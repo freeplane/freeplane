@@ -83,12 +83,12 @@ Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; F
 ;".myp" is the extension we're associating. "MyProgramFile" is the internal name for the file type as stored in the registry. Make sure you use a unique name for this so you don't inadvertently overwrite another application's registry key.
 ;"My Program File" above is the name for the file type as shown in Explorer.
 ;"DefaultIcon" is the registry key that specifies the filename containing the icon to associate with the file type. ",0" tells Explorer to use the first icon from MYPROG.EXE. (",1" would mean the second icon.)
-Root: HKCR; Subkey: Applications\freeplane.exe; Flags: deletekey
-Root: HKCR; Subkey: .mm; Flags: deletekey
-Root: HKLM; Subkey: SOFTWARE\Classes\.mm; Flags: deletekey
-Root: HKCU; Subkey: Software\Classes\Applications\freeplane.exe; Flags: deletekey
-Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mm; Flags: deletekey
 Root: HKLM; Subkey: Software\JavaSoft\Prefs
+Root: HKCR; Subkey: Applications\freeplane.exe; Flags: deletekey; Tasks: associate
+Root: HKCR; Subkey: .mm; Flags: deletekey; Tasks: associate
+Root: HKLM; Subkey: SOFTWARE\Classes\.mm; Flags: deletekey; Tasks: associate
+Root: HKCU; Subkey: Software\Classes\Applications\freeplane.exe; Flags: deletekey; Tasks: associate
+Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mm; Flags: deletekey; Tasks: associate
 Root: HKCR; SubKey: .mm; ValueType: string; ValueData: Freeplane; Flags: uninsdeletekey; Tasks: associate
 Root: HKCR; SubKey: Freeplane; ValueType: string; ValueData: Freeplane mind map; Flags: uninsdeletekey; Tasks: associate
 Root: HKCR; SubKey: Freeplane\Shell\Open\Command; ValueType: string; ValueData: """{app}\freeplane.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: associate
