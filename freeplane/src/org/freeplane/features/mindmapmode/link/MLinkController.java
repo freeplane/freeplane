@@ -21,6 +21,8 @@ package org.freeplane.features.mindmapmode.link;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -165,22 +167,44 @@ public class MLinkController extends LinkController {
 		arrowLinkPopup.add(menuItem);
 		arrowLinkPopup.addSeparator();
 		arrowLinkPopup.add(new JLabel(ResourceBundles.getText("edit_source_label")));
+		KeyListener enterListener = new KeyListener(){
+
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER){
+					arrowLinkPopup.setVisible(false);
+					e.consume();
+				}
+            }
+
+			public void keyReleased(KeyEvent e) {
+            }
+
+			public void keyTyped(KeyEvent e) {
+            }};
 		final JTextField sourceLabelEditor = new JTextField(link.getSourceLabel());
+		sourceLabelEditor.addKeyListener(enterListener);
 		arrowLinkPopup.add(sourceLabelEditor);
 		arrowLinkPopup.addSeparator();
 		arrowLinkPopup.add(new JLabel(ResourceBundles.getText("edit_middle_label")));
 		final JTextField middleLabelEditor = new JTextField(link.getMiddleLabel());
+		middleLabelEditor.addKeyListener(enterListener);
 		arrowLinkPopup.add(middleLabelEditor);
 		arrowLinkPopup.addSeparator();
 		arrowLinkPopup.add(new JLabel(ResourceBundles.getText("edit_target_label")));
 		final JTextField targetLabelEditor = new JTextField(link.getTargetLabel());
+		targetLabelEditor.addKeyListener(enterListener);
 		arrowLinkPopup.add(targetLabelEditor);
 		arrowLinkPopup.addSeparator();
 		arrowLinkPopup.addPopupMenuListener(new PopupMenuListener() {
+			private boolean canceled = false;
 			public void popupMenuCanceled(final PopupMenuEvent e) {
+				canceled = true;
 			}
 
 			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+				if(canceled){
+					return;
+				}
 				setSourceLabel(link, sourceLabelEditor.getText());
 				setMiddleLabel(link, middleLabelEditor.getText());
 				setTargetLabel(link, targetLabelEditor.getText());
