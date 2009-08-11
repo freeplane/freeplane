@@ -400,7 +400,11 @@ public abstract class MainView extends JLabel {
 		setIcon((iconPresent ? iconImages : null));
 	}
 
-	void updateText(String nodeText, final MapView map) {
+	void updateText(String nodeText) {
+		final MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+		if(map == null){
+			return;
+		}
 		final boolean isHtml = nodeText.startsWith("<html>");
 		boolean widthMustBeRestricted = false;
 		boolean isLong = false;

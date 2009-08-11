@@ -1152,7 +1152,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (attributeView != null) {
 			attributeView.update();
 		}
-		mainView.updateText(getModel().toString(), map);
+		mainView.updateText(getModel().toString());
 		updateToolTip();
 		revalidate();
 	}

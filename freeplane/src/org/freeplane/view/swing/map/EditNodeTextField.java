@@ -94,7 +94,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			}
 	        final int lastWidth = textfield.getWidth();
 	    	final int lastHeight = textfield.getHeight();
-			final MapView mapView = (MapView)textfield.getParent();
+			final MainView mainView = (MainView)textfield.getParent();
 			final int height;
 			final int width ;
 			final boolean lineWrap = lastWidth == maxWidth;
@@ -126,9 +126,9 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				textfield.repaint();
 				return;
 			}
+			MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, mainView);
 			final NodeView nodeView = mapView.getNodeView(getNode());
 			mapView.anchorToSelected(nodeView, 0f, 0f);
-			final MainView mainView = nodeView.getMainView();
 			textfield.setSize(width, height);
 			mainView.setPreferredSize(new Dimension(width, height));
 			nodeView.revalidate();
@@ -145,7 +145,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	    }
     }
 
-	class TextFieldListener implements KeyListener, FocusListener, MouseListener, ComponentListener, INodeChangeListener {
+	class TextFieldListener implements KeyListener, FocusListener, MouseListener, INodeChangeListener {
 		final int CANCEL = 2;
 		final int EDIT = 1;
 		// TODO rladstaetter 18.02.2009 eventSource should be an enum
@@ -153,32 +153,6 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		private boolean popupShown;
 
 		public TextFieldListener() {
-		}
-
-		public void componentHidden(final ComponentEvent e) {
-			focusLost(null);
-		}
-
-		public void componentMoved(final ComponentEvent e) {
-					Point location = new Point();
-					Component component = e.getComponent();
-					if(component instanceof NodeView){
-						component = ((NodeView) component).getMainView();
-					}
-					UITools.convertPointToAncestor(component, location, MapView.class);
-					textfield.setLocation(location);
-		}
-
-		public void componentResized(final ComponentEvent e) {
-					final Component component = e.getComponent();
-					if(component instanceof NodeView){
-						return;
-					}
-					textfield.setSize(component.getSize());
-		}
-
-		public void componentShown(final ComponentEvent e) {
-			focusLost(null);
 		}
 
 		private void conditionallyShowPopup(final MouseEvent e) {
@@ -290,22 +264,16 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 		final ModeController modeController = getModeController();
 		modeController.getMapController().removeNodeChangeListener((INodeChangeListener)textFieldListener);
-		final MapView mapView = (MapView) textfield.getParent();
+		final MainView mainView = (MainView) textfield.getParent();
 		final Rectangle bounds = textfield.getBounds();
-		final MainView mainView = nodeView.getMainView();
-		mainView.removeComponentListener((ComponentListener) textFieldListener);
-		nodeView.removeComponentListener((ComponentListener) textFieldListener);
 		textfield.getDocument().removeDocumentListener(documentListener);
 		textfield = null;
-		if (mapView == null) {
-			return;
-		}
 		mainView.setPreferredSize(null);
-		mainView.updateText(getNode().getText(), mapView);
+		mainView.updateText(getNode().getText());
 		mainView.getParent().invalidate();
-		mapView.remove(0);
-		mapView.revalidate();
-		mapView.repaint(bounds);
+		mainView.remove(0);
+		mainView.revalidate();
+		mainView.repaint();
 	}
 	private NodeView nodeView;
 
@@ -343,9 +311,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		SpellCheckerController.getController(modeController).enableAutoSpell(textfield);
 		mapView.scrollNodeToVisible(nodeView);
 		
-		final Point textFieldLocation = new Point();
 		final MainView mainView = nodeView.getMainView();
-		UITools.convertPointToAncestor(mainView, textFieldLocation, mapView);
 		final Dimension textFieldSize = textfield.getPreferredSize();
 		textFieldSize.width += 1;
 		textfield.setWrapStyleWord(true);
@@ -360,7 +326,6 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final int nodeHeight = mainView.getHeight();
 		maxWidth += nodeWidth - textFieldSize.width;
 		textfield.setSize(nodeWidth, nodeHeight);
-		textfield.setLocation(textFieldLocation);
 		int iconWidth = mainView.getIconWidth();
 		if(iconWidth != 0){
 			iconWidth += mapView.getZoomed(mainView.getIconTextGap());
@@ -385,15 +350,13 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				topBorder + 1, leftBorder + 1 + iconWidth, topBorder-1, leftBorder-1, 
 				borderColor));
 		}
-		mapView.add(textfield, 0);		
+		mainView.add(textfield, 0);		
 		if (firstEvent != null ) {
 			redispatchKeyEvents(textfield, firstEvent);
 		}
 		else {
 			textfield.setCaretPosition(getText().length());
 		}
-		component.addComponentListener(textFieldListener);
-		nodeView.addComponentListener(textFieldListener);
 		textfield.getDocument().addDocumentListener(documentListener);
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeChangeListener(textFieldListener);
