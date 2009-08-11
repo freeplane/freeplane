@@ -11,9 +11,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.view.swing.map.MapView;
 
 import atp.sHotEqn;
 
@@ -23,7 +25,7 @@ class JZoomedHotEqn extends sHotEqn {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	static private double zoom = 1f;
+	private float zoom = 1f;
 	final private LatexNodeHook latexController;
 	private LatexExtension model;
 
@@ -31,7 +33,7 @@ class JZoomedHotEqn extends sHotEqn {
 		this.latexController = latexController;
 		setDebug(false);
 		setEditable(false);
-		setBorder(true);
+		setBorder(false);
 		model = latexExtension;
 		setEquation(latexExtension.getEquation());
 		if (JZoomedHotEqn.editorTitle == null) {
@@ -58,10 +60,12 @@ class JZoomedHotEqn extends sHotEqn {
 
 	@Override
 	public Dimension getPreferredSize() {
+		MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+		zoom = mapView.getZoom();
 		final Dimension dimension = isValid() ? super.getPreferredSize() : getSizeof(getEquation());
-		dimension.height *= JZoomedHotEqn.zoom;
-		dimension.width *= JZoomedHotEqn.zoom;
-		return dimension;
+		Dimension zoomed = new Dimension((int)(dimension.width * zoom), (int)(dimension.height * zoom));
+		zoom = Math.min((float) zoomed.width / dimension.width, (float) zoomed.height / dimension.height);
+		return zoomed;
 	}
 
 	@Override
@@ -76,10 +80,11 @@ class JZoomedHotEqn extends sHotEqn {
 
 	@Override
 	public void paint(final Graphics g) {
-		if (JZoomedHotEqn.zoom != 1F) {
+		if (zoom != 1F) {
 			final Graphics2D g2 = (Graphics2D) g;
 			final AffineTransform transform = g2.getTransform();
-			g2.scale(JZoomedHotEqn.zoom, JZoomedHotEqn.zoom);
+			final float correctedZoom = zoom;
+			g2.scale(correctedZoom, correctedZoom);
 			super.paint(g);
 			g2.setTransform(transform);
 		}
@@ -90,11 +95,11 @@ class JZoomedHotEqn extends sHotEqn {
 
 	@Override
 	public void setBounds(final int x, final int y, final int w, final int h) {
-		if (JZoomedHotEqn.zoom < 1f) {
-			super.setBounds(x, y, (int) (w / JZoomedHotEqn.zoom), (int) (h / JZoomedHotEqn.zoom));
+		if (zoom < 1f) {
+			super.setBounds(x, y, (int) (w / zoom), (int) (h / zoom));
 		}
 		else {
-			super.setBounds(x, y, (w), (h));
+			super.setBounds(x, y, w, h );
 		}
 	}
 
