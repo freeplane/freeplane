@@ -129,6 +129,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			final NodeView nodeView = mapView.getNodeView(getNode());
 			mapView.anchorToSelected(nodeView, 0f, 0f);
 			final MainView mainView = nodeView.getMainView();
+			textfield.setSize(width, height);
 			mainView.setPreferredSize(new Dimension(width, height));
 			nodeView.revalidate();
         }

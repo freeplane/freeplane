@@ -1360,7 +1360,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			vp.setScrollMode(scrollMode);
 		}
 		else {
-			vp.repaint(vp.getViewRect());
+			repaintVisible();
 		}
 		if (nodeToBeVisible != null) {
 			final int scrollMode = vp.getScrollMode();
@@ -1445,4 +1445,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    // TODO Auto-generated method stub
 	    
     }
+	
+	public void repaintVisible(){
+		final JViewport vp = (JViewport) getParent();
+		final Dimension extentSize = vp.getExtentSize();
+		repaint(0, 0, extentSize.width, extentSize.height);
+	}
 }
