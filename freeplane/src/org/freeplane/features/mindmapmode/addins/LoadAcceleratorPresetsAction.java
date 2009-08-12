@@ -177,7 +177,9 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 			final String title = ResourceBundles.getText(key + ".text", keyset);
 			final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
 			    keysetFile.toURL(), key, title, getController());
-			getController().addAction(loadAcceleratorPresetsAction);
+			if(null == getController().getAction(loadAcceleratorPresetsAction.getKey())){
+				getController().addAction(loadAcceleratorPresetsAction);
+			}
 			getModeController().getUserInputListenerFactory().getMenuBuilder().addAction(
 			    "/menu_bar/extras/first/options/acceleratorPresets/new", key, loadAcceleratorPresetsAction,
 			    MenuBuilder.AS_CHILD);
