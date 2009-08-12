@@ -94,7 +94,6 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			}
 	        final int lastWidth = textfield.getWidth();
 	    	final int lastHeight = textfield.getHeight();
-			final MainView mainView = (MainView)textfield.getParent();
 			final int height;
 			final int width ;
 			final boolean lineWrap = lastWidth == maxWidth;
@@ -126,12 +125,10 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				textfield.repaint();
 				return;
 			}
-			MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, mainView);
-			final NodeView nodeView = mapView.getNodeView(getNode());
-			mapView.anchorToSelected(nodeView, 0f, 0f);
 			textfield.setSize(width, height);
+			final Component mainView = textfield.getParent();
 			mainView.setPreferredSize(new Dimension(width, height));
-			nodeView.revalidate();
+			textfield.revalidate();
         }
 
 	    public void insertUpdate(DocumentEvent e) {

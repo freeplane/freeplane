@@ -255,7 +255,7 @@ public abstract class MainView extends JLabel {
 	public void paint(final Graphics g) {
 		final Graphics2D g2 = (Graphics2D) g;
 		float zoom = getZoom();
-		if (zoom != 1F) {
+		if (zoom != 1F && getComponentCount() == 0) {
 			zoom *= MainView.ZOOM_CORRECTION_FACTOR;
 			final AffineTransform transform = g2.getTransform();
 			g2.scale(zoom, zoom);
