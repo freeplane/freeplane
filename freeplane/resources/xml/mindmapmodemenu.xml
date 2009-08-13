@@ -118,7 +118,7 @@
 			<menu_category name="links">
 				<menu_action action="SetLinkByFileChooserAction" accelerator="control shift K" />
 				<menu_action action="SetLinkByTextFieldAction" accelerator="control K" />
-				<menu_action action="AddArrowLinkAction" accelerator="control L" />
+				<menu_action action="AddConnectorAction" accelerator="control L" />
 				<menu_action action="AddLocalLinkAction" accelerator="alt shift L" />
 			</menu_category>
 			<menu_separator />
@@ -423,7 +423,7 @@
 			<menu_category name="links">
 				<menu_action action="SetLinkByFileChooserAction"  />
 				<menu_action action="SetLinkByTextFieldAction"  />
-				<menu_action action="AddArrowLinkAction"  />
+				<menu_action action="AddConnectorAction"  />
 				<menu_action action="AddLocalLinkAction"  />
 			</menu_category>
 		</menu_submenu>

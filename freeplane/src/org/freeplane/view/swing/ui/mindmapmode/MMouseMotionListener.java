@@ -25,7 +25,7 @@ import java.awt.event.MouseEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.IMapMouseReceiver;
-import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.view.swing.map.MapView;
@@ -33,7 +33,7 @@ import org.freeplane.view.swing.map.NodeView;
 
 /** */
 public class MMouseMotionListener implements IMapMouseReceiver {
-	ArrowLinkModel draggedLink = null;
+	ConnectorModel draggedLink = null;
 	private Point draggedLinkOldEndPoint;
 	private Point draggedLinkOldStartPoint;
 	final private ModeController mController;
@@ -92,8 +92,8 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 			originX = e.getX();
 			originY = e.getY();
 			final Object object = mapView.detectCollision(new Point(originX, originY));
-			if (object instanceof ArrowLinkModel) {
-				final ArrowLinkModel arrowLinkModel = (ArrowLinkModel) object;
+			if (object instanceof ConnectorModel) {
+				final ConnectorModel arrowLinkModel = (ConnectorModel) object;
 				if(arrowLinkModel.isEdgeLike()){
 					return;
 				}

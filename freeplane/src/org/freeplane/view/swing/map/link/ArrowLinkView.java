@@ -35,7 +35,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinkModel;
 import org.freeplane.view.swing.map.MapView;
@@ -48,11 +48,11 @@ public class ArrowLinkView implements ILinkView {
 	static final Stroke DEF_STROKE = new BasicStroke(1);
 	private static final int LABEL_SHIFT = 4;
 	private CubicCurve2D arrowLinkCurve;
-	private final ArrowLinkModel arrowLinkModel;
+	private final ConnectorModel arrowLinkModel;
 	private final NodeView source, target;
 
 	/* Note, that source and target are nodeviews and not nodemodels!. */
-	public ArrowLinkView(final ArrowLinkModel arrowLinkModel, final NodeView source, final NodeView target) {
+	public ArrowLinkView(final ConnectorModel arrowLinkModel, final NodeView source, final NodeView target) {
 		this.arrowLinkModel = arrowLinkModel;
 		this.source = source;
 		this.target = target;
@@ -166,7 +166,7 @@ public class ArrowLinkView implements ILinkView {
 	}
 
 	Color getColor() {
-		final ArrowLinkModel model = getModel();
+		final ConnectorModel model = getModel();
 		return LinkController.getController(getModeController()).getColor(model);
 	}
 
@@ -186,7 +186,7 @@ public class ArrowLinkView implements ILinkView {
 	/* (non-Javadoc)
      * @see org.freeplane.view.swing.map.link.ILinkView#getModel()
      */
-	public ArrowLinkModel getModel() {
+	public ConnectorModel getModel() {
 		return arrowLinkModel;
 	}
 

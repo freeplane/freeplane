@@ -56,7 +56,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	}
 
 	protected NodeLinkModel createArrowLink(final NodeModel source, final String targetID) {
-		return new ArrowLinkModel(source, targetID);
+		return new ConnectorModel(source, targetID);
 	}
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
@@ -108,68 +108,68 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		});
 		reader.addAttributeHandler("arrowlink", "EDGE_LIKE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setEdgeLike(Boolean.TRUE.toString().equals(value));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "COLOR", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setColor(ColorUtils.stringToColor(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "DESTINATION", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setTargetID(value);
 				arrowLinks.add(arrowLink);
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "SOURCE_LABEL", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setSourceLabel(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "MIDDLE_LABEL", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setMiddleLabel(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "TARGET_LABEL", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setTargetLabel(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "STARTINCLINATION", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setStartInclination(TreeXmlReader.xmlToPoint(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "ENDINCLINATION", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setEndInclination(TreeXmlReader.xmlToPoint(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "STARTARROW", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setStartArrow(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "ENDARROW", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setEndArrow(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "WIDTH", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setWidth(Integer.parseInt(value.toString()));
 			}
 		});
@@ -186,7 +186,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		writer.addAttributeWriter(NodeBuilder.XML_NODE, this);
 	}
 
-	public void save(final ITreeWriter writer, final ArrowLinkModel model) throws IOException {
+	public void save(final ITreeWriter writer, final ConnectorModel model) throws IOException {
 		final NodeModel target = model.getTarget();
 		if (target == null) {
 			return;
@@ -263,8 +263,8 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		final Iterator<LinkModel> iterator = links.getLinks().iterator();
 		while (iterator.hasNext()) {
 			final LinkModel linkModel = iterator.next();
-			if (linkModel instanceof ArrowLinkModel) {
-				final ArrowLinkModel arrowLinkModel = (ArrowLinkModel) linkModel;
+			if (linkModel instanceof ConnectorModel) {
+				final ConnectorModel arrowLinkModel = (ConnectorModel) linkModel;
 				save(writer, arrowLinkModel);
 			}
 		}

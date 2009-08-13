@@ -96,24 +96,24 @@ public class LinkController extends SelectionController implements IExtension {
 		modeController.getController();
 	}
 
-	final private ExclusivePropertyChain<Color, ArrowLinkModel> colorHandlers;
+	final private ExclusivePropertyChain<Color, ConnectorModel> colorHandlers;
 	final private ModeController modeController;
 
 	public LinkController(final ModeController modeController) {
 		this.modeController = modeController;
 		updateStandards(modeController);
-		colorHandlers = new ExclusivePropertyChain<Color, ArrowLinkModel>();
+		colorHandlers = new ExclusivePropertyChain<Color, ConnectorModel>();
 		if (listener == null) {
 			listener = new ArrowLinkListener();
 			ResourceController.getResourceController().addPropertyChangeListener(listener);
 		}
-		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, ArrowLinkModel>() {
-			public Color getProperty(final ArrowLinkModel model, final Color currentValue) {
+		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, ConnectorModel>() {
+			public Color getProperty(final ConnectorModel model, final Color currentValue) {
 				return model.getColor();
 			}
 		});
-		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, ArrowLinkModel>() {
-			public Color getProperty(final ArrowLinkModel model, final Color currentValue) {
+		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, ConnectorModel>() {
+			public Color getProperty(final ConnectorModel model, final Color currentValue) {
 				return standardColor;
 			}
 		});
@@ -124,8 +124,8 @@ public class LinkController extends SelectionController implements IExtension {
 		new LinkBuilder(this).registerBy(readManager, writeManager);
 	}
 
-	public IPropertyHandler<Color, ArrowLinkModel> addColorGetter(final Integer key,
-	                                                              final IPropertyHandler<Color, ArrowLinkModel> getter) {
+	public IPropertyHandler<Color, ConnectorModel> addColorGetter(final Integer key,
+	                                                              final IPropertyHandler<Color, ConnectorModel> getter) {
 		return colorHandlers.addGetter(key, getter);
 	}
 
@@ -134,10 +134,10 @@ public class LinkController extends SelectionController implements IExtension {
 		final Collection<LinkModel> links = new LinkedList<LinkModel>();;
 		links.addAll(sourceLinks);
 		for (final LinkModel foreign_link : links) {
-			if (!(foreign_link instanceof ArrowLinkModel)) {
+			if (!(foreign_link instanceof ConnectorModel)) {
 				continue;
 			}
-			final ArrowLinkModel arrowLink = (ArrowLinkModel) foreign_link;
+			final ConnectorModel arrowLink = (ConnectorModel) foreign_link;
 			final NodeModel foreignTarget = arrowLink.getTarget();
 			if (nodeAlreadyVisited.add(foreignTarget)) {
 				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreignTarget));
@@ -172,7 +172,7 @@ public class LinkController extends SelectionController implements IExtension {
 		modeController.addAction(new GotoLinkNodeAction(this, null));
 	}
 
-	protected void createArrowLinkPopup(final ArrowLinkModel link, final JPopupMenu arrowLinkPopup) {
+	protected void createArrowLinkPopup(final ConnectorModel link, final JPopupMenu arrowLinkPopup) {
 		final NodeModel source = link.getSource();
 		final NodeModel target = link.getTarget();
 		final HashSet<NodeModel> nodeAlreadyVisited = new HashSet<NodeModel>();
@@ -182,7 +182,7 @@ public class LinkController extends SelectionController implements IExtension {
 		addLinks(arrowLinkPopup, target, nodeAlreadyVisited);
 	}
 
-	public Color getColor(final ArrowLinkModel model) {
+	public Color getColor(final ConnectorModel model) {
 		return colorHandlers.getProperty(model);
 	}
 
@@ -228,8 +228,8 @@ public class LinkController extends SelectionController implements IExtension {
 	 * least removelink available.
 	 */
 	public JPopupMenu getPopupForModel(final java.lang.Object obj) {
-		if (obj instanceof ArrowLinkModel) {
-			final ArrowLinkModel link = (ArrowLinkModel) obj;
+		if (obj instanceof ConnectorModel) {
+			final ConnectorModel link = (ConnectorModel) obj;
 			final JPopupMenu arrowLinkPopup = new JPopupMenu();
 			createArrowLinkPopup(link, arrowLinkPopup);
 			return arrowLinkPopup;
@@ -273,7 +273,7 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 	}
 
-	public IPropertyHandler<Color, ArrowLinkModel> removeColorGetter(final Integer key) {
+	public IPropertyHandler<Color, ConnectorModel> removeColorGetter(final Integer key) {
 		return colorHandlers.removeGetter(key);
 	}
 

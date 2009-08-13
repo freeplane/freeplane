@@ -24,7 +24,7 @@ import java.awt.Point;
 
 import org.freeplane.core.model.NodeModel;
 
-public class ArrowLinkModel extends NodeLinkModel {
+public class ConnectorModel extends NodeLinkModel {
 	private Color color;
 	private String endArrow;
 	private Point endInclination;
@@ -45,7 +45,7 @@ public class ArrowLinkModel extends NodeLinkModel {
     	this.edgeLike = edgeLike;
     }
 
-	public ArrowLinkModel(final NodeModel source, final String targetID) {
+	public ConnectorModel(final NodeModel source, final String targetID) {
 		super(source, targetID);
 		startArrow = "None";
 		endArrow = "Default";

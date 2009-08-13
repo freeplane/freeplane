@@ -28,14 +28,14 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.NodeLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 
 /**
  * @author foltin
  */
-class AddArrowLinkAction extends AFreeplaneAction {
+class AddConnectorAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
@@ -43,8 +43,8 @@ class AddArrowLinkAction extends AFreeplaneAction {
 
 	/**
 	 */
-	public AddArrowLinkAction(final Controller controller) {
-		super("AddArrowLinkAction", controller);
+	public AddConnectorAction(final Controller controller) {
+		super("AddConnectorAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -70,7 +70,7 @@ class AddArrowLinkAction extends AFreeplaneAction {
 					nodeLinks = new NodeLinks();
 					source.addExtension(nodeLinks);
 				}
-				arrowLink = new ArrowLinkModel(source, targetID);
+				arrowLink = new ConnectorModel(source, targetID);
 				nodeLinks.addArrowlink(arrowLink);
 				getModeController().getMapController().nodeChanged(source);
 			}

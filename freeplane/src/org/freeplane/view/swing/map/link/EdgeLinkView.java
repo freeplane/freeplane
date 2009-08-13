@@ -24,7 +24,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.EdgeViewFactory;
@@ -34,11 +34,11 @@ import org.freeplane.view.swing.map.edge.EdgeViewFactory;
  * 09.08.2009
  */
 public class EdgeLinkView implements ILinkView {
-	private final ArrowLinkModel model;
+	private final ConnectorModel model;
 	private final EdgeView edgeView;
 	
 	
-	public EdgeLinkView(ArrowLinkModel model,  NodeView source, NodeView target) {
+	public EdgeLinkView(ConnectorModel model,  NodeView source, NodeView target) {
 	    super();
 	    this.model = model;
 	    edgeView = EdgeViewFactory.getInstance().getEdge(source, target);
@@ -58,7 +58,7 @@ public class EdgeLinkView implements ILinkView {
 		return edgeView.detectCollision(p);
 	}
 
-	public ArrowLinkModel getModel() {
+	public ConnectorModel getModel() {
 		return model;
 	}
 

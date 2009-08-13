@@ -351,7 +351,7 @@ Todo:
 				<xsl:element name="img">
 					<xsl:attribute name="src"><xsl:value-of select="$destination_dir"/>ilink.png</xsl:attribute>
 					<xsl:attribute name="class">ilink</xsl:attribute>
-					<xsl:attribute name="alt">Arrow Link</xsl:attribute>
+					<xsl:attribute name="alt">Connector</xsl:attribute>
 				</xsl:element>
 			</xsl:otherwise>
 			</xsl:choose>

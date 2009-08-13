@@ -30,7 +30,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 
 class EdgeLikeLinkAction extends AFreeplaneAction {
@@ -38,9 +38,9 @@ class EdgeLikeLinkAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	ArrowLinkModel arrowLink;
+	ConnectorModel arrowLink;
 
-	public EdgeLikeLinkAction(final MLinkController linkController, final ArrowLinkModel arrowLink) {
+	public EdgeLikeLinkAction(final MLinkController linkController, final ConnectorModel arrowLink) {
 		super("EdgeLikeLinkAction", linkController.getModeController().getController());
 		this.arrowLink = arrowLink;
 	}

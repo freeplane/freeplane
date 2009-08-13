@@ -74,7 +74,7 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.addins.mapstyle.MapStyle;
-import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.NodeLinks;
@@ -949,10 +949,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			final Iterator<LinkModel> linkIterator = links.iterator();
 			while (linkIterator.hasNext()) {
 				final LinkModel next = linkIterator.next();
-				if (!(next instanceof ArrowLinkModel)) {
+				if (!(next instanceof ConnectorModel)) {
 					continue;
 				}
-				final ArrowLinkModel ref = (ArrowLinkModel) next;
+				final ConnectorModel ref = (ConnectorModel) next;
 				if (alreadyPaintedLinks.add(ref)) {
 					final NodeModel target = ref.getTarget();
 					if (target == null) {

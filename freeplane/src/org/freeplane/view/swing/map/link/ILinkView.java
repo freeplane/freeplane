@@ -23,7 +23,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.ConnectorModel;
 
 /**
  * @author Dimitry Polivaev
@@ -41,7 +41,7 @@ public interface ILinkView {
 	 * fc: This getter is public, because the view gets the model by click on
 	 * the curve.
 	 */
-	public abstract ArrowLinkModel getModel();
+	public abstract ConnectorModel getModel();
 
 	/**
 	 * \param iterativeLevel describes the n-th nested arrowLink that is to be

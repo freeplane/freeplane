@@ -46,7 +46,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.MapLinks;
@@ -148,7 +148,7 @@ public class MLinkController extends LinkController {
         }
 	}
 
-	static private ColorArrowLinkAction colorArrowLinkAction;
+	static private ConnectorColorAction colorArrowLinkAction;
 	static private EdgeLikeLinkAction edgeLikeLinkAction;
 	static private Pattern mailPattern;
 	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;]");
@@ -162,12 +162,12 @@ public class MLinkController extends LinkController {
 	}
 
 	public void addLink(final NodeModel source, final NodeModel target) {
-		((AddArrowLinkAction) getModeController().getAction("AddArrowLinkAction")).addLink(source, target);
+		((AddConnectorAction) getModeController().getAction("AddConnectorAction")).addLink(source, target);
 	}
 
-	public void changeArrowsOfArrowLink(final ArrowLinkModel arrowLink, final boolean hasStartArrow,
+	public void changeArrowsOfArrowLink(final ConnectorModel arrowLink, final boolean hasStartArrow,
 	                                    final boolean hasEndArrow) {
-		((ChangeArrowsInArrowLinkAction) getModeController().getAction("ChangeArrowsInArrowLinkAction"))
+		((ChangeConnectorArrowsAction) getModeController().getAction("ChangeConnectorArrowsAction"))
 		    .changeArrowsOfArrowLink(arrowLink, hasStartArrow, hasEndArrow);
 	}
 
@@ -178,14 +178,14 @@ public class MLinkController extends LinkController {
 		final Controller controller = modeController.getController();
 		setLinkByFileChooser = new SetLinkByFileChooserAction(controller);
 		modeController.addAction(setLinkByFileChooser);
-		final AddArrowLinkAction addArrowLinkAction = new AddArrowLinkAction(controller);
+		final AddConnectorAction addArrowLinkAction = new AddConnectorAction(controller);
 		modeController.addAction(addArrowLinkAction);
-		modeController.addAction(new RemoveArrowLinkAction(this, null));
-		colorArrowLinkAction = new ColorArrowLinkAction(this, null);
+		modeController.addAction(new RemoveConnectorAction(this, null));
+		colorArrowLinkAction = new ConnectorColorAction(this, null);
 		modeController.addAction(colorArrowLinkAction);
 		edgeLikeLinkAction = new EdgeLikeLinkAction(this, null);
 		modeController.addAction(edgeLikeLinkAction);
-		modeController.addAction(new ChangeArrowsInArrowLinkAction(this, "none", null, true, true));
+		modeController.addAction(new ChangeConnectorArrowsAction(this, "none", null, true, true));
 		setLinkByTextField = new SetLinkByTextFieldAction(controller);
 		modeController.addAction(setLinkByTextField);
 		modeController.addAction(new AddLocalLinkAction(controller));
@@ -193,11 +193,11 @@ public class MLinkController extends LinkController {
 	}
 
 	@Override
-	protected void createArrowLinkPopup(final ArrowLinkModel link, final JPopupMenu arrowLinkPopup) {
+	protected void createArrowLinkPopup(final ConnectorModel link, final JPopupMenu arrowLinkPopup) {
 		super.createArrowLinkPopup(link, arrowLinkPopup);
-		((RemoveArrowLinkAction) getModeController().getAction("RemoveArrowLinkAction")).setArrowLink(link);
-		arrowLinkPopup.add(new RemoveArrowLinkAction(this, link));
-		arrowLinkPopup.add(new ColorArrowLinkAction(this, link));
+		((RemoveConnectorAction) getModeController().getAction("RemoveConnectorAction")).setArrowLink(link);
+		arrowLinkPopup.add(new RemoveConnectorAction(this, link));
+		arrowLinkPopup.add(new ConnectorColorAction(this, link));
 		final EdgeLikeLinkAction action = new EdgeLikeLinkAction(this, link);
 		final JCheckBoxMenuItem menuItem = new JCheckBoxMenuItem(action);
 		menuItem.setSelected(link.isEdgeLike());
@@ -252,19 +252,19 @@ public class MLinkController extends LinkController {
 		});
 		final boolean a = !link.getStartArrow().equals("None");
 		final boolean b = !link.getEndArrow().equals("None");
-		final JRadioButtonMenuItem itemnn = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this, "none",
+		final JRadioButtonMenuItem itemnn = new JRadioButtonMenuItem(new ChangeConnectorArrowsAction(this, "none",
 		    link, false, false));
 		arrowLinkPopup.add(itemnn);
 		itemnn.setSelected(!a && !b);
-		final JRadioButtonMenuItem itemnt = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this, "forward",
+		final JRadioButtonMenuItem itemnt = new JRadioButtonMenuItem(new ChangeConnectorArrowsAction(this, "forward",
 		    link, false, true));
 		arrowLinkPopup.add(itemnt);
 		itemnt.setSelected(!a && b);
-		final JRadioButtonMenuItem itemtn = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this,
+		final JRadioButtonMenuItem itemtn = new JRadioButtonMenuItem(new ChangeConnectorArrowsAction(this,
 		    "backward", link, true, false));
 		arrowLinkPopup.add(itemtn);
 		itemtn.setSelected(a && !b);
-		final JRadioButtonMenuItem itemtt = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this, "both",
+		final JRadioButtonMenuItem itemtt = new JRadioButtonMenuItem(new ChangeConnectorArrowsAction(this, "both",
 		    link, true, true));
 		arrowLinkPopup.add(itemtt);
 		itemtt.setSelected(a && b);
@@ -298,11 +298,11 @@ public class MLinkController extends LinkController {
 		return link;
 	}
 
-	public void setArrowLinkColor(final ArrowLinkModel arrowLink, final Color color) {
+	public void setArrowLinkColor(final ConnectorModel arrowLink, final Color color) {
 		colorArrowLinkAction.setArrowLinkColor(arrowLink, color);
 	}
 
-	public void setArrowLinkEndPoints(final ArrowLinkModel link, final Point startPoint, final Point endPoint) {
+	public void setArrowLinkEndPoints(final ConnectorModel link, final Point startPoint, final Point endPoint) {
 		final IActor actor = new IActor() {
 			final private Point oldEndPoint = link.getEndInclination();
 			final private Point oldStartPoint = link.getStartInclination();
@@ -348,7 +348,7 @@ public class MLinkController extends LinkController {
 		setLinkByFileChooser.setLinkByFileChooser();
 	}
 
-	public void setMiddleLabel(final ArrowLinkModel model, final String label) {
+	public void setMiddleLabel(final ConnectorModel model, final String label) {
 		final String oldLabel = model.getMiddleLabel();
 		if (label == oldLabel || label != null && label.equals(oldLabel)) {
 			return;
@@ -371,7 +371,7 @@ public class MLinkController extends LinkController {
 		getModeController().execute(actor, model.getSource().getMap());
 	}
 
-	public void setSourceLabel(final ArrowLinkModel model, final String label) {
+	public void setSourceLabel(final ConnectorModel model, final String label) {
 		final String oldLabel = model.getSourceLabel();
 		if (label == oldLabel || label != null && label.equals(oldLabel)) {
 			return;
@@ -394,7 +394,7 @@ public class MLinkController extends LinkController {
 		getModeController().execute(actor, model.getSource().getMap());
 	}
 
-	public void setTargetLabel(final ArrowLinkModel model, final String label) {
+	public void setTargetLabel(final ConnectorModel model, final String label) {
 		final String oldLabel = model.getTargetLabel();
 		if (label == oldLabel || label != null && label.equals(oldLabel)) {
 			return;

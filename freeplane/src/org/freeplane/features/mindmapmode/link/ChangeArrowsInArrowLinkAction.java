@@ -23,21 +23,21 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.ConnectorModel;
 
-class ChangeArrowsInArrowLinkAction extends AFreeplaneAction {
+class ChangeConnectorArrowsAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	ArrowLinkModel arrowLink;
+	ConnectorModel arrowLink;
 	boolean hasEndArrow;
 	boolean hasStartArrow;
 
-	public ChangeArrowsInArrowLinkAction(final MLinkController linkController, final String key,
-	                                     final ArrowLinkModel arrowLink, final boolean hasStartArrow,
+	public ChangeConnectorArrowsAction(final MLinkController linkController, final String key,
+	                                     final ConnectorModel arrowLink, final boolean hasStartArrow,
 	                                     final boolean hasEndArrow) {
-		super("ChangeArrowsInArrowLinkAction." + key, linkController.getModeController().getController());
+		super("ChangeConnectorArrowsAction." + key, linkController.getModeController().getController());
 		this.arrowLink = arrowLink;
 		this.hasStartArrow = hasStartArrow;
 		this.hasEndArrow = hasEndArrow;
@@ -47,7 +47,7 @@ class ChangeArrowsInArrowLinkAction extends AFreeplaneAction {
 		changeArrowsOfArrowLink(arrowLink, hasStartArrow, hasEndArrow);
 	}
 
-	public void changeArrowsOfArrowLink(final ArrowLinkModel link, final boolean hasStartArrow,
+	public void changeArrowsOfArrowLink(final ConnectorModel link, final boolean hasStartArrow,
 	                                    final boolean hasEndArrow) {
 		final IActor actor = new IActor() {
 			final private String oldEndArrow = link.getEndArrow();

@@ -27,7 +27,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.NodeLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 
-class RemoveArrowLinkAction extends AFreeplaneAction {
+class RemoveConnectorAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
@@ -37,8 +37,8 @@ class RemoveArrowLinkAction extends AFreeplaneAction {
 	/**
 	 * can be null can be null.
 	 */
-	public RemoveArrowLinkAction(final MLinkController linkController, final NodeLinkModel arrowLink) {
-		super("RemoveArrowLinkAction", linkController.getModeController().getController());
+	public RemoveConnectorAction(final MLinkController linkController, final NodeLinkModel arrowLink) {
+		super("RemoveConnectorAction", linkController.getModeController().getController());
 		setArrowLink(arrowLink);
 	}
 
