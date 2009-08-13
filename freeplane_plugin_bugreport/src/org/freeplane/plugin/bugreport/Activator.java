@@ -1,25 +1,7 @@
 package org.freeplane.plugin.bugreport;
 
-import java.awt.EventQueue;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.LogTool;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
