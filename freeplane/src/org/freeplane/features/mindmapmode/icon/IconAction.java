@@ -32,11 +32,11 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.icon.IconController;
 
-class IconAction extends MultipleNodeAction implements IIconInformation {
+class IconAction extends AMultipleNodeAction implements IIconInformation {
 	/**
 	 * 
 	 */

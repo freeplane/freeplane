@@ -24,13 +24,13 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 
 @SelectableAction(checkOnNodeChange = true)
-class EdgeWidthAction extends MultipleNodeAction {
+class EdgeWidthAction extends AMultipleNodeAction {
 	/**
 	 * 
 	 */

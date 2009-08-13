@@ -274,6 +274,7 @@ public class MMapController extends MapController {
 		}
 		newParent.insert(child, newIndex);
 		fireNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
+		setSaved(newParent.getMap(), false);
 		return newIndex;
 	}
 

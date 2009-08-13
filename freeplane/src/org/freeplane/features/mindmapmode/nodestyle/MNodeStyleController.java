@@ -26,7 +26,7 @@ import java.util.ListIterator;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
@@ -45,7 +45,7 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new ItalicAction(controller));
 		fontSizeAction = new FontSizeAction(controller);
 		modeController.addAction(fontSizeAction);
-		final MultipleNodeAction increaseNodeFont = new MultipleNodeAction("IncreaseNodeFontAction", controller) {
+		final AMultipleNodeAction increaseNodeFont = new AMultipleNodeAction("IncreaseNodeFontAction", controller) {
 			/**
 			 * 
 			 */
@@ -57,7 +57,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 		};
 		modeController.addAction(increaseNodeFont);
-		final MultipleNodeAction decreaseNodeFont = new MultipleNodeAction("DecreaseNodeFontAction", controller) {
+		final AMultipleNodeAction decreaseNodeFont = new AMultipleNodeAction("DecreaseNodeFontAction", controller) {
 			/**
 			 * 
 			 */

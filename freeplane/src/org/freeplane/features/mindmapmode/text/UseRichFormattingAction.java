@@ -23,11 +23,11 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.text.TextController;
 
-class UseRichFormattingAction extends MultipleNodeAction {
+class UseRichFormattingAction extends AMultipleNodeAction {
 	/**
 	 * 
 	 */

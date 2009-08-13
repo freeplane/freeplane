@@ -826,7 +826,7 @@ public class MenuBuilder extends UIBuilder {
 		}
 		final KeyStroke removedAccelerator = removeAccelerator(node);
 		item.setAccelerator(keyStroke);
-		if (acceleratorChangeListener != null) {
+		if (acceleratorChangeListener != null && (removedAccelerator != null || keyStroke != null)) {
 			acceleratorChangeListener.acceleratorChanged(item, removedAccelerator, keyStroke);
 		}
 	}

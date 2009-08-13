@@ -27,10 +27,10 @@ import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.common.cloud.CloudController;
 
-class CloudColorAction extends MultipleNodeAction {
+class CloudColorAction extends AMultipleNodeAction {
 	/**
 	 * 
 	 */

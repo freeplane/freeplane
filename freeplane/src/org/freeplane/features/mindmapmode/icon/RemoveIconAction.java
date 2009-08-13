@@ -30,14 +30,14 @@ import org.freeplane.core.model.IIconInformation;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 
 /**
  * @author foltin
  */
-class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
+class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 	/**
 	 * 
 	 */

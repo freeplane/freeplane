@@ -24,10 +24,10 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 
 /** */
-class SelectAllAction extends MultipleNodeAction {
+class SelectAllAction extends AMultipleNodeAction {
 	/**
 	 * 
 	 */

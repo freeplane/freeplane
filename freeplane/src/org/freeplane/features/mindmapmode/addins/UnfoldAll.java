@@ -30,6 +30,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.AMultipleNodeAction;
 
 /**
  * @author foltin
@@ -37,7 +38,7 @@ import org.freeplane.core.ui.MenuBuilder;
 public class UnfoldAll implements IMouseWheelEventHandler {
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
 	accelerator = "alt HOME")
-	private class FoldAllAction extends AFreeplaneAction {
+	private class FoldAllAction extends AMultipleNodeAction {
 		/**
 		 * 
 		 */
@@ -47,14 +48,14 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			super("FoldAllAction", controller);
 		}
 
-		public void actionPerformed(final ActionEvent e) {
-			foldAll(getModeController().getMapController().getSelectedNode());
+		public void actionPerformed(final ActionEvent e, NodeModel node) {
+			foldAll(node);
 		}
 	}
 
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
 	accelerator = "alt PAGE_UP")
-	private class FoldOneLevelAction extends AFreeplaneAction {
+	private class FoldOneLevelAction extends AMultipleNodeAction {
 		/**
 		 * 
 		 */
@@ -64,14 +65,14 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			super("FoldOneLevelAction", controller);
 		}
 
-		public void actionPerformed(final ActionEvent e) {
-			foldOneStage(getModeController().getMapController().getSelectedNode());
+		public void actionPerformed(final ActionEvent e, NodeModel node) {
+			foldOneStage(node);
 		}
 	}
 
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
 	accelerator = "alt END")
-	private class UnfoldAllAction extends AFreeplaneAction {
+	private class UnfoldAllAction extends AMultipleNodeAction {
 		/**
 		 * 
 		 */
@@ -81,14 +82,14 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			super("UnfoldAllAction", controller);
 		}
 
-		public void actionPerformed(final ActionEvent e) {
-			unfoldAll(getModeController().getMapController().getSelectedNode());
+		public void actionPerformed(final ActionEvent e, NodeModel node) {
+			unfoldAll(node);
 		}
 	}
 
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
 	accelerator = "alt PAGE_DOWN")
-	private class UnfoldOneLevelAction extends AFreeplaneAction {
+	private class UnfoldOneLevelAction extends AMultipleNodeAction {
 		/**
 		 * 
 		 */
@@ -98,8 +99,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			super("UnfoldOneLevelAction", controller);
 		}
 
-		public void actionPerformed(final ActionEvent e) {
-			unfoldOneStage(getModeController().getMapController().getSelectedNode());
+		public void actionPerformed(final ActionEvent e, NodeModel node) {
+			unfoldOneStage(node);
 		}
 	}
 

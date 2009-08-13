@@ -27,7 +27,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.features.mindmapnode.pattern.Pattern;
 import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
@@ -68,7 +68,7 @@ class FormatCopy extends AFreeplaneAction {
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" }, //
 accelerator = "alt shift V")
-public class FormatPaste extends MultipleNodeAction {
+public class FormatPaste extends AMultipleNodeAction {
 	/**
 	 * 
 	 */

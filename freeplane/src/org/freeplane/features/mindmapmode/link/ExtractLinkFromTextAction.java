@@ -23,14 +23,14 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.common.link.LinkController;
 
 /**
  * @author Dimitry Polivaev
  * Mar 20, 2009
  */
-public class ExtractLinkFromTextAction extends MultipleNodeAction {
+public class ExtractLinkFromTextAction extends AMultipleNodeAction {
 	/**
 	 * 
 	 */

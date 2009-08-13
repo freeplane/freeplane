@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodelocation.LocationModel;
 
@@ -31,7 +31,7 @@ import org.freeplane.features.common.nodelocation.LocationModel;
  * @author Dimitry Polivaev
  * 07.12.2008
  */
-class ResetNodeLocationAction extends MultipleNodeAction {
+class ResetNodeLocationAction extends AMultipleNodeAction {
 	/**
 	 * 
 	 */

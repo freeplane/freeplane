@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
@@ -32,7 +32,7 @@ import org.freeplane.features.common.cloud.CloudModel;
  * @author foltin
  */
 @SelectableAction(checkOnNodeChange = true)
-class CloudAction extends MultipleNodeAction {
+class CloudAction extends AMultipleNodeAction {
 	/**
 	 * 
 	 */

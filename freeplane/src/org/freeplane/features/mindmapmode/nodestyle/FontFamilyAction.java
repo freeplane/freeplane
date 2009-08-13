@@ -23,13 +23,13 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 /**
  * @author foltin
  */
-class FontFamilyAction extends MultipleNodeAction {
+class FontFamilyAction extends AMultipleNodeAction {
 	/**
 	 * 
 	 */

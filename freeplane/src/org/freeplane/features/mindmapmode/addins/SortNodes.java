@@ -25,14 +25,14 @@ import java.util.Vector;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionLocationDescriptor;
-import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.mindmapmode.MMapController;
 
 /**
  * @author foltin
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/sorting" })
-public class SortNodes extends MultipleNodeAction {
+public class SortNodes extends AMultipleNodeAction {
 	final private class NodeTextComparator implements Comparator {
 		public int compare(final Object pArg0, final Object pArg1) {
 			if (pArg0 instanceof NodeModel) {
