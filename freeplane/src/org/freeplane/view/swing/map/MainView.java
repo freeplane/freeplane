@@ -47,6 +47,7 @@ import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
@@ -481,4 +482,8 @@ public abstract class MainView extends JLabel {
 		    node.getModel());
 		setForeground(color);
 	}
+
+	public boolean isEdited() {
+	    return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
+    }
 }

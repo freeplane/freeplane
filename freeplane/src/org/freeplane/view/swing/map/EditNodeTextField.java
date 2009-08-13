@@ -331,23 +331,23 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			iconWidth += mapView.getZoomed(mainView.getIconTextGap());
 			nodeWidth -= iconWidth;
 		}
-		final int topBorder = (nodeHeight + 1 - textFieldSize.height)/2;
+		int topBorder = (nodeHeight + 1 - textFieldSize.height)/2;
 		final int leftBorder = (nodeWidth + 1 - textFieldSize.width)/2;
 		final Color borderColor;
-		if(MapView.standardDrawRectangleForSelection){
-			borderColor= nodeTextBackground;
-		}
-		else{
+//		if(MapView.standardDrawRectangleForSelection){
+//			borderColor= nodeTextBackground;
+//		}
+//		else{
 			borderColor= nodeView.getSelectedColor();
-		}
+//		}
 		if(nodeView.isLeft() && ! nodeView.isRoot()){
 			textfield.setBorder(BorderFactory.createMatteBorder(
-				topBorder+ 1, leftBorder + 1,topBorder-1,leftBorder-1 + iconWidth, 
+				topBorder, leftBorder,topBorder,leftBorder + iconWidth, 
 				borderColor));
 		}
 		else{
 			textfield.setBorder(BorderFactory.createMatteBorder(
-				topBorder + 1, leftBorder + 1 + iconWidth, topBorder-1, leftBorder-1, 
+				topBorder, leftBorder+ iconWidth, topBorder, leftBorder, 
 				borderColor));
 		}
 		mainView.add(textfield, 0);		

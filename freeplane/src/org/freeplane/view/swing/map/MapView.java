@@ -1000,6 +1000,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void paintSelected(final Graphics2D g, final NodeView selected) {
+		if(selected.getMainView().isEdited()){
+			return;
+		}
 		final int arcWidth = 4;
 		final JComponent content = selected.getContent();
 		final Point contentLocation = new Point();
