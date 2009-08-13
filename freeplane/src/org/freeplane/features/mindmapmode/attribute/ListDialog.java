@@ -51,11 +51,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.attribute.util.IListModel;
 
 class ListDialog extends JDialog {
 	private class AddAction implements ActionListener {

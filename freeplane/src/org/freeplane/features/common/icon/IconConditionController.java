@@ -29,10 +29,10 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
-import org.freeplane.core.filter.util.ExtendedComboBoxModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.features.common.attribute.util.ExtendedComboBoxModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

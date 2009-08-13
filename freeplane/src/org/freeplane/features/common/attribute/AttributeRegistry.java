@@ -29,14 +29,14 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.filter.util.IListModel;
-import org.freeplane.core.filter.util.SortedComboBoxModel;
-import org.freeplane.core.filter.util.SortedMapVector;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.attribute.util.IListModel;
+import org.freeplane.features.common.attribute.util.SortedComboBoxModel;
+import org.freeplane.features.common.attribute.util.SortedMapVector;
 import org.freeplane.features.mindmapmode.attribute.IAttributesListener;
 import org.freeplane.n3.nanoxml.XMLElement;
 

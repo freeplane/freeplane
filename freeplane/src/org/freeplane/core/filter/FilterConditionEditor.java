@@ -37,10 +37,10 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
-import org.freeplane.core.filter.util.ExtendedComboBoxModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.features.common.attribute.util.ExtendedComboBoxModel;
 
 /**
  * @author Dimitry Polivaev
