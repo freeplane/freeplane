@@ -98,7 +98,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 		}
 	}
 
-	static Vector colors = new Vector();
+	static Vector<Color> colors = new Vector<Color>();
 
 	/**
 	 */

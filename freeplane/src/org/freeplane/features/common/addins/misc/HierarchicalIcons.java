@@ -95,8 +95,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			return;
 		}
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
-		for (final Iterator i = childrenUnfolded; i.hasNext();) {
-			final NodeModel child = (NodeModel) i.next();
+		while(childrenUnfolded.hasNext()) {
+			final NodeModel child = childrenUnfolded.next();
 			gatherLeavesAndSetParentsStyle(child);
 		}
 	}
@@ -109,8 +109,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			return;
 		}
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
-		for (final Iterator i = childrenUnfolded; i.hasNext();) {
-			final NodeModel child = (NodeModel) i.next();
+		while(childrenUnfolded.hasNext()) {
+			final NodeModel child = childrenUnfolded.next();
 			gatherLeavesAndSetStyle(child);
 		}
 	}
@@ -188,8 +188,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		node.setStateIcon(getHookName(), null);
 		getModeController().getMapController().nodeRefresh(node);
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
-		for (final Iterator i = childrenUnfolded; i.hasNext();) {
-			final NodeModel child = (NodeModel) i.next();
+		while(childrenUnfolded.hasNext()) {
+			final NodeModel child = childrenUnfolded.next();
 			removeIcons(child);
 		}
 	}
@@ -197,12 +197,11 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	private void setStyle(final NodeModel node) {
 		final TreeSet iconSet = new TreeSet();
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
-		for (final Iterator i = childrenUnfolded; i.hasNext();) {
-			final NodeModel child = (NodeModel) i.next();
+		while(childrenUnfolded.hasNext()) {
+			final NodeModel child = childrenUnfolded.next();
 			addAccumulatedIconsToTreeSet(child, iconSet, nodeIconSets.get(child));
 		}
-		for (final Iterator i = node.getIcons().iterator(); i.hasNext();) {
-			final MindIcon icon = (MindIcon) i.next();
+		for(MindIcon icon : node.getIcons()) {
 			iconSet.remove(icon.getName());
 		}
 		boolean dirty = true;

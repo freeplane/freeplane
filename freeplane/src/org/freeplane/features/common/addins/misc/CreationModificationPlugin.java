@@ -101,8 +101,8 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	 */
 	private void removeToolTipRecursively(final NodeModel node) {
 		setToolTip(node, getHookName(), null);
-		for (final Iterator i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
-			final NodeModel child = (NodeModel) i.next();
+		for (final Iterator<NodeModel> i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+			final NodeModel child = i.next();
 			removeToolTipRecursively(child);
 		}
 	}
@@ -122,8 +122,8 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	 */
 	private void setStyleRecursive(final NodeModel node) {
 		setStyle(node);
-		for (final Iterator i = getModeController().getMapController().childrenFolded(node); i.hasNext();) {
-			final NodeModel child = (NodeModel) i.next();
+		for (final Iterator<NodeModel> i = getModeController().getMapController().childrenFolded(node); i.hasNext();) {
+			final NodeModel child = i.next();
 			setStyleRecursive(child);
 		}
 	}

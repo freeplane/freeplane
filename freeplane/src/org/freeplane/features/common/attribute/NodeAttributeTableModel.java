@@ -53,8 +53,8 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		return attributes != null ? attributes : NodeAttributeTableModel.EMTPY_ATTRIBUTES;
 	}
 
-	private Vector attributes = null;
-	private AttributeTableLayoutModel layout = null;
+	private Vector<Attribute> attributes;
+	private AttributeTableLayoutModel layout;
 	private HashSet<TableModelListener> listeners;
 	final private NodeModel node;
 
@@ -86,7 +86,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 
 	private void allocateAttributes(final int size) {
 		if (attributes == null && size > 0) {
-			attributes = new Vector(size, NodeAttributeTableModel.CAPACITY_INCREMENT);
+			attributes = new Vector<Attribute>(size, NodeAttributeTableModel.CAPACITY_INCREMENT);
 		}
 	}
 
@@ -138,10 +138,9 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		return (Attribute) attributes.get(row);
 	}
 
-	public List getAttributeKeyList() {
-		final Vector returnValue = new Vector();
-		for (final Iterator iter = getAttributes().iterator(); iter.hasNext();) {
-			final Attribute attr = (Attribute) iter.next();
+	public List<String> getAttributeKeyList() {
+		final Vector<String> returnValue = new Vector<String>();
+		for(Attribute attr : getAttributes()) {
 			returnValue.add(attr.getName());
 		}
 		return returnValue;
@@ -152,8 +151,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 			return -1;
 		}
 		int pos = 0;
-		for (final Iterator iter = getAttributes().iterator(); iter.hasNext();) {
-			final Attribute attr = (Attribute) iter.next();
+		for(Attribute attr : getAttributes()) {
 			if (pKey.equals(attr.getName())) {
 				return pos;
 			}
@@ -165,7 +163,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	/**
 	 * @return a list of Attribute elements.
 	 */
-	public Vector getAttributes() {
+	public Vector<Attribute> getAttributes() {
 		allocateAttributes(NodeAttributeTableModel.CAPACITY_INCREMENT);
 		return attributes;
 	}
