@@ -22,6 +22,8 @@ package org.freeplane.features.common.attribute;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.controller.Controller;
@@ -29,8 +31,6 @@ import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.filter.util.ExtendedComboBoxModel;
-import org.freeplane.core.filter.util.IListModel;
-import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -124,12 +124,12 @@ class AttributeConditionController implements IElementaryConditionController {
 		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT) });
 	}
 
-	public IListModel getFilteredProperties() {
+	public ListModel getFilteredProperties() {
 		final AttributeRegistry registry = AttributeRegistry.getRegistry(controller.getMap());
 		if (registry != null) {
 			return registry.getListBoxModel();
 		}
-		return new SortedMapListModel();
+		return new DefaultListModel();
 	}
 
 	public ComboBoxEditor getValueEditor() {

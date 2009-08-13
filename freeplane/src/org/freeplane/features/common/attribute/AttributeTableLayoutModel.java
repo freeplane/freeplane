@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.common.attribute;
 
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.EventListenerList;
 
 /**

@@ -26,7 +26,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.MenuBuilder;

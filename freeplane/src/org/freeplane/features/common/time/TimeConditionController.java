@@ -24,12 +24,12 @@ import java.util.Date;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
-import org.freeplane.core.filter.util.IListModel;
-import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.LogTool;
@@ -75,9 +75,9 @@ class TimeConditionController implements IElementaryConditionController {
 		return new DefaultComboBoxModel(getTimeConditionNames());
 	}
 
-	public IListModel getFilteredProperties() {
-		final SortedMapListModel list = new SortedMapListModel();
-		list.add(ResourceBundles.createTranslatedString(FILTER_TIME));
+	public ListModel getFilteredProperties() {
+		final DefaultListModel list = new DefaultListModel();
+		list.addElement(ResourceBundles.createTranslatedString(FILTER_TIME));
 		return list;
 	}
 

@@ -22,6 +22,7 @@ package org.freeplane.core.filter.util;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -68,7 +69,7 @@ public class ExtendedComboBoxModel extends DefaultComboBoxModel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private IListModel extension = null;
+	private ListModel extension = null;
 	final private ExtensionDataListener extensionDataListener = new ExtensionDataListener();
 
 	public ExtendedComboBoxModel() {
@@ -83,7 +84,7 @@ public class ExtendedComboBoxModel extends DefaultComboBoxModel {
 		super(v);
 	}
 
-	public void addExtensionList(final IListModel listModel) {
+	public void addExtensionList(final ListModel listModel) {
 		if (extension == null) {
 			setExtensionList(listModel);
 		}
@@ -118,8 +119,18 @@ public class ExtendedComboBoxModel extends DefaultComboBoxModel {
 		if (idx > -1 || extension == null) {
 			return idx;
 		}
-		final int extIdx = extension.getIndexOf(o);
+		final int extIdx = getExtensionIndex(o);
 		return extIdx > -1 ? extIdx + getOwnSize() : -1;
+	}
+
+	private int getExtensionIndex(Object o) {
+			final int size = extension.getSize();
+			for (int count = 0; count < size; count++) {
+				if (extension.getElementAt(count).equals(o)) {
+					return count;
+				}
+			}
+			return -1;
 	}
 
 	private ExtendedComboBoxModel getModel() {
@@ -164,7 +175,7 @@ public class ExtendedComboBoxModel extends DefaultComboBoxModel {
 
 	/**
 	 */
-	public void setExtensionList(final IListModel sortedListModel) {
+	public void setExtensionList(final ListModel sortedListModel) {
 		final int ownSize = getOwnSize();
 		{
 			if (extension != null) {

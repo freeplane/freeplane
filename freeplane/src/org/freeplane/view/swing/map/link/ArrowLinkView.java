@@ -32,8 +32,6 @@ import java.awt.geom.CubicCurve2D;
 import java.awt.geom.FlatteningPathIterator;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;

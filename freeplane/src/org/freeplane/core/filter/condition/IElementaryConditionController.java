@@ -21,8 +21,8 @@ package org.freeplane.core.filter.condition;
 
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
+import javax.swing.ListModel;
 
-import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -43,7 +43,7 @@ public interface IElementaryConditionController {
 
 	ComboBoxModel getConditionsForProperty(final Object property);
 
-	IListModel getFilteredProperties();
+	ListModel getFilteredProperties();
 
 	ComboBoxEditor getValueEditor();
 

@@ -20,6 +20,7 @@
 package org.freeplane.core.filter.util;
 
 import javax.swing.AbstractListModel;
+import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -27,15 +28,15 @@ import javax.swing.event.ListDataListener;
  * @author Dimitry Polivaev
  * 21.12.2008
  */
-class DoubleListModel extends AbstractListModel implements IListModel {
+class DoubleListModel extends AbstractListModel implements ListModel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private IListModel first;
-	final private IListModel second;
+	final private ListModel first;
+	final private ListModel second;
 
-	public DoubleListModel(final IListModel first, final IListModel second) {
+	public DoubleListModel(final ListModel first, final ListModel second) {
 		super();
 		this.first = first;
 		this.second = second;
@@ -70,49 +71,12 @@ class DoubleListModel extends AbstractListModel implements IListModel {
 		});
 	}
 
-	public void add(final Object o) {
-		if (!first.contains(o)) {
-			second.add(o);
-		}
-	}
-
-	public void clear() {
-		first.clear();
-		second.clear();
-	}
-
-	public boolean contains(final Object o) {
-		return first.contains(o) || second.contains(o);
-	}
-
 	public Object getElementAt(final int index) {
 		final int firstSize = first.getSize();
 		return index < firstSize ? first.getElementAt(index) : second.getElementAt(index - firstSize);
 	}
-
-	public int getIndexOf(final Object o) {
-		final int index = first.getIndexOf(o);
-		if (index != -1) {
-			return index;
-		}
-		return second.getIndexOf(o) + first.getSize();
-	}
-
 	public int getSize() {
 		return first.getSize() + second.getSize();
 	}
 
-	public void remove(final Object o) {
-		first.remove(o);
-		second.remove(o);
-	}
-
-	public void replace(final Object oldO, final Object newO) {
-		if (first.contains(oldO)) {
-			first.replace(oldO, newO);
-		}
-		else {
-			second.replace(oldO, newO);
-		}
-	}
 }

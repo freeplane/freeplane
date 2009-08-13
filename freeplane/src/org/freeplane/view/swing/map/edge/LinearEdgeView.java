@@ -22,7 +22,6 @@ package org.freeplane.view.swing.map.edge;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
 

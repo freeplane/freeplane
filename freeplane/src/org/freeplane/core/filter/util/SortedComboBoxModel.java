@@ -19,18 +19,114 @@
  */
 package org.freeplane.core.filter.util;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
 /**
  * @author Dimitry Polivaev
  */
-public class SortedComboBoxModel extends SortedMapListModel implements ComboBoxModel {
+public class SortedComboBoxModel extends AbstractListModel implements ComboBoxModel, IListModel, Iterable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private Object selectedItem;
+	private SortedSet model;
 
+	public SortedComboBoxModel() {
+		model = new TreeSet();
+	}
+
+	public void add(final Object element) {
+		if (model.add(element)) {
+			fireContentsChanged(this, 0, getSize());
+		}
+	}
+
+	public void addAll(final Object elements[]) {
+		final Collection c = Arrays.asList(elements);
+		model.addAll(c);
+		fireContentsChanged(this, 0, getSize());
+	}
+
+	public void clear() {
+		final int oldSize = getSize();
+		if (oldSize > 0) {
+			model.clear();
+			fireIntervalRemoved(this, 0, oldSize - 1);
+		}
+	}
+
+	public boolean contains(final Object element) {
+		return model.contains(element);
+	}
+
+	public Object firstElement() {
+		return model.first();
+	}
+
+	public Object getElementAt(final int index) {
+		return model.toArray()[index];
+	}
+
+	/**
+	*/
+	public int getIndexOf(final Object o) {
+		int count = -1;
+		for (Object element:this) {
+			count++;
+			if (element.equals(o)) {
+				return count;
+			}
+		}
+		return -1;
+	}
+
+	public int getSize() {
+		return model.size();
+	}
+
+	public Iterator iterator() {
+		return model.iterator();
+	}
+
+	public Object lastElement() {
+		return model.last();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * freeplane.controller.filter.util.SortedListModel#delete(java.lang.Object)
+	 */
+	public void remove(final Object element) {
+		if (model.remove(element)) {
+			fireContentsChanged(this, 0, getSize());
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * freeplane.controller.filter.util.SortedListModel#replace(java.lang.Object,
+	 * java.lang.Object)
+	 */
+	public void replace(final Object oldO, final Object newO) {
+		if (oldO.equals(newO)) {
+			return;
+		}
+		final boolean removed = model.remove(oldO);
+		final boolean added = model.add(newO);
+		if (removed || added) {
+			fireContentsChanged(this, 0, getSize());
+		}
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see javax.swing.ComboBoxModel#getSelectedItem()

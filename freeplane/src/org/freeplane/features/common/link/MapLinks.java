@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.model.MapModel;
 
 /**
  * @author Dimitry Polivaev
@@ -73,4 +74,8 @@ public class MapLinks implements IExtension {
 	public void set(final String targetID, final Set<LinkModel> set) {
 		links.put(targetID, set);
 	}
+
+	public static MapLinks getLinks(final MapModel map) {
+        return (MapLinks) map.getExtension(MapLinks.class);
+    }
 }

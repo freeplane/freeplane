@@ -97,7 +97,7 @@ public class NodeLinks implements IExtension {
 	}
 
 	private void addLinkToMap(final MapModel map, final LinkModel newLink) {
-		MapLinks mapLinks = (MapLinks) map.getExtension(MapLinks.class);
+		MapLinks mapLinks = MapLinks.getLinks(map);
 		if (mapLinks == null) {
 			mapLinks = new MapLinks();
 			map.addExtension(mapLinks);
@@ -130,7 +130,7 @@ public class NodeLinks implements IExtension {
 	}
 
 	private void removeLinkFromMap(final MapModel map, final LinkModel link) {
-		final MapLinks mapLinks = (MapLinks) map.getExtension(MapLinks.class);
+		final MapLinks mapLinks = MapLinks.getLinks(map);
 		mapLinks.remove(link);
 	}
 

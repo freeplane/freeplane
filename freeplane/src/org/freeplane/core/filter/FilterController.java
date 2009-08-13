@@ -266,6 +266,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			}
 		};
 		final JButton applyBtn = new JButton(controller.getAction("ReapplyFilterAction"));
+		final JButton noFilteringBtn = new JButton(controller.getAction("ApplyNoFilteringAction"));
 		filterToolbar.addSeparator();
 		filterToolbar.add(undoBtn);
 		filterToolbar.add(redoBtn);
@@ -274,6 +275,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.add(applyToVisibleBox);
 		filterToolbar.add(activeFilterConditionComboBox);
 		filterToolbar.add(applyBtn);
+		filterToolbar.add(noFilteringBtn);
 		filterToolbar.add(btnUnfoldAncestors);
 		filterToolbar.add(btnEdit);
 		activeFilterConditionComboBox.setFocusable(false);
@@ -434,5 +436,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	void updateSettingsFromHistory() {
 		final Filter filter = history.getCurrentFilter();
 		updateSettingsFromFilter(filter);
+		final boolean isActive = filter.getCondition() != null;
+		applyToVisibleNodeOnly.setSelected(isActive);
 	}
 }

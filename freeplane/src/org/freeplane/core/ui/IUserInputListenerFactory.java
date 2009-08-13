@@ -28,8 +28,6 @@ import java.awt.event.MouseWheelListener;
 import java.util.Set;
 
 import javax.swing.JPopupMenu;
-import javax.swing.JToolBar;
-
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 public interface IUserInputListenerFactory {

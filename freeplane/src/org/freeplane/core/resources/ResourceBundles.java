@@ -36,7 +36,6 @@ import org.freeplane.core.util.MultipleValueMap;
 /**
  * Class for managing localized resources. See translation property files.
  */
-// TODO ARCH rladstaetter 22.03.2009 reduce this class to a simple Map<String,String>
 public class ResourceBundles extends ResourceBundle {
 	private static final String DEFAULT_LANGUAGE = "en";
 	public static final String POSTFIX_TRANSLATE_ME = "[translate me]";

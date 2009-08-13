@@ -22,14 +22,14 @@ package org.freeplane.features.common.icon;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.filter.util.ExtendedComboBoxModel;
-import org.freeplane.core.filter.util.IListModel;
-import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
@@ -73,9 +73,9 @@ class IconConditionController implements IElementaryConditionController {
 		return new DefaultComboBoxModel(getIconConditionNames());
 	}
 
-	public IListModel getFilteredProperties() {
-		final SortedMapListModel list = new SortedMapListModel();
-		list.add(ResourceBundles.createTranslatedString(FILTER_ICON));
+	public ListModel getFilteredProperties() {
+		final DefaultListModel list = new DefaultListModel();
+		list.addElement(ResourceBundles.createTranslatedString(FILTER_ICON));
 		return list;
 	}
 
@@ -88,7 +88,7 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property) {
-		final SortedMapListModel icons = controller.getMap().getIconRegistry().getIcons();
+		final ListModel icons = controller.getMap().getIconRegistry().getIcons();
 		final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
 		extendedComboBoxModel.setExtensionList(icons);
 		return extendedComboBoxModel;

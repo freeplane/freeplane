@@ -22,13 +22,13 @@ package org.freeplane.features.common.link;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
-import org.freeplane.core.filter.util.IListModel;
-import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -39,6 +39,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 public class LinkConditionController implements IElementaryConditionController {
 	static final String FILTER_LINK = "filter_link";
+	static final String CONNECTOR_LABEL = "connector_label";
 	private final ComboBoxEditor editor = new BasicComboBoxEditor();
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
@@ -51,7 +52,7 @@ public class LinkConditionController implements IElementaryConditionController {
 			return false;
 		}
 		final NamedObject namedObject = (NamedObject) selectedItem;
-		return namedObject.objectEquals(FILTER_LINK);
+		return namedObject.objectEquals(FILTER_LINK) || namedObject.objectEquals(CONNECTOR_LABEL);
 	}
 
 	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
@@ -60,11 +61,24 @@ public class LinkConditionController implements IElementaryConditionController {
 
 	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
 	                                  final boolean ignoreCase) {
-		if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-			return new HyperLinkEqualsCondition((String) value);
+		final NamedObject namedObject = (NamedObject) selectedItem;
+		if(namedObject.objectEquals(FILTER_LINK)){
+			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
+				return new HyperLinkEqualsCondition((String) value);
+			}
+			if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+				return new HyperLinkContainsCondition((String) value);
+			}
+			return null;
 		}
-		if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-			return new HyperLinkContainsCondition((String) value);
+		if(namedObject.objectEquals(CONNECTOR_LABEL)){
+			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
+				return new ConnectorLabelEqualsCondition((String) value, ignoreCase);
+			}
+			if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+				return new ConnectorLabelContainsCondition((String) value, ignoreCase);
+			}
+			return null;
 		}
 		return null;
 	}
@@ -73,9 +87,10 @@ public class LinkConditionController implements IElementaryConditionController {
 		return new DefaultComboBoxModel(getLinkConditionNames());
 	}
 
-	public IListModel getFilteredProperties() {
-		final SortedMapListModel list = new SortedMapListModel();
-		list.add(ResourceBundles.createTranslatedString(FILTER_LINK));
+	public ListModel getFilteredProperties() {
+		final DefaultListModel list = new DefaultListModel();
+		list.addElement(ResourceBundles.createTranslatedString(FILTER_LINK));
+		list.addElement(ResourceBundles.createTranslatedString(CONNECTOR_LABEL));
 		return list;
 	}
 
@@ -93,7 +108,7 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
-		return false;
+		return ((NamedObject)property).objectEquals(CONNECTOR_LABEL);
 	}
 
 	public ICondition loadCondition(final XMLElement element) {
@@ -104,6 +119,16 @@ public class LinkConditionController implements IElementaryConditionController {
 		if (element.getName().equalsIgnoreCase(HyperLinkContainsCondition.NAME)) {
 			final String target = element.getAttribute(HyperLinkContainsCondition.TEXT, null);
 			return new HyperLinkContainsCondition(target);
+		}
+		if (element.getName().equalsIgnoreCase(ConnectorLabelEqualsCondition.NAME)) {
+			final String text = element.getAttribute(ConnectorLabelEqualsCondition.TEXT, null);
+			final boolean ignoreCase = Boolean.toString(true).equals(element.getAttribute(ConnectorLabelEqualsCondition.IGNORE_CASE, null));
+			return new ConnectorLabelEqualsCondition(text, ignoreCase);
+		}
+		if (element.getName().equalsIgnoreCase(ConnectorLabelContainsCondition.NAME)) {
+			final String text = element.getAttribute(ConnectorLabelContainsCondition.TEXT, null);
+			final boolean ignoreCase = Boolean.toString(true).equals(element.getAttribute(ConnectorLabelEqualsCondition.IGNORE_CASE, null));
+			return new ConnectorLabelContainsCondition(text, ignoreCase);
 		}
 		return null;
 	}

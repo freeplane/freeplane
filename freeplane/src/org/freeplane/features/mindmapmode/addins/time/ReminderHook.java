@@ -22,12 +22,9 @@ package org.freeplane.features.mindmapmode.addins.time;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
-import javax.swing.tree.TreeNode;
-
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
@@ -39,7 +36,6 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.core.util.SysUtil;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

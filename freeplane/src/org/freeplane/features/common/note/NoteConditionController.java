@@ -22,13 +22,13 @@ package org.freeplane.features.common.note;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
-import org.freeplane.core.filter.util.IListModel;
-import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -89,9 +89,9 @@ class NoteConditionController implements IElementaryConditionController {
 		    .createTranslatedString(ConditionFactory.FILTER_CONTAINS) });
 	}
 
-	public IListModel getFilteredProperties() {
-		final SortedMapListModel list = new SortedMapListModel();
-		list.add(ResourceBundles.createTranslatedString(NoteConditionController.FILTER_NOTE));
+	public ListModel getFilteredProperties() {
+		final DefaultListModel list = new DefaultListModel();
+		list.addElement(ResourceBundles.createTranslatedString(NoteConditionController.FILTER_NOTE));
 		return list;
 	}
 

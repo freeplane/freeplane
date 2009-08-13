@@ -28,23 +28,43 @@ import org.freeplane.core.resources.ResourceBundles;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-class HyperLinkEqualsCondition extends HyperLinkCondition {
-	public static final String NAME = "hyper_link_equals";
+class ConnectorLabelEqualsCondition extends ConnectorLabelCondition {
+	public static final String NAME = "connector_label_equals";
 
-	public HyperLinkEqualsCondition(final String hyperlink) {
-		super(hyperlink);
+	public ConnectorLabelEqualsCondition(final String text, boolean ignoreCase) {
+		super(text, ignoreCase);
 	}
 
 	@Override
-	protected boolean checkLink(final URI nodeLink) {
-		return getHyperlink().equals(nodeLink);
+	protected boolean checkLink(final ConnectorModel connector) {
+		final String middleLabel = connector.getMiddleLabel();
+		if (equals(middleLabel)) {
+			return true;
+		}
+		final String sourceLabel = connector.getSourceLabel();
+		if (equals(sourceLabel)) {
+			return true;
+		}
+		final String targetLabel = connector.getTargetLabel();
+		if (equals(targetLabel)) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean equals(String middleLabel) {
+		if (middleLabel == null)
+			return false;
+		if (ignoreCase())
+			return middleLabel.toLowerCase().equals(getText());
+		return middleLabel.equals(getText());
 	}
 
 	@Override
 	protected String createDesctiption() {
-		final String condition = ResourceBundles.getText(LinkConditionController.FILTER_LINK);
+		final String condition = ResourceBundles.getText(LinkConditionController.CONNECTOR_LABEL);
 		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
-		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), false);
+		return ConditionFactory.createDescription(condition, simpleCondition, getText(), ignoreCase());
 	}
 
 	@Override

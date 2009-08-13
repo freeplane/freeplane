@@ -20,11 +20,8 @@
 package org.freeplane.features.mindmapmode.link;
 
 import java.awt.event.ActionEvent;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;

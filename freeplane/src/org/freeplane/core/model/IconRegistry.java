@@ -21,8 +21,10 @@ package org.freeplane.core.model;
 
 import java.util.ListIterator;
 
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
+
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.modecontroller.MapController;
 
 /**
@@ -30,19 +32,19 @@ import org.freeplane.core.modecontroller.MapController;
  * 03.01.2009
  */
 public class IconRegistry implements IExtension {
-	final private SortedMapListModel mapIcons;
+	final private DefaultListModel mapIcons;
 
 	IconRegistry(final MapController mapController, final MapModel map) {
 		super();
-		mapIcons = new SortedMapListModel();
+		mapIcons = new DefaultListModel();
 		registryNodeIcons(mapController, map.getRootNode());
 	}
 
 	void addIcon(final MindIcon icon) {
-		mapIcons.add(icon);
+		mapIcons.addElement(icon);
 	}
 
-	public SortedMapListModel getIcons() {
+	public ListModel getIcons() {
 		return mapIcons;
 	}
 

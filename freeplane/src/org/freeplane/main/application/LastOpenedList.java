@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javax.swing.Action;
 import javax.swing.JMenuItem;
 
 import org.freeplane.core.controller.Controller;
