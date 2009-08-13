@@ -50,6 +50,8 @@ import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.MapLinks;
+import org.freeplane.features.common.link.NodeLinkModel;
+import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**
@@ -75,15 +77,49 @@ public class MLinkController extends LinkController {
 		}
 
 		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel model, final int oldIndex) {
-			final MapModel map = model.getMap();
-			final MModeController modeController = (MModeController) getModeController();
-			if (modeController.isUndoAction()) {
+			if (((MModeController) getModeController()).isUndoAction()) {
 				return;
 			}
+	        final MapModel map = model.getMap();
 			final MapLinks links = (MapLinks) map.getExtension(MapLinks.class);
 			if (links == null) {
 				return;
 			}
+			removeLinksForDeletedSource(links, model);
+			removeLinksForDeletedTarget(links, model);
+		}
+
+		private void removeLinksForDeletedSource(final MapLinks links, final NodeModel model) {
+			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
+			if(nodeLinks == null){
+				return;
+			}
+			for (final LinkModel link:nodeLinks.getLinks()){
+				if(! (link instanceof NodeLinkModel)){
+					continue;
+				}
+				final String id = ((NodeLinkModel)link).getTargetID();
+				final Set<LinkModel> linkModels = links.get(id);
+				final IActor actor = new IActor() {
+					public void act() {
+						linkModels.remove(link);
+					}
+
+					public String getDescription() {
+						return null;
+					}
+
+					public void undo() {
+						linkModels.add(link);
+					}
+				};
+		        final MapModel map = model.getMap();
+				getModeController().execute(actor, map);
+				
+			}
+        }
+
+		private void removeLinksForDeletedTarget(final MapLinks links, final NodeModel model) {
 			final String id = model.getID();
 			final Set<LinkModel> linkModels = links.get(id);
 			if (linkModels == null || linkModels.isEmpty()) {
@@ -102,8 +138,9 @@ public class MLinkController extends LinkController {
 					links.set(id, linkModels);
 				}
 			};
+	        final MapModel map = model.getMap();
 			getModeController().execute(actor, map);
-		}
+        }
 
 		public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
 	        // TODO Auto-generated method stub
