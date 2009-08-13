@@ -28,6 +28,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.net.URI;
@@ -252,20 +253,20 @@ public abstract class MainView extends JLabel {
 	}
 
 	@Override
-	public void paint(final Graphics g) {
+	public void paintComponent(final Graphics g) {
 		final Graphics2D g2 = (Graphics2D) g;
 		float zoom = getZoom();
-		if (zoom != 1F && getComponentCount() == 0) {
+		if (zoom != 1F) {
 			zoom *= MainView.ZOOM_CORRECTION_FACTOR;
 			final AffineTransform transform = g2.getTransform();
 			g2.scale(zoom, zoom);
 			isPainting = true;
-			super.paint(g);
+			super.paintComponent(g);
 			isPainting = false;
 			g2.setTransform(transform);
 		}
 		else {
-			super.paint(g);
+			super.paintComponent(g);
 		}
 	}
 
