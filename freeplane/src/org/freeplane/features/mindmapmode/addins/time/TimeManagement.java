@@ -51,6 +51,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.time.swing.JDayChooser;
@@ -286,9 +287,34 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 						final NodeModel element = (NodeModel) i.next();
 						final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
 						final String dateAsString = df.format(getCalendarDate());
-						((MTextController) TextController.getController(mController)).setNodeText(element, (element
-						    .getText()
-						        + " " + dateAsString));
+						final String text = element.getText();
+						final StringBuilder newText = new StringBuilder();
+						if (HtmlTools.isHtmlNode(text)){
+							int bodyEndPos = text.lastIndexOf("</body>");
+							if(bodyEndPos == -1){
+								bodyEndPos = text.lastIndexOf("</BODY>");
+							}
+							if(bodyEndPos == -1){
+								bodyEndPos = text.lastIndexOf("</html>");
+							}
+							if(bodyEndPos == -1){
+								bodyEndPos = text.lastIndexOf("</HTML>");
+							}
+							if(bodyEndPos == -1){
+								bodyEndPos = text.length();
+							}
+							newText.append(text.substring(0, bodyEndPos));
+							newText.append("<p>");
+							newText.append(dateAsString);
+							newText.append("</p>");
+							newText.append(text.substring(bodyEndPos));
+						}
+						else{
+							newText.append(text);
+							newText.append(" ");
+							newText.append(dateAsString);
+						}
+						((MTextController) TextController.getController(mController)).setNodeText(element, newText.toString());
 					}
 				}
 			});
