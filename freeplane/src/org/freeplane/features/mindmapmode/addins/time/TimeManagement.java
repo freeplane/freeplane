@@ -290,19 +290,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 						final String text = element.getText();
 						final StringBuilder newText = new StringBuilder();
 						if (HtmlTools.isHtmlNode(text)){
-							int bodyEndPos = text.lastIndexOf("</body>");
-							if(bodyEndPos == -1){
-								bodyEndPos = text.lastIndexOf("</BODY>");
-							}
-							if(bodyEndPos == -1){
-								bodyEndPos = text.lastIndexOf("</html>");
-							}
-							if(bodyEndPos == -1){
-								bodyEndPos = text.lastIndexOf("</HTML>");
-							}
-							if(bodyEndPos == -1){
-								bodyEndPos = text.length();
-							}
+							int bodyEndPos = HtmlTools.endOfText(text);
 							newText.append(text.substring(0, bodyEndPos));
 							newText.append("<p>");
 							newText.append(dateAsString);

@@ -505,4 +505,21 @@ public class HtmlTools {
 		htmlText = htmlText.replaceAll(">", "&lt;");
 		return htmlText;
 	}
+
+	static public int endOfText(final String html) {
+        int bodyEndPos = html.lastIndexOf("</body>");
+        if(bodyEndPos == -1){
+        	bodyEndPos = html.lastIndexOf("</BODY>");
+        }
+        if(bodyEndPos == -1){
+        	bodyEndPos = html.lastIndexOf("</html>");
+        }
+        if(bodyEndPos == -1){
+        	bodyEndPos = html.lastIndexOf("</HTML>");
+        }
+        if(bodyEndPos == -1){
+        	bodyEndPos = html.length();
+        }
+        return bodyEndPos;
+    }
 }
