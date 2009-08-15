@@ -55,7 +55,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
-import org.freeplane.features.common.attribute.util.IListModel;
+import org.freeplane.core.util.collection.IListModel;
 
 class ListDialog extends JDialog {
 	private class AddAction implements ActionListener {

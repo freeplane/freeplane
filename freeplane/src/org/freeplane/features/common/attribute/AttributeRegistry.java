@@ -34,9 +34,9 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.features.common.attribute.util.IListModel;
-import org.freeplane.features.common.attribute.util.SortedComboBoxModel;
-import org.freeplane.features.common.attribute.util.SortedMapVector;
+import org.freeplane.core.util.collection.IListModel;
+import org.freeplane.core.util.collection.SortedComboBoxModel;
+import org.freeplane.core.util.collection.SortedMapVector;
 import org.freeplane.features.mindmapmode.attribute.IAttributesListener;
 import org.freeplane.n3.nanoxml.XMLElement;
 

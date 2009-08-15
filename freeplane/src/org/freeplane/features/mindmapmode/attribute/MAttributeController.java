@@ -26,12 +26,12 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.common.attribute.Attribute;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
-import org.freeplane.features.common.attribute.util.SortedComboBoxModel;
 
 public class MAttributeController extends AttributeController {
 	private class AttributeChanger implements IVisitor {

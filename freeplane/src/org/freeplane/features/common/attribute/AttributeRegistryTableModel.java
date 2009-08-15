@@ -22,7 +22,7 @@ package org.freeplane.features.common.attribute;
 import javax.swing.table.AbstractTableModel;
 
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.features.common.attribute.util.IListModel;
+import org.freeplane.core.util.collection.IListModel;
 
 /**
  * @author Dimitry Polivaev

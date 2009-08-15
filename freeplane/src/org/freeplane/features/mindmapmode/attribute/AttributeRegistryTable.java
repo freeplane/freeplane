@@ -38,7 +38,7 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.common.attribute.util.IListModel;
+import org.freeplane.core.util.collection.IListModel;
 
 /**
  * @author Dimitry Polivaev

@@ -40,7 +40,7 @@ import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.features.common.attribute.util.ExtendedComboBoxModel;
+import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 
 /**
  * @author Dimitry Polivaev

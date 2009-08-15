@@ -50,8 +50,8 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.collection.IListModel;
 import org.freeplane.features.common.attribute.AttributeRegistry;
-import org.freeplane.features.common.attribute.util.IListModel;
 
 /**
  * @author Dimitry Polivaev

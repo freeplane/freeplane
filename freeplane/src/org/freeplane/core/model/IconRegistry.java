@@ -26,22 +26,23 @@ import javax.swing.ListModel;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.util.collection.SortedComboBoxModel;
 
 /**
  * @author Dimitry Polivaev
  * 03.01.2009
  */
 public class IconRegistry implements IExtension {
-	final private DefaultListModel mapIcons;
+	final private SortedComboBoxModel mapIcons;
 
 	IconRegistry(final MapController mapController, final MapModel map) {
 		super();
-		mapIcons = new DefaultListModel();
+		mapIcons = new SortedComboBoxModel();
 		registryNodeIcons(mapController, map.getRootNode());
 	}
 
 	void addIcon(final MindIcon icon) {
-		mapIcons.addElement(icon);
+		mapIcons.add(icon);
 	}
 
 	public ListModel getIcons() {

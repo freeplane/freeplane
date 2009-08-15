@@ -57,7 +57,7 @@ class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 			return false;
 		if (ignoreCase())
 			return middleLabel.toLowerCase().contains(getText());
-		return middleLabel.equals(getText());
+		return middleLabel.contains(getText());
     }
 
 	@Override

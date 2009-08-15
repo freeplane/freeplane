@@ -24,7 +24,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import org.freeplane.features.common.attribute.util.IListModel;
+import org.freeplane.core.util.collection.IListModel;
 
 class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements TableModelListener, ComboBoxModel,
         IListModel {
