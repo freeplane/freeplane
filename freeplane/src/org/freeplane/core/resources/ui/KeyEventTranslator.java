@@ -65,7 +65,7 @@ public class KeyEventTranslator {
 	}
 
 	static int c, a, m, s;
-	private static Map transMap = new HashMap();
+	private static Map<Key, Key> transMap = new HashMap<Key, Key>();
 	static {
 		if (GrabKeyDialog.isMacOS()) {
 			KeyEventTranslator.setModifierMapping(InputEvent.META_MASK, /* == C+ */
@@ -382,7 +382,7 @@ public class KeyEventTranslator {
 		 * consuming won't work. I don't think this is a problem as nothing uses
 		 * translation anyway
 		 */
-		final Key trans = (Key) KeyEventTranslator.transMap.get(returnValue);
+		final Key trans = KeyEventTranslator.transMap.get(returnValue);
 		if (trans == null) {
 			return returnValue;
 		}

@@ -22,10 +22,7 @@ package org.freeplane.core.resources.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -66,12 +63,9 @@ public class PropertyAction extends AFreeplaneAction {
 		dialog.setUndecorated(false);
 		final OptionPanel options = new OptionPanel(dialog, new IOptionPanelFeedback() {
 			public void writeProperties(final Properties props) {
-				final Vector sortedKeys = new Vector();
-				sortedKeys.addAll(props.keySet());
-				Collections.sort(sortedKeys);
 				boolean propertiesChanged = false;
-				for (final Iterator i = sortedKeys.iterator(); i.hasNext();) {
-					final String key = (String) i.next();
+				for (Object keyObject : props.keySet()) {
+					String key = keyObject.toString();
 					final String newProperty = props.getProperty(key);
 					propertiesChanged = propertiesChanged
 					        || !newProperty.equals(ResourceController.getResourceController().getProperty(key));
