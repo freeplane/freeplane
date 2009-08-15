@@ -29,6 +29,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -71,6 +74,7 @@ import org.freeplane.core.util.LogTool;
  * @author Dimitry Polivaev
  */
 abstract public class ViewController implements IMapViewChangeListener, IFreeplanePropertyListener {
+	public static final String VISIBLE_PROPERTY_KEY = "VISIBLE_PROPERTY_KEY";
 	public static final String RESOURCE_ANTIALIAS = "antialias";
 	private static final String[] zooms = { "25%", "50%", "75%", "100%", "150%", "200%", "300%", "400%" };
 	private boolean antialiasAll = false;
@@ -87,9 +91,19 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	final private ZoomInAction zoomIn;
 	private final DefaultComboBoxModel zoomModel;
 	final private ZoomOutAction zoomOut;
+	final private GraphicsDevice device;
+	private Rectangle previousSize;
 
 	public ViewController(final Controller controller, final IMapViewManager mapViewManager) {
 		super();
+		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice[] devices = env.getScreenDevices();
+		if(devices.length > 0){
+			device = devices[0];
+		}
+		else{
+			device = null;
+		}
 		statusInfos = new HashMap<String, JLabel>();
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
 		status = new JLabel("!");
@@ -104,6 +118,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		controller.addAction(zoomIn);
 		zoomOut = new ZoomOutAction(this);
 		controller.addAction(zoomOut);
+		controller.addAction(new ToggleFullScreenAction(this));
 		userDefinedZoom = ResourceBundles.getText("user_defined_zoom");
 		zoomModel = new DefaultComboBoxModel(getZooms());
 		zoomModel.addElement(userDefinedZoom);
@@ -117,8 +132,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			LogTool.severe(e);
 		}
 		controller.addAction(new ToggleMenubarAction(controller, this));
-		controller.addAction(new ToggleToolbarAction(controller, "ToggleToolbarAction", "/main_toolbar",
-		    "toolbarVisible"));
+		controller.addAction(new ToggleToolbarAction(controller, "ToggleToolbarAction", "/main_toolbar", "toolbarVisible"));
 		controller.addAction(new ToggleLeftToolbarAction(controller, this));
 		toolbarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0))
 		{
@@ -131,21 +145,13 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			@Override
 			public void validateTree() {
 				if(! isValid()){
-					resizeToolbarPane();
 					super.validateTree();
+					resizeToolbarPane();
 				}
 			}
 			
 			private void resizeToolbarPane() {
-				if (!isValid()) {
-					if (getWidth() == 0) {
-						return;
-					}
-					EventQueue.invokeLater(new Runnable() {
-						public void run() {
-							resizeToolbarPane();
-						}
-					});
+				if (getWidth() == 0) {
 					return;
 				}
 				int lastComponent = getComponentCount() - 1;
@@ -163,8 +169,11 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 				}
 				if (oldPreferredSize.height != preferredSize.height) {
 					setPreferredSize(preferredSize);
-					getParent().invalidate();
-					((JComponent) getContentPane()).revalidate();
+					EventQueue.invokeLater(new Runnable(){
+						public void run() {
+							getParent().invalidate();
+							((JComponent) getContentPane()).revalidate();
+                        }});
 				}
 			}
 
@@ -380,15 +389,25 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	abstract public boolean isApplet();
 
 	boolean isLeftToolbarVisible() {
-		return ResourceController.getResourceController().getBooleanProperty("leftToolbarVisible");
+		final String property ;
+		if(isFullScreenEnabled()){
+			property = "leftToolbarVisible.fullscreen";
+		}
+		else{
+			property = "leftToolbarVisible";
+		}
+		return ResourceController.getResourceController().getBooleanProperty(property);
 	}
 
 	protected boolean isMenubarVisible() {
-		return ResourceController.getResourceController().getBooleanProperty("menubarVisible");
-	}
-
-	boolean isToolbarVisible() {
-		return ResourceController.getResourceController().getBooleanProperty("toolbarVisible");
+		final String property ;
+		if(isFullScreenEnabled()){
+			property = "menubarVisible.fullscreen";
+		}
+		else{
+			property = "menubarVisible";
+		}
+		return ResourceController.getResourceController().getBooleanProperty(property);
 	}
 
 	public void obtainFocusForSelected() {
@@ -494,7 +513,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		if (oldModeController != null) {
 			final IUserInputListenerFactory userInputListenerFactory = oldModeController.getUserInputListenerFactory();
-			final Iterable<Component> modeToolBars = userInputListenerFactory.getToolBars();
+			final Iterable<JComponent> modeToolBars = userInputListenerFactory.getToolBars();
 			if (modeToolBars != null) {
 				for (final Component toolBar : modeToolBars) {
 					toolbarPanel.remove(toolBar);
@@ -507,8 +526,10 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			}
 		}
 		final IUserInputListenerFactory newUserInputListenerFactory = newModeController.getUserInputListenerFactory();
-		newUserInputListenerFactory.getToolBar("/main_toolbar").setVisible(isToolbarVisible());
-		final Iterable<Component> newToolBars = newUserInputListenerFactory.getToolBars();
+		final JComponent mainToolBar = newUserInputListenerFactory.getToolBar("/main_toolbar");
+		mainToolBar.putClientProperty(VISIBLE_PROPERTY_KEY, "toolbarVisible");
+		mainToolBar.setVisible(isToolbarVisible(mainToolBar));
+		final Iterable<JComponent> newToolBars = newUserInputListenerFactory.getToolBars();
 		if (newToolBars != null) {
 			int i = 0;
 			for (final Component toolBar : newToolBars) {
@@ -523,7 +544,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			leftToolbarPanel.add(newLeftToolBar, BorderLayout.WEST);
 		}
 		setFreeplaneMenuBar(newUserInputListenerFactory.getMenuBar());
-		setMenubarVisible(isMenubarVisible());
+		getFreeplaneMenuBar().setVisible(isMenubarVisible());
 	}
 
 	public void setAntialiasAll(final boolean antialiasAll) {
@@ -548,12 +569,26 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
 
 	public void setLeftToolbarVisible(final boolean visible) {
-		ResourceController.getResourceController().setProperty("leftToolbarVisible", visible);
+		final String property ;
+		if(isFullScreenEnabled()){
+			property = "leftToolbarVisible.fullscreen";
+		}
+		else{
+			property = "leftToolbarVisible";
+		}
+		ResourceController.getResourceController().setProperty(property, visible);
 		leftToolbarPanel.setVisible(visible);
 	}
 
 	public void setMenubarVisible(final boolean visible) {
-		ResourceController.getResourceController().setProperty("menubarVisible", visible);
+		final String property ;
+		if(isFullScreenEnabled()){
+			property = "menubarVisible.fullscreen";
+		}
+		else{
+			property = "menubarVisible";
+		}
+		ResourceController.getResourceController().setProperty(property, visible);
 		getFreeplaneMenuBar().setVisible(visible);
 	}
 
@@ -593,16 +628,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	abstract public void setTitle(String title);
-
-	public void setToolbarVisible(final boolean visible) {
-		ResourceController.getResourceController().setProperty("toolbarVisible", visible);
-		final Component toolBar = controller.getModeController().getUserInputListenerFactory().getToolBar(
-		    "/main_toolbar");
-		if (toolBar.isVisible() == visible) {
-			return;
-		}
-		toolBar.setVisible(visible);
-	}
 
 	private void setViewportView(final Component view) {
 		scrollPane.setViewportView(view);
@@ -670,4 +695,66 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex - 0.5f)));
 		}
 	}
+	
+	void setFullScreen(boolean fullScreen){
+		if(fullScreen == isFullScreenEnabled() || ! device.isFullScreenSupported()){
+			return;
+		}
+		final Frame frame = getFrame();
+	        if (fullScreen){
+            	frame.dispose();
+                previousSize=frame.getBounds();
+                frame.setUndecorated(true);
+                frame.setResizable(false);
+                device.setFullScreenWindow(frame);
+                getFreeplaneMenuBar().setVisible(isMenubarVisible());
+                leftToolbarPanel.setVisible(isLeftToolbarVisible());
+        		final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory().getToolBars();
+				for(final JComponent toolBar : toolBars){
+					toolBar.setVisible(isToolbarVisible(toolBar));
+				}
+                frame.setVisible(true);
+	        }else{
+	        	frame.dispose();
+	        	frame.setUndecorated(false);
+	        	frame.setResizable(true);
+	        	frame.setBounds(previousSize);
+	            device.setFullScreenWindow(null);
+                getFreeplaneMenuBar().setVisible(isMenubarVisible());
+                leftToolbarPanel.setVisible(isLeftToolbarVisible());
+        		final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory().getToolBars();
+				for(final JComponent toolBar : toolBars){
+					toolBar.setVisible(isToolbarVisible(toolBar));
+				}
+	            frame.setVisible(true);
+	        }
+	}
+
+	boolean isToolbarVisible(JComponent toolBar) {
+		final String completeKeyString = completeVisiblePropertyKey(toolBar);
+		if(completeKeyString == null){
+			return true;
+		}
+		return ! "false".equals(ResourceController.getResourceController().getProperty(completeKeyString, "true"));
+    }
+
+	String completeVisiblePropertyKey(JComponent toolBar) {
+		final Object key = toolBar.getClientProperty(VISIBLE_PROPERTY_KEY);
+		if(key == null){
+			return null;
+		}
+		final String keyString = key.toString();
+	    final String completeKeyString;
+		if(isFullScreenEnabled()){
+			completeKeyString = keyString + ".fullscreen";
+		}
+		else{
+			completeKeyString = keyString;
+		}
+	    return completeKeyString;
+    }
+
+	protected boolean isFullScreenEnabled() {
+	    return device.getFullScreenWindow() == getFrame();
+    }
 }

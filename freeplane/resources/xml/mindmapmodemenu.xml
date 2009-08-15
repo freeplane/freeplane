@@ -76,6 +76,7 @@
 			<menu_action action="ToggleToolbarAction" />
 			<menu_action action="ToggleFBarAction" />
 			<menu_action action="ToggleLeftToolbarAction" />
+			<menu_action action="ToggleFullScreenAction" />
 			<menu_separator />
 			<menu_category name="general">
 				<menu_action action="ShowSelectionAsRectangleAction" />
@@ -306,6 +307,7 @@
 			<menu_action action="ShowFilterToolbarAction"  />
 			<menu_action action="ToggleFBarAction" />
 			<menu_action action="ToggleLeftToolbarAction" />
+			<menu_action action="ToggleFullScreenAction" />
 			<menu_action action="ShowHideNoteAction" />
 		</menu_category>
 	</menu_category>

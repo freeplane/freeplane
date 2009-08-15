@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 
 import javax.swing.JApplet;
+import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
@@ -79,7 +80,8 @@ public class FreeplaneApplet extends JApplet {
 		    "/xml/appletMenu.xml");
 		controller.selectMode(browseController);
 		appletViewController.init();
-		controller.getViewController().setToolbarVisible(true);
+		final JComponent toolBar = browseController.getUserInputListenerFactory().getToolBar("/main_toolbar");
+		toolBar.setVisible(true);
 		controller.getViewController().setMenubarVisible(false);
 	}
 

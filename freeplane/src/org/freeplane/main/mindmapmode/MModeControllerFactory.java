@@ -28,6 +28,7 @@ import javax.swing.JPopupMenu;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.ToggleToolbarAction;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
@@ -243,10 +244,10 @@ public class MModeControllerFactory {
 		userInputListenerFactory.addMainToolBar("/main_toolbar", toolbar);
 		userInputListenerFactory.addMainToolBar("/filter_toolbar", FilterController.getController(controller).getFilterToolbar());
 		final FButtonBar fButtonToolBar = new FButtonBar(modeController);
+		fButtonToolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "fbarVisible");
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
 		userInputListenerFactory.addMainToolBar("/fbuttons", fButtonToolBar);
-		controller.addAction(new ToggleToolbarAction(controller, "ToggleFBarAction",
-		    "/fbuttons", "fbarVisible"));
+		controller.addAction(new ToggleToolbarAction(controller, "ToggleFBarAction", "/fbuttons", "fbarVisible"));
 		userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);
 		userInputListenerFactory.setLeftToolBar(((MIconController) IconController.getController(modeController))
 		    .getIconToolBarScrollPane());

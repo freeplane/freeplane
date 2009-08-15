@@ -51,6 +51,7 @@ import org.freeplane.core.filter.condition.SelectedViewCondition;
 import org.freeplane.core.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.ToggleToolbarAction;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceBundles;
@@ -242,6 +243,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private JToolBar createFilterToolbar() {
 		final JToolBar filterToolbar = new FreeplaneToolBar();
 		filterToolbar.setVisible(ResourceController.getResourceController().getBooleanProperty("filter_toolbar_visible"));
+		filterToolbar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "filter_toolbar_visible");
 		filterToolbar.setFocusable(false);
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
 		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));

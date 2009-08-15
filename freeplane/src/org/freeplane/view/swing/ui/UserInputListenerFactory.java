@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
@@ -79,7 +80,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private IMouseListener nodeMotionListener;
 	private INodeMouseMotionListener nodeMouseMotionListener;
 	private JPopupMenu nodePopupMenu;
-	private final Map<String, Component> toolBars;
+	private final Map<String, JComponent> toolBars;
 
 	public UserInputListenerFactory(final ModeController modeController) {
 		controller = modeController.getController();
@@ -96,10 +97,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 			}
 		});
-		toolBars = new LinkedHashMap<String, Component>();
+		toolBars = new LinkedHashMap<String, JComponent>();
 	}
 
-	public void addMainToolBar(final String name, final Component toolBar) {
+	public void addMainToolBar(final String name, final JComponent toolBar) {
 		toolBars.put(name, toolBar);
 	}
 
@@ -219,11 +220,11 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return nodePopupMenu;
 	}
 
-	public Component getToolBar(final String name) {
+	public JComponent getToolBar(final String name) {
 		return toolBars.get(name);
 	}
 
-	public Iterable<Component> getToolBars() {
+	public Iterable<JComponent> getToolBars() {
 		return toolBars.values();
 	}
 

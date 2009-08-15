@@ -365,15 +365,17 @@ class ApplicationViewController extends ViewController {
 	@Override
 	public void saveProperties() {
 		saveSplitPanePosition();
-		final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
-		if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
-			resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
-			resourceController.setProperty("appwindow_y", String.valueOf(frame.getY()));
-			resourceController.setProperty("appwindow_width", String.valueOf(frame.getWidth()));
-			resourceController.setProperty("appwindow_height", String.valueOf(frame.getHeight()));
-		}
-		resourceController.setProperty("appwindow_state", String.valueOf(winState));
 		resourceController.setProperty("map_view_zoom", Float.toString(getZoom()));
+		if(! isFullScreenEnabled()){
+			final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
+			if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
+				resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
+				resourceController.setProperty("appwindow_y", String.valueOf(frame.getY()));
+				resourceController.setProperty("appwindow_width", String.valueOf(frame.getWidth()));
+				resourceController.setProperty("appwindow_height", String.valueOf(frame.getHeight()));
+			}
+			resourceController.setProperty("appwindow_state", String.valueOf(winState));
+		}
 	}
 
 	private void saveSplitPanePosition() {

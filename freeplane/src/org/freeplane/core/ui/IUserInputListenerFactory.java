@@ -27,6 +27,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.Set;
 
+import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
@@ -61,9 +62,9 @@ public interface IUserInputListenerFactory {
 
 	JPopupMenu getNodePopupMenu();
 
-	Component getToolBar(String name);
+	JComponent getToolBar(String name);
 
-	Iterable<Component> getToolBars();
+	Iterable<JComponent> getToolBars();
 
 	public void removeMouseWheelEventHandler(final IMouseWheelEventHandler handler);
 
