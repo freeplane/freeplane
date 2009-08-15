@@ -12,8 +12,11 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
+import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.Option;
@@ -108,7 +111,7 @@ class XHTMLWriter extends FixedHTMLWriter {
 					insideValue = true;
 				}
 				else if (c == '>') {
-					if (tag.equals("img") || tag.equals("br") || tag.equals("hr") || tag.equals("input")
+					if (tag.equals("img") || tag.equals("br")|| tag.equals("wbr") || tag.equals("hr") || tag.equals("input")
 					        || tag.equals("meta") || tag.equals("link") || tag.equals("area") || tag.equals("base")
 					        || tag.equals("basefont") || tag.equals("frame") || tag.equals("iframe")
 					        || tag.equals("col")) {
@@ -235,4 +238,17 @@ class XHTMLWriter extends FixedHTMLWriter {
 		write("</option>");
 		writeLineSeparator();
 	}
+	
+	   /* (non-Javadoc)
+     * @see javax.swing.text.html.HTMLWriter#writeAttributes(javax.swing.text.AttributeSet)
+     */
+    protected void writeAttributes(AttributeSet attributeSet) throws IOException {
+    	Object nameTag = (attributeSet != null) ? attributeSet.getAttribute(StyleConstants.NameAttribute) : null;
+		Object endTag = (attributeSet != null) ? attributeSet.getAttribute(HTML.Attribute.ENDTAG) : null;
+		// write no attributes for end tags
+		if (nameTag != null && endTag != null && (endTag instanceof String) && ((String) endTag).equals("true")) {
+			return;
+		}
+		super.writeAttributes(attributeSet);
+    }
 }
