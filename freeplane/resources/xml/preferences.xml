@@ -150,10 +150,10 @@
             <number name="mapxsize"/>
             <number name="mapysize"/>
         </separator>
-        <separator name="links">
+        <separator name="connectors">
         	<font name="label_font_family"/>
         	<number name="label_font_size" min="4" max="216"/>
-        	<boolean name="paint_links_behind"/>
+        	<boolean name="paint_connectors_behind"/>
         </separator>
         <separator name="hyperlink_types">        
             <combo name="links">

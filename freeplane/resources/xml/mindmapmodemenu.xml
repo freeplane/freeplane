@@ -58,6 +58,7 @@
 				<menu_action action="CopyAction" accelerator="control C" />
 				<menu_action action="CopySingleAction" 	accelerator="control shift C"/>
 				<menu_action action="PasteAction" accelerator="control V" />
+				<menu_action action="SelectedPasteAction"  />
 			</menu_category>
 			<menu_category name="edit">
 				<menu_action action="EditAction" accelerator="F2" />
@@ -332,8 +333,7 @@
 		<menu_category name="PasteAction">
 			<menu_action action="CutAction"  />
 			<menu_action action="CopyAction"  />
-			<menu_action action="CopySingleAction"
-				 />
+			<menu_action action="CopySingleAction"/>
 			<menu_action action="PasteAction"  />
 		</menu_category>
 		<menu_separator />

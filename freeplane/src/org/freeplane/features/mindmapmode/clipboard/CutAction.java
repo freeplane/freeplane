@@ -60,21 +60,8 @@ class CutAction extends AFreeplaneAction {
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final Transferable copy = cut(controller.getSelection().getSortedSelection());
-		((ClipboardController) mMindMapController.getExtension(ClipboardController.class)).setClipboardContents(copy);
+		final MClipboardController clipboardController = (MClipboardController) mMindMapController.getExtension(ClipboardController.class);
+		clipboardController.cut(controller.getSelection().getSortedSelection());
 		controller.getViewController().obtainFocusForSelected();
-	}
-
-	Transferable cut(final List<NodeModel> collection) {
-		getModeController().getMapController().sortNodesByDepth(collection);
-		final Transferable totalCopy = ((ClipboardController) getModeController().getExtension(
-		    ClipboardController.class)).copy(collection, true);
-		for (final Iterator i = collection.iterator(); i.hasNext();) {
-			final NodeModel node = (NodeModel) i.next();
-			if (node.getParentNode() != null) {
-				((MMapController) getModeController().getMapController()).deleteNode(node);
-			}
-		}
-		return totalCopy;
 	}
 }
