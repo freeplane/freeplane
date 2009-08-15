@@ -21,8 +21,10 @@ package org.freeplane.main.application;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Insets;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Vector;
@@ -35,6 +37,8 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.TabbedPaneUI;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewChangeListener;
@@ -45,6 +49,7 @@ class MapViewTabs implements IMapViewChangeListener {
 	private JTabbedPane mTabbedPane = null;
 	final private Vector<Component> mTabbedPaneMapViews;
 	private boolean mTabbedPaneSelectionUpdate = true;
+	private TabbedPaneUI tabbedPaneUI;
 
 	public MapViewTabs(final Controller controller, final ApplicationViewController fm,
 	                   final JComponent contentComponent) {
@@ -85,6 +90,7 @@ class MapViewTabs implements IMapViewChangeListener {
 		final String title = title1;
 		mTabbedPane.addTab(title, new JPanel());
 		mTabbedPane.setSelectedIndex(mTabbedPane.getTabCount() - 1);
+		setTabsVisible();
 	}
 
 	public void afterViewClose(final Component pOldMapView) {
@@ -95,6 +101,7 @@ class MapViewTabs implements IMapViewChangeListener {
 				mTabbedPaneMapViews.remove(i);
 				mTabbedPaneSelectionUpdate = true;
 				tabSelectionChanged();
+				setTabsVisible();
 				return;
 			}
 		}
@@ -152,4 +159,38 @@ class MapViewTabs implements IMapViewChangeListener {
 			mTabbedPane.setComponentAt(selectedIndex, mContentComponent);
 		}
 	}
+    private void setTabsVisible() {
+    	boolean visible = mTabbedPane.getTabCount() > 1;
+    	if(visible == areTabsVisible()){
+    		return;
+    	}
+    	if(tabbedPaneUI == null){
+    		tabbedPaneUI = mTabbedPane.getUI();
+    	}
+    	if(visible){
+    		mTabbedPane.setUI(tabbedPaneUI);
+    	}
+    	else{
+    		mTabbedPane.setUI(new BasicTabbedPaneUI() {
+    			@Override
+    			protected int calculateTabAreaHeight(final int tabPlacement,
+    			                                     final int horizRunCount, final int maxTabHeight) {
+    				return 0;
+    			}
+    			@Override
+    			protected Insets getContentBorderInsets(final int tabPlacement) {
+    				return new Insets(0, 0, 0, 0);
+    			}
+    			@Override
+    			protected MouseListener createMouseListener() {
+    				return null;
+    			}
+    		});
+    	}
+    	mTabbedPane.revalidate();
+    }
+    private boolean areTabsVisible() {
+    	return tabbedPaneUI == null || tabbedPaneUI == mTabbedPane.getUI();
+    }
+
 }
