@@ -58,6 +58,35 @@ import org.freeplane.features.mindmapmode.MModeController;
  * @author Dimitry Polivaev
  */
 public class MLinkController extends LinkController {
+	private final class PopupEditorKeyListener implements KeyListener {
+	    private final JPopupMenu arrowLinkPopup;
+	    private boolean canceled = false;
+
+	    private PopupEditorKeyListener(JPopupMenu arrowLinkPopup) {
+		    this.arrowLinkPopup = arrowLinkPopup;
+	    }
+
+	    public void keyPressed(KeyEvent e) {
+	    	if(e.getKeyCode() == KeyEvent.VK_ENTER){
+	    		arrowLinkPopup.setVisible(false);
+	    		e.consume();
+	    	}
+	    	if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+	    		canceled = true;
+	    	}
+	    }
+
+	    protected boolean isCanceled() {
+	    	return canceled;
+	    }
+
+	    public void keyReleased(KeyEvent e) {
+	    }
+
+	    public void keyTyped(KeyEvent e) {
+	    }
+    }
+
 	/**
 	 * @author Dimitry Polivaev
 	 */
@@ -204,20 +233,7 @@ public class MLinkController extends LinkController {
 		arrowLinkPopup.add(menuItem);
 		arrowLinkPopup.addSeparator();
 		arrowLinkPopup.add(new JLabel(ResourceBundles.getText("edit_source_label")));
-		KeyListener enterListener = new KeyListener(){
-
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER){
-					arrowLinkPopup.setVisible(false);
-					e.consume();
-				}
-            }
-
-			public void keyReleased(KeyEvent e) {
-            }
-
-			public void keyTyped(KeyEvent e) {
-            }};
+		final PopupEditorKeyListener enterListener = new PopupEditorKeyListener(arrowLinkPopup);
 		final JTextField sourceLabelEditor = new JTextField(link.getSourceLabel());
 		sourceLabelEditor.addKeyListener(enterListener);
 		arrowLinkPopup.add(sourceLabelEditor);
@@ -233,13 +249,11 @@ public class MLinkController extends LinkController {
 		arrowLinkPopup.add(targetLabelEditor);
 		arrowLinkPopup.addSeparator();
 		arrowLinkPopup.addPopupMenuListener(new PopupMenuListener() {
-			private boolean canceled = false;
 			public void popupMenuCanceled(final PopupMenuEvent e) {
-				canceled = true;
 			}
 
 			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-				if(canceled){
+				if(enterListener.isCanceled()){
 					return;
 				}
 				setSourceLabel(link, sourceLabelEditor.getText());
