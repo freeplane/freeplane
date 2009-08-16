@@ -35,6 +35,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -133,7 +134,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 		textfield.setSize(width, height);
 		final Component mainView = textfield.getParent();
-		mainView.setPreferredSize(new Dimension(width, height));
+		mainView.setPreferredSize(new Dimension(width + horizontalSpace + iconWidth, height + verticalSpace));
 		textfield.revalidate();
 	}
 
@@ -263,6 +264,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield = null;
 		mainView.setPreferredSize(null);
 		mainView.updateText(getNode().getText());
+		mainView.setHorizontalAlignment(JLabel.CENTER);
 		mainView.getParent().invalidate();
 		mainView.remove(0);
 		mainView.revalidate();
@@ -272,6 +274,9 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	private NodeView nodeView;
 	private Font font;
 	private float zoom;
+	private int iconWidth;
+	private int horizontalSpace;
+	private int verticalSpace;
 
 	/* (non-Javadoc)
 	 * @see org.freeplane.view.swing.map.INodeTextField#show()
@@ -316,32 +321,28 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			textfield.setLineWrap(true);
 			textFieldSize.height = textfield.getPreferredSize().height;
 		}
-		int nodeWidth = mainView.getWidth();
+		final int nodeWidth = mainView.getWidth();
 		final int nodeHeight = mainView.getHeight();
-		maxWidth += nodeWidth - textFieldSize.width;
-		textfield.setSize(nodeWidth, nodeHeight);
-		int iconWidth = mainView.getIconWidth();
+		horizontalSpace = nodeWidth  - textFieldSize.width;
+		verticalSpace = nodeHeight  - textFieldSize.height;
+		iconWidth = mainView.getIconWidth();
 		if (iconWidth != 0) {
 			iconWidth += mapView.getZoomed(mainView.getIconTextGap());
-			nodeWidth -= iconWidth;
+			horizontalSpace -= iconWidth;
 		}
-		int topBorder = (nodeHeight + 1 - textFieldSize.height) / 2;
-		final int leftBorder = (nodeWidth + 1 - textFieldSize.width) / 2;
-		final Color borderColor;
-		//		if(MapView.standardDrawRectangleForSelection){
-		//			borderColor= nodeTextBackground;
-		//		}
-		//		else{
-		borderColor = nodeView.getSelectedColor();
-		//		}
+		int y = (verticalSpace+ 1) / 2;
+		final int x = (horizontalSpace+ 1) / 2;
 		if (nodeView.isLeft() && !nodeView.isRoot()) {
-			textfield.setBorder(BorderFactory.createMatteBorder(topBorder, leftBorder, topBorder, leftBorder
-			        + iconWidth, borderColor));
+			textfield.setBounds(x, y, textFieldSize.width, textFieldSize.height);
+			mainView.setText("");
+			mainView.setHorizontalAlignment(JLabel.RIGHT);
 		}
 		else {
-			textfield.setBorder(BorderFactory.createMatteBorder(topBorder, leftBorder + iconWidth, topBorder,
-			    leftBorder, borderColor));
+			textfield.setBounds(x+ iconWidth, y, textFieldSize.width, textFieldSize.height);
+			mainView.setText("");
+			mainView.setHorizontalAlignment(JLabel.LEFT);
 		}
+		mainView.setPreferredSize(new Dimension(nodeWidth, nodeHeight));
 		mainView.add(textfield, 0);
 		if (firstEvent != null) {
 			redispatchKeyEvents(textfield, firstEvent);
@@ -358,9 +359,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	}
 
 	private int getTextPreferredWidth() {
-		final Insets insets = textfield.getInsets();
 		final FontMetrics fontMetrics = textfield.getFontMetrics(font);
-		int preferredWidth = fontMetrics.stringWidth(textfield.getText()) + insets.left + insets.right + 1;
+		int preferredWidth = fontMetrics.stringWidth(textfield.getText()) + 1;
 		if (zoom != 1f) {
 			preferredWidth += font.getSize() / 2;
 		}

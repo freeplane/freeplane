@@ -317,11 +317,6 @@ public abstract class MainView extends JLabel {
 		}
 	}
 
-	@Override
-	protected void printComponent(final Graphics g) {
-		super.paintComponent(g);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see javax.swing.JComponent#processKeyBinding(javax.swing.KeyStroke,
