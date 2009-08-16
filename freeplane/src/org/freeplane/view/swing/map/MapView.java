@@ -1369,6 +1369,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
+//	@Override
+//    public void repaint(int x, int y, int width, int height) {
+//		final JViewport vp = (JViewport) getParent();
+//		final Rectangle viewRect = vp.getViewRect();
+//		super.repaint(viewRect.x, viewRect.y, viewRect.width, viewRect.height);
+////	    super.repaint(x, y, width, height);
+//    }
+
 	public void setZoom(final float zoom) {
 		this.zoom = zoom;
 		anchorToSelected(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
@@ -1446,7 +1454,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	
 	public void repaintVisible(){
 		final JViewport vp = (JViewport) getParent();
-		final Dimension extentSize = vp.getExtentSize();
-		repaint(0, 0, extentSize.width, extentSize.height);
+		repaint(vp.getViewRect());
 	}
 }

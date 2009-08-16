@@ -77,7 +77,7 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 				}
 				originX = e.getX();
 				originY = e.getY();
-				mapView.repaint();
+				mapView.repaintVisible();
 			}
 			else {
 				mapView.scrollBy(originX - e.getX(), originY - e.getY());
@@ -101,7 +101,7 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 				draggedLinkOldStartPoint = draggedLink.getStartInclination();
 				draggedLinkOldEndPoint = draggedLink.getEndInclination();
 				draggedLink.setShowControlPoints(true);
-				mapView.repaint();
+				mapView.repaintVisible();
 			}
 		}
 	}
@@ -118,7 +118,7 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 			draggedLink.setEndInclination(draggedLinkOldEndPoint);
 			((MLinkController) LinkController.getController(mController)).setArrowLinkEndPoints(draggedLink,
 			    draggedLinkNewStartPoint, draggedLinkNewEndPoint);
-			mapView.repaint();
+			mapView.repaintVisible();
 			draggedLink = null;
 		}
 	}
