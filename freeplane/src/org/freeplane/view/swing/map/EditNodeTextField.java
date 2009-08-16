@@ -39,6 +39,7 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -61,80 +62,66 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 
 	private final class MyDocumentListener implements DocumentListener {
 		public void changedUpdate(DocumentEvent e) {
-			onUpdate(false);
+			onUpdate();
 		}
 
-		private void onUpdate(final boolean forceLineWrap) {
+		private void onUpdate() {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					layout(forceLineWrap);
+					layout();
 				}
 			});
 		}
 
 		public void insertUpdate(DocumentEvent e) {
-			if (!textfield.getLineWrap()) {
-				final int offset = e.getOffset();
-				final int length = e.getLength();
-				try {
-					if (e.getDocument().getText(offset, length).contains("\n") && !textfield.getLineWrap()) {
-						onUpdate(true);
-						return;
-					}
-				}
-				catch (BadLocationException e1) {
-				}
-			}
-			onUpdate(false);
+			onUpdate();
 		}
 
 		public void removeUpdate(DocumentEvent e) {
-			onUpdate(false);
+			onUpdate();
 		}
 	}
 
-	private void layout(boolean forceLineWrap) {
+	private void layout() {
 		if (textfield == null) {
 			return;
 		}
 		final int lastWidth = textfield.getWidth();
 		final int lastHeight = textfield.getHeight();
-		final int height;
-		final int width;
 		final boolean lineWrap = lastWidth == maxWidth;
+		final Dimension preferredSize;
 		if (!lineWrap) {
-			int preferredWidth;
-			if(forceLineWrap || (preferredWidth= getTextPreferredWidth()) > maxWidth){
-    			textfield.setSize(maxWidth, Integer.MAX_VALUE);
-    			textfield.setLineWrap(true);
-				width = maxWidth;
-				height = Math.max(lastHeight, textfield.getPreferredScrollableViewportSize().height);
+			preferredSize = textfield.getPreferredSize();
+			if(preferredSize.width > maxWidth){
+				textfield.setSize(maxWidth, Integer.MAX_VALUE);
+				textfield.setLineWrap(true);
+				preferredSize.width = maxWidth;
+				preferredSize.height = Math.max(lastHeight, textfield.getPreferredSize().height);
 			}
 			else{
-				preferredWidth= getTextPreferredWidth();
-				if (preferredWidth < lastWidth) {
-					width = lastWidth;
+				if (preferredSize.width < lastWidth) {
+					preferredSize.width = lastWidth;
 				}
 				else {
-					width = Math.min(preferredWidth + extraWidth, maxWidth);
-					if (width == maxWidth) {
+					preferredSize.width = Math.min(preferredSize.width + extraWidth, maxWidth);
+					if (preferredSize.width == maxWidth) {
 						textfield.setLineWrap(true);
 					}
 				}
-				height = lastHeight;
+				preferredSize.height = Math.max(preferredSize.height, lastHeight);
 			}
 		}
 		else {
-			width = maxWidth;
-			height = Math.max(lastHeight, textfield.getPreferredScrollableViewportSize().height);
+			preferredSize = new Dimension(maxWidth,
+			 Math.max(lastHeight, textfield.getPreferredScrollableViewportSize().height));
 		}
-		if (width == lastWidth && height == lastHeight) {
+		if (preferredSize.width == lastWidth && preferredSize.height == lastHeight) {
 			textfield.repaint();
 			return;
 		}
-		textfield.setSize(width, height);
+		textfield.setSize(preferredSize);
 		final Component mainView = textfield.getParent();
-		mainView.setPreferredSize(new Dimension(width + horizontalSpace + iconWidth, height + verticalSpace));
+		mainView.setPreferredSize(new Dimension(preferredSize.width + horizontalSpace + iconWidth, preferredSize.height + verticalSpace));
 		textfield.revalidate();
 	}
 
@@ -177,34 +164,41 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 
 		public void keyPressed(final KeyEvent e) {
-			if (e.isAltDown() || e.isControlDown() || e.isMetaDown() || eventSource == CANCEL) {
+			if (e.isControlDown() || e.isMetaDown() || eventSource == CANCEL) {
 				return;
 			}
-			boolean commit = true;
 			switch (e.getKeyCode()) {
 				case KeyEvent.VK_ESCAPE:
-					commit = false;
+					eventSource = CANCEL;
+					hideMe();
+					getEditControl().cancel();
+					nodeView.requestFocus();
+					e.consume();
+					break;
 				case KeyEvent.VK_ENTER:
+					if(! e.isAltDown()){ 
+						if(e.isShiftDown()){
+							e.consume();
+							final Component component = e.getComponent();
+							final KeyEvent keyEvent = new KeyEvent(component, e.getID(),e.getWhen(), 0, e.getKeyCode(), e.getKeyChar(), e.getKeyLocation());
+							SwingUtilities.processKeyBindings(keyEvent);
+							break;
+						}
+						else if(! ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default")){
+							break;
+						}
+					}
 					final String output;
-					if (commit) {
 						output = textfield.getText();
-					}
-					else {
-						output = null;
-					}
 					e.consume();
 					eventSource = CANCEL;
 					hideMe();
-					if (commit) {
-						getEditControl().ok(output);
-					}
-					else {
-						getEditControl().cancel();
-					}
+					getEditControl().ok(output);
 					nodeView.requestFocus();
 					break;
 				case KeyEvent.VK_SPACE:
 					e.consume();
+					break;
 			}
 		}
 
@@ -309,29 +303,39 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.addFocusListener(textFieldListener);
 		textfield.addKeyListener(textFieldListener);
 		textfield.addMouseListener(textFieldListener);
+		textfield.setWrapStyleWord(true);
 		SpellCheckerController.getController(modeController).enableAutoSpell(textfield);
 		mapView.scrollNodeToVisible(nodeView);
 		final MainView mainView = nodeView.getMainView();
-		final Dimension textFieldSize = textfield.getPreferredSize();
-		textFieldSize.width += 1;
-		textfield.setWrapStyleWord(true);
-		if (textFieldSize.width > maxWidth) {
-			textFieldSize.width = maxWidth;
-			textfield.setSize(maxWidth, Integer.MAX_VALUE);
-			textfield.setLineWrap(true);
-			textFieldSize.height = textfield.getPreferredSize().height;
-		}
 		final int nodeWidth = mainView.getWidth();
 		final int nodeHeight = mainView.getHeight();
-		horizontalSpace = nodeWidth  - textFieldSize.width;
-		verticalSpace = nodeHeight  - textFieldSize.height;
+		final Dimension textFieldSize;
+		textfield.setBorder(new MatteBorder(2, 2, 2, 2, nodeView.getSelectedColor()));
+		textFieldSize = textfield.getPreferredSize();
+		textFieldSize.width += 1;
+		if (textFieldSize.width > maxWidth) {
+			textFieldSize.width = maxWidth;
+			textfield.setSize(textFieldSize.width, Integer.MAX_VALUE);
+			textfield.setLineWrap(true);
+			textFieldSize.height = textfield.getPreferredSize().height;
+			horizontalSpace = nodeWidth  - textFieldSize.width;
+			verticalSpace = nodeHeight  - textFieldSize.height;
+		}
+		else{
+			horizontalSpace = nodeWidth  - textFieldSize.width;
+			verticalSpace = nodeHeight  - textFieldSize.height;
+		}
+		
+		textfield.setSize(textFieldSize.width, textFieldSize.height);
+		mainView.setPreferredSize(new Dimension(textFieldSize.width + horizontalSpace, textFieldSize.height + verticalSpace));
+		
 		iconWidth = mainView.getIconWidth();
 		if (iconWidth != 0) {
 			iconWidth += mapView.getZoomed(mainView.getIconTextGap());
 			horizontalSpace -= iconWidth;
 		}
-		int y = (verticalSpace+ 1) / 2;
 		final int x = (horizontalSpace+ 1) / 2;
+		final int y = (verticalSpace+ 1) / 2;
 		if (nodeView.isLeft() && !nodeView.isRoot()) {
 			textfield.setBounds(x, y, textFieldSize.width, textFieldSize.height);
 			mainView.setText("");
@@ -342,7 +346,6 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			mainView.setText("");
 			mainView.setHorizontalAlignment(JLabel.LEFT);
 		}
-		mainView.setPreferredSize(new Dimension(nodeWidth, nodeHeight));
 		mainView.add(textfield, 0);
 		if (firstEvent != null) {
 			redispatchKeyEvents(textfield, firstEvent);
@@ -353,17 +356,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.getDocument().addDocumentListener(documentListener);
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeChangeListener(textFieldListener);
-		layout(false);
 		textfield.repaint();
 		textfield.requestFocus();
 	}
 
-	private int getTextPreferredWidth() {
-		final FontMetrics fontMetrics = textfield.getFontMetrics(font);
-		int preferredWidth = fontMetrics.stringWidth(textfield.getText()) + 1;
-		if (zoom != 1f) {
-			preferredWidth += font.getSize() / 2;
-		}
-		return preferredWidth;
-	}
 }

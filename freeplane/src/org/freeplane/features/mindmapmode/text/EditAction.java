@@ -95,7 +95,7 @@ class EditAction extends AFreeplaneAction {
 		String text = nodeModel.toString();
 		final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
 		final boolean isHtmlNode = HtmlTools.isHtmlNode(text);
-		final boolean editDefinitivelyLong = editLong || ! isHtmlNode && text.indexOf('\n') != -1;
+		final boolean editDefinitivelyLong = editLong;
 		boolean useRichTextInNewLongNodes = true;
 		if (!isHtmlNode && editDefinitivelyLong) {
 			final MTextController textController = (MTextController) TextController.getController(getModeController());
@@ -220,7 +220,7 @@ class EditAction extends AFreeplaneAction {
 	public void setNodeText(final NodeModel node, final String newText) {
 		final ModeController modeController = getController().getModeController(MModeController.MODENAME);
 		final MTextController textController = (MTextController) TextController.getController(modeController);
-		textController.setNodeText(node, newText);
+		textController.setNodeText(node, newText.replaceFirst("\\s+$", ""));
 	}
 
 	public void stopEditing() {
