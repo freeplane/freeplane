@@ -48,7 +48,8 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 		if (localName != null) {
 			return localName;
 		}
-		return FpStringUtils.formatText("user_icon", name);
+//		return FpStringUtils.formatText("user_icon", name);
+		return  '"' + name + '"';
 	}
 
 	final private MindIcon icon;
