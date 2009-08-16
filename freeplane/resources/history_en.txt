@@ -13,7 +13,8 @@ Full screen mode
 Hide tabs if only one map is loaded
 Selective paste from edit menu (Paste...)
 edit nodes with line breaks in in-line editor (alt+enter to quit , shift+enter for line break)
-
+new icons: 0%, 25%, 50%, 75%, 100%
+no follow up links in link pop-up menu
 
 Bug fixes:
 installer bug fixes
