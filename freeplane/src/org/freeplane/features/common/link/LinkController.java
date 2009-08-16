@@ -127,38 +127,11 @@ public class LinkController extends SelectionController implements IExtension {
 		return colorHandlers.addGetter(key, getter);
 	}
 
-	private void addForeignLinks(final JPopupMenu arrowLinkPopup, final HashSet<NodeModel> nodeAlreadyVisited,
-	                             final Collection<LinkModel> sourceLinks) {
-		final Collection<LinkModel> links = new LinkedList<LinkModel>();;
-		links.addAll(sourceLinks);
-		for (final LinkModel foreign_link : links) {
-			if (!(foreign_link instanceof ConnectorModel)) {
-				continue;
-			}
-			final ConnectorModel arrowLink = (ConnectorModel) foreign_link;
-			final NodeModel foreignTarget = arrowLink.getTarget();
-			if (nodeAlreadyVisited.add(foreignTarget)) {
-				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreignTarget));
-			}
-			final NodeModel foreignSource = arrowLink.getSource();
-			if (nodeAlreadyVisited.add(foreignSource)) {
-				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreignSource));
-			}
-		}
-	}
-
 	private void addLinks(final JPopupMenu arrowLinkPopup, final NodeModel source,
 	                      final HashSet<NodeModel> nodeAlreadyVisited) {
-		boolean actionsAdded = false;
 		final IMapSelection selection = getModeController().getController().getSelection();
 		if (!selection.isSelected(source)) {
 			arrowLinkPopup.add(new GotoLinkNodeAction(this, source));
-			actionsAdded = true;
-		}
-		addForeignLinks(arrowLinkPopup, nodeAlreadyVisited, NodeLinks.getLinks(source));
-		if (actionsAdded) {
-			actionsAdded = false;
-			arrowLinkPopup.addSeparator();
 		}
 	}
 
@@ -167,7 +140,6 @@ public class LinkController extends SelectionController implements IExtension {
 	 */
 	private void createActions(final ModeController modeController) {
 		modeController.addAction(new FollowLinkAction(modeController.getController()));
-		modeController.addAction(new GotoLinkNodeAction(this, null));
 	}
 
 	protected void createArrowLinkPopup(final ConnectorModel link, final JPopupMenu arrowLinkPopup) {
