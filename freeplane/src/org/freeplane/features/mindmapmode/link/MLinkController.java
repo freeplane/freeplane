@@ -58,6 +58,84 @@ import org.freeplane.features.mindmapmode.MModeController;
  * @author Dimitry Polivaev
  */
 public class MLinkController extends LinkController {
+	private final class TargetLabelSetter implements IActor {
+	    private final String oldLabel;
+	    private final String label;
+	    private final ConnectorModel model;
+
+	    private TargetLabelSetter(String oldLabel, String label, ConnectorModel model) {
+		    this.oldLabel = oldLabel;
+		    this.label = label;
+		    this.model = model;
+	    }
+
+	    public void act() {
+	    	model.setTargetLabel(label);
+	    	getModeController().getMapController().nodeChanged(model.getSource());
+	    }
+
+	    public String getDescription() {
+	    	return "setTargetLabel";
+	    }
+
+	    public void undo() {
+	    	model.setTargetLabel(oldLabel);
+	    	getModeController().getMapController().nodeChanged(model.getSource());
+	    }
+    }
+
+	private final class SourceLabelSetter implements IActor {
+	    private final ConnectorModel model;
+	    private final String label;
+	    private final String oldLabel;
+
+	    private SourceLabelSetter(ConnectorModel model, String label, String oldLabel) {
+		    this.model = model;
+		    this.label = label;
+		    this.oldLabel = oldLabel;
+	    }
+
+	    public void act() {
+	    	model.setSourceLabel(label);
+	    	getModeController().getMapController().nodeChanged(model.getSource());
+	    }
+
+	    public String getDescription() {
+	    	return "setSourceLabel";
+	    }
+
+	    public void undo() {
+	    	model.setSourceLabel(oldLabel);
+	    	getModeController().getMapController().nodeChanged(model.getSource());
+	    }
+    }
+
+	private final class MiddleLabelSetter implements IActor {
+	    private final ConnectorModel model;
+	    private final String oldLabel;
+	    private final String label;
+
+	    private MiddleLabelSetter(ConnectorModel model, String oldLabel, String label) {
+		    this.model = model;
+		    this.oldLabel = oldLabel;
+		    this.label = label;
+	    }
+
+	    public void act() {
+	    	model.setMiddleLabel(label);
+	    	getModeController().getMapController().nodeChanged(model.getSource());
+	    }
+
+	    public String getDescription() {
+	    	return "setMiddleLabel";
+	    }
+
+	    public void undo() {
+	    	model.setMiddleLabel(oldLabel);
+	    	getModeController().getMapController().nodeChanged(model.getSource());
+	    }
+    }
+
 	private final class PopupEditorKeyListener implements KeyListener {
 	    private final JPopupMenu arrowLinkPopup;
 	    private boolean canceled = false;
@@ -362,72 +440,48 @@ public class MLinkController extends LinkController {
 		setLinkByFileChooser.setLinkByFileChooser();
 	}
 
-	public void setMiddleLabel(final ConnectorModel model, final String label) {
-		final String oldLabel = model.getMiddleLabel();
+	public void setMiddleLabel(final ConnectorModel model, String label) {
+		if("".equals(label)){
+			label = null;
+		}
+		String oldLabel = model.getMiddleLabel();
+		if("".equals(oldLabel)){
+			oldLabel = null;
+		}
 		if (label == oldLabel || label != null && label.equals(oldLabel)) {
 			return;
 		}
-		final IActor actor = new IActor() {
-			public void act() {
-				model.setMiddleLabel(label);
-				getModeController().getMapController().nodeChanged(model.getSource());
-			}
-
-			public String getDescription() {
-				return "setMiddleLabel";
-			}
-
-			public void undo() {
-				model.setMiddleLabel(oldLabel);
-				getModeController().getMapController().nodeChanged(model.getSource());
-			}
-		};
+		final IActor actor = new MiddleLabelSetter(model, oldLabel, label);
 		getModeController().execute(actor, model.getSource().getMap());
 	}
 
-	public void setSourceLabel(final ConnectorModel model, final String label) {
-		final String oldLabel = model.getSourceLabel();
+	public void setSourceLabel(final ConnectorModel model, String label) {
+		if("".equals(label)){
+			label = null;
+		}
+		String oldLabel = model.getSourceLabel();
+		if("".equals(oldLabel)){
+			oldLabel = null;
+		}
 		if (label == oldLabel || label != null && label.equals(oldLabel)) {
 			return;
 		}
-		final IActor actor = new IActor() {
-			public void act() {
-				model.setSourceLabel(label);
-				getModeController().getMapController().nodeChanged(model.getSource());
-			}
-
-			public String getDescription() {
-				return "setSourceLabel";
-			}
-
-			public void undo() {
-				model.setSourceLabel(oldLabel);
-				getModeController().getMapController().nodeChanged(model.getSource());
-			}
-		};
+		final IActor actor = new SourceLabelSetter(model, label, oldLabel);
 		getModeController().execute(actor, model.getSource().getMap());
 	}
 
-	public void setTargetLabel(final ConnectorModel model, final String label) {
-		final String oldLabel = model.getTargetLabel();
+	public void setTargetLabel(final ConnectorModel model, String label) {
+		if("".equals(label)){
+			label = null;
+		}
+		String oldLabel = model.getTargetLabel();
+		if("".equals(oldLabel)){
+			oldLabel = null;
+		}
 		if (label == oldLabel || label != null && label.equals(oldLabel)) {
 			return;
 		}
-		final IActor actor = new IActor() {
-			public void act() {
-				model.setTargetLabel(label);
-				getModeController().getMapController().nodeChanged(model.getSource());
-			}
-
-			public String getDescription() {
-				return "setTargetLabel";
-			}
-
-			public void undo() {
-				model.setTargetLabel(oldLabel);
-				getModeController().getMapController().nodeChanged(model.getSource());
-			}
-		};
+		final IActor actor = new TargetLabelSetter(oldLabel, label, model);
 		getModeController().execute(actor, model.getSource().getMap());
 	}
 }

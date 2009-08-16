@@ -206,15 +206,15 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 			arrowLink.setAttribute("DESTINATION", destinationLabel);
 		}
 		final String sourceLabel = model.getSourceLabel();
-		if (sourceLabel != null) {
+		if (sourceLabel != null && !sourceLabel.equals("")) {
 			arrowLink.setAttribute("SOURCE_LABEL", sourceLabel);
 		}
 		final String targetLabel = model.getTargetLabel();
-		if (targetLabel != null) {
+		if (targetLabel != null && !targetLabel.equals("")) {
 			arrowLink.setAttribute("TARGET_LABEL", targetLabel);
 		}
 		final String middleLabel = model.getMiddleLabel();
-		if (middleLabel != null) {
+		if (middleLabel != null && !middleLabel.equals("")) {
 			arrowLink.setAttribute("MIDDLE_LABEL", middleLabel);
 		}
 		final Point startInclination = model.getStartInclination();
