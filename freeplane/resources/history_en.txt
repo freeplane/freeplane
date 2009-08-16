@@ -12,6 +12,8 @@ Connector Label Filter Condition
 Full screen mode
 Hide tabs if only one map is loaded
 Selective paste from edit menu (Paste...)
+edit nodes with line breaks in in-line editor (alt+enter to quit , shift+enter for line break)
+
 
 Bug fixes:
 installer bug fixes
@@ -22,6 +24,7 @@ remove link from map links if its source node is removed
 [Bugs 0000191]: Save after move node
 [Bugs 0000188]: Fold / Unfold for multiple selection
 [Bugs 0000193]: date appended to rich text node is invisible
+work around for external html containing unknown tags
 
 Performance issues:
 repaint only visible part of the map
