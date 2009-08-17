@@ -35,6 +35,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
@@ -120,9 +121,12 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			return;
 		}
 		textfield.setSize(preferredSize);
-		final Component mainView = textfield.getParent();
+		final JComponent mainView = (JComponent) textfield.getParent();
 		mainView.setPreferredSize(new Dimension(preferredSize.width + horizontalSpace + iconWidth, preferredSize.height + verticalSpace));
 		textfield.revalidate();
+		NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, mainView);
+		MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, nodeView);
+		mapView.scrollNodeToVisible(nodeView);
 	}
 
 	class TextFieldListener implements KeyListener, FocusListener, MouseListener, INodeChangeListener {

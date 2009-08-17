@@ -1448,8 +1448,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-	    // TODO Auto-generated method stub
-	    
     }
 	
 	public void repaintVisible(){
