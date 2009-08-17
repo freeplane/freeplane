@@ -25,6 +25,7 @@ remove link from map links if its source node is removed
 [Bugs 0000191]: Save after move node
 [Bugs 0000188]: Fold / Unfold for multiple selection
 [Bugs 0000193]: date appended to rich text node is invisible
+[Bugs 0000198]: Pasting clipboard into a new node results in node of massive size
 work around for external html containing unknown tags
 
 Performance issues:
