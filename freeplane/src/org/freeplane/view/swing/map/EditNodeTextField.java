@@ -294,7 +294,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		font = nodeView.getTextFont();
 		zoom = viewController.getZoom();
 		if (zoom != 1F) {
-			font = font.deriveFont(font.getSize() * zoom * 0.97f);
+			font = font.deriveFont(font.getSize() * zoom);
 		}
 		textfield.setFont(font);
 		final Color nodeTextColor = nodeView.getTextColor();
@@ -328,6 +328,12 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		else{
 			horizontalSpace = nodeWidth  - textFieldSize.width;
 			verticalSpace = nodeHeight  - textFieldSize.height;
+		}
+		if(horizontalSpace < 0){
+			horizontalSpace = 0;
+		}
+		if(verticalSpace < 0){
+			verticalSpace = 0;
 		}
 		
 		textfield.setSize(textFieldSize.width, textFieldSize.height);
