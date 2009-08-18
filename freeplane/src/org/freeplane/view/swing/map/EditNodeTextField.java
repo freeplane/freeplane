@@ -93,6 +93,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final Dimension preferredSize;
 		if (!lineWrap) {
 			preferredSize = textfield.getPreferredSize();
+			preferredSize.width += 1;
 			if(preferredSize.width > maxWidth){
 				textfield.setSize(maxWidth, Integer.MAX_VALUE);
 				textfield.setLineWrap(true);
