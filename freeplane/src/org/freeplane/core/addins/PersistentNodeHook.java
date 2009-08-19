@@ -92,7 +92,9 @@ public abstract class PersistentNodeHook {
 				if (extension == null) {
 					extension = createExtension(node);
 				}
-				add(node, extension);
+				if(extension != null){
+					add(node, extension);
+				}
 			}
 		}
 

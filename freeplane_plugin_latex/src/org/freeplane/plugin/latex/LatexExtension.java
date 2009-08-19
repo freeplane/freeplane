@@ -24,7 +24,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.NodeModel;
 
 /**
  * @author Dimitry Polivaev
@@ -32,13 +31,11 @@ import org.freeplane.core.model.NodeModel;
  */
 class LatexExtension implements IExtension {
 	private String equation;
-	private final NodeModel node;
 	final private Set<JZoomedHotEqn> viewers;
 
-	public LatexExtension(final NodeModel node) {
+	public LatexExtension() {
 		equation = "\\mbox{I}^\\fgcolor{ff0000}{\\heartsuit}\\mbox{HotEqn}";
 		viewers = new LinkedHashSet();
-		this.node = node;
 	}
 
 	public String getEquation() {

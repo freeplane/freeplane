@@ -376,26 +376,7 @@ public class UrlManager implements IExtension {
 			return;
 		}
 		try {
-			URL url;
-			final String path = uri.getPath();
-			if (!uri.isAbsolute() || uri.isOpaque()) {
-				final MapModel map = getController().getMap();
-				url = new URL(map.getURL(), path);
-			}
-			else {
-				StringBuilder sb = new StringBuilder(path);
-				final String query = uri.getQuery();
-				if(query != null){
-					sb.append('?');
-					sb.append(query);
-				}
-				final String fragment = uri.getFragment();
-				if(fragment != null){
-					sb.append('#');
-					sb.append(fragment);
-				}
-				url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), sb.toString());
-			}
+			URL url = getAbsoluteUrl(uri);
 			final String extension = UrlManager.getExtension(url.toString());
 			try {
 				if ((extension != null)
@@ -433,6 +414,30 @@ public class UrlManager implements IExtension {
 				UITools.errorMessage(FpStringUtils.formatText("link_not_found", uriString));
 			}
 		}
+	}
+
+	public URL getAbsoluteUrl(final URI uri) throws MalformedURLException {
+		URL url;
+		final String path = uri.getPath();
+		if (!uri.isAbsolute() || uri.isOpaque()) {
+			final MapModel map = getController().getMap();
+			url = new URL(map.getURL(), path);
+		}
+		else {
+			StringBuilder sb = new StringBuilder(path);
+			final String query = uri.getQuery();
+			if(query != null){
+				sb.append('?');
+				sb.append(query);
+			}
+			final String fragment = uri.getFragment();
+			if(fragment != null){
+				sb.append('#');
+				sb.append(fragment);
+			}
+			url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), sb.toString());
+		}
+		return url;
 	}
 
 	public void setLastCurrentDir(final File lastCurrentDir) {

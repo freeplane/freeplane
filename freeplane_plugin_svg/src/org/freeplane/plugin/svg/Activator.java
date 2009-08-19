@@ -3,10 +3,12 @@ package org.freeplane.plugin.svg;
 import java.util.Hashtable;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
+import org.freeplane.view.swing.addins.filepreview.PreviewController;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -25,6 +27,8 @@ public class Activator implements BundleActivator {
 				    final Controller controller = modeController.getController();
 				    menuBuilder.addAnnotatedAction(new ExportPdf(controller));
 				    menuBuilder.addAnnotatedAction(new ExportSvg(controller));
+				    PreviewController extension = (PreviewController) modeController.getExtension(PreviewController.class);
+				    extension.addFactory(new SvgViewerFactory());
 			    }
 		    }, props);
 	}
