@@ -44,6 +44,8 @@ import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.features.common.addins.misc.BlinkingNodeHook;
 import org.freeplane.features.common.addins.misc.CreationModificationPlugin;
 import org.freeplane.features.common.addins.misc.HierarchicalIcons;
+import org.freeplane.features.common.addins.misc.NextNodeAction;
+import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.cloud.CloudController;
@@ -146,6 +148,9 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new SaveAll(controller));
 		menuBuilder.addAnnotatedAction(new SortNodes(controller));
 		menuBuilder.addAnnotatedAction(new SplitNode(controller));
+		menuBuilder.addAnnotatedAction(new NextNodeAction(controller, Direction.FORWARD));
+		menuBuilder.addAnnotatedAction(new NextNodeAction(controller, Direction.BACK));
+
 		new UnfoldAll(modeController);
 		new ChangeNodeLevelController(modeController.getController(), menuBuilder);
 		ExportWithXSLT.createXSLTExportActions(modeController, "/xml/ExportWithXSLT.xml");
