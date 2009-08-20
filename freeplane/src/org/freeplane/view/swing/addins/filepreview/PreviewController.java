@@ -82,7 +82,7 @@ final private Set<IPreviewComponentFactory> factories;
 		try {
 			URI uri = model.getUri();
 			UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
-			URL absoluteUrl = urlManager.getAbsoluteUrl(uri);
+			URL absoluteUrl = urlManager.getAbsoluteUrl(view.getModel().getMap(), uri);
 			final JComponent comp = createPreviewComponent(new File(absoluteUrl.getFile()));
 			final Set<JComponent> viewers = model.getViewers();
 			viewers.add(comp);

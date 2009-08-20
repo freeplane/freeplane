@@ -417,10 +417,14 @@ public class UrlManager implements IExtension {
 	}
 
 	public URL getAbsoluteUrl(final URI uri) throws MalformedURLException {
-		URL url;
+		final MapModel map = getController().getMap();
+		return getAbsoluteUrl(map, uri);
+	}
+
+	public URL getAbsoluteUrl(final MapModel map, final URI uri) throws MalformedURLException {
+	    URL url;
 		final String path = uri.getPath();
 		if (!uri.isAbsolute() || uri.isOpaque()) {
-			final MapModel map = getController().getMap();
 			url = new URL(map.getURL(), path);
 		}
 		else {
@@ -438,7 +442,7 @@ public class UrlManager implements IExtension {
 			url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), sb.toString());
 		}
 		return url;
-	}
+    }
 
 	public void setLastCurrentDir(final File lastCurrentDir) {
 		UrlManager.lastCurrentDir = lastCurrentDir;
