@@ -295,7 +295,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		font = nodeView.getTextFont();
 		zoom = viewController.getZoom();
 		if (zoom != 1F) {
-			font = font.deriveFont(font.getSize() * zoom);
+			final float fontSize = (float) (Math.rint(font.getSize() * zoom * 2) / 2);
+			font = font.deriveFont(fontSize);
 		}
 		textfield.setFont(font);
 		final Color nodeTextColor = nodeView.getTextColor();
