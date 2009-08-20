@@ -11,7 +11,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 
-@ActionLocationDescriptor(locations={"/menu_bar/navigate/navigate"})
 public class NextNodeAction extends AFreeplaneAction {
 	public enum Direction{BACK, FORWARD};
 	/**
@@ -62,20 +61,25 @@ public class NextNodeAction extends AFreeplaneAction {
 			}
 	}
 	private NodeModel getPrevious(NodeModel selected) {
-		if(selected.getChildCount() != 0){
-			return (NodeModel) selected.getChildAt(selected.getChildCount()-1);
-		}
 		for(;;){
 			NodeModel parentNode = selected.getParentNode();
 			if(parentNode == null){
+				break;
+			}
+			getModeController().getMapController().setFolded(selected, true);
+			int index = parentNode.getIndex(selected)-1;
+			if(index < 0){
+				getModeController().getMapController().setFolded(parentNode, true);
+				return parentNode;
+			}
+			selected = (NodeModel) parentNode.getChildAt(index);
+			break;
+		}
+		for(;;){
+			if(selected.getChildCount() == 0){
 				return selected;
 			}
-			int index = parentNode.getIndex(selected)-1;
-			if(index >= 0){
-				getModeController().getMapController().setFolded(selected, true);
-				return (NodeModel) parentNode.getChildAt(index);
-			}
-			selected = parentNode;
+			selected = (NodeModel) selected.getChildAt(selected.getChildCount() - 1);
 		}
-}
+	}
 }

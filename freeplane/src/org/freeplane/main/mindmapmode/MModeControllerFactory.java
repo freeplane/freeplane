@@ -92,7 +92,7 @@ import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.view.swing.addins.FitToPage;
-import org.freeplane.view.swing.addins.filepreview.PreviewController;
+import org.freeplane.view.swing.addins.filepreview.ViewerController;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
@@ -135,7 +135,7 @@ public class MModeControllerFactory {
 		new MapStyle(modeController);
 		new CreationModificationPlugin(modeController);
 		new ReminderHook(modeController);
-		new PreviewController(modeController);
+		new ViewerController(modeController);
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.addAnnotatedAction(new ApplyFormatPlugin(controller));
 		new FormatPaste(controller, menuBuilder);
@@ -148,8 +148,6 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new SaveAll(controller));
 		menuBuilder.addAnnotatedAction(new SortNodes(controller));
 		menuBuilder.addAnnotatedAction(new SplitNode(controller));
-		menuBuilder.addAnnotatedAction(new NextNodeAction(controller, Direction.FORWARD));
-		menuBuilder.addAnnotatedAction(new NextNodeAction(controller, Direction.BACK));
 
 		new UnfoldAll(modeController);
 		new ChangeNodeLevelController(modeController.getController(), menuBuilder);

@@ -6,7 +6,7 @@ import java.io.File;
 import javax.swing.JComponent;
 import javax.swing.filechooser.FileFilter;
 
-public interface IPreviewComponentFactory {
+public interface IViewerFactory {
 	FileFilter getFileFilter();
-	JComponent createPreviewComponent(File file);
+	JComponent createViewer(File file);
 }

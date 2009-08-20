@@ -70,6 +70,8 @@
 			<menu_category name="navigate">
 				<menu_action action="NavigationPreviousMapAction" accelerator="alt shift LEFT" />
 				<menu_action action="NavigationNextMapAction" accelerator="alt shift RIGHT" />
+				<menu_action action="NextNodeAction.BACK" accelerator="control alt LEFT" />
+				<menu_action action="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="nodes">

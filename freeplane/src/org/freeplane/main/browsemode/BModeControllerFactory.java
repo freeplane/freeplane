@@ -90,8 +90,6 @@ public class BModeControllerFactory {
 		modeController.updateMenus();
 		ResourceController.getResourceController().updateMenus(modeController);
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		menuBuilder.addAnnotatedAction(new NextNodeAction(controller, Direction.FORWARD));
-		menuBuilder.addAnnotatedAction(new NextNodeAction(controller, Direction.BACK));
 		NodeHistory.install(modeController);
 		new MapStyle(modeController);
 		return modeController;

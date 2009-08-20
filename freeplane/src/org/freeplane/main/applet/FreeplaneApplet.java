@@ -29,6 +29,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.browsemode.BModeController;
+import org.freeplane.features.common.addins.misc.NextNodeAction;
+import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
@@ -78,6 +80,8 @@ public class FreeplaneApplet extends JApplet {
 		IconController.install(controller);
 		final BModeController browseController = BModeControllerFactory.createModeController(controller,
 		    "/xml/appletMenu.xml");
+		controller.addAction(new NextNodeAction(controller, Direction.FORWARD));
+		controller.addAction(new NextNodeAction(controller, Direction.BACK));
 		controller.selectMode(browseController);
 		appletViewController.init();
 		final JComponent toolBar = browseController.getUserInputListenerFactory().getToolBar("/main_toolbar");

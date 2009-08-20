@@ -605,6 +605,9 @@ public class MapController extends SelectionController {
 	}
 
 	public void setFolded(final NodeModel node, final boolean folded) {
+		if(node.getChildCount() == 0){
+			return;
+		}
 		_setFolded(node, folded);
 	}
 

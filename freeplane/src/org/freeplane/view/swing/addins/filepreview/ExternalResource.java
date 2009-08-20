@@ -10,10 +10,10 @@ import javax.swing.JComponent;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
 
-class PreviewUri implements IExtension {
+class ExternalResource implements IExtension {
 	final private Set<JComponent> viewers;
 	
-	PreviewUri(){
+	ExternalResource(){
 		viewers = new HashSet<JComponent>();
 	}
 
@@ -32,20 +32,20 @@ class PreviewUri implements IExtension {
 		return uri;
 	}
 
-	public void setUri(URI url, IPreviewComponentFactory factory) {
+	public void setUri(URI url, IViewerFactory factory) {
 		this.uri = url;
 	}
 
 	private URI uri; 
 	
-	static PreviewUri getPreviewUrl(NodeModel model){
-		return (PreviewUri) model.getExtension(PreviewUri.class);
+	static ExternalResource getPreviewUrl(NodeModel model){
+		return (ExternalResource) model.getExtension(ExternalResource.class);
 	}
 
-	static PreviewUri setPreviewUrl(NodeModel model, URI uri, IPreviewComponentFactory factory){
-		PreviewUri extension = (PreviewUri) model.getExtension(PreviewUri.class);
+	static ExternalResource setPreviewUrl(NodeModel model, URI uri, IViewerFactory factory){
+		ExternalResource extension = (ExternalResource) model.getExtension(ExternalResource.class);
 		if(extension == null){
-			extension = new PreviewUri();
+			extension = new ExternalResource();
 			model.addExtension(extension);
 		}
 		extension.setUri(uri, factory);

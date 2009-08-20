@@ -32,19 +32,19 @@ import org.freeplane.view.swing.map.NodeView;
 @NodeHookDescriptor(hookName = "PreviewUri", //
 onceForMap = false)
 @ActionLocationDescriptor(locations = "/menu_bar/insert/other")
-public class PreviewController extends PersistentNodeHook implements IPreviewComponentFactory, INodeViewLifeCycleListener, IExtension{
+public class ViewerController extends PersistentNodeHook implements IViewerFactory, INodeViewLifeCycleListener, IExtension{
 
-final private Set<IPreviewComponentFactory> factories;	
-	public PreviewController(ModeController modeController) {
+final private Set<IViewerFactory> factories;	
+	public ViewerController(ModeController modeController) {
 		super(modeController);
-		factories = new HashSet<IPreviewComponentFactory>();
+		factories = new HashSet<IViewerFactory>();
 		modeController.addINodeViewLifeCycleListener(this);
 		modeController.addExtension(this.getClass(), this);
 	}
 
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
-		final PreviewUri preview = (PreviewUri) extension;
+		final ExternalResource preview = (ExternalResource) extension;
 		final Iterator iterator = node.getViewers().iterator();
 		while (iterator.hasNext()) {
 			final NodeView view = (NodeView) iterator.next();
@@ -59,14 +59,14 @@ final private Set<IPreviewComponentFactory> factories;
 		if (uri == null) {
 			return null;
 		}
-		PreviewUri preview = new PreviewUri();
+		ExternalResource preview = new ExternalResource();
 		preview.setUri(uri, this);
 		return preview;
 	}
 
 	@Override
 	protected IExtension createExtension(NodeModel node, XMLElement element) {
-		PreviewUri previewUrl = new PreviewUri();
+		ExternalResource previewUrl = new ExternalResource();
 		try {
 			String attribute = element.getAttribute("URI", null);
 			if(attribute != null){
@@ -78,12 +78,12 @@ final private Set<IPreviewComponentFactory> factories;
 		return previewUrl;
 	}
 
-	void createViewer(final PreviewUri model, final NodeView view) {
+	void createViewer(final ExternalResource model, final NodeView view) {
 		try {
 			URI uri = model.getUri();
 			UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
 			URL absoluteUrl = urlManager.getAbsoluteUrl(view.getModel().getMap(), uri);
-			final JComponent comp = createPreviewComponent(new File(absoluteUrl.getFile()));
+			final JComponent comp = createViewer(new File(absoluteUrl.getFile()));
 			final Set<JComponent> viewers = model.getViewers();
 			viewers.add(comp);
 			view.getContentPane().add(comp);
@@ -94,7 +94,7 @@ final private Set<IPreviewComponentFactory> factories;
 		}
 	}
 
-	void deleteViewer(final PreviewUri model, final NodeView nodeView) {
+	void deleteViewer(final ExternalResource model, final NodeView nodeView) {
 		final Set<JComponent> viewers = model.getViewers();
 		if (viewers.isEmpty()) {
 			return;
@@ -113,12 +113,12 @@ final private Set<IPreviewComponentFactory> factories;
 
 	@Override
 	protected Class getExtensionClass() {
-		return PreviewUri.class;
+		return ExternalResource.class;
 	}
 
 	public void onViewCreated(final Container container) {
 		final NodeView nodeView = (NodeView) container;
-		final PreviewUri previewUri = (PreviewUri) nodeView.getModel().getExtension(PreviewUri.class);
+		final ExternalResource previewUri = (ExternalResource) nodeView.getModel().getExtension(ExternalResource.class);
 		if (previewUri == null) {
 			return;
 		}
@@ -127,7 +127,7 @@ final private Set<IPreviewComponentFactory> factories;
 
 	public void onViewRemoved(final Container container) {
 		final NodeView nodeView = (NodeView) container;
-		final PreviewUri previewUri = (PreviewUri) nodeView.getModel().getExtension(PreviewUri.class);
+		final ExternalResource previewUri = (ExternalResource) nodeView.getModel().getExtension(ExternalResource.class);
 		if (previewUri == null) {
 			return;
 		}
@@ -136,14 +136,14 @@ final private Set<IPreviewComponentFactory> factories;
 
 	@Override
 	protected void remove(final NodeModel node, final IExtension extension) {
-		final PreviewUri latexExtension = (PreviewUri) extension;
+		final ExternalResource latexExtension = (ExternalResource) extension;
 		latexExtension.removeViewers();
 		super.remove(node, extension);
 	}
 
 	@Override
 	protected void saveExtension(final IExtension extension, final XMLElement element) {
-		final PreviewUri previewUri = (PreviewUri) extension;
+		final ExternalResource previewUri = (ExternalResource) extension;
 		URI uri = previewUri.getUri();
 		if(uri != null){
 			element.setAttribute("URI", uri.toString());
@@ -151,7 +151,7 @@ final private Set<IPreviewComponentFactory> factories;
 		super.saveExtension(extension, element);
 	}
 
-	void setUriUndoable(final PreviewUri model, final URI newUri) {
+	void setUriUndoable(final ExternalResource model, final URI newUri) {
 		final URI uri = model.getUri();
 		if (uri.equals(newUri)) {
 			return;
@@ -160,7 +160,7 @@ final private Set<IPreviewComponentFactory> factories;
 			private final URI oldUri = uri;
 
 			public void act() {
-				model.setUri(newUri, PreviewController.this);
+				model.setUri(newUri, ViewerController.this);
 				final MapModel map = getModeController().getController().getMap();
 				getModeController().getMapController().setSaved(map, false);
 			}
@@ -170,18 +170,18 @@ final private Set<IPreviewComponentFactory> factories;
 			}
 
 			public void undo() {
-				model.setUri(oldUri, PreviewController.this);
+				model.setUri(oldUri, ViewerController.this);
 			}
 		};
 		getModeController().execute(actor, getModeController().getController().getMap());
 	}
-	public JComponent createPreviewComponent(File file) {
+	public JComponent createViewer(File file) {
 		if(file == null ){
 			return new JLabel("no file set");
 		}
-		for(IPreviewComponentFactory factory:factories){
+		for(IViewerFactory factory:factories){
 			if(factory.getFileFilter().accept(file)){
-				return factory.createPreviewComponent(file);
+				return factory.createViewer(file);
 			}
 		}
 		return new JLabel(file.toString());
@@ -191,7 +191,10 @@ final private Set<IPreviewComponentFactory> factories;
 		return new FileFilter(){
 
 			public boolean accept(File pathname) {
-				for(IPreviewComponentFactory factory:factories){
+				if (pathname.isDirectory()){
+					return true;
+				}
+				for(IViewerFactory factory:factories){
 					if(factory.getFileFilter().accept(pathname)){
 						return true;
 					}
@@ -202,7 +205,7 @@ final private Set<IPreviewComponentFactory> factories;
 			@Override
 			public String getDescription() {
 				StringBuilder sb = new StringBuilder();
-				for(IPreviewComponentFactory factory:factories){
+				for(IViewerFactory factory:factories){
 					if(sb.length() != 0){
 						sb.append(", ");
 					}
@@ -213,10 +216,10 @@ final private Set<IPreviewComponentFactory> factories;
 			}};
 	}
 
-	public void addFactory(IPreviewComponentFactory factory){
+	public void addFactory(IViewerFactory factory){
 		factories.add(factory);
 	}
-	public void removeFactory(IPreviewComponentFactory factory){
+	public void removeFactory(IViewerFactory factory){
 		factories.remove(factory);
 	}
 }

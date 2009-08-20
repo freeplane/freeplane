@@ -289,6 +289,9 @@ public class MMapController extends MapController {
 	 */
 	@Override
 	public void setFolded(final NodeModel node, final boolean folded) {
+		if(node.getChildCount() == 0){
+			return;
+		}
 		if (node.isFolded() == folded) {
 			return;
 		}

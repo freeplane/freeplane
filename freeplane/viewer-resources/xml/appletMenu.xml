@@ -67,6 +67,10 @@
 			<menu_action action="ReapplyFilterAction" /> 
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
+			<menu_category name="navigate">
+				<menu_action action="NextNodeAction.BACK" accelerator="control alt LEFT" />
+				<menu_action action="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
+			</menu_category>
 			<menu_category name="nodes">
 				<menu_action action="MoveToRootAction" accelerator="ESCAPE"  />
 			</menu_category>
