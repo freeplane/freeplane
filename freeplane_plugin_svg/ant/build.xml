@@ -18,7 +18,7 @@
 	<property name="java_source_version" value="1.5" />
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
-	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${lib}/batik-awt-util.jar:${lib}/batik-bridge.jar:${lib}/batik-css.jar:${lib}/batik-dom.jar:${lib}/batik-extension.jar:${lib}/batik-ext.jar:${lib}/batik-gui-util.jar:${lib}/batik-gvt.jar:${lib}/batik-parser.jar:${lib}/batik-script.jar:${lib}/batik-svg-dom.jar:${lib}/batik-svggen.jar:${lib}/batik-swing.jar:${lib}/batik-transcoder.jar:${lib}/batik-util.jar:${lib}/batik-xml.jar:${lib}/js.jar:${lib}/pdf-transcoder.jar:${lib}/xerces_2_5_0.jar:${lib}/xml-apis.jar:${lib}/batik-squiggle.jar"/>
+	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${lib}/batik-awt-util.jar:${lib}/batik-bridge.jar:${lib}/batik-css.jar:${lib}/batik-dom.jar:${lib}/batik-extension.jar:${lib}/batik-ext.jar:${lib}/batik-codec.jar:${lib}/batik-anim.jar:${lib}/batik-gui-util.jar:${lib}/batik-gvt.jar:${lib}/batik-parser.jar:${lib}/batik-script.jar:${lib}/batik-svg-dom.jar:${lib}/batik-svggen.jar:${lib}/batik-swing.jar:${lib}/batik-transcoder.jar:${lib}/batik-util.jar:${lib}/batik-xml.jar:${lib}/js.jar:${lib}/pdf-transcoder.jar:${lib}/xerces_2_5_0.jar:${lib}/xml-apis.jar:${lib}/xml-apis-ext.jar"/>
 
 	<target name="build">
 		<echo>Freeplane Version = ${ver}.</echo>
