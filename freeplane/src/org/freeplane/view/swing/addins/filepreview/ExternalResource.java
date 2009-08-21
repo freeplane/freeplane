@@ -36,8 +36,17 @@ class ExternalResource implements IExtension {
 		this.uri = url;
 	}
 
-	private URI uri; 
+	private URI uri;
+	private int size = -1;
 	
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
 	static ExternalResource getPreviewUrl(NodeModel model){
 		return (ExternalResource) model.getExtension(ExternalResource.class);
 	}

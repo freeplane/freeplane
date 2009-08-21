@@ -1,5 +1,6 @@
 package org.freeplane.plugin.svg;
 
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.geom.Dimension2D;
 import java.io.File;
@@ -32,13 +33,20 @@ public class SvgViewerFactory implements IViewerFactory {
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
-
+			private float zoom = 1f;
 			@Override
 			public Dimension getPreferredSize() {
+				
 				Dimension preferredSize = super.getPreferredSize();
 				MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
-				preferredSize.width = mapView.getZoomed(preferredSize.width);
-				preferredSize.height = mapView.getZoomed(preferredSize.height);
+				float newZoom = mapView.getZoom();
+				if(zoom != newZoom){
+					float ratio = newZoom/ zoom;
+					preferredSize.width = (int)(Math.rint(preferredSize.width * ratio));
+					preferredSize.height = (int)(Math.rint(preferredSize.height * ratio));
+					setPreferredSize(preferredSize);
+					zoom = newZoom;
+				}
 				return preferredSize;
 			}
 		};
