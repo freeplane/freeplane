@@ -1,7 +1,9 @@
 package org.freeplane.plugin.svg;
 
 import java.awt.Dimension;
+import java.awt.geom.Dimension2D;
 import java.io.File;
+import java.net.URI;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -15,22 +17,15 @@ import org.freeplane.view.swing.map.MapView;
 
 public class SvgViewerFactory implements IViewerFactory {
 
-	final private FileFilter fileFilter;
-	
-	SvgViewerFactory(){
-		fileFilter = new FileFilter(){
-			@Override
-            public boolean accept(File f) {
-	            return f.getName().endsWith(".svg");
-            }
-
-			@Override
-            public String getDescription() {
-	            return "SVG file";
-            }};
+	public boolean accept(URI uri) {
+		return uri.getRawPath().endsWith(".svg");
 	}
 
-	public JComponent createViewer(File file) {
+	public String getDescription() {
+		return "SVG";
+	};
+
+	public JComponent createViewer(URI uri) {
 		final JSVGCanvas canvas = new JSVGCanvas(){
 
 			/**
@@ -55,12 +50,20 @@ public class SvgViewerFactory implements IViewerFactory {
         });
 
 
-		canvas.setURI (file.toURI().toString());
+		canvas.setURI (uri.toString());
 		return canvas;
 	}
 
-	public FileFilter getFileFilter() {
-		return fileFilter;
+	public Dimension getOriginalSize(JComponent viewer) {
+		final JSVGCanvas canvas = (JSVGCanvas) viewer;
+		Dimension2D documentSize = canvas.getSVGDocumentSize();
+		documentSize.setSize(Math.ceil(documentSize.getWidth()), documentSize.getHeight());
+		return new Dimension((int)documentSize.getWidth(), (int)documentSize.getHeight());
+	}
+
+	public void setViewerSize(JComponent viewer, Dimension size) {
+		final JSVGCanvas canvas = (JSVGCanvas) viewer;
+		canvas.setMySize(size);
 	}
 
 }

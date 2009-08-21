@@ -1152,6 +1152,15 @@ public class NodeView extends JComponent implements INodeView {
 		if (attributeView != null) {
 			attributeView.update();
 		}
+		if(contentPane != null){
+			int componentCount = contentPane.getComponentCount();
+			for(int i = 1; i < componentCount; i++){
+				Component component = contentPane.getComponent(i);
+				if(component instanceof JComponent){
+					((JComponent) component).revalidate();
+				}
+			}
+		}
 		mainView.updateText(getModel().toString());
 		updateToolTip();
 		revalidate();

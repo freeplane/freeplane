@@ -421,6 +421,19 @@ public class UrlManager implements IExtension {
 		return getAbsoluteUrl(map, uri);
 	}
 
+	public URI getAbsoluteUri(final MapModel map, final URI uri) throws MalformedURLException {
+		if (uri.isAbsolute()) {
+			return uri;
+		}
+		final String path = uri.getPath();
+		URL url = new URL(map.getURL(), path);
+		try {
+			return new URI(url.getProtocol(), null, url.getPath(), null);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	public URL getAbsoluteUrl(final MapModel map, final URI uri) throws MalformedURLException {
 	    URL url;
 		final String path = uri.getPath();

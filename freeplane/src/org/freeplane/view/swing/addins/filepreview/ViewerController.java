@@ -1,7 +1,13 @@
 package org.freeplane.view.swing.addins.filepreview;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -13,6 +19,8 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
@@ -27,12 +35,148 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
-@NodeHookDescriptor(hookName = "PreviewUri", //
+@NodeHookDescriptor(hookName = "ExternalObject", //
 onceForMap = false)
 @ActionLocationDescriptor(locations = "/menu_bar/insert/other")
-public class ViewerController extends PersistentNodeHook implements IViewerFactory, INodeViewLifeCycleListener, IExtension{
+public class ViewerController extends PersistentNodeHook implements INodeViewLifeCycleListener, IExtension{
+	
+	static private class MyMouseListener implements MouseListener, MouseMotionListener{
+		private boolean isActive = false;
+		public void mouseClicked(MouseEvent e) {
+			if(resetSize(e)){
+				return;
+			}
+			if(showPopupMenu(e)){
+				return;
+			}
+		}
+
+		private boolean showPopupMenu(MouseEvent e) {
+			return false;
+		}
+
+		private boolean resetSize(MouseEvent e) {
+			if(e.getClickCount() != 2 ){
+				return false;
+			}
+			JComponent viewer = (JComponent) e.getComponent();
+			int cursorType = viewer.getCursor().getType();
+			if(cursorType != Cursor.E_RESIZE_CURSOR && cursorType != Cursor.S_RESIZE_CURSOR ){
+				return false;
+			}
+			IViewerFactory factory = (IViewerFactory) viewer.getClientProperty(IViewerFactory.class);
+			if(factory == null){
+				return true;
+			}
+			final Dimension size = factory.getOriginalSize(viewer);
+			MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, viewer);
+			size.width = mapView.getZoomed(size.width);
+			size.height = mapView.getZoomed(size.height);
+			factory.setViewerSize(viewer, size );
+			viewer.revalidate();
+			return true;
+		}
+
+		public void mouseEntered(MouseEvent e) {
+			setCursor(e);
+		}
+
+		public void mouseExited(MouseEvent e) {
+			if(isActive){
+				return;
+			}
+			setCursor(e);
+		}
+
+		private void setCursor(MouseEvent e) {
+			Component component = e.getComponent();
+			final int cursorType;
+			final int x = e.getX();
+			int width = component.getWidth();
+			if(width- BORDER_SIZE <= x && x <= width){
+				cursorType = Cursor.E_RESIZE_CURSOR;
+			}
+			else{
+				final int y = e.getY();
+				int height = component.getHeight();
+				if(height- BORDER_SIZE <= y && y <= height){
+					cursorType = Cursor.S_RESIZE_CURSOR;
+				}
+				else{
+					cursorType = Cursor.DEFAULT_CURSOR;
+				}
+			}
+			Cursor cursor = component.getCursor();
+			if(cursor.getType() != cursorType){
+				component.setCursor(Cursor.getPredefinedCursor(cursorType));
+			}
+			
+			
+		}
+
+		public void mousePressed(MouseEvent e) {
+			int cursorType = e.getComponent().getCursor().getType();
+			if(cursorType != Cursor.E_RESIZE_CURSOR && cursorType != Cursor.S_RESIZE_CURSOR){
+				return;
+			}
+			isActive = true;
+		}
+
+		public void mouseReleased(MouseEvent e) {
+			isActive = false;
+			setCursor(e);
+		}
+
+		public void mouseDragged(MouseEvent e) {
+			if(! isActive){
+				return;
+			}
+			setSize(e);
+		}
+
+		private boolean setSize(MouseEvent e) {
+			if(! isActive){
+				return false;
+			}
+			JComponent component = (JComponent) e.getComponent();
+			int cursorType = component.getCursor().getType();
+			IViewerFactory factory = (IViewerFactory) component.getClientProperty(IViewerFactory.class);
+			if(factory == null){
+				return true;
+			}
+			final Dimension size;
+			switch(cursorType){
+			case Cursor.E_RESIZE_CURSOR:
+				size = new Dimension( e.getX(), component.getHeight());
+				break;
+			case Cursor.S_RESIZE_CURSOR:
+				size = new Dimension( component.getWidth(), e.getY());
+				break;
+			default:
+				size = null;
+			}
+			factory.setViewerSize(component, size );
+			component.revalidate();
+			return true;
+		}
+
+		public void mouseMoved(MouseEvent e) {
+			if(isActive){
+				return;
+			}
+			setCursor(e);
+		}
+		
+	}
+
+	private static final int BORDER_SIZE = 2;
+
+	private static final Color BORDER_COLOR = Color.GRAY;
+
+	private static final MyMouseListener mouseListener = new MyMouseListener();
 
 final private Set<IViewerFactory> factories;	
 	public ViewerController(ModeController modeController) {
@@ -60,8 +204,17 @@ final private Set<IViewerFactory> factories;
 			return null;
 		}
 		ExternalResource preview = new ExternalResource();
-		preview.setUri(uri, this);
+		preview.setUri(uri, getViewerFactory(uri));
 		return preview;
+	}
+
+	private IViewerFactory getViewerFactory(URI uri) {
+		for(IViewerFactory factory:factories){
+			if(factory.accept(uri)){
+				return factory;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -70,7 +223,8 @@ final private Set<IViewerFactory> factories;
 		try {
 			String attribute = element.getAttribute("URI", null);
 			if(attribute != null){
-				previewUrl.setUri(new URI(attribute), this);
+				URI uri= new URI(attribute);
+				previewUrl.setUri(uri, getViewerFactory(uri));
 			}
 			getModeController().getMapController().nodeChanged(node);
 		} catch (URISyntaxException e) {
@@ -82,8 +236,9 @@ final private Set<IViewerFactory> factories;
 		try {
 			URI uri = model.getUri();
 			UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
-			URL absoluteUrl = urlManager.getAbsoluteUrl(view.getModel().getMap(), uri);
-			final JComponent comp = createViewer(new File(absoluteUrl.getFile()));
+			URI absoluteUri = urlManager.getAbsoluteUri(view.getModel().getMap(), uri);
+			JComponent comp;
+			comp = createBorderedViewer(absoluteUri);
 			final Set<JComponent> viewers = model.getViewers();
 			viewers.add(comp);
 			view.getContentPane().add(comp);
@@ -160,7 +315,7 @@ final private Set<IViewerFactory> factories;
 			private final URI oldUri = uri;
 
 			public void act() {
-				model.setUri(newUri, ViewerController.this);
+				model.setUri(newUri, getViewerFactory(newUri));
 				final MapModel map = getModeController().getController().getMap();
 				getModeController().getMapController().setSaved(map, false);
 			}
@@ -170,21 +325,30 @@ final private Set<IViewerFactory> factories;
 			}
 
 			public void undo() {
-				model.setUri(oldUri, ViewerController.this);
+				model.setUri(oldUri, getViewerFactory(oldUri));
 			}
 		};
 		getModeController().execute(actor, getModeController().getController().getMap());
 	}
-	public JComponent createViewer(File file) {
-		if(file == null ){
+	public JComponent createBorderedViewer(URI uri) {
+		JComponent viewer = createViewer(uri);
+		viewer.setBorder(new MatteBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_COLOR));
+		return viewer;
+	}
+
+	private JComponent createViewer(URI uri) {
+		if(uri == null ){
 			return new JLabel("no file set");
 		}
-		for(IViewerFactory factory:factories){
-			if(factory.getFileFilter().accept(file)){
-				return factory.createViewer(file);
-			}
+		IViewerFactory factory = getViewerFactory(uri);
+		if(factory != null){
+			JComponent viewer = factory.createViewer(uri);
+			viewer.putClientProperty(IViewerFactory.class,factory);
+//			viewer.addMouseListener(mouseListener);
+//			viewer.addMouseMotionListener(mouseListener);
+			return viewer;
 		}
-		return new JLabel(file.toString());
+		return new JLabel(uri.toString());
 	}
 
 	public FileFilter getFileFilter() {
@@ -194,12 +358,7 @@ final private Set<IViewerFactory> factories;
 				if (pathname.isDirectory()){
 					return true;
 				}
-				for(IViewerFactory factory:factories){
-					if(factory.getFileFilter().accept(pathname)){
-						return true;
-					}
-				}
-				return false;
+				return getViewerFactory(pathname.toURI()) != null;
 			}
 
 			@Override
@@ -209,7 +368,7 @@ final private Set<IViewerFactory> factories;
 					if(sb.length() != 0){
 						sb.append(", ");
 					}
-					sb.append(factory.getFileFilter().getDescription());
+					sb.append(factory.getDescription());
 				}
 				return sb.toString();
 				

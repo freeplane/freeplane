@@ -1,12 +1,15 @@
 package org.freeplane.view.swing.addins.filepreview;
 
-import java.io.File;
+import java.awt.Dimension;
+import java.net.URI;
 
 
 import javax.swing.JComponent;
-import javax.swing.filechooser.FileFilter;
 
 public interface IViewerFactory {
-	FileFilter getFileFilter();
-	JComponent createViewer(File file);
+	boolean accept(URI uri);
+	JComponent createViewer(URI uri);
+	Dimension getOriginalSize(JComponent viewer);
+	void setViewerSize(JComponent viewer, Dimension size);
+	String getDescription();
 }
