@@ -102,7 +102,7 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 	}
 
 	public boolean isActive() {
-		return getDragStartingPoint() != null;
+		return dragStartingPoint != null;
 	}
 
 	@Override
