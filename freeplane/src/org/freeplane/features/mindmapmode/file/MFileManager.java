@@ -227,7 +227,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	}
 
 	public URI getLinkByFileChooser(final MapModel map, final FileFilter fileFilter) {
-		File input;
 		JFileChooser chooser = null;
 		if (map.getFile() == null) {
 			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ResourceBundles
@@ -250,7 +249,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return null;
 		}
-		input = chooser.getSelectedFile();
+		final File input = chooser.getSelectedFile();
 		setLastCurrentDir(input.getParentFile());
 		if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
 			return LinkController.toRelativeURI(map.getFile(), input);

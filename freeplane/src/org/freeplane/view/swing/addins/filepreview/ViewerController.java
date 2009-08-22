@@ -18,7 +18,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileFilter;
@@ -30,9 +32,12 @@ import org.freeplane.core.modecontroller.INodeViewLifeCycleListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.MapView;
@@ -43,6 +48,27 @@ onceForMap = false)
 @ActionLocationDescriptor(locations = "/menu_bar/insert/other")
 public class ViewerController extends PersistentNodeHook implements INodeViewLifeCycleListener, IExtension{
 	
+	private static final class FactoryFileFilter extends FileFilter {
+	    private final IViewerFactory factory;
+
+	    protected IViewerFactory getFactory() {
+        	return factory;
+        }
+
+		private FactoryFileFilter(IViewerFactory factory) {
+		    this.factory = factory;
+	    }
+
+	    @Override
+	    public boolean accept(File f) {
+	        return f.isDirectory() || factory.accept(f.toURI());
+	    }
+
+	    @Override
+	    public String getDescription() {
+	        return factory.getDescription();
+	    }
+    }
 	private class MyMouseListener implements MouseListener, MouseMotionListener{
 		private boolean isActive = false;
 		private boolean sizeChanged = false;
@@ -83,6 +109,9 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 
 		public void mouseEntered(MouseEvent e) {
+			if(isActive){
+				return;
+			}
 			setCursor(e);
 		}
 
@@ -258,13 +287,29 @@ final private Set<IViewerFactory> factories;
 	}
 
 	protected IExtension createExtension(final NodeModel node) {
-		final URI uri = ((MFileManager) UrlManager.getController(getModeController()))
-		.getLinkByFileChooser(getController().getMap(), getFileFilter());
+		final MapModel map = node.getMap();
+		if (map.getFile() == null) {
+			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ResourceBundles
+				.getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+			return null;
+		}
+		UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
+		JFileChooser chooser = urlManager.getFileChooser(null);
+		chooser.setAcceptAllFileFilterUsed(false);
+		for(IViewerFactory factory:factories){
+			chooser.addChoosableFileFilter(new FactoryFileFilter(factory));
+		}
+		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			return null;
+		}
+		final File input = chooser.getSelectedFile();
+		final URI uri = input.toURI();
 		if (uri == null) {
 			return null;
 		}
 		ExternalResource preview = new ExternalResource();
-		preview.setUri(uri, getViewerFactory(uri));
+		preview.setUri(uri, ((FactoryFileFilter) chooser.getFileFilter()).getFactory());
 		return preview;
 	}
 
@@ -413,30 +458,6 @@ final private Set<IViewerFactory> factories;
 		viewer.addMouseListener(mouseListener);
 		viewer.addMouseMotionListener(mouseListener);
 		return viewer;
-	}
-
-	public FileFilter getFileFilter() {
-		return new FileFilter(){
-
-			public boolean accept(File pathname) {
-				if (pathname.isDirectory()){
-					return true;
-				}
-				return getViewerFactory(pathname.toURI()) != null;
-			}
-
-			@Override
-			public String getDescription() {
-				StringBuilder sb = new StringBuilder();
-				for(IViewerFactory factory:factories){
-					if(sb.length() != 0){
-						sb.append(", ");
-					}
-					sb.append(factory.getDescription());
-				}
-				return sb.toString();
-				
-			}};
 	}
 
 	public void addFactory(IViewerFactory factory){
