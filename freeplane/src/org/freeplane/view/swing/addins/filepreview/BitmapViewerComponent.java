@@ -21,6 +21,7 @@ package org.freeplane.view.swing.addins.filepreview;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 
@@ -51,6 +52,13 @@ final class BitmapViewerComponent extends AViewerComponent {
 	
 	@Override
     protected void paintComponent(Graphics g) {
-		g.drawImage(image, 0, 0, getWidth()-1, getHeight()-1, 0, 0, image.getWidth()-1, image.getHeight()-1, null);
+		final Image scaledImage;
+		if(image.getWidth() != getWidth() || image.getHeight() != getHeight()){
+			scaledImage = image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+		}
+		else{
+			scaledImage = image;
+		}
+		g.drawImage(scaledImage, 0, 0, null);
     }
 }
