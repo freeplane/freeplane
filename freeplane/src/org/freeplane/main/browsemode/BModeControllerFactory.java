@@ -47,6 +47,7 @@ import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.view.swing.addins.filepreview.ViewerController;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
@@ -88,6 +89,7 @@ public class BModeControllerFactory {
 		userInputListenerFactory.setMenuStructure(menuStructure);
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
+		new ViewerController(modeController);
 		ResourceController.getResourceController().updateMenus(modeController);
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		NodeHistory.install(modeController);

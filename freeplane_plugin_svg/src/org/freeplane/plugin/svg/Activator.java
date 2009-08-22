@@ -6,6 +6,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
@@ -18,7 +19,12 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(final BundleContext context) throws Exception {
-		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
+		registerMindMapModeExtension(context);
+		registerBrowseModeExtension(context);
+	}
+
+	private void registerMindMapModeExtension(final BundleContext context) {
+	    final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("mode", new String[] { MModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
@@ -31,7 +37,19 @@ public class Activator implements BundleActivator {
 				    extension.addFactory(new SvgViewerFactory());
 			    }
 		    }, props);
-	}
+    }
+
+	private void registerBrowseModeExtension(final BundleContext context) {
+	    final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
+		props.put("mode", new String[] { BModeController.MODENAME });
+		context.registerService(IModeControllerExtensionProvider.class.getName(),
+		    new IModeControllerExtensionProvider() {
+			    public void installExtension(final ModeController modeController) {
+				    ViewerController extension = (ViewerController) modeController.getExtension(ViewerController.class);
+				    extension.addFactory(new SvgViewerFactory());
+			    }
+		    }, props);
+    }
 
 	/*
 	 * (non-Javadoc)

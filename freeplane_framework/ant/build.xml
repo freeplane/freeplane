@@ -6,7 +6,7 @@
 	<property name="bin" value="${root}/bin" />
 	<property name="dist" value="${root}/dist" />
 	
-	<target name="dist" depends="clean">
+	<target name="bin" depends="clean">
 		<property name = "root" value = "."/>
 		<property name="framework.jar" value="lib/knopflerfish/framework.jar" />
 		<property name="freeplane.exe" value="windows-launcher/freeplane.exe" />
@@ -60,6 +60,9 @@
 			<fileset dir="${workspace}/freeplane/bin/dist/resources"/>
 		</copy>
 		
+	</target>
+
+	<target name="dist" depends="bin">
 		<mkdir dir="${dist}" />	
 		
 		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="true">
@@ -97,8 +100,7 @@
 			failonerror="true">
 			<arg line="/cc Freeplane_without_Java.iss"/>
 		</exec>
-	</target>
-
+</target>
 	<target name="clean">
 		 <delete quiet="true" includeemptydirs="true">
 		    <fileset dir="${bin}"/>

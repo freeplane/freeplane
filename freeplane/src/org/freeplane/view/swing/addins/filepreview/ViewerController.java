@@ -45,6 +45,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	
 	private class MyMouseListener implements MouseListener, MouseMotionListener{
 		private boolean isActive = false;
+		private boolean sizeChanged = false;
+		
 		public void mouseClicked(MouseEvent e) {
 			if(resetSize(e)){
 				return;
@@ -71,16 +73,12 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			if(factory == null){
 				return true;
 			}
-			final Dimension size = factory.getOriginalSize(viewer);
 			MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, viewer);
-			size.width = mapView.getZoomed(size.width);
-			size.height = mapView.getZoomed(size.height);
-			factory.setViewerSize(viewer, size );
-			viewer.revalidate();
-//			setModelSize(mapView.getModeController(), mapView.getModel(),
-//					(ExternalResource) viewer
-//							.getClientProperty(ExternalResource.class),
-//					-1);
+			setModelSize(mapView.getModeController(), mapView.getModel(),
+					(ExternalResource) viewer
+							.getClientProperty(ExternalResource.class),
+					1f);
+			sizeChanged = false;
 			return true;
 		}
 
@@ -118,14 +116,38 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 
 		public void mousePressed(MouseEvent e) {
-			int cursorType = e.getComponent().getCursor().getType();
+			final JComponent component = (JComponent) e.getComponent();
+			int cursorType = component.getCursor().getType();
 			if(cursorType != Cursor.SE_RESIZE_CURSOR){
+				return;
+			}
+			final IViewerFactory factory = (IViewerFactory) component.getClientProperty(IViewerFactory.class);
+			if(factory == null){
 				return;
 			}
 			isActive = true;
 		}
 
 		public void mouseReleased(MouseEvent e) {
+			if(sizeChanged){
+				JComponent component = (JComponent) e.getComponent();
+				int x = component.getWidth();
+				int y = component.getHeight();
+				final IViewerFactory factory = (IViewerFactory) component.getClientProperty(IViewerFactory.class);
+				double r = Math.sqrt(x*x+y*y);
+				final Dimension originalSize = factory.getOriginalSize(component);
+				int w = originalSize.width;
+				int h = originalSize.height;
+				double r0 = Math.sqrt(w*w+h*h);
+				MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
+				float zoom = mapView.getZoom();
+				final float modelSize = (float)(r / r0 /zoom);
+				setModelSize(mapView.getModeController(), mapView.getModel(),
+					(ExternalResource) component
+					.getClientProperty(ExternalResource.class),
+					modelSize);
+				sizeChanged = false;
+			}
 			isActive = false;
 			setCursor(e);
 		}
@@ -147,12 +169,13 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			if(factory == null){
 				return true;
 			}
+			sizeChanged = true;
 			final Dimension size;
 			switch(cursorType){
 			case Cursor.SE_RESIZE_CURSOR:
 				Dimension minimumSize = new Dimension(10, 10);
-				int x = e.getX();
-				int y = e.getY();
+				int x = e.getX()-2*BORDER_SIZE;
+				int y = e.getY()-2*BORDER_SIZE;
 				if(x <= 0 || y <= 0){
 					return true;
 				}
@@ -169,12 +192,6 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				}
 				size = new Dimension( x, y);
 				factory.setViewerSize(component, size );
-				float zoom = mapView.getZoom();
-//				final int modelSize = (int)(Math.rint(r / zoom));
-//				setModelSize(mapView.getModeController(), mapView.getModel(),
-//						(ExternalResource) component
-//								.getClientProperty(ExternalResource.class),
-//						modelSize);
 				component.revalidate();
 				break;
 			default:
@@ -205,15 +222,15 @@ final private Set<IViewerFactory> factories;
 		modeController.addExtension(this.getClass(), this);
 	}
 
-	public void setModelSize(final ModeController modeController, final MapModel map, final ExternalResource model, final int size) {
-		final int oldSize = model.getSize();
+	public void setModelSize(final ModeController modeController, final MapModel map, final ExternalResource model, final float size) {
+		final float oldSize = model.getZoom();
 		if(size == oldSize){
 			return;
 		}
 		IActor actor = new IActor(){
 
 			public void act() {
-				model.setSize(size);
+				model.setZoom(size);
 				modeController.getMapController().setSaved(map, false);
 			}
 
@@ -222,7 +239,7 @@ final private Set<IViewerFactory> factories;
 			}
 
 			public void undo() {
-				model.setSize(oldSize);
+				model.setZoom(oldSize);
 				modeController.getMapController().setSaved(map, false);
 			}};
 			modeController.execute(actor, map);
@@ -270,8 +287,8 @@ final private Set<IViewerFactory> factories;
 			}
 			String attrSize = element.getAttribute("SIZE", null);
 			if(attrSize != null){
-				int size = Integer.parseInt(attrSize);
-				previewUrl.setSize(size);
+				float size = Float.parseFloat(attrSize);
+				previewUrl.setZoom(size);
 			}
 			getModeController().getMapController().nodeChanged(node);
 		} catch (URISyntaxException e) {
@@ -280,22 +297,15 @@ final private Set<IViewerFactory> factories;
 	}
 
 	void createViewer(final ExternalResource model, final NodeView view) {
-		try {
-			URI uri = model.getUri();
-			UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
-			URI absoluteUri = urlManager.getAbsoluteUri(view.getModel().getMap(), uri);
-			JComponent viewer = createViewer(model, absoluteUri);
+			JComponent viewer = createViewer(view.getMap().getModel(), model);
 			viewer.setBorder(new MatteBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_COLOR));
 			final Set<JComponent> viewers = model.getViewers();
 			viewers.add(viewer);
 			view.getContentPane().add(viewer);
-			if(model.getSize() != -1){
+			if(model.getZoom() != -1){
 			}
 			viewer.revalidate();
 			viewer.repaint();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	void deleteViewer(final ExternalResource model, final NodeView nodeView) {
@@ -352,9 +362,9 @@ final private Set<IViewerFactory> factories;
 		if(uri != null){
 			element.setAttribute("URI", uri.toString());
 		}
-		int size = previewUri.getSize();
+		float size = previewUri.getZoom();
 		if(size != -1){
-			element.setAttribute("SIZE", Integer.toString(size));
+			element.setAttribute("SIZE", Float.toString(size));
 		}
 		super.saveExtension(extension, element);
 	}
@@ -383,13 +393,15 @@ final private Set<IViewerFactory> factories;
 		};
 		getModeController().execute(actor, getModeController().getController().getMap());
 	}
-	private JComponent createViewer(final ExternalResource model, URI uri) {
+	private JComponent createViewer(final MapModel map, final ExternalResource model) {
+		final URI uri = model.getUri();
 		if(uri == null ){
 			return new JLabel("no file set");
 		}
-		IViewerFactory factory = getViewerFactory(uri);
+		final URI absoluteUri = model.getAbsoluteUri(map, getModeController());
+		IViewerFactory factory = getViewerFactory(absoluteUri);
 		if(factory != null){
-			JComponent viewer = factory.createViewer(uri);
+			JComponent viewer = factory.createViewer(model, absoluteUri);
 			viewer.putClientProperty(IViewerFactory.class,factory);
 			viewer.putClientProperty(ExternalResource.class,model);
 			viewer.addMouseListener(mouseListener);

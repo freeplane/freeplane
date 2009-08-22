@@ -1,16 +1,23 @@
 package org.freeplane.view.swing.addins.filepreview;
 
+import java.awt.Dimension;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.url.UrlManager;
+import org.freeplane.view.swing.map.MapView;
 
-class ExternalResource implements IExtension {
+public class ExternalResource implements IExtension {
 	final private Set<JComponent> viewers;
 	
 	ExternalResource(){
@@ -31,20 +38,43 @@ class ExternalResource implements IExtension {
 	public URI getUri() {
 		return uri;
 	}
+	
+	public URI getAbsoluteUri(MapModel map, ModeController modeController) {
+        try {
+    		UrlManager urlManager = (UrlManager) modeController.getExtension(UrlManager.class);
+        	URI absoluteUri = urlManager.getAbsoluteUri(map, uri);
+			return absoluteUri;
+        }
+        catch (MalformedURLException e) {
+	        e.printStackTrace();
+        }
+        return null;
+	}
 
 	public void setUri(URI url, IViewerFactory factory) {
 		this.uri = url;
 	}
 
 	private URI uri;
-	private int size = -1;
+	private float zoom = 1f;
 	
-	public int getSize() {
-		return size;
+	public float getZoom() {
+		return zoom;
 	}
 
-	public void setSize(int size) {
-		this.size = size;
+	public void setZoom(float r) {
+		this.zoom = r;
+		for(JComponent viewer:viewers){
+			IViewerFactory factory = (IViewerFactory) viewer.getClientProperty(IViewerFactory.class);
+			MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, viewer);
+			Dimension preferredSize = factory.getOriginalSize(viewer);
+			preferredSize.width = (int)(preferredSize.width*r);
+			preferredSize.height = (int)(preferredSize.height*r);
+			preferredSize.width = mapView.getZoomed(preferredSize.width);
+			preferredSize.height = mapView.getZoomed(preferredSize.height);
+			factory.setViewerSize(viewer, preferredSize);
+			viewer.revalidate();
+		}
 	}
 
 	static ExternalResource getPreviewUrl(NodeModel model){

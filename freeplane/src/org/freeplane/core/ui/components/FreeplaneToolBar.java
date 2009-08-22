@@ -114,7 +114,7 @@ public class FreeplaneToolBar extends JToolBar {
 	}
 
 	protected void configureComponent(final Component comp) {
-		comp.setFocusable(false);
+//		comp.setFocusable(false);
 		if (!(comp instanceof AbstractButton)) {
 			return;
 		}
