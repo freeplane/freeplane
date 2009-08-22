@@ -220,6 +220,7 @@ final private Set<IViewerFactory> factories;
 		factories = new HashSet<IViewerFactory>();
 		modeController.addINodeViewLifeCycleListener(this);
 		modeController.addExtension(this.getClass(), this);
+		factories.add(new BitmapViewerFactory());
 	}
 
 	public void setModelSize(final ModeController modeController, final MapModel map, final ExternalResource model, final float size) {
@@ -400,15 +401,18 @@ final private Set<IViewerFactory> factories;
 		}
 		final URI absoluteUri = model.getAbsoluteUri(map, getModeController());
 		IViewerFactory factory = getViewerFactory(absoluteUri);
-		if(factory != null){
-			JComponent viewer = factory.createViewer(model, absoluteUri);
-			viewer.putClientProperty(IViewerFactory.class,factory);
-			viewer.putClientProperty(ExternalResource.class,model);
-			viewer.addMouseListener(mouseListener);
-			viewer.addMouseMotionListener(mouseListener);
-			return viewer;
+		if(factory == null){
+			return new JLabel(uri.toString());
 		}
-		return new JLabel(uri.toString());
+		JComponent viewer = factory.createViewer(model, absoluteUri);
+		if(viewer == null){
+			return new JLabel(uri.toString());
+		}
+		viewer.putClientProperty(IViewerFactory.class,factory);
+		viewer.putClientProperty(ExternalResource.class,model);
+		viewer.addMouseListener(mouseListener);
+		viewer.addMouseMotionListener(mouseListener);
+		return viewer;
 	}
 
 	public FileFilter getFileFilter() {

@@ -10,6 +10,7 @@ import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.swing.gvt.GVTTreeRendererAdapter;
 import org.apache.batik.swing.gvt.GVTTreeRendererEvent;
 import org.apache.batik.util.SVGConstants;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.view.swing.addins.filepreview.ExternalResource;
 import org.freeplane.view.swing.addins.filepreview.IViewerFactory;
@@ -97,7 +98,7 @@ public class SvgViewerFactory implements IViewerFactory {
 	}
 
 	public String getDescription() {
-		return "SVG";
+		return  ResourceBundles.getText("svg");
 	};
 
 	public JComponent createViewer(final ExternalResource resource, final URI uri) {
