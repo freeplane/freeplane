@@ -10,6 +10,7 @@ import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.swing.gvt.GVTTreeRendererAdapter;
 import org.apache.batik.swing.gvt.GVTTreeRendererEvent;
 import org.apache.batik.util.SVGConstants;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.view.swing.addins.filepreview.ExternalResource;
 import org.freeplane.view.swing.addins.filepreview.IViewerFactory;
 import org.freeplane.view.swing.map.MapView;
@@ -43,6 +44,10 @@ public class SvgViewerFactory implements IViewerFactory {
 					final SVGLength height = rootElement.getHeight().getBaseVal();
 					float defaultWidth = width.getValue();	
 					float defaultHeigth = height.getValue();
+					if(defaultWidth == 1f && defaultHeigth == 1f){
+						defaultWidth = ResourceController.getResourceController().getIntProperty("default_external_component_width", 200);
+						defaultHeigth = ResourceController.getResourceController().getIntProperty("default_external_component_height", 200);
+					}
 					originalSize = new Dimension((int)defaultWidth, (int)defaultHeigth );
 					zoom = 1f;
 					if("".equals(rootElement.getAttributeNS(null, SVGConstants.SVG_VIEW_BOX_ATTRIBUTE))){
@@ -70,6 +75,9 @@ public class SvgViewerFactory implements IViewerFactory {
 
 		@Override
 	    public Dimension getPreferredSize() {
+			if(originalSize == null){
+				return new Dimension(1, 1);
+			}
 	    	Dimension preferredSize = super.getPreferredSize();
 	    	MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
 	    	float newZoom = mapView.getZoom();
