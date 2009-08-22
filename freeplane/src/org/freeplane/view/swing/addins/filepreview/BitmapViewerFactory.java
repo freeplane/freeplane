@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.addins.filepreview;
 
 import java.awt.Dimension;
+import java.awt.LayoutManager;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -60,7 +61,14 @@ public class BitmapViewerFactory implements IViewerFactory {
 	public JComponent createViewer(ExternalResource resource, URI uri) {
 		try {
 	        final BufferedImage image = ImageIO.read(uri.toURL());
-	        return new BitmapViewerComponent(image, resource.getZoom());
+	        final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(image);
+	        final Dimension originalSize = bitmapViewerComponent.getOriginalSize();
+	        float zoom = resource.getZoom();
+			originalSize.width = (int)(originalSize.width * zoom);
+	        originalSize.height = (int)(originalSize.height * zoom);
+	        bitmapViewerComponent.setPreferredSize(originalSize);
+	        bitmapViewerComponent.setLayout(new ViewerLayoutManager(zoom));
+			return bitmapViewerComponent;
         }
         catch (MalformedURLException e) {
 	        // TODO Auto-generated catch block

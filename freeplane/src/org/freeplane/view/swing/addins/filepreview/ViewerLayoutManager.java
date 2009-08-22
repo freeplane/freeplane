@@ -23,38 +23,58 @@ package org.freeplane.view.swing.addins.filepreview;
  * @author Dimitry Polivaev
  * 22.08.2009
  */
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.LayoutManager;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.view.swing.map.MapView;
 
-public abstract class AViewerComponent extends JComponent {
+public class ViewerLayoutManager implements LayoutManager {
+	private float zoom;
+
 	/**
      * 
      */
-    private static final long serialVersionUID = 1L;
-	protected float zoom = 1f;
-
-	public AViewerComponent() {
+	public ViewerLayoutManager(float zoom) {
 		super();
+		this.zoom = zoom;
 	}
-	
-	abstract protected Dimension getOriginalSize();
 
-	@Override
-    public Dimension getPreferredSize() {
-    	Dimension preferredSize = super.getPreferredSize();
-    	MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+	public void addLayoutComponent(String name, Component comp) {
+    }
+
+	public void layoutContainer(final Container parent) {
+		if(! parent.isPreferredSizeSet()){
+			throw new IllegalStateException("preferred size not set for " + parent);
+		}
+    	Dimension preferredSize = parent.getPreferredSize();
+    	MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, parent);
+    	if(mapView == null){
+    		return;
+    	}
     	float newZoom = mapView.getZoom();
     	if(zoom != newZoom){
     		float ratio = newZoom/ zoom;
     		preferredSize.width = (int)(Math.rint(preferredSize.width * ratio));
     		preferredSize.height = (int)(Math.rint(preferredSize.height * ratio));
-    		setPreferredSize(preferredSize);
+    		parent.setPreferredSize(preferredSize);
     		zoom = newZoom;
     	}
-    	return preferredSize;
+    }
+
+	public Dimension minimumLayoutSize(Container parent) {
+	    return new Dimension(0, 0);
+    }
+
+	public Dimension preferredLayoutSize(Container parent) {
+	    return new Dimension(0, 0);
+    }
+
+	public void removeLayoutComponent(Component comp) {
     }
 }

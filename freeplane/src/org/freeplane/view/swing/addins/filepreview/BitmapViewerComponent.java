@@ -24,26 +24,23 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JComponent;
+
 
 
 /**
  * @author Dimitry Polivaev
  * 22.08.2009
  */
-final class BitmapViewerComponent extends AViewerComponent {
+final class BitmapViewerComponent extends JComponent{
 
 	/**
      * 
      */
     private static final long serialVersionUID = 1L;
 	private BufferedImage image;
-	public BitmapViewerComponent(BufferedImage image, float zoom) {
+	public BitmapViewerComponent(BufferedImage image) {
         this.image = image;
-        final Dimension originalSize = getOriginalSize();
-        this.zoom = zoom;
-        originalSize.width = (int)(originalSize.width * zoom);
-        originalSize.height = (int)(originalSize.height * zoom);
-		setPreferredSize(originalSize);
     }
 	
 	protected Dimension getOriginalSize(){

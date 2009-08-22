@@ -14,6 +14,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.view.swing.addins.filepreview.ExternalResource;
 import org.freeplane.view.swing.addins.filepreview.IViewerFactory;
+import org.freeplane.view.swing.addins.filepreview.ViewerLayoutManager;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.svg.SVGDocument;
 import org.w3c.dom.svg.SVGLength;
@@ -26,7 +27,6 @@ public class SvgViewerFactory implements IViewerFactory {
 	     * 
 	     */
 	    private static final long serialVersionUID = 1L;
-	    private float zoom = 1f;
 	    private Dimension originalSize = null;
 
 	    protected Dimension getOriginalSize() {
@@ -50,26 +50,12 @@ public class SvgViewerFactory implements IViewerFactory {
 						defaultHeigth = ResourceController.getResourceController().getIntProperty("default_external_component_height", 200);
 					}
 					originalSize = new Dimension((int)defaultWidth, (int)defaultHeigth );
-					zoom = 1f;
 					if("".equals(rootElement.getAttributeNS(null, SVGConstants.SVG_VIEW_BOX_ATTRIBUTE))){
 						rootElement.setAttributeNS(null, SVGConstants.SVG_VIEW_BOX_ATTRIBUTE, "0 0 "+ defaultWidth + " " + defaultHeigth);
 					}
 					setSize(originalSize);
 	                removeGVTTreeRendererListener(this);
                 }
-	        });
-			addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
-
-				public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
-	            	final float r = resource.getZoom();
-	            	zoom = 1f;
-	            	Dimension preferredSize = getOriginalSize();
-	            	preferredSize.width = (int)(Math.rint(preferredSize.width * r));
-	            	preferredSize.height = (int)(Math.rint(preferredSize.height * r));
-	            	setPreferredSize(preferredSize);
-	                revalidate();
-	                removeGVTTreeRendererListener(this);
-	            }
 	        });
 			setURI (uri.toString());
         }
@@ -79,17 +65,7 @@ public class SvgViewerFactory implements IViewerFactory {
 			if(originalSize == null){
 				return new Dimension(1, 1);
 			}
-	    	Dimension preferredSize = super.getPreferredSize();
-	    	MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
-	    	float newZoom = mapView.getZoom();
-	    	if(zoom != newZoom){
-	    		float ratio = newZoom/ zoom;
-	    		preferredSize.width = (int)(Math.rint(preferredSize.width * ratio));
-	    		preferredSize.height = (int)(Math.rint(preferredSize.height * ratio));
-	    		setPreferredSize(preferredSize);
-	    		zoom = newZoom;
-	    	}
-	    	return preferredSize;
+	    	return super.getPreferredSize();
 	    }
     }
 
@@ -102,7 +78,20 @@ public class SvgViewerFactory implements IViewerFactory {
 	};
 
 	public JComponent createViewer(final ExternalResource resource, final URI uri) {
-		final JSVGCanvas canvas = new ViewerComponent(resource, uri);
+		final ViewerComponent canvas = new ViewerComponent(resource, uri);
+		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
+
+			public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
+            	final float r = resource.getZoom();
+            	Dimension preferredSize = canvas.getOriginalSize();
+            	preferredSize.width = (int)(Math.rint(preferredSize.width * r));
+            	preferredSize.height = (int)(Math.rint(preferredSize.height * r));
+            	canvas.setPreferredSize(preferredSize);
+            	canvas.setLayout(new ViewerLayoutManager(1f));
+            	canvas.revalidate();
+            	canvas.removeGVTTreeRendererListener(this);
+            }
+        });
 		return canvas;
 	}
 

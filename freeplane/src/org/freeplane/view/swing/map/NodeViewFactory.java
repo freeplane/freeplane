@@ -54,6 +54,7 @@ class NodeViewFactory {
 			for (int i = 0; i < componentCount; i++) {
 				final Component component = parent.getComponent(i);
 				if (component.isVisible()) {
+					component.validate();
 					final Dimension preferredCompSize = component.getPreferredSize();
 					if (component instanceof MainView) {
 						component.setBounds(0, y, width, preferredCompSize.height);
@@ -77,6 +78,7 @@ class NodeViewFactory {
 			for (int i = 0; i < componentCount; i++) {
 				final Component component = parent.getComponent(i);
 				if (component.isVisible()) {
+					component.validate();
 					final Dimension preferredCompSize = component.getPreferredSize();
 					prefSize.height += preferredCompSize.height;
 					prefSize.width = Math.max(prefSize.width, preferredCompSize.width);
