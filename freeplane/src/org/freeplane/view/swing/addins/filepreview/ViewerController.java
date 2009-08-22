@@ -296,8 +296,16 @@ final private Set<IViewerFactory> factories;
 		UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
 		JFileChooser chooser = urlManager.getFileChooser(null);
 		chooser.setAcceptAllFileFilterUsed(false);
-		for(IViewerFactory factory:factories){
-			chooser.addChoosableFileFilter(new FactoryFileFilter(factory));
+		if(factories.size() > 1){
+			final FileFilter combiFileFilter = getCombiFileFilter();
+			chooser.addChoosableFileFilter(combiFileFilter);
+			for(IViewerFactory factory:factories){
+				chooser.addChoosableFileFilter(new FactoryFileFilter(factory));
+			}
+			chooser.setFileFilter(combiFileFilter);
+		}
+		else{
+			chooser.setFileFilter(new FactoryFileFilter(factories.iterator().next()));
 		}
 		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -309,7 +317,15 @@ final private Set<IViewerFactory> factories;
 			return null;
 		}
 		ExternalResource preview = new ExternalResource();
-		preview.setUri(uri, ((FactoryFileFilter) chooser.getFileFilter()).getFactory());
+		final FileFilter fileFilter = chooser.getFileFilter();
+		final IViewerFactory factory;
+		if(fileFilter instanceof FactoryFileFilter){
+			factory = ((FactoryFileFilter) fileFilter).getFactory();
+		}
+		else{
+			factory = getViewerFactory(uri);
+		}
+		preview.setUri(uri, factory);
 		return preview;
 	}
 
@@ -458,6 +474,30 @@ final private Set<IViewerFactory> factories;
 		viewer.addMouseListener(mouseListener);
 		viewer.addMouseMotionListener(mouseListener);
 		return viewer;
+	}
+
+	private FileFilter getCombiFileFilter() {
+		return new FileFilter(){
+
+			public boolean accept(File pathname) {
+				if (pathname.isDirectory()){
+					return true;
+				}
+				return getViewerFactory(pathname.toURI()) != null;
+			}
+
+			@Override
+			public String getDescription() {
+				StringBuilder sb = new StringBuilder();
+				for(IViewerFactory factory:factories){
+					if(sb.length() != 0){
+						sb.append(", ");
+					}
+					sb.append(factory.getDescription());
+				}
+				return sb.toString();
+				
+			}};
 	}
 
 	public void addFactory(IViewerFactory factory){
