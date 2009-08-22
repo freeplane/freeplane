@@ -33,8 +33,10 @@ public class SvgViewerFactory implements IViewerFactory {
         	return new Dimension(originalSize);
         }
 
-		public ViewerComponent(final ExternalResource resource, final URI uri) {
+		public ViewerComponent(final URI uri) {
 	        super(null, false, false);
+	        setDocumentState(ALWAYS_STATIC);
+	        setSize(1, 1);
 			addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 	            @Override
                 public void gvtRenderingStarted(GVTTreeRendererEvent e) {
@@ -78,7 +80,7 @@ public class SvgViewerFactory implements IViewerFactory {
 	};
 
 	public JComponent createViewer(final ExternalResource resource, final URI uri) {
-		final ViewerComponent canvas = new ViewerComponent(resource, uri);
+		final ViewerComponent canvas = new ViewerComponent(uri);
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 
 			public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
@@ -89,6 +91,22 @@ public class SvgViewerFactory implements IViewerFactory {
             	canvas.setPreferredSize(preferredSize);
             	canvas.setLayout(new ViewerLayoutManager(1f));
             	canvas.revalidate();
+            	canvas.removeGVTTreeRendererListener(this);
+            }
+        });
+		return canvas;
+	}
+
+	public JComponent createViewer(final URI uri, final Dimension preferredSize) {
+		final ViewerComponent canvas = new ViewerComponent(uri);
+		canvas.setPreferredSize(preferredSize);
+		canvas.setSize(preferredSize);
+		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
+
+			public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
+				canvas.setMySize(preferredSize);
+				canvas.setSize(preferredSize);
+				canvas.revalidate();
             	canvas.removeGVTTreeRendererListener(this);
             }
         });

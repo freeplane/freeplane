@@ -34,6 +34,7 @@ import javax.imageio.ImageReader;
 import javax.swing.JComponent;
 
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.ui.components.BitmapViewerComponent;
 
 
 /**
@@ -59,9 +60,7 @@ public class BitmapViewerFactory implements IViewerFactory {
     }
 
 	public JComponent createViewer(ExternalResource resource, URI uri) {
-		try {
-	        final BufferedImage image = ImageIO.read(uri.toURL());
-	        final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(image);
+	         final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
 	        final Dimension originalSize = bitmapViewerComponent.getOriginalSize();
 	        float zoom = resource.getZoom();
 			originalSize.width = (int)(originalSize.width * zoom);
@@ -69,17 +68,12 @@ public class BitmapViewerFactory implements IViewerFactory {
 	        bitmapViewerComponent.setPreferredSize(originalSize);
 	        bitmapViewerComponent.setLayout(new ViewerLayoutManager(zoom));
 			return bitmapViewerComponent;
-        }
-        catch (MalformedURLException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	        return null;
-        }
-        catch (IOException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	        return null;
-        }
+	}
+	public JComponent createViewer(URI uri, final Dimension preferredSize) {
+	        final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
+	        bitmapViewerComponent.setPreferredSize(preferredSize);
+	        bitmapViewerComponent.setSize(preferredSize);
+			return bitmapViewerComponent;
 	}
 
 	public String getDescription() {

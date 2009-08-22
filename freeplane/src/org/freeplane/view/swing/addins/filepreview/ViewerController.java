@@ -48,7 +48,43 @@ onceForMap = false)
 @ActionLocationDescriptor(locations = "/menu_bar/insert/other")
 public class ViewerController extends PersistentNodeHook implements INodeViewLifeCycleListener, IExtension{
 	
-	private static final class FactoryFileFilter extends FileFilter {
+	private final class CombiFactory implements IViewerFactory {
+	    private IViewerFactory factory;
+
+	    public JComponent createViewer(URI uri, final Dimension preferredSize) {
+	    	factory = getViewerFactory(uri);
+	        return factory.createViewer(uri, preferredSize);
+	    }
+
+	    public JComponent createViewer(ExternalResource resource, URI absoluteUri) {
+	    	factory = getViewerFactory(absoluteUri);
+	        return factory.createViewer(resource, absoluteUri);
+	    }
+
+	    public String getDescription() {
+	    	StringBuilder sb = new StringBuilder();
+	    	for(IViewerFactory factory:factories){
+	    		if(sb.length() != 0){
+	    			sb.append(", ");
+	    		}
+	    		sb.append(factory.getDescription());
+	    	}
+	    	return sb.toString();
+	    }
+
+	    public Dimension getOriginalSize(JComponent viewer) {
+	        return factory.getOriginalSize(viewer);
+	    }
+
+	    public void setViewerSize(JComponent viewer, Dimension size) {
+	        factory.setViewerSize(viewer, size);
+	    }
+
+	    public boolean accept(URI uri) {
+	        return getViewerFactory(uri) != null;
+	    }
+    }
+	static final class FactoryFileFilter extends FileFilter {
 	    private final IViewerFactory factory;
 
 	    protected IViewerFactory getFactory() {
@@ -307,6 +343,7 @@ final private Set<IViewerFactory> factories;
 		else{
 			chooser.setFileFilter(new FactoryFileFilter(factories.iterator().next()));
 		}
+		chooser.setAccessory(new ImagePreview(chooser));
 		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return null;
@@ -317,15 +354,7 @@ final private Set<IViewerFactory> factories;
 			return null;
 		}
 		ExternalResource preview = new ExternalResource();
-		final FileFilter fileFilter = chooser.getFileFilter();
-		final IViewerFactory factory;
-		if(fileFilter instanceof FactoryFileFilter){
-			factory = ((FactoryFileFilter) fileFilter).getFactory();
-		}
-		else{
-			factory = getViewerFactory(uri);
-		}
-		preview.setUri(uri, factory);
+		preview.setUri(uri);
 		return preview;
 	}
 
@@ -345,7 +374,7 @@ final private Set<IViewerFactory> factories;
 			String attrUri = element.getAttribute("URI", null);
 			if(attrUri != null){
 				URI uri= new URI(attrUri);
-				previewUrl.setUri(uri, getViewerFactory(uri));
+				previewUrl.setUri(uri);
 			}
 			String attrSize = element.getAttribute("SIZE", null);
 			if(attrSize != null){
@@ -440,7 +469,7 @@ final private Set<IViewerFactory> factories;
 			private final URI oldUri = uri;
 
 			public void act() {
-				model.setUri(newUri, getViewerFactory(newUri));
+				model.setUri(newUri);
 				final MapModel map = getModeController().getController().getMap();
 				getModeController().getMapController().setSaved(map, false);
 			}
@@ -450,7 +479,7 @@ final private Set<IViewerFactory> factories;
 			}
 
 			public void undo() {
-				model.setUri(oldUri, getViewerFactory(oldUri));
+				model.setUri(oldUri);
 			}
 		};
 		getModeController().execute(actor, getModeController().getController().getMap());
@@ -477,28 +506,9 @@ final private Set<IViewerFactory> factories;
 	}
 
 	private FileFilter getCombiFileFilter() {
-		return new FileFilter(){
-
-			public boolean accept(File pathname) {
-				if (pathname.isDirectory()){
-					return true;
-				}
-				return getViewerFactory(pathname.toURI()) != null;
-			}
-
-			@Override
-			public String getDescription() {
-				StringBuilder sb = new StringBuilder();
-				for(IViewerFactory factory:factories){
-					if(sb.length() != 0){
-						sb.append(", ");
-					}
-					sb.append(factory.getDescription());
-				}
-				return sb.toString();
-				
-			}};
+		return new FactoryFileFilter(new CombiFactory());
 	}
+
 
 	public void addFactory(IViewerFactory factory){
 		factories.add(factory);

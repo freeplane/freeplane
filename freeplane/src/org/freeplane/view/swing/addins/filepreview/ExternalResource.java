@@ -51,7 +51,7 @@ public class ExternalResource implements IExtension {
         return null;
 	}
 
-	public void setUri(URI url, IViewerFactory factory) {
+	public void setUri(URI url) {
 		this.uri = url;
 	}
 
@@ -87,7 +87,7 @@ public class ExternalResource implements IExtension {
 			extension = new ExternalResource();
 			model.addExtension(extension);
 		}
-		extension.setUri(uri, factory);
+		extension.setUri(uri);
 		return extension;
 	}
 }

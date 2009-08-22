@@ -20,6 +20,7 @@
 package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -27,6 +28,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
@@ -35,7 +37,9 @@ import javax.swing.text.html.HTMLEditorKit;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
@@ -50,6 +54,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
+import org.freeplane.view.swing.addins.filepreview.ImagePreview;
 
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.TextResources;
@@ -197,9 +202,18 @@ public class MTextController extends TextController {
 			filter.addExtension("jpeg");
 			filter.addExtension("png");
 			filter.addExtension("gif");
-			filter.setDescription("JPG, PNG and GIF Images");
-			final URI uri = ((MFileManager) UrlManager.getController(getModeController())).getLinkByFileChooser(
-			    getModeController().getController().getMap(), filter);
+			filter.setDescription(ResourceBundles.getText("bitmaps"));
+			UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
+			JFileChooser chooser = urlManager.getFileChooser(null);
+			chooser.setFileFilter(filter);
+			chooser.setAcceptAllFileFilterUsed(false);
+			chooser.setAccessory(new BitmapImagePreview(chooser));
+			final int returnVal = chooser.showOpenDialog(getModeController().getController().getViewController().getContentPane());
+			if (returnVal != JFileChooser.APPROVE_OPTION) {
+				return;
+			}
+			final File input = chooser.getSelectedFile();
+			final URI uri = input.toURI();
 			if (uri != null) {
 				final String strText = "<html><img src=\"" + uri.toString() + "\">";
 				setNodeText(getModeController().getMapController().getSelectedNode(), strText);
