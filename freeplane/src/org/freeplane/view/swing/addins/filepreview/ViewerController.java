@@ -37,6 +37,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -116,7 +117,23 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			if(showPopupMenu(e)){
 				return;
 			}
+			if(openUri(e)){
+				return;
+			}
 		}
+
+		private boolean openUri(MouseEvent e) {
+			if(e.getClickCount() != 2){
+				return false;
+			}
+			final ExternalResource model = getModel(e);
+			if(model == null){
+				return true;
+			}
+			final UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
+			urlManager.loadURL(model.getUri());
+	        return true;
+        }
 
 		private boolean showPopupMenu(MouseEvent e) {
 			return false;
@@ -148,8 +165,19 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			if(isActive){
 				return;
 			}
+			final ExternalResource model = getModel(e);
+			if(model == null){
+				return;
+			}
+			getController().getViewController().out(model.getUri().toString());
 			setCursor(e);
 		}
+
+		private ExternalResource getModel(MouseEvent e) {
+	        final JComponent component = (JComponent) e.getComponent();
+			final ExternalResource model = (ExternalResource) component.getClientProperty(ExternalResource.class);
+	        return model;
+        }
 
 		public void mouseExited(MouseEvent e) {
 			if(isActive){
@@ -494,7 +522,13 @@ final private Set<IViewerFactory> factories;
 		if(factory == null){
 			return new JLabel(uri.toString());
 		}
-		JComponent viewer = factory.createViewer(model, absoluteUri);
+		JComponent viewer = null;
+        try {
+	        viewer = factory.createViewer(model, absoluteUri);
+        }
+        catch (Exception e) {
+        	LogTool.warn(e);
+        }
 		if(viewer == null){
 			return new JLabel(uri.toString());
 		}
