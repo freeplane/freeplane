@@ -24,12 +24,15 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -43,6 +46,7 @@ import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.model.MindIcon;
@@ -66,16 +70,20 @@ public abstract class MainView extends JLabel {
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	private static final int MIN_HOR_NODE_SIZE = 10;
 	static Dimension minimumSize = new Dimension(0, 0);
+    final static private Graphics2D fmg;
+    static{
+    	fmg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics();
+    	fmg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+    }
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static final float ZOOM_CORRECTION_FACTOR = 0.97F;
+	private static final JComponent standardLabel = new JLabel();
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
-	private boolean isPainting;
 
 	MainView() {
-		isPainting = false;
+		setUI(MainViewUI.createUI(this));
 		setAlignmentX(Component.CENTER_ALIGNMENT);
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setVerticalAlignment(SwingConstants.CENTER);
@@ -117,20 +125,6 @@ public abstract class MainView extends JLabel {
 		return isDraggedOver;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.JComponent#getHeight()
-	 */
-	@Override
-	public int getHeight() {
-		if (isPainting) {
-			final float zoom = getZoom();
-			if (zoom != 1F) {
-				return (int) (super.getHeight() / zoom);
-			}
-		}
-		return super.getHeight();
-	}
 
 	protected int getIconWidth() {
 		final Icon icon = getIcon();
@@ -186,17 +180,10 @@ public abstract class MainView extends JLabel {
 			setText("!");
 		}
 		final Dimension prefSize = super.getPreferredSize();
-		final float zoom = getNodeView().getMap().getZoom();
-		if (zoom != 1F) {
-			prefSize.width = (int) (0.99 + prefSize.width * zoom);
-			prefSize.height = (int) (0.99 + prefSize.height * zoom);
-		}
 		prefSize.width = Math.max(getNodeView().getMap().getZoomed(MainView.MIN_HOR_NODE_SIZE), prefSize.width);
 		if (isEmpty) {
 			setText("");
 		}
-		prefSize.width += getNodeView().getMap().getZoomed(12);
-		prefSize.height += getNodeView().getMap().getZoomed(4);
 		return prefSize;
     }
 
@@ -204,32 +191,13 @@ public abstract class MainView extends JLabel {
 
 	abstract String getStyle();
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.JComponent#getWidth()
-	 */
-	@Override
-	public int getWidth() {
-		if (isPainting) {
-			final float zoom = getZoom();
-			if (zoom != 1F) {
-				return (int) (0.99f + super.getWidth() / zoom);
-			}
-		}
-		return super.getWidth();
-	}
-
-	private float getZoom() {
+	float getZoom() {
 		final float zoom = getNodeView().getMap().getZoom();
 		return zoom;
 	}
 
 	int getZoomedFoldingSymbolHalfWidth() {
 		return getNodeView().getZoomedFoldingSymbolHalfWidth();
-	}
-
-	protected boolean isCurrentlyPrinting() {
-		return getNodeView().getMap().isCurrentlyPrinting();
 	}
 
 	public boolean isInFollowLinkRegion(final double xCoord) {
@@ -248,25 +216,7 @@ public abstract class MainView extends JLabel {
 	public boolean isInVerticalRegion(final double xCoord, final double p) {
 		return getNodeView().isLeft() ? xCoord > getSize().width * (1.0 - p) : xCoord < getSize().width * p;
 	}
-
-	@Override
-	public void paintComponent(final Graphics g) {
-		final Graphics2D g2 = (Graphics2D) g;
-		float zoom = getZoom();
-		if (zoom != 1F) {
-			zoom *= MainView.ZOOM_CORRECTION_FACTOR;
-			final AffineTransform transform = g2.getTransform();
-			g2.scale(zoom, zoom);
-			isPainting = true;
-			super.paintComponent(g);
-			isPainting = false;
-			g2.setTransform(transform);
-		}
-		else {
-			super.paintComponent(g);
-		}
-	}
-
+	
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
 		graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
@@ -468,6 +418,13 @@ public abstract class MainView extends JLabel {
 		}
 	}
 
+	@Override
+    public FontMetrics getFontMetrics(Font font) {
+		fmg.setFont(font);
+		final FontMetrics fontMetrics = fmg.getFontMetrics();
+		return fontMetrics;
+    }
+
 	void updateTextColor(final NodeView node) {
 		final Color color = NodeStyleController.getController(node.getMap().getModeController()).getColor(
 		    node.getModel());
@@ -477,4 +434,29 @@ public abstract class MainView extends JLabel {
 	public boolean isEdited() {
 	    return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
     }
+
+	FontMetrics getFontMetrics() {
+		return getFontMetrics(getFont());
+    }
+
+	@Override
+    public void setText(String text) {
+		if (! BasicHTML.isHTMLString(text)){
+			super.setText(text);
+			return;
+		}
+		setFractionalMetrics();
+		super.setText(text);
+		unsetFractionalMetrics();
+    }
+
+	private void unsetFractionalMetrics() {
+		BasicHTML.createHTMLView(standardLabel, "<html><b>1</b>2");
+    }
+
+	private void setFractionalMetrics() {
+		BasicHTML.createHTMLView(this, "<html><b>1</b>2");
+    }
+
+	
 }
