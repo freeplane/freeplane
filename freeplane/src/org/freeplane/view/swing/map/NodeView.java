@@ -1040,6 +1040,11 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	@Override
+	public boolean requestFocusInWindow() {
+		return mainView.requestFocusInWindow();
+	}
+
+	@Override
 	public void requestFocus() {
 		mainView.requestFocus();
 	}

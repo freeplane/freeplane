@@ -3,6 +3,27 @@ $LastChangedDate$
 $Rev$
 *******************************
 ===============================
+1.0.27 alpha
+===============================
+New features:
+External bitmap and SVG images can be attached using menu Insert->External object
+The action is also available from popup menu
+Images can be scaled by dragging the bottom right corner
+Image size can be reseted double clicking on the bottom right corner
+The attached file can be opened by double click on the image itself
+
+Insert image dialog and insert external object dialog have file previews
+
+New navigation actions useful for presentation "next node" and "previous node".
+They traverse the map in depth-first order.
+Hot keys: CONTROL + ALT + RIGHT, CONTROL + ALT + LEFT
+
+Text rendering mode use more exact fractional metric based version.
+
+Batik version updated to 1.7
+       
+
+===============================
 1.0.26 alpha
 ===============================
 New features:

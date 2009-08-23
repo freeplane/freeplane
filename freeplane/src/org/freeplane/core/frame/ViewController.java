@@ -35,6 +35,8 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -382,6 +384,18 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
+		getFrame().addWindowFocusListener(new WindowFocusListener(){
+
+			public void windowGainedFocus(WindowEvent e) {
+				final IMapSelection selection = getSelection();
+				if(selection == null){
+					return;
+				}
+				getComponent(selection.getSelected()).requestFocusInWindow();
+            }
+
+			public void windowLostFocus(WindowEvent e) {
+            }});
 	}
 
 	abstract public JSplitPane insertComponentIntoSplitPane(JComponent noteViewerComponent);

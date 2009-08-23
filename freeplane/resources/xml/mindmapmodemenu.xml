@@ -316,27 +316,22 @@
 	</menu_category>
 	<menu_category name="node_popup">
 		<menu_category name="EditAction">
-			<menu_action action="EditAction"  />
-			<menu_action action="EditLongAction"
-				 />
-			<menu_action action="EditAttributesAction"
-				 />
-			<menu_action action="DeleteAction"
-				 />
+			<menu_action action="EditAction" />
+			<menu_action action="EditLongAction" />
+			<menu_action action="EditAttributesAction" />
+			<menu_action action="DeleteAction" />
 			<!--
-				<menu_action action="UseRichFormattingAction"
-				/> <menu_action
-				name="UsePlainTextAction" action="usePlainText"
-				/>
+				<menu_action action="UseRichFormattingAction" /> <menu_action
+				name="UsePlainTextAction" action="usePlainText" />
 			-->
 			<!-- <menu_action action="remove" /> -->
 		</menu_category>
 		<menu_separator />
 		<menu_category name="PasteAction">
-			<menu_action action="CutAction"  />
-			<menu_action action="CopyAction"  />
-			<menu_action action="CopySingleAction"/>
-			<menu_action action="PasteAction"  />
+			<menu_action action="CutAction" />
+			<menu_action action="CopyAction" />
+			<menu_action action="CopySingleAction" />
+			<menu_action action="PasteAction" />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="new_nodes">
@@ -344,21 +339,20 @@
 				<menu_action action="NewChildAction"
 				/>
 			-->
-			<menu_action action="NewChildAction"  />
-			<menu_action action="NewSiblingAction"  />
-			<menu_action action="NewPreviousSiblingAction"
-				 />
+			<menu_action action="NewChildAction" />
+			<menu_action action="NewSiblingAction" />
+			<menu_action action="NewPreviousSiblingAction" />
 		</menu_category>
 		<menu_separator />
 
-	<menu_category name="navigate_nodes">
-		<menu_action action="NodeUpAction"  />
-		<menu_action action="NodeDownAction"  />
-	</menu_category>
+		<menu_category name="navigate_nodes">
+			<menu_action action="NodeUpAction" />
+			<menu_action action="NodeDownAction" />
+		</menu_category>
 
 		<menu_separator />
 		<menu_category name="folding">
-			<menu_action action="ToggleFoldedAction"  />
+			<menu_action action="ToggleFoldedAction" />
 		</menu_category>
 		<menu_category name="context">
 		</menu_category>
@@ -367,7 +361,7 @@
 			<menu_category name="icons" />
 		</menu_submenu>
 		<menu_submenu name="export" name_ref="menu_file_export">
-			<menu_action action="ExportBranchAction"  />
+			<menu_action action="ExportBranchAction" />
 		</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
 			<menu_category name="nodes">
@@ -377,16 +371,16 @@
 				</menu_category>
 				<menu_separator />
 				<menu_category name="font">
-					<menu_action action="IncreaseNodeFontAction"  />
-					<menu_action action="DecreaseNodeFontAction"  />
-					<menu_action action="ItalicAction"  />
-					<menu_action action="BoldAction"  />
+					<menu_action action="IncreaseNodeFontAction" />
+					<menu_action action="DecreaseNodeFontAction" />
+					<menu_action action="ItalicAction" />
+					<menu_action action="BoldAction" />
 					<!--
 						Underlined is not implemented in the view yet. <menu_action
 						action="underlined" />
 					-->
-					<menu_action action="NodeColorAction"  />
-					<menu_action action="NodeColorBlendAction"  />
+					<menu_action action="NodeColorAction" />
+					<menu_action action="NodeColorBlendAction" />
 					<menu_action action="NodeBackgroundColorAction" />
 				</menu_category>
 				<menu_separator />
@@ -396,7 +390,7 @@
 			</menu_category>
 			<menu_separator />
 			<menu_category name="edges">
-				<menu_action action="EdgeColorAction"  />
+				<menu_action action="EdgeColorAction" />
 				<menu_submenu name="styles" name_ref="format_menu_edge_styles">
 					<menu_radio_action action="EdgeStyleAsParentAction" />
 					<menu_radio_action action="EdgeStyleAction.linear" />
@@ -418,17 +412,17 @@
 		</menu_submenu>
 		<menu_submenu name="insert" name_ref="menu_insert">
 			<menu_category name="clouds">
-				<menu_action action="CloudAction"  />
+				<menu_action action="CloudAction" />
 			</menu_category>
 			<menu_category name="image">
-				<menu_action action="SetImageByFileChooserAction"  />
+				<menu_action action="SetImageByFileChooserAction" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="links">
-				<menu_action action="SetLinkByFileChooserAction"  />
-				<menu_action action="SetLinkByTextFieldAction"  />
-				<menu_action action="AddConnectorAction"  />
-				<menu_action action="AddLocalLinkAction"  />
+				<menu_action action="SetLinkByFileChooserAction" />
+				<menu_action action="SetLinkByTextFieldAction" />
+				<menu_action action="AddConnectorAction" />
+				<menu_action action="AddLocalLinkAction" />
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="patterns" name_ref="extension_menu">

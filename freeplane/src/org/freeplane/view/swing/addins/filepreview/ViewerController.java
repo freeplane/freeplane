@@ -46,7 +46,7 @@ import org.freeplane.view.swing.map.NodeView;
 
 @NodeHookDescriptor(hookName = "ExternalObject", //
 onceForMap = false)
-@ActionLocationDescriptor(locations = "/menu_bar/insert/other")
+@ActionLocationDescriptor(locations = {"/menu_bar/insert/other", "/node_popup/insert/image"})
 public class ViewerController extends PersistentNodeHook implements INodeViewLifeCycleListener, IExtension{
 	
 	private final class CombiFactory implements IViewerFactory {
@@ -144,8 +144,11 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				return false;
 			}
 			JComponent viewer = (JComponent) e.getComponent();
-			int cursorType = viewer.getCursor().getType();
-			if(cursorType != Cursor.SE_RESIZE_CURSOR){
+			final int x = e.getX();
+			int width = viewer.getWidth();
+			final int y = e.getY();
+			int height = viewer.getHeight();
+			if(x < width- 4 * BORDER_SIZE || y < height- 4 * BORDER_SIZE){
 				return false;
 			}
 			IViewerFactory factory = (IViewerFactory) viewer.getClientProperty(IViewerFactory.class);
