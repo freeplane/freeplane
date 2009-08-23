@@ -169,23 +169,8 @@ public abstract class MainView extends JLabel {
 		if (isPreferredSizeSet()) {
 			return super.getPreferredSize();
 		}
- 		return getPreferredSizeImpl();
+ 		return super.getPreferredSize();
 	}
-
-	private Dimension getPreferredSizeImpl() {
-	    final String text = getText();
-		final boolean isEmpty = text.length() == 0 || HtmlTools.isHtmlNode(text) && text.indexOf("<img") < 0
-		        && HtmlTools.htmlToPlain(text).length() == 0;
-		if (isEmpty) {
-			setText("!");
-		}
-		final Dimension prefSize = super.getPreferredSize();
-		prefSize.width = Math.max(getNodeView().getMap().getZoomed(MainView.MIN_HOR_NODE_SIZE), prefSize.width);
-		if (isEmpty) {
-			setText("");
-		}
-		return prefSize;
-    }
 
 	abstract Point getRightPoint();
 

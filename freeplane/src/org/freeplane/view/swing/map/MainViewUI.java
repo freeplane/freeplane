@@ -43,6 +43,15 @@ class MainViewUI extends BasicLabelUI {
 	@Override
     public Dimension getPreferredSize(JComponent c) {
 	    final Dimension preferredSize = super.getPreferredSize(c);
+	    if(preferredSize.height == 0){
+	    	preferredSize.height = ((MainView)c).getFontMetrics().getHeight();
+	    }
+	    
+	    if(preferredSize.width <= 4){
+	    	preferredSize.width = 4;
+	    }
+	    
+	    preferredSize.width += 4;
 	    final float zoom = ((MainView) c).getZoom();
 	    if(zoom != 1f){
 	    	preferredSize.width = (int)(Math.ceil(zoom * preferredSize.width));
@@ -73,8 +82,11 @@ class MainViewUI extends BasicLabelUI {
 	@Override
 	public void paint(Graphics g, JComponent label) {
 		final Graphics2D g2 = (Graphics2D) g;
-		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS);
-		g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+		final Object oldRenderingHintFM = g2.getRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS);
+		final Object newRenderingHintFM = RenderingHints.VALUE_FRACTIONALMETRICS_ON;
+		if (oldRenderingHintFM != newRenderingHintFM) {
+			g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, newRenderingHintFM);
+		}
 		final float zoom = ((MainView) label).getZoom();
 		if(zoom == 1f){
 			super.paint(g, label);
@@ -91,7 +103,7 @@ class MainViewUI extends BasicLabelUI {
 			}
 			g2.setTransform(transform);
 		}
-		g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, renderingHint != null ? renderingHint : RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
+		g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, oldRenderingHintFM != null ? oldRenderingHintFM : RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
 	}
 
 

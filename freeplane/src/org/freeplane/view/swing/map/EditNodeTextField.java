@@ -25,14 +25,17 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -60,6 +63,24 @@ import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
  */
 class EditNodeTextField extends AbstractEditNodeTextField {
 	private int extraWidth;
+
+	private static final class TextArea extends JTextArea {
+	    private TextArea(String text) {
+		    super(text);
+	    }
+	    final static private Graphics2D fmg;
+	    static{
+	    	fmg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics();
+	    	fmg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+	    }
+	    
+		@Override
+	    public FontMetrics getFontMetrics(Font font) {
+			fmg.setFont(font);
+			final FontMetrics fontMetrics = fmg.getFontMetrics();
+			return fontMetrics;
+	    }
+    }
 
 	private final class MyDocumentListener implements DocumentListener {
 		public void changedUpdate(DocumentEvent e) {
@@ -282,7 +303,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	 */
 	@Override
 	public void show() {
-		textfield = new JTextArea(getText());
+		textfield = new TextArea(getText());
 		final ModeController modeController = getModeController();
 		final ViewController viewController = modeController.getController().getViewController();
 		final Component component = viewController.getComponent(getNode());
@@ -295,7 +316,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		font = nodeView.getTextFont();
 		zoom = viewController.getZoom();
 		if (zoom != 1F) {
-			final float fontSize = (float) (Math.rint(font.getSize() * zoom * 2) / 2);
+			final float fontSize = font.getSize() * zoom;
 			font = font.deriveFont(fontSize);
 		}
 		textfield.setFont(font);

@@ -81,19 +81,6 @@ class BubbleMainView extends MainView {
 		return width + dW;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.view.mindmapview.NodeView.MainView#getPreferredSize()
-	 */
-	@Override
-	public Dimension getPreferredSize() {
-		final Dimension prefSize = super.getPreferredSize();
-        if (isPreferredSizeSet()) {
-            return prefSize;
-        }
-		prefSize.width += getNodeView().getMap().getZoomed(5);
-		return prefSize;
-	}
 
 	@Override
 	Point getRightPoint() {

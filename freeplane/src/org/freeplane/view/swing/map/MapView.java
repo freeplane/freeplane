@@ -905,12 +905,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		try {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 			controller.getViewController().setTextRenderingHint(g2);
-			final Object oldRenderingHintFM = g2.getRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS);
-			final Object newRenderingHintFM = getZoom() != 1F ? RenderingHints.VALUE_FRACTIONALMETRICS_ON
-			        : RenderingHints.VALUE_FRACTIONALMETRICS_OFF;
-			if (oldRenderingHintFM != newRenderingHintFM) {
-				g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, newRenderingHintFM);
-			}
 			super.paint(g2);
 		}
 		finally {
