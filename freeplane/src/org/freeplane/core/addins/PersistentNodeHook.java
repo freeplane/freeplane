@@ -70,6 +70,13 @@ public abstract class PersistentNodeHook {
 		}
 
 		@Override
+        public void actionPerformed(ActionEvent e) {
+			setSelected(!isActiveForSelection());
+	        super.actionPerformed(e);
+			setSelected(isActiveForSelection());
+        }
+
+		@Override
 		public void setSelected() {
 			setSelected(isActiveForSelection());
 		}
