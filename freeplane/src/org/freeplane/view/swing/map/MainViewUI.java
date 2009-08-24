@@ -81,31 +81,30 @@ class MainViewUI extends BasicLabelUI {
 
 	@Override
 	public void paint(Graphics g, JComponent label) {
+		MainView mainView = (MainView) label;
+		if(! mainView.useFractionalMetrics()){
+			super.paint(g, label);
+			return;
+		}
 		final Graphics2D g2 = (Graphics2D) g;
 		final Object oldRenderingHintFM = g2.getRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS);
 		final Object newRenderingHintFM = RenderingHints.VALUE_FRACTIONALMETRICS_ON;
 		if (oldRenderingHintFM != newRenderingHintFM) {
 			g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, newRenderingHintFM);
 		}
-		final float zoom = ((MainView) label).getZoom();
-		if(zoom == 1f){
+		final AffineTransform transform = g2.getTransform();
+		final float zoom = mainView.getZoom();
+		g2.scale(zoom, zoom);
+		try{
+			isPainting = true;
 			super.paint(g, label);
 		}
-		else{
-			final AffineTransform transform = g2.getTransform();
-			g2.scale(zoom, zoom);
-			try{
-				isPainting = true;
-				super.paint(g, label);
-			}
-			finally{
-				isPainting = false;
-			}
-			g2.setTransform(transform);
+		finally{
+			isPainting = false;
 		}
-		g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, oldRenderingHintFM != null ? oldRenderingHintFM : RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
+		g2.setTransform(transform);
+		if (oldRenderingHintFM != newRenderingHintFM) {
+			g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, oldRenderingHintFM != null ? oldRenderingHintFM : RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
+		}
 	}
-
-
-	
 }

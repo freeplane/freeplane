@@ -463,6 +463,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void endPrinting() {
 		if (isPreparedForPrinting == true) {
 			isPrinting = false;
+			if(zoom == 1f){
+				getRoot().updateAll();
+			}
 			if (MapView.printOnWhiteBackground) {
 				setBackground(background);
 			}
@@ -824,11 +827,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		revalidate();
 	}
 
-	/**
-	 * For nodes, they can ask, whether or not the width must be bigger to
-	 * prevent the "..." at the output. (Bug of java).
-	 */
-	public boolean isCurrentlyPrinting() {
+	public boolean isPrinting() {
 		return isPrinting;
 	}
 
@@ -1002,7 +1001,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void paintSelecteds(final Graphics2D g) {
 		if (!MapView.standardDrawRectangleForSelection 
-				|| isCurrentlyPrinting()) {
+				|| isPrinting()) {
 			return;
 		}
 		final Color c = g.getColor();
@@ -1030,6 +1029,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void preparePrinting() {
 		if (isPreparedForPrinting == false) {
 			isPrinting = true;
+			if(zoom == 1f){
+				getRoot().updateAll();
+			}
 			repaintSelecteds();
 			if (MapView.printOnWhiteBackground) {
 				background = getBackground();

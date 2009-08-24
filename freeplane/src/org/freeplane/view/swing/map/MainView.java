@@ -81,6 +81,7 @@ public abstract class MainView extends JLabel {
 	private static final long serialVersionUID = 1L;
 	private static final JComponent standardLabel = new JLabel();
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
+	private boolean isHtml;
 
 	MainView() {
 		setUI(MainViewUI.createUI(this));
@@ -405,10 +406,25 @@ public abstract class MainView extends JLabel {
 
 	@Override
     public FontMetrics getFontMetrics(Font font) {
+		if(! useFractionalMetrics()){
+			return super.getFontMetrics(font);
+		}
 		fmg.setFont(font);
 		final FontMetrics fontMetrics = fmg.getFontMetrics();
 		return fontMetrics;
     }
+
+	boolean useFractionalMetrics() {
+		if(isHtml){
+			return true;
+		}
+		MapView map = getNodeView().getMap();
+		if(map.isPrinting()){
+			return true;
+		}
+		final float zoom = map.getZoom();
+		return 1f != zoom;
+	}
 
 	void updateTextColor(final NodeView node) {
 		final Color color = NodeStyleController.getController(node.getMap().getModeController()).getColor(
@@ -426,7 +442,8 @@ public abstract class MainView extends JLabel {
 
 	@Override
     public void setText(String text) {
-		if (! BasicHTML.isHTMLString(text)){
+		isHtml = BasicHTML.isHTMLString(text);
+		if (! isHtml){
 			super.setText(text);
 			return;
 		}
