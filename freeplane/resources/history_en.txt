@@ -21,6 +21,11 @@ Hot keys: CONTROL + ALT + RIGHT, CONTROL + ALT + LEFT
 Text rendering mode use more exact fractional metric based version.
 
 Batik version updated to 1.7
+
+Fwdir is not created any more, knopflerfish updated to 2.3.3 nightly build 2911
+
+Performance optimization: do not paint links which both source and target 
+	are far away from the visible part of the screen
        
 
 ===============================
