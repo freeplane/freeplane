@@ -975,15 +975,32 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
 
-	protected void paintLinks(final NodeView source, final Graphics2D graphics, final HashSet alreadyPaintedLinks) {
+	private void paintLinks(final NodeView source, final Graphics2D graphics, final HashSet alreadyPaintedLinks) {
 		final NodeModel node = source.getModel();
 		final Collection<LinkModel> outLinks = NodeLinks.getLinks(node);
 		paintLinks(outLinks, graphics, alreadyPaintedLinks);
 		final Collection<LinkModel> inLinks = LinkController.getController(getModeController()).getLinksTo(node);
 		paintLinks(inLinks, graphics, alreadyPaintedLinks);
-		for (final ListIterator e = source.getChildrenViews().listIterator(); e.hasNext();) {
-			final NodeView target = (NodeView) e.next();
-			paintLinks(target, graphics, alreadyPaintedLinks);
+		final int nodeViewCount = source.getComponentCount();
+		for (int i = 0; i < nodeViewCount; i++) {
+			final Component component = source.getComponent(i);
+			if(! (component instanceof NodeView)){
+				continue;
+			}
+			final NodeView child = (NodeView) component;
+			if(! isPrinting){
+				final Rectangle bounds = SwingUtilities.convertRectangle(source, child.getBounds(), this);
+				final JViewport vp = (JViewport) getParent();
+				final Rectangle viewRect = vp.getViewRect();
+				viewRect.x -= viewRect.width;
+				viewRect.y -= viewRect.height;
+				viewRect.width *= 3;
+				viewRect.height *= 3;
+				if(! viewRect.intersects(bounds)){
+					continue;
+				}
+			}
+			paintLinks(child, graphics, alreadyPaintedLinks);
 		}
 	}
 

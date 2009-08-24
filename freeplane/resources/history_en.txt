@@ -7,7 +7,7 @@ $Rev$
 ===============================
 New features:
 External bitmap and SVG images can be attached using menu Insert->External object
-The action is also available from popup menu
+The action is also available from pop-up menu
 Images can be scaled by dragging the bottom right corner
 Image size can be reseted double clicking on the bottom right corner
 The attached file can be opened by double click on the image itself
