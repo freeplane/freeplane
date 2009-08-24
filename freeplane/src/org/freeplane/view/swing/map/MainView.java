@@ -81,7 +81,6 @@ public abstract class MainView extends JLabel {
 	private static final long serialVersionUID = 1L;
 	private static final JComponent standardLabel = new JLabel();
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
-	private boolean isHtml;
 
 	MainView() {
 		setUI(MainViewUI.createUI(this));
@@ -415,9 +414,6 @@ public abstract class MainView extends JLabel {
     }
 
 	boolean useFractionalMetrics() {
-		if(isHtml){
-			return true;
-		}
 		MapView map = getNodeView().getMap();
 		if(map.isPrinting()){
 			return true;
@@ -442,8 +438,7 @@ public abstract class MainView extends JLabel {
 
 	@Override
     public void setText(String text) {
-		isHtml = BasicHTML.isHTMLString(text);
-		if (! isHtml){
+		if (! (BasicHTML.isHTMLString(text) && useFractionalMetrics())){
 			super.setText(text);
 			return;
 		}
