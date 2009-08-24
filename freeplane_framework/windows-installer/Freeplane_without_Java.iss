@@ -76,7 +76,6 @@ Name: {commondesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desk
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: quicklaunchicon
 
 [Run]
-Filename: javaw.exe; Parameters: """-Dorg.freeplane.exit_on_start=true"" ""-Dorg.osgi.framework.dir=fwdir"" ""-Dorg.knopflerfish.gosg.jars=reference:file:{app}/plugins/""  -jar ""framework.jar"" -xargs ""props.xargs"" -xargs ""init.xargs"" "; WorkingDir: {app}
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
 
 [Registry]

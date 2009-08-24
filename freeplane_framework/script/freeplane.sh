@@ -11,7 +11,7 @@ fi
 _debug() {
 	if [ -n "${DEBUG}" ]
 	then
-		echo "DEBUG:   $1" >&2 
+		echo "DEBUG:   $1" >&2
 		shift
 		for text in "$@"
 		do
@@ -177,18 +177,13 @@ fi
 fwdir=${freedir}/fwdir
 
 defines=
+defines="$defines -Dorg.knopflerfish.framework.bundlestorage=memory"
 defines="$defines -Dorg.freeplane.globalresourcedir=${freedir}/resources"
-defines="$defines -Dorg.osgi.framework.dir=${fwdir}"
 defines="$defines -Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/plugins/"
 
 xargs=
 xargs="$xargs -xargs ${freedir}/props.xargs"
-if [ -d "${fwdir}" ]
-then
-	xargs="$xargs -xargs ${freedir}/restart.xargs"
-else	
-	xargs="$xargs -xargs ${freedir}/init.xargs"
-fi
+xargs="$xargs -xargs ${freedir}/init.xargs"
 
 call=
 if [ "${JAVA_TYPE}" != "sun" ]

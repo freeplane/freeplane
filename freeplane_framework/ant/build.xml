@@ -95,10 +95,10 @@
 		
 		<exec osfamily="windows"
 			dir="${workspace}/freeplane_framework/windows-installer"
-			executable="C:\Program Files\Inno Setup 5\compil32.exe"
+			executable="C:\Program Files\Inno Setup 5\iscc.exe"
 			failifexecutionfails="false"
 			failonerror="true">
-			<arg line="/cc Freeplane_without_Java.iss"/>
+			<arg line="/Q Freeplane_without_Java.iss"/>
 		</exec>
 </target>
 	<target name="clean">

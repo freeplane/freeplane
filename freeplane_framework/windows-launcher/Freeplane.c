@@ -9,7 +9,7 @@
 char * getcwd ()
      {
        size_t size = 300;
-     
+
        while (1)
          {
            char *buffer = (char *) malloc((size + 1 ) * sizeof(char));
@@ -38,7 +38,7 @@ char *concat(const char *argv[])
       strcpy(result+pos , arg);
       pos += strlen(arg);
    }
-   return result; 
+   return result;
 }
 
 char *surround_by_quote(const char *in_string) {
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])  {
    int one_for_stopping_null = 1;
    int no_of_passed_arguments_without_caller = argc - 1;
 
-   int no_of_passed_arguments = no_of_fixed_arguments 
+   int no_of_passed_arguments = no_of_fixed_arguments
             + no_of_passed_arguments_without_caller + one_for_stopping_null;
    char** arguments = (char **) malloc(no_of_passed_arguments * sizeof(char*));
 
@@ -92,32 +92,22 @@ int main(int argc, char *argv[])  {
 
 
    {
+      const char *argv[] = {"\"-Dorg.knopflerfish.framework.bundlestorage=memory\"", 0};
+      arguments[argumentNumber++] = concat(argv);
+   }
+
+   {
       const char *argv[] = {"\"-Dorg.freeplane.globalresourcedir=", path_to_launcher_without_file, "resources\"", 0};
       arguments[argumentNumber++] = concat(argv);
    }
-   
-   char* fwdir;
-   {
-      const char *argv[] = {path_to_launcher_without_file, "fwdir", 0};
-      fwdir = concat(argv);
-   }
-   
 
-   struct stat info;
-   bool fwdirExist = 0 == stat(fwdir, &info) && 0 != S_ISDIR (info.st_mode);
-   
-   {
-      const char *argv[] = {"\"-Dorg.osgi.framework.dir=", fwdir, "\"", 0};
-      arguments[argumentNumber++] = concat(argv);
-   }
-   
    {
       const char *argv[] = {"\"-Dorg.knopflerfish.gosg.jars=reference:file:", path_to_launcher_without_file, "plugins/\"", 0};
       arguments[argumentNumber++] = concat(argv);
    }
-   
+
    for (int i=1; i <= no_of_passed_arguments_without_caller; ++i) {
-      arguments[argumentNumber++] = param2define(i, argv[i]); 
+      arguments[argumentNumber++] = param2define(i, argv[i]);
 
    }
 
@@ -135,7 +125,7 @@ int main(int argc, char *argv[])  {
    }
    arguments[argumentNumber++] = "-xargs";
    {
-      const char *argv[] = {path_to_launcher_without_file, fwdirExist ? "restart.xargs":"init.xargs", 0};
+      const char *argv[] = {path_to_launcher_without_file, "init.xargs", 0};
       arguments[argumentNumber++] = surround_by_quote(concat(argv));
    }
    // Null-terminate the arguments array
@@ -144,9 +134,9 @@ int main(int argc, char *argv[])  {
 
 #ifdef __DEBUG__
       for (int i=0; i < argumentNumber; ++i) {
-         printf("Argument %s\n",arguments[i]); 
+         printf("Argument %s\n",arguments[i]);
       }
-#endif         
+#endif
    // Replace current process by a new one running our application
 
    execvp(javaw_path, arguments);
