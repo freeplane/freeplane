@@ -114,11 +114,11 @@ public class FreeplaneToolBar extends JToolBar {
 	}
 
 	protected void configureComponent(final Component comp) {
-//		comp.setFocusable(false);
 		if (!(comp instanceof AbstractButton)) {
 			return;
 		}
 		final AbstractButton abstractButton = (AbstractButton) comp;
+		abstractButton.setFocusable(false);
 		abstractButton.setMargin(FreeplaneToolBar.nullInsets);
 		if (null != abstractButton.getIcon()) {
 			final String text = abstractButton.getText();
