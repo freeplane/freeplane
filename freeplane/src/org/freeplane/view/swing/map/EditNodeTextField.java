@@ -262,8 +262,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		modeController.getMapController().removeNodeChangeListener((INodeChangeListener) textFieldListener);
 		final Rectangle bounds = textfield.getBounds();
 		textfield.getDocument().removeDocumentListener(documentListener);
-		textfield = null;
 		final MainView mainView = (MainView) textfield.getParent();
+		textfield = null;
 		mainView.setPreferredSize(null);
 		mainView.updateText(getNode().getText());
 		mainView.setHorizontalAlignment(JLabel.CENTER);
