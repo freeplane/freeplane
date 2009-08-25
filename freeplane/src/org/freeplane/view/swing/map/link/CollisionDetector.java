@@ -21,6 +21,8 @@ package org.freeplane.view.swing.map.link;
 
 import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -35,7 +37,25 @@ public class CollisionDetector {
 	
 	public boolean detectCollision(final Point p, final Shape shape) {
 	    final Rectangle2D rec = getControlRectangle(p);
-	    return shape.intersects(rec);
+	    final PathIterator pathIterator = shape.getPathIterator(new AffineTransform(), MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION/4);
+	    double lastCoords[] = new double[6];
+	    pathIterator.currentSegment(lastCoords);
+	    for(;;){
+	    	pathIterator.next();
+	    	double nextCoords[] = new double[6];
+		    if(pathIterator.isDone() || PathIterator.SEG_CLOSE == pathIterator.currentSegment(nextCoords)){
+		    	break;
+		    }
+		    double x = Math.min(lastCoords[0], nextCoords[0]);
+			double y = Math.min(lastCoords[1], nextCoords[1]);
+			double w = Math.abs(lastCoords[0]- nextCoords[0]);
+			double h = Math.abs(lastCoords[1]- nextCoords[1]);
+			if(rec.intersects(x, y, w, h)) {
+				return true;
+			}
+			lastCoords = nextCoords;
+	    }
+	    return false;
     }
 
 	private Rectangle2D getControlRectangle(final Point2D p) {
