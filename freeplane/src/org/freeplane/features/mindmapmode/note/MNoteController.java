@@ -222,6 +222,9 @@ public class MNoteController extends NoteController {
 		final ModeController modeController = getModeController();
 		final Controller controller = modeController.getController();
 		final IMapSelection selection = controller.getSelection();
+		if(selection == null){
+			return;
+		}
 		final NodeModel selected = selection.getSelected();
 		noteManager.saveNote(selected);
 	}

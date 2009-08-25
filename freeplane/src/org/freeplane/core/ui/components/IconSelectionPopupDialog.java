@@ -75,7 +75,6 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		}
 	}
 
-	private static Position lastPosition = new Position(0, 0);
 	/**
 	 * 
 	 */
@@ -129,7 +128,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		getContentPane().add(iconPanel, BorderLayout.CENTER);
 		descriptionLabel = new JLabel(" ");
 		getContentPane().add(descriptionLabel, BorderLayout.SOUTH);
-		setSelectedPosition(IconSelectionPopupDialog.lastPosition);
+		setSelectedPosition(new Position(0, 0));
 		select(getSelectedPosition());
 		addKeyListener(this);
 		pack();
@@ -351,7 +350,6 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 
 	private void setSelectedPosition(final Position position) {
 		selected = position;
-		IconSelectionPopupDialog.lastPosition = position;
 	}
 
 	private void unhighlight(final Position position) {

@@ -258,7 +258,7 @@ public class MLinkController extends LinkController {
 	static private ConnectorColorAction colorArrowLinkAction;
 	static private EdgeLikeLinkAction edgeLikeLinkAction;
 	static private Pattern mailPattern;
-	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;]");
+	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;|]");
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
 

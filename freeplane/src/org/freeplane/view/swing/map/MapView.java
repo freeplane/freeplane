@@ -22,6 +22,7 @@ package org.freeplane.view.swing.map;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -560,8 +561,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * @see java.awt.dnd.Autoscroll#getAutoscrollInsets()
 	 */
 	public Insets getAutoscrollInsets() {
+		final Container parent = getParent();
+		if(parent == null){
+			return new Insets(0, 0, 0, 0);
+		}
 		final Rectangle outer = getBounds();
-		final Rectangle inner = getParent().getBounds();
+		final Rectangle inner = parent.getBounds();
 		return new Insets(inner.y - outer.y + MapView.margin, inner.x - outer.x + MapView.margin, outer.height
 		        - inner.height - inner.y + outer.y + MapView.margin, outer.width - inner.width - inner.x + outer.x
 		        + MapView.margin);

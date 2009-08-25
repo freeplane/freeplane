@@ -84,6 +84,9 @@ class EditAction extends AFreeplaneAction {
 			return;
 		}
 		final Controller controller = getController();
+		if(controller.getMap() != nodeModel.getMap()){
+			return;
+		}
 		final ViewController viewController = controller.getViewController();
 		final Component map = viewController.getMapView();
 		map.validate();

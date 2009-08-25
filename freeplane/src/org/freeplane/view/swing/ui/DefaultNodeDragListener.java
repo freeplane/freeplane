@@ -10,6 +10,7 @@ import java.awt.dnd.DragSourceDragEvent;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
+import java.awt.dnd.InvalidDnDOperationException;
 import java.awt.event.InputEvent;
 
 import org.freeplane.core.controller.Controller;
@@ -57,23 +58,27 @@ class DefaultNodeDragListener implements DragGestureListener {
 		final ModeController modeController = controller.getModeController();
 		final Transferable t = ClipboardController.getController(modeController).copy(controller.getSelection());
 		((MindMapNodesSelection) t).setDropAction(dragActionName);
-		e.startDrag(cursor, t, new DragSourceListener() {
-			public void dragDropEnd(final DragSourceDropEvent dsde) {
-			}
+		try {
+	        e.startDrag(cursor, t, new DragSourceListener() {
+	        	public void dragDropEnd(final DragSourceDropEvent dsde) {
+	        	}
 
-			public void dragEnter(final DragSourceDragEvent e) {
-			}
+	        	public void dragEnter(final DragSourceDragEvent e) {
+	        	}
 
-			public void dragExit(final DragSourceEvent dse) {
-			}
+	        	public void dragExit(final DragSourceEvent dse) {
+	        	}
 
-			public void dragOver(final DragSourceDragEvent dsde) {
-			}
+	        	public void dragOver(final DragSourceDragEvent dsde) {
+	        	}
 
-			public void dropActionChanged(final DragSourceDragEvent dsde) {
-				dsde.getDragSourceContext().setCursor(getCursorByAction(dsde.getUserAction()));
-			}
-		});
+	        	public void dropActionChanged(final DragSourceDragEvent dsde) {
+	        		dsde.getDragSourceContext().setCursor(getCursorByAction(dsde.getUserAction()));
+	        	}
+	        });
+        }
+        catch (InvalidDnDOperationException ex) {
+        }
 	}
 
 	public Cursor getCursorByAction(final int dragAction) {

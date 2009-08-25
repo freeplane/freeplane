@@ -133,7 +133,7 @@ public class UrlManager implements IExtension {
 						trans.transform(new StreamSource(file), result);
 					}
 					catch (final Exception ex) {
-						LogTool.severe(ex);
+						LogTool.warn(ex);
 						thrownException = ex;
 					}
 				}
@@ -335,12 +335,12 @@ public class UrlManager implements IExtension {
 			urlStreamReader = new InputStreamReader(url.openStream());
 		}
 		catch (final AccessControlException ex) {
-			UITools.errorMessage("Could not open URL " + url.toString() + ". Access Denied.");
+			UITools.errorMessage("Could not open URL " + url + ". Access Denied.");
 			System.err.println(ex);
 			return;
 		}
 		catch (final Exception ex) {
-			UITools.errorMessage("Could not open URL " + url.toString() + ".");
+			UITools.errorMessage("Could not open URL " + url + ".");
 			System.err.println(ex);
 			return;
 		}

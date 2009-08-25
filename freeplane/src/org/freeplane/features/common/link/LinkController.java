@@ -127,8 +127,7 @@ public class LinkController extends SelectionController implements IExtension {
 		return colorHandlers.addGetter(key, getter);
 	}
 
-	private void addLinks(final JPopupMenu arrowLinkPopup, final NodeModel source,
-	                      final HashSet<NodeModel> nodeAlreadyVisited) {
+	private void addLinks(final JPopupMenu arrowLinkPopup, final NodeModel source) {
 		final IMapSelection selection = getModeController().getController().getSelection();
 		if (!selection.isSelected(source)) {
 			arrowLinkPopup.add(new GotoLinkNodeAction(this, source));
@@ -145,11 +144,8 @@ public class LinkController extends SelectionController implements IExtension {
 	protected void createArrowLinkPopup(final ConnectorModel link, final JPopupMenu arrowLinkPopup) {
 		final NodeModel source = link.getSource();
 		final NodeModel target = link.getTarget();
-		final HashSet<NodeModel> nodeAlreadyVisited = new HashSet<NodeModel>();
-		nodeAlreadyVisited.add(source);
-		nodeAlreadyVisited.add(target);
-		addLinks(arrowLinkPopup, source, nodeAlreadyVisited);
-		addLinks(arrowLinkPopup, target, nodeAlreadyVisited);
+		addLinks(arrowLinkPopup, source);
+		addLinks(arrowLinkPopup, target);
 	}
 
 	public Color getColor(final ConnectorModel model) {

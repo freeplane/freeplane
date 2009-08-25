@@ -80,19 +80,19 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 
 	public void importFolderStructure(final File folder, final NodeModel target, final boolean redisplay)
 	        throws MalformedURLException {
-		Logger.global.warning("Entering folder: " + folder);
-		if (folder.isDirectory()) {
-			final File[] list = folder.listFiles();
-			for (int i = 0; i < list.length; i++) {
-				if (list[i].isDirectory()) {
-					final NodeModel node = addNode(target, list[i].getName(), list[i].toURI().toString());
-					importFolderStructure(list[i], node, false);
-				}
+		final File[] list = folder.listFiles();
+		if (list == null) {
+			return;
+		}
+		for (int i = 0; i < list.length; i++) {
+			if (list[i].isDirectory()) {
+				final NodeModel node = addNode(target, list[i].getName(), list[i].toURI().toString());
+				importFolderStructure(list[i], node, false);
 			}
-			for (int i = 0; i < list.length; i++) {
-				if (!list[i].isDirectory()) {
-					addNode(target, list[i].getName(), list[i].toURI().toString());
-				}
+		}
+		for (int i = 0; i < list.length; i++) {
+			if (!list[i].isDirectory()) {
+				addNode(target, list[i].getName(), list[i].toURI().toString());
 			}
 		}
 		getModeController().getMapController().setFolded(target, true);

@@ -99,10 +99,11 @@ public class EdgeController implements IExtension {
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<EdgeStyle, NodeModel>() {
 			public EdgeStyle getProperty(final NodeModel node, final EdgeStyle currentValue) {
-				if (node.isRoot()) {
+				final NodeModel parentNode = node.getParentNode();
+				if (parentNode == null) {
 					return standardStyle;
 				}
-				return getStyle(node.getParentNode());
+				return getStyle(parentNode);
 			}
 		});
 		addWidthGetter(IPropertyHandler.NODE, new IPropertyHandler<Integer, NodeModel>() {
