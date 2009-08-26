@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -52,12 +53,12 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	private final class CombiFactory implements IViewerFactory {
 	    private IViewerFactory factory;
 
-	    public JComponent createViewer(URI uri, final Dimension preferredSize) {
+	    public JComponent createViewer(URI uri, final Dimension preferredSize) throws MalformedURLException, IOException {
 	    	factory = getViewerFactory(uri);
 	        return factory.createViewer(uri, preferredSize);
 	    }
 
-	    public JComponent createViewer(ExternalResource resource, URI absoluteUri) {
+	    public JComponent createViewer(ExternalResource resource, URI absoluteUri) throws MalformedURLException, IOException {
 	    	factory = getViewerFactory(absoluteUri);
 	        return factory.createViewer(resource, absoluteUri);
 	    }

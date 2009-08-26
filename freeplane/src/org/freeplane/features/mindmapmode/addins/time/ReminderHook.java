@@ -165,7 +165,7 @@ public class ReminderHook extends PersistentNodeHook {
 		if (model.getNode().getMap() != getController().getMap()) {
 			return;
 		}
-		displayState(model, (stateAdded) ? CLOCK_VISIBLE : CLOCK_INVISIBLE, model.getNode(), false);
+		displayState(model, (stateAdded) ? CLOCK_VISIBLE : CLOCK_INVISIBLE, model.getNode(), true);
 	}
 
 	@Override
@@ -239,7 +239,7 @@ public class ReminderHook extends PersistentNodeHook {
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		setToolTip(reminderExtension.getNode(), null);
         reminderExtension.deactivateTimer();
-        displayState(reminderExtension, REMOVE_CLOCK, reminderExtension.getNode(), false);
+        displayState(reminderExtension, REMOVE_CLOCK, reminderExtension.getNode(), true);
         getModeController().getMapController().removeMapChangeListener(reminderExtension);
 		super.remove(node, extension);
 	}
@@ -261,7 +261,7 @@ public class ReminderHook extends PersistentNodeHook {
 		    .getText("plugins/TimeManagement.xml_reminderNode_tooltip"));
 		final String message = formatter.format(messageArguments);
 		setToolTip(model.getNode(), message);
-		displayState(model, CLOCK_VISIBLE, model.getNode(), true);
+		displayState(model, CLOCK_VISIBLE, model.getNode(), false);
 	}
 
 	private void scheduleTimer(final ReminderExtension model, final TimerTask task) {

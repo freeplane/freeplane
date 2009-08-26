@@ -133,7 +133,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		mapView.scrollNodeToVisible(nodeView);
 	}
 
-	class TextFieldListener implements KeyListener, FocusListener, MouseListener, INodeChangeListener {
+	class TextFieldListener implements KeyListener, FocusListener, MouseListener{
 		final int CANCEL = 2;
 		final int EDIT = 1;
 		// TODO rladstaetter 18.02.2009 eventSource should be an enum
@@ -233,13 +233,6 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			conditionallyShowPopup(e);
 		}
 
-		public void nodeChanged(NodeChangeEvent event) {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					focusLost(null);
-				}
-			});
-		}
 	}
 
 	final private KeyEvent firstEvent;
@@ -258,9 +251,6 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		if (textfield == null) {
 			return;
 		}
-		final ModeController modeController = getModeController();
-		modeController.getMapController().removeNodeChangeListener((INodeChangeListener) textFieldListener);
-		final Rectangle bounds = textfield.getBounds();
 		textfield.getDocument().removeDocumentListener(documentListener);
 		final MainView mainView = (MainView) textfield.getParent();
 		textfield = null;
@@ -368,8 +358,6 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			textfield.setCaretPosition(getText().length());
 		}
 		textfield.getDocument().addDocumentListener(documentListener);
-		final MapController mapController = modeController.getMapController();
-		mapController.addNodeChangeListener(textFieldListener);
 		textfield.repaint();
 		textfield.requestFocus();
 	}

@@ -33,6 +33,10 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Window;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
@@ -95,6 +99,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	final private ZoomOutAction zoomOut;
 	final private GraphicsDevice device;
 	private Rectangle previousSize;
+	private int winState;
 
 	public ViewController(final Controller controller, final IMapViewManager mapViewManager) {
 		super();
@@ -384,7 +389,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
-		getFrame().addWindowFocusListener(new WindowFocusListener(){
+		final Frame frame = getFrame();
+		frame.addWindowFocusListener(new WindowFocusListener(){
 
 			public void windowGainedFocus(WindowEvent e) {
 				final IMapSelection selection = getSelection();
@@ -396,6 +402,25 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 			public void windowLostFocus(WindowEvent e) {
             }});
+		frame.addComponentListener(new ComponentAdapter(){
+
+			@Override
+            public void componentResized(ComponentEvent e) {
+				final Frame frame = (Frame) e.getComponent();
+				if(frame.getExtendedState() != Frame.NORMAL || isFullScreenEnabled()){
+					return;
+				}
+				previousSize = frame.getBounds();
+            }
+
+			@Override
+            public void componentMoved(ComponentEvent e) {
+				componentResized(e);
+            }
+			
+			
+			
+		});
 	}
 
 	abstract public JSplitPane insertComponentIntoSplitPane(JComponent noteViewerComponent);
@@ -717,7 +742,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		final Frame frame = getFrame();
 	        if (fullScreen){
             	frame.dispose();
-                previousSize=frame.getBounds();
+    			winState = frame.getExtendedState();
                 frame.setUndecorated(true);
                 frame.setResizable(false);
                 device.setFullScreenWindow(frame);
@@ -732,8 +757,9 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	        	frame.dispose();
 	        	frame.setUndecorated(false);
 	        	frame.setResizable(true);
-	        	frame.setBounds(previousSize);
 	            device.setFullScreenWindow(null);
+	            frame.setBounds(previousSize);
+	            frame.setExtendedState(winState);
                 getFreeplaneMenuBar().setVisible(isMenubarVisible());
                 leftToolbarPanel.setVisible(isLeftToolbarVisible());
         		final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory().getToolBars();

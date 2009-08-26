@@ -29,12 +29,15 @@ import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.border.MatteBorder;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogTool;
 
 
 public class BitmapImagePreview extends JComponent implements PropertyChangeListener {
@@ -76,10 +79,18 @@ public class BitmapImagePreview extends JComponent implements PropertyChangeList
         if(file == null){
         	return;
         }
-        updateView(file);
+        try {
+	        updateView(file);
+        }
+        catch (MalformedURLException e1) {
+	        LogTool.warn(e1);
+        }
+        catch (IOException e1) {
+	        LogTool.warn(e1);
+        }
     }
 
-	protected void updateView(File file) {
+	protected void updateView(File file) throws MalformedURLException, IOException {
 		BitmapViewerComponent viewer = new BitmapViewerComponent(file.toURI());
 		viewer.setHint(Image.SCALE_FAST);
 		final Dimension size = getSize();

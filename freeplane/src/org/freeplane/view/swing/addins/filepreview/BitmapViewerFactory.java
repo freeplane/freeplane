@@ -59,7 +59,7 @@ public class BitmapViewerFactory implements IViewerFactory {
 	    return readers;
     }
 
-	public JComponent createViewer(ExternalResource resource, URI uri) {
+	public JComponent createViewer(ExternalResource resource, URI uri) throws MalformedURLException, IOException {
 	         final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
 	        final Dimension originalSize = bitmapViewerComponent.getOriginalSize();
 	        float zoom = resource.getZoom();
@@ -69,7 +69,7 @@ public class BitmapViewerFactory implements IViewerFactory {
 	        bitmapViewerComponent.setLayout(new ViewerLayoutManager(zoom));
 			return bitmapViewerComponent;
 	}
-	public JComponent createViewer(URI uri, final Dimension preferredSize) {
+	public JComponent createViewer(URI uri, final Dimension preferredSize) throws MalformedURLException, IOException {
 	        final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
 	        bitmapViewerComponent.setPreferredSize(preferredSize);
 	        bitmapViewerComponent.setSize(preferredSize);

@@ -52,16 +52,8 @@ public class BitmapViewerComponent extends JComponent{
     	this.hint = hint;
     }
 
-	public BitmapViewerComponent(URI uri) {
-	     try {
-	        this.image = ImageIO.read(uri.toURL());
-        }
-        catch (MalformedURLException e) {
-	        e.printStackTrace();
-        }
-        catch (IOException e) {
-	        e.printStackTrace();
-        }
+	public BitmapViewerComponent(URI uri) throws MalformedURLException, IOException {
+		this.image = ImageIO.read(uri.toURL());
 		hint = Image.SCALE_SMOOTH;
     }
 	

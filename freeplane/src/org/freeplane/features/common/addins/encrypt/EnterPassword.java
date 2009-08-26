@@ -112,7 +112,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 			public void act() {
 				node.addExtension(encryptedMindMapNode);
 				encryptedMindMapNode.updateIcon();
-				getModeController().getMapController().nodeRefresh(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
@@ -122,7 +122,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 			public void undo() {
 				node.removeExtension(encryptedMindMapNode);
 				node.setStateIcon("decrypted", null);
-				getModeController().getMapController().nodeRefresh(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		getModeController().execute(actor, node.getMap());
