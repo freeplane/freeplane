@@ -282,11 +282,18 @@ public class HtmlTools {
 				if (myChar == ';') {
 					if (entity.charAt(0) == '#') {
 						try {
+							final char c ;
 							if (entity.charAt(1) == 'x') {
-								result.append((char) Integer.parseInt(entity.substring(2), 16));
+								c = (char) Integer.parseInt(entity.substring(2), 16);
 							}
 							else {
-								result.append((char) Integer.parseInt(entity.substring(1), 10));
+								c = (char) Integer.parseInt(entity.substring(1), 10);
+							}
+							if(c >= ' ' || c == '\t' || c == '\r' || c == '\n'){
+								result.append(c);
+							}
+							else{
+								result.append(' ');
 							}
 						}
 						catch (final NumberFormatException e) {

@@ -251,4 +251,17 @@ class XHTMLWriter extends FixedHTMLWriter {
 		}
 		super.writeAttributes(attributeSet);
     }
+    
+    // remove invalid characters
+	@Override
+    protected void output(char[] chars, int start, int length) throws IOException {
+		for(int i = start; i < start + length; i++){
+			final char c = chars[i];
+			if(c < 32 && c != '\r' && c != '\n' && c != '\t'){
+				chars[i] = ' ';
+			}
+		}
+	    super.output(chars, start, length);
+    }
+	
 }

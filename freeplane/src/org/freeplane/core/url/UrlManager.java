@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.url;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -130,7 +131,8 @@ public class UrlManager implements IExtension {
 					Transformer trans;
 					try {
 						trans = transFact.newTransformer(xsltSource);
-						trans.transform(new StreamSource(file), result);
+						InputStream cleanedInput = new CleaningInputStream(new BufferedInputStream(file));
+						trans.transform(new StreamSource(cleanedInput), result);
 					}
 					catch (final Exception ex) {
 						LogTool.warn(ex);
