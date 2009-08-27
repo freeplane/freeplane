@@ -75,7 +75,7 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.view.swing.map.link.ArrowLinkView;
+import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
 
@@ -960,7 +960,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 						arrowLink = new EdgeLinkView(ref, sourceView, targetView);
 					}
 					else{
-						arrowLink = new ArrowLinkView(ref, sourceView, targetView);
+						arrowLink = new ConnectorView(ref, sourceView, targetView);
 					}
 					arrowLink.paint(graphics);
 					arrowLinkViews.add(arrowLink);

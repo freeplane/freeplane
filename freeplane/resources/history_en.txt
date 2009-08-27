@@ -3,6 +3,19 @@ $LastChangedDate$
 $Rev$
 *******************************
 ===============================
+1.0.28 alpha
+===============================
+Bug fixes:
+Save map after node is encrypted
+Bug fixes in reminder: properly show and remove state icons (flag) when reminder is active
+Do not cancel editing in text field if some node is changed
+Proper handling of missing URI for viewer/preview
+Window state properly recovered after full screen
+Text rendering in inline editor
+Collision detecting for connectors
+Middle lable positioning for connectors
+
+===============================
 1.0.27 alpha
 ===============================
 New features:
@@ -27,7 +40,6 @@ Fwdir is not created any more, knopflerfish updated to 2.3.3 nightly build 2911
 Performance optimization: do not paint links which both source and target 
 	are far away from the visible part of the screen
        
-
 ===============================
 1.0.26 alpha
 ===============================

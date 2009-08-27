@@ -1,25 +1,6 @@
-# Prefix for searching for bundle URLs from console or command line
-
--init
-## Basic plugin bundles
--initlevel 1
--install org.freeplane.plugin.help
--install org.freeplane.plugin.svg
--install org.freeplane.plugin.latex
--install org.freeplane.plugin.script
--install org.freeplane.plugin.bugreport
-
--initlevel 2
--install org.freeplane.core
-
--startlevel 2
-
-## first start
--start org.freeplane.plugin.help
--start org.freeplane.plugin.svg
--start org.freeplane.plugin.latex
--start org.freeplane.plugin.script
--start org.freeplane.plugin.bugreport
--start org.freeplane.core
-
-
+-istart org.freeplane.plugin.help
+-istart org.freeplane.plugin.svg
+-istart org.freeplane.plugin.latex
+-istart org.freeplane.plugin.script
+-istart org.freeplane.plugin.bugreport
+-istart org.freeplane.core
