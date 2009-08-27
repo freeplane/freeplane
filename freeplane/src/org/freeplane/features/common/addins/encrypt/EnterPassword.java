@@ -168,6 +168,9 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 				if (doPasswordCheckAndDecryptNode(encNode)) {
 					node.setFolded(false);
 				}
+				else{
+					return;
+				}
 			}
 			final Controller controller = getController();
 			final IMapSelection selection = controller.getSelection();

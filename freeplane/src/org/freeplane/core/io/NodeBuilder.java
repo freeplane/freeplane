@@ -117,7 +117,10 @@ public class NodeBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeBuilder.XML_NODE_ENCRYPTED_CONTENT,
 		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
-				    createEncryptedNode((NodeModel) userObject, value);
+				    final NodeModel node = (NodeModel) userObject;
+					createEncryptedNode(node, value);
+					node.setFolded(true);
+				    
 			    }
 		    });
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeBuilder.XML_NODE_HISTORY_CREATED_AT,
