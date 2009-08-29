@@ -109,7 +109,7 @@ class BubbleMainView extends MainView {
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
 		final Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
-		paintSelected(g);
+		paintBackgound(g);
 		paintDragOver(g);
 		final Color edgeColor = EdgeController.getController(modeController).getColor(model);
 		g.setColor(edgeColor);
@@ -125,13 +125,4 @@ class BubbleMainView extends MainView {
 		graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
 	}
 
-	@Override
-	public void paintSelected(final Graphics2D graphics) {
-		if (getNodeView().useSelectionColors()) {
-			paintBackground(graphics, getNodeView().getSelectedColor());
-		}
-		else {
-			paintBackground(graphics, getNodeView().getTextBackground());
-		}
-	}
 }

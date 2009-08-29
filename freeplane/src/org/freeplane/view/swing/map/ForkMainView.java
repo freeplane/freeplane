@@ -128,7 +128,7 @@ class ForkMainView extends MainView {
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
 		final Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
-		paintSelected(g);
+		paintBackgound(g);
 		paintDragOver(g);
 		final EdgeController edgeController = EdgeController.getController(modeController);
 		int edgeWidth = edgeController.getWidth(model);

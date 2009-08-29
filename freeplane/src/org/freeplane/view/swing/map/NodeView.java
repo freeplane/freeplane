@@ -56,6 +56,7 @@ import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.edge.EdgeView;
@@ -913,32 +914,41 @@ public class NodeView extends JComponent implements INodeView {
 	 */
 	@Override
 	public void paint(final Graphics g) {
+		final PaintingMode paintingMode = map.getPaintingMode();
 		final boolean isRoot = isRoot();
 		if (isRoot) {
-			paintCloud(g);
+			switch(paintingMode){
+				case CLOUDS:
+				case ALL:
+					paintCloud(g);
+			}
 		}
 		if (isContentVisible()) {
 			final Graphics2D g2 = (Graphics2D) g;
-			final ModeController modeController = getMap().getModeController();
-			final Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g2);
-			paintCloudsAndEdges(g2);
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+			final ModeController modeController = map.getModeController();
+			final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+			switch(paintingMode){
+				case CLOUDS:
+				case ALL:
+					modeController.getController().getViewController().setEdgesRenderingHint(g2);
+					paintCloudsAndEdges(g2);
+					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+			}
 			super.paint(g);
-			g2.setStroke(BubbleMainView.DEF_STROKE);
-			if (!isRoot) {
-				modeController.getController().getViewController().setEdgesRenderingHint(g2);
-				paintFoldingMark(g2);
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+			switch(paintingMode){
+				case NODES:
+				case ALL:
+					g2.setStroke(BubbleMainView.DEF_STROKE);
+					if (!isRoot) {
+						modeController.getController().getViewController().setEdgesRenderingHint(g2);
+						paintFoldingMark(g2);
+						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+					}
 			}
 		}
 		else {
 			super.paint(g);
 		}
-	}
-
-	@Override
-	protected void paintChildren(final Graphics g) {
-		super.paintChildren(g);
 	}
 
 	private void paintCloud(final Graphics g) {

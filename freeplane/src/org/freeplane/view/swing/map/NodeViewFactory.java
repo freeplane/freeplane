@@ -22,6 +22,7 @@ package org.freeplane.view.swing.map;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.LayoutManager;
 
 import javax.swing.JComponent;
@@ -41,6 +42,17 @@ class NodeViewFactory {
 		ContentPane() {
 			setLayout(ContentPane.layoutManager);
 		}
+		
+		
+		@Override
+	    public void paint(Graphics g) {
+			switch(((NodeView)getParent()).getMap().getPaintingMode())
+			{
+				case CLOUDS:
+					return;
+			}
+		    super.paint(g);
+	    }
 	}
 
 	private static class ContentPaneLayout implements LayoutManager {

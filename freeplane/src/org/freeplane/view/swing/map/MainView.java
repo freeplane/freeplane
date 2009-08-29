@@ -90,11 +90,11 @@ public abstract class MainView extends JLabel {
 	}
 
 	protected void convertPointFromMap(final Point p) {
-		UITools.convertPointFromAncestor(getNodeView().getMap(), p, this);
+		UITools.convertPointFromAncestor(getMap(), p, this);
 	}
 
 	protected void convertPointToMap(final Point p) {
-		UITools.convertPointToAncestor(this, p, getNodeView().getMap());
+		UITools.convertPointToAncestor(this, p, getMap());
 	}
 
 	public boolean dropAsSibling(final double xCoord) {
@@ -131,7 +131,7 @@ public abstract class MainView extends JLabel {
 		if (icon == null) {
 			return 0;
 		}
-		return getNodeView().getMap().getZoomed(icon.getIconWidth());
+		return getMap().getZoomed(icon.getIconWidth());
 	}
 
 	abstract Point getLeftPoint();
@@ -166,10 +166,15 @@ public abstract class MainView extends JLabel {
 	 */
 	@Override
 	public Dimension getPreferredSize() {
+		final Dimension preferredSize = super.getPreferredSize();
 		if (isPreferredSizeSet()) {
-			return super.getPreferredSize();
+			return preferredSize;
 		}
- 		return super.getPreferredSize();
+		final float zoom = getZoom();
+		int d = 2 * (int)(Math.floor(zoom));
+		preferredSize.width += d;
+		preferredSize.height += d;
+ 		return preferredSize;
 	}
 
 	abstract Point getRightPoint();
@@ -177,9 +182,13 @@ public abstract class MainView extends JLabel {
 	abstract String getStyle();
 
 	float getZoom() {
-		final float zoom = getNodeView().getMap().getZoom();
+		final float zoom = getMap().getZoom();
 		return zoom;
 	}
+
+	private MapView getMap() {
+	    return getNodeView().getMap();
+    }
 
 	int getZoomedFoldingSymbolHalfWidth() {
 		return getNodeView().getZoomedFoldingSymbolHalfWidth();
@@ -202,6 +211,16 @@ public abstract class MainView extends JLabel {
 		return getNodeView().isLeft() ? xCoord > getSize().width * (1.0 - p) : xCoord < getSize().width * p;
 	}
 	
+	@Override
+    public void paint(Graphics g) {
+		switch(getMap().getPaintingMode())
+		{
+			case CLOUDS:
+				return;
+		}
+	    super.paint(g);
+    }
+
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
 		graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
@@ -210,18 +229,18 @@ public abstract class MainView extends JLabel {
 	public void paintDragOver(final Graphics2D graphics) {
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SON) {
 			if (getNodeView().isLeft()) {
-				graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getNodeView().getMap().getBackground(),
+				graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getMap().getBackground(),
 				    getWidth() / 4, 0, NodeView.dragColor));
 				graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
 			}
 			else {
-				graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getNodeView().getMap().getBackground(),
+				graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getMap().getBackground(),
 				    getWidth() * 3 / 4, 0, NodeView.dragColor));
 				graphics.fillRect(getWidth() / 4, 0, getWidth() - 1, getHeight() - 1);
 			}
 		}
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SIBLING) {
-			graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5, getNodeView().getMap().getBackground(), 0,
+			graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5, getMap().getBackground(), 0,
 			    getHeight() / 5, NodeView.dragColor));
 			graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
 		}
@@ -240,18 +259,15 @@ public abstract class MainView extends JLabel {
 		g.setColor(color);
 	}
 
-	public void paintSelected(final Graphics2D graphics) {
+	public void paintBackgound(final Graphics2D graphics) {
 		if (getNodeView().useSelectionColors()) {
 			paintBackground(graphics, getNodeView().getSelectedColor());
 		}
 		else {
-			final Color backgroundColor = NodeStyleModel.getBackgroundColor(getNodeView().getModel());
-			if (backgroundColor != null) {
-				paintBackground(graphics, backgroundColor);
-			}
+			paintBackground(graphics, getNodeView().getTextBackground());
 		}
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see javax.swing.JComponent#processKeyBinding(javax.swing.KeyStroke,
@@ -414,7 +430,7 @@ public abstract class MainView extends JLabel {
     }
 
 	boolean useFractionalMetrics() {
-		MapView map = getNodeView().getMap();
+		MapView map = getMap();
 		if(map.isPrinting()){
 			return true;
 		}

@@ -84,6 +84,8 @@ import org.freeplane.view.swing.map.link.ILinkView;
  * JTree).
  */
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener {
+	enum PaintingMode{CLOUDS, NODES, ALL};
+	private PaintingMode paintingMode = PaintingMode.ALL;
 	private class MapSelection implements IMapSelection {
 		public void centerNode(final NodeModel node) {
 			final NodeView nodeView = getNodeView(node);
@@ -921,15 +923,23 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final boolean paintLinksBehind = ResourceController.getResourceController().getBooleanProperty(
 		    "paint_connectors_behind");
 		if (paintLinksBehind) {
+			paintingMode = PaintingMode.CLOUDS;
+			super.paintChildren(graphics);
 			paintLinks((Graphics2D) graphics);
+			paintingMode = PaintingMode.NODES;
 			super.paintChildren(graphics);
 		}
 		else {
+			paintingMode = PaintingMode.ALL;
 			super.paintChildren(graphics);
 			paintLinks((Graphics2D) graphics);
 		}
 		paintSelecteds((Graphics2D) graphics);
 	}
+
+	protected PaintingMode getPaintingMode() {
+    	return paintingMode;
+    }
 
 	private void paintLinks(final Collection<LinkModel> links, final Graphics2D graphics,
 	                        final HashSet alreadyPaintedLinks) {

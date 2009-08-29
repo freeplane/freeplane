@@ -109,7 +109,7 @@ class RootMainView extends MainView {
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
 		final Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
-		paintSelected(g);
+		paintBackgound(g);
 		paintDragOver(g);
 		g.setColor(Color.gray);
 		g.setStroke(new BasicStroke(1.0f));
@@ -138,17 +138,6 @@ class RootMainView extends MainView {
 			graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
 		}
 	}
-
-	@Override
-	public void paintSelected(final Graphics2D graphics) {
-		if (getNodeView().useSelectionColors()) {
-			paintBackground(graphics, getNodeView().getSelectedColor());
-		}
-		else {
-			paintBackground(graphics, getNodeView().getTextBackground());
-		}
-	}
-
 	@Override
 	public void setDraggedOver(final Point p) {
 		setDraggedOver((dropPosition(p.getX())) ? NodeView.DRAGGED_OVER_SON_LEFT : NodeView.DRAGGED_OVER_SON);
