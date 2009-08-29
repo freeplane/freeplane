@@ -72,7 +72,7 @@ public class ViewerLayoutManager implements LayoutManager {
     }
 
 	public Dimension preferredLayoutSize(Container parent) {
-	    return new Dimension(0, 0);
+	    return parent.getPreferredSize();
     }
 
 	public void removeLayoutComponent(Component comp) {

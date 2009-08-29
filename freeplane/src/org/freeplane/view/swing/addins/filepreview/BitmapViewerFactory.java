@@ -66,7 +66,8 @@ public class BitmapViewerFactory implements IViewerFactory {
 			originalSize.width = (int)(originalSize.width * zoom);
 	        originalSize.height = (int)(originalSize.height * zoom);
 	        bitmapViewerComponent.setPreferredSize(originalSize);
-	        bitmapViewerComponent.setLayout(new ViewerLayoutManager(zoom));
+	        bitmapViewerComponent.setSize(originalSize);
+	        bitmapViewerComponent.setLayout(new ViewerLayoutManager(1f));
 			return bitmapViewerComponent;
 	}
 	public JComponent createViewer(URI uri, final Dimension preferredSize) throws MalformedURLException, IOException {
