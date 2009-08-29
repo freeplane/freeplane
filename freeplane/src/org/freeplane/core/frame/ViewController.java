@@ -98,7 +98,15 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	private final DefaultComboBoxModel zoomModel;
 	final private ZoomOutAction zoomOut;
 	final private GraphicsDevice device;
-	private Rectangle previousSize;
+	private Rectangle frameSize;
+	public Rectangle getFrameSize() {
+    	return frameSize;
+    }
+
+	public void setFrameSize(Rectangle frameSize) {
+    	this.frameSize = frameSize;
+    }
+
 	private int winState;
 
 	public ViewController(final Controller controller, final IMapViewManager mapViewManager) {
@@ -410,7 +418,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 				if(frame.getExtendedState() != Frame.NORMAL || isFullScreenEnabled()){
 					return;
 				}
-				previousSize = frame.getBounds();
+				frameSize = frame.getBounds();
             }
 
 			@Override
@@ -758,7 +766,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	        	frame.setUndecorated(false);
 	        	frame.setResizable(true);
 	            device.setFullScreenWindow(null);
-	            frame.setBounds(previousSize);
+	            frame.setBounds(frameSize);
 	            frame.setExtendedState(winState);
                 getFreeplaneMenuBar().setVisible(isMenubarVisible());
                 leftToolbarPanel.setVisible(isLeftToolbarVisible());
