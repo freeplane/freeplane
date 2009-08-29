@@ -24,12 +24,16 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
 
+import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -37,16 +41,25 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.components.LimitedWidthTooltipUI;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 
 class ApplicationViewController extends ViewController {
+	private static final String TOOL_TIP_MANAGER = "toolTipManager.";
+	private static final String TOOL_TIP_MANAGER_DISMISS_DELAY = "toolTipManager.dismissDelay";
+	private static final String TOOL_TIP_MANAGER_INITIAL_DELAY = "toolTipManager.initialDelay";
+	private static final String TOOL_TIP_MANAGER_RESHOW_DELAY = "toolTipManager.reshowDelay";
+
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
 	private static final String SPLIT_PANE_LAST_LEFT_POSITION = "split_pane_last_left_position";
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";
@@ -100,6 +113,7 @@ class ApplicationViewController extends ViewController {
 			getContentPane().add(mContentComponent, BorderLayout.CENTER);
 		}
 		getContentPane().add(getStatusBar(), BorderLayout.SOUTH);
+		initFrame(frame);
 	}
 
 	/**
@@ -441,4 +455,64 @@ class ApplicationViewController extends ViewController {
 		navigationPreviousMap.setEnabled(number > 0);
 		navigationNextMap.setEnabled(number > 0);
 	}
+	public void initFrame(final JFrame frame) {
+		final ImageIcon mWindowIcon;
+		if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
+			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+			    "/images/Freeplane_frame_icon.png"));
+		}
+		else {
+			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+			    "/images/Freeplane_frame_icon_32x32.png"));
+		}
+		frame.setIconImage(mWindowIcon.getImage());
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(final WindowEvent e) {
+				controller.quit(new ActionEvent(this, 0, "quit"));
+			}
+			/*
+			 * fc, 14.3.2008: Completely removed, as it damaged the focus if for
+			 * example the note window was active.
+			 */
+		});
+		frame.setFocusTraversalKeysEnabled(false);
+		final int win_width = ResourceController.getResourceController().getIntProperty("appwindow_width", 0);
+		final int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", 0);
+		final int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
+		final int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
+		UITools.setBounds(frame, win_x, win_y, win_width, win_height);
+		setFrameSize(frame.getBounds());
+		int win_state = Integer
+		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
+		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
+		frame.setExtendedState(win_state);
+		setTooltipDelays();
+		LimitedWidthTooltipUI.initialize();
+		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+				if (propertyName.startsWith(TOOL_TIP_MANAGER)) {
+					setTooltipDelays();
+				}
+			}
+		});
+	}
+
+	private void setTooltipDelays() {
+		final ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
+		final int initialDelay = ResourceController.getResourceController().getIntProperty(
+		    TOOL_TIP_MANAGER_INITIAL_DELAY, 0);
+		toolTipManager.setInitialDelay(initialDelay);
+		final int dismissDelay = ResourceController.getResourceController().getIntProperty(
+		    TOOL_TIP_MANAGER_DISMISS_DELAY, 0);
+		toolTipManager.setDismissDelay(dismissDelay);
+		final int reshowDelay = ResourceController.getResourceController().getIntProperty(
+		    TOOL_TIP_MANAGER_RESHOW_DELAY, 0);
+		toolTipManager.setReshowDelay(reshowDelay);
+		final int maxWidth = ResourceController.getResourceController().getIntProperty(
+		    "toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
+		LimitedWidthTooltipUI.setMaximumWidth(maxWidth);
+	}
+
 }

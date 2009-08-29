@@ -61,11 +61,6 @@ import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MMapViewController;
 
 public class FreeplaneStarter {
-	private static final String TOOL_TIP_MANAGER = "toolTipManager.";
-	private static final String TOOL_TIP_MANAGER_DISMISS_DELAY = "toolTipManager.dismissDelay";
-	private static final String TOOL_TIP_MANAGER_INITIAL_DELAY = "toolTipManager.initialDelay";
-	private static final String TOOL_TIP_MANAGER_RESHOW_DELAY = "toolTipManager.reshowDelay";
-
 	static public void main(final String[] args) {
 		final FreeplaneStarter starter = new FreeplaneStarter();
 		starter.run(args);
@@ -117,7 +112,6 @@ public class FreeplaneStarter {
 			feedBack.setMaximumValue(2);
 			final MMapViewController mapViewController = new MMapViewController();
 			viewController = new ApplicationViewController(controller, mapViewController, frame);
-			initFrame(frame);
 			feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
 			System.setSecurityManager(new FreeplaneSecurityManager());
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
@@ -167,50 +161,6 @@ public class FreeplaneStarter {
 				}
 				splash.dispose();
 				frame.toFront();
-			}
-		});
-	}
-
-	public void initFrame(final JFrame frame) {
-		final ImageIcon mWindowIcon;
-		if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
-			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-			    "/images/Freeplane_frame_icon.png"));
-		}
-		else {
-			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-			    "/images/Freeplane_frame_icon_32x32.png"));
-		}
-		frame.setIconImage(mWindowIcon.getImage());
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(final WindowEvent e) {
-				controller.quit(new ActionEvent(this, 0, "quit"));
-			}
-			/*
-			 * fc, 14.3.2008: Completely removed, as it damaged the focus if for
-			 * example the note window was active.
-			 */
-		});
-		frame.setFocusTraversalKeysEnabled(false);
-		final int win_width = ResourceController.getResourceController().getIntProperty("appwindow_width", 0);
-		final int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", 0);
-		final int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
-		final int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
-		UITools.setBounds(frame, win_x, win_y, win_width, win_height);
-		viewController.setFrameSize(frame.getBounds());
-		int win_state = Integer
-		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
-		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
-		frame.setExtendedState(win_state);
-		setTooltipDelays();
-		LimitedWidthTooltipUI.initialize();
-		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
-			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-				if (propertyName.startsWith(TOOL_TIP_MANAGER)) {
-					setTooltipDelays();
-				}
 			}
 		});
 	}
@@ -266,22 +216,6 @@ public class FreeplaneStarter {
 			    "Startup problem", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
-	}
-
-	private void setTooltipDelays() {
-		final ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
-		final int initialDelay = ResourceController.getResourceController().getIntProperty(
-		    TOOL_TIP_MANAGER_INITIAL_DELAY, 0);
-		toolTipManager.setInitialDelay(initialDelay);
-		final int dismissDelay = ResourceController.getResourceController().getIntProperty(
-		    TOOL_TIP_MANAGER_DISMISS_DELAY, 0);
-		toolTipManager.setDismissDelay(dismissDelay);
-		final int reshowDelay = ResourceController.getResourceController().getIntProperty(
-		    TOOL_TIP_MANAGER_RESHOW_DELAY, 0);
-		toolTipManager.setReshowDelay(reshowDelay);
-		final int maxWidth = ResourceController.getResourceController().getIntProperty(
-		    "toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
-		LimitedWidthTooltipUI.setMaximumWidth(maxWidth);
 	}
 
 	public void stop() {
