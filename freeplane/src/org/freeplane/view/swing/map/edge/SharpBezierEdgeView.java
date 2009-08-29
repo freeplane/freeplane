@@ -50,9 +50,9 @@ public class SharpBezierEdgeView extends EdgeView {
 
 	@Override
 	protected void createStart() {
-		if (source.isRoot()) {
-			start = source.getMainViewOutPoint(getTarget(), end);
-			final MainView mainView = source.getMainView();
+		if (getSource().isRoot()) {
+			start = getSource().getMainViewOutPoint(getTarget(), end);
+			final MainView mainView = getSource().getMainView();
 			final double w = mainView.getWidth() / 2;
 			final double x0 = start.x - w;
 			final double w2 = w * w;
@@ -74,7 +74,7 @@ public class SharpBezierEdgeView extends EdgeView {
 					deltaY = -deltaY;
 				}
 			}
-			UITools.convertPointToAncestor(mainView, start, source);
+			UITools.convertPointToAncestor(mainView, start, getSource());
 		}
 		else {
 			final int delta = getMap().getZoomed(getWidth() / 2 + 1);

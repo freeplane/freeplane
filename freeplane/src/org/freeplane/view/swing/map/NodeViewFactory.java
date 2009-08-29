@@ -149,17 +149,11 @@ class NodeViewFactory {
 		if (model.isRoot()) {
 			final MainView mainView = new RootMainView();
 			newView.setMainView(mainView);
-			newView.setLayout(VerticalRootNodeViewLayout.getInstance());
 		}
 		else {
 			newView.setMainView(newMainView(newView));
-			if (newView.isLeft()) {
-				newView.setLayout(LeftNodeViewLayout.getInstance());
-			}
-			else {
-				newView.setLayout(RightNodeViewLayout.getInstance());
-			}
 		}
+		newView.setLayout(SelectableLayout.getInstance());
 		model.addViewer(newView);
 		newView.update();
 		fireNodeViewCreated(newView);

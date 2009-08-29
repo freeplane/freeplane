@@ -62,12 +62,6 @@ public class DefaultNodeKeyListener implements KeyListener {
 				return;
 			}
 		}
-		final boolean doMove = false;
-		if (doMove) {
-			((MapView) controller.getViewController().getMapView()).move(e);
-			e.consume();
-			return;
-		}
 	}
 
 	public void keyReleased(final KeyEvent e) {

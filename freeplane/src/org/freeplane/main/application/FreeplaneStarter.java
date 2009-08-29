@@ -59,6 +59,8 @@ import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MMapViewController;
+import org.freeplane.view.swing.map.ViewLayoutTypeAction;
+import org.freeplane.view.swing.map.MapView.Layout;
 
 public class FreeplaneStarter {
 	static public void main(final String[] args) {
@@ -127,6 +129,7 @@ public class FreeplaneStarter {
 			controller.addAction(new UpdateCheckAction(controller));
 			controller.addAction(new NextNodeAction(controller, Direction.FORWARD));
 			controller.addAction(new NextNodeAction(controller, Direction.BACK));
+			controller.addAction(new ViewLayoutTypeAction(controller, Layout.OUTLINE));
 			NodeHistory.install(controller);
 			MModeControllerFactory.createModeController(controller);
 			controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(

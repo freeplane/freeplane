@@ -48,7 +48,7 @@ public abstract class EdgeView {
 		return EdgeView.ECLIPSED_STROKE;
 	}
 
-	protected NodeView source;
+	private NodeView source;
 	protected Point start, end;
 	private NodeView target;
 	private Color color;

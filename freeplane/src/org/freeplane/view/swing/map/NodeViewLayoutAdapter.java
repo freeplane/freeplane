@@ -60,7 +60,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 				}
 			}
 		}
-		return height + vGap * (count - 1);
+		return height + getVGap() * (count - 1);
 	}
 
 	/**
@@ -265,7 +265,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 	public void removeLayoutComponent(final Component arg0) {
 	}
 
-	private void setUp(final Container c) {
+	protected void setUp(final Container c) {
 		final NodeView localView = (NodeView) c;
 		localView.syncronizeAttributeView();
 		final int localChildCount = localView.getComponentCount() - 1;
@@ -277,20 +277,24 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 		childCount = localChildCount;
 		content = localView.getContent();
 		if (getModel().isVisible()) {
-			vGap = getView().getVGap();
+			setVGap(getView().getVGap());
 		}
 		else {
-			vGap = getView().getVisibleParentView().getVGap();
+			setVGap(getView().getVisibleParentView().getVGap());
 		}
 		spaceAround = view.getMap().getZoomed(NodeView.SPACE_AROUND);
 	}
 
-	private void shutDown() {
+	protected void shutDown() {
 		view = null;
 		model = null;
 		content = null;
 		childCount = 0;
-		vGap = 0;
+		setVGap(0);
 		spaceAround = 0;
 	}
+
+	public void setVGap(int vGap) {
+	    this.vGap = vGap;
+    }
 }

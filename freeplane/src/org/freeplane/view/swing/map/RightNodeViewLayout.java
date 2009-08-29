@@ -30,12 +30,9 @@ import org.freeplane.core.ui.components.UITools;
  * @author Dimitry Polivaev
  */
 public class RightNodeViewLayout extends NodeViewLayoutAdapter {
-	static private RightNodeViewLayout instance = null;
+	static private final RightNodeViewLayout instance =  new RightNodeViewLayout();
 
 	static RightNodeViewLayout getInstance() {
-		if (RightNodeViewLayout.instance == null) {
-			RightNodeViewLayout.instance = new RightNodeViewLayout();
-		}
 		return RightNodeViewLayout.instance;
 	}
 

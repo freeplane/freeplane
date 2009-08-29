@@ -56,6 +56,7 @@ import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.view.swing.map.MapView.Layout;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
@@ -799,6 +800,9 @@ public class NodeView extends JComponent implements INodeView {
 
 	/** Is the node left of root? */
 	public boolean isLeft() {
+		if(getMap().getLayoutType() == Layout.OUTLINE){
+			return false;
+		}
 		return getModel().isLeft();
 	}
 

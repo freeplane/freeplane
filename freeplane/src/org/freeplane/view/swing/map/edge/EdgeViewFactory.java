@@ -23,6 +23,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.map.MapView.Layout;
 
 /**
  * @author Dimitry Polivaev
@@ -31,34 +32,40 @@ import org.freeplane.view.swing.map.NodeView;
 public class EdgeViewFactory {
 	final private static EdgeViewFactory instance = new EdgeViewFactory();
 
-	public EdgeView getEdge(final NodeView newView) {
-		final NodeModel model = newView.getModel();
-		final EdgeStyle edgeStyle = EdgeController.getController(newView.getMap().getModeController()).getStyle(model);
+	public EdgeView getEdge(final NodeView nodeView) {
+		if(nodeView.getMap().getLayoutType() == Layout.OUTLINE){
+			return new OutlineEdgeView(nodeView);
+		}
+		final NodeModel model = nodeView.getModel();
+		final EdgeStyle edgeStyle = EdgeController.getController(nodeView.getMap().getModeController()).getStyle(model);
 		if (edgeStyle.equals(EdgeStyle.EDGESTYLE_LINEAR)) {
-			return new LinearEdgeView(newView);
+			return new LinearEdgeView(nodeView);
 		}
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_BEZIER)) {
-			return new BezierEdgeView(newView);
+			return new BezierEdgeView(nodeView);
 		}
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_LINEAR)) {
-			return new SharpLinearEdgeView(newView);
+			return new SharpLinearEdgeView(nodeView);
 		}
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_BEZIER)) {
-			return new SharpBezierEdgeView(newView);
+			return new SharpBezierEdgeView(nodeView);
 		}
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_HORIZONTAL)) {
-			return new HorizontalEdgeView(newView);
+			return new HorizontalEdgeView(nodeView);
 		}
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
-			return new HiddenEdgeView(newView);
+			return new HiddenEdgeView(nodeView);
 		}
 		else {
 			System.err.println("Unknown Edge Type.");
-			return new LinearEdgeView(newView);
+			return new LinearEdgeView(nodeView);
 		}
 	}
 
 	public EdgeView getEdge(final NodeView source, final NodeView target) {
+		if(source.getMap().getLayoutType() == Layout.OUTLINE){
+			return new OutlineEdgeView(source, target);
+		}
 		final NodeModel model = target.getModel();
 		final EdgeStyle edgeStyle = EdgeController.getController(target.getMap().getModeController()).getStyle(model);
 		if (edgeStyle.equals(EdgeStyle.EDGESTYLE_LINEAR)) {

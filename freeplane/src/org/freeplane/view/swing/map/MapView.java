@@ -85,6 +85,16 @@ import org.freeplane.view.swing.map.link.ILinkView;
  */
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener {
 	enum PaintingMode{CLOUDS, NODES, ALL};
+	public enum Layout{MAP, OUTLINE};
+	private Layout layoutType = Layout.MAP;
+	public Layout getLayoutType() {
+    	return layoutType;
+    }
+
+	protected void setLayoutType(Layout layoutType) {
+    	this.layoutType = layoutType;
+    }
+
 	private PaintingMode paintingMode = PaintingMode.ALL;
 	private class MapSelection implements IMapSelection {
 		public void centerNode(final NodeModel node) {
@@ -965,7 +975,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					final NodeView sourceView = getNodeView(source);
 					final NodeView targetView = getNodeView(target);
 					final ILinkView arrowLink;
-					if(ref.isEdgeLike() && sourceView != null && targetView != null
+					if(sourceView != null && targetView != null 
+							&& (ref.isEdgeLike() || sourceView.getMap().getLayoutType() == Layout.OUTLINE)
 							&& source.isVisible() && target.isVisible()){
 						arrowLink = new EdgeLinkView(ref, sourceView, targetView);
 					}

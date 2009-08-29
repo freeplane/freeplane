@@ -41,6 +41,7 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinkModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.map.MapView.Layout;
 
 /**
  * This class represents a ArrowLink around a node.
