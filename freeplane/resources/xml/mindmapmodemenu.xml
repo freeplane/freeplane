@@ -81,6 +81,7 @@
 			<menu_separator />
 			<menu_category name="general">
 				<menu_action action="ShowSelectionAsRectangleAction" />
+				<menu_action action="ViewLayoutTypeAction.OUTLINE" />
 			</menu_category>
 
 			<menu_action action="CenterSelectedNodeAction" accelerator="control alt C" />
