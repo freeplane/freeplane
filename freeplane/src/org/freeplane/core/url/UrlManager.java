@@ -77,7 +77,7 @@ public class UrlManager implements IExtension {
 	 * @throws FileNotFoundException
 	 */
 	protected static Reader getActualReader(final InputStream file) throws FileNotFoundException {
-		return new BufferedReader(new InputStreamReader(file));
+		return new InputStreamReader(file);
 	}
 
 	public static UrlManager getController(final ModeController modeController) {
@@ -101,7 +101,7 @@ public class UrlManager implements IExtension {
 
 	public static Reader getUpdateReader(final File file, final String xsltScript) throws FileNotFoundException,
 	        IOException {
-		return UrlManager.getUpdateReader(new FileInputStream(file), xsltScript);
+		return UrlManager.getUpdateReader(new BufferedInputStream( new FileInputStream(file)), xsltScript);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class UrlManager implements IExtension {
 			if (updaterUrl == null) {
 				throw new IllegalArgumentException(xsltScript + " not found.");
 			}
-			inputStream = updaterUrl.openStream();
+			inputStream = new BufferedInputStream(updaterUrl.openStream());
 			final Source xsltSource = new StreamSource(inputStream);
 			writer = new StringWriter();
 			final Result result = new StreamResult(writer);
@@ -131,7 +131,7 @@ public class UrlManager implements IExtension {
 					Transformer trans;
 					try {
 						trans = transFact.newTransformer(xsltSource);
-						InputStream cleanedInput = new CleaningInputStream(new BufferedInputStream(file));
+						InputStream cleanedInput = new CleaningInputStream(file);
 						trans.transform(new StreamSource(cleanedInput), result);
 					}
 					catch (final Exception ex) {

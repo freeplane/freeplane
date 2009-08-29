@@ -20,6 +20,7 @@
 package org.freeplane.core.filter;
 
 import java.awt.Dimension;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -369,7 +370,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterConditionModel.removeAllElements();
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
-			final IXMLReader reader = new StdXMLReader(new FileInputStream(pathToFilterFile));
+			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(pathToFilterFile)));
 			parser.setReader(reader);
 			final XMLElement loader = (XMLElement) parser.parse();
 			final Vector<XMLElement> conditions = loader.getChildren();

@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mindmapnode.pattern;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -165,8 +166,8 @@ public class MPatternController implements IExtension {
 		}
 		else {
 			System.out.println("User patterns file " + patternsFile + " not found.");
-			reader = new InputStreamReader(ResourceController.getResourceController().getResource("/xml/patterns.xml")
-			    .openStream());
+			reader = new BufferedReader(new InputStreamReader(ResourceController.getResourceController().getResource("/xml/patterns.xml")
+			    .openStream()));
 		}
 		return reader;
 	}

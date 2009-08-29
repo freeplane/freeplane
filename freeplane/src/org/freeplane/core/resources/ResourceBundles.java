@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -134,7 +135,7 @@ public class ResourceBundles extends ResourceBundle {
 	}
 
 	private Map<String, String> getLanguageResources(final URL systemResource) throws IOException {
-		final InputStream in = systemResource.openStream();
+		final InputStream in = new BufferedInputStream(systemResource.openStream());
 		if (in == null) {
 			return null;
 		}

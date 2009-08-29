@@ -19,6 +19,7 @@ package org.freeplane.features.mindmapmode.addins.export;
 
 import java.awt.event.ActionEvent;
 import java.awt.image.RenderedImage;
+import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -314,7 +315,7 @@ public class ExportWithXSLT extends ExportAction {
 			LogTool.severe("Can't find " + xsltFileName + " as resource.");
 			throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");
 		}
-		final InputStream xsltFile = xsltUrl.openStream();
+		final InputStream xsltFile = new BufferedInputStream(xsltUrl.openStream());
 		final Source xsltSource = new StreamSource(xsltFile);
 		final Result result = new StreamResult(saveFile);
 		try {

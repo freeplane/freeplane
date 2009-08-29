@@ -21,6 +21,7 @@ package org.freeplane.features.mindmapmode.file;
 
 import java.awt.Component;
 import java.awt.dnd.DropTarget;
+import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -300,7 +301,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 			throw new IOException("can not obtain file lock for " + file);
 		}
 		try{
-			final NodeModel rootNode = loadTreeImpl(map, input);
+			final NodeModel rootNode = loadTreeImpl(map, new BufferedInputStream(input));
 			return rootNode;
 		}
 		catch (final Exception ex) {
@@ -316,7 +317,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 		}
 	}
 
-	private NodeModel loadTreeImpl(final MapModel map, final FileInputStream input) throws FileNotFoundException,
+	private NodeModel loadTreeImpl(final MapModel map, final InputStream input) throws FileNotFoundException,
 	        IOException, XMLException {
 		int versionInfoLength = EXPECTED_START_STRINGS[0].length();
 		final String buffer = readFileStart(input, versionInfoLength).toString();
@@ -404,7 +405,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	private String readFileStart(final FileInputStream input, final int pMinimumLength) throws IOException {
+	private String readFileStart(final InputStream input, final int pMinimumLength) throws IOException {
 		final byte[] buffer = new byte[pMinimumLength];
 		input.read(buffer);
 		return new String(buffer);

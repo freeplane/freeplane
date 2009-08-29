@@ -1,5 +1,7 @@
 package org.freeplane.core.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,8 +23,8 @@ public class ResUtil {
 				LogTool.severe("Cannot find resource: " + dir + fileName);
 				return;
 			}
-			final InputStream in = new FileInputStream(resource);
-			final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
+			final InputStream in = new BufferedInputStream(new FileInputStream(resource));
+			final OutputStream out = new BufferedOutputStream(new FileOutputStream(destinationDirectory + "/" + fileName));
 			ResUtil.copyStream(in, out);
 		}
 		catch (final Exception e) {
@@ -40,7 +42,7 @@ public class ResUtil {
 				LogTool.severe("Cannot find resource: " + prefix + fileName);
 				return;
 			}
-			final InputStream in = resource.openStream();
+			final InputStream in = new BufferedInputStream(resource.openStream());
 			final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
 			ResUtil.copyStream(in, out);
 		}

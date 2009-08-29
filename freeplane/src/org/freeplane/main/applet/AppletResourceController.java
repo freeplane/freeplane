@@ -19,6 +19,7 @@
  */
 package org.freeplane.main.applet;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -44,7 +45,7 @@ class AppletResourceController extends ResourceController {
 		final URL defaultPropsURL = getResource(ResourceController.FREEPLANE_PROPERTIES);
 		try {
 			userProps = new Properties();
-			final InputStream in = defaultPropsURL.openStream();
+			final InputStream in = new BufferedInputStream(defaultPropsURL.openStream());
 			userProps.load(in);
 			in.close();
 		}

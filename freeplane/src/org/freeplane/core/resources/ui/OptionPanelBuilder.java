@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.ui;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -423,7 +424,7 @@ public class OptionPanelBuilder {
 	public void load(final URL menu) {
 		final TreeXmlReader reader = new TreeXmlReader(readManager);
 		try {
-			reader.load(new InputStreamReader(menu.openStream()));
+			reader.load(new InputStreamReader(new BufferedInputStream(menu.openStream())));
 		}
 		catch (final IOException e) {
 			throw new RuntimeException(e);

@@ -24,6 +24,7 @@ import java.awt.Container;
 import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -344,7 +345,7 @@ public class MenuBuilder extends UIBuilder {
 		public void processMenu(final URL menu) {
 			final TreeXmlReader reader = new TreeXmlReader(readManager);
 			try {
-				reader.load(new InputStreamReader(menu.openStream()));
+				reader.load(new InputStreamReader(new BufferedInputStream(menu.openStream())));
 			}
 			catch (final IOException e) {
 				throw new RuntimeException(e);
