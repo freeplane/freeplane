@@ -446,7 +446,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		return ResourceController.getResourceController().getBooleanProperty(property);
 	}
 
-	protected boolean isMenubarVisible() {
+	public boolean isMenubarVisible() {
 		final String property ;
 		if(isFullScreenEnabled()){
 			property = "menubarVisible.fullscreen";
@@ -454,7 +454,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		else{
 			property = "menubarVisible";
 		}
-		return ResourceController.getResourceController().getBooleanProperty(property);
+		final boolean booleanProperty = ResourceController.getResourceController().getBooleanProperty(property);
+		return booleanProperty;
 	}
 
 	public void obtainFocusForSelected() {
@@ -786,7 +787,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		return ! "false".equals(ResourceController.getResourceController().getProperty(completeKeyString, "true"));
     }
 
-	String completeVisiblePropertyKey(JComponent toolBar) {
+	public String completeVisiblePropertyKey(JComponent toolBar) {
 		final Object key = toolBar.getClientProperty(VISIBLE_PROPERTY_KEY);
 		if(key == null){
 			return null;
