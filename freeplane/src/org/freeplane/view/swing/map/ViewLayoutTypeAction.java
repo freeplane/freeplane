@@ -60,6 +60,7 @@ public class ViewLayoutTypeAction extends AFreeplaneAction{
 			map.setLayoutType(this.layoutType);
 			setSelected(true);
 		}
+		map.anchorToSelected(map.getSelected(), 0.5f, 0.5f);
 		map.getRoot().updateAll();
     }
 

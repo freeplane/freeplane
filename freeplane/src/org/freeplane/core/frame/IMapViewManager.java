@@ -134,4 +134,6 @@ public interface IMapViewManager {
 	public boolean tryToChangeToMapView(final String mapView);
 
 	public void updateMapViewName();
+
+	public boolean isLeftTreeSupported(Component mapViewComponent);
 }

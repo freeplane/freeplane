@@ -41,6 +41,8 @@ import org.freeplane.features.controller.print.PrintController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapViewController;
+import org.freeplane.view.swing.map.ViewLayoutTypeAction;
+import org.freeplane.view.swing.map.MapView.Layout;
 
 public class FreeplaneApplet extends JApplet {
 	static private AppletResourceController appletResourceController;
@@ -69,6 +71,7 @@ public class FreeplaneApplet extends JApplet {
 		contentPane.setLayout(new BorderLayout());
 		ResourceController.setResourceController(appletResourceController);
 		appletViewController = new AppletViewController(controller, this, new MapViewController());
+		controller.addAction(new ViewLayoutTypeAction(controller, Layout.OUTLINE));
 		FilterController.install(controller);
 		PrintController.install(controller);
 		HelpController.install(controller);

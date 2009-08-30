@@ -172,6 +172,10 @@
             <boolean name="el__enter_confirms_by_default" />
             <boolean name="el__show_icon_for_attributes" />
         </separator>
+        <separator name="outline_view">
+        	<number name="outline_vgap" step="5"/>
+        	<number name="outline_hgap" step="5"/>
+        </separator>
        <separator name="icon_properties">        
             <boolean name="structured_icon_toolbar"/>
             <boolean name="don_t_show_note_icons" />

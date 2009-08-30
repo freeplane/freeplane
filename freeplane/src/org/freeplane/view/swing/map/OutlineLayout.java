@@ -24,11 +24,17 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import org.freeplane.core.resources.ResourceController;
+
 /**
  * @author Dimitry Polivaev
  * 29.08.2009
  */
 public class OutlineLayout extends NodeViewLayoutAdapter{
+	private int hGap;
+	protected int getHGap() {
+    	return hGap;
+    }
 	static private final OutlineLayout instance =  new OutlineLayout();
 
 	static OutlineLayout getInstance() {
@@ -62,7 +68,7 @@ public class OutlineLayout extends NodeViewLayoutAdapter{
 	}
 
     protected void placeRightChildren() {
-	    final int baseX = getContent().getX() + getVGap();
+	    final int baseX = getContent().getX() + getHGap();
         int y = getContent().getY() + getContent().getHeight()+ getVGap() - + getSpaceAround();
         int right = baseX +  + getContent().getWidth() + getSpaceAround();
         NodeView child = null;
@@ -72,7 +78,7 @@ public class OutlineLayout extends NodeViewLayoutAdapter{
         	final int additionalCloudHeigth = child.getAdditionalCloudHeigth() / 2;
         	y += additionalCloudHeigth;
         	final int shiftY = 0;
-        	final int childHGap = child.getContent().isVisible() ? getVGap() : 0;
+        	final int childHGap = child.getContent().isVisible() ? getHGap() : 0;
         	final int x = baseX + childHGap - child.getContent().getX();
         	if (shiftY < 0) {
         		child.setLocation(x, y);
@@ -101,7 +107,10 @@ public class OutlineLayout extends NodeViewLayoutAdapter{
 	@Override
     protected void setUp(Container c) {
 	    super.setUp(c);
-		setVGap(getView().getMap().getZoomed(5));
+	    final int vgap = ResourceController.getResourceController().getIntProperty("outline_vgap", 0);
+	    final int hgap = ResourceController.getResourceController().getIntProperty("outline_hgap", 0);
+		setVGap(getView().getMap().getZoomed(vgap));
+		this.hGap=getView().getMap().getZoomed(hgap);
     }
 
 	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {

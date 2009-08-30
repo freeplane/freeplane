@@ -17,10 +17,12 @@
  */
 package org.freeplane.features.mindmapmode.addins;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
@@ -49,7 +51,9 @@ public class ChangeNodeLevelController {
 		public void actionPerformed(final ActionEvent e) {
 			final ModeController modeController = getModeController();
 			final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-			if (selectedNode.isLeft()) {
+			final IMapViewManager mapViewManager = getController().getMapViewManager();
+			final Component mapViewComponent = mapViewManager.getMapViewComponent();
+			if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft()) {
 				moveDownwards(modeController, selectedNode);
 			}
 			else {
@@ -73,7 +77,9 @@ public class ChangeNodeLevelController {
 		public void actionPerformed(final ActionEvent e) {
 			final ModeController modeController = getModeController();
 			final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-			if (selectedNode.isLeft()) {
+			final IMapViewManager mapViewManager = getController().getMapViewManager();
+			final Component mapViewComponent = mapViewManager.getMapViewComponent();
+			if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft()) {
 				moveUpwards(modeController, selectedNode);
 			}
 			else {
@@ -158,6 +164,11 @@ public class ChangeNodeLevelController {
 		int position;
 		final boolean changeSide;
 		if (selectedParent.isRoot()) {
+			final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
+			final Component mapViewComponent = mapViewManager.getMapViewComponent();
+			if (! mapViewManager.isLeftTreeSupported(mapViewComponent)){
+				return;
+			}
 			position = selectedParent.getChildCount() - 1;
 			changeSide = true;
 		}

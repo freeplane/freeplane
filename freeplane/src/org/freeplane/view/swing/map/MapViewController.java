@@ -45,6 +45,7 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.view.swing.map.MapView.Layout;
 
 /**
  * Manages the list of MapViews. As this task is very complex, I exported it
@@ -496,4 +497,8 @@ public class MapViewController implements IMapViewManager {
 		addToOrChangeInMapViews(name, getMapView());
 		changeToMapView(getMapView());
 	}
+
+	public boolean isLeftTreeSupported(Component mapViewComponent) {
+		return ((MapView)mapViewComponent).getLayoutType() != Layout.OUTLINE;
+    }
 }

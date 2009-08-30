@@ -37,6 +37,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 	private NodeModel model;
 	private int spaceAround;
 	private int vGap;
+
 	private NodeView view;
 
 	public void addLayoutComponent(final String arg0, final Component arg1) {
