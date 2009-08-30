@@ -33,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 
@@ -64,12 +65,12 @@ class PreviewDialog extends JDialog implements ActionListener {
 		toolbar.add(getButton("ZoomIn24.gif", new ZoomAction(preview, PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
 		toolbar.add(getButton("ZoomOut24.gif", new ZoomAction(preview, -PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
 		toolbar.add(new JToolBar.Separator());
-		final JPanel dialog = new JPanel();
-		dialog.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		final JPanel buttons = new JPanel();
+		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		final JButton ok = new JButton("OK");
 		ok.addActionListener(this);
-		dialog.add(ok);
-		getContentPane().add(dialog, "South");
+		buttons.add(ok);
+		getContentPane().add(buttons, "South");
 		UITools.addEscapeActionToDialog(this);
 	}
 
@@ -84,7 +85,7 @@ class PreviewDialog extends JDialog implements ActionListener {
 	private JButton getButton(final String name, final String iconName, final AbstractAction action) {
 		JButton result = null;
 		ImageIcon icon = null;
-		final URL imageURL = getClass().getClassLoader().getResource("/images/" + iconName);
+		final URL imageURL = ResourceController.getResourceController().getResource("/images/" + iconName);
 		if (imageURL != null) {
 			icon = new ImageIcon(imageURL);
 		}

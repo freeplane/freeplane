@@ -75,6 +75,7 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.controller.print.FitMap;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
@@ -272,7 +273,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	final private Controller controller;
 	private boolean disableMoveCursor = true;
 	private int extraWidth;
-	private boolean fitToPage = true;
+	private FitMap fitMap = FitMap.USER_DEFINED;
 	private boolean isPreparedForPrinting = false;
 	private boolean isPrinting = false;
 	private int maxNodeWidth = 0;
@@ -478,11 +479,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			isPrinting = false;
 			if(zoom == 1f){
 				getRoot().updateAll();
+				validateTree();
 			}
 			if (MapView.printOnWhiteBackground) {
 				setBackground(background);
 			}
-			repaintSelecteds();
 		}
 		isPreparedForPrinting = false;
 	}
@@ -1074,14 +1075,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			isPrinting = true;
 			if(zoom == 1f){
 				getRoot().updateAll();
+				validateTree();
 			}
-			repaintSelecteds();
 			if (MapView.printOnWhiteBackground) {
 				background = getBackground();
 				setBackground(Color.WHITE);
 			}
 			boundingRectangle = getInnerBounds();
-			fitToPage = ResourceController.getResourceController().getBooleanProperty("fit_to_page");
+			fitMap = FitMap.valueOf();
 			isPreparedForPrinting = true;
 		}
 	}
@@ -1101,17 +1102,23 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		double userZoomFactor = ResourceController.getResourceController().getDoubleProperty("user_zoom", 1);
 		userZoomFactor = Math.max(0, userZoomFactor);
 		userZoomFactor = Math.min(2, userZoomFactor);
-		if (fitToPage && pageIndex > 0) {
+		if (fitMap==FitMap.PAGE && pageIndex > 0) {
 			return Printable.NO_SUCH_PAGE;
 		}
 		final Graphics2D graphics2D = (Graphics2D) graphics;
 		try {
 			preparePrinting();
 			double zoomFactor = 1;
-			if (fitToPage) {
+			if (fitMap == FitMap.PAGE) {
 				final double zoomFactorX = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
 				final double zoomFactorY = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
 				zoomFactor = Math.min(zoomFactorX, zoomFactorY);
+			}
+			else if (fitMap == FitMap.WIDTH){
+				zoomFactor = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
+			}
+			else if (fitMap == FitMap.HEIGHT){
+				zoomFactor = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
 			}
 			else {
 				zoomFactor = userZoomFactor;

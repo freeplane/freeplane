@@ -29,11 +29,13 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.print.PageFormat;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import org.freeplane.core.resources.ResourceBundles;
@@ -68,7 +70,6 @@ class PageAction extends AbstractPrintAction {
 	PageAction(final PrintController controller) {
 		super("PageAction", controller);
 	}
-
 	public void actionPerformed(final ActionEvent e) {
 		if (!getPrintController().acquirePrinterJobAndPageFormat()) {
 			return;
@@ -76,30 +77,48 @@ class PageAction extends AbstractPrintAction {
 		final Frame frame = getPrintController().getController().getViewController().getFrame();
 		final JDialog dialog = new JDialog(frame, ResourceBundles.getText("printing_settings"), /* modal=*/
 		true);
-		final JCheckBox fitToPage = new JCheckBox(ResourceBundles.getText("fit_to_page"), ResourceController
-		    .getResourceController().getBooleanProperty("fit_to_page"));
+		ButtonGroup fitButtons = new ButtonGroup();
+		final FitMap fitMap = FitMap.valueOf();
+		final JRadioButton fitToPage = new JRadioButton(ResourceBundles.getText("fit_map_to_page"), fitMap==FitMap.PAGE);
+		fitButtons.add(fitToPage);
+		final JRadioButton fitToWidth = new JRadioButton(ResourceBundles.getText("fit_map_to_page_width"), fitMap==FitMap.WIDTH);
+		fitButtons.add(fitToWidth);
+		final JRadioButton fitToHeighth = new JRadioButton(ResourceBundles.getText("fit_map_to_page_height"), fitMap==FitMap.HEIGHT);
+		fitButtons.add(fitToHeighth);
+		final JRadioButton userDefaultScale = new JRadioButton(ResourceBundles.getText("user_defined_scale"), fitMap==FitMap.USER_DEFINED);
+		fitButtons.add(userDefaultScale);
 		final JLabel userZoomL = new JLabel(ResourceBundles.getText("user_zoom"));
 		final JTextField userZoom = new JTextField(ResourceController.getResourceController().getProperty("user_zoom"),
 		    3);
-		userZoom.setEditable(!fitToPage.isSelected());
+		userZoom.setEditable(userDefaultScale.isSelected());
 		final JButton okButton = new JButton();
 		MenuBuilder.setLabelAndMnemonic(okButton, ResourceBundles.getText("ok"));
 		final JPanel panel = new JPanel();
 		final GridBagLayout gridbag = new GridBagLayout();
-		final GridBagConstraints c = new GridBagConstraints();
 		final ActionListenerImplementation aListener = new ActionListenerImplementation(dialog);
 		okButton.addActionListener(aListener);
-		fitToPage.addItemListener(new ItemListener() {
+		userDefaultScale.addItemListener(new ItemListener() {
 			public void itemStateChanged(final ItemEvent e) {
-				userZoom.setEditable(e.getStateChange() == ItemEvent.DESELECTED);
+				userZoom.setEditable(e.getStateChange() == ItemEvent.SELECTED);
 			}
 		});
+		final GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.LINE_START;
 		gridbag.setConstraints(fitToPage, c);
 		panel.add(fitToPage);
-		c.gridy = 1;
+		c.gridy++;
+		gridbag.setConstraints(fitToWidth, c);
+		panel.add(fitToWidth);
+		c.gridy++;
+		gridbag.setConstraints(fitToHeighth, c);
+		panel.add(fitToHeighth);
+		c.gridy++;
+		gridbag.setConstraints(userDefaultScale, c);
+		panel.add(userDefaultScale);
+		c.gridy++;
 		c.gridwidth = 1;
 		gridbag.setConstraints(userZoomL, c);
 		panel.add(userZoomL);
@@ -107,10 +126,11 @@ class PageAction extends AbstractPrintAction {
 		c.gridwidth = 1;
 		gridbag.setConstraints(userZoom, c);
 		panel.add(userZoom);
-		c.gridy = 2;
+		c.gridy++;
 		c.gridx = 0;
 		c.gridwidth = 3;
 		c.insets = new Insets(10, 0, 0, 0);
+		c.anchor = GridBagConstraints.CENTER;
 		gridbag.setConstraints(okButton, c);
 		panel.add(okButton);
 		panel.setLayout(gridbag);
@@ -122,8 +142,20 @@ class PageAction extends AbstractPrintAction {
 		dialog.setVisible(true);
 		if (aListener.getEventSource() == 1) {
 			ResourceController.getResourceController().setProperty("user_zoom", userZoom.getText());
-			ResourceController.getResourceController().setProperty("fit_to_page",
-			    (fitToPage.isSelected() ? "true" : "false"));
+			final FitMap fitMapDecision;
+			if(fitToPage.isSelected()){
+				fitMapDecision = FitMap.PAGE;
+			}
+			else if(fitToWidth.isSelected()){
+				fitMapDecision = FitMap.WIDTH;
+			}
+			else if(fitToHeighth.isSelected()){
+				fitMapDecision = FitMap.HEIGHT;
+			}
+			else {
+				fitMapDecision = FitMap.USER_DEFINED;
+			}
+			ResourceController.getResourceController().setProperty("fit_map", fitMapDecision.toString());
 		}
 		else {
 			return;
