@@ -38,12 +38,12 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	}
 
 	protected EdgeModel createEdge(final NodeModel node) {
-		return new EdgeModel();
+		return EdgeModel.createEdgeModel(node);
 	}
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (tag.equals("edge")) {
-			return createEdge(null);
+			return createEdge((NodeModel) parent);
 		}
 		return null;
 	}

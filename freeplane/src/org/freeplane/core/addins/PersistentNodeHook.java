@@ -137,6 +137,9 @@ public abstract class PersistentNodeHook {
 				selectableHookAction.setEnabled(true);
 			}
 			final NodeModel node = (NodeModel) userObject;
+			if(node.getExtension(getExtensionClass()) != null){
+				return;
+			}
 			add(node, createExtension(node, lastBuiltElement));
 		}
 	}

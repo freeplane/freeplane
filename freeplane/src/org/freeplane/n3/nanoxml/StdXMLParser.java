@@ -22,6 +22,8 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 
+import org.freeplane.core.util.LogTool;
+
 /**
  * StdXMLParser is the core parser of NanoXML.
  * 
@@ -122,6 +124,7 @@ public class StdXMLParser implements IXMLParser {
 			throw e;
 		}
 		catch (final Exception e) {
+			LogTool.severe(e);
 			throw new XMLException(e);
 		}
 	}

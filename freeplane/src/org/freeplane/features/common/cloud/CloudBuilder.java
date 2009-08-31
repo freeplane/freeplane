@@ -43,7 +43,8 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (tag.equals("cloud")) {
-			return new CloudModel();
+			final CloudModel oldCloud = CloudModel.getModel((NodeModel) parent);
+			return oldCloud != null ? oldCloud : new CloudModel();
 		}
 		return null;
 	}
