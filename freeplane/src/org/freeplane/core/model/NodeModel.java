@@ -89,9 +89,11 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public void acceptViewVisitor(final INodeViewVisitor visitor) {
-		final Iterator<INodeView> iterator = views.iterator();
-		while (iterator.hasNext()) {
-			visitor.visit(iterator.next());
+		if(views == null){
+			return;
+		}
+		for(INodeView view :views){
+			visitor.visit(view);
 		}
 	}
 
