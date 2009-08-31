@@ -7,7 +7,16 @@ $Rev$
 ===============================
 New features:
 Outline view available from menu View
+Distance between nodes in outline view can be configured in Preferences->Appearance 
+Options "fit map to page width", "fit map to page height" in page setup dialog (useful for outline view)
 
+Bug fixes:
+[Bugs 0000211]: Some maps can not be loaded anymore
+bug fix: do not create already existing edgemodel and cloudmodel on loading
+[Bugs 0000213]: Freeplane 1.0.28 a: graphics' size is not reminded when map is reopened
+[Bugs 0000214]: mouse pointer after note
+[Bugs 0000212]: Link with clouds -  not visible
+[Bugs 0000207]: user's icons break edge nodes
 ===============================
 1.0.28 alpha
 ===============================
