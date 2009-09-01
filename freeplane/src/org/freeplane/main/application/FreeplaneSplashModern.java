@@ -140,16 +140,16 @@ public class FreeplaneSplashModern extends JWindow {
 				final String progressString = (String) getClientProperty("progressString");
 				if (progressString != null) {
 					final Double percent = (Double) getClientProperty("progressPercent");
-					final int xBase = 40;
+					final int xBase = 20;
 					final int yBase = 240;
-					final int width = 300;
+					final int width = 310;
 					g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 					g2.setFont(progressFont);
-					g2.setColor(new Color(0xff, 0xff, 0xff));
+					g2.setColor(new Color(255, 255, 204));
 					g2.drawString(progressString, xBase + 1, yBase - 4);
-					g2.setColor(new Color(0xc8, 0xdf, 0x8b));
+					g2.setColor(new Color(0xff, 0xee, 0xe6));
 					g2.draw(new Rectangle(xBase + 2, yBase, width, 3));
-					g2.setColor(new Color(0xff, 0xff, 0xff));
+					g2.setColor(new Color(255, 255, 204));
 					g2.fill(new Rectangle(xBase + 1, yBase + 1, (int) (width * percent.doubleValue()), 2));
 				}
 			}
