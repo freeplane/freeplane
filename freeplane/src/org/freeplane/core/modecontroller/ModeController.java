@@ -154,6 +154,10 @@ public class ModeController extends AController {
 
 	public void commit() {
 	}
+	
+	public boolean isUndoAction() {
+		return false;
+	}
 
 	public void execute(final IActor actor, MapModel map) {
 		actor.act();

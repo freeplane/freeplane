@@ -22,6 +22,7 @@ package org.freeplane.features.common.addins.misc;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -31,11 +32,17 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.modecontroller.IMapChangeListener;
+import org.freeplane.core.modecontroller.IMapLifeCycleListener;
 import org.freeplane.core.modecontroller.INodeViewVisitor;
+import org.freeplane.core.modecontroller.MapChangeEvent;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.INodeView;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionLocationDescriptor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.SysUtil;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -44,12 +51,15 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "accessories/plugins/BlinkingNodeHook.properties", onceForMap = false)
 @ActionLocationDescriptor(locations = { "/menu_bar/format/nodes" })
 public class BlinkingNodeHook extends PersistentNodeHook {
-	protected class TimerColorChanger extends TimerTask implements IExtension {
+	protected class TimerColorChanger extends TimerTask implements IExtension, IMapChangeListener, IMapLifeCycleListener {
 		final private NodeModel node;
 		final private Timer timer;
 
 		TimerColorChanger(final NodeModel node) {
 			this.node = node;
+			final MapController mapController = getModeController().getMapController();
+			mapController.addMapChangeListener(this);
+			mapController.addMapLifeCycleListener(this);
 			timer = SysUtil.createTimer(getClass().getSimpleName());
 			timer.schedule(this, 500, 500);
 			BlinkingNodeHook.colors.clear();
@@ -96,6 +106,53 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 				}
 			});
 		}
+
+		public void mapChanged(MapChangeEvent event) {
+        }
+
+		public void onNodeDeleted(final NodeModel parent, NodeModel child, int index) {
+			if(getModeController().isUndoAction() 
+					||! (node.equals(child) || node.isDescendantOf(child))){
+				return;
+			}
+			IActor actor = new IActor(){
+				public void act() {
+					EventQueue.invokeLater(new Runnable(){
+						public void run() {
+							remove(node, node.getExtension(TimerColorChanger.class));
+		                }});
+                }
+
+				public String getDescription() {
+	                return "BlinkingNodeHook.timer";
+                }
+
+				public void undo() {
+					node.addExtension(new TimerColorChanger(node));
+                }};
+                getModeController().execute(actor, node.getMap());
+        }
+
+		public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+        }
+
+		public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+        }
+
+		public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
+        }
+
+		public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+        }
+
+		public void onCreate(MapModel map) {
+        }
+
+		public void onRemove(MapModel map) {
+			if(node.getMap().equals(map)){
+				timer.cancel();
+			}
+        }
 	}
 
 	static Vector<Color> colors = new Vector<Color>();
@@ -122,7 +179,11 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 	 */
 	@Override
 	public void remove(final NodeModel node, final IExtension extension) {
-		((TimerColorChanger) extension).getTimer().cancel();
+		final TimerColorChanger timer = ((TimerColorChanger) extension);
+		timer.getTimer().cancel();
+		final MapController mapController = getModeController().getMapController();
+		mapController.removeMapChangeListener(timer);
+		mapController.removeMapLifeCycleListener(timer);
 		super.remove(node, extension);
 	}
 }
