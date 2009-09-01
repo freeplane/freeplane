@@ -476,7 +476,7 @@ public class HtmlTools {
 			return true;
 		}
 		catch (final SAXParseException e) {
-			LogTool.severe("XmlParseError on line " + e.getLineNumber() + " of " + xml, e);
+			LogTool.warn("XmlParseError on line " + e.getLineNumber() + " of " + xml, e);
 		}
 		catch (final Exception e) {
 			LogTool.severe("XmlParseError", e);
