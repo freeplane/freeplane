@@ -1114,16 +1114,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				final double zoomFactorY = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
 				zoomFactor = Math.min(zoomFactorX, zoomFactorY);
 			}
-			else if (fitMap == FitMap.WIDTH){
-				zoomFactor = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
-			}
-			else if (fitMap == FitMap.HEIGHT){
-				zoomFactor = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
-			}
-			else {
-				zoomFactor = userZoomFactor;
+			else 
+			{
+				if (fitMap == FitMap.WIDTH){
+					zoomFactor = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
+				}
+				else if (fitMap == FitMap.HEIGHT){
+					zoomFactor = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
+				}
+				else {
+					zoomFactor = userZoomFactor;
+				}
 				final int nrPagesInWidth = (int) Math.ceil(zoomFactor * boundingRectangle.getWidth()
-				        / pageFormat.getImageableWidth());
+					/ pageFormat.getImageableWidth());
 				final int nrPagesInHeight = (int) Math.ceil(zoomFactor * boundingRectangle.getHeight()
 				        / pageFormat.getImageableHeight());
 				if (pageIndex >= nrPagesInWidth * nrPagesInHeight) {
