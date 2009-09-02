@@ -3,6 +3,21 @@ $LastChangedDate$
 $Rev$
 *******************************
 ===============================
+1.0.30 alpha
+===============================
+New features:
+Search and Replace in all maps
+Automatic Layout moved from menu Tools to menu Format
+
+Bug fixes:
+[Bugs 0000217]: Enter key gives new line in node rather than end node edit
+[Bugs 0000221]: parasitical line in outline view when connectors present an a map
+[Bugs 0000222]: vertical and horizontal distance problem (outline view)
+[Bugs 0000223]: fit width and height
+Consider edge width in outline view
+remove timer for blinking node if the node is removed from map
+
+===============================
 1.0.29 alpha
 ===============================
 New features:

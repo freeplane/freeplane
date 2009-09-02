@@ -19,12 +19,16 @@
  */
 package org.freeplane.view.swing.map.edge;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -56,10 +60,20 @@ public class OutlineLinkView extends EdgeView {
 		g.setColor(color);
 		final Stroke stroke = getStroke();
 		g.setStroke(stroke);
-		final int middleX = Math.max(start.x, end.x) + getSource().getMap().getZoomed(5);
+		final int middleX = Math.max(start.x, end.x) + getSource().getMap().getZoomed(10);
 		g.drawLine(start.x, start.y, middleX, start.y);
 		g.drawLine(middleX, start.y, middleX, end.y);
 		g.drawLine(middleX, end.y, end.x, end.y);
 
+	}
+	
+	@Override
+	protected Stroke getStroke() {
+		final EdgeController edgeController = EdgeController.getController(getSource().getMap().getModeController());
+		final NodeModel model = getTarget().getModel();
+		int edgeWidth = edgeController.getWidth(model);
+		final EdgeStyle style = edgeController.getStyle(model);
+		edgeWidth = style.getNodeLineWidth(edgeWidth);
+		return new BasicStroke(edgeWidth);
 	}
 }
