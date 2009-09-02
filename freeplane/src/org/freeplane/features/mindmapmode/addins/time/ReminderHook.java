@@ -44,25 +44,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "plugins/TimeManagementReminder.xml", onceForMap = false)
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" })
 public class ReminderHook extends PersistentNodeHook {
-	@ActionLocationDescriptor(locations = { "/menu_bar/edit/find" }, //
-	accelerator = "control shift F")
-	static private class NodeListAction extends AFreeplaneAction {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-		private final TimeList timeList;
-
-		public NodeListAction(final ModeController modeController) {
-			super("NodeListAction", modeController.getController());
-			timeList = new TimeList(modeController, true);
-		}
-
-		public void actionPerformed(final ActionEvent e) {
-			timeList.startup();
-		}
-	}
-
 	//******************************************	
 	@EnabledAction(checkOnNodeChange = true)
 	private class ReminderHookAction extends HookAction {
@@ -93,11 +74,11 @@ public class ReminderHook extends PersistentNodeHook {
 		/**
 		 * 
 		 */
-		private final TimeList timeList;
+		private final NodeList timeList;
 
 		public TimeListAction(final ModeController modeController) {
 			super("TimeListAction", modeController.getController());
-			timeList = new TimeList(modeController, false);
+			timeList = new NodeList(modeController, false, false);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -143,12 +124,10 @@ public class ReminderHook extends PersistentNodeHook {
 	 */
 	public ReminderHook(final ModeController modeController) {
 		super(modeController);
-		final AFreeplaneAction timeManagementAction = new TimeManagementAction(modeController, this);
-		registerAction(timeManagementAction);
-		final AFreeplaneAction timeListAction = new TimeListAction(modeController);
-		registerAction(timeListAction);
-		final AFreeplaneAction nodeListAction = new NodeListAction(modeController);
-		registerAction(nodeListAction);
+		registerAction(new TimeManagementAction(modeController, this));
+		registerAction(new TimeListAction(modeController));
+		registerAction(new NodeListAction(modeController));
+		registerAction(new AllMapsNodeListAction(modeController));
 	}
 
 	@Override

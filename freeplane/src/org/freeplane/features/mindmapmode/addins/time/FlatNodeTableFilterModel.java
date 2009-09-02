@@ -27,7 +27,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import org.freeplane.features.mindmapmode.addins.time.TimeList.NodeHolder;
+import org.freeplane.features.mindmapmode.addins.time.NodeList.NodeHolder;
 
 /**
  * @author foltin

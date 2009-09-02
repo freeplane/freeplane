@@ -84,12 +84,6 @@ public interface IMapViewManager {
 	/** @return an unmodifiable set of all display names of current opened maps. */
 	public List<String> getMapKeys();
 
-	/**
-	 * @return a map of String to MapView elements.
-	 * @deprecated use getMapViewVector instead (and get the displayname as
-	 *             MapView.getDisplayName().
-	 */
-	@Deprecated
 	public Map<String, MapModel> getMaps();
 
 	public IMapSelection getMapSelection();
@@ -136,4 +130,6 @@ public interface IMapViewManager {
 	public void updateMapViewName();
 
 	public boolean isLeftTreeSupported(Component mapViewComponent);
+
+	public Map<String, MapModel> getMaps(String modename);
 }

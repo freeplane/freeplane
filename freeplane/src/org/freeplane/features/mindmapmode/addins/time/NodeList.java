@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.EventListener;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -68,6 +69,7 @@ import javax.swing.text.Document;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
@@ -85,6 +87,7 @@ import org.freeplane.core.util.SysUtil;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
@@ -92,7 +95,7 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
 /**
  * @author foltin
  */
-class TimeList {
+class NodeList {
 	static class DateRenderer extends DefaultTableCellRenderer {
 		/**
 		 * 
@@ -127,7 +130,7 @@ class TimeList {
 					public void run() {
 						try {
 							final Document document = event.getDocument();
-							final String text = TimeList.getRegularExpression(getText(document));
+							final String text = NodeList.getRegularExpression(getText(document));
 							mFlatNodeTableFilterModel.setFilter(text);
 						}
 						catch (final BadLocationException e) {
@@ -147,7 +150,7 @@ class TimeList {
 				mTypeDelayTimer = null;
 			}
 			mTypeDelayTimer = SysUtil.createTimer(getClass().getSimpleName());
-			mTypeDelayTimer.schedule(new DelayedTextEntry(event), TimeList.TYPE_DELAY_TIME);
+			mTypeDelayTimer.schedule(new DelayedTextEntry(event), NodeList.TYPE_DELAY_TIME);
 		}
 
 		public void changedUpdate(final DocumentEvent event) {
@@ -410,7 +413,7 @@ class TimeList {
 
 	private class ReplaceAllInfo implements IReplaceInputInformation {
 		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) TextController.getController(getMindMapController())).setNodeText(nodeHolder.node,
+			((MTextController) TextController.getController(getModeController())).setNodeText(nodeHolder.node,
 			    newText);
 		}
 
@@ -419,13 +422,13 @@ class TimeList {
 		}
 
 		public NodeHolder getNodeHolderAt(final int i) {
-			return (NodeHolder) mFlatNodeTableFilterModel.getValueAt(i, TimeList.NODE_TEXT_COLUMN);
+			return (NodeHolder) mFlatNodeTableFilterModel.getValueAt(i, NodeList.NODE_TEXT_COLUMN);
 		}
 	}
 
 	private class ReplaceSelectedInfo implements IReplaceInputInformation {
 		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) TextController.getController(getMindMapController())).setNodeText(nodeHolder.node,
+			((MTextController) TextController.getController(getModeController())).setNodeText(nodeHolder.node,
 			    newText);
 		}
 
@@ -434,7 +437,7 @@ class TimeList {
 		}
 
 		public NodeHolder getNodeHolderAt(final int i) {
-			return (NodeHolder) sorter.getValueAt(timeTable.getSelectedRows()[i], TimeList.NODE_TEXT_COLUMN);
+			return (NodeHolder) sorter.getValueAt(timeTable.getSelectedRows()[i], NodeList.NODE_TEXT_COLUMN);
 		}
 	}
 
@@ -463,7 +466,7 @@ class TimeList {
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
 	private static final int TYPE_DELAY_TIME = 500;
-	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = TimeList.class.getName() + "_properties";
+	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = NodeList.class.getName() + "_properties";
 
 	/**
 	 */
@@ -480,9 +483,9 @@ class TimeList {
 
 	public static void replace(final IReplaceInputInformation info, final String searchString,
 	                           final String replaceString) {
-		final String regExp = "(" + TimeList.getPureRegularExpression(searchString) + ")";
+		final String regExp = "(" + NodeList.getPureRegularExpression(searchString) + ")";
 		final Pattern p = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
-		final String replacement = TimeList.getPureRegularExpression(replaceString);
+		final String replacement = NodeList.getPureRegularExpression(replaceString);
 		final int length = info.getLength();
 		for (int i = 0; i < length; i++) {
 			final NodeHolder nodeHolder = info.getNodeHolderAt(i);
@@ -509,11 +512,13 @@ class TimeList {
 	private org.freeplane.features.mindmapmode.addins.time.TableSorter sorter;
 	private JTable timeTable;
 	private DefaultTableModel timeTableModel;
+	private boolean searchInAllMaps;
 
-	public TimeList(final ModeController modeController, final boolean showAllNodes) {
+	public NodeList(final ModeController modeController, final boolean showAllNodes, final boolean searchInAllMaps) {
 		this.modeController = modeController;
 		controller = modeController.getController();
 		this.showAllNodes = showAllNodes;
+		this.searchInAllMaps = searchInAllMaps;
 	}
 
 	/**
@@ -527,7 +532,7 @@ class TimeList {
 			setting.setColumnSorting(sorter.getSortingStatus(i));
 			storage.addTimeWindowColumnSetting(setting);
 		}
-		storage.storeDialogPositions(dialog, TimeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		storage.storeDialogPositions(dialog, NodeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
 		dialog.setVisible(false);
 		dialog.dispose();
 	}
@@ -539,7 +544,7 @@ class TimeList {
 			final int row = selectedRows[i];
 			selectedNodes.add(getMindMapNode(row));
 		}
-		final ModeController mindMapController = getMindMapController();
+		final ModeController mindMapController = getModeController();
 		final MapModel newMap = mindMapController.getMapController().newMap(((NodeModel) null));;
 		for (final Iterator iter = selectedNodes.iterator(); iter.hasNext();) {
 			final NodeModel node = (NodeModel) iter.next();
@@ -553,7 +558,7 @@ class TimeList {
 		disposeDialog();
 	}
 
-	private ModeController getMindMapController() {
+	private ModeController getModeController() {
 		return modeController;
 	}
 
@@ -561,7 +566,7 @@ class TimeList {
 	 */
 	private NodeModel getMindMapNode(final int focussedRow) {
 		final NodeModel selectedNode = ((NodeHolder) timeTable.getModel().getValueAt(focussedRow,
-		    TimeList.NODE_TEXT_COLUMN)).node;
+		    NodeList.NODE_TEXT_COLUMN)).node;
 		return selectedNode;
 	}
 
@@ -582,7 +587,7 @@ class TimeList {
 		try {
 			final String searchString = getText(mFilterTextSearchField.getDocument());
 			final String replaceString = getText(mFilterTextReplaceField.getDocument());
-			TimeList.replace(info, searchString, replaceString);
+			NodeList.replace(info, searchString, replaceString);
 			timeTableModel.fireTableDataChanged();
 			mFlatNodeTableFilterModel.resetFilter();
 			mFilterTextSearchField.setText("");
@@ -595,26 +600,46 @@ class TimeList {
 	private void selectNodes(final int focussedRow, final int[] selectedRows) {
 		if (focussedRow >= 0) {
 			final NodeModel focussedNode = getMindMapNode(focussedRow);
+			final MapModel map = focussedNode.getMap();
 			final Vector selectedNodes = new Vector();
 			for (int i = 0; i < selectedRows.length; i++) {
 				final int row = selectedRows[i];
-				selectedNodes.add(getMindMapNode(row));
+				final NodeModel node = getMindMapNode(row);
+				if(! node.getMap().equals(map)){
+					continue;
+				}
+				selectedNodes.add(node);
 			}
-			getMindMapController().getMapController().selectMultipleNodes(focussedNode, selectedNodes);
+			selectMap(map);
+			getModeController().getMapController().selectMultipleNodes(focussedNode, selectedNodes);
 		}
 	}
+
+	private void selectMap(MapModel map) {
+	    if(map.equals(controller.getMap())){
+	    	return;
+	    }
+	    final IMapViewManager mapViewManager = controller.getMapViewManager();
+		final Map<String, MapModel> maps = mapViewManager.getMaps(MModeController.MODENAME);
+	    for(Map.Entry<String, MapModel> entry : maps.entrySet()){
+	    	if(map.equals(entry.getValue())){
+	    		mapViewManager.tryToChangeToMapView(entry.getKey());
+	    	}
+	    }
+	    
+    }
 
 	private void selectSelectedRows() {
 		selectNodes(timeTable.getSelectedRow(), timeTable.getSelectedRows());
 	}
 
 	public void startup() {
-		TimeList.COLUMN_MODIFIED = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
-		TimeList.COLUMN_CREATED = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_CREATED);
-		TimeList.COLUMN_ICONS = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_ICONS);
-		TimeList.COLUMN_TEXT = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_TEXT);
-		TimeList.COLUMN_DATE = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_DATE);
-		TimeList.COLUMN_NOTES = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_NOTES);
+		NodeList.COLUMN_MODIFIED = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
+		NodeList.COLUMN_CREATED = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_CREATED);
+		NodeList.COLUMN_ICONS = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_ICONS);
+		NodeList.COLUMN_TEXT = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_TEXT);
+		NodeList.COLUMN_DATE = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_DATE);
+		NodeList.COLUMN_NOTES = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_NOTES);
 		dialog = new JDialog(modeController.getController().getViewController().getFrame(), true /* modal */);
 		String windowTitle;
 		if (showAllNodes) {
@@ -681,20 +706,20 @@ class TimeList {
 		dateRenderer = new DateRenderer();
 		nodeRenderer = new NodeRenderer();
 		notesRenderer = new NotesRenderer();
-		iconsRenderer = new IconsRenderer(getMindMapController());
+		iconsRenderer = new IconsRenderer(getModeController());
 		timeTable = new FlatNodeTable();
 		timeTable.addKeyListener(new FlatNodeTableKeyListener());
 		timeTable.addMouseListener(new FlatNodeTableMouseAdapter());
 		timeTable.getTableHeader().setReorderingAllowed(false);
 		timeTableModel = updateModel();
-		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(timeTableModel, TimeList.NODE_TEXT_COLUMN);
+		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(timeTableModel, NodeList.NODE_TEXT_COLUMN);
 		sorter = new TableSorter(mFlatNodeTableFilterModel);
 		timeTable.setModel(sorter);
 		sorter.setTableHeader(timeTable.getTableHeader());
 		sorter.setColumnComparator(Date.class, TableSorter.COMPARABLE_COMAPRATOR);
 		sorter.setColumnComparator(NodeModel.class, TableSorter.LEXICAL_COMPARATOR);
 		sorter.setColumnComparator(IconsHolder.class, TableSorter.COMPARABLE_COMAPRATOR);
-		sorter.setSortingStatus(TimeList.DATE_COLUMN, TableSorter.ASCENDING);
+		sorter.setSortingStatus(NodeList.DATE_COLUMN, TableSorter.ASCENDING);
 		final JScrollPane pane = new JScrollPane(timeTable);
 		contentPane.add(pane, new GridBagConstraints(0, 4, 1, 1, 1.0, 10.0, GridBagConstraints.WEST,
 		    GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
@@ -827,7 +852,7 @@ class TimeList {
 			}
 		});
 		final String marshalled = ResourceController.getResourceController().getProperty(
-		    TimeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		    NodeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
 		final WindowConfigurationStorage result = TimeWindowConfigurationStorage.decorateDialog(marshalled, dialog);
 		final WindowConfigurationStorage storage = result;
 		if (storage != null) {
@@ -848,7 +873,6 @@ class TimeList {
 	 * Creates a table model for the new table and returns it.
 	 */
 	private DefaultTableModel updateModel() {
-		final NodeModel node = controller.getMap().getRootNode();
 		final DefaultTableModel model = new DefaultTableModel() {
 			/**
 			 * 
@@ -877,13 +901,23 @@ class TimeList {
 				}
 			}
 		};
-		model.addColumn(TimeList.COLUMN_DATE);
-		model.addColumn(TimeList.COLUMN_TEXT);
-		model.addColumn(TimeList.COLUMN_ICONS);
-		model.addColumn(TimeList.COLUMN_CREATED);
-		model.addColumn(TimeList.COLUMN_MODIFIED);
-		model.addColumn(TimeList.COLUMN_NOTES);
-		updateModel(model, node);
+		model.addColumn(NodeList.COLUMN_DATE);
+		model.addColumn(NodeList.COLUMN_TEXT);
+		model.addColumn(NodeList.COLUMN_ICONS);
+		model.addColumn(NodeList.COLUMN_CREATED);
+		model.addColumn(NodeList.COLUMN_MODIFIED);
+		model.addColumn(NodeList.COLUMN_NOTES);
+		if(searchInAllMaps == false){
+			final NodeModel node = controller.getMap().getRootNode();
+			updateModel(model, node);
+		}
+		else{
+			final Map<String, MapModel> maps = controller.getMapViewManager().getMaps(MModeController.MODENAME);
+			for(MapModel map:maps.values()){
+				final NodeModel node = map.getRootNode();
+				updateModel(model, node);
+			}
+		}
 		return model;
 	}
 
@@ -898,7 +932,7 @@ class TimeList {
 			        node.getHistoryInformation().getCreatedAt(), node.getHistoryInformation().getLastModifiedAt(),
 			        new NotesHolder(node) });
 		}
-		for (final Iterator i = getMindMapController().getMapController().childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
 			updateModel(model, child);
 		}

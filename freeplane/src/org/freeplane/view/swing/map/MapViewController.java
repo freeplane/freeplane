@@ -284,7 +284,6 @@ public class MapViewController implements IMapViewManager {
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getMaps()
 	 */
-	@Deprecated
 	public Map<String, MapModel> getMaps() {
 		final HashMap<String, MapModel> returnValue = new HashMap<String, MapModel>(mapViewVector.size());
 		for (MapView mapView : mapViewVector) {
@@ -501,4 +500,14 @@ public class MapViewController implements IMapViewManager {
 	public boolean isLeftTreeSupported(Component mapViewComponent) {
 		return ((MapView)mapViewComponent).getLayoutType() != Layout.OUTLINE;
     }
+
+	public Map<String, MapModel> getMaps(String modename) {
+			final HashMap<String, MapModel> returnValue = new HashMap<String, MapModel>(mapViewVector.size());
+			for (MapView mapView : mapViewVector) {
+				if(mapView.getModeController().getModeName().equals(modename)){
+					returnValue.put(mapView.getName(), getModel(mapView));
+				}
+			}
+			return Collections.unmodifiableMap(returnValue);
+		}
 }
