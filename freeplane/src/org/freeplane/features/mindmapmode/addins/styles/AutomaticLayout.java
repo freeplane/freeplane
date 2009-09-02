@@ -65,7 +65,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 @NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
-@ActionLocationDescriptor(locations = "/menu_bar/extras/first/nodes/change")
+@ActionLocationDescriptor(locations = "/menu_bar/format/nodes")
 public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener, INodeChangeListener,
         IReadCompletionListener, IExtension {
 	/**
