@@ -173,8 +173,8 @@
             <boolean name="el__show_icon_for_attributes" />
         </separator>
         <separator name="outline_view">
-        	<number name="outline_vgap" step="5"/>
-        	<number name="outline_hgap" step="5"/>
+        	<number name="outline_vgap" min = "1"/>
+        	<number name="outline_hgap" min = "1"/>
         </separator>
        <separator name="icon_properties">        
             <boolean name="structured_icon_toolbar"/>

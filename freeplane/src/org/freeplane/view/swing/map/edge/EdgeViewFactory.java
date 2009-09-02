@@ -64,7 +64,7 @@ public class EdgeViewFactory {
 
 	public EdgeView getEdge(final NodeView source, final NodeView target) {
 		if(source.getMap().getLayoutType() == Layout.OUTLINE){
-			return new OutlineEdgeView(source, target);
+			return new OutlineLinkView(source, target);
 		}
 		final NodeModel model = target.getModel();
 		final EdgeStyle edgeStyle = EdgeController.getController(target.getMap().getModeController()).getStyle(model);

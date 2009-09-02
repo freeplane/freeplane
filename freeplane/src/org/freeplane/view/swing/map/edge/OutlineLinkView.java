@@ -32,9 +32,9 @@ import org.freeplane.view.swing.map.NodeView;
  * @author Dimitry Polivaev
  * 29.08.2009
  */
-public class OutlineEdgeView extends EdgeView {
-	public OutlineEdgeView(NodeView target) {
-	    super(target);
+public class OutlineLinkView extends EdgeView {
+	public OutlineLinkView(final NodeView source, final NodeView target) {
+	    super(source, target);
     }
 
 	@Override
@@ -43,8 +43,12 @@ public class OutlineEdgeView extends EdgeView {
 	}
 
 	protected void createStart() {
-		start = getSource().getMainViewInPoint();
-		UITools.convertPointToAncestor(getSource().getMainView(), start, getSource());
+		final MainView startMainView = getSource().getMainView();
+		start = new Point (startMainView.getWidth(), startMainView.getHeight()/2);
+		UITools.convertPointToAncestor(startMainView, start, getSource());
+        final MainView targetMainView = getTarget().getMainView();
+		end = new Point (targetMainView.getWidth(), targetMainView.getHeight()/2);
+		UITools.convertPointToAncestor(targetMainView, end, getTarget().getMap());
 	}
 	@Override
 	protected void draw(Graphics2D g) {
@@ -52,7 +56,10 @@ public class OutlineEdgeView extends EdgeView {
 		g.setColor(color);
 		final Stroke stroke = getStroke();
 		g.setStroke(stroke);
-		g.drawLine(start.x, start.y, start.x, end.y);
-		g.drawLine(start.x, end.y, end.x, end.y);
+		final int middleX = Math.max(start.x, end.x) + getSource().getMap().getZoomed(5);
+		g.drawLine(start.x, start.y, middleX, start.y);
+		g.drawLine(middleX, start.y, middleX, end.y);
+		g.drawLine(middleX, end.y, end.x, end.y);
+
 	}
 }
