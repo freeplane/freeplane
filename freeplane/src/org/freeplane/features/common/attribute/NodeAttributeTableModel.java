@@ -299,7 +299,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 
 	public void setStateIcon() {
 		final boolean showIcon = ResourceController.getResourceController().getBooleanProperty(
-		    "el__show_icon_for_attributes");
+		    "show_icon_for_attributes");
 		if (showIcon && getRowCount() == 0) {
 			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, null);
 		}

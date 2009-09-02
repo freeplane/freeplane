@@ -192,7 +192,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 							SwingUtilities.processKeyBindings(keyEvent);
 							break;
 						}
-						else if(! ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default")){
+						else if(! ResourceController.getResourceController().getBooleanProperty("il__enter_confirms_by_default")){
 							break;
 						}
 					}

@@ -162,6 +162,9 @@
             </combo>
         </separator>
         
+       <separator name="inline_editor">        
+            <boolean name="il__enter_confirms_by_default" />
+        </separator>
        <separator name="edit_long_node_window">        
             <boolean name="el__buttons_above"/>
             <boolean name="el__position_window_below_node" />
@@ -170,7 +173,6 @@
             <number name="el__min_default_window_width" />
             <number name="el__max_default_window_width" />
             <boolean name="el__enter_confirms_by_default" />
-            <boolean name="el__show_icon_for_attributes" />
         </separator>
         <separator name="outline_view">
         	<number name="outline_vgap" min = "1"/>
@@ -179,6 +181,7 @@
        <separator name="icon_properties">        
             <boolean name="structured_icon_toolbar"/>
             <boolean name="don_t_show_note_icons" />
+            <boolean name="show_icon_for_attributes" />
         </separator>
     </tab>
     <tab name="Keystrokes" layout="right:max(40dlu;p), 4dlu, 80dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu">
