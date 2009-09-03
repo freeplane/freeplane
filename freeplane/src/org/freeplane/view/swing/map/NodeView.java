@@ -1060,6 +1060,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public void requestFocus() {
+		getMap().scrollNodeToVisible(this);
 		mainView.requestFocus();
 	}
 
