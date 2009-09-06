@@ -41,7 +41,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 
 	private static final String DEFAULT_IMAGE_PATH = "/images";
 
-	protected static final String SEPARATOR = System.getProperty("file.separator");
+	protected static final String SEPARATOR = "/";
 
 	protected static final String THEME_FOLDER_KEY = "icon.theme.folder";
 
