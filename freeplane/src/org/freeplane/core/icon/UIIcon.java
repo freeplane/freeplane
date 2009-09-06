@@ -21,6 +21,7 @@ package org.freeplane.core.icon;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
@@ -129,7 +130,13 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		}
 		else {
 			try {
-				path = new File(RESOURCE_CONTROLLER.getResource(defaultPath).toURI()).getPath();
+				URL resourceURL = RESOURCE_CONTROLLER.getResource(defaultPath);
+				if(resourceURL != null) {
+					path = new File(resourceURL.toURI()).getPath();
+				}
+				else {
+					LogTool.warn(String.format("could not open file [%s]", defaultPath));
+				}
 			} catch (final URISyntaxException e) {
 				LogTool.warn(String.format("could not open file [%s]", defaultPath));
 			}
