@@ -17,16 +17,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.icon;
+package org.freeplane.core.icon;
 
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.ReadManager;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class IconBuilder implements IElementDOMHandler {
+	
+	private final IconStore store;
+	
+	public IconBuilder(final IconStore icons) {
+		this.store = icons;
+	}
+	
 	static class IconProperties {
 		String iconName;
 	}
@@ -42,7 +48,7 @@ class IconBuilder implements IElementDOMHandler {
 		if (parent instanceof NodeModel && tag.equals("icon")) {
 			final NodeModel node = (NodeModel) parent;
 			final IconProperties ip = (IconProperties) userObject;
-			node.addIcon(MindIcon.factory(ip.iconName), MindIcon.LAST);
+			node.addIcon(store.getMindIcon(ip.iconName));
 			return;
 		}
 	}
@@ -51,7 +57,7 @@ class IconBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler("icon", "BUILTIN", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final IconProperties ip = (IconProperties) userObject;
-				ip.iconName = value.toString();
+				ip.iconName = value;
 			}
 		});
 	}

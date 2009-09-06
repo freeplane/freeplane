@@ -22,7 +22,6 @@ package org.freeplane.features.browsemode;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -31,9 +30,10 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.icon.UIIcon;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 
@@ -41,7 +41,7 @@ import org.freeplane.features.common.note.NoteModel;
  * @author foltin
  */
 public class BNodeNoteViewer implements INodeSelectionListener {
-	private static ImageIcon noteIcon = null;
+	private static UIIcon noteIcon = null;
 	final private Controller controller;
 	private JComponent noteScrollPane;
 	private JLabel noteViewer;
@@ -57,6 +57,8 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 			noteViewer.setVerticalAlignment(SwingConstants.TOP);
 			noteViewer.setOpaque(true);
 			noteScrollPane = new JScrollPane(noteViewer) {
+				private static final long serialVersionUID = -4923850893346946687L;
+
 				@Override
 				public Dimension getPreferredSize() {
 					final JApplet applet = (JApplet) SwingUtilities.getAncestorOfClass(JApplet.class, noteScrollPane);
@@ -87,8 +89,7 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 	/** Copied from NodeNoteRegistration. */
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
 		if (BNodeNoteViewer.noteIcon == null) {
-			BNodeNoteViewer.noteIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-			    "/images/knotes.png"));
+			BNodeNoteViewer.noteIcon = IconStoreFactory.create().getUIIcon("knotes.png");
 		}
 		node.setStateIcon(NoteController.NODE_NOTE_ICON, (enabled) ? BNodeNoteViewer.noteIcon : null);
 	}

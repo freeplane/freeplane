@@ -31,16 +31,15 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
@@ -49,7 +48,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.JTextComponent;
 
-import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.icon.IconStore;
+import org.freeplane.core.icon.MindIcon;
+import org.freeplane.core.icon.UIIcon;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
@@ -59,16 +61,14 @@ import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 /**
  * Base class for all node views.
  */
 public abstract class MainView extends JLabel {
-	public static final Set executableExtensions = new HashSet(Arrays.asList(new String[] { "exe", "com", "vbs", "bat",
+	public static final Set<String> executableExtensions = new HashSet<String>(Arrays.asList(new String[] { "exe", "com", "vbs", "bat",
 	        "lnk" }));
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
-	private static final int MIN_HOR_NODE_SIZE = 10;
 	static Dimension minimumSize = new Dimension(0, 0);
     final static private Graphics2D fmg;
     static{
@@ -82,6 +82,8 @@ public abstract class MainView extends JLabel {
 	private static final JComponent standardLabel = new JLabel();
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
 
+	private static final IconStore STORE = IconStoreFactory.create();
+	
 	MainView() {
 		setUI(MainViewUI.createUI(this));
 		setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -316,10 +318,14 @@ public abstract class MainView extends JLabel {
 		boolean iconPresent = false;
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();
-		for(Entry<String, ImageIcon> iconEntry : model.getStateIcons().entrySet()) {
+		for(Entry<String, List<UIIcon>> iconEntry : model.getStateIcons().entrySet()) {
 			iconPresent = true;
-			final ImageIcon myIcon = iconEntry.getValue();
-			iconImages.addImage(myIcon);
+			final List<UIIcon> myIcons = iconEntry.getValue();
+			MultipleImage image = new MultipleImage();
+			for(UIIcon icon : myIcons) {
+				image.addImage(icon.getIcon());
+			}
+			iconImages.addImage(image);
 		}
 		for(MindIcon myIcon : model.getIcons()) {
 			iconPresent = true;
@@ -328,18 +334,18 @@ public abstract class MainView extends JLabel {
 		final URI link = NodeLinks.getLink(model);
 		if (link != null) {
 			iconPresent = true;
-			String iconPath = "/images/Link.png";
+			String iconPath = "Link.png";
 			if (link.toString().startsWith("#")) {
-				iconPath = "/images/LinkLocal.png";
+				iconPath = "LinkLocal.png";
 			}
 			else if (link.toString().startsWith("mailto:")) {
-				iconPath = "/images/Mail.png";
+				iconPath = "Mail.png";
 			}
 			else if (executableExtensions.contains(link)) {
-				iconPath = "/images/Executable.png";
+				iconPath = "Executable.png";
 			}
-			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconPath));
-			iconImages.addImage(icon);
+			final UIIcon icon = STORE.getUIIcon(iconPath);
+			iconImages.addImage(icon.getIcon());
 		}
 		setIcon((iconPresent ? iconImages : null));
 	}

@@ -25,8 +25,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 
@@ -36,9 +36,13 @@ public class MultipleImage extends ImageIcon {
 	 */
 	private static final long serialVersionUID = 1L;
 	private boolean isDirty;
-	final private Vector mImages = new Vector();
+	final private List<ImageIcon> mImages = new ArrayList<ImageIcon>();
 	private double zoomFactor = 1;
 
+	public MultipleImage() {
+		this(1.0f);
+	}
+	
 	public MultipleImage(final double zoom) {
 		zoomFactor = zoom;
 		isDirty = true;
@@ -84,8 +88,7 @@ public class MultipleImage extends ImageIcon {
 		final BufferedImage outImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D g = outImage.createGraphics();
 		double myX = 0;
-		for (final Iterator i = mImages.iterator(); i.hasNext();) {
-			final ImageIcon currentIcon = (ImageIcon) i.next();
+		for (final ImageIcon currentIcon : mImages) {
 			final double pwidth = (currentIcon.getIconWidth() * zoomFactor);
 			final AffineTransform inttrans = AffineTransform.getScaleInstance(zoomFactor, zoomFactor);
 			g.drawImage(currentIcon.getImage(), inttrans, null);

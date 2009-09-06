@@ -78,21 +78,6 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	final private String key;
 	private boolean selected = false;
 
-	//
-	//	/**
-	//	 * @param title
-	//	 *            Title is a resource.
-	//	 * @param iconPath
-	//	 *            is a path to an icon.
-	//	 */
-	//	private AFreeplaneAction(final Controller controller, final String title, final String iconPath) {
-	//		this(controller, title);
-	//		if (iconPath != null && !iconPath.equals("")) {
-	//			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconPath));
-	//			putValue(SMALL_ICON, icon);
-	//System.out.println("icon\t\t" + getClass().getSimpleName() + ".icon=" + iconPath);		
-	//		}
-	//	}
 	public AFreeplaneAction(final String key, final Controller controller) {
 		super();
 		this.controller = controller;

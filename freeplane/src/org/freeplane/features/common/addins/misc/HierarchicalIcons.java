@@ -21,7 +21,6 @@
 package org.freeplane.features.common.addins.misc;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.TreeSet;
@@ -29,16 +28,15 @@ import java.util.TreeSet;
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionLocationDescriptor;
-import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -48,7 +46,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @ActionLocationDescriptor(locations = { "/menu_bar/format/nodes/automaticLayout2" })
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener, IExtension {
-	final private Map<NodeModel, TreeSet> nodeIconSets = new HashMap<NodeModel, TreeSet>();
+	final private Map<NodeModel, TreeSet<MindIcon>> nodeIconSets = new HashMap<NodeModel, TreeSet<MindIcon>>();
 
 	public HierarchicalIcons(final ModeController modeController) {
 		super(modeController);
@@ -66,17 +64,15 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 
 	/**
 	 */
-	private void addAccumulatedIconsToTreeSet(final NodeModel child, final TreeSet iconSet, final TreeSet childsTreeSet) {
-		for (final Iterator i = child.getIcons().iterator(); i.hasNext();) {
-			final MindIcon icon = (MindIcon) i.next();
-			iconSet.add(icon.getName());
+	private void addAccumulatedIconsToTreeSet(final NodeModel child, final TreeSet<MindIcon> iconSet, final TreeSet<MindIcon> childsTreeSet) {
+		for (final MindIcon icon : child.getIcons()) {
+			iconSet.add(icon);
 		}
 		if (childsTreeSet == null) {
 			return;
 		}
-		for (final Iterator i = childsTreeSet.iterator(); i.hasNext();) {
-			final String iconName = (String) i.next();
-			iconSet.add(iconName);
+		for (final MindIcon icon : childsTreeSet) {
+			iconSet.add(icon);
 		}
 	}
 
@@ -185,7 +181,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	/**
 	 */
 	private void removeIcons(final NodeModel node) {
-		node.setStateIcon(getHookName(), null);
+		node.removeStateIcons(getHookName());
 		getModeController().getMapController().nodeRefresh(node);
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
 		while(childrenUnfolded.hasNext()) {
@@ -195,18 +191,18 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	}
 
 	private void setStyle(final NodeModel node) {
-		final TreeSet iconSet = new TreeSet();
+		final TreeSet<MindIcon> iconSet = new TreeSet<MindIcon>();
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
 		while(childrenUnfolded.hasNext()) {
 			final NodeModel child = childrenUnfolded.next();
 			addAccumulatedIconsToTreeSet(child, iconSet, nodeIconSets.get(child));
 		}
 		for(MindIcon icon : node.getIcons()) {
-			iconSet.remove(icon.getName());
+			iconSet.remove(icon);
 		}
 		boolean dirty = true;
 		if (nodeIconSets.containsKey(node)) {
-			final TreeSet storedIconSet = nodeIconSets.get(node);
+			final TreeSet<MindIcon> storedIconSet = nodeIconSets.get(node);
 			if (storedIconSet.equals(iconSet)) {
 				dirty = false;
 			}
@@ -214,16 +210,10 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		nodeIconSets.put(node, iconSet);
 		if (dirty) {
 			if (iconSet.size() > 0) {
-				final MultipleImage image = new MultipleImage(0.75f);
-				for (final Iterator i = iconSet.iterator(); i.hasNext();) {
-					final String iconName = (String) i.next();
-					final MindIcon icon = MindIcon.factory(iconName);
-					image.addImage(icon.getIcon());
-				}
-				node.setStateIcon(getHookName(), image);
+				node.setStateIcon(getHookName(), iconSet);
 			}
 			else {
-				node.setStateIcon(getHookName(), null);
+				node.removeStateIcons(getHookName());
 			}
 			getModeController().getMapController().nodeRefresh(node);
 		}

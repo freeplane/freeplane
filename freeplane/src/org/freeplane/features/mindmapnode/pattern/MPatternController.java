@@ -27,15 +27,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.icon.IconStore;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
@@ -55,10 +56,14 @@ public class MPatternController implements IExtension {
 		modeController.addExtension(MPatternController.class, patternController);
 	}
 
-	final private ModeController modeController;
-	private List mPatternsList = new Vector();
+	private static final IconStore STORE = IconStoreFactory.create();
+	
+	private final ModeController modeController;
+	private final File patternsFile;
+	
+	private List<Pattern> mPatternsList = new ArrayList<Pattern>();
+	
 	public ApplyPatternAction patterns[] = new ApplyPatternAction[0];
-	final private File patternsFile;
 
 	public MPatternController(final ModeController modeController) {
 		super();
@@ -131,7 +136,7 @@ public class MPatternController implements IExtension {
 		}
 	}
 
-	private void createPatterns(final List patternsList) throws Exception {
+	private void createPatterns(final List<Pattern> patternsList) throws Exception {
 		mPatternsList = patternsList;
 		patterns = new ApplyPatternAction[patternsList.size()];
 		for (int i = 0; i < patterns.length; i++) {
@@ -139,7 +144,7 @@ public class MPatternController implements IExtension {
 			patterns[i] = new ApplyPatternAction(modeController, actualPattern);
 			final PatternProperty patternIcon = actualPattern.getPatternIcon();
 			if (patternIcon != null && patternIcon.getValue() != null) {
-				patterns[i].putValue(Action.SMALL_ICON, MindIcon.factory(patternIcon.getValue()).getIcon());
+				patterns[i].putValue(Action.SMALL_ICON, STORE.getMindIcon(patternIcon.getValue()).getIcon());
 			}
 		}
 	}

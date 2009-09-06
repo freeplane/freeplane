@@ -24,6 +24,8 @@ import java.util.ListIterator;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.icon.UIIcon;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -32,7 +34,7 @@ import org.freeplane.features.common.note.NoteModel;
 
 public class BModeController extends ModeController {
 	static public final String MODENAME = "Browse";
-	private ImageIcon noteIcon;
+	private UIIcon noteIcon;
 
 	public BModeController(final Controller controller) {
 		super(controller);
@@ -47,7 +49,7 @@ public class BModeController extends ModeController {
 		final String noteText = NoteModel.getNoteText(node);
 		if (noteText != null && !noteText.equals("")) {
 			if (noteIcon == null) {
-				noteIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/knotes.png"));
+				noteIcon = IconStoreFactory.create().getUIIcon("knotes.png");
 			}
 			node.setStateIcon(NoteController.NODE_NOTE_ICON, noteIcon);
 		}

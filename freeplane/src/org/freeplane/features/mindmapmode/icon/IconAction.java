@@ -26,15 +26,14 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.IIconInformation;
-import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.icon.IIconInformation;
+import org.freeplane.core.icon.IconController;
+import org.freeplane.core.icon.MindIcon;
+import org.freeplane.core.icon.factory.ImageIconFactory;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.common.icon.IconController;
 
 class IconAction extends AMultipleNodeAction implements IIconInformation {
 	/**
@@ -42,27 +41,17 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static String getLocalName(final MindIcon _icon) {
-		final String name = _icon.getName();
-		final String localName = ResourceBundles.getText("icon_" + name, null);
-		if (localName != null) {
-			return localName;
-		}
-//		return FpStringUtils.formatText("user_icon", name);
-		return  '"' + name + '"';
-	}
-
 	final private MindIcon icon;
 
 	public IconAction(final Controller controller, final MindIcon _icon) {
-		super("IconAction." + _icon.getName(), controller, IconAction.getLocalName(_icon), _icon.getIcon());
+		super("IconAction." + _icon.getName(), controller, _icon.getDescription(), ImageIconFactory.getInstance().getImageIcon(_icon));
 		putValue(Action.SHORT_DESCRIPTION, _icon.getDescription());
 		icon = _icon;
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MIconController) IconController.getController(getModeController())).addIcon(node, icon, MindIcon.LAST);
+		((MIconController) IconController.getController(getModeController())).addIcon(node, icon);
 	}
 
 	public String getDescription() {
@@ -70,7 +59,7 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 	}
 
 	public ImageIcon getIcon() {
-		return icon.getIcon();
+		return ImageIconFactory.getInstance().getImageIcon(icon);
 	}
 
 	public KeyStroke getKeyStroke() {

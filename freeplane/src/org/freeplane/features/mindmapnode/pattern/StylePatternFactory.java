@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.core.model.NodeModel;
@@ -156,10 +155,9 @@ public class StylePatternFactory {
 		return pattern;
 	}
 
-	public static Pattern createPatternFromSelected(final NodeModel focussed, final List selected) {
+	public static Pattern createPatternFromSelected(final NodeModel focussed, final List<NodeModel> selected) {
 		Pattern nodePattern = StylePatternFactory.createPatternFromNode(focussed);
-		for (final Iterator iter = selected.iterator(); iter.hasNext();) {
-			final NodeModel node = (NodeModel) iter.next();
+		for (final NodeModel node : selected) {
 			final Pattern tempNodePattern = StylePatternFactory.createPatternFromNode(node);
 			nodePattern = StylePatternFactory.intersectPattern(nodePattern, tempNodePattern);
 		}
@@ -220,7 +218,7 @@ public class StylePatternFactory {
 		return result;
 	}
 
-	public static List loadPatterns(final File file) throws Exception {
+	public static List<Pattern> loadPatterns(final File file) throws Exception {
 		return StylePatternFactory.loadPatterns(new BufferedReader(new FileReader(file)));
 	}
 
@@ -228,7 +226,7 @@ public class StylePatternFactory {
 	 * @return a List of Pattern elements.
 	 * @throws Exception
 	 */
-	public static List loadPatterns(final Reader reader) throws Exception {
+	public static List<Pattern> loadPatterns(final Reader reader) throws Exception {
 		final Patterns patterns = Patterns.unMarshall(reader);
 		return patterns.getListChoiceList();
 	}
@@ -255,10 +253,9 @@ public class StylePatternFactory {
 	 *
 	 * @throws Exception
 	 */
-	public static void savePatterns(final Writer writer, final List listOfPatterns) throws Exception {
+	public static void savePatterns(final Writer writer, final List<Pattern> listOfPatterns) throws Exception {
 		final Patterns patterns = new Patterns();
-		for (final Iterator iter = listOfPatterns.iterator(); iter.hasNext();) {
-			final Pattern pattern = (Pattern) iter.next();
+		for (final Pattern pattern : listOfPatterns) {
 			patterns.addChoice(pattern);
 		}
 		final String marshalledResult = patterns.marshall();

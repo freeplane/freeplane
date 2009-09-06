@@ -24,17 +24,20 @@ import java.awt.CardLayout;
 import java.awt.HeadlessException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.JPanel;
 
+import org.freeplane.core.icon.IconController;
+import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.BooleanProperty;
 import org.freeplane.core.resources.ui.ColorProperty;
@@ -51,7 +54,6 @@ import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
-import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.mindmapmode.icon.MIconController;
@@ -139,13 +141,13 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private ThreeCheckBoxProperty mClearSetters;
 	private BooleanProperty mCloud;
 	private ColorProperty mCloudColor;
-	private Vector mControls;
+	private List<IPropertyControl> mControls;
 	private ColorProperty mEdgeColor;
 	private ComboProperty mEdgeStyle;
 	private ComboProperty mEdgeWidth;
 	private IconProperty mIcon;
-	private Vector mIconInformationVector;
-	final private ModeController mMindMapController;
+	private List<MindIcon> mIconInformationVector;
+	private final ModeController mMindMapController;
 	private StringProperty mName;
 	private ColorProperty mNodeBackgroundColor;
 	private ColorProperty mNodeColor;
@@ -155,12 +157,12 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private ComboProperty mNodeFontSize;
 	private ComboProperty mNodeStyle;
 	private StringProperty mNodeText;
-	private List mPatternList;
+	private List<Pattern> mPatternList;
 	/**
 	 * Denotes pairs property -> ThreeCheckBoxProperty such that the boolean
 	 * property can be set, when the format property is changed.
 	 */
-	final private HashMap mPropertyChangePropagation = new HashMap();
+	private final Map<ThreeCheckBoxProperty, PropertyBean> mPropertyChangePropagation = new HashMap<ThreeCheckBoxProperty, PropertyBean>();
 	private ScriptEditorProperty mScriptPattern;
 	private ThreeCheckBoxProperty mSetChildPattern;
 	private ThreeCheckBoxProperty mSetCloud;
@@ -202,8 +204,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
     }
 
 	public void addListeners() {
-		for (final Iterator iter = mControls.iterator(); iter.hasNext();) {
-			final IPropertyControl control = (IPropertyControl) iter.next();
+		for (final IPropertyControl control : mControls) {
 			if (control instanceof PropertyBean) {
 				final PropertyBean bean = (PropertyBean) control;
 				bean.addPropertyChangeListener(this);
@@ -211,16 +212,15 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		}
 		mClearSetters.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent pEvt) {
-				for (final Iterator iter = mPropertyChangePropagation.keySet().iterator(); iter.hasNext();) {
-					final ThreeCheckBoxProperty booleanProp = (ThreeCheckBoxProperty) iter.next();
+				for (final ThreeCheckBoxProperty booleanProp : mPropertyChangePropagation.keySet()) {
 					booleanProp.setValue(mClearSetters.getValue());
 				}
 			}
 		});
 	}
 
-	private Vector getControls() {
-		final Vector controls = new Vector();
+	private List<IPropertyControl> getControls() {
+		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
 		controls.add(new SeparatorProperty("OptionPanel.separator.General"));
 		mClearSetters = new ThreeCheckBoxProperty(StylePatternPanel.CLEAR_ALL_SETTERS);
 		mClearSetters.setValue(ThreeCheckBoxProperty.TRUE_VALUE);
@@ -230,7 +230,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 			controls.add(mName);
 			mSetChildPattern = new ThreeCheckBoxProperty(StylePatternPanel.SET_CHILD_PATTERN);
 			controls.add(mSetChildPattern);
-			final Vector childNames = new Vector();
+			final List<String> childNames = new ArrayList<String>();
 			mChildPattern = new ComboProperty(StylePatternPanel.CHILD_PATTERN, childNames, childNames);
 			controls.add(mChildPattern);
 		}
@@ -252,9 +252,9 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		mNodeStyle = new ComboProperty(StylePatternPanel.NODE_STYLE, new String[] { "fork", "bubble", "as_parent",
 		        "combined" });
 		controls.add(mNodeStyle);
-		mIconInformationVector = new Vector();
+		mIconInformationVector = new ArrayList<MindIcon>();
 		final ModeController controller = mMindMapController;
-		final Collection mindIcons = ((MIconController) IconController.getController(controller)).getMindIcons();
+		final Collection<MindIcon> mindIcons = ((MIconController) IconController.getController(controller)).getMindIcons();
 		mIconInformationVector.addAll(mindIcons);
 		mSetIcon = new ThreeCheckBoxProperty(StylePatternPanel.SET_ICON);
 		controls.add(mSetIcon);
@@ -268,11 +268,10 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		controls.add(mNodeFontName);
 		mSetNodeFontSize = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_SIZE);
 		controls.add(mSetNodeFontSize);
-		final Vector sizesVector = new Vector();
-		for (int i = 0; i < sizes.length; i++) {
-			sizesVector.add(sizes[i]);
-		}
+
+		final List<String> sizesVector = new ArrayList<String>(Arrays.asList(sizes));
 		mNodeFontSize = new ComboProperty(StylePatternPanel.NODE_FONT_SIZE, sizesVector, sizesVector);
+		
 		controls.add(mNodeFontSize);
 		mSetNodeFontBold = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_BOLD);
 		controls.add(mSetNodeFontBold);
@@ -354,10 +353,9 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		return transformator;
 	}
 
-	private Vector getPatternNames() {
-		final Vector childNames = new Vector();
-		for (final Iterator iter = mPatternList.iterator(); iter.hasNext();) {
-			final Pattern pattern = (Pattern) iter.next();
+	private List<String> getPatternNames() {
+		final List<String> childNames = new ArrayList<String>();
+		for (final Pattern pattern : mPatternList) {
 			childNames.add(pattern.getName());
 		}
 		return childNames;
@@ -433,8 +431,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.setDefaultDialogBorder();
 		mControls = getControls();
-		for (final Iterator i = mControls.iterator(); i.hasNext();) {
-			final IPropertyControl control = (IPropertyControl) i.next();
+		for (final IPropertyControl control : mControls) {
 			control.layout(rightBuilder);
 		}
 		rightStack.add(rightBuilder.getPanel(), "testTab");
@@ -475,7 +472,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		setPatternControls(pattern.getPatternNodeFontBold(), mSetNodeFontBold, mNodeFontBold, Boolean.TRUE.toString());
 		setPatternControls(pattern.getPatternNodeFontItalic(), mSetNodeFontItalic, mNodeFontItalic, Boolean.TRUE
 		    .toString());
-		final MindIcon firstInfo = (MindIcon) mIconInformationVector.get(0);
+		final MindIcon firstInfo = mIconInformationVector.get(0);
 		setPatternControls(pattern.getPatternIcon(), mSetIcon, mIcon, firstInfo.getName());
 		setPatternControls(pattern.getPatternScript(), mSetScriptPattern, mScriptPattern, "");
 		if (StylePatternPanelType.WITH_NAME_AND_CHILDS.equals(mType)) {
@@ -516,9 +513,9 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	/**
 	 * For the child pattern box, the list is set here.
 	 */
-	public void setPatternList(final List patternList) {
+	public void setPatternList(final List<Pattern> patternList) {
 		mPatternList = patternList;
-		final Vector childNames = getPatternNames();
+		final List<String> childNames = getPatternNames();
 		mChildPattern.updateComboBoxEntries(childNames, childNames);
 	}
 

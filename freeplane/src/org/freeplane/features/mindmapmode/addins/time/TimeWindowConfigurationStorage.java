@@ -2,6 +2,7 @@ package org.freeplane.features.mindmapmode.addins.time;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JDialog;
 
@@ -13,16 +14,16 @@ class TimeWindowConfigurationStorage extends WindowConfigurationStorage {
 		final TimeWindowConfigurationStorage storage = new TimeWindowConfigurationStorage();
 		final XMLElement xml = storage.unmarschall(marshalled, dialog);
 		if (xml != null) {
-			final Iterator iterator = xml.getChildren().iterator();
+			final Iterator<XMLElement> iterator = xml.getChildren().iterator();
 			while (iterator.hasNext()) {
-				storage.addTimeWindowColumnSetting(TimeWindowColumnSetting.create((XMLElement) iterator.next()));
+				storage.addTimeWindowColumnSetting(TimeWindowColumnSetting.create(iterator.next()));
 			}
 			return storage;
 		}
 		return null;
 	}
 
-	protected ArrayList<TimeWindowColumnSetting> timeWindowColumnSettingList = new ArrayList();
+	protected List<TimeWindowColumnSetting> timeWindowColumnSettingList = new ArrayList<TimeWindowColumnSetting>();
 
 	public void addAtTimeWindowColumnSetting(final int position, final TimeWindowColumnSetting timeWindowColumnSetting) {
 		timeWindowColumnSettingList.add(position, timeWindowColumnSetting);
@@ -36,7 +37,7 @@ class TimeWindowConfigurationStorage extends WindowConfigurationStorage {
 		timeWindowColumnSettingList.clear();
 	}
 
-	public java.util.List getListTimeWindowColumnSettingList() {
+	public List<TimeWindowColumnSetting> getListTimeWindowColumnSettingList() {
 		return java.util.Collections.unmodifiableList(timeWindowColumnSettingList);
 	}
 

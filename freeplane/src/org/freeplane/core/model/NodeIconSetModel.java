@@ -19,47 +19,53 @@
  */
 package org.freeplane.core.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Vector;
 
-import javax.swing.ImageIcon;
+import org.freeplane.core.icon.MindIcon;
+import org.freeplane.core.icon.UIIcon;
 
 /**
  * @author Dimitry Polivaev 20.11.2008
  */
 class NodeIconSetModel {
 	/** stores the icons associated with this node. */
-	protected Vector<MindIcon>        icons;
-	private TreeMap<String, ImageIcon> stateIcons;
+	protected List<MindIcon>                icons;
+	private   TreeMap<String, List<UIIcon>> stateIcons;
 
-	void addIcon(final MindIcon _icon, final int position) {
+	void addIcon(final MindIcon icon) {
 		createIcons();
-		if (position == MindIcon.LAST) {
-			icons.add(_icon);
+		icons.add(icon);
+	}
+	
+	void addIcon(final MindIcon icon, final int position) {
+		createIcons();
+		if (position > -1) {
+			icons.add(position, icon);
 		}
 		else {
-			icons.add(position, _icon);
+			icons.add(icon);
 		}
 	}
 
 	private void createIcons() {
 		if (icons == null) {
-			icons = new Vector<MindIcon>();
+			icons = new ArrayList<MindIcon>();
 		}
 	}
 
 	private void createStateIcons() {
 		if (stateIcons == null) {
-			stateIcons = new TreeMap<String, ImageIcon>();
+			stateIcons = new TreeMap<String, List<UIIcon>>();
 		}
 	}
 
 	public MindIcon getIcon(final int position) {
-		final  List<MindIcon> icons = getIcons();
-		return (position == MindIcon.LAST ? icons.get(icons.size() - 1) : icons.get(position));
+		return getIcons().get(position);
 	}
 
 	List<MindIcon> getIcons() {
@@ -69,38 +75,54 @@ class NodeIconSetModel {
 		return icons;
 	}
 
-	Map<String, ImageIcon> getStateIcons() {
+	Map<String, List<UIIcon>> getStateIcons() {
 		if (stateIcons == null) {
 			return Collections.emptyMap();
 		}
 		return Collections.unmodifiableSortedMap(stateIcons);
 	}
 
-	/** @return returns the number of remaining icons. */
+	/** 
+	 * removes the last icon
+	 * 
+	 * @return returns the number of remaining icons. 
+	 */
+	int removeIcon() {
+		createIcons();
+		if(!icons.isEmpty()) {
+			icons.remove(icons.size() - 1);
+		}
+		return icons.size();
+	}
+	
+	/** 
+	 * @param position of icon to remove
+	 * 
+	 * @return returns the number of remaining icons. 
+	 */
 	int removeIcon(int position) {
 		createIcons();
-		if (position == MindIcon.LAST) {
+		if (position == icons.size()) {
 			position = icons.size() - 1;
 		}
 		icons.remove(position);
-		final int returnSize = icons.size();
-		if (returnSize == 0) {
-			icons = null;
-		}
-		return returnSize;
+		return icons.size();
 	}
 
 	/** This method must be synchronized as the TreeMap isn't. */
-	void setStateIcon(final String key, final ImageIcon icon) {
+	void setStateIcon(final String key, final UIIcon icon) {
 		createStateIcons();
 		if (icon != null) {
-			stateIcons.put(key, icon);
+			if(!stateIcons.containsKey(key)) {
+				stateIcons.put(key, new LinkedList<UIIcon>());
+			}
+			stateIcons.get(key).add(icon);
 		}
-		else if (stateIcons.containsKey(key)) {
+	}
+
+	public void removeStateIcons(String key) {
+		if(stateIcons != null) {
 			stateIcons.remove(key);
-		}
-		if (stateIcons.size() == 0) {
-			stateIcons = null;
 		}
 	}
 }

@@ -25,9 +25,10 @@ import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
-
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.icon.IconStore;
+import org.freeplane.core.icon.UIIcon;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.io.MapWriter;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.IEncrypter;
@@ -36,10 +37,12 @@ import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
 public class EncryptionModel implements IExtension {
-	private static ImageIcon decryptedIcon;
-	private static ImageIcon encryptedIcon;
+	private static UIIcon decryptedIcon;
+	private static UIIcon encryptedIcon;
 	private static Logger logger;
 
+	private static final IconStore STORE = IconStoreFactory.create();
+	
 	public static EncryptionModel getModel(final NodeModel node) {
 		return (EncryptionModel) node.getExtension(EncryptionModel.class);
 	}
@@ -175,10 +178,10 @@ public class EncryptionModel implements IExtension {
 			EncryptionModel.logger = Logger.global;
 		}
 		if (EncryptionModel.encryptedIcon == null) {
-			EncryptionModel.encryptedIcon = MindIcon.factory("encrypted").getIcon();
+			EncryptionModel.encryptedIcon = STORE.getUIIcon("lock.png");
 		}
 		if (EncryptionModel.decryptedIcon == null) {
-			EncryptionModel.decryptedIcon = MindIcon.factory("decrypted").getIcon();
+			EncryptionModel.decryptedIcon = STORE.getUIIcon("unlock.png");
 		}
 		updateIcon();
 	}
@@ -221,11 +224,11 @@ public class EncryptionModel implements IExtension {
 	 */
 	public void updateIcon() {
 		if (isAccessible()) {
-			node.setStateIcon("encrypted", null);
+			node.removeStateIcons("encrypted");
 			node.setStateIcon("decrypted", EncryptionModel.decryptedIcon);
 		}
 		else {
-			node.setStateIcon("decrypted", null);
+			node.removeStateIcons("decrypted");
 			node.setStateIcon("encrypted", EncryptionModel.encryptedIcon);
 		}
 	}

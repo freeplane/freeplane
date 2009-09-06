@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.model;
+package org.freeplane.core.icon;
 
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;

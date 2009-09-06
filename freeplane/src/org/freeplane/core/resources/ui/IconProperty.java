@@ -22,28 +22,28 @@ package org.freeplane.core.resources.ui;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class IconProperty extends PropertyBean implements IPropertyControl, ActionListener {
-	private MindIcon mActualIcon = null;
-	JButton mButton;
+	private MindIcon mActualIcon;
+	private final JButton mButton;
 	/**
 	 * Of IconInformation s.
 	 */
-	final private Vector<MindIcon> mIcons;
+	private final List<MindIcon> mIcons;
 
-	public IconProperty(final String name, final Vector<MindIcon> icons) {
+	public IconProperty(final String name, final List<MindIcon> icons) {
 		super(name);
 		mIcons = icons;
 		mButton = new JButton();
@@ -51,10 +51,9 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Vector<MindIcon> icons = new Vector<MindIcon>();
-		final Vector<String> descriptions = new Vector<String>();
-		for (final Iterator<MindIcon> iter = mIcons.iterator(); iter.hasNext();) {
-			final MindIcon icon = iter.next();
+		final List<MindIcon> icons = new ArrayList<MindIcon>();
+		final List<String> descriptions = new ArrayList<String>();
+		for (final MindIcon icon : mIcons) {
 			icons.add(icon);
 			descriptions.add(icon.getDescription());
 		}
@@ -65,7 +64,7 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 		dialog.setVisible(true);
 		final int result = dialog.getResult();
 		if (result >= 0) {
-			final MindIcon icon = (MindIcon) mIcons.get(result);
+			final MindIcon icon = mIcons.get(result);
 			setValue(icon.getName());
 			firePropertyChangeEvent();
 		}
@@ -92,8 +91,7 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 
 	@Override
 	public void setValue(final String value) {
-		for (final Iterator<MindIcon> iter = mIcons.iterator(); iter.hasNext();) {
-			final MindIcon icon = iter.next();
+		for (final MindIcon icon : mIcons) {
 			if (icon.getName().equals(value)) {
 				mActualIcon = icon;
 				setIcon(mActualIcon);

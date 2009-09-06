@@ -31,7 +31,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -46,10 +45,12 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.icon.IconStore;
+import org.freeplane.core.icon.MindIcon;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
@@ -69,6 +70,9 @@ import org.freeplane.n3.nanoxml.XMLParserFactory;
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class ExportWithXSLT extends ExportAction {
+	
+	private static final IconStore STORE = IconStoreFactory.create();
+	
 	private static final String NAME_EXTENSION_PROPERTY = "name_extension";
 	/**
 	 * 
@@ -78,10 +82,8 @@ public class ExportWithXSLT extends ExportAction {
 	/**
 	 */
 	private static void copyIconsToDirectory(final String directoryName2) {
-		final List<String> iconNames = MindIcon.getAllIconNames();
-		for (String iconName : iconNames) {
-			final MindIcon myIcon = MindIcon.factory(iconName);
-			ResUtil.copyFromResource(MindIcon.getIconsPath(), myIcon.getIconBaseFileName(), directoryName2);
+		for (MindIcon icon : STORE.getMindIcons()) {
+			ResUtil.copyFromFile(new File(icon.getPath()), directoryName2);
 		}
 		final File iconDir = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "icons");
 		if (iconDir.exists()) {

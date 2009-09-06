@@ -1,7 +1,6 @@
 package org.freeplane.core.util;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,6 +13,7 @@ import java.util.Properties;
 import org.freeplane.core.resources.ResourceController;
 
 public class ResUtil {
+	
 	/**
 	 */
 	public static void copyFromFile(final String dir, final String fileName, final String destinationDirectory) {
@@ -23,12 +23,22 @@ public class ResUtil {
 				LogTool.severe("Cannot find resource: " + dir + fileName);
 				return;
 			}
-			final InputStream in = new BufferedInputStream(new FileInputStream(resource));
-			final OutputStream out = new BufferedOutputStream(new FileOutputStream(destinationDirectory + "/" + fileName));
-			ResUtil.copyStream(in, out);
+			copyFromFile(resource, destinationDirectory);
 		}
 		catch (final Exception e) {
 			LogTool.severe("File not found or could not be copied. " + "Was searching for " + dir + fileName
+			        + " and should go to " + destinationDirectory);
+		}
+	}
+	
+	public static void copyFromFile(final File resource, final String destinationDirectory) {
+		try {
+			final InputStream in = new FileInputStream(resource);
+			final OutputStream out = new FileOutputStream(destinationDirectory + "/" + resource.getName());
+			ResUtil.copyStream(in, out);
+		}
+		catch (final Exception e) {
+			LogTool.severe("File not found or could not be copied. " + "Was searching for " + resource.getPath()
 			        + " and should go to " + destinationDirectory);
 		}
 	}
@@ -47,7 +57,7 @@ public class ResUtil {
 			ResUtil.copyStream(in, out);
 		}
 		catch (final Exception e) {
-			LogTool.severe("File not found or could not be copied. " + "Was earching for " + prefix + fileName
+			LogTool.severe("File not found or could not be copied. " + "Was searching for " + prefix + fileName
 			        + " and should go to " + destinationDirectory);
 		}
 	}

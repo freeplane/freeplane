@@ -32,7 +32,6 @@ import java.util.Vector;
 
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JToggleButton;
@@ -54,7 +53,6 @@ import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.ToggleToolbarAction;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -327,10 +325,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	public JToolBar getFilterToolbar() {
 		if (filterToolbar == null) {
 			filterToolbar = createFilterToolbar();
-			MindIcon.factory("AttributeExist", new ImageIcon(ResourceController.getResourceController().getResource(
-			    "/images/showAttributes.gif")));
-			MindIcon.factory("encrypted");
-			MindIcon.factory("decrypted");
 		}
 		return filterToolbar;
 	}

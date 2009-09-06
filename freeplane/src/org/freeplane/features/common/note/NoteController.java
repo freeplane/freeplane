@@ -21,16 +21,15 @@ package org.freeplane.features.common.note;
 
 import java.awt.Font;
 
-import javax.swing.ImageIcon;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.icon.UIIcon;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 
@@ -43,7 +42,7 @@ public class NoteController implements IExtension {
 	 *
 	 */
 	public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
-	private static ImageIcon noteIcon = null;
+	private static UIIcon noteIcon;
 	public static final String RESOURCES_DON_T_SHOW_NOTE_ICONS = "don_t_show_note_icons";
 
 	public static NoteController getController(final ModeController modeController) {
@@ -58,8 +57,7 @@ public class NoteController implements IExtension {
 	public static void install(final ModeController modeController, final NoteController noteController) {
 		modeController.addExtension(NoteController.class, noteController);
 		if (firstRun) {
-			noteIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/knotes.png"));
-			MindIcon.factory(NoteController.NODE_NOTE_ICON, noteIcon);
+			noteIcon = IconStoreFactory.create().getUIIcon("knotes.png");
 			firstRun = false;
 		}
 	}

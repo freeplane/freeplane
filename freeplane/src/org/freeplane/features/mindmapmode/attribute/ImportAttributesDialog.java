@@ -45,8 +45,9 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
+import org.freeplane.core.icon.IconStore;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
@@ -55,6 +56,9 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
+	
+	private static final IconStore STORE = IconStoreFactory.create();
+	
 	static private class AttributeTreeNodeInfo extends TreeNodeInfo {
 		final private boolean restricted;
 
@@ -69,9 +73,9 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	}
 
 	static private class MyRenderer extends DefaultTreeCellRenderer {
-		static final Icon iconFull = MindIcon.factory("button_ok").getIcon();
-		static final Icon iconNotSelected = MindIcon.factory("button_cancel").getIcon();
-		static final Icon iconPartial = MindIcon.factory("forward").getIcon();
+		static final Icon iconFull = STORE.getUIIcon("button_ok.png").getIcon();
+		static final Icon iconNotSelected = STORE.getUIIcon("button_cancel.png").getIcon();
+		static final Icon iconPartial = STORE.getUIIcon("forward.png").getIcon();
 		/**
 		 * 
 		 */

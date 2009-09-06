@@ -121,7 +121,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 
 			public void undo() {
 				node.removeExtension(encryptedMindMapNode);
-				node.setStateIcon("decrypted", null);
+				node.removeStateIcons("decrypted");
 				getModeController().getMapController().nodeChanged(node);
 			}
 		};

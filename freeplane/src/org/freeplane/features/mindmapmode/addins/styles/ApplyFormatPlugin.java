@@ -18,7 +18,6 @@
 package org.freeplane.features.mindmapmode.addins.styles;
 
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
@@ -46,7 +45,7 @@ public class ApplyFormatPlugin extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		final NodeModel focussed = modeController.getMapController().getSelectedNode();
-		final List<?> selected = modeController.getMapController().getSelectedNodes();
+		final List<NodeModel> selected = modeController.getMapController().getSelectedNodes();
 		final Pattern nodePattern = StylePatternFactory.createPatternFromSelected(focussed, selected);
 		final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(getController().getViewController()
 		    .getFrame(), modeController, "accessories/plugins/ApplyFormatPlugin.dialog.title", nodePattern);
@@ -54,8 +53,7 @@ public class ApplyFormatPlugin extends AFreeplaneAction {
 		formatDialog.setVisible(true);
 		if (formatDialog.getResult() == ChooseFormatPopupDialog.OK) {
 			final Pattern pattern = formatDialog.getPattern();
-			for (final Iterator iter = selected.iterator(); iter.hasNext();) {
-				final NodeModel node = (NodeModel) iter.next();
+			for (final NodeModel node : selected) {
 				MPatternController.getController(getModeController()).applyPattern(node, pattern);
 			}
 		}

@@ -27,7 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.resources.ResourceBundles;
 
 /**

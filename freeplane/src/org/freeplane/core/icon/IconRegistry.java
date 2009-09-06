@@ -17,31 +17,39 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.model;
+package org.freeplane.core.icon;
 
 import java.util.ListIterator;
 
-import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 
 /**
  * @author Dimitry Polivaev
+ * 
+ * maintains a set of icons which currently are or have been
+ * used on the map during the last editing session. This information is
+ * used in IconConditionController calling IconRegistry.getIcons() to
+ * prepare values available in Filter Editor Dialog / find dialog when
+ * filter on icons is selected
+ * 
  * 03.01.2009
  */
 public class IconRegistry implements IExtension {
 	final private SortedComboBoxModel mapIcons;
 
-	IconRegistry(final MapController mapController, final MapModel map) {
+	public IconRegistry(final MapController mapController, final MapModel map) {
 		super();
 		mapIcons = new SortedComboBoxModel();
 		registryNodeIcons(mapController, map.getRootNode());
 	}
 
-	void addIcon(final MindIcon icon) {
+	public void addIcon(final UIIcon icon) {
 		mapIcons.add(icon);
 	}
 

@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
@@ -39,6 +38,8 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.SmallExtensionMap;
 import org.freeplane.core.filter.Filter;
 import org.freeplane.core.filter.FilterInfo;
+import org.freeplane.core.icon.MindIcon;
+import org.freeplane.core.icon.UIIcon;
 import org.freeplane.core.modecontroller.INodeViewVisitor;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.util.HtmlTools;
@@ -75,7 +76,7 @@ public class NodeModel implements MutableTreeNode {
 	private Map<String, ITooltipProvider> toolTip = null;
 	private Collection<INodeView> views = null;
 	private String xmlText = "no text";
-
+	
 	public NodeModel(final MapModel map) {
 		this("", map);
 	}
@@ -101,9 +102,14 @@ public class NodeModel implements MutableTreeNode {
 		extensionContainer.addExtension(extension);
 	}
 
-	public void addIcon(final MindIcon _icon, final int position) {
-		icons.addIcon(_icon, position);
-		getMap().getIconRegistry().addIcon(_icon);
+	public void addIcon(final MindIcon icon) {
+		icons.addIcon(icon);
+		getMap().getIconRegistry().addIcon(icon);
+	}
+	
+	public void addIcon(final MindIcon icon, final int position) {
+		icons.addIcon(icon, position);
+		getMap().getIconRegistry().addIcon(icon);
 	}
 
 	public void addViewer(final INodeView viewer) {
@@ -289,7 +295,7 @@ public class NodeModel implements MutableTreeNode {
 		return adaptedText;
 	}
 
-	public Map<String, ImageIcon> getStateIcons() {
+	public Map<String, List<UIIcon>> getStateIcons() {
 		return icons.getStateIcons();
 	}
 
@@ -454,6 +460,20 @@ public class NodeModel implements MutableTreeNode {
 		parent.remove(this);
 	}
 
+	/**
+	 * remove last icon
+	 * 
+	 * @return the number of remaining icons.
+	 */
+	public int removeIcon() {
+		return icons.removeIcon();
+	}
+	
+	/**
+	 * @param remove icons with given position
+	 *  
+	 * @return the number of remaining icons
+	 */
 	public int removeIcon(final int position) {
 		return icons.removeIcon(position);
 	}
@@ -513,10 +533,22 @@ public class NodeModel implements MutableTreeNode {
 		parent = newParent;
 	}
 
-	public void setStateIcon(final String key, final ImageIcon icon) {
+	public void setStateIcon(final String key, final UIIcon icon) {
 		icons.setStateIcon(key, icon);
 		if (icon != null && map != null) {
-			map.getIconRegistry().addIcon(MindIcon.factory(key, icon));
+			map.getIconRegistry().addIcon(icon);
+		}
+	}
+	
+	public void setStateIcon(final String key, final Collection<? extends UIIcon> icons) {
+		for(UIIcon icon : icons) {
+			setStateIcon(key, icon);
+		}
+	}
+	
+	public void removeStateIcons(final String key) {
+		if(icons != null) {
+			icons.removeStateIcons(key);
 		}
 	}
 

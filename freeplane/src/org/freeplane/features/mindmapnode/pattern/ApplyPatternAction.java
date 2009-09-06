@@ -23,8 +23,10 @@ import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.icon.IconController;
+import org.freeplane.core.icon.IconStore;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
@@ -33,7 +35,6 @@ import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
-import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
@@ -43,6 +44,9 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ApplyPatternAction extends AMultipleNodeAction {
+	
+	private static final IconStore STORE = IconStoreFactory.create();
+	
 	private static final String EDGE_WIDTH_THIN_STRING = "thin";
 	/**
 	 * 
@@ -111,11 +115,10 @@ class ApplyPatternAction extends AMultipleNodeAction {
 		if (pattern.getPatternIcon() != null) {
 			final String iconName = pattern.getPatternIcon().getValue();
 			while (((MIconController) IconController.getController(getModeController()))
-			    .removeIcon(node, MindIcon.LAST) > 0) {
+			    .removeIcon(node) > 0) {
 			}
 			if (iconName != null) {
-				((MIconController) IconController.getController(controller.getModeController())).addIcon(node, MindIcon
-				    .factory(iconName), MindIcon.LAST);
+				((MIconController) IconController.getController(controller.getModeController())).addIcon(node, STORE.getMindIcon(iconName));
 			}
 		}
 		if (pattern.getPatternNodeFontName() != null) {
@@ -176,9 +179,9 @@ class ApplyPatternAction extends AMultipleNodeAction {
 			for (int i = 0; i < patterns.length; i++) {
 				final ApplyPatternAction action = patterns[i];
 				if (action.getPattern().getName().equals(searchedPatternName)) {
-					for (final ListIterator j = getModeController().getMapController().childrenUnfolded(node); j
+					for (final ListIterator<NodeModel> j = getModeController().getMapController().childrenUnfolded(node); j
 					    .hasNext();) {
-						final NodeModel child = (NodeModel) j.next();
+						final NodeModel child = j.next();
 						applyPattern(child, action.getPattern());
 					}
 					break;

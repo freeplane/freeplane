@@ -26,8 +26,8 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.IIconInformation;
-import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.icon.IIconInformation;
+import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
@@ -52,7 +52,7 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		if ((e.getModifiers() & (ActionEvent.SHIFT_MASK | ActionEvent.CTRL_MASK | ActionEvent.ALT_MASK)) == 0) {
-			removeIcon(node, MindIcon.LAST);
+			removeIcon(node);
 			return;
 		}
 		if ((e.getModifiers() & ~ActionEvent.SHIFT_MASK & ~ActionEvent.CTRL_MASK & ActionEvent.ALT_MASK) != 0) {
@@ -77,6 +77,28 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 		return getKey() + ".shortcut";
 	}
 
+	public int removeIcon(final NodeModel node) {
+		final IActor actor = new IActor() {
+			private final MindIcon icon = node.getIcon(node.getIcons().size() - 1);
+
+			public void act() {
+				node.removeIcon();
+				getModeController().getMapController().nodeChanged(node, "icon", icon, null);
+			}
+
+			public String getDescription() {
+				return "removeIcon";
+			}
+
+			public void undo() {
+				node.addIcon(icon);
+				getModeController().getMapController().nodeChanged(node, "icon", null, icon);
+			}
+		};
+		getModeController().execute(actor, node.getMap());
+		return node.getIcons().size();
+	}
+	
 	public int removeIcon(final NodeModel node, final int position) {
 		final int size = node.getIcons().size();
 		if (size == 0 || size <= position) {

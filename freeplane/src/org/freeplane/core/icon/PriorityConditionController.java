@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.icon;
+package org.freeplane.core.icon;
 
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
@@ -28,7 +28,7 @@ import javax.swing.ListModel;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
-import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -39,6 +39,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 class PriorityConditionController implements IElementaryConditionController {
 	static final String FILTER_PRIORITY = "filter_priority";
+	
+	private static final IconStore STORE = IconStoreFactory.create();
 
 	public PriorityConditionController() {
 		super();
@@ -103,10 +105,10 @@ class PriorityConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property) {
-		final Object[] items = new Object[] { MindIcon.factory("full-1"), MindIcon.factory("full-2"),
-		        MindIcon.factory("full-3"), MindIcon.factory("full-4"), MindIcon.factory("full-5"),
-		        MindIcon.factory("full-6"), MindIcon.factory("full-7"), MindIcon.factory("full-8"),
-		        MindIcon.factory("full-9") };
+		final Object[] items = new Object[10];
+		for(int i = 1; i < 10; ++i) {
+			items[i-1] = STORE.getMindIcon("full-" + Integer.toString(i));
+		}
 		final ComboBoxModel box = new DefaultComboBoxModel(items);
 		return box;
 	}

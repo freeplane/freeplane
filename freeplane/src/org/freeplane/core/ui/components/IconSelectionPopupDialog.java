@@ -32,7 +32,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
@@ -42,7 +42,7 @@ import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 
-import org.freeplane.core.model.IIconInformation;
+import org.freeplane.core.icon.IIconInformation;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 
@@ -82,7 +82,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	final private JLabel descriptionLabel;
 	final private JLabel[] iconLabels;
 	final private JPanel iconPanel = new JPanel();
-	final private Vector icons;
+	final private List<? extends IIconInformation> icons;
 	private int mModifiers;
 	final private int numOfIcons;
 	private int result;
@@ -90,7 +90,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	final private int xDimension;
 	private int yDimension;
 
-	public IconSelectionPopupDialog(final Frame frame, final Vector icons) {
+	public IconSelectionPopupDialog(final Frame frame, final List<? extends IIconInformation> icons) {
 		super(frame, ResourceBundles.getText("select_icon"));
 		getContentPane().setLayout(new BorderLayout());
 		this.icons = icons;

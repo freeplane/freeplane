@@ -78,7 +78,7 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 		timer = null;
     }
 
-	private void displayStateIcon(NodeModel parent, int state) {
+	private void displayStateIcon(NodeModel parent, ClockState state) {
 	    if(!isAncestorNode(parent)){
 			return;
 		}
@@ -95,19 +95,19 @@ class ReminderExtension implements IExtension, IMapChangeListener {
     }
 
 	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-		displayStateIcon(parent, ReminderHook.CLOCK_VISIBLE);
+		displayStateIcon(parent, ClockState.CLOCK_VISIBLE);
     }
 
 	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-		displayStateIcon(newParent, ReminderHook.CLOCK_VISIBLE);
+		displayStateIcon(newParent, ClockState.CLOCK_VISIBLE);
     }
 
 	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
-		displayStateIcon(oldParent, ReminderHook.REMOVE_CLOCK);
+		displayStateIcon(oldParent, ClockState.REMOVE_CLOCK);
     }
 
 	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-		displayStateIcon(oldParent, ReminderHook.REMOVE_CLOCK);
+		displayStateIcon(oldParent, ClockState.REMOVE_CLOCK);
 	}
 
 	public void mapChanged(MapChangeEvent event) {

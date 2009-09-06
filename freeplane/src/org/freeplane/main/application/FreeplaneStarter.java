@@ -21,24 +21,18 @@ package org.freeplane.main.application;
 
 import java.awt.EventQueue;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.ToolTipManager;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.icon.IconController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.LimitedWidthTooltipUI;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
@@ -46,7 +40,6 @@ import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.addins.misc.NextNodeAction;
 import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
-import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.text.TextController;
@@ -149,7 +142,7 @@ public class FreeplaneStarter {
 			public void run() {
 				viewController.init();
 				try {
-					final Class macClass = Class.forName("accessories.plugins.MacChanges");
+					final Class<?> macClass = Class.forName("accessories.plugins.MacChanges");
 					macClass.getConstructors()[0].newInstance(new Object[] { this });
 				}
 				catch (final Exception e) {

@@ -21,16 +21,16 @@ package org.freeplane.features.common.attribute;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.ImageIcon;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.icon.UIIcon;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.NodeModel;
@@ -44,7 +44,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	private static final String ATTRIBUTE_TOOLTIP = "attribute_tooltip";
 	private static final int CAPACITY_INCREMENT = 10;
 	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(null);
-	static private ImageIcon noteIcon = null;
+	static private UIIcon noteIcon = null;
 	private static final String STATE_ICON = "AttributeExist";
 
 	public static NodeAttributeTableModel getModel(final NodeModel node) {
@@ -301,12 +301,11 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		final boolean showIcon = ResourceController.getResourceController().getBooleanProperty(
 		    "show_icon_for_attributes");
 		if (showIcon && getRowCount() == 0) {
-			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, null);
+			node.removeStateIcons(NodeAttributeTableModel.STATE_ICON);
 		}
 		if (showIcon && getRowCount() == 1) {
 			if (NodeAttributeTableModel.noteIcon == null) {
-				NodeAttributeTableModel.noteIcon = new ImageIcon(ResourceController.getResourceController()
-				    .getResource("/images/showAttributes.gif"));
+				NodeAttributeTableModel.noteIcon = IconStoreFactory.create().getUIIcon("showAttributes.gif");
 			}
 			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.noteIcon);
 		}

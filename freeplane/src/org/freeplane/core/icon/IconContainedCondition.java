@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.icon;
+package org.freeplane.core.icon;
 
 import java.util.Iterator;
 import java.util.List;
@@ -29,19 +29,22 @@ import javax.swing.JLabel;
 
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.JCondition;
-import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class IconContainedCondition implements ICondition {
+	
+	private static final IconStore STORE = IconStoreFactory.create();
+	
 	static final String ICON = "ICON";
 	static final String NAME = "icon_contained_condition";
 
 	static public int iconFirstIndex(final NodeModel node, final String iconName) {
-		final List icons = node.getIcons();
-		for (final ListIterator i = icons.listIterator(); i.hasNext();) {
-			final MindIcon nextIcon = (MindIcon) i.next();
+		final List<MindIcon> icons = node.getIcons();
+		for (final ListIterator<MindIcon> i = icons.listIterator(); i.hasNext();) {
+			final MindIcon nextIcon = i.next();
 			if (iconName.equals(nextIcon.getName())) {
 				return i.previousIndex();
 			}
@@ -50,10 +53,10 @@ class IconContainedCondition implements ICondition {
 	}
 
 	static public int iconLastIndex(final NodeModel node, final String iconName) {
-		final List icons = node.getIcons();
-		final ListIterator i = icons.listIterator(icons.size());
+		final List<MindIcon> icons = node.getIcons();
+		final ListIterator<MindIcon> i = icons.listIterator(icons.size());
 		while (i.hasPrevious()) {
-			final MindIcon nextIcon = (MindIcon) i.previous();
+			final MindIcon nextIcon = i.previous();
 			if (iconName.equals(nextIcon.getName())) {
 				return i.nextIndex();
 			}
@@ -62,9 +65,9 @@ class IconContainedCondition implements ICondition {
 	}
 
 	private static boolean isStateIconContained(final NodeModel node, final String iconName) {
-		final Set stateIcons = node.getStateIcons().keySet();
-		for (final Iterator stateIcon = stateIcons.iterator(); stateIcon.hasNext();) {
-			final String nextIcon = (String) stateIcon.next();
+		final Set<String> stateIcons = node.getStateIcons().keySet();
+		for (final Iterator<String> stateIcon = stateIcons.iterator(); stateIcon.hasNext();) {
+			final String nextIcon = stateIcon.next();
 			if (iconName.equals(nextIcon)) {
 				return true;
 			}
@@ -102,7 +105,7 @@ class IconContainedCondition implements ICondition {
 		final String text = ResourceBundles.getText("filter_icon") + ' ' + ResourceBundles.getText("filter_contains")
 		        + ' ';
 		component.add(new JLabel(text));
-		component.add(MindIcon.factory(getIconName()).getRendererComponent());
+		component.add(new JLabel(STORE.getMindIcon(getIconName()).getIcon()));
 		return component;
 	}
 

@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.icon;
+package org.freeplane.core.icon;
 
 import java.util.List;
 
@@ -27,9 +27,9 @@ import javax.swing.SwingConstants;
 import org.freeplane.core.filter.condition.CompareConditionAdapter;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.JCondition;
+import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -39,6 +39,8 @@ class PriorityCompareCondition extends CompareConditionAdapter {
 	static final String NAME = "priority_compare_condition";
 	static final String SUCCEED = "SUCCEED";
 	static final String VALUE = "VALUE";
+	
+	private static final IconStore STORE = IconStoreFactory.create();
 
 	static ICondition load(final XMLElement element) {
 		return new PriorityCompareCondition(element.getAttribute(PriorityCompareCondition.VALUE, null), Integer
@@ -56,7 +58,7 @@ class PriorityCompareCondition extends CompareConditionAdapter {
 		final JCondition renderer = new JCondition();
 		final String string = toString();
 		final JLabel label = new JLabel(string.substring(0, string.length() - 3));
-		label.setIcon(MindIcon.factory(getIconName()).getIcon());
+		label.setIcon(STORE.getMindIcon(getIconName()).getIcon());
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 		renderer.add(label);
 		setListCellRendererComponent(renderer);
@@ -65,7 +67,7 @@ class PriorityCompareCondition extends CompareConditionAdapter {
 	public boolean checkNode(final NodeModel node) {
 		final List<MindIcon> icons = node.getIcons();
 		for (final MindIcon icon : icons) {
-			final String iconName = icon.getName();
+			final String iconName = icon.getFileName();
 			if (iconName.length() != 6) {
 				continue;
 			}

@@ -28,7 +28,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
-import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -61,9 +61,9 @@ abstract class TimeCondition implements ICondition {
 	}
 
 	static public int iconFirstIndex(final NodeModel node, final String iconName) {
-		final List icons = node.getIcons();
-		for (final ListIterator i = icons.listIterator(); i.hasNext();) {
-			final MindIcon nextIcon = (MindIcon) i.next();
+		final List<MindIcon> icons = node.getIcons();
+		for (final ListIterator<MindIcon> i = icons.listIterator(); i.hasNext();) {
+			final MindIcon nextIcon = i.next();
 			if (iconName.equals(nextIcon.getName())) {
 				return i.previousIndex();
 			}
@@ -72,10 +72,10 @@ abstract class TimeCondition implements ICondition {
 	}
 
 	static public int iconLastIndex(final NodeModel node, final String iconName) {
-		final List icons = node.getIcons();
-		final ListIterator i = icons.listIterator(icons.size());
+		final List<MindIcon> icons = node.getIcons();
+		final ListIterator<MindIcon> i = icons.listIterator(icons.size());
 		while (i.hasPrevious()) {
-			final MindIcon nextIcon = (MindIcon) i.previous();
+			final MindIcon nextIcon = i.previous();
 			if (iconName.equals(nextIcon.getName())) {
 				return i.nextIndex();
 			}

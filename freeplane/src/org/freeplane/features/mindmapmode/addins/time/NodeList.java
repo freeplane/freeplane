@@ -33,10 +33,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EventListener;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -70,9 +72,9 @@ import javax.swing.text.Document;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
+import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -241,37 +243,39 @@ class NodeList {
 		}
 	}
 
-	static class IconsHolder implements Comparable {
-		final private Vector iconNames;
-		Vector icons = new Vector();
+	static class IconsHolder implements Comparable<IconsHolder> {
+		final private String iconNames;
+		List<MindIcon> icons = new ArrayList<MindIcon>();
 
 		public IconsHolder(final NodeModel node) {
 			icons.addAll(node.getIcons());
-			iconNames = new Vector();
-			for (final Iterator i = icons.iterator(); i.hasNext();) {
-				final MindIcon icon = (MindIcon) i.next();
-				iconNames.add(icon.getName());
+			if(icons.size() > 0) {
+				final List<MindIcon> toSort = new ArrayList<MindIcon>(icons);
+				Collections.sort(toSort);
+				
+				StringBuilder builder = new StringBuilder();
+				for(MindIcon icon : toSort) {
+					builder.append(icon.getName()).append(" ");
+				}
+				iconNames = builder.toString();
 			}
-			Collections.sort(iconNames);
+			else {
+				iconNames = "";
+			}
 		}
 
-		public int compareTo(final Object compareToObject) {
+		public int compareTo(final IconsHolder compareToObject) {
 			return toString().compareTo(compareToObject.toString());
 		}
 
-		public Vector getIcons() {
+		public List<MindIcon> getIcons() {
 			return icons;
 		}
 
 		/** Returns a sorted list of icon names. */
 		@Override
 		public String toString() {
-			String result = "";
-			for (final Iterator i = iconNames.iterator(); i.hasNext();) {
-				final String name = (String) i.next();
-				result += name + " ";
-			}
-			return result;
+			return iconNames;
 		}
 	}
 
@@ -290,8 +294,7 @@ class NodeList {
 			if (value instanceof IconsHolder) {
 				final IconsHolder iconsHolder = (IconsHolder) value;
 				final MultipleImage iconImages = new MultipleImage(1.0f);
-				for (final Iterator i = iconsHolder.getIcons().iterator(); i.hasNext();) {
-					final MindIcon icon = (MindIcon) i.next();
+				for (MindIcon icon : iconsHolder.getIcons()) {
 					iconImages.addImage(icon.getIcon());
 				}
 				if (iconImages.getImageCount() > 0) {
@@ -313,7 +316,7 @@ class NodeList {
 	}
 
 	/** removes html in nodes before comparison. */
-	public static class NodeHolder implements Comparable {
+	public static class NodeHolder implements Comparable<NodeHolder> {
 		final private NodeModel node;
 		private String originalNodeText = null;
 		private String untaggedNodeText = null;
@@ -325,7 +328,7 @@ class NodeList {
 			this.node = node;
 		}
 
-		public int compareTo(final Object compareToObject) {
+		public int compareTo(final NodeHolder compareToObject) {
 			return toString().compareTo(compareToObject.toString());
 		}
 
@@ -361,7 +364,7 @@ class NodeList {
 	}
 
 	/** removes html in notes before comparison. */
-	public static class NotesHolder implements Comparable {
+	public static class NotesHolder implements Comparable<NotesHolder> {
 		final private NodeModel node;
 		private String originalNotesText = null;
 		private String untaggedNotesText = null;
@@ -373,7 +376,7 @@ class NodeList {
 			this.node = node;
 		}
 
-		public int compareTo(final Object compareToObject) {
+		public int compareTo(final NotesHolder compareToObject) {
 			return toString().compareTo(compareToObject.toString());
 		}
 
@@ -539,17 +542,14 @@ class NodeList {
 
 	protected void exportSelectedRowsAndClose() {
 		final int[] selectedRows = timeTable.getSelectedRows();
-		final Vector selectedNodes = new Vector();
+		final List<NodeModel> selectedNodes = new ArrayList<NodeModel>();
 		for (int i = 0; i < selectedRows.length; i++) {
 			final int row = selectedRows[i];
 			selectedNodes.add(getMindMapNode(row));
 		}
 		final ModeController mindMapController = getModeController();
 		final MapModel newMap = mindMapController.getMapController().newMap(((NodeModel) null));;
-		for (final Iterator iter = selectedNodes.iterator(); iter.hasNext();) {
-			final NodeModel node = (NodeModel) iter.next();
-			//
-			//
+		for (final NodeModel node : selectedNodes) {
 			final NodeModel copy = ClipboardController.getController(mindMapController).shallowCopy(node);
 			if (copy != null) {
 				mindMapController.getMapController().insertNodeIntoWithoutUndo(copy, newMap.getRootNode());
@@ -601,9 +601,8 @@ class NodeList {
 		if (focussedRow >= 0) {
 			final NodeModel focussedNode = getMindMapNode(focussedRow);
 			final MapModel map = focussedNode.getMap();
-			final Vector selectedNodes = new Vector();
-			for (int i = 0; i < selectedRows.length; i++) {
-				final int row = selectedRows[i];
+			final List<NodeModel> selectedNodes = new ArrayList<NodeModel>();
+			for (int row : selectedRows) {
 				final NodeModel node = getMindMapNode(row);
 				if(! node.getMap().equals(map)){
 					continue;
@@ -858,9 +857,7 @@ class NodeList {
 		if (storage != null) {
 			timeTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			int column = 0;
-			for (final Iterator i = ((TimeWindowConfigurationStorage) storage).getListTimeWindowColumnSettingList()
-			    .iterator(); i.hasNext();) {
-				final TimeWindowColumnSetting setting = (TimeWindowColumnSetting) i.next();
+			for (final TimeWindowColumnSetting setting : ((TimeWindowConfigurationStorage) storage).getListTimeWindowColumnSettingList()) {
 				timeTable.getColumnModel().getColumn(column).setPreferredWidth(setting.getColumnWidth());
 				sorter.setSortingStatus(column, setting.getColumnSorting());
 				column++;
@@ -884,7 +881,7 @@ class NodeList {
 			 * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
 			 */
 			@Override
-			public Class getColumnClass(final int arg0) {
+			public Class<?> getColumnClass(final int arg0) {
 				switch (arg0) {
 					case DATE_COLUMN:
 					case NODE_CREATED_COLUMN:
@@ -913,7 +910,7 @@ class NodeList {
 		}
 		else{
 			final Map<String, MapModel> maps = controller.getMapViewManager().getMaps(MModeController.MODENAME);
-			for(MapModel map:maps.values()){
+			for(MapModel map : maps.values()){
 				final NodeModel node = map.getRootNode();
 				updateModel(model, node);
 			}
@@ -932,8 +929,8 @@ class NodeList {
 			        node.getHistoryInformation().getCreatedAt(), node.getHistoryInformation().getLastModifiedAt(),
 			        new NotesHolder(node) });
 		}
-		for (final Iterator i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
-			final NodeModel child = (NodeModel) i.next();
+		for (final Iterator<NodeModel> i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+			final NodeModel child = i.next();
 			updateModel(model, child);
 		}
 	}

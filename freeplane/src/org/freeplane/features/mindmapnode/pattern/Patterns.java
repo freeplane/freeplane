@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 
 import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.IXMLParser;
@@ -39,7 +40,7 @@ public class Patterns {
 		return Patterns.unMarshall(new StringReader(patternsString));
 	}
 
-	protected ArrayList<Pattern> choiceList = new ArrayList();
+	protected List<Pattern> choiceList = new ArrayList<Pattern>();
 
 	public void addAtChoice(final int position, final Pattern choice) {
 		choiceList.add(position, choice);
@@ -57,7 +58,7 @@ public class Patterns {
 		return choiceList.get(index);
 	}
 
-	public java.util.List getListChoiceList() {
+	public List<Pattern> getListChoiceList() {
 		return java.util.Collections.unmodifiableList(choiceList);
 	}
 
