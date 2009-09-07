@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.icon.factory;
 
+import java.net.URL;
 import java.util.WeakHashMap;
 
 import javax.swing.ImageIcon;
@@ -41,8 +42,8 @@ public final class ImageIconFactory {
 	private static final ImageIcon ICON_NOT_FOUND 
 		= new ImageIcon(DEFAULT_IMAGE_PATH + "IconNotFound.png");
 
-	private final WeakHashMap<String, ImageIcon> ICON_CACHE
-		= new WeakHashMap<String, ImageIcon>();
+	private final WeakHashMap<URL, ImageIcon> ICON_CACHE
+		= new WeakHashMap<URL, ImageIcon>();
 	
 	public static ImageIconFactory getInstance() {
 		return FACTORY;
@@ -52,15 +53,15 @@ public final class ImageIconFactory {
 		return getImageIcon(uiIcon.getPath());
 	}
 	
-	public ImageIcon getImageIcon(String fileName) {
+	public ImageIcon getImageIcon(URL url) {
 		ImageIcon result = ICON_NOT_FOUND;
-		if(fileName != null) {
-			if(ICON_CACHE.containsKey(fileName)) {
-				result = ICON_CACHE.get(fileName);
+		if(url != null) {
+			if(ICON_CACHE.containsKey(url)) {
+				result = ICON_CACHE.get(url);
 			}
 			else {
-				result = new ImageIcon(fileName);
-				ICON_CACHE.put(fileName, result);
+				result = new ImageIcon(url);
+				ICON_CACHE.put(url, result);
 			}
 		}
 		return result;

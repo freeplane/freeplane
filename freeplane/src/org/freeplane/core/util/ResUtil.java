@@ -42,6 +42,22 @@ public class ResUtil {
 			        + " and should go to " + destinationDirectory);
 		}
 	}
+	
+	public static void copyFromURL(final URL resource, final String destinationDirectory) {
+		String path = resource.getPath();
+		int index   = path.lastIndexOf('/');
+		String fileName = index > -1 ? path.substring(index + 1) : path;
+		
+		try {
+			final InputStream in = resource.openStream();
+			final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
+			ResUtil.copyStream(in, out);
+		}
+		catch (final Exception e) {
+			LogTool.severe("File not found or could not be copied. " + "Was searching for " + path
+			        + " and should go to " + destinationDirectory);
+		}
+	}
 
 	/**
 	 */

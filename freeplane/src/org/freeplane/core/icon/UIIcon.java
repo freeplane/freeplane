@@ -19,8 +19,6 @@
  */
 package org.freeplane.core.icon;
 
-import java.io.File;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -28,7 +26,6 @@ import javax.swing.KeyStroke;
 
 import org.freeplane.core.icon.factory.ImageIconFactory;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.LogTool;
 
 /**
  * Base class for all icons used in FreePlane.
@@ -103,18 +100,8 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return DEFAULT_IMAGE_PATH;
 	}
 
-	public String getPath() {
-		final String themeFolder = RESOURCE_CONTROLLER.getProperty(THEME_FOLDER_KEY);
-		final String userDir     = RESOURCE_CONTROLLER.getFreeplaneUserDirectory();
-
+	public URL getPath() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(userDir);
-		builder.append(SEPARATOR);
-		builder.append(themeFolder);
-		builder.append(SEPARATOR);
-		builder.append(this.fileName);
-
-		final String themePath   = builder.toString();
 
 		builder = new StringBuilder();
 		builder.append(this.getDefaultImagePath());
@@ -122,27 +109,9 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		builder.append(this.fileName);
 
 		final String defaultPath = builder.toString();
-
-		String path = null;
-		final File iconFile = new File(themePath);
-		if(themeFolder != null && iconFile.exists()) {
-			path = iconFile.getPath();
-		}
-		else {
-			try {
-				URL resourceURL = RESOURCE_CONTROLLER.getResource(defaultPath);
-				if(resourceURL != null) {
-					path = new File(resourceURL.toURI()).getPath();
-				}
-				else {
-					LogTool.warn(String.format("could not open file [%s]", defaultPath));
-				}
-			} catch (final URISyntaxException e) {
-				LogTool.warn(String.format("could not open file [%s]", defaultPath));
-			}
-		}
-
-		return path;
+		final URL resourceURL = RESOURCE_CONTROLLER.getResource(defaultPath);
+		
+		return resourceURL;
 	}
 
 	@Override
@@ -192,6 +161,6 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	}
 
 	public int compareTo(final UIIcon uiIcon) {
-		return this.getPath().compareTo(uiIcon.getPath());
+		return this.getPath().toExternalForm().compareTo(uiIcon.getPath().toExternalForm());
 	}
 }

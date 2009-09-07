@@ -83,7 +83,7 @@ public class ExportWithXSLT extends ExportAction {
 	 */
 	private static void copyIconsToDirectory(final String directoryName2) {
 		for (MindIcon icon : STORE.getMindIcons()) {
-			ResUtil.copyFromFile(new File(icon.getPath()), directoryName2);
+				ResUtil.copyFromURL(icon.getPath(), directoryName2);
 		}
 		final File iconDir = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "icons");
 		if (iconDir.exists()) {
