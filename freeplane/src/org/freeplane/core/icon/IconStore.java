@@ -106,7 +106,14 @@ public class IconStore {
 	 * @return MindIcon with given name
 	 */
 	public MindIcon getMindIcon(String name) {
-		return mindIcons.get(name);
+		MindIcon result;
+		if(mindIcons.containsKey(name)) {
+			result = mindIcons.get(name);
+		}
+		else {
+			result = IconNotFound.instance();
+		}
+		return result;
 	}
 	
 	/**

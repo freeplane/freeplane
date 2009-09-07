@@ -35,8 +35,6 @@ import org.freeplane.core.resources.ResourceController;
  */
 public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 
-	public static final UIIcon ICON_NOT_FOUND = new UIIcon("icon_not_found", "IconNotFound.png", "icon not found", "");
-
 	private static final String DEFAULT_IMAGE_PATH = "/images";
 
 	protected static final String SEPARATOR = "/";

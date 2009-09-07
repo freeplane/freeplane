@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.freeplane.core.icon.IconGroup;
+import org.freeplane.core.icon.IconNotFound;
 import org.freeplane.core.icon.IconStore;
 import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.icon.UIIcon;
@@ -96,7 +97,7 @@ public class IconStoreFactory {
 			}
 
 			if(groupIcon == null) {
-				groupIcon = icons.size() > 0 ? icons.get(0) : UserIcon.ICON_NOT_FOUND;
+				groupIcon = icons.size() > 0 ? icons.get(0) : IconNotFound.instance();
 			}
 			iconStore.addGroup(new IconGroup(groupName, groupIcon, description, icons));
 			
