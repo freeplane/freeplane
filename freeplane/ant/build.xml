@@ -98,6 +98,37 @@
 		</copy>
 	</target>
 
+	<!-- for maven integration -->
+	<!-- make sure you've installed maven properly - see http://maven.apache.org/ -->
+	<target name="maven-deps">
+		<exec executable="mvn.bat">
+		    <arg value="install:install-file"/>
+			<arg value="-DgroupId=org.freeplane"/>
+			<arg value="-DartifactId=freeplane-simplyHtml"/>
+			<arg value="-Dversion=${freeplane_version}"/>
+			<arg value="-Dpackaging=jar"/>
+			<arg value="-Dfile=lib/SimplyHTML.jar"/>
+		</exec>
+		<exec executable="mvn.bat">
+		    <arg value="install:install-file"/>
+			<arg value="-DgroupId=org.freeplane"/>
+			<arg value="-DartifactId=freeplane-jortho"/>
+			<arg value="-Dversion=${freeplane_version}"/>
+			<arg value="-Dpackaging=jar"/>
+			<arg value="-Dfile=lib/jortho.jar"/>
+		</exec>
+		<exec executable="mvn.bat">
+		    <arg value="install:install-file"/>
+			<arg value="-DgroupId=com.jgoodies"/>
+			<arg value="-DartifactId=forms"/>
+			<arg value="-Dversion=1.0.5"/>
+			<arg value="-Dpackaging=jar"/>
+			<arg value="-Dfile=lib/forms-1.0.5.jar"/>
+		</exec>
+	</target>
+
+
+
 	<target name="osgi_dist" depends="osgi_jar, dist">
 		<mkdir dir="${dist.osgi.dir}" />
 		<copy todir="${dist.osgi.dir}">
