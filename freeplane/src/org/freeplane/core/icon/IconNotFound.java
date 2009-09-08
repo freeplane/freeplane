@@ -7,7 +7,7 @@ public class IconNotFound extends MindIcon {
 	private static final IconNotFound ICON_NOT_FOUND = new IconNotFound();
 	
 	public IconNotFound() {
-		super("icon_not_found", "IconNotFound.png", "icon not found", "");
+		super("icon_not_found", "IconNotFound.png", "icon not found");
 	}
 	
 	@Override

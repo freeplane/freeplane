@@ -21,7 +21,6 @@ package org.freeplane.core.icon.factory;
 
 import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.resources.ResourceController;
 
 /**
  * 
@@ -32,11 +31,7 @@ import org.freeplane.core.resources.ResourceController;
  */
 public class MindIconFactory {
 
-	private static final ResourceController RESOURCE_CONTROLLER = ResourceController.getResourceController();
-	
 	private static final String DESC_KEY = "icon_%s";
-	
-	private static final String SHORTCUT_KEY = "IconAction.%s.shortcut";
 	
 	/**
 	 * Constructs a MindIcon with the given name from the property file.
@@ -46,10 +41,8 @@ public class MindIconFactory {
 	 * @return
 	 */
 	public static MindIcon create(String name) {
-		String shortcutKey = RESOURCE_CONTROLLER.getProperty(String.format(SHORTCUT_KEY, name));
 		return new MindIcon(name, 
 					   name + ".png",
-					   ResourceBundles.getText(String.format(DESC_KEY, name)),
-					   shortcutKey == null ? "?" : shortcutKey);
+					   ResourceBundles.getText(String.format(DESC_KEY, name)));
 	}
 }

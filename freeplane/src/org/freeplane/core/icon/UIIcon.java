@@ -42,24 +42,18 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	protected static final String THEME_FOLDER_KEY = "icon.theme.folder";
 
 	protected static final ResourceController RESOURCE_CONTROLLER = ResourceController.getResourceController();
-
+	
 	protected final String name;
 	protected final String fileName;
 	protected final String description;
 	protected final String shortcutKey;
 
 	public UIIcon(final String name, final String fileName) {
-		this.name = name;
-		this.fileName = fileName;
-		this.description = "";
-		this.shortcutKey = "?";
+		this(name, fileName, "", "?");
 	}
 
 	public UIIcon(final String name, final String fileName, final String description) {
-		this.name = name;
-		this.fileName = fileName;
-		this.description = description;
-		this.shortcutKey = "?";
+		this(name, fileName, description, "?");
 	}
 
 	public UIIcon(final String name, final String fileName,
@@ -74,18 +68,30 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return this.fileName;
 	}
 
+	/**
+	 * @return key for the shortcut in the property file
+	 */
 	public String getShortcutKey() {
 		return this.shortcutKey;
 	}
 
+	/**
+	 * @return description of icon
+	 */
 	public String getDescription() {
 		return this.description;
 	}
 
+	/**
+	 * @return name of icon
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * @return associated ImageIcon for this icon
+	 */
 	public ImageIcon getIcon() {
 		return ImageIconFactory.getInstance().getImageIcon(this);
 	}

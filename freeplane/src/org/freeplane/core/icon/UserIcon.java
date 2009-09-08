@@ -42,11 +42,6 @@ public class UserIcon extends MindIcon {
 		super(name, fileName, description);
 	}
 
-	public UserIcon(final String name, final String fileName, final String description,
-			final String shortcutKey) {
-		super(name, fileName, description, shortcutKey);
-	}
-
 	@Override
 	public URL getPath() {
 		final StringBuilder builder = new StringBuilder();
