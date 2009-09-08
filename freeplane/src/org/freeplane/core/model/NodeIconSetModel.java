@@ -21,7 +21,6 @@ package org.freeplane.core.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -35,7 +34,7 @@ import org.freeplane.core.icon.UIIcon;
 class NodeIconSetModel {
 	/** stores the icons associated with this node. */
 	protected List<MindIcon>                icons;
-	private   TreeMap<String, List<UIIcon>> stateIcons;
+	private   TreeMap<String, UIIcon> stateIcons;
 
 	void addIcon(final MindIcon icon) {
 		createIcons();
@@ -60,7 +59,7 @@ class NodeIconSetModel {
 
 	private void createStateIcons() {
 		if (stateIcons == null) {
-			stateIcons = new TreeMap<String, List<UIIcon>>();
+			stateIcons = new TreeMap<String, UIIcon>();
 		}
 	}
 
@@ -75,7 +74,7 @@ class NodeIconSetModel {
 		return icons;
 	}
 
-	Map<String, List<UIIcon>> getStateIcons() {
+	Map<String, UIIcon> getStateIcons() {
 		if (stateIcons == null) {
 			return Collections.emptyMap();
 		}
@@ -113,10 +112,13 @@ class NodeIconSetModel {
 	void setStateIcon(final String key, final UIIcon icon) {
 		createStateIcons();
 		if (icon != null) {
-			if(!stateIcons.containsKey(key)) {
-				stateIcons.put(key, new LinkedList<UIIcon>());
-			}
-			stateIcons.get(key).add(icon);
+			stateIcons.put(key, icon);
+		}
+		else if (stateIcons.containsKey(key)) {
+			stateIcons.remove(key);
+		}
+		if (stateIcons.size() == 0) {
+			stateIcons = null;
 		}
 	}
 

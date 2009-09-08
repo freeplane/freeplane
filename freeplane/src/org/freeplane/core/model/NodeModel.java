@@ -295,7 +295,7 @@ public class NodeModel implements MutableTreeNode {
 		return adaptedText;
 	}
 
-	public Map<String, List<UIIcon>> getStateIcons() {
+	public Map<String, UIIcon> getStateIcons() {
 		return icons.getStateIcons();
 	}
 

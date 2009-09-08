@@ -35,7 +35,6 @@ import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -318,14 +317,9 @@ public abstract class MainView extends JLabel {
 		boolean iconPresent = false;
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();
-		for(Entry<String, List<UIIcon>> iconEntry : model.getStateIcons().entrySet()) {
+		for(Entry<String, UIIcon> iconEntry : model.getStateIcons().entrySet()) {
 			iconPresent = true;
-			final List<UIIcon> myIcons = iconEntry.getValue();
-			MultipleImage image = new MultipleImage();
-			for(UIIcon icon : myIcons) {
-				image.addImage(icon.getIcon());
-			}
-			iconImages.addImage(image);
+			iconImages.addImage(iconEntry.getValue().getIcon());
 		}
 		for(MindIcon myIcon : model.getIcons()) {
 			iconPresent = true;

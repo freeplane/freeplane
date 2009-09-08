@@ -175,7 +175,6 @@ public class ReminderHook extends PersistentNodeHook {
 			}
 		}
 		if(stateAdded != ClockState.REMOVE_CLOCK || pNode == model.getNode() || ReminderExtension.getExtension(pNode) == null){
-			pNode.removeStateIcons(STATE_TOOLTIP);
 			pNode.setStateIcon(STATE_TOOLTIP, icon);
 		}
 		getModeController().getMapController().nodeRefresh(pNode);
