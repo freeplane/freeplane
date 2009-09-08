@@ -92,6 +92,9 @@ class EditAction extends AFreeplaneAction {
 		map.validate();
 		map.invalidate();
 		final Component node = viewController.getComponent(nodeModel);
+		if(node == null){
+			return;
+		}
 		node.requestFocus();
 		stopEditing();
 		getModeController().setBlocked(true);
