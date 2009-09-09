@@ -737,12 +737,11 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			return;
 		}
 	        if (fullScreen){
-	        	frame.dispose();
     			winState = frame.getExtendedState();
+	        	frame.dispose();
+	        	frame.setExtendedState(Frame.MAXIMIZED_BOTH);
                 frame.setUndecorated(true);
                 frame.setResizable(false);
-                frame.setAlwaysOnTop(true);
-                frame.setBounds(0, 0, 400, 400);
                 getFreeplaneMenuBar().setVisible(isMenubarVisible());
                 leftToolbarPanel.setVisible(isLeftToolbarVisible());
         		final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory().getToolBars();
@@ -754,7 +753,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	        	frame.dispose();
 	        	frame.setUndecorated(false);
 	        	frame.setResizable(true);
-	        	frame.setAlwaysOnTop(false);
 	            frame.setBounds(frameSize);
 	            frame.setExtendedState(winState);
                 getFreeplaneMenuBar().setVisible(isMenubarVisible());
@@ -763,7 +761,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 				for(final JComponent toolBar : toolBars){
 					toolBar.setVisible(isToolbarVisible(toolBar));
 				}
-	            frame.setVisible(true);
+	            frame.setVisible(true);	            
 	        }
 	}
 
@@ -792,6 +790,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
     }
 
 	protected boolean isFullScreenEnabled() {
-	    return getFrame().isAlwaysOnTop();
+	    return ! getFrame().isResizable();
     }
 }
