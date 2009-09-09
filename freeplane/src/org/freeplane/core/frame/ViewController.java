@@ -731,43 +731,46 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 	}
 	
-	void setFullScreen(boolean fullScreen){
+	void setFullScreen(boolean fullScreen) {
 		final Frame frame = getFrame();
-		if(fullScreen == isFullScreenEnabled() || ! frame.isAlwaysOnTopSupported()){
+		if (fullScreen == isFullScreenEnabled()) {
 			return;
 		}
-	        if (fullScreen){
-    			winState = frame.getExtendedState();
-	        	frame.dispose();
-	        	frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-                frame.setUndecorated(true);
-                frame.setResizable(false);
-                getFreeplaneMenuBar().setVisible(isMenubarVisible());
-                leftToolbarPanel.setVisible(isLeftToolbarVisible());
-        		final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory().getToolBars();
-				for(final JComponent toolBar : toolBars){
-					toolBar.setVisible(isToolbarVisible(toolBar));
-				}
-                frame.setVisible(true);
-	        }else{
-	        	frame.dispose();
-	        	frame.setUndecorated(false);
-	        	frame.setResizable(true);
-	            frame.setBounds(frameSize);
-	            frame.setExtendedState(winState);
-                getFreeplaneMenuBar().setVisible(isMenubarVisible());
-                leftToolbarPanel.setVisible(isLeftToolbarVisible());
-        		final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory().getToolBars();
-				for(final JComponent toolBar : toolBars){
-					toolBar.setVisible(isToolbarVisible(toolBar));
-				}
-	            frame.setVisible(true);	            
-	        }
+		if (fullScreen) {
+			winState = frame.getExtendedState();
+			frame.dispose();
+			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+			frame.setUndecorated(true);
+			frame.setResizable(false);
+			getFreeplaneMenuBar().setVisible(isMenubarVisible());
+			leftToolbarPanel.setVisible(isLeftToolbarVisible());
+			final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory()
+			    .getToolBars();
+			for (final JComponent toolBar : toolBars) {
+				toolBar.setVisible(isToolbarVisible(toolBar));
+			}
+			frame.setVisible(true);
+		}
+		else {
+			frame.dispose();
+			frame.setUndecorated(false);
+			frame.setResizable(true);
+			frame.setBounds(frameSize);
+			frame.setExtendedState(winState);
+			getFreeplaneMenuBar().setVisible(isMenubarVisible());
+			leftToolbarPanel.setVisible(isLeftToolbarVisible());
+			final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory()
+			    .getToolBars();
+			for (final JComponent toolBar : toolBars) {
+				toolBar.setVisible(isToolbarVisible(toolBar));
+			}
+			frame.setVisible(true);
+		}
 	}
 
 	boolean isToolbarVisible(JComponent toolBar) {
 		final String completeKeyString = completeVisiblePropertyKey(toolBar);
-		if(completeKeyString == null){
+		if (completeKeyString == null) {
 			return true;
 		}
 		return ! "false".equals(ResourceController.getResourceController().getProperty(completeKeyString, "true"));

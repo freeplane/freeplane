@@ -36,6 +36,10 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.dnd.Autoscroll;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.awt.event.KeyEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -52,6 +56,7 @@ import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
@@ -85,6 +90,34 @@ import org.freeplane.view.swing.map.link.ILinkView;
  * JTree).
  */
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener {
+	private final class ParentListener extends ComponentAdapter implements ContainerListener {
+	    public void componentRemoved(ContainerEvent e) {
+	    	if(e.getChild() == MapView.this){
+	    		final Container container = e.getContainer();
+				container.removeContainerListener(parentListener);
+				SwingUtilities.getAncestorOfClass(JScrollPane.class, container).removeComponentListener(parentListener);
+	    		parentListener = null;
+	    	}
+	    }
+
+	    public void componentAdded(ContainerEvent e) {
+	    }
+
+		@Override
+        public void componentResized(ComponentEvent e) {
+			if(anchor == null){
+				return;
+			}
+			if (nodeToBeVisible == null){
+				nodeToBeVisible = getSelected();
+				extraWidth = 0;
+			}
+			setViewPositionAfterValidate();
+        }
+	    
+	    
+    }
+
 	enum PaintingMode{CLOUDS, NODES, ALL};
 	public enum Layout{MAP, OUTLINE};
 	private Layout layoutType = Layout.MAP;
@@ -288,6 +321,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private float zoom = 1F;
 	private float anchorHorizontalPoint;
 	private float anchorVerticalPoint;
+	private ParentListener parentListener;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -564,8 +598,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		UITools.convertPointToAncestor(mainView, anchorCenterPoint, parent);
 		final Point viewPosition = parent.getViewPosition();
-		anchorCenterPoint.x += viewPosition.x;
-		anchorCenterPoint.y += viewPosition.y;
+		anchorCenterPoint.x += viewPosition.x - parent.getWidth()/2;
+		anchorCenterPoint.y += viewPosition.y - parent.getHeight()/2;
 		return anchorCenterPoint;
 	}
 
@@ -1491,10 +1525,22 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	@Override
 	protected void validateTree() {
+		registerParentListener();
 		validateSelecteds();
 		super.validateTree();
 		setViewPositionAfterValidate();
 	}
+
+	private void registerParentListener() {
+	    if(parentListener != null){
+	    	return;
+	    }
+	    parentListener = new ParentListener();
+		final Container parent = getParent();
+		parent.addContainerListener(parentListener);
+		SwingUtilities.getAncestorOfClass(JScrollPane.class, parent).addComponentListener(parentListener);
+	    
+    }
 
 	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
     }
