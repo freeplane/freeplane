@@ -29,14 +29,10 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Window;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
@@ -97,7 +93,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	final private ZoomInAction zoomIn;
 	private final DefaultComboBoxModel zoomModel;
 	final private ZoomOutAction zoomOut;
-	final private GraphicsDevice device;
 	private Rectangle frameSize;
 	public Rectangle getFrameSize() {
     	return frameSize;
@@ -111,14 +106,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	public ViewController(final Controller controller, final IMapViewManager mapViewManager) {
 		super();
-		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice[] devices = env.getScreenDevices();
-		if(devices.length > 0){
-			device = devices[0];
-		}
-		else{
-			device = null;
-		}
 		statusInfos = new HashMap<String, JLabel>();
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
 		status = new JLabel("!");
@@ -745,16 +732,17 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 	
 	void setFullScreen(boolean fullScreen){
-		if(fullScreen == isFullScreenEnabled() || ! device.isFullScreenSupported()){
+		final Frame frame = getFrame();
+		if(fullScreen == isFullScreenEnabled() || ! frame.isAlwaysOnTopSupported()){
 			return;
 		}
-		final Frame frame = getFrame();
 	        if (fullScreen){
-            	frame.dispose();
+	        	frame.dispose();
     			winState = frame.getExtendedState();
                 frame.setUndecorated(true);
                 frame.setResizable(false);
-                device.setFullScreenWindow(frame);
+                frame.setAlwaysOnTop(true);
+                frame.setBounds(0, 0, 400, 400);
                 getFreeplaneMenuBar().setVisible(isMenubarVisible());
                 leftToolbarPanel.setVisible(isLeftToolbarVisible());
         		final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory().getToolBars();
@@ -766,7 +754,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	        	frame.dispose();
 	        	frame.setUndecorated(false);
 	        	frame.setResizable(true);
-	            device.setFullScreenWindow(null);
+	        	frame.setAlwaysOnTop(false);
 	            frame.setBounds(frameSize);
 	            frame.setExtendedState(winState);
                 getFreeplaneMenuBar().setVisible(isMenubarVisible());
@@ -804,6 +792,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
     }
 
 	protected boolean isFullScreenEnabled() {
-	    return device.getFullScreenWindow() == getFrame();
+	    return getFrame().isAlwaysOnTop();
     }
 }
