@@ -42,6 +42,7 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewChangeListener;
+import org.freeplane.core.frame.ViewController;
 
 class MapViewTabs implements IMapViewChangeListener {
 	final private Controller controller;
@@ -51,7 +52,7 @@ class MapViewTabs implements IMapViewChangeListener {
 	private boolean mTabbedPaneSelectionUpdate = true;
 	private TabbedPaneUI tabbedPaneUI;
 
-	public MapViewTabs(final Controller controller, final ApplicationViewController fm,
+	public MapViewTabs(final Controller controller, final ViewController fm,
 	                   final JComponent contentComponent) {
 		this.controller = controller;
 		mContentComponent = contentComponent;
