@@ -309,4 +309,12 @@ public class LinkController extends SelectionController implements IExtension {
 		link = Compat.cleanURI(link);
 		return link;
     }
+
+	public static Collection<LinkModel> getLinksTo(ModeController modeController, NodeModel node) {
+		final LinkController linkController = getController(modeController);
+		if(linkController == null){
+			return  Collections.emptyList();
+		}
+		return linkController.getLinksTo(node);
+	}
 }

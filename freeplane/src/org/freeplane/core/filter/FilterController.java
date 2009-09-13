@@ -418,7 +418,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	private void updateSettingsFromFilter(final Filter filter) {
-		filterConditions.removeListDataListener(filterChangeListener);
+		getFilterConditions().removeListDataListener(filterChangeListener);
 		showAncestors.removeChangeListener(filterChangeListener);
 		showDescendants.removeChangeListener(filterChangeListener);
 		filterConditions.setSelectedItem(filter.getCondition());

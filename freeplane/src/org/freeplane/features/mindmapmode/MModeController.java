@@ -57,7 +57,7 @@ public class MModeController extends ModeController {
 		createOptionPanelControls();
 	}
 
-	private void addUndoableActor(final IActor actor, final MMapModel map) {
+	private void addUndoableActor(final IActor actor, final UMapModel map) {
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.addActor(actor);
 		undo.setEnabled(true);
@@ -115,7 +115,7 @@ public class MModeController extends ModeController {
 	@Override
 	public void execute(final IActor actor, MapModel map) {
 		actor.act();
-		addUndoableActor(actor, (MMapModel) map);
+		addUndoableActor(actor, (UMapModel) map);
 	}
 
 	@Override
@@ -154,7 +154,10 @@ public class MModeController extends ModeController {
 	@Override
 	public void shutdown() {
 		super.shutdown();
-		((MNoteController) NoteController.getController(this)).shutdownController();
+		final MNoteController noteController = (MNoteController) NoteController.getController(this);
+		if(noteController != null){
+			noteController.shutdownController();
+		}
 	}
 
 	@Override
@@ -171,7 +174,10 @@ public class MModeController extends ModeController {
 	@Override
 	public void startup() {
 		super.startup();
-		((MNoteController) NoteController.getController(this)).startupController();
+		final NoteController noteController = NoteController.getController(this);
+		if(noteController != null){
+			((MNoteController) noteController).startupController();
+		}
 	}
 
 	public void undo() {

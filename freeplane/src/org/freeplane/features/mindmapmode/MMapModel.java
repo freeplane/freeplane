@@ -27,30 +27,28 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.SysUtil;
 import org.freeplane.features.mindmapmode.file.DoAutomaticSave;
 import org.freeplane.features.mindmapmode.file.DummyLockManager;
 import org.freeplane.features.mindmapmode.file.LockManager;
+import org.freeplane.features.mindmapmode.file.MFileManager;
 
-public class MMapModel extends MapModel {
+public class MMapModel extends UMapModel {
 	private static int unnamedMapsNumber = 1;
 	private LockManager lockManager;
 	private Timer timerForAutomaticSaving;
 	private int titleNumber = 0;
-	final private IUndoHandler undoHandler;
-
 	/**
 	 * The current version and all other version that don't need XML update for
 	 * sure.
 	 */
-	public MMapModel(final NodeModel root, final ModeController modeController) {
-		super(modeController, root);
+	MMapModel(final NodeModel root, final ModeController modeController) {
+		super(root, modeController);
 		setReadOnly(false);
 		this.setLockManager(ResourceController.getResourceController().getBooleanProperty(
 		    "experimental_file_locking_on") ? new LockManager() : new DummyLockManager());
-		undoHandler = new UndoHandler();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				scheduleTimerForAutomaticSaving(modeController);
@@ -93,11 +91,10 @@ public class MMapModel extends MapModel {
 		return ResourceBundles.getText("mindmap") + titleNumber;
 	}
 
-	public IUndoHandler getUndoHandler() {
-		return undoHandler;
-	}
-
 	public void scheduleTimerForAutomaticSaving(final ModeController modeController) {
+		if(! (UrlManager.getController(modeController) instanceof MFileManager)){
+			return;
+		}
 		final int numberOfTempFiles = Integer.parseInt(ResourceController.getResourceController().getProperty(
 		    "number_of_different_files_for_automatic_save"));
 		if (numberOfTempFiles == 0) {

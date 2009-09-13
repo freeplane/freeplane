@@ -89,6 +89,7 @@ import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
+import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
 import org.freeplane.view.swing.addins.FitToPage;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
@@ -117,10 +118,6 @@ public class MModeControllerFactory {
 			instance = new MModeControllerFactory();
 		}
 		return instance;
-	}
-
-	public static MModeController getModeController() {
-		return MModeControllerFactory.getInstance().modeController;
 	}
 
 	private Controller controller;
@@ -160,8 +157,7 @@ public class MModeControllerFactory {
 	private MModeController createModeControllerImpl(final Controller controller) {
 		this.controller = controller;
 		createStandardControllers();
-		createAddIns();
-		ResourceController.getResourceController().updateMenus(modeController);
+		createAddIns();		
 		return modeController;
 	}
 
@@ -251,6 +247,10 @@ public class MModeControllerFactory {
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
 		userInputListenerFactory.addMainToolBar("/fbuttons", fButtonToolBar);
 		controller.addAction(new ToggleToolbarAction(controller, "ToggleFBarAction", "/fbuttons", "fbarVisible"));
+
+		SModeControllerFactory.createModeController(modeController);
+		
+		
 		userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);
 		userInputListenerFactory.setLeftToolBar(((MIconController) IconController.getController(modeController))
 		    .getIconToolBarScrollPane());

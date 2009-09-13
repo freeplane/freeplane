@@ -62,7 +62,10 @@ public class MapModel {
 		listeners = new LinkedList<IMapChangeListener>();
 		final Controller controller = modeController.getController();
 		nodes = new HashMap<String, NodeModel>();
-		filter = FilterController.getController(controller).createTransparentFilter();
+		final FilterController filterController = FilterController.getController(controller);
+		if(filterController != null){
+			filter = filterController.createTransparentFilter();
+		}
 		if (root == null) {
 			root = new NodeModel(ResourceBundles.getText("new_mindmap"), this);
 			setRoot(root);

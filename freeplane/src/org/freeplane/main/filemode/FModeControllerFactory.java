@@ -81,7 +81,6 @@ public class FModeControllerFactory {
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		ResourceController.getResourceController().updateMenus(modeController);
 		NodeHistory.install(modeController);
 		new MapStyle(modeController);
 		return modeController;

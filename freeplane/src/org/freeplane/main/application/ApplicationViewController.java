@@ -84,7 +84,7 @@ class ApplicationViewController extends ViewController {
 
 	public ApplicationViewController(final Controller controller, final IMapViewManager mapViewController,
 	                                 final JFrame frame) {
-		super(controller, mapViewController);
+		super(controller, mapViewController, "");
 		this.controller = controller;
 		navigationPreviousMap = new NavigationPreviousMapAction(controller);
 		controller.addAction(navigationPreviousMap);

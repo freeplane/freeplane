@@ -442,13 +442,6 @@ public class MapController extends SelectionController {
 		return node.isFolded();
 	}
 
-	public MapModel newMap(final NodeModel root) {
-		final MapModel newModel = newModel(root);
-		fireMapCreated(newModel);
-		newMapView(newModel);
-		return newModel;
-	}
-
 	public void newMap(final URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
 		final IMapViewManager mapViewManager = getController().getMapViewManager();
 		/*
@@ -474,9 +467,15 @@ public class MapController extends SelectionController {
 		}
 	}
 
-	protected void newMapView(final MapModel mapModel) {
+	public void newMapView(final MapModel mapModel) {
 		getController().getMapViewManager().newMapView(mapModel, getModeController());
 		setSaved(mapModel, false);
+	}
+
+	public MapModel newMap(final NodeModel root) {
+		final MapModel newModel = newModel(root);
+		newMapView(newModel);
+		return newModel;
 	}
 
 	public MapModel newModel(final NodeModel root) {

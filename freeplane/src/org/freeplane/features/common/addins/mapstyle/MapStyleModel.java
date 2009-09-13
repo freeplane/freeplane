@@ -22,26 +22,27 @@ package org.freeplane.features.common.addins.mapstyle;
 import java.awt.Color;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.features.mindmapmode.MMapModel;
+import org.freeplane.features.mindmapmode.UMapModel;
 
 /**
  * @author Dimitry Polivaev
  * Mar 12, 2009
  */
 public class MapStyleModel implements IExtension {
-	public static MapStyleModel createExtension(final NodeModel node) {
-		MapStyleModel extension = (MapStyleModel) node.getExtension(MapStyleModel.class);
-		if (extension == null) {
-			extension = new MapStyleModel();
-			node.addExtension(extension);
-		}
-		return extension;
-	}
-
+	private static final String STYLES = "styles";
+	final private MapModel styleMap;
 	public static MapStyleModel getExtension(final MapModel map) {
 		return MapStyleModel.getExtension(map.getRootNode());
 	}
+
+	public MapModel getStyleMap() {
+    	return styleMap;
+    }
 
 	public static MapStyleModel getExtension(final NodeModel node) {
 		return (MapStyleModel) node.getExtension(MapStyleModel.class);
@@ -49,14 +50,25 @@ public class MapStyleModel implements IExtension {
 
 	private Color backgroundColor;
 
-	public MapStyleModel() {
+	public MapStyleModel(ModeController modeController) {
+		styleMap = new UMapModel(null, modeController){
+
+			@Override
+            public String getTitle() {
+	            return ResourceBundles.getText(STYLES);
+            }
+			
+		};
+		NodeModel root = new NodeModel(styleMap);
+		root.setText(ResourceBundles.getText(STYLES));
+		styleMap.setRoot(root);
 	}
 
 	public Color getBackgroundColor() {
 		return backgroundColor;
 	}
 
-	protected void setBackgroundColor(final Color backgroundColor) {
+	public void setBackgroundColor(final Color backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
 }

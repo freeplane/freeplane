@@ -284,7 +284,6 @@ public class ModeController extends AController {
 	 * it to perform the actions that cannot be performed at creation time.
 	 */
 	public void startup() {
-		UrlManager.getController(this).startup();
 	}
 
 	public void updateMenus() {

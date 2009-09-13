@@ -17,16 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources;
+package org.freeplane.core.ui;
 
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.core.resources.ResourceController;
 
 @SelectableAction(checkOnPopup = true)
-class ShowSelectionAsRectangleAction extends AFreeplaneAction {
+public class ShowSelectionAsRectangleAction extends AFreeplaneAction {
 	static final String NAME = "showSelectionAsRectangle";
 	/**
 	 * 
@@ -41,11 +40,19 @@ class ShowSelectionAsRectangleAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		ResourceController.getResourceController().toggleSelectionAsRectangle();
+		toggleSelectionAsRectangle();
 	}
+
+	private void toggleSelectionAsRectangle() {
+		ResourceController.getResourceController().setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, Boolean.toString(!isSelectionAsRectangle()) );
+    }
 
 	@Override
 	public void setSelected() {
-		setSelected(ResourceController.getResourceController().isSelectionAsRectangle());
+		setSelected(isSelectionAsRectangle());
 	}
+
+	private boolean isSelectionAsRectangle() {
+		return Boolean.parseBoolean(ResourceController.getResourceController().getProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION));
+    }
 }

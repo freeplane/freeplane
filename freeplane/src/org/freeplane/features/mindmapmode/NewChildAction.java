@@ -51,7 +51,10 @@ class NewChildAction extends AFreeplaneAction {
 	public NodeModel addNewNode(int newNodeMode, final KeyEvent e) {
 		final ModeController modeController = getModeController();
 		final NodeModel target = modeController.getMapController().getSelectedNode();
-		((MTextController) TextController.getController(modeController)).stopEditing();
+		final TextController textController = TextController.getController(modeController);
+		if(textController instanceof MTextController){
+			((MTextController) textController).stopEditing();
+		}
 		final NodeModel targetNode = target;
 		final NodeModel newNode;
 		switch (newNodeMode) {
@@ -66,13 +69,13 @@ class NewChildAction extends AFreeplaneAction {
 					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
 					modeController.getMapController().select(newNode);
 					if (e != null) {
-						((MTextController) TextController.getController(modeController)).edit(newNode, targetNode, e,
+						((MTextController) textController).edit(newNode, targetNode, e,
 						    true, false, false);
 					}
 					else {
 						EventQueue.invokeLater(new Runnable() {
 							public void run() {
-								((MTextController) TextController.getController(modeController)).edit(newNode,
+								((MTextController) textController).edit(newNode,
 								    targetNode, e, true, false, false);
 							}
 						});
@@ -98,7 +101,7 @@ class NewChildAction extends AFreeplaneAction {
 				}
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						((MTextController) TextController.getController(modeController)).edit(newNode, targetNode, e,
+						((MTextController) textController).edit(newNode, targetNode, e,
 						    true, parentFolded, false);
 					}
 				});

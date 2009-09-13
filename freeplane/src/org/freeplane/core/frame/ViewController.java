@@ -103,9 +103,12 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
     }
 
 	private int winState;
+	final private String propertyKeyPrefix;
 
-	public ViewController(final Controller controller, final IMapViewManager mapViewManager) {
+	public ViewController(final Controller controller, final IMapViewManager mapViewManager,
+	                      final String propertyKeyPrefix) {
 		super();
+		this.propertyKeyPrefix = propertyKeyPrefix;
 		statusInfos = new HashMap<String, JLabel>();
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
 		status = new JLabel("!");
@@ -125,7 +128,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		zoomModel = new DefaultComboBoxModel(getZooms());
 		zoomModel.addElement(userDefinedZoom);
 		final ResourceController resourceController = ResourceController.getResourceController();
-		final String mapViewZoom = resourceController.getProperty("map_view_zoom", "1.0");
+		final String mapViewZoom = resourceController.getProperty(getPropertyKeyPrefix() + "map_view_zoom", "1.0");
 		try {
 			setZoom(Float.parseFloat(mapViewZoom));
 		}
@@ -379,9 +382,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	public void init() {
 		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
 		getContentPane().add(leftToolbarPanel, BorderLayout.WEST);
-		if (!ResourceController.getResourceController().getBooleanProperty("leftToolbarVisible")) {
-			controller.getViewController().setLeftToolbarVisible(false);
-		}
 		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
 		final Frame frame = getFrame();
@@ -430,7 +430,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		else{
 			property = "leftToolbarVisible";
 		}
-		return ResourceController.getResourceController().getBooleanProperty(property);
+		return ResourceController.getResourceController().getBooleanProperty(getPropertyKeyPrefix() + property);
 	}
 
 	public boolean isMenubarVisible() {
@@ -441,7 +441,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		else{
 			property = "menubarVisible";
 		}
-		final boolean booleanProperty = ResourceController.getResourceController().getBooleanProperty(property);
+		final boolean booleanProperty = ResourceController.getResourceController().getBooleanProperty(getPropertyKeyPrefix() + property);
 		return booleanProperty;
 	}
 
@@ -611,7 +611,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		else{
 			property = "leftToolbarVisible";
 		}
-		ResourceController.getResourceController().setProperty(property, visible);
+		ResourceController.getResourceController().setProperty(getPropertyKeyPrefix() + property, visible);
 		leftToolbarPanel.setVisible(visible);
 	}
 
@@ -623,7 +623,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		else{
 			property = "menubarVisible";
 		}
-		ResourceController.getResourceController().setProperty(property, visible);
+		ResourceController.getResourceController().setProperty(getPropertyKeyPrefix() + property, visible);
 		getFreeplaneMenuBar().setVisible(visible);
 	}
 
@@ -773,7 +773,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		if (completeKeyString == null) {
 			return true;
 		}
-		return ! "false".equals(ResourceController.getResourceController().getProperty(completeKeyString, "true"));
+		return ! "false".equals(ResourceController.getResourceController().getProperty(getPropertyKeyPrefix() + completeKeyString, "true"));
     }
 
 	public String completeVisiblePropertyKey(JComponent toolBar) {
@@ -795,4 +795,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	protected boolean isFullScreenEnabled() {
 	    return ! getFrame().isResizable();
     }
+	
+	protected String getPropertyKeyPrefix(){
+		return propertyKeyPrefix ;
+	}
 }

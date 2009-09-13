@@ -137,6 +137,7 @@
 			<menu_category name="icons" />
 			</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
+		<menu_action action="EditStylesAction" />
 			<menu_category name="change">
 			</menu_category>
 			<menu_separator />

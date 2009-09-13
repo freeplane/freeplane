@@ -56,7 +56,7 @@ class AppletViewController extends ViewController {
 
 	public AppletViewController(final Controller controller, final JApplet applet,
 	                            final IMapViewManager mapViewController) {
-		super(controller, mapViewController);
+		super(controller, mapViewController, "");
 		this.applet = applet;
 	}
 

@@ -216,11 +216,6 @@ public abstract class ResourceController {
 	}
 
 	protected void init(final Controller controller) {
-		controller.addAction(new ShowSelectionAsRectangleAction(controller));
-	}
-
-	boolean isSelectionAsRectangle() {
-		return Boolean.parseBoolean(getProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION));
 	}
 
 	abstract public void loadProperties(InputStream inStream) throws IOException;
@@ -240,12 +235,4 @@ public abstract class ResourceController {
 	}
 
 	abstract public void setProperty(final String property, final String value);
-
-	public void toggleSelectionAsRectangle() {
-		setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, Boolean.toString(!isSelectionAsRectangle()) );
-	}
-
-	public void updateMenus(final ModeController modeController) {
-		LogTool.warn("ResourceController.updateMenus(...) called, but not implemented.");
-	}
 }

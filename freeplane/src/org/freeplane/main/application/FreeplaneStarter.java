@@ -33,6 +33,7 @@ import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
@@ -50,6 +51,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
+import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MMapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
@@ -123,6 +125,7 @@ public class FreeplaneStarter {
 			controller.addAction(new NextNodeAction(controller, Direction.FORWARD));
 			controller.addAction(new NextNodeAction(controller, Direction.BACK));
 			controller.addAction(new ViewLayoutTypeAction(controller, Layout.OUTLINE));
+			controller.addAction(new ShowSelectionAsRectangleAction(controller));
 			NodeHistory.install(controller);
 			MModeControllerFactory.createModeController(controller);
 			controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(
@@ -141,6 +144,9 @@ public class FreeplaneStarter {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				viewController.init();
+				if (!ResourceController.getResourceController().getBooleanProperty("leftToolbarVisible")) {
+					controller.getViewController().setLeftToolbarVisible(false);
+				}
 				try {
 					final Class<?> macClass = Class.forName("accessories.plugins.MacChanges");
 					macClass.getConstructors()[0].newInstance(new Object[] { this });

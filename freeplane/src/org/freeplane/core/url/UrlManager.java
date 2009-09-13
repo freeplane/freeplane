@@ -466,7 +466,4 @@ public class UrlManager implements IExtension {
 	protected void setURL(final MapModel map, final URL url) {
 		map.setURL(url);
 	}
-
-	public void startup() {
-	}
 }

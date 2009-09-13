@@ -29,6 +29,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.common.addins.misc.NextNodeAction;
 import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
@@ -83,6 +84,7 @@ public class FreeplaneApplet extends JApplet {
 		IconController.install(controller);
 		final BModeController browseController = BModeControllerFactory.createModeController(controller,
 		    "/xml/appletMenu.xml");
+		controller.addAction(new ShowSelectionAsRectangleAction(controller));
 		controller.addAction(new NextNodeAction(controller, Direction.FORWARD));
 		controller.addAction(new NextNodeAction(controller, Direction.BACK));
 		controller.selectMode(browseController);

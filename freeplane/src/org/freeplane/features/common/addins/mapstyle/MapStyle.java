@@ -60,7 +60,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		else {
 			bgColor = null;
 		}
-		final MapStyleModel model = new MapStyleModel();
+		final MapStyleModel model = new MapStyleModel(getModeController());
 		model.setBackgroundColor(bgColor);
 		return model;
 	}
@@ -87,7 +87,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		if (rootNode.containsExtension(MapStyleModel.class)) {
 			return;
 		}
-		rootNode.addExtension(new MapStyleModel());
+		rootNode.addExtension(new MapStyleModel(getModeController()));
 	}
 
 	public void onRemove(final MapModel map) {
