@@ -53,29 +53,21 @@ public class NodeBuilder implements IElementDOMHandler {
 	public static final String XML_NODE_ENCRYPTED_CONTENT = "ENCRYPTED_CONTENT";
 	public static final String XML_NODE_HISTORY_CREATED_AT = "CREATED";
 	public static final String XML_NODE_HISTORY_LAST_MODIFIED_AT = "MODIFIED";
-	private NodeModel mapChild = null;
 	private final MapReader mapReader;
-	private final HashMap<String, String> newIds;
 
 	public NodeBuilder(final MapReader mapReader) {
 		this.mapReader = mapReader;
-		newIds = new HashMap<String, String>();
 	}
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (tag.equals(NodeBuilder.XML_NODE)) {
 			final NodeModel userObject = createNode();
-			if (mapChild == null) {
-				mapChild = userObject;
+			if (getMapChild() == null) {
+				setMapChild(userObject);
 			}
 			return userObject;
 		}
 		return null;
-	}
-
-	protected void createEncryptedNode(final NodeModel node, final String additionalInfo) {
-		final EncryptionModel encryptionModel = new EncryptionModel(node, additionalInfo);
-		node.addExtension(encryptionModel);
 	}
 
 	public NodeModel createNode() {
@@ -88,7 +80,7 @@ public class NodeBuilder implements IElementDOMHandler {
 			node.addExtension(new UnknownElements(dom));
 		}
 		if (tag.equals("node") && parentObject instanceof MapModel) {
-			mapChild = node;
+			setMapChild(node);
 			return;
 		}
 		if (parentObject instanceof NodeModel) {
@@ -101,21 +93,21 @@ public class NodeBuilder implements IElementDOMHandler {
 	}
 
 	private MapModel getMap() {
-		return mapReader.getCreatedMap();
+		return mapReader.getCurrentNodeTreeCreator().getCreatedMap();
 	}
 
 	public NodeModel getMapChild() {
-		return mapChild;
-	}
-
-	public HashMap<String, String> getNewIds() {
-		final HashMap<String, String> ids = newIds;
-		return ids;
+		return mapReader.getCurrentNodeTreeCreator().getMapChild();
 	}
 
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeBuilder.XML_NODE_ENCRYPTED_CONTENT,
 		    new IAttributeHandler() {
+			private void createEncryptedNode(final NodeModel node, final String additionalInfo) {
+				final EncryptionModel encryptionModel = new EncryptionModel(node, additionalInfo);
+				node.addExtension(encryptionModel);
+			}
+
 			    public void setAttribute(final Object userObject, final String value) {
 				    final NodeModel node = (NodeModel) userObject;
 					createEncryptedNode(node, value);
@@ -146,7 +138,7 @@ public class NodeBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "FOLDED", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				final Object mode = mapReader.getHint(Hint.MODE);
+				final Object mode = mapReader.getCurrentNodeTreeCreator().getHint(Hint.MODE);
 				if (mode.equals(Mode.FILE)) {
 					final String loadFolding = ResourceController.getResourceController().getProperty(
 					    NodeBuilder.RESOURCES_LOAD_FOLDING);
@@ -154,7 +146,7 @@ public class NodeBuilder implements IElementDOMHandler {
 					        || loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD)) {
 						return;
 					}
-					mapReader.setHint(FOLDING_LOADED, Boolean.TRUE);
+					mapReader.getCurrentNodeTreeCreator().setHint(FOLDING_LOADED, Boolean.TRUE);
 				}
 				if (value.equals("true")) {
 					node.setFolded(true);
@@ -175,10 +167,10 @@ public class NodeBuilder implements IElementDOMHandler {
 			}
 
 			public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
-				if (!Mode.FILE.equals(mapReader.getHint(Hint.MODE))) {
+				if (!Mode.FILE.equals(mapReader.getCurrentNodeTreeCreator().getHint(Hint.MODE))) {
 					return;
 				}
-				if (Boolean.TRUE.equals(mapReader.getHint(NodeBuilder.FOLDING_LOADED))) {
+				if (Boolean.TRUE.equals(mapReader.getCurrentNodeTreeCreator().getHint(NodeBuilder.FOLDING_LOADED))) {
 					return;
 				}
 				final String loadFolding = ResourceController.getResourceController().getProperty(
@@ -203,7 +195,7 @@ public class NodeBuilder implements IElementDOMHandler {
 				final String realId = getMap().generateNodeID(value);
 				node.setID(realId);
 				if (!realId.equals(value)) {
-					newIds.put(value, realId);
+					mapReader.getCurrentNodeTreeCreator().substituteNodeID(value, realId);
 				}
 			}
 		});
@@ -217,9 +209,13 @@ public class NodeBuilder implements IElementDOMHandler {
 	}
 
 	public void reset() {
-		mapChild = null;
+		setMapChild(null);
 	}
 
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
+
+	private void setMapChild(NodeModel mapChild) {
+	    mapReader.getCurrentNodeTreeCreator().setMapChild(mapChild);
+    }
 }

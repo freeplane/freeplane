@@ -106,7 +106,7 @@ class AttributeBuilder implements IElementDOMHandler {
 	}
 
 	private MapModel getMap() {
-		return mapReader.getCreatedMap();
+		return mapReader.getCurrentNodeTreeCreator().getCreatedMap();
 	}
 
 	private void registerAttributeHandlers(final ReadManager reader) {

@@ -35,10 +35,15 @@ import org.freeplane.n3.nanoxml.XMLException;
  * @author Dimitry Polivaev
  * 20.12.2008
  */
-public class MapReader implements IElementDOMHandler, IHintProvider {
+public class MapReader implements IElementDOMHandler{
 	public class NodeTreeCreator {
+		private MapModel createdMap;
+		private HashMap<Object, Object> hints;
+		private NodeModel mapChild = null;
+		private final HashMap<String, String> newIds;
 		public NodeTreeCreator() {
 			super();
+			newIds = new HashMap<String, String>();
 			hints = new HashMap<Object, Object>();
 		}
 
@@ -63,7 +68,6 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 		}
 
 		public void finish(final NodeModel node) {
-			final HashMap<String, String> newIds = nodeBuilder.getNewIds();
 			readManager.readingCompleted(node, newIds);
 			newIds.clear();
 			createdMap = null;
@@ -72,13 +76,39 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 		void start(final MapModel map) {
 			createdMap = map;
 		}
+		public MapModel getCreatedMap() {
+			return createdMap;
+		}
+
+		Object getHint(final Object key) {
+			return hints.get(key);
+		}
+
+		public void setHint(final Object key, final Object value) {
+			hints.put(key, value);
+		}
+
+		NodeModel getMapChild() {
+	        return mapChild;
+        }
+
+		public void setMapChild(NodeModel mapChild) {
+	        this.mapChild = mapChild;
+	        
+        }
+
+		public void substituteNodeID(String value, String realId) {
+			newIds.put(value, realId);
+		}
 	}
 
-	private MapModel createdMap;
-	private HashMap<Object, Object> hints;
-	private boolean mapLoadingInProcess;
 	private final NodeBuilder nodeBuilder;
 	final private ReadManager readManager;
+	private NodeTreeCreator nodeTreeCreator;
+
+	public NodeTreeCreator getCurrentNodeTreeCreator() {
+    	return nodeTreeCreator;
+    }
 
 	public MapReader(final ReadManager readManager) {
 		this.readManager = readManager;
@@ -87,21 +117,20 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 	}
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
-		return getCreatedMap();
+		return nodeTreeCreator.getCreatedMap();
 	}
 
 	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader, final Mode mode)
 	        throws IOException, XMLException {
+		final NodeTreeCreator oldNodeTreeCreator = nodeTreeCreator;
 		try {
-			mapLoadingInProcess = true;
-			final NodeTreeCreator nodeTreeCreator = new NodeTreeCreator();
-			setHint(Hint.MODE, mode);
+			nodeTreeCreator = new NodeTreeCreator();
+			nodeTreeCreator.setHint(Hint.MODE, mode);
 			final NodeModel topNode = nodeTreeCreator.createNodeTreeFromXml(map, pReader);
-			mapLoadingInProcess = false;
 			return topNode;
 		}
 		finally {
-			mapLoadingInProcess = false;
+			nodeTreeCreator = oldNodeTreeCreator;
 		}
 	}
 
@@ -112,25 +141,13 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 		}
 	}
 
-	public MapModel getCreatedMap() {
-		return createdMap;
-	}
-
-	public Object getHint(final Object key) {
-		return hints.get(key);
-	}
-
 	public boolean isMapLoadingInProcess() {
-		return mapLoadingInProcess;
+		return nodeTreeCreator != null;
 	}
 
 	public NodeTreeCreator nodeTreeCreator(final MapModel map) {
-		final NodeTreeCreator nodeTreeCreator = new NodeTreeCreator();
+		NodeTreeCreator nodeTreeCreator = new NodeTreeCreator();
 		nodeTreeCreator.start(map);
 		return nodeTreeCreator;
-	}
-
-	public void setHint(final Object key, final Object value) {
-		hints.put(key, value);
 	}
 }

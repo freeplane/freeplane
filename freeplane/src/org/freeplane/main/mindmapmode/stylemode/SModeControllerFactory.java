@@ -70,10 +70,9 @@ public class SModeControllerFactory {
 		return instance;
 	}
 
-	private Controller controller;
-	private MModeController modeController;
+	private SModeController modeController;
 
-	MModeController createModeController(JDialog dialog) {
+	SModeController createModeController(JDialog dialog) {
 		Controller controller = new Controller();
 		final MapViewController mapViewController = new MapViewController();
 		final DialogController viewController = new DialogController(controller, mapViewController, dialog);
@@ -82,8 +81,7 @@ public class SModeControllerFactory {
 		TextController.install(controller);
 		controller.addAction(new ViewLayoutTypeAction(controller, Layout.OUTLINE));
 		controller.addAction(new ShowSelectionAsRectangleAction(controller));
-		this.controller = controller;
-		modeController = new MModeController(controller);
+		modeController = new SModeController(controller);
         final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
         userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener(modeController));
         modeController.setUserInputListenerFactory(userInputListenerFactory);
@@ -113,12 +111,12 @@ public class SModeControllerFactory {
         modeController.updateMenus();
         new MapStyle(modeController);
 		controller.addModeController(modeController);
-		MModeController modeController = this.modeController;
+		SModeController modeController = this.modeController;
 		this.modeController = null;
 		return modeController;
 	}
 
-	public static void createModeController(ModeController modeController) {
-		modeController.addAction(new EditStylesAction(modeController.getController()));
+	public static void createModeController(MModeController modeController) {
+		modeController.addAction(new EditStylesAction(modeController));
     }
 }

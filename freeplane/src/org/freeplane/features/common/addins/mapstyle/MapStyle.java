@@ -20,10 +20,14 @@
 package org.freeplane.features.common.addins.mapstyle;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.io.StringWriter;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.MapWriter;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.IMapLifeCycleListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
@@ -60,7 +64,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		else {
 			bgColor = null;
 		}
-		final MapStyleModel model = new MapStyleModel(getModeController());
+		final String styleMap = element.getAttribute("styles", null);
+		final MapStyleModel model = new MapStyleModel(getModeController(), styleMap);
 		model.setBackgroundColor(bgColor);
 		return model;
 	}
@@ -87,7 +92,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		if (rootNode.containsExtension(MapStyleModel.class)) {
 			return;
 		}
-		rootNode.addExtension(new MapStyleModel(getModeController()));
+		rootNode.addExtension(new MapStyleModel(getModeController(), null));
 	}
 
 	public void onRemove(final MapModel map) {
@@ -96,10 +101,22 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	@Override
 	protected void saveExtension(final IExtension extension, final XMLElement element) {
 		super.saveExtension(extension, element);
-		final Color backgroundColor = ((MapStyleModel) extension).getBackgroundColor();
+		final MapStyleModel mapStyleModel = (MapStyleModel) extension;
+		final Color backgroundColor = mapStyleModel.getBackgroundColor();
 		if (backgroundColor != null) {
 			element.setAttribute("background", ColorUtils.colorToString(backgroundColor));
 		}
+		final MapWriter mapWriter = getModeController().getMapController().getMapWriter();
+		StringWriter writer = new StringWriter();
+		final NodeModel rootNode = mapStyleModel.getStyleMap().getRootNode();
+		try {
+	        mapWriter.writeNodeAsXml(writer, rootNode, Mode.FILE, true, true);
+        }
+        catch (IOException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+        }
+        element.setAttribute("styles", writer.toString());
 	}
 
 	public void setBackgroundColor(final MapStyleModel model, final Color actionColor) {

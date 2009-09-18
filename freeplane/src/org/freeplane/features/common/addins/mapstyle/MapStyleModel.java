@@ -20,20 +20,28 @@
 package org.freeplane.features.common.addins.mapstyle;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.Enumeration;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.MapReader;
+import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.features.mindmapmode.MMapModel;
 import org.freeplane.features.mindmapmode.UMapModel;
+import org.freeplane.n3.nanoxml.XMLException;
 
 /**
  * @author Dimitry Polivaev
  * Mar 12, 2009
  */
 public class MapStyleModel implements IExtension {
+	private static final String DEFAULT_STYLE = "default";
 	private static final String STYLES = "styles";
 	final private MapModel styleMap;
 	public static MapStyleModel getExtension(final MapModel map) {
@@ -50,7 +58,7 @@ public class MapStyleModel implements IExtension {
 
 	private Color backgroundColor;
 
-	public MapStyleModel(ModeController modeController) {
+	public MapStyleModel(ModeController modeController, String styleMapStr) {
 		styleMap = new UMapModel(null, modeController){
 
 			@Override
@@ -59,9 +67,47 @@ public class MapStyleModel implements IExtension {
             }
 			
 		};
-		NodeModel root = new NodeModel(styleMap);
-		root.setText(ResourceBundles.getText(STYLES));
-		styleMap.setRoot(root);
+		if(styleMapStr == null){
+			NodeModel root = new NodeModel(styleMap);
+			root.setText(ResourceBundles.getText(STYLES));
+			styleMap.setRoot(root);
+			createDefaultStyle();
+			return;
+		}
+		final MapReader mapReader = modeController.getMapController().getMapReader();
+		try {
+			NodeModel root = mapReader.createNodeTreeFromXml(styleMap, new StringReader(styleMapStr), Mode.FILE);
+			styleMap.setRoot(root);
+        }
+        catch (IOException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+        }
+        catch (XMLException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+        }
+        if(getStyleNode(DEFAULT_STYLE) == null){
+        	createDefaultStyle();
+        }
+	}
+
+	private void createDefaultStyle() {
+	    NodeModel defaultStyle = new NodeModel(styleMap);
+	    defaultStyle.setText(DEFAULT_STYLE);
+	    styleMap.getRootNode().insert(defaultStyle, 0);
+    }
+	
+	public NodeModel getStyleNode(final String style){
+		final NodeModel rootNode = styleMap.getRootNode();
+		final Enumeration<NodeModel> children = rootNode.children();
+		while(children.hasMoreElements()){
+			NodeModel child = children.nextElement();
+			if(child.getText().equals(style)){
+				return child;
+			}
+		}
+		return null;
 	}
 
 	public Color getBackgroundColor() {

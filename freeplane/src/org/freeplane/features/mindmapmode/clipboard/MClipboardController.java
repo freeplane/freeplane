@@ -146,7 +146,7 @@ public class MClipboardController extends ClipboardController {
 			final MMapController mapController = (MMapController) getModeController().getMapController();
 			final MapReader mapReader = mapController.getMapReader();
 			final NodeTreeCreator nodeTreeCreator = mapReader.nodeTreeCreator(target.getMap());
-			mapReader.setHint(Hint.MODE, Mode.CLIPBOARD);
+			nodeTreeCreator.setHint(Hint.MODE, Mode.CLIPBOARD);
 			for (int i = 0; i < textLines.length; ++i) {
 				try {
 					final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));

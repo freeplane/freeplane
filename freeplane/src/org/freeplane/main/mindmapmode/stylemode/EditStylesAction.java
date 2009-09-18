@@ -23,18 +23,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
@@ -43,38 +36,46 @@ import org.freeplane.features.mindmapmode.MModeController;
  * 13.09.2009
  */
 public class EditStylesAction extends AFreeplaneAction {
-	public EditStylesAction(Controller controller) {
-	    super("EditStylesAction", controller);
+	public EditStylesAction(MModeController mainModeController) {
+	    super("EditStylesAction", mainModeController.getController());
+    }
+
+	private void init() {
+		if(dialog != null){
+			return;
+		}
+	    dialog = new JDialog(getController().getViewController().getJFrame());
+		dialog.setSize(400, 300);
+		modeController = SModeControllerFactory.getInstance().createModeController(dialog);
+		final ViewController viewController = modeController.getController().getViewController();
+		viewController.init();
+		viewController.setLeftToolbarVisible(false);
+		dialog.addComponentListener(new ComponentAdapter() {
+
+			@Override
+            public void componentHidden(ComponentEvent e) {
+	            modeController.getController().getMapViewManager().close(true);
+	            super.componentHidden(e);
+            }
+			
+		});
     }
 
 	/**
      * 
      */
     private static final long serialVersionUID = 1L;
+	private JDialog dialog;
+	private SModeController modeController;
 
 	public void actionPerformed(ActionEvent e) {
-		final JDialog dialog = new JDialog(getController().getViewController().getJFrame());
-		dialog.setSize(400, 300);
-		dialog.setLocationRelativeTo(getController().getViewController().getJFrame());
-		final MModeController modeController = SModeControllerFactory.getInstance().createModeController(dialog);
+		init();
 		final MapModel map = getController().getMap();
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
 		final MapModel styleMap = mapStyleModel.getStyleMap();
 		mapStyleModel.getBackgroundColor();
 		modeController.getMapController().newMapView(styleMap);
-		dialog.addComponentListener(new ComponentAdapter() {
-
-			@Override
-            public void componentHidden(ComponentEvent e) {
-	            modeController.getController().getMapViewManager().close(true);
-	            dialog.removeComponentListener(this);
-	            super.componentHidden(e);
-            }
-			
-		});
-		final ViewController viewController = modeController.getController().getViewController();
-		viewController.init();
-		viewController.setLeftToolbarVisible(false);
+		dialog.setLocationRelativeTo(getController().getViewController().getJFrame());
 		dialog.setVisible(true);
 	}
 }
