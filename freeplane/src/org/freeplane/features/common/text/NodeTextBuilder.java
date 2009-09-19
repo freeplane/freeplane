@@ -30,11 +30,13 @@ import org.freeplane.core.io.NodeBuilder;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter {
 	public static final String XML_NODE_TEXT = "TEXT";
+	public static final String XML_NODE_LOCALIZED_TEXT = "LOCALIZED_TEXT";
 	public static final String XML_NODE_XHTML_CONTENT_TAG = "richcontent";
 	public static final String XML_NODE_XHTML_TYPE_NODE = "NODE";
 	public static final String XML_NODE_XHTML_TYPE_NOTE = "NOTE";
@@ -65,6 +67,12 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 				node.setText(value);
 			}
 		});
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = ((NodeModel) userObject);
+				node.setUserObject(new NamedObject(value));
+			}
+		});
 	}
 
 	/**
@@ -78,8 +86,15 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	}
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
-		final NodeModel node = (NodeModel) userObject;
-		final String text = node.toString();
+		final Object data = ((NodeModel) userObject).getUserObject();
+		if(data instanceof NamedObject){
+			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((NamedObject)data).getObject().toString());
+			return;
+		}
+		if(! (data instanceof String)){
+			return;
+		}
+		final String text = (String) data;
 		if (!HtmlTools.isHtmlNode(text)) {
 			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 		}

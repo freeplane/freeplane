@@ -43,6 +43,11 @@ public class NamedObject {
 		this.name = name;
 	}
 
+	public NamedObject(String object) {
+		this.object = object;
+		this.name = ResourceBundles.getText(object);
+    }
+
 	public Object getObject() {
 		return object;
 	}

@@ -20,9 +20,17 @@
 package org.freeplane.features.common.addins.mapstyle;
 
 import java.awt.Color;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.AccessControlException;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.MapReader;
@@ -32,9 +40,13 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MMapModel;
 import org.freeplane.features.mindmapmode.UMapModel;
 import org.freeplane.n3.nanoxml.XMLException;
+import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev
@@ -43,6 +55,8 @@ import org.freeplane.n3.nanoxml.XMLException;
 public class MapStyleModel implements IExtension {
 	private static final String DEFAULT_STYLE = "default";
 	private static final String STYLES = "styles";
+	final private Map<String, NodeModel> styleNodes; 
+	private static boolean loadingStyleMap = false;
 	final private MapModel styleMap;
 	public static MapStyleModel getExtension(final MapModel map) {
 		return MapStyleModel.getExtension(map.getRootNode());
@@ -59,6 +73,12 @@ public class MapStyleModel implements IExtension {
 	private Color backgroundColor;
 
 	public MapStyleModel(ModeController modeController, String styleMapStr) {
+		if(loadingStyleMap){
+			styleMap = null;
+			styleNodes = null;
+			return;
+		}
+		styleNodes = new HashMap<String, NodeModel>();
 		styleMap = new UMapModel(null, modeController){
 
 			@Override
@@ -67,37 +87,44 @@ public class MapStyleModel implements IExtension {
             }
 			
 		};
-		if(styleMapStr == null){
-			NodeModel root = new NodeModel(styleMap);
-			root.setText(ResourceBundles.getText(STYLES));
-			styleMap.setRoot(root);
-			createDefaultStyle();
-			return;
-		}
 		final MapReader mapReader = modeController.getMapController().getMapReader();
+		final NodeModel root;
 		try {
-			NodeModel root = mapReader.createNodeTreeFromXml(styleMap, new StringReader(styleMapStr), Mode.FILE);
+			if(styleMapStr != null){
+				final Reader styleReader; 
+				styleReader = new StringReader(styleMapStr);
+				root = mapReader.createNodeTreeFromXml(styleMap, styleReader, Mode.FILE);
+			}
+			else{
+				loadingStyleMap = true;
+				try{
+				root = load(ResourceController.getResourceController().getResource("/styles/default.mm"),
+					mapReader,styleMap);
+				}
+				finally{
+					loadingStyleMap = false;
+				}
+			}
 			styleMap.setRoot(root);
-        }
-        catch (IOException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-        }
-        catch (XMLException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-        }
+			styleMap.setReadOnly(false);
+		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         if(getStyleNode(DEFAULT_STYLE) == null){
-        	createDefaultStyle();
+	        // TODO
         }
 	}
 
-	private void createDefaultStyle() {
-	    NodeModel defaultStyle = new NodeModel(styleMap);
-	    defaultStyle.setText(DEFAULT_STYLE);
-	    styleMap.getRootNode().insert(defaultStyle, 0);
-    }
-	
+	private NodeModel load(final URL url, final MapReader mapReader, final MapModel map) throws Exception {
+		InputStreamReader urlStreamReader = null;
+		urlStreamReader = new InputStreamReader(url.openStream());
+		final NodeModel root = mapReader.createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
+		urlStreamReader.close();
+		return root;
+	}
+
 	public NodeModel getStyleNode(final String style){
 		final NodeModel rootNode = styleMap.getRootNode();
 		final Enumeration<NodeModel> children = rootNode.children();

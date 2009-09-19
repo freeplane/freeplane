@@ -72,7 +72,11 @@ public class NodeModel implements MutableTreeNode {
 	private NodeModel parent;
 	private int position = NodeModel.UNKNOWN_POSITION;
 	private NodeModel preferredChild;
-	private String text = "no text";
+	private Object userObject = "no text";
+	public Object getUserObject() {
+    	return userObject;
+    }
+
 	private Map<String, ITooltipProvider> toolTip = null;
 	private Collection<INodeView> views = null;
 	private String xmlText = "no text";
@@ -301,8 +305,8 @@ public class NodeModel implements MutableTreeNode {
 
 	public String getText() {
 		String string = "";
-		if (text != null) {
-			string = text.toString();
+		if (userObject != null) {
+			string = userObject.toString();
 		}
 		return string;
 	}
@@ -553,8 +557,17 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public final void setText(final String text) {
-		this.text = XmlTool.makeValidXml(text);
+		this.userObject = XmlTool.makeValidXml(text);
 		xmlText = HtmlTools.getInstance().toXhtml(text);
+	}
+
+	public final void setUserObject(final Object data) {
+		if(data instanceof String){
+			setText(data.toString());
+			return;
+		}
+		this.userObject = data;
+		xmlText = null;
 	}
 
 	/**
@@ -574,13 +587,9 @@ public class NodeModel implements MutableTreeNode {
 		}
 	}
 
-	public void setUserObject(final Object object) {
-		setText(object.toString());
-	}
-
 	public final void setXmlText(final String pXmlText) {
 		xmlText = XmlTool.makeValidXml(pXmlText);
-		text = HtmlTools.getInstance().toHtml(xmlText);
+		userObject = HtmlTools.getInstance().toHtml(xmlText);
 	}
 
 	@Override
