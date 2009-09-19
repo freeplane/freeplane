@@ -25,11 +25,14 @@ import java.awt.event.ComponentEvent;
 
 import javax.swing.JDialog;
 
+import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.UMapModel;
 
 /**
  * @author Dimitry Polivaev
@@ -54,7 +57,15 @@ public class EditStylesAction extends AFreeplaneAction {
 
 			@Override
             public void componentHidden(ComponentEvent e) {
-	            modeController.getController().getMapViewManager().close(true);
+	            final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
+	            UMapModel map = (UMapModel) mapViewManager.getModel();
+	            final IUndoHandler undoHandler = map.getUndoHandler();
+				if(undoHandler.canUndo()){
+					final MapModel currentMap = getController().getMap();
+	            	getModeController().getMapController().setSaved(currentMap, false);
+	            	modeController.getMapController().setSaved(map, true);
+	            }
+				mapViewManager.close(true);
 	            super.componentHidden(e);
             }
 			
