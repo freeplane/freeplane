@@ -55,7 +55,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 public class MapStyleModel implements IExtension {
 	private static final String DEFAULT_STYLE = "default";
 	private static final String STYLES = "styles";
-	final private Map<String, NodeModel> styleNodes; 
+	final private Map<Object, NodeModel> styleNodes; 
 	private static boolean loadingStyleMap = false;
 	final private MapModel styleMap;
 	public static MapStyleModel getExtension(final MapModel map) {
@@ -78,7 +78,7 @@ public class MapStyleModel implements IExtension {
 			styleNodes = null;
 			return;
 		}
-		styleNodes = new HashMap<String, NodeModel>();
+		styleNodes = new HashMap<Object, NodeModel>();
 		styleMap = new UMapModel(null, modeController){
 
 			@Override

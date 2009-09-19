@@ -108,7 +108,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		final MapWriter mapWriter = getModeController().getMapController().getMapWriter();
 		StringWriter writer = new StringWriter();
-		final NodeModel rootNode = mapStyleModel.getStyleMap().getRootNode();
+		final MapModel styleMap = mapStyleModel.getStyleMap();
+		if(styleMap == null){
+			return;
+		}
+		final NodeModel rootNode = styleMap.getRootNode();
 		try {
 	        mapWriter.writeNodeAsXml(writer, rootNode, Mode.FILE, true, true);
         }
