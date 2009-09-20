@@ -48,14 +48,17 @@ public class MapReader implements IElementDOMHandler{
 		}
 
 		public NodeModel create(final Reader pReader) throws XMLException {
+			final NodeTreeCreator oldNodeTreeCreator = nodeTreeCreator;
 			final TreeXmlReader reader = new TreeXmlReader(readManager);
 			try {
+				nodeTreeCreator = this;
 				reader.load(pReader);
 				final NodeModel node = nodeBuilder.getMapChild();
 				return node;
 			}
 			finally {
 				nodeBuilder.reset();
+				nodeTreeCreator = oldNodeTreeCreator;
 			}
 		}
 
@@ -68,9 +71,16 @@ public class MapReader implements IElementDOMHandler{
 		}
 
 		public void finish(final NodeModel node) {
-			readManager.readingCompleted(node, newIds);
-			newIds.clear();
-			createdMap = null;
+			final NodeTreeCreator oldNodeTreeCreator = nodeTreeCreator;
+			try {
+				nodeTreeCreator = this;
+				readManager.readingCompleted(node, newIds);
+				newIds.clear();
+				createdMap = null;
+			}
+			finally {
+				nodeTreeCreator = oldNodeTreeCreator;
+			}
 		}
 
 		void start(final MapModel map) {
@@ -121,18 +131,18 @@ public class MapReader implements IElementDOMHandler{
 	}
 
 	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader, final Mode mode)
-	        throws IOException, XMLException {
-		final NodeTreeCreator oldNodeTreeCreator = nodeTreeCreator;
-		try {
-			nodeTreeCreator = new NodeTreeCreator();
-			nodeTreeCreator.setHint(Hint.MODE, mode);
-			final NodeModel topNode = nodeTreeCreator.createNodeTreeFromXml(map, pReader);
-			return topNode;
-		}
-		finally {
-			nodeTreeCreator = oldNodeTreeCreator;
-		}
-	}
+            throws IOException, XMLException {
+    	final NodeTreeCreator oldNodeTreeCreator = nodeTreeCreator;
+    	try {
+    		nodeTreeCreator = new NodeTreeCreator();
+    		nodeTreeCreator.setHint(Hint.MODE, mode);
+    		final NodeModel topNode = nodeTreeCreator.createNodeTreeFromXml(map, pReader);
+    		return topNode;
+    	}
+    	finally {
+    		nodeTreeCreator = oldNodeTreeCreator;
+    	}
+    }
 
 	public void endElement(final Object parent, final String tag, final Object element, final XMLElement dom) {
 		final MapModel map = (MapModel) element;

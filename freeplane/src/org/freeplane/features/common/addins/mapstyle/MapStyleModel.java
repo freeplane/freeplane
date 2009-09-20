@@ -39,6 +39,7 @@ import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -53,9 +54,9 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * Mar 12, 2009
  */
 public class MapStyleModel implements IExtension {
-	private static final String DEFAULT_STYLE = "default";
+	static final String DEFAULT_STYLE = "OptionPanel.default";
 	private static final String STYLES = "styles";
-	final private Map<Object, NodeModel> styleNodes; 
+	private Map<Object, NodeModel> styleNodes; 
 	private static boolean loadingStyleMap = false;
 	final private MapModel styleMap;
 	public static MapStyleModel getExtension(final MapModel map) {
@@ -106,16 +107,44 @@ public class MapStyleModel implements IExtension {
 				}
 			}
 			styleMap.setRoot(root);
+			MapStyleModel extension = getExtension(styleMap);
+			if(extension == null){
+				loadingStyleMap = true;
+				try{
+					extension = new MapStyleModel(modeController, null);
+					styleMap.getRootNode().addExtension(extension);
+				}
+				finally{
+					loadingStyleMap = false;
+				}
+			}
+			extension.styleNodes = styleNodes;
+			createNodeStyleMap(root);
+			
 			styleMap.setReadOnly(false);
 		}
 		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        if(getStyleNode(DEFAULT_STYLE) == null){
-	        // TODO
-        }
 	}
+
+	private void createNodeStyleMap(NodeModel node) {
+	    if(node.hasChildren()){
+	    	final Enumeration<NodeModel> children = node.children();
+	    	while(children.hasMoreElements()){
+	    		createNodeStyleMap(children.nextElement());
+	    	}
+	    	return;
+	    }
+	    final Object userObject = node.getUserObject();
+	    if(userObject instanceof NamedObject){
+	    	styleNodes.put(((NamedObject)userObject).getObject(), node);
+	    }
+	    else{
+	    	styleNodes.put(userObject, node);
+	    }
+    }
 
 	private NodeModel load(final URL url, final MapReader mapReader, final MapModel map) throws Exception {
 		InputStreamReader urlStreamReader = null;
@@ -125,16 +154,8 @@ public class MapStyleModel implements IExtension {
 		return root;
 	}
 
-	public NodeModel getStyleNode(final String style){
-		final NodeModel rootNode = styleMap.getRootNode();
-		final Enumeration<NodeModel> children = rootNode.children();
-		while(children.hasMoreElements()){
-			NodeModel child = children.nextElement();
-			if(child.getText().equals(style)){
-				return child;
-			}
-		}
-		return null;
+	public NodeModel getStyleNode(final Object style){
+		return styleNodes.get(style);
 	}
 
 	public Color getBackgroundColor() {

@@ -20,6 +20,7 @@
 package org.freeplane.features.common.nodestyle;
 
 import java.awt.Color;
+import java.awt.Font;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
@@ -175,4 +176,5 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public void setShape(final String shape) {
 		this.shape = shape;
 	}
+
 }

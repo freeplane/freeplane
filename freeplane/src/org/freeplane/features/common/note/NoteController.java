@@ -32,6 +32,7 @@ import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
 
 /**
  * @author Dimitry Polivaev
@@ -102,7 +103,8 @@ public class NoteController implements IExtension {
 		}
 		node.setStateIcon(NoteController.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);
 		if (enabled) {
-			final Font defaultFont = ResourceController.getResourceController().getDefaultFont();
+			final MapStyle mapStyle = (MapStyle) getModeController().getExtension(MapStyle.class);
+			final Font defaultFont = mapStyle.getDefaultFont(getModeController().getController().getMap());
 			final StringBuilder rule = new StringBuilder();
 			rule.append("font-family: " + defaultFont.getFamily() + ";");
 			rule.append("font-size: " + defaultFont.getSize() + "pt;");

@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mindmapnode.pattern;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
@@ -31,6 +32,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
@@ -124,7 +126,8 @@ class ApplyPatternAction extends AMultipleNodeAction {
 		if (pattern.getPatternNodeFontName() != null) {
 			String nodeFontFamily = pattern.getPatternNodeFontName().getValue();
 			if (nodeFontFamily == null) {
-				nodeFontFamily = ResourceController.getResourceController().getDefaultFontFamilyName();
+				final MapStyle mapStyle = (MapStyle) getModeController().getExtension(MapStyle.class);
+				nodeFontFamily = mapStyle.getDefaultFontFamilyName(node.getMap());
 			}
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController())).setFontFamily(
 			    node, nodeFontFamily);
@@ -132,7 +135,8 @@ class ApplyPatternAction extends AMultipleNodeAction {
 		if (pattern.getPatternNodeFontSize() != null) {
 			String nodeFontSize = pattern.getPatternNodeFontSize().getValue();
 			if (nodeFontSize == null) {
-				nodeFontSize = "" + ResourceController.getResourceController().getDefaultFontSize();
+				final MapStyle mapStyle = (MapStyle) getModeController().getExtension(MapStyle.class);
+				nodeFontSize = "" + mapStyle.getDefaultFontSize(node.getMap());
 			}
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController())).setFontSize(
 			    node, Integer.parseInt(nodeFontSize));

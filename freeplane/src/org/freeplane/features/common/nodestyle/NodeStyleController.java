@@ -36,6 +36,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
 
 /**
  * @author Dimitry Polivaev
@@ -105,7 +106,9 @@ public class NodeStyleController implements IExtension {
 		});
 		addFontGetter(CombinedPropertyChain.DEFAULT, new IPropertyHandler<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, final Font currentValue) {
-				return ResourceController.getResourceController().getDefaultFont();
+				final MapStyle mapStyle = (MapStyle) getModeController().getExtension(MapStyle.class);
+				final Font defaultFont = mapStyle.getDefaultFont(node.getMap());
+				return defaultFont;
 			}
 		});
 		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, NodeModel>() {

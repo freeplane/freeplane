@@ -20,6 +20,7 @@
 package org.freeplane.features.common.addins.mapstyle;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -36,6 +37,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -45,6 +47,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "MapStyle")
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
+	public static final String MAP_STYLES = "MAP_STYLES";
 
 	public MapStyle(final ModeController modeController) {
 		super(modeController);
@@ -100,18 +103,18 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 	@Override
 	protected void saveExtension(final IExtension extension, final XMLElement element) {
-		super.saveExtension(extension, element);
 		final MapStyleModel mapStyleModel = (MapStyleModel) extension;
+		final MapModel styleMap = mapStyleModel.getStyleMap();
+		if(styleMap == null){
+			return;
+		}
+		super.saveExtension(extension, element);
 		final Color backgroundColor = mapStyleModel.getBackgroundColor();
 		if (backgroundColor != null) {
 			element.setAttribute("background", ColorUtils.colorToString(backgroundColor));
 		}
 		final MapWriter mapWriter = getModeController().getMapController().getMapWriter();
 		StringWriter writer = new StringWriter();
-		final MapModel styleMap = mapStyleModel.getStyleMap();
-		if(styleMap == null){
-			return;
-		}
 		final NodeModel rootNode = styleMap.getRootNode();
 		try {
 	        mapWriter.writeNodeAsXml(writer, rootNode, Mode.FILE, true, true);
@@ -149,4 +152,26 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		};
 		getModeController().execute(actor, getController().getMap());
 	}
+
+	public Font getDefaultFont(MapModel map) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+		int fontStyle = (Boolean.TRUE.equals(styleModel.isBold()) ? Font.BOLD:0) | (Boolean.TRUE.equals(styleModel.isItalic()) ? Font.ITALIC : 0);
+		return new Font(styleModel.getFontFamilyName(), fontStyle, styleModel.getFontSize());
+    }
+
+	public String getDefaultFontFamilyName(MapModel map) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+		return styleModel.getFontFamilyName();
+    }
+
+	public int getDefaultFontSize(MapModel map) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+		return styleModel.getFontSize();
+    }
 }

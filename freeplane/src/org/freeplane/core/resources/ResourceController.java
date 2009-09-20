@@ -115,29 +115,10 @@ public abstract class ResourceController {
 		return Boolean.parseBoolean(getProperty(key));
 	}
 
-	public Font getDefaultFont() {
-		final int fontSize = getDefaultFontSize();
-		final int fontStyle = getDefaultFontStyle();
-		final String fontFamily = getDefaultFontFamilyName();
-		return new Font(fontFamily, fontStyle, fontSize);
-	}
-
 	/**
 	 */
 	public String getDefaultFontFamilyName() {
 		return getProperty("defaultfont");
-	}
-
-	/**
-	 */
-	public int getDefaultFontSize() {
-		return Integer.parseInt(getProperty("defaultfontsize"));
-	}
-
-	/**
-	 */
-	public int getDefaultFontStyle() {
-		return Integer.parseInt(getProperty("defaultfontstyle"));
 	}
 
 	/**

@@ -51,6 +51,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
@@ -290,7 +291,8 @@ public class MNoteController extends NoteController {
 		if (ResourceController.getResourceController().getBooleanProperty(
 		    MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
 			// set default font for notes:
-			final Font defaultFont = ResourceController.getResourceController().getDefaultFont();
+			final MapStyle mapStyle = (MapStyle) getModeController().getExtension(MapStyle.class);
+			final Font defaultFont = mapStyle.getDefaultFont(getModeController().getController().getMap());
 			String rule = "body {";
 			rule += "font-family: " + defaultFont.getFamily() + ";";
 			rule += "font-size: " + defaultFont.getSize() + "pt;";

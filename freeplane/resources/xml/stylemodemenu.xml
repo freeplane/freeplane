@@ -207,19 +207,12 @@
 		</menu_submenu>
 	</menu_category>
 	<menu_category name="main_toolbar">
-		<menu_separator />
-		<menu_category name="zoom">
-		</menu_category>
-		<menu_category name="font">
-		</menu_category>
-		<menu_separator />
 		<menu_category name="undo">
 			<menu_action action="UndoAction" />
 			<menu_action action="RedoAction" />
 		</menu_category>
 		<menu_separator />
-		<menu_category name="insert">
-			<menu_action action="NewChildAction" />
+		<menu_category name="zoom">
 		</menu_category>
 		<menu_category name="font">
 			<menu_action action="ItalicAction" />
