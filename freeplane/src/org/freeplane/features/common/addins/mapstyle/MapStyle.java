@@ -27,10 +27,15 @@ import java.io.StringWriter;
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.IElementContentHandler;
+import org.freeplane.core.io.IElementHandler;
+import org.freeplane.core.io.IExtensionElementWriter;
+import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.MapWriter;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.IMapLifeCycleListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -54,7 +59,48 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		if (modeController.getModeName().equals("MindMap")) {
 			registerAction(new MapBackgroundColorAction(this));
 		}
-		modeController.getMapController().addMapLifeCycleListener(this);
+		final MapController mapController = modeController.getMapController();
+		mapController.addMapLifeCycleListener(this);
+	}
+
+	protected class XmlWriter implements IExtensionElementWriter {
+		public void writeContent(final ITreeWriter writer, final Object object, final IExtension extension)
+		        throws IOException {
+			final MapStyleModel mapStyleModel = (MapStyleModel) extension;
+			final MapModel styleMap = mapStyleModel.getStyleMap();
+			if(styleMap == null){
+				return;
+			}
+			final MapWriter mapWriter = getModeController().getMapController().getMapWriter();
+			StringWriter sw = new StringWriter();
+			final NodeModel rootNode = styleMap.getRootNode();
+			try {
+		        mapWriter.writeNodeAsXml(sw, rootNode, Mode.FILE, true, true);
+	        }
+	        catch (IOException e) {
+		        // TODO Auto-generated catch block
+		        e.printStackTrace();
+	        }
+			final XMLElement element = new XMLElement("hook");
+			saveExtension(extension, element);
+			writer.addElement(sw.toString(), element);
+		}
+	}
+	protected XmlWriter createXmlWriter() {
+		return new XmlWriter();
+	}
+
+	protected class MyXmlReader extends XmlReader implements IElementContentHandler {
+
+		public void endElement(Object parent, String tag, Object userObject, XMLElement attributes, String content) {
+			super.endElement(parent, tag, userObject, attributes);
+			final NodeModel node = (NodeModel) userObject;
+			MapStyleModel.getExtension(node).createStyleMap(getModeController(), content);
+        }
+	}
+
+	protected IElementHandler createXmlReader() {
+		return new MyXmlReader();
 	}
 
 	@Override
@@ -67,8 +113,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		else {
 			bgColor = null;
 		}
-		final String styleMap = element.getAttribute("styles", null);
-		final MapStyleModel model = new MapStyleModel(getModeController(), styleMap);
+		final MapStyleModel model = new MapStyleModel();
 		model.setBackgroundColor(bgColor);
 		return model;
 	}
@@ -95,7 +140,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		if (rootNode.containsExtension(MapStyleModel.class)) {
 			return;
 		}
-		rootNode.addExtension(new MapStyleModel(getModeController(), null));
+		final MapStyleModel extension = new MapStyleModel();
+		rootNode.addExtension(extension);
+		extension.createStyleMap(getModeController(), null);
 	}
 
 	public void onRemove(final MapModel map) {
@@ -104,26 +151,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	@Override
 	protected void saveExtension(final IExtension extension, final XMLElement element) {
 		final MapStyleModel mapStyleModel = (MapStyleModel) extension;
-		final MapModel styleMap = mapStyleModel.getStyleMap();
-		if(styleMap == null){
-			return;
-		}
 		super.saveExtension(extension, element);
 		final Color backgroundColor = mapStyleModel.getBackgroundColor();
 		if (backgroundColor != null) {
 			element.setAttribute("background", ColorUtils.colorToString(backgroundColor));
 		}
-		final MapWriter mapWriter = getModeController().getMapController().getMapWriter();
-		StringWriter writer = new StringWriter();
-		final NodeModel rootNode = styleMap.getRootNode();
-		try {
-	        mapWriter.writeNodeAsXml(writer, rootNode, Mode.FILE, true, true);
-        }
-        catch (IOException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-        }
-        element.setAttribute("styles", writer.toString());
 	}
 
 	public void setBackgroundColor(final MapStyleModel model, final Color actionColor) {

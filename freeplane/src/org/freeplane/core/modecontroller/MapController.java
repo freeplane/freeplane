@@ -560,6 +560,17 @@ public class MapController extends SelectionController {
 		}
 	}
 
+	void removeMapChangeListener(final Class<? extends IActionOnChange> clazz, final Action action) {
+		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
+		while (iterator.hasNext()) {
+			final IMapChangeListener next = iterator.next();
+			if (next instanceof IActionOnChange && ((IActionOnChange) next).getAction() == action) {
+				iterator.remove();
+				return;
+			}
+		}
+	}
+
 	public void removeNodeChangeListener(final INodeChangeListener listener) {
 		nodeChangeListeners.remove(listener);
 	}

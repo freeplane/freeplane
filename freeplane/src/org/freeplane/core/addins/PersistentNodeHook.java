@@ -27,6 +27,7 @@ import java.util.List;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementDOMHandler;
+import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.modecontroller.MapController;
@@ -200,11 +201,11 @@ public abstract class PersistentNodeHook {
 		return new SelectableHookAction(getClass().getSimpleName() + "Action");
 	}
 
-	protected XmlReader createXmlReader() {
+	protected IElementHandler createXmlReader() {
 		return new XmlReader();
 	}
 
-	protected XmlWriter createXmlWriter() {
+	protected IExtensionElementWriter createXmlWriter() {
 		return new XmlWriter();
 	}
 

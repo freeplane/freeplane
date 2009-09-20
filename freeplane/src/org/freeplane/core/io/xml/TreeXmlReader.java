@@ -196,12 +196,12 @@ public class TreeXmlReader implements IXMLBuilder {
 		}
 		final Object element = currentElement;
 		currentElement = elementStack.removeLast();
-		if (nodeCreator instanceof IElementDOMHandler) {
-			((IElementDOMHandler) nodeCreator).endElement(currentElement, name, element, lastBuiltElement);
-		}
-		else if (nodeCreator instanceof IElementContentHandler) {
+		if (nodeCreator instanceof IElementContentHandler) {
 			((IElementContentHandler) nodeCreator).endElement(currentElement, name, element, lastBuiltElement,
 			    elementContentAsString);
+		}
+		else if (nodeCreator instanceof IElementDOMHandler) {
+			((IElementDOMHandler) nodeCreator).endElement(currentElement, name, element, lastBuiltElement);
 		}
 		final XMLElement top = lastBuiltElement.getParent();
 		if (nodeCreator != null && top != null && top.hasChildren()) {

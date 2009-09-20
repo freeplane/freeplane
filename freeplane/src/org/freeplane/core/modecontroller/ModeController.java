@@ -39,6 +39,8 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 /**
  * Derive from this class to implement the Controller for your mode. Overload
@@ -71,7 +73,7 @@ public class ModeController extends AController {
 		}
 	}
 
-	private static class ActionSelectorOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange {
+	private static class ActionSelectorOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange, IMapChangeListener {
 		final AFreeplaneAction action;
 
 		public ActionSelectorOnChange(final AFreeplaneAction action) {
@@ -95,6 +97,29 @@ public class ModeController extends AController {
 		public void onSelect(final NodeModel node) {
 			action.setSelected();
 		}
+
+		public void mapChanged(MapChangeEvent event) {
+			final Object property = event.getProperty();
+			if (property.equals(MapStyle.MAP_STYLES)) {
+				action.setSelected();
+				return;
+			}
+        }
+
+		public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+        }
+
+		public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+        }
+
+		public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+        }
+
+		public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
+        }
+
+		public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+        }
 	}
 
 	interface IActionOnChange {
@@ -137,6 +162,7 @@ public class ModeController extends AController {
 			final ActionSelectorOnChange listener = new ActionSelectorOnChange(action);
 			mapController.addNodeSelectionListener(listener);
 			mapController.addNodeChangeListener(listener);
+			mapController.addMapChangeListener(listener);
 		}
 	}
 
@@ -234,6 +260,8 @@ public class ModeController extends AController {
 		if (AFreeplaneAction.checkSelectionOnChange(action)) {
 			mapController.removeNodeSelectionListener(ActionSelectorOnChange.class, action);
 			mapController.removeNodeChangeListener(ActionSelectorOnChange.class, action);
+			mapController.removeMapChangeListener(ActionSelectorOnChange.class, action);
+
 		}
 		return action;
 	}

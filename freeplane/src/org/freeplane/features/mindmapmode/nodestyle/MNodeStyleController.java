@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AMultipleNodeAction;
@@ -78,8 +79,10 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new NodeShapeAction(modeController, NodeStyleModel.STYLE_BUBBLE));
 		final MToolbarContributor menuContributor = new MToolbarContributor(this);
 		modeController.addMenuContributor(menuContributor);
-		modeController.getMapController().addNodeChangeListener(menuContributor);
-		modeController.getMapController().addNodeSelectionListener(menuContributor);
+		final MapController mapController = modeController.getMapController();
+		mapController.addNodeChangeListener(menuContributor);
+		mapController.addNodeSelectionListener(menuContributor);
+		mapController.addMapChangeListener(menuContributor);
 	}
 
 	public void copyStyle(final NodeModel source, final NodeModel target) {

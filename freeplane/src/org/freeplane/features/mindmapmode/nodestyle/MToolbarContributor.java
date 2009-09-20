@@ -27,14 +27,17 @@ import javax.swing.JComboBox;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
+import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
 
-class MToolbarContributor implements IMenuContributor, INodeSelectionListener, INodeChangeListener {
+class MToolbarContributor implements IMenuContributor, INodeSelectionListener, INodeChangeListener, IMapChangeListener {
 	private static final String[] sizes = { "8", "10", "12", "14", "16", "18", "20", "24", "28" };
 	final private Controller controller;
 	private boolean fontFamily_IgnoreChangeEvent = false;
@@ -123,4 +126,29 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 		builder.addComponent("/main_toolbar/font", fonts, styleController.fontFamilyAction, MenuBuilder.AS_CHILD);
 		builder.addComponent("/main_toolbar/font", size, styleController.fontSizeAction, MenuBuilder.AS_CHILD);
 	}
+
+	public void mapChanged(MapChangeEvent event) {
+		final Object property = event.getProperty();
+		if (property.equals(MapStyle.MAP_STYLES)) {
+			changeToolbar(controller.getSelection().getSelected());
+			return;
+		}
+    }
+
+	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+   }
+
+	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+   }
+
+	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+    }
+
+	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
+    }
+
+	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	    // TODO Auto-generated method stub
+	    
+    }
 }

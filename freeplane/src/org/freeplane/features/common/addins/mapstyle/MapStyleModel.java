@@ -58,7 +58,7 @@ public class MapStyleModel implements IExtension {
 	private static final String STYLES = "styles";
 	private Map<Object, NodeModel> styleNodes; 
 	private static boolean loadingStyleMap = false;
-	final private MapModel styleMap;
+	private MapModel styleMap;
 	public static MapStyleModel getExtension(final MapModel map) {
 		return MapStyleModel.getExtension(map.getRootNode());
 	}
@@ -73,8 +73,11 @@ public class MapStyleModel implements IExtension {
 
 	private Color backgroundColor;
 
-	public MapStyleModel(ModeController modeController, String styleMapStr) {
-		if(loadingStyleMap){
+	public MapStyleModel() {
+	}
+
+	void createStyleMap(ModeController modeController, String styleMapStr) {
+	    if(loadingStyleMap){
 			styleMap = null;
 			styleNodes = null;
 			return;
@@ -111,7 +114,7 @@ public class MapStyleModel implements IExtension {
 			if(extension == null){
 				loadingStyleMap = true;
 				try{
-					extension = new MapStyleModel(modeController, null);
+					extension = new MapStyleModel();
 					styleMap.getRootNode().addExtension(extension);
 				}
 				finally{
@@ -127,7 +130,7 @@ public class MapStyleModel implements IExtension {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+    }
 
 	private void createNodeStyleMap(NodeModel node) {
 	    if(node.hasChildren()){
