@@ -185,25 +185,4 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		getModeController().execute(actor, getController().getMap());
 	}
 
-	public Font getDefaultFont(MapModel map) {
-		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
-		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
-		int fontStyle = (Boolean.TRUE.equals(styleModel.isBold()) ? Font.BOLD:0) | (Boolean.TRUE.equals(styleModel.isItalic()) ? Font.ITALIC : 0);
-		return new Font(styleModel.getFontFamilyName(), fontStyle, styleModel.getFontSize());
-    }
-
-	public String getDefaultFontFamilyName(MapModel map) {
-		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
-		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
-		return styleModel.getFontFamilyName();
-    }
-
-	public int getDefaultFontSize(MapModel map) {
-		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
-		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
-		return styleModel.getFontSize();
-    }
 }

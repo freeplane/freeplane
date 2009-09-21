@@ -32,11 +32,13 @@ import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.addins.mapstyle.MapStyle;
+import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 
 /**
  * @author Dimitry Polivaev
@@ -106,8 +108,7 @@ public class NodeStyleController implements IExtension {
 		});
 		addFontGetter(CombinedPropertyChain.DEFAULT, new IPropertyHandler<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, final Font currentValue) {
-				final MapStyle mapStyle = (MapStyle) getModeController().getExtension(MapStyle.class);
-				final Font defaultFont = mapStyle.getDefaultFont(node.getMap());
+				final Font defaultFont = getDefaultFont(node.getMap());
 				return defaultFont;
 			}
 		});
@@ -118,7 +119,7 @@ public class NodeStyleController implements IExtension {
 		});
 		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
-				return standardNodeTextColor;
+				return getDefaultTextColor(node.getMap());
 			}
 		});
 		addBackgroundColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, NodeModel>() {
@@ -268,4 +269,33 @@ public class NodeStyleController implements IExtension {
 	public IPropertyHandler<String, NodeModel> removeShapeGetter(final Integer key) {
 		return shapeHandlers.removeGetter(key);
 	}
+	public Font getDefaultFont(MapModel map) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+		int fontStyle = (Boolean.TRUE.equals(styleModel.isBold()) ? Font.BOLD:0) | (Boolean.TRUE.equals(styleModel.isItalic()) ? Font.ITALIC : 0);
+		return new Font(styleModel.getFontFamilyName(), fontStyle, styleModel.getFontSize());
+    }
+
+	public String getDefaultFontFamilyName(MapModel map) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+		return styleModel.getFontFamilyName();
+    }
+
+	public int getDefaultFontSize(MapModel map) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+		return styleModel.getFontSize();
+    }
+
+	public Color getDefaultTextColor(MapModel map) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+		final Color styleColor = styleModel.getColor();
+		return styleColor != null ? styleColor : standardNodeTextColor;
+    }
 }

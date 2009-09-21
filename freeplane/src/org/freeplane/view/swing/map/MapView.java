@@ -911,8 +911,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			setBackground(requiredBackground());
 			return;
 		}
-		if (property.equals(NodeStyleController.RESOURCES_NODE_TEXT_COLOR)
-				|| property.equals(MapStyle.MAP_STYLES) && event.getMap().equals(model)) {
+		if (property.equals(MapStyle.MAP_STYLES) && event.getMap().equals(model)) {
 			getRoot().updateAll();
 			return;
 		}

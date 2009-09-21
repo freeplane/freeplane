@@ -6,6 +6,7 @@
 <edge STYLE="bezier" WIDTH="1"/>
 </node>
 <node LOCALIZED_TEXT="OptionPanel.level1" POSITION="right" ID="ID_223569769" CREATED="1253390054678" MODIFIED="1253390054678">
+</node>
 <node LOCALIZED_TEXT="OptionPanel.level2" ID="ID_779332051" CREATED="1253390054678" MODIFIED="1253390054678" COLOR="#0033ff">
 <font SIZE="18"/>
 <edge WIDTH="8"/>
@@ -19,7 +20,6 @@
 </node>
 <node LOCALIZED_TEXT="OptionPanel.level5" ID="ID_1840133960" CREATED="1253390054678" MODIFIED="1253390054678" COLOR="#111111">
 <font SIZE="12"/>
-</node>
 </node>
 </node>
 </map>

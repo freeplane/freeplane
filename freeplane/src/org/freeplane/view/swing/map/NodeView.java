@@ -1197,7 +1197,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	private void updateStyle() {
 		final String shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
-		if (mainView != null && (mainView.getStyle().equals(shape) || model.isRoot())) {
+		if (mainView != null && ( model.isRoot() || mainView.getStyle().equals(shape))) {
 			return;
 		}
 		final MainView newMainView = NodeViewFactory.getInstance().newMainView(this);

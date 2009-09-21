@@ -137,6 +137,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private static final String SET_NODE_TEXT = StylePatternPanel.SET_RESOURCE;
 	private static final String SET_RESOURCE = "set_property_text";
 	private static final String SET_SCRIPT = "setscript";
+	private static final String NODE_TEXT_COLOR = "standardnodetextcolor";
 	private ComboProperty mChildPattern;
 	private ThreeCheckBoxProperty mClearSetters;
 	private BooleanProperty mCloud;
@@ -239,7 +240,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		mSetNodeColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_COLOR);
 		controls.add(mSetNodeColor);
 		mNodeColor = new ColorProperty(StylePatternPanel.NODE_COLOR, ResourceController.getResourceController()
-		    .getDefaultProperty(NodeStyleController.RESOURCES_NODE_TEXT_COLOR));
+		    .getDefaultProperty(NODE_TEXT_COLOR));
 		controls.add(mNodeColor);
 		mSetNodeBackgroundColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_BACKGROUND_COLOR);
 		controls.add(mSetNodeBackgroundColor);
@@ -453,7 +454,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 
 	public void setPattern(final Pattern pattern) {
 		setPatternControls(pattern.getPatternNodeColor(), mSetNodeColor, mNodeColor, ResourceController
-		    .getResourceController().getDefaultProperty(NodeStyleController.RESOURCES_NODE_TEXT_COLOR));
+		    .getResourceController().getDefaultProperty(NODE_TEXT_COLOR));
 		setPatternControls(pattern.getPatternNodeBackgroundColor(), mSetNodeBackgroundColor, mNodeBackgroundColor,
 		    ResourceController.getResourceController().getDefaultProperty(NODE_BACKGROUND_COLOR));
 		setPatternControls(pattern.getPatternNodeStyle(), mSetNodeStyle, mNodeStyle, NodeStyleModel.SHAPE_AS_PARENT);

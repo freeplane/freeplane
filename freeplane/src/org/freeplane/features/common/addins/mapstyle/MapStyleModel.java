@@ -54,7 +54,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * Mar 12, 2009
  */
 public class MapStyleModel implements IExtension {
-	static final String DEFAULT_STYLE = "OptionPanel.default";
+	public static final String DEFAULT_STYLE = "OptionPanel.default";
 	private static final String STYLES = "styles";
 	private Map<Object, NodeModel> styleNodes; 
 	private static boolean loadingStyleMap = false;
