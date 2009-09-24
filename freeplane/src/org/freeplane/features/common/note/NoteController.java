@@ -105,7 +105,7 @@ public class NoteController implements IExtension {
 		node.setStateIcon(NoteController.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);
 		if (enabled) {
 			final NodeStyleController style = (NodeStyleController) getModeController().getExtension(NodeStyleController.class);
-			final Font defaultFont = style.getDefaultFont(getModeController().getController().getMap());
+			final Font defaultFont = style.getDefaultFont(node.getMap());
 			final StringBuilder rule = new StringBuilder();
 			rule.append("font-family: " + defaultFont.getFamily() + ";");
 			rule.append("font-size: " + defaultFont.getSize() + "pt;");

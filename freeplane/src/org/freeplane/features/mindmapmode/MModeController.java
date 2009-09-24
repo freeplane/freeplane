@@ -41,9 +41,9 @@ import org.freeplane.features.mindmapmode.note.MNoteController;
 
 public class MModeController extends ModeController {
 	static public final String MODENAME = "MindMap";
-	static private RedoAction redo;
+	private RedoAction redo;
 	public static final String RESOURCES_DELETE_NODES_WITHOUT_QUESTION = "delete_nodes_without_question";
-	static private UndoAction undo;
+	private UndoAction undo;
 
 	static public MModeController getMModeController(final Controller controller) {
 		return (MModeController) controller.getModeController(MODENAME);
