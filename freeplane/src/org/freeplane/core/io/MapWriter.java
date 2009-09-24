@@ -40,7 +40,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		MODE
 	};
 
-	public enum Mode { CLIPBOARD, FILE };
+	public enum Mode { CLIPBOARD, FILE, STYLE };
 
 	private NodeWriter currentNodeWriter;
 	final private MapController mapController;
@@ -88,22 +88,30 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 	private void writeNode(final ITreeWriter xmlWriter, final NodeModel node, final boolean writeInvisible,
 	                       final boolean writeChildren) throws IOException {
 		final NodeWriter oldNodeWriter = currentNodeWriter;
-		if (oldNodeWriter != null) {
-			writeManager.removeElementWriter(NodeBuilder.XML_NODE, oldNodeWriter);
-			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
+		final Object mode = xmlWriter.getHint(Hint.MODE);
+		final String nodeTag;
+		if(Mode.STYLE.equals(mode)){
+			nodeTag = NodeBuilder.XML_STYLENODE;
 		}
-		currentNodeWriter = new NodeWriter(mapController, writeChildren, writeInvisible);
+		else{
+			nodeTag=NodeBuilder.XML_NODE;
+		}
+		if (oldNodeWriter != null) {
+			writeManager.removeElementWriter(nodeTag, oldNodeWriter);
+			writeManager.removeAttributeWriter(nodeTag, oldNodeWriter);
+		}
+		currentNodeWriter = new NodeWriter(mapController, nodeTag, writeChildren, writeInvisible);
 		try {
-			writeManager.addElementWriter(NodeBuilder.XML_NODE, currentNodeWriter);
-			writeManager.addAttributeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
-			xmlWriter.addElement(node, NodeBuilder.XML_NODE);
+			writeManager.addElementWriter(nodeTag, currentNodeWriter);
+			writeManager.addAttributeWriter(nodeTag, currentNodeWriter);
+			xmlWriter.addElement(node, nodeTag);
 		}
 		finally {
-			writeManager.removeElementWriter(NodeBuilder.XML_NODE, currentNodeWriter);
-			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
+			writeManager.removeElementWriter(nodeTag, currentNodeWriter);
+			writeManager.removeAttributeWriter(nodeTag, currentNodeWriter);
 			if (oldNodeWriter != null) {
-				writeManager.addElementWriter(NodeBuilder.XML_NODE, oldNodeWriter);
-				writeManager.addAttributeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
+				writeManager.addElementWriter(nodeTag, oldNodeWriter);
+				writeManager.addAttributeWriter(nodeTag, oldNodeWriter);
 			}
 			currentNodeWriter = oldNodeWriter;
 		}

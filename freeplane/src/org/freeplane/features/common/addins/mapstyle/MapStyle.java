@@ -75,7 +75,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			StringWriter sw = new StringWriter();
 			final NodeModel rootNode = styleMap.getRootNode();
 			try {
-		        mapWriter.writeNodeAsXml(sw, rootNode, Mode.FILE, true, true);
+		        mapWriter.writeNodeAsXml(sw, rootNode, Mode.STYLE, true, true);
 	        }
 	        catch (IOException e) {
 		        // TODO Auto-generated catch block

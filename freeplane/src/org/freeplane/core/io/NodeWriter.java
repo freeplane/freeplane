@@ -38,11 +38,13 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	private final boolean writeFolded;
 	final private boolean writeInvisible;
 	private XMLElement xmlNode;
+	final private String nodeTag;
 
-	public NodeWriter(final MapController mapController, final boolean writeChildren, final boolean writeInvisible) {
+	public NodeWriter(final MapController mapController, String nodeTag, final boolean writeChildren, final boolean writeInvisible) {
 		this.mapController = mapController;
 		this.writeChildren = writeChildren;
 		this.writeInvisible = writeInvisible;
+		this.nodeTag = nodeTag;
 		final String saveFolding = ResourceController.getResourceController().getProperty(
 		    NodeBuilder.RESOURCES_SAVE_FOLDING);
 		writeFolded = saveFolding.equals(NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)
@@ -53,7 +55,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		for (final ListIterator<NodeModel> e = mapController.childrenUnfolded(node); e.hasNext();) {
 			final NodeModel child = e.next();
 			if (writeInvisible || child.isVisible()) {
-				writer.addElement(child, NodeBuilder.XML_NODE);
+				writer.addElement(child, nodeTag);
 			}
 			else {
 				saveChildren(writer, child);
@@ -68,7 +70,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	 * java.lang.Object, java.lang.String)
 	 */
 	public void writeAttributes(final ITreeWriter writer, final Object content, final String tag) {
-		if (tag.equals(NodeBuilder.XML_NODE)) {
+		if (tag.equals(nodeTag)) {
 			final NodeModel node = (NodeModel) content;
 			writeAttributesGenerateContent(writer, node);
 			return;
@@ -79,23 +81,28 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		/** fc, 12.6.2005: XML must not contain any zero characters. */
 		xmlNode = new XMLElement();
 		encryptionModel = EncryptionModel.getModel(node);
+        final Object mode = writer.getHint(Hint.MODE);
 		if (encryptionModel != null) {
 			final String additionalInfo = encryptionModel.getEncryptedContent(mapController);
 			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, additionalInfo);
 		}
-		else if (mapController.isFolded(node) && (writeFolded || writer.getHint(Hint.MODE).equals(Mode.CLIPBOARD))) {
-			writer.addAttribute("FOLDED", "true");
-		}
+        else {
+	        if (mapController.isFolded(node)){ 
+	        	if (mode.equals(Mode.FILE) && writeFolded || mode.equals(Mode.CLIPBOARD)) {
+	        		writer.addAttribute("FOLDED", "true");
+	        	}
+	        }
+        }
 		final NodeModel parentNode = node.getParentNode();
 		if (parentNode != null && parentNode.isRoot()) {
 			writer.addAttribute("POSITION", node.isLeft() ? "left" : "right");
 		}
-		final boolean saveID = !MapController.saveOnlyIntrinsicallyNeededIds();
+		final boolean saveID = ! mode.equals(Mode.STYLE) && ! MapController.saveOnlyIntrinsicallyNeededIds();
 		if (saveID) {
 			final String id = node.createID();
 			writer.addAttribute("ID", id);
 		}
-		if (node.getHistoryInformation() != null
+		if (! mode.equals(Mode.STYLE) && node.getHistoryInformation() != null
 		        && ResourceController.getResourceController().getBooleanProperty(
 		            NodeBuilder.RESOURCES_SAVE_MODIFICATION_TIMES)) {
 			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter.dateToString(node

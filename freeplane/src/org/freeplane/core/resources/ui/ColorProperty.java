@@ -65,7 +65,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	/**
 	 */
-	private Color getColorValue() {
+	public Color getColorValue() {
 		return color;
 	}
 
@@ -103,13 +103,13 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	/**
 	 */
-	private void setColorValue(Color result) {
-		color = result;
-		if (result == null) {
-			result = Color.WHITE;
+	public void setColorValue(Color value) {
+		color = value;
+		if (value == null) {
+			value = Color.WHITE;
 		}
-		mButton.setBackground(result);
-		mButton.setText(ColorUtils.colorToString(result));
+		mButton.setBackground(value);
+		mButton.setText(ColorUtils.colorToString(value));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

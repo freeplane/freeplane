@@ -19,6 +19,9 @@
  */
 package org.freeplane.main.mindmapmode.stylemode;
 
+import java.awt.EventQueue;
+import java.util.List;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
@@ -26,6 +29,9 @@ import javax.swing.JPopupMenu;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.icon.IconController;
+import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.modecontroller.INodeSelectionListener;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
@@ -73,7 +79,7 @@ public class SModeControllerFactory {
 	private SModeController modeController;
 
 	SModeController createModeController(JDialog dialog) {
-		Controller controller = new Controller();
+		final Controller controller = new Controller();
 		final MapViewController mapViewController = new MapViewController();
 		final DialogController viewController = new DialogController(controller, mapViewController, dialog);
 		controller.setViewController(viewController);
@@ -112,6 +118,30 @@ public class SModeControllerFactory {
         new MapStyle(modeController);
 		controller.addModeController(modeController);
 		SModeController modeController = this.modeController;
+		final MapController mapController = modeController.getMapController();
+		mapController.addNodeSelectionListener(new INodeSelectionListener() {
+			public void onSelect(NodeModel node) {
+				final NodeModel rootNode = node.getMap().getRootNode();
+				final IMapSelection selection = controller.getSelection();
+				if(! selection.isSelected(rootNode)){
+					return;
+				}
+				final List<NodeModel> selecteds = selection.getSelection();
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						if(selecteds.size() == 1){
+							selection.makeTheSelected((NodeModel) rootNode.getChildAt(0));
+						}
+						else{
+							selection.toggleSelected(rootNode);
+						}
+					}
+				});
+			}
+			
+			public void onDeselect(NodeModel node) {
+			}
+		});
 		this.modeController = null;
 		return modeController;
 	}

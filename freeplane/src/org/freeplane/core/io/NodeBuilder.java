@@ -48,6 +48,7 @@ public class NodeBuilder implements IElementDOMHandler {
 	public static final String RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED = "save_folding_if_map_is_changed";
 	public static final String RESOURCES_SAVE_MODIFICATION_TIMES = "save_modification_times";
 	public static final String XML_NODE = "node";
+	public static final String XML_STYLENODE = "stylenode";
 	public static final String XML_NODE_ADDITIONAL_INFO = "ADDITIONAL_INFO";
 	public static final String XML_NODE_CLASS = "AA_NODE_CLASS";
 	public static final String XML_NODE_ENCRYPTED_CONTENT = "ENCRYPTED_CONTENT";
@@ -55,19 +56,16 @@ public class NodeBuilder implements IElementDOMHandler {
 	public static final String XML_NODE_HISTORY_LAST_MODIFIED_AT = "MODIFIED";
 	private final MapReader mapReader;
 
-	public NodeBuilder(final MapReader mapReader) {
+	NodeBuilder(final MapReader mapReader) {
 		this.mapReader = mapReader;
 	}
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
-		if (tag.equals(NodeBuilder.XML_NODE)) {
-			final NodeModel userObject = createNode();
-			if (getMapChild() == null) {
-				setMapChild(userObject);
-			}
-			return userObject;
+		final NodeModel userObject = createNode();
+		if (getMapChild() == null) {
+			setMapChild(userObject);
 		}
-		return null;
+		return userObject;
 	}
 
 	public NodeModel createNode() {
@@ -79,13 +77,13 @@ public class NodeBuilder implements IElementDOMHandler {
 		if (dom.getAttributeCount() != 0 || dom.hasChildren()) {
 			node.addExtension(new UnknownElements(dom));
 		}
-		if (tag.equals("node") && parentObject instanceof MapModel) {
+		if (parentObject instanceof MapModel) {
 			setMapChild(node);
 			return;
 		}
 		if (parentObject instanceof NodeModel) {
 			final NodeModel parentNode = (NodeModel) parentObject;
-			if (tag.equals("node") && userObject instanceof NodeModel) {
+			if (userObject instanceof NodeModel) {
 				parentNode.insert(node, -1);
 			}
 			return;
@@ -206,6 +204,7 @@ public class NodeBuilder implements IElementDOMHandler {
 	public void registerBy(final ReadManager reader) {
 		registerAttributeHandlers(reader);
 		reader.addElementHandler(NodeBuilder.XML_NODE, this);
+		reader.addElementHandler(NodeBuilder.XML_STYLENODE, this);
 	}
 
 	public void reset() {

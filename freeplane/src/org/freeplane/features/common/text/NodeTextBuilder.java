@@ -61,18 +61,22 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	}
 
 	private void registerAttributeHandlers(final ReadManager reader) {
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT, new IAttributeHandler() {
+		final IAttributeHandler textHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
 				node.setText(value);
 			}
-		});
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, new IAttributeHandler() {
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT, textHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_TEXT, textHandler);
+		final IAttributeHandler ltextHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
 				node.setUserObject(new NamedObject(value));
 			}
-		});
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ltextHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ltextHandler);
 	}
 
 	/**
@@ -82,7 +86,9 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		registerAttributeHandlers(reader);
 		reader.addElementHandler("richcontent", this);
 		writeManager.addElementWriter(NodeBuilder.XML_NODE, this);
+		writeManager.addElementWriter(NodeBuilder.XML_STYLENODE, this);
 		writeManager.addAttributeWriter(NodeBuilder.XML_NODE, this);
+		writeManager.addAttributeWriter(NodeBuilder.XML_STYLENODE, this);
 	}
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {

@@ -130,7 +130,7 @@ public abstract class PersistentNodeHook {
 		                       final XMLElement lastBuiltElement) {
 			if (getHookAnnotation().onceForMap()) {
 				final XMLElement parentNodeElement = lastBuiltElement.getParent().getParent();
-				if (parentNodeElement == null || parentNodeElement.getName().equals("node")) {
+				if (parentNodeElement == null || ! parentNodeElement.getName().equals("map")) {
 					return;
 				}
 			}
