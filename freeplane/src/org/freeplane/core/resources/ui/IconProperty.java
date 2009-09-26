@@ -98,4 +98,8 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 			}
 		}
 	}
+
+	public MindIcon getIcon() {
+	    return mActualIcon;
+    }
 }

@@ -19,20 +19,25 @@
  */
 package org.freeplane.main.mindmapmode.stylemode;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
@@ -117,12 +122,20 @@ public class SModeControllerFactory {
         modeController.updateMenus();
         new MapStyle(modeController);
 		controller.addModeController(modeController);
-		SModeController modeController = this.modeController;
+		final SModeController modeController = this.modeController;
 		final MapController mapController = modeController.getMapController();
+		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController);
+		styleEditorPanel.init();
+		JScrollPane styleScrollPane = new JScrollPane(styleEditorPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		dialog.add(styleScrollPane, BorderLayout.EAST);
+//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
 			public void onSelect(NodeModel node) {
 				final NodeModel rootNode = node.getMap().getRootNode();
 				final IMapSelection selection = controller.getSelection();
+				if(! node.isRoot()){
+					styleEditorPanel.setStyle(modeController, node);
+				}
 				if(! selection.isSelected(rootNode)){
 					return;
 				}
@@ -140,6 +153,15 @@ public class SModeControllerFactory {
 			}
 			
 			public void onDeselect(NodeModel node) {
+			}
+		});
+		mapController.addNodeChangeListener(new INodeChangeListener() {
+			public void nodeChanged(NodeChangeEvent event) {
+				final IMapSelection selection = controller.getSelection();
+				final NodeModel node = event.getNode();
+				if(selection.getSelected().equals(node)){
+					styleEditorPanel.setStyle(modeController, node);
+				}
 			}
 		});
 		this.modeController = null;

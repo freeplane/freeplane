@@ -26,7 +26,7 @@ import org.freeplane.core.model.NodeModel;
 
 public class EdgeModel implements IExtension {
 	public static final int WIDTH_PARENT = -1;
-	public static final int DEFAULT_WIDTH = WIDTH_PARENT;
+	public static final int DEFAULT_WIDTH = -1;
 	static public final String EDGEWIDTH_THIN = "thin";
 
 	public static final int WIDTH_THIN = 0;

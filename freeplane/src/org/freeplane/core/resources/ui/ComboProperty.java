@@ -19,6 +19,10 @@
  */
 package org.freeplane.core.resources.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
@@ -32,7 +36,7 @@ import org.freeplane.core.resources.ResourceBundles;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class ComboProperty extends PropertyBean implements IPropertyControl {
+public class ComboProperty extends PropertyBean implements IPropertyControl, ActionListener {
 	static public Vector<String> translate(final String[] possibles) {
 		final Vector<String> possibleTranslations = new Vector<String>(possibles.length);
 		for (int i = 0; i < possibles.length; i++) {
@@ -41,13 +45,15 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 		return possibleTranslations;
 	}
 
-	JComboBox mComboBox = new JComboBox();
+	final JComboBox mComboBox;
 	private Vector<String> possibleValues;
 
 	public ComboProperty(final String name, final List<String> possibles, final List<String> possibleTranslations) {
 		super(name);
 		fillPossibleValues(possibles);
+		mComboBox = new JComboBox();
 		mComboBox.setModel(new DefaultComboBoxModel(new Vector<String>(possibleTranslations)));
+		mComboBox.addActionListener(this);
 	}
 
 	public ComboProperty(final String name, final String[] strings) {
@@ -101,4 +107,9 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 			mComboBox.setSelectedIndex(0);
 		}
 	}
+
+	public void actionPerformed(ActionEvent e) {
+	   firePropertyChangeEvent();	    
+    }
+
 }

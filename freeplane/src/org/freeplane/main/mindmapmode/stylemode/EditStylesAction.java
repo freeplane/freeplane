@@ -51,7 +51,7 @@ public class EditStylesAction extends AFreeplaneAction {
 			return;
 		}
 	    dialog = new JDialog(getController().getViewController().getJFrame());
-		dialog.setSize(400, 300);
+		dialog.setSize(800, 300);
 		modeController = SModeControllerFactory.getInstance().createModeController(dialog);
 		final ViewController viewController = modeController.getController().getViewController();
 		viewController.init();

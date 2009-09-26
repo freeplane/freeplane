@@ -36,8 +36,6 @@ import org.freeplane.core.util.ColorUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-// TODO rladstaetter 28.02.2009 remove: a container for color properties is not necessary. if really need be, one can use a generic container (see Triple<A,B,C>); consider using FpColor
-@Deprecated
 public class ColorProperty extends PropertyBean implements IPropertyControl, ActionListener {
 	Color color;
 	final private String defaultColor;
