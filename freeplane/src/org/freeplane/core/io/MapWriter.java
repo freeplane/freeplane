@@ -97,8 +97,8 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 			nodeTag=NodeBuilder.XML_NODE;
 		}
 		if (oldNodeWriter != null) {
-			writeManager.removeElementWriter(nodeTag, oldNodeWriter);
-			writeManager.removeAttributeWriter(nodeTag, oldNodeWriter);
+			writeManager.removeElementWriter(oldNodeWriter.getNodeTag(), oldNodeWriter);
+			writeManager.removeAttributeWriter(oldNodeWriter.getNodeTag(), oldNodeWriter);
 		}
 		currentNodeWriter = new NodeWriter(mapController, nodeTag, writeChildren, writeInvisible);
 		try {
@@ -110,8 +110,8 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 			writeManager.removeElementWriter(nodeTag, currentNodeWriter);
 			writeManager.removeAttributeWriter(nodeTag, currentNodeWriter);
 			if (oldNodeWriter != null) {
-				writeManager.addElementWriter(nodeTag, oldNodeWriter);
-				writeManager.addAttributeWriter(nodeTag, oldNodeWriter);
+				writeManager.addElementWriter(oldNodeWriter.getNodeTag(), oldNodeWriter);
+				writeManager.addAttributeWriter(oldNodeWriter.getNodeTag(), oldNodeWriter);
 			}
 			currentNodeWriter = oldNodeWriter;
 		}

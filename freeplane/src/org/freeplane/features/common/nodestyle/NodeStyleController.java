@@ -127,42 +127,42 @@ public class NodeStyleController implements IExtension {
 				return NodeStyleModel.getBackgroundColor(node);
 			}
 		});
+		addBackgroundColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node, final Color currentValue) {
+				return getDefaultBackgroundColor(node.getMap());
+			}
+		});
 		addShapeGetter(IPropertyHandler.NODE, new IPropertyHandler<String, NodeModel>() {
+			public String getProperty(final NodeModel node, final String currentValue) {
+				String returnedString = NodeStyleModel.getShape(node);
+                if(NodeStyleModel.SHAPE_AS_PARENT.equals(returnedString)){
+                	return null;
+                }
+                return returnedString;
+			}
+		});
+		addShapeGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<String, NodeModel>() {
 			public String getProperty(final NodeModel node, final String currentValue) {
 				return getShape(node);
 			}
 
 			private String getShape(final NodeModel node) {
-				String returnedString = NodeStyleModel.getShape(node);
-				if (NodeStyleModel.getShape(node) == null) {
-					if (node.isRoot()) {
-						returnedString = ResourceController.getResourceController().getProperty(
-						    NodeStyleController.RESOURCES_ROOT_NODE_SHAPE);
-					}
-					else {
-						final String stdstyle = ResourceController.getResourceController().getProperty(
-						    NodeStyleController.RESOURCES_NODE_SHAPE);
-						if (stdstyle.equals(NodeStyleModel.SHAPE_AS_PARENT)) {
-							returnedString = getShape(node.getParentNode());
-						}
-						else {
-							returnedString = stdstyle;
-						}
-					}
+				String returnedString = getDefaultShape(node.getMap());
+				if(returnedString != null){
+					return returnedString;
 				}
-				else if (node.isRoot() && NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
+				if (node.isRoot()) {
 					returnedString = ResourceController.getResourceController().getProperty(
-					    NodeStyleController.RESOURCES_ROOT_NODE_SHAPE);
+						NodeStyleController.RESOURCES_ROOT_NODE_SHAPE);
 				}
-				else if (NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
-					returnedString = getShape(node.getParentNode());
-				}
-				if (returnedString.equals(NodeStyleModel.SHAPE_COMBINED)) {
-					if (getModeController().getMapController().isFolded(node)) {
-						return NodeStyleModel.STYLE_BUBBLE;
+				else {
+					final String stdstyle = ResourceController.getResourceController().getProperty(
+						NodeStyleController.RESOURCES_NODE_SHAPE);
+					if (stdstyle.equals(NodeStyleModel.SHAPE_AS_PARENT)) {
+						returnedString = getShape(node.getParentNode());
 					}
 					else {
-						return NodeStyleModel.STYLE_FORK;
+						returnedString = stdstyle;
 					}
 				}
 				return returnedString;
@@ -243,7 +243,16 @@ public class NodeStyleController implements IExtension {
 	}
 
 	public String getShape(final NodeModel node) {
-		return shapeHandlers.getProperty(node);
+		String returnedString = shapeHandlers.getProperty(node);
+		if (returnedString.equals(NodeStyleModel.SHAPE_COMBINED)) {
+			if (getModeController().getMapController().isFolded(node)) {
+				return NodeStyleModel.STYLE_BUBBLE;
+			}
+			else {
+				return NodeStyleModel.STYLE_FORK;
+			}
+		}
+		return returnedString;
 	}
 
 	public boolean isBold(final NodeModel node) {
@@ -298,4 +307,22 @@ public class NodeStyleController implements IExtension {
 		final Color styleColor = styleModel.getColor();
 		return styleColor != null ? styleColor : standardNodeTextColor;
     }
+	
+	protected Color getDefaultBackgroundColor(MapModel map) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+		final Color styleColor = styleModel.getBackgroundColor();
+		return styleColor;
+    }
+
+	protected String getDefaultShape(MapModel map) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+		final String shape = styleModel.getShape();
+		return NodeStyleModel.SHAPE_AS_PARENT.equals(shape) ? null : shape;
+    }
+
+
 }

@@ -181,12 +181,14 @@ public class NodeBuilder implements IElementDOMHandler {
 				}
 			}
 		});
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "POSITION", new IAttributeHandler() {
+		final IAttributeHandler positionHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				node.setLeft(value.equals("left"));
 			}
-		});
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "POSITION", positionHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "POSITION", positionHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "ID", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;

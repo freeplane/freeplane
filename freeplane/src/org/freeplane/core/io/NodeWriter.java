@@ -130,4 +130,8 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		}
 		return;
 	}
+
+	String getNodeTag() {
+	    return nodeTag;
+    }
 }
