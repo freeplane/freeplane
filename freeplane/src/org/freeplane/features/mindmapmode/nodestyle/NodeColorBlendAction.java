@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -53,12 +54,13 @@ class NodeColorBlendAction extends AMultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final Component mapView = getController().getViewController().getMapView();
+		final ViewController viewController = getController().getViewController();
+		final Component mapView = viewController.getMapView();
 		final Color mapColor = mapView.getBackground();
 		Color nodeColor = NodeStyleModel.getColor(node);
 		final MNodeStyleController mNodeStyleController = (MNodeStyleController) NodeStyleController.getController(getController().getModeController());
 		if (nodeColor == null) {
-			nodeColor = mNodeStyleController.getDefaultTextColor(node.getMap());
+			nodeColor = viewController.getBackgroundColor(node);
 		}
 		mNodeStyleController.setColor(node,
 		    new Color((3 * mapColor.getRed() + nodeColor.getRed()) / 4,

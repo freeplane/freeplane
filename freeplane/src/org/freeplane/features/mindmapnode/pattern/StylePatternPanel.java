@@ -21,6 +21,7 @@ package org.freeplane.features.mindmapnode.pattern;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Font;
 import java.awt.HeadlessException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -467,12 +468,11 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		setPatternControls(pattern.getPatternCloud(), mSetCloud, mCloud, Boolean.TRUE.toString());
 		setPatternControls(pattern.getPatternCloudColor(), mSetCloudColor, mCloudColor, ResourceController
 		    .getResourceController().getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
-		setPatternControls(pattern.getPatternNodeFontName(), mSetNodeFontName, mNodeFontName, ResourceController
-		    .getResourceController().getDefaultFontFamilyName());
+		final Font defaultFont = NodeStyleController.getDefaultFont();
+		setPatternControls(pattern.getPatternNodeFontName(), mSetNodeFontName, mNodeFontName, defaultFont.getFamily());
 		setPatternControls(pattern.getPatternNodeFontSize(), mSetNodeFontSize, mNodeFontSize, sizes[0]);
-		setPatternControls(pattern.getPatternNodeFontBold(), mSetNodeFontBold, mNodeFontBold, Boolean.TRUE.toString());
-		setPatternControls(pattern.getPatternNodeFontItalic(), mSetNodeFontItalic, mNodeFontItalic, Boolean.TRUE
-		    .toString());
+		setPatternControls(pattern.getPatternNodeFontBold(), mSetNodeFontBold, mNodeFontBold, Boolean.toString(defaultFont.isBold()));
+		setPatternControls(pattern.getPatternNodeFontItalic(), mSetNodeFontItalic, mNodeFontItalic, Boolean.toString(defaultFont.isItalic()));
 		final MindIcon firstInfo = mIconInformationVector.get(0);
 		setPatternControls(pattern.getPatternIcon(), mSetIcon, mIcon, firstInfo.getName());
 		setPatternControls(pattern.getPatternScript(), mSetScriptPattern, mScriptPattern, "");

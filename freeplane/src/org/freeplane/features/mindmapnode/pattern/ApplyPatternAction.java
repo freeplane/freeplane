@@ -125,19 +125,11 @@ class ApplyPatternAction extends AMultipleNodeAction {
 		}
 		if (pattern.getPatternNodeFontName() != null) {
 			String nodeFontFamily = pattern.getPatternNodeFontName().getValue();
-			if (nodeFontFamily == null) {
-				final NodeStyleController style = (NodeStyleController) getModeController().getExtension(NodeStyleController.class);
-				nodeFontFamily = style.getDefaultFontFamilyName(node.getMap());
-			}
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController())).setFontFamily(
 			    node, nodeFontFamily);
 		}
 		if (pattern.getPatternNodeFontSize() != null) {
 			String nodeFontSize = pattern.getPatternNodeFontSize().getValue();
-			if (nodeFontSize == null) {
-				final NodeStyleController style = (NodeStyleController) getModeController().getExtension(NodeStyleController.class);
-				nodeFontSize = "" + style.getDefaultFontSize(node.getMap());
-			}
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController())).setFontSize(
 			    node, Integer.parseInt(nodeFontSize));
 		}

@@ -189,7 +189,7 @@ public class StyleEditorPanel extends JPanel {
 		void applyValue(final boolean enabled, final NodeModel node) {
 			final MEdgeController styleController = (MEdgeController) mMindMapController
 			    .getExtension(EdgeController.class);
-			styleController.setStyle(node, enabled ? EdgeStyle.valueOf(mEdgeStyle.getValue()) : null);
+			styleController.setStyle(node, enabled ? EdgeStyle.getStyle(mEdgeStyle.getValue()) : null);
 		}
 	}
 	private class EdgeWidthChangeListener extends ChangeListener {

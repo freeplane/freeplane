@@ -20,8 +20,12 @@
 package org.freeplane.core.modecontroller;
 
 public interface IPropertyHandler<V, M> {
-	final static public Integer DEFAULT = 100;
-	final static public Integer NODE = 10;
+	final static public Integer DEFAULT = 1<<9;
+	final static public Integer DEFAULT_STYLE = 1<<8;
+	final static public Integer STYLE = 1<<7;
+	final static public Integer NODE = 1<<6;
+	final static public Integer AUTO = 1<<5;
+	final static public Integer MODIFICATION = 1<<4;
 
 	V getProperty(M model, V currentValue);
 }

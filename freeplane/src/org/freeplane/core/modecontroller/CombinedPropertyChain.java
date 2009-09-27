@@ -22,14 +22,11 @@ package org.freeplane.core.modecontroller;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-@Deprecated
 public class CombinedPropertyChain<V, T> {
-	static public Integer DEFAULT = 10;
-	static public Integer NODE = 100;
-	final private TreeMap handlers = new TreeMap();
+	final private TreeMap<Integer, IPropertyHandler<?, ?>> handlers = new TreeMap<Integer, IPropertyHandler<?, ?>>();
 
 	public IPropertyHandler addGetter(final Integer key, final IPropertyHandler getter) {
-		return (IPropertyHandler) handlers.put(key, getter);
+		return (IPropertyHandler) handlers.put(-key, getter);
 	}
 
 	public V getProperty(final T node) {
@@ -43,6 +40,6 @@ public class CombinedPropertyChain<V, T> {
 	}
 
 	public IPropertyHandler removeGetter(final Integer key) {
-		return (IPropertyHandler) handlers.remove(key);
+		return (IPropertyHandler) handlers.remove(-key);
 	}
 }

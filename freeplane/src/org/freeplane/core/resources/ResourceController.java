@@ -116,12 +116,6 @@ public abstract class ResourceController {
 	}
 
 	/**
-	 */
-	public String getDefaultFontFamilyName() {
-		return getProperty("defaultfont");
-	}
-
-	/**
 	 * @param resourcesNodeTextColor
 	 * @return
 	 */
