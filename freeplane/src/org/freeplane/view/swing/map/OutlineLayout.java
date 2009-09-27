@@ -75,7 +75,7 @@ public class OutlineLayout extends NodeViewLayoutAdapter{
         for (int i = 0; i < getChildCount(); i++) {
         	final NodeView component = (NodeView) getView().getComponent(i);
         	child = component;
-        	final int additionalCloudHeigth = child.getAdditionalCloudHeigth() / 2;
+        	final int additionalCloudHeigth = getAdditionalCloudHeigth(child) / 2;
         	y += additionalCloudHeigth;
         	final int shiftY = 0;
         	final int childHGap = child.getContent().isVisible() ? getHGap() : 0;
@@ -97,7 +97,7 @@ public class OutlineLayout extends NodeViewLayoutAdapter{
         final int bottom = getContent().getY() + getContent().getHeight() + getSpaceAround();
         if (child != null) {
         	getView().setSize(right,
-        	    Math.max(bottom, child.getY() + child.getHeight() + child.getAdditionalCloudHeigth() / 2));
+        	    Math.max(bottom, child.getY() + child.getHeight() + getAdditionalCloudHeigth(child) / 2));
         }
         else {
         	getView().setSize(right, bottom);

@@ -26,14 +26,19 @@ import java.awt.Stroke;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.modecontroller.CombinedPropertyChain;
 import org.freeplane.core.modecontroller.ExclusivePropertyChain;
 import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
+import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
+import org.freeplane.features.common.edge.EdgeModel;
 
 /**
  * @author Dimitry Polivaev
@@ -62,11 +67,13 @@ public class CloudController implements IExtension {
 		modeController.addExtension(CloudController.class, cloudController);
 	}
 
+	final private CombinedPropertyChain<CloudModel, NodeModel> cloudHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
 	private final ModeController modeController;
 
 	public CloudController(final ModeController modeController) {
 		this.modeController = modeController;
+		cloudHandlers = new CombinedPropertyChain<CloudModel, NodeModel>();
 		colorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		if (listener == null) {
 			listener = new CloudAdapterListener();
@@ -79,9 +86,33 @@ public class CloudController implements IExtension {
 				return cloud != null ? cloud.getColor() : null;
 			}
 		});
+		addColorGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node, final Color currentValue) {
+				return getStyleCloudColor(node.getMap(), MapStyleModel.DEFAULT_STYLE);
+			}
+		});
 		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return standardColor;
+			}
+		});
+		addCloudGetter(IPropertyHandler.NODE, new IPropertyHandler<CloudModel, NodeModel>() {
+			public CloudModel getProperty(final NodeModel node, final CloudModel currentValue) {
+				final CloudModel cloud = CloudModel.getModel(node);
+				if(currentValue == null){
+					return cloud;
+				}
+				return createCloudModel(currentValue, cloud);
+			}
+		});
+		addCloudGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<CloudModel, NodeModel>() {
+			public CloudModel getProperty(final NodeModel node, final CloudModel currentValue) {
+				return styleCloud(node.getMap(), MapStyleModel.DEFAULT_STYLE);
+			}
+		});
+		addCloudGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<CloudModel, NodeModel>() {
+			public CloudModel getProperty(final NodeModel node, final CloudModel currentValue) {
+				return null;
 			}
 		});
 		final MapController mapController = modeController.getMapController();
@@ -91,9 +122,30 @@ public class CloudController implements IExtension {
 		cloudBuilder.registerBy(readManager, writeManager);
 	}
 
+
+	private Color getStyleCloudColor(final MapModel map, Object styleKey) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNode(styleKey);
+		final CloudModel styleModel = CloudModel.getModel(styleNode);
+		final Color styleColor = styleModel == null ? null : styleModel.getColor();
+		return styleColor;
+	}
+
+	protected CloudModel styleCloud(MapModel map, Object styleKey) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNode(styleKey);
+		final CloudModel styleModel = CloudModel.getModel(styleNode);
+		return styleModel;
+    }
+	
 	public IPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
-	                                                         final IPropertyHandler<Color, NodeModel> getter) {
+		final IPropertyHandler<Color, NodeModel> getter) {
 		return colorHandlers.addGetter(key, getter);
+	}
+
+	public IPropertyHandler<CloudModel, NodeModel> addCloudGetter(final Integer key,
+		final IPropertyHandler<CloudModel, NodeModel> getter) {
+		return cloudHandlers.addGetter(key, getter);
 	}
 
 	public Color getColor(final NodeModel node) {
@@ -116,6 +168,10 @@ public class CloudController implements IExtension {
 		return colorHandlers.removeGetter(key);
 	}
 
+	public IPropertyHandler<CloudModel, NodeModel> removeCloudGetter(final Integer key) {
+		return cloudHandlers.removeGetter(key);
+	}
+
 	private void updateStandards(final ModeController controller) {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
@@ -123,4 +179,36 @@ public class CloudController implements IExtension {
 			standardColor = ColorUtils.stringToColor(stdColor);
 		}
 	}
+	/** gets iterative level which is required for painting and layout. */
+	public int getCloudIterativeLevel(final NodeModel target) {
+		int iterativeLevel = 0;
+		if (target != null) {
+			for (NodeModel parentNode = target.getParentNode(); parentNode != null; parentNode = parentNode
+			    .getParentNode()) {
+				if (cloudExist(target)) {
+					iterativeLevel++;
+				}
+			}
+		}
+		return iterativeLevel;
+	}
+
+	public boolean cloudExist(NodeModel model) {
+	    return getCloud(model) != null;
+    }
+
+	public CloudModel getCloud(NodeModel model) {
+	    return cloudHandlers.getProperty(model);
+    }
+
+	private CloudModel createCloudModel(final CloudModel base, final CloudModel cloud) {
+	    if(cloud == null){
+	    	return base;
+	    }
+	    if(cloud.getColor() != null){
+	    	return cloud;
+	    }
+	    return null;
+    }
+
 }

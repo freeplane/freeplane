@@ -26,7 +26,11 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.cloud.CloudController;
+import org.freeplane.features.common.cloud.CloudModel;
+import org.freeplane.view.swing.map.cloud.CloudView;
 
 abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 	private static Dimension minDimension;
@@ -53,7 +57,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 		for (int i = 0; i < childCount; i++) {
 			final NodeView child = (NodeView) getView().getComponent(i);
 			if (child.isLeft() == isLeft) {
-				final int additionalCloudHeigth = child.getAdditionalCloudHeigth();
+				final int additionalCloudHeigth = getAdditionalCloudHeigth(child);
 				final int contentHeight = child.getContent().getHeight();
 				height += contentHeight + additionalCloudHeigth;
 				if (child.getHeight() - 2 * getSpaceAround() != 0) {
@@ -82,7 +86,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 			if (child.isLeft()) {
 				shiftCandidate = -child.getContent().getX() - child.getContent().getWidth();
 				if (child.isContentVisible()) {
-					shiftCandidate -= child.getHGap() + child.getAdditionalCloudHeigth() / 2;
+					shiftCandidate -= child.getHGap() + getAdditionalCloudHeigth(child) / 2;
 				}
 			}
 			else {
@@ -179,7 +183,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 				continue;
 			}
 			child = component;
-			final int additionalCloudHeigth = child.getAdditionalCloudHeigth() / 2;
+			final int additionalCloudHeigth = getAdditionalCloudHeigth(child) / 2;
 			y += additionalCloudHeigth;
 			final int shiftY = child.getShift();
 			final int childHGap = child.getContent().isVisible() ? child.getHGap() : 0;
@@ -201,7 +205,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 		final int bottom = getContent().getY() + getContent().getHeight() + getSpaceAround();
 		if (child != null) {
 			getView().setSize(right,
-			    Math.max(bottom, child.getY() + child.getHeight() + child.getAdditionalCloudHeigth() / 2));
+			    Math.max(bottom, child.getY() + child.getHeight() + getAdditionalCloudHeigth(child) / 2));
 		}
 		else {
 			getView().setSize(right, bottom);
@@ -219,7 +223,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 				continue;
 			}
 			child = component;
-			final int additionalCloudHeigth = child.getAdditionalCloudHeigth() / 2;
+			final int additionalCloudHeigth = getAdditionalCloudHeigth(child) / 2;
 			y += additionalCloudHeigth;
 			final int shiftY = child.getShift();
 			final int childHGap = child.getContent().isVisible() ? child.getHGap() : 0;
@@ -241,7 +245,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 		final int bottom = getContent().getY() + getContent().getHeight() + getSpaceAround();
 		if (child != null) {
 			getView().setSize(right,
-			    Math.max(bottom, child.getY() + child.getHeight() + child.getAdditionalCloudHeigth() / 2));
+			    Math.max(bottom, child.getY() + child.getHeight() + getAdditionalCloudHeigth(child) / 2));
 		}
 		else {
 			getView().setSize(right, bottom);
@@ -298,4 +302,23 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 	public void setVGap(int vGap) {
 	    this.vGap = vGap;
     }
+	
+	/**
+	 * Calculates the tree height increment because of the clouds.
+	 */
+	public int getAdditionalCloudHeigth(NodeView node) {
+		if (!node.isContentVisible()) {
+			return 0;
+		}
+		final ModeController modeController = node.getMap().getModeController();
+		final CloudController cloudController = CloudController.getController(modeController);
+		if (cloudController.cloudExist(getModel())){
+			return CloudView.getAdditionalHeigth(node);
+		}
+		else {
+			return 0;
+		}
+	}
+
+
 }

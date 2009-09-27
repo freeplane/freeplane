@@ -188,22 +188,6 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	/**
-	 * Calculates the tree height increment because of the clouds.
-	 */
-	public int getAdditionalCloudHeigth() {
-		if (!isContentVisible()) {
-			return 0;
-		}
-		final CloudModel cloud = CloudModel.getModel(getModel());
-		if (cloud != null) {
-			return CloudView.getAdditionalHeigth(cloud, this);
-		}
-		else {
-			return 0;
-		}
-	}
-
-	/**
 	 * Returns the relative position of the Edge. This is used by bold edge to
 	 * know how to shift the line.
 	 */
@@ -222,9 +206,9 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	private Color getBackgroundColor() {
-		final CloudModel cloud = CloudModel.getModel(getModel());
-		if (cloud != null) {
-			return CloudController.getController(getMap().getModeController()).getColor(model);
+		final Color cloudColor = CloudController.getController(getMap().getModeController()).getColor(model);
+		if (cloudColor != null) {
+			return cloudColor;
 		}
 		if (isRoot()) {
 			return getMap().getBackground();
@@ -281,9 +265,12 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		if (isContentVisible()) {
-			final CloudModel cloud = CloudModel.getModel(getModel());
-			if (byChildren && cloud != null) {
-				additionalDistanceForConvexHull += CloudView.getAdditionalHeigth(cloud, this) / 5;
+			if (byChildren){
+				final ModeController modeController = getMap().getModeController();
+				final CloudController cloudController = CloudController.getController(modeController);
+				if (cloudController.cloudExist(getModel())){
+					additionalDistanceForConvexHull += CloudView.getAdditionalHeigth(this) / 5;
+				}
 			}
 			final int x = transX + getContent().getX() - getDeltaX();
 			final int y = transY + getContent().getY() - getDeltaY();
@@ -956,10 +943,15 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	private void paintCloud(final Graphics g) {
-		if (isContentVisible() && CloudModel.getModel(model) != null) {
-			final CloudView cloud = new CloudView(CloudModel.getModel(model), this);
-			cloud.paint(g);
+		if (!isContentVisible()){
+			return; 
 		}
+		final CloudModel cloudModel = CloudController.getController(getMap().getModeController()).getCloud(model);
+		if (cloudModel == null){
+			return; 
+		}
+		final CloudView cloud = new CloudView(cloudModel, this);
+		cloud.paint(g);
 	}
 
 	private void paintCloudsAndEdges(final Graphics2D g) {

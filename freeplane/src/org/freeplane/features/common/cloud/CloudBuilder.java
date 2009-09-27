@@ -62,8 +62,8 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler("cloud", "STYLE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final CloudModel cloud = (CloudModel) userObject;
-				cloud.setStyle(value.toString());
+//				final CloudModel cloud = (CloudModel) userObject;
+//				cloud.setStyle(value.toString());
 			}
 		});
 		reader.addAttributeHandler("cloud", "COLOR", new IAttributeHandler() {
@@ -74,8 +74,8 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		});
 		reader.addAttributeHandler("cloud", "WIDTH", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final CloudModel cloud = (CloudModel) userObject;
-				cloud.setWidth(Integer.parseInt(value.toString()));
+//				final CloudModel cloud = (CloudModel) userObject;
+//				cloud.setWidth(Integer.parseInt(value.toString()));
 			}
 		});
 	}
@@ -96,18 +96,18 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		final CloudModel model = (CloudModel) extension;
 		final XMLElement cloud = new XMLElement();
 		cloud.setName("cloud");
-		final String style = model.getStyle();
-		if (style != null) {
-			cloud.setAttribute("STYLE", style);
-		}
+//		final String style = model.getStyle();
+//		if (style != null) {
+//			cloud.setAttribute("STYLE", style);
+//		}
 		final Color color = model.getColor();
 		if (color != null) {
 			cloud.setAttribute("COLOR", ColorUtils.colorToString(color));
 		}
-		final int width = model.getWidth();
-		if (width != CloudController.DEFAULT_WIDTH) {
-			cloud.setAttribute("WIDTH", Integer.toString(width));
-		}
+//		final int width = model.getWidth();
+//		if (width != CloudController.DEFAULT_WIDTH) {
+//			cloud.setAttribute("WIDTH", Integer.toString(width));
+//		}
 		writer.addElement(model, cloud);
 	}
 }

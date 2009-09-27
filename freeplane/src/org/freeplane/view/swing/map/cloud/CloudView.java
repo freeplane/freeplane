@@ -31,6 +31,7 @@ import java.awt.geom.QuadCurve2D;
 import java.util.LinkedList;
 import java.util.Vector;
 
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
@@ -42,22 +43,27 @@ import org.freeplane.view.swing.map.NodeView;
  */
 public class CloudView {
 	static final Stroke DEF_STROKE = new BasicStroke(1);
-	static private CloudView heightCalculator = new CloudView(null, null);
 
 	/** the layout functions can get the additional height of the clouded node . */
-	static public int getAdditionalHeigth(final CloudModel cloudModel, final NodeView source) {
-		CloudView.heightCalculator.cloudModel = cloudModel;
-		CloudView.heightCalculator.source = source;
-		return (int) (1.1 * CloudView.heightCalculator.getDistanceToConvexHull());
+	static public int getAdditionalHeigth(final NodeView source) {
+		CloudView heightCalculator = new CloudView(null, source);
+		return (int) (1.1 * heightCalculator.getDistanceToConvexHull());
 	}
 
 	protected CloudModel cloudModel;
 	protected NodeView source;
+	private int iterativeLevel;
 
 	public CloudView(final CloudModel cloudModel, final NodeView source) {
 		this.cloudModel = cloudModel;
 		this.source = source;
+		final ModeController modeController = source.getMap().getModeController();
+		iterativeLevel = CloudController.getController(modeController).getCloudIterativeLevel(source.getModel());
 	}
+
+	public CloudView() {
+		iterativeLevel = -1;
+    }
 
 	public Color getColor() {
 		final NodeModel model = source.getModel();
@@ -77,7 +83,7 @@ public class CloudView {
 	 * painted.
 	 */
 	protected int getIterativeLevel() {
-		return cloudModel.getIterativeLevel(source.getModel());
+		return iterativeLevel;
 	}
 
 	protected MapView getMap() {
