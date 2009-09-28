@@ -28,8 +28,10 @@ import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessControlException;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.freeplane.core.extension.IExtension;
@@ -54,7 +56,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * Mar 12, 2009
  */
 public class MapStyleModel implements IExtension {
-	public static final String DEFAULT_STYLE = "OptionPanel.default";
+	public static final NamedObject DEFAULT_STYLE = new NamedObject("OptionPanel.default");
 	private static final String STYLES = "styles";
 	private Map<Object, NodeModel> styleNodes; 
 	private static boolean loadingStyleMap = false;
@@ -82,7 +84,7 @@ public class MapStyleModel implements IExtension {
 			styleNodes = null;
 			return;
 		}
-		styleNodes = new HashMap<Object, NodeModel>();
+		styleNodes = new LinkedHashMap<Object, NodeModel>();
 		styleMap = new UMapModel(null, modeController){
 
 			@Override
@@ -141,12 +143,7 @@ public class MapStyleModel implements IExtension {
 	    	return;
 	    }
 	    final Object userObject = node.getUserObject();
-	    if(userObject instanceof NamedObject){
-	    	styleNodes.put(((NamedObject)userObject).getObject(), node);
-	    }
-	    else{
-	    	styleNodes.put(userObject, node);
-	    }
+	    styleNodes.put(userObject, node);
     }
 
 	private NodeModel load(final URL url, final MapReader mapReader, final MapModel map) throws Exception {
@@ -168,4 +165,9 @@ public class MapStyleModel implements IExtension {
 	public void setBackgroundColor(final Color backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
+
+	public Collection<Object> getStyles() {
+	    return styleNodes.keySet();
+	    
+    }
 }

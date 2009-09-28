@@ -20,6 +20,7 @@
 package org.freeplane.core.icon;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
@@ -85,17 +86,19 @@ public class IconController implements IExtension {
 		});
 		addIconGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<List<MindIcon>, NodeModel>() {
 			public List<MindIcon> getProperty(final NodeModel node, final List<MindIcon> currentValue) {
-				final List<MindIcon> styleIcons = getStyleIcons(node.getMap(), MapStyleModel.DEFAULT_STYLE);
+				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+                final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+				final List<MindIcon> styleIcons ;
+				if(styleNode.equals(node)){
+					styleIcons = Collections.emptyList(); 
+				}
+				else{
+					styleIcons = styleNode.getIcons();
+				}
 				return styleIcons;
 			}
 		});
 	}
-
-	protected List<MindIcon> getStyleIcons(MapModel map, Object styleKey) {
-		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(styleKey);
-		return styleNode.getIcons();
-    }
 
 	public ModeController getModeController() {
 		return modeController;

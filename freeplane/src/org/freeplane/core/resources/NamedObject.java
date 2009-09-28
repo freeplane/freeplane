@@ -60,4 +60,20 @@ public class NamedObject {
 	public String toString() {
 		return name;
 	}
+
+	@Override
+    public boolean equals(Object obj) {
+		if(! (obj instanceof NamedObject)){
+			return false;
+		}
+		NamedObject nobj = (NamedObject) obj;
+		return object.equals(nobj.object) && name.equals(nobj.name);
+    }
+
+	@Override
+    public int hashCode() {
+	    return 37 * object.hashCode() + name.hashCode();
+    }
+	
+	
 }

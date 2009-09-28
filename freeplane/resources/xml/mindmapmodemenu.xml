@@ -137,7 +137,6 @@
 			<menu_category name="icons" />
 			</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
-		<menu_action action="EditStylesAction" />
 			<menu_category name="change">
 			</menu_category>
 			<menu_separator />
@@ -150,6 +149,14 @@
 				</menu_category>
 				<menu_separator />
 				<menu_category name="patterns">
+				</menu_category>
+			</menu_submenu>
+			<menu_submenu name="styles" name_ref="styles">
+				<menu_category name="manage">
+					<menu_action action="EditStylesAction" />
+				</menu_category>
+				<menu_separator />
+				<menu_category name="assign">
 				</menu_category>
 			</menu_submenu>
 			<menu_separator />
