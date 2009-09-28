@@ -26,25 +26,37 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev
  * 28.09.2009
  */
-public class NodeStyleModel implements IExtension {
-	private String style;
+public class LogicalStyleModel implements IExtension {
+	private Object style;
 
-	public String getStyle() {
+	public Object getStyle() {
     	return style;
     }
 
-	public void setStyle(String style) {
+	public void setStyle(Object style) {
     	this.style = style;
     }
 	
-	static public NodeStyleModel getExtension(NodeModel node){
-		return (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+	static public LogicalStyleModel getExtension(NodeModel node){
+		return (LogicalStyleModel) node.getExtension(LogicalStyleModel.class);
 	}
 	
-	static public NodeStyleModel createExtension(NodeModel node){
-		NodeStyleModel extension = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+	static public Object getStyle(NodeModel node){
+		final LogicalStyleModel extension = getExtension(node);
 		if(extension == null){
-			extension = new NodeStyleModel();
+			return MapStyleModel.DEFAULT_STYLE;
+		}
+		final Object style = extension.getStyle();
+		if(style == null){
+			return MapStyleModel.DEFAULT_STYLE;
+		}
+		return style ;
+	}
+	
+	static public LogicalStyleModel createExtension(NodeModel node){
+		LogicalStyleModel extension = (LogicalStyleModel) node.getExtension(LogicalStyleModel.class);
+		if(extension == null){
+			extension = new LogicalStyleModel();
 			node.addExtension(extension);
 		}
 		return extension;

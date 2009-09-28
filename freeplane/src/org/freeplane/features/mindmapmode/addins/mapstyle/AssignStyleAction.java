@@ -25,18 +25,22 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.addins.mapstyle.LogicalStyleController;
+import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
 
 /**
  * @author Dimitry Polivaev
  * 28.09.2009
  */
+@SelectableAction(checkOnNodeChange=true)
 public class AssignStyleAction extends AMultipleNodeAction {
-	final private String style;
-	public AssignStyleAction(String style, Controller controller, String title, ImageIcon icon) {
-	    super("AssignStyleAction." + style, controller, title, icon);
+	final private Object style;
+	public AssignStyleAction(Object style, Controller controller, String title, ImageIcon icon) {
+	    super("AssignStyleAction." + NamedObject.toKeyString(style), controller, title, icon);
 	    this.style = style;
     }
 
@@ -51,4 +55,11 @@ public class AssignStyleAction extends AMultipleNodeAction {
 		controller.setStyle(node, style);
 		
     }
+
+	@Override
+    public void setSelected() {
+		setSelected(style.equals(LogicalStyleModel.getStyle(getController().getSelection().getSelected())));
+    }
+	
+	
 }

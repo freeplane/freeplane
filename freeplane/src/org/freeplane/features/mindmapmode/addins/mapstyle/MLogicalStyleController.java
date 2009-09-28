@@ -20,10 +20,16 @@
 package org.freeplane.features.mindmapmode.addins.mapstyle;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.JMenu;
 
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.modecontroller.IMapChangeListener;
+import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -33,7 +39,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 import org.freeplane.features.common.addins.mapstyle.LogicalStyleController;
-import org.freeplane.features.common.addins.mapstyle.NodeStyleModel;
+import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
 
 /**
  * @author Dimitry Polivaev
@@ -42,10 +48,12 @@ import org.freeplane.features.common.addins.mapstyle.NodeStyleModel;
 public class MLogicalStyleController extends LogicalStyleController {
 
 	private ModeController modeController;
+	final private List<AssignStyleAction> actions;
 
 	public MLogicalStyleController(ModeController modeController) {
 	    super(modeController);
 	    this.modeController = modeController;
+	    actions = new LinkedList<AssignStyleAction>();
 	    final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 	    modeController.getController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void beforeMapChange(MapModel oldMap, MapModel newMap) {
@@ -60,7 +68,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 		});
 	    
-	    modeController.getMapController().addMapChangeListener(new IMapChangeListener() {
+	    final MapController mapController = modeController.getMapController();
+		mapController.addMapChangeListener(new IMapChangeListener() {
 			public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
 			}
 			
@@ -83,10 +92,20 @@ public class MLogicalStyleController extends LogicalStyleController {
 				}
 			}
 		});
+		mapController.addNodeSelectionListener(new INodeSelectionListener() {
+			public void onSelect(NodeModel node) {
+				selectActions();
+			}
+			
+			public void onDeselect(NodeModel node) {
+
+			}
+		});
     }
 	
 	protected void removeStyleMenu(MenuBuilder menuBuilder, final String formatMenuString) {
 		menuBuilder.removeChildElements(formatMenuString + "/styles/assign");
+		actions.clear();
 	    
     }
 
@@ -98,32 +117,40 @@ public class MLogicalStyleController extends LogicalStyleController {
 	    if(extension == null){
 	    	return;
 	    }
-		final Collection<Object> styles = extension.getStyles();
-	    for (Object style:styles){
-	    	final String key;
-	    	if(style instanceof NamedObject){
-	    		key = ((NamedObject)style).getObject().toString();
-	    	}
-	    	else{
-	    		key = style.toString();
-	    	}
-	    	final AssignStyleAction action = new AssignStyleAction(key, modeController.getController(), style.toString(), null);
-	    	menuBuilder.addAction(formatMenuString+ "/styles/assign", action, MenuBuilder.AS_CHILD);
-	    }
+	    final NodeModel rootNode = extension.getStyleMap().getRootNode();
+	    addStyleMenu(menuBuilder, formatMenuString+ "/styles/assign", rootNode);
+    }
+
+	private void addStyleMenu(MenuBuilder menuBuilder, String category, NodeModel rootNode) {
+		final List<NodeModel> children = rootNode.getChildren();
+		for(NodeModel child:children){
+		    Object style = child.getUserObject();
+			if(child.hasChildren()){
+				final String newCategory = category + '/' + style;
+				menuBuilder.addMenuItem(category, new JMenu(style.toString()), newCategory, MenuBuilder.AS_CHILD);
+				addStyleMenu(menuBuilder, newCategory, child);
+			}
+			else{
+			    final AssignStyleAction action = new AssignStyleAction(style, modeController.getController(), style.toString(), null);
+			    actions.add(action);
+			    menuBuilder.addAction(category, action, MenuBuilder.AS_CHILD);
+			}
+		}
 	    
     }
 
-	public void setStyle(final NodeModel node, final String style)
+	public void setStyle(final NodeModel node, final Object style)
 	{
-		final NodeStyleModel model = NodeStyleModel.createExtension(node);
-		final String oldStyle = model.getStyle();
+		final LogicalStyleModel model = LogicalStyleModel.createExtension(node);
+		final Object oldStyle = model.getStyle();
 	    if(oldStyle != null && oldStyle.equals(style) || oldStyle == style){
 	    	return;
 	    }
 		IActor actor = new IActor() {
 			public void undo() {
 				model.setStyle(oldStyle);
-				modeController.getMapController().nodeChanged(node, NodeStyleModel.class, style, oldStyle);
+				modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, style, oldStyle);
+				selectActions();
 			}
 			
 			public String getDescription() {
@@ -132,9 +159,16 @@ public class MLogicalStyleController extends LogicalStyleController {
 			
 			public void act() {
 				model.setStyle(style);
-				modeController.getMapController().nodeChanged(node, NodeStyleModel.class, oldStyle, style);
+				modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
+				selectActions();
 			}
 		};
 		modeController.execute(actor, node.getMap());
 	}
+
+	 void selectActions() {
+	    for(AssignStyleAction action:actions){
+	    	action.setSelected();
+	    }
+    }
 }

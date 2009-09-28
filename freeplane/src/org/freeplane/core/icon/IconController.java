@@ -35,6 +35,7 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
 import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 import org.freeplane.features.common.cloud.CloudModel;
 
@@ -84,10 +85,10 @@ public class IconController implements IExtension {
 				return arrayList;
 			}
 		});
-		addIconGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<List<MindIcon>, NodeModel>() {
+		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<List<MindIcon>, NodeModel>() {
 			public List<MindIcon> getProperty(final NodeModel node, final List<MindIcon> currentValue) {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-                final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+                final NodeModel styleNode = model.getStyleNode(LogicalStyleModel.getStyle(node));
 				final List<MindIcon> styleIcons ;
 				if(styleNode.equals(node)){
 					styleIcons = Collections.emptyList(); 

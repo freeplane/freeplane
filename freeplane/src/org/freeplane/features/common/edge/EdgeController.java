@@ -33,6 +33,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
 import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
@@ -86,6 +87,11 @@ public class EdgeController implements IExtension {
 				return edge == null ? null : edge.getColor();
 			}
 		});
+		addColorGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node, final Color currentValue) {
+				return getStyleEdgeColor(node.getMap(), LogicalStyleModel.getStyle(node));
+			}
+		});
 		addColorGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return getStyleEdgeColor(node.getMap(), MapStyleModel.DEFAULT_STYLE);
@@ -103,6 +109,11 @@ public class EdgeController implements IExtension {
 			public EdgeStyle getProperty(final NodeModel node, final EdgeStyle currentValue) {
 				final EdgeModel edge = EdgeModel.getModel(node);
 				return edge == null ? null : edge.getStyle();
+			}
+		});
+		addStyleGetter(IPropertyHandler.STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {
+			public EdgeStyle getProperty(final NodeModel node, final EdgeStyle currentValu) {
+				return getStyleStyle(node.getMap(), LogicalStyleModel.getStyle(node));
 			}
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {
@@ -126,6 +137,12 @@ public class EdgeController implements IExtension {
 				return width == EdgeModel.DEFAULT_WIDTH ? null : width;
 			}
 		});
+		addWidthGetter(IPropertyHandler.STYLE, new IPropertyHandler<Integer, NodeModel>() {
+			public Integer getProperty(final NodeModel node, final Integer currentValue) {
+				return getStyleWidth(node.getMap(), LogicalStyleModel.getStyle(node));
+			}
+		});
+		
 		addWidthGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<Integer, NodeModel>() {
 			public Integer getProperty(final NodeModel node, final Integer currentValue) {
 				return getStyleWidth(node.getMap(), MapStyleModel.DEFAULT_STYLE);

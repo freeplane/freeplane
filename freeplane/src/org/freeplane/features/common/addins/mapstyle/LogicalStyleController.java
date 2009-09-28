@@ -31,6 +31,7 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.NamedObject;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.addins.mapstyle.MLogicalStyleController;
 
@@ -44,22 +45,34 @@ public class LogicalStyleController implements IExtension{
 		final ReadManager readManager = mapController.getReadManager();
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE_REF", new IAttributeHandler() {
 			public void setAttribute(Object node, String value) {
-				final NodeStyleModel extension = NodeStyleModel.createExtension((NodeModel) node);
+				final LogicalStyleModel extension = LogicalStyleModel.createExtension((NodeModel) node);
 				extension.setStyle(value);
+			}
+		});
+		readManager.addAttributeHandler(NodeBuilder.XML_NODE, "LOCALIZED_STYLE_REF", new IAttributeHandler() {
+			public void setAttribute(Object node, String value) {
+				final LogicalStyleModel extension = LogicalStyleModel.createExtension((NodeModel) node);
+				extension.setStyle(new NamedObject(value));
 			}
 		});
 		final WriteManager writeManager = mapController.getWriteManager();
 		writeManager.addAttributeWriter(NodeBuilder.XML_NODE, new IAttributeWriter() {
 			public void writeAttributes(ITreeWriter writer, Object node, String tag) {
-				final NodeStyleModel extension = NodeStyleModel.getExtension((NodeModel) node);
+				final LogicalStyleModel extension = LogicalStyleModel.getExtension((NodeModel) node);
 				if(extension == null){
 					return;
 				}
-				final String style = extension.getStyle();
-				if(style == null){
+				final Object style = extension.getStyle();
+				if(style == null || style.equals(MapStyleModel.DEFAULT_STYLE)){
 					return;
 				}
-				writer.addAttribute("STYLE_REF", style);
+				String value = NamedObject.toKeyString(style);
+				if(style instanceof NamedObject){
+					writer.addAttribute("LOCALIZED_STYLE_REF", value);
+				}
+				else{
+					writer.addAttribute("STYLE_REF", value);
+				}
 			}
 		});
 	}

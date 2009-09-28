@@ -75,5 +75,10 @@ public class NamedObject {
 	    return 37 * object.hashCode() + name.hashCode();
     }
 	
-	
+	static public String toKeyString(Object obj){
+		if(obj instanceof NamedObject){
+			return ((NamedObject)obj).getObject().toString();
+		}
+		return obj.toString();
+	}
 }
