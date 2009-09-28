@@ -24,6 +24,7 @@ import java.util.HashSet;
 import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -44,7 +45,7 @@ public class SelectedViewSnapshotCondition implements ICondition {
 		selectedNodes.addAll(controller.getSelection().getSelection());
 	}
 
-	public boolean checkNode(final NodeModel node) {
+	public boolean checkNode(ModeController modeController, final NodeModel node) {
 		return selectedNodes.contains(node);
 	}
 

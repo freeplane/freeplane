@@ -19,18 +19,30 @@
  */
 package org.freeplane.core.icon;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.modecontroller.CombinedPropertyChain;
+import org.freeplane.core.modecontroller.ExclusivePropertyChain;
+import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
+import org.freeplane.features.common.cloud.CloudModel;
 
 /**
  * @author Dimitry Polivaev
  */
 public class IconController implements IExtension {
+	final private CombinedPropertyChain< List<MindIcon>, NodeModel> iconHandlers;
+
 	public static IconController getController(final ModeController modeController) {
 		return (IconController) modeController.getExtension(IconController.class);
 	}
@@ -50,14 +62,62 @@ public class IconController implements IExtension {
 
 	public IconController(final ModeController modeController) {
 		super();
+		iconHandlers = new CombinedPropertyChain<List<MindIcon>, NodeModel>();
 		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final IconBuilder textBuilder = new IconBuilder(IconStoreFactory.create());
 		textBuilder.registerBy(readManager);
+		addIconGetter(IPropertyHandler.NODE, new IPropertyHandler<List<MindIcon>, NodeModel>() {
+			public List<MindIcon> getProperty(final NodeModel node, final List<MindIcon> currentValue) {
+				final List<MindIcon> icons = node.getIcons();
+				if(currentValue.isEmpty()){
+					return icons;
+				}
+				if(icons.isEmpty()){
+					return currentValue;
+				}
+				final ArrayList<MindIcon> arrayList = new ArrayList<MindIcon>(icons.size() + currentValue.size());
+				arrayList.addAll(currentValue);
+				arrayList.addAll(icons);
+				return arrayList;
+			}
+		});
+		addIconGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<List<MindIcon>, NodeModel>() {
+			public List<MindIcon> getProperty(final NodeModel node, final List<MindIcon> currentValue) {
+				final List<MindIcon> styleIcons = getStyleIcons(node.getMap(), MapStyleModel.DEFAULT_STYLE);
+				return styleIcons;
+			}
+		});
 	}
+
+	protected List<MindIcon> getStyleIcons(MapModel map, Object styleKey) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNode(styleKey);
+		return styleNode.getIcons();
+    }
 
 	public ModeController getModeController() {
 		return modeController;
 	}
+	public IPropertyHandler<List<MindIcon>, NodeModel> addIconGetter(final Integer key,
+		final IPropertyHandler<List<MindIcon>, NodeModel> getter) {
+		return iconHandlers.addGetter(key, getter);
+	}
+
+	public IPropertyHandler<List<MindIcon>, NodeModel> removeIconGetter(final Integer key,
+		final IPropertyHandler<List<MindIcon>, NodeModel> getter) {
+		return iconHandlers.addGetter(key, getter);
+	}
+	
+	public List<MindIcon> getIcons(NodeModel node){
+		return iconHandlers.getProperty(node);
+	}
+
+	public static List<MindIcon> getIcons(ModeController modeController, final NodeModel node) {
+    	IconController iconController = getController(modeController);
+        final List<MindIcon> icons = iconController.getIcons(node);
+        return icons;
+    }
+
 }

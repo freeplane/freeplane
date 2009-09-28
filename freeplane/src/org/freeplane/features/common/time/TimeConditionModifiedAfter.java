@@ -23,6 +23,7 @@ import java.util.Date;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 
@@ -38,8 +39,8 @@ class TimeConditionModifiedAfter extends TimeConditionModifiedBefore implements 
 	}
 
 	@Override
-	public boolean checkNode(final NodeModel node) {
-		return !super.checkNode(node);
+	public boolean checkNode(ModeController modeController, final NodeModel node) {
+		return !super.checkNode(modeController, node);
 	}
 
 	@Override

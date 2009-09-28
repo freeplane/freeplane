@@ -23,6 +23,7 @@ import org.freeplane.core.filter.condition.CompareConditionAdapter;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.HtmlTools;
@@ -51,7 +52,7 @@ class NodeCompareCondition extends CompareConditionAdapter {
 		this.succeed = succeed;
 	}
 
-	public boolean checkNode(final NodeModel node) {
+	public boolean checkNode(ModeController modeController, final NodeModel node) {
 		final String text = node.getText();
 		return checkText(text) || HtmlTools.isHtmlNode(text) && checkText(node.getPlainTextContent());
 	}

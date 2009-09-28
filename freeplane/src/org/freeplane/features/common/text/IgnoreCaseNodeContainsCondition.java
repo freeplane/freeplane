@@ -22,6 +22,7 @@ package org.freeplane.features.common.text;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NodeCondition;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.HtmlTools;
@@ -42,7 +43,7 @@ class IgnoreCaseNodeContainsCondition extends NodeCondition {
 		this.value = value.toLowerCase();
 	}
 
-	public boolean checkNode(final NodeModel node) {
+	public boolean checkNode(ModeController modeController, final NodeModel node) {
 		final String text = node.getText();
 		return checkText(text) || HtmlTools.isHtmlNode(text) && checkText(node.getPlainTextContent());
 	}

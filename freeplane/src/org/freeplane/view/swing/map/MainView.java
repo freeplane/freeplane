@@ -35,6 +35,7 @@ import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -47,6 +48,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.core.icon.IconController;
 import org.freeplane.core.icon.IconStore;
 import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.icon.UIIcon;
@@ -321,7 +323,8 @@ public abstract class MainView extends JLabel {
 			iconPresent = true;
 			iconImages.addImage(iconEntry.getValue().getIcon());
 		}
-		for(MindIcon myIcon : model.getIcons()) {
+		final List<MindIcon> icons = IconController.getIcons(getMap().getModeController(), model);
+		for(MindIcon myIcon : icons) {
 			iconPresent = true;
 			iconImages.addImage(myIcon.getIcon());
 		}

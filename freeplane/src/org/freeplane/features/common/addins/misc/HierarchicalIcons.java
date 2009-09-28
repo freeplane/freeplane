@@ -28,6 +28,7 @@ import java.util.TreeSet;
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.icon.IconController;
 import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.modecontroller.IMapChangeListener;
@@ -197,7 +198,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			final NodeModel child = childrenUnfolded.next();
 			addAccumulatedIconsToTreeSet(child, iconSet, nodeIconSets.get(child));
 		}
-		for(MindIcon icon : node.getIcons()) {
+		for(MindIcon icon : IconController.getIcons(getModeController(), node)) {
 			iconSet.remove(icon);
 		}
 		boolean dirty = true;

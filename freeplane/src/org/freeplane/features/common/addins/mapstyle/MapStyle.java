@@ -95,7 +95,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		public void endElement(Object parent, String tag, Object userObject, XMLElement attributes, String content) {
 			super.endElement(parent, tag, userObject, attributes);
 			final NodeModel node = (NodeModel) userObject;
-			MapStyleModel.getExtension(node).createStyleMap(getModeController(), content);
+			final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
+			mapStyleModel.createStyleMap(getModeController(), content);
+			node.getMap().getIconRegistry().addIcons(mapStyleModel.getStyleMap());
         }
 	}
 

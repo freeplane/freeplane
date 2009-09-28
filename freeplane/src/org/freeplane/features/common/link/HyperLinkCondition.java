@@ -25,6 +25,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -45,7 +46,7 @@ public abstract class HyperLinkCondition implements ICondition {
 
 	abstract protected boolean checkLink(final URI nodeLink);
 
-	public boolean checkNode(final NodeModel node) {
+	public boolean checkNode(ModeController modeController, final NodeModel node) {
 		final NodeLinks model = NodeLinks.getModel(node);
 		if (model == null) {
 			return false;

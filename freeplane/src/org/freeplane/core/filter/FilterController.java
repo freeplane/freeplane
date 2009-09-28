@@ -200,7 +200,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	void applyFilter(final boolean force) {
 		final Filter filter = createFilter();
-		filter.applyFilter(getController().getMap(), force);
+		filter.applyFilter(getController().getModeController(), getController().getMap(), force);
 		final boolean isActive = filter.getCondition() != null;
 		applyToVisibleNodeOnly.setSelected(isActive);
 		history.add(filter);

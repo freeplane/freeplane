@@ -24,6 +24,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
@@ -60,9 +61,9 @@ public class DisjunctConditions implements ICondition {
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
-	public boolean checkNode(final NodeModel node) {
+	public boolean checkNode(ModeController modeController, final NodeModel node) {
 		for(ICondition condition : conditions) {
-			if (condition.checkNode(node)) {
+			if (condition.checkNode(modeController, node)) {
 				return true;
 			}
 		}

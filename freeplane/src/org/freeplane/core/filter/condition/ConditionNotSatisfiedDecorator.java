@@ -24,6 +24,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
@@ -59,8 +60,8 @@ public class ConditionNotSatisfiedDecorator implements ICondition {
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
-	public boolean checkNode(final NodeModel node) {
-		return !originalCondition.checkNode(node);
+	public boolean checkNode(ModeController modeController, final NodeModel node) {
+		return !originalCondition.checkNode(modeController, node);
 	}
 
 	/*

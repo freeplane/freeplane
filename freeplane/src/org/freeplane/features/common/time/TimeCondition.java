@@ -60,29 +60,6 @@ abstract class TimeCondition implements ICondition {
 		return DateFormat.getDateInstance(DateFormat.MEDIUM).format(date);
 	}
 
-	static public int iconFirstIndex(final NodeModel node, final String iconName) {
-		final List<MindIcon> icons = node.getIcons();
-		for (final ListIterator<MindIcon> i = icons.listIterator(); i.hasNext();) {
-			final MindIcon nextIcon = i.next();
-			if (iconName.equals(nextIcon.getName())) {
-				return i.previousIndex();
-			}
-		}
-		return -1;
-	}
-
-	static public int iconLastIndex(final NodeModel node, final String iconName) {
-		final List<MindIcon> icons = node.getIcons();
-		final ListIterator<MindIcon> i = icons.listIterator(icons.size());
-		while (i.hasPrevious()) {
-			final MindIcon nextIcon = i.previous();
-			if (iconName.equals(nextIcon.getName())) {
-				return i.nextIndex();
-			}
-		}
-		return -1;
-	}
-
 	final private Date date;
 	private String description;
 	private JComponent renderer;

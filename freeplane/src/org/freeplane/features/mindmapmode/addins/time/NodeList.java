@@ -72,6 +72,7 @@ import javax.swing.text.Document;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
+import org.freeplane.core.icon.IconController;
 import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
@@ -247,8 +248,8 @@ class NodeList {
 		final private String iconNames;
 		List<MindIcon> icons = new ArrayList<MindIcon>();
 
-		public IconsHolder(final NodeModel node) {
-			icons.addAll(node.getIcons());
+		public IconsHolder(ModeController modeController, final NodeModel node) {
+			icons.addAll(IconController.getIcons(modeController, node));
 			if(icons.size() > 0) {
 				final List<MindIcon> toSort = new ArrayList<MindIcon>(icons);
 				Collections.sort(toSort);
@@ -925,7 +926,7 @@ class NodeList {
 			date = new Date(hook.getRemindUserAt());
 		}
 		if (showAllNodes || hook != null) {
-			model.addRow(new Object[] { date, new NodeHolder(node), new IconsHolder(node),
+			model.addRow(new Object[] { date, new NodeHolder(node), new IconsHolder(modeController, node),
 			        node.getHistoryInformation().getCreatedAt(), node.getHistoryInformation().getLastModifiedAt(),
 			        new NotesHolder(node) });
 		}

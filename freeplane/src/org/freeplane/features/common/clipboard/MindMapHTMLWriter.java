@@ -24,8 +24,10 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 
+import org.freeplane.core.icon.IconController;
 import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.NodeModel;
@@ -345,10 +347,11 @@ class MindMapHTMLWriter {
 	}
 
 	private void writeIcons(final NodeModel model) throws IOException {
-		for (int i = 0; i < model.getIcons().size(); ++i) {
-			final String iconFileName = ((MindIcon) model.getIcons().get(i)).getFileName().substring(1);
+		final List<MindIcon> icons = IconController.getIcons(mapController.getModeController(), model);
+		for (int i = 0; i < icons.size(); ++i) {
+			final String iconFileName = ((MindIcon) icons.get(i)).getFileName().substring(1);
 			fileout.write("<img src=\"" + iconFileName + "\" alt=\""
-			        + ((MindIcon) model.getIcons().get(i)).getDescription() + "\">");
+			        + ((MindIcon) icons.get(i)).getDescription() + "\">");
 		}
 	}
 

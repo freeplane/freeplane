@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.JCondition;
 import org.freeplane.core.icon.factory.IconStoreFactory;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -41,8 +42,8 @@ class IconContainedCondition implements ICondition {
 	static final String ICON = "ICON";
 	static final String NAME = "icon_contained_condition";
 
-	static public int iconFirstIndex(final NodeModel node, final String iconName) {
-		final List<MindIcon> icons = node.getIcons();
+	static private int iconFirstIndex(ModeController modeController, final NodeModel node, final String iconName) {		
+		final List<MindIcon> icons = IconController.getIcons(modeController, node);
 		for (final ListIterator<MindIcon> i = icons.listIterator(); i.hasNext();) {
 			final MindIcon nextIcon = i.next();
 			if (iconName.equals(nextIcon.getName())) {
@@ -52,8 +53,8 @@ class IconContainedCondition implements ICondition {
 		return -1;
 	}
 
-	static public int iconLastIndex(final NodeModel node, final String iconName) {
-		final List<MindIcon> icons = node.getIcons();
+	static private int iconLastIndex(ModeController modeController, final NodeModel node, final String iconName) {
+		final List<MindIcon> icons = IconController.getIcons(modeController, node);
 		final ListIterator<MindIcon> i = icons.listIterator(icons.size());
 		while (i.hasPrevious()) {
 			final MindIcon nextIcon = i.previous();
@@ -85,8 +86,8 @@ class IconContainedCondition implements ICondition {
 		this.iconName = iconName;
 	}
 
-	public boolean checkNode(final NodeModel node) {
-		return IconContainedCondition.iconFirstIndex(node, iconName) != -1
+	public boolean checkNode(ModeController modeController, final NodeModel node) {
+		return IconContainedCondition.iconFirstIndex(modeController, node, iconName) != -1
 		        || IconContainedCondition.isStateIconContained(node, iconName);
 	}
 

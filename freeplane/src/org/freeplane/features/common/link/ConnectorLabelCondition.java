@@ -26,6 +26,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -57,7 +58,7 @@ public abstract class ConnectorLabelCondition implements ICondition {
 
 	abstract protected boolean checkLink(final ConnectorModel connector);
 
-	public boolean checkNode(final NodeModel node) {
+	public boolean checkNode(ModeController modeController, final NodeModel node) {
 		final NodeLinks nodeLinks = NodeLinks.getModel(node);
 		if(nodeLinks != null){
 			for(LinkModel l:nodeLinks.getLinks()){

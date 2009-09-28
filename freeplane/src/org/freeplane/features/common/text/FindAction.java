@@ -147,7 +147,7 @@ class FindAction extends AFreeplaneAction {
 				continue;
 			}
 			findNodeQueue = nodes;
-			final boolean found = condition.checkNode(node);
+			final boolean found = condition.checkNode(getModeController(), node);
 			if (found) {
 				displayNode(node, findNodesUnfoldedByLastFind);
 				getModeController().getMapController().select(node);
