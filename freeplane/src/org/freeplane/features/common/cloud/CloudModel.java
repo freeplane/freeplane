@@ -43,6 +43,7 @@ public class CloudModel implements IExtension {
 
 	private Color color;
 	public CloudModel() {
+		color = CloudController.getStandardColor();
 	}
 
 	public Color getColor() {
@@ -50,6 +51,6 @@ public class CloudModel implements IExtension {
 	}
 
 	public void setColor(final Color color) {
-		this.color = color;
+		this.color = color != null ? color : CloudController.getStandardColor();
 	}
 }

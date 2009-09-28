@@ -45,7 +45,7 @@ public class MCloudController extends CloudController {
 		if ((cloud != null) == enable) {
 			return;
 		}
-		final Color color = cloud != null ? cloud.getColor() : null;
+		final Color color = cloud != null ? cloud.getColor() :  getStandardColor();
 		final ModeController modeController = getModeController();
 		final IActor actor = new IActor() {
 			public void act() {
