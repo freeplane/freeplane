@@ -142,8 +142,17 @@ public class MapStyleModel implements IExtension {
 	    	}
 	    	return;
 	    }
+	    addStyleNode(node);
+    }
+
+	public void addStyleNode(NodeModel node) {
 	    final Object userObject = node.getUserObject();
 	    styleNodes.put(userObject, node);
+    }
+
+	public void removeStyleNode(NodeModel node) {
+	    final Object userObject = node.getUserObject();
+	    styleNodes.remove(userObject);
     }
 
 	private NodeModel load(final URL url, final MapReader mapReader, final MapModel map) throws Exception {

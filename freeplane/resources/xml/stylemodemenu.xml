@@ -2,6 +2,8 @@
 <menu_structure>
 	<menu_category name="menu_bar">
 		<menu_submenu name="edit" name_ref="edit">
+		<menu_action action="NewStyleAction" accelerator="ENTER" />
+		<menu_action action="DeleteStyleAction" accelerator="DELETE" />
 			<menu_category name="UndoAction">
 				<menu_action action="UndoAction" accelerator="control Z" />
 				<menu_action action="RedoAction" accelerator="control Y" />

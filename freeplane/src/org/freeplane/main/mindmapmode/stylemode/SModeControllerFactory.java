@@ -93,6 +93,8 @@ public class SModeControllerFactory {
 		controller.addAction(new ViewLayoutTypeAction(controller, Layout.OUTLINE));
 		controller.addAction(new ShowSelectionAsRectangleAction(controller));
 		modeController = new SModeController(controller);
+		modeController.addAction(new NewStyleAction(controller));
+		modeController.addAction(new DeleteStyleAction(controller));
         final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
         userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener(modeController));
         modeController.setUserInputListenerFactory(userInputListenerFactory);
