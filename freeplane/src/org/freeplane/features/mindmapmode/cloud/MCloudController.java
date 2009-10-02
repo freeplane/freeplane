@@ -28,6 +28,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
+import org.freeplane.features.mindmapmode.addins.mapstyle.MLogicalStyleController;
 
 /**
  * @author Dimitry Polivaev
@@ -38,6 +39,7 @@ public class MCloudController extends CloudController {
 		final Controller controller = modeController.getController();
 		modeController.addAction(new CloudAction(controller));
 		modeController.addAction(new CloudColorAction(controller));
+		modeController.getMapController().addNodeChangeListener(new MLogicalStyleController.StyleRemover(CloudModel.class));
 	}
 
 	public void setCloud(final NodeModel node, final boolean enable) {

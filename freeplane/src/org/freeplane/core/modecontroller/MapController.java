@@ -517,7 +517,7 @@ public class MapController extends SelectionController {
 				node.getHistoryInformation().setLastModifiedAt(new Date());
 			}
 		}
-		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue);
+		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(modeController, node, property, oldValue, newValue);
 		fireNodeChanged(node, nodeChangeEvent);
 	}
 
@@ -537,7 +537,7 @@ public class MapController extends SelectionController {
 	}
 
 	public void refreshMapFrom(final NodeModel node) {
-		final NodeChangeEvent event = new NodeChangeEvent(node, NodeChangeType.REFRESH, null, null);
+		final NodeChangeEvent event = new NodeChangeEvent(modeController, node, NodeChangeType.REFRESH, null, null);
 		refreshMap(node, event);
 	}
 

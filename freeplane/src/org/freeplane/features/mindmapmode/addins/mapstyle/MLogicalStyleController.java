@@ -25,12 +25,15 @@ import java.util.List;
 
 import javax.swing.JMenu;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.modecontroller.IMapChangeListener;
+import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.NamedObject;
@@ -40,12 +43,61 @@ import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 import org.freeplane.features.common.addins.mapstyle.LogicalStyleController;
 import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
+import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 /**
  * @author Dimitry Polivaev
  * 28.09.2009
  */
 public class MLogicalStyleController extends LogicalStyleController {
+	
+	public static class  StyleRemover implements INodeChangeListener{
+		private Class<? extends IExtension> clazz;
+		public StyleRemover(Class<? extends IExtension> clazz){
+			this.clazz = clazz;
+		}
+		public void nodeChanged(NodeChangeEvent event) {
+	        final ModeController modeController = event.getModeController();
+			if(modeController == null || modeController.isUndoAction()){
+	        	return ;
+	        }
+	        if(! event.getProperty().equals(LogicalStyleModel.class)){
+	        	return;
+	        }
+	        final NodeModel node = event.getNode();
+	        final IExtension model = node.getExtension(clazz);
+	    	if(model == null){
+	    		return;
+	    	}
+	        final MapModel map = node.getMap();
+	        final Object styleKey = event.getNewValue();
+	       	final MapStyleModel mapStyles = MapStyleModel.getExtension(map);
+	    	final NodeModel styleNode = mapStyles.getStyleNode(styleKey);
+	    	final IExtension styleModel = styleNode.getExtension(clazz);
+	    	if(styleModel == null){
+	    		return;
+	    	}
+	    	undoableRemoveExtensionInformation(modeController, node, styleModel, model);
+        }
+		protected void undoableRemoveExtensionInformation(ModeController modeController, final NodeModel node, IExtension styleModel, final IExtension model) {
+	        IActor actor = new IActor() {
+				public void undo() {
+					node.addExtension(model);
+				}
+				
+				public String getDescription() {
+					return "undoableRemoveExtensionInformation";
+				}
+				
+				public void act() {
+					node.removeExtension(clazz);
+				}
+			};
+			modeController.execute(actor, node.getMap());
+        }
+
+	};
+
 
 	private ModeController modeController;
 	final private List<AssignStyleAction> actions;
@@ -144,6 +196,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		final LogicalStyleModel model = LogicalStyleModel.createExtension(node);
 		final Object oldStyle = model.getStyle();
 	    if(oldStyle != null && oldStyle.equals(style) || oldStyle == style){
+			modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
 	    	return;
 	    }
 		IActor actor = new IActor() {

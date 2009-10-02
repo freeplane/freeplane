@@ -24,18 +24,59 @@ import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.modecontroller.NodeChangeEvent;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
+import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.mindmapmode.addins.mapstyle.MLogicalStyleController;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MNodeStyleController extends NodeStyleController {
+	
+	private class StyleRemover extends MLogicalStyleController.StyleRemover{
+
+		public StyleRemover() {
+	        super(NodeStyleModel.class);
+        }
+
+		@Override
+        protected void undoableRemoveExtensionInformation(ModeController modeController, NodeModel node,
+                                                          IExtension styleModel, IExtension model) {
+	    	if(null != ((NodeStyleModel) styleModel).isBold()){
+	    		setBold(node, null);
+	    	}
+	    	if(null != ((NodeStyleModel) styleModel).isItalic()){
+	    		setItalic(node, null);
+	    	}
+	    	if(null != ((NodeStyleModel) styleModel).getFontFamilyName()){
+	    		setFontFamily(node, null);
+	    	}
+	    	if(null != ((NodeStyleModel) styleModel).getFontSize()){
+	    		setFontSize(node, null);
+	    	}
+	    	if(null != ((NodeStyleModel) styleModel).getShape()){
+	    		setShape(node, null);
+	    	}
+	    	if(null != ((NodeStyleModel) styleModel).getColor()){
+	    		setColor(node, null);
+	    	}
+	    	if(null != ((NodeStyleModel) styleModel).getBackgroundColor()){
+	    		setBackgroundColor(node, null);
+	    	}
+        }
+
+	};
 	FontFamilyAction fontFamilyAction;
 	FontSizeAction fontSizeAction;
 
@@ -83,6 +124,7 @@ public class MNodeStyleController extends NodeStyleController {
 		mapController.addNodeChangeListener(menuContributor);
 		mapController.addNodeSelectionListener(menuContributor);
 		mapController.addMapChangeListener(menuContributor);
+		mapController.addNodeChangeListener(new StyleRemover());
 	}
 
 	public void copyStyle(final NodeModel source, final NodeModel target) {

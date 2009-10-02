@@ -498,7 +498,7 @@ public class NodeModel implements MutableTreeNode {
 			return;
 		}
 		this.folded = folded;
-		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(!folded), Boolean
+		fireNodeChanged(new NodeChangeEvent(null, this, NodeChangeType.FOLDING, Boolean.valueOf(!folded), Boolean
 		    .valueOf(folded)));
 	}
 

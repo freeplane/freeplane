@@ -26,9 +26,11 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
+import org.freeplane.features.mindmapmode.addins.mapstyle.MLogicalStyleController;
 
 /**
  * @author Dimitry Polivaev
@@ -51,6 +53,8 @@ public class MEdgeController extends EdgeController {
 		modeController.addAction(new EdgeStyleAction(modeController, EdgeStyle.EDGESTYLE_HORIZONTAL));
 		modeController.addAction(new EdgeStyleAction(modeController, EdgeStyle.EDGESTYLE_HIDDEN));
 		modeController.addAction(new EdgeStyleAsParentAction(modeController));
+		modeController.getMapController().addNodeChangeListener(new MLogicalStyleController.StyleRemover(EdgeModel.class));
+
 	}
 
 	public void setColor(final NodeModel node, final Color color) {
