@@ -45,9 +45,11 @@ import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IPropertyControlCreator;
@@ -55,7 +57,10 @@ import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.resources.ui.PropertyBean;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.features.common.addins.mapstyle.LogicalStyleController;
+import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.addins.mapstyle.MLogicalStyleController;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.features.mindmapnode.pattern.Pattern;
 import org.freeplane.features.mindmapnode.pattern.Patterns;
@@ -68,18 +73,6 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 @ActionLocationDescriptor(locations = "/menu_bar/format/nodes")
 public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener, INodeChangeListener,
         IReadCompletionListener, IExtension {
-	/**
-	 * Registers the property pages.
-	 *
-	 * @author foltin
-	 */
-	static class MyFreeplanePropertyListener implements IFreeplanePropertyListener {
-		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-			if (propertyName.startsWith(AutomaticLayout.AUTOMATIC_FORMAT_LEVEL)) {
-				AutomaticLayout.patterns = null;
-			}
-		}
-	}
 
 	public static class StylePatternListProperty extends PropertyBean implements IPropertyControl,
 	        ListSelectionListener {
@@ -239,9 +232,6 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		}
 	}
 
-	private static final String AUTOMATIC_FORMAT_LEVEL = "automaticFormat_level";
-	private static Patterns patterns = null;
-	private static final String TAB = "OptionPanel.accessories/plugins/AutomaticLayout.properties_PatternTabName";
 	private boolean setStyleActive = false;
 
 	/**
@@ -249,9 +239,6 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	 */
 	public AutomaticLayout(final ModeController modeController) {
 		super(modeController);
-		final MyFreeplanePropertyListener listener = new MyFreeplanePropertyListener();
-		ResourceController.getResourceController().addPropertyChangeListener(listener);
-		addPropertiesToOptionPanel();
 		modeController.getMapController().getReadManager().addReadCompletionListener(this);
 		getModeController().getMapController().addMapChangeListener(this);
 	}
@@ -264,19 +251,6 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	protected void add(final NodeModel node, final IExtension extension) {
 		super.add(node, extension);
 		setStyleRecursive(node);
-	}
-
-	private void addPropertiesToOptionPanel() {
-		final MModeController modeController = (MModeController) getModeController();
-		final OptionPanelBuilder controls = modeController.getOptionPanelBuilder();
-		controls.addTab(TAB);
-		final String SEPARATOR = "OptionPanel.separator.accessories/plugins/AutomaticLayout.properties_PatternSeparatorName";
-		controls.addSeparator(TAB, SEPARATOR, IndexedTree.AS_CHILD);
-		controls.addCreator(TAB + "/" + SEPARATOR, new IPropertyControlCreator() {
-			public IPropertyControl createControl() {
-				return new StylePatternListProperty(AUTOMATIC_FORMAT_LEVEL, modeController);
-			}
-		}, AUTOMATIC_FORMAT_LEVEL, IndexedTree.AS_CHILD);
 	}
 
 	@Override
@@ -337,16 +311,6 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			}
 		});
 	}
-
-	/** get styles from preferences: */
-	private void reloadPatterns() {
-		if (AutomaticLayout.patterns == null) {
-			final String property = ResourceController.getResourceController().getProperty(
-			    AutomaticLayout.AUTOMATIC_FORMAT_LEVEL);
-			AutomaticLayout.patterns = StylePatternFactory.getPatternsFromString(property);
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see freeplane.extensions.NodeHook#invoke(freeplane.modes.MindMapNode)
@@ -368,15 +332,22 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	}
 
 	private void setStyleImpl(final NodeModel node) {
-		final int depth = depth(node);
-		reloadPatterns();
-		int myIndex = AutomaticLayout.patterns.sizeChoiceList() - 1;
-		if (depth < AutomaticLayout.patterns.sizeChoiceList()) {
-			myIndex = depth;
-		}
-		final Pattern p = AutomaticLayout.patterns.getChoice(myIndex);
-		MPatternController.getController((getModeController())).applyPattern(node, p);
+		MLogicalStyleController styleController = (MLogicalStyleController) getModeController().getExtension(LogicalStyleController.class);
+		Object style = getStyle(node);
+		styleController.setStyle(node, style);
 	}
+
+	private Object getStyle(NodeModel node) {
+		final int depth = depth(node)+1;
+		final MapModel map = node.getMap();
+		final MapStyleModel extension = MapStyleModel.getExtension(map);
+		String name = "OptionPanel.level" + depth;
+		NamedObject obj = new NamedObject(name);
+		if(extension.getStyleNode(obj) != null){
+			return obj;
+		}
+		return MapStyleModel.DEFAULT_STYLE;
+    }
 
 	/**
 	 */

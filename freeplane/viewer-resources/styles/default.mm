@@ -1,11 +1,12 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <stylenode LOCALIZED_TEXT="styles" ID="ID_559162128" CREATED="1253390054678" MODIFIED="1253390054678">
-<stylenode LOCALIZED_TEXT="OptionPanel.default" POSITION="right" ID="ID_1938988684" CREATED="1253390054678" MODIFIED="1253390054678" COLOR="#000000" STYLE="fork">
+<stylenode LOCALIZED_TEXT="OptionPanel.default" POSITION="right" ID="ID_1938988684" CREATED="1253390054678" MODIFIED="1253390054678" STYLE="fork">
 <font NAME="Arial" SIZE="12"/>
 <edge STYLE="bezier" WIDTH="1"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="OptionPanel.level1" POSITION="right" ID="ID_223569769" CREATED="1253390054678" MODIFIED="1253390054678">
+<stylenode LOCALIZED_TEXT="OptionPanel.level1" POSITION="right" ID="ID_223569769" CREATED="1253390054678" MODIFIED="1253390054678"  COLOR="#000000">
+<font SIZE="20"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="OptionPanel.level2" ID="ID_779332051" CREATED="1253390054678" MODIFIED="1253390054678" COLOR="#0033ff">
 <font SIZE="18"/>

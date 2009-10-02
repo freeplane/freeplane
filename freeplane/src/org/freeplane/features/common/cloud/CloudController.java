@@ -107,6 +107,9 @@ public class CloudController implements IExtension {
 	protected CloudModel getStyleCloud(MapModel map, Object styleKey) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		final NodeModel styleNode = model.getStyleNode(styleKey);
+		if(styleNode == null){
+			return null;
+		}
 		final CloudModel styleModel = CloudModel.getModel(styleNode);
 		return styleModel;
     }

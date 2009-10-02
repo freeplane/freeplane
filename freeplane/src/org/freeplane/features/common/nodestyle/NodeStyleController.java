@@ -247,6 +247,9 @@ public class NodeStyleController implements IExtension {
 	private Color getStyleBackgroundColor(final MapModel map, Object styleKey) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		final NodeModel styleNode = model.getStyleNode(styleKey);
+		if(styleNode == null){
+			return null;
+		}
 		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
 		final Color styleColor = styleModel == null ? null : styleModel.getBackgroundColor();
 		return styleColor;
@@ -280,6 +283,9 @@ public class NodeStyleController implements IExtension {
     private Font getStyleFont(final Font baseFont, final MapModel map, Object styleKey) {
     	final MapStyleModel model = MapStyleModel.getExtension(map);
     	final NodeModel styleNode = model.getStyleNode(styleKey);
+		if(styleNode == null){
+			return baseFont;
+		}
     	final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
     	if(styleModel == null){
     		return baseFont;
@@ -319,6 +325,9 @@ public class NodeStyleController implements IExtension {
 	private String getStyleShape(final MapModel map, Object styleKey) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		final NodeModel styleNode = model.getStyleNode(styleKey);
+		if(styleNode == null){
+			return null;
+		}
 		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
 		final String shape = styleModel == null ? null : styleModel.getShape();
 		return shape;
@@ -327,13 +336,17 @@ public class NodeStyleController implements IExtension {
 	private Color getStyleTextColor(final MapModel map, Object styleKey) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		final NodeModel styleNode = model.getStyleNode(styleKey);
+		if(styleNode == null){
+			return null;
+		}
 		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
 		final Color styleColor = styleModel == null ? null : styleModel.getColor();
 		return styleColor;
 	}
 
 	public Font getFont(final NodeModel node) {
-		return fontHandlers.getProperty(node);
+		final Font font = fontHandlers.getProperty(node);
+		return font;
 	}
 
 	public String getFontFamilyName(final NodeModel node) {

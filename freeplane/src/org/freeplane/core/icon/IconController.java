@@ -90,7 +90,7 @@ public class IconController implements IExtension {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
                 final NodeModel styleNode = model.getStyleNode(LogicalStyleModel.getStyle(node));
 				final List<MindIcon> styleIcons ;
-				if(styleNode.equals(node)){
+				if(styleNode == null || styleNode.equals(node)){
 					styleIcons = Collections.emptyList(); 
 				}
 				else{

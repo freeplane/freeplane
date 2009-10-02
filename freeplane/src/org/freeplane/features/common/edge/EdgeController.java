@@ -230,6 +230,9 @@ public class EdgeController implements IExtension {
 	private Color getStyleEdgeColor(final MapModel map, Object styleKey) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		final NodeModel styleNode = model.getStyleNode(styleKey);
+		if(styleNode == null){
+			return null;
+		}
 		final EdgeModel styleModel = EdgeModel.getModel(styleNode);
 		final Color styleColor = styleModel == null ? null : styleModel.getColor();
 		return styleColor;
@@ -238,6 +241,9 @@ public class EdgeController implements IExtension {
 	private Integer getStyleWidth(MapModel map, Object styleKey) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		final NodeModel styleNode = model.getStyleNode(styleKey);
+		if(styleNode == null){
+			return null;
+		}
 		final EdgeModel styleModel = EdgeModel.getModel(styleNode);
 		if(styleModel == null) return null;
 		final int width = styleModel.getWidth();
@@ -247,6 +253,9 @@ public class EdgeController implements IExtension {
 	private EdgeStyle getStyleStyle(MapModel map, Object styleKey) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		final NodeModel styleNode = model.getStyleNode(styleKey);
+		if(styleNode == null){
+			return null;
+		}
 		final EdgeModel styleModel = EdgeModel.getModel(styleNode);
 		if(styleModel == null) return null;
 		final EdgeStyle style = styleModel == null ? null : styleModel.getStyle();
