@@ -71,7 +71,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 @NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
 @ActionLocationDescriptor(locations = "/menu_bar/format/nodes")
-public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener, INodeChangeListener,
+public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener,
         IReadCompletionListener, IExtension {
 
 	public static class StylePatternListProperty extends PropertyBean implements IPropertyControl,
@@ -269,17 +269,6 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	public void mapChanged(final MapChangeEvent event) {
 	}
 
-	public void nodeChanged(final NodeChangeEvent event) {
-		if(setStyleActive){
-			return;
-		}
-		final NodeModel node = event.getNode();
-		if (!isActive(node)) {
-			return;
-		}
-		setStyle(node);
-	}
-
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
 	}
 
@@ -338,11 +327,11 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	}
 
 	private Object getStyle(NodeModel node) {
-		final int depth = depth(node)+1;
+		final int depth = depth(node);
 		final MapModel map = node.getMap();
 		final MapStyleModel extension = MapStyleModel.getExtension(map);
-		String name = "OptionPanel.level" + depth;
-		NamedObject obj = new NamedObject(name);
+		String name = depth == 0 ? "AutomaticLayout.level.root" : "AutomaticLayout.level," + depth;
+		NamedObject obj = NamedObject.formatText(name);
 		if(extension.getStyleNode(obj) != null){
 			return obj;
 		}

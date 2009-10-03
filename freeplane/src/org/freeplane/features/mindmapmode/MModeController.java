@@ -90,7 +90,7 @@ public class MModeController extends ModeController {
 		final Vector<String> lafNames = new Vector(lafInfo.length + 5);
 		final Vector<String> translatedLafNames = new Vector(lafInfo.length + 5);
 		lafNames.add("default");
-		translatedLafNames.add(FpStringUtils.getOptionalText("OptionPanel.default"));
+		translatedLafNames.add(FpStringUtils.getOptionalText("default"));
 		lafNames.add("metal");
 		translatedLafNames.add(FpStringUtils.getOptionalText("OptionPanel.metal"));
 		lafNames.add("windows");

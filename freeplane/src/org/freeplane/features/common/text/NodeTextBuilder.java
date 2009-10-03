@@ -72,7 +72,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		final IAttributeHandler ltextHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
-				node.setUserObject(new NamedObject(value));
+				node.setUserObject(NamedObject.formatText(value));
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ltextHandler);

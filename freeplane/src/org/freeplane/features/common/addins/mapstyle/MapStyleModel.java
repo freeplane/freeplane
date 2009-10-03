@@ -56,7 +56,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * Mar 12, 2009
  */
 public class MapStyleModel implements IExtension {
-	public static final NamedObject DEFAULT_STYLE = new NamedObject("OptionPanel.default");
+	public static final NamedObject DEFAULT_STYLE = new NamedObject("default");
 	private static final String STYLES = "styles";
 	private Map<Object, NodeModel> styleNodes; 
 	private static boolean loadingStyleMap = false;
@@ -104,7 +104,7 @@ public class MapStyleModel implements IExtension {
 			else{
 				loadingStyleMap = true;
 				try{
-				root = load(ResourceController.getResourceController().getResource("/styles/default.mm"),
+				root = load(ResourceController.getResourceController().getResource("/styles/default.stylemm"),
 					mapReader,styleMap);
 				}
 				finally{
