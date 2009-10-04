@@ -30,6 +30,7 @@ import java.util.ListIterator;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
@@ -37,6 +38,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 class MindMapHTMLWriter {
@@ -123,9 +125,12 @@ class MindMapHTMLWriter {
 	final private Writer fileout;
 	final private MapController mapController;
 	private boolean writeFoldingCode;
+	private NodeStyleController nodeStyleController;
 
 	MindMapHTMLWriter(final MapController mapController, final Writer fileout) {
 		this.mapController = mapController;
+		final ModeController modeController = mapController.getModeController();
+		this. nodeStyleController =  NodeStyleController.getController(modeController);
 		this.fileout = fileout;
 		writeFoldingCode = false;
 		basedOnHeadings = (getProperty("html_export_folding").equals("html_export_based_on_headings"));
@@ -133,28 +138,21 @@ class MindMapHTMLWriter {
 
 	private String fontStyle(final NodeModel model) throws IOException {
 		String fontStyle = "";
-		if (NodeStyleModel.getColor(model) != null) {
-			fontStyle += "color: " + ColorUtils.colorToString(NodeStyleModel.getColor(model)) + ";";
+		final Color color = nodeStyleController.getColor(model);
+		fontStyle += "color: " + ColorUtils.colorToString(color) + ";";
+		final int fontSize = nodeStyleController.getFontSize(model);
+		final int defaultFontSize = Integer.parseInt(getProperty("defaultfontsize"));
+		final int procentSize = (int) (fontSize * 100 / defaultFontSize);
+		if (procentSize != 100) {
+			fontStyle += "font-size: " + procentSize + "%;";
 		}
-		final NodeStyleModel font = NodeStyleModel.getModel(model);
-		if (font != null) {
-			if (font.getFontSize() != null) {
-				final int defaultFontSize = Integer.parseInt(getProperty("defaultfontsize"));
-				final int procentSize = (int) (font.getFontSize() * 100 / defaultFontSize);
-				if (procentSize != 100) {
-					fontStyle += "font-size: " + procentSize + "%;";
-				}
-			}
-			final String fontFamily = font.getFontFamilyName();
-			if (fontFamily != null) {
-				fontStyle += "font-family: " + fontFamily + ", sans-serif; ";
-			}
-			if (Boolean.TRUE.equals(font.isItalic())) {
-				fontStyle += "font-style: italic; ";
-			}
-			if (Boolean.TRUE.equals(font.isBold())) {
-				fontStyle += "font-weight: bold; ";
-			}
+		final String fontFamily = nodeStyleController.getFontFamilyName(model);
+		fontStyle += "font-family: " + fontFamily + ", sans-serif; ";
+		if (nodeStyleController.isItalic(model)) {
+			fontStyle += "font-style: italic; ";
+		}
+		if (nodeStyleController.isBold(model)) {
+			fontStyle += "font-weight: bold; ";
 		}
 		return fontStyle;
 	}
@@ -349,7 +347,7 @@ class MindMapHTMLWriter {
 	private void writeIcons(final NodeModel model) throws IOException {
 		final List<MindIcon> icons = IconController.getIcons(mapController.getModeController(), model);
 		for (int i = 0; i < icons.size(); ++i) {
-			final String iconFileName = ((MindIcon) icons.get(i)).getFileName().substring(1);
+			final String iconFileName = ((MindIcon) icons.get(i)).getFileName();
 			fileout.write("<img src=\"" + iconFileName + "\" alt=\""
 			        + ((MindIcon) icons.get(i)).getDescription() + "\">");
 		}
