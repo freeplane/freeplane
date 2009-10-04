@@ -108,38 +108,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		mRegisteredMouseWheelEventHandler.add(handler);
 	}
 
-	public boolean extendSelection(final MouseEvent e) {
-		final NodeModel newlySelectedNodeView = ((MainView) e.getComponent()).getNodeView().getModel();
-		final boolean extend = e.isControlDown();
-		final boolean range = e.isShiftDown();
-		final boolean branch = e.isAltGraphDown() || e.isAltDown();
-		/* windows alt, linux altgraph .... */
-		boolean retValue = false;
-		if (extend || range || branch || !controller.getSelection().isSelected(newlySelectedNodeView)) {
-			if (!range) {
-				if (extend) {
-					controller.getSelection().toggleSelected(newlySelectedNodeView);
-				}
-				else {
-					controller.getSelection().selectAsTheOnlyOneSelected(newlySelectedNodeView);
-				}
-				retValue = true;
-			}
-			else {
-				controller.getSelection().selectContinuous(newlySelectedNodeView);
-				retValue = true;
-			}
-			if (branch) {
-				controller.getSelection().selectBranch(newlySelectedNodeView, extend);
-				retValue = true;
-			}
-		}
-		if (retValue) {
-			e.consume();
-		}
-		return retValue;
-	}
-
 	public Component getLeftToolBar() {
 		return leftToolBar;
 	}

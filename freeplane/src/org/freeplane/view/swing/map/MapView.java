@@ -43,6 +43,7 @@ import java.awt.event.ContainerListener;
 import java.awt.event.KeyEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -322,6 +323,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private float anchorHorizontalPoint;
 	private float anchorVerticalPoint;
 	private ParentListener parentListener;
+	protected NodeView nodeToBeCentered;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -390,12 +392,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * scrollRectToVisible twice, the first time the location of the node is
 	 * calculated, the second time the scrollPane is actually scrolled.
 	 */
-	public void centerNode(final NodeView node) {
+	public void centerNode(NodeView node) {
+		nodeToBeCentered = node;
 		if (SwingUtilities.getRoot(this) == null) {
 			addAncestorListener(new AncestorListener() {
 				public void ancestorAdded(final AncestorEvent event) {
 					removeAncestorListener(this);
-					centerNode(node);
+					if(nodeToBeCentered != null){
+						centerNode(nodeToBeCentered);
+					}
 				}
 
 				public void ancestorMoved(final AncestorEvent event) {
@@ -414,14 +419,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			centerNodeCounter--;
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					centerNode(node);
+					if(nodeToBeCentered != null){
+						centerNode(nodeToBeCentered);
+					}
 				}
 			});
 			return;
 		}
 		final JViewport viewPort = (JViewport) getParent();
 		final Dimension d = viewPort.getExtentSize();
-		final JComponent content = node.getContent();
+		final JComponent content = nodeToBeCentered.getContent();
 		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
 		        / 2, d.width, d.height);
 		final Point oldAnchorContentLocation = anchorContentLocation;
@@ -432,6 +439,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (oldViewPosition.equals(newViewPosition)) {
 			anchorContentLocation = oldAnchorContentLocation;
 		}
+		nodeToBeCentered = null;
 	}
 
 	/**
@@ -721,12 +729,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public List<NodeModel> getSelectedNodes() {
-		final int size = selection.size();
-		final ArrayList<NodeModel> selectedNodes = new ArrayList(size);
-		for (int i = 0; i < size; i++) {
-			selectedNodes.add(getSelected(i).getModel());
-		}
-		return selectedNodes;
+		return new AbstractList<NodeModel>() {
+
+			@Override
+            public NodeModel get(int index) {
+	            return getSelected(index).getModel();
+            }
+
+			@Override
+            public int size() {
+	            return selection.size();
+            }
+		};
 	}
 
 	/**
@@ -1237,6 +1251,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void scrollNodeToVisible(final NodeView node, final int extraWidth) {
+		if(nodeToBeCentered != null){
+			if(node != nodeToBeCentered){
+				centerNode(node);
+			}
+			return;
+		}
 		if (!isValid()) {
 			nodeToBeVisible = node;
 			this.extraWidth = extraWidth;

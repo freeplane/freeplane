@@ -142,7 +142,9 @@ public class MapStyleModel implements IExtension {
 	    	}
 	    	return;
 	    }
-	    addStyleNode(node);
+	    if(node.depth() >= 2) {
+	    	addStyleNode(node);
+	    }
     }
 
 	public void addStyleNode(NodeModel node) {

@@ -119,13 +119,6 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		menuBuilder.addAnnotatedAction(new FoldOneLevelAction());
 	}
 
-	protected int depth(final NodeModel node) {
-		if (node.isRoot()) {
-			return 0;
-		}
-		return depth((NodeModel) node.getParent()) + 1;
-	}
-
 	/**
 	 */
 	protected void foldAll(final NodeModel node) {
@@ -165,7 +158,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	public void foldStageN(final NodeModel node, final int stage) {
-		final int k = depth(node);
+		final int k = node.depth();
 		if (k < stage) {
 			setFolded(node, false);
 			for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i
@@ -183,7 +176,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	protected int getMaxDepth(final NodeModel node) {
 		if (controller.getModeController().getMapController().isFolded(node)
 		        || !controller.getModeController().getMapController().hasChildren(node)) {
-			return depth(node);
+			return node.depth();
 		}
 		int k = 0;
 		for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
@@ -197,7 +190,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 
 	public int getMinDepth(final NodeModel node) {
 		if (controller.getModeController().getMapController().isFolded(node)) {
-			return depth(node);
+			return node.depth();
 		}
 		if (!controller.getModeController().getMapController().hasChildren(node)) {
 			return Integer.MAX_VALUE;
@@ -253,7 +246,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	public void unfoldStageN(final NodeModel node, final int stage) {
-		final int k = depth(node);
+		final int k = node.depth();
 		if (k < stage) {
 			setFolded(node, false);
 			for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i

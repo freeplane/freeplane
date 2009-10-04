@@ -133,23 +133,27 @@ public class SModeControllerFactory {
 //		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
 			public void onSelect(NodeModel node) {
-				final NodeModel rootNode = node.getMap().getRootNode();
 				final IMapSelection selection = controller.getSelection();
-				if(! node.isRoot()){
+				if(selection.size() == 1 && node.depth() >= 2){
 					styleEditorPanel.setStyle(modeController, node);
-				}
-				if(! selection.isSelected(rootNode)){
 					return;
 				}
-				final List<NodeModel> selecteds = selection.getSelection();
+
+				final NodeModel nextSelection;
+				if(node.depth() < 2){
+					if(node.depth() == 1 && node.hasChildren()){
+						nextSelection = (NodeModel) node.getChildAt(0);
+					}
+					else{
+						nextSelection = (NodeModel) (node.getMap().getRootNode().getChildAt(0).getChildAt(0));
+					}
+				}
+				else {
+					nextSelection = node;
+				}
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						if(selecteds.size() == 1){
-							selection.makeTheSelected((NodeModel) rootNode.getChildAt(0));
-						}
-						else{
-							selection.toggleSelected(rootNode);
-						}
+						selection.selectAsTheOnlyOneSelected(nextSelection);
 					}
 				});
 			}

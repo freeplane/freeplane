@@ -774,7 +774,8 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	private void removeAccelerators(final DefaultMutableTreeNode node) {
-		if (node.getUserObject() instanceof JMenuItem) {
+		final Object userObject = node.getUserObject();
+		if (userObject instanceof JMenuItem && !(userObject instanceof JMenu)) {
 			setAccelerator((Node) node, null);
 		}
 		for (final Enumeration<Object> children = node.children(); children.hasMoreElements();) {

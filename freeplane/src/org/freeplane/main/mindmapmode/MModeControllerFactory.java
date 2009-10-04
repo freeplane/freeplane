@@ -73,9 +73,9 @@ import org.freeplane.features.mindmapmode.addins.export.ExportToImage;
 import org.freeplane.features.mindmapmode.addins.export.ExportToOoWriter;
 import org.freeplane.features.mindmapmode.addins.export.ExportWithXSLT;
 import org.freeplane.features.mindmapmode.addins.export.ImportMindmanagerFiles;
+import org.freeplane.features.mindmapmode.addins.mapstyle.AutomaticLayout;
 import org.freeplane.features.mindmapmode.addins.mapstyle.MLogicalStyleController;
 import org.freeplane.features.mindmapmode.addins.styles.ApplyFormatPlugin;
-import org.freeplane.features.mindmapmode.addins.styles.AutomaticLayout;
 import org.freeplane.features.mindmapmode.addins.styles.ManagePatterns;
 import org.freeplane.features.mindmapmode.addins.time.ReminderHook;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
@@ -171,7 +171,7 @@ public class MModeControllerFactory {
 			public void mouseReleased(final MouseEvent e) {
 				stopTimerForDelayedSelection();
 				final ModeController modeController = controller.getModeController();
-				modeController.getUserInputListenerFactory().extendSelection(e);
+				extendSelection(e);
 				showPopupMenu(e);
 				if (e.isConsumed()) {
 					return;

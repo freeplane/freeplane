@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
@@ -53,7 +54,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					if (e.getModifiers() == 0 && !c.isBlocked() && c.getController().getSelection().size() <= 1) {
-						c.getUserInputListenerFactory().extendSelection(e);
+						extendSelection(e);
 					}
 				}
 			});
@@ -107,7 +108,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		stopTimerForDelayedSelection();
 		final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
 		if (!((MapView) mc.getController().getViewController().getMapView()).isSelected(nodeV)) {
-			mc.getUserInputListenerFactory().extendSelection(e);
+			extendSelection(e);
 		}
 	}
 
@@ -142,7 +143,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 
 	public void mouseReleased(final MouseEvent e) {
 		stopTimerForDelayedSelection();
-		mc.getUserInputListenerFactory().extendSelection(e);
+		extendSelection(e);
 		showPopupMenu(e);
 		if (e.isConsumed()) {
 			return;
@@ -193,5 +194,38 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		timerForDelayedSelection = null;
 		controlRegionForDelayedSelection = null;
 	}
+	public boolean extendSelection(final MouseEvent e) {
+		Controller controller = mc.getController();
+		final NodeModel newlySelectedNodeView = ((MainView) e.getComponent()).getNodeView().getModel();
+		final boolean extend = e.isControlDown();
+		final boolean range = e.isShiftDown();
+		final boolean branch = e.isAltGraphDown() || e.isAltDown();
+		/* windows alt, linux altgraph .... */
+		boolean retValue = false;
+		if (extend || range || branch || !controller.getSelection().isSelected(newlySelectedNodeView)) {
+			if (!range) {
+				if (extend) {
+					controller.getSelection().toggleSelected(newlySelectedNodeView);
+				}
+				else {
+					controller.getSelection().selectAsTheOnlyOneSelected(newlySelectedNodeView);
+				}
+				retValue = true;
+			}
+			else {
+				controller.getSelection().selectContinuous(newlySelectedNodeView);
+				retValue = true;
+			}
+			if (branch) {
+				controller.getSelection().selectBranch(newlySelectedNodeView, extend);
+				retValue = true;
+			}
+		}
+		if (retValue) {
+			e.consume();
+		}
+		return retValue;
+	}
+
 
 }

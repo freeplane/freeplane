@@ -222,6 +222,7 @@ public class IndexedTree {
 			final Node child = (Node) children.nextElement();
 			final Object childKey = child.getKey();
 			if (childKey != null) {
+				removeChildElements(childKey);
 				string2Element.remove(childKey);
 			}
 		}

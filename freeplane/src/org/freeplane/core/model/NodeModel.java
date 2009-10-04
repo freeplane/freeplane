@@ -49,7 +49,6 @@ import org.freeplane.core.util.XmlTool;
  * This class represents a single Node of a Tree. It contains direct handles to
  * its parent and children and to its view.
  */
-// TODO ARCH rladstaetter 21.03.2009 rename to node
 public class NodeModel implements MutableTreeNode {
 	public enum NodeChangeType {
 		FOLDING, REFRESH
@@ -595,5 +594,13 @@ public class NodeModel implements MutableTreeNode {
 	@Override
 	public String toString() {
 		return getText();
+	}
+	
+	public int depth() {
+		final NodeModel parentNode = getParentNode();
+		if (parentNode == null) {
+			return 0;
+		}
+		return parentNode.depth() + 1;
 	}
 }

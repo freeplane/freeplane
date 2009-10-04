@@ -63,7 +63,8 @@ public class NewStyleAction extends AFreeplaneAction{
 	    final MMapController mapController = (MMapController) getModeController().getMapController();
 	    final NodeModel node = new NodeModel(map);
 	    node.setUserObject(styleName);
-		mapController.insertNode(node, map.getRootNode(), false, false, true);
+		final NodeModel getUserDefinedStyleParentNode = (NodeModel) map.getRootNode().getChildAt(2);
+		mapController.insertNode(node, getUserDefinedStyleParentNode, false, false, true);
 		mapController.select(node);
 		IActor actor = new IActor() {
 			public void undo() {
