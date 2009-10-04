@@ -21,12 +21,12 @@ package org.freeplane.main.mindmapmode.stylemode;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JOptionPane;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -38,9 +38,10 @@ import org.freeplane.features.mindmapmode.MMapController;
  * @author Dimitry Polivaev
  * 02.10.2009
  */
-public class DeleteStyleAction extends AFreeplaneAction {
-	public DeleteStyleAction(Controller controller) {
-	    super("DeleteStyleAction", controller);
+public class NewUserStyleAction extends AFreeplaneAction{
+
+	public NewUserStyleAction(Controller controller) {
+	    super("NewUserStyleAction", controller);
     }
 
 	/**
@@ -49,34 +50,38 @@ public class DeleteStyleAction extends AFreeplaneAction {
     private static final long serialVersionUID = 1L;
 
 	public void actionPerformed(ActionEvent e) {
-		final ModeController modeController = getModeController();
-		final Controller controller = modeController.getController();
-		final NodeModel selected = controller.getSelection().getSelected();
-		if(selected.depth() < 2){
-			UITools.errorMessage(ResourceBundles.getText("can_not_delete_style_group"));
-			return;
-		}
-		if(selected.getUserObject() instanceof NamedObject){
-			UITools.errorMessage(ResourceBundles.getText("can_not_delete_predefined_style"));
-			return;
-		}
-		final MapModel map = selected.getMap();
+	    final String styleName = JOptionPane.showInputDialog(ResourceBundles.getText("enter_new_style_name"));
+	    if(styleName == null){
+	    	return;
+	    }
+	    final MapModel map = getController().getMap();
 	    final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		final MMapController mapController = (MMapController) modeController.getMapController();
-		mapController.deleteNode(selected);
+	    if (null != styleModel.getStyleNode(styleName)){
+	    	UITools.errorMessage(ResourceBundles.getText("style_already_exists"));
+	    	return;
+	    }
+	    final MMapController mapController = (MMapController) getModeController().getMapController();
+	    final NodeModel node = new NodeModel(map);
+	    node.setUserObject(styleName);
+		mapController.insertNode(node, getUserStyleParentNode(map), false, false, true);
+		mapController.select(node);
 		IActor actor = new IActor() {
 			public void undo() {
-				styleModel.addStyleNode(selected);
+				styleModel.removeStyleNode(node);
 			}
 			
 			public String getDescription() {
-				return "DeleteStyle";
+				return "NewStyle";
 			}
 			
 			public void act() {
-				styleModel.removeStyleNode(selected);
+				styleModel.addStyleNode(node);
 			}
 		};
 		getModeController().execute(actor, map);
-	}
+    }
+
+	private NodeModel getUserStyleParentNode(final MapModel map) {
+	    return (NodeModel) map.getRootNode().getChildAt(2);
+    }
 }
