@@ -19,11 +19,14 @@
  */
 package org.freeplane.features.common.nodestyle;
 
+import java.awt.Color;
 import java.io.IOException;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
+import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementDOMHandler;
+import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.IExtensionAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
@@ -32,9 +35,10 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, IExtensionAttributeWriter {
+class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, IExtensionAttributeWriter, IAttributeWriter, IElementWriter {
 	static class FontProperties {
 		String fontName;
 		Integer fontSize;
@@ -42,7 +46,10 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		Boolean isItalic;
 	}
 
-	public NodeStyleBuilder() {
+	private NodeStyleController nsc;
+
+	public NodeStyleBuilder(NodeStyleController nsc) {
+		this.nsc = nsc;
 	}
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
@@ -132,6 +139,8 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addElementHandler("font", this);
 		registerAttributeHandlers(reader);
+		writer.addAttributeWriter(NodeBuilder.XML_NODE, this);
+		writer.addElementWriter(NodeBuilder.XML_NODE, this);
 		writer.addExtensionElementWriter(NodeStyleModel.class, this);
 		writer.addExtensionAttributeWriter(NodeStyleModel.class, this);
 	}
@@ -139,45 +148,90 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
+	public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		if(! forceFormatting){
+			return;
+		}
+		final NodeModel node = (NodeModel) userObject;
+		writeAttributes(writer, node, null, true);
+    }
+
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		if(forceFormatting){
+			return;
+		}
+
 		final NodeStyleModel style = (NodeStyleModel) extension;
-		if (style.getColor() != null) {
-			writer.addAttribute("COLOR", ColorUtils.colorToString(style.getColor()));
-		}
-		if (style.getBackgroundColor() != null) {
-			writer.addAttribute("BACKGROUND_COLOR", ColorUtils.colorToString(style.getBackgroundColor()));
-		}
-		if (style.getShape() != null) {
-			writer.addAttribute("STYLE", style.getShape());
-		}
+		writeAttributes(writer, null, style, false);
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
+	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeStyleModel style,
+                                 final boolean forceFormatting) {
+	    final Color color = forceFormatting ? nsc.getColor(node) : style.getColor();
+		if (color != null) {
+			writer.addAttribute("COLOR", ColorUtils.colorToString(color));
+		}
+		final Color backgroundColor = forceFormatting ? nsc.getBackgroundColor(node) :style.getBackgroundColor();
+		if (backgroundColor != null) {
+			writer.addAttribute("BACKGROUND_COLOR", ColorUtils.colorToString(backgroundColor));
+		}
+		final String shape = forceFormatting ? nsc.getShape(node) : style.getShape();
+		if (shape != null) {
+			writer.addAttribute("STYLE", shape);
+		}
+    }
+
+	public void writeContent(ITreeWriter writer, Object userObject, String tag) throws IOException {
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		if(! forceFormatting){
+			return;
+		}
+		final NodeModel node = (NodeModel) userObject;
+		writeContent(writer, node, null, true);
+	}
+	
+	public void writeContent(final ITreeWriter writer, final Object userObject, final IExtension extension)
 	        throws IOException {
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		if(forceFormatting){
+			return;
+		}
 		final NodeStyleModel style = (NodeStyleModel) extension;
-		if (style != null) {
+		writeContent(writer, null, style, false);
+	}
+
+	private void writeContent(final ITreeWriter writer, final NodeModel node, final NodeStyleModel style,
+                              final boolean forceFormatting) throws IOException {
+	    if (forceFormatting || style != null) {
 			final XMLElement fontElement = new XMLElement();
 			fontElement.setName("font");
-			boolean isRelevant = false;
-			if (style.getFontFamilyName() != null) {
-				fontElement.setAttribute("NAME", style.getFontFamilyName());
+			boolean isRelevant = forceFormatting;
+			final String fontFamilyName = forceFormatting ? nsc.getFontFamilyName(node) : style.getFontFamilyName();
+			if (fontFamilyName != null) {
+				fontElement.setAttribute("NAME", fontFamilyName);
 				isRelevant = true;
 			}
-			if (style.getFontSize() != null) {
-				fontElement.setAttribute("SIZE", Integer.toString(style.getFontSize()));
+			final Integer fontSize =  forceFormatting ? Integer.valueOf(nsc.getFontSize(node)) : style.getFontSize();
+			if (fontSize != null) {
+				fontElement.setAttribute("SIZE", Integer.toString(fontSize));
 				isRelevant = true;
 			}
-			if (style.isBold() != null) {
-				fontElement.setAttribute("BOLD", style.isBold() ? "true" : "false");
+			final Boolean bold = forceFormatting ? Boolean.valueOf(nsc.isBold(node)) : style.isBold();
+			if (bold != null) {
+				fontElement.setAttribute("BOLD", bold ? "true" : "false");
 				isRelevant = true;
 			}
-			if (style.isItalic() != null) {
-				fontElement.setAttribute("ITALIC", style.isItalic() ? "true" : "false");
+			final Boolean italic = forceFormatting ? Boolean.valueOf(nsc.isItalic(node)) :style.isItalic();
+			if (italic != null) {
+				fontElement.setAttribute("ITALIC", italic ? "true" : "false");
 				isRelevant = true;
 			}
 			if (isRelevant) {
 				writer.addElement(style, fontElement);
 			}
 		}
-	}
+    }
+
 }

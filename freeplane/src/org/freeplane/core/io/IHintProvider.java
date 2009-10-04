@@ -24,7 +24,8 @@ package org.freeplane.core.io;
  * Mar 8, 2009
  */
 public interface IHintProvider {
-	public abstract Object getHint(Object key);
+	public Object getHint(Object key);
 
-	public abstract void setHint(Object key, Object value);
+	public void setHint(Object key, Object value);
+	public void setHint(Object key);
 }

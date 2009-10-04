@@ -520,7 +520,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 				throw new IOException("can not obtain file lock for " + file);
 			}
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
-			getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true);
+			getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true, false);
 			if (!isInternal) {
 				setFile(map, file);
 				map.setSaved(true);

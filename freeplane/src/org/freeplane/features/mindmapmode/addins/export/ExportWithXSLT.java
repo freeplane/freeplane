@@ -191,7 +191,7 @@ public class ExportWithXSLT extends ExportAction {
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pDirectoryName
 		        + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
 		final MapModel map = getController().getMap();
-		getModeController().getMapController().getFilteredXml(map, fileout, Mode.FILE);
+		getModeController().getMapController().getFilteredXml(map, fileout, Mode.FILE, true);
 		return success;
 	}
 
@@ -232,7 +232,7 @@ public class ExportWithXSLT extends ExportAction {
 		final ModeController modeController = getModeController();
 		final Controller controller = modeController.getController();
 		final MapModel map = controller.getMap();
-		modeController.getMapController().getFilteredXml(map, writer, mode);
+		modeController.getMapController().getFilteredXml(map, writer, mode, true);
 		return writer.getBuffer().toString();
 	}
 

@@ -20,8 +20,10 @@
 package org.freeplane.core.io;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.ListIterator;
 
+import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.io.MapWriter.Hint;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.io.xml.TreeXmlWriter;
@@ -109,12 +111,6 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 			    .getHistoryInformation().getCreatedAt()));
 			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, TreeXmlWriter.dateToString(node
 			    .getHistoryInformation().getLastModifiedAt()));
-		}
-		for (int i = 0; i < node.getIcons().size(); ++i) {
-			final XMLElement iconElement = new XMLElement();
-			iconElement.setName("icon");
-			iconElement.setAttribute("BUILTIN", (node.getIcons().get(i)).getName());
-			xmlNode.addChild(iconElement);
 		}
 		writer.addExtensionAttributes(node, node.getExtensions().values());
 	}

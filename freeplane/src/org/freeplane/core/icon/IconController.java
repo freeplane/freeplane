@@ -28,6 +28,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.modecontroller.CombinedPropertyChain;
 import org.freeplane.core.modecontroller.ExclusivePropertyChain;
 import org.freeplane.core.modecontroller.IPropertyHandler;
@@ -68,8 +69,9 @@ public class IconController implements IExtension {
 		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
-		final IconBuilder textBuilder = new IconBuilder(IconStoreFactory.create());
-		textBuilder.registerBy(readManager);
+		final WriteManager writeManager = mapController.getWriteManager();
+		final IconBuilder textBuilder = new IconBuilder(this, IconStoreFactory.create());
+		textBuilder.registerBy(readManager, writeManager);
 		addIconGetter(IPropertyHandler.NODE, new IPropertyHandler<List<MindIcon>, NodeModel>() {
 			public List<MindIcon> getProperty(final NodeModel node, final List<MindIcon> currentValue) {
 				final List<MindIcon> icons = node.getIcons();

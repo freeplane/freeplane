@@ -191,7 +191,7 @@ public class NodeStyleController implements IExtension {
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
-		final NodeStyleBuilder styleBuilder = new NodeStyleBuilder();
+		final NodeStyleBuilder styleBuilder = new NodeStyleBuilder(this);
 		styleBuilder.registerBy(readManager, writeManager);
 		if (standardNodeTextColor == null) {
 			final String stdcolor = ResourceController.getResourceController().getProperty(

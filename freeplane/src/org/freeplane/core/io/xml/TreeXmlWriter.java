@@ -191,13 +191,17 @@ public class TreeXmlWriter implements ITreeWriter {
 	}
 
 	public Object getHint(final Object key) {
-		return hints.get(key);
+		final Object object = hints.get(key);
+		return object == null ? Boolean.FALSE : object;
 	}
 
 	private ListHashTable getNodeWriters() {
 		return writeManager.getElementWriters();
 	}
 
+	public void setHint(final Object key) {
+		hints.put(key, Boolean.TRUE);
+	}
 	public void setHint(final Object key, final Object value) {
 		hints.put(key, value);
 	}

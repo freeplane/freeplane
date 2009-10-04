@@ -25,6 +25,7 @@ import java.io.IOException;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
+import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
@@ -32,13 +33,16 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
+class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElementWriter  {
 	private final MapController mapController;
+	private CloudController cc;
 
-	public CloudBuilder(final MapController mapController) {
+	public CloudBuilder(final MapController mapController, CloudController cc) {
 		this.mapController = mapController;
+		this.cc = cc;
 	}
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
@@ -91,9 +95,27 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
+	public void writeContent(ITreeWriter writer, Object userObject, String tag) throws IOException {
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		if(! forceFormatting){
+			return;
+		}
+		writeContentImpl(writer, (NodeModel) userObject, null);
+    }
+	public void writeContent(final ITreeWriter writer, final Object userObject, final IExtension extension)
 	        throws IOException {
-		final CloudModel model = (CloudModel) extension;
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		if(forceFormatting){
+			return;
+		}
+		writeContentImpl(writer, null, extension);
+	}
+
+	private void writeContentImpl(final ITreeWriter writer, NodeModel node, final IExtension extension) throws IOException {
+	    final CloudModel model = extension != null ? (CloudModel) extension : cc.getCloud(node);
+		if(model == null){
+			return;
+		}
 		final XMLElement cloud = new XMLElement();
 		cloud.setName("cloud");
 //		final String style = model.getStyle();
@@ -109,5 +131,6 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
 //			cloud.setAttribute("WIDTH", Integer.toString(width));
 //		}
 		writer.addElement(model, cloud);
-	}
+    }
+
 }

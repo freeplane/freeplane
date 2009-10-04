@@ -25,16 +25,21 @@ import java.io.IOException;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
+import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
-	public EdgeBuilder() {
+class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IElementWriter {
+	private EdgeController ec;
+
+	public EdgeBuilder(EdgeController ec) {
+		this.ec = ec;
 	}
 
 	protected EdgeModel createEdge(final NodeModel node) {
@@ -103,13 +108,32 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
+
+	public void writeContent(ITreeWriter writer, Object element, String tag) throws IOException {
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		if(! forceFormatting){
+			return;
+		}
+		NodeModel node = (NodeModel) element;
+		writeContent(writer, node, null, forceFormatting);
+    }
+	public void writeContent(final ITreeWriter writer, final Object userObject, final IExtension extension)
 	        throws IOException {
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		if(forceFormatting){
+			return;
+		}
 		final EdgeModel model = (EdgeModel) extension;
-		final String style = EdgeStyle.toString(model.getStyle());
-		final Color color = model.getColor();
-		final int width = model.getWidth();
-		if (style != null || color != null || width != EdgeModel.DEFAULT_WIDTH) {
+		writeContent(writer, null, model, forceFormatting);
+	}
+
+	private void writeContent(final ITreeWriter writer, NodeModel node,
+                              final EdgeModel model, final boolean forceFormatting) throws IOException {
+	    final EdgeStyle styleObj = forceFormatting ? ec.getStyle(node): model.getStyle();
+		final String style = EdgeStyle.toString(styleObj);
+		final Color color = forceFormatting ? ec.getColor(node): model.getColor();
+		final int width = forceFormatting ? ec.getWidth(node): model.getWidth();
+		if (forceFormatting || style != null || color != null || width != EdgeModel.DEFAULT_WIDTH) {
 			final XMLElement edge = new XMLElement();
 			edge.setName("edge");
 			boolean relevant = false;
@@ -138,5 +162,5 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 				writer.addElement(model, edge);
 			}
 		}
-	}
+    }
 }

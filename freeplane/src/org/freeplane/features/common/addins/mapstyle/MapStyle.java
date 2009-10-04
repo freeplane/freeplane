@@ -53,6 +53,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String MAP_STYLES = "MAP_STYLES";
+	public enum WriterHint {FORCE_FORMATTING};
 
 	public MapStyle(final ModeController modeController) {
 		super(modeController);
@@ -96,6 +97,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			super.endElement(parent, tag, userObject, attributes);
 			final NodeModel node = (NodeModel) userObject;
 			final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
+			if(mapStyleModel == null){
+				return;
+			}
 			mapStyleModel.createStyleMap(getModeController(), content);
 			node.getMap().getIconRegistry().addIcons(mapStyleModel.getStyleMap());
         }

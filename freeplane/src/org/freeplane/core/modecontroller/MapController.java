@@ -296,8 +296,8 @@ public class MapController extends SelectionController {
 		return controller;
 	}
 
-	public void getFilteredXml(final MapModel map, final Writer fileout, final Mode mode) throws IOException {
-		getMapWriter().writeMapAsXml(map, fileout, mode, false);
+	public void getFilteredXml(final MapModel map, final Writer fileout, final Mode mode, boolean forceFormat) throws IOException {
+		getMapWriter().writeMapAsXml(map, fileout, mode, false, forceFormat);
 	}
 
 	/**

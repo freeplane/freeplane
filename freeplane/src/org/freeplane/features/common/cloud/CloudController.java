@@ -99,7 +99,7 @@ public class CloudController implements IExtension {
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
-		final CloudBuilder cloudBuilder = new CloudBuilder(mapController);
+		final CloudBuilder cloudBuilder = new CloudBuilder(mapController, this);
 		cloudBuilder.registerBy(readManager, writeManager);
 	}
 

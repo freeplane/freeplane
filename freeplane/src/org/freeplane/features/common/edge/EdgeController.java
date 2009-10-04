@@ -160,7 +160,7 @@ public class EdgeController implements IExtension {
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
-		final EdgeBuilder edgeBuilder = new EdgeBuilder();
+		final EdgeBuilder edgeBuilder = new EdgeBuilder(this);
 		edgeBuilder.registerBy(readManager, writeManager);
 	}
 
