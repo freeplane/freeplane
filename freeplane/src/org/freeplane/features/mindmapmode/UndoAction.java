@@ -43,8 +43,8 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final UMapModel map = (UMapModel) getController().getMap();
-		final IUndoHandler undoHandler = map.getUndoHandler();
+		final MapModel map = getController().getMap();
+		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
 		undoHandler.getUndoAction().actionPerformed(e);
 		setEnabled(undoHandler.canUndo());
 		redo.setEnabled(undoHandler.canRedo());
@@ -54,8 +54,8 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
 		if (newMap == null) {
 			return;
 		}
-		if (newMap instanceof UMapModel) {
-			final IUndoHandler undoHandler = ((UMapModel) newMap).getUndoHandler();
+		final IUndoHandler undoHandler = (IUndoHandler)( newMap.getExtension(IUndoHandler.class));
+		if (undoHandler  != null) {
 			setEnabled(undoHandler.canUndo());
 			redo.setEnabled(undoHandler.canRedo());
 		}

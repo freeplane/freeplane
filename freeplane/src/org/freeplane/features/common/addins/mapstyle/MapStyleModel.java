@@ -45,9 +45,10 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MMapModel;
-import org.freeplane.features.mindmapmode.UMapModel;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -85,7 +86,7 @@ public class MapStyleModel implements IExtension {
 			return;
 		}
 		styleNodes = new LinkedHashMap<Object, NodeModel>();
-		styleMap = new UMapModel(null, modeController){
+		styleMap = new MapModel(modeController, null){
 
 			@Override
             public String getTitle() {
@@ -93,6 +94,8 @@ public class MapStyleModel implements IExtension {
             }
 			
 		};
+		styleMap.addExtension(IUndoHandler.class, new UndoHandler());
+
 		final MapReader mapReader = modeController.getMapController().getMapReader();
 		final NodeModel root;
 		try {

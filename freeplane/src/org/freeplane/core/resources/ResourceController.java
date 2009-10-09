@@ -210,4 +210,8 @@ public abstract class ResourceController {
 	}
 
 	abstract public void setProperty(final String property, final String value);
+
+	public boolean isApplet() {
+	    return false;
+    }
 }

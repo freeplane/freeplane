@@ -25,6 +25,7 @@ import java.util.WeakHashMap;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.icon.UIIcon;
+import org.freeplane.core.resources.ResourceController;
 
 /**
  * 
@@ -40,7 +41,7 @@ public final class ImageIconFactory {
 	private static final String DEFAULT_IMAGE_PATH = "/images/";
 	
 	private static final ImageIcon ICON_NOT_FOUND 
-		= new ImageIcon(DEFAULT_IMAGE_PATH + "IconNotFound.png");
+		= new ImageIcon(ResourceController.getResourceController().getResource(DEFAULT_IMAGE_PATH + "IconNotFound.png"));
 
 	private final WeakHashMap<URL, ImageIcon> ICON_CACHE
 		= new WeakHashMap<URL, ImageIcon>();

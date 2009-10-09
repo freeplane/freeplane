@@ -118,28 +118,31 @@ public class IconStoreFactory {
 	
 	private static List<MindIcon> getUserIcons() {
 		List<MindIcon> icons = Collections.emptyList();
-		
-		final File iconDir = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "icons");
-		if (iconDir.exists()) {
-			final String[] userIconArray = iconDir.list(new FilenameFilter() {
-				public boolean accept(final File dir, final String name) {
-					return name.matches(".*\\.png");
+
+		final ResourceController resourceController = ResourceController.getResourceController();
+		if (resourceController.isApplet()){
+			return icons;
+		}
+		final File iconDir = new File(resourceController.getFreeplaneUserDirectory(), "icons");
+		if (! iconDir.exists()) {
+			return icons;
+		}
+		final String[] userIconArray = iconDir.list(new FilenameFilter() {
+			public boolean accept(final File dir, final String name) {
+				return name.matches(".*\\.png");
+			}
+		});
+		if (userIconArray != null) {
+			icons = new ArrayList<MindIcon>(userIconArray.length);
+			for (String fileName : userIconArray) {
+				String iconName = fileName.substring(0, fileName.length() - 4);
+				if (iconName.equals("")) {
+					continue;
 				}
-			});
-			if (userIconArray != null) {
-				icons = new ArrayList<MindIcon>(userIconArray.length);
-				for (String fileName : userIconArray) {
-					String iconName = fileName.substring(0, fileName.length() - 4);
-					if (iconName.equals("")) {
-						continue;
-					}
-					UserIcon icon = new UserIcon(iconName, fileName, iconName);
-					icons.add(icon);
-				}
+				UserIcon icon = new UserIcon(iconName, fileName, iconName);
+				icons.add(icon);
 			}
 		}
-		
-		return icons;
+		return icons;		
 	}
-
 }

@@ -57,8 +57,8 @@ public class MModeController extends ModeController {
 		createOptionPanelControls();
 	}
 
-	private void addUndoableActor(final IActor actor, final UMapModel map) {
-		final IUndoHandler undoHandler = map.getUndoHandler();
+	private void addUndoableActor(final IActor actor, final MapModel map) {
+		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
 		undoHandler.addActor(actor);
 		undo.setEnabled(true);
 		redo.setEnabled(false);
@@ -67,7 +67,7 @@ public class MModeController extends ModeController {
 	@Override
 	public void commit() {
 		final MMapModel map = (MMapModel) getController().getMap();
-		final IUndoHandler undoHandler = map.getUndoHandler();
+		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
 		undoHandler.commit();
 	}
 
@@ -115,7 +115,7 @@ public class MModeController extends ModeController {
 	@Override
 	public void execute(final IActor actor, MapModel map) {
 		actor.act();
-		addUndoableActor(actor, (UMapModel) map);
+		addUndoableActor(actor, map);
 	}
 
 	@Override
@@ -132,13 +132,13 @@ public class MModeController extends ModeController {
 		if (!(model instanceof MMapModel)) {
 			return false;
 		}
-		return ((MMapModel) model).getUndoHandler().isUndoActionRunning();
+		return ((IUndoHandler)((MMapModel) model).getExtension(IUndoHandler.class)).isUndoActionRunning();
 	}
 
 	@Override
 	public void rollback() {
 		final MMapModel map = (MMapModel) getController().getMap();
-		final IUndoHandler undoHandler = map.getUndoHandler();
+		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
 		undoHandler.rollback();
 		undo.setEnabled(undoHandler.canUndo());
 		redo.setEnabled(false);
@@ -163,7 +163,7 @@ public class MModeController extends ModeController {
 	@Override
 	public void startTransaction() {
 		final MMapModel map = (MMapModel) getController().getMap();
-		final IUndoHandler undoHandler = map.getUndoHandler();
+		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
 		undoHandler.startTransaction();
 	}
 

@@ -21,7 +21,9 @@ package org.freeplane.core.undo;
 
 import java.awt.event.ActionListener;
 
-public interface IUndoHandler {
+import org.freeplane.core.extension.IExtension;
+
+public interface IUndoHandler extends IExtension{
 	void addActor(IActor actor);
 
 	boolean canRedo();

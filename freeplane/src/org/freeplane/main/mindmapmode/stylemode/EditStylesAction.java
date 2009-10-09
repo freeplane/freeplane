@@ -35,7 +35,6 @@ import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.UMapModel;
 
 /**
  * @author Dimitry Polivaev
@@ -61,8 +60,8 @@ public class EditStylesAction extends AFreeplaneAction {
 			@Override
             public void componentHidden(ComponentEvent e) {
 	            final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
-	            UMapModel map = (UMapModel) mapViewManager.getModel();
-	            final IUndoHandler undoHandler = map.getUndoHandler();
+	            MapModel map = mapViewManager.getModel();
+	            final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
 				if(undoHandler.canUndo()){
 					final MapModel currentMap = getController().getMap();
 	            	getModeController().getMapController().setSaved(currentMap, false);

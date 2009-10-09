@@ -280,7 +280,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public MapModel newModel(final NodeModel root) {
-		final MMapModel mindMapMapModel = new MMapModel(root, getModeController());
+		final MMapModel mindMapMapModel = new MMapModel(getModeController(), root);
 		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}

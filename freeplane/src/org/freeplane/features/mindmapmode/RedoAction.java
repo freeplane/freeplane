@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
 
@@ -40,8 +41,8 @@ class RedoAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final UMapModel map = (UMapModel) getController().getMap();
-		final IUndoHandler undoHandler = map.getUndoHandler();
+		final MapModel map = getController().getMap();
+		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
 		undoHandler.getRedoAction().actionPerformed(e);
 		undo.setEnabled(undoHandler.canUndo());
 		setEnabled(undoHandler.canRedo());
@@ -49,7 +50,7 @@ class RedoAction extends AFreeplaneAction {
 
 	public void reset() {
 		final MMapModel map = (MMapModel) getController().getMap();
-		final IUndoHandler undoHandler = map.getUndoHandler();
+		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
 		undoHandler.resetRedo();
 		setEnabled(false);
 	}

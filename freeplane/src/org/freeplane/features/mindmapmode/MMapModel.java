@@ -27,6 +27,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.SysUtil;
@@ -35,7 +36,7 @@ import org.freeplane.features.mindmapmode.file.DummyLockManager;
 import org.freeplane.features.mindmapmode.file.LockManager;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 
-public class MMapModel extends UMapModel {
+public class MMapModel extends MapModel {
 	private static int unnamedMapsNumber = 1;
 	private LockManager lockManager;
 	private Timer timerForAutomaticSaving;
@@ -44,8 +45,9 @@ public class MMapModel extends UMapModel {
 	 * The current version and all other version that don't need XML update for
 	 * sure.
 	 */
-	MMapModel(final NodeModel root, final ModeController modeController) {
-		super(root, modeController);
+	MMapModel(final ModeController modeController, final NodeModel root) {
+		super(modeController, root);
+		addExtension(IUndoHandler.class, new UndoHandler());
 		setReadOnly(false);
 		this.setLockManager(ResourceController.getResourceController().getBooleanProperty(
 		    "experimental_file_locking_on") ? new LockManager() : new DummyLockManager());
