@@ -73,6 +73,9 @@ public class MLogicalStyleController extends LogicalStyleController {
 	        final Object styleKey = event.getNewValue();
 	       	final MapStyleModel mapStyles = MapStyleModel.getExtension(map);
 	    	final NodeModel styleNode = mapStyles.getStyleNode(styleKey);
+	    	if(styleNode == null){
+	    		return;
+	    	}
 	    	final IExtension styleModel = styleNode.getExtension(clazz);
 	    	if(styleModel == null){
 	    		return;

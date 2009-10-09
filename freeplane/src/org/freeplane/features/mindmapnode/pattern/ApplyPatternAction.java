@@ -131,7 +131,7 @@ class ApplyPatternAction extends AMultipleNodeAction {
 		if (pattern.getPatternNodeFontSize() != null) {
 			String nodeFontSize = pattern.getPatternNodeFontSize().getValue();
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController())).setFontSize(
-			    node, Integer.parseInt(nodeFontSize));
+			    node, nodeFontSize == null ? null : Integer.valueOf(nodeFontSize));
 		}
 		if (pattern.getPatternNodeFontItalic() != null) {
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController())).setItalic(node,
