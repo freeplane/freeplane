@@ -52,7 +52,7 @@ class FNodeModel extends NodeModel {
 					final File childFile = new File(path, files[i]);
 					if (!childFile.isHidden()) {
 						final FNodeModel fileNodeModel = new FNodeModel(childFile, getMap());
-						NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(file.toURI());
+						NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(childFile.toURI());
 						fileNodeModel.setLeft(isNewChildLeft());
 						children.add(getChildCount(), fileNodeModel);
 						fileNodeModel.setParent(this);
@@ -80,7 +80,7 @@ class FNodeModel extends NodeModel {
 
 	@Override
 	public boolean hasChildren() {
-		return !file.isFile() && !super.getChildren().isEmpty();
+		return !file.isFile() && !getChildren().isEmpty();
 	}
 
 	@Override

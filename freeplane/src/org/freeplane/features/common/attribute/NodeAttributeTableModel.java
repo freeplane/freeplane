@@ -44,7 +44,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	private static final String ATTRIBUTE_TOOLTIP = "attribute_tooltip";
 	private static final int CAPACITY_INCREMENT = 10;
 	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(null);
-	static private UIIcon noteIcon = null;
+	static private UIIcon attributeIcon = null;
 	private static final String STATE_ICON = "AttributeExist";
 
 	public static NodeAttributeTableModel getModel(final NodeModel node) {
@@ -307,7 +307,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 			if (NodeAttributeTableModel.noteIcon == null) {
 				NodeAttributeTableModel.noteIcon = IconStoreFactory.create().getUIIcon("showAttributes.png");
 			}
-			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.noteIcon);
+			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.attributeIcon);
 		}
 		setTooltip();
 	}

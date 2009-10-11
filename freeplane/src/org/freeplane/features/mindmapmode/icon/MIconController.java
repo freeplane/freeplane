@@ -267,7 +267,7 @@ public class MIconController extends IconController {
 		}
 		for (IconGroup group : STORE.getGroups()) {
 			for(MindIcon icon : group.getIcons()) {
-				final AFreeplaneAction iconAction = iconActions.get(icon.getName());
+				final AFreeplaneAction iconAction = iconActions.get(icon);
 				if (iconAction != null) {
 					iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 				}

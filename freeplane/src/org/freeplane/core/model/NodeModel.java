@@ -526,6 +526,9 @@ public class NodeModel implements MutableTreeNode {
 	 */
 	public void setMap(final MapModel map) {
 		this.map = map;
+		for(NodeModel child : children){
+			child.setMap(map);
+		}
 	}
 
 	public void setParent(final MutableTreeNode newParent) {

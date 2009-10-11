@@ -93,7 +93,7 @@ class NodeHolder {
 		return mapView != null ? mapView.hashCode() * 37 : 0 + mNodeId.hashCode();
 	}
 
-	public boolean isIdentical(final NodeView pNode) {
+	boolean isIdentical(final NodeView pNode) {
 		final String id = pNode.getModel().createID();
 		final MapView mapView = pNode.getMap();
 		return mapView == mMapView.get() && id.equals(mNodeId);

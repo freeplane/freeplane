@@ -46,10 +46,10 @@ public class CollisionDetector {
 		    if(pathIterator.isDone() || PathIterator.SEG_CLOSE == pathIterator.currentSegment(nextCoords)){
 		    	break;
 		    }
-		    double x = Math.min(lastCoords[0], nextCoords[0]);
-			double y = Math.min(lastCoords[1], nextCoords[1]);
-			double w = Math.abs(lastCoords[0]- nextCoords[0]);
-			double h = Math.abs(lastCoords[1]- nextCoords[1]);
+		    double x = Math.min(lastCoords[0], nextCoords[0])-1;
+			double y = Math.min(lastCoords[1], nextCoords[1])-1;
+			double w = Math.abs(lastCoords[0]- nextCoords[0])+2;
+			double h = Math.abs(lastCoords[1]- nextCoords[1])+2;
 			if(rec.intersects(x, y, w, h)) {
 				return true;
 			}

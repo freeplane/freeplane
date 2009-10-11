@@ -23,14 +23,19 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
+import java.awt.geom.Line2D;
 
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.map.link.CollisionDetector;
 
 /**
  * This class represents a single Edge of a MindMap.
  */
 public class HorizontalEdgeView extends EdgeView {
+	private int xs[];
+	private int ys[];
+
 	public HorizontalEdgeView(NodeView source, NodeView target) {
 	    super(source, target);
     }
@@ -63,33 +68,26 @@ public class HorizontalEdgeView extends EdgeView {
 				endX += mainViewWidth;
 			}
 		}
-		final int xs[] = { start.x, xMiddle, xMiddle, endX };
-		final int ys[] = { start.y, start.y, end.y, end.y };
-		if (w <= 1) {
+		xs = new int[] { start.x, xMiddle, xMiddle, endX };
+		ys = new int[] { start.y, start.y, end.y, end.y };
+		g.drawPolyline(xs, ys, 4);
+		if (isTargetEclipsed()) {
+			g.setColor(g.getBackground());
+			g.setStroke(EdgeView.getEclipsedStroke());
 			g.drawPolyline(xs, ys, 4);
-			if (isTargetEclipsed()) {
-				g.setColor(g.getBackground());
-				g.setStroke(EdgeView.getEclipsedStroke());
-				g.drawPolyline(xs, ys, 4);
-				g.setColor(color);
-				g.setStroke(stroke);
-			}
-		}
-		else {
-			g.drawPolyline(xs, ys, 4);
-			if (isTargetEclipsed()) {
-				g.setColor(g.getBackground());
-				g.setStroke(EdgeView.getEclipsedStroke());
-				g.drawPolyline(xs, ys, 4);
-				g.setColor(color);
-				g.setStroke(stroke);
-			}
+			g.setColor(color);
+			g.setStroke(stroke);
 		}
 	}
 
 	@Override
     public boolean detectCollision(Point p) {
-	    // TODO Auto-generated method stub
+	    CollisionDetector collisionDetector = new CollisionDetector();
+	    for(int i = 1; i < xs.length; i++){
+	    	if(collisionDetector.detectCollision(p, new Line2D.Float(xs[i-1], ys[i-1],xs[i], ys[i]))){
+	    		return true;
+	    	}
+	    }
 	    return false;
     }
 }

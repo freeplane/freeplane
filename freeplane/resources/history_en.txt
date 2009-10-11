@@ -1,8 +1,9 @@
-*******************************
-$LastChangedDate$
-$Rev$
-*******************************
-===============================
+
+Bug fixes:
+0000243: Find and replace doesn't replace all occurrence of a pattern within a node 
+0000245: Navigation in File Mode is (almost) not working
+0000253: can't edit name on exported branch as a new card
+0000252: Attribute assignation kinematic  
 1.0.30 alpha
 ===============================
 New features:

@@ -179,10 +179,10 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 			    keysetFile.toURL(), key, title, getController());
 			if(null == getController().getAction(loadAcceleratorPresetsAction.getKey())){
 				getController().addAction(loadAcceleratorPresetsAction);
+				getModeController().getUserInputListenerFactory().getMenuBuilder().addAction(
+				    "/menu_bar/extras/first/options/acceleratorPresets/new", key, loadAcceleratorPresetsAction,
+				    MenuBuilder.AS_CHILD);
 			}
-			getModeController().getUserInputListenerFactory().getMenuBuilder().addAction(
-			    "/menu_bar/extras/first/options/acceleratorPresets/new", key, loadAcceleratorPresetsAction,
-			    MenuBuilder.AS_CHILD);
 		}
 		catch (final IOException e1) {
 			UITools.errorMessage(ResourceBundles.getText("can_not_save_key_set"));

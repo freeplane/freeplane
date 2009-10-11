@@ -76,8 +76,12 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 				if (fontSize_IgnoreChangeEvent) {
 					return;
 				}
-				final int intSize = Integer.parseInt(((String) e.getItem()));
-				styleController.setFontSize(intSize);
+				try {
+	                final int intSize = Integer.parseInt(((String) e.getItem()));
+	                styleController.setFontSize(intSize);
+                }
+                catch (NumberFormatException nfe) {
+                }
 			}
 		};
 		size.addItemListener(sizeListener);
