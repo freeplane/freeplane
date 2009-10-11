@@ -62,8 +62,8 @@ class PreviewDialog extends JDialog implements ActionListener {
 		toolbar.add(pageNumber);
 		toolbar.add(getButton("Forward24.gif", new BrowseAction(preview, pageNumber, 1)));
 		toolbar.add(new JToolBar.Separator());
-		toolbar.add(getButton("ZoomIn24.gif", new ZoomAction(preview, PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
-		toolbar.add(getButton("ZoomOut24.gif", new ZoomAction(preview, -PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
+		toolbar.add(getButton("ZoomIn24.png", new ZoomAction(preview, PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
+		toolbar.add(getButton("ZoomOut24.png", new ZoomAction(preview, -PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
 		toolbar.add(new JToolBar.Separator());
 		final JPanel buttons = new JPanel();
 		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT));
