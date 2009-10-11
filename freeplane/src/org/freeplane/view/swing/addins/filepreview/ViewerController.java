@@ -55,7 +55,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	    public JComponent createViewer(URI uri, final Dimension preferredSize) throws MalformedURLException, IOException {
 	    	factory = getViewerFactory(uri);
-	        return factory.createViewer(uri, preferredSize);
+	        return factory == null ? null : factory.createViewer(uri, preferredSize);
 	    }
 
 	    public JComponent createViewer(ExternalResource resource, URI absoluteUri) throws MalformedURLException, IOException {
