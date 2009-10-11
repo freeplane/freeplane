@@ -1,3 +1,4 @@
+#include <windows.h>
 #include <process.h>
 #include <stdlib.h>
 #include <string.h>
@@ -53,6 +54,30 @@ char *param2define(int number, const char *in_string) {
    return concat(argv);
 }
 
+DWORD calculateMemory()
+{
+  MEMORYSTATUS stat;
+  stat.dwLength = sizeof (stat);
+  GlobalMemoryStatus (&stat);
+  DWORD memory = stat.dwTotalPhys;
+  const DWORD MAX_MEMORY = 1024 * 1024 * 1024;
+  if(memory == -1 )
+  {
+      memory = MAX_MEMORY;
+  }
+  else
+  {   
+      memory /=4;
+      memory *= 3;
+   }
+  if(memory > MAX_MEMORY)
+  {
+      memory = MAX_MEMORY;
+  }
+  memory /= 1024;
+
+}
+
 int main(int argc, char *argv[])  {
     // argv[0] - caller name, argv[argc -1] == last argument,
 
@@ -67,7 +92,10 @@ int main(int argc, char *argv[])  {
    char* application_name = "framework.jar";
    char* standard_javaw_path = "javaw.exe";
    char* alternative_javaw_path = "jre\\bin\\javaw.exe";
-   char* argument_allowing_more_memory = "-Xmx256M";
+   char argument_allowing_more_memory[15];
+   DWORD memory = calculateMemory();
+   sprintf(argument_allowing_more_memory, "-Xmx%ik", memory);
+
    int /*bool*/ take_standard_javaw_path = 1; // 1 - true; 0 - false.
 
    char* javaw_path = take_standard_javaw_path ? standard_javaw_path : alternative_javaw_path;
