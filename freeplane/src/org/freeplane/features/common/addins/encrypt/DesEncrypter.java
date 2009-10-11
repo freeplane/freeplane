@@ -55,8 +55,8 @@ public class DesEncrypter implements IEncrypter {
 		return Base64Coding.encode64(byteBuffer);
 	}
 
-	Cipher dcipher;
-	Cipher ecipher;
+	private Cipher dcipher;
+	private Cipher ecipher;
 	int iterationCount = 19;
 	final private String mAlgorithm;
 	byte[] mSalt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35, (byte) 0xE3,
@@ -70,7 +70,7 @@ public class DesEncrypter implements IEncrypter {
 	}
 
 	public String decrypt(String str) {
-		if (str == null) {
+		if (dcipher == null || str == null) {
 			return null;
 		}
 		try {
