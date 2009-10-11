@@ -3,6 +3,13 @@ $LastChangedDate$
 $Rev$
 *******************************
 ===============================
+1.0.32 alpha
+===============================
+Refactoring for icons (Tamas)
+bug fix for full screen mode: properly display modal dialogs on top
+System dependent memory allocation for windows OS
+
+===============================
 1.0.30 alpha
 ===============================
 New features:
