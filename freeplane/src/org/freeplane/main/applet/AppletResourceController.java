@@ -130,4 +130,11 @@ class AppletResourceController extends ResourceController {
 			userProps.setProperty(key, val);
 		}
 	}
+
+	@Override
+    public boolean isApplet() {
+	    return true;
+    }
+	
+	
 }

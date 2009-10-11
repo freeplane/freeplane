@@ -241,6 +241,7 @@ public abstract class ResourceController {
 
 	abstract public void setProperty(final String property, final String value);
 
+
 	public void toggleSelectionAsRectangle() {
 		setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, Boolean.toString(!isSelectionAsRectangle()) );
 	}
@@ -248,4 +249,7 @@ public abstract class ResourceController {
 	public void updateMenus(final ModeController modeController) {
 		LogTool.warn("ResourceController.updateMenus(...) called, but not implemented.");
 	}
+	public boolean isApplet() {
+	    return false;
+    }
 }
