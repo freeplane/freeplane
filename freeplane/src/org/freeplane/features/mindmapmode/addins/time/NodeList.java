@@ -493,11 +493,28 @@ class NodeList {
 		for (int i = 0; i < length; i++) {
 			final NodeHolder nodeHolder = info.getNodeHolderAt(i);
 			final String text = nodeHolder.node.getText();
-			final String replaceResult = HtmlTools.getInstance().getReplaceResult(p, replacement, text);
+			final String replaceResult; 
+			if(HtmlTools.isHtmlNode(text)){
+				replaceResult = replace(p, replacement, text);
+			}
+			else{
+				replaceResult = p.matcher(text).replaceAll(replacement);
+			}
 			if (!StringUtils.equals(text, replaceResult)) {
 				info.changeString(nodeHolder, replaceResult);
 			}
 		}
+	}
+
+	private static String replace(final Pattern p, final String replacement,
+			String replaceResult) {
+		Object before;
+		do {
+			before = replaceResult;
+			replaceResult = HtmlTools.getInstance().getReplaceResult(p,
+					replacement, replaceResult);
+		} while (!replaceResult.equals(before));
+		return replaceResult;
 	}
 
 	final private Controller controller;
