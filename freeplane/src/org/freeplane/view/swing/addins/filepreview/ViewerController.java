@@ -381,6 +381,9 @@ final private Set<IViewerFactory> factories;
 			return null;
 		}
 		final File input = chooser.getSelectedFile();
+		if (input == null) {
+			return null;
+		}
 		final URI uri = input.toURI();
 		if (uri == null) {
 			return null;
