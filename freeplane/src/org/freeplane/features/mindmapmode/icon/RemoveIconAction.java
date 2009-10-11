@@ -78,6 +78,10 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 	}
 
 	public int removeIcon(final NodeModel node) {
+		final int size = node.getIcons().size();
+		if (size == 0) {
+			return size;
+		}
 		final IActor actor = new IActor() {
 			private final MindIcon icon = node.getIcon(node.getIcons().size() - 1);
 
