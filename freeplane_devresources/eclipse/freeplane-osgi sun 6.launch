@@ -12,16 +12,15 @@
 <intAttribute key="default_start_level" value="1"/>
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.JAVA_COMMAND" value="java"/>
-<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-6-sun-1.6.0.14"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -console"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true -Dosgi.debug=debug.properties&#13;&#10;-Dorg.freeplane.param1=/home/dimitry/Desktop/1234.mm -Dorg.freeplane.param2= -Dorg.freeplane.param3= -Dorg.freeplane.param4=  -Dorg.freeplane.globalresourcedir=bin/resources -Dorg.osgi.framework.dir=/home/dimitry/freeplane/fwdir -Dorg.freeplane.nosplash=true"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true -Dosgi.debug=debug.properties"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:freeplane}"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <booleanAttribute key="show_selected_only" value="true"/>
-<stringAttribute key="target_bundles" value="org.eclipse.osgi@:"/>
+<stringAttribute key="target_bundles" value="org.eclipse.osgi@-1:true"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="org.freeplane.plugin.svg@default:default,org.freeplane.plugin.script@default:default,org.freeplane.plugin.help@default:default,org.freeplane.plugin.bugreport@default:default,org.freeplane.plugin.latex@default:default,org.freeplane.core@2:default"/>
+<stringAttribute key="workspace_bundles" value="org.freeplane.plugin.script@default:default,org.freeplane.plugin.svg@default:default,org.freeplane.core@2:default,org.freeplane.plugin.help@default:default,org.freeplane.plugin.bugreport@default:default,org.freeplane.plugin.latex@default:default"/>
 <stringAttribute key="yk-options" value="&#10;additional-options=&#10;snapshots-dir=&#10;startup=0&#10;"/>
 </launchConfiguration>
