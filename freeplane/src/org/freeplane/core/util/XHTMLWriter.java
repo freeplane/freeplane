@@ -15,6 +15,7 @@ import java.io.Writer;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.Element;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
@@ -43,8 +44,6 @@ class XHTMLWriter extends FixedHTMLWriter {
 	public static class XHTMLFilterWriter extends FilterWriter {
 		private boolean insideTag = false;
 		private boolean insideValue = false;
-		private boolean readTag = false;
-		private String tag = "";
 
 		/**
 		 * Create a new XHTMLFilterWriter.
@@ -99,32 +98,15 @@ class XHTMLWriter extends FixedHTMLWriter {
 				}
 			}
 			else if (insideTag) {
-				if (readTag) {
-					if (c == ' ' || c == '>') {
-						readTag = false;
-					}
-					else {
-						tag += (char) c;
-					}
-				}
 				if (c == '"') {
 					insideValue = true;
 				}
 				else if (c == '>') {
-					if (tag.equals("img") || tag.equals("br")|| tag.equals("wbr") || tag.equals("hr") || tag.equals("input")
-					        || tag.equals("meta") || tag.equals("link") || tag.equals("area") || tag.equals("base")
-					        || tag.equals("basefont") || tag.equals("frame") || tag.equals("iframe")
-					        || tag.equals("col")) {
-						super.write(" /");
-					}
 					insideTag = false;
-					readTag = false;
 				}
 			}
 			else if (c == '<') {
-				tag = "";
 				insideTag = true;
-				readTag = true;
 			}
 			super.write(c);
 		}
@@ -184,6 +166,7 @@ class XHTMLWriter extends FixedHTMLWriter {
 	}
 
 	private boolean writeLineSeparatorEnabled = true;
+	private boolean insideEmptyTag;
 
 	/**
 	 * Create a new XHTMLWriter that will write the entire HTMLDocument.
@@ -250,6 +233,9 @@ class XHTMLWriter extends FixedHTMLWriter {
 			return;
 		}
 		super.writeAttributes(attributeSet);
+		if(insideEmptyTag){
+			write('/');
+		}
     }
     
     // remove invalid characters
@@ -263,5 +249,19 @@ class XHTMLWriter extends FixedHTMLWriter {
 		}
 	    super.output(chars, start, length);
     }
+
+	@Override
+	protected void emptyTag(Element elem) throws BadLocationException,
+			IOException {
+		try{
+			insideEmptyTag = true;
+			super.emptyTag(elem);
+		}
+		finally{
+			insideEmptyTag = false;
+		}
+	}
+	
+	
 	
 }
