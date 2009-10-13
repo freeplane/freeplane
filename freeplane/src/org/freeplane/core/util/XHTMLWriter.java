@@ -16,6 +16,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
+import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
@@ -254,6 +255,12 @@ class XHTMLWriter extends FixedHTMLWriter {
 	protected void emptyTag(Element elem) throws BadLocationException,
 			IOException {
 		try{
+			AttributeSet attributes = elem.getAttributes();
+			Object endTag = attributes.getAttribute(HTML.Attribute.ENDTAG);
+			if((endTag instanceof String) &&
+					((String)endTag).equals("true")){
+				return;
+			}
 			insideEmptyTag = true;
 			super.emptyTag(elem);
 		}
