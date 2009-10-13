@@ -259,6 +259,10 @@ class XHTMLWriter extends FixedHTMLWriter {
 			Object endTag = attributes.getAttribute(HTML.Attribute.ENDTAG);
 			if((endTag instanceof String) &&
 					((String)endTag).equals("true")){
+			    write('<');
+			    write(elem.getName());
+			    write('/');
+			    write('>');
 				return;
 			}
 			insideEmptyTag = true;
