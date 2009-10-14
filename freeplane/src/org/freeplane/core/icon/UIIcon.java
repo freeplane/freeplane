@@ -167,4 +167,9 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	public int compareTo(final UIIcon uiIcon) {
 		return this.getPath().toExternalForm().compareTo(uiIcon.getPath().toExternalForm());
 	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
 }

@@ -23,6 +23,7 @@ package org.freeplane.features.common.addins.misc;
 import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
@@ -30,6 +31,9 @@ import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.icon.MindIcon;
+import org.freeplane.core.icon.UIIcon;
+import org.freeplane.core.icon.UIIconSet;
+import org.freeplane.core.icon.ZoomedIcon;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.INodeChangeListener;
@@ -48,6 +52,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener, IExtension {
 	final private Map<NodeModel, TreeSet<MindIcon>> nodeIconSets = new HashMap<NodeModel, TreeSet<MindIcon>>();
+	boolean removing = false;
 
 	public HierarchicalIcons(final ModeController modeController) {
 		super(modeController);
@@ -182,6 +187,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	/**
 	 */
 	private void removeIcons(final NodeModel node) {
+		removing = true;
 		node.removeStateIcons(getHookName());
 		getModeController().getMapController().nodeRefresh(node);
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
@@ -189,6 +195,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			final NodeModel child = childrenUnfolded.next();
 			removeIcons(child);
 		}
+		removing = false;
 	}
 
 	private void setStyle(final NodeModel node) {
@@ -210,8 +217,12 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		}
 		nodeIconSets.put(node, iconSet);
 		if (dirty) {
-			if (iconSet.size() > 0) {
-				node.setStateIcon(getHookName(), iconSet);
+			if (!removing && iconSet.size() > 0) {
+				Set<UIIcon> zoomedIcons = new TreeSet<UIIcon>();
+				for (MindIcon icon : iconSet) {
+					zoomedIcons.add(new ZoomedIcon(icon, 0.75f));
+			    }
+				node.setStateIcon(getHookName(), new UIIconSet(zoomedIcons));
 			}
 			else {
 				node.removeStateIcons(getHookName());
