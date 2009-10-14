@@ -87,13 +87,11 @@ public class MultipleImage extends ImageIcon {
 		}
 		final BufferedImage outImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D g = outImage.createGraphics();
-		double myX = 0;
 		for (final ImageIcon currentIcon : mImages) {
 			final double pwidth = (currentIcon.getIconWidth() * zoomFactor);
 			final AffineTransform inttrans = AffineTransform.getScaleInstance(zoomFactor, zoomFactor);
 			g.drawImage(currentIcon.getImage(), inttrans, null);
 			g.translate(pwidth, 0);
-			myX += pwidth;
 		}
 		g.dispose();
 		setImage(outImage);
