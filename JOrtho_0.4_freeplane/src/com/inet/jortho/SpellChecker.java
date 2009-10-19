@@ -206,6 +206,10 @@ public class SpellChecker {
 			final Thread thread = new Thread(new Runnable() {
 				public void run() {
 					try {
+						final Locale oldLocale = currentLocale;
+						currentDictionary = null;
+						currentLocale = null;
+						SpellChecker.fireLanguageChanged(oldLocale);
 						final DictionaryFactory factory = new DictionaryFactory();
 						try {
 							factory.loadWordList(new URL(baseURL, "dictionary_" + locale + extension));
@@ -220,10 +224,9 @@ public class SpellChecker {
 						catch (final Exception ex) {
 							JOptionPane.showMessageDialog(null, ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
 						}
-						final Locale oldLocale = locale;
 						currentDictionary = factory.create();
 						currentLocale = locale;
-						SpellChecker.fireLanguageChanged(oldLocale);
+						SpellChecker.fireLanguageChanged(null);
 					}
 					finally {
 						setEnabled(true);
