@@ -23,6 +23,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,18 +31,31 @@ import javax.swing.ImageIcon;
 
 public class UIIconSet extends UIIcon {
 
-	Collection<UIIcon> uiIcons;
+	final Collection<UIIcon> uiIcons;
+	final float zoom; 
 	
+	public Collection<UIIcon> getIcons() {
+		return uiIcons;
+	}
+
 	List<ImageIcon> imageIcons;
 	
 	private ImageIcon compounIcon;
 	
-	public UIIconSet(Collection<UIIcon> uiIcons) {
+	public UIIconSet(final Collection<UIIcon> uiIcons, float zoom) {
 		super("", "");
-		this.uiIcons    = uiIcons;
+		this.zoom = zoom;
+		this.uiIcons    = Collections.unmodifiableCollection(uiIcons);
 		this.imageIcons = new LinkedList<ImageIcon>();
 		for(UIIcon uiIcon : uiIcons) {
-			imageIcons.add(uiIcon.getIcon());
+			final ImageIcon icon;
+			if(zoom == 1f) {
+				icon = uiIcon.getIcon();
+			}
+			else{
+				icon = new ZoomedIcon(uiIcon, zoom).getIcon();
+			}
+			imageIcons.add(icon);
 		}
 	}
 	
@@ -85,11 +99,18 @@ public class UIIconSet extends UIIcon {
 	
 	@Override
 	public boolean equals(Object obj) {
-		return uiIcons.equals(obj);
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (this.getClass() != obj.getClass())
+			return false;
+		UIIconSet uiIconSet = (UIIconSet)obj;
+		return zoom == uiIconSet.zoom && uiIcons.equals(uiIconSet.uiIcons);
 	}
 	
 	@Override
 	public int hashCode() {
-		return uiIcons.hashCode();
+		return 31 * uiIcons.hashCode();
 	}
 }

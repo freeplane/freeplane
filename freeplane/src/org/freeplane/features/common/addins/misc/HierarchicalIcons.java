@@ -51,8 +51,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @ActionLocationDescriptor(locations = { "/menu_bar/format/nodes/automaticLayout2" })
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener, IExtension {
-	final private Map<NodeModel, TreeSet<MindIcon>> nodeIconSets = new HashMap<NodeModel, TreeSet<MindIcon>>();
-	boolean removing = false;
 
 	public HierarchicalIcons(final ModeController modeController) {
 		super(modeController);
@@ -70,14 +68,15 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 
 	/**
 	 */
-	private void addAccumulatedIconsToTreeSet(final NodeModel child, final TreeSet<MindIcon> iconSet, final TreeSet<MindIcon> childsTreeSet) {
-		for (final MindIcon icon : child.getIcons()) {
+	private void addAccumulatedIconsToTreeSet(final NodeModel child, final TreeSet<UIIcon> iconSet) {
+		for (final UIIcon icon : child.getIcons()) {
 			iconSet.add(icon);
 		}
-		if (childsTreeSet == null) {
+		final UIIconSet uiIcon = (UIIconSet) child.getStateIcons().get(getHookName());
+		if (uiIcon == null) {
 			return;
 		}
-		for (final MindIcon icon : childsTreeSet) {
+		for (final UIIcon icon : uiIcon.getIcons()) {
 			iconSet.add(icon);
 		}
 	}
@@ -126,10 +125,10 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		if (!isActive(node)) {
 			return;
 		}
-		setStyle(node);
 		if (!event.getProperty().equals("icon")) {
 			return;
 		}
+		setStyle(node);
 		onUpdateChildren(node);
 	}
 
@@ -179,7 +178,6 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 
 	@Override
 	protected void remove(final NodeModel node, final IExtension extension) {
-		nodeIconSets.clear();
 		removeIcons(node);
 		super.remove(node, extension);
 	}
@@ -187,7 +185,6 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	/**
 	 */
 	private void removeIcons(final NodeModel node) {
-		removing = true;
 		node.removeStateIcons(getHookName());
 		getModeController().getMapController().nodeRefresh(node);
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
@@ -195,40 +192,25 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			final NodeModel child = childrenUnfolded.next();
 			removeIcons(child);
 		}
-		removing = false;
 	}
 
 	private void setStyle(final NodeModel node) {
-		final TreeSet<MindIcon> iconSet = new TreeSet<MindIcon>();
+		final TreeSet<UIIcon> iconSet = new TreeSet<UIIcon>();
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
 		while(childrenUnfolded.hasNext()) {
 			final NodeModel child = childrenUnfolded.next();
-			addAccumulatedIconsToTreeSet(child, iconSet, nodeIconSets.get(child));
+			addAccumulatedIconsToTreeSet(child, iconSet);
 		}
 		for(MindIcon icon : node.getIcons()) {
 			iconSet.remove(icon);
 		}
-		boolean dirty = true;
-		if (nodeIconSets.containsKey(node)) {
-			final TreeSet<MindIcon> storedIconSet = nodeIconSets.get(node);
-			if (storedIconSet.equals(iconSet)) {
-				dirty = false;
-			}
+		if (iconSet.size() > 0) {
+			node.setStateIcon(getHookName(), new UIIconSet(iconSet, 0.75f));
 		}
-		nodeIconSets.put(node, iconSet);
-		if (dirty) {
-			if (!removing && iconSet.size() > 0) {
-				Set<UIIcon> zoomedIcons = new TreeSet<UIIcon>();
-				for (MindIcon icon : iconSet) {
-					zoomedIcons.add(new ZoomedIcon(icon, 0.75f));
-			    }
-				node.setStateIcon(getHookName(), new UIIconSet(zoomedIcons));
-			}
-			else {
-				node.removeStateIcons(getHookName());
-			}
-			getModeController().getMapController().nodeRefresh(node);
+		else {
+			node.removeStateIcons(getHookName());
 		}
+		getModeController().getMapController().nodeRefresh(node);
 	}
 
 	/**

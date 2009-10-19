@@ -543,12 +543,6 @@ public class NodeModel implements MutableTreeNode {
 		}
 	}
 	
-	public void setStateIcon(final String key, final Collection<? extends UIIcon> icons) {
-		for(UIIcon icon : icons) {
-			setStateIcon(key, icon);
-		}
-	}
-	
 	public void removeStateIcons(final String key) {
 		if(icons != null) {
 			icons.removeStateIcons(key);
