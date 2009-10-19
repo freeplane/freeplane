@@ -257,7 +257,7 @@ class ApplicationViewController extends ViewController {
 		final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController().getProperty(
 		    propertyString));
 		String browserCommand = formatter.format(messageArguments);
-		Runtime.getRuntime().exec(browserCommand);
+		Controller.exec(browserCommand);
 	}
 
 	/**
@@ -291,10 +291,10 @@ class ApplicationViewController extends ViewController {
 					command = new String[]{"rundll32", "url.dll,FileProtocolHandler", url.toString()};
 				}
 				else {
-					Runtime.getRuntime().exec(browserCommand);
+					Controller.exec(browserCommand);
 					return;
 				}
-				Runtime.getRuntime().exec(command);
+				Controller.exec(command);
 			}
 			catch (final IOException x) {
 				UITools
@@ -317,7 +317,7 @@ class ApplicationViewController extends ViewController {
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty("default_browser_command_mac"));
 				browserCommand = formatter.format(messageArguments);
-				Runtime.getRuntime().exec(browserCommand);
+				Controller.exec(browserCommand);
 			}
 			catch (final IOException ex2) {
 				UITools
@@ -338,7 +338,7 @@ class ApplicationViewController extends ViewController {
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty("default_browser_command_other_os"));
 				browserCommand = formatter.format(messageArguments);
-				Runtime.getRuntime().exec(browserCommand);
+				Controller.exec(browserCommand);
 			}
 			catch (final IOException ex2) {
 				UITools
