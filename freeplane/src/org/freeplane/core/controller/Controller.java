@@ -21,6 +21,7 @@ package org.freeplane.core.controller;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -208,7 +209,7 @@ public class Controller extends AController {
 	}
 
 	public static Process exec(String[] command) throws IOException {
-		LogTool.info("execute " + command);
+		LogTool.info("execute " + Arrays.toString(command));
 		return Runtime.getRuntime().exec(command);
 	}
 }
