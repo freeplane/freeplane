@@ -290,6 +290,7 @@ public class UrlManager implements IExtension {
 		}
 		if (filter != null) {
 			chooser.addChoosableFileFilter(filter);
+			chooser.setFileFilter(filter);
 		}
 		return chooser;
 	}

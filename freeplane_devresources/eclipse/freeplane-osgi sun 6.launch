@@ -21,6 +21,6 @@
 <stringAttribute key="target_bundles" value="org.eclipse.osgi@-1:true"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="org.freeplane.plugin.script@default:default,org.freeplane.plugin.svg@default:default,org.freeplane.core@2:default,org.freeplane.plugin.help@default:default,org.freeplane.plugin.bugreport@default:default,org.freeplane.plugin.latex@default:default"/>
+<stringAttribute key="workspace_bundles" value="org.freeplane.core@2:default,org.freeplane.plugin.help@default:default,org.freeplane.plugin.latex@default:default,org.freeplane.plugin.svg@default:default,org.freeplane.plugin.bugreport@default:default,org.freeplane.plugin.script@default:default"/>
 <stringAttribute key="yk-options" value="&#10;additional-options=&#10;snapshots-dir=&#10;startup=0&#10;"/>
 </launchConfiguration>
