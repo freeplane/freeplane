@@ -660,6 +660,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			}
 		}
 		setTitle(title);
+		modeController.getUserInputListenerFactory().updateMapList();
 	}
 
 	abstract public void setTitle(String title);
