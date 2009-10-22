@@ -1,6 +1,6 @@
 *******************************
-$LastChangedDate$
-$Rev$
+Revision 828
+
 *******************************
 ===============================
 1.0.32 alpha
@@ -14,6 +14,10 @@ System dependent memory allocation for windows OS
 0000245: Navigation in File Mode is (almost) not working
 0000253: can't edit name on exported branch as a new card
 0000252: Attribute assignation kinematic  
+0000236: simulate edge feature is buggy when used with "horizontal" edge style
+0000273: File -> Open dialog shows by default all files instead of only showing map files.
+0000275: Freeplane 1.0.32 a does not open encrypted maps
+0000277: After saving a new map, exception thrown when selecting "Map1" on right-click menu
 
 ===============================
 1.0.30 alpha
