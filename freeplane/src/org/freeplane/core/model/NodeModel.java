@@ -373,14 +373,14 @@ public class NodeModel implements MutableTreeNode {
 	 * of this node. (transitive)
 	 */
 	public boolean isDescendantOf(final NodeModel node) {
-		if (this.isRoot()) {
+		if (parent == null) {
 			return false;
 		}
-		else if (node == getParentNode()) {
+		else if (node == parent) {
 			return true;
 		}
 		else {
-			return getParentNode().isDescendantOf(node);
+			return parent.isDescendantOf(node);
 		}
 	}
 
