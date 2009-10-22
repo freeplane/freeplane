@@ -272,6 +272,33 @@ class XHTMLWriter extends FixedHTMLWriter {
 			insideEmptyTag = false;
 		}
 	}
+
+	@Override
+	protected void closeOutUnwantedEmbeddedTags(AttributeSet attr)
+			throws IOException {
+		boolean insideEmptyTag = this.insideEmptyTag;
+		this.insideEmptyTag = false;
+		try{
+			super.closeOutUnwantedEmbeddedTags(attr);
+		}
+		finally{
+			this.insideEmptyTag = insideEmptyTag;
+		}
+	}
+
+	@Override
+	protected void writeEmbeddedTags(AttributeSet attr) throws IOException {
+		boolean insideEmptyTag = this.insideEmptyTag;
+		this.insideEmptyTag = false;
+		try{
+			super.writeEmbeddedTags(attr);
+		}
+		finally{
+			this.insideEmptyTag = insideEmptyTag;
+		}
+	}
+	
+	
 	
 	
 	

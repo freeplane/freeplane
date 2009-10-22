@@ -71,6 +71,9 @@ public class NoteModel implements IExtension {
 		}
 		noteText = XmlTool.makeValidXml(pNoteText);
 		xmlNoteText = HtmlTools.getInstance().toXhtml(noteText);
+		if(xmlNoteText != null && ! xmlNoteText.startsWith("<")){
+			noteText = xmlNoteText;
+		}
 	}
 
 	public final void setXmlNoteText(final String pXmlNoteText) {

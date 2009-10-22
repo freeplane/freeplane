@@ -552,6 +552,10 @@ public class NodeModel implements MutableTreeNode {
 	public final void setText(final String text) {
 		this.text = XmlTool.makeValidXml(text);
 		xmlText = HtmlTools.getInstance().toXhtml(text);
+		if(xmlText != null && ! xmlText.startsWith("<")){
+			this.text = " " + text;
+			xmlText = null;
+		}
 	}
 
 	/**
