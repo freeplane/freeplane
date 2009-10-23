@@ -255,10 +255,13 @@ class XHTMLWriter extends FixedHTMLWriter {
 	protected void emptyTag(Element elem) throws BadLocationException,
 			IOException {
 		try{
-			AttributeSet attributes = elem.getAttributes();
-			Object endTag = attributes.getAttribute(HTML.Attribute.ENDTAG);
-			if((endTag instanceof String) &&
-					((String)endTag).equals("true")){
+			boolean isEndtag = isEndtag(elem);
+			int balance = balance(elem, isEndtag);
+			if(balance == 0 || balance > 0 && isEndtag || balance < 0  && ! isEndtag){
+				super.emptyTag(elem);
+				return;
+			}
+			if(isEndtag){
 			    write('<');
 			    write(elem.getName());
 			    write('/');
@@ -271,6 +274,51 @@ class XHTMLWriter extends FixedHTMLWriter {
 		finally{
 			insideEmptyTag = false;
 		}
+	}
+
+	private int balance(Element elem, boolean isEndtag) {
+		Element parentElement = elem.getParentElement();
+		int elementCount = parentElement.getElementCount();
+		int balance = 0;
+		String elemName = elem.getName();
+		for(int i = 0; i < elementCount; i++){
+			Element childElement = parentElement.getElement(i);
+			if(isEndtag){
+				if (childElement.equals(elem)){
+					balance--;
+					break;
+				}
+			}
+			else{
+				if (childElement.equals(elem)){
+					balance = 1;
+					continue;
+				}
+				if(balance == 0){
+					continue;
+				}
+			}
+			if(! elemName.equals(childElement.getName())){
+				continue;
+			}
+			if(isEndtag(childElement)){
+				if(balance > 0){
+					balance--;
+					continue;
+				}
+			}
+			else{
+				balance++;
+			}
+		}
+		return balance;
+	}
+
+	private boolean isEndtag(Element elem) {
+		AttributeSet attributes = elem.getAttributes();
+		Object endTag = attributes.getAttribute(HTML.Attribute.ENDTAG);
+		boolean isEndtag = (endTag instanceof String) && ((String)endTag).equals("true");
+		return isEndtag;
 	}
 
 	@Override
