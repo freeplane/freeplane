@@ -566,59 +566,65 @@ public class NodeView extends JComponent implements INodeView {
 		return null;
 	}
 
-	public NodeView getPreferredVisibleChild(final boolean left) {
+	public NodeView getPreferredVisibleChild(Layout layoutType, final boolean left) {
+		if (getModel().isLeaf()) {
+			return null;
+		}
+		if(layoutType==Layout.OUTLINE){
+			preferredChild = null;
+		}
 		if (preferredChild != null && (left == preferredChild.isLeft()) && preferredChild.getParent() == this) {
 			if (preferredChild.isContentVisible()) {
 				return preferredChild;
 			}
 			else {
-				final NodeView newSelected = preferredChild.getPreferredVisibleChild(left);
+				final NodeView newSelected = preferredChild.getPreferredVisibleChild(layoutType, left);
 				if (newSelected != null) {
 					return newSelected;
 				}
 			}
 		}
-		if (!getModel().isLeaf()) {
-			int yGap = Integer.MAX_VALUE;
-			final NodeView baseComponent;
-			if (isContentVisible()) {
-				baseComponent = this;
+		int yGap = Integer.MAX_VALUE;
+		final NodeView baseComponent;
+		if (isContentVisible()) {
+			baseComponent = this;
+		}
+		else {
+			baseComponent = getVisibleParentView();
+		}
+		final int ownY = baseComponent.getMainView().getY() + baseComponent.getMainView().getHeight() / 2;
+		NodeView newSelected = null;
+		for (int i = 0; i < getComponentCount(); i++) {
+			final Component c = getComponent(i);
+			if (!(c instanceof NodeView)) {
+				continue;
+			}
+			NodeView childView = (NodeView) c;
+			if (!(childView.isLeft() == left)) {
+				continue;
+			}
+			if (!childView.isContentVisible()) {
+				childView = childView.getPreferredVisibleChild(layoutType, left);
+				if (childView == null) {
+					continue;
+				}
+			}
+			final Point childPoint = new Point(0, childView.getMainView().getHeight() / 2);
+			UITools.convertPointToAncestor(childView.getMainView(), childPoint, baseComponent);
+			if (layoutType==Layout.OUTLINE){
+				return childView;
+			}
+			final int gapToChild = Math.abs(childPoint.y - ownY);
+			if (gapToChild < yGap) {
+				newSelected = childView;
+				preferredChild = (NodeView) c;
+				yGap = gapToChild;
 			}
 			else {
-				baseComponent = getVisibleParentView();
+				break;
 			}
-			final int ownY = baseComponent.getMainView().getY() + baseComponent.getMainView().getHeight() / 2;
-			NodeView newSelected = null;
-			for (int i = 0; i < getComponentCount(); i++) {
-				final Component c = getComponent(i);
-				if (!(c instanceof NodeView)) {
-					continue;
-				}
-				NodeView childView = (NodeView) c;
-				if (!(childView.isLeft() == left)) {
-					continue;
-				}
-				if (!childView.isContentVisible()) {
-					childView = childView.getPreferredVisibleChild(left);
-					if (childView == null) {
-						continue;
-					}
-				}
-				final Point childPoint = new Point(0, childView.getMainView().getHeight() / 2);
-				UITools.convertPointToAncestor(childView.getMainView(), childPoint, baseComponent);
-				final int gapToChild = Math.abs(childPoint.y - ownY);
-				if (gapToChild < yGap) {
-					newSelected = childView;
-					preferredChild = (NodeView) c;
-					yGap = gapToChild;
-				}
-				else {
-					break;
-				}
-			}
-			return newSelected;
 		}
-		return null;
+		return newSelected;
 	}
 
 	protected NodeView getPreviousPage() {
@@ -884,7 +890,7 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		(node).remove();
-		final NodeView preferred = getPreferredVisibleChild(preferredChildIsLeft);
+		final NodeView preferred = getPreferredVisibleChild(getMap().getLayoutType(), preferredChildIsLeft);
 		if (preferred != null) {
 			getMap().selectAsTheOnlyOneSelected(preferred);
 		}

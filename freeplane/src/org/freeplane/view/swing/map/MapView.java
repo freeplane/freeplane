@@ -791,7 +791,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		NodeView newSelected = oldSelected;
 		final NodeModel oldModel = oldSelected.getModel();
 		if (oldModel.isRoot()) {
-			newSelected = oldSelected.getPreferredVisibleChild(true);
+			newSelected = oldSelected.getPreferredVisibleChild(layoutType, true);
 		}
 		else if (!oldSelected.isLeft()) {
 			newSelected = oldSelected.getVisibleParentView();
@@ -801,9 +801,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				getModeController().getMapController().setFolded(oldModel, false);
 				return oldSelected;
 			}
-			newSelected = oldSelected.getPreferredVisibleChild(true);
+			newSelected = oldSelected.getPreferredVisibleChild(layoutType, true);
 			while (newSelected != null && !newSelected.isContentVisible()) {
-				newSelected = newSelected.getPreferredVisibleChild(true);
+				newSelected = newSelected.getPreferredVisibleChild(layoutType, true);
 			}
 		}
 		return newSelected;
@@ -845,7 +845,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		NodeView newSelected = oldSelected;
 		final NodeModel oldModel = oldSelected.getModel();
 		if (oldModel.isRoot()) {
-			newSelected = oldSelected.getPreferredVisibleChild(false);
+			newSelected = oldSelected.getPreferredVisibleChild(layoutType, false);
 		}
 		else if (oldSelected.isLeft()) {
 			newSelected = oldSelected.getVisibleParentView();
@@ -855,9 +855,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				getModeController().getMapController().setFolded(oldModel, false);
 				return oldSelected;
 			}
-			newSelected = oldSelected.getPreferredVisibleChild(false);
+			newSelected = oldSelected.getPreferredVisibleChild(layoutType, false);
 			while (newSelected != null && !newSelected.isContentVisible()) {
-				newSelected = newSelected.getPreferredVisibleChild(false);
+				newSelected = newSelected.getPreferredVisibleChild(layoutType, false);
 			}
 		}
 		return newSelected;
