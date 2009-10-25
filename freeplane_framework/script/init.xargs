@@ -1,4 +1,4 @@
--istart org.freeplane.plugin.help
+# -istart org.freeplane.plugin.help
 -istart org.freeplane.plugin.svg
 -istart org.freeplane.plugin.latex
 -istart org.freeplane.plugin.script

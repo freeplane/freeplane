@@ -34,10 +34,14 @@
 		<copy todir="${bin.plugins}/org.freeplane.core">
 			<fileset dir="${workspace}/freeplane/bin/dist/osgi/dir"/>
 		</copy>
+		
+<!-- temporarily remove help plugin 
+		
 		<mkdir dir="${bin.plugins}/org.freeplane.plugin.help" />
 		<copy todir="${bin.plugins}/org.freeplane.plugin.help">
 			<fileset dir="${workspace}/freeplane_plugin_help/bin/dist/osgi/dir"/>
 		</copy>
+-->			
 		<mkdir dir="${bin.plugins}/org.freeplane.plugin.latex" />
 		<copy todir="${bin.plugins}/org.freeplane.plugin.latex">
 			<fileset dir="${workspace}/freeplane_plugin_latex/bin/dist/osgi/dir"/>
@@ -59,7 +63,7 @@
 		<copy todir="${bin.resources}">
 			<fileset dir="${workspace}/freeplane/bin/dist/resources"/>
 		</copy>
-		
+	
 	</target>
 
 	<target name="dist" depends="bin">
