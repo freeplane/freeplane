@@ -556,7 +556,7 @@ public class NodeModel implements MutableTreeNode {
 		this.userObject = XmlTool.makeValidXml(text);
 		xmlText = HtmlTools.getInstance().toXhtml(text);
 		if(xmlText != null && ! xmlText.startsWith("<")){
-			this.text = " " + text;
+			this.userObject = " " + text;
 			xmlText = null;
 		}
 	}

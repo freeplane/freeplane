@@ -304,8 +304,8 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 			node.removeStateIcons(NodeAttributeTableModel.STATE_ICON);
 		}
 		if (showIcon && getRowCount() == 1) {
-			if (NodeAttributeTableModel.noteIcon == null) {
-				NodeAttributeTableModel.noteIcon = IconStoreFactory.create().getUIIcon("showAttributes.png");
+			if (NodeAttributeTableModel.attributeIcon == null) {
+				NodeAttributeTableModel.attributeIcon = IconStoreFactory.create().getUIIcon("showAttributes.png");
 			}
 			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.attributeIcon);
 		}
