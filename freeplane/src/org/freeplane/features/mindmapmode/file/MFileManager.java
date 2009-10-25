@@ -301,6 +301,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 			throw new IOException("can not obtain file lock for " + file);
 		}
 		try{
+			if (file.length() == 0){
+				return map.getRootNode();
+			}
 			final NodeModel rootNode = loadTreeImpl(map, new BufferedInputStream(input));
 			return rootNode;
 		}
