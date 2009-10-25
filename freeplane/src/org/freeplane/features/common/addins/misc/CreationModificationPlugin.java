@@ -129,10 +129,24 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	}
 
 	protected void setToolTip(final NodeModel node, final String key, final String value) {
-		(getModeController().getMapController()).setToolTip(node, key, new ITooltipProvider() {
+		final ITooltipProvider tooltipProvider;
+		if(value != null){
+		tooltipProvider = new ITooltipProvider() {
 			public String getTooltip() {
 				return value;
 			}
-		});
+		};
+		}
+		else{
+			tooltipProvider = null;
+		}
+		final boolean nodeChangeListenerDisabled = this.nodeChangeListenerDisabled;
+		this.nodeChangeListenerDisabled = true;
+		try{
+		(getModeController().getMapController()).setToolTip(node, key, tooltipProvider);
+		}
+		finally{
+			this.nodeChangeListenerDisabled = nodeChangeListenerDisabled;
+		}
 	}
 }

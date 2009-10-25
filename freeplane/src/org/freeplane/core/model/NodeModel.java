@@ -561,6 +561,9 @@ public class NodeModel implements MutableTreeNode {
 	/**
 	 */
 	public void setToolTip(final String key, final ITooltipProvider tooltip) {
+		if(tooltip == null && toolTip == null){
+			return;
+		}
 		createToolTip();
 		if (tooltip == null) {
 			if (toolTip.containsKey(key)) {
