@@ -15,6 +15,8 @@ import java.io.Writer;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
@@ -43,8 +45,6 @@ class XHTMLWriter extends FixedHTMLWriter {
 	public static class XHTMLFilterWriter extends FilterWriter {
 		private boolean insideTag = false;
 		private boolean insideValue = false;
-		private boolean readTag = false;
-		private String tag = "";
 
 		/**
 		 * Create a new XHTMLFilterWriter.
@@ -99,32 +99,15 @@ class XHTMLWriter extends FixedHTMLWriter {
 				}
 			}
 			else if (insideTag) {
-				if (readTag) {
-					if (c == ' ' || c == '>') {
-						readTag = false;
-					}
-					else {
-						tag += (char) c;
-					}
-				}
 				if (c == '"') {
 					insideValue = true;
 				}
 				else if (c == '>') {
-					if (tag.equals("img") || tag.equals("br")|| tag.equals("wbr") || tag.equals("hr") || tag.equals("input")
-					        || tag.equals("meta") || tag.equals("link") || tag.equals("area") || tag.equals("base")
-					        || tag.equals("basefont") || tag.equals("frame") || tag.equals("iframe")
-					        || tag.equals("col")) {
-						super.write(" /");
-					}
 					insideTag = false;
-					readTag = false;
 				}
 			}
 			else if (c == '<') {
-				tag = "";
 				insideTag = true;
-				readTag = true;
 			}
 			super.write(c);
 		}
@@ -184,6 +167,7 @@ class XHTMLWriter extends FixedHTMLWriter {
 	}
 
 	private boolean writeLineSeparatorEnabled = true;
+	private boolean insideEmptyTag;
 
 	/**
 	 * Create a new XHTMLWriter that will write the entire HTMLDocument.
@@ -250,6 +234,9 @@ class XHTMLWriter extends FixedHTMLWriter {
 			return;
 		}
 		super.writeAttributes(attributeSet);
+		if(insideEmptyTag){
+			write('/');
+		}
     }
     
     // remove invalid characters
@@ -263,5 +250,104 @@ class XHTMLWriter extends FixedHTMLWriter {
 		}
 	    super.output(chars, start, length);
     }
+
+	@Override
+	protected void emptyTag(Element elem) throws BadLocationException,
+			IOException {
+		try{
+			boolean isEndtag = isEndtag(elem);
+			int balance = balance(elem, isEndtag);
+			if(balance == 0 || balance > 0 && isEndtag || balance < 0  && ! isEndtag){
+				super.emptyTag(elem);
+				return;
+			}
+			if(isEndtag){
+			    write('<');
+			    write(elem.getName());
+			    write('/');
+			    write('>');
+				return;
+			}
+			insideEmptyTag = true;
+			super.emptyTag(elem);
+		}
+		finally{
+			insideEmptyTag = false;
+		}
+	}
+
+	private int balance(Element elem, boolean isEndtag) {
+		Element parentElement = elem.getParentElement();
+		int elementCount = parentElement.getElementCount();
+		int balance = 0;
+		String elemName = elem.getName();
+		for(int i = 0; i < elementCount; i++){
+			Element childElement = parentElement.getElement(i);
+			if(isEndtag){
+				if (childElement.equals(elem)){
+					balance--;
+					break;
+				}
+			}
+			else{
+				if (childElement.equals(elem)){
+					balance = 1;
+					continue;
+				}
+				if(balance == 0){
+					continue;
+				}
+			}
+			if(! elemName.equals(childElement.getName())){
+				continue;
+			}
+			if(isEndtag(childElement)){
+				if(balance > 0){
+					balance--;
+					continue;
+				}
+			}
+			else{
+				balance++;
+			}
+		}
+		return balance;
+	}
+
+	private boolean isEndtag(Element elem) {
+		AttributeSet attributes = elem.getAttributes();
+		Object endTag = attributes.getAttribute(HTML.Attribute.ENDTAG);
+		boolean isEndtag = (endTag instanceof String) && ((String)endTag).equals("true");
+		return isEndtag;
+	}
+
+	@Override
+	protected void closeOutUnwantedEmbeddedTags(AttributeSet attr)
+			throws IOException {
+		boolean insideEmptyTag = this.insideEmptyTag;
+		this.insideEmptyTag = false;
+		try{
+			super.closeOutUnwantedEmbeddedTags(attr);
+		}
+		finally{
+			this.insideEmptyTag = insideEmptyTag;
+		}
+	}
+
+	@Override
+	protected void writeEmbeddedTags(AttributeSet attr) throws IOException {
+		boolean insideEmptyTag = this.insideEmptyTag;
+		this.insideEmptyTag = false;
+		try{
+			super.writeEmbeddedTags(attr);
+		}
+		finally{
+			this.insideEmptyTag = insideEmptyTag;
+		}
+	}
+	
+	
+	
+	
 	
 }

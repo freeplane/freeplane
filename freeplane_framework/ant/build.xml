@@ -34,10 +34,14 @@
 		<copy todir="${bin.plugins}/org.freeplane.core">
 			<fileset dir="${workspace}/freeplane/bin/dist/osgi/dir"/>
 		</copy>
+		
+<!-- temporarily remove help plugin 
+		
 		<mkdir dir="${bin.plugins}/org.freeplane.plugin.help" />
 		<copy todir="${bin.plugins}/org.freeplane.plugin.help">
 			<fileset dir="${workspace}/freeplane_plugin_help/bin/dist/osgi/dir"/>
 		</copy>
+-->			
 		<mkdir dir="${bin.plugins}/org.freeplane.plugin.latex" />
 		<copy todir="${bin.plugins}/org.freeplane.plugin.latex">
 			<fileset dir="${workspace}/freeplane_plugin_latex/bin/dist/osgi/dir"/>
@@ -59,7 +63,7 @@
 		<copy todir="${bin.resources}">
 			<fileset dir="${workspace}/freeplane/bin/dist/resources"/>
 		</copy>
-		
+	
 	</target>
 
 	<target name="dist" depends="bin">
@@ -75,14 +79,17 @@
 		<tar destfile="${dist}/freeplane_src-${ver}.tar.gz" compression="gzip" longfile="gnu">
 			<tarfileset prefix="freeplane-${ver}" 
 				dir="${workspace}" mode="777" username="ant" group="ant">
-				<include name="*freeplane/**"/>
-				<include name="*freeplane_plugin*/**"/>
+				<include name="freeplane/**"/>
+				<include name="freeplane_plugin*/**"/>
+				<include name="freeplane_framework/**"/>
+				<include name="JOrtho_0.4_freeplane/**"/>
 				<exclude name=".*/**"/>
 				<exclude name="bin/**"/>
 				<exclude name="dist/**"/>
 				<exclude name="*/bin/**"/>
 				<exclude name="*/build/**"/>
 				<exclude name="*/dist/**"/>
+				<exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho"/>
 			</tarfileset>
 			<tarfileset prefix="freeplane-${ver}" dir="${root}" 
 					mode="777" username="ant" group="ant">

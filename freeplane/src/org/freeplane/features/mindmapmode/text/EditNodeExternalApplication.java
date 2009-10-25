@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.text.MessageFormat;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -60,7 +61,7 @@ class EditNodeExternalApplication extends EditNodeBase {
 					    "html_editing_command");
 					final String expandedHtmlEditingCommand = new MessageFormat(htmlEditingCommand)
 					    .format(new String[] { temporaryFile.toString() });
-					final Process htmlEditorProcess = Runtime.getRuntime().exec(expandedHtmlEditingCommand);
+					final Process htmlEditorProcess = Controller.exec(expandedHtmlEditingCommand);
 					htmlEditorProcess.waitFor();
 					final String content = UrlManager.readFile(temporaryFile);
 					if (content == null) {

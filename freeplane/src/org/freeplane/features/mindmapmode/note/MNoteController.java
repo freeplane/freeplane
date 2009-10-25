@@ -209,6 +209,13 @@ public class MNoteController extends NoteController {
 		noteViewerComponent.setVisible(false);
 		getModeController().getController().getViewController().removeSplitPane();
 		mSplitPane = null;
+		final Controller controller = getModeController().getController();
+		final NodeModel node = controller.getSelection().getSelected();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				controller.getViewController().getComponent(node).requestFocus();
+			}
+		});
 	}
 
 	boolean isLastContentEmpty() {
@@ -327,6 +334,12 @@ public class MNoteController extends NoteController {
 		});
 		noteViewerComponent.setVisible(true);
 		mSplitPane = getModeController().getController().getViewController().insertComponentIntoSplitPane(southPanel);
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				getHtmlEditorPanel().getMostRecentFocusOwner().requestFocus();
+			}
+		});
 		southPanel.revalidate();
 	}
 

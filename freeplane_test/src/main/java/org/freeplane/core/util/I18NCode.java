@@ -9,7 +9,7 @@ package org.freeplane.core.util;
  */
 public enum I18NCode {
 	AFGHANISTAN("AFGHANISTAN ", CountryCode.af, false), //
-	ALAND_ISLANDS("ÅLAND ISLANDS ", CountryCode.ax, false), //
+	ALAND_ISLANDS("ï¿½LAND ISLANDS ", CountryCode.ax, false), //
 	ALBANIA("ALBANIA ", CountryCode.al, false), //
 	ALGERIA("ALGERIA ", CountryCode.dz, false), //
 	AMERICAN_SAMOA("AMERICAN SAMOA ", CountryCode.as, false), //
@@ -60,7 +60,7 @@ public enum I18NCode {
 	CONGO("CONGO ", CountryCode.cg, false), //
 	COOK_ISLANDS("COOK ISLANDS ", CountryCode.ck, false), //
 	COSTA_RICA("COSTA RICA ", CountryCode.cr, false), //
-	COTE_IVOIRE("CÔTE D'IVOIRE ", CountryCode.ci, false), //
+	COTE_IVOIRE("Cï¿½TE D'IVOIRE ", CountryCode.ci, false), //
 	CROATIA("CROATIA ", CountryCode.hr, false), //
 	CUBA("CUBA ", CountryCode.cu, false), //
 	CYPRUS("CYPRUS ", CountryCode.cy, false), //
@@ -185,11 +185,10 @@ public enum I18NCode {
 	PORTUGAL("PORTUGAL ", CountryCode.pt, false), //
 	PUERTO_RICO("PUERTO RICO ", CountryCode.pr, false), //
 	QATAR("QATAR ", CountryCode.qa, false), //
-	REUNION("RÉUNION ", CountryCode.re, false), //
+	REUNION("Rï¿½UNION ", CountryCode.re, false), //
 	ROMANIA("ROMANIA ", CountryCode.ro, false), //
 	RUSSIAN_FEDERATION("RUSSIAN FEDERATION ", CountryCode.ru, false), //
 	RWANDA("RWANDA ", CountryCode.rw, false), //
-	SAINT_BARTHÉLEMY("SAINT BARTHÉLEMY ", CountryCode.bl, false), //
 	SAINT_HELENA("SAINT_HELENA ", CountryCode.sh, false), //
 	SAINT_KITTS_AND_NEVIS("SAINT_KITTS AND NEVIS ", CountryCode.kn, false), //
 	SAINT_LUCIA("SAINT_LUCIA ", CountryCode.lc, false), //

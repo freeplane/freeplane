@@ -71,6 +71,8 @@
 			<menu_category name="navigate">
 				<menu_action action="NextNodeAction.BACK" accelerator="control alt LEFT" />
 				<menu_action action="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
+				<menu_action action="NextNodeAction.BACK_N_FOLD" accelerator="control alt shift LEFT" />
+				<menu_action action="NextNodeAction.FORWARD_N_FOLD" accelerator="control alt shift RIGHT" />
 			</menu_category>
 			<menu_category name="nodes">
 				<menu_action action="MoveToRootAction" accelerator="ESCAPE"  />

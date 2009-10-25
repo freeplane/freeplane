@@ -71,6 +71,12 @@
             	<choice value="always_unfold_all_after_load"/>
             </combo> 
         </separator>
+       <separator name="hyperlink_types">        
+            <combo name="links">
+                <choice value="relative"/>
+                <choice value="absolute"/>
+            </combo>
+        </separator>
         <separator name = "updates">
         	<boolean name = "check_updates_automatically"/>
         </separator>
@@ -155,13 +161,7 @@
         	<number name="label_font_size" min="4" max="216"/>
         	<boolean name="paint_connectors_behind"/>
         </separator>
-        <separator name="hyperlink_types">        
-            <combo name="links">
-                <choice value="relative"/>
-                <choice value="absolute"/>
-            </combo>
-        </separator>
-        
+         
        <separator name="inline_editor">        
             <boolean name="il__enter_confirms_by_default" />
         </separator>

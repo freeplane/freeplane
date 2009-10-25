@@ -124,6 +124,8 @@ public class FreeplaneStarter {
 			controller.addAction(new UpdateCheckAction(controller));
 			controller.addAction(new NextNodeAction(controller, Direction.FORWARD));
 			controller.addAction(new NextNodeAction(controller, Direction.BACK));
+			controller.addAction(new NextNodeAction(controller, Direction.FORWARD_N_FOLD));
+			controller.addAction(new NextNodeAction(controller, Direction.BACK_N_FOLD));
 			controller.addAction(new ViewLayoutTypeAction(controller, Layout.OUTLINE));
 			controller.addAction(new ShowSelectionAsRectangleAction(controller));
 			NodeHistory.install(controller);

@@ -376,14 +376,14 @@ public class NodeModel implements MutableTreeNode {
 	 * of this node. (transitive)
 	 */
 	public boolean isDescendantOf(final NodeModel node) {
-		if (this.isRoot()) {
+		if (parent == null) {
 			return false;
 		}
-		else if (node == getParentNode()) {
+		else if (node == parent) {
 			return true;
 		}
 		else {
-			return getParentNode().isDescendantOf(node);
+			return parent.isDescendantOf(node);
 		}
 	}
 
@@ -546,12 +546,6 @@ public class NodeModel implements MutableTreeNode {
 		}
 	}
 	
-	public void setStateIcon(final String key, final Collection<? extends UIIcon> icons) {
-		for(UIIcon icon : icons) {
-			setStateIcon(key, icon);
-		}
-	}
-	
 	public void removeStateIcons(final String key) {
 		if(icons != null) {
 			icons.removeStateIcons(key);
@@ -561,6 +555,10 @@ public class NodeModel implements MutableTreeNode {
 	public final void setText(final String text) {
 		this.userObject = XmlTool.makeValidXml(text);
 		xmlText = HtmlTools.getInstance().toXhtml(text);
+		if(xmlText != null && ! xmlText.startsWith("<")){
+			this.text = " " + text;
+			xmlText = null;
+		}
 	}
 
 	public final void setUserObject(final Object data) {
@@ -575,6 +573,9 @@ public class NodeModel implements MutableTreeNode {
 	/**
 	 */
 	public void setToolTip(final String key, final ITooltipProvider tooltip) {
+		if(tooltip == null && toolTip == null){
+			return;
+		}
 		createToolTip();
 		if (tooltip == null) {
 			if (toolTip.containsKey(key)) {

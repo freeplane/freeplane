@@ -240,7 +240,7 @@ public class UrlManager implements IExtension {
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		if (osNameStart.equals("Win")) {
 			try {
-				Runtime.getRuntime().exec("attrib " + (hidden ? "+" : "-") + "H \"" + file.getAbsolutePath() + "\"");
+				Controller.exec("attrib " + (hidden ? "+" : "-") + "H \"" + file.getAbsolutePath() + "\"");
 				if (!synchronously) {
 					return;
 				}
@@ -290,6 +290,7 @@ public class UrlManager implements IExtension {
 		}
 		if (filter != null) {
 			chooser.addChoosableFileFilter(filter);
+			chooser.setFileFilter(filter);
 		}
 		return chooser;
 	}
@@ -379,7 +380,7 @@ public class UrlManager implements IExtension {
 		}
 		try {
 			URL url = getAbsoluteUrl(uri);
-			final String extension = UrlManager.getExtension(url.toString());
+			final String extension = UrlManager.getExtension(url.getPath());
 			try {
 				if ((extension != null)
 				        && extension.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
@@ -430,7 +431,7 @@ public class UrlManager implements IExtension {
 		final String path = uri.getPath();
 		URL url = new URL(map.getURL(), path);
 		try {
-			return new URI(url.getProtocol(), null, url.getPath(), null);
+			return new URI(url.getProtocol(), null, url.getPath(), uri.getFragment());
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 			return null;
@@ -439,21 +440,21 @@ public class UrlManager implements IExtension {
 	public URL getAbsoluteUrl(final MapModel map, final URI uri) throws MalformedURLException {
 	    URL url;
 		final String path = uri.getPath();
+		StringBuilder sb = new StringBuilder(path);
+		final String query = uri.getQuery();
+		if(query != null){
+			sb.append('?');
+			sb.append(query);
+		}
+		final String fragment = uri.getFragment();
+		if(fragment != null){
+			sb.append('#');
+			sb.append(fragment);
+		}
 		if (!uri.isAbsolute() || uri.isOpaque()) {
-			url = new URL(map.getURL(), path);
+			url = new URL(map.getURL(), sb.toString());
 		}
 		else {
-			StringBuilder sb = new StringBuilder(path);
-			final String query = uri.getQuery();
-			if(query != null){
-				sb.append('?');
-				sb.append(query);
-			}
-			final String fragment = uri.getFragment();
-			if(fragment != null){
-				sb.append('#');
-				sb.append(fragment);
-			}
 			url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), sb.toString());
 		}
 		return url;

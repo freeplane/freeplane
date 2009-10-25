@@ -22,7 +22,6 @@
  */
 package com.inet.jortho;
 
-import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.Window;
@@ -206,25 +205,28 @@ public class SpellChecker {
 			setSelected(true);
 			final Thread thread = new Thread(new Runnable() {
 				public void run() {
-					final String dictName = "dictionary_" + locale + extension;
 					try {
+						final Locale oldLocale = currentLocale;
+						currentDictionary = null;
+						currentLocale = null;
+						SpellChecker.fireLanguageChanged(oldLocale);
 						final DictionaryFactory factory = new DictionaryFactory();
-						factory.loadWordList(new URL(baseURL, dictName));
-						final UserDictionaryProvider provider = userDictionaryProvider;
-						if (provider != null) {
-							final String userWords = provider.getUserWords(locale);
-							if (userWords != null) {
-								factory.loadPlainWordList(new StringReader(userWords));
+						try {
+							factory.loadWordList(new URL(baseURL, "dictionary_" + locale + extension));
+							final UserDictionaryProvider provider = userDictionaryProvider;
+							if (provider != null) {
+								final String userWords = provider.getUserWords(locale);
+								if (userWords != null) {
+									factory.loadPlainWordList(new StringReader(userWords));
+								}
 							}
 						}
-						final Locale oldLocale = locale;
+						catch (final Exception ex) {
+							JOptionPane.showMessageDialog(null, ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+						}
 						currentDictionary = factory.create();
 						currentLocale = locale;
-						SpellChecker.fireLanguageChanged(oldLocale);
-					}
-					catch (final Throwable ex) {
-						final Component source = ev != null ? (Component) ev.getSource() : null;
-						JOptionPane.showMessageDialog(source, ex.toString(), "Error loading " + dictName, JOptionPane.ERROR_MESSAGE);
+						SpellChecker.fireLanguageChanged(null);
 					}
 					finally {
 						setEnabled(true);

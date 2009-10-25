@@ -12,7 +12,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 
 public class NextNodeAction extends AFreeplaneAction {
-	public enum Direction{BACK, FORWARD};
+	public enum Direction{BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD};
 	/**
 	 * 
 	 */
@@ -32,9 +32,11 @@ public class NextNodeAction extends AFreeplaneAction {
 		do{
 			switch(direction){
 			case FORWARD:
+			case FORWARD_N_FOLD:
 				next = getNext(next);
 				break;
 			case BACK:
+			case BACK_N_FOLD:
 				next = getPrevious(next);
 				break;
 			}
@@ -54,7 +56,9 @@ public class NextNodeAction extends AFreeplaneAction {
 				int index = parentNode.getIndex(selected)+1;
 				int childCount = parentNode.getChildCount();
 				if(index < childCount){
-					getModeController().getMapController().setFolded(selected, true);
+					if(direction == Direction.FORWARD_N_FOLD){
+						getModeController().getMapController().setFolded(selected, true);
+					}
 					return (NodeModel) parentNode.getChildAt(index);
 				}
 				selected = parentNode;
@@ -66,10 +70,14 @@ public class NextNodeAction extends AFreeplaneAction {
 			if(parentNode == null){
 				break;
 			}
-			getModeController().getMapController().setFolded(selected, true);
+			if(direction == Direction.BACK_N_FOLD){
+				getModeController().getMapController().setFolded(selected, true);
+			}
 			int index = parentNode.getIndex(selected)-1;
 			if(index < 0){
-				getModeController().getMapController().setFolded(parentNode, true);
+				if(direction == Direction.BACK_N_FOLD){
+					getModeController().getMapController().setFolded(parentNode, true);
+				}
 				return parentNode;
 			}
 			selected = (NodeModel) parentNode.getChildAt(index);

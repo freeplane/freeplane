@@ -70,7 +70,7 @@ public class DesEncrypter implements IEncrypter {
 	}
 
 	public String decrypt(String str) {
-		if (dcipher == null || str == null) {
+		if (str == null) {
 			return null;
 		}
 		try {
@@ -83,6 +83,9 @@ public class DesEncrypter implements IEncrypter {
 			}
 			final byte[] dec = DesEncrypter.fromBase64(str);
 			init(salt);
+			if(dcipher == null){
+				return null;
+			}
 			final byte[] utf8 = dcipher.doFinal(dec);
 			return new String(utf8, "UTF8");
 		}
