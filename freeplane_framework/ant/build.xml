@@ -78,12 +78,14 @@
 				<include name="freeplane/**"/>
 				<include name="freeplane_plugin*/**"/>
 				<include name="freeplane_framework/**"/>
+				<include name="JOrtho_0.4_freeplane/**"/>
 				<exclude name=".*/**"/>
 				<exclude name="bin/**"/>
 				<exclude name="dist/**"/>
 				<exclude name="*/bin/**"/>
 				<exclude name="*/build/**"/>
 				<exclude name="*/dist/**"/>
+				<exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho"/>
 			</tarfileset>
 			<tarfileset prefix="freeplane-${ver}" dir="${root}" 
 					mode="777" username="ant" group="ant">
