@@ -54,8 +54,6 @@ import org.freeplane.core.ui.components.LimitedWidthTooltipUI;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 
-import com.sun.jndi.toolkit.url.Uri;
-
 class ApplicationViewController extends ViewController {
 	private static final String TOOL_TIP_MANAGER = "toolTipManager.";
 	private static final String TOOL_TIP_MANAGER_DISMISS_DELAY = "toolTipManager.dismissDelay";
