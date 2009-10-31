@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -80,7 +81,7 @@ public class Controller extends AController {
 	 * (Used to change this behavior under MacOSX).
 	 */
 	private ModeController modeController;
-	final private Map<String, ModeController> modeControllers = new HashMap<String, ModeController>();
+	final private Map<String, ModeController> modeControllers = new LinkedHashMap<String, ModeController>();
 	private ViewController viewController;
 
 	public Controller() {

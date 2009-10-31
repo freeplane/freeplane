@@ -27,14 +27,17 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class ModesMenuActionListener extends AFreeplaneAction {
+	private String mode;
+
 	public ModesMenuActionListener(final String mode, final Controller controller) {
-		super("ModesMenuAction." + mode, controller, mode, null);
+		super("ModesMenuAction." + mode, controller);
+		this.mode = mode;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				getController().selectMode(e.getActionCommand());
+				getController().selectMode(mode);
 			}
 		});
 	}
