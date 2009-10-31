@@ -68,7 +68,7 @@ class PriorityCompareCondition extends CompareConditionAdapter {
 		final List<MindIcon> icons = node.getIcons();
 		for (final MindIcon icon : icons) {
 			final String iconName = icon.getFileName();
-			if (iconName.length() != 6) {
+			if (iconName.length() != 10) {
 				continue;
 			}
 			if (!iconName.startsWith("full-")) {
