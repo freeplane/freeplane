@@ -113,6 +113,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	    modeController.getController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void beforeMapChange(MapModel oldMap, MapModel newMap) {
 				removeStyleMenu(menuBuilder, "/menu_bar/format");
+				removeStyleMenu(menuBuilder, "/node_popup");
 			}
 			
 			public void afterMapClose(MapModel oldMap) {
@@ -120,6 +121,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			
 			public void afterMapChange(MapModel oldMap, MapModel newMap) {
 				addStyleMenu(menuBuilder, "/menu_bar/format", newMap);
+				addStyleMenu(menuBuilder, "/node_popup", newMap);
 			}
 		});
 	    
@@ -144,6 +146,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 				if(event.getProperty().equals(MapStyle.MAP_STYLES)){
 					removeStyleMenu(menuBuilder, "/menu_bar/format");
 					addStyleMenu(menuBuilder, "/menu_bar/format", event.getMap());
+					removeStyleMenu(menuBuilder, "/node_popup");
+					addStyleMenu(menuBuilder, "/node_popup", event.getMap());
 				}
 			}
 		});

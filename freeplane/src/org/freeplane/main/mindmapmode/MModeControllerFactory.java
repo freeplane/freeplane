@@ -59,7 +59,6 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.addins.ChangeNodeLevelController;
-import org.freeplane.features.mindmapmode.addins.FormatPaste;
 import org.freeplane.features.mindmapmode.addins.IconSelectionPlugin;
 import org.freeplane.features.mindmapmode.addins.LoadAcceleratorPresetsAction;
 import org.freeplane.features.mindmapmode.addins.NewParentNode;
@@ -76,7 +75,8 @@ import org.freeplane.features.mindmapmode.addins.export.ImportMindmanagerFiles;
 import org.freeplane.features.mindmapmode.addins.mapstyle.AutomaticLayout;
 import org.freeplane.features.mindmapmode.addins.mapstyle.MLogicalStyleController;
 import org.freeplane.features.mindmapmode.addins.styles.ApplyFormatPlugin;
-import org.freeplane.features.mindmapmode.addins.styles.ManagePatterns;
+import org.freeplane.features.mindmapmode.addins.styles.FormatPaste;
+import org.freeplane.features.mindmapmode.addins.styles.MPatternController;
 import org.freeplane.features.mindmapmode.addins.time.ReminderHook;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
@@ -90,7 +90,6 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.MTextController;
-import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
 import org.freeplane.view.swing.addins.FitToPage;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
@@ -140,7 +139,6 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new EncryptedMap(modeController));
 		menuBuilder.addAnnotatedAction(new EnterPassword(modeController));
 		menuBuilder.addAnnotatedAction(new IconSelectionPlugin(controller));
-		menuBuilder.addAnnotatedAction(new ManagePatterns(controller));
 		menuBuilder.addAnnotatedAction(new NewParentNode(controller));
 		menuBuilder.addAnnotatedAction(new SaveAll(controller));
 		menuBuilder.addAnnotatedAction(new SortNodes(controller));
@@ -271,10 +269,6 @@ public class MModeControllerFactory {
 		final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		((MIconController) IconController.getController(modeController)).updateIconToolbar();
 		((MIconController) IconController.getController(modeController)).updateMenus(builder);
-		MPatternController.getController(modeController).createPatternSubMenu(builder,
-		    UserInputListenerFactory.NODE_POPUP);
-		final String formatMenuString = FreeplaneMenuBar.FORMAT_MENU;
-		MPatternController.getController(modeController).createPatternSubMenu(builder, formatMenuString);
 		modeController.updateMenus();
 	}
 }

@@ -1,4 +1,4 @@
-package org.freeplane.features.mindmapnode.pattern;
+package org.freeplane.features.mindmapmode.addins.styles;
 
 public class PatternProperty implements Cloneable {
 	protected String value;

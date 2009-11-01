@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapnode.pattern;
+package org.freeplane.features.mindmapmode.addins.styles;
 
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -26,6 +26,8 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.List;
+
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
@@ -39,31 +41,6 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
  * This class constructs patterns from files or from nodes and saves them back.
  */
 public class StylePatternFactory {
-	public static final String FALSE_VALUE = "false";
-	private static final String PATTERN_DUMMY = "<pattern name='dummy'/>";
-	private static final String PATTERNS_DUMMY = "<patterns/>";
-	public static final String TRUE_VALUE = "true";
-
-	private static String addSeparatorIfNecessary(String result) {
-		if (result.length() > 0) {
-			result += ", ";
-		}
-		return result;
-	}
-
-	private static String addSubPatternToString(String result, final PatternProperty patternType,
-	                                            final String patternString) {
-		if (patternType != null) {
-			result = StylePatternFactory.addSeparatorIfNecessary(result);
-			if (patternType.getValue() == null) {
-				result += "-" + ResourceBundles.getText(patternString);
-			}
-			else {
-				result += "+" + ResourceBundles.getText(patternString) + " " + patternType.getValue();
-			}
-		}
-		return result;
-	}
 
 	public static Pattern createPatternFromNode(final NodeModel node) {
 		final Pattern pattern = new Pattern();
@@ -89,11 +66,10 @@ public class StylePatternFactory {
 		final PatternProperty nodeFontName = new PatternProperty();
 		if (font != null) {
 			if (font.isBold() != null) {
-				nodeFontBold.setValue(font.isBold() ? StylePatternFactory.TRUE_VALUE : StylePatternFactory.FALSE_VALUE);
+				nodeFontBold.setValue(font.isBold().toString());
 			}
 			if (font.isItalic() != null) {
-				nodeFontItalic.setValue(font.isItalic() ? StylePatternFactory.TRUE_VALUE
-				        : StylePatternFactory.FALSE_VALUE);
+				nodeFontItalic.setValue(font.isItalic().toString());
 			}
 			if (font.getFontSize() != null) {
 				nodeFontSize.setValue("" + font.getFontSize());
@@ -146,7 +122,7 @@ public class StylePatternFactory {
 				cloudColorPattern.setValue(ColorUtils.colorToString(cloudColor));
 			}
 			else {
-				cloudPattern.setValue(TRUE_VALUE);
+				cloudPattern.setValue(Boolean.TRUE.toString());
 			}
 		}
 		else{
@@ -162,24 +138,6 @@ public class StylePatternFactory {
 			nodePattern = StylePatternFactory.intersectPattern(nodePattern, tempNodePattern);
 		}
 		return nodePattern;
-	}
-
-	public static Pattern getPatternFromString(final String pattern) {
-		String patternString = pattern;
-		if (patternString == null) {
-			patternString = StylePatternFactory.PATTERN_DUMMY;
-		}
-		final Pattern pat = Pattern.unMarshall(patternString);
-		return pat;
-	}
-
-	public static Patterns getPatternsFromString(final String patterns) {
-		String patternsString = patterns;
-		if (patternsString == null) {
-			patternsString = StylePatternFactory.PATTERNS_DUMMY;
-		}
-		final Patterns pat = Patterns.unMarshall(patternsString);
-		return pat;
 	}
 
 	/**
@@ -218,19 +176,6 @@ public class StylePatternFactory {
 		return result;
 	}
 
-	public static List<Pattern> loadPatterns(final File file) throws Exception {
-		return StylePatternFactory.loadPatterns(new BufferedReader(new FileReader(file)));
-	}
-
-	/**
-	 * @return a List of Pattern elements.
-	 * @throws Exception
-	 */
-	public static List<Pattern> loadPatterns(final Reader reader) throws Exception {
-		final Patterns patterns = Patterns.unMarshall(reader);
-		return patterns.getListChoiceList();
-	}
-
 	private static PatternProperty processPatternProperties(final PatternProperty prop1, final PatternProperty prop2,
 	                                                        final PatternProperty destination) {
 		if (prop1 == null || prop2 == null) {
@@ -247,48 +192,4 @@ public class StylePatternFactory {
 		return (string1 != null && string2 != null && string1.equals(string2)) || (string1 == null && string2 == null);
 	}
 
-	/**
-	 * the result is written to, and it is closed afterwards List of Pattern
-	 * elements.
-	 *
-	 * @throws Exception
-	 */
-	public static void savePatterns(final Writer writer, final List<Pattern> listOfPatterns) throws Exception {
-		final Patterns patterns = new Patterns();
-		for (final Pattern pattern : listOfPatterns) {
-			patterns.addChoice(pattern);
-		}
-		final String marshalledResult = patterns.marshall();
-		writer.write(marshalledResult);
-		writer.close();
-	}
-
-	public static String toString(final Pattern pPattern) {
-		String result = "";
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeColor(),
-		    "PatternToString.color");
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeBackgroundColor(),
-		    "PatternToString.backgroundColor");
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeFontSize(),
-		    "PatternToString.NodeFontSize");
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeFontName(),
-		    "PatternToString.FontName");
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeFontBold(),
-		    "PatternToString.FontBold");
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeFontItalic(),
-		    "PatternToString.FontItalic");
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternEdgeStyle(),
-		    "PatternToString.EdgeStyle");
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternEdgeColor(),
-		    "PatternToString.Cloud");
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternCloud(),
-		    "PatternToString.CloudColor");
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternCloudColor(),
-		    "PatternToString.EdgeColor");
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternEdgeWidth(),
-		    "PatternToString.EdgeWidth");
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternIcon(), "PatternToString.Icon");
-		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternChild(), "PatternToString.Child");
-		return result;
-	}
 }

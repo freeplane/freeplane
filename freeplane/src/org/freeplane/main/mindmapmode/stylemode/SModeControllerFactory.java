@@ -54,13 +54,13 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.addins.styles.MPatternController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
-import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.MapView.Layout;
@@ -113,8 +113,6 @@ public class SModeControllerFactory {
         userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(controller, new MMouseMotionListener(
             modeController)));
         
-MPatternController.install(modeController, new MPatternController(modeController));
-
         final JPopupMenu popupmenu = new JPopupMenu();
         userInputListenerFactory.setNodePopupMenu(popupmenu);
         final FreeplaneToolBar toolbar = new FreeplaneToolBar();
@@ -124,8 +122,6 @@ MPatternController.install(modeController, new MPatternController(modeController
         userInputListenerFactory.setMenuStructure("/xml/stylemodemenu.xml");
         final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
         userInputListenerFactory.updateMenus(modeController);
-final String formatMenuString = FreeplaneMenuBar.FORMAT_MENU;
-MPatternController.getController(modeController).createPatternSubMenu(builder, formatMenuString);
         ((MIconController) IconController.getController(modeController)).updateIconToolbar();
         ((MIconController) IconController.getController(modeController)).updateMenus(builder);
         modeController.updateMenus();

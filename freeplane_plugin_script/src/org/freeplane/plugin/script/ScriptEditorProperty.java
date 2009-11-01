@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapnode.pattern;
+package org.freeplane.plugin.script;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,10 +32,9 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.PropertyBean;
 import org.freeplane.core.util.HtmlTools;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class ScriptEditorProperty extends PropertyBean implements IPropertyControl, ActionListener {
+class ScriptEditorProperty extends PropertyBean implements IPropertyControl, ActionListener {
 	public interface IScriptEditorStarter extends IExtension {
 		String startEditor(String scriptInput);
 	}

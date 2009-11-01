@@ -42,9 +42,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.mindmapnode.pattern.Pattern;
-import org.freeplane.features.mindmapnode.pattern.StylePatternPanel;
-import org.freeplane.features.mindmapnode.pattern.StylePatternPanel.StylePatternPanelType;
+import org.freeplane.features.mindmapmode.addins.styles.StylePatternPanel.StylePatternPanelType;
 
 /** */
 class ChooseFormatPopupDialog extends JDialog implements KeyListener {
@@ -160,10 +158,6 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 
 	public Pattern getPattern() {
 		return mStylePatternFrame.getResultPattern();
-	}
-
-	public Pattern getPattern(final Pattern copyIntoPattern) {
-		return mStylePatternFrame.getResultPattern(copyIntoPattern);
 	}
 
 	/**

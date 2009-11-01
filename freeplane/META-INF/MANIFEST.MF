@@ -13,7 +13,8 @@ Bundle-ClassPath: lib/freeplaneviewer.jar,
  lib/jortho.jar
 Bundle-Activator: org.freeplane.main.osgi.Activator
 Import-Package: org.osgi.framework
-Export-Package: org.apache.commons.lang,
+Export-Package: com.jgoodies.forms.builder,
+ org.apache.commons.lang,
  org.freeplane.core.addins,
  org.freeplane.core.controller,
  org.freeplane.core.extension,
@@ -66,7 +67,6 @@ Export-Package: org.apache.commons.lang,
  org.freeplane.features.mindmapmode.nodestyle,
  org.freeplane.features.mindmapmode.note,
  org.freeplane.features.mindmapmode.text,
- org.freeplane.features.mindmapnode.pattern,
  org.freeplane.main.application,
  org.freeplane.main.browsemode,
  org.freeplane.main.filemode,

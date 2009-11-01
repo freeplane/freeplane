@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.addins;
+package org.freeplane.features.mindmapmode.addins.styles;
 
 import java.awt.event.ActionEvent;
 
@@ -28,9 +28,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.features.mindmapnode.pattern.MPatternController;
-import org.freeplane.features.mindmapnode.pattern.Pattern;
-import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
 
 /**
  * @author foltin

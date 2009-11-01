@@ -32,14 +32,12 @@ import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapnode.pattern.IExternalPatternAction;
-import org.freeplane.features.mindmapnode.pattern.Pattern;
-import org.freeplane.features.mindmapnode.pattern.ScriptEditorProperty;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
+import org.freeplane.plugin.script.ScriptEditorProperty.IScriptEditorStarter;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
-class ScriptingRegistration implements IExternalPatternAction {
+class ScriptingRegistration {
 	final private class PatternScriptModel implements IScriptModel {
 		final private String mOriginalScript;
 		private String mScript;
@@ -102,21 +100,11 @@ class ScriptingRegistration implements IExternalPatternAction {
 	private static final String TAB = "OptionPanel.plugins/scripting/tab_name";
 	final private MModeController modeController;
 	final private HashMap mScriptCookies = new HashMap();
-	private ScriptEditorProperty.IScriptEditorStarter mScriptEditorStarter;
+	private IScriptEditorStarter mScriptEditorStarter;
 
 	public ScriptingRegistration(final ModeController controller) {
 		modeController = (MModeController) controller;
 		register();
-	}
-
-	public void act(final NodeModel node, final Pattern pattern) {
-		if (pattern.getPatternScript() != null && pattern.getPatternScript().getValue() != null) {
-			ScriptingEngine.executeScript(node, Boolean.FALSE, HtmlTools.unescapeHTMLUnicodeEntity(pattern
-			    .getPatternScript().getValue()), modeController, new IErrorHandler() {
-				public void gotoLine(final int pLineNumber) {
-				}
-			}, System.out, getScriptCookies());
-		}
 	}
 
 	private void addPropertiesToOptionPanel() {
@@ -140,7 +128,6 @@ class ScriptingRegistration implements IExternalPatternAction {
 	}
 
 	private void register() {
-		modeController.addExtension(IExternalPatternAction.class, this);
 		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
 				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);

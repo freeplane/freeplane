@@ -25,9 +25,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
-import org.freeplane.features.mindmapnode.pattern.MPatternController;
-import org.freeplane.features.mindmapnode.pattern.Pattern;
-import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/format/change" })
 public class ApplyFormatPlugin extends AFreeplaneAction {

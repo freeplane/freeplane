@@ -144,13 +144,6 @@
 				<menu_action action="UseRichFormattingAction" accelerator="alt shift R" />
 				<menu_action action="UsePlainTextAction" accelerator="alt shift P"/>
 			</menu_category>
-			<menu_submenu name="patterns" name_ref="extension_menu">
-				<menu_category name="manage">
-				</menu_category>
-				<menu_separator />
-				<menu_category name="patterns">
-				</menu_category>
-			</menu_submenu>
 			<menu_submenu name="styles" name_ref="styles">
 				<menu_category name="manage">
 					<menu_action action="EditStylesAction" />
@@ -374,6 +367,14 @@
 		<menu_submenu name="export" name_ref="menu_file_export">
 			<menu_action action="ExportBranchAction" />
 		</menu_submenu>
+		<menu_submenu name="styles" name_ref="styles">
+			<menu_category name="manage">
+				<menu_action action="EditStylesAction" />
+			</menu_category>
+			<menu_separator />
+			<menu_category name="assign">
+			</menu_category>
+		</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
 			<menu_category name="nodes">
 				<menu_category name="style">
@@ -434,13 +435,6 @@
 				<menu_action action="SetLinkByTextFieldAction" />
 				<menu_action action="AddConnectorAction" />
 				<menu_action action="AddLocalLinkAction" />
-			</menu_category>
-		</menu_submenu>
-		<menu_submenu name="patterns" name_ref="extension_menu">
-			<menu_category name="manage">
-			</menu_category>
-			<menu_separator />
-			<menu_category name="patterns">
 			</menu_category>
 		</menu_submenu>
 	</menu_category>
