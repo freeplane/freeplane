@@ -55,6 +55,7 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.addins.styles.MPatternController;
+import org.freeplane.features.mindmapmode.addins.styles.StyleEditorPanel;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
@@ -128,17 +129,13 @@ public class SModeControllerFactory {
         new MapStyle(modeController);
 		controller.addModeController(modeController);
 		final SModeController modeController = this.modeController;
-		final MapController mapController = modeController.getMapController();
 		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController);
-		styleEditorPanel.init();
-		JScrollPane styleScrollPane = new JScrollPane(styleEditorPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		dialog.add(styleScrollPane, BorderLayout.EAST);
-//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
+		styleEditorPanel.init(modeController);
+		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
 			public void onSelect(NodeModel node) {
 				final IMapSelection selection = controller.getSelection();
 				if(selection.size() == 1 && node.depth() >= 2){
-					styleEditorPanel.setStyle(modeController, node);
 					return;
 				}
 
@@ -164,18 +161,13 @@ public class SModeControllerFactory {
 			public void onDeselect(NodeModel node) {
 			}
 		});
-		mapController.addNodeChangeListener(new INodeChangeListener() {
-			public void nodeChanged(NodeChangeEvent event) {
-				final IMapSelection selection = controller.getSelection();
-				final NodeModel node = event.getNode();
-				if(selection.getSelected().equals(node)){
-					styleEditorPanel.setStyle(modeController, node);
-				}
-			}
-		});
+		JScrollPane styleScrollPane = new JScrollPane(styleEditorPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
 		this.modeController = null;
+		dialog.add(styleScrollPane, BorderLayout.EAST);
 		return modeController;
 	}
+
 
 	public static void createModeController(MModeController modeController) {
 		modeController.addAction(new EditStylesAction(modeController));

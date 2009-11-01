@@ -95,6 +95,7 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 			if (icon.getName().equals(value)) {
 				mActualIcon = icon;
 				setIcon(mActualIcon);
+				break;
 			}
 		}
 	}

@@ -198,6 +198,7 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 	}
 
 	private void updateMapStyles(MapModel newMap) {
+		ignoreChangeEvent = true;
 		DefaultComboBoxModel model = (DefaultComboBoxModel) styles.getModel();
 		model.removeAllElements();
 		if(newMap == null){
@@ -207,7 +208,7 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 		for(Object style:styleObjects){
 			model.addElement(style);
 		}
-		
+		ignoreChangeEvent = false;
 	}
 
 	public void afterMapClose(MapModel oldMap) {

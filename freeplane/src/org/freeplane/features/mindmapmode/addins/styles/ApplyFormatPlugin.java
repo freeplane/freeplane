@@ -17,21 +17,30 @@
  */
 package org.freeplane.features.mindmapmode.addins.styles;
 
+import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.util.List;
+
+import javax.swing.JRootPane;
+import javax.swing.JScrollPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
+import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.features.mindmapmode.MModeController;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/format/change" })
+@SelectableAction(checkOnPopup = true)
 public class ApplyFormatPlugin extends AFreeplaneAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private JScrollPane styleScrollPane;
 
 	/**
 	 */
@@ -41,18 +50,50 @@ public class ApplyFormatPlugin extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
-		final NodeModel focussed = modeController.getMapController().getSelectedNode();
-		final List<NodeModel> selected = modeController.getMapController().getSelectedNodes();
-		final Pattern nodePattern = StylePatternFactory.createPatternFromSelected(focussed, selected);
-		final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(getController().getViewController()
-		    .getFrame(), modeController, "accessories/plugins/ApplyFormatPlugin.dialog.title", nodePattern);
-		formatDialog.setModal(true);
-		formatDialog.setVisible(true);
-		if (formatDialog.getResult() == ChooseFormatPopupDialog.OK) {
-			final Pattern pattern = formatDialog.getPattern();
-			for (final NodeModel node : selected) {
-				MPatternController.getController(getModeController()).applyPattern(node, pattern);
-			}
+		Controller controller = getController();
+		Container rootPane = controller.getViewController().getContentPane();
+		int stylePanelIndex = stylePanelIndex();
+		if(stylePanelIndex != -1){
+			rootPane.remove(stylePanelIndex);
+			rootPane.validate();
+			setSelected();
+			return;
 		}
+		if(styleScrollPane == null){
+			StyleEditorPanel panel = new StyleEditorPanel(modeController);
+			panel.init(modeController);
+			panel.setStyle(modeController, controller.getSelection().getSelected());
+			 styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		}
+		rootPane.add(styleScrollPane, BorderLayout.EAST);
+		rootPane.validate();
+		setSelected();
+	}
+
+	@Override
+	public void setSelected() {
+		super.setSelected(-1 != stylePanelIndex());
+	}
+	
+	@Override
+	public void afterMapChange(final Object newMap) {
+		if(styleScrollPane != null){
+			styleScrollPane.setVisible(newMap != null && getModeController() instanceof MModeController);
+		}
+		super.afterMapChange(newMap);
+	}
+
+	private int stylePanelIndex() {
+		if(styleScrollPane == null){
+			return -1;
+		}
+	Controller controller = getController();
+	Container pane = controller.getViewController().getContentPane();
+	for(int i = 0; i < pane.getComponentCount(); i++){
+		if(styleScrollPane.equals(pane.getComponent(i))){
+			return i;
+		}
+	}
+	return -1;
 	}
 }
