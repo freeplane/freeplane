@@ -127,12 +127,6 @@
 			</menu_category>
 			<menu_separator />
 		</menu_submenu>
-		<menu_submenu name="extras" name_ref="menu_extras">
-			<menu_category name="first">
-				<menu_action action="ShowAttributeDialogAction" />
-				<menu_action action="AssignAttributesAction" />
-			</menu_category>
-		</menu_submenu>
 		<menu_submenu name="mindmaps" name_ref="mindmaps">
 			<menu_category name="modes"></menu_category>
 			<menu_category name="navigate"></menu_category>
@@ -231,10 +225,6 @@
 		<menu_category name="clouds">
 			<menu_action action="CloudAction" />
 			<menu_action action="CloudColorAction" />
-		</menu_category>
-		<menu_separator />
-		<menu_category name="attributes">
-			<menu_action action="ShowAttributeDialogAction" />
 		</menu_category>
 		<menu_separator />
 	</menu_category>

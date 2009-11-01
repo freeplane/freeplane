@@ -218,6 +218,14 @@ public class MModeControllerFactory {
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
 		IconController.install(modeController, new MIconController(modeController));
 		NodeStyleController.install(modeController, new MNodeStyleController(modeController));
+		final MToolbarContributor menuContributor = new MToolbarContributor(modeController);
+		modeController.addMenuContributor(menuContributor);
+		final MapController mapController = modeController.getMapController();
+		mapController.addNodeChangeListener(menuContributor);
+		mapController.addNodeSelectionListener(menuContributor);
+		mapController.addMapChangeListener(menuContributor);
+		controller.getMapViewManager().addMapSelectionListener(menuContributor);
+
 		EdgeController.install(modeController, new MEdgeController(modeController));
 		CloudController.install(modeController, new MCloudController(modeController));
 		NoteController.install(modeController, new MNoteController(modeController));

@@ -21,6 +21,7 @@ package org.freeplane.features.mindmapmode.nodestyle;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
@@ -77,16 +78,11 @@ public class MNodeStyleController extends NodeStyleController {
         }
 
 	};
-	FontFamilyAction fontFamilyAction;
-	FontSizeAction fontSizeAction;
-
 	public MNodeStyleController(final ModeController modeController) {
 		super(modeController);
 		final Controller controller = modeController.getController();
 		modeController.addAction(new BoldAction(controller));
 		modeController.addAction(new ItalicAction(controller));
-		fontSizeAction = new FontSizeAction(controller);
-		modeController.addAction(fontSizeAction);
 		final AMultipleNodeAction increaseNodeFont = new AMultipleNodeAction("IncreaseNodeFontAction", controller) {
 			/**
 			 * 
@@ -111,20 +107,12 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 		};
 		modeController.addAction(decreaseNodeFont);
-		fontFamilyAction = new FontFamilyAction(controller);
-		modeController.addAction(fontFamilyAction);
 		modeController.addAction(new NodeColorAction(controller));
 		modeController.addAction(new NodeColorBlendAction(controller));
 		modeController.addAction(new NodeBackgroundColorAction(controller));
 		modeController.addAction(new NodeShapeAction(modeController, NodeStyleModel.STYLE_FORK));
 		modeController.addAction(new NodeShapeAction(modeController, NodeStyleModel.STYLE_BUBBLE));
-		final MToolbarContributor menuContributor = new MToolbarContributor(this);
-		modeController.addMenuContributor(menuContributor);
-		final MapController mapController = modeController.getMapController();
-		mapController.addNodeChangeListener(menuContributor);
-		mapController.addNodeSelectionListener(menuContributor);
-		mapController.addMapChangeListener(menuContributor);
-		mapController.addNodeChangeListener(new StyleRemover());
+		modeController.getMapController().addNodeChangeListener(new StyleRemover());
 	}
 
 	public void copyStyle(final NodeModel source, final NodeModel target) {
@@ -292,9 +280,9 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setFontSize(final int size) {
-		for (final ListIterator it = getModeController().getMapController().getSelectedNodes().listIterator(); it
-		    .hasNext();) {
-			final NodeModel selected = (NodeModel) it.next();
+		List<NodeModel> selectedNodes = getModeController().getMapController().getSelectedNodes();
+		for (final NodeModel selected  : selectedNodes)
+		{
 			setFontSize(selected, size);
 		}
 	}

@@ -227,4 +227,12 @@ public class MLogicalStyleController extends LogicalStyleController {
 	    	action.setSelected();
 	    }
     }
+
+	public void setStyle(Object style) {
+		List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
+		for (final NodeModel selected  : selectedNodes)
+		{
+			setStyle(selected, style);
+		}
+	}
 }

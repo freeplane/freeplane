@@ -115,8 +115,6 @@ public class SModeControllerFactory {
         
 MPatternController.install(modeController, new MPatternController(modeController));
 
-		AttributeController.install(modeController, new MAttributeController(modeController));
-        modeController.addAction(new EditAttributesAction(controller));
         final JPopupMenu popupmenu = new JPopupMenu();
         userInputListenerFactory.setNodePopupMenu(popupmenu);
         final FreeplaneToolBar toolbar = new FreeplaneToolBar();

@@ -17,63 +17,76 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.nodestyle;
+package org.freeplane.main.mindmapmode;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Collection;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.features.common.addins.mapstyle.LogicalStyleController;
+import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
 import org.freeplane.features.common.addins.mapstyle.MapStyle;
+import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.addins.mapstyle.MLogicalStyleController;
+import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
-class MToolbarContributor implements IMenuContributor, INodeSelectionListener, INodeChangeListener, IMapChangeListener {
+class MToolbarContributor implements IMenuContributor, INodeSelectionListener, INodeChangeListener, IMapChangeListener, IMapSelectionListener {
 	private static final String[] sizes = { "8", "10", "12", "14", "16", "18", "20", "24", "28" };
 	final private Controller controller;
-	private boolean fontFamily_IgnoreChangeEvent = false;
-	final private JComboBox fonts, size;
-	private boolean fontSize_IgnoreChangeEvent = false;
-	final private ItemListener fontsListener;
-	final private ItemListener sizeListener;
-	private final MNodeStyleController styleController;
+	private boolean ignoreChangeEvent = false;
+	final private JComboBox fonts, size, styles;
+	private final MModeController modeController;
 
-	public MToolbarContributor(final MNodeStyleController styleController) {
-		this.styleController = styleController;
-		controller = styleController.getModeController().getController();
+	public MToolbarContributor(final MModeController modeController) {
+		this.modeController = modeController;
+		final MNodeStyleController styleController = (MNodeStyleController) modeController.getExtension(NodeStyleController.class);
+		controller = modeController.getController();
 		final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		final String[] envFonts = gEnv.getAvailableFontFamilyNames();
 		fonts = new JComboBox(envFonts);
-		size = new JComboBox(MToolbarContributor.sizes);
-		fontsListener = new ItemListener() {
+		final ItemListener fontsListener = new ItemListener() {
 			public void itemStateChanged(final ItemEvent e) {
 				if (e.getStateChange() != ItemEvent.SELECTED) {
 					return;
 				}
-				if (fontFamily_IgnoreChangeEvent) {
+				if (ignoreChangeEvent) {
 					return;
 				}
-				fontFamily_IgnoreChangeEvent = true;
+				ignoreChangeEvent = true;
 				styleController.setFontFamily((String) e.getItem());
-				fontFamily_IgnoreChangeEvent = false;
+				ignoreChangeEvent = false;
 			}
 		};
 		fonts.addItemListener(fontsListener);
-		sizeListener = new ItemListener() {
+		fonts.setMaximumRowCount(9);
+		size = new JComboBox(MToolbarContributor.sizes);
+		final ItemListener sizeListener = new ItemListener() {
 			public void itemStateChanged(final ItemEvent e) {
 				if (e.getStateChange() != ItemEvent.SELECTED) {
 					return;
 				}
-				if (fontSize_IgnoreChangeEvent) {
+				if (ignoreChangeEvent) {
 					return;
 				}
 				try {
@@ -85,14 +98,31 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 			}
 		};
 		size.addItemListener(sizeListener);
-		fonts.setMaximumRowCount(9);
 		size.setEditor(new BasicComboBoxEditor());
 		size.setEditable(true);
+		
+		styles = new JComboBox();
+		final ItemListener styleListener = new ItemListener() {
+			public void itemStateChanged(final ItemEvent e) {
+				if (e.getStateChange() != ItemEvent.SELECTED) {
+					return;
+				}
+				if (ignoreChangeEvent) {
+					return;
+				}
+				final Object style = e.getItem();
+				MLogicalStyleController controller = (MLogicalStyleController) modeController.getExtension(LogicalStyleController.class);
+				controller.setStyle(style);
+			}
+		};
+		styles.addItemListener(styleListener);
 	}
 
 	private void changeToolbar(final NodeModel node) {
+		final MNodeStyleController styleController = (MNodeStyleController) modeController.getExtension(NodeStyleController.class);
 		selectFontSize(Integer.toString(styleController.getFontSize(node)));
 		selectFontName(styleController.getFontFamilyName(node));
+		selectStyle(LogicalStyleModel.getStyle(node));
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
@@ -110,30 +140,39 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 	}
 
 	private void selectFontName(final String fontName) {
-		if (fontFamily_IgnoreChangeEvent) {
+		if (ignoreChangeEvent) {
 			return;
 		}
-		fontFamily_IgnoreChangeEvent = true;
+		ignoreChangeEvent = true;
 		fonts.setEditable(true);
 		fonts.setSelectedItem(fontName);
 		fonts.setEditable(false);
-		fontFamily_IgnoreChangeEvent = false;
+		ignoreChangeEvent = false;
 	}
 
 	private void selectFontSize(final String fontSize) {
-		fontSize_IgnoreChangeEvent = true;
+		ignoreChangeEvent = true;
 		size.setSelectedItem(fontSize);
-		fontSize_IgnoreChangeEvent = false;
+		ignoreChangeEvent = false;
+	}
+
+	private void selectStyle(Object style) {
+		ignoreChangeEvent = true;
+		styles.setSelectedItem(style);
+		ignoreChangeEvent = false;
 	}
 
 	public void updateMenus(final MenuBuilder builder) {
-		builder.addComponent("/main_toolbar/font", fonts, styleController.fontFamilyAction, MenuBuilder.AS_CHILD);
-		builder.addComponent("/main_toolbar/font", size, styleController.fontSizeAction, MenuBuilder.AS_CHILD);
+		AFreeplaneAction action = modeController.getAction("IncreaseNodeFontAction");
+		builder.addComponent("/main_toolbar/font", fonts, action, MenuBuilder.AS_CHILD);
+		builder.addComponent("/main_toolbar/font", size, action, MenuBuilder.AS_CHILD);
+		builder.addComponent("/main_toolbar/font", styles, action, MenuBuilder.AS_CHILD);
 	}
 
 	public void mapChanged(MapChangeEvent event) {
 		final Object property = event.getProperty();
 		if (property.equals(MapStyle.MAP_STYLES)) {
+			updateMapStyles(event.getMap());
 			changeToolbar(controller.getSelection().getSelected());
 			return;
 		}
@@ -152,7 +191,28 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
     }
 
 	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-	    // TODO Auto-generated method stub
-	    
     }
+
+	public void afterMapChange(MapModel oldMap, MapModel newMap) {
+		updateMapStyles(newMap);
+	}
+
+	private void updateMapStyles(MapModel newMap) {
+		DefaultComboBoxModel model = (DefaultComboBoxModel) styles.getModel();
+		model.removeAllElements();
+		if(newMap == null){
+			return;
+		}
+		Collection<Object> styleObjects = MapStyleModel.getExtension(newMap).getStyles();
+		for(Object style:styleObjects){
+			model.addElement(style);
+		}
+		
+	}
+
+	public void afterMapClose(MapModel oldMap) {
+	}
+
+	public void beforeMapChange(MapModel oldMap, MapModel newMap) {
+	}
 }
