@@ -1,4 +1,22 @@
 ===============================
+1.0.33 alpha
+===============================
+Bug fixes:
+Improved node selection using arrow keys for outline view 
+287:Format message for changed zoom in Italian and French
+Update check for localized versions
+285, 281, 229, 246, 248, 272: Use proper URI for open URL
+228: load empty files as a new mindmap
+227: In the preferences > Move "Hyperlink Types" from "Appearance" tab : moved to environment
+216 Focus after note window
+Temporarily remove help plugin
+Add jortho to source distribution
+177: Modification times
+include freeplane_framework into src dist
+278: Bold on and italic on  icons don't show properly in SimplyHtml toolbar
+250: Tag balancer in xhtml writer
+
+===============================
 1.0.32 alpha
 ===============================
 Refactoring for icons (Tamas)

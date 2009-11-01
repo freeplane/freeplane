@@ -39,6 +39,7 @@ import javax.swing.JSplitPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
@@ -147,14 +148,14 @@ public class OptionPanel {
 		    new JScrollPane(rightStack));
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
 		final JButton cancelButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(cancelButton, "cancel");
+		MenuBuilder.setLabelAndMnemonic(cancelButton, ResourceBundles.getText("cancel"));
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				closeWindow();
 			}
 		});
 		final JButton okButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okButton, "ok");
+		MenuBuilder.setLabelAndMnemonic(okButton, ResourceBundles.getText("ok"));
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				feedback.writeProperties(getOptionProperties());

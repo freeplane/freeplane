@@ -159,7 +159,7 @@ public class MModeControllerFactory {
 	private MModeController createModeControllerImpl(final Controller controller) {
 		this.controller = controller;
 		createStandardControllers();
-		createAddIns();		
+		createAddIns();
 		return modeController;
 	}
 

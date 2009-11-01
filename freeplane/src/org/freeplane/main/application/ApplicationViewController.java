@@ -266,6 +266,10 @@ class ApplicationViewController extends ViewController {
 	 */
 	@Override
 	public void openDocument(final URL url) throws Exception {
+		String correctedUrl = url.toExternalForm();
+		if (url.getProtocol().equals("file")) {
+			correctedUrl = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getRef()).toString();
+		}
 		final String osName = System.getProperty("os.name");
 		if (osName.substring(0, 3).equals("Win")) {
 			String propertyString = "default_browser_command_windows";
@@ -282,9 +286,9 @@ class ApplicationViewController extends ViewController {
 				    .getProperty(propertyString));
 				String browserCommand = formatter.format(messageArguments);
 				if (url.getProtocol().equals("file")) {
-					command = new String[]{"rundll32", "url.dll,FileProtocolHandler", url.toString()};
+					command = new String[]{"rundll32", "url.dll,FileProtocolHandler", correctedUrl};
 					if (System.getProperty("os.name").startsWith("Windows 2000")) {
-						command = new String[]{"rundll32", "shell32.dll,ShellExec_RunDLL",  url.toString()};
+						command = new String[]{"rundll32", "shell32.dll,ShellExec_RunDLL",  correctedUrl};
 					}
 				}
 				else if (url.toString().startsWith("mailto:")) {
@@ -309,10 +313,6 @@ class ApplicationViewController extends ViewController {
 		else if (osName.startsWith("Mac OS")) {
 			String browserCommand = null;
 			try {
-				String correctedUrl = url.toExternalForm();
-				if (url.getProtocol().equals("file")) {
-					correctedUrl = correctedUrl.replace('\\', '/').replaceAll(" ", "%20");
-				}
 				final Object[] messageArguments = { correctedUrl, url.toString() };
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty("default_browser_command_mac"));
@@ -330,10 +330,6 @@ class ApplicationViewController extends ViewController {
 		else {
 			String browserCommand = null;
 			try {
-				String correctedUrl = url.toExternalForm();
-				if (url.getProtocol().equals("file")) {
-					correctedUrl = correctedUrl.replace('\\', '/').replaceAll(" ", "%20");
-				}
 				final Object[] messageArguments = { correctedUrl, url.toString() };
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty("default_browser_command_other_os"));

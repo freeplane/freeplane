@@ -213,7 +213,10 @@ public class MNoteController extends NoteController {
 		final NodeModel node = controller.getSelection().getSelected();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				controller.getViewController().getComponent(node).requestFocus();
+				Component component = controller.getViewController().getComponent(node);
+				if(component != null){
+					component.requestFocus();
+				}
 			}
 		});
 	}
