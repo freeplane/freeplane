@@ -1,10 +1,73 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <stylenode LOCALIZED_TEXT="styles">
-<stylenode LOCALIZED_TEXT="styles.predefined">
-<stylenode LOCALIZED_TEXT="default" POSITION="right" STYLE="fork">
-<font NAME="Arial" SIZE="12"/>
-<edge STYLE="bezier" WIDTH="1"/>
+<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
+<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork">
+<font NAME="Arial" SIZE="12" BOLD="false" ITALIC="false"/>
+<edge STYLE="bezier" COLOR="#808080" WIDTH="1"/>
+</stylenode>
+<stylenode TEXT="OK">
+<icon BUILTIN="button_ok"/>
+</stylenode>
+<stylenode TEXT="Needs action">
+<icon BUILTIN="messagebox_warning"/>
+</stylenode>
+<stylenode TEXT="Floating node">
+<cloud COLOR="#ffffff"/>
+<edge STYLE="hide_edge"/>
+</stylenode>
+<stylenode TEXT="Topic" COLOR="#18898b" STYLE="fork">
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
+</stylenode>
+<stylenode TEXT="Subtopic" COLOR="#cc3300" STYLE="fork">
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
+</stylenode>
+<stylenode TEXT="Subsubtopic" COLOR="#669900">
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+</stylenode>
+<stylenode TEXT="Important" COLOR="#ff0000">
+<icon BUILTIN="yes"/>
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+<stylenode TEXT="Question">
+<icon BUILTIN="help"/>
+<font NAME="Aharoni" SIZE="12"/>
+</stylenode>
+<stylenode TEXT="Key" COLOR="#996600">
+<icon BUILTIN="password"/>
+<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
+</stylenode>
+<stylenode TEXT="Idea">
+<icon BUILTIN="idea"/>
+</stylenode>
+<stylenode TEXT="Note" COLOR="#990000">
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+<stylenode TEXT="Date" COLOR="#0033ff">
+<icon BUILTIN="calendar"/>
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+<stylenode TEXT="Website" COLOR="#006633">
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+<stylenode TEXT="List" COLOR="#cc6600">
+<icon BUILTIN="list"/>
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+</stylenode>
+<stylenode TEXT="Quotation" COLOR="#338800" STYLE="fork">
+<font NAME="Liberation Sans" SIZE="12" BOLD="false" ITALIC="false"/>
+<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
+</stylenode>
+<stylenode TEXT="Definition" COLOR="#666600">
+<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
+</stylenode>
+<stylenode TEXT="Description" COLOR="#996600">
+<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
+</stylenode>
+<stylenode TEXT="Pending" COLOR="#b3b95c">
+<font NAME="Liberation Sans" SIZE="12"/>
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout">

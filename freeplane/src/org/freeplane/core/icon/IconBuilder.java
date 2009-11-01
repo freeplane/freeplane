@@ -77,6 +77,7 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 		reader.addElementHandler("icon", this);
 		registerAttributeHandlers(reader);
 		writer.addElementWriter("node", this);
+		writer.addElementWriter("stylenode", this);
 	}
 
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {

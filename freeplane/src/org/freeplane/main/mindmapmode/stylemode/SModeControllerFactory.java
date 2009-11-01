@@ -41,6 +41,7 @@ import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.features.common.attribute.AttributeController;
@@ -59,6 +60,7 @@ import org.freeplane.features.mindmapmode.cloud.MCloudController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
+import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.MapView.Layout;
@@ -110,7 +112,10 @@ public class SModeControllerFactory {
         LinkController.install(modeController, new LinkController(modeController));
         userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(controller, new MMouseMotionListener(
             modeController)));
-        AttributeController.install(modeController, new MAttributeController(modeController));
+        
+MPatternController.install(modeController, new MPatternController(modeController));
+
+		AttributeController.install(modeController, new MAttributeController(modeController));
         modeController.addAction(new EditAttributesAction(controller));
         final JPopupMenu popupmenu = new JPopupMenu();
         userInputListenerFactory.setNodePopupMenu(popupmenu);
@@ -119,8 +124,10 @@ public class SModeControllerFactory {
         userInputListenerFactory.setLeftToolBar(((MIconController) IconController.getController(modeController))
             .getIconToolBarScrollPane());
         userInputListenerFactory.setMenuStructure("/xml/stylemodemenu.xml");
-        userInputListenerFactory.updateMenus(modeController);
         final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
+        userInputListenerFactory.updateMenus(modeController);
+final String formatMenuString = FreeplaneMenuBar.FORMAT_MENU;
+MPatternController.getController(modeController).createPatternSubMenu(builder, formatMenuString);
         ((MIconController) IconController.getController(modeController)).updateIconToolbar();
         ((MIconController) IconController.getController(modeController)).updateMenus(builder);
         modeController.updateMenus();
