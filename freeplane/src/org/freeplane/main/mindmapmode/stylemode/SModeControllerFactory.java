@@ -43,7 +43,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
-import org.freeplane.features.common.addins.mapstyle.MapStyle;
+import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;

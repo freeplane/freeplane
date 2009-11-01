@@ -28,7 +28,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
-import org.freeplane.features.mindmapmode.addins.mapstyle.MLogicalStyleController;
+import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 
 /**
  * @author Dimitry Polivaev

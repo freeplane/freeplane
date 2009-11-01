@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.addins.mapstyle;
+package org.freeplane.features.mindmapmode.addins.styles;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -39,10 +39,10 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.addins.mapstyle.MapStyle;
-import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
-import org.freeplane.features.common.addins.mapstyle.LogicalStyleController;
-import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
+import org.freeplane.features.common.addins.styles.LogicalStyleController;
+import org.freeplane.features.common.addins.styles.LogicalStyleModel;
+import org.freeplane.features.common.addins.styles.MapStyle;
+import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 /**

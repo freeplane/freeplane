@@ -51,7 +51,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogTool;
-import org.freeplane.features.common.addins.mapstyle.MapStyle;
+import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;

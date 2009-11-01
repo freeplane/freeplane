@@ -36,8 +36,8 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
-import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
+import org.freeplane.features.common.addins.styles.LogicalStyleModel;
+import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.cloud.CloudModel;
 
 /**

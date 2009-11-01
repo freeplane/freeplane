@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.addins.mapstyle;
+package org.freeplane.features.common.addins.styles;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
@@ -33,7 +33,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.addins.mapstyle.MLogicalStyleController;
+import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 
 /**
  * @author Dimitry Polivaev

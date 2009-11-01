@@ -42,13 +42,13 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.features.common.addins.mapstyle.LogicalStyleController;
-import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
-import org.freeplane.features.common.addins.mapstyle.MapStyle;
-import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
+import org.freeplane.features.common.addins.styles.LogicalStyleController;
+import org.freeplane.features.common.addins.styles.LogicalStyleModel;
+import org.freeplane.features.common.addins.styles.MapStyle;
+import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.addins.mapstyle.MLogicalStyleController;
+import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
 class MToolbarContributor implements IMenuContributor, INodeSelectionListener, INodeChangeListener, IMapChangeListener, IMapSelectionListener {

@@ -33,8 +33,8 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
-import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
+import org.freeplane.features.common.addins.styles.LogicalStyleModel;
+import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 /**

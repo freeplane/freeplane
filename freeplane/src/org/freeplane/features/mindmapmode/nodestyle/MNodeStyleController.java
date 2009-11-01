@@ -34,11 +34,11 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
-import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
+import org.freeplane.features.common.addins.styles.LogicalStyleModel;
+import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
-import org.freeplane.features.mindmapmode.addins.mapstyle.MLogicalStyleController;
+import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 
 /**
  * @author Dimitry Polivaev

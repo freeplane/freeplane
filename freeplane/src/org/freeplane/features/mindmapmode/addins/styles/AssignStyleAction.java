@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.addins.mapstyle;
+package org.freeplane.features.mindmapmode.addins.styles;
 
 import java.awt.event.ActionEvent;
 
@@ -29,8 +29,8 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.features.common.addins.mapstyle.LogicalStyleController;
-import org.freeplane.features.common.addins.mapstyle.LogicalStyleModel;
+import org.freeplane.features.common.addins.styles.LogicalStyleController;
+import org.freeplane.features.common.addins.styles.LogicalStyleModel;
 
 /**
  * @author Dimitry Polivaev

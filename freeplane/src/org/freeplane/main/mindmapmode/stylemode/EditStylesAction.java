@@ -32,8 +32,8 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.features.common.addins.mapstyle.MapStyle;
-import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
+import org.freeplane.features.common.addins.styles.MapStyle;
+import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**

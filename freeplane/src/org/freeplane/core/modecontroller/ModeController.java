@@ -39,7 +39,7 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.features.common.addins.mapstyle.MapStyle;
+import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 /**

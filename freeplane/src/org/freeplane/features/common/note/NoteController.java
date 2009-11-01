@@ -32,7 +32,7 @@ import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.common.addins.mapstyle.MapStyle;
+import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 /**
