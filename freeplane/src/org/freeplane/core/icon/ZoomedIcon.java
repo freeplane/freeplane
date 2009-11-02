@@ -21,11 +21,13 @@ package org.freeplane.core.icon;
 
 import java.awt.Image;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 
 public class ZoomedIcon extends UIIcon {
-
+	final static private Map<UIIcon, Map<Float, ImageIcon>> zoomedIcons = new HashMap<UIIcon, Map<Float,ImageIcon>>();
 	private final UIIcon uiIcon;
 	
 	private final float zoom;
@@ -41,21 +43,46 @@ public class ZoomedIcon extends UIIcon {
 	@Override
 	public ImageIcon getIcon() {
 		if(zoomedIcon == null) {
+			Map<Float, ImageIcon> icons = zoomedIcons.get(uiIcon);
+			if(icons == null){
+				icons = new HashMap<Float, ImageIcon>();
+				zoomedIcons.put(uiIcon, icons);
+			}
+			zoomedIcon = icons.get(zoom);
+			if(zoomedIcon != null){
+				return zoomedIcon;
+			}
 			final ImageIcon icon = uiIcon.getIcon();
-			final Image scaledImage 
-				= uiIcon.getIcon()
+			final Image scaledImage = uiIcon.getIcon()
 					  .getImage()
 					  .getScaledInstance(
 							  (int)(icon.getIconWidth() * zoom), 
 							  (int)(icon.getIconHeight() * zoom),
 							  Image.SCALE_SMOOTH);
 			zoomedIcon = new ImageIcon(scaledImage);
+			icons.put(zoom, zoomedIcon);
 		}
 		return zoomedIcon; 
 	}
 	
 	@Override
-	public URL getPath() {
+	public String getPath() {
 		return uiIcon.getPath();
 	}
+	
+	@Override
+	public URL getUrl() {
+		return uiIcon.getUrl();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj) && zoom == ((ZoomedIcon)obj).zoom;
+	}
+
+	@Override
+	public int hashCode() {
+		return 31 * super.hashCode() + Float.valueOf(zoom).hashCode();
+	}
+	
 }

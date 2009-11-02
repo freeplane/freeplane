@@ -100,7 +100,7 @@ public class NoteController implements IExtension {
 		    NoteController.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
 			showIcon = false;
 		}
-		node.setStateIcon(NoteController.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);
+		node.setStateIcon(NoteController.NODE_NOTE_ICON, (showIcon) ? noteIcon : null, true);
 		if (enabled) {
 			final Font defaultFont = ResourceController.getResourceController().getDefaultFont();
 			final StringBuilder rule = new StringBuilder();

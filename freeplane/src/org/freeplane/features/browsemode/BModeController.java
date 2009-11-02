@@ -51,7 +51,7 @@ public class BModeController extends ModeController {
 			if (noteIcon == null) {
 				noteIcon = IconStoreFactory.create().getUIIcon("knotes.png");
 			}
-			node.setStateIcon(NoteController.NODE_NOTE_ICON, noteIcon);
+			node.setStateIcon(NoteController.NODE_NOTE_ICON, noteIcon, true);
 		}
 		final ListIterator<NodeModel> children = getMapController().childrenUnfolded(node);
 		while (children.hasNext()) {

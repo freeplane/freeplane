@@ -307,7 +307,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 			if (NodeAttributeTableModel.attributeIcon == null) {
 				NodeAttributeTableModel.attributeIcon = IconStoreFactory.create().getUIIcon("showAttributes.png");
 			}
-			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.attributeIcon);
+			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.attributeIcon, true);
 		}
 		setTooltip();
 	}

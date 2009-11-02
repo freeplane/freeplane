@@ -104,7 +104,14 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return DEFAULT_IMAGE_PATH;
 	}
 
-	public URL getPath() {
+	public URL getUrl() {
+		final String path = getPath();
+		final URL resourceURL = RESOURCE_CONTROLLER.getResource(path);
+		
+		return resourceURL;
+	}
+
+	public String getPath() {
 		StringBuilder builder = new StringBuilder();
 
 		builder = new StringBuilder();
@@ -112,10 +119,8 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		builder.append(SEPARATOR);
 		builder.append(this.fileName);
 
-		final String defaultPath = builder.toString();
-		final URL resourceURL = RESOURCE_CONTROLLER.getResource(defaultPath);
-		
-		return resourceURL;
+		final String path = builder.toString();
+		return path;
 	}
 
 	@Override
@@ -129,6 +134,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
 		result = prime * result
 				+ ((this.shortcutKey == null) ? 0 : this.shortcutKey.hashCode());
+		result = prime * result + this.getClass().hashCode();
 		return result;
 	}
 
@@ -165,7 +171,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	}
 
 	public int compareTo(final UIIcon uiIcon) {
-		return this.getPath().toExternalForm().compareTo(uiIcon.getPath().toExternalForm());
+		return this.getPath().compareTo(uiIcon.getPath());
 	}
 	
 	@Override

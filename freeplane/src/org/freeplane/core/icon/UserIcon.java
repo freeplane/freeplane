@@ -41,18 +41,22 @@ public class UserIcon extends MindIcon {
 	public UserIcon(final String name, final String fileName, final String description) {
 		super(name, fileName, description);
 	}
-
 	@Override
-	public URL getPath() {
+	public String getPath() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append(ResourceController.getResourceController().getFreeplaneUserDirectory());
 		builder.append(SEPARATOR);
 		builder.append("icons");
 		builder.append(SEPARATOR);
 		builder.append(this.fileName);
-		String urlString = builder.toString();
+		String path = builder.toString();
+		return path;
+	}
+	@Override
+	public URL getUrl() {
 		
 		URL result = null;
+		String urlString = getPath();
 		try {
 			result = new URL("file", "", urlString);
 		} catch (MalformedURLException e) {
