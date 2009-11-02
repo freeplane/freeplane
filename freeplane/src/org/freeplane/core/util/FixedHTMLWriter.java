@@ -26,7 +26,7 @@ import javax.swing.text.html.HTMLWriter;
  * really be XHTML 1.0 transitional conformous. The basic purpose of this class
  * is to give an XSL processor access to plain HTML files.
  * 
- * @author Richard "Shred" K�rber
+ * @author Richard "Shred" K&ouml;rber
  */
 public class FixedHTMLWriter extends HTMLWriter {
 	/**

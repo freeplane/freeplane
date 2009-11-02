@@ -205,7 +205,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			iconSet.remove(icon);
 		}
 		if (iconSet.size() > 0) {
-			node.setStateIcon(getHookName(), new UIIconSet(iconSet, 0.75f));
+			node.setStateIcon(getHookName(), new UIIconSet(iconSet, 0.75f), false);
 		}
 		else {
 			node.removeStateIcons(getHookName());

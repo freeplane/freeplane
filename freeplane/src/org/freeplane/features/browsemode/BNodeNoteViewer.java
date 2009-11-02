@@ -91,6 +91,6 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 		if (BNodeNoteViewer.noteIcon == null) {
 			BNodeNoteViewer.noteIcon = IconStoreFactory.create().getUIIcon("knotes.png");
 		}
-		node.setStateIcon(NoteController.NODE_NOTE_ICON, (enabled) ? BNodeNoteViewer.noteIcon : null);
+		node.setStateIcon(NoteController.NODE_NOTE_ICON, (enabled) ? BNodeNoteViewer.noteIcon : null, true);
 	}
 }

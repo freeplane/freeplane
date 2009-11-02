@@ -539,9 +539,9 @@ public class NodeModel implements MutableTreeNode {
 		parent = newParent;
 	}
 
-	public void setStateIcon(final String key, final UIIcon icon) {
+	public void setStateIcon(final String key, final UIIcon icon, boolean register) {
 		icons.setStateIcon(key, icon);
-		if (icon != null && map != null) {
+		if (register && icon != null && map != null) {
 			map.getIconRegistry().addIcon(icon);
 		}
 	}

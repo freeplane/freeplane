@@ -51,7 +51,7 @@ public final class ImageIconFactory {
 	}
 	
 	public ImageIcon getImageIcon(UIIcon uiIcon) {
-		return getImageIcon(uiIcon.getPath());
+		return getImageIcon(uiIcon.getUrl());
 	}
 	
 	public ImageIcon getImageIcon(URL url) {

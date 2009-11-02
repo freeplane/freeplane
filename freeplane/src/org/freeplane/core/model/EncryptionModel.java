@@ -225,11 +225,11 @@ public class EncryptionModel implements IExtension {
 	public void updateIcon() {
 		if (isAccessible()) {
 			node.removeStateIcons("encrypted");
-			node.setStateIcon("decrypted", EncryptionModel.decryptedIcon);
+			node.setStateIcon("decrypted", EncryptionModel.decryptedIcon, true);
 		}
 		else {
 			node.removeStateIcons("decrypted");
-			node.setStateIcon("encrypted", EncryptionModel.encryptedIcon);
+			node.setStateIcon("encrypted", EncryptionModel.encryptedIcon, true);
 		}
 	}
 }
