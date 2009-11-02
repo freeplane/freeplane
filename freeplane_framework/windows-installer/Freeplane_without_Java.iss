@@ -11,7 +11,7 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.0.33 beta"
+#define MyVersion "1.0.34 beta"
 #define MyAppName "Freeplane"
 #define MyAppVerName "Freeplane"
 #define MyAppPublisher "Open source"
