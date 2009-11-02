@@ -1,8 +1,10 @@
 #=================== Configuration ===================
 
 # $max_node_number - approximate number of nodes to generate
-#our $max_node_number = 200000;
 our $max_node_number = 1000;
+# our $max_node_number = 10000;
+# our $max_node_number = 100000;
+#our $max_node_number = 200000;
 
 # $max_level - number of node levels, root node has level 0
 our $max_level = 7;
@@ -12,6 +14,9 @@ our $max_number = 7;
 
 # $attributeNumber - number of attributes added to each node
 our $attributeNumber = 0;
+
+# $iconNumber - number of icons added to each node
+our $iconNumber = 2;
 
 # $linkNumber - number of links added to each node
 our $linkNumber = 0;
@@ -28,8 +33,7 @@ our $rest = 1;
 my $mmfile;
 
 open($mmfile,
-">map_$max_node_number-$max_level-$max_number-$attributeNumber-$linkNumber-$
-richcontent.mm");
+">map_$max_node_number-$max_level-$max_number-$attributeNumber-$linkNumber-$richcontent.mm");
 
 sub attributes($)
 {
@@ -40,6 +44,17 @@ sub attributes($)
        print $mmfile "<attribute NAME=\"$i\" VALUE=\"attribute $i $i
 $i\"/>\n";
  }
+}
+
+sub icons($)
+{
+    my $level = shift;
+    for(my $i = 0; $ i < $iconNumber; $i++)
+    {
+        my $j = ($i + $level-1) % 9 + 1;
+	print $mmfile " " x ($level * 4);
+        print $mmfile "<icon BUILTIN=\"full-" . $j . "\"/>\n";
+    }
 }
 
 sub links($)
@@ -112,6 +127,7 @@ END
  }
  attributes($level + 1);
  links($level + 1);
+ icons($level + 1);
  nodes($level + 1);
  print $mmfile " " x ($level * 4);
  print $mmfile "</node>\n";
