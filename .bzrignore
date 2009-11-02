@@ -1,3 +1,6 @@
+*.OTHER
+*.BASE
+*.THIS
 ./*/bin
 ./*/build
 ./*/dist
