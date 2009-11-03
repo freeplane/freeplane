@@ -117,32 +117,46 @@ public class IconStoreFactory {
 	}
 	
 	private static List<MindIcon> getUserIcons() {
-		List<MindIcon> icons = Collections.emptyList();
+		
 
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if (resourceController.isApplet()){
-			return icons;
+			return Collections.emptyList();
 		}
 		final File iconDir = new File(resourceController.getFreeplaneUserDirectory(), "icons");
+		return getUserIcons(iconDir, "");		
+	}
+
+	private static List<MindIcon> getUserIcons(final File iconDir, String dir) {
 		if (! iconDir.exists()) {
-			return icons;
+			return Collections.emptyList();
 		}
 		final String[] userIconArray = iconDir.list(new FilenameFilter() {
 			public boolean accept(final File dir, final String name) {
-				return name.matches(".*\\.png");
+				return name.endsWith(".png") || new File(dir, name).isDirectory();
 			}
 		});
-		if (userIconArray != null) {
-			icons = new ArrayList<MindIcon>(userIconArray.length);
-			for (String fileName : userIconArray) {
-				String iconName = fileName.substring(0, fileName.length() - 4);
-				if (iconName.equals("")) {
-					continue;
-				}
-				UserIcon icon = new UserIcon(iconName, fileName, iconName);
-				icons.add(icon);
-			}
+		if (userIconArray == null) {
+			return Collections.emptyList();
 		}
-		return icons;		
+		
+		final List<MindIcon> icons = new ArrayList<MindIcon>(userIconArray.length);
+		for (String fileName : userIconArray) {
+			File childDir = new File(iconDir, fileName);
+			final String fullName = dir + fileName;
+			if(childDir.isDirectory()){
+				List<MindIcon> childUserIcons = getUserIcons(childDir, fullName + File.separatorChar);
+				icons.addAll(childUserIcons);
+				continue;
+			}
+			String iconName = fullName.substring(0, fullName.length() - 4);
+			String iconDescription = fileName.substring(0, fileName.length() - 4);
+			if (iconName.equals("")) {
+				continue;
+			}
+			UserIcon icon = new UserIcon(iconName, fullName, iconDescription);
+			icons.add(icon);
+		}
+		return icons;
 	}
 }

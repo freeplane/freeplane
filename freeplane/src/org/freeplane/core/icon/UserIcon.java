@@ -34,10 +34,6 @@ import org.freeplane.core.util.LogTool;
  */
 public class UserIcon extends MindIcon {
 
-	public UserIcon(final String name, final String fileName) {
-		super(name, fileName);
-	}
-
 	public UserIcon(final String name, final String fileName, final String description) {
 		super(name, fileName, description);
 	}
