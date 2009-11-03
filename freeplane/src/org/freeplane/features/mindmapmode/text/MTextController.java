@@ -228,13 +228,14 @@ public class MTextController extends TextController {
 			}
 			final File input = chooser.getSelectedFile();
 			URI uri = input.toURI();
-			if (uri != null) {
-				if (useRelativeUri) {
-					uri = LinkController.toRelativeURI(map.getFile(), input);
-				}
-				final String strText = "<html><img src=\"" + uri.toString() + "\">";
-				setNodeText(selectedNode, strText);
+			if (uri == null) {
+				return;
 			}
+			if (useRelativeUri) {
+				uri = LinkController.toRelativeURI(map.getFile(), input);
+			}
+			final String strText = "<html><img src=\"" + uri.toString() + "\">";
+			setNodeText(selectedNode, strText);
 		}
 	}
 

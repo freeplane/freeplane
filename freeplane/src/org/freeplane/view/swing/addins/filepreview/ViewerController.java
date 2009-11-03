@@ -28,7 +28,9 @@ import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.INodeViewLifeCycleListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
@@ -355,10 +357,14 @@ final private Set<IViewerFactory> factories;
 	}
 
 	protected IExtension createExtension(final NodeModel node) {
-		final MapModel map = node.getMap();
-		if (map.getFile() == null) {
-			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ResourceBundles
-				.getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+		Controller controller = getController();
+		ViewController viewController = controller.getViewController();
+		MapModel map = node.getMap();
+		File file = map.getFile();
+		boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
+		if (file == null && useRelativeUri) {
+			JOptionPane.showMessageDialog(viewController.getContentPane(), ResourceBundles
+			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 		UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
@@ -384,9 +390,12 @@ final private Set<IViewerFactory> factories;
 		if (input == null) {
 			return null;
 		}
-		final URI uri = input.toURI();
+		URI uri = input.toURI();
 		if (uri == null) {
 			return null;
+		}
+		if (useRelativeUri) {
+			uri = LinkController.toRelativeURI(map.getFile(), input);
 		}
 		ExternalResource preview = new ExternalResource();
 		preview.setUri(uri);
