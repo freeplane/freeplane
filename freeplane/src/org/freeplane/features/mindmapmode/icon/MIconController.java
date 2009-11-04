@@ -141,7 +141,7 @@ public class MIconController extends IconController {
 
 	private void addAction(final MenuBuilder builder, final String itemKey,
 			final MindIcon icon, final String fileName) {
-		int separatorPosition = fileName.indexOf(File.separatorChar);
+		int separatorPosition = fileName.indexOf('/');
 		if(separatorPosition == -1){
 			builder.addAction(itemKey, iconActions.get(icon), MenuBuilder.AS_CHILD);
 			return;
@@ -243,7 +243,7 @@ public class MIconController extends IconController {
 
 	private void addActionToIconSubmenu(final JMenu menu, MindIcon icon, String fileName) {
 		final AFreeplaneAction myAction = iconActions.get(icon);
-		int separatorPosition = fileName.indexOf(File.separatorChar);
+		int separatorPosition = fileName.indexOf('/');
 		if(separatorPosition == -1){
 			menu.add(myAction);
 			return;

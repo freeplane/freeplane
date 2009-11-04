@@ -145,7 +145,7 @@ public class IconStoreFactory {
 			File childDir = new File(iconDir, fileName);
 			final String fullName = dir + fileName;
 			if(childDir.isDirectory()){
-				List<MindIcon> childUserIcons = getUserIcons(childDir, fullName + File.separatorChar);
+				List<MindIcon> childUserIcons = getUserIcons(childDir, fullName + '/');
 				icons.addAll(childUserIcons);
 				continue;
 			}
