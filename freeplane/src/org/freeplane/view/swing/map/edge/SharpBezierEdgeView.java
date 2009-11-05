@@ -58,12 +58,12 @@ public class SharpBezierEdgeView extends EdgeView {
 			final double w2 = w * w;
 			final double x02 = x0 * x0;
 			if (Double.compare(w2, x02) == 0) {
-				final int delta = getMap().getZoomed(getWidth() / 2 + 1);
+				final int delta = getMap().getZoomed(getWidth() + 1);
 				deltaX = 0;
 				deltaY = delta;
 			}
 			else {
-				final double delta = getMap().getZoom() * (getWidth() / 2 + 1);
+				final double delta = getMap().getZoom() * (getWidth() + 1);
 				final int h = mainView.getHeight() / 2;
 				final int y0 = start.y - h;
 				final double k = h / w * x0 / Math.sqrt(w2 - x02);
@@ -77,7 +77,7 @@ public class SharpBezierEdgeView extends EdgeView {
 			UITools.convertPointToAncestor(mainView, start, getSource());
 		}
 		else {
-			final int delta = getMap().getZoomed(getWidth() / 2 + 1);
+			final int delta = getMap().getZoomed(getWidth() + 1);
 			super.createStart();
 			deltaX = 0;
 			deltaY = delta;
@@ -97,26 +97,29 @@ public class SharpBezierEdgeView extends EdgeView {
 		g.setStroke(getStroke());
 		g.fill(graph);
 		g.draw(graph);
+//		g.setColor(Color.WHITE);
+//		g.drawOval(start.x, start.y, 4, 4);
+//		g.drawOval((int)one.x, (int)one.y, 4, 4);
+//		g.drawOval((int)two.x, (int)two.y, 4, 4);
+//		g.drawOval(end.x, end.y, 4, 4);
 	}
 
 	private GeneralPath update() {
 		final float zoom = getMap().getZoom();
-		final float xctrlRelative = SharpBezierEdgeView.XCTRL * zoom;
-		if (getTarget().isLeft()) {
-			one = new Point2D.Float(start.x - xctrlRelative, start.y);
-			two = new Point2D.Float(end.x + xctrlRelative, end.y);
+		float xctrlRelative = (float) Math.max(SharpBezierEdgeView.XCTRL * zoom, Math.abs(start.y - end.y)/4);
+		if(getTarget().isLeft()){
+			xctrlRelative = - xctrlRelative;
 		}
-		else {
-			one = new Point2D.Float(start.x + xctrlRelative, start.y);
-			two = new Point2D.Float(end.x - xctrlRelative, end.y);
-		}
+		one = new Point2D.Float(start.x + xctrlRelative, start.y);
+		two = new Point2D.Float(end.x - xctrlRelative, end.y);
 		final float w = (getWidth() / 2f + 1) * zoom;
 		final float w2 = w / 2;
 		CubicCurve2D.Float line1 = new CubicCurve2D.Float();
 		CubicCurve2D.Float line2 = new CubicCurve2D.Float();
-		line1.setCurve(start.x - deltaX, start.y - deltaY, one.x - deltaX, one.y - deltaY, two.x, two.y - w2, end.x,
-		    end.y);
-		line2.setCurve(end.x, end.y, two.x, two.y + w2, one.x + deltaX, one.y + deltaY, start.x + deltaX, start.y
+		float wEnd = deltaY > 0 ? w2 : -w2;
+		line1.setCurve(start.x - deltaX, start.y - deltaY, one.x - deltaX, one.y - deltaY, two.x, two.y - wEnd, end.x,
+		    end.y - wEnd/4);
+		line2.setCurve(end.x, end.y+ wEnd/4, two.x, two.y + wEnd, one.x + deltaX, one.y + deltaY, start.x + deltaX, start.y
 		        + deltaY);
 		GeneralPath graph = new GeneralPath();
 		graph.append(line1, true);
