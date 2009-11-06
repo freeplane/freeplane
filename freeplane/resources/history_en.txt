@@ -1,4 +1,21 @@
 ===============================
+1.0.34 beta
+===============================
+New features:
+menu hierarchy for user icons based of folder structure
+
+Bug fixes:
+new splash screen
+SharpBezier shape changed
+306]: Sub folders under user icons
+305]: Absolute/relative hyper link for external objects
+305]: Absolute/relative hyper link for images
+use wider sharp bezier edges (299]: Thicker edge width and few proposal about Bezire sharp edges)
+bug 303: Hierarchical Icons unacceptably slow performance
+bug 291: Priority filtering is broken
+
+
+===============================
 1.0.33 alpha
 ===============================
 Bug fixes:
