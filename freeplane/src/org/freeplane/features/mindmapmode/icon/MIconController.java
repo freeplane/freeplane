@@ -253,8 +253,11 @@ public class MIconController extends IconController {
 		if (componentCount != 0){
 			Component lastComponent = menu.getMenuComponent(componentCount - 1);
 			if(lastComponent instanceof JMenu){
-				addActionToIconSubmenu((JMenu) lastComponent, icon, fileName.substring(separatorPosition+1));
-				return;
+				JMenu lastSubmenu = (JMenu) lastComponent;
+				if(lastSubmenu.getText().equals(submenuName)){
+					addActionToIconSubmenu(lastSubmenu, icon, fileName.substring(separatorPosition+1));
+					return;
+				}
 			}
 		}
 		JMenu submenu = new JMenu(submenuName);
