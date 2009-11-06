@@ -41,11 +41,13 @@ public class ApplyFormatPlugin extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JScrollPane styleScrollPane;
+	private MUIFactory uiFactory;
 
 	/**
 	 */
-	public ApplyFormatPlugin(final Controller controller) {
+	public ApplyFormatPlugin(final Controller controller, MUIFactory uiFactory) {
 		super("ApplyFormatPlugin", controller);
+		this.uiFactory = uiFactory;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -60,7 +62,7 @@ public class ApplyFormatPlugin extends AFreeplaneAction {
 			return;
 		}
 		if(styleScrollPane == null){
-			StyleEditorPanel panel = new StyleEditorPanel(modeController);
+			StyleEditorPanel panel = new StyleEditorPanel(modeController, uiFactory, true);
 			panel.init(modeController);
 			panel.setStyle(modeController, controller.getSelection().getSelected());
 			 styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

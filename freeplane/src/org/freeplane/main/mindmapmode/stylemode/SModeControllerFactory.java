@@ -129,7 +129,7 @@ public class SModeControllerFactory {
         new MapStyle(modeController);
 		controller.addModeController(modeController);
 		final SModeController modeController = this.modeController;
-		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController);
+		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController, null, false);
 		styleEditorPanel.init(modeController);
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {

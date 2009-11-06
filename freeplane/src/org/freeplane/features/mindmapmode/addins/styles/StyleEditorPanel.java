@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode.addins.styles;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.HeadlessException;
 import java.beans.PropertyChangeEvent;
@@ -335,13 +336,17 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetNodeStyle;
 	final private String[] sizes = new String[] { "2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24",
 	        "30", "36", "48", "72" };
+	private boolean addStyleBox;
+	private MUIFactory uiFactory;
 
 	/**
 	 * @throws HeadlessException
 	 */
-	public StyleEditorPanel(final ModeController pMindMapController) throws HeadlessException {
+	public StyleEditorPanel(final ModeController pMindMapController, MUIFactory uiFactory, boolean addStyleBox) throws HeadlessException {
 		super();
 		mMindMapController = pMindMapController;
+		this.addStyleBox = addStyleBox;
+		this.uiFactory = uiFactory;
 	}
 
 	private void addBgColorControl(final List<IPropertyControl> controls) {
@@ -533,6 +538,11 @@ public class StyleEditorPanel extends JPanel {
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.setDefaultDialogBorder();
+		if(addStyleBox){
+			Container styleBox = uiFactory.createStyleBox();
+			rightBuilder.append(styleBox);
+			rightBuilder.nextLine();
+		}
 		mControls = getControls();
 		for (final IPropertyControl control : mControls) {
 			control.layout(rightBuilder);

@@ -77,6 +77,7 @@ import org.freeplane.features.mindmapmode.addins.styles.AutomaticLayout;
 import org.freeplane.features.mindmapmode.addins.styles.FormatPaste;
 import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 import org.freeplane.features.mindmapmode.addins.styles.MPatternController;
+import org.freeplane.features.mindmapmode.addins.styles.MUIFactory;
 import org.freeplane.features.mindmapmode.addins.time.ReminderHook;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
@@ -123,6 +124,7 @@ public class MModeControllerFactory {
 
 	private Controller controller;
 	private MModeController modeController;
+	private MUIFactory uiFactory;
 
 	private void createAddIns() {
 		new HierarchicalIcons(modeController);
@@ -133,7 +135,7 @@ public class MModeControllerFactory {
 		new ReminderHook(modeController);
 		new ViewerController(modeController);
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		menuBuilder.addAnnotatedAction(new ApplyFormatPlugin(controller));
+		menuBuilder.addAnnotatedAction(new ApplyFormatPlugin(controller, uiFactory));
 		new FormatPaste(controller, menuBuilder);
 		menuBuilder.addAnnotatedAction(new FitToPage(controller));
 		menuBuilder.addAnnotatedAction(new EncryptedMap(modeController));
@@ -216,13 +218,14 @@ public class MModeControllerFactory {
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
 		IconController.install(modeController, new MIconController(modeController));
 		NodeStyleController.install(modeController, new MNodeStyleController(modeController));
-		final MToolbarContributor menuContributor = new MToolbarContributor(modeController);
-		modeController.addMenuContributor(menuContributor);
 		final MapController mapController = modeController.getMapController();
-		mapController.addNodeChangeListener(menuContributor);
-		mapController.addNodeSelectionListener(menuContributor);
-		mapController.addMapChangeListener(menuContributor);
-		controller.getMapViewManager().addMapSelectionListener(menuContributor);
+		uiFactory = new MUIFactory(modeController);
+		mapController.addNodeChangeListener(uiFactory);
+		mapController.addNodeSelectionListener(uiFactory);
+		mapController.addMapChangeListener(uiFactory);
+		controller.getMapViewManager().addMapSelectionListener(uiFactory);
+		final MToolbarContributor menuContributor = new MToolbarContributor(modeController, uiFactory);
+		modeController.addMenuContributor(menuContributor);
 
 		EdgeController.install(modeController, new MEdgeController(modeController));
 		CloudController.install(modeController, new MCloudController(modeController));
