@@ -78,7 +78,6 @@ public class FreeplaneStarter {
 
 	private ApplicationResourceController applicationResourceController;
 	private Controller controller;
-	private IFeedBack feedBack;
 	private FreeplaneSplashModern splash;
 	private ApplicationViewController viewController;
 
@@ -103,11 +102,8 @@ public class FreeplaneStarter {
 				splash.setVisible(true);
 			}
 			Compat.useScreenMenuBar();
-			feedBack = splash.getFeedBack();
-			feedBack.setMaximumValue(2);
 			final MMapViewController mapViewController = new MMapViewController();
 			viewController = new ApplicationViewController(controller, mapViewController, frame);
-			feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
 			System.setSecurityManager(new FreeplaneSecurityManager());
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 			FilterController.install(controller);
@@ -149,7 +145,6 @@ public class FreeplaneStarter {
 				}
 				catch (final Exception e) {
 				}
-				feedBack.increase("Freeplane.progress.loadMaps");
 				loadMaps(args);
 				final Frame frame = viewController.getFrame();
 				final int extendedState = frame.getExtendedState();

@@ -23,12 +23,15 @@ package org.freeplane.main.application;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon;
@@ -49,126 +52,49 @@ import org.freeplane.core.resources.ResourceController;
  * 
  */
 public class FreeplaneSplashModern extends JWindow {
-	private class FeedBackImpl implements IFeedBack {
-		private long mActualTimeStamp = System.currentTimeMillis();
-		private int mActualValue;
-		private JLabel mImageJLabel = null;
-		private long mTotalTime = 0;
-
-		public int getActualValue() {
-			return mActualValue;
-		}
-
-		public void increase(final String messageId) {
-			progress(getActualValue() + 1, messageId);
-		}
-
-		public void progress(final int act, final String messageId) {
-			final String progressString = ResourceBundles.getText(messageId);
-			System.out.println(progressString);
-			mActualValue = act;
-			final long timeDifference = System.currentTimeMillis() - mActualTimeStamp;
-			mActualTimeStamp = System.currentTimeMillis();
-			mTotalTime += timeDifference;
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					mProgressBar.setValue(act);
-					final double percent = act * 1.0 / mProgressBar.getMaximum();
-					mProgressBar.setString(progressString);
-					if (mImageJLabel != null) {
-						mImageJLabel.putClientProperty("progressString", progressString);
-						mImageJLabel.putClientProperty("progressPercent", new Double(percent));
-						mImageJLabel.paintImmediately(0, 0, mImageJLabel.getWidth(), mImageJLabel.getHeight());
-					}
-				}
-			});
-		}
-
-		public void setImageJLabel(final JLabel imageJLabel) {
-			mImageJLabel = imageJLabel;
-		}
-
-		public void setMaximumValue(final int max) {
-			mProgressBar.setMaximum(max);
-			mProgressBar.setIndeterminate(false);
-		}
-	}
-
-	static final String FREEPLANE_PROGRESS_CREATE_CONTROLLER = "Freeplane.progress.createController";
-	static final String FREEPLANE_PROGRESS_UPDATE_LOOK_AND_FEEL = "Freeplane.progress.updateLookAndFeel";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private FeedBackImpl feedBack;
-	final private JProgressBar mProgressBar;
+	private Font versionTextFont = null;
 
 	public FreeplaneSplashModern(JFrame frame) {
 		super(frame);
-		final ImageIcon splashImage = new ImageIcon(ResourceController.getResourceController().getResource(
-		    "/images/Freeplane_splash.png"));
-		final JLabel splashImageLabel = new JLabel(splashImage) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-			private Integer mWidth;
-			final private Font progressFont = new Font("SansSerif", Font.PLAIN, 10);
-			private Font versionTextFont = null;
-			{
-				final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
-				final String[] envFonts = gEnv.getAvailableFontFamilyNames();
-				final String[] availableFontFamilyNames = envFonts;
-				versionTextFont = Arrays.asList(availableFontFamilyNames).contains("Century Gothic") ? new Font(
-				    "Century Gothic", Font.BOLD, 14) : new Font("Arial", Font.BOLD, 12);
-			}
+		try {
+			InputStream fontInputStream = ResourceController.getResourceController().getResource("/fonts/AUGUSTUS.TTF").openStream();
+			versionTextFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream).deriveFont(16f);
+			fontInputStream.close();
+		} catch (Exception e) {
+			versionTextFont = new Font("Arial", Font.PLAIN, 16);
+		}
+		splashImage = new ImageIcon(ResourceController.getResourceController().getResource("/images/Freeplane_splash.png"));
 
-			@Override
-			public void paint(final Graphics g) {
-				super.paint(g);
-				final Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-				g2.setFont(versionTextFont);
-				final String freeplaneVersion = FreeplaneVersion.getVersion().toString();
-				if (mWidth == null) {
-					mWidth = new Integer(g2.getFontMetrics().stringWidth(freeplaneVersion));
-				}
-				final int xCoordinate = (int) (getSize().getWidth() - mWidth.intValue() - 20);
-				final int yCoordinate = 20;
-				g2.setColor(new Color(0, 0, 0));
-				g2.drawString(freeplaneVersion, xCoordinate, yCoordinate);
-				final String progressString = (String) getClientProperty("progressString");
-				if (progressString != null) {
-					final Double percent = (Double) getClientProperty("progressPercent");
-					final int xBase = 20;
-					final int yBase = 240;
-					final int width = 310;
-					g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-					g2.setFont(progressFont);
-					g2.setColor(new Color(255, 255, 204));
-					g2.drawString(progressString, xBase + 1, yBase - 4);
-					g2.setColor(new Color(0xff, 0xee, 0xe6));
-					g2.draw(new Rectangle(xBase + 2, yBase, width, 3));
-					g2.setColor(new Color(255, 255, 204));
-					g2.fill(new Rectangle(xBase + 1, yBase + 1, (int) (width * percent.doubleValue()), 2));
-				}
-			}
-		};
-		feedBack = new FeedBackImpl();
-		feedBack.setImageJLabel(splashImageLabel);
-		mProgressBar = new JProgressBar();
-		mProgressBar.setIndeterminate(true);
-		mProgressBar.setStringPainted(true);
-		getContentPane().add(splashImageLabel);
-		getRootPane().setOpaque(true);
-		pack();
+		getRootPane().setOpaque(false);
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		final Dimension labelSize = splashImageLabel.getPreferredSize();
+		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
 		setLocation(screenSize.width / 2 - (labelSize.width / 2), screenSize.height / 2 - (labelSize.height / 2));
+		setSize(labelSize);
 	}
 
-	public IFeedBack getFeedBack() {
-		return feedBack;
+	private Integer mWidth;
+	private ImageIcon splashImage;
+	@Override
+	public void paint(final Graphics g) {
+		final Graphics2D g2 = (Graphics2D) g;
+		splashImage.paintIcon(this, g2, 0, 0);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2.setFont(versionTextFont);
+		g2.setColor(new Color(0x4a, 0x00, 0x65));
+		FreeplaneVersion version = FreeplaneVersion.getVersion();
+		final String freeplaneNumber = version.numberToString() ;
+		String status = version.getType();
+		if (mWidth == null) {
+			mWidth = new Integer(g2.getFontMetrics().stringWidth(freeplaneNumber));
+		}
+		final int xCoordinate = (int) (getSize().getWidth() - mWidth.intValue() - 40);
+		final int yCoordinate = 32;
+		g2.drawString(freeplaneNumber, xCoordinate, yCoordinate);
+		g2.drawString(status, xCoordinate, yCoordinate + 16);
 	}
 
 	@Override
