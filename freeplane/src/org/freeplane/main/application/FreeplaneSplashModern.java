@@ -67,6 +67,7 @@ public class FreeplaneSplashModern extends JWindow {
 		} catch (Exception e) {
 			versionTextFont = new Font("Arial", Font.PLAIN, 16);
 		}
+		versionTextFont = new Font("Arial", Font.PLAIN, 16);
 		splashImage = new ImageIcon(ResourceController.getResourceController().getResource("/images/Freeplane_splash.png"));
 
 		getRootPane().setOpaque(false);
@@ -76,8 +77,9 @@ public class FreeplaneSplashModern extends JWindow {
 		setSize(labelSize);
 	}
 
-	private Integer mWidth;
+	private Integer mWidth1;
 	private ImageIcon splashImage;
+	private Integer mWidth2;
 	@Override
 	public void paint(final Graphics g) {
 		final Graphics2D g2 = (Graphics2D) g;
@@ -87,14 +89,15 @@ public class FreeplaneSplashModern extends JWindow {
 		g2.setColor(new Color(0x4a, 0x00, 0x65));
 		FreeplaneVersion version = FreeplaneVersion.getVersion();
 		final String freeplaneNumber = version.numberToString() ;
-		String status = version.getType();
-		if (mWidth == null) {
-			mWidth = new Integer(g2.getFontMetrics().stringWidth(freeplaneNumber));
+		String status = version.getType().toUpperCase();
+		if (mWidth1 == null) {
+			mWidth1 = new Integer(g2.getFontMetrics().stringWidth(freeplaneNumber));
+			mWidth2 = new Integer(g2.getFontMetrics().stringWidth(status));
 		}
-		final int xCoordinate = (int) (getSize().getWidth() - mWidth.intValue() - 40);
+		final int xCoordinate = (int) (getSize().getWidth() - mWidth1.intValue() - 40);
 		final int yCoordinate = 32;
 		g2.drawString(freeplaneNumber, xCoordinate, yCoordinate);
-		g2.drawString(status, xCoordinate, yCoordinate + 16);
+		g2.drawString(status, xCoordinate + (mWidth2 - mWidth1) / 2, yCoordinate + 16);
 	}
 
 	@Override
