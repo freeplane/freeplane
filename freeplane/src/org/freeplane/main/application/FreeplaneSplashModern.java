@@ -67,7 +67,6 @@ public class FreeplaneSplashModern extends JWindow {
 		} catch (Exception e) {
 			versionTextFont = new Font("Arial", Font.PLAIN, 16);
 		}
-		versionTextFont = new Font("Arial", Font.PLAIN, 16);
 		splashImage = new ImageIcon(ResourceController.getResourceController().getResource("/images/Freeplane_splash.png"));
 
 		getRootPane().setOpaque(false);
