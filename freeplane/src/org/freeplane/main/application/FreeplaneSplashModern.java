@@ -60,12 +60,19 @@ public class FreeplaneSplashModern extends JWindow {
 
 	public FreeplaneSplashModern(JFrame frame) {
 		super(frame);
+		InputStream fontInputStream = null;
 		try {
-			InputStream fontInputStream = ResourceController.getResourceController().getResource("/fonts/AUGUSTUS.TTF").openStream();
+			fontInputStream = ResourceController.getResourceController().getResource("/fonts/BPreplay.ttf").openStream();
 			versionTextFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream).deriveFont(16f);
-			fontInputStream.close();
 		} catch (Exception e) {
 			versionTextFont = new Font("Arial", Font.PLAIN, 16);
+		}
+		finally{
+			if (fontInputStream != null)
+				try {
+					fontInputStream.close();
+				} catch (IOException e) {
+				}
 		}
 		splashImage = new ImageIcon(ResourceController.getResourceController().getResource("/images/Freeplane_splash.png"));
 
@@ -96,7 +103,7 @@ public class FreeplaneSplashModern extends JWindow {
 		final int xCoordinate = (int) (getSize().getWidth() - mWidth1.intValue() - 40);
 		final int yCoordinate = 32;
 		g2.drawString(freeplaneNumber, xCoordinate, yCoordinate);
-		g2.drawString(status, xCoordinate + (mWidth2 - mWidth1) / 2, yCoordinate + 16);
+		g2.drawString(status, xCoordinate + 4 + (mWidth2 - mWidth1) / 2, yCoordinate + 16);
 	}
 
 	@Override
