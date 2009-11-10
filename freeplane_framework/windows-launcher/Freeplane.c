@@ -107,50 +107,60 @@ int main(int argc, char *argv[])  {
       path_to_launcher_without_file[prefix_length] = '\0'; // End the string with null.
    }
 
-   char* javaw_path = "javaw.exe";
 
-   char* pathToPortableApp = 0;
-   #ifdef PORTABLE_APP
-      pathToPortableApp = path_to_launcher_without_file;
+#ifdef PORTABLE_APP
+      char * pathToPortableApp = path_to_launcher_without_file;
+      char*  javaw_path;
       {
          const char *argv[] = {pathToPortableApp, "App\\Freeplane\\", 0};
          pathToPortableApp = path_to_launcher_without_file;
          path_to_launcher_without_file = concat(argv);
       }
-      const int pathToPortableAppLen = strlen(pathToPortableApp);
-      char* pathToPortableJava = pathToPortableApp;
-      int pos;
-      for(pos = pathToPortableAppLen - 1; 
-         pos > 0 && pathToPortableJava[--pos] != '\\';);
-      if(pos == 0)
       {
-         pathToPortableJava = "..\\";
+         const int pathToPortableAppLen = strlen(pathToPortableApp);
+         char* pathToPortableJava = pathToPortableApp;
+         int pos;
+         for(pos = pathToPortableAppLen - 1; 
+            pos > 0 && pathToPortableJava[--pos] != '\\';);
+         if(pos == 0)
+         {
+            pathToPortableJava = "..\\";
+         }   
+         else
+         {
+            pos++;
+            pathToPortableJava =(char *) malloc((pos + 1 ) * sizeof(char));
+            strncpy(pathToPortableJava, path_to_launcher_without_file, pos);
+            pathToPortableJava[pos] = 0;
+         }
+         {
+            const char *argv[] = {pathToPortableJava, "CommonFiles\\Java\\bin\\javaw.exe", 0};
+            javaw_path = concat(argv);
+         }
       }   
-      else
-      {
-         pos++;
-         pathToPortableJava =(char *) malloc((pos + 1 ) * sizeof(char));
-         strncpy(pathToPortableJava, path_to_launcher_without_file, pos);
-         pathToPortableJava[pos] = 0;
-      }
-      {
-         const char *argv[] = {pathToPortableJava, "CommonFiles\\Java\\bin\\javaw.exe", 0};
-         javaw_path = concat(argv);
-      }
-      no_of_passed_arguments++;
-   #endif
+      no_of_passed_arguments+=2;
+#else   
+      char * javaw_path = "javaw.exe";
+#endif
 
    char** arguments = (char **) malloc(no_of_passed_arguments * sizeof(char*));
    int argumentNumber = 0;
+   #ifdef PORTABLE_APP
    arguments[argumentNumber++] = surround_by_quote(javaw_path);
+   #else
+   arguments[argumentNumber++] = javaw_path;
+   #endif
+   
    arguments[argumentNumber++] = argument_allowing_more_memory;
 
 
-   if(pathToPortableApp)
+#ifdef PORTABLE_APP
    {
+      arguments[argumentNumber++] = "\"-Dportableapp=true\"";
       const char *argv[] = {"\"-Duser.home=", pathToPortableApp, "Data\"", 0};
       arguments[argumentNumber++] = concat(argv);
    }
+#endif
 
    {
       const char *argv[] = {"\"-Dorg.knopflerfish.framework.bundlestorage=memory\"", 0};
@@ -200,8 +210,10 @@ int main(int argc, char *argv[])  {
 #endif
    // Replace current process by a new one running our application
 
+#ifdef PORTABLE_APP
    _execv(javaw_path, arguments);
    arguments[0] = "javaw.exe";
+#endif
    _execvp(arguments[0], arguments);
    // the following patch seems useful for vista but needs additional testing.
    // https://sourceforge.net/tracker/?func=detail&atid=107118&aid=2350483&group_id=7118
