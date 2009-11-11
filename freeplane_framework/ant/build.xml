@@ -1,13 +1,13 @@
 <project name="freeplane" default="dist" basedir="..">
-	<property name = "workspace" value = ".."/>
-	<property file="${workspace}/freeplane/viewer-resources/version.properties"/>
+	<property name="workspace" value=".." />
+	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
 	<property name="ver" value="${freeplane_version}" />
-	<property name = "root" value = "."/>
+	<property name="root" value="." />
 	<property name="bin" value="${root}/bin" />
 	<property name="dist" value="${root}/dist" />
-	
+
 	<target name="bin" depends="clean">
-		<property name = "root" value = "."/>
+		<property name="root" value="." />
 		<property name="framework.jar" value="lib/knopflerfish/framework.jar" />
 		<property name="freeplane.exe" value="windows-launcher/freeplane.exe" />
 		<property name="license" value="license.txt" />
@@ -17,119 +17,156 @@
 		<property name="bin.resources" value="${bin}/resources" />
 		<property name="script" value="${root}/script" />
 
-		<ant antfile="ant/build.xml" target="osgi_dist" dir="${workspace}/freeplane" inheritall="false"/>
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_help" inheritall="false"/>
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_svg" inheritall="false"/>
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_latex" inheritall="false"/>
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_script" inheritall="false"/>
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_bugreport" inheritall="false"/>
+		<ant antfile="ant/build.xml" target="osgi_dist" dir="${workspace}/freeplane" inheritall="false" />
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_help" inheritall="false" />
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_svg" inheritall="false" />
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_latex" inheritall="false" />
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_script" inheritall="false" />
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_bugreport" inheritall="false" />
 		<mkdir dir="${bin}" />
 		<copy todir="${bin}">
-			<fileset dir="${script}"/>
-			<fileset file="${framework.jar}"/>
-			<fileset file="${freeplane.exe}"/>
+			<fileset dir="${script}" />
+			<fileset file="${framework.jar}" />
+			<fileset file="${freeplane.exe}" />
 		</copy>
-		<chmod file="${bin}/freeplane.sh" perm="ugo+rx"/>
+		<chmod file="${bin}/freeplane.sh" perm="ugo+rx" />
 		<mkdir dir="${bin.plugins}/org.freeplane.core" />
 		<copy todir="${bin.plugins}/org.freeplane.core">
-			<fileset dir="${workspace}/freeplane/bin/dist/osgi/dir"/>
+			<fileset dir="${workspace}/freeplane/bin/dist/osgi/dir" />
 		</copy>
-		
-<!-- temporarily remove help plugin 
+
+		<!-- temporarily remove help plugin 
 		
 		<mkdir dir="${bin.plugins}/org.freeplane.plugin.help" />
 		<copy todir="${bin.plugins}/org.freeplane.plugin.help">
 			<fileset dir="${workspace}/freeplane_plugin_help/bin/dist/osgi/dir"/>
 		</copy>
--->			
+-->
 		<mkdir dir="${bin.plugins}/org.freeplane.plugin.latex" />
 		<copy todir="${bin.plugins}/org.freeplane.plugin.latex">
-			<fileset dir="${workspace}/freeplane_plugin_latex/bin/dist/osgi/dir"/>
+			<fileset dir="${workspace}/freeplane_plugin_latex/bin/dist/osgi/dir" />
 		</copy>
 		<mkdir dir="${bin.plugins}/org.freeplane.plugin.svg" />
 		<copy todir="${bin.plugins}/org.freeplane.plugin.svg">
-			<fileset dir="${workspace}/freeplane_plugin_svg/bin/dist/osgi/dir"/>
+			<fileset dir="${workspace}/freeplane_plugin_svg/bin/dist/osgi/dir" />
 		</copy>
 		<mkdir dir="${bin.plugins}/org.freeplane.plugin.script" />
 		<copy todir="${bin.plugins}/org.freeplane.plugin.script">
-			<fileset dir="${workspace}/freeplane_plugin_script/bin/dist/osgi/dir"/>
+			<fileset dir="${workspace}/freeplane_plugin_script/bin/dist/osgi/dir" />
 		</copy>
 		<mkdir dir="${bin.plugins}/org.freeplane.plugin.bugreport" />
 		<copy todir="${bin.plugins}/org.freeplane.plugin.bugreport">
-			<fileset dir="${workspace}/freeplane_plugin_bugreport/bin/dist/osgi/dir"/>
-		</copy>		
-		
-		<mkdir dir="${bin.resources}" />		
-		<copy todir="${bin.resources}">
-			<fileset dir="${workspace}/freeplane/bin/dist/resources"/>
+			<fileset dir="${workspace}/freeplane_plugin_bugreport/bin/dist/osgi/dir" />
 		</copy>
-	
+
+		<mkdir dir="${bin.resources}" />
+		<copy todir="${bin.resources}">
+			<fileset dir="${workspace}/freeplane/bin/dist/resources" />
+		</copy>
+
 	</target>
 
-	<target name="dist" depends="bin">
-		<mkdir dir="${dist}" />	
-		
+	<target name="mkdistdir">
+		<mkdir dir="${dist}" />
+	</target>
+
+	<target name="binzip" depends="bin, mkdistdir">
 		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="true">
-			<zipfileset dir="${bin}" prefix="freeplane-${ver}"/>
+			<zipfileset dir="${bin}" prefix="freeplane-${ver}" />
 			<zipfileset dir="${root}" prefix="freeplane-${ver}">
-				<include name="${license}"/>
+				<include name="${license}" />
 			</zipfileset>
 		</zip>
-		
+	</target>
+
+	<target name="srczip" depends="mkdistdir">
 		<tar destfile="${dist}/freeplane_src-${ver}.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset prefix="freeplane-${ver}" 
-				dir="${workspace}" mode="777" username="ant" group="ant">
+			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="777" username="ant" group="ant">
 				<patternset id="freeplane.sources">
-					<include name="freeplane/**"/>
-					<include name="freeplane_plugin*/**"/>
-					<include name="freeplane_framework/**"/>
-					<include name="JOrtho_0.4_freeplane/**"/>
-					<exclude name=".*/**"/>
-					<exclude name="bin/**"/>
-					<exclude name="dist/**"/>
-					<exclude name="*/bin/**"/>
-					<exclude name="*/build/**"/>
-					<exclude name="*/dist/**"/>
-					<exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho"/>
+					<include name="freeplane/**" />
+					<include name="freeplane_plugin*/**" />
+					<include name="freeplane_framework/**" />
+					<include name="JOrtho_0.4_freeplane/**" />
+					<exclude name=".*/**" />
+					<exclude name="bin/**" />
+					<exclude name="dist/**" />
+					<exclude name="*/bin/**" />
+					<exclude name="*/build/**" />
+					<exclude name="*/dist/**" />
+					<exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho" />
 				</patternset>
 			</tarfileset>
-			<tarfileset prefix="freeplane-${ver}" dir="${root}" 
-					mode="777" username="ant" group="ant">
-				<include name="${license}"/>
-				<include name="${readme_src}"/>
+			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="777" username="ant" group="ant">
+				<include name="${license}" />
+				<include name="${readme_src}" />
 			</tarfileset>
 		</tar>
-		
+
 		<tar destfile="${dist}/freeplane_srcpure-${ver}.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset prefix="freeplane-${ver}" 
-				dir="${workspace}" mode="777" username="ant" group="ant">
+			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="777" username="ant" group="ant">
 				<patternset refid="freeplane.sources" />
 				<exclude name="**/*.jar" />
 			</tarfileset>
-			<tarfileset prefix="freeplane-${ver}" dir="${root}" 
-					mode="777" username="ant" group="ant">
-				<include name="${license}"/>
-				<include name="${readme_src}"/>
+			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="777" username="ant" group="ant">
+				<include name="${license}" />
+				<include name="${readme_src}" />
 			</tarfileset>
 		</tar>
-		
-		
-		<copy file="${workspace}/freeplane/resources/history_en.txt" todir="${dist}"/>
-		
-		<exec osfamily="windows"
-			dir="${workspace}/freeplane_framework/windows-installer"
-			executable="C:\Program Files\Inno Setup 5\iscc.exe"
-			failifexecutionfails="false"
-			failonerror="true">
-			<arg line="/Q Freeplane_without_Java.iss"/>
+	</target>
+
+	<target name="installer" depends="bin, mkdistdir">
+		<exec osfamily="windows" dir="${workspace}/freeplane_framework/windows-installer" executable="iscc.exe" failifexecutionfails="false" failonerror="true">
+			<arg line="/Q Freeplane_without_Java.iss" />
 		</exec>
-</target>
-	<target name="clean">
-		 <delete quiet="true" includeemptydirs="true">
-		    <fileset dir="${bin}"/>
-		    <fileset dir="${dist}"/>
-		  </delete>
 	</target>
 	
+	<target name="portableinstaller" depends="bin, mkdistdir">
+		<property name="workingdir" value="${root}/temp/FreeplanePortable" />
+		<delete quiet="true" includeemptydirs="false">
+			<fileset dir="${workingdir}/.." />
+		</delete>
+		<mkdir dir="${workingdir}/App/Freeplane" />
+		<copy todir="${workingdir}">
+			<fileset dir="${root}/windows-portable" />
+			<fileset file="windows-launcher/freeplanePortable.exe" />
+		</copy>
+        <copy tofile="${workingdir}/App/AppInfo/appicon.ico">
+            <fileset file="windows-launcher/Freeplane_app.ico" />
+        </copy>
+		
+		<copy todir="${workingdir}/App/Freeplane">
+			<fileset dir="${root}/bin">
+				<exclude name="*.exe" />
+				<exclude name="*.bat" />
+				<exclude name="*.sh" />
+			</fileset>
+		</copy>
+		<dirname property="workingdir.path" file="${workingdir}/file" />
+		<exec osfamily="windows" executable="PortableApps.comInstaller.exe" failifexecutionfails="false" failonerror="true">
+			<arg line="${workingdir.path}" />
+		</exec>
+		<move todir="${dist}">
+			<fileset dir="${workingdir}/..">
+				<include name="*.paf.exe" />
+			</fileset>
+		</move>
+
+		<delete quiet="true" includeemptydirs="true">
+			<fileset dir="${workingdir}/.." />
+		</delete>
+
+	</target>
+
+	<target name="dist" depends="binzip, srczip, installer, portableinstaller">
+		<copy file="${workspace}/freeplane/resources/history_en.txt" todir="${dist}" />
+	</target>
+
+	<target name="clean">
+		<delete quiet="true" includeemptydirs="true">
+			<fileset dir="${bin}" />
+			<fileset dir="${dist}" />
+		</delete>
+	</target>
+
 </project>
 

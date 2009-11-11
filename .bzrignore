@@ -3,15 +3,9 @@
 ./*/dist
 backups
 ./.metadata
-./freeplane_framework/CommonFiles
-./freeplane_framework/FreeplanePortable
-./freeplane_framework/FreeplanePortable_1.2_Release_1.paf.exe
-./freeplane_framework/windows-launcher/App
-./freeplane_framework/windows-launcher/Data
 ./freeplane_framework/windows-launcher/Freeplane_private.h
 ./freeplane_framework/windows-launcher/Freeplane_private.rc
 ./freeplane_framework/windows-launcher/Freeplane_private.res
 ./freeplane_framework/windows-launcher/Freeplane.o
 ./freeplane_framework/windows-launcher/Makefile.win
-./freeplane_framework/windows-launcher/Other
 
