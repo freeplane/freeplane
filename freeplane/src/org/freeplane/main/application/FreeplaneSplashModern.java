@@ -57,6 +57,8 @@ public class FreeplaneSplashModern extends JWindow {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Font versionTextFont = null;
+	private final String description = "Free mind mapping and knowledge management software";
+	private final String copyright = "\u00a9 2000-2009";
 
 	public FreeplaneSplashModern(JFrame frame) {
 		super(frame);
@@ -86,6 +88,7 @@ public class FreeplaneSplashModern extends JWindow {
 	private Integer mWidth1;
 	private ImageIcon splashImage;
 	private Integer mWidth2;
+	private Integer mWidth3;
 	@Override
 	public void paint(final Graphics g) {
 		final Graphics2D g2 = (Graphics2D) g;
@@ -100,10 +103,20 @@ public class FreeplaneSplashModern extends JWindow {
 			mWidth1 = new Integer(g2.getFontMetrics().stringWidth(freeplaneNumber));
 			mWidth2 = new Integer(g2.getFontMetrics().stringWidth(status));
 		}
-		final int xCoordinate = (int) (getSize().getWidth() - mWidth1.intValue() - 40);
-		final int yCoordinate = 32;
+		int xCoordinate = getSize().width - mWidth1.intValue() - 40;
+		int yCoordinate = 32;
 		g2.drawString(freeplaneNumber, xCoordinate, yCoordinate);
 		g2.drawString(status, xCoordinate + 4 + (mWidth2 - mWidth1) / 2, yCoordinate + 16);
+		g2.setFont(versionTextFont.deriveFont(10f));
+		g2.setColor(Color.WHITE);
+		xCoordinate = 10;
+		yCoordinate = getSize().height - 10;
+		g2.drawString(description, xCoordinate, yCoordinate);
+		if (mWidth3 == null) {
+			mWidth3 = new Integer(g2.getFontMetrics().stringWidth(copyright));
+		}
+		xCoordinate = getSize().width - mWidth3.intValue() - 10;
+		g2.drawString(copyright, xCoordinate, yCoordinate);
 	}
 
 	@Override
