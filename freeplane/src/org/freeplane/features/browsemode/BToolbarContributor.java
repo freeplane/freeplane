@@ -42,7 +42,7 @@ public class BToolbarContributor implements IMenuContributor, IMapViewChangeList
 
 	public BToolbarContributor(final ModeController controller) {
 		modeController = controller;
-		urlfield = new PersistentEditableComboBox(BROWSE_URL_STORAGE_KEY);
+		urlfield = new PersistentEditableComboBox(BROWSE_URL_STORAGE_KEY, 20);
 		urlfield.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				final String urlText = urlfield.getText();

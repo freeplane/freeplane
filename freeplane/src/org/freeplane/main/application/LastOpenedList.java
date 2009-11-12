@@ -70,6 +70,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	public static final String LOAD_LAST_MAPS = "load_last_maps";
 	private static final String SEPARATOR = File.pathSeparator + File.pathSeparator;
 	private final Controller controller;
+	private static boolean PORTABLE_APP = System.getProperty("portableapp", "false").equals("true");
+	private static String USER_DRIVE = System.getProperty("user.home", "").substring(0, 2);
 	final private List<String> currenlyOpenedList = new LinkedList<String>();
 	/**
 	 * Contains Restore strings.
@@ -124,7 +126,15 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		if (file == null) {
 			return null;
 		}
-		return "MindMap:" + file.getAbsolutePath();
+		final String absolutePath = file.getAbsolutePath();
+		if(! PORTABLE_APP || ! USER_DRIVE.endsWith(":")){
+			return "MindMap:" + absolutePath;
+		}
+		final String diskName = absolutePath.substring(0, 2);
+		if(! diskName.equals(USER_DRIVE)){
+			return "MindMap:" + absolutePath;
+		}
+		return "MindMap::" + absolutePath.substring(2);
 	}
 
 	private String getRestoreable(final Component mapView) {
@@ -198,7 +208,10 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			if (token.hasMoreTokens()) {
 				final String mode = token.nextToken();
 				if (controller.selectMode(mode)) {
-					final String fileName = token.nextToken("").substring(1);
+					String fileName = token.nextToken("").substring(1);
+					if(PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")){
+						fileName = USER_DRIVE + fileName.substring(1);
+					}
 					controller.getModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
 				}
 			}
