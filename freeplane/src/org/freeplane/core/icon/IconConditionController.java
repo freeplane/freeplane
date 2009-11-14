@@ -60,7 +60,7 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
-		return controller.getMap().getIconRegistry().getIcons().getSize() > 0;
+		return controller.getMap().getIconRegistry().getIconsAsListModel().getSize() > 0;
 	}
 
 	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
@@ -87,7 +87,7 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property) {
-		final ListModel icons = controller.getMap().getIconRegistry().getIcons();
+		final ListModel icons = controller.getMap().getIconRegistry().getIconsAsListModel();
 		final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
 		extendedComboBoxModel.setExtensionList(icons);
 		return extendedComboBoxModel;

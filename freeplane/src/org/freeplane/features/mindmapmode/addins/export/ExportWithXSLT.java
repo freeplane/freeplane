@@ -36,6 +36,7 @@ import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+import javax.swing.ListModel;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -47,6 +48,7 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.icon.IconStore;
 import org.freeplane.core.icon.MindIcon;
+import org.freeplane.core.icon.UIIcon;
 import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
@@ -80,25 +82,22 @@ public class ExportWithXSLT extends ExportAction {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * @param map 
 	 */
-	private static void copyIconsToDirectory(final String directoryName2) {
-		for (MindIcon icon : STORE.getMindIcons()) {
-				ResUtil.copyFromURL(icon.getUrl(), directoryName2);
-		}
-		final File iconDir = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "icons");
-		if (iconDir.exists()) {
-			final String[] userIconArray = iconDir.list(new FilenameFilter() {
-				public boolean accept(final File dir, final String name) {
-					return name.matches(".*\\.png");
+	private void copyIconsToDirectory(MapModel map, final String directoryName) {
+		ListModel icons = map.getIconRegistry().getIconsAsListModel();
+		for (int i = 0; i < icons.getSize(); i++) {
+				UIIcon icon = (UIIcon) icons.getElementAt(i);
+				String iconName = icon.getName();
+				StringBuilder sb = new StringBuilder(directoryName);
+				int lastIndexOfSeparator = iconName.lastIndexOf('/');
+				if(lastIndexOfSeparator != -1){
+					sb.append(File.separatorChar);
+					sb.append(iconName.substring(0, lastIndexOfSeparator));
 				}
-			});
-			for (int i = 0; i < userIconArray.length; ++i) {
-				final String iconName = userIconArray[i];
-				if (iconName.length() == 4) {
-					continue;
-				}
-				ResUtil.copyFromFile(iconDir.getAbsolutePath(), iconName, directoryName2);
-			}
+				File destinationDirectory = new File(sb.toString());
+				destinationDirectory.mkdirs();
+				ResUtil.copyFromURL(icon.getUrl(), destinationDirectory);
 		}
 	}
 
@@ -168,29 +167,30 @@ public class ExportWithXSLT extends ExportAction {
 	private void copyFilesFromResourcesToDirectory(final String directoryName, final String files,
 	                                               final String filePrefix) {
 		final StringTokenizer tokenizer = new StringTokenizer(files, ",");
+		final File destinationDirectory = new File(directoryName);
 		while (tokenizer.hasMoreTokens()) {
 			final String next = tokenizer.nextToken();
-			ResUtil.copyFromResource(filePrefix, next, directoryName);
+			ResUtil.copyFromResource(filePrefix, next, destinationDirectory);
 		}
 	}
 
 	/**
+	 * @param map 
 	 */
-	private boolean copyIcons(final String directoryName) {
+	private boolean copyIcons(MapModel map, final String directoryName) {
 		boolean success;
 		final String iconDirectoryName = directoryName + File.separatorChar + "icons";
 		success = ResUtil.createDirectory(iconDirectoryName);
 		if (success) {
-			ExportWithXSLT.copyIconsToDirectory(iconDirectoryName);
+			copyIconsToDirectory(map, iconDirectoryName);
 		}
 		return success;
 	}
 
-	private boolean copyMap(final String pDirectoryName) throws IOException {
+	private boolean copyMap(MapModel map, final String pDirectoryName) throws IOException {
 		final boolean success = true;
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pDirectoryName
 		        + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
-		final MapModel map = getController().getMap();
 		getModeController().getMapController().getFilteredXml(map, fileout, Mode.FILE);
 		return success;
 	}
@@ -263,6 +263,7 @@ public class ExportWithXSLT extends ExportAction {
 		try {
 			mTransformResultWithoutError = true;
 			final boolean create_image = StringUtils.equals(getProperty("create_html_linked_image"), "true");
+			final MapModel map = getController().getMap();
 			final String areaCode = getAreaCode(create_image);
 			final String xsltFileName = getProperty("xslt_file");
 			boolean success = transformMapWithXslt(xsltFileName, saveFile, areaCode);
@@ -280,10 +281,10 @@ public class ExportWithXSLT extends ExportAction {
 					copyFilesFromResourcesToDirectory(directoryName, files, filePrefix);
 				}
 				if (success && StringUtils.equals(getProperty("copy_icons"), "true")) {
-					success = copyIcons(directoryName);
+					success = copyIcons(map, directoryName);
 				}
 				if (success && StringUtils.equals(getProperty("copy_map"), "true")) {
-					success = copyMap(directoryName);
+					success = copyMap(map, directoryName);
 				}
 				if (success && create_image) {
 					createImageFromMap(directoryName);

@@ -53,7 +53,7 @@ public class IconRegistry implements IExtension {
 		mapIcons.add(icon);
 	}
 
-	public ListModel getIcons() {
+	public ListModel getIconsAsListModel() {
 		return mapIcons;
 	}
 
