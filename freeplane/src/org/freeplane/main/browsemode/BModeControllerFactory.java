@@ -79,6 +79,7 @@ public class BModeControllerFactory {
 			LogTool.warn("can not access system clipboard, clipboard controller disabled");
 		}
 		LocationController.install(modeController, new LocationController(modeController));
+		new MapStyle(modeController);
 		modeController.getMapController().addNodeSelectionListener(new BNodeNoteViewer(modeController.getController()));
 		final BToolbarContributor toolbarContributor = new BToolbarContributor(modeController);
 		modeController.addMenuContributor(toolbarContributor);
@@ -91,7 +92,6 @@ public class BModeControllerFactory {
 		modeController.updateMenus();
 		new ViewerController(modeController);
 		NodeHistory.install(modeController);
-		new MapStyle(modeController);
 		return modeController;
 	}
 }

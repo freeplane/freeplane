@@ -82,6 +82,7 @@
 			<menu_category name="general">
 				<menu_action action="ShowSelectionAsRectangleAction" />
 				<menu_action action="ViewLayoutTypeAction.OUTLINE" />
+				<menu_action action="MaxNodeWidthAction"/>
 			</menu_category>
 
 			<menu_action action="CenterSelectedNodeAction" accelerator="control alt C" />
@@ -167,10 +168,11 @@
 						Underlined is not implemented in the view yet. <menu_action
 						action="underlined" />
 					-->
-					<menu_action action="NodeColorAction" accelerator="alt shift F" />
-					<menu_action action="NodeColorBlendAction" accelerator="alt shift B" />
-					<menu_action action="NodeBackgroundColorAction" />
 				</menu_category>
+                <menu_action action="NodeColorAction" accelerator="alt shift F" />
+                <menu_action action="NodeColorBlendAction" accelerator="alt shift B" />
+                <menu_action action="NodeBackgroundColorAction" />
+                <menu_action action="MapBackgroundColorAction" />
 				<menu_category name="position">
 					<menu_action action="ResetNodeLocationAction" />
 				</menu_category>

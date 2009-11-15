@@ -24,6 +24,7 @@ import java.awt.Color;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev
@@ -79,4 +80,24 @@ public class MapStyleModel implements IExtension {
 	}
 	
 	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
+	
+	private int maxNodeWidth = getDefaultMaxNodeWidth();
+	public int getMaxNodeWidth() {
+		return maxNodeWidth;
+	}
+
+	public void setMaxNodeWidth(int maxNodeWidth) {
+		this.maxNodeWidth = maxNodeWidth;
+	}
+
+	static int getDefaultMaxNodeWidth() {
+		try {
+			return Integer.parseInt(ResourceController.getResourceController()
+					.getProperty("max_node_width"));
+		}
+		catch (final NumberFormatException e) {
+			return Integer.parseInt(ResourceController.getResourceController().getProperty(
+					"el__max_default_window_width")) * 2 / 3;
+		}
+	}
 }

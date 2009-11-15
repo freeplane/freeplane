@@ -34,7 +34,6 @@ import org.freeplane.core.util.ColorUtils;
  * @author Dimitry Polivaev
  * Mar 12, 2009
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/format/nodes" })
 class MapBackgroundColorAction extends AFreeplaneAction {
 	/**
 	 * 

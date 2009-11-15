@@ -652,17 +652,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public int getMaxNodeWidth() {
-		if (maxNodeWidth == 0) {
-			try {
-				maxNodeWidth = Integer.parseInt(ResourceController.getResourceController()
-				    .getProperty("max_node_width"));
-			}
-			catch (final NumberFormatException e) {
-				maxNodeWidth = Integer.parseInt(ResourceController.getResourceController().getProperty(
-				    "el__max_default_window_width"));
-			}
-		}
-		return maxNodeWidth;
+		return MapStyleModel.getExtension(getModel()).getMaxNodeWidth();
 	}
 
 	public ModeController getModeController() {
@@ -910,11 +900,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void mapChanged(final MapChangeEvent event) {
-		if (event.getProperty().equals(MapStyle.RESOURCES_BACKGROUND_COLOR)) {
+		Object property = event.getProperty();
+		if (property.equals(MapStyle.RESOURCES_BACKGROUND_COLOR)) {
 			setBackground(requiredBackground());
 			return;
 		}
-		if (event.getProperty().equals(NodeStyleController.RESOURCES_NODE_TEXT_COLOR)) {
+		if (property.equals(NodeStyleController.RESOURCES_NODE_TEXT_COLOR)
+				|| property.equals(MapStyle.MAX_NODE_WIDTH)) {
 			getRoot().updateAll();
 			return;
 		}
