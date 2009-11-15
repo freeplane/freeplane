@@ -75,6 +75,8 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.addins.mapstyle.MapStyle;
+import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
+import org.freeplane.features.common.addins.mapstyle.MapViewLayout;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
@@ -119,13 +121,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	enum PaintingMode{CLOUDS, NODES, ALL};
-	public enum Layout{MAP, OUTLINE};
-	private Layout layoutType = Layout.MAP;
-	public Layout getLayoutType() {
+	private MapViewLayout layoutType;
+	public MapViewLayout getLayoutType() {
     	return layoutType;
     }
 
-	protected void setLayoutType(Layout layoutType) {
+	protected void setLayoutType(MapViewLayout layoutType) {
     	this.layoutType = layoutType;
     }
 
@@ -349,6 +350,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		this.setLayout(new MindMapLayout());
 		initRoot();
 		setBackground(requiredBackground());
+		MapStyleModel mapStyleModel = MapStyleModel.getExtension(model);
+		zoom = mapStyleModel.getZoom();
+		layoutType = mapStyleModel.getMapViewLayout();
 		final IUserInputListenerFactory userInputListenerFactory = getModeController().getUserInputListenerFactory();
 		addMouseListener(userInputListenerFactory.getMapMouseListener());
 		addMouseMotionListener(userInputListenerFactory.getMapMouseListener());
@@ -1011,7 +1015,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					final NodeView targetView = getNodeView(target);
 					final ILinkView arrowLink;
 					if(sourceView != null && targetView != null 
-							&& (ref.isEdgeLike() || sourceView.getMap().getLayoutType() == Layout.OUTLINE)
+							&& (ref.isEdgeLike() || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE)
 							&& source.isVisible() && target.isVisible()){
 						arrowLink = new EdgeLinkView(ref, sourceView, targetView);
 					}

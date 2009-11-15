@@ -37,6 +37,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.addins.mapstyle.MapViewLayout;
 import org.freeplane.features.common.addins.misc.NextNodeAction;
 import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
@@ -53,7 +54,6 @@ import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MMapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
-import org.freeplane.view.swing.map.MapView.Layout;
 
 public class FreeplaneStarter {
 	static public void main(final String[] args) {
@@ -120,7 +120,7 @@ public class FreeplaneStarter {
 			controller.addAction(new NextNodeAction(controller, Direction.BACK));
 			controller.addAction(new NextNodeAction(controller, Direction.FORWARD_N_FOLD));
 			controller.addAction(new NextNodeAction(controller, Direction.BACK_N_FOLD));
-			controller.addAction(new ViewLayoutTypeAction(controller, Layout.OUTLINE));
+			controller.addAction(new ViewLayoutTypeAction(controller, MapViewLayout.OUTLINE));
 			NodeHistory.install(controller);
 			MModeControllerFactory.createModeController(controller);
 			controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(

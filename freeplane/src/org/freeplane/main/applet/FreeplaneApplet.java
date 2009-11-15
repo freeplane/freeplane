@@ -30,6 +30,7 @@ import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.browsemode.BModeController;
+import org.freeplane.features.common.addins.mapstyle.MapViewLayout;
 import org.freeplane.features.common.addins.misc.NextNodeAction;
 import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
@@ -42,7 +43,6 @@ import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
-import org.freeplane.view.swing.map.MapView.Layout;
 
 public class FreeplaneApplet extends JApplet {
 	static private AppletResourceController appletResourceController;
@@ -71,7 +71,7 @@ public class FreeplaneApplet extends JApplet {
 		contentPane.setLayout(new BorderLayout());
 		ResourceController.setResourceController(appletResourceController);
 		appletViewController = new AppletViewController(controller, this, new MapViewController());
-		controller.addAction(new ViewLayoutTypeAction(controller, Layout.OUTLINE));
+		controller.addAction(new ViewLayoutTypeAction(controller, MapViewLayout.OUTLINE));
 		FilterController.install(controller);
 		PrintController.install(controller);
 		HelpController.install(controller);

@@ -52,6 +52,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
+		final MapStyleModel model = new MapStyleModel();
+
 		final String colorString = element.getAttribute("background", null);
 		final Color bgColor;
 		if (colorString != null) {
@@ -60,8 +62,22 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		else {
 			bgColor = null;
 		}
-		final MapStyleModel model = new MapStyleModel();
 		model.setBackgroundColor(bgColor);
+		final String zoomString = element.getAttribute("zoom", null);
+		if (zoomString != null) {
+			final float zoom = Float.valueOf(zoomString);
+			model.setZoom(zoom);
+		}
+		
+		final String layoutString =  element.getAttribute("layout", null);
+		try{
+			if (layoutString != null) {
+				final MapViewLayout layout = MapViewLayout.valueOf(layoutString);
+				model.setMapViewLayout(layout);
+			}
+		}
+		catch (Exception e){
+		}
 		return model;
 	}
 
@@ -96,12 +112,39 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	@Override
 	protected void saveExtension(final IExtension extension, final XMLElement element) {
 		super.saveExtension(extension, element);
-		final Color backgroundColor = ((MapStyleModel) extension).getBackgroundColor();
+		MapStyleModel mapStyleModel = (MapStyleModel) extension;
+		final Color backgroundColor = mapStyleModel.getBackgroundColor();
 		if (backgroundColor != null) {
 			element.setAttribute("background", ColorUtils.colorToString(backgroundColor));
 		}
+		float zoom = mapStyleModel.getZoom();
+		if(zoom != 1f){
+			element.setAttribute("zoom", Float.toString(zoom));
+		}
+		MapViewLayout layout = mapStyleModel.getMapViewLayout();
+		if(! layout.equals(MapViewLayout.MAP)){
+			element.setAttribute("layout", layout.toString());
+		}
 	}
 
+	public void setZoom(MapModel map, final float zoom ) {
+		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map); 
+		if(zoom == mapStyleModel.getZoom()){
+			return;
+		}
+		mapStyleModel.setZoom(zoom);
+		getModeController().getMapController().setSaved(map, false);
+	}
+	
+	public void setMapViewLayout(MapModel map, final MapViewLayout layout ) {
+		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map); 
+		if(layout.equals(mapStyleModel.getMapViewLayout())){
+			return;
+		}
+		mapStyleModel.setMapViewLayout(layout);
+		getModeController().getMapController().setSaved(map, false);
+	}
+	
 	public void setBackgroundColor(final MapStyleModel model, final Color actionColor) {
 		final Color oldColor = model.getBackgroundColor();
 		if (actionColor == oldColor || actionColor != null && actionColor.equals(oldColor)) {

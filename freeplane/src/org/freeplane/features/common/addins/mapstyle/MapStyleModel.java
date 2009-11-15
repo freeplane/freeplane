@@ -59,4 +59,24 @@ public class MapStyleModel implements IExtension {
 	protected void setBackgroundColor(final Color backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
+
+	private float zoom = 1f;
+
+	public float getZoom() {
+		return zoom;
+	}
+
+	public MapViewLayout getMapViewLayout() {
+		return mapViewLayout;
+	}
+
+	void setMapViewLayout(MapViewLayout mapViewLayout) {
+		this.mapViewLayout = mapViewLayout;
+	}
+
+	void setZoom(float zoom) {
+		this.zoom = zoom;
+	}
+	
+	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
 }
