@@ -133,6 +133,12 @@
         <copy tofile="${workingdir}/App/AppInfo/appicon.ico">
             <fileset file="windows-launcher/Freeplane_app.ico" />
         </copy>
+        <copy tofile="${workingdir}/App/AppInfo/appicon_16.png">
+            <fileset file="${workspace}/freeplane/resources/images/Freeplane_frame_icon.png" />
+        </copy>
+        <copy tofile="${workingdir}/App/AppInfo/appicon_32.png">
+            <fileset file="${workspace}/freeplane/resources/images/Freeplane_frame_icon_32x32.png" />
+        </copy>
 		
 		<copy todir="${workingdir}/App/Freeplane">
 			<fileset dir="${root}/bin">
