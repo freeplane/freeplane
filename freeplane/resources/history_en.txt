@@ -1,7 +1,25 @@
 *******************************
-Revision 870
+Revision 892
 
 *******************************
+===============================
+1.0.35 beta
+===============================
+New features:
+Freeplane as Portable App (*.paf.exe)
+support changing drive for last opened map list portable apps
+maximum node width saved in the map file
+save zoom and layout type in the map file
+Use current map content (no file required) for exports using ExportWithXsltDialog
+new splash design
+
+Bug fixes:
+316: Export menu for "Using XSLT" duplicates the pull-down file options each time it is accessed
+310]: note window - refresh bug
+315]: Export of user icons
+bug fix in icon toolbar menu hierarchy
+key mapping guide
+
 ===============================
 1.0.34 beta
 ===============================
