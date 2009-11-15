@@ -252,8 +252,6 @@ public class ExportDialog {
 	 * file filters}) and the {@link #filtermap filtermap} field.
 	 */
 	private void gatherXsltScripts() {
-		filtermap.clear();
-		filechooser.resetChoosableFileFilters();
 		gatherXsltScripts(getXsltUserDirectory());
 		gatherXsltScripts(getXsltSysDirectory());
 	}
