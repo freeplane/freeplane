@@ -253,6 +253,7 @@ public class ExportDialog {
 	 */
 	private void gatherXsltScripts() {
 		filtermap.clear();
+		filechooser.resetChoosableFileFilters();
 		gatherXsltScripts(getXsltUserDirectory());
 		gatherXsltScripts(getXsltSysDirectory());
 	}
