@@ -22,11 +22,13 @@ package org.freeplane.view.swing.map;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.view.swing.map.MapView.Layout;
+import org.freeplane.features.common.addins.styles.MapStyle;
+import org.freeplane.features.common.addins.styles.MapViewLayout;
 
 
 /**
@@ -43,9 +45,9 @@ public class ViewLayoutTypeAction extends AFreeplaneAction{
 	/**
      * 
      */
-	private Layout layoutType;
+	private MapViewLayout layoutType;
 
-	public ViewLayoutTypeAction(Controller controller, Layout layoutType) {
+	public ViewLayoutTypeAction(Controller controller, MapViewLayout layoutType) {
 	    super("ViewLayoutTypeAction." + layoutType.toString(), controller);
 	    this.layoutType = layoutType;
     }
@@ -53,13 +55,15 @@ public class ViewLayoutTypeAction extends AFreeplaneAction{
 	public void actionPerformed(ActionEvent e) {
 		MapView map = (MapView) getController().getViewController().getMapView();
 		if(isSelected()){
-			map.setLayoutType(Layout.MAP);
+			map.setLayoutType(MapViewLayout.MAP);
 			setSelected(false);
 		}
 		else{
 			map.setLayoutType(this.layoutType);
 			setSelected(true);
 		}
+		MapStyle mapStyle = (MapStyle) map.getModeController().getExtension(MapStyle.class);
+		mapStyle.setMapViewLayout(map.getModel(), this.layoutType);
 		map.anchorToSelected(map.getSelected(), 0.5f, 0.5f);
 		map.getRoot().updateAll();
     }

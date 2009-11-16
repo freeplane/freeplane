@@ -220,6 +220,9 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		setTitle();
 		viewNumberChanged(mapViewManager.getViewNumber());
 		newModeController.getUserInputListenerFactory().updateMapList();
+		if(pNewMap != null){
+			newModeController.setVisible(true);
+		}
 	}
 
 	public void afterViewClose(final Component oldView) {

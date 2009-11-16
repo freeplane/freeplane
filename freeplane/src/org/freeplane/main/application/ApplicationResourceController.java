@@ -109,7 +109,7 @@ class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public String getFreeplaneUserDirectory() {
-		return System.getProperty("user.home") + File.separator + getProperty("properties_folder");
+		return getFreeplaneUserDirectory(props);
 	}
 
 	private String getFreeplaneUserDirectory(final Properties defaultPreferences) {

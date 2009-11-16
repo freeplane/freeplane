@@ -184,4 +184,43 @@ public class MapStyleModel implements IExtension {
 	    return styleNodes.keySet();
 	    
     }
+	private float zoom = 1f;
+
+	public float getZoom() {
+		return zoom;
+	}
+
+	public MapViewLayout getMapViewLayout() {
+		return mapViewLayout;
+	}
+
+	void setMapViewLayout(MapViewLayout mapViewLayout) {
+		this.mapViewLayout = mapViewLayout;
+	}
+
+	void setZoom(float zoom) {
+		this.zoom = zoom;
+	}
+	
+	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
+	
+	private int maxNodeWidth = getDefaultMaxNodeWidth();
+	public int getMaxNodeWidth() {
+		return maxNodeWidth;
+	}
+
+	public void setMaxNodeWidth(int maxNodeWidth) {
+		this.maxNodeWidth = maxNodeWidth;
+	}
+
+	static int getDefaultMaxNodeWidth() {
+		try {
+			return Integer.parseInt(ResourceController.getResourceController()
+					.getProperty("max_node_width"));
+		}
+		catch (final NumberFormatException e) {
+			return Integer.parseInt(ResourceController.getResourceController().getProperty(
+					"el__max_default_window_width")) * 2 / 3;
+		}
+	}
 }

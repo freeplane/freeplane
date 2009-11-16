@@ -33,6 +33,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
@@ -106,8 +108,9 @@ public class ExportDialog {
 	/**
 	 * A function to call again and again in order to export the same XML source file.
 	 * @param parentframe a parent component for the dialogs to appear (can be null).
+	 * @param streamSource 
 	 */
-	void export(final Component parentframe, final File xmlSourceFile) {
+	void export(final Component parentframe, StreamSource xmlSource, final File xmlSourceFile) {
 		gatherXsltScripts();
 		if (filtermap.isEmpty()) {
 			JOptionPane.showMessageDialog(parentframe, FpStringUtils.formatText("xslt_export_file_not_found_in_dirs",
@@ -121,10 +124,15 @@ public class ExportDialog {
 		}
 		// Finish to setup the File Chooser...
 		// And then use it
-		final String absolutePathWithoutExtension = UrlManager.removeExtension(xmlSourceFile.getAbsolutePath());
+		final String absolutePathWithoutExtension;
+		if(xmlSourceFile != null){
+			absolutePathWithoutExtension = UrlManager.removeExtension(xmlSourceFile.getAbsolutePath());
+		}
+		else{
+			absolutePathWithoutExtension = null;
+		}
 		final PropertyChangeListener filterChangeListener = new PropertyChangeListener() {
-			final private File selectedFile = new File(absolutePathWithoutExtension);
-
+			final private File selectedFile = absolutePathWithoutExtension == null ? null : new File(absolutePathWithoutExtension);
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)) {
 					final ExampleFileFilter filter = (ExampleFileFilter) evt.getNewValue();
@@ -177,7 +185,8 @@ public class ExportDialog {
 						return;
 					}
 				}
-				xe.transForm(xmlSourceFile, xsltFile, selectedFile);
+				final Source xsltSource = new StreamSource(xsltFile);
+				xe.transform(xmlSource, xsltSource, selectedFile);
 			}
 		}
 		finally {
@@ -243,7 +252,6 @@ public class ExportDialog {
 	 * file filters}) and the {@link #filtermap filtermap} field.
 	 */
 	private void gatherXsltScripts() {
-		filtermap.clear();
 		gatherXsltScripts(getXsltUserDirectory());
 		gatherXsltScripts(getXsltSysDirectory());
 	}
@@ -287,7 +295,6 @@ public class ExportDialog {
 	 * @return The system directory where XSLT export files are supposed to be.
 	 */
 	private File getXsltSysDirectory() {
-		// TODO dpolivaev 26.02.2009 How to get Freeplane's base directory resp. the system XSLT directory
 		return new File(ResourceController.getResourceController().getResourceBaseDir(), "xslt");
 	}
 
@@ -297,7 +304,6 @@ public class ExportDialog {
 	 * @return The user directory where XSLT export files are supposed to be.
 	 */
 	private File getXsltUserDirectory() {
-		// TODO dpolivaev 26.02.2009 How to get Freeplane's user directory resp. the user's XSLT directory
 		return new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "xslt");
 	}
 }

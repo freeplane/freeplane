@@ -55,6 +55,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
 
@@ -280,7 +281,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final Component component = viewController.getComponent(getNode());
 		nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
 		final MapView mapView = (MapView) viewController.getMapView();
-		maxWidth = ResourceController.getResourceController().getIntProperty("max_node_width", 0);
+		maxWidth = MapStyleModel.getExtension(mapView.getModel()).getMaxNodeWidth();
 		maxWidth = mapView.getZoomed(maxWidth) + 1;
 		extraWidth = ResourceController.getResourceController().getIntProperty("editor_extra_width", 80);
 		extraWidth = mapView.getZoomed(extraWidth);

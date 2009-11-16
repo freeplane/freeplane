@@ -20,10 +20,10 @@
 package org.freeplane.view.swing.map.edge;
 
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.view.swing.map.NodeView;
-import org.freeplane.view.swing.map.MapView.Layout;
 
 /**
  * @author Dimitry Polivaev
@@ -33,7 +33,7 @@ public class EdgeViewFactory {
 	final private static EdgeViewFactory instance = new EdgeViewFactory();
 
 	public EdgeView getEdge(final NodeView nodeView) {
-		if(nodeView.getMap().getLayoutType() == Layout.OUTLINE){
+		if(nodeView.getMap().getLayoutType() == MapViewLayout.OUTLINE){
 			return new OutlineEdgeView(nodeView);
 		}
 		final NodeModel model = nodeView.getModel();
@@ -63,7 +63,7 @@ public class EdgeViewFactory {
 	}
 
 	public EdgeView getEdge(final NodeView source, final NodeView target) {
-		if(source.getMap().getLayoutType() == Layout.OUTLINE){
+		if(source.getMap().getLayoutType() == MapViewLayout.OUTLINE){
 			return new OutlineLinkView(source, target);
 		}
 		final NodeModel model = target.getModel();

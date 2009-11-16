@@ -48,6 +48,7 @@ import org.freeplane.core.model.NodeModel.NodeChangeType;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.cloud.CloudController;
@@ -56,7 +57,6 @@ import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.view.swing.map.MapView.Layout;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
@@ -553,11 +553,11 @@ public class NodeView extends JComponent implements INodeView {
 		return null;
 	}
 
-	public NodeView getPreferredVisibleChild(Layout layoutType, final boolean left) {
+	public NodeView getPreferredVisibleChild(MapViewLayout layoutType, final boolean left) {
 		if (getModel().isLeaf()) {
 			return null;
 		}
-		if(layoutType==Layout.OUTLINE){
+		if(layoutType==MapViewLayout.OUTLINE){
 			preferredChild = null;
 		}
 		if (preferredChild != null && (left == preferredChild.isLeft()) && preferredChild.getParent() == this) {
@@ -598,7 +598,7 @@ public class NodeView extends JComponent implements INodeView {
 			}
 			final Point childPoint = new Point(0, childView.getMainView().getHeight() / 2);
 			UITools.convertPointToAncestor(childView.getMainView(), childPoint, baseComponent);
-			if (layoutType==Layout.OUTLINE){
+			if (layoutType==MapViewLayout.OUTLINE){
 				return childView;
 			}
 			final int gapToChild = Math.abs(childPoint.y - ownY);
@@ -793,7 +793,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	/** Is the node left of root? */
 	public boolean isLeft() {
-		if(getMap().getLayoutType() == Layout.OUTLINE){
+		if(getMap().getLayoutType() == MapViewLayout.OUTLINE){
 			return false;
 		}
 		return getModel().isLeft();

@@ -54,14 +54,17 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String MAP_STYLES = "MAP_STYLES";
 	public enum WriterHint {FORCE_FORMATTING};
+	public static final String MAX_NODE_WIDTH = "max_node_width";
 
 	public MapStyle(final ModeController modeController) {
 		super(modeController);
+		modeController.getMapController().addMapLifeCycleListener(this);
 		if (modeController.getModeName().equals("MindMap")) {
-			registerAction(new MapBackgroundColorAction(this));
+			modeController.addAction(new MapBackgroundColorAction(this));
 		}
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapLifeCycleListener(this);
+		modeController.addAction(new MaxNodeWidthAction(getController()));
 	}
 
 	protected class XmlWriter implements IExtensionElementWriter {
@@ -111,6 +114,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
+		final MapStyleModel model = new MapStyleModel();
+
 		final String colorString = element.getAttribute("background", null);
 		final Color bgColor;
 		if (colorString != null) {
@@ -119,8 +124,32 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		else {
 			bgColor = null;
 		}
-		final MapStyleModel model = new MapStyleModel();
 		model.setBackgroundColor(bgColor);
+		final String zoomString = element.getAttribute("zoom", null);
+		if (zoomString != null) {
+			final float zoom = Float.valueOf(zoomString);
+			model.setZoom(zoom);
+		}
+		
+		final String layoutString =  element.getAttribute("layout", null);
+		try{
+			if (layoutString != null) {
+				final MapViewLayout layout = MapViewLayout.valueOf(layoutString);
+				model.setMapViewLayout(layout);
+			}
+		}
+		catch (Exception e){
+		}
+		
+		final String maxNodeWidthString =  element.getAttribute("max_node_width", null);
+		try{
+			if (maxNodeWidthString != null) {
+				final int maxNodeWidth = Integer.valueOf(maxNodeWidthString);
+				model.setMaxNodeWidth(maxNodeWidth);
+			}
+		}
+		catch (Exception e){
+		}
 		return model;
 	}
 
@@ -162,8 +191,47 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		if (backgroundColor != null) {
 			element.setAttribute("background", ColorUtils.colorToString(backgroundColor));
 		}
+		float zoom = mapStyleModel.getZoom();
+		if(zoom != 1f){
+			element.setAttribute("zoom", Float.toString(zoom));
+		}
+		MapViewLayout layout = mapStyleModel.getMapViewLayout();
+		if(! layout.equals(MapViewLayout.MAP)){
+			element.setAttribute("layout", layout.toString());
+		}
+		element.setAttribute("max_node_width", Integer.toString(mapStyleModel.getMaxNodeWidth()));
 	}
 
+	public void setZoom(MapModel map, final float zoom ) {
+		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map); 
+		if(zoom == mapStyleModel.getZoom()){
+			return;
+		}
+		mapStyleModel.setZoom(zoom);
+		getModeController().getMapController().setSaved(map, false);
+	}
+	
+	public void setMaxNodeWidth(MapModel map, final int width ) {
+		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map); 
+		int oldMaxNodeWidth = mapStyleModel.getMaxNodeWidth();
+		if(width == oldMaxNodeWidth){
+			return;
+		}
+		mapStyleModel.setMaxNodeWidth(width);
+		getModeController().getMapController().fireMapChanged(
+			    new MapChangeEvent(MapStyle.this, getController().getMap(), MapStyle.MAX_NODE_WIDTH,
+			    		oldMaxNodeWidth, width));
+	}
+	
+	public void setMapViewLayout(MapModel map, final MapViewLayout layout ) {
+		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map); 
+		if(layout.equals(mapStyleModel.getMapViewLayout())){
+			return;
+		}
+		mapStyleModel.setMapViewLayout(layout);
+		getModeController().getMapController().setSaved(map, false);
+	}
+	
 	public void setBackgroundColor(final MapStyleModel model, final Color actionColor) {
 		final Color oldColor = model.getBackgroundColor();
 		if (actionColor == oldColor || actionColor != null && actionColor.equals(oldColor)) {

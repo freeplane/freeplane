@@ -22,6 +22,8 @@ package org.freeplane.core.ui.components;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
 import org.freeplane.core.resources.ResourceController;
@@ -35,22 +37,25 @@ public class PersistentEditableComboBox extends JComboBox {
 	final private String pStorageKey;
 	private boolean sendExternalEvents = true;
 
-	public PersistentEditableComboBox(final String storageKey) {
+	public PersistentEditableComboBox(final String storageKey, int maximumRowCount) {
 		pStorageKey = storageKey;
 		setEditable(true);
-		addUrl("", false);
+		setMaximumRowCount(maximumRowCount);
 		final String storedUrls = ResourceController.getResourceController().getProperty(pStorageKey);
 		if (storedUrls != null) {
 			final String[] array = storedUrls.split("\t");
 			for (int i = 0; i < array.length; i++) {
+				if(i == maximumRowCount){
+					break;
+				}
 				final String string = array[i];
-				addUrl(string, false);
+				addUrl(string);
 			}
 		}
-		setSelectedIndex(0);
+		setSelectedItem("");
 		super.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
-				addUrl(getText(), false);
+				addUrl(getText());
 				if (sendExternalEvents && actionListener != null) {
 					actionListener.actionPerformed(arg0);
 				}
@@ -63,28 +68,24 @@ public class PersistentEditableComboBox extends JComboBox {
 		actionListener = arg0;
 	}
 
-	private boolean addUrl(final String selectedItem, final boolean calledFromSetText) {
-		for (int i = 0; i < getModel().getSize(); i++) {
-			final String element = (String) getModel().getElementAt(i);
+	private void addUrl(final String selectedItem) {
+		DefaultComboBoxModel model = (DefaultComboBoxModel) getModel();
+		for (int i = 0; i < model.getSize(); i++) {
+			final String element = (String) model.getElementAt(i);
 			if (element.equals(selectedItem)) {
-				if (calledFromSetText) {
-					setSelectedIndex(i);
-				}
-				return false;
+				model.removeElementAt(i);
+				break;
 			}
 		}
-		addItem(selectedItem);
-		setSelectedIndex(getModel().getSize() - 1);
-		if (calledFromSetText) {
-			final StringBuilder resultBuffer = new StringBuilder();
-			for (int i = 0; i < getModel().getSize(); i++) {
-				final String element = (String) getModel().getElementAt(i);
-				resultBuffer.append(element);
-				resultBuffer.append("\t");
-			}
-			ResourceController.getResourceController().setProperty(pStorageKey, resultBuffer.toString());
+		model.insertElementAt(selectedItem, 0);
+		setSelectedIndex(0);
+		final StringBuilder resultBuffer = new StringBuilder();
+		for (int i = 0; i < model.getSize(); i++) {
+			final String element = (String) model.getElementAt(i);
+			resultBuffer.append(element);
+			resultBuffer.append("\t");
 		}
-		return true;
+		ResourceController.getResourceController().setProperty(pStorageKey, resultBuffer.toString());
 	};
 
 	public String getText() {
@@ -93,7 +94,7 @@ public class PersistentEditableComboBox extends JComboBox {
 
 	public void setText(final String text) {
 		sendExternalEvents = false;
-		addUrl(text, true);
+		addUrl(text);
 		sendExternalEvents = true;
 	}
 }

@@ -38,6 +38,7 @@
 			<menu_category name="general">
 				<menu_action action="ShowSelectionAsRectangleAction" />
 				<menu_action action="ViewLayoutTypeAction.OUTLINE" />
+                <menu_action action="MaxNodeWidthAction"/>
 			</menu_category>
 			<menu_action action="CenterSelectedNodeAction" accelerator="control alt C" />
 			<menu_category name="zoom">

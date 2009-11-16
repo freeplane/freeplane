@@ -6,3 +6,8 @@
 ./*/dist
 backups
 ./.metadata
+./freeplane_framework/windows-launcher/Freeplane_private.h
+./freeplane_framework/windows-launcher/Freeplane_private.rc
+./freeplane_framework/windows-launcher/Freeplane_private.res
+./freeplane_framework/windows-launcher/Freeplane.o
+./freeplane_framework/windows-launcher/Makefile.win

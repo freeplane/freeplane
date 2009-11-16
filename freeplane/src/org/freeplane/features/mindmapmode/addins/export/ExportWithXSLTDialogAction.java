@@ -19,8 +19,14 @@ package org.freeplane.features.mindmapmode.addins.export;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+
+import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -41,26 +47,31 @@ public class ExportWithXSLTDialogAction extends ExportAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController mc = getModeController();
 		final MapModel model = getController().getMap();
 		if (model == null) {
 			return;
 		}
-		if ((model.getFile() == null) || model.isReadOnly()) {
-			if (((MModeController) mc).save()) {
-				export(model.getFile());
-				return;
-			}
-			else {
-				return;
-			}
-		}
-		else {
-			export(model.getFile());
-		}
+		export(model.getFile());
 	}
 
 	private void export(final File file) {
-		exp.export(getController().getViewController().getFrame(), file);
+		exp.export(getController().getViewController().getFrame(), getMapXml(Mode.FILE), file);
+	}
+	/**
+	 * @param mode 
+	 * @throws IOException
+	 */
+	private StreamSource getMapXml(final Mode mode){
+		final StringWriter writer = new StringWriter();
+		final ModeController modeController = getModeController();
+		final Controller controller = modeController.getController();
+		final MapModel map = controller.getMap();
+		try {
+			modeController.getMapController().getFilteredXml(map, writer, mode, true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		StringReader stringReader = new StringReader(writer.getBuffer().toString());
+		return new StreamSource(stringReader);
 	}
 }

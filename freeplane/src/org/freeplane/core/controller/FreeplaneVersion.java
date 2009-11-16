@@ -160,4 +160,13 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 		}
 		return buf.toString();
 	}
+	public String numberToString() {
+		final StringBuilder buf = new StringBuilder();
+		buf.append(mMaj);
+		buf.append('.');
+		buf.append(mMid);
+		buf.append('.');
+		buf.append(mMin);
+		return buf.toString();
+	}
 }

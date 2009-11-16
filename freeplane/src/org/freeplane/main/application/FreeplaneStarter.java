@@ -38,6 +38,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.addins.misc.NextNodeAction;
 import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
@@ -55,7 +56,6 @@ import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MMapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
-import org.freeplane.view.swing.map.MapView.Layout;
 
 public class FreeplaneStarter {
 	static public void main(final String[] args) {
@@ -80,7 +80,6 @@ public class FreeplaneStarter {
 
 	private ApplicationResourceController applicationResourceController;
 	private Controller controller;
-	private IFeedBack feedBack;
 	private FreeplaneSplashModern splash;
 	private ApplicationViewController viewController;
 
@@ -105,11 +104,8 @@ public class FreeplaneStarter {
 				splash.setVisible(true);
 			}
 			Compat.useScreenMenuBar();
-			feedBack = splash.getFeedBack();
-			feedBack.setMaximumValue(2);
 			final MMapViewController mapViewController = new MMapViewController();
 			viewController = new ApplicationViewController(controller, mapViewController, frame);
-			feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
 			System.setSecurityManager(new FreeplaneSecurityManager());
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 			FilterController.install(controller);
@@ -126,8 +122,8 @@ public class FreeplaneStarter {
 			controller.addAction(new NextNodeAction(controller, Direction.BACK));
 			controller.addAction(new NextNodeAction(controller, Direction.FORWARD_N_FOLD));
 			controller.addAction(new NextNodeAction(controller, Direction.BACK_N_FOLD));
-			controller.addAction(new ViewLayoutTypeAction(controller, Layout.OUTLINE));
 			controller.addAction(new ShowSelectionAsRectangleAction(controller));
+			controller.addAction(new ViewLayoutTypeAction(controller, MapViewLayout.OUTLINE));
 			NodeHistory.install(controller);
 			MModeControllerFactory.createModeController(controller);
 			controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(
@@ -155,7 +151,6 @@ public class FreeplaneStarter {
 				}
 				catch (final Exception e) {
 				}
-				feedBack.increase("Freeplane.progress.loadMaps");
 				loadMaps(args);
 				final Frame frame = viewController.getFrame();
 				final int extendedState = frame.getExtendedState();

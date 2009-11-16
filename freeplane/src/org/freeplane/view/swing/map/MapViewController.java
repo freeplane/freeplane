@@ -45,7 +45,9 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.view.swing.map.MapView.Layout;
+import org.freeplane.features.common.addins.styles.MapStyle;
+import org.freeplane.features.common.addins.styles.MapStyleModel;
+import org.freeplane.features.common.addins.styles.MapViewLayout;
 
 /**
  * Manages the list of MapViews. As this task is very complex, I exported it
@@ -113,8 +115,9 @@ public class MapViewController implements IMapViewManager {
 		if (mapView != null) {
 			final ModeController modeController = mapView.getModeController();
 			lastModeName = modeController.getModeName();
-			if (zoom != mapView.getZoom()) {
-				mapView.setZoom(zoom);
+			float mapViewZoom = mapView.getZoom();
+			if (zoom != mapViewZoom) {
+				setZoom(mapViewZoom);
 			}
 			modeController.getController().selectMode(modeController);
 		}
@@ -471,6 +474,9 @@ public class MapViewController implements IMapViewManager {
 		if (mapView == null) {
 			return;
 		}
+		MapModel map = mapView.getModel();
+		MapStyle mapStyle = (MapStyle) mapView.getModeController().getExtension(MapStyle.class); 
+		mapStyle.setZoom(map, zoom);
 		mapView.setZoom(zoom);
 	}
 
@@ -498,7 +504,7 @@ public class MapViewController implements IMapViewManager {
 	}
 
 	public boolean isLeftTreeSupported(Component mapViewComponent) {
-		return ((MapView)mapViewComponent).getLayoutType() != Layout.OUTLINE;
+		return ((MapView)mapViewComponent).getLayoutType() != MapViewLayout.OUTLINE;
     }
 
 	public Map<String, MapModel> getMaps(String modename) {

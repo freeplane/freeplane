@@ -26,6 +26,7 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -41,15 +42,8 @@ class XmlExporter {
 	public XmlExporter() {
 	}
 
-	/**
-	 * The method actually performing the XSLT transformation.
-	 * @param xmlFile the source XML file
-	 * @param xsltFile the XSLT sheet describing the transformation
-	 * @param resultFile the target file (can be XML or something else)
-	 */
-	public void transForm(final File xmlFile, final File xsltFile, final File resultFile) {
-		final Source xmlSource = new StreamSource(xmlFile);
-		final Source xsltSource = new StreamSource(xsltFile);
+	void transform(final Source xmlSource, final Source xsltSource,
+			final File resultFile) throws TransformerFactoryConfigurationError {
 		FileOutputStream outputStream = null;
 		try {
 			outputStream = new FileOutputStream(resultFile);

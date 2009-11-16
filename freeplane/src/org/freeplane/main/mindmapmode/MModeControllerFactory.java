@@ -130,7 +130,6 @@ public class MModeControllerFactory {
 		new HierarchicalIcons(modeController);
 		new AutomaticLayout(modeController);
 		new BlinkingNodeHook(modeController);
-		new MapStyle(modeController);
 		new CreationModificationPlugin(modeController);
 		new ReminderHook(modeController);
 		new ViewerController(modeController);
@@ -249,6 +248,7 @@ public class MModeControllerFactory {
 		AttributeController.install(modeController, new MAttributeController(modeController));
 		modeController.addAction(new EditAttributesAction(controller));
 		SpellCheckerController.install(modeController);
+		new MapStyle(modeController);
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar();

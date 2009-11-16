@@ -66,6 +66,7 @@ public class FModeControllerFactory {
 		TextController.install(modeController, new TextController(modeController));
 		ClipboardController.install(modeController, new ClipboardController(modeController));
 		LocationController.install(modeController, new LocationController(modeController));
+		new MapStyle(modeController);
 		NodeStyleController.getController(modeController).addShapeGetter(new Integer(0),
 		    new IPropertyHandler<String, NodeModel>() {
 			    public String getProperty(final NodeModel node, final String currentValue) {
@@ -81,7 +82,6 @@ public class FModeControllerFactory {
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
 		NodeHistory.install(modeController);
-		new MapStyle(modeController);
 		return modeController;
 	}
 }

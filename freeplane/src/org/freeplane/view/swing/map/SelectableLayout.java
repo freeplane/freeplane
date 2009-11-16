@@ -25,7 +25,8 @@ import java.awt.Dimension;
 import java.awt.LayoutManager;
 import java.awt.Point;
 
-import org.freeplane.view.swing.map.MapView.Layout;
+import org.freeplane.features.common.addins.styles.MapViewLayout;
+
 
 /**
  * @author Dimitry Polivaev
@@ -65,8 +66,8 @@ public class SelectableLayout implements INodeViewLayout {
 	
 	private INodeViewLayout getLayout(Container parent){
 		NodeView view = (NodeView) parent;
-		final Layout layout = view.getMap().getLayoutType();
-		if(layout == Layout.OUTLINE){
+		final MapViewLayout layout = view.getMap().getLayoutType();
+		if(layout == MapViewLayout.OUTLINE){
 			return OutlineLayout.getInstance();
 		}
 		if (view.isRoot()) {
