@@ -98,7 +98,7 @@ public class FreeplaneSplashModern extends JWindow {
 		int xCoordinate = getSize().width - mWidth1.intValue() - 40;
 		int yCoordinate = 32;
 		g2.drawString(freeplaneNumber, xCoordinate, yCoordinate);
-		g2.drawString(status, xCoordinate + 4 + (mWidth2 - mWidth1) / 2, yCoordinate + 16);
+		g2.drawString(status, xCoordinate + (mWidth1 - mWidth2) / 2, yCoordinate + 16);
 		g2.setFont(versionTextFont.deriveFont(10f));
 		g2.setColor(Color.WHITE);
 		xCoordinate = 10;
