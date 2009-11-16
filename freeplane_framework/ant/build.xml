@@ -125,11 +125,15 @@
 		<delete quiet="true" includeemptydirs="false">
 			<fileset dir="${workingdir}/.." />
 		</delete>
-		<mkdir dir="${workingdir}/App/Freeplane" />
-		<copy todir="${workingdir}">
-			<fileset dir="${root}/windows-portable" />
-			<fileset file="windows-launcher/freeplanePortable.exe" />
-		</copy>
+        <mkdir dir="${workingdir}/App/Freeplane" />
+        <copy todir="${workingdir}">
+            <fileset dir="${root}/windows-portable" />
+            <fileset file="windows-launcher/freeplanePortable.exe" />
+        </copy>
+        <mkdir dir="${workingdir}/Other/Source" />
+        <copy todir="${workingdir}/Other/Source">
+            <fileset file="${workspace}/freeplane/resources/license.txt" />
+        </copy>
         <copy tofile="${workingdir}/App/AppInfo/appicon.ico">
             <fileset file="windows-launcher/Freeplane_app.ico" />
         </copy>
