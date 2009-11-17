@@ -224,6 +224,10 @@
         <separator name="mouse_wheel">
             <number name="wheel_velocity"/>
         </separator>
+        <separator name="scrollbar">
+            <number name="scrollbar_increment"/>
+        </separator>
+        
         <separator name="tooltip">
             <boolean name="show_node_tooltips"/>
             <number name="toolTipManager.initialDelay" min = "0"/>
