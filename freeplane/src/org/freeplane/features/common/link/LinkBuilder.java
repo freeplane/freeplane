@@ -158,13 +158,13 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		reader.addAttributeHandler("arrowlink", "STARTARROW", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setStartArrow(value.toString());
+				arrowLink.setStartArrow(ArrowType.valueOf(value.toUpperCase()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "ENDARROW", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setEndArrow(value.toString());
+				arrowLink.setEndArrow(ArrowType.valueOf(value.toUpperCase()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "WIDTH", new IAttributeHandler() {
@@ -225,11 +225,11 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		if (endInclination != null) {
 			arrowLink.setAttribute("ENDINCLINATION", TreeXmlWriter.PointToXml(endInclination));
 		}
-		final String startArrow = model.getStartArrow();
+		final String startArrow = model.getStartArrow().toString();
 		if (startArrow != null) {
 			arrowLink.setAttribute("STARTARROW", startArrow);
 		}
-		final String endArrow = model.getEndArrow();
+		final String endArrow = model.getEndArrow().toString();
 		if (endArrow != null) {
 			arrowLink.setAttribute("ENDARROW", endArrow);
 		}

@@ -135,7 +135,7 @@ public class MNodeDropListener implements DropTargetListener {
 					for (final Iterator<NodeModel> it = controller.getSelection().getSelection().iterator(); it
 					    .hasNext();) {
 						final NodeModel selectedNodeModel = (it.next());
-						((MLinkController) LinkController.getController(modeController)).addLink(selectedNodeModel,
+						((MLinkController) LinkController.getController(modeController)).addConnector(selectedNodeModel,
 						    targetNode);
 					}
 				}

@@ -29,6 +29,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 
@@ -54,37 +55,10 @@ class AddConnectorAction extends AFreeplaneAction {
 			UITools.errorMessage(ResourceBundles.getText("less_than_two_selected_nodes"));
 			return;
 		}
+		MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
 		for (int i = 1; i < selecteds.size(); i++) {
-			addLink((NodeModel) selecteds.get(i), (NodeModel) selecteds.get(0));
+			linkController.addConnector((NodeModel) selecteds.get(i), (NodeModel) selecteds.get(0));
 		}
 	}
 
-	public void addLink(final NodeModel source, final NodeModel target) {
-		final String targetID = target.createID();
-		final IActor actor = new IActor() {
-			private NodeLinkModel arrowLink;
-
-			public void act() {
-				NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
-				if (nodeLinks == null) {
-					nodeLinks = new NodeLinks();
-					source.addExtension(nodeLinks);
-				}
-				arrowLink = new ConnectorModel(source, targetID);
-				nodeLinks.addArrowlink(arrowLink);
-				getModeController().getMapController().nodeChanged(source);
-			}
-
-			public String getDescription() {
-				return "addLink";
-			}
-
-			public void undo() {
-				final NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
-				nodeLinks.removeArrowlink(arrowLink);
-				getModeController().getMapController().nodeChanged(source);
-			}
-		};
-		getModeController().execute(actor, source.getMap());
-	}
 }

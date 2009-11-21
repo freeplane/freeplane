@@ -24,46 +24,41 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.link.NodeLinkModel;
+import org.freeplane.features.common.link.NodeLinks;
 
-class EdgeLikeLinkAction extends AFreeplaneAction {
+class RemoveConnectorAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	ConnectorModel arrowLink;
+	private NodeLinkModel mArrowLink;
 
-	public EdgeLikeLinkAction(final MLinkController linkController, final ConnectorModel arrowLink) {
-		super("EdgeLikeLinkAction", linkController.getModeController().getController());
-		this.arrowLink = arrowLink;
+	/**
+	 * can be null can be null.
+	 */
+	public RemoveConnectorAction(final MLinkController linkController, final NodeLinkModel arrowLink) {
+		super("RemoveConnectorAction", linkController.getModeController().getController());
+		setArrowLink(arrowLink);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		setEdgeLike(! arrowLink.isEdgeLike());
+		MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+		linkController.removeArrowLink(mArrowLink);
 	}
 
-	public void setEdgeLike(final boolean edgeLike) {
-		final boolean alreadyEdgeLike = arrowLink.isEdgeLike();
-		if (alreadyEdgeLike == edgeLike) {
-			return;
-		}
-		final IActor actor = new IActor() {
-			public void act() {
-				arrowLink.setEdgeLike(edgeLike);
-				final NodeModel node = arrowLink.getSource();
-				getModeController().getMapController().nodeChanged(node);
-			}
+	/**
+	 * @return Returns the arrowLink.
+	 */
+	public NodeLinkModel getArrowLink() {
+		return mArrowLink;
+	}
 
-			public String getDescription() {
-				return "setEdgeLike";
-			}
-
-			public void undo() {
-				arrowLink.setEdgeLike(alreadyEdgeLike);
-				final NodeModel node = arrowLink.getSource();
-				getModeController().getMapController().nodeChanged(node);
-			}
-		};
-		getModeController().execute(actor, arrowLink.getSource().getMap());
+	/**
+	 * The arrowLink to set.
+	 */
+	public void setArrowLink(final NodeLinkModel arrowLink) {
+		mArrowLink = arrowLink;
 	}
 }
