@@ -73,6 +73,8 @@ public interface Proxy {
 		void selectBranch(Node branchRoot);
 
 		void selectMultipleNodes(java.util.List<Node> toSelect);
+		
+		void deactivateUndo();
 	}
 
 	interface Edge {

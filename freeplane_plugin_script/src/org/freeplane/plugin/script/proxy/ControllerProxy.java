@@ -7,7 +7,9 @@ import java.util.AbstractList;
 import java.util.List;
 
 import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.mindmapmode.MMapModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
@@ -83,5 +85,12 @@ class ControllerProxy implements Proxy.Controller {
 			}
 		}
 
+	}
+
+	public void deactivateUndo() {
+		MapModel map = modeController.getController().getMap();
+		if(map instanceof MapModel){
+			modeController.deactivateUndo((MMapModel) map);
+		}
 	}
 }

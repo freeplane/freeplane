@@ -47,4 +47,6 @@ public interface IUndoHandler {
 	void startTransaction();
 
 	void undo();
+	
+	void deactivate();
 }

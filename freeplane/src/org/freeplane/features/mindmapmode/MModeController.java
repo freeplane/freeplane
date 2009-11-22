@@ -60,7 +60,14 @@ public class MModeController extends ModeController {
 	private void addUndoableActor(final IActor actor, final MMapModel map) {
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.addActor(actor);
-		undo.setEnabled(true);
+		undo.setEnabled(undoHandler.canUndo());
+		redo.setEnabled(false);
+	}
+
+	public void deactivateUndo(final MMapModel map) {
+		final IUndoHandler undoHandler = map.getUndoHandler();
+		undoHandler.deactivate();
+		undo.setEnabled(false);
 		redo.setEnabled(false);
 	}
 
