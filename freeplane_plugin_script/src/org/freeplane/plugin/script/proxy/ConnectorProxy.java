@@ -10,82 +10,85 @@ import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
-
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class ConnectorProxy extends AbstractProxy implements Proxy.Connector {
-	
-	public ConnectorModel getConnector() {
-		return (ConnectorModel) getDelegate();
-	}
 
-	ConnectorProxy(ConnectorModel connector, MModeController modeController){
+	ConnectorProxy(final ConnectorModel connector,
+			final MModeController modeController) {
 		super(connector, modeController);
-	}
-	
-	private MLinkController getLinkController(){
-		return (MLinkController) LinkController.getController(getModeController());
-	}
-	
-	public Node getSource() {
-		return new NodeProxy(getConnector().getSource(), getModeController());
-	}
-
-	public Node getTarget() {
-		return new NodeProxy(getConnector().getTarget(), getModeController());
 	}
 
 	public Color getColor() {
 		return getLinkController().getColor(getConnector());
 	}
 
-	public String getMiddleLabel() {
-		return getConnector().getMiddleLabel();
-	}
-
-	public String getSourceLabel() {
-		return getConnector().getSourceLabel();
-	}
-
-	public String getTargetLabel() {
-		return getConnector().getTargetLabel();
+	public ConnectorModel getConnector() {
+		return (ConnectorModel) getDelegate();
 	}
 
 	public ArrowType getEndArrow() {
 		return getConnector().getEndArrow();
 	}
 
+	private MLinkController getLinkController() {
+		return (MLinkController) LinkController
+				.getController(getModeController());
+	}
+
+	public String getMiddleLabel() {
+		return getConnector().getMiddleLabel();
+	}
+
+	public Node getSource() {
+		return new NodeProxy(getConnector().getSource(), getModeController());
+	}
+
+	public String getSourceLabel() {
+		return getConnector().getSourceLabel();
+	}
+
 	public ArrowType getStartArrow() {
 		return getConnector().getStartArrow();
 	}
 
-	public void setEndArrow(ArrowType arrowType) {
-		ConnectorModel connector = getConnector();
-		getLinkController().changeArrowsOfArrowLink(connector, connector.getStartArrow(), arrowType);
+	public Node getTarget() {
+		return new NodeProxy(getConnector().getTarget(), getModeController());
 	}
 
-	public void setColor(Color color) {
+	public String getTargetLabel() {
+		return getConnector().getTargetLabel();
+	}
+
+	public void setColor(final Color color) {
 		getLinkController().setArrowLinkColor(getConnector(), color);
 	}
 
-	public void setStartArrow(ArrowType arrowType) {
-		ConnectorModel connector = getConnector();
-		getLinkController().changeArrowsOfArrowLink(connector, arrowType, connector.getEndArrow());
+	public void setEndArrow(final ArrowType arrowType) {
+		final ConnectorModel connector = getConnector();
+		getLinkController().changeArrowsOfArrowLink(connector,
+				connector.getStartArrow(), arrowType);
 	}
 
-	public void setMiddleLabel(String label) {
+	public void setMiddleLabel(final String label) {
 		getLinkController().setMiddleLabel(getConnector(), label);
 	}
 
-	public void setSimulatesEdge(boolean simulatesEdge) {
+	public void setSimulatesEdge(final boolean simulatesEdge) {
 		getLinkController().setEdgeLike(getConnector(), simulatesEdge);
 	}
 
-	public void setSourceLabel(String label) {
+	public void setSourceLabel(final String label) {
 		getLinkController().setSourceLabel(getConnector(), label);
 	}
 
-	public void setTargetLabel(String label) {
+	public void setStartArrow(final ArrowType arrowType) {
+		final ConnectorModel connector = getConnector();
+		getLinkController().changeArrowsOfArrowLink(connector, arrowType,
+				connector.getEndArrow());
+	}
+
+	public void setTargetLabel(final String label) {
 		getLinkController().setTargetLabel(getConnector(), label);
 	}
 

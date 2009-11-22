@@ -13,29 +13,21 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 
 class AttributesProxy extends AbstractProxy implements Proxy.Attributes {
-	AttributesProxy(NodeModel delegate, MModeController modeController) {
+	AttributesProxy(final NodeModel delegate,
+			final MModeController modeController) {
 		super(delegate, modeController);
 	}
 
-	public void set(String key, String value) {
-		int attributeNumber = findAttribute(key);
-		Attribute attribute = new Attribute(key, value);
-		if(attributeNumber == -1){
-			getAttributeController().addAttribute(getNode(), attribute);
-			return;
-		}
-		getAttributeController().setAttribute(getNode(), attributeNumber, attribute);
-	}
-
-	public int findAttribute(String key) {
-		NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		if(nodeAttributeTableModel == null){
+	public int findAttribute(final String key) {
+		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
+		if (nodeAttributeTableModel == null) {
 			return -1;
 		}
-		Vector<Attribute> attributes = nodeAttributeTableModel.getAttributes();
+		final Vector<Attribute> attributes = nodeAttributeTableModel
+				.getAttributes();
 		int i = 0;
-		for(Attribute a : attributes){
-			if(a.getName().equals(key)){
+		for (final Attribute a : attributes) {
+			if (a.getName().equals(key)) {
 				return i;
 			}
 			i++;
@@ -43,30 +35,42 @@ class AttributesProxy extends AbstractProxy implements Proxy.Attributes {
 		return -1;
 	}
 
-	public String get(String key) {
-		int attributeNumber = findAttribute(key);
-		if(attributeNumber == -1){
+	public String get(final String key) {
+		final int attributeNumber = findAttribute(key);
+		if (attributeNumber == -1) {
 			return null;
 		}
-		NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
+		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		return nodeAttributeTableModel.getAttribute(attributeNumber).getValue();
 	}
-	
-	public boolean remove(String key) {
-		int attributeNumber = findAttribute(key);
-		if(attributeNumber == -1){
+
+	MAttributeController getAttributeController() {
+		return (MAttributeController) AttributeController
+				.getController(getModeController());
+	}
+
+	NodeAttributeTableModel getNodeAttributeTableModel() {
+		return NodeAttributeTableModel.getModel(getNode());
+	}
+
+	public boolean remove(final String key) {
+		final int attributeNumber = findAttribute(key);
+		if (attributeNumber == -1) {
 			return false;
 		}
 		getAttributeController().removeAttribute(getNode(), attributeNumber);
 		return true;
 	}
-	
-	NodeAttributeTableModel getNodeAttributeTableModel(){
-		return NodeAttributeTableModel.getModel(getNode());
-	}
-	
-	MAttributeController getAttributeController(){
-		return (MAttributeController) AttributeController.getController(getModeController());
+
+	public void set(final String key, final String value) {
+		final int attributeNumber = findAttribute(key);
+		final Attribute attribute = new Attribute(key, value);
+		if (attributeNumber == -1) {
+			getAttributeController().addAttribute(getNode(), attribute);
+			return;
+		}
+		getAttributeController().setAttribute(getNode(), attributeNumber,
+				attribute);
 	}
 
 }

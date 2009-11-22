@@ -23,137 +23,59 @@ import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeProxy extends AbstractProxy implements Node {
 
-	public NodeProxy(NodeModel node, MModeController modeController) {
+	public NodeProxy(final NodeModel node, final MModeController modeController) {
 		super(node, modeController);
 	}
 
-	public void moveTo(Node parentNode) {
-		final NodeProxy parentNodeProxy = (NodeProxy)parentNode;
-		MMapController mapController = (MMapController) getModeController().getMapController();
-		mapController.moveNodeAsChild(getNode(), parentNodeProxy.getNode(), getNode().isLeft(), false);
+	public Proxy.Connector addConnectorTo(final Node target) {
+		return addConnectorTo(target.getNodeID());
 	}
 
-	public void moveTo(Node parentNode, int position) {
-		final NodeProxy parentNodeProxy = (NodeProxy)parentNode;
-		MMapController mapController = (MMapController) getModeController().getMapController();
-		mapController.moveNode(getNode(), parentNodeProxy.getNode(), position, getNode().isLeft(), false);
-	}
-
-	public void setFolded(boolean folded) {
-		MMapController mapController = (MMapController) getModeController().getMapController();
-		mapController.setFolded(getNode(), folded);
-	}
-
-	public void delete() {
-		MMapController mapController = (MMapController) getModeController().getMapController();
-		mapController.deleteNode(getNode());
-	}
-
-	public void removeConnector(Proxy.Connector connectorToBeRemoved) {
-		ConnectorProxy connectorProxy = (ConnectorProxy) connectorToBeRemoved;
-		ConnectorModel link = connectorProxy.getConnector();
-		MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
-		linkController.removeArrowLink(link);
-		
-	}
-
-	public boolean isRoot() {
-		return getNode().isRoot();
-	}
-
-	public boolean isLeaf() {
-		return getNode().isLeaf();
-	}
-
-	public boolean isLeft() {
-		return getNode().isLeft();
-	}
-
-	public boolean isFolded() {
-		return getNode().isFolded();
-	}
-
-	public boolean isDescendantOf(Node otherNode) {
-		final NodeModel otherNodeModel = ((NodeProxy)otherNode).getNode();
-		NodeModel node = this.getNode();
-		do{
-			if(node.equals(otherNodeModel)){
-				return true;
-			}
-			node = getNode().getParentNode();
-		}while (node != null);
-		return false;
+	public Proxy.Connector addConnectorTo(final String targetNodeID) {
+		final MLinkController linkController = (MLinkController) LinkController
+				.getController(getModeController());
+		final ConnectorModel connectorModel = linkController.addConnector(
+				getNode(), targetNodeID);
+		return new ConnectorProxy(connectorModel, getModeController());
 	}
 
 	public Node createChild() {
-		MMapController mapController = (MMapController) getModeController().getMapController();
-		NodeModel newNodeModel = new NodeModel(getNode().getMap());
+		final MMapController mapController = (MMapController) getModeController()
+				.getMapController();
+		final NodeModel newNodeModel = new NodeModel(getNode().getMap());
 		mapController.insertNode(newNodeModel, getNode());
 		return new NodeProxy(newNodeModel, getModeController());
 	}
 
-	public Node createChild(int position) {
-		MMapController mapController = (MMapController) getModeController().getMapController();
-		NodeModel newNodeModel = new NodeModel(getNode().getMap());
+	public Node createChild(final int position) {
+		final MMapController mapController = (MMapController) getModeController()
+				.getMapController();
+		final NodeModel newNodeModel = new NodeModel(getNode().getMap());
 		mapController.insertNode(newNodeModel, getNode(), position);
 		return new NodeProxy(newNodeModel, getModeController());
 	}
 
-
-	public String getText() {
-		return getNode().getText();
+	public void delete() {
+		final MMapController mapController = (MMapController) getModeController()
+				.getMapController();
+		mapController.deleteNode(getNode());
 	}
 
-	public Proxy.NodeStyle getStyle() {
-		return new NodeStyleProxy();
+	public Proxy.Attributes getAttributes() {
+		return new AttributesProxy(getNode(), getModeController());
 	}
 
-	public Node getRootNode() {
-		if(getNode().isRoot()){
-			return this;
-		}
-		NodeModel rootNode = getNode().getMap().getRootNode();
-		return new NodeProxy(rootNode, getModeController());
+	public int getChildPosition(final Node childNode) {
+		final NodeModel childNodeModel = ((NodeProxy) childNode).getNode();
+		return getNode().getChildPosition(childNodeModel);
 	}
 
-	public Node getParentNode() {
-		NodeModel parentNode = getNode().getParentNode();
-		return parentNode != null ? new NodeProxy(parentNode, getModeController()) : null;
-	}
-
-	public int getNodeLevel(boolean countHidden) {
-		return getNode().getNodeLevel(countHidden);
-	}
-
-	public String getNodeID() {
-		return getNode().getID();
-	}
-
-	public Proxy.Link getLink() {
-		return new LinkProxy();
-	}
-
-	public Proxy.Icons getIcons() {
-		return new IconsProxy();
-	}
-
-	public Proxy.ExternalObject getExternalObject() {
-		return new ExternalObjectProxy();
-	}
-
-	public Collection<Proxy.Connector> getConnectorsOut() {
-		return new ConnectorOutListProxy(getNode(), getModeController());
-	}
-
-	public Collection<Connector> getConnectorsIn() {
-		return new ConnectorInListProxy(getNode(), getModeController());
-	}
 	public List<Node> getChildren() {
 		return new AbstractList<Node>() {
 
 			@Override
-			public Node get(int index) {
-				NodeModel child = (NodeModel) getNode().getChildAt(index);
+			public Node get(final int index) {
+				final NodeModel child = (NodeModel) getNode().getChildAt(index);
 				return new NodeProxy(child, getModeController());
 			}
 
@@ -164,40 +86,136 @@ class NodeProxy extends AbstractProxy implements Node {
 		};
 	}
 
-	public int getChildPosition(Node childNode) {
-		NodeModel childNodeModel = ((NodeProxy)childNode).getNode();
-		return getNode().getChildPosition(childNodeModel);
+	public Collection<Connector> getConnectorsIn() {
+		return new ConnectorInListProxy(getNode(), getModeController());
 	}
 
-	public Proxy.Attributes getAttributes() {
-		return new AttributesProxy(getNode(), getModeController());
+	public Collection<Proxy.Connector> getConnectorsOut() {
+		return new ConnectorOutListProxy(getNode(), getModeController());
 	}
 
-	public Proxy.Connector addConnectorTo(String targetNodeID) {
-		MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
-		ConnectorModel connectorModel = linkController.addConnector(getNode(), targetNodeID);
-		return new ConnectorProxy(connectorModel, getModeController());
+	public Proxy.ExternalObject getExternalObject() {
+		return new ExternalObjectProxy(getNode(), getModeController());
 	}
 
-	public Proxy.Connector addConnectorTo(Node target) {
-		return addConnectorTo(target.getNodeID());
+	public Proxy.Icons getIcons() {
+		return new IconsProxy(getNode(), getModeController());
+	}
+
+	public Proxy.Link getLink() {
+		return new LinkProxy(getNode(), getModeController());
+	}
+
+	public String getNodeID() {
+		return getNode().getID();
+	}
+
+	public int getNodeLevel(final boolean countHidden) {
+		return getNode().getNodeLevel(countHidden);
 	}
 
 	public String getNoteText() {
 		return NoteModel.getNoteText(getNode());
 	}
 
+	public Node getParentNode() {
+		final NodeModel parentNode = getNode().getParentNode();
+		return parentNode != null ? new NodeProxy(parentNode,
+				getModeController()) : null;
+	}
+
 	public String getPlainTextContent() {
 		return getNode().getPlainTextContent();
 	}
 
-	public void setNoteText(String text) {
-		MNoteController noteController = (MNoteController) NoteController.getController(getModeController());
+	public Node getRootNode() {
+		if (getNode().isRoot()) {
+			return this;
+		}
+		final NodeModel rootNode = getNode().getMap().getRootNode();
+		return new NodeProxy(rootNode, getModeController());
+	}
+
+	public Proxy.NodeStyle getStyle() {
+		return new NodeStyleProxy(getNode(), getModeController());
+	}
+
+	public String getText() {
+		return getNode().getText();
+	}
+
+	public boolean isDescendantOf(final Node otherNode) {
+		final NodeModel otherNodeModel = ((NodeProxy) otherNode).getNode();
+		NodeModel node = this.getNode();
+		do {
+			if (node.equals(otherNodeModel)) {
+				return true;
+			}
+			node = getNode().getParentNode();
+		} while (node != null);
+		return false;
+	}
+
+	public boolean isFolded() {
+		return getNode().isFolded();
+	}
+
+	public boolean isLeaf() {
+		return getNode().isLeaf();
+	}
+
+	public boolean isLeft() {
+		return getNode().isLeft();
+	}
+
+	public boolean isRoot() {
+		return getNode().isRoot();
+	}
+
+	public boolean isVisible() {
+		return getNode().isVisible();
+	}
+
+	public void moveTo(final Node parentNode) {
+		final NodeProxy parentNodeProxy = (NodeProxy) parentNode;
+		final MMapController mapController = (MMapController) getModeController()
+				.getMapController();
+		mapController.moveNodeAsChild(getNode(), parentNodeProxy.getNode(),
+				getNode().isLeft(), false);
+	}
+
+	public void moveTo(final Node parentNode, final int position) {
+		final NodeProxy parentNodeProxy = (NodeProxy) parentNode;
+		final MMapController mapController = (MMapController) getModeController()
+				.getMapController();
+		mapController.moveNode(getNode(), parentNodeProxy.getNode(), position,
+				getNode().isLeft(), false);
+	}
+
+	public void removeConnector(final Proxy.Connector connectorToBeRemoved) {
+		final ConnectorProxy connectorProxy = (ConnectorProxy) connectorToBeRemoved;
+		final ConnectorModel link = connectorProxy.getConnector();
+		final MLinkController linkController = (MLinkController) LinkController
+				.getController(getModeController());
+		linkController.removeArrowLink(link);
+
+	}
+
+	public void setFolded(final boolean folded) {
+		final MMapController mapController = (MMapController) getModeController()
+				.getMapController();
+		mapController.setFolded(getNode(), folded);
+	}
+
+	public void setNoteText(final String text) {
+		final MNoteController noteController = (MNoteController) NoteController
+				.getController(getModeController());
 		noteController.setNoteText(getNode(), text);
 	}
 
-	public void setText(String text) {
-		MTextController textController = (MTextController) TextController.getController(getModeController());
+	public void setText(final String text) {
+		final MTextController textController = (MTextController) TextController
+				.getController(getModeController());
 		textController.setNodeText(getNode(), text);
 	}
 

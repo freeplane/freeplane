@@ -11,38 +11,39 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 
 class EdgeProxy extends AbstractProxy implements Proxy.Edge {
-	EdgeProxy(Object delegate, MModeController modeController) {
+	EdgeProxy(final Object delegate, final MModeController modeController) {
 		super(delegate, modeController);
 	}
-	
-	private MEdgeController getEdgeController(){
-		return (MEdgeController) EdgeController.getController(getModeController());
+
+	public Color getColor() {
+		return getEdgeController().getColor(getNode());
 	}
 
-	public void setWidth(int width) {
-		getEdgeController().setWidth(getNode(), width);
-		
-	}
-
-	public void setType(EdgeStyle type) {
-		getEdgeController().setStyle(getNode(), type);
-		
-	}
-
-	public void setColor(Color color) {
-		getEdgeController().setColor(getNode(), color);
-		
-	}
-
-	public int getWidth() {
-		return getEdgeController().getWidth(getNode());
+	private MEdgeController getEdgeController() {
+		return (MEdgeController) EdgeController
+				.getController(getModeController());
 	}
 
 	public EdgeStyle getType() {
 		return getEdgeController().getStyle(getNode());
 	}
 
-	public Color getColor() {
-		return getEdgeController().getColor(getNode());
+	public int getWidth() {
+		return getEdgeController().getWidth(getNode());
+	}
+
+	public void setColor(final Color color) {
+		getEdgeController().setColor(getNode(), color);
+
+	}
+
+	public void setType(final EdgeStyle type) {
+		getEdgeController().setStyle(getNode(), type);
+
+	}
+
+	public void setWidth(final int width) {
+		getEdgeController().setWidth(getNode(), width);
+
 	}
 }

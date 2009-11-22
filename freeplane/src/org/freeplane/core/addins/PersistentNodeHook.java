@@ -334,7 +334,7 @@ public abstract class PersistentNodeHook {
 		undoableToggleHook(node, null);
 	}
 
-	private void undoableToggleHook(final NodeModel node, final IExtension extension) {
+	public void undoableToggleHook(final NodeModel node, final IExtension extension) {
 		final IActor actor = new ToggleHookActor(node, extension);
 		getModeController().execute(actor, node.getMap());
 	}

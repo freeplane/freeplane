@@ -20,7 +20,7 @@ import org.freeplane.view.swing.map.MapView;
 public class ExternalResource implements IExtension {
 	final private Set<JComponent> viewers;
 	
-	ExternalResource(){
+	public ExternalResource(){
 		viewers = new HashSet<JComponent>();
 	}
 

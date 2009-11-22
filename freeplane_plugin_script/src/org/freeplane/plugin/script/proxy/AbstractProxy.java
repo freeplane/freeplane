@@ -6,28 +6,30 @@ import org.freeplane.features.mindmapmode.MModeController;
 public abstract class AbstractProxy {
 	final private Object delegate;
 	final private MModeController modeController;
-	
-	AbstractProxy(final Object delegate, final MModeController modeController){
+
+	AbstractProxy(final Object delegate, final MModeController modeController) {
 		this.delegate = delegate;
 		this.modeController = modeController;
 	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (!getClass().equals(obj.getClass())) {
+			return false;
+		}
+		return delegate.equals(((AbstractProxy) obj).getDelegate());
+	}
+
 	public Object getDelegate() {
 		return delegate;
-	}
-	
-	public NodeModel getNode() {
-		return (NodeModel) delegate;
 	}
 
 	public MModeController getModeController() {
 		return modeController;
 	}
-	@Override
-	public boolean equals(Object obj) {
-		if(! getClass().equals(obj.getClass())){
-			return false;
-		}
-		return delegate.equals(((AbstractProxy)obj).getDelegate());
+
+	public NodeModel getNode() {
+		return (NodeModel) delegate;
 	}
 
 	@Override

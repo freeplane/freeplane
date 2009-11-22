@@ -159,7 +159,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				return true;
 			}
 			MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, viewer);
-			setModelSize(mapView.getModeController(), mapView.getModel(),
+			setZoom(mapView.getModeController(), mapView.getModel(),
 					(ExternalResource) viewer
 							.getClientProperty(ExternalResource.class),
 					1f);
@@ -241,7 +241,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
 				float zoom = mapView.getZoom();
 				final float modelSize = (float)(r / r0 /zoom);
-				setModelSize(mapView.getModeController(), mapView.getModel(),
+				setZoom(mapView.getModeController(), mapView.getModel(),
 					(ExternalResource) component
 					.getClientProperty(ExternalResource.class),
 					modelSize);
@@ -322,7 +322,7 @@ final private Set<IViewerFactory> factories;
 		factories.add(new BitmapViewerFactory());
 	}
 
-	public void setModelSize(final ModeController modeController, final MapModel map, final ExternalResource model, final float size) {
+	public void setZoom(final ModeController modeController, final MapModel map, final ExternalResource model, final float size) {
 		final float oldSize = model.getZoom();
 		if(size == oldSize){
 			return;
@@ -504,7 +504,7 @@ final private Set<IViewerFactory> factories;
 		super.saveExtension(extension, element);
 	}
 
-	void setUriUndoable(final ExternalResource model, final URI newUri) {
+	public void setUriUndoable(final ExternalResource model, final URI newUri) {
 		final URI uri = model.getUri();
 		if (uri.equals(newUri)) {
 			return;
