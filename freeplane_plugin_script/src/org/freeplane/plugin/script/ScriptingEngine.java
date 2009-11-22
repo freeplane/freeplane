@@ -52,6 +52,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.main.application.FreeplaneSecurityManager;
+import org.freeplane.plugin.script.proxy.ProxyFactory;
 
 /**
  * @author foltin
@@ -97,8 +98,8 @@ class ScriptingEngine extends AFreeplaneAction {
 		}
 		pAlreadyAScriptExecuted = Boolean.TRUE;
 		final Binding binding = new Binding();
-		binding.setVariable("c", pMindMapController);
-		binding.setVariable("node", node);
+		binding.setVariable("c", ProxyFactory.createController(pMindMapController));
+		binding.setVariable("node", ProxyFactory.createNode(node, pMindMapController));
 		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
 		boolean assignResult = false;
 		String assignTo = null;
