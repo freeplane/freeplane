@@ -8,18 +8,15 @@ import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.link.ArrowType;
 
 public interface Proxy {
+	/** simplistic interface for unique keys */
 	interface Attributes {
 		String get(String key);
 
 		boolean remove(String key); // returns true on success
 
-		// possibly add higher level functions allowing to deal with non-unique
-		// keys
-		// simplistic interface for unique keys
 		void set(String key, String value);
 	}
 
-	// /////////
 
 	interface Connector {
 		Color getColor();
@@ -56,31 +53,30 @@ public interface Proxy {
 	}
 
 	interface Controller {
-		// selects branchRoot and all children
 		void centerOnNode(Node center);
 
 		Node getSelected();
 
-		// returns the Node of that selected node which is closest to the root
 		List<Node> getSelecteds();
 
-		// returns List<Node> of Node objects
+		/** returns List<Node> of Node objects sorted on Y */
 		List<Node> getSortedSelection();
 
 		void select(Node toSelect);
 
-		// toSelect is a List<Node> of Node objects
+		/** selects branchRoot and all children */
 		void selectBranch(Node branchRoot);
 
+		/** toSelect is a List<Node> of Node objects */
 		void selectMultipleNodes(java.util.List<Node> toSelect);
 		
+		/** reset undo / redo lists and deactivate Undo for current script */
 		void deactivateUndo();
 	}
 
 	interface Edge {
 		Color getColor();
 
-		// can be "Parent","Thin","1","2","4","8"
 		EdgeStyle getType();
 
 		int getWidth();
@@ -89,16 +85,18 @@ public interface Proxy {
 
 		void setType(EdgeStyle type);
 
+		/** can be -1 for default, 0 for thin, >0 */
 		void setWidth(int width);
 	}
 
 	interface ExternalObject {
-		String getURI(); // empty string means that there's no external object
+		/** empty string means that there's no external object */
+		String getURI(); 
 
 		float getZoom();
 
-		void setURI(String uri); // setting empty String uri means remove
-									// external object (as for Links);
+		/** setting empty String uri means remove external object (as for Links); */
+		void setURI(String uri); 
 
 		void setZoom(float zoom);
 	}
@@ -140,12 +138,14 @@ public interface Proxy {
 	interface Icons {
 		void addIcon(String name);
 
-		// deletes first occurence of icon with name iconID, returns true if
-		// success (icon existed);
+		/** returns List<Node> of Strings (corresponding to iconID above);
+		 iconID is one of "Idea","Question","Important", etc.
+		 */
 		java.util.List<String> getIcons();
 
-		// returns List<Node> of Strings (corresponding to iconID above);
-		// iconID is one of "Idea","Question","Important", etc.
+		/** deletes first occurence of icon with name iconID, returns true if
+		 success (icon existed);
+		 */
 		boolean removeIcon(String iconID);
 	}
 
@@ -159,15 +159,19 @@ public interface Proxy {
 	interface Node {
 		Connector addConnectorTo(Node target);
 
-		// adds a new Connector object to List<Node> connectors and returns
-		// reference for optional further editing (style);; also enlists the
-		// Connector on the target Node object
+		/** adds a new Connector object to List<Node> connectors and returns
+		 reference for optional further editing (style);; also enlists the
+		 Connector on the target Node object
+		 */
 		Connector addConnectorTo(String targetNodeID);
 
-		// inserts *new* node as child, takes care of all construction work and
-		// internal stuff
+		/** inserts *new* node as child, takes care of all construction work and
+		internal stuff inserts as last child
+		*/
 		Node createChild();
 
+		/** inserts *new* node as child, takes care of all construction work and
+		internal stuff */
 		Node createChild(int position);
 
 		void delete();
@@ -180,8 +184,6 @@ public interface Proxy {
 
 		Collection<Connector> getConnectorsIn();
 
-		// List<Node> of Connector objects
-		// methods
 		Collection<Connector> getConnectorsOut();
 
 		ExternalObject getExternalObject();
@@ -210,7 +212,6 @@ public interface Proxy {
 
 		boolean isFolded();
 
-		// same as above, inserts as last child
 		boolean isLeaf();
 
 		boolean isLeft();
@@ -219,14 +220,13 @@ public interface Proxy {
 
 		boolean isVisible();
 
-		// removes connector from List<Node> connectors; does the corresponding
-		// on the target Node object referenced by connectorToBeRemoved
+		/** removes connector from List<Node> connectors; does the corresponding
+		on the target Node object referenced by connectorToBeRemoved */
 		void moveTo(Node parentNode);
 
 		void moveTo(Node parentNode, int position);
 
-		// as above, using String nodeID instead of Node object to establish the
-		// connector
+		/** as above, using String nodeID instead of Node object to establish the connector*/
 		void removeConnector(Connector connectorToBeRemoved);
 
 		void setFolded(boolean folded);
