@@ -165,11 +165,13 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				getEditControl().ok(textfield.getText());
 				hideMe();
 				eventSource = CANCEL;
+				return;
 			}
-			else {
-				getEditControl().ok(textfield.getText());
-				hideMe();
+			if(e.isTemporary()){
+				return;
 			}
+			getEditControl().ok(textfield.getText());
+			hideMe();
 		}
 
 		public void keyPressed(final KeyEvent e) {
