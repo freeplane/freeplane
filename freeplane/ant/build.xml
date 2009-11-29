@@ -8,7 +8,7 @@
 	<property name="root" value="." />
 	<property name="manifest" value="${root}/META-INF/OLD_MANIFEST.MF" />
 	<property name="osgimanifest" value="${root}/META-INF/MANIFEST.MF" />
-	<property name="lib" value="${root}/lib" />
+	<property name="external.lib" value="${root}/lib" />
 	<property name="framework.jar" value="${root}/../freeplane_framework/lib/knopflerfish/framework.jar" />
 	<property name="build" value="${root}/build" />
 	<property name="bin" value="${root}/bin" />
@@ -25,7 +25,7 @@
 	<property name="java_source_version" value="1.5" />
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
-	<property name="classpath" value="${lib}/commons-lang-2.0.jar:${lib}/forms-1.0.5.jar:${lib}/SimplyHTML.jar:${lib}/jortho.jar:${framework.jar}" />
+	<property name="classpath" value="${external.lib}/commons-lang-2.0.jar:${external.lib}/forms-1.0.5.jar:${external.lib}/SimplyHTML.jar:${external.lib}/jortho.jar:${framework.jar}" />
 
 	<target name="build" depends="clean">
 		<echo>Freeplane Version = ${ver}.</echo>
@@ -88,7 +88,7 @@
 		<!-- third party libs -->
 		<mkdir dir="${dist.lib}" />
 		<copy todir="${dist.lib}">
-			<fileset dir="${lib}">
+			<fileset dir="${external.lib}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
