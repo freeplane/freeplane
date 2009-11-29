@@ -166,10 +166,9 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public boolean contains(final int x, final int y) {
-		if (!isValid()) {
-			@SuppressWarnings("unused")
-            int  i = 0;
-		}
+//		if (!isValid()) {
+//			return false;
+//		}
 		final int space = getMap().getZoomed(NodeView.SPACE_AROUND) - 2 * getZoomedFoldingSymbolHalfWidth();
 		return (x >= space) && (x < getWidth() - space) && (y >= space) && (y < getHeight() - space);
 	}
