@@ -438,8 +438,7 @@ public class UrlManager implements IExtension {
 		}
 	}
 	public URL getAbsoluteUrl(final MapModel map, final URI uri) throws MalformedURLException {
-	    URL url;
-		final String path = uri.getPath();
+		final String path = uri.isOpaque() ? uri.getSchemeSpecificPart() : uri.getPath();
 		StringBuilder sb = new StringBuilder(path);
 		final String query = uri.getQuery();
 		if(query != null){
@@ -452,11 +451,13 @@ public class UrlManager implements IExtension {
 			sb.append(fragment);
 		}
 		if (!uri.isAbsolute() || uri.isOpaque()) {
-			url = new URL(map.getURL(), sb.toString());
+			URL mapUrl = map.getURL();
+			if(mapUrl.getProtocol().equals(uri.getScheme())){
+				final URL url = new URL(mapUrl, sb.toString());
+				return url;
+			}
 		}
-		else {
-			url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), sb.toString());
-		}
+		final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), sb.toString());
 		return url;
     }
 
