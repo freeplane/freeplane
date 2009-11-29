@@ -63,7 +63,7 @@
 			<menu_category name="edit">
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
-				<menu_action action="EditAttributesAction" accelerator="control F9" />
+				<menu_action action="EditAttributesAction" accelerator="alt F9" />
 				<menu_action action="DeleteAction" accelerator="DELETE" />
 				<!-- <menu_action action="remove" /> -->
 			</menu_category>
