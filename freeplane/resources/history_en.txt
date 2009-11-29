@@ -1,5 +1,5 @@
 *******************************
-Revision 892
+Revision 915
 
 *******************************
 ===============================
@@ -18,6 +18,16 @@ Bug fixes:
 310]: note window - refresh bug
 315]: Export of user icons
 bug fix in icon toolbar menu hierarchy
+bug fixes for automatic bug reports
+326]: mailto: feature not working in v1.0.34
+323]: Map Area Coordinates Are Inaccurate
+320]: Alt+Tab from/to Freeplane can cause menu to be highlighted
+322]: clicking local link opens "Save As..." instead of moving to the linked target node
+321]: Scrollbar Speed
+bug fixes for menu bar, f-bar and NodeView.contains
+new  createURI (by Eric and Dimitry)
+bug fix for Clear Case: do not lock read file
+
 key mapping guide
 
 ===============================
