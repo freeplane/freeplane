@@ -39,6 +39,9 @@ public class ImagePreview extends BitmapImagePreview{
 	        LogTool.warn(e);
 	        return;
         }
+        if(viewer == null){
+        	return;
+        }
 		viewer.setLocation(BORDER_WIDTH, BORDER_WIDTH);
         if(viewer instanceof BitmapViewerComponent){
         	((BitmapViewerComponent) viewer).setHint(Image.SCALE_FAST);
