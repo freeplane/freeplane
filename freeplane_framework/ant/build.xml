@@ -170,6 +170,18 @@
 			<fileset dir="${bin}" />
 			<fileset dir="${dist}" />
 		</delete>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane"/>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_help"/>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_svg"/>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_latex"/>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_script"/>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_bugreport"/>		
 	</target>
 
 </project>
