@@ -28,7 +28,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
  * removed from History too?
  */
 public class QuitAction extends AFreeplaneAction {
-	// TODO rladstaetter 15.02.2009 just replace the name with getClass().getSimpleName() ?
 	public static final String NAME = "quit";
 	/**
 	 * 
@@ -44,5 +43,9 @@ public class QuitAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		getController().quit();
+	}
+
+	@Override
+	public void afterMapChange(final Object newMap) {
 	}
 }
