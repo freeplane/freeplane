@@ -66,7 +66,7 @@ Name: associate; Description: {cm:AssocFileExtension,Freeplane,.mm}; GroupDescri
 
 
 [Files]
-Source: ..\bin\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: fwdir\*
+Source: ..\build\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: fwdir\*
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

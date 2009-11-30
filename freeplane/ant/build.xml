@@ -95,6 +95,7 @@
 		<copy todir="${dist.resources}">
 			<fileset dir="external-resources"/>
 		</copy>
+        <delete dir="${build}"  quiet="true"/>
 	</target>
 
 	<!-- for maven integration -->
