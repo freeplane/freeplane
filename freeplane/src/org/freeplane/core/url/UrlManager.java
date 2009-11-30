@@ -452,7 +452,8 @@ public class UrlManager implements IExtension {
 		}
 		if (!uri.isAbsolute() || uri.isOpaque()) {
 			URL mapUrl = map.getURL();
-			if(mapUrl.getProtocol().equals(uri.getScheme())){
+			String scheme = uri.getScheme();
+			if(scheme == null || mapUrl.getProtocol().equals(scheme)){
 				final URL url = new URL(mapUrl, sb.toString());
 				return url;
 			}
