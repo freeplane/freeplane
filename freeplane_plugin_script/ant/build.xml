@@ -5,13 +5,12 @@
 	<property name="osgimanifest" value="${root}/META-INF/MANIFEST.MF" />	
 	<property name="external.lib" value="${root}/lib" />
 	<property name="framework.jar" value="${root}/../freeplane_framework/lib/knopflerfish/framework.jar" />
-	<property name="freeplane.dist.lib" value="${root}/../freeplane/bin/dist/lib" />
+	<property name="freeplane.dist.lib" value="${root}/../freeplane/dist/lib" />
 	<property name="freeplane.jars" value="${freeplane.dist.lib}/freeplaneviewer.jar:${freeplane.dist.lib}/freeplaneeditor.jar:${freeplane.dist.lib}/freeplaneosgi.jar" />
-	<property name="external.dist.lib" value="${root}/../freeplane/bin/dist/lib" />
+	<property name="external.dist.lib" value="${root}/../freeplane/dist/lib" />
 	<property name="external.jars" value="${external.dist.lib}/commons-lang-2.0.jar:${external.dist.lib}/forms-1.0.5.jar:${external.dist.lib}/SimplyHTML/SimplyHTML.jar" />
 	<property name="build" value="${root}/build" />
-	<property name="bin" value="${root}/bin" />
-	<property name="dist" value="${bin}/dist" />
+	<property name="dist" value="${root}/dist" />
 	<property name="dist.lib" value="${dist}/lib" />
 	<property name="dist.osgi.dir" value="${dist}/osgi/dir" />
 	<property name="dist.osgi.jar" value="${dist}/osgi/jar" />
@@ -60,7 +59,7 @@
 	
 	<target name="clean">
 		<delete dir="${build}"  quiet="true"/>
-		<delete dir="${bin}"  quiet="true"/>
+		<delete dir="${dist}"  quiet="true"/>
 		<delete>
 			<fileset defaultexcludes="no" dir="${src}" includes="**/*~"/>
 		</delete>

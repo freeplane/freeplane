@@ -11,8 +11,7 @@
 	<property name="external.lib" value="${root}/lib" />
 	<property name="framework.jar" value="${root}/../freeplane_framework/lib/knopflerfish/framework.jar" />
 	<property name="build" value="${root}/build" />
-	<property name="bin" value="${root}/bin" />
-	<property name="dist" value="${bin}/dist" />
+	<property name="dist" value="${root}/dist" />
 	<property name="dist.lib" value="${dist}/lib" />
 	<property name="dist.resources" value="${dist}/resources" />
 	<property name="dist.osgi.dir" value="${dist}/osgi/dir" />
@@ -151,7 +150,7 @@
 	
 	<target name="clean">
 		<delete dir="${build}" quiet="true" />
-		<delete dir="${bin}" quiet="true" />
+		<delete dir="${dist}" quiet="true" />
 		<delete>
 			<fileset defaultexcludes="no" dir="${src}" includes="**/*~" />
 		</delete>

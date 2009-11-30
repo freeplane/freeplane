@@ -3,18 +3,18 @@
 	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
 	<property name="ver" value="${freeplane_version}" />
 	<property name="root" value="." />
-	<property name="bin" value="${root}/bin" />
+	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/dist" />
 
-	<target name="bin" depends="clean">
+	<target name="build" depends="clean">
 		<property name="root" value="." />
 		<property name="framework.jar" value="lib/knopflerfish/framework.jar" />
 		<property name="freeplane.exe" value="windows-launcher/freeplane.exe" />
 		<property name="license" value="license.txt" />
 		<property name="readme_src" value="readme.txt" />
-		<property name="bin.jars" value="${bin}/jars" />
-		<property name="bin.plugins" value="${bin}/plugins" />
-		<property name="bin.resources" value="${bin}/resources" />
+		<property name="build.jars" value="${build}/jars" />
+		<property name="build.plugins" value="${build}/plugins" />
+		<property name="build.resources" value="${build}/resources" />
 		<property name="script" value="${root}/script" />
 
 		<ant antfile="ant/build.xml" target="osgi_dist" dir="${workspace}/freeplane" inheritall="false" />
@@ -23,45 +23,45 @@
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_latex" inheritall="false" />
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_script" inheritall="false" />
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_bugreport" inheritall="false" />
-		<mkdir dir="${bin}" />
-		<copy todir="${bin}">
+		<mkdir dir="${build}" />
+		<copy todir="${build}">
 			<fileset dir="${script}" />
 			<fileset file="${framework.jar}" />
 			<fileset file="${freeplane.exe}" />
 		</copy>
-		<chmod file="${bin}/freeplane.sh" perm="ugo+rx" />
-		<mkdir dir="${bin.plugins}/org.freeplane.core" />
-		<copy todir="${bin.plugins}/org.freeplane.core">
-			<fileset dir="${workspace}/freeplane/bin/dist/osgi/dir" />
+		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
+		<mkdir dir="${build.plugins}/org.freeplane.core" />
+		<copy todir="${build.plugins}/org.freeplane.core">
+			<fileset dir="${workspace}/freeplane/dist/osgi/dir" />
 		</copy>
 
 		<!-- temporarily remove help plugin 
 		
-		<mkdir dir="${bin.plugins}/org.freeplane.plugin.help" />
-		<copy todir="${bin.plugins}/org.freeplane.plugin.help">
-			<fileset dir="${workspace}/freeplane_plugin_help/bin/dist/osgi/dir"/>
+		<mkdir dir="${build.plugins}/org.freeplane.plugin.help" />
+		<copy todir="${build.plugins}/org.freeplane.plugin.help">
+			<fileset dir="${workspace}/freeplane_plugin_help/dist/osgi/dir"/>
 		</copy>
 -->
-		<mkdir dir="${bin.plugins}/org.freeplane.plugin.latex" />
-		<copy todir="${bin.plugins}/org.freeplane.plugin.latex">
-			<fileset dir="${workspace}/freeplane_plugin_latex/bin/dist/osgi/dir" />
+		<mkdir dir="${build.plugins}/org.freeplane.plugin.latex" />
+		<copy todir="${build.plugins}/org.freeplane.plugin.latex">
+			<fileset dir="${workspace}/freeplane_plugin_latex/dist/osgi/dir" />
 		</copy>
-		<mkdir dir="${bin.plugins}/org.freeplane.plugin.svg" />
-		<copy todir="${bin.plugins}/org.freeplane.plugin.svg">
-			<fileset dir="${workspace}/freeplane_plugin_svg/bin/dist/osgi/dir" />
+		<mkdir dir="${build.plugins}/org.freeplane.plugin.svg" />
+		<copy todir="${build.plugins}/org.freeplane.plugin.svg">
+			<fileset dir="${workspace}/freeplane_plugin_svg/dist/osgi/dir" />
 		</copy>
-		<mkdir dir="${bin.plugins}/org.freeplane.plugin.script" />
-		<copy todir="${bin.plugins}/org.freeplane.plugin.script">
-			<fileset dir="${workspace}/freeplane_plugin_script/bin/dist/osgi/dir" />
+		<mkdir dir="${build.plugins}/org.freeplane.plugin.script" />
+		<copy todir="${build.plugins}/org.freeplane.plugin.script">
+			<fileset dir="${workspace}/freeplane_plugin_script/dist/osgi/dir" />
 		</copy>
-		<mkdir dir="${bin.plugins}/org.freeplane.plugin.bugreport" />
-		<copy todir="${bin.plugins}/org.freeplane.plugin.bugreport">
-			<fileset dir="${workspace}/freeplane_plugin_bugreport/bin/dist/osgi/dir" />
+		<mkdir dir="${build.plugins}/org.freeplane.plugin.bugreport" />
+		<copy todir="${build.plugins}/org.freeplane.plugin.bugreport">
+			<fileset dir="${workspace}/freeplane_plugin_bugreport/dist/osgi/dir" />
 		</copy>
 
-		<mkdir dir="${bin.resources}" />
-		<copy todir="${bin.resources}">
-			<fileset dir="${workspace}/freeplane/bin/dist/resources" />
+		<mkdir dir="${build.resources}" />
+		<copy todir="${build.resources}">
+			<fileset dir="${workspace}/freeplane/dist/resources" />
 		</copy>
 
 	</target>
@@ -70,9 +70,9 @@
 		<mkdir dir="${dist}" />
 	</target>
 
-	<target name="binzip" depends="bin, mkdistdir">
+	<target name="binzip" depends="build, mkdistdir">
 		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="true">
-			<zipfileset dir="${bin}" prefix="freeplane-${ver}" />
+			<zipfileset dir="${build}" prefix="freeplane-${ver}" />
 			<zipfileset dir="${root}" prefix="freeplane-${ver}">
 				<include name="${license}" />
 			</zipfileset>
@@ -89,6 +89,7 @@
 					<include name="JOrtho_0.4_freeplane/**" />
 					<exclude name=".*/**" />
 					<exclude name="bin/**" />
+					<exclude name="build/**" />
 					<exclude name="dist/**" />
 					<exclude name="*/bin/**" />
 					<exclude name="*/build/**" />
@@ -114,13 +115,13 @@
 		</tar>
 	</target>
 
-	<target name="installer" depends="bin, mkdistdir">
+	<target name="installer" depends="build, mkdistdir">
 		<exec osfamily="windows" dir="${workspace}/freeplane_framework/windows-installer" executable="iscc.exe" failifexecutionfails="false" failonerror="true">
 			<arg line="/Q Freeplane_without_Java.iss" />
 		</exec>
 	</target>
 	
-	<target name="portableinstaller" depends="bin, mkdistdir">
+	<target name="portableinstaller" depends="build, mkdistdir">
 		<property name="workingdir" value="${root}/temp/FreeplanePortable" />
 		<delete quiet="true" includeemptydirs="false">
 			<fileset dir="${workingdir}/.." />
@@ -139,7 +140,7 @@
         </copy>
 		
 		<copy todir="${workingdir}/App/Freeplane">
-			<fileset dir="${root}/bin">
+			<fileset dir="${build}">
 				<exclude name="*.exe" />
 				<exclude name="*.bat" />
 				<exclude name="*.sh" />
@@ -167,7 +168,7 @@
 
 	<target name="clean">
 		<delete quiet="true" includeemptydirs="true">
-			<fileset dir="${bin}" />
+			<fileset dir="${build}" />
 			<fileset dir="${dist}" />
 		</delete>
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
