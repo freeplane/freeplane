@@ -267,9 +267,7 @@ class ApplicationViewController extends ViewController {
 	@Override
 	public void openDocument(final URL url) throws Exception {
 		String correctedUrl = url.toExternalForm();
-		if (url.getProtocol().equals("file")) {
-			correctedUrl = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getRef()).toString();
-		}
+		correctedUrl = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getRef()).toString();
 		final String osName = System.getProperty("os.name");
 		if (osName.substring(0, 3).equals("Win")) {
 			String propertyString = "default_browser_command_windows";
@@ -281,7 +279,7 @@ class ApplicationViewController extends ViewController {
 			}
 			String[] command = null;
 			try {
-				final Object[] messageArguments = { url.toString() };
+				final Object[] messageArguments = { correctedUrl };
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty(propertyString));
 				String browserCommand = formatter.format(messageArguments);
@@ -291,8 +289,8 @@ class ApplicationViewController extends ViewController {
 						command = new String[]{"rundll32", "shell32.dll,ShellExec_RunDLL",  correctedUrl};
 					}
 				}
-				else if (url.toString().startsWith("mailto:")) {
-					command = new String[]{"rundll32", "url.dll,FileProtocolHandler", url.toString()};
+				else if (correctedUrl.startsWith("mailto:")) {
+					command = new String[]{"rundll32", "url.dll,FileProtocolHandler", correctedUrl};
 				}
 				else {
 					Controller.exec(browserCommand);
@@ -313,7 +311,7 @@ class ApplicationViewController extends ViewController {
 		else if (osName.startsWith("Mac OS")) {
 			String browserCommand = null;
 			try {
-				final Object[] messageArguments = { correctedUrl, url.toString() };
+				final Object[] messageArguments = { correctedUrl, correctedUrl};
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty("default_browser_command_mac"));
 				browserCommand = formatter.format(messageArguments);
@@ -330,7 +328,7 @@ class ApplicationViewController extends ViewController {
 		else {
 			String browserCommand = null;
 			try {
-				final Object[] messageArguments = { correctedUrl, url.toString() };
+				final Object[] messageArguments = { correctedUrl, correctedUrl };
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty("default_browser_command_other_os"));
 				browserCommand = formatter.format(messageArguments);
