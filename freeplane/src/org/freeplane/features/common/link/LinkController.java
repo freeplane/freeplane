@@ -304,7 +304,7 @@ public class LinkController extends SelectionController implements IExtension {
 	static Pattern patSMB = Pattern.compile( // \\host\path[#fragement]
 		"(?:\\\\\\\\([^\\\\]+)\\\\)(.*?)(?:#([^#]*))?");
 	static Pattern patFile = Pattern.compile( // [drive:]path[#fragment]
-	"((?:\\p{Alpha}:)?(?:[^:#?]*))?(?:#([^#]*))?");
+	"((?:\\p{Alpha}:)?([/\\\\])?(?:[^:#?]*))?(?:#([^#]*))?");
 	static Pattern patURI = Pattern.compile( // [scheme:]scheme-specific-part[#fragment]
 	"(?:(\\p{Alpha}[\\p{Alnum}+.-]+):)?(.*?)(?:#([^#]*))?");
 	/* Function that tries to transform a not necessarily well-formed
@@ -337,9 +337,15 @@ public class LinkController extends SelectionController implements IExtension {
 			{
 				final Matcher mat = patFile.matcher(inputValue);
 				if (mat.matches()) {
+					if(mat.group(2) == null){
+						scheme = null;
+						ssp = mat.group(1).replace('\\','/');
+						fragment = mat.group(3);
+						return new URI(scheme, ssp, fragment);
+					}
 					scheme = "file";
 					ssp = "/" + mat.group(1).replace('\\','/');
-					fragment = mat.group(2);
+					fragment = mat.group(3);
 					return new URI(scheme, ssp, fragment);
 				}
 			}
