@@ -503,7 +503,7 @@ Personal modification color
 text labels can be added to any end and in the middle of any link by link pop-up menu
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta20
+Changes made in FreeMind 0.9.0 Beta20
 ===============================
 * Fixed some documentation bugs reported by Edmund Laugasson. Thanks.
 * Bug fix: Untranslatable strings and places * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=2020259&group_id=7118
@@ -511,7 +511,7 @@ Changes made in Freeplane 0.9.0 Beta20
 * Mac: Spaces in files names corrected.
 * Bug fix: B19 startup fails with "Mode not available: Mindmap" * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=2025279&group_id=7118
 * "Open hyperlink" works for multiple selected nodes.
-* FreeplaneStarter uses reflection. Thus, it can detect java < 1.4.
+* FreeMindStarter uses reflection. Thus, it can detect java < 1.4.
 * Icons revised. Thanks to Predrag.
 * Fixed: copying to clipboard for Linux.
 * Fixed: saving of xhtml - tag <option>.
@@ -525,7 +525,7 @@ Changes made in Freeplane 0.9.0 Beta20
 * Integrated [ 2027826 ] Word export with notes - Thanks to Eric.
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta19
+Changes made in FreeMind 0.9.0 Beta19
 ===============================
 * Fixed: in key based navigation in filtered maps.
 * Fixed: displaying of fork node in filtered maps.
@@ -536,7 +536,7 @@ Changes made in Freeplane 0.9.0 Beta19
 * Fixed: export of filtered maps to PDF
 * Fixed: Patterns can't be customized in FM beta18 * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1985406&group_id=7118
 * Fixed: onCreateNodeHook fixed.
-* Freeplane includes document icons now. Thanks to Predrag.
+* FreeMind includes document icons now. Thanks to Predrag.
 * Bug fix: storing of scripts in patterns corrected.
 * Key documentation added. Thanks to Ryan.
 * New icons (thanks to Predrag), Icons and their order is customizable in preferences, now.
@@ -565,7 +565,7 @@ Changes made in Freeplane 0.9.0 Beta19
 * Updated groovy to version 1.5.6.
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta18
+Changes made in FreeMind 0.9.0 Beta18
 ===============================
 * Fixed: bubble / fork style not correctly cascading * http://sf.net/tracker/index.php?func=detail&aid=1822099&group_id=7118&atid=107118
 * Fixed: java.lang.OutOfMemoryError: Java heap space * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1965270&group_id=7118
@@ -578,14 +578,14 @@ Changes made in Freeplane 0.9.0 Beta18
 * Fixed: displaying of accelerator keys in selected language.
 * Fixed: Mnenonics for yes/no/cancel buttons in "Save" Dialog.
 * Fixed: displaying of changes made using "Assign attributes" dialog if only selected attributes are visible.
-* Refactoring of FreeplaneStarter such that preferences are only read once.
+* Refactoring of FreeMindStarter such that preferences are only read once.
 * Fixed: confirmation dialogs were placed outside of the screen
 * Fixed: position of files dragged to a node
 * Splash updated by Predrag via mail from 28.05.2008 (GPLv2+). Many thanks.
-* Icon taken form Predrag. Freeplane started recompiled. Thank you.
+* Icon taken form Predrag. FreeMind started recompiled. Thank you.
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta17
+Changes made in FreeMind 0.9.0 Beta17
 ===============================
 * Scripts can be installed as menu functions (look into ScriptingEngine.xml).
 * Security Enhancements for Scripting Engine.
@@ -605,9 +605,9 @@ Changes made in Freeplane 0.9.0 Beta17
 * Fixed: Layout of pattern manager.
 * Fixed: .toURL() is deprecated in Java 1.6 https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1812246&group_id=7118
 * This fixes as well: Hyperlinks dont work with interntional chars in filename * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1801949&group_id=7118
-* Fixed: On first start Freeplane should show new map to newbies * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1752516&group_id=7118
+* Fixed: On first start FreeMind should show new map to newbies * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1752516&group_id=7118
 * Fixed: Print Preview can be closed with ESC.
-* Fixed: English used by Freeplane... (thanks to the author) * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1933938&group_id=7118
+* Fixed: English used by FreeMind... (thanks to the author) * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1933938&group_id=7118
 * Fixed: Missing tooltips in Manager Patterns dialog * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1848057&group_id=7118
 * Fixed: Format dialog remembers its position on screen.
 * Fixed: Like in 0.8 nodes are still unfolded, when others are dragged into. This can changed in the preferences.
@@ -622,11 +622,11 @@ Changes made in Freeplane 0.9.0 Beta17
 * Fixed: Valid html output * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1063430&group_id=7118
 * Fixed: faulty undo for edge types after auto layouting * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1937927&group_id=7118
 * Fixed: Issues with action "Clear note" * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1842855&group_id=7118
-* A link to the Freeplane's webpage is available in Help Menu
+* A link to the FreeMind's webpage is available in Help Menu
 * Fixed: Folding not saved * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1938342&group_id=7118
-* Scripts can be signed by a Freeplane key or with a user key (specified in the options)
+* Scripts can be signed by a FreeMind key or with a user key (specified in the options)
   and have then full rights.  
-* Freeplane version is now a structure that can be used by scripts or plugins to guarantee compatibility.
+* FreeMind version is now a structure that can be used by scripts or plugins to guarantee compatibility.
 * New design of logo (thanks to mmeitzner) and splash (thanks to bernardlang) integrated
 * Fixed: Wrong language name for Norwegian * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1935818&group_id=7118
 * New croatian language. Thanks to Predrag.
@@ -639,7 +639,7 @@ Changes made in Freeplane 0.9.0 Beta17
 
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta16
+Changes made in FreeMind 0.9.0 Beta16
 ===============================
 * Bug fix: do not add new <p> for HTML nodes copied as HTML
 * Bug fix: remove HTML tags by generating RTF
@@ -677,7 +677,7 @@ Changes made in Freeplane 0.9.0 Beta16
   variant will not be released soon due to open license questions
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta15
+Changes made in FreeMind 0.9.0 Beta15
 ===============================
 * Option added that map conversions are confirmed
 * Bug fix: Browser applet can be started twice
@@ -698,7 +698,7 @@ Changes made in Freeplane 0.9.0 Beta15
 
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta 14
+Changes made in FreeMind 0.9.0 Beta 14
 ===============================
 * Open Office Export now for the ODT format.
 * Nicer automatic format with sharp bezier curves.
@@ -713,7 +713,7 @@ Changes made in Freeplane 0.9.0 Beta 14
 * Use node text and background colors in editors.
 * Bug fix: use edge color for folding mark.
 * Bug fix: new maps should not have "saved" attribute set.
-* Bug fix: Freeplane non-responsive after application focus change.
+* Bug fix: FreeMind non-responsive after application focus change.
 * Bug fixes in filter management.
 * Bug fix: export to PNG.
 * Bug fix: mnemonics for starting Attribute Manager Dialog.
@@ -726,7 +726,7 @@ Changes made in Freeplane 0.9.0 Beta 14
 * Menu item "Split" moved to menu item "Join nodes"
  
 ===============================
-Changes made in Freeplane 0.9.0 Beta 13
+Changes made in FreeMind 0.9.0 Beta 13
 ===============================
 * Menu Item to show SimplyHTML about box 
 * Use cloud or map backgroung color in WYSIWYG Editor if the node has no own background color.
@@ -754,14 +754,14 @@ Changes made in Freeplane 0.9.0 Beta 13
 * Enter on root gives new child, shift-enter on root causes root to get a child of a new root node.
 	 
 ===============================
-Changes made in Freeplane 0.9.0 Beta 12
+Changes made in FreeMind 0.9.0 Beta 12
 ===============================
 * Map background color may be set via Format menu and saved with the map.
 * Bug fixes: problems if auto.properties does not exist 
-* Freeplane Accelerators work from Note Editor
+* FreeMind Accelerators work from Note Editor
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta 11
+Changes made in FreeMind 0.9.0 Beta 11
 ===============================
 * New menu option: Display Selection as Rectangle.
 * Standard colors are taken from Look&Feel settings.
@@ -771,7 +771,7 @@ Changes made in Freeplane 0.9.0 Beta 11
 * Bug fix: tab closing fixed for java4+5
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta 10
+Changes made in FreeMind 0.9.0 Beta 10
 ===============================
 * New option: velocity of mouse wheel movements.
 * Bug fix: F6 and F8 can be used for formats again.
@@ -812,15 +812,15 @@ which can be obtained using NodeView.getContent().
 * Window position, size and state are saved and restored correctly
 
 * Adjusting not only the background color of selected node but also its text color. 
-* System colors used instead of Freeplane default colors 
+* System colors used instead of FreeMind default colors 
  for default window background color, default node text color, 
  default selected node background and text colors.
 * Alternative displaying of selected nodes showing rounded rectangle around the node (may be set in preferences)
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta 9
+Changes made in FreeMind 0.9.0 Beta 9
 ===============================
-* Bug fix: nodes selection does not change if Freeplane is not focused
+* Bug fix: nodes selection does not change if FreeMind is not focused
 * Select All is aplied to the filtered nodes only if filter is active
 * Bug fix: new nodes are directly closed.
 * Performance of note editor improved. Thanks to Dimitri.
@@ -841,12 +841,12 @@ Changes made in Freeplane 0.9.0 Beta 9
 * Blinking Node Hook does not change the model color, only the view color
 * Bug fix on start if the last map has been deleted
 * Short cuts are traced to the actions even if menu bar is not visible
-* Freeplane Base Dir used for searching the plugins is taken from the classpath, not from the properties
-* Freeplane Base Dir is also used for localizing the docu
-* The Internet Docu Version is used if Freeplane Base Dir can not be defined (applet in browser)
+* FreeMind Base Dir used for searching the plugins is taken from the classpath, not from the properties
+* FreeMind Base Dir is also used for localizing the docu
+* The Internet Docu Version is used if FreeMind Base Dir can not be defined (applet in browser)
 * Search & Replace Dialog with menu and nicer. Bug fixes...
 * Changes for Java 6.0
-* changes in getFreeplaneBaseDir (TODO)
+* changes in getFreeMindBaseDir (TODO)
 * Local Short Cuts and Properties => Bug Fix for control PLUS etc.
 * Using Shift+Click on icon bar substitutes the current icons by the new one. (Same with Shift+Enter in the icon selection dialog)
 * user friendly closing of the node edit dialogs
@@ -872,7 +872,7 @@ Changes made in Freeplane 0.9.0 Beta 9
 * Copy limited to filtered nodes 
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta 8
+Changes made in FreeMind 0.9.0 Beta 8
 ===============================
 * bug fix: feedback.increase must not be called before auto properties with language setting has been loaded        
 * SimpleHTML: icons for bold and italic actions replaced
@@ -905,14 +905,14 @@ Changes made in Freeplane 0.9.0 Beta 8
 * Mac Changes: integration in system improved.
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta 7
+Changes made in FreeMind 0.9.0 Beta 7
 ===============================
 * Kafenio replaced by SimplyHTML
 * Bug fixes: two HTML exports adapted to new file format
 * Patch from Eric for XSLT export introduced. Thanks.
 
 ===============================
-Changes made in Freeplane 0.9.0 Beta 6
+Changes made in FreeMind 0.9.0 Beta 6
 ===============================
 * Restrictions on node positions removed, 
 * the node motion view oval is filled red if node overlap is possible.
@@ -920,7 +920,7 @@ Changes made in Freeplane 0.9.0 Beta 6
 * Bug fixes
 * Mac changes: whole application is in one package
 * Slider for Notes introduced.
-* FreeplaneStarter introduced to detect wrong java versions.
+* FreeMindStarter introduced to detect wrong java versions.
 * user.properties are obsolete and were removed. auto.properties are replacing them
 * Logging to file enabled.
 * Notes are always present and directly stored (without the plugin notation)
@@ -939,7 +939,7 @@ Changes made in Freeplane 0.9.0 Beta 6
 * Bug fix: layout of root with attributes
 * Enhancements of the scripting feature.
 
-Changes made in Freeplane 0.9.0 Beta 5
+Changes made in FreeMind 0.9.0 Beta 5
 ===============================
 * Search and Replace in History Dialog.
 * Load and Save Format of HTML nodes realized as discussed by the directors board.
@@ -948,7 +948,7 @@ Changes made in Freeplane 0.9.0 Beta 5
 * Safety extension for Html nodes: if they don't give well formed Xml, we replace the tags.
 * \0 characters are removed from HTML.
 
-Changes made in Freeplane 0.9.0 Beta 2
+Changes made in FreeMind 0.9.0 Beta 2
 ===============================
 * Kafenio for notes
 * Paste and Encrypted Node register new attributes in the attribtue registry correctly
@@ -962,34 +962,34 @@ Changes made in Freeplane 0.9.0 Beta 2
 * NodeView has got a new multi component capable layout manager
 * Export of local hyperlinks to XHTML/HTML with image corrected.
 
-Changes made in Freeplane 0.9.0 Beta 1
+Changes made in FreeMind 0.9.0 Beta 1
 ===============================
 * VariableSizeCardLayout implemented for Preference Dialog
 * Automatic layout preference design bugs fixed
 
-Changes made in Freeplane 0.9.0 Alpha 1.02
+Changes made in FreeMind 0.9.0 Alpha 1.02
 ===============================
 Merged with WYSIWYG Version
 
-Changes made in Freeplane 0.9.0 Alpha 1.01
+Changes made in FreeMind 0.9.0 Alpha 1.01
 ===============================
 Merged with Attribute Version
 
-Changes made in Freeplane 0.8.1 FA Alpha 10.02
+Changes made in FreeMind 0.8.1 FA Alpha 10.02
 ===============================
 Attributes can be leaved with alt+F9
 
-Changes made in Freeplane 0.8.1 FA Alpha 10.01
+Changes made in FreeMind 0.8.1 FA Alpha 10.01
 ===============================
 Print Preview
 
-Changes made in Freeplane 0.8.1 FA Alpha 9.04
+Changes made in FreeMind 0.8.1 FA Alpha 9.04
 ===============================
 * Key strokes for attributes can be set using the preferences Dialog
 * Save as HTML, RTF and Text consider filter settings
 * Size of buttons with empty key strokes in the Option Panel are set correctly
 
-Changes made in Freeplane 0.8.1 FA Alpha 9.03
+Changes made in FreeMind 0.8.1 FA Alpha 9.03
 ===============================
 *The export plugins using XSLT changed:
 	Only nodes passed the filter condition inclusive settings
@@ -997,11 +997,11 @@ Changes made in Freeplane 0.8.1 FA Alpha 9.03
 	are exported in OOWriter and generally by the XSLT exporter.
 *Bugfixes
 
-Changes made in Freeplane 0.8.1 FA Alpha 9.01
+Changes made in FreeMind 0.8.1 FA Alpha 9.01
 ===============================
-Merge with Freeplane 0.8.1 beta 3
+Merge with FreeMind 0.8.1 beta 3
 
-Changes made in Freeplane 0.8.FA Alpha 8
+Changes made in FreeMind 0.8.FA Alpha 8
 ===============================
 * Undo for all attribute operations
 
@@ -1024,7 +1024,7 @@ Other improvements:
 * Radio Button Items in Menus
 * other changes and refactorings
 
-Changes made in Freeplane 0.8.1:
+Changes made in FreeMind 0.8.1:
 ===============================
 * Word wrap enabled for notes.
 * Refactoring: MindMap specific actions moved to mindmapmode.
@@ -1072,7 +1072,7 @@ Beta4:
 * Root node curves improved.
 * Automatic layout patterns can be specified in the preferences dialog
 
-Changes made in Freeplane 0.8.0-ALPHA-DAN-5:
+Changes made in FreeMind 0.8.0-ALPHA-DAN-5:
 ===============================
     * HTML selections are pasted directly as rich text, whether they
       were made in a web browser, Microsoft Word document, or any
@@ -1124,7 +1124,7 @@ Changes made in Freeplane 0.8.0-ALPHA-DAN-5:
       confirms regardless of the "Enter Confirms" setting,
 
     * when exporting to HTML using the exporting function as of
-      Freeplane 0.7.1, the list bullets in exported HTML nodes are
+      FreeMind 0.7.1, the list bullets in exported HTML nodes are
       shown. HTML link contained in HTML nodes are styled normally and
       underlined.
 
@@ -1132,7 +1132,7 @@ Changes made in Freeplane 0.8.0-ALPHA-DAN-5:
       search is - word "two other"; node matches if it (a) contains
       substring "word", and (b) it contains substring "two other".
 
-Changes made in Freeplane 0.8.0:
+Changes made in FreeMind 0.8.0:
 ===============================
 * From Koh (thanks): Standard Macintosh application use Command(meta) key based Keyboard shortcut. (ex. copy is Command(meta) + C). I think that mac version's freeplane should allow to assign meta key based shortcut.
 * Bug fix: AutomaticLayout.java
@@ -1452,7 +1452,7 @@ RC 6:
 * New lithuanian translation. Thanks to oxiris.
 * Update version XSLT is only applied if neccessary (for 0.7.1 it is not applied).
 
-Changes made in Freeplane 0.7.2:
+Changes made in FreeMind 0.7.2:
 ===============================
 * Pluginmechanism added
 * Messagebox if recent file not present
@@ -1469,7 +1469,7 @@ Changes made in Freeplane 0.7.2:
 * Jython is substituted by an attrappe
 * Fold and Unfold one stage is available now.
 
-Changes made in Freeplane 0.7.1:
+Changes made in FreeMind 0.7.1:
 ===============================
 * Bug fix: automatic save occurs not so often (in fact, only if something has changed since the last automatic save), and uses a better filename.
 * Daniel changed the documentation.
@@ -1490,7 +1490,7 @@ RC3:
 * Bug fix: If more than one selection, folding and editing with mouse disabled. The old behaviour was not useful as the last selected was opened in the editor or was folded even if one pressed on another node.
 * Little feature: folding of many selected nodes is working.
 * Bug fix: Continuous selection with Shift key corrected. Now, more than one of these selection ranges can be used.
-* Logger is now available at the Freeplane interface.
+* Logger is now available at the FreeMind interface.
 * Automatic save introduced (necessary feature until undo is available)
 
 RC2:
@@ -1518,7 +1518,7 @@ RC1:
 * Bug fix: Zoom in/out uses step one again.
 * Bug fix: System default look and feel is set if so stated in the freeplane.properties or user.properties.
 
-Changes made in Freeplane 0.7.0:
+Changes made in FreeMind 0.7.0:
 ===============================
 
 * Bug fix: Open and Quit are working if no map is present
@@ -1527,7 +1527,7 @@ Changes made in Freeplane 0.7.0:
 * Selection method changed and simplified: double click is now for editing and single for mark and fold.
 * Browser is working again.
 * Folded nodes have now an arc on their outer side, where the edge comes into.
-* Solved the left/right problem of Freeplane.
+* Solved the left/right problem of FreeMind.
 * Patches for PrintSetup, RTF and FoldedIcons added. Thanks to the contributors.
 * Japanese traduction added
 * Corrected the browser call statement. Hopefully, it is right now.
