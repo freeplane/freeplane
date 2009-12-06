@@ -20,10 +20,8 @@
 package org.freeplane.features.mindmapmode.addins.styles;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.EventQueue;
 import java.awt.HeadlessException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -32,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Map.Entry;
 
 import javax.swing.JPanel;
@@ -46,6 +45,7 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.BooleanProperty;
 import org.freeplane.core.resources.ui.ColorProperty;
@@ -55,7 +55,6 @@ import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IconProperty;
 import org.freeplane.core.resources.ui.NextLineProperty;
 import org.freeplane.core.resources.ui.SeparatorProperty;
-import org.freeplane.core.resources.ui.StringProperty;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeController;
@@ -93,7 +92,7 @@ public class StyleEditorPanel extends JPanel {
 		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) mMindMapController
 			    .getExtension(NodeStyleController.class);
-			styleController.setShape(node, enabled ? mNodeStyle.getValue() : null);
+			styleController.setShape(node, enabled ? mNodeShape.getValue() : null);
 		}
 	}
 	
@@ -276,7 +275,7 @@ public class StyleEditorPanel extends JPanel {
 	private static final String NODE_FONT_ITALIC = "nodefontitalic";
 	private static final String NODE_FONT_NAME = "nodefontname";
 	private static final String NODE_FONT_SIZE = "nodefontsize";
-	private static final String NODE_STYLE = "nodeshape";
+	private static final String NODE_SHAPE = "nodeshape";
 	private static final String NODE_TEXT_COLOR = "standardnodetextcolor";
 	/**
 	* 
@@ -314,14 +313,13 @@ public class StyleEditorPanel extends JPanel {
 	private IconProperty mIcon;
 	private List<MindIcon> mIconInformationVector;
 	private final ModeController mMindMapController;
-	private StringProperty mName;
 	private ColorProperty mNodeBackgroundColor;
 	private ColorProperty mNodeColor;
 	private BooleanProperty mNodeFontBold;
 	private BooleanProperty mNodeFontItalic;
 	private FontProperty mNodeFontName;
 	private ComboProperty mNodeFontSize;
-	private ComboProperty mNodeStyle;
+	private ComboProperty mNodeShape;
 	private BooleanProperty mSetCloudColor;
 	private BooleanProperty mSetEdgeColor;
 	private BooleanProperty mSetEdgeStyle;
@@ -333,7 +331,7 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetNodeFontItalic;
 	private BooleanProperty mSetNodeFontName;
 	private BooleanProperty mSetNodeFontSize;
-	private BooleanProperty mSetNodeStyle;
+	private BooleanProperty mSetNodeShape;
 	final private String[] sizes = new String[] { "2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24",
 	        "30", "36", "48", "72" };
 	private boolean addStyleBox;
@@ -481,15 +479,15 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void addNodeShapeControl(final List<IPropertyControl> controls) {
-		mSetNodeStyle = new BooleanProperty(StyleEditorPanel.SET_NODE_STYLE);
-		controls.add(mSetNodeStyle);
-		mNodeStyle = new ComboProperty(StyleEditorPanel.NODE_STYLE, new String[] { "fork", "bubble", "as_parent",
+		mSetNodeShape = new BooleanProperty(StyleEditorPanel.SET_NODE_STYLE);
+		controls.add(mSetNodeShape);
+		mNodeShape = new ComboProperty(StyleEditorPanel.NODE_SHAPE, new String[] { "fork", "bubble", "as_parent",
 		        "combined" });
-		controls.add(mNodeStyle);
-		final NodeShapeChangeListener listener = new NodeShapeChangeListener(mSetNodeStyle,
-			mNodeStyle);
-		mSetNodeStyle.addPropertyChangeListener(listener);
-		mNodeStyle.addPropertyChangeListener(listener);
+		controls.add(mNodeShape);
+		final NodeShapeChangeListener listener = new NodeShapeChangeListener(mSetNodeShape,
+			mNodeShape);
+		mSetNodeShape.addPropertyChangeListener(listener);
+		mNodeShape.addPropertyChangeListener(listener);
 	}
 
 	private List<IPropertyControl> getControls() {
@@ -497,7 +495,7 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeColors"));
 		addColorControl(controls);
 		addBgColorControl(controls);
-		controls.add(new SeparatorProperty("OptionPanel.separator.NodeStyles"));
+		controls.add(new SeparatorProperty("OptionPanel.separator.NodeShape"));
 		addNodeShapeControl(controls);
 		addNodeIconControl(controls);
 		controls.add(new NextLineProperty());
@@ -539,8 +537,12 @@ public class StyleEditorPanel extends JPanel {
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.setDefaultDialogBorder();
 		if(addStyleBox){
+			String label = ResourceBundles.getText("OptionPanel.separator.NodeStyle");
+			rightBuilder.appendSeparator(label);
 			Container styleBox = uiFactory.createStyleBox();
-			rightBuilder.append(styleBox);
+			rightBuilder.nextLine();
+			rightBuilder.append("");
+			rightBuilder.append(styleBox, 5);
 			rightBuilder.nextLine();
 		}
 		mControls = getControls();
@@ -575,9 +577,9 @@ public class StyleEditorPanel extends JPanel {
 			{
 				final String shape = NodeStyleModel.getShape(node);
 				final String viewShape = styleController.getShape(node);
-				mSetNodeStyle.setValue(shape != null);
-				mNodeStyle.setValue(viewShape);
-				mNodeStyle.setEnabled(mSetNodeStyle.getBooleanValue());
+				mSetNodeShape.setValue(shape != null);
+				mNodeShape.setValue(viewShape);
+				mNodeShape.setEnabled(mSetNodeShape.getBooleanValue());
 			}
 			final EdgeController edgeController = EdgeController.getController(modeController);
 			final EdgeModel edgeModel = EdgeModel.getModel(node);

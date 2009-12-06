@@ -25,7 +25,7 @@
 	<property name="java_source_version" value="1.5" />
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
-	<property name="classpath" value="${lib}/commons-lang-2.0.jar:${lib}/forms-1.0.5.jar:${lib}/SimplyHTML.jar:${lib}/jortho.jar:${framework.jar}" />
+	<property name="classpath" value="${lib}/commons-lang-2.0.jar:${lib}/forms-1.2.1.jar:${lib}/SimplyHTML.jar:${lib}/jortho.jar:${framework.jar}" />
 
 	<target name="build" depends="clean">
 		<echo>Freeplane Version = ${ver}.</echo>
@@ -123,7 +123,7 @@
 			<arg value="-DartifactId=forms"/>
 			<arg value="-Dversion=1.0.5"/>
 			<arg value="-Dpackaging=jar"/>
-			<arg value="-Dfile=lib/forms-1.0.5.jar"/>
+			<arg value="-Dfile=lib/forms-1.2.1.jar"/>
 		</exec>
 	</target>
 
