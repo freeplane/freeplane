@@ -114,23 +114,27 @@ class EditNodeDialog extends EditNodeBase {
 			});
 			textArea.addKeyListener(new KeyListener() {
 				public void keyPressed(final KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-						e.consume();
-						confirmedCancel();
-					}
-					else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						if (enterConfirms.isSelected() && (e.getModifiers() & InputEvent.SHIFT_MASK) != 0) {
+					switch(e.getKeyCode()){
+						case KeyEvent.VK_ESCAPE:
 							e.consume();
-							textArea.insert("\n", textArea.getCaretPosition());
-						}
-						else if (enterConfirms.isSelected() || ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
+							confirmedCancel();
+							break;
+						case KeyEvent.VK_ENTER:
 							e.consume();
-							submit();
-						}
-						else {
+							if (enterConfirms.isSelected() && (e.getModifiers() & InputEvent.SHIFT_MASK) != 0) {
+								textArea.insert("\n", textArea.getCaretPosition());
+							}
+							else if (enterConfirms.isSelected() || ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
+								submit();
+							}
+							else {
+								textArea.insert("\n", textArea.getCaretPosition());
+							}
+							break;
+						case KeyEvent.VK_TAB:
 							e.consume();
-							textArea.insert("\n", textArea.getCaretPosition());
-						}
+							textArea.insert("    ", textArea.getCaretPosition());
+							break;
 					}
 				}
 

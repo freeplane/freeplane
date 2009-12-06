@@ -207,6 +207,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 					getEditControl().ok(output);
 					nodeView.requestFocus();
 					break;
+				case KeyEvent.VK_TAB:
+					textfield.insert("    ", textfield.getCaretPosition());
 				case KeyEvent.VK_SPACE:
 					e.consume();
 					break;
