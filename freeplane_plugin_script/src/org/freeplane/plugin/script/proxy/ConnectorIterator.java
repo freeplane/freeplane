@@ -13,12 +13,13 @@ import org.freeplane.features.mindmapmode.MModeController;
 class ConnectorIterator implements Iterator<Proxy.Connector> {
 	private final Iterator<LinkModel> iterator;
 	private final MModeController modeController;
-	private ConnectorModel next = getNextConnectorModel();
+	private ConnectorModel next;
 
 	public ConnectorIterator(final Iterator<LinkModel> iterator,
 			final MModeController modeController) {
 		this.iterator = iterator;
 		this.modeController = modeController;
+		this.next = getNextConnectorModel();
 	}
 
 	private ConnectorModel getNextConnectorModel() {
