@@ -11,3 +11,4 @@ backups
 ./freeplane_framework/windows-launcher/Freeplane_private.res
 ./freeplane_framework/windows-launcher/Freeplane.o
 ./freeplane_framework/windows-launcher/Makefile.win
+./freeplane/lib/forms-1_2_1.zip
