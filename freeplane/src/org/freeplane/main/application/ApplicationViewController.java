@@ -266,8 +266,7 @@ class ApplicationViewController extends ViewController {
 	 */
 	@Override
 	public void openDocument(final URL url) throws Exception {
-		String correctedUrl = url.toExternalForm();
-		correctedUrl = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getRef()).toString();
+		final String correctedUrl = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), url.getRef()).toString();
 		final String osName = System.getProperty("os.name");
 		if (osName.substring(0, 3).equals("Win")) {
 			String propertyString = "default_browser_command_windows";
