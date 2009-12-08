@@ -26,6 +26,7 @@ import java.io.IOException;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
@@ -52,7 +53,9 @@ class ExportToHTMLAction extends AFreeplaneAction {
 				return;
 			}
 			ClipboardController.getController(getModeController()).saveHTML(map.getRootNode(), file);
-			ExportWithXSLT.copyIconsToDirectory(map, new File(file.getAbsoluteFile().getParentFile(), "icons").getAbsolutePath());
+			if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
+				ExportWithXSLT.copyIconsToDirectory(map, new File(file.getAbsoluteFile().getParentFile(), "icons").getAbsolutePath());
+			}
 			((UrlManager) getModeController().getMapController().getModeController().getExtension(UrlManager.class))
 			    .loadURL(file.toURI());
 		}
