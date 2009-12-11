@@ -1,5 +1,6 @@
 package org.freeplane.view.swing.ui;
 
+import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
@@ -10,6 +11,7 @@ import java.util.TimerTask;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
@@ -76,6 +78,12 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 
 	private void createTimer(final MouseEvent e) {
 		stopTimerForDelayedSelection();
+		if (!JOptionPane.getFrameForComponent(e.getComponent()).isFocused()) {
+			return;
+		}
+		if(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner() instanceof JTextComponent){
+			return;
+		}
 		/* Region to check for in the sequel. */
 		controlRegionForDelayedSelection = getControlRegion(e.getPoint());
 		final String selectionMethod = ResourceController.getResourceController().getProperty(SELECTION_METHOD);
@@ -112,9 +120,6 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	}
 
 	public void mouseEntered(final MouseEvent e) {
-		if (!JOptionPane.getFrameForComponent(e.getComponent()).isFocused()) {
-			return;
-		}
 		createTimer(e);
 	}
 
