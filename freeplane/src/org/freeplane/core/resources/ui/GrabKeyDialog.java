@@ -1,6 +1,8 @@
 /*
  *  Freeplane - mind map editor
  *  Copyright (C) 2001, 2002 Slava Pestov
+ *  Copyright (C) 2009 Dimitry Polivaev
+ *  
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
