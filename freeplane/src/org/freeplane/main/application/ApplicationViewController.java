@@ -236,37 +236,7 @@ class ApplicationViewController extends ViewController {
 
 	@Override
 	public void openDocument(final URI uri) throws IOException {
-		String propertyString;
-		final String osName = System.getProperty("os.name");
-		if (osName.substring(0, 3).equals("Win")) {
-			propertyString = "default_browser_command_windows";
-			if (osName.indexOf("9") != -1 || osName.indexOf("Me") != -1) {
-				propertyString += "_9x";
-			}
-			else {
-				propertyString += "_nt";
-			}
-		}
-		else if (osName.startsWith("Mac OS")) {
-			propertyString = "default_browser_command_mac";
-		}
-		else {
-			propertyString = "default_browser_command_other_os";
-		}
-		final Object[] messageArguments = { uri.toString() };
-		final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController().getProperty(
-		    propertyString));
-		String browserCommand = formatter.format(messageArguments);
-		Controller.exec(browserCommand);
-	}
-
-	/**
-	 * Open url in WWW browser. This method hides some differences between
-	 * operating systems.
-	 */
-	@Override
-	public void openDocument(final URL url) throws Exception {
-		final String correctedUrl = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), url.getRef()).toString();
+		final String uriString = uri.toString();
 		final String osName = System.getProperty("os.name");
 		if (osName.substring(0, 3).equals("Win")) {
 			String propertyString = "default_browser_command_windows";
@@ -278,18 +248,18 @@ class ApplicationViewController extends ViewController {
 			}
 			String[] command = null;
 			try {
-				final Object[] messageArguments = { correctedUrl };
+				final Object[] messageArguments = { uriString };
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty(propertyString));
 				String browserCommand = formatter.format(messageArguments);
-				if (url.getProtocol().equals("file")) {
-					command = new String[]{"rundll32", "url.dll,FileProtocolHandler", correctedUrl};
+				if (uri.getScheme().equals("file")) {
+					command = new String[]{"rundll32", "url.dll,FileProtocolHandler", uriString};
 					if (System.getProperty("os.name").startsWith("Windows 2000")) {
-						command = new String[]{"rundll32", "shell32.dll,ShellExec_RunDLL",  correctedUrl};
+						command = new String[]{"rundll32", "shell32.dll,ShellExec_RunDLL",  uriString};
 					}
 				}
-				else if (correctedUrl.startsWith("mailto:")) {
-					command = new String[]{"rundll32", "url.dll,FileProtocolHandler", correctedUrl};
+				else if (uriString.startsWith("mailto:")) {
+					command = new String[]{"rundll32", "url.dll,FileProtocolHandler", uriString};
 				}
 				else {
 					Controller.exec(browserCommand);
@@ -310,7 +280,7 @@ class ApplicationViewController extends ViewController {
 		else if (osName.startsWith("Mac OS")) {
 			String browserCommand = null;
 			try {
-				final Object[] messageArguments = { correctedUrl, correctedUrl};
+				final Object[] messageArguments = { uriString, uriString};
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty("default_browser_command_mac"));
 				browserCommand = formatter.format(messageArguments);
@@ -327,7 +297,7 @@ class ApplicationViewController extends ViewController {
 		else {
 			String browserCommand = null;
 			try {
-				final Object[] messageArguments = { correctedUrl, correctedUrl };
+				final Object[] messageArguments = { uriString, uriString };
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty("default_browser_command_other_os"));
 				browserCommand = formatter.format(messageArguments);
@@ -341,6 +311,16 @@ class ApplicationViewController extends ViewController {
 				System.err.println("Caught: " + ex2);
 			}
 		}
+	}
+
+	/**
+	 * Open url in WWW browser. This method hides some differences between
+	 * operating systems.
+	 */
+	@Override
+	public void openDocument(final URL url) throws Exception {
+		final URI uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), url.getRef());
+		openDocument(uri);
 	}
 
 	@Override

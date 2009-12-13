@@ -431,7 +431,7 @@ public class UrlManager implements IExtension {
 		final String path = uri.getPath();
 		URL url = new URL(map.getURL(), path);
 		try {
-			return new URI(url.getProtocol(), null, url.getPath(), uri.getFragment());
+			return new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), url.getRef());
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 			return null;
