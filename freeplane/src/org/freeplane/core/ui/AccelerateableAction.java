@@ -38,6 +38,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.GrabKeyDialog;
 import org.freeplane.core.resources.ui.IKeystrokeValidator;
 import org.freeplane.core.ui.IndexedTree.Node;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 
 /**
@@ -122,13 +123,16 @@ class AccelerateableAction implements IFreeplaneAction {
 				return true;
 			}
 
-			public boolean isValid(final KeyStroke keystroke) {
+			public boolean isValid(final KeyStroke keystroke, Character keyChar) {
 				if (keystroke == null) {
 					return true;
 				}
 				final Object menubarKey = menuBuilder.getMenubar(menuBuilder.get(key));
 				if (menubarKey == null) {
 					return true;
+				}
+				if(keyChar == 0 && (keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK)) == 0){
+					return false;
 				}
 				final DefaultMutableTreeNode menubarNode = menuBuilder.get(menubarKey);
 				if ((keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK)) == Event.ALT_MASK) {
@@ -144,7 +148,12 @@ class AccelerateableAction implements IFreeplaneAction {
 						}
 					}
 				}
-				return isValid(menubarNode, keystroke);
+				if (!isValid(menubarNode, keystroke))
+					return false;
+				final KeyStroke derivedKS = FreeplaneMenuBar.derive(keystroke, keyChar);
+				if (derivedKS == keystroke)
+					return false;
+				return isValid(menubarNode, derivedKS);
 			}
 		});
 		grabKeyDialog.setVisible(true);

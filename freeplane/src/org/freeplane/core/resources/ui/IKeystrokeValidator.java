@@ -26,5 +26,5 @@ import javax.swing.KeyStroke;
  * 12.04.2009
  */
 public interface IKeystrokeValidator {
-	boolean isValid(KeyStroke keystroke);
+	boolean isValid(KeyStroke keystroke, Character character);
 }

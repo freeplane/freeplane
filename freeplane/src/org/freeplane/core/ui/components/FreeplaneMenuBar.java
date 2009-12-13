@@ -51,7 +51,7 @@ public class FreeplaneMenuBar extends JMenuBar {
 	}
 
 	static final int KEY_MODIFIERS = KeyEvent.SHIFT_DOWN_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_GRAPH_DOWN_MASK | KeyEvent.ALT_GRAPH_MASK;
-	private KeyStroke derive(KeyStroke ks, Character keyChar){
+	public static KeyStroke derive(KeyStroke ks, Character keyChar){
     	int modifiers = ks.getModifiers();
     	if(0 == (modifiers  & KEY_MODIFIERS) || ks.getKeyChar() != KeyEvent.CHAR_UNDEFINED){
     		return ks;
