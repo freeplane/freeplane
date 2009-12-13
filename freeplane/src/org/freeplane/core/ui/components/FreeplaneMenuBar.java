@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JMenuBar;
@@ -49,8 +50,44 @@ public class FreeplaneMenuBar extends JMenuBar {
 	public FreeplaneMenuBar() {
 	}
 
+	static final int KEY_MODIFIERS = KeyEvent.SHIFT_DOWN_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_GRAPH_DOWN_MASK | KeyEvent.ALT_GRAPH_MASK;
+	private KeyStroke derive(KeyStroke ks, Character keyChar){
+    	int modifiers = ks.getModifiers();
+    	if(0 == (modifiers  & KEY_MODIFIERS) || ks.getKeyChar() != KeyEvent.CHAR_UNDEFINED){
+    		return ks;
+    	}
+    	final int keyCode;
+    	switch(keyChar){
+    		case '<':
+    			keyCode = KeyEvent.VK_LESS;
+    			break;
+    		case '>':
+    			keyCode = KeyEvent.VK_GREATER;
+    			break;
+    		case '+':
+    			keyCode = KeyEvent.VK_PLUS;
+    			break;
+    		case '-':
+    			keyCode = KeyEvent.VK_MINUS;
+    			break;
+    		case '=':
+    			keyCode = KeyEvent.VK_EQUALS;
+    			break;
+    		default:
+    			return ks;
+    	}
+    	return KeyStroke.getKeyStroke(keyCode, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
+    }
+	
 	@Override
 	public boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
-		return super.processKeyBinding(ks, e, condition, pressed);
+		if(super.processKeyBinding(ks, e, condition, pressed)){
+			return true;
+		}
+		final KeyStroke derivedKS = derive(ks, e.getKeyChar());
+		if(derivedKS == ks){
+			return false;
+		}
+		return super.processKeyBinding(derivedKS, e, condition, pressed);
 	}
 }
