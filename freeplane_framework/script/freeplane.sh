@@ -133,7 +133,7 @@ fi
 
 output_debug_info
 
-if [ -x $(which readlink) ]
+if [ -x $(which readlink) ] && [ "`echo $OSTYPE | cut -b1-6`" != "darwin" ]
 then # if we have 'readlink' we can use it to get an absolute path
 	# -m should be faster and link does always resolve, else this script
 	# wouldn't be called, would it?
