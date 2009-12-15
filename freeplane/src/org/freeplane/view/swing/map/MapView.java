@@ -148,8 +148,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return MapView.this.getSelectedNodes();
 		}
 
-		public List<NodeModel> getSortedSelection() {
-			return MapView.this.getSelectedNodesSortedByY();
+		public List<NodeModel> getSortedSelection(boolean differentSubtrees) {
+			return MapView.this.getSelectedNodesSortedByY(differentSubtrees);
 		}
 
 		public boolean isSelected(final NodeModel node) {
@@ -724,10 +724,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	/**
+	 * @param differentSubtrees TODO
 	 * @return an ArrayList of MindMapNode objects. If both ancestor and
 	 *         descandant node are selected, only the ancestor ist returned
 	 */
-	ArrayList<NodeModel> getSelectedNodesSortedByY() {
+	ArrayList<NodeModel> getSelectedNodesSortedByY(boolean differentSubtrees) {
 		final HashSet selectedNodesSet = new HashSet();
 		for (int i = 0; i < selection.size(); i++) {
 			selectedNodesSet.add(getSelected(i).getModel());
@@ -737,9 +738,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		iteration: for (int i = 0; i < selection.size(); i++) {
 			final NodeView view = getSelected(i);
 			final NodeModel node = view.getModel();
-			for (NodeModel parent = node.getParentNode(); parent != null; parent = parent.getParentNode()) {
-				if (selectedNodesSet.contains(parent)) {
-					continue iteration;
+			if(differentSubtrees){
+				for (NodeModel parent = node.getParentNode(); parent != null; parent = parent.getParentNode()) {
+					if (selectedNodesSet.contains(parent)) {
+						continue iteration;
+					}
 				}
 			}
 			view.getContent().getLocation(point);

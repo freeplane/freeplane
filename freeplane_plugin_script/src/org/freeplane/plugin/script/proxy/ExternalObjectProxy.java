@@ -41,13 +41,12 @@ class ExternalObjectProxy extends AbstractProxy implements Proxy.ExternalObject 
 	public void setURI(final String uri) {
 		try {
 			ExternalResource externalObject = getExternalObjectModel();
-			if (externalObject == null) {
-				externalObject = new ExternalResource();
-				externalObject.setUri(new URI(uri));
-				getViewerController().undoableToggleHook(getNode(),
-						externalObject);
+			if (externalObject != null) {
+				getViewerController().undoableToggleHook(getNode(), externalObject);
 			}
-			getViewerController().setUriUndoable(externalObject, new URI(uri));
+			externalObject = new ExternalResource();
+			externalObject.setUri(new URI(uri));
+			getViewerController().undoableToggleHook(getNode(), externalObject);
 		} catch (final URISyntaxException e) {
 			LogTool.warn(e);
 		}

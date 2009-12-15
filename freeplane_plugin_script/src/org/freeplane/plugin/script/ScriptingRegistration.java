@@ -24,6 +24,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 
 import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -67,7 +68,8 @@ class ScriptingRegistration implements IExternalPatternAction {
 		}
 
 		public boolean executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
-			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), Boolean.TRUE,
+			ScriptingEngine.setNoUserPermissionRequired(true);
+			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), 
 			    mScript, modeController, pErrorHandler, pOutStream, getScriptCookies());
 		}
 
@@ -111,7 +113,7 @@ class ScriptingRegistration implements IExternalPatternAction {
 
 	public void act(final NodeModel node, final Pattern pattern) {
 		if (pattern.getPatternScript() != null && pattern.getPatternScript().getValue() != null) {
-			ScriptingEngine.executeScript(node, Boolean.FALSE, HtmlTools.unescapeHTMLUnicodeEntity(pattern
+			ScriptingEngine.executeScript(node, HtmlTools.unescapeHTMLUnicodeEntity(pattern
 			    .getPatternScript().getValue()), modeController, new IErrorHandler() {
 				public void gotoLine(final int pLineNumber) {
 				}
@@ -141,10 +143,11 @@ class ScriptingRegistration implements IExternalPatternAction {
 
 	private void register() {
 		modeController.addExtension(IExternalPatternAction.class, this);
+		final Controller controller = modeController.getController();
 		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
 				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
-				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(modeController.getController(),
+				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(controller,
 				    patternScriptModel, false);
 				scriptEditorPanel.setVisible(true);
 				return patternScriptModel.getScript();
@@ -153,7 +156,9 @@ class ScriptingRegistration implements IExternalPatternAction {
 		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
 		addPropertiesToOptionPanel();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		menuBuilder.addAnnotatedAction(new ScriptEditor(modeController.getController(), this));
-		menuBuilder.addAnnotatedAction(new ScriptingEngine(modeController.getController(), this));
+		menuBuilder.addAnnotatedAction(new ScriptEditor(controller, this));
+		final ScriptingEngine scriptingEngine = new ScriptingEngine(this);
+		menuBuilder.addAnnotatedAction(new ExecuteScriptForAllNodes(controller, scriptingEngine));
+		menuBuilder.addAnnotatedAction(new ExecuteScriptForSelectionAction(controller, scriptingEngine));
 	}
 }

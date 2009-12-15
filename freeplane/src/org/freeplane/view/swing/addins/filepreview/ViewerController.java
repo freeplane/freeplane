@@ -504,30 +504,6 @@ final private Set<IViewerFactory> factories;
 		super.saveExtension(extension, element);
 	}
 
-	public void setUriUndoable(final ExternalResource model, final URI newUri) {
-		final URI uri = model.getUri();
-		if (uri.equals(newUri)) {
-			return;
-		}
-		final IActor actor = new IActor() {
-			private final URI oldUri = uri;
-
-			public void act() {
-				model.setUri(newUri);
-				final MapModel map = getModeController().getController().getMap();
-				getModeController().getMapController().setSaved(map, false);
-			}
-
-			public String getDescription() {
-				return "setUriUndoable";
-			}
-
-			public void undo() {
-				model.setUri(oldUri);
-			}
-		};
-		getModeController().execute(actor, getModeController().getController().getMap());
-	}
 	private JComponent createViewer(final MapModel map, final ExternalResource model) {
 		final URI uri = model.getUri();
 		if(uri == null ){

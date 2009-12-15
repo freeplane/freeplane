@@ -34,7 +34,7 @@ public interface IMapSelection {
 
 	public List<NodeModel> getSelection();
 
-	public List<NodeModel> getSortedSelection();
+	public List<NodeModel> getSortedSelection(boolean differentSubtrees);
 
 	public boolean isSelected(final NodeModel node);
 

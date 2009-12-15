@@ -161,7 +161,7 @@ public class MNodeDropListener implements DropTargetListener {
 						}
 						actualNode = (actualNode.isRoot()) ? null : actualNode.getParentNode();
 					} while (actualNode != null);
-					final List<NodeModel> sortedSelection = controller.getSelection().getSortedSelection();
+					final List<NodeModel> sortedSelection = controller.getSelection().getSortedSelection(true);
 					for (final NodeModel node : sortedSelection) {
 						mapController.moveNode(node, targetNode, dropAsSibling, isLeft, isLeft != node.isLeft());
 					}

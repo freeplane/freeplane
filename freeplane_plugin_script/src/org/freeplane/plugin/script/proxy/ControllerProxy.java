@@ -35,33 +35,32 @@ class ControllerProxy implements Proxy.Controller {
 
 	public List<Node> getSelecteds() {
 		return new AbstractList<Node>() {
-
+			private final List<NodeModel> selectionCopy = selection.getSelection();
 			@Override
 			public Node get(final int index) {
-				final NodeModel nodeModel = selection.getSelection().get(index);
+				final NodeModel nodeModel = selectionCopy.get(index);
 				return new NodeProxy(nodeModel, modeController);
 			}
 
 			@Override
 			public int size() {
-				return selection.size();
+				return selectionCopy.size();
 			}
 		};
 	}
 
-	public List<Node> getSortedSelection() {
+	public List<Node> getSortedSelection(final boolean differentSubtrees) {
 		return new AbstractList<Node>() {
-
+			final private List<NodeModel> sortedSelection = selection.getSortedSelection(differentSubtrees);
 			@Override
 			public Node get(final int index) {
-				final NodeModel nodeModel = selection.getSortedSelection().get(
-						index);
+				final NodeModel nodeModel = sortedSelection.get(index);
 				return new NodeProxy(nodeModel, modeController);
 			}
 
 			@Override
 			public int size() {
-				return selection.size();
+				return sortedSelection.size();
 			}
 		};
 	}

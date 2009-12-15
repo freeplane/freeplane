@@ -59,8 +59,9 @@ public interface Proxy {
 
 		List<Node> getSelecteds();
 
-		/** returns List<Node> of Node objects sorted on Y */
-		List<Node> getSortedSelection();
+		/** returns List<Node> of Node objects sorted on Y 
+		 * @param differentSubtrees true if only parent nodes of subtrees should be returned*/
+		List<Node> getSortedSelection(boolean differentSubtrees);
 
 		void select(Node toSelect);
 
