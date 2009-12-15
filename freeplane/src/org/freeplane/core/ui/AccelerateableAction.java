@@ -23,6 +23,7 @@ import java.awt.Event;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 
@@ -131,7 +132,7 @@ class AccelerateableAction implements IFreeplaneAction {
 				if (menubarKey == null) {
 					return true;
 				}
-				if(keyChar == 0 && (keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK)) == 0){
+				if(keyChar != KeyEvent.CHAR_UNDEFINED && (keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK)) == 0){
 					return false;
 				}
 				final DefaultMutableTreeNode menubarNode = menuBuilder.get(menubarKey);
@@ -152,7 +153,7 @@ class AccelerateableAction implements IFreeplaneAction {
 					return false;
 				final KeyStroke derivedKS = FreeplaneMenuBar.derive(keystroke, keyChar);
 				if (derivedKS == keystroke)
-					return false;
+					return true;
 				return isValid(menubarNode, derivedKS);
 			}
 		});
