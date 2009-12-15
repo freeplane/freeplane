@@ -195,7 +195,7 @@ public class MNoteController extends NoteController {
 		JSplitPane splitPane;
 		splitPane = getSplitPane();
 		if (splitPane == null) {
-			showNotesPanel();
+			showNotesPanel(true);
 			splitPane = getSplitPane();
 			ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
 		}
@@ -290,7 +290,7 @@ public class MNoteController extends NoteController {
 		    MNoteController.RESOURCES_USE_SPLIT_PANE));
 	}
 
-	public void showNotesPanel() {
+	void showNotesPanel(final boolean requestFocus) {
 		if (noteViewerComponent == null) {
 			noteViewerComponent = getHtmlEditorPanel();
 			noteManager.updateEditor();
@@ -334,12 +334,14 @@ public class MNoteController extends NoteController {
 		});
 		noteViewerComponent.setVisible(true);
 		mSplitPane = getModeController().getController().getViewController().insertComponentIntoSplitPane(southPanel);
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				getHtmlEditorPanel().getMostRecentFocusOwner().requestFocus();
-			}
-		});
+		if(requestFocus){
+			KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					getHtmlEditorPanel().getMostRecentFocusOwner().requestFocus();
+				}
+			});
+		}
 		southPanel.revalidate();
 	}
 
@@ -361,7 +363,7 @@ public class MNoteController extends NoteController {
 		if (shouldUseSplitPane()) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					showNotesPanel();
+					showNotesPanel(false);
 				}
 			});
 		}
