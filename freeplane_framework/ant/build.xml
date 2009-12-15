@@ -1,6 +1,7 @@
 <project name="freeplane" default="dist" basedir="..">
-	<property name="workspace" value=".." />
+	<property name="workspace" location=".." />
 	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
+	<property file="ant/ant.properties" />
 	<property name="ver" value="${freeplane_version}" />
 	<property name="root" value="." />
 	<property name="build" value="${root}/build" />
@@ -8,7 +9,6 @@
 
 	<target name="build" depends="clean">
 		<property name="root" value="." />
-		<property name="framework.jar" value="lib/knopflerfish/framework.jar" />
 		<property name="freeplane.exe" value="windows-launcher/freeplane.exe" />
 		<property name="license" value="license.txt" />
 		<property name="readme_src" value="readme.txt" />

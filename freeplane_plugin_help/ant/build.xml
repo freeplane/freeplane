@@ -1,19 +1,17 @@
 <project name="freeplane_help" default="dist" basedir="..">
+	<property name="workspace" location=".." />
 	<property name="ver" value="1.0.1" />
 	<property name="src" value="src" />
 	<property name="resources" value="resources" />
-	<property name = "root" value = "."/>
+	<property name="root" value="."/>
 	<property name="osgimanifest" value="${root}/META-INF/MANIFEST.MF" />	
-	<property name="external.lib" value="${root}/lib" />
-	<property name="framework.jar" value="${root}/../freeplane_framework/lib/knopflerfish/framework.jar" />
-	<property name="freeplane.dist.lib" value="${root}/../freeplane/dist/lib" />
-	<property name="freeplane.jars" value="${freeplane.dist.lib}/freeplaneviewer.jar:${freeplane.dist.lib}/freeplaneeditor.jar:${freeplane.dist.lib}/freeplaneosgi.jar" />
-	<property name="external.dist.lib" value="${root}/../freeplane/dist/lib" />
-	<property name="external.jars" value="${external.dist.lib}/commons-lang-2.0.jar:${external.dist.lib}/forms-1.0.5.jar:${external.dist.lib}/SimplyHTML/SimplyHTML.jar" />
+	<property file="${workspace}/freeplane_framework/ant/ant.properties" />
+	<property file="${workspace}/freeplane/ant/ant.properties" />
+	<property file="ant/ant.properties" />
+	<property name="external.jars" value="${commons-lang.jar}:${forms.jar}:${SimplyHTML.jar}" />
 	<property name="build" value="${root}/build" />
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${build}/dist" />
-	<property name="dist.lib" value="${dist}/lib" />
 	<property name="dist.osgi.dir" value="${dist}/osgi/dir" />
 	<property name="dist.osgi.jar" value="${dist}/osgi/jar" />
 	<property name="freeplaneplugin.jar" value="${dist.osgi.jar}/org.freeplane.plugin.help.jar"/>
@@ -21,7 +19,7 @@
 	<property name="java_source_version" value="1.5" />
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
-	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}:${external.lib}/jhall.jar"/>
+	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}:${jhall.jar}"/>
 
 	<target name="build">
 		<echo>Freeplane Version = ${ver}.</echo>
