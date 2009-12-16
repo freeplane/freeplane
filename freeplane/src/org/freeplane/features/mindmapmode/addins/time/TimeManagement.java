@@ -19,9 +19,11 @@
  */
 package org.freeplane.features.mindmapmode.addins.time;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -43,6 +45,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapSelectionListener;
@@ -283,10 +286,17 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			final JButton appendButton = new JButton(getResourceString("plugins/TimeManagement.xml_appendButton"));
 			appendButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
+					final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
+					final String dateAsString = df.format(getCalendarDate());
+					final Window parentWindow = (Window) dialog.getParent();
+					final Component mostRecentFocusOwner = parentWindow.getMostRecentFocusOwner();
+					if(mostRecentFocusOwner instanceof JTextComponent){
+						JTextComponent text = (JTextComponent) mostRecentFocusOwner;
+						text.replaceSelection(dateAsString);
+						return;
+					}
 					for (final Iterator i = mController.getMapController().getSelectedNodes().iterator(); i.hasNext();) {
 						final NodeModel element = (NodeModel) i.next();
-						final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
-						final String dateAsString = df.format(getCalendarDate());
 						final String text = element.getText();
 						final StringBuilder newText = new StringBuilder();
 						if (HtmlTools.isHtmlNode(text)){
