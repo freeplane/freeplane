@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.icon;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -45,7 +46,7 @@ public class UserIcon extends MindIcon {
 		builder.append("icons");
 		builder.append(SEPARATOR);
 		builder.append(this.fileName);
-		String path = builder.toString();
+		String path = builder.toString().replace(File.separatorChar, '/');
 		return path;
 	}
 	@Override
@@ -54,7 +55,7 @@ public class UserIcon extends MindIcon {
 		URL result = null;
 		String urlString = getPath();
 		try {
-			result = new URL("file", "", urlString);
+			result = new File(urlString).toURI().toURL();
 		} catch (MalformedURLException e) {
 			LogTool.warn(String.format("could not create URL from [%s]", urlString));
 		}
