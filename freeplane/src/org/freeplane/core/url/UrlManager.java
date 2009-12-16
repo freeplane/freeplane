@@ -95,6 +95,9 @@ public class UrlManager implements IExtension {
 	 * Returns the lowercase of the extension of a file.
 	 */
 	public static String getExtension(final String s) {
+		if(s == null){
+			return null;
+		}
 		final int i = s.lastIndexOf('.');
 		return (i > 0 && i < s.length() - 1) ? s.substring(i + 1).toLowerCase().trim() : "";
 	}
@@ -166,16 +169,6 @@ public class UrlManager implements IExtension {
 				writer.close();
 			}
 		}
-	}
-
-	/**
-	 * Returns the same URL as input with the addition, that the reference part
-	 * "#..." is filtered out.
-	 *
-	 * @throws MalformedURLException
-	 */
-	public static URL getURLWithoutReference(final URL input) throws MalformedURLException {
-		return new URL(input.toString().replaceFirst("#.*", ""));
 	}
 
 	public static void install(final ModeController modeController, final UrlManager urlManager) {
@@ -364,7 +357,7 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	public void loadURL(final URI uri) {
+	public void loadURL(URI uri) {
 		final String uriString = uri.toString();
 		if (uriString.startsWith("#")) {
 			final String target = uri.getFragment();
@@ -379,50 +372,42 @@ public class UrlManager implements IExtension {
 			return;
 		}
 		try {
-			URL url = getAbsoluteUrl(uri);
-			final String extension = UrlManager.getExtension(url.getPath());
+			final String extension = UrlManager.getExtension(uri.getRawPath());
+			uri = getAbsoluteUri(uri);
 			try {
 				if ((extension != null)
-				        && extension.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-					final String ref = url.getRef();
-					if (ref != null) {
-						url = UrlManager.getURLWithoutReference(url);
-					}
+						&& extension.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+					URL	url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
 					modeController.getMapController().newMap(url);
+					String ref = uri.getFragment();
 					if (ref != null) {
 						final ModeController newModeController = getController().getModeController();
 						final MapController newMapController = newModeController.getMapController();
 						newMapController.select(newMapController.getNodeFromID(ref));
 					}
+					return;
 				}
-				else {
-					getController().getViewController().openDocument(url);
-				}
+				getController().getViewController().openDocument(uri);
 			}
-			catch (final Exception e) {
+			catch (Exception e) {
 				LogTool.warn("link " + uri + " not found", e);
 				UITools.errorMessage(FpStringUtils.formatText("link_not_found", uri.toString()));
 			}
+			return;
 		}
 		catch (final MalformedURLException ex) {
-			/*
-			 * It's not a file, it's not a URL, it still might be a URI
-			 * (e.g. link to Lotus Notes via notes://... etc. 
-			 */
-			try {
-				getController().getViewController().openDocument(uri);
-			}
-			catch (final Exception e) {
-				LogTool.warn("URL " + uriString + " not found", e);
-				UITools.errorMessage(FpStringUtils.formatText("link_not_found", uriString));
-			}
+			LogTool.warn("URL " + uriString + " not found", ex);
+			UITools.errorMessage(FpStringUtils.formatText("link_not_found", uriString));
 		}
 	}
 
-	public URL getAbsoluteUrl(final URI uri) throws MalformedURLException {
+	private URI getAbsoluteUri(URI uri) throws MalformedURLException {
+		if(uri.isAbsolute()){
+			return uri;
+		}
 		final MapModel map = getController().getMap();
-		return getAbsoluteUrl(map, uri);
-	}
+		return getAbsoluteUri(map, uri);
+   }
 
 	public URI getAbsoluteUri(final MapModel map, final URI uri) throws MalformedURLException {
 		if (uri.isAbsolute()) {
