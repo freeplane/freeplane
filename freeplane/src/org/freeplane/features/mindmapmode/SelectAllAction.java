@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AMultipleNodeAction;
@@ -43,6 +44,8 @@ class SelectAllAction extends AMultipleNodeAction {
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final ModeController modeController = getModeController();
-		modeController.getMapController().selectBranch(getController().getMap().getRootNode(), false);
+		NodeModel root = getController().getMap().getRootNode();
+		MapController mapController = modeController.getMapController();
+        mapController.getController().getSelection().selectBranch(root, true);
 	}
 }

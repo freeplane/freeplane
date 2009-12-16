@@ -202,7 +202,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		public void toggleSelected(final NodeModel node) {
-			MapView.this.toggleSelected(getNodeView(node));
+			MapView.this.toggleSelected(getNodeView(node), true);
 		}
 	}
 
@@ -578,10 +578,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			final boolean enlargingMove = (deltaY > 0) && (e.getKeyCode() == KeyEvent.VK_DOWN) || (deltaY < 0)
 			        && (e.getKeyCode() == KeyEvent.VK_UP);
 			if (enlargingMove) {
-				toggleSelected(newlySelectedNodeView);
+				toggleSelected(newlySelectedNodeView, true);
 			}
 			else {
-				toggleSelected(getSelected());
+				toggleSelected(getSelected(), true);
 				makeTheSelected(newlySelectedNodeView);
 			}
 		}
@@ -1304,7 +1304,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			selectAsTheOnlyOneSelected(newlySelectedNodeView);
 		}
 		else if (!isSelected(newlySelectedNodeView) && newlySelectedNodeView.isContentVisible()) {
-			toggleSelected(newlySelectedNodeView);
+			toggleSelected(newlySelectedNodeView, false);
 		}
 		for (final ListIterator e = newlySelectedNodeView.getChildrenViews().listIterator(); e.hasNext();) {
 			final NodeView target = (NodeView) e.next();
@@ -1327,7 +1327,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		if (oldSelected == null) {
 			if (!isSelected(newSelected) && newSelected.isContentVisible()) {
-				toggleSelected(newSelected);
+				toggleSelected(newSelected, true);
 				return true;
 			}
 			return false;
@@ -1382,7 +1382,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			final NodeView next = (NodeView) i.next();
 			if (next == newSelected || next == oldSelected) {
 				if (!isSelected(next) && next.isContentVisible()) {
-					toggleSelected(next);
+					toggleSelected(next, true);
 				}
 				break;
 			}
@@ -1392,14 +1392,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			final NodeView next = (NodeView) i.next();
 			if ((next.isLeft() == oldPositionLeft || next.isLeft() == newPositionLeft) && !isSelected(next)
 			        && next.isContentVisible()) {
-				toggleSelected(next);
+				toggleSelected(next, true);
 			}
 			if (next == newSelected || next == oldSelected) {
 				break;
 			}
 		}
-		toggleSelected(oldSelected);
-		toggleSelected(oldSelected);
+		toggleSelected(oldSelected, true);
+		toggleSelected(oldSelected, true);
 		return true;
 	}
 
@@ -1469,8 +1469,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	/**
 	 * Add the node to the selection if it is not yet there, remove it
 	 * otherwise.
+	 * @param requestFocus TODO
 	 */
-	void toggleSelected(final NodeView nodeView) {
+	private void toggleSelected(final NodeView nodeView, boolean requestFocus) {
 		final NodeView newSelected = nodeView;
 		NodeView oldSelected = getSelected();
 		if (isSelected(newSelected)) {
@@ -1482,7 +1483,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		else {
 			selection.add(newSelected);
 		}
-		getSelected().requestFocus();
+		if(requestFocus){
+			getSelected().requestFocus();
+		}
 		getSelected().repaintSelected();
 		if (oldSelected != null) {
 			oldSelected.repaintSelected();
