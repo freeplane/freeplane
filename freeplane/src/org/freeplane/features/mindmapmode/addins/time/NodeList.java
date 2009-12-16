@@ -941,7 +941,7 @@ class NodeList {
 		if (hook != null) {
 			date = new Date(hook.getRemindUserAt());
 		}
-		if (showAllNodes || hook != null) {
+		if (showAllNodes && node.isVisible() || hook != null) {
 			model.addRow(new Object[] { date, new NodeHolder(node), new IconsHolder(node),
 			        node.getHistoryInformation().getCreatedAt(), node.getHistoryInformation().getLastModifiedAt(),
 			        new NotesHolder(node) });
