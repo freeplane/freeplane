@@ -196,6 +196,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final int h = getRowHeight(rowIndex);
 			setRowHeight(rowIndex, h + AttributeTable.EXTRA_HEIGHT);
 			highRowIndex = rowIndex;
+assert 	highRowIndex >= 0;		
 		}
 	}
 
@@ -307,18 +308,20 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	/**
 	 */
 	public void moveRowDown(final int row) {
-		if (getModel() instanceof ExtendedAttributeTableModelDecorator) {
+		if (getModel() instanceof ExtendedAttributeTableModelDecorator && row < getRowCount() - 1) {
 			final ExtendedAttributeTableModelDecorator model = (ExtendedAttributeTableModelDecorator) getModel();
 			model.moveRowDown(row);
+			changeSelection(row + 1, getSelectedColumn(), false, false);
 		}
 	}
 
 	/**
 	 */
 	public void moveRowUp(final int row) {
-		if (getModel() instanceof ExtendedAttributeTableModelDecorator) {
+		if (getModel() instanceof ExtendedAttributeTableModelDecorator && row > 0) {
 			final ExtendedAttributeTableModelDecorator model = (ExtendedAttributeTableModelDecorator) getModel();
 			model.moveRowUp(row);
+			changeSelection(row - 1, getSelectedColumn(), false, false);
 		}
 	}
 
@@ -419,6 +422,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if (getModel() instanceof ExtendedAttributeTableModelDecorator) {
 			final ExtendedAttributeTableModelDecorator model = (ExtendedAttributeTableModelDecorator) getModel();
 			model.removeRow(row);
+			final int rowCount = getRowCount();
+			if(row <= rowCount-1){
+				changeSelection(row, getSelectedColumn(), false, false);
+			}
+			else if(rowCount >= 1){
+				changeSelection(row-1, getSelectedColumn(), false, false);
+			}
 		}
 	}
 

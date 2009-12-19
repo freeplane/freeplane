@@ -19,9 +19,13 @@
  */
 package org.freeplane.features.mindmapmode.note;
 
+import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
@@ -48,6 +52,16 @@ class ShowHideNoteAction extends AFreeplaneAction {
 		}
 		else {
 			(noteController).hideNotesPanel();
+			final Controller controller = getModeController().getController();
+			final NodeModel node = controller.getSelection().getSelected();
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					Component component = controller.getViewController().getComponent(node);
+					if(component != null){
+						component.requestFocus();
+					}
+				}
+			});
 			ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "false");
 		}
 	}

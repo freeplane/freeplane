@@ -600,7 +600,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (parent == null) {
 			return new Point();
 		}
-		UITools.convertPointToAncestor(mainView, anchorCenterPoint, parent);
+		try {
+	        UITools.convertPointToAncestor(mainView, anchorCenterPoint, parent);
+        }
+        catch (NullPointerException e) {
+			return new Point();
+        }
 		final Point viewPosition = parent.getViewPosition();
 		anchorCenterPoint.x += viewPosition.x - parent.getWidth()/2;
 		anchorCenterPoint.y += viewPosition.y - parent.getHeight()/2;

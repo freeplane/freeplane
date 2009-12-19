@@ -55,7 +55,11 @@ public class PersistentEditableComboBox extends JComboBox {
 		setSelectedItem("");
 		super.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
-				addUrl(getText());
+				final String text = getText();
+				if(text == null){
+					return;
+				}
+				addUrl(text);
 				if (sendExternalEvents && actionListener != null) {
 					actionListener.actionPerformed(arg0);
 				}
@@ -89,7 +93,8 @@ public class PersistentEditableComboBox extends JComboBox {
 	};
 
 	public String getText() {
-		return getSelectedItem().toString();
+		final Object selectedItem = getSelectedItem();
+		return selectedItem == null ? null : selectedItem.toString();
 	}
 
 	public void setText(final String text) {

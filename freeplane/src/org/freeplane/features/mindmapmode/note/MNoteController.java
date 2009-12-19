@@ -207,16 +207,6 @@ public class MNoteController extends NoteController {
 		noteViewerComponent.setVisible(false);
 		getModeController().getController().getViewController().removeSplitPane();
 		mSplitPane = null;
-		final Controller controller = getModeController().getController();
-		final NodeModel node = controller.getSelection().getSelected();
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				Component component = controller.getViewController().getComponent(node);
-				if(component != null){
-					component.requestFocus();
-				}
-			}
-		});
 	}
 
 	boolean isLastContentEmpty() {
