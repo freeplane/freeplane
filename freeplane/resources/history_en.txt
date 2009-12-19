@@ -1,6 +1,35 @@
 ===============================
 1.0.36 beta
 ===============================
+Bug fixes:
+remove memory leak for long node editor
+bug fixes in scripting
+fixes for automatic bugreports
+346]: Menu Accelerator Keys Missing for Maps ans Help
+Bug for % in user icon names
+348]: Applying dates to nodes : append date to node text field / attribute is it is being edited
+use only visible nodes in find/replace
+bug fix for SelectAllAction
+bug fix in ExportBranchAction
+bug fix in OpenUri with map
+bug fix: do not request focus in note editor on start
+341]: Scripting API bugs
+335]:Toggle Encrypted/Decrypted
+bug fix in grabbing short cut
+build patch from ewl: separate properties
+freeplane.sh patch for MAC OS
+ApplicationViewController.openDocument refactored
+changes in GrabKeyDialog
+336]: Shortcut key to switch note window on/off (Ctrl+Shift+Less) does not work
+334]: Attributes disappearing
+333]: Export as HTML does not show icons
+333]: Icon file name in exported HTML
+332]: connector options works only for option "both"
+bug fix in open url
+330]: New scripting API bug in proxy.Connector (?), general problem with scripting engine
+insert 4 spaces if tab is pressed in text editor
+Replace Freeplane by FreeMind for old program versions in history_en.txt
+
 ===============================
 1.0.35 beta
 ===============================
