@@ -224,6 +224,7 @@ class ScriptingEngine {
 			return false;
 		}
 		if (e2 != null) {
+			pMindMapController.getMapController().select(node);
 			LogTool.warn(e2);
 			pOutStream.print(e2.getMessage());
 			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");

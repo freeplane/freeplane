@@ -66,6 +66,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.MapChangeEvent;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -221,7 +222,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		private void addSelectionForHooks(final NodeView node) {
-			getModeController().getMapController().onSelect(node.getModel());
+			final ModeController modeController = getModeController();
+			final MapController mapController = modeController.getMapController();
+			final NodeModel model = node.getModel();
+			mapController.onSelect(model);
 		}
 
 		public void clear() {

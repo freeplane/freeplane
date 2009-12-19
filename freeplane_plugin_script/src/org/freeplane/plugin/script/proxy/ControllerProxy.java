@@ -72,6 +72,7 @@ class ControllerProxy implements Proxy.Controller {
 
 	public void selectBranch(final Node branchRoot) {
 		final NodeModel nodeModel = ((NodeProxy) branchRoot).getNode();
+		modeController.getMapController().displayNode(nodeModel);
 		selection.selectBranch(nodeModel, false);
 
 	}
