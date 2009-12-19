@@ -26,6 +26,8 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -278,5 +280,19 @@ class EditNodeDialog extends EditNodeBase {
 			UITools.setDialogLocationRelativeTo(dialog, getController(), getNode());
 		}
 		dialog.show();
+		dialog.addComponentListener(new ComponentListener() {
+			public void componentShown(ComponentEvent e) {
+			}
+			
+			public void componentResized(ComponentEvent e) {
+			}
+			
+			public void componentMoved(ComponentEvent e) {
+			}
+			
+			public void componentHidden(ComponentEvent e) {
+				dialog.dispose();
+			}
+		});
 	}
 }
