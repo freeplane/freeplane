@@ -60,7 +60,16 @@ public class FreeplaneStarter {
 		final FreeplaneStarter starter = new FreeplaneStarter();
 		starter.run(args);
 	}
+	private static final String PROPERTIES_FOLDER = ".freeplane";
 
+	public static String getResourceBaseDir() {
+	    return System.getProperty(FreeplaneStarter.ORG_FREEPLANE_GLOBALRESOURCEDIR,
+		    FreeplaneStarter.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
+    }
+
+	public static String getFreeplaneUserDirectory() {
+	    return System.getProperty("user.home") + File.separator + PROPERTIES_FOLDER;
+    }
 	public static void showSysInfo() {
 		final StringBuilder info = new StringBuilder();
 		info.append("freeplane_version = ");
@@ -80,6 +89,8 @@ public class FreeplaneStarter {
 	private Controller controller;
 	private FreeplaneSplashModern splash;
 	private ApplicationViewController viewController;
+	public static final String DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR = "resources";
+	public static final String ORG_FREEPLANE_GLOBALRESOURCEDIR = "org.freeplane.globalresourcedir";
 
 	public FreeplaneStarter() {
 		super();

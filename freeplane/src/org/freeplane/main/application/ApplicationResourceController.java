@@ -45,13 +45,10 @@ import org.freeplane.core.util.Compat;
  * @author Dimitry Polivaev
  */
 class ApplicationResourceController extends ResourceController {
-	public static final String DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR = "resources";
-	public static final String ORG_FREEPLANE_GLOBALRESOURCEDIR = "org.freeplane.globalresourcedir";
 	final private File autoPropertiesFile;
 	final private Properties defProps;
 	private LastOpenedList lastOpened;
 	final private Properties props;
-	private final String resourceBaseDir;
 	private ClassLoader urlResourceLoader;
 
 	/**
@@ -60,8 +57,7 @@ class ApplicationResourceController extends ResourceController {
 	public ApplicationResourceController() {
 		super();
 		urlResourceLoader = null;
-		resourceBaseDir = System.getProperty(ApplicationResourceController.ORG_FREEPLANE_GLOBALRESOURCEDIR,
-		    ApplicationResourceController.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
+		final String resourceBaseDir = getResourceBaseDir();
 		if (resourceBaseDir != null) {
 			try {
 				final File resourceDir = new File(resourceBaseDir);
@@ -89,7 +85,7 @@ class ApplicationResourceController extends ResourceController {
 	}
 
 	private void createUserDirectory(final Properties pDefaultProperties) {
-		final File userPropertiesFolder = new File(getFreeplaneUserDirectory(pDefaultProperties));
+		final File userPropertiesFolder = new File(getFreeplaneUserDirectory());
 		try {
 			if (!userPropertiesFolder.exists()) {
 				userPropertiesFolder.mkdir();
@@ -109,12 +105,9 @@ class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public String getFreeplaneUserDirectory() {
-		return getFreeplaneUserDirectory(props);
+		return FreeplaneStarter.getFreeplaneUserDirectory();
 	}
 
-	private String getFreeplaneUserDirectory(final Properties defaultPreferences) {
-		return System.getProperty("user.home") + File.separator + defaultPreferences.getProperty("properties_folder");
-	}
 
 	public LastOpenedList getLastOpenedList() {
 		return lastOpened;
@@ -170,8 +163,8 @@ class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
-	public String getResourceBaseDir() {
-		return resourceBaseDir;
+	 public String getResourceBaseDir() {
+		return FreeplaneStarter.getResourceBaseDir();
 	}
 
 	private File getUserPreferencesFile(final Properties defaultPreferences) {
@@ -179,7 +172,7 @@ class ApplicationResourceController extends ResourceController {
 			System.err.println("Panic! Error while loading default properties.");
 			System.exit(1);
 		}
-		final String freeplaneDirectory = getFreeplaneUserDirectory(defaultPreferences);
+		final String freeplaneDirectory = getFreeplaneUserDirectory();
 		final File userPropertiesFolder = new File(freeplaneDirectory);
 		final File autoPropertiesFile = new File(userPropertiesFolder, defaultPreferences.getProperty("autoproperties"));
 		return autoPropertiesFile;

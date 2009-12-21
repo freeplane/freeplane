@@ -13,7 +13,8 @@
 		<property name="license" value="license.txt" />
 		<property name="readme_src" value="readme.txt" />
 		<property name="build.jars" value="${build}/jars" />
-		<property name="build.plugins" value="${build}/plugins" />
+        <property name="build.plugins" value="${build}/plugins" />
+        <property name="build.core" value="${build}/core" />
 		<property name="build.resources" value="${build}/resources" />
 		<property name="script" value="${root}/script" />
 
@@ -30,8 +31,8 @@
 			<fileset file="${freeplane.exe}" />
 		</copy>
 		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
-		<mkdir dir="${build.plugins}/org.freeplane.core" />
-		<copy todir="${build.plugins}/org.freeplane.core">
+		<mkdir dir="${build.core}/org.freeplane.core" />
+		<copy todir="${build.core}/org.freeplane.core">
 			<fileset dir="${workspace}/freeplane/dist/osgi/dir" />
 		</copy>
 

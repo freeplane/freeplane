@@ -179,7 +179,7 @@ fwdir=${freedir}/fwdir
 defines=
 defines="$defines -Dorg.knopflerfish.framework.bundlestorage=memory"
 defines="$defines -Dorg.freeplane.globalresourcedir=${freedir}/resources"
-defines="$defines -Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/plugins/"
+defines="$defines -Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"
 
 xargs=
 xargs="$xargs -xargs ${freedir}/props.xargs"
