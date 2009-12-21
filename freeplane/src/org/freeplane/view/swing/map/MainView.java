@@ -31,6 +31,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.Arrays;
@@ -471,5 +472,8 @@ public abstract class MainView extends JLabel {
 		BasicHTML.createHTMLView(this, "<html><b>1</b>2");
     }
 
-	
+	@Override
+    public Point getToolTipLocation(MouseEvent event) {
+        return new Point(0, getHeight());
+    }
 }
