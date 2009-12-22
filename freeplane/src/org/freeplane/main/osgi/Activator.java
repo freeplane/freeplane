@@ -21,8 +21,11 @@ package org.freeplane.main.osgi;
 
 import java.awt.EventQueue;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.jar.Manifest;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
@@ -90,6 +93,19 @@ public class Activator implements BundleActivator {
 		File manifest = new File(file, "META-INF/MANIFEST.MF");
 		if(manifest.exists()){
 			try {
+				InputStream manifestContent = new FileInputStream(manifest);
+				Manifest bundleManifest = new Manifest(manifestContent);
+				final String name = bundleManifest.getMainAttributes().getValue("Bundle-SymbolicName");
+				if(name == null){
+					return;
+				}
+	            final Bundle[] bundles = context.getBundles();
+	            for(Bundle installedBundle:bundles){
+	            	if(installedBundle.getSymbolicName().equals(name)){
+	            		System.out.println("Bundle " + name + " already installed");
+	            		return;
+	            	}
+	            }
 	            final Bundle bundle = context.installBundle("reference:file:" + file.getAbsolutePath());
 	            bundle.start();
             }
