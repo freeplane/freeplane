@@ -33,31 +33,31 @@
 		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
 		<mkdir dir="${build.core}/org.freeplane.core" />
 		<copy todir="${build.core}/org.freeplane.core">
-			<fileset dir="${workspace}/freeplane/dist/osgi/dir" />
+			<fileset dir="${workspace}/freeplane/dist/org.freeplane.core" />
 		</copy>
 
 		<!-- temporarily remove help plugin 
 		
 		<mkdir dir="${build.plugins}/org.freeplane.plugin.help" />
 		<copy todir="${build.plugins}/org.freeplane.plugin.help">
-			<fileset dir="${workspace}/freeplane_plugin_help/dist/osgi/dir"/>
+			<fileset dir="${workspace}/freeplane_plugin_help/dist/org.freeplane.plugin.help"/>
 		</copy>
 -->
 		<mkdir dir="${build.plugins}/org.freeplane.plugin.latex" />
 		<copy todir="${build.plugins}/org.freeplane.plugin.latex">
-			<fileset dir="${workspace}/freeplane_plugin_latex/dist/osgi/dir" />
+			<fileset dir="${workspace}/freeplane_plugin_latex/dist/org.freeplane.plugin.latex" />
 		</copy>
 		<mkdir dir="${build.plugins}/org.freeplane.plugin.svg" />
 		<copy todir="${build.plugins}/org.freeplane.plugin.svg">
-			<fileset dir="${workspace}/freeplane_plugin_svg/dist/osgi/dir" />
+			<fileset dir="${workspace}/freeplane_plugin_svg/dist/org.freeplane.plugin.svg" />
 		</copy>
 		<mkdir dir="${build.plugins}/org.freeplane.plugin.script" />
 		<copy todir="${build.plugins}/org.freeplane.plugin.script">
-			<fileset dir="${workspace}/freeplane_plugin_script/dist/osgi/dir" />
+			<fileset dir="${workspace}/freeplane_plugin_script/dist/org.freeplane.plugin.script" />
 		</copy>
 		<mkdir dir="${build.plugins}/org.freeplane.plugin.bugreport" />
 		<copy todir="${build.plugins}/org.freeplane.plugin.bugreport">
-			<fileset dir="${workspace}/freeplane_plugin_bugreport/dist/osgi/dir" />
+			<fileset dir="${workspace}/freeplane_plugin_bugreport/dist/org.freeplane.plugin.bugreport" />
 		</copy>
 
 		<mkdir dir="${build.resources}" />

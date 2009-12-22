@@ -16,8 +16,7 @@
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/dist" />
 	<property name="dist.resources" value="${dist}/resources" />
-	<property name="dist.osgi.dir" value="${dist}/osgi/dir" />
-	<property name="dist.osgi.jar" value="${dist}/osgi/jar" />
+	<property name="dist.osgi.dir" value="${dist}/org.freeplane.core" />
 	<property name="freeplaneplugin.jar" value="${dist.osgi.dir}/org.freeplane.core.jar" />
 	<property name="debug" value="on" />
 	<property name="java_source_version" value="1.5" />
@@ -27,7 +26,6 @@
 
 	<target name="build" depends="clean">
 		<echo>Freeplane Version = ${ver}.</echo>
-		<delete dir="${build}" quiet="true" />
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" source="${java_source_version}" target="${java_target_version}">
 			<exclude name="org/freeplane/startup/FreeplaneStarter.java" />
@@ -140,7 +138,6 @@
 	</target>
 
 	<target name="osgi_dist_as_jar" depends="osgi_dist">
-		<mkdir dir="${dist.osgi.jar}" />
 		<jar jarfile="${freeplaneplugin.jar}">
 			<fileset dir="${dist.osgi.dir}">
 				<include name="**" />
