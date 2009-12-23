@@ -293,7 +293,7 @@ class NodeList {
 		public void setValue(final Object value) {
 			if (value instanceof IconsHolder) {
 				final IconsHolder iconsHolder = (IconsHolder) value;
-				final MultipleImage iconImages = new MultipleImage(1.0f);
+				final MultipleImage iconImages = new MultipleImage();
 				for (MindIcon icon : iconsHolder.getIcons()) {
 					iconImages.addImage(icon.getIcon());
 				}

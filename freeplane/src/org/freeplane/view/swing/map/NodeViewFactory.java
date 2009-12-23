@@ -146,6 +146,7 @@ class NodeViewFactory {
 	 */
 	NodeView newNodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
 		final NodeView newView = new NodeView(model, position, map, parent);
+		newView.setLayout(SelectableLayout.getInstance());
 		if (model.isRoot()) {
 			final MainView mainView = new RootMainView();
 			newView.setMainView(mainView);
@@ -153,7 +154,6 @@ class NodeViewFactory {
 		else {
 			newView.setMainView(newMainView(newView));
 		}
-		newView.setLayout(SelectableLayout.getInstance());
 		model.addViewer(newView);
 		newView.update();
 		fireNodeViewCreated(newView);

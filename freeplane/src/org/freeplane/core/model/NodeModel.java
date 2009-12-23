@@ -61,6 +61,7 @@ public class NodeModel implements MutableTreeNode {
 	public final static int RIGHT_POSITION = 1;
 	public final static int UNKNOWN_POSITION = 0;
 	static public final Object UNKNOWN_PROPERTY = new Object();
+	public static final String NODE_ICON = "icon";
 	protected final List<NodeModel> children = new ArrayList<NodeModel>();
 	private final ExtensionContainer extensionContainer;
 	final private FilterInfo filterInfo = new FilterInfo();

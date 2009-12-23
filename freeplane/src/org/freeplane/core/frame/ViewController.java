@@ -145,7 +145,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void validateTree() {
+			protected void validateTree() {
 				if(! isValid()){
 					super.validateTree();
 					resizeToolbarPane();

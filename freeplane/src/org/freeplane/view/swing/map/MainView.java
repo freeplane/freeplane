@@ -314,7 +314,7 @@ public abstract class MainView extends JLabel {
 
 	void updateIcons(final NodeView node) {
 		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
-		final MultipleImage iconImages = new MultipleImage(1.0f);
+		final MultipleImage iconImages = new MultipleImage();
 		boolean iconPresent = false;
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();

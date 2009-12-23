@@ -852,6 +852,11 @@ public class NodeView extends JComponent implements INodeView {
 			treeStructureChanged();
 			return;
 		}
+		if(event.getProperty().equals(NodeModel.NODE_ICON)){
+			mainView.updateIcons(this);
+			revalidate();
+			return;
+		}
 		update();
 	}
 
@@ -1254,4 +1259,11 @@ public class NodeView extends JComponent implements INodeView {
 
 	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
     }
+
+	@Override
+    protected void validateTree() {
+	    super.validateTree();
+    }
+	
+	
 }

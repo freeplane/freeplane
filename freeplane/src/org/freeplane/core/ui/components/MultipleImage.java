@@ -28,85 +28,52 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-public class MultipleImage extends ImageIcon {
+public class MultipleImage implements Icon {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private boolean isDirty;
-	final private List<ImageIcon> mImages = new ArrayList<ImageIcon>();
-	private double zoomFactor = 1;
+	final private List<Icon> mIcons = new ArrayList<Icon>();
 
 	public MultipleImage() {
-		this(1.0f);
 	}
 	
-	public MultipleImage(final double zoom) {
-		zoomFactor = zoom;
-		isDirty = true;
+	public void addImage(final Icon icon) {
+		mIcons.add(icon);
 	};
 
-	public void addImage(final ImageIcon image) {
-		mImages.add(image);
-		setImage(image.getImage());
-		isDirty = true;
-	};
-
-	@Override
 	public int getIconHeight() {
 		int myY = 0;
-		for (int i = 0; i < mImages.size(); i++) {
-			final int otherHeight = ((ImageIcon) mImages.get(i)).getIconHeight();
+		for (Icon icon:mIcons) {
+			final int otherHeight = icon.getIconHeight();
 			if (otherHeight > myY) {
 				myY = otherHeight;
 			}
 		}
-		return (int) (myY * zoomFactor);
+		return myY;
 	};
 
-	@Override
 	public int getIconWidth() {
 		int myX = 0;
-		for (int i = 0; i < mImages.size(); i++) {
-			myX += ((ImageIcon) mImages.get(i)).getIconWidth();
+		for (Icon icon:mIcons) {
+			myX += icon.getIconWidth();
 		}
-		return (int) (myX * zoomFactor);
+		return myX;
 	}
 
-	@Override
-	public Image getImage() {
-		if (!isDirty) {
-			return super.getImage();
-		}
-		final int w = getIconWidth();
-		final int h = getIconHeight();
-		if (w == 0 || h == 0) {
-			return null;
-		}
-		final BufferedImage outImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D g = outImage.createGraphics();
-		for (final ImageIcon currentIcon : mImages) {
-			final double pwidth = (currentIcon.getIconWidth() * zoomFactor);
-			final AffineTransform inttrans = AffineTransform.getScaleInstance(zoomFactor, zoomFactor);
-			g.drawImage(currentIcon.getImage(), inttrans, null);
-			g.translate(pwidth, 0);
-		}
-		g.dispose();
-		setImage(outImage);
-		isDirty = false;
-		return super.getImage();
-	}
 
 	public int getImageCount() {
-		return mImages.size();
+		return mIcons.size();
 	}
 
-	@Override
 	public void paintIcon(final Component c, final Graphics g, final int x, final int y) {
-		if (getImage() != null) {
-			super.paintIcon(c, g, x, y);
+		int myX = x;
+		for (Icon icon:mIcons) {
+			icon.paintIcon(c, g, myX, y);
+			myX += icon.getIconWidth();
 		}
 	}
 };

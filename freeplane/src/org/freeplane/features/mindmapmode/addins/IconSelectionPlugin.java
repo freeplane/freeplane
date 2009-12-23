@@ -71,7 +71,7 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 		final int result = selectionDialog.getResult();
 		if (result >= 0) {
 			final Action action = (Action) actions.get(result);
-			action.actionPerformed(new ActionEvent(action, 0, "icon", selectionDialog.getModifiers()));
+			action.actionPerformed(new ActionEvent(action, 0, NodeModel.NODE_ICON, selectionDialog.getModifiers()));
 		}
 	}
 }

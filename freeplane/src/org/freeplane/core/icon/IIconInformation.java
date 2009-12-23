@@ -19,13 +19,13 @@
  */
 package org.freeplane.core.icon;
 
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 public interface IIconInformation {
 	String getDescription();
 
-	ImageIcon getIcon();
+	Icon getIcon();
 
 	KeyStroke getKeyStroke();
 
