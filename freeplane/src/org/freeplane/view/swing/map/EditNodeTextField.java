@@ -167,7 +167,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				eventSource = CANCEL;
 				return;
 			}
-			if(e.isTemporary()){
+			if(e.isTemporary() && e.getOppositeComponent() == null){
 				return;
 			}
 			getEditControl().ok(textfield.getText());
