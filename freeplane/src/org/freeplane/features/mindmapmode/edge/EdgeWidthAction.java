@@ -83,10 +83,13 @@ class EdgeWidthAction extends AMultipleNodeAction {
 		if (model == null) {
 			if (mWidth == EdgeModel.WIDTH_PARENT) {
 				setSelected(true);
+				return;
 			}
 		}
 		else if (model.getWidth() == mWidth) {
 			setSelected(true);
+			return;
 		}
+		setSelected(false);
 	}
 }

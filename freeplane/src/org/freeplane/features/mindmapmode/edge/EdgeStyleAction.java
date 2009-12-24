@@ -57,11 +57,12 @@ class EdgeStyleAction extends AMultipleNodeAction {
 	public void setSelected() {
 		final NodeModel node = getModeController().getMapController().getSelectedNode();
 		final EdgeModel model = EdgeModel.getModel(node);
-		if (model == null) {
-			return;
+		if (model != null) {
+			if (mStyle.equals(model.getStyle())) {
+				setSelected(true);
+				return;
+			}
 		}
-		if (mStyle.equals(model.getStyle())) {
-			setSelected(true);
-		}
+		setSelected(false);
 	}
 }

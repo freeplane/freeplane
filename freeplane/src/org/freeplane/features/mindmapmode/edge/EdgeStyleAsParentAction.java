@@ -56,6 +56,8 @@ class EdgeStyleAsParentAction extends AMultipleNodeAction {
 		final EdgeModel model = EdgeModel.getModel(node);
 		if (model == null || model.getStyle() == null) {
 			setSelected(true);
+			return;
 		}
+		setSelected(false);
 	}
 }
