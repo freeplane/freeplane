@@ -352,8 +352,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public void insert(final MutableTreeNode child, int index) {
-		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
-		if (encryptionModel != null && !encryptionModel.isAccessible()) {
+		if (! isAccessible()){
 			throw new IllegalArgumentException("Trying to insert nodes into a ciphered node.");
 		}
 		final NodeModel childNode = (NodeModel) child;
@@ -368,6 +367,11 @@ public class NodeModel implements MutableTreeNode {
 		child.setParent(this);
 		fireNodeInserted(childNode, getIndex(child));
 	}
+
+	public boolean isAccessible() {
+	    final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
+		return encryptionModel == null || encryptionModel.isAccessible();
+    }
 
 	/**
 	 * Returns whether the argument is parent or parent of one of the grandpa's
