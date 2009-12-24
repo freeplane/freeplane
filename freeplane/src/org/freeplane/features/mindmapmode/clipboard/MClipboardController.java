@@ -52,7 +52,9 @@ import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
@@ -604,6 +606,12 @@ public class MClipboardController extends ClipboardController {
 	    if (handler == null) {
 	    	return;
 	    }
+		final MMapController mapController = (MMapController) getModeController().getMapController();
+		if (asSibling && ! mapController.isWriteable(target.getParentNode()) || ! asSibling && ! mapController.isWriteable(target)) {
+			final String message = ResourceBundles.getText("node_is_write_protected");
+			UITools.errorMessage(message);
+			return;
+		}
 	    try {
 	    	getController().getViewController().setWaitingCursor(true);
 	    	if (newNodes == null) {

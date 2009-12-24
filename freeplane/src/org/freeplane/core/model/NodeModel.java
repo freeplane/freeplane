@@ -368,7 +368,7 @@ public class NodeModel implements MutableTreeNode {
 		fireNodeInserted(childNode, getIndex(child));
 	}
 
-	public boolean isAccessible() {
+	private boolean isAccessible() {
 	    final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
 		return encryptionModel == null || encryptionModel.isAccessible();
     }

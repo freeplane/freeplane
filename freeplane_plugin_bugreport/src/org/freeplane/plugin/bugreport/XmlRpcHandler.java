@@ -195,9 +195,6 @@ public class XmlRpcHandler extends StreamHandler {
 			close();
 			createInfo();
 			final String errorMessage = out.toString(getEncoding());
-			if(errorMessage.startsWith("Exception in thread \"AWT-EventQueue-0\" \njava.lang.IllegalArgumentException: Trying to insert nodes into a ciphered node.\n")){
-				return;
-			}
 			log = info + errorMessage;
 			if (log.equals("")) {
 				return;
