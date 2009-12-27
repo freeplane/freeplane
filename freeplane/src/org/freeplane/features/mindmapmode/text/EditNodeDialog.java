@@ -49,8 +49,8 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
-import com.inet.jortho.SpellChecker;
 
 /**
  * @author foltin
@@ -179,7 +179,9 @@ class EditNodeDialog extends EditNodeBase {
 			final Color nodeTextBackground = viewController.getBackgroundColor(getNode());
 			textArea.setBackground(nodeTextBackground);
 			textArea.setCaretColor(nodeTextColor);
-			SpellChecker.enableAutoSpell(textArea, true);
+			final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getBase()
+			    .getModeController());
+			spellCheckerController.enableAutoSpell(textArea);
 			final JPanel buttonPane = new JPanel();
 			buttonPane.add(enterConfirms);
 			buttonPane.add(okButton);

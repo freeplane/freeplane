@@ -19,27 +19,36 @@
  */
 package org.freeplane.features.mindmapmode.ortho;
 
+import java.awt.EventQueue;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.net.MalformedURLException;
+import java.util.Locale;
 
 import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MModeController;
 
 import com.inet.jortho.FileUserDictionary;
+import com.inet.jortho.LanguageChangeEvent;
+import com.inet.jortho.LanguageChangeListener;
 import com.inet.jortho.SpellChecker;
+import com.inet.jortho.SpellCheckerOptions;
 
 /**
  * @author Dimitry Polivaev
  * Feb 8, 2009
  */
 public class SpellCheckerController implements IExtension {
+	private static final String SPELLING_LANGUAGE = "spelling_language";
+
 	public static SpellCheckerController getController(final ModeController modeController) {
 		return (SpellCheckerController) modeController.getExtension(SpellCheckerController.class);
 	}
@@ -50,6 +59,7 @@ public class SpellCheckerController implements IExtension {
 
 	private boolean spellCheckerEnabled = false;
 	private boolean spellCheckerInitialized = false;
+	private LanguageChangeListener languageChangeListener;
 
 	private SpellCheckerController() {
 		init();
@@ -85,6 +95,15 @@ public class SpellCheckerController implements IExtension {
 			if (!orthoDir.exists()) {
 				return;
 			}
+			setSpellCheckOptions(resourceController);
+			resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
+				public void propertyChanged(String propertyName, String newValue, String oldValue) {
+					if(propertyName.startsWith("spelling_opt")){
+						setSpellCheckOptions(resourceController);
+					}
+				}
+			});
+			
 			final String[] dictionaryList = orthoDir.list(new FilenameFilter() {
 				public boolean accept(final File dir, final String name) {
 					return name.length() == "dictionary_XX.ortho".length() && name.startsWith("dictionary_")
@@ -108,9 +127,43 @@ public class SpellCheckerController implements IExtension {
 			}
 			catch (final MalformedURLException e) {
 				LogTool.severe(e);
+				return;
 			}
+			
+			String spellingLanguage = resourceController.getProperty(SPELLING_LANGUAGE, null);
+			if(spellingLanguage == null){
+				spellingLanguage = ((ResourceBundles) resourceController.getResources()).getLanguageCode();
+			}
+			if(! spellingLanguage.equals("disabled")){
+				SpellChecker.setLanguage(spellingLanguage);
+			}
+			languageChangeListener = new LanguageChangeListener() {
+				public void languageChanged(final LanguageChangeEvent ev) {
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							final Locale currentLocale = ev.getCurrentLocale();
+							if(currentLocale == null){
+								resourceController.setProperty(SPELLING_LANGUAGE, "disabled");
+								return;
+							}
+							resourceController.setProperty(SPELLING_LANGUAGE, currentLocale.getLanguage());
+						}
+					});
+				}
+			};
+			SpellChecker.addLanguageChangeLister(languageChangeListener);
 		}
 	}
+
+	private void setSpellCheckOptions(final ResourceController resourceController) {
+	    final SpellCheckerOptions options = SpellChecker.getOptions();
+	    options.setCaseSensitive(resourceController.getBooleanProperty("spelling_opt_case_sensitive"));
+	    options.setIgnoreAllCapsWords(resourceController.getBooleanProperty("spelling_opt_ignore_all_caps_words"));
+	    options.setIgnoreCapitalization(resourceController.getBooleanProperty("spelling_opt_ignore_capitalization"));
+	    options.setIgnoreWordsWithNumbers(resourceController.getBooleanProperty("spelling_opt_ignore_words_with_numbers"));
+	    options.setSuggestionsLimitDialog(resourceController.getIntProperty("spelling_opt_suggestions_limit_dialog", 15));
+	    options.setSuggestionsLimitMenu(resourceController.getIntProperty("spelling_opt_suggestions_limit_menu", 15));
+    }
 
 	public boolean isSpellCheckerActive() {
 		return spellCheckerEnabled;

@@ -228,6 +228,15 @@
             <number name="scrollbar_increment"/>
         </separator>
         
+        <separator name="spelling">
+            <boolean name="spelling_opt_case_sensitive"/>
+            <boolean name="spelling_opt_ignore_all_caps_words"/>
+            <boolean name="spelling_opt_ignore_capitalization"/>
+            <boolean name="spelling_opt_ignore_words_with_numbers"/>
+            <number name="spelling_opt_suggestions_limit_dialog" min = "0"/>
+            <number name="spelling_opt_suggestions_limit_menu" min = "0"/>
+        </separator>
+        
         <separator name="tooltip">
             <boolean name="show_node_tooltips"/>
             <number name="toolTipManager.initialDelay" min = "0"/>
