@@ -94,7 +94,7 @@ class ApplicationViewController extends ViewController {
 		this.frame = frame;
 		getContentPane().setLayout(new BorderLayout());
 		// --- Set Note Window Location ---
-		mLocationPreferenceValue = resourceController.getProperty("location", "bottom");
+		mLocationPreferenceValue = resourceController.getProperty("note_location", "bottom");
 		if (ResourceController.getResourceController().getBooleanProperty("no_scrollbar")) {
 			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -127,7 +127,7 @@ class ApplicationViewController extends ViewController {
 			removeSplitPane();
 		}
 		// --- Get the new location --
-		mLocationPreferenceValue = resourceController.getProperty("location");
+		mLocationPreferenceValue = resourceController.getProperty("note_location");
 		// -- Display Note Window in the new location --
 		if (isSplitWindowOnorOff == true) {
 			// --- Place the Note Window in the new place --

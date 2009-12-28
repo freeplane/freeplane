@@ -518,7 +518,12 @@ public class MenuBuilder extends UIBuilder {
 			item = new JMenuItem(decorateAction(category, action));
 		}
 		addMenuItem(category, item, key, position);
-		if (action instanceof PopupMenuListener) {
+		addListeners(key, action);
+		return;
+	}
+
+	private void addListeners(final String key, final AFreeplaneAction action) {
+	    if (action instanceof PopupMenuListener) {
 			addPopupMenuListener(key, (PopupMenuListener) action);
 		}
 		if (AFreeplaneAction.checkSelectionOnPopup(action)) {
@@ -547,8 +552,7 @@ public class MenuBuilder extends UIBuilder {
 				}
 			});
 		}
-		return;
-	}
+    }
 
 	public void addAnnotatedAction(final AFreeplaneAction action) {
 		addAction(action, action.getClass().getAnnotation(ActionLocationDescriptor.class));
@@ -655,8 +659,10 @@ public class MenuBuilder extends UIBuilder {
 		else {
 			item = new JRadioButtonMenuItem(decorateAction(category, action));
 		}
-		addMenuItem(category, item, category + '/' + key, MenuBuilder.AS_CHILD);
+		final String fullKey = category + '/' + key;
+		addMenuItem(category, item, fullKey, MenuBuilder.AS_CHILD);
 		item.setSelected(isSelected);
+		addListeners(fullKey, action);
 		return item;
 	}
 
