@@ -146,7 +146,7 @@ class BubbleMainView extends MainView {
 
 	@Override
     public Insets getInsets(Insets insets) {
-	    super.getInsets(insets);
+		insets = super.getInsets(insets);
 	    fitInsets(insets);
 		return insets;
     }
