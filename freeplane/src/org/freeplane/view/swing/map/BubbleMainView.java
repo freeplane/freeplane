@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
@@ -125,4 +126,30 @@ class BubbleMainView extends MainView {
 		graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
 	}
 
+	@Override
+    public Insets getInsets() {
+	    final Insets insets = super.getInsets();
+	    fitInsets(insets);
+		return insets;
+    }
+
+	private void fitInsets(final Insets insets) {
+	    final NodeView nodeView = getNodeView();
+	    final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
+		if(nodeView.isLeft()){
+	    	insets.left += zoomedFoldingSymbolHalfWidth;
+	    }
+	    else{
+	    	insets.right += zoomedFoldingSymbolHalfWidth;
+	    }
+    }
+
+	@Override
+    public Insets getInsets(Insets insets) {
+	    super.getInsets(insets);
+	    fitInsets(insets);
+		return insets;
+    }
+	
+	
 }
