@@ -51,9 +51,6 @@ public class LimitedWidthTooltipUI extends BasicToolTipUI {
 		tipText = "<html><table width=\"" + maximumWidth + "\">" + tipText.substring(TABLE_START.length());
 		((JToolTip) c).setTipText(tipText);
 		preferredSize = super.getPreferredSize(c);
-		if (preferredSize.width > maximumWidth) {
-			preferredSize.width = maximumWidth;
-		}
 		return preferredSize;
 	}
 }
