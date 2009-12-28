@@ -35,8 +35,9 @@ class LatexExtension implements IExtension {
 
 	public LatexExtension() {
 //		equation = "\\mbox{I}^\\fgcolor{ff0000}{\\heartsuit}\\mbox{HotEqn}";
-		equation = "\\mbox{I}^{\\heartsuit}\\mbox{JLatexMath}";
-		viewers = new LinkedHashSet();
+//		equation = "\\mbox{I}^\\fgcolor{ff0000}{\\heartsuit}\\mbox{\\JLaTeXMath}";
+		equation = "\\mbox{I}^{\\heartsuit}\\mbox{\\JLaTeXMath}";
+		viewers = new LinkedHashSet<JLatexViewer>();
 	}
 
 	public String getEquation() {
