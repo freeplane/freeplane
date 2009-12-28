@@ -1,6 +1,12 @@
 ===============================
 1.0.37 rc
 ===============================
+355]: note tooltip appears truncated on the right side : do not limit maximum width of tooltips with long lines
+364]: folding symbol eats the last letter of the bubbled node
+new italian translation + automatic translations
+jlatexmath-0.8.2.jar
+display selected attribute view type in menu
+363]: Two minor bug about note
 JLatexMath replaces HotEqn
 support spellchecker options
 better solution for inserting nodes into encrypted nodes
