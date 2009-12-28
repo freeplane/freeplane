@@ -22,10 +22,10 @@ package org.freeplane.features.common.attribute;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.SelectableAction;
 
-class HideAllAttributesAction extends AFreeplaneAction {
+@SelectableAction(checkOnPopup=true)
+class HideAllAttributesAction extends AttributeViewTypeAction {
 	/**
 	 * 
 	 */
@@ -39,20 +39,15 @@ class HideAllAttributesAction extends AFreeplaneAction {
 	};
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = getController().getMap();
-		setAttributeViewType(map);
+		setAttributeViewType();
 	}
 
-	public void setAttributeViewType(final MapModel map) {
-		if (map == null) {
-			return;
-		}
-		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
-		if (attributes == null) {
-			return;
-		}
-		if (attributes.getAttributeViewType() != AttributeTableLayoutModel.HIDE_ALL) {
-			attributes.setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
-		}
+	void setAttributeViewType() {
+		setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
+	}
+
+	@Override
+	public void setSelected() {
+		setSelected(AttributeTableLayoutModel.HIDE_ALL.equals(getAttributeViewType()));
 	}
 }
