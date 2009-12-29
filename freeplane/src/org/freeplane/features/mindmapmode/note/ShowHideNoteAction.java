@@ -44,6 +44,7 @@ class ShowHideNoteAction extends AFreeplaneAction {
 	public ShowHideNoteAction(final MNoteController noteController, final ModeController modeController) {
 		super("ShowHideNoteAction", modeController.getController());
 		this.noteController = noteController;
+		setSelected(ResourceController.getResourceController().getBooleanProperty(MNoteController.RESOURCES_USE_SPLIT_PANE));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
