@@ -1,6 +1,12 @@
 ===============================
-1.0.37 rc
+1.0.37 beta
 ===============================
+invocation of external scripts (Volker Boerchers, Dimitry)
+366]:Spacing at the begin of bubble node
+363]: Two minor bug about note
+ChangeSelectionOnPropertyChange
+Resources_hr.properties
+new italian translation + automatic translations
 355]: note tooltip appears truncated on the right side : do not limit maximum width of tooltips with long lines
 364]: folding symbol eats the last letter of the bubbled node
 new italian translation + automatic translations

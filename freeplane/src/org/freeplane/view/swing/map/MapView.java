@@ -797,7 +797,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		NodeView newSelected = oldSelected;
 		final NodeModel oldModel = oldSelected.getModel();
 		if (oldModel.isRoot()) {
-			newSelected = oldSelected.getPreferredVisibleChild(layoutType, true);
+			newSelected = oldSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), true);
 		}
 		else if (!oldSelected.isLeft()) {
 			newSelected = oldSelected.getVisibleParentView();
@@ -807,9 +807,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				getModeController().getMapController().setFolded(oldModel, false);
 				return oldSelected;
 			}
-			newSelected = oldSelected.getPreferredVisibleChild(layoutType, true);
+			newSelected = oldSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), true);
 			while (newSelected != null && !newSelected.isContentVisible()) {
-				newSelected = newSelected.getPreferredVisibleChild(layoutType, true);
+				newSelected = newSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), true);
 			}
 		}
 		return newSelected;
@@ -851,7 +851,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		NodeView newSelected = oldSelected;
 		final NodeModel oldModel = oldSelected.getModel();
 		if (oldModel.isRoot()) {
-			newSelected = oldSelected.getPreferredVisibleChild(layoutType, false);
+			newSelected = oldSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), false);
 		}
 		else if (oldSelected.isLeft()) {
 			newSelected = oldSelected.getVisibleParentView();
@@ -861,9 +861,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				getModeController().getMapController().setFolded(oldModel, false);
 				return oldSelected;
 			}
-			newSelected = oldSelected.getPreferredVisibleChild(layoutType, false);
+			newSelected = oldSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), false);
 			while (newSelected != null && !newSelected.isContentVisible()) {
-				newSelected = newSelected.getPreferredVisibleChild(layoutType, false);
+				newSelected = newSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), false);
 			}
 		}
 		return newSelected;
