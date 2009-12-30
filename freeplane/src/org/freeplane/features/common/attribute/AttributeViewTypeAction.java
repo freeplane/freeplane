@@ -16,24 +16,12 @@ public abstract class AttributeViewTypeAction extends AFreeplaneAction {
 	}
 
 	protected void setAttributeViewType(final String type) {
-        final String attributeViewType = getAttributeViewType();
-    	if (attributeViewType !=  null && attributeViewType != type) {
-    		final MapModel map = getController().getMap();
-    		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
-    		attributes.setAttributeViewType(type);
-    	}
+    	final MapModel map = getController().getMap();
+    	ModelessAttributeController.getController(getController()).setAttributeViewType(map, type);
     }
 
 	protected String getAttributeViewType() {
     	final MapModel map = getController().getMap();
-    	if (map == null) {
-    		return null;
-    	}
-    	final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
-    	if (attributes == null) {
-    		return null;
-    	}
-    	final String attributeViewType = attributes.getAttributeViewType();
-    	return attributeViewType;
+    	return ModelessAttributeController.getController(getController()).getAttributeViewType(map);
     }
 }

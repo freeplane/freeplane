@@ -41,10 +41,6 @@ class ShowAllAttributesAction extends AttributeViewTypeAction {
 	};
 
 	public void actionPerformed(final ActionEvent e) {
-		setAttributeViewType();
-	}
-
-	void setAttributeViewType() {
 		setAttributeViewType(AttributeTableLayoutModel.SHOW_ALL);
 	}
 

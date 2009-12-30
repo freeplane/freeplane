@@ -42,9 +42,11 @@ public class ModelessAttributeController implements IExtension {
 	final private ShowAllAttributesAction showAllAttributes;
 	final private ShowAttributeDialogAction showAttributeManagerAction;
 	final private ShowSelectedAttributesAction showSelectedAttributes;
+	final private Controller controller;
 
 	public ModelessAttributeController(final Controller controller) {
 		super();
+		this.controller = controller;
 		showAttributeManagerAction = new ShowAttributeDialogAction(controller);
 		showAllAttributes = new ShowAllAttributesAction(controller);
 		showSelectedAttributes = new ShowSelectedAttributesAction(controller);
@@ -55,15 +57,24 @@ public class ModelessAttributeController implements IExtension {
 		controller.addAction(hideAllAttributes);
 	}
 
-	public void setAttributeViewType(final MapModel map, final String value) {
-		if (value.equals(AttributeTableLayoutModel.SHOW_SELECTED)) {
-			(showSelectedAttributes).setAttributeViewType();
-		}
-		else if (value.equals(AttributeTableLayoutModel.HIDE_ALL)) {
-			(hideAllAttributes).setAttributeViewType();
-		}
-		else if (value.equals(AttributeTableLayoutModel.SHOW_ALL)) {
-			(showAllAttributes).setAttributeViewType();
-		}
-	}
+	protected void setAttributeViewType(MapModel map, final String type) {
+        final String attributeViewType = getAttributeViewType(map);
+    	if (attributeViewType !=  null && attributeViewType != type) {
+    		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
+    		attributes.setAttributeViewType(type);
+    	}
+    }
+
+	protected String getAttributeViewType(final MapModel map) {
+    	if (map == null) {
+    		return null;
+    	}
+    	final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
+    	if (attributes == null) {
+    		return null;
+    	}
+    	final String attributeViewType = attributes.getAttributeViewType();
+    	return attributeViewType;
+    }
+	
 }
