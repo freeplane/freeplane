@@ -210,7 +210,6 @@
             <boolean name="delete_nodes_without_question"/>
             <boolean name="cut_nodes_without_question"/>
             <boolean name="remove_notes_without_question"/>
-            <boolean name="execute_scripts_without_asking"/>
         </separator>
         <separator name="selection_method">
             <combo name="selection_method">

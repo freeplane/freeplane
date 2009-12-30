@@ -21,12 +21,18 @@
 package org.freeplane.plugin.script;
 
 import java.io.PrintStream;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map.Entry;
+
+import javax.swing.JMenu;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
@@ -36,11 +42,17 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapnode.pattern.IExternalPatternAction;
 import org.freeplane.features.mindmapnode.pattern.Pattern;
 import org.freeplane.features.mindmapnode.pattern.ScriptEditorProperty;
+import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
 class ScriptingRegistration implements IExternalPatternAction {
+	/** create scripts submenu if there are more scripts than this number. */
+	private static final int MINIMAL_SCRIPT_COUNT_FOR_SUBMENU = 1;
+	private static final String MENU_BAR_SCRIPTING_PARENT_LOCATION = "/menu_bar/extras/first";
+	private static final String MENU_BAR_SCRIPTING_LOCATION = MENU_BAR_SCRIPTING_PARENT_LOCATION + "/scripting";
+
 	final private class PatternScriptModel implements IScriptModel {
 		final private String mOriginalScript;
 		private String mScript;
@@ -126,6 +138,8 @@ class ScriptingRegistration implements IExternalPatternAction {
 		controls.addTab(TAB);
 		controls.addSeparator(TAB, SEPARATOR, IndexedTree.AS_CHILD);
 		final String GROUP = TAB + "/" + SEPARATOR;
+		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+		    IndexedTree.AS_CHILD);
 		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
 		    IndexedTree.AS_CHILD);
 		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
@@ -135,6 +149,7 @@ class ScriptingRegistration implements IExternalPatternAction {
 		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED, IndexedTree.AS_CHILD);
 		controls.addStringProperty(GROUP, ScriptingEngine.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING,
 		    IndexedTree.AS_CHILD);
+		controls.addStringProperty(GROUP, ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES, IndexedTree.AS_CHILD);
 	}
 
 	public HashMap getScriptCookies() {
@@ -160,5 +175,42 @@ class ScriptingRegistration implements IExternalPatternAction {
 		final ScriptingEngine scriptingEngine = new ScriptingEngine(this);
 		menuBuilder.addAnnotatedAction(new ExecuteScriptForAllNodes(controller, scriptingEngine));
 		menuBuilder.addAnnotatedAction(new ExecuteScriptForSelectionAction(controller, scriptingEngine));
+		registerScripts(controller, menuBuilder, scriptingEngine);
+	}
+
+	private void registerScripts(final Controller controller, final MenuBuilder menuBuilder,
+	                             final ScriptingEngine scriptingEngine) {
+		ScriptingConfiguration configuration = new ScriptingConfiguration();
+		String scriptsParentLocation = MENU_BAR_SCRIPTING_PARENT_LOCATION;
+		String scriptsLocation = MENU_BAR_SCRIPTING_LOCATION;
+		if (configuration.getNameScriptMap().size() >= MINIMAL_SCRIPT_COUNT_FOR_SUBMENU) {
+			scriptsParentLocation = scriptsLocation;
+			scriptsLocation += "/scripts";
+			final JMenu menuItem = new JMenu();
+			MenuBuilder.setLabelAndMnemonic(menuItem, ResourceBundles.getText("ExecuteScripts.text"));
+			menuBuilder.addMenuItem(scriptsParentLocation, menuItem, scriptsLocation, MenuBuilder.AS_CHILD);
+		}
+		for (Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
+			String scriptName = entry.getKey();
+			final String menuItemName = getMenuItemName(scriptName);
+			menuBuilder.addAction(scriptsLocation, new ExecuteScriptAction(controller, scriptingEngine, scriptName,
+			    menuItemName, entry.getValue(),  ExecutionMode.ON_SELECTED_NODE), MenuBuilder.AS_CHILD);
+			final String recursiveMenuItemName = getRecursiveMenuItemName(scriptName);
+			menuBuilder.addAction(scriptsLocation, new ExecuteScriptAction(controller, scriptingEngine, scriptName
+			        + ".recursive", recursiveMenuItemName, entry.getValue(),
+			    ExecuteScriptAction.ExecutionMode.ON_SELECTED_NODE_RECURSIVELY), MenuBuilder.AS_CHILD);
+		}
+	}
+
+	/** adds a resource string to be used as menu text for this script. */
+	private String getMenuItemName(String scriptName) {
+		final String msg = FpStringUtils.format("ExecuteScript.text", new Object[] { scriptName });
+		return msg;
+	}
+
+	/** adds a resource string to be used as menu text for this script. */
+	private String getRecursiveMenuItemName(String scriptName) {
+		final String msg = FpStringUtils.format("ExecuteScriptRecursively.text", new Object[] { scriptName });
+		return msg;
 	}
 }

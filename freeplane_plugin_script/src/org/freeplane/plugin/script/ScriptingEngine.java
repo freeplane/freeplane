@@ -23,7 +23,6 @@ import groovy.lang.GroovyRuntimeException;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 
-import java.awt.event.ActionEvent;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
@@ -36,13 +35,9 @@ import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
@@ -69,13 +64,15 @@ class ScriptingEngine {
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION = "execute_scripts_without_network_restriction";
 	public static final String RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING = "script_user_key_name_for_signing";
 	public static final String RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED = "signed_script_are_trusted";
+	public static final String RESOURCES_SCRIPT_DIRECTORIES = "script_directories";
 	public static final String SCRIPT_PREFIX = "script";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final HashMap sScriptCookies = new HashMap();
-	private static Boolean noUserPermissionRequired =false;
+	private static Boolean noUserPermissionRequired = false;
+
 	/**
 	 * @param node
 	 * @param noUserPermissionRequired
@@ -85,9 +82,9 @@ class ScriptingEngine {
 	 * @return true, if further scripts can be executed, false, if the user
 	 *         canceled or an error occurred.
 	 */
-	static boolean executeScript(final NodeModel node, String script,
-	                             final MModeController pMindMapController, final IErrorHandler pErrorHandler,
-	                             final PrintStream pOutStream, final HashMap pScriptCookies) {
+	static boolean executeScript(final NodeModel node, String script, final MModeController pMindMapController,
+	                             final IErrorHandler pErrorHandler, final PrintStream pOutStream,
+	                             final HashMap pScriptCookies) {
 		if (!noUserPermissionRequired) {
 			final int showResult = OptionalDontShowMeAgainDialog.show(pMindMapController.getController(),
 			    "really_execute_script", "confirmation", RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
@@ -263,43 +260,55 @@ class ScriptingEngine {
 		this.reg = reg;
 	}
 
-	boolean performScriptOperationRecursive(MModeController modeController, final NodeModel node) {
-			for (final Iterator iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
-				final NodeModel element = (NodeModel) iter.next();
-				if (! performScriptOperationRecursive(modeController, element)){
-					return false;
-				}
+	boolean executeScript(MModeController modeController, final NodeModel node, final String script) {
+		return ScriptingEngine.executeScript(node, script, modeController, new IErrorHandler() {
+			public void gotoLine(final int pLineNumber) {
 			}
-			return performScriptOperation(modeController, node);
+		}, System.out, reg.getScriptCookies());
+	}
+
+	boolean executeScriptRecursive(MModeController modeController, NodeModel node, String script) {
+		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
+			if (!executeScriptRecursive(modeController, iter.next(), script)) {
+				return false;
+			}
+		}
+		return executeScript(modeController, node, script);
+	}
+
+	boolean performScriptOperationRecursive(MModeController modeController, final NodeModel node) {
+		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
+			final NodeModel child = iter.next();
+			if (!performScriptOperationRecursive(modeController, child)) {
+				return false;
+			}
+		}
+		return performScriptOperation(modeController, node);
 	}
 
 	boolean performScriptOperation(MModeController modeController, final NodeModel node) {
-	    final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
-	    if (attributes == null) {
-	    	return true;
-	    }
-	    for (int row = 0; row < attributes.getRowCount(); ++row) {
-	    	final String attrKey = (String) attributes.getName(row);
-	    	final String script = (String) attributes.getValue(row);
-	    	if (attrKey.startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
-	    		final boolean result = ScriptingEngine.executeScript(node, script,
-	    			modeController, new IErrorHandler() {
-	    			public void gotoLine(final int pLineNumber) {
-	    			}
-	    		}, System.out, reg.getScriptCookies());
-	    		if (!result) {
-	    			return false;
-	    		}
-	    	}
-	    }
-	    return true;
-    }
+		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
+		if (attributes == null) {
+			return true;
+		}
+		for (int row = 0; row < attributes.getRowCount(); ++row) {
+			final String attrKey = (String) attributes.getName(row);
+			final String script = (String) attributes.getValue(row);
+			if (attrKey.startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
+				final boolean result = executeScript(modeController, node, script);
+				if (!result) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
 	static void setNoUserPermissionRequired(Boolean noUserPermissionRequired) {
-	    ScriptingEngine.noUserPermissionRequired = noUserPermissionRequired;
-    }
+		ScriptingEngine.noUserPermissionRequired = noUserPermissionRequired;
+	}
 
 	static Boolean getNoUserPermissionRequired() {
-	    return noUserPermissionRequired;
-    }
+		return noUserPermissionRequired;
+	}
 }

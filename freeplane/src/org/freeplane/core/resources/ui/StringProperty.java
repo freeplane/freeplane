@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.ui;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -30,12 +31,13 @@ import org.freeplane.core.resources.FpStringUtils;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class StringProperty extends PropertyBean implements IPropertyControl {
-	JTextField mTextField = new JTextField();
+	final JTextField mTextField;
 
 	/**
 	 */
 	public StringProperty(final String name) {
 		super(name);
+		mTextField = new JTextField();
 		mTextField.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent pE) {
 				firePropertyChangeEvent();
