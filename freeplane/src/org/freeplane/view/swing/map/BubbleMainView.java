@@ -135,13 +135,16 @@ class BubbleMainView extends MainView {
 
 	private void fitInsets(final Insets insets) {
 	    final NodeView nodeView = getNodeView();
-	    final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
+	    final int zoomedFoldingSymbolHalfWidth = nodeView.getZoomedFoldingSymbolHalfWidth();
+	    final int extraSpace = nodeView.getMap().getZoomed(1);
 		if(nodeView.isLeft()){
 	    	insets.left += zoomedFoldingSymbolHalfWidth;
 	    }
 	    else{
 	    	insets.right += zoomedFoldingSymbolHalfWidth;
 	    }
+	    insets.left += extraSpace;
+	    insets.right += extraSpace;
     }
 
 	@Override

@@ -874,7 +874,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public int getZoomed(final int number) {
-		return (int) (number * zoom);
+		return (int) Math.ceil(number * zoom);
 	}
 
 	public void initRoot() {
