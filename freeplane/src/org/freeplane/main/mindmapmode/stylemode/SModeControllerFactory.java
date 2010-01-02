@@ -167,7 +167,7 @@ public class SModeControllerFactory {
 		JScrollPane styleScrollPane = new JScrollPane(styleEditorPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 //		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
 		this.modeController = null;
-		dialog.add(styleScrollPane, BorderLayout.EAST);
+		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, styleScrollPane);
 		return modeController;
 	}
 
