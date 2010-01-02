@@ -31,6 +31,8 @@ import javax.swing.JScrollPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.frame.ToggleToolbarAction;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.INodeChangeListener;
@@ -116,10 +118,11 @@ public class SModeControllerFactory {
         
         final JPopupMenu popupmenu = new JPopupMenu();
         userInputListenerFactory.setNodePopupMenu(popupmenu);
-        final FreeplaneToolBar toolbar = new FreeplaneToolBar();
-        userInputListenerFactory.addMainToolBar("/main_toolbar", toolbar);
-        userInputListenerFactory.setLeftToolBar(((MIconController) IconController.getController(modeController))
-            .getIconToolBarScrollPane());
+		FreeplaneToolBar toolBar = new FreeplaneToolBar();
+		toolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
+		userInputListenerFactory.addToolBar("/main_toolbar",ViewController.TOP, toolBar);
+		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT,((MIconController) IconController.getController(modeController))
+			    .getIconToolBarScrollPane());
         userInputListenerFactory.setMenuStructure("/xml/stylemodemenu.xml");
         final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
         userInputListenerFactory.updateMenus(modeController);

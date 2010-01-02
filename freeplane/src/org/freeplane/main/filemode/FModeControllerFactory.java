@@ -23,6 +23,7 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.model.NodeModel;
@@ -34,6 +35,7 @@ import org.freeplane.features.common.addins.misc.NextNodeAction;
 import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
 import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.clipboard.ClipboardController;
+import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.nodelocation.LocationController;
@@ -64,6 +66,7 @@ public class FModeControllerFactory {
 		EdgeController.install(modeController, new EdgeController(modeController));
 		LinkController.install(modeController, new LinkController(modeController));
 		TextController.install(modeController, new TextController(modeController));
+		CloudController.install(modeController, new CloudController(modeController));
 		ClipboardController.install(modeController, new ClipboardController(modeController));
 		LocationController.install(modeController, new LocationController(modeController));
 		new MapStyle(modeController);
@@ -76,8 +79,10 @@ public class FModeControllerFactory {
 		modeController.addAction(new CenterAction(controller));
 		modeController.addAction(new OpenPathAction(controller));
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
-		userInputListenerFactory.addMainToolBar("/main_toolbar", new FreeplaneToolBar());
-		userInputListenerFactory.addMainToolBar("/filter_toolbar", FilterController.getController(controller).getFilterToolbar());
+		FreeplaneToolBar toolBar = new FreeplaneToolBar();
+		toolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
+		userInputListenerFactory.addToolBar("/main_toolbar",ViewController.TOP, toolBar);
+		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(controller).getFilterToolbar());
 		userInputListenerFactory.setMenuStructure("/xml/filemodemenu.xml");
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();

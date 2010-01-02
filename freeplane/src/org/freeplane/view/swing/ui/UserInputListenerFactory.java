@@ -81,6 +81,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private INodeMouseMotionListener nodeMouseMotionListener;
 	private JPopupMenu nodePopupMenu;
 	private final Map<String, JComponent> toolBars;
+	private final List<JComponent>[] toolbarLists;
 
 	public UserInputListenerFactory(final ModeController modeController) {
 		controller = modeController.getController();
@@ -98,18 +99,19 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			}
 		});
 		toolBars = new LinkedHashMap<String, JComponent>();
+		toolbarLists = new List[4];
+		for(int j = 0; j < 4; j++){
+			toolbarLists[j] = new LinkedList<JComponent>();
+		}
 	}
 
-	public void addMainToolBar(final String name, final JComponent toolBar) {
+	public void addToolBar(final String name, final int position, final JComponent toolBar) {
 		toolBars.put(name, toolBar);
+		toolbarLists[position].add(toolBar);
 	}
 
 	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
 		mRegisteredMouseWheelEventHandler.add(handler);
-	}
-
-	public Component getLeftToolBar() {
-		return leftToolBar;
 	}
 
 	public IMouseListener getMapMouseListener() {
@@ -192,19 +194,12 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return toolBars.get(name);
 	}
 
-	public Iterable<JComponent> getToolBars() {
-		return toolBars.values();
+	public Iterable<JComponent> getToolBars(final int position) {
+		return toolbarLists[position];
 	}
 
 	public void removeMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
 		mRegisteredMouseWheelEventHandler.remove(handler);
-	}
-
-	public void setLeftToolBar(final Component leftToolBar) {
-		if (this.leftToolBar != null) {
-			throw new RuntimeException("already set");
-		}
-		this.leftToolBar = leftToolBar;
 	}
 
 	public void setMapMouseListener(final IMouseListener mapMouseMotionListener) {
@@ -313,7 +308,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		mapsPopupMenu = new JPopupMenu();
 		menuBuilder.addPopupMenu(mapsPopupMenu, FreeplaneMenuBar.MAP_POPUP_MENU);
 		menuBuilder.addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
-		menuBuilder.addToolbar((JToolBar) getToolBars().iterator().next(), "/main_toolbar");
+		menuBuilder.addToolbar((JToolBar) getToolBar("/main_toolbar"), "/main_toolbar");
 		mapsPopupMenu.setName(ResourceBundles.getText("mindmaps"));
 		if (menuStructure != null) {
 			menuBuilder.processMenuCategory(menuStructure);

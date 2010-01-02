@@ -41,6 +41,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.icon.IIconInformation;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.icon.IconGroup;
@@ -82,6 +83,7 @@ public class MIconController extends IconController {
 		iconToolBar = new FreeplaneToolBar();
 		iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
 		iconToolBar.setOrientation(SwingConstants.VERTICAL);
+		iconToolBarScrollPane.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "leftToolbarVisible");
 		createIconActions();
 		createPreferences();
 	}
@@ -207,7 +209,7 @@ public class MIconController extends IconController {
 	/**
 	 * @return
 	 */
-	public Component getIconToolBarScrollPane() {
+	public JComponent getIconToolBarScrollPane() {
 		return iconToolBarScrollPane;
 	}
 

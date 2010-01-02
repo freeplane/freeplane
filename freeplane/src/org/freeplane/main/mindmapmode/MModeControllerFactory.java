@@ -252,20 +252,22 @@ public class MModeControllerFactory {
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar();
-		userInputListenerFactory.addMainToolBar("/main_toolbar", toolbar);
-		userInputListenerFactory.addMainToolBar("/filter_toolbar", FilterController.getController(controller).getFilterToolbar());
+		toolbar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
+		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolbar);
+		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(controller).getFilterToolbar());
 		final FButtonBar fButtonToolBar = new FButtonBar(modeController);
 		fButtonToolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "fbarVisible");
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
-		userInputListenerFactory.addMainToolBar("/fbuttons", fButtonToolBar);
-		controller.addAction(new ToggleToolbarAction(controller, "ToggleFBarAction", "/fbuttons", "fbarVisible"));
+		userInputListenerFactory.addToolBar("/fbuttons", ViewController.TOP, fButtonToolBar);
+		controller.addAction(new ToggleToolbarAction(controller, "ToggleFBarAction", "/fbuttons"));
 
 		SModeControllerFactory.createModeController(modeController);
 		
 		
 		userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);
-		userInputListenerFactory.setLeftToolBar(((MIconController) IconController.getController(modeController))
+		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT,((MIconController) IconController.getController(modeController))
 		    .getIconToolBarScrollPane());
+		modeController.addAction(new ToggleToolbarAction(controller, "ToggleLeftToolbarAction", "/icon_toolbar"));
 		new RevisionPlugin(modeController);
 		userInputListenerFactory.setMenuStructure("/xml/mindmapmodemenu.xml");
 		userInputListenerFactory.updateMenus(modeController);

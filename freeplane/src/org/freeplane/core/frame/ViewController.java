@@ -29,6 +29,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
@@ -46,6 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.JComboBox;
@@ -76,19 +78,65 @@ import org.freeplane.core.util.LogTool;
  * @author Dimitry Polivaev
  */
 abstract public class ViewController implements IMapViewChangeListener, IFreeplanePropertyListener {
+	private final class HorizontalToolbarPanel extends JPanel {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		private HorizontalToolbarPanel(LayoutManager layout) {
+			super(layout);
+		}
+
+		@Override
+		public void validateTree() {
+			if(! isValid()){
+				super.validateTree();
+				resizeToolbarPane();
+			}
+		}
+
+		private void resizeToolbarPane() {
+			if (getWidth() == 0) {
+				return;
+			}
+			int lastComponent = getComponentCount() - 1;
+			while (lastComponent >= 0 && !getComponent(lastComponent).isVisible()) {
+				lastComponent--;
+			}
+			final Dimension oldPreferredSize = getPreferredSize();
+			final Dimension preferredSize;
+			if (lastComponent >= 0) {
+				final Component component = getComponent(lastComponent);
+				preferredSize = new Dimension(getWidth(), component.getY() + component.getHeight());
+			}
+			else {
+				preferredSize = new Dimension(0, 0);
+			}
+			if (oldPreferredSize.height != preferredSize.height) {
+				setPreferredSize(preferredSize);
+				EventQueue.invokeLater(new Runnable(){
+					public void run() {
+						getParent().invalidate();
+						((JComponent) getContentPane()).revalidate();
+		            }});
+			}
+		}
+	}
+
 	public static final String VISIBLE_PROPERTY_KEY = "VISIBLE_PROPERTY_KEY";
+	public static final int TOP = 0, LEFT =1, RIGHT = 2, BOTTOM = 3; 
 	public static final String RESOURCE_ANTIALIAS = "antialias";
 	private static final String[] zooms = { "25%", "50%", "75%", "100%", "150%", "200%", "300%", "400%" };
 	private boolean antialiasAll = false;
 	private boolean antialiasEdges = false;
 	final private Controller controller;
-	final private JPanel leftToolbarPanel;
 	private final IMapViewManager mapViewManager;
 	final private JScrollPane scrollPane;
 	final private JLabel status;
 	final private Map<String, JLabel> statusInfos;
 	final private JPanel statusPanel;
-	final private JPanel toolbarPanel;
+	final private JComponent toolbarPanel[];
 	final private String userDefinedZoom;
 	final private ZoomInAction zoomIn;
 	private final DefaultComboBoxModel zoomModel;
@@ -137,54 +185,12 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			LogTool.severe(e);
 		}
 		controller.addAction(new ToggleMenubarAction(controller, this));
-		controller.addAction(new ToggleToolbarAction(controller, "ToggleToolbarAction", "/main_toolbar", "toolbarVisible"));
-		controller.addAction(new ToggleLeftToolbarAction(controller, this));
-		toolbarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0))
-		{
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void validateTree() {
-				if(! isValid()){
-					super.validateTree();
-					resizeToolbarPane();
-				}
-			}
-			
-			private void resizeToolbarPane() {
-				if (getWidth() == 0) {
-					return;
-				}
-				int lastComponent = getComponentCount() - 1;
-				while (lastComponent >= 0 && !getComponent(lastComponent).isVisible()) {
-					lastComponent--;
-				}
-				final Dimension oldPreferredSize = getPreferredSize();
-				final Dimension preferredSize;
-				if (lastComponent >= 0) {
-					final Component component = getComponent(lastComponent);
-					preferredSize = new Dimension(getWidth(), component.getY() + component.getHeight());
-				}
-				else {
-					preferredSize = new Dimension(0, 0);
-				}
-				if (oldPreferredSize.height != preferredSize.height) {
-					setPreferredSize(preferredSize);
-					EventQueue.invokeLater(new Runnable(){
-						public void run() {
-							getParent().invalidate();
-							((JComponent) getContentPane()).revalidate();
-                        }});
-				}
-			}
-
-			
-		};
-		leftToolbarPanel = new JPanel(new BorderLayout());
+		controller.addAction(new ToggleToolbarAction(controller, "ToggleToolbarAction", "/main_toolbar"));
+		toolbarPanel = new JComponent[4];
+		toolbarPanel[TOP] = new HorizontalToolbarPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		toolbarPanel[BOTTOM] = new HorizontalToolbarPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		toolbarPanel[LEFT] = Box.createVerticalBox();
+		toolbarPanel[RIGHT] = Box.createVerticalBox();
 		scrollPane = new MapViewScrollPane();
 		resourceController.addPropertyChangeListener(this);
 		final String antialiasProperty = resourceController.getProperty(ViewController.RESOURCE_ANTIALIAS);
@@ -383,8 +389,10 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	public void init() {
-		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
-		getContentPane().add(leftToolbarPanel, BorderLayout.WEST);
+		getContentPane().add(toolbarPanel[TOP], BorderLayout.NORTH);
+		getContentPane().add(toolbarPanel[LEFT], BorderLayout.WEST);
+		getContentPane().add(toolbarPanel[RIGHT], BorderLayout.EAST);
+		getContentPane().add(toolbarPanel[BOTTOM], BorderLayout.SOUTH);
 		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
 		final Frame frame = getFrame();
@@ -551,35 +559,28 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		if (oldModeController != null) {
 			final IUserInputListenerFactory userInputListenerFactory = oldModeController.getUserInputListenerFactory();
-			final Iterable<JComponent> modeToolBars = userInputListenerFactory.getToolBars();
-			if (modeToolBars != null) {
-				for (final Component toolBar : modeToolBars) {
-					toolbarPanel.remove(toolBar);
+			for(int j = 0; j < 4; j++){
+				final Iterable<JComponent> modeToolBars = userInputListenerFactory.getToolBars(j);
+				if (modeToolBars != null) {
+					for (final Component toolBar : modeToolBars) {
+						toolbarPanel[j].remove(toolBar);
+					}
+					toolbarPanel[j].revalidate();
 				}
-				toolbarPanel.revalidate();
-			}
-			final Component leftToolBar = userInputListenerFactory.getLeftToolBar();
-			if (leftToolBar != null) {
-				leftToolbarPanel.remove(leftToolBar);
 			}
 		}
 		final IUserInputListenerFactory newUserInputListenerFactory = newModeController.getUserInputListenerFactory();
-		final JComponent mainToolBar = newUserInputListenerFactory.getToolBar("/main_toolbar");
-		mainToolBar.putClientProperty(VISIBLE_PROPERTY_KEY, "toolbarVisible");
-		mainToolBar.setVisible(isToolbarVisible(mainToolBar));
-		final Iterable<JComponent> newToolBars = newUserInputListenerFactory.getToolBars();
-		if (newToolBars != null) {
-			int i = 0;
-			for (final Component toolBar : newToolBars) {
-				toolbarPanel.add(toolBar, i++);
+		for(int j = 0; j < 4; j++){
+			final Iterable<JComponent> newToolBars = newUserInputListenerFactory.getToolBars(j);
+			if (newToolBars != null) {
+				int i = 0;
+				for (final JComponent toolBar : newToolBars) {
+					toolBar.setVisible(isToolbarVisible(toolBar));
+					toolbarPanel[j].add(toolBar, i++);
+				}
+				toolbarPanel[j].revalidate();
+				toolbarPanel[j].repaint();
 			}
-			toolbarPanel.revalidate();
-			toolbarPanel.repaint();
-		}
-		/* new left toolbar. */
-		final Component newLeftToolBar = newUserInputListenerFactory.getLeftToolBar();
-		if (newLeftToolBar != null) {
-			leftToolbarPanel.add(newLeftToolBar, BorderLayout.WEST);
 		}
 		setFreeplaneMenuBar(newUserInputListenerFactory.getMenuBar());
 		getFreeplaneMenuBar().setVisible(isMenubarVisible());
@@ -605,18 +606,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
-
-	public void setLeftToolbarVisible(final boolean visible) {
-		final String property ;
-		if(isFullScreenEnabled()){
-			property = "leftToolbarVisible.fullscreen";
-		}
-		else{
-			property = "leftToolbarVisible";
-		}
-		ResourceController.getResourceController().setProperty(getPropertyKeyPrefix() + property, visible);
-		leftToolbarPanel.setVisible(visible);
-	}
 
 	public void setMenubarVisible(final boolean visible) {
 		final String property ;
@@ -747,11 +736,12 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			frame.setUndecorated(true);
 			frame.setResizable(false);
 			getFreeplaneMenuBar().setVisible(isMenubarVisible());
-			leftToolbarPanel.setVisible(isLeftToolbarVisible());
-			final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory()
-			    .getToolBars();
-			for (final JComponent toolBar : toolBars) {
-				toolBar.setVisible(isToolbarVisible(toolBar));
+			for(int j = 0; j < 4; j++){
+				final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory()
+				.getToolBars(j);
+				for (final JComponent toolBar : toolBars) {
+					toolBar.setVisible(isToolbarVisible(toolBar));
+				}
 			}
 			frame.setVisible(true);
 		}
@@ -762,11 +752,12 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			frame.setBounds(frameSize);
 			frame.setExtendedState(winState);
 			getFreeplaneMenuBar().setVisible(isMenubarVisible());
-			leftToolbarPanel.setVisible(isLeftToolbarVisible());
-			final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory()
-			    .getToolBars();
-			for (final JComponent toolBar : toolBars) {
-				toolBar.setVisible(isToolbarVisible(toolBar));
+			for(int j = 0; j < 4; j++){
+				final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory()
+				.getToolBars(j);
+				for (final JComponent toolBar : toolBars) {
+					toolBar.setVisible(isToolbarVisible(toolBar));
+				}
 			}
 			frame.setVisible(true);
 		}

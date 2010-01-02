@@ -25,6 +25,7 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.resources.ResourceController;
@@ -85,8 +86,10 @@ public class BModeControllerFactory {
 		modeController.addMenuContributor(toolbarContributor);
 		controller.getMapViewManager().addMapViewChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
-		userInputListenerFactory.addMainToolBar("/main_toolbar", new FreeplaneToolBar());
-		userInputListenerFactory.addMainToolBar("/filter_toolbar", FilterController.getController(controller).getFilterToolbar());
+		FreeplaneToolBar toolBar = new FreeplaneToolBar();
+		toolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
+		userInputListenerFactory.addToolBar("/main_toolbar",ViewController.TOP, toolBar);
+		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(controller).getFilterToolbar());
 		userInputListenerFactory.setMenuStructure(menuStructure);
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();

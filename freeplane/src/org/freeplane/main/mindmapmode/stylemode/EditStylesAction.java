@@ -54,7 +54,6 @@ public class EditStylesAction extends AFreeplaneAction {
 		modeController = SModeControllerFactory.getInstance().createModeController(dialog);
 		final ViewController viewController = modeController.getController().getViewController();
 		viewController.init();
-		viewController.setLeftToolbarVisible(false);
 		dialog.addComponentListener(new ComponentAdapter() {
 
 			@Override

@@ -142,9 +142,6 @@ public class FreeplaneStarter {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				viewController.init();
-				if (!ResourceController.getResourceController().getBooleanProperty("leftToolbarVisible")) {
-					controller.getViewController().setLeftToolbarVisible(false);
-				}
 				try {
 					final Class<?> macClass = Class.forName("accessories.plugins.MacChanges");
 					macClass.getConstructors()[0].newInstance(new Object[] { this });

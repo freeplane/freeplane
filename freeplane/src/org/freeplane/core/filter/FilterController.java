@@ -144,7 +144,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		applyToVisibleNodeOnly.setSelected(false);
 		controller.getMapViewManager().addMapSelectionListener(this);
 		final AFreeplaneAction showFilterToolbar = new ToggleToolbarAction(controller,
-			"ShowFilterToolbarAction", "/filter_toolbar", "filter_toolbar_visible");
+			"ShowFilterToolbarAction", "/filter_toolbar");
 		controller.addAction(showFilterToolbar);
 		final UnfoldFilteredAncestorsAction unfoldFilteredAncestors = new UnfoldFilteredAncestorsAction(this);
 		controller.addAction(unfoldFilteredAncestors);
