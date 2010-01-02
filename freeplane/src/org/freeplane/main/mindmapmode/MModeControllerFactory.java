@@ -24,6 +24,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
@@ -78,6 +79,7 @@ import org.freeplane.features.mindmapmode.addins.styles.FormatPaste;
 import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 import org.freeplane.features.mindmapmode.addins.styles.MPatternController;
 import org.freeplane.features.mindmapmode.addins.styles.MUIFactory;
+import org.freeplane.features.mindmapmode.addins.styles.StyleEditorPanel;
 import org.freeplane.features.mindmapmode.addins.time.ReminderHook;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
@@ -134,7 +136,12 @@ public class MModeControllerFactory {
 		new ReminderHook(modeController);
 		new ViewerController(modeController);
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		menuBuilder.addAnnotatedAction(new ApplyFormatPlugin(controller, uiFactory));
+		StyleEditorPanel panel = new StyleEditorPanel(modeController, uiFactory, true);
+		panel.init(modeController);
+		JScrollPane styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		styleScrollPane.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "styleScrollPaneVisible");
+		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, styleScrollPane);
+		menuBuilder.addAnnotatedAction(new ApplyFormatPlugin(controller));
 		new FormatPaste(controller, menuBuilder);
 		menuBuilder.addAnnotatedAction(new FitToPage(controller));
 		menuBuilder.addAnnotatedAction(new EncryptedMap(modeController));

@@ -32,7 +32,9 @@ import javax.swing.JPopupMenu;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 public interface IUserInputListenerFactory {
-	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler);
+	void addMouseWheelEventHandler(final IMouseWheelEventHandler handler);
+	
+	void addToolBar(final String name, final int position, final JComponent toolBar);
 
 	IMouseListener getMapMouseListener();
 
