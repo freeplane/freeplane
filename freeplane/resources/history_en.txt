@@ -1,10 +1,18 @@
 ===============================
 1.0.37 beta
 ===============================
+New features:
+
+Loading and execution of external Groovy scripts (Volker Boerchers, Dimitry)
+http://freeplane.sourceforge.net/mediawiki-1.14.1/index.php/External_script_file_execution
+
+JLatexMath replaces HotEqn
+http://forge.scilab.org/index.php/p/jlatexmath/
+
+Bug fixes:
 367]: "View->Attributes->Show selected attributes" not restored
 362]: outline view behaves inconsistent when deleting node
 jlatexmath-0.8.4.jar
-invocation of external scripts (Volker Boerchers, Dimitry)
 366]:Spacing at the begin of bubble node
 363]: Two minor bug about note
 ChangeSelectionOnPropertyChange
