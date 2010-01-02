@@ -93,7 +93,8 @@ Root: HKCR; SubKey: Freeplane; ValueType: string; ValueData: Freeplane mind map;
 Root: HKCR; SubKey: Freeplane\Shell\Open\Command; ValueType: string; ValueData: """{app}\freeplane.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: associate
 Root: HKCR; Subkey: Freeplane\DefaultIcon; ValueType: string; ValueData: {app}\freeplane.exe,1; Flags: uninsdeletevalue; Tasks: associate
 [InstallDelete]
-Name: {app}\plugins\org.freeplane.core; Type: filesandordirs; Tasks: ; Languages: 
+Name: {app}\core; Type: filesandordirs
+Name: {app}\plugins; Type: filesandordirs; Tasks: ; Languages: 
 
 
 

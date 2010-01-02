@@ -1,6 +1,9 @@
 ===============================
 1.0.37 beta
 ===============================
+367]: "View->Attributes->Show selected attributes" not restored
+362]: outline view behaves inconsistent when deleting node
+jlatexmath-0.8.4.jar
 invocation of external scripts (Volker Boerchers, Dimitry)
 366]:Spacing at the begin of bubble node
 363]: Two minor bug about note
@@ -10,7 +13,6 @@ new italian translation + automatic translations
 355]: note tooltip appears truncated on the right side : do not limit maximum width of tooltips with long lines
 364]: folding symbol eats the last letter of the bubbled node
 new italian translation + automatic translations
-jlatexmath-0.8.2.jar
 display selected attribute view type in menu
 363]: Two minor bug about note
 JLatexMath replaces HotEqn
