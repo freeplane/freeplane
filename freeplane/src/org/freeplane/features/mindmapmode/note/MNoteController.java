@@ -27,6 +27,8 @@ import java.awt.Font;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 
@@ -165,11 +167,22 @@ public class MNoteController extends NoteController {
 		}
 		htmlEditorPanel = MTextController.createSHTMLPanel();
 		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
-		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
-		final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getModeController());
-		spellCheckerController.enableAutoSpell(editorPane);
-		spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
-		spellCheckerController.enableShortKey(editorPane);
+	    final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
+	    editorPane.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+			}
+			
+			public void focusGained(FocusEvent e) {
+				initSpellChecker();
+				editorPane.removeFocusListener(this);
+			}
+			private void initSpellChecker() {
+				final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getModeController());
+				spellCheckerController.enableAutoSpell(editorPane);
+				spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
+				spellCheckerController.enableShortKey(editorPane);
+		    }
+		});
 		final Action jumpToMapAction = new JumpToMapAction();
 		final String keystroke = ResourceController.getResourceController().getAdjustableProperty(
 		    "acceleratorForMindMap//menu_bar/navigate/notes/SelectNoteAction");
