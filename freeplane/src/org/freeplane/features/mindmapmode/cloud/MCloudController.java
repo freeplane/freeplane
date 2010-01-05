@@ -22,24 +22,70 @@ package org.freeplane.features.mindmapmode.cloud;
 import java.awt.Color;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
+import org.freeplane.features.common.edge.EdgeModel;
+import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MCloudController extends CloudController {
+	private static class ExtensionCopier implements IExtensionCopier{
+
+		public void copy(Object key, NodeModel from, NodeModel to) {
+			if(! key.equals(LogicalStyleKeys.NODE_STYLE)){
+				return;
+			}
+			copy(from, to);
+		}
+
+		public void copy(NodeModel from, NodeModel to) {
+			final CloudModel fromStyle = (CloudModel) from.getExtension(CloudModel.class);
+			if(fromStyle == null){
+				return;
+			}
+			CloudModel toStyle = CloudModel.createModel(to);
+			toStyle.setColor(fromStyle.getColor());
+		}
+
+		public void remove(Object key, NodeModel from) {
+			if(! key.equals(LogicalStyleKeys.NODE_STYLE)){
+				return;
+			}
+			from.removeExtension(CloudModel.class);
+		}
+
+		public void remove(Object key, NodeModel from, NodeModel which) {
+			if(! key.equals(LogicalStyleKeys.NODE_STYLE)){
+				return;
+			}
+	    	final CloudModel whichStyle = (CloudModel) which.getExtension(CloudModel.class);
+	    	if(whichStyle == null){
+	    		return;
+	    	}
+	    	final CloudModel fromStyle = (CloudModel) from.getExtension(CloudModel.class);
+	    	if(fromStyle == null){
+	    		return;
+	    	}
+	    	from.removeExtension(fromStyle);
+		}
+		
+	}
+	
 	public MCloudController(final ModeController modeController) {
 		super(modeController);
 		final Controller controller = modeController.getController();
+		modeController.registerExtensionCopier(new ExtensionCopier());
 		modeController.addAction(new CloudAction(controller));
 		modeController.addAction(new CloudColorAction(controller));
-		modeController.getMapController().addNodeChangeListener(new MLogicalStyleController.StyleRemover(CloudModel.class));
 	}
 
 	public void setCloud(final NodeModel node, final boolean enable) {
@@ -61,7 +107,7 @@ public class MCloudController extends CloudController {
 
 			private void disable() {
 				final MapController mapController = modeController.getMapController();
-				CloudModel.setModel(mapController, node, null);
+				CloudModel.setModel(node, null);
 				mapController.nodeChanged(node);
 			}
 
@@ -69,7 +115,7 @@ public class MCloudController extends CloudController {
 				final CloudModel cloud = new CloudModel();
 				cloud.setColor(color);
 				final MapController mapController = modeController.getMapController();
-				CloudModel.setModel(mapController, node, cloud);
+				CloudModel.setModel(node, cloud);
 				mapController.nodeChanged(node);
 			}
 

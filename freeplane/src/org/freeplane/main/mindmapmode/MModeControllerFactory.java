@@ -77,7 +77,6 @@ import org.freeplane.features.mindmapmode.addins.styles.ApplyFormatPlugin;
 import org.freeplane.features.mindmapmode.addins.styles.AutomaticLayout;
 import org.freeplane.features.mindmapmode.addins.styles.FormatPaste;
 import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
-import org.freeplane.features.mindmapmode.addins.styles.MPatternController;
 import org.freeplane.features.mindmapmode.addins.styles.MUIFactory;
 import org.freeplane.features.mindmapmode.addins.styles.StyleEditorPanel;
 import org.freeplane.features.mindmapmode.addins.time.ReminderHook;
@@ -239,7 +238,6 @@ public class MModeControllerFactory {
 		LinkController.install(modeController, new MLinkController(modeController));
 		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(controller, new MMouseMotionListener(
 		    modeController)));
-		MPatternController.install(modeController, new MPatternController(modeController));
 		final MTextController textController = new MTextController(modeController);
 		TextController.install(modeController, textController);
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(controller, new IEditHandler() {

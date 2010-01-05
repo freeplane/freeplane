@@ -571,7 +571,7 @@ public class StyleEditorPanel extends JPanel {
 				final Color color = NodeStyleModel.getBackgroundColor(node);
 				final Color viewColor = styleController.getBackgroundColor(node);
 				mSetNodeBackgroundColor.setValue(color != null);
-				mNodeBackgroundColor.setColorValue(viewColor);
+				mNodeBackgroundColor.setColorValue(viewColor != null ? viewColor : modeController.getController().getMapViewManager().getBackgroundColor(node));
 				mNodeBackgroundColor.setEnabled(mSetNodeBackgroundColor.getBooleanValue());
 			}
 			{

@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.util.ListIterator;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.NodeModel;
 
 public class CloudModel implements IExtension {
@@ -31,7 +30,17 @@ public class CloudModel implements IExtension {
 		return (CloudModel) node.getExtension(CloudModel.class);
 	}
 
-	public static void setModel(final MapController mapController, final NodeModel node, final CloudModel cloud) {
+	public static CloudModel createModel(final NodeModel node) {
+		CloudModel extension = (CloudModel) node.getExtension(CloudModel.class);
+		if(extension != null){
+			return extension;
+		}
+		CloudModel cloudModel = new CloudModel();
+		node.addExtension(cloudModel);
+		return cloudModel;
+	}
+
+	public static void setModel(final NodeModel node, final CloudModel cloud) {
 		final CloudModel oldCloud = CloudModel.getModel(node);
 		if (cloud != null && oldCloud == null) {
 			node.addExtension(cloud);

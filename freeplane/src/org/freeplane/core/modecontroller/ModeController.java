@@ -20,6 +20,7 @@
 package org.freeplane.core.modecontroller;
 
 import java.awt.Container;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -30,6 +31,7 @@ import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
@@ -38,6 +40,7 @@ import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -128,6 +131,7 @@ public class ModeController extends AController {
 
 	final private Controller controller;
 	private final ExtensionContainer extensionContainer;
+	private final Collection<IExtensionCopier> copiers;
 	private boolean isBlocked = false;
 	private MapController mapController;
 	final private List<IMenuContributor> menuContributors = new LinkedList<IMenuContributor>();
@@ -148,6 +152,7 @@ public class ModeController extends AController {
 	public ModeController(final Controller controller) {
 		this.controller = controller;
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
+		copiers = new LinkedList<IExtensionCopier>();
 	}
 
 	@Override
@@ -169,6 +174,99 @@ public class ModeController extends AController {
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
 		extensionContainer.addExtension(clazz, extension);
 	}
+	
+	public void registerExtensionCopier(IExtensionCopier copier){
+		copiers.add(copier);
+	}
+
+	public void unregisterExtensionCopier(IExtensionCopier copier){
+		copiers.remove(copier);
+	}
+
+	void copyExtensions(Object key, NodeModel from, NodeModel to){
+		for(IExtensionCopier copier:copiers){
+			copier.copy(key, from, to);
+		}
+	}
+	
+	public void undoableCopyExtensions(final Object key, final NodeModel from, final NodeModel to){
+		MapModel map = to.getMap();
+		if(map == null){
+			copyExtensions(key, from, to);
+			return;
+		}
+		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
+		if(undoHandler == null){
+			copyExtensions(key, from, to);
+			return;
+		}
+		final NodeModel backup = new NodeModel(null);
+		copyExtensions(key, to, backup);
+		IActor actor = new IActor() {
+			
+			public void undo() {
+				removeExtensions(key, to);
+				copyExtensions(key, backup, to);
+				getMapController().nodeChanged(to);
+			}
+			
+			public String getDescription() {
+				return "undoableCopyExtensions";
+			}
+			
+			public void act() {
+				copyExtensions(key, from, to);
+				getMapController().nodeChanged(to);
+			}
+		};
+		execute(actor, map);
+	}
+
+	void removeExtensions(Object key, NodeModel from, final NodeModel which){
+		for(IExtensionCopier copier:copiers){
+			copier.remove(key, from);
+		}
+	}
+	
+	public void undoableRemoveExtensions(final Object key, final NodeModel from, final NodeModel which){
+		MapModel map = from.getMap();
+		if(map == null){
+			removeExtensions(key, from, which);
+			return;
+		}
+		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
+		if(undoHandler == null){
+			removeExtensions(key, from, which);
+			return;
+		}
+		final NodeModel backup = new NodeModel(null);
+		copyExtensions(key, from, backup);
+		IActor actor = new IActor() {
+			
+			public void undo() {
+				copyExtensions(key, backup, from);
+				getMapController().nodeChanged(from);
+			}
+			
+			public String getDescription() {
+				return "undoableCopyExtensions";
+			}
+			
+			public void act() {
+				removeExtensions(key, from, which);
+				getMapController().nodeChanged(from);
+			}
+		};
+		execute(actor, map);
+	}
+
+	
+	void removeExtensions(Object key, NodeModel from){
+		for(IExtensionCopier copier:copiers){
+			copier.remove(key, from, from);
+		}
+	}
+	
 
 	public void addINodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
 		nodeViewListeners.add(listener);

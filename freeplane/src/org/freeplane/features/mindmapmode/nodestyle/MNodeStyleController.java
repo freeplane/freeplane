@@ -26,6 +26,7 @@ import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
@@ -34,6 +35,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.addins.styles.LogicalStyleModel;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -45,42 +47,78 @@ import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
  */
 public class MNodeStyleController extends NodeStyleController {
 	
-	private class StyleRemover extends MLogicalStyleController.StyleRemover{
+	private static class StyleCopier implements IExtensionCopier{
 
-		public StyleRemover() {
-	        super(NodeStyleModel.class);
-        }
+		public void copy(Object key, NodeModel from, NodeModel to) {
+			if(! key.equals(LogicalStyleKeys.NODE_STYLE)){
+				return;
+			}
+			copy(from, to);
+		}
 
-		@Override
-        protected void undoableRemoveExtensionInformation(ModeController modeController, NodeModel node,
-                                                          IExtension styleModel, IExtension model) {
-	    	if(null != ((NodeStyleModel) styleModel).isBold()){
-	    		setBold(node, null);
-	    	}
-	    	if(null != ((NodeStyleModel) styleModel).isItalic()){
-	    		setItalic(node, null);
-	    	}
-	    	if(null != ((NodeStyleModel) styleModel).getFontFamilyName()){
-	    		setFontFamily(node, null);
-	    	}
-	    	if(null != ((NodeStyleModel) styleModel).getFontSize()){
-	    		setFontSize(node, null);
-	    	}
-	    	if(null != ((NodeStyleModel) styleModel).getShape()){
-	    		setShape(node, null);
-	    	}
-	    	if(null != ((NodeStyleModel) styleModel).getColor()){
-	    		setColor(node, null);
-	    	}
-	    	if(null != ((NodeStyleModel) styleModel).getBackgroundColor()){
-	    		setBackgroundColor(node, null);
-	    	}
-        }
 
-	};
+		public void copy(NodeModel from, NodeModel to) {
+			final IExtension fromStyle = from.getExtension(NodeStyleModel.class);
+			if(fromStyle == null){
+				return;
+			}
+			NodeStyleModel toStyle = NodeStyleModel.createNodeStyleModel(to);
+			toStyle.setBold(((NodeStyleModel) fromStyle).isBold());
+			toStyle.setItalic(((NodeStyleModel) fromStyle).isItalic());
+			toStyle.setFontFamilyName(((NodeStyleModel) fromStyle).getFontFamilyName());
+			toStyle.setFontSize(((NodeStyleModel) fromStyle).getFontSize());
+			toStyle.setShape(((NodeStyleModel) fromStyle).getShape());
+			toStyle.setColor(((NodeStyleModel) fromStyle).getColor());
+			toStyle.setBackgroundColor(((NodeStyleModel) fromStyle).getBackgroundColor());
+		}
+
+		public void remove(Object key, NodeModel from) {
+			if(! key.equals(LogicalStyleKeys.NODE_STYLE)){
+				return;
+			}
+			from.removeExtension(NodeStyleModel.class);
+		}
+
+		public void remove(Object key, NodeModel from, NodeModel which) {
+			if(! key.equals(LogicalStyleKeys.NODE_STYLE)){
+				return;
+			}
+	    	final NodeStyleModel whichStyle = (NodeStyleModel) which.getExtension(NodeStyleModel.class);
+	    	if(whichStyle == null){
+	    		return;
+	    	}
+	    	final NodeStyleModel fromStyle = (NodeStyleModel) from.getExtension(NodeStyleModel.class);
+	    	if(fromStyle == null){
+	    		return;
+	    	}
+	    	if(null != whichStyle.isBold()){
+				fromStyle.setBold(null);
+	    	}
+	    	if(null != whichStyle.isItalic()){
+				fromStyle.setItalic(null);
+	    	}
+	    	if(null != whichStyle.getFontFamilyName()){
+				fromStyle.setFontFamilyName(null);
+	    	}
+	    	if(null != whichStyle.getFontSize()){
+				fromStyle.setFontSize(null);
+	    	}
+	    	if(null != whichStyle.getShape()){
+				fromStyle.setShape(null);
+	    	}
+	    	if(null != whichStyle.getColor()){
+				fromStyle.setColor(null);
+	    	}
+	    	if(null != whichStyle.getBackgroundColor()){
+				fromStyle.setBackgroundColor(null);
+	    	}
+        }		
+	}
+
 	public MNodeStyleController(final ModeController modeController) {
 		super(modeController);
 		final Controller controller = modeController.getController();
+		modeController.registerExtensionCopier(new StyleCopier());
 		modeController.addAction(new BoldAction(controller));
 		modeController.addAction(new ItalicAction(controller));
 		final AMultipleNodeAction increaseNodeFont = new AMultipleNodeAction("IncreaseNodeFontAction", controller) {
@@ -112,7 +150,6 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new NodeBackgroundColorAction(controller));
 		modeController.addAction(new NodeShapeAction(modeController, NodeStyleModel.STYLE_FORK));
 		modeController.addAction(new NodeShapeAction(modeController, NodeStyleModel.STYLE_BUBBLE));
-		modeController.getMapController().addNodeChangeListener(new StyleRemover());
 	}
 
 	public void copyStyle(final NodeModel source, final NodeModel target) {

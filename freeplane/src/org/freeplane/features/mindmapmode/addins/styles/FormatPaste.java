@@ -22,12 +22,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 
 /**
  * @author foltin
@@ -35,13 +37,13 @@ import org.freeplane.core.ui.AMultipleNodeAction;
 @ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" }, //
 accelerator = "alt shift C")
 class FormatCopy extends AFreeplaneAction {
-	private static Pattern pattern = null;
+	private static NodeModel pattern = null;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static Pattern getPattern() {
+	public static NodeModel getPattern() {
 		return pattern;
 	}
 
@@ -56,7 +58,9 @@ class FormatCopy extends AFreeplaneAction {
 	/**
 	 */
 	private void copyFormat(final NodeModel node) {
-		FormatCopy.pattern = StylePatternFactory.createPatternFromNode(node);
+		FormatCopy.pattern = new NodeModel(null);
+		getModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, pattern);
+		getModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, node, pattern);
 	}
 }
 
@@ -85,12 +89,13 @@ public class FormatPaste extends AMultipleNodeAction {
 	/**
 	 */
 	private void pasteFormat(final NodeModel node) {
-		final Pattern pattern = FormatCopy.getPattern();
+		final NodeModel pattern = FormatCopy.getPattern();
 		if (pattern == null) {
 			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ResourceBundles
 			    .getText("no_format_copy_before_format_paste"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		MPatternController.getController((getModeController())).applyPattern(node, pattern);
+		getModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, pattern, node);
+		getModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, pattern, node);
 	}
 }

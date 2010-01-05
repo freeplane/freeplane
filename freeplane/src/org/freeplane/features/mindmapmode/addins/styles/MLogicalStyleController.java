@@ -26,6 +26,7 @@ import java.util.List;
 import javax.swing.JMenu;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.INodeChangeListener;
@@ -40,10 +41,13 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.addins.styles.LogicalStyleController;
+import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.addins.styles.LogicalStyleModel;
 import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
+import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
+
 
 /**
  * @author Dimitry Polivaev
@@ -51,10 +55,8 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
  */
 public class MLogicalStyleController extends LogicalStyleController {
 	
-	public static class  StyleRemover implements INodeChangeListener{
-		private Class<? extends IExtension> clazz;
-		public StyleRemover(Class<? extends IExtension> clazz){
-			this.clazz = clazz;
+	private static class  StyleRemover implements INodeChangeListener{
+		public StyleRemover(){
 		}
 		public void nodeChanged(NodeChangeEvent event) {
 	        final ModeController modeController = event.getModeController();
@@ -65,10 +67,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 	        	return;
 	        }
 	        final NodeModel node = event.getNode();
-	        final IExtension model = node.getExtension(clazz);
-	    	if(model == null){
-	    		return;
-	    	}
 	        final MapModel map = node.getMap();
 	        final Object styleKey = event.getNewValue();
 	       	final MapStyleModel mapStyles = MapStyleModel.getExtension(map);
@@ -76,31 +74,52 @@ public class MLogicalStyleController extends LogicalStyleController {
 	    	if(styleNode == null){
 	    		return;
 	    	}
-	    	final IExtension styleModel = styleNode.getExtension(clazz);
-	    	if(styleModel == null){
-	    		return;
-	    	}
-	    	undoableRemoveExtensionInformation(modeController, node, styleModel, model);
-        }
-		protected void undoableRemoveExtensionInformation(ModeController modeController, final NodeModel node, IExtension styleModel, final IExtension model) {
-	        IActor actor = new IActor() {
-				public void undo() {
-					node.addExtension(model);
-				}
-				
-				public String getDescription() {
-					return "undoableRemoveExtensionInformation";
-				}
-				
-				public void act() {
-					node.removeExtension(clazz);
-				}
-			};
-			modeController.execute(actor, node.getMap());
+	    	modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
         }
 
 	};
+	
+	private static class ExtensionCopier implements IExtensionCopier{
 
+		public void copy(Object key, NodeModel from, NodeModel to) {
+			if(! key.equals(LogicalStyleKeys.LOGICAL_STYLE)){
+				return;
+			}
+			copy(from, to);
+		}
+
+		public void copy(NodeModel from, NodeModel to) {
+			final LogicalStyleModel fromStyle = (LogicalStyleModel) from.getExtension(LogicalStyleModel.class);
+			if(fromStyle == null){
+				return;
+			}
+			LogicalStyleModel toStyle = LogicalStyleModel.createExtension(to);
+			toStyle.setStyle(fromStyle.getStyle());
+		}
+
+		public void remove(Object key, NodeModel from) {
+			if(! key.equals(LogicalStyleKeys.LOGICAL_STYLE)){
+				return;
+			}
+			from.removeExtension(CloudModel.class);
+		}
+
+		public void remove(Object key, NodeModel from, NodeModel which) {
+			if(! key.equals(LogicalStyleKeys.LOGICAL_STYLE)){
+				return;
+			}
+	    	final LogicalStyleModel whichStyle = (LogicalStyleModel) which.getExtension(LogicalStyleModel.class);
+	    	if(whichStyle == null){
+	    		return;
+	    	}
+	    	final LogicalStyleModel fromStyle = (LogicalStyleModel) from.getExtension(LogicalStyleModel.class);
+	    	if(fromStyle == null){
+	    		return;
+	    	}
+	    	from.removeExtension(fromStyle);
+		}
+		
+	}
 
 	private ModeController modeController;
 	final private List<AssignStyleAction> actions;
@@ -108,6 +127,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 	public MLogicalStyleController(ModeController modeController) {
 	    super(modeController);
 	    this.modeController = modeController;
+	    modeController.getMapController().addNodeChangeListener(new StyleRemover());
+		modeController.registerExtensionCopier(new ExtensionCopier());
 	    actions = new LinkedList<AssignStyleAction>();
 	    final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 	    modeController.getController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {

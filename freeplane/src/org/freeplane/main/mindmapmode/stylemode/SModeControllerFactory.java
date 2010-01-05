@@ -57,7 +57,6 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.addins.styles.MPatternController;
 import org.freeplane.features.mindmapmode.addins.styles.StyleEditorPanel;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;

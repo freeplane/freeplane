@@ -23,22 +23,73 @@ import java.awt.Color;
 import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
+import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
+
 
 /**
  * @author Dimitry Polivaev
  */
 public class MEdgeController extends EdgeController {
+	
+	private static class ExtensionCopier implements IExtensionCopier{
+
+		public void copy(Object key, NodeModel from, NodeModel to) {
+			if(! key.equals(LogicalStyleKeys.NODE_STYLE)){
+				return;
+			}
+			copy(from, to);
+		}
+
+		public void copy(NodeModel from, NodeModel to) {
+			final EdgeModel fromStyle = (EdgeModel) from.getExtension(EdgeModel.class);
+			if(fromStyle == null){
+				return;
+			}
+			EdgeModel toStyle = EdgeModel.createEdgeModel(to);
+			toStyle.setColor(fromStyle.getColor());
+			toStyle.setStyle(fromStyle.getStyle());
+			toStyle.setWidth(fromStyle.getWidth());
+		}
+
+		public void remove(Object key, NodeModel from) {
+			if(! key.equals(LogicalStyleKeys.NODE_STYLE)){
+				return;
+			}
+			from.removeExtension(NodeStyleModel.class);
+		}
+
+		public void remove(Object key, NodeModel from, NodeModel which) {
+			if(! key.equals(LogicalStyleKeys.NODE_STYLE)){
+				return;
+			}
+	    	final EdgeModel whichStyle = (EdgeModel) which.getExtension(EdgeModel.class);
+	    	if(whichStyle == null){
+	    		return;
+	    	}
+	    	final EdgeModel fromStyle = (EdgeModel) from.getExtension(EdgeModel.class);
+	    	if(fromStyle == null){
+	    		return;
+	    	}
+	    	from.removeExtension(fromStyle);
+		}
+		
+	}
+	
 	public MEdgeController(final ModeController modeController) {
 		super(modeController);
 		final Controller controller = modeController.getController();
+		modeController.registerExtensionCopier(new ExtensionCopier());
 		modeController.addAction(new EdgeColorAction(controller));
 		modeController.addAction(new EdgeWidthAction(modeController, EdgeModel.WIDTH_PARENT));
 		modeController.addAction(new EdgeWidthAction(modeController, EdgeModel.WIDTH_THIN));
@@ -53,8 +104,6 @@ public class MEdgeController extends EdgeController {
 		modeController.addAction(new EdgeStyleAction(modeController, EdgeStyle.EDGESTYLE_HORIZONTAL));
 		modeController.addAction(new EdgeStyleAction(modeController, EdgeStyle.EDGESTYLE_HIDDEN));
 		modeController.addAction(new EdgeStyleAsParentAction(modeController));
-		modeController.getMapController().addNodeChangeListener(new MLogicalStyleController.StyleRemover(EdgeModel.class));
-
 	}
 
 	public void setColor(final NodeModel node, final Color color) {

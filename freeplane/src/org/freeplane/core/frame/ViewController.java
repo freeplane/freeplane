@@ -188,7 +188,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		controller.addAction(new ToggleToolbarAction(controller, "ToggleToolbarAction", "/main_toolbar"));
 		toolbarPanel = new JComponent[4];
 		toolbarPanel[TOP] = new HorizontalToolbarPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		toolbarPanel[BOTTOM] = new HorizontalToolbarPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		toolbarPanel[BOTTOM] = Box.createHorizontalBox();
 		toolbarPanel[LEFT] = Box.createVerticalBox();
 		toolbarPanel[RIGHT] = Box.createVerticalBox();
 		scrollPane = new MapViewScrollPane();
@@ -432,17 +432,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	abstract public JSplitPane insertComponentIntoSplitPane(JComponent noteViewerComponent);
 
 	abstract public boolean isApplet();
-
-	boolean isLeftToolbarVisible() {
-		final String property ;
-		if(isFullScreenEnabled()){
-			property = "leftToolbarVisible.fullscreen";
-		}
-		else{
-			property = "leftToolbarVisible";
-		}
-		return ResourceController.getResourceController().getBooleanProperty(getPropertyKeyPrefix() + property);
-	}
 
 	public boolean isMenubarVisible() {
 		final String property ;
