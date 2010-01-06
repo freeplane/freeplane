@@ -40,6 +40,10 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 class DialogController extends ViewController {
 	final private JDialog dialog;
+	public JDialog getDialog() {
+		return dialog;
+	}
+
 	private JComponent mContentComponent = null;
 	/** Contains the value where the Note Window should be displayed (right, left, top, bottom) */
 	/** Contains the Note Window Component */

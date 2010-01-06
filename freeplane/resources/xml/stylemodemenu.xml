@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu_structure>
 	<menu_category name="menu_bar">
-		<menu_submenu name="styles" name_ref="styles_menu">
-			<menu_action action="NewUserStyleAction" accelerator="ENTER" />
-			<menu_action action="DeleteUserStyleAction" accelerator="DELETE" />
+        <menu_submenu name="file" name_ref="file">
+            <menu_category name="close">
+                <menu_action action="styledialog.ok"  accelerator="control S"/>
+                <menu_action action="styledialog.cancel" accelerator="control W" />
+            </menu_category>
+        </menu_submenu>
+        <menu_submenu name="styles" name_ref="styles_menu">
+            <menu_action action="NewUserStyleAction" accelerator="ENTER" />
+            <menu_action action="DeleteUserStyleAction" accelerator="DELETE" />
 			<menu_action action="NewLevelStyleAction"/>
 			<menu_action action="DeleteLevelStyleAction"/>
 		</menu_submenu>
@@ -211,6 +217,10 @@
 		</menu_submenu>
 	</menu_category>
 	<menu_category name="main_toolbar">
+            <menu_category name="close">
+                <menu_action action="styledialog.ok"  accelerator="control S"/>
+                <menu_action action="styledialog.cancel" accelerator="control W" />
+            </menu_category>
 		<menu_category name="undo">
 			<menu_action action="UndoAction" />
 			<menu_action action="RedoAction" />

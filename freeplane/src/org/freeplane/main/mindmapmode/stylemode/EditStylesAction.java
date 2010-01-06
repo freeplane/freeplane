@@ -55,8 +55,9 @@ public class EditStylesAction extends AFreeplaneAction {
 		dialog.setModal(true);
 		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		modeController = SModeControllerFactory.getInstance().createModeController(dialog);
-		final ControlToolbar controlToolbar = new ControlToolbar();
-		modeController.getUserInputListenerFactory().addToolBar("/control", ViewController.BOTTOM, controlToolbar);
+		final ControlToolbar controlToolbar = new ControlToolbar(modeController.getController(), "styledialog", dialog);
+		modeController.addAction(controlToolbar.getOkAction());
+		modeController.addAction(controlToolbar.getOkAction());
 		final ViewController viewController = modeController.getController().getViewController();
 		viewController.init();
 		dialog.addComponentListener(new ComponentAdapter() {
