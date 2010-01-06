@@ -28,6 +28,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import org.freeplane.core.icon.MindIcon;
+import org.freeplane.core.icon.UIIcon;
 import org.freeplane.core.resources.ResourceBundles;
 
 /**
@@ -48,8 +49,8 @@ public class DefaultConditionRenderer implements ListCellRenderer {
 			return new JLabel(ResourceBundles.getText("filter_no_filtering"));
 		}
 		JComponent component;
-		if (value instanceof MindIcon) {
-			component = new JLabel(((MindIcon) value).getIcon());
+		if (value instanceof UIIcon) {
+			component = new JLabel(((UIIcon) value).getIcon());
 		}
 		else if (value instanceof ICondition) {
 			final ICondition cond = (ICondition) value;
