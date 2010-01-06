@@ -43,6 +43,8 @@ class ChangeConnectorArrowsAction extends AFreeplaneAction {
 		this.arrowLink = arrowLink;
 		this.startArrow = startArrow;
 		this.endArrow = endArrow;
+		boolean selected = arrowLink.getStartArrow().equals(startArrow) && arrowLink.getEndArrow().equals(endArrow);
+		setSelected(selected);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

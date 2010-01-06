@@ -45,6 +45,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
@@ -348,7 +349,6 @@ public class MLinkController extends LinkController {
 		modeController.addAction(colorArrowLinkAction);
 		edgeLikeLinkAction = new EdgeLikeConnectorAction(this, null);
 		modeController.addAction(edgeLikeLinkAction);
-		modeController.addAction(new ChangeConnectorArrowsAction(this, "none", null, ArrowType.DEFAULT, ArrowType.DEFAULT));
 		setLinkByTextField = new SetLinkByTextFieldAction(controller);
 		modeController.addAction(setLinkByTextField);
 		modeController.addAction(new AddLocalLinkAction(controller));
@@ -398,24 +398,22 @@ public class MLinkController extends LinkController {
 			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 			}
 		});
-		final boolean a = !link.getStartArrow().equals("None");
-		final boolean b = !link.getEndArrow().equals("None");
-		final JRadioButtonMenuItem itemnn = new JRadioButtonMenuItem(new ChangeConnectorArrowsAction(this, "none",
-		    link, ArrowType.NONE, ArrowType.NONE));
+		final ChangeConnectorArrowsAction actionNN = new ChangeConnectorArrowsAction(this, "none",
+		    link, ArrowType.NONE, ArrowType.NONE);
+		final JRadioButtonMenuItem itemnn = new JAutoRadioButtonMenuItem(actionNN);
 		arrowLinkPopup.add(itemnn);
-		itemnn.setSelected(!a && !b);
-		final JRadioButtonMenuItem itemnt = new JRadioButtonMenuItem(new ChangeConnectorArrowsAction(this, "forward",
-		    link, ArrowType.NONE, ArrowType.DEFAULT));
+		final ChangeConnectorArrowsAction actionNT = new ChangeConnectorArrowsAction(this, "forward",
+		    link, ArrowType.NONE, ArrowType.DEFAULT);
+		final JRadioButtonMenuItem itemnt = new JAutoRadioButtonMenuItem(actionNT);
 		arrowLinkPopup.add(itemnt);
-		itemnt.setSelected(!a && b);
-		final JRadioButtonMenuItem itemtn = new JRadioButtonMenuItem(new ChangeConnectorArrowsAction(this,
-		    "backward", link, ArrowType.DEFAULT, ArrowType.NONE));
+		final ChangeConnectorArrowsAction actionTN = new ChangeConnectorArrowsAction(this,
+		    "backward", link, ArrowType.DEFAULT, ArrowType.NONE);
+		final JRadioButtonMenuItem itemtn = new JAutoRadioButtonMenuItem(actionTN);
 		arrowLinkPopup.add(itemtn);
-		itemtn.setSelected(a && !b);
-		final JRadioButtonMenuItem itemtt = new JRadioButtonMenuItem(new ChangeConnectorArrowsAction(this, "both",
-		    link, ArrowType.DEFAULT, ArrowType.DEFAULT));
+		final ChangeConnectorArrowsAction actionTT = new ChangeConnectorArrowsAction(this, "both",
+		    link, ArrowType.DEFAULT, ArrowType.DEFAULT);
+		final JRadioButtonMenuItem itemtt = new JAutoRadioButtonMenuItem(actionTT);
 		arrowLinkPopup.add(itemtt);
-		itemtt.setSelected(a && b);
 	}
 
 	private void createMailPattern() {

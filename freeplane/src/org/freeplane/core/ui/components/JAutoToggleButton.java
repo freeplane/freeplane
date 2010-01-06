@@ -28,6 +28,7 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 public class JAutoToggleButton extends JToggleButton implements PropertyChangeListener, ChangeListener {
@@ -41,9 +42,12 @@ public class JAutoToggleButton extends JToggleButton implements PropertyChangeLi
 		super(a);
 	}
 
-	public JAutoToggleButton(final Action a, final ButtonModel model) {
+	public JAutoToggleButton(final IFreeplaneAction a, final ButtonModel model) {
 		super(a);
 		model.addChangeListener(this);
+		if(a.isSelected()){
+			setSelected(true);
+		}
 	}
 
 	@Override
