@@ -79,7 +79,7 @@ public class MapStyleModel implements IExtension {
 	public MapStyleModel() {
 	}
 
-	void createStyleMap(ModeController modeController, String styleMapStr) {
+	void createStyleMap(MapModel parentMap, ModeController modeController, String styleMapStr) {
 	    if(loadingStyleMap){
 			styleMap = null;
 			styleNodes = null;
@@ -94,7 +94,7 @@ public class MapStyleModel implements IExtension {
             }
 			
 		};
-		styleMap.addExtension(IUndoHandler.class, new UndoHandler());
+		styleMap.addExtension(IUndoHandler.class, parentMap.getExtension(IUndoHandler.class));
 
 		final MapReader mapReader = modeController.getMapController().getMapReader();
 		final NodeModel root;

@@ -103,8 +103,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			if(mapStyleModel == null){
 				return;
 			}
-			mapStyleModel.createStyleMap(getModeController(), content);
-			node.getMap().getIconRegistry().addIcons(mapStyleModel.getStyleMap());
+			MapModel map = node.getMap();
+			mapStyleModel.createStyleMap(map, getModeController(), content);
+			map.getIconRegistry().addIcons(mapStyleModel.getStyleMap());
         }
 	}
 
@@ -177,7 +178,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		final MapStyleModel extension = new MapStyleModel();
 		rootNode.addExtension(extension);
-		extension.createStyleMap(getModeController(), null);
+		extension.createStyleMap(map, getModeController(), null);
 	}
 
 	public void onRemove(final MapModel map) {

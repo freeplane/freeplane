@@ -103,7 +103,9 @@ public class UndoHandler implements IUndoHandler {
 	}
 
 	public boolean canUndo() {
-		return actorIterator.hasPrevious();
+		int previousIndex = actorIterator.previousIndex();
+		if (transactionList.isEmpty()) return previousIndex > -1 ;
+		return previousIndex > transactionList.getLast();
 	}
 
 	public void commit() {
