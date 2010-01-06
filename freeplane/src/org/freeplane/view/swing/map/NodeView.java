@@ -773,7 +773,7 @@ public class NodeView extends JComponent implements INodeView {
 			    "foldingsymbolwidth", 8);
 		}
 		final int preferredFoldingSymbolHalfWidth = (int) ((NodeView.FOLDING_SYMBOL_WIDTH * map.getZoom()) / 2);
-		return Math.min(preferredFoldingSymbolHalfWidth, getHeight() / 2);
+		return preferredFoldingSymbolHalfWidth;
 	}
 
 	void insert() {
