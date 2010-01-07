@@ -31,25 +31,25 @@ import org.freeplane.core.extension.IExtension;
  */
 class LatexExtension implements IExtension {
 	private String equation;
-	final private Set<JZoomedHotEqn> viewers;
+	final private Set<JLatexViewer> viewers;
 
 	public LatexExtension() {
-		equation = "\\mbox{I}^\\fgcolor{ff0000}{\\heartsuit}\\mbox{HotEqn}";
-		viewers = new LinkedHashSet();
+		equation = "\\mbox{I}^\\fgcolor{ff0000}{\\heartsuit}\\mbox{\\JLaTeXMath}";
+		viewers = new LinkedHashSet<JLatexViewer>();
 	}
 
 	public String getEquation() {
 		return equation;
 	}
 
-	Set<JZoomedHotEqn> getViewers() {
+	Set<JLatexViewer> getViewers() {
 		return viewers;
 	}
 
 	void removeViewers() {
 		final Iterator iterator = getViewers().iterator();
 		while (iterator.hasNext()) {
-			final JZoomedHotEqn comp = (JZoomedHotEqn) iterator.next();
+			final JLatexViewer comp = (JLatexViewer) iterator.next();
 			comp.getParent().remove(comp);
 		}
 		viewers.clear();
@@ -59,7 +59,7 @@ class LatexExtension implements IExtension {
 		this.equation = equation;
 		final Iterator iterator = viewers.iterator();
 		while (iterator.hasNext()) {
-			final JZoomedHotEqn comp = (JZoomedHotEqn) iterator.next();
+			final JLatexViewer comp = (JLatexViewer) iterator.next();
 			comp.setModel(this);
 		}
 	}

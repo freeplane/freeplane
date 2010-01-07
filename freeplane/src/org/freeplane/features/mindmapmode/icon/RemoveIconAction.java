@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode.icon;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
@@ -65,7 +66,7 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 		return (String) getValue(Action.SHORT_DESCRIPTION);
 	}
 
-	public ImageIcon getIcon() {
+	public Icon getIcon() {
 		return (ImageIcon) getValue(Action.SMALL_ICON);
 	}
 
@@ -87,7 +88,7 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 
 			public void act() {
 				node.removeIcon();
-				getModeController().getMapController().nodeChanged(node, "icon", icon, null);
+				getModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, icon, null);
 			}
 
 			public String getDescription() {
@@ -96,7 +97,7 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 
 			public void undo() {
 				node.addIcon(icon);
-				getModeController().getMapController().nodeChanged(node, "icon", null, icon);
+				getModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, null, icon);
 			}
 		};
 		getModeController().execute(actor, node.getMap());
@@ -113,7 +114,7 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 
 			public void act() {
 				node.removeIcon(position);
-				getModeController().getMapController().nodeChanged(node, "icon", icon, null);
+				getModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, icon, null);
 			}
 
 			public String getDescription() {
@@ -122,7 +123,7 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 
 			public void undo() {
 				node.addIcon(icon, position);
-				getModeController().getMapController().nodeChanged(node, "icon", null, icon);
+				getModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, null, icon);
 			}
 		};
 		getModeController().execute(actor, node.getMap());

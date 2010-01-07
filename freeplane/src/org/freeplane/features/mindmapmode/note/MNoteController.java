@@ -27,6 +27,8 @@ import java.awt.Font;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 
@@ -167,11 +169,22 @@ public class MNoteController extends NoteController {
 		}
 		htmlEditorPanel = MTextController.createSHTMLPanel();
 		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
-		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
-		final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getModeController());
-		spellCheckerController.enableAutoSpell(editorPane);
-		spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
-		spellCheckerController.enableShortKey(editorPane);
+	    final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
+	    editorPane.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+			}
+			
+			public void focusGained(FocusEvent e) {
+				initSpellChecker();
+				editorPane.removeFocusListener(this);
+			}
+			private void initSpellChecker() {
+				final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getModeController());
+				spellCheckerController.enableAutoSpell(editorPane);
+				spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
+				spellCheckerController.enableShortKey(editorPane);
+		    }
+		});
 		final Action jumpToMapAction = new JumpToMapAction();
 		final String keystroke = ResourceController.getResourceController().getAdjustableProperty(
 		    "acceleratorForMindMap//menu_bar/navigate/notes/SelectNoteAction");
@@ -197,7 +210,7 @@ public class MNoteController extends NoteController {
 		JSplitPane splitPane;
 		splitPane = getSplitPane();
 		if (splitPane == null) {
-			showNotesPanel();
+			showNotesPanel(true);
 			splitPane = getSplitPane();
 			ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
 		}
@@ -209,16 +222,6 @@ public class MNoteController extends NoteController {
 		noteViewerComponent.setVisible(false);
 		getModeController().getController().getViewController().removeSplitPane();
 		mSplitPane = null;
-		final Controller controller = getModeController().getController();
-		final NodeModel node = controller.getSelection().getSelected();
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				Component component = controller.getViewController().getComponent(node);
-				if(component != null){
-					component.requestFocus();
-				}
-			}
-		});
 	}
 
 	boolean isLastContentEmpty() {
@@ -292,7 +295,7 @@ public class MNoteController extends NoteController {
 		    MNoteController.RESOURCES_USE_SPLIT_PANE));
 	}
 
-	public void showNotesPanel() {
+	void showNotesPanel(final boolean requestFocus) {
 		if (noteViewerComponent == null) {
 			noteViewerComponent = getHtmlEditorPanel();
 			noteManager.updateEditor();
@@ -337,12 +340,14 @@ public class MNoteController extends NoteController {
 		});
 		noteViewerComponent.setVisible(true);
 		mSplitPane = getModeController().getController().getViewController().insertComponentIntoSplitPane(southPanel);
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				getHtmlEditorPanel().getMostRecentFocusOwner().requestFocus();
-			}
-		});
+		if(requestFocus){
+			KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					getHtmlEditorPanel().getMostRecentFocusOwner().requestFocus();
+				}
+			});
+		}
 		southPanel.revalidate();
 	}
 
@@ -364,7 +369,7 @@ public class MNoteController extends NoteController {
 		if (shouldUseSplitPane()) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					showNotesPanel();
+					showNotesPanel(false);
 				}
 			});
 		}

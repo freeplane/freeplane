@@ -60,6 +60,7 @@ public class NodeModel implements MutableTreeNode {
 	public final static int RIGHT_POSITION = 1;
 	public final static int UNKNOWN_POSITION = 0;
 	static public final Object UNKNOWN_PROPERTY = new Object();
+	public static final String NODE_ICON = "icon";
 	protected final List<NodeModel> children = new ArrayList<NodeModel>();
 	private final ExtensionContainer extensionContainer;
 	final private FilterInfo filterInfo = new FilterInfo();
@@ -354,8 +355,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public void insert(final MutableTreeNode child, int index) {
-		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
-		if (encryptionModel != null && !encryptionModel.isAccessible()) {
+		if (! isAccessible()){
 			throw new IllegalArgumentException("Trying to insert nodes into a ciphered node.");
 		}
 		final NodeModel childNode = (NodeModel) child;
@@ -370,6 +370,11 @@ public class NodeModel implements MutableTreeNode {
 		child.setParent(this);
 		fireNodeInserted(childNode, getIndex(child));
 	}
+
+	private boolean isAccessible() {
+	    final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
+		return encryptionModel == null || encryptionModel.isAccessible();
+    }
 
 	/**
 	 * Returns whether the argument is parent or parent of one of the grandpa's

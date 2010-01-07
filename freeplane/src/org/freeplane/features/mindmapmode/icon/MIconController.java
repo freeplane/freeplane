@@ -92,7 +92,7 @@ public class MIconController extends IconController {
 		final IActor actor = new IActor() {
 			public void act() {
 				node.addIcon(icon);
-				getModeController().getMapController().nodeChanged(node, "icon", null, icon);
+				getModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, null, icon);
 			}
 
 			public String getDescription() {
@@ -101,7 +101,7 @@ public class MIconController extends IconController {
 
 			public void undo() {
 				node.removeIcon();
-				getModeController().getMapController().nodeChanged(node, "icon", icon, null);
+				getModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, icon, null);
 			}
 		};
 		getModeController().execute(actor, node.getMap());
@@ -111,7 +111,7 @@ public class MIconController extends IconController {
 		final IActor actor = new IActor() {
 			public void act() {
 				node.addIcon(icon, position);
-				getModeController().getMapController().nodeChanged(node, "icon", null, icon);
+				getModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, null, icon);
 			}
 
 			public String getDescription() {
@@ -120,7 +120,7 @@ public class MIconController extends IconController {
 
 			public void undo() {
 				node.removeIcon(position);
-				getModeController().getMapController().nodeChanged(node, "icon", icon, null);
+				getModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, icon, null);
 			}
 		};
 		getModeController().execute(actor, node.getMap());

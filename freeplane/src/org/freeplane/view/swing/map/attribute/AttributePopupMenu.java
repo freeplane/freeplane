@@ -243,7 +243,9 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 			if (table.getValueAt(row, 0).equals("")) {
 				row--;
 			}
-			table.getSelectedRow();
+			if(row >= 0){
+				table.changeSelection(row, table.columnAtPoint(point), false, false);
+			}
 		}
 		else if (component instanceof JTableHeader) {
 			final JTableHeader header = (JTableHeader) component;

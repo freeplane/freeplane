@@ -44,22 +44,31 @@ public class UndoHandler implements IUndoHandler {
 	private static final int MAX_ENTRIES = 100;
 	private static final long TIME_TO_BEGIN_NEW_ACTION = 100;
 	private boolean actionFrameStarted;
-	private ListIterator actorIterator;
-	final private LinkedList<IActor> actorList;
+	private ListIterator<IActor> actorIterator;
+	private LinkedList<IActor> actorList;
 	private boolean isUndoActionRunning = false;
 	final private ActionListener redoAction;
 	private long timeOfLastAdd;
-	final private LinkedList<Integer> transactionList;
+	final private LinkedList<LinkedList<IActor>> transactionList;
+	final private LinkedList<ListIterator<IActor>> transactionIteratorList;
 	final private ActionListener undoAction;
+	private boolean deactivated;
 
 	public UndoHandler() {
 		actionFrameStarted = false;
-		actorList = new LinkedList();
-		transactionList = new LinkedList<Integer>();
+		deactivated = false;
+		actorList = new LinkedList<IActor>();
+		transactionList = new LinkedList<LinkedList<IActor>>();
+		transactionIteratorList = new LinkedList<ListIterator<IActor>>();
 		actorIterator = actorList.listIterator();
 		redoAction = new RedoAction();
 		timeOfLastAdd = 0;
 		undoAction = new UndoAction();
+	}
+	
+	public void deactivate(){
+		deactivated = true;
+		startActionFrame();
 	}
 
 	/*
@@ -71,8 +80,21 @@ public class UndoHandler implements IUndoHandler {
 	public void addActor(final IActor actor) {
 		resetRedo();
 		final long currentTime = System.currentTimeMillis();
+		if(deactivated){
+			if(! actionFrameStarted && currentTime - timeOfLastAdd > UndoHandler.TIME_TO_BEGIN_NEW_ACTION){
+				deactivated = false;
+			}
+			else {
+				if (actorList.size() > 0){
+					actorList.clear();
+					actorIterator = actorList.listIterator();
+				}
+				return;
+			}
+		}
+		
 		if ((actorList.size() > 0)
-		        && (actionFrameStarted || currentTime - timeOfLastAdd < UndoHandler.TIME_TO_BEGIN_NEW_ACTION)) {
+				&& (actionFrameStarted || currentTime - timeOfLastAdd < UndoHandler.TIME_TO_BEGIN_NEW_ACTION)) {
 			final IActor lastActor = (IActor) actorIterator.previous();
 			CompoundActor compoundActor;
 			if (!(lastActor instanceof CompoundActor)) {
@@ -107,7 +129,12 @@ public class UndoHandler implements IUndoHandler {
 	}
 
 	public void commit() {
-		transactionList.removeLast();
+		final CompoundActor compoundActor = new CompoundActor(actorList);
+		actionFrameStarted = false;
+		timeOfLastAdd = 0;
+		actorList = transactionList.removeLast();
+		actorIterator = transactionIteratorList.removeLast();
+		addActor(compoundActor);
 	}
 
 	public String getLastDescription() {
@@ -162,10 +189,9 @@ public class UndoHandler implements IUndoHandler {
 	}
 
 	public void rollback() {
-		final int last = transactionList.removeLast();
 		try {
 			isUndoActionRunning = true;
-			while (last < actorIterator.previousIndex()) {
+			while (actorIterator.hasPrevious()) {
 				final IActor actor = (IActor) actorIterator.previous();
 				actor.undo();
 			}
@@ -173,6 +199,9 @@ public class UndoHandler implements IUndoHandler {
 		finally {
 			isUndoActionRunning = false;
 		}
+		actorList = transactionList.removeLast();
+		actorIterator = transactionIteratorList.removeLast();
+
 	}
 
 	private void startActionFrame() {
@@ -187,7 +216,11 @@ public class UndoHandler implements IUndoHandler {
 	}
 
 	public void startTransaction() {
-		transactionList.addLast(actorIterator.previousIndex());
+		transactionList.addLast(actorList);
+		transactionIteratorList.addLast(actorIterator);
+		final LinkedList<IActor> newActorList = new LinkedList<IActor>();
+		actorList = newActorList;
+		actorIterator = newActorList.listIterator();
 	}
 
 	/*

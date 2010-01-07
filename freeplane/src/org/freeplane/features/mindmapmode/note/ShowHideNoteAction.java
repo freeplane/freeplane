@@ -19,14 +19,18 @@
  */
 package org.freeplane.features.mindmapmode.note;
 
+import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
-@SelectableAction(checkOnPopup = true)
+@SelectableAction(checkOnPropertyChange = "use_split_pane")
 class ShowHideNoteAction extends AFreeplaneAction {
 	/**
 	 * 
@@ -40,6 +44,7 @@ class ShowHideNoteAction extends AFreeplaneAction {
 	public ShowHideNoteAction(final MNoteController noteController, final ModeController modeController) {
 		super("ShowHideNoteAction", modeController.getController());
 		this.noteController = noteController;
+		setSelected(ResourceController.getResourceController().getBooleanProperty(MNoteController.RESOURCES_USE_SPLIT_PANE));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -48,6 +53,16 @@ class ShowHideNoteAction extends AFreeplaneAction {
 		}
 		else {
 			(noteController).hideNotesPanel();
+			final Controller controller = getModeController().getController();
+			final NodeModel node = controller.getSelection().getSelected();
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					Component component = controller.getViewController().getComponent(node);
+					if(component != null){
+						component.requestFocus();
+					}
+				}
+			});
 			ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "false");
 		}
 	}

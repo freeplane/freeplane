@@ -45,7 +45,9 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
@@ -58,6 +60,42 @@ import org.freeplane.features.mindmapmode.MModeController;
  * @author Dimitry Polivaev
  */
 public class MLinkController extends LinkController {
+	private final class CreateArrowLinkActor implements IActor {
+		private final String targetID;
+		private final NodeModel source;
+		private ConnectorModel arrowLink;
+
+		public ConnectorModel getArrowLink() {
+			return arrowLink;
+		}
+
+		private CreateArrowLinkActor(String targetID, NodeModel source) {
+			this.targetID = targetID;
+			this.source = source;
+		}
+
+		public void act() {
+			NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
+			if (nodeLinks == null) {
+				nodeLinks = new NodeLinks();
+				source.addExtension(nodeLinks);
+			}
+			arrowLink = new ConnectorModel(source, targetID);
+			nodeLinks.addArrowlink(arrowLink);
+			getModeController().getMapController().nodeChanged(source);
+		}
+
+		public String getDescription() {
+			return "addLink";
+		}
+
+		public void undo() {
+			final NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
+			nodeLinks.removeArrowlink(arrowLink);
+			getModeController().getMapController().nodeChanged(source);
+		}
+	}
+
 	private final class TargetLabelSetter implements IActor {
 	    private final String oldLabel;
 	    private final String label;
@@ -256,7 +294,7 @@ public class MLinkController extends LinkController {
 	}
 
 	static private ConnectorColorAction colorArrowLinkAction;
-	static private EdgeLikeLinkAction edgeLikeLinkAction;
+	static private EdgeLikeConnectorAction edgeLikeLinkAction;
 	static private Pattern mailPattern;
 	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;|]");
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
@@ -268,14 +306,33 @@ public class MLinkController extends LinkController {
 		(modeController.getMapController()).addMapChangeListener(new NodeDeletionListener());
 	}
 
-	public void addLink(final NodeModel source, final NodeModel target) {
-		((AddConnectorAction) getModeController().getAction("AddConnectorAction")).addLink(source, target);
+	public ConnectorModel addConnector(final NodeModel source, final NodeModel target) {
+		return addConnector(source, target.getID());
 	}
 
-	public void changeArrowsOfArrowLink(final ConnectorModel arrowLink, final boolean hasStartArrow,
-	                                    final boolean hasEndArrow) {
-		((ChangeConnectorArrowsAction) getModeController().getAction("ChangeConnectorArrowsAction"))
-		    .changeArrowsOfArrowLink(arrowLink, hasStartArrow, hasEndArrow);
+	public void changeArrowsOfArrowLink(final ConnectorModel link, final ArrowType startArrow,
+	                                    final ArrowType endArrow) {
+		final IActor actor = new IActor() {
+			final private ArrowType oldEndArrow = link.getEndArrow();
+			final private ArrowType oldStartArrow = link.getStartArrow();
+
+			public void act() {
+				link.setStartArrow(startArrow);
+				link.setEndArrow(endArrow);
+				getModeController().getMapController().nodeChanged(link.getSource());
+			}
+
+			public String getDescription() {
+				return "changeArrowsOfArrowLink";
+			}
+
+			public void undo() {
+				link.setStartArrow(oldStartArrow);
+				link.setEndArrow(oldEndArrow);
+				getModeController().getMapController().nodeChanged(link.getSource());
+			}
+		};
+		getModeController().execute(actor, link.getSource().getMap());
 	}
 
 	/**
@@ -290,9 +347,8 @@ public class MLinkController extends LinkController {
 		modeController.addAction(new RemoveConnectorAction(this, null));
 		colorArrowLinkAction = new ConnectorColorAction(this, null);
 		modeController.addAction(colorArrowLinkAction);
-		edgeLikeLinkAction = new EdgeLikeLinkAction(this, null);
+		edgeLikeLinkAction = new EdgeLikeConnectorAction(this, null);
 		modeController.addAction(edgeLikeLinkAction);
-		modeController.addAction(new ChangeConnectorArrowsAction(this, "none", null, true, true));
 		setLinkByTextField = new SetLinkByTextFieldAction(controller);
 		modeController.addAction(setLinkByTextField);
 		modeController.addAction(new AddLocalLinkAction(controller));
@@ -305,7 +361,7 @@ public class MLinkController extends LinkController {
 		((RemoveConnectorAction) getModeController().getAction("RemoveConnectorAction")).setArrowLink(link);
 		arrowLinkPopup.add(new RemoveConnectorAction(this, link));
 		arrowLinkPopup.add(new ConnectorColorAction(this, link));
-		final EdgeLikeLinkAction action = new EdgeLikeLinkAction(this, link);
+		final EdgeLikeConnectorAction action = new EdgeLikeConnectorAction(this, link);
 		final JCheckBoxMenuItem menuItem = new JCheckBoxMenuItem(action);
 		menuItem.setSelected(link.isEdgeLike());
 		arrowLinkPopup.add(menuItem);
@@ -342,24 +398,22 @@ public class MLinkController extends LinkController {
 			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 			}
 		});
-		final boolean a = !link.getStartArrow().equals("None");
-		final boolean b = !link.getEndArrow().equals("None");
-		final JRadioButtonMenuItem itemnn = new JRadioButtonMenuItem(new ChangeConnectorArrowsAction(this, "none",
-		    link, false, false));
+		final ChangeConnectorArrowsAction actionNN = new ChangeConnectorArrowsAction(this, "none",
+		    link, ArrowType.NONE, ArrowType.NONE);
+		final JRadioButtonMenuItem itemnn = new JAutoRadioButtonMenuItem(actionNN);
 		arrowLinkPopup.add(itemnn);
-		itemnn.setSelected(!a && !b);
-		final JRadioButtonMenuItem itemnt = new JRadioButtonMenuItem(new ChangeConnectorArrowsAction(this, "forward",
-		    link, false, true));
+		final ChangeConnectorArrowsAction actionNT = new ChangeConnectorArrowsAction(this, "forward",
+		    link, ArrowType.NONE, ArrowType.DEFAULT);
+		final JRadioButtonMenuItem itemnt = new JAutoRadioButtonMenuItem(actionNT);
 		arrowLinkPopup.add(itemnt);
-		itemnt.setSelected(!a && b);
-		final JRadioButtonMenuItem itemtn = new JRadioButtonMenuItem(new ChangeConnectorArrowsAction(this,
-		    "backward", link, true, false));
+		final ChangeConnectorArrowsAction actionTN = new ChangeConnectorArrowsAction(this,
+		    "backward", link, ArrowType.DEFAULT, ArrowType.NONE);
+		final JRadioButtonMenuItem itemtn = new JAutoRadioButtonMenuItem(actionTN);
 		arrowLinkPopup.add(itemtn);
-		itemtn.setSelected(a && !b);
-		final JRadioButtonMenuItem itemtt = new JRadioButtonMenuItem(new ChangeConnectorArrowsAction(this, "both",
-		    link, true, true));
+		final ChangeConnectorArrowsAction actionTT = new ChangeConnectorArrowsAction(this, "both",
+		    link, ArrowType.DEFAULT, ArrowType.DEFAULT);
+		final JRadioButtonMenuItem itemtt = new JAutoRadioButtonMenuItem(actionTT);
 		arrowLinkPopup.add(itemtt);
-		itemtt.setSelected(a && b);
 	}
 
 	private void createMailPattern() {
@@ -483,5 +537,62 @@ public class MLinkController extends LinkController {
 		}
 		final IActor actor = new TargetLabelSetter(oldLabel, label, model);
 		getModeController().execute(actor, model.getSource().getMap());
+	}
+	
+	public ConnectorModel addConnector(final NodeModel source, final String targetID) {
+		final CreateArrowLinkActor actor = new CreateArrowLinkActor(targetID, source);
+		getModeController().execute(actor, source.getMap());
+		return actor.getArrowLink();
+	}
+
+	public void removeArrowLink(final NodeLinkModel arrowLink) {
+		final IActor actor = new IActor() {
+			public void act() {
+				final NodeModel source = arrowLink.getSource();
+				final NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
+				nodeLinks.removeArrowlink(arrowLink);
+				getModeController().getMapController().nodeChanged(source);
+			}
+
+			public String getDescription() {
+				return "removeArrowLink";
+			}
+
+			public void undo() {
+				final NodeModel source = arrowLink.getSource();
+				NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
+				if (nodeLinks == null) {
+					nodeLinks = new NodeLinks();
+					source.addExtension(nodeLinks);
+				}
+				nodeLinks.addArrowlink(arrowLink);
+				getModeController().getMapController().nodeChanged(source);
+			}
+		};
+		getModeController().execute(actor, arrowLink.getSource().getMap());
+	}
+	public void setEdgeLike(final ConnectorModel connector, final boolean edgeLike) {
+		final boolean alreadyEdgeLike = connector.isEdgeLike();
+		if (alreadyEdgeLike == edgeLike) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				connector.setEdgeLike(edgeLike);
+				final NodeModel node = connector.getSource();
+				getModeController().getMapController().nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setEdgeLike";
+			}
+
+			public void undo() {
+				connector.setEdgeLike(alreadyEdgeLike);
+				final NodeModel node = connector.getSource();
+				getModeController().getMapController().nodeChanged(node);
+			}
+		};
+		getModeController().execute(actor, connector.getSource().getMap());
 	}
 }

@@ -49,4 +49,6 @@ public interface IUndoHandler extends IExtension{
 	void startTransaction();
 
 	void undo();
+	
+	void deactivate();
 }

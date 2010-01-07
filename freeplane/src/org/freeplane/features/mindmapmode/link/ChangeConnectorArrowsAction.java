@@ -23,7 +23,9 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.common.link.LinkController;
 
 class ChangeConnectorArrowsAction extends AFreeplaneAction {
 	/**
@@ -31,44 +33,22 @@ class ChangeConnectorArrowsAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 	ConnectorModel arrowLink;
-	boolean hasEndArrow;
-	boolean hasStartArrow;
+	ArrowType endArrow;
+	ArrowType startArrow;
 
 	public ChangeConnectorArrowsAction(final MLinkController linkController, final String key,
-	                                     final ConnectorModel arrowLink, final boolean hasStartArrow,
-	                                     final boolean hasEndArrow) {
+	                                     final ConnectorModel arrowLink, final ArrowType startArrow,
+	                                     final ArrowType endArrow) {
 		super("ChangeConnectorArrowsAction." + key, linkController.getModeController().getController());
 		this.arrowLink = arrowLink;
-		this.hasStartArrow = hasStartArrow;
-		this.hasEndArrow = hasEndArrow;
+		this.startArrow = startArrow;
+		this.endArrow = endArrow;
+		boolean selected = arrowLink.getStartArrow().equals(startArrow) && arrowLink.getEndArrow().equals(endArrow);
+		setSelected(selected);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		changeArrowsOfArrowLink(arrowLink, hasStartArrow, hasEndArrow);
-	}
-
-	public void changeArrowsOfArrowLink(final ConnectorModel link, final boolean hasStartArrow,
-	                                    final boolean hasEndArrow) {
-		final IActor actor = new IActor() {
-			final private String oldEndArrow = link.getEndArrow();
-			final private String oldStartArrow = link.getStartArrow();
-
-			public void act() {
-				link.setStartArrow(hasStartArrow ? "Default" : "None");
-				link.setEndArrow(hasEndArrow ? "Default" : "None");
-				getModeController().getMapController().nodeChanged(link.getSource());
-			}
-
-			public String getDescription() {
-				return "changeArrowsOfArrowLink";
-			}
-
-			public void undo() {
-				link.setStartArrow(oldStartArrow);
-				link.setEndArrow(oldEndArrow);
-				getModeController().getMapController().nodeChanged(link.getSource());
-			}
-		};
-		getModeController().execute(actor, link.getSource().getMap());
+		MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+		linkController.changeArrowsOfArrowLink(arrowLink, startArrow, endArrow);
 	}
 }

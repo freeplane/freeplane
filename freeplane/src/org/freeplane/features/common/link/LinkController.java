@@ -28,6 +28,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JPopupMenu;
 
@@ -298,23 +300,70 @@ public class LinkController extends SelectionController implements IExtension {
     	return null;
     }
 
-	public static URI createURI(String inputValue) throws URISyntaxException {
-		URI link;
-		try {
-			link = new URI(inputValue);
+	// patterns only need to be compiled once
+	static Pattern patSMB = Pattern.compile( // \\host\path[#fragement]
+		"(?:\\\\\\\\([^\\\\]+)\\\\)(.*?)(?:#([^#]*))?");
+	static Pattern patFile = Pattern.compile( // [drive:]path[#fragment]
+	"((?:\\p{Alpha}:)?([/\\\\])?(?:[^:#?]*))?(?:#([^#]*))?");
+	static Pattern patURI = Pattern.compile( // [scheme:]scheme-specific-part[#fragment]
+	"(?:(\\p{Alpha}[\\p{Alnum}+.-]+):)?(.*?)(?:#([^#]*))?");
+	/* Function that tries to transform a not necessarily well-formed
+	 * string into a valid URI. We use the fact that the single-argument
+	 * URI constructor doesn't escape invalid characters (especially
+	 * spaces), whereas the 3-argument constructors does do escape
+	 * them (e.g. space into %20).
+	 */
+	public static URI createURI(String inputValue) throws URISyntaxException
+	{
+		try { // first, we try if the string can be interpreted as URI
+			return new URI(inputValue);
 		}
-		catch (final URISyntaxException e1) {
-			link = new URI(null, null, inputValue, null);
-		}
-		link = Compat.cleanURI(link);
-		return link;
-    }
+		catch (final URISyntaxException e) {
+			// [scheme:]scheme-specific-part[#fragment] 
+			String scheme = "", ssp = "", fragment = "";
 
-	public static Collection<LinkModel> getLinksTo(ModeController modeController, NodeModel node) {
-		final LinkController linkController = getController(modeController);
-		if(linkController == null){
-			return  Collections.emptyList();
+			// we check first if the string matches an SMB
+			// of the form \\host\path[#fragment]
+			{
+				final Matcher mat = patSMB.matcher(inputValue);
+				if (mat.matches()) {
+					scheme = "smb";
+					ssp = "//" + mat.group(1) + "/"
+					+ mat.group(2).replace('\\','/');
+					fragment = mat.group(3);
+					return new URI(scheme, ssp, fragment);
+				}
+			}
+			{
+				final Matcher mat = patFile.matcher(inputValue);
+				if (mat.matches()) {
+					if(mat.group(2) == null){
+						scheme = null;
+						ssp = mat.group(1).replace('\\','/');
+						fragment = mat.group(3);
+						return new URI(scheme, ssp, fragment);
+					}
+					scheme = "file";
+					ssp = "/" + mat.group(1).replace('\\','/');
+					fragment = mat.group(3);
+					return new URI(scheme, ssp, fragment);
+				}
+			}
+			// if this doesn't work out, we try to
+			// recognize an URI of the form
+			// [scheme:]scheme-specific-part[#fragment]
+			{
+				final Matcher mat = patURI.matcher(inputValue);
+				if (mat.matches()) {
+					scheme = mat.group(1);
+					ssp = mat.group(2).replace('\\','/');
+					fragment = mat.group(3);
+					return new URI(scheme, ssp, fragment);
+				}
+			}
+			throw new URISyntaxException(inputValue,
+			"This doesn't look like a valid link (URI, file, SMB or URL).");
+
 		}
-		return linkController.getLinksTo(node);
 	}
 }

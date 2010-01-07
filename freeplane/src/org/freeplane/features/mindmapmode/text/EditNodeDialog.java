@@ -26,6 +26,8 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -47,8 +49,8 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
-import com.inet.jortho.SpellChecker;
 
 /**
  * @author foltin
@@ -114,23 +116,27 @@ class EditNodeDialog extends EditNodeBase {
 			});
 			textArea.addKeyListener(new KeyListener() {
 				public void keyPressed(final KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-						e.consume();
-						confirmedCancel();
-					}
-					else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						if (enterConfirms.isSelected() && (e.getModifiers() & InputEvent.SHIFT_MASK) != 0) {
+					switch(e.getKeyCode()){
+						case KeyEvent.VK_ESCAPE:
 							e.consume();
-							textArea.insert("\n", textArea.getCaretPosition());
-						}
-						else if (enterConfirms.isSelected() || ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
+							confirmedCancel();
+							break;
+						case KeyEvent.VK_ENTER:
 							e.consume();
-							submit();
-						}
-						else {
+							if (enterConfirms.isSelected() && (e.getModifiers() & InputEvent.SHIFT_MASK) != 0) {
+								textArea.insert("\n", textArea.getCaretPosition());
+							}
+							else if (enterConfirms.isSelected() || ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
+								submit();
+							}
+							else {
+								textArea.insert("\n", textArea.getCaretPosition());
+							}
+							break;
+						case KeyEvent.VK_TAB:
 							e.consume();
-							textArea.insert("\n", textArea.getCaretPosition());
-						}
+							textArea.insert("    ", textArea.getCaretPosition());
+							break;
 					}
 				}
 
@@ -173,7 +179,9 @@ class EditNodeDialog extends EditNodeBase {
 			final Color nodeTextBackground = viewController.getBackgroundColor(getNode());
 			textArea.setBackground(nodeTextBackground);
 			textArea.setCaretColor(nodeTextColor);
-			SpellChecker.enableAutoSpell(textArea, true);
+			final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getBase()
+			    .getModeController());
+			spellCheckerController.enableAutoSpell(textArea);
 			final JPanel buttonPane = new JPanel();
 			buttonPane.add(enterConfirms);
 			buttonPane.add(okButton);
@@ -274,5 +282,19 @@ class EditNodeDialog extends EditNodeBase {
 			UITools.setDialogLocationRelativeTo(dialog, getController(), getNode());
 		}
 		dialog.show();
+		dialog.addComponentListener(new ComponentListener() {
+			public void componentShown(ComponentEvent e) {
+			}
+			
+			public void componentResized(ComponentEvent e) {
+			}
+			
+			public void componentMoved(ComponentEvent e) {
+			}
+			
+			public void componentHidden(ComponentEvent e) {
+				dialog.dispose();
+			}
+		});
 	}
 }

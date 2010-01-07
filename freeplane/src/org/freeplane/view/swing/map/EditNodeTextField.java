@@ -165,11 +165,13 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				getEditControl().ok(textfield.getText());
 				hideMe();
 				eventSource = CANCEL;
+				return;
 			}
-			else {
-				getEditControl().ok(textfield.getText());
-				hideMe();
+			if(e.isTemporary() && e.getOppositeComponent() == null){
+				return;
 			}
+			getEditControl().ok(textfield.getText());
+			hideMe();
 		}
 
 		public void keyPressed(final KeyEvent e) {
@@ -205,6 +207,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 					getEditControl().ok(output);
 					nodeView.requestFocus();
 					break;
+				case KeyEvent.VK_TAB:
+					textfield.insert("    ", textfield.getCaretPosition());
 				case KeyEvent.VK_SPACE:
 					e.consume();
 					break;

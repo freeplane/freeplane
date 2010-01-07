@@ -3,10 +3,10 @@
 	<menu_category name="menu_bar">
 		<menu_submenu name="file" name_ref="file">
 			<menu_category name="open">
-				<menu_action action="NewMapAction"  accelerator="control N"/>
-				<menu_action action="OpenAction"  accelerator="control O"/>
-				<menu_action action="SaveAction"  accelerator="control S"/>
-				<menu_action action="SaveAsAction"  accelerator="control shift S"/>
+				<menu_action action="NewMapAction" accelerator="control N" />
+				<menu_action action="OpenAction" accelerator="control O" />
+				<menu_action action="SaveAction" accelerator="control S" />
+				<menu_action action="SaveAsAction" accelerator="control shift S" />
 				<menu_action action="RevertAction" />
 			</menu_category>
 			<menu_category name="close">
@@ -14,13 +14,13 @@
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="last" name_ref="most_recent_files"></menu_submenu>
-				<menu_submenu name="export" name_ref="menu_file_export">
-					<menu_action action="ExportBranchAction" accelerator="alt shift A" />
-					<menu_separator />
-					<menu_category name="html"/>
-					<menu_separator />
-					<menu_category name="dialog"/>
-				</menu_submenu>
+			<menu_submenu name="export" name_ref="menu_file_export">
+				<menu_action action="ExportBranchAction" accelerator="alt shift A" />
+				<menu_separator />
+				<menu_category name="html" />
+				<menu_separator />
+				<menu_category name="dialog" />
+			</menu_submenu>
 			<menu_separator />
 			<menu_category name="import">
 				<menu_submenu name="import" name_ref="menu_file_import">
@@ -35,8 +35,8 @@
 			<menu_separator />
 			<menu_category name="print">
 				<menu_action action="PageAction" />
-				<menu_action action="PrintAction"  accelerator="control P"/>
-				<menu_action action="PrintPreviewAction"  />
+				<menu_action action="PrintAction" accelerator="control P" />
+				<menu_action action="PrintPreviewAction" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="quit">
@@ -50,20 +50,20 @@
 				<menu_action action="RedoAction" accelerator="control Y" />
 			</menu_category>
 			<menu_category name="select">
-				<menu_action action="SelectAllAction" accelerator="control A"/>
-				<menu_action action="SelectBranchAction" accelerator="control shift A"/>
+				<menu_action action="SelectAllAction" accelerator="control A" />
+				<menu_action action="SelectBranchAction" accelerator="control shift A" />
 			</menu_category>
 			<menu_category name="paste">
 				<menu_action action="CutAction" accelerator="control X" />
 				<menu_action action="CopyAction" accelerator="control C" />
-				<menu_action action="CopySingleAction" 	accelerator="control shift C"/>
+				<menu_action action="CopySingleAction" accelerator="control shift C" />
 				<menu_action action="PasteAction" accelerator="control V" />
-				<menu_action action="SelectedPasteAction"  />
+				<menu_action action="SelectedPasteAction" />
 			</menu_category>
 			<menu_category name="edit">
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
-				<menu_action action="EditAttributesAction" accelerator="control F9" />
+				<menu_action action="EditAttributesAction" accelerator="alt F9" />
 				<menu_action action="DeleteAction" accelerator="DELETE" />
 				<!-- <menu_action action="remove" /> -->
 			</menu_category>
@@ -83,46 +83,48 @@
 			<menu_category name="general">
 				<menu_action action="ShowSelectionAsRectangleAction" />
 				<menu_action action="ViewLayoutTypeAction.OUTLINE" />
-				<menu_action action="MaxNodeWidthAction"/>
+				<menu_action action="MaxNodeWidthAction" />
 			</menu_category>
 
-			<menu_action action="CenterSelectedNodeAction" accelerator="control alt C" />
+			<menu_action action="CenterSelectedNodeAction"
+				accelerator="control alt C" />
 			<menu_category name="zoom">
 				<menu_action action="ZoomInAction" accelerator="alt UP" />
 				<menu_action action="ZoomOutAction" accelerator="alt DOWN" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="note_window">
-				<menu_action action="ShowHideNoteAction" accelerator="control shift LESS" />
+				<menu_action action="ShowHideNoteAction" accelerator="control GREATER" />
 				<menu_submenu name="note_window_location" name_ref="note_window_location">
-					<menu_radio_action action="SetNoteWindowPosition.top"/>
-					<menu_radio_action action="SetNoteWindowPosition.left"/>
-					<menu_radio_action action="SetNoteWindowPosition.right"/>
-					<menu_radio_action action="SetNoteWindowPosition.bottom"/>
+					<menu_radio_action action="SetNoteWindowPosition.top" />
+					<menu_radio_action action="SetNoteWindowPosition.left" />
+					<menu_radio_action action="SetNoteWindowPosition.right" />
+					<menu_radio_action action="SetNoteWindowPosition.bottom" />
 				</menu_submenu>
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="attributes" name_ref="menu_attributes">
-				<menu_radio_action action="ShowAllAttributesAction"
-					 />
-				<menu_radio_action
-					action="ShowSelectedAttributesAction"  />
-				<menu_radio_action action="HideAllAttributesAction"
-					 />
+				<menu_radio_action action="ShowAllAttributesAction" />
+				<menu_radio_action action="ShowSelectedAttributesAction" />
+				<menu_radio_action action="HideAllAttributesAction" />
 			</menu_submenu>
 		</menu_submenu>
 		<menu_submenu name="insert" name_ref="menu_insert">
 			<menu_category name="nodes">
 				<menu_action action="NewChildAction" accelerator="INSERT" />
 				<menu_action action="NewSiblingAction" accelerator="ENTER" />
-				<menu_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
+				<menu_action action="NewPreviousSiblingAction"
+					accelerator="shift ENTER" />
 			</menu_category>
 			<menu_category name="image">
-				<menu_action action="SetImageByFileChooserAction" accelerator="alt shift K" />
+				<menu_action action="SetImageByFileChooserAction"
+					accelerator="alt shift K" />
 			</menu_category>
 			<menu_category name="links">
-				<menu_action action="SetLinkByFileChooserAction" accelerator="control shift K" />
-				<menu_action action="SetLinkByTextFieldAction" accelerator="control K" />
+				<menu_action action="SetLinkByFileChooserAction"
+					accelerator="control shift K" />
+				<menu_action action="SetLinkByTextFieldAction"
+					accelerator="control K" />
 				<menu_action action="AddConnectorAction" accelerator="control L" />
 				<menu_action action="AddLocalLinkAction" accelerator="alt shift L" />
 			</menu_category>
@@ -133,18 +135,19 @@
 			<menu_category name="other">
 			</menu_category>
 		</menu_submenu>
-			<menu_submenu name="icons" name_ref="icon_menu">
+		<menu_submenu name="icons" name_ref="icon_menu">
 			<menu_category name="actions" />
 			<menu_separator />
 			<menu_category name="icons" />
-			</menu_submenu>
+		</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
 			<menu_category name="change">
 			</menu_category>
 			<menu_separator />
 			<menu_category name="formatting_type">
-				<menu_action action="UseRichFormattingAction" accelerator="alt shift R" />
-				<menu_action action="UsePlainTextAction" accelerator="alt shift P"/>
+				<menu_action action="UseRichFormattingAction"
+					accelerator="alt shift R" />
+				<menu_action action="UsePlainTextAction" accelerator="alt shift P" />
 			</menu_category>
 			<menu_submenu name="styles" name_ref="styles">
 				<menu_category name="manage">
@@ -162,8 +165,10 @@
 				</menu_category>
 				<menu_separator />
 				<menu_category name="font">
-					<menu_action action="IncreaseNodeFontAction" accelerator="? control shift PLUS" />
-					<menu_action action="DecreaseNodeFontAction" accelerator="control MINUS" />
+					<menu_action action="IncreaseNodeFontAction"
+						accelerator="control PLUS" />
+					<menu_action action="DecreaseNodeFontAction"
+						accelerator="control MINUS" />
 					<menu_action action="ItalicAction" accelerator="control I" />
 					<menu_action action="BoldAction" accelerator="control B" />
 					<!--
@@ -171,10 +176,10 @@
 						action="underlined" />
 					-->
 				</menu_category>
-                <menu_action action="NodeColorAction" accelerator="alt shift F" />
-                <menu_action action="NodeColorBlendAction" accelerator="alt shift B" />
-                <menu_action action="NodeBackgroundColorAction" />
-                <menu_action action="MapBackgroundColorAction" />
+				<menu_action action="NodeColorAction" accelerator="alt shift F" />
+				<menu_action action="NodeColorBlendAction" accelerator="alt shift B" />
+				<menu_action action="NodeBackgroundColorAction" />
+				<menu_action action="MapBackgroundColorAction" />
 				<menu_category name="position">
 					<menu_action action="ResetNodeLocationAction" />
 				</menu_category>
@@ -208,23 +213,29 @@
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="navigate">
-				<menu_action action="NavigationPreviousMapAction" accelerator="alt shift LEFT" />
-				<menu_action action="NavigationNextMapAction" accelerator="alt shift RIGHT" />
+				<menu_action action="NavigationPreviousMapAction"
+					accelerator="alt shift LEFT" />
+				<menu_action action="NavigationNextMapAction"
+					accelerator="alt shift RIGHT" />
 				<menu_action action="NextNodeAction.BACK" accelerator="control alt LEFT" />
-				<menu_action action="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
-				<menu_action action="NextNodeAction.BACK_N_FOLD" accelerator="control alt shift LEFT" />
-				<menu_action action="NextNodeAction.FORWARD_N_FOLD" accelerator="control alt shift RIGHT" />
+				<menu_action action="NextNodeAction.FORWARD"
+					accelerator="control alt RIGHT" />
+				<menu_action action="NextNodeAction.BACK_N_FOLD"
+					accelerator="control alt shift LEFT" />
+				<menu_action action="NextNodeAction.FORWARD_N_FOLD"
+					accelerator="control alt shift RIGHT" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="nodes">
 				<menu_action action="MoveToRootAction" accelerator="ESCAPE" />
 				<menu_action action="NodeUpAction" accelerator="control UP" />
-				<menu_action action="NodeDownAction"  accelerator="control DOWN"/>
+				<menu_action action="NodeDownAction" accelerator="control DOWN" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="folding">
-				<menu_action action="ToggleFoldedAction" accelerator="SPACE"  />
-				<menu_action action="ToggleChildrenFoldedAction"   accelerator="control SPACE" />
+				<menu_action action="ToggleFoldedAction" accelerator="SPACE" />
+				<menu_action action="ToggleChildrenFoldedAction"
+					accelerator="control SPACE" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="links">
@@ -232,21 +243,21 @@
 			</menu_category>
 			<menu_separator></menu_separator>
 			<menu_category name="notes">
-				<menu_action action="SelectNoteAction"/> <!-- goto -->
+				<menu_action action="SelectNoteAction" /> <!-- goto -->
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="filter" name_ref="menu_filter">
-			<menu_action action="ShowFilterToolbarAction" /> 
-			<menu_action action="UnfoldFilteredAncestorsAction" /> 
-			<menu_action action="ApplyNoFilteringAction" /> 
-			<menu_action action="ApplySelectedViewConditionAction" /> 
-			<menu_action action="ApplyToVisibleAction" /> 
-			<menu_action action="ShowAncestorsAction" /> 
-			<menu_action action="ShowDescendantsAction" /> 
-			<menu_action action="EditFilterAction" /> 
-			<menu_action action="UndoFilterAction" /> 
-			<menu_action action="RedoFilterAction" /> 
-			<menu_action action="ReapplyFilterAction" /> 
+			<menu_action action="ShowFilterToolbarAction" />
+			<menu_action action="UnfoldFilteredAncestorsAction" />
+			<menu_action action="ApplyNoFilteringAction" />
+			<menu_action action="ApplySelectedViewConditionAction" />
+			<menu_action action="ApplyToVisibleAction" />
+			<menu_action action="ShowAncestorsAction" />
+			<menu_action action="ShowDescendantsAction" />
+			<menu_action action="EditFilterAction" />
+			<menu_action action="UndoFilterAction" />
+			<menu_action action="RedoFilterAction" />
+			<menu_action action="ReapplyFilterAction" />
 		</menu_submenu>
 		<menu_submenu name="extras" name_ref="menu_extras">
 			<menu_category name="first">
@@ -255,21 +266,17 @@
 				</menu_category>
 				<menu_category name="nodes">
 
-					<menu_action action="ExtractLinkFromTextAction"/>
+					<menu_action action="ExtractLinkFromTextAction" />
 					<menu_category name="sorting" />
 					<menu_category name="crypto" />
 					<menu_category name="change">
-						<menu_action action="RevisionPluginAction"
-							/>
+						<menu_action action="RevisionPluginAction" />
 					</menu_category>
 				</menu_category>
-				<menu_action action="RemoveNoteAction"
-					 />
+				<menu_action action="RemoveNoteAction" />
 				<menu_separator />
-				<menu_action action="ShowAttributeDialogAction"
-					 />
-				<menu_action action="AssignAttributesAction"
-					 />
+				<menu_action action="ShowAttributeDialogAction" />
+				<menu_action action="AssignAttributesAction" />
 				<menu_separator />
 				<menu_category name="time_management">
 				</menu_category>
@@ -280,9 +287,9 @@
 				<menu_category name="options">
 					<menu_action action="PropertyAction" accelerator="control COMMA" />
 					<menu_submenu name="acceleratorPresets" name_ref="acceleratorPresets">
-						<menu_category name="new"/>
+						<menu_category name="new" />
 						<menu_separator />
-						<menu_category name="save"/>
+						<menu_category name="save" />
 					</menu_submenu>
 				</menu_category>
 			</menu_category>
@@ -296,14 +303,14 @@
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="doc">
-				<menu_action action="DocumentationAction" accelerator="F1"/>
+				<menu_action action="DocumentationAction" accelerator="F1" />
 				<menu_action action="OpenFreeplaneSiteAction" />
 				<menu_action action="ReportBugAction" />
 				<menu_action action="RequestFeatureAction" />
 				<menu_action action="AskForHelp" />
 				<menu_action action="LicenseAction" />
 				<menu_action action="AboutAction" />
-				<menu_action action="UpdateCheckAction" />  
+				<menu_action action="UpdateCheckAction" />
 			</menu_category>
 		</menu_submenu>
 	</menu_category>
@@ -314,7 +321,7 @@
 		<menu_category name="toolbars">
 			<menu_action action="ToggleMenubarAction" />
 			<menu_action action="ToggleToolbarAction" />
-			<menu_action action="ShowFilterToolbarAction"  />
+			<menu_action action="ShowFilterToolbarAction" />
 			<menu_action action="ToggleFBarAction" />
 			<menu_action action="ToggleLeftToolbarAction" />
 			<menu_action action="ToggleFullScreenAction" />
@@ -443,51 +450,51 @@
 	</menu_category>
 	<menu_category name="main_toolbar">
 		<menu_separator />
-		<menu_category name="update"/>
+		<menu_category name="update" />
 		<menu_category name="main">
 			<menu_action action="NavigationPreviousMapAction" />
 			<menu_action action="NavigationNextMapAction" />
-			<menu_action action="PrintAction" />			
+			<menu_action action="PrintAction" />
 		</menu_category>
 		<menu_category name="zoom">
 		</menu_category>
 		<menu_category name="open">
-			<menu_action action="NewMapAction"  />
-			<menu_action action="OpenAction"  />
-			<menu_action action="SaveAction"  />
-			<menu_action action="SaveAsAction"  />
+			<menu_action action="NewMapAction" />
+			<menu_action action="OpenAction" />
+			<menu_action action="SaveAction" />
+			<menu_action action="SaveAsAction" />
 		</menu_category>
 		<menu_category name="font">
 		</menu_category>
 		<menu_separator />
 		<menu_category name="undo">
-			<menu_action action="UndoAction"  />
-			<menu_action action="RedoAction"  />
+			<menu_action action="UndoAction" />
+			<menu_action action="RedoAction" />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="paste">
-			<menu_action action="CutAction"  />
-			<menu_action action="CopyAction"  />
-			<menu_action action="PasteAction"  />
+			<menu_action action="CutAction" />
+			<menu_action action="CopyAction" />
+			<menu_action action="PasteAction" />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="insert">
 			<menu_action action="NewChildAction" />
 		</menu_category>
 		<menu_category name="font">
-			<menu_action action="ItalicAction"  />
-			<menu_action action="BoldAction"  />
+			<menu_action action="ItalicAction" />
+			<menu_action action="BoldAction" />
 		</menu_category>
 		<menu_category name="clouds">
-			<menu_action action="CloudAction"  />
+			<menu_action action="CloudAction" />
 			<menu_action action="CloudColorAction" />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="attributes">
-			<menu_action action="ShowAttributeDialogAction"  />
+			<menu_action action="ShowAttributeDialogAction" />
 		</menu_category>
 		<menu_separator />
-		<menu_category name="history"/>
-		<menu_category name="folding"/>
+		<menu_category name="history" />
+		<menu_category name="folding" />
 	</menu_category>
 </menu_structure>

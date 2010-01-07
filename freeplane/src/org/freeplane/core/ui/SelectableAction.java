@@ -29,4 +29,6 @@ public @interface SelectableAction {
 	boolean checkOnNodeChange() default false;
 
 	boolean checkOnPopup() default false;
+
+	String checkOnPropertyChange() default "";
 }

@@ -57,7 +57,7 @@ class DeleteAction extends AFreeplaneAction {
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final Iterator<NodeModel> iterator = controller.getSelection().getSortedSelection().iterator();
+		final Iterator<NodeModel> iterator = controller.getSelection().getSortedSelection(true).iterator();
 		while (iterator.hasNext()) {
 			delete(iterator.next());
 		}

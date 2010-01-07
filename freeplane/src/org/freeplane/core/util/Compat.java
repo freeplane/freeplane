@@ -28,33 +28,6 @@ public class Compat {
 		}
 	}
 
-	static private final String osNameStart = System.getProperty("os.name").substring(0, 3);
-	public static URI cleanURI(final URI hyperlink) {
-		final String rawPath = hyperlink.getRawPath();
-		if (rawPath == null) {
-			return hyperlink;
-		}
-		final int indexOfColon = rawPath.indexOf(':', 3);
-		if (indexOfColon == -1) {
-			return hyperlink;
-		}
-		final String scheme = hyperlink.getScheme();
-		if (scheme != null && !scheme.equals("file")) {
-			return hyperlink;
-		}
-		if (!osNameStart.equals("Win")) {
-			return hyperlink;
-		}
-		URI uri;
-		try {
-			uri = new URI("file:/" + rawPath.substring(indexOfColon - 1));
-			return uri;
-		}
-		catch (final URISyntaxException e) {
-			LogTool.severe(e);
-		}
-		return hyperlink;
-	}
 
 	public static URL fileToUrl(final File pFile) throws MalformedURLException {
 		return pFile.toURL();

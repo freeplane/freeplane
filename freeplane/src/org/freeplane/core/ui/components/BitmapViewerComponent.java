@@ -63,6 +63,10 @@ public class BitmapViewerComponent extends JComponent{
 	
 	@Override
     protected void paintComponent(Graphics g) {
+		if(image == null){
+			super.paintComponent(g);
+			return;
+		}
 		final Image scaledImage;
 		final int x;
 		final int y;

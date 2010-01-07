@@ -74,14 +74,14 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 	}
 
 	void createViewer(final LatexExtension model, final NodeView view) {
-		final JZoomedHotEqn comp = new JZoomedHotEqn(this, model);
-		final Set<JZoomedHotEqn> viewers = model.getViewers();
+		final JLatexViewer comp = new JLatexViewer(this, model);
+		final Set<JLatexViewer> viewers = model.getViewers();
 		viewers.add(comp);
 		view.getContentPane().add(comp);
 	}
 
 	void deleteViewer(final LatexExtension model, final NodeView nodeView) {
-		final Set<JZoomedHotEqn> viewers = model.getViewers();
+		final Set<JLatexViewer> viewers = model.getViewers();
 		if (viewers.isEmpty()) {
 			return;
 		}

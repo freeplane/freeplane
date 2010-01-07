@@ -20,7 +20,9 @@
  */
 package org.freeplane.features.common.addins.misc;
 
+import java.awt.EventQueue;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
@@ -51,6 +53,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @ActionLocationDescriptor(locations = { "/menu_bar/format/nodes/automaticLayout2" })
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener, IExtension {
+
+	private HashSet<NodeModel> nodeSet;
 
 	public HierarchicalIcons(final ModeController modeController) {
 		super(modeController);
@@ -210,7 +214,26 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		else {
 			node.removeStateIcons(getHookName());
 		}
-		getModeController().getMapController().nodeRefresh(node);
+		delayedNodeRefresh(node);
+	}
+
+	private void delayedNodeRefresh(final NodeModel node) {
+		if (nodeSet == null) {
+			nodeSet = new HashSet<NodeModel>();
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						for (final NodeModel node : nodeSet) {
+							getModeController().getMapController().nodeRefresh(node, NodeModel.NODE_ICON, null, null);
+						}
+					}
+					finally {
+						nodeSet = null;
+					}
+				}
+			});
+		}
+		nodeSet.add(node);
 	}
 
 	/**

@@ -84,7 +84,7 @@ public class ExportWithXSLT extends ExportAction {
 	/**
 	 * @param map 
 	 */
-	private void copyIconsToDirectory(MapModel map, final String directoryName) {
+	static void copyIconsToDirectory(MapModel map, final String directoryName) {
 		ListModel icons = map.getIconRegistry().getIconsAsListModel();
 		for (int i = 0; i < icons.getSize(); i++) {
 				UIIcon icon = (UIIcon) icons.getElementAt(i);

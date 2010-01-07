@@ -166,9 +166,9 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public boolean contains(final int x, final int y) {
-		if (!isValid()) {
-			return false;
-		}
+//		if (!isValid()) {
+//			return false;
+//		}
 		final int space = getMap().getZoomed(NodeView.SPACE_AROUND) - 2 * getZoomedFoldingSymbolHalfWidth();
 		return (x >= space) && (x < getWidth() - space) && (y >= space) && (y < getHeight() - space);
 	}
@@ -553,11 +553,11 @@ public class NodeView extends JComponent implements INodeView {
 		return null;
 	}
 
-	public NodeView getPreferredVisibleChild(MapViewLayout layoutType, final boolean left) {
+	public NodeView getPreferredVisibleChild(final boolean getUpper, final boolean left) {
 		if (getModel().isLeaf()) {
 			return null;
 		}
-		if(layoutType==MapViewLayout.OUTLINE){
+		if(getUpper){
 			preferredChild = null;
 		}
 		if (preferredChild != null && (left == preferredChild.isLeft()) && preferredChild.getParent() == this) {
@@ -565,7 +565,7 @@ public class NodeView extends JComponent implements INodeView {
 				return preferredChild;
 			}
 			else {
-				final NodeView newSelected = preferredChild.getPreferredVisibleChild(layoutType, left);
+				final NodeView newSelected = preferredChild.getPreferredVisibleChild(getUpper, left);
 				if (newSelected != null) {
 					return newSelected;
 				}
@@ -591,14 +591,14 @@ public class NodeView extends JComponent implements INodeView {
 				continue;
 			}
 			if (!childView.isContentVisible()) {
-				childView = childView.getPreferredVisibleChild(layoutType, left);
+				childView = childView.getPreferredVisibleChild(getUpper, left);
 				if (childView == null) {
 					continue;
 				}
 			}
 			final Point childPoint = new Point(0, childView.getMainView().getHeight() / 2);
 			UITools.convertPointToAncestor(childView.getMainView(), childPoint, baseComponent);
-			if (layoutType==MapViewLayout.OUTLINE){
+			if (getUpper){
 				return childView;
 			}
 			final int gapToChild = Math.abs(childPoint.y - ownY);
@@ -760,7 +760,7 @@ public class NodeView extends JComponent implements INodeView {
 			    "foldingsymbolwidth", 8);
 		}
 		final int preferredFoldingSymbolHalfWidth = (int) ((NodeView.FOLDING_SYMBOL_WIDTH * map.getZoom()) / 2);
-		return Math.min(preferredFoldingSymbolHalfWidth, getHeight() / 2);
+		return preferredFoldingSymbolHalfWidth;
 	}
 
 	void insert() {
@@ -839,6 +839,11 @@ public class NodeView extends JComponent implements INodeView {
 			treeStructureChanged();
 			return;
 		}
+		if(event.getProperty().equals(NodeModel.NODE_ICON)){
+			mainView.updateIcons(this);
+			revalidate();
+			return;
+		}
 		update();
 	}
 
@@ -877,7 +882,7 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		(node).remove();
-		final NodeView preferred = getPreferredVisibleChild(getMap().getLayoutType(), preferredChildIsLeft);
+		final NodeView preferred = getPreferredVisibleChild(false, preferredChildIsLeft);
 		if (preferred != null) {
 			getMap().selectAsTheOnlyOneSelected(preferred);
 		}
@@ -1246,4 +1251,11 @@ public class NodeView extends JComponent implements INodeView {
 
 	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
     }
+
+	@Override
+    protected void validateTree() {
+	    super.validateTree();
+    }
+	
+	
 }

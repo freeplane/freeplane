@@ -297,11 +297,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
 		final FileInputStream input = new FileInputStream(file);
-		final FileChannel channel = input.getChannel();
-		final FileLock lock = channel.tryLock(0, Long.MAX_VALUE, true);
-		if (lock == null) {
-			throw new IOException("can not obtain file lock for " + file);
-		}
 		try{
 			if (file.length() == 0){
 				return map.getRootNode();
@@ -366,7 +361,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	public void loadURL(final URI relative) {
 		final MapModel map = getController().getMap();
 		if (map.getFile() == null) {
-			if (!relative.isAbsolute() || relative.isOpaque()) {
+			if (! relative.toString().startsWith("#") &&  !relative.isAbsolute() || relative.isOpaque()) {
 				getController().getViewController().out("You must save the current map first!");
 				final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
 				if (!result) {

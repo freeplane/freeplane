@@ -49,7 +49,7 @@ class JoinNodesAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel selectedNode = getController().getSelection().getSelected();
-		final List selectedNodes = getController().getSelection().getSortedSelection();
+		final List selectedNodes = getController().getSelection().getSortedSelection(true);
 		joinNodes(selectedNode, selectedNodes);
 	}
 

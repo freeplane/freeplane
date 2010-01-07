@@ -28,8 +28,10 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
@@ -50,8 +52,12 @@ class NewChildAction extends AFreeplaneAction {
 
 	public NodeModel addNewNode(int newNodeMode, final KeyEvent e) {
 		final ModeController modeController = getModeController();
-		final NodeModel target = modeController.getMapController().getSelectedNode();
 		final TextController textController = TextController.getController(modeController);
+		if(textController instanceof MTextController){
+			((MTextController) textController).stopEditing();
+		}
+		final MMapController mapController = (MMapController) modeController.getMapController();
+		final NodeModel target = mapController.getSelectedNode();
 		if(textController instanceof MTextController){
 			((MTextController) textController).stopEditing();
 		}
@@ -67,7 +73,10 @@ class NewChildAction extends AFreeplaneAction {
 						childPosition++;
 					}
 					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
-					modeController.getMapController().select(newNode);
+					if(newNode == null){
+						return null;
+					}
+					mapController.select(newNode);
 					if (e != null) {
 						((MTextController) textController).edit(newNode, targetNode, e,
 						    true, false, false);
@@ -88,7 +97,6 @@ class NewChildAction extends AFreeplaneAction {
 			}
 			case MMapController.NEW_CHILD:
 			case MMapController.NEW_CHILD_WITHOUT_FOCUS: {
-				final MapController mapController = modeController.getMapController();
 				final boolean parentFolded = mapController.isFolded(targetNode);
 				if (parentFolded) {
 					mapController.setFolded(targetNode, false);
@@ -96,8 +104,11 @@ class NewChildAction extends AFreeplaneAction {
 				final int position = ResourceController.getResourceController().getProperty("placenewbranches").equals(
 				    "last") ? targetNode.getChildCount() : 0;
 				newNode = addNewNode(targetNode, position, targetNode.isNewChildLeft());
+				if(newNode == null){
+					return null;
+				}
 				if (newNodeMode == MMapController.NEW_CHILD) {
-					modeController.getMapController().select(newNode);
+					mapController.select(newNode);
 				}
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
@@ -114,6 +125,12 @@ class NewChildAction extends AFreeplaneAction {
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
+		final MMapController mapController = (MMapController) getModeController().getMapController();
+		if (! mapController.isWriteable(parent)) {
+			final String message = ResourceBundles.getText("node_is_write_protected");
+			UITools.errorMessage(message);
+			return null;
+		}
 		final MapModel map = parent.getMap();
 		final NodeModel newNode = getModeController().getMapController().newNode("", map);
 		newNode.setLeft(newNodeIsLeft);
@@ -127,7 +144,7 @@ class NewChildAction extends AFreeplaneAction {
 			}
 
 			public void undo() {
-				((MMapController) getModeController().getMapController()).deleteWithoutUndo(newNode);
+				mapController.deleteWithoutUndo(newNode);
 			}
 		};
 		getModeController().execute(actor, map);

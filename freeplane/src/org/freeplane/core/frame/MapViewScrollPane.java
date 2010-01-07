@@ -21,17 +21,42 @@ package org.freeplane.core.frame;
 
 import java.awt.Component;
 
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+
+import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
  * 10.01.2009
  */
 class MapViewScrollPane extends JScrollPane {
+	private static final String SCROLLBAR_INCREMENT = "scrollbar_increment";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	public MapViewScrollPane() {
+		super();
+		final int scrollbarIncrement = ResourceController.getResourceController().getIntProperty(SCROLLBAR_INCREMENT, 1);
+		getHorizontalScrollBar().setUnitIncrement(scrollbarIncrement);
+		getVerticalScrollBar().setUnitIncrement(scrollbarIncrement);
+		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+			
+			public void propertyChanged(String propertyName, String newValue,
+					String oldValue) {
+				if(! propertyName.equals(SCROLLBAR_INCREMENT)){
+					return;
+				}
+				final int scrollbarIncrement = Integer.valueOf(newValue);
+				getHorizontalScrollBar().setUnitIncrement(scrollbarIncrement);
+				getVerticalScrollBar().setUnitIncrement(scrollbarIncrement);
+			}
+		});
+	}
 
 	@Override
 	protected void validateTree() {

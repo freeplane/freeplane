@@ -163,7 +163,7 @@ class AppletViewController extends ViewController {
 	@Override
 	public void openDocument(final URI location) {
 		try {
-			applet.getAppletContext().showDocument(location.toURL(), "_blank");
+			openDocument(location.toURL());
 		}
 		catch (final MalformedURLException e) {
 			e.printStackTrace();
@@ -171,7 +171,7 @@ class AppletViewController extends ViewController {
 	}
 
 	@Override
-	public void openDocument(final URL doc) throws Exception {
+	public void openDocument(final URL doc){
 		applet.getAppletContext().showDocument(doc, "_blank");
 	}
 

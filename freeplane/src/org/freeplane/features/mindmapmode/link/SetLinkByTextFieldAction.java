@@ -56,7 +56,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 			}
 			URI link;
             try {
-	            link = LinkController.createURI(inputValue);
+	            link = LinkController.createURI(inputValue.trim());
             }
 			catch (URISyntaxException e1) {
 				LogTool.warn(e1);

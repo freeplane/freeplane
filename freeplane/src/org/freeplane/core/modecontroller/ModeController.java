@@ -35,6 +35,8 @@ import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
@@ -123,10 +125,6 @@ public class ModeController extends AController {
 
 		public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
         }
-	}
-
-	interface IActionOnChange {
-		AFreeplaneAction getAction();
 	}
 
 	final private Controller controller;
@@ -350,7 +348,7 @@ public class ModeController extends AController {
 
 	@Override
 	public AFreeplaneAction removeAction(final String key) {
-		final AFreeplaneAction action = getActions().remove(key);
+		final AFreeplaneAction action = super.removeAction(key);
 		if (AFreeplaneAction.checkEnabledOnChange(action)) {
 			mapController.removeNodeSelectionListener(ActionEnablerOnChange.class, action);
 			mapController.removeNodeChangeListener(ActionEnablerOnChange.class, action);

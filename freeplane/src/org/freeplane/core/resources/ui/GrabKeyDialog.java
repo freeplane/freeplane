@@ -1,6 +1,8 @@
 /*
  *  Freeplane - mind map editor
  *  Copyright (C) 2001, 2002 Slava Pestov
+ *  Copyright (C) 2009 Dimitry Polivaev
+ *  
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,6 +25,7 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 
@@ -37,6 +40,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.ui.KeyEventTranslator.Key;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 
@@ -86,27 +90,83 @@ public class GrabKeyDialog extends JDialog {
 		private int getModifierMask() {
 			return modifierMask;
 		}
+		
+		private Character keyChar = null;
 
 		@Override
-		protected void processKeyEvent(final KeyEvent _evt) {
-			if ((getModifierMask() & _evt.getModifiers()) != 0) {
-				final KeyEvent evt = new KeyEvent(_evt.getComponent(), _evt.getID(), _evt.getWhen(), ~getModifierMask()
-				        & _evt.getModifiers(), _evt.getKeyCode(), _evt.getKeyChar(), _evt.getKeyLocation());
-				processKeyEvent(evt);
-				if (evt.isConsumed()) {
-					_evt.consume();
+		protected void processKeyEvent(final KeyEvent evt) {
+			if(KeyEvent.KEY_PRESSED != evt.getID()){
+				return;
+			}
+			if ((getModifierMask() & evt.getModifiers()) != 0) {
+				final KeyEvent evt2 = new KeyEvent(evt.getComponent(), evt.getID(), evt.getWhen(), ~getModifierMask()
+				        & evt.getModifiers(), evt.getKeyCode(), evt.getKeyChar(), evt.getKeyLocation());
+				processKeyEvent(evt2);
+				if (evt2.isConsumed()) {
+					evt.consume();
 				}
 				return;
 			}
-			final KeyEvent evt = KeyEventWorkaround.processKeyEvent(_evt);
-			if (evt == null) {
-				return;
+			final int keyCode = evt.getKeyCode();
+			KeyEventTranslator.lastKeyTime = evt.getWhen();
+			switch (keyCode) {
+				case KeyEvent.VK_DEAD_GRAVE:
+				case KeyEvent.VK_DEAD_ACUTE:
+				case KeyEvent.VK_DEAD_CIRCUMFLEX:
+				case KeyEvent.VK_DEAD_TILDE:
+				case KeyEvent.VK_DEAD_MACRON:
+				case KeyEvent.VK_DEAD_BREVE:
+				case KeyEvent.VK_DEAD_ABOVEDOT:
+				case KeyEvent.VK_DEAD_DIAERESIS:
+				case KeyEvent.VK_DEAD_ABOVERING:
+				case KeyEvent.VK_DEAD_DOUBLEACUTE:
+				case KeyEvent.VK_DEAD_CARON:
+				case KeyEvent.VK_DEAD_CEDILLA:
+				case KeyEvent.VK_DEAD_OGONEK:
+				case KeyEvent.VK_DEAD_IOTA:
+				case KeyEvent.VK_DEAD_VOICED_SOUND:
+				case KeyEvent.VK_DEAD_SEMIVOICED_SOUND:
+				case '\0':
+					return;
+				case KeyEvent.VK_ALT:
+					KeyEventTranslator.modifiers |= InputEvent.ALT_MASK;
+					return;
+				case KeyEvent.VK_ALT_GRAPH:
+					KeyEventTranslator.modifiers |= InputEvent.ALT_GRAPH_MASK;
+					return;
+				case KeyEvent.VK_CONTROL:
+					KeyEventTranslator.modifiers |= InputEvent.CTRL_MASK;
+					return;
+				case KeyEvent.VK_SHIFT:
+					KeyEventTranslator.modifiers |= InputEvent.SHIFT_MASK;
+					return;
+				case KeyEvent.VK_META:
+					KeyEventTranslator.modifiers |= InputEvent.META_MASK;
+					return;
+				default:
+					if (!evt.isMetaDown()) {
+						if (evt.isControlDown() && evt.isAltDown()) {
+							KeyEventTranslator.lastKeyTime = 0L;
+						}
+						else if (!evt.isControlDown() && !evt.isAltDown()) {
+							KeyEventTranslator.lastKeyTime = 0L;
+						}
+					}
+					if (KeyEventTranslator.ALT_KEY_PRESSED_DISABLED) {
+						/* we don't handle key pressed A+ */
+						/* they're too troublesome */
+						if ((KeyEventTranslator.modifiers & InputEvent.ALT_MASK) != 0) {
+							return;
+						}
+					}
+					break;
 			}
 			evt.consume();
 			final KeyEventTranslator.Key key = KeyEventTranslator.translateKeyEvent(evt);
 			if (key == null) {
 				return;
 			}
+			keyChar = key.input;
 			final StringBuilder keyString = new StringBuilder(/* getText() */);
 			if (key.modifiers != null) {
 				keyString.append(key.modifiers).append(' ');
@@ -114,7 +174,7 @@ public class GrabKeyDialog extends JDialog {
 			if (key.input == ' ') {
 				keyString.append("SPACE");
 			}
-			else if (key.input != '\0') {
+			else if (key.key == 0) {
 				keyString.append(key.input);
 			}
 			else {
@@ -127,6 +187,10 @@ public class GrabKeyDialog extends JDialog {
 			setText(keyString.toString());
 			updateAssignedTo(keyString.toString());
 		}
+
+		public Character getKeyChar() {
+        	return keyChar;
+        }
 	}
 
 	/**
@@ -193,6 +257,10 @@ public class GrabKeyDialog extends JDialog {
 	private JButton ok;
 	private JButton remove;
 	private InputPane shortcut;
+	public Character getKeyChar() {
+	    return shortcut.getKeyChar();
+    }
+
 	private IKeystrokeValidator validator;
 
 	public GrabKeyDialog(final Dialog parent, final String input, final int modifierMask) {
@@ -206,7 +274,7 @@ public class GrabKeyDialog extends JDialog {
 	}
 
 	public boolean canClose(final KeyStroke ks) {
-		return validator == null || validator.isValid(ks);
+		return validator == null || validator.isValid(ks, getKeyChar());
 	}
 
 	/**

@@ -60,7 +60,14 @@ public class MModeController extends ModeController {
 	private void addUndoableActor(final IActor actor, final MapModel map) {
 		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
 		undoHandler.addActor(actor);
-		undo.setEnabled(true);
+		undo.setEnabled(undoHandler.canUndo());
+		redo.setEnabled(false);
+	}
+
+	public void deactivateUndo(final MMapModel map) {
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+		undoHandler.deactivate();
+		undo.setEnabled(false);
 		redo.setEnabled(false);
 	}
 
@@ -141,7 +148,7 @@ public class MModeController extends ModeController {
 		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
 		undoHandler.rollback();
 		undo.setEnabled(undoHandler.canUndo());
-		redo.setEnabled(false);
+		redo.setEnabled(undoHandler.canRedo());
 	}
 
 	/**

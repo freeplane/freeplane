@@ -104,7 +104,7 @@ public class ClipboardController implements IExtension {
 	}
 
 	public Transferable copy(final IMapSelection selection) {
-		return copy(selection.getSortedSelection(), false);
+		return copy(selection.getSortedSelection(true), false);
 	}
 
 	public Transferable copy(final NodeModel node, final boolean saveInvisible) {

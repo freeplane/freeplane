@@ -1,16 +1,21 @@
 /*
- * KeyEventTranslator.java - Hides some warts of AWT event API
- * :tabSize=8:indentSize=8:noTabs=false: :folding=explicit:collapseFolds=1:
- * Copyright (C) 2003 Slava Pestov This program is free software; you can
- * redistribute it and/or modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either version 2 of the
- * License, or any later version. This program is distributed in the hope that
- * it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details. You should have received a copy of
- * the GNU General Public License along with this program; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
+  *  Freeplane - mind map editor
+ *  Copyright (C) 2001, 2002 Slava Pestov
+ *  Copyright (C) 2009 Dimitry Polivaev
+ *  
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.freeplane.core.resources.ui;
 
@@ -25,15 +30,12 @@ import org.freeplane.core.util.LogTool;
  * In conjunction with the <code>KeyEventWorkaround</code>, hides some warts in
  * the AWT key event API.
  * 
- * @author Slava Pestov
- * @version $Id: KeyEventTranslator.java,v 1.1.2.2 2005/05/12 21:56:57
- *          christianfoltin Exp $
  */
-public class KeyEventTranslator {
-	public static class Key {
-		public char input;
-		public int key;
-		public String modifiers;
+class KeyEventTranslator {
+	static class Key {
+		final public char input;
+		final public int key;
+		final public String modifiers;
 
 		public Key(final String modifiers, final int key, final char input) {
 			this.modifiers = modifiers;
@@ -78,19 +80,6 @@ public class KeyEventTranslator {
 			KeyEventTranslator.setModifierMapping(InputEvent.CTRL_MASK, InputEvent.ALT_MASK, InputEvent.META_MASK,
 			    InputEvent.SHIFT_MASK);
 		}
-	}
-
-	/**
-	 * Adds a keyboard translation.
-	 * 
-	 * @param key1
-	 *            Translate this key
-	 * @param key2
-	 *            Into this key
-	 * @since jEdit 4.2pre3
-	 */
-	public static void addTranslation(final Key key1, final Key key2) {
-		KeyEventTranslator.transMap.put(key1, key2);
 	}
 
 	/**
@@ -190,63 +179,6 @@ public class KeyEventTranslator {
 		}
 	}
 
-	/**
-	 * Converts a string to a keystroke. The string should be of the form
-	 * <i>modifiers</i>+<i>shortcut</i> where <i>modifiers</i> is any
-	 * combination of A for Alt, C for Control, S for Shift or M for Meta, and
-	 * <i>shortcut</i> is either a single character, or a keycode name from the
-	 * <code>KeyEvent</code> class, without the <code>VK_</code> prefix.
-	 * 
-	 * @param keyStroke
-	 *            A string description of the key stroke
-	 * @since jEdit 4.2pre3
-	 */
-	public static Key parseKey(final String keyStroke) {
-		if (keyStroke == null) {
-			return null;
-		}
-		final int index = keyStroke.indexOf('+');
-		int modifiers = 0;
-		if (index != -1) {
-			for (int i = 0; i < index; i++) {
-				switch (Character.toUpperCase(keyStroke.charAt(i))) {
-					case 'A':
-						modifiers |= KeyEventTranslator.a;
-						break;
-					case 'C':
-						modifiers |= KeyEventTranslator.c;
-						break;
-					case 'M':
-						modifiers |= KeyEventTranslator.m;
-						break;
-					case 'S':
-						modifiers |= KeyEventTranslator.s;
-						break;
-				}
-			}
-		}
-		final String key = keyStroke.substring(index + 1);
-		if (key.length() == 1) {
-			return new Key(KeyEventTranslator.modifiersToString(modifiers), 0, key.charAt(0));
-		}
-		else if (key.length() == 0) {
-			return null;
-		}
-		else if (key.equals("SPACE")) {
-			return new Key(KeyEventTranslator.modifiersToString(modifiers), 0, ' ');
-		}
-		else {
-			int ch;
-			try {
-				ch = KeyEvent.class.getField("VK_".concat(key)).getInt(null);
-			}
-			catch (final Exception e) {
-				LogTool.severe(e);
-				return null;
-			}
-			return new Key(KeyEventTranslator.modifiersToString(modifiers), ch, '\0');
-		}
-	}
 
 	/**
 	 * Changes the mapping between symbolic modifier key names (<code>C</code>,
@@ -308,13 +240,8 @@ public class KeyEventTranslator {
 				final int keyCode = evt.getKeyCode();
 				if ((keyCode >= KeyEvent.VK_0 && keyCode <= KeyEvent.VK_9)
 				        || (keyCode >= KeyEvent.VK_A && keyCode <= KeyEvent.VK_Z)) {
-					if (KeyEventWorkaround.ALTERNATIVE_DISPATCHER) {
-						return null;
-					}
-					else {
 						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), '\0', Character
 						    .toUpperCase((char) keyCode));
-					}
 				}
 				else {
 					if (keyCode == KeyEvent.VK_TAB) {
@@ -330,47 +257,7 @@ public class KeyEventTranslator {
 						}
 					}
 					else {
-						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), keyCode, '\0');
-					}
-				}
-				break;
-			case KeyEvent.KEY_TYPED:
-				final char ch = evt.getKeyChar();
-				switch (ch) {
-					case '\n':
-					case '\t':
-					case '\b':
-						return null;
-					case ' ':
-						if ((modifiers & ~InputEvent.SHIFT_MASK) != 0) {
-							return null;
-						}
-				}
-				int ignoreMods;
-				if (KeyEventWorkaround.ALT_KEY_PRESSED_DISABLED) {
-					/* on MacOS, A+ can be user input */
-					ignoreMods = (InputEvent.SHIFT_MASK | InputEvent.ALT_GRAPH_MASK | InputEvent.ALT_MASK);
-				}
-				else {
-					/* on MacOS, A+ can be user input */
-					ignoreMods = (InputEvent.SHIFT_MASK | InputEvent.ALT_GRAPH_MASK);
-				}
-				if ((modifiers & InputEvent.ALT_GRAPH_MASK) == 0
-				        && evt.getWhen() - KeyEventWorkaround.lastKeyTime < 750
-				        && (KeyEventWorkaround.modifiers & ~ignoreMods) != 0) {
-					if (KeyEventWorkaround.ALTERNATIVE_DISPATCHER) {
-						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), 0, ch);
-					}
-					else {
-						return null;
-					}
-				}
-				else {
-					if (ch == ' ') {
-						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), 0, ch);
-					}
-					else {
-						returnValue = new Key(null, 0, ch);
+						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), keyCode, evt.getKeyChar());
 					}
 				}
 				break;
@@ -390,4 +277,8 @@ public class KeyEventTranslator {
 			return trans;
 		}
 	}
+
+	public static final boolean ALT_KEY_PRESSED_DISABLED = false;
+	static long lastKeyTime;
+	static int modifiers;
 }

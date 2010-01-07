@@ -66,7 +66,7 @@ Name: associate; Description: {cm:AssocFileExtension,Freeplane,.mm}; GroupDescri
 
 
 [Files]
-Source: ..\bin\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: fwdir\*
+Source: ..\build\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: fwdir\*
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -93,12 +93,12 @@ Root: HKCR; SubKey: Freeplane; ValueType: string; ValueData: Freeplane mind map;
 Root: HKCR; SubKey: Freeplane\Shell\Open\Command; ValueType: string; ValueData: """{app}\freeplane.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: associate
 Root: HKCR; Subkey: Freeplane\DefaultIcon; ValueType: string; ValueData: {app}\freeplane.exe,1; Flags: uninsdeletevalue; Tasks: associate
 [InstallDelete]
-Name: {app}\fwdir; Type: filesandordirs; Tasks: ; Languages: 
+Name: {app}\core; Type: filesandordirs
+Name: {app}\plugins; Type: filesandordirs; Tasks: ; Languages: 
 
 
 
 [UninstallDelete]
-Name: {app}\fwdir; Type: filesandordirs; Tasks: ; Languages: 
 
 [Code]
 function SearchForJavaVersion: Boolean;

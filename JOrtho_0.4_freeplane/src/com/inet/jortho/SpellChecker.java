@@ -274,6 +274,10 @@ public class SpellChecker {
 			}
 			putValue(SELECTED_KEY, Boolean.valueOf(b));
 		}
+
+		public Locale getLocale() {
+	        return locale;
+        }
 	}
 
 	private static String applicationName;
@@ -472,8 +476,10 @@ public class SpellChecker {
 	 */
 	private static void fireLanguageChanged(final Locale oldLocale) {
 		final LanguageChangeEvent ev = new LanguageChangeEvent(currentLocale, oldLocale);
-		for (final LanguageChangeListener listener : listeners.keySet()) {
-			listener.languageChanged(ev);
+		synchronized(listeners){
+			for (final LanguageChangeListener listener : listeners.keySet()) {
+				listener.languageChanged(ev);
+			}
 		}
 	}
 
@@ -667,33 +673,39 @@ public class SpellChecker {
 				e.printStackTrace();
 			}
 		}
-		if (activeLocale == null) {
-			activeLocale = "";
-		}
-		activeLocale = activeLocale.trim();
-		if (activeLocale.length() == 0) {
-			activeLocale = Locale.getDefault().getLanguage();
-		}
-		boolean activeSelected = false;
 		for (String locale : availableLocales.split(",")) {
 			locale = locale.trim().toLowerCase();
 			if (locale.length() > 0) {
 				final LanguageAction action = new LanguageAction(baseURL, new Locale(locale), extension);
 				languages.remove(action);
 				languages.add(action);
-				if (locale.equals(activeLocale)) {
-					action.actionPerformed(null);
+			}
+		}
+		//sort the display names in order of the current language 
+		Collections.sort(languages);
+		
+		setLanguage(activeLocale);
+	}
+
+	public static void setLanguage(String activeLocale) {
+		boolean activeSelected = false;
+		if (activeLocale != null) {
+			activeLocale = activeLocale.trim();
+			for(LanguageAction language:languages){
+				if (language.getLocale().getLanguage().equals(activeLocale)) {
+					language.actionPerformed(null);
 					activeSelected = true;
 				}
 			}
 		}
 		// if nothing selected then select the first entry
 		if (!activeSelected && languages.size() > 0) {
-			final LanguageAction action = languages.get(0);
-			action.actionPerformed(null);
+			DisableLanguageAction.instance.actionPerformed(null);
 		}
-		//sort the display names in order of the current language 
-		Collections.sort(languages);
+    }
+	
+	public static String getLanguage(){
+		return currentLocale == null ? null : currentLocale.getLanguage();
 	}
 
 	/**

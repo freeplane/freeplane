@@ -126,7 +126,7 @@ public class ChangeNodeLevelController {
 			return;
 		}
 		final NodeModel selectedParent = selectedNode.getParentNode();
-		final List<NodeModel> selectedNodes = modeController.getController().getSelection().getSortedSelection();
+		final List<NodeModel> selectedNodes = modeController.getController().getSelection().getSortedSelection(true);
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		final int ownPosition = selectedParent.getChildPosition(selectedNode);
 		NodeModel directSibling = null;
@@ -160,7 +160,7 @@ public class ChangeNodeLevelController {
 		}
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		NodeModel selectedParent = selectedNode.getParentNode();
-		final List<NodeModel> selectedNodes = modeController.getController().getSelection().getSortedSelection();
+		final List<NodeModel> selectedNodes = modeController.getController().getSelection().getSortedSelection(true);
 		int position;
 		final boolean changeSide;
 		if (selectedParent.isRoot()) {

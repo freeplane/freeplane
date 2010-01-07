@@ -32,8 +32,10 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.common.link.LinkController;
@@ -105,23 +107,41 @@ class ExportBranchAction extends AFreeplaneAction {
 			 */
 			final NodeModel parent = existingNode.getParentNode();
 			final File oldFile = existingNode.getMap().getFile();
-			final URI newUri = LinkController.toRelativeURI(oldFile, chosenFile);
+			boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
+			final URI newUri = useRelativeUri ? LinkController.toRelativeURI(oldFile, chosenFile) : chosenFile.toURI();
+			final URI oldUri = useRelativeUri ? LinkController.toRelativeURI(chosenFile, file):file.toURI();
+			((MLinkController) LinkController.getController(controller.getModeController())).setLink(existingNode, oldUri);
 			final int nodePosition = parent.getChildPosition(existingNode);
-			((MMapController) getModeController().getMapController()).deleteNode(existingNode);
-			existingNode.setParent(null);
-			existingNode.setFolded(false);
-			final MapModel map = getModeController().getMapController().newMap(existingNode);
+			final MMapController mMapController = (MMapController) getModeController().getMapController();
+			mMapController.deleteNode(existingNode);
+			final MapModel parentMap = parent.getMap();
+			{
+				IActor actor = new IActor() {
+					private boolean wasFolded = existingNode.isFolded();
+					public void undo() {
+						existingNode.setMap(parentMap);
+						existingNode.setFolded(wasFolded);
+					}
+
+					public String getDescription() {
+						return "ExportBranchAction";
+					}
+
+					public void act() {
+						existingNode.setParent(null);
+						existingNode.setFolded(false);
+						mMapController.newModel(existingNode);
+					}
+				};
+				getModeController().execute(actor, parentMap);
+			}
+			final MapModel map = existingNode.getMap();
 			((MFileManager) UrlManager.getController(getModeController())).save(map, chosenFile);
-			getController().getMapViewManager().updateMapViewName();
-			final NodeModel newNode = ((MMapController) getModeController().getMapController()).addNewNode(parent,
-			    nodePosition, existingNode.isLeft());
+			final NodeModel newNode = mMapController.addNewNode(parent, nodePosition, existingNode.isLeft());
 			((MTextController) TextController.getController(getModeController())).setNodeText(newNode, existingNode
 			    .getText());
 			final File newFile = map.getFile();
-			final URI oldUri = LinkController.toRelativeURI(newFile, file);
 			((MLinkController) LinkController.getController(controller.getModeController())).setLink(newNode, newUri);
-			((MLinkController) LinkController.getController(controller.getModeController())).setLink(existingNode,
-			    oldUri);
 		}
 	}
 	

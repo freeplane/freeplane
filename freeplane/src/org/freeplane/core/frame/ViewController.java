@@ -396,18 +396,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
 		final Frame frame = getFrame();
-		frame.addWindowFocusListener(new WindowFocusListener(){
-
-			public void windowGainedFocus(WindowEvent e) {
-				final IMapSelection selection = getSelection();
-				if(selection == null){
-					return;
-				}
-				getComponent(selection.getSelected()).requestFocusInWindow();
-            }
-
-			public void windowLostFocus(WindowEvent e) {
-            }});
 		frame.addComponentListener(new ComponentAdapter(){
 
 			@Override

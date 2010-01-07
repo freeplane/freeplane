@@ -20,8 +20,12 @@
 package org.freeplane.main.osgi;
 
 import java.awt.EventQueue;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.jar.Manifest;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
@@ -29,6 +33,7 @@ import org.freeplane.main.application.FreeplaneStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
@@ -58,8 +63,63 @@ public class Activator implements BundleActivator {
 	}
 
 	public void start(final BundleContext context) throws Exception {
-		startFramework(context);
+		loadPlugins(context);
+		try{
+			startFramework(context);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			throw e;
+		}
+		catch(Error e){
+			e.printStackTrace();
+			throw e;
+		}
 	}
+
+	private void loadPlugins(BundleContext context) {
+		final String resourceBaseDir = FreeplaneStarter.getResourceBaseDir();
+		final File baseDir = new File(resourceBaseDir).getAbsoluteFile().getParentFile();
+		loadPlugins(context, new File (baseDir, "plugins"));
+		final String freeplaneUserDirectory = FreeplaneStarter.getFreeplaneUserDirectory();
+		loadPlugins(context, new File(freeplaneUserDirectory));
+	    
+    }
+
+	private void loadPlugins(BundleContext context, File file) {
+		if(! file.exists() || ! file.isDirectory()){
+			return;
+		}
+		File manifest = new File(file, "META-INF/MANIFEST.MF");
+		if(manifest.exists()){
+			try {
+				InputStream manifestContent = new FileInputStream(manifest);
+				Manifest bundleManifest = new Manifest(manifestContent);
+				final String name = bundleManifest.getMainAttributes().getValue("Bundle-SymbolicName");
+				if(name == null){
+					return;
+				}
+	            final Bundle[] bundles = context.getBundles();
+	            for(Bundle installedBundle:bundles){
+	            	if(installedBundle.getSymbolicName().equals(name)){
+	            		System.out.println("Bundle " + name + " already installed");
+	            		return;
+	            	}
+	            }
+	            final Bundle bundle = context.installBundle("reference:file:" + file.getAbsolutePath());
+	            bundle.start();
+            }
+            catch (Exception e) {
+	            e.printStackTrace();
+            }
+            return;
+		}
+		final File[] childFiles = file.listFiles();
+		for(File child:childFiles){
+			loadPlugins(context, child);
+		}
+		
+    }
 
 	private void startFramework(final BundleContext context) {
 		starter = new FreeplaneStarter();

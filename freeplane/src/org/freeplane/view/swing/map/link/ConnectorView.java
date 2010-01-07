@@ -36,6 +36,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinkModel;
@@ -369,10 +370,10 @@ public class ConnectorView implements ILinkView {
 			arrowLinkCurve.setCurve(p1, p3, p4, p2);
 			g.draw(arrowLinkCurve);
 		}
-		if (isSourceVisible() && !connectorModel.getStartArrow().equals("None")) {
+		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
 			paintArrow(p1, p3, g);
 		}
-		if (isTargetVisible() && !connectorModel.getEndArrow().equals("None")) {
+		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
 			paintArrow(p2, p4, g);
 		}
 		if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {

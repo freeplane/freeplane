@@ -19,11 +19,14 @@
  */
 package org.freeplane.core.icon;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class ZoomedIcon extends UIIcon {
@@ -41,7 +44,7 @@ public class ZoomedIcon extends UIIcon {
 	}
 	
 	@Override
-	public ImageIcon getIcon() {
+	public Icon getIcon() {
 		if(zoomedIcon == null) {
 			Map<Float, ImageIcon> icons = zoomedIcons.get(uiIcon);
 			if(icons == null){
@@ -52,15 +55,18 @@ public class ZoomedIcon extends UIIcon {
 			if(zoomedIcon != null){
 				return zoomedIcon;
 			}
-			final ImageIcon icon = uiIcon.getIcon();
-			final Image scaledImage = uiIcon.getIcon()
-					  .getImage()
-					  .getScaledInstance(
-							  (int)(icon.getIconWidth() * zoom), 
-							  (int)(icon.getIconHeight() * zoom),
+			final Icon icon = uiIcon.getIcon();
+			final int width =icon.getIconWidth();
+			final int height = icon.getIconHeight();
+			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			final Graphics2D g = image.createGraphics();
+			icon.paintIcon(null, g, 0, 0);
+			final Image scaledImage = image.getScaledInstance((int)(width* zoom), 
+							  (int)(height* zoom),
 							  Image.SCALE_SMOOTH);
 			zoomedIcon = new ImageIcon(scaledImage);
 			icons.put(zoom, zoomedIcon);
+			g.dispose();
 		}
 		return zoomedIcon; 
 	}

@@ -252,8 +252,9 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 		}
 		if (e.getID() == KeyEvent.KEY_PRESSED) {
 			createButtons(nextModifiers)[keyCode - KeyEvent.VK_F1].doClick();
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	private void resetModifiers() {

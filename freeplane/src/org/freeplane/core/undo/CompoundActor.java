@@ -30,8 +30,15 @@ import java.util.ListIterator;
  * @author Robert Ladstaetter
  */
 public class CompoundActor implements IActor {
-	final private LinkedList<IActor> actors = new LinkedList<IActor>();
+	final private LinkedList<IActor> actors;
 
+	public CompoundActor(){
+		this(new LinkedList<IActor>());
+	}
+	
+	public CompoundActor(LinkedList<IActor> actors){
+		this.actors = actors;
+	}
 	public void act() {
 		for (final IActor a : actors) {
 			a.act();

@@ -126,7 +126,8 @@ class ScriptEditor extends AFreeplaneAction {
 
 		public boolean executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			final String script = getScript(pIndex).getScript();
-			return ScriptingEngine.executeScript(mMindMapController.getMapController().getSelectedNode(), Boolean.TRUE,
+			ScriptingEngine.setNoUserPermissionRequired(true);
+			return ScriptingEngine.executeScript(mMindMapController.getMapController().getSelectedNode(),
 			    script, mMindMapController, pErrorHandler, pOutStream, reg.getScriptCookies());
 		}
 

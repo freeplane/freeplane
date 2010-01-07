@@ -81,10 +81,7 @@ public class MindMapLayout implements LayoutManager {
 		final int componentCount = mapView.getComponentCount();
 		for (int i = 0; i < componentCount; i++) {
 			final Component component = mapView.getComponent(i);
-			if (!component.isValid()) {
-				component.validate();
-			}
-			if (component instanceof NodeMotionListenerView) {
+				if (component instanceof NodeMotionListenerView) {
 				final NodeMotionListenerView nodeMotionListenerView = (NodeMotionListenerView) component;
 				final INodeViewLayout layout = (INodeViewLayout) nodeMotionListenerView.getMovedView().getLayout();
 				layout.layoutNodeMotionListenerView(nodeMotionListenerView);

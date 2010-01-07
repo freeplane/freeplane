@@ -114,8 +114,18 @@ public class MNodeDropListener implements DropTargetListener {
 				dtde.rejectDrop();
 				return;
 			}
-			dtde.acceptDrop(dtde.getDropAction());
 			final boolean dropAsSibling = mainView.dropAsSibling(dtde.getLocation().getX());
+			final MMapController mapController = (MMapController) modeController.getMapController();
+			if ((dropAction == DnDConstants.ACTION_MOVE || dropAction == DnDConstants.ACTION_COPY)){
+				final NodeModel parent = dropAsSibling ? targetNode.getParentNode() : targetNode;
+				if( !mapController.isWriteable(parent)) {
+					dtde.rejectDrop();
+					final String message = ResourceBundles.getText("node_is_write_protected");
+					UITools.errorMessage(message);
+					return;
+				}
+			}
+			dtde.acceptDrop(dtde.getDropAction());
 			final boolean isLeft = mainView.dropPosition(dtde.getLocation().getX());
 			if (!dtde.isLocalTransfer()) {
 				((MClipboardController) ClipboardController.getController(modeController)).paste(t, targetNode,
@@ -135,18 +145,12 @@ public class MNodeDropListener implements DropTargetListener {
 					for (final Iterator<NodeModel> it = controller.getSelection().getSelection().iterator(); it
 					    .hasNext();) {
 						final NodeModel selectedNodeModel = (it.next());
-						((MLinkController) LinkController.getController(modeController)).addLink(selectedNodeModel,
-						    targetNode);
+						((MLinkController) LinkController.getController(modeController)).addConnector(
+						    selectedNodeModel, targetNode);
 					}
 				}
 			}
 			else {
-				final MMapController mapController = (MMapController) modeController.getMapController();
-				if (!mapController.isWriteable(targetNode)) {
-					final String message = ResourceBundles.getText("node_is_write_protected");
-					UITools.errorMessage(message);
-					return;
-				}
 				Transferable trans = null;
 				final List selecteds = mapController.getSelectedNodes();
 				if (DnDConstants.ACTION_MOVE == dropAction) {
@@ -161,7 +165,7 @@ public class MNodeDropListener implements DropTargetListener {
 						}
 						actualNode = (actualNode.isRoot()) ? null : actualNode.getParentNode();
 					} while (actualNode != null);
-					final List<NodeModel> sortedSelection = controller.getSelection().getSortedSelection();
+					final List<NodeModel> sortedSelection = controller.getSelection().getSortedSelection(true);
 					for (final NodeModel node : sortedSelection) {
 						mapController.moveNode(node, targetNode, dropAsSibling, isLeft, isLeft != node.isLeft());
 					}
@@ -198,9 +202,6 @@ public class MNodeDropListener implements DropTargetListener {
 	private boolean isDropAcceptable(final DropTargetDropEvent event) {
 		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
-		if (!((MMapController) modeController.getMapController()).isWriteable(node)) {
-			return false;
-		}
 		return ((node != selected) && !node.isDescendantOf(selected));
 	}
 }

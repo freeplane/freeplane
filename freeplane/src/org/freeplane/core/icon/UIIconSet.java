@@ -19,15 +19,14 @@
  */
 package org.freeplane.core.icon;
 
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
+
+import org.freeplane.core.ui.components.MultipleImage;
 
 public class UIIconSet extends UIIcon {
 
@@ -38,17 +37,17 @@ public class UIIconSet extends UIIcon {
 		return uiIcons;
 	}
 
-	List<ImageIcon> imageIcons;
+	List<Icon> imageIcons;
 	
-	private ImageIcon compounIcon;
+	private MultipleImage compoundIcon;
 	
 	public UIIconSet(final Collection<UIIcon> uiIcons, float zoom) {
 		super("", "");
 		this.zoom = zoom;
 		this.uiIcons    = Collections.unmodifiableCollection(uiIcons);
-		this.imageIcons = new LinkedList<ImageIcon>();
+		this.imageIcons = new LinkedList<Icon>();
 		for(UIIcon uiIcon : uiIcons) {
-			final ImageIcon icon;
+			final Icon icon;
 			if(zoom == 1f) {
 				icon = uiIcon.getIcon();
 			}
@@ -60,36 +59,14 @@ public class UIIconSet extends UIIcon {
 	}
 	
 	@Override
-	public ImageIcon getIcon() {
-		if(compounIcon == null) {
-			final BufferedImage outImage = new BufferedImage(getTotalWidth(), getMaxHeight(), BufferedImage.TYPE_INT_ARGB);
-			final Graphics2D g = outImage.createGraphics();
-			double width = 0.0;
-			for (final ImageIcon icon : imageIcons) {
-				final AffineTransform inttrans = AffineTransform.getTranslateInstance(width, 0);
-				g.drawImage(icon.getImage(), inttrans, null);
-				width += icon.getIconWidth();
+	public Icon getIcon() {
+		if(compoundIcon == null) {
+			compoundIcon = new MultipleImage();
+			for (final Icon icon : imageIcons) {
+				compoundIcon.addImage(icon);
 			}
-			g.dispose();
-			compounIcon = new ImageIcon(outImage);
 		}
-		return compounIcon;
-	}
-	
-	private int getMaxHeight() {
-		int height = 0;
-		for(ImageIcon icon : imageIcons) {
-			height = Math.max(height, icon.getIconHeight());
-		}
-		return height;
-	}
-	
-	private int getTotalWidth() {
-		int width = 0;
-		for(ImageIcon icon : imageIcons) {
-			width += icon.getIconWidth();
-		}
-		return width;
+		return compoundIcon;
 	}
 	
 	@Override

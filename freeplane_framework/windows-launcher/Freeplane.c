@@ -173,7 +173,7 @@ int main(int argc, char *argv[])  {
    }
 
    {
-      const char *argv[] = {"\"-Dorg.knopflerfish.gosg.jars=reference:file:", path_to_launcher_without_file, "plugins/\"", 0};
+      const char *argv[] = {"\"-Dorg.knopflerfish.gosg.jars=reference:file:", path_to_launcher_without_file, "core/\"", 0};
       arguments[argumentNumber++] = concat(argv);
    }
 

@@ -291,7 +291,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			newItem.setSelected(false);
 			group.add(newItem);
 			newItem.addActionListener(mapsMenuActionListener);
-			newItem.setMnemonic(displayName.charAt(0));
+			if(displayName.length() > 0){
+				newItem.setMnemonic(displayName.charAt(0));
+			}
 			final MapView currentMapView = (MapView) mapViewManager.getMapViewComponent();
 			if (currentMapView != null) {
 				if (mapView == currentMapView) {

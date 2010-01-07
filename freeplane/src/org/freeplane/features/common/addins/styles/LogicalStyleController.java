@@ -81,4 +81,9 @@ public class LogicalStyleController implements IExtension{
 		modeController.addExtension(LogicalStyleController.class, logicalStyleController);
 	    
     }
+
+	public static LogicalStyleController getController(
+			ModeController modeController) {
+		return (LogicalStyleController) modeController.getExtension(LogicalStyleController.class);
+	}
 }

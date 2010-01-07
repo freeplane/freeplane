@@ -19,9 +19,12 @@
  */
 package org.freeplane.core.icon;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.icon.factory.ImageIconFactory;
@@ -47,6 +50,8 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	protected final String fileName;
 	protected final String description;
 	protected final String shortcutKey;
+
+	private URL resourceURL;
 
 	public UIIcon(final String name, final String fileName) {
 		this(name, fileName, "", "?");
@@ -92,7 +97,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	/**
 	 * @return associated ImageIcon for this icon
 	 */
-	public ImageIcon getIcon() {
+	public Icon getIcon() {
 		return ImageIconFactory.getInstance().getImageIcon(this);
 	}
 
@@ -105,8 +110,11 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	}
 
 	public URL getUrl() {
+		if (resourceURL != null){
+			return resourceURL;
+		}
 		final String path = getPath();
-		final URL resourceURL = RESOURCE_CONTROLLER.getResource(path);
+		resourceURL = RESOURCE_CONTROLLER.getResource(path);
 		
 		return resourceURL;
 	}

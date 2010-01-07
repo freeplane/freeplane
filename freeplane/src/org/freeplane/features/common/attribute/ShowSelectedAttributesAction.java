@@ -24,8 +24,10 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.SelectableAction;
 
-class ShowSelectedAttributesAction extends AFreeplaneAction {
+@SelectableAction(checkOnPopup=true)
+class ShowSelectedAttributesAction extends AttributeViewTypeAction {
 	/**
 	 * 
 	 */
@@ -39,20 +41,11 @@ class ShowSelectedAttributesAction extends AFreeplaneAction {
 	};
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = getController().getMap();
-		setAttributeViewType(map);
+		setAttributeViewType(AttributeTableLayoutModel.SHOW_SELECTED);
 	}
 
-	void setAttributeViewType(final MapModel map) {
-		if (map == null) {
-			return;
-		}
-		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
-		if (attributes == null) {
-			return;
-		}
-		if (attributes.getAttributeViewType() != AttributeTableLayoutModel.SHOW_SELECTED) {
-			attributes.setAttributeViewType(AttributeTableLayoutModel.SHOW_SELECTED);
-		}
+	@Override
+	public void setSelected() {
+		setSelected(AttributeTableLayoutModel.SHOW_SELECTED.equals(getAttributeViewType()));
 	}
 }

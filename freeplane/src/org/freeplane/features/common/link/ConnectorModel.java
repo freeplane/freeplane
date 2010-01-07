@@ -26,12 +26,12 @@ import org.freeplane.core.model.NodeModel;
 
 public class ConnectorModel extends NodeLinkModel {
 	private Color color;
-	private String endArrow;
+	private ArrowType endArrow;
 	private Point endInclination;
 	private String middleLabel;
 	private boolean showControlPointsFlag;
 	private String sourceLabel;
-	private String startArrow;
+	private ArrowType startArrow;
 	private Point startInclination;
 	private String targetLabel;
 	private int width;
@@ -47,8 +47,8 @@ public class ConnectorModel extends NodeLinkModel {
 
 	public ConnectorModel(final NodeModel source, final String targetID) {
 		super(source, targetID);
-		startArrow = "None";
-		endArrow = "Default";
+		startArrow = ArrowType.NONE;
+		endArrow = ArrowType.DEFAULT;
 	}
 
 	public void changeInclination(int deltaX, final int deltaY, final NodeModel linkedNodeView,
@@ -80,7 +80,7 @@ public class ConnectorModel extends NodeLinkModel {
 		return color;
 	}
 
-	public String getEndArrow() {
+	public ArrowType getEndArrow() {
 		return endArrow;
 	}
 
@@ -103,7 +103,7 @@ public class ConnectorModel extends NodeLinkModel {
 		return sourceLabel;
 	}
 
-	public String getStartArrow() {
+	public ArrowType getStartArrow() {
 		return startArrow;
 	}
 
@@ -126,16 +126,8 @@ public class ConnectorModel extends NodeLinkModel {
 		this.color = color;
 	}
 
-	public void setEndArrow(final String endArrow) {
-		if (endArrow == null || endArrow.toUpperCase().equals("NONE")) {
-			this.endArrow = "None";
-			return;
-		}
-		else if (endArrow.toUpperCase().equals("DEFAULT")) {
-			this.endArrow = "Default";
-			return;
-		}
-		System.err.println("Cannot set the end arrow type to " + endArrow);
+	public void setEndArrow(final ArrowType endArrow) {
+		this.endArrow = endArrow;
 	}
 
 	public void setEndInclination(final Point endInclination) {
@@ -154,16 +146,8 @@ public class ConnectorModel extends NodeLinkModel {
 		sourceLabel = empty2null(label);
 	}
 
-	public void setStartArrow(final String startArrow) {
-		if (startArrow == null || startArrow.toUpperCase().equals("NONE")) {
-			this.startArrow = "None";
-			return;
-		}
-		else if (startArrow.toUpperCase().equals("DEFAULT")) {
-			this.startArrow = "Default";
-			return;
-		}
-		System.err.println("Cannot set the start arrow type to " + startArrow);
+	public void setStartArrow(final ArrowType startArrow) {
+		this.startArrow = startArrow;
 	}
 
 	public void setStartInclination(final Point startInclination) {

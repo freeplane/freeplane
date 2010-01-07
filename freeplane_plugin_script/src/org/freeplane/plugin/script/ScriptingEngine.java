@@ -23,7 +23,6 @@ import groovy.lang.GroovyRuntimeException;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 
-import java.awt.event.ActionEvent;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
@@ -36,12 +35,9 @@ import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
@@ -52,12 +48,12 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.main.application.FreeplaneSecurityManager;
+import org.freeplane.plugin.script.proxy.ProxyFactory;
 
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/scripting" })
-class ScriptingEngine extends AFreeplaneAction {
+class ScriptingEngine {
 	public interface IErrorHandler {
 		void gotoLine(int pLineNumber);
 	}
@@ -68,26 +64,28 @@ class ScriptingEngine extends AFreeplaneAction {
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION = "execute_scripts_without_network_restriction";
 	public static final String RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING = "script_user_key_name_for_signing";
 	public static final String RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED = "signed_script_are_trusted";
+	public static final String RESOURCES_SCRIPT_DIRECTORIES = "script_directories";
 	public static final String SCRIPT_PREFIX = "script";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final HashMap sScriptCookies = new HashMap();
+	private static Boolean noUserPermissionRequired = false;
 
 	/**
 	 * @param node
-	 * @param pAlreadyAScriptExecuted
+	 * @param noUserPermissionRequired
 	 * @param script
 	 * @param pMindMapController
 	 * @param pScriptCookies
 	 * @return true, if further scripts can be executed, false, if the user
 	 *         canceled or an error occurred.
 	 */
-	static boolean executeScript(final NodeModel node, Boolean pAlreadyAScriptExecuted, String script,
-	                             final MModeController pMindMapController, final IErrorHandler pErrorHandler,
-	                             final PrintStream pOutStream, final HashMap pScriptCookies) {
-		if (!pAlreadyAScriptExecuted) {
+	static boolean executeScript(final NodeModel node, String script, final MModeController pMindMapController,
+	                             final IErrorHandler pErrorHandler, final PrintStream pOutStream,
+	                             final HashMap pScriptCookies) {
+		if (!noUserPermissionRequired) {
 			final int showResult = OptionalDontShowMeAgainDialog.show(pMindMapController.getController(),
 			    "really_execute_script", "confirmation", RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
@@ -95,10 +93,10 @@ class ScriptingEngine extends AFreeplaneAction {
 				return false;
 			}
 		}
-		pAlreadyAScriptExecuted = Boolean.TRUE;
+		noUserPermissionRequired = Boolean.TRUE;
 		final Binding binding = new Binding();
-		binding.setVariable("c", pMindMapController);
-		binding.setVariable("node", node);
+		binding.setVariable("c", ProxyFactory.createController(pMindMapController));
+		binding.setVariable("node", ProxyFactory.createNode(node, pMindMapController));
 		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
 		boolean assignResult = false;
 		String assignTo = null;
@@ -172,6 +170,7 @@ class ScriptingEngine extends AFreeplaneAction {
 					finally {
 						if (script != null) {
 							InvokerHelper.removeClass(script.getClass());
+							securityManager.setFinalSecurityManager(scriptingSecurityManager);
 						}
 					}
 				}
@@ -185,7 +184,6 @@ class ScriptingEngine extends AFreeplaneAction {
 			e2 = e;
 		}
 		finally {
-			securityManager.setFinalSecurityManager(scriptingSecurityManager);
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
 			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
@@ -223,6 +221,7 @@ class ScriptingEngine extends AFreeplaneAction {
 			return false;
 		}
 		if (e2 != null) {
+			pMindMapController.getMapController().select(node);
 			LogTool.warn(e2);
 			pOutStream.print(e2.getMessage());
 			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
@@ -257,41 +256,59 @@ class ScriptingEngine extends AFreeplaneAction {
 
 	final private ScriptingRegistration reg;
 
-	public ScriptingEngine(final Controller controller, final ScriptingRegistration reg) {
-		super("ScriptingEngine", controller);
+	public ScriptingEngine(final ScriptingRegistration reg) {
 		this.reg = reg;
 	}
 
-	public void actionPerformed(final ActionEvent e) {
-		final NodeModel node = getController().getMap().getRootNode();
-		final Boolean booleanHolder = Boolean.FALSE;
-		performScriptOperation(node, booleanHolder);
+	boolean executeScript(MModeController modeController, final NodeModel node, final String script) {
+		return ScriptingEngine.executeScript(node, script, modeController, new IErrorHandler() {
+			public void gotoLine(final int pLineNumber) {
+			}
+		}, System.out, reg.getScriptCookies());
 	}
 
-	private void performScriptOperation(final NodeModel node, final Boolean pAlreadyAScriptExecuted) {
-		getController().getViewController().setWaitingCursor(true);
-		for (final Iterator iter = getModeController().getMapController().childrenUnfolded(node); iter.hasNext();) {
-			final NodeModel element = (NodeModel) iter.next();
-			performScriptOperation(element, pAlreadyAScriptExecuted);
+	boolean executeScriptRecursive(MModeController modeController, NodeModel node, String script) {
+		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
+			if (!executeScriptRecursive(modeController, iter.next(), script)) {
+				return false;
+			}
 		}
+		return executeScript(modeController, node, script);
+	}
+
+	boolean performScriptOperationRecursive(MModeController modeController, final NodeModel node) {
+		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
+			final NodeModel child = iter.next();
+			if (!performScriptOperationRecursive(modeController, child)) {
+				return false;
+			}
+		}
+		return performScriptOperation(modeController, node);
+	}
+
+	boolean performScriptOperation(MModeController modeController, final NodeModel node) {
 		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		if (attributes == null) {
-			return;
+			return true;
 		}
 		for (int row = 0; row < attributes.getRowCount(); ++row) {
 			final String attrKey = (String) attributes.getName(row);
 			final String script = (String) attributes.getValue(row);
 			if (attrKey.startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
-				final boolean result = ScriptingEngine.executeScript(node, pAlreadyAScriptExecuted, script,
-				    (MModeController) getModeController(), new IErrorHandler() {
-					    public void gotoLine(final int pLineNumber) {
-					    }
-				    }, System.out, reg.getScriptCookies());
+				final boolean result = executeScript(modeController, node, script);
 				if (!result) {
-					break;
+					return false;
 				}
 			}
 		}
-		getController().getViewController().setWaitingCursor(false);
+		return true;
+	}
+
+	static void setNoUserPermissionRequired(Boolean noUserPermissionRequired) {
+		ScriptingEngine.noUserPermissionRequired = noUserPermissionRequired;
+	}
+
+	static Boolean getNoUserPermissionRequired() {
+		return noUserPermissionRequired;
 	}
 }

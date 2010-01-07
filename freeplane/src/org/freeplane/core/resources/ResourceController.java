@@ -32,7 +32,10 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.AController.IActionOnChange;
+import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
 
 /**
@@ -213,5 +216,16 @@ public abstract class ResourceController {
 
 	public boolean isApplet() {
 	    return false;
+    }
+
+	public void removePropertyChangeListener(final Class<? extends IActionOnChange> clazz, AFreeplaneAction action) {
+		final Iterator<IFreeplanePropertyListener> iterator = propertyChangeListeners.iterator();
+		while (iterator.hasNext()) {
+			final IFreeplanePropertyListener next = iterator.next();
+			if (next instanceof IActionOnChange && ((IActionOnChange) next).getAction() == action) {
+				iterator.remove();
+				return;
+			}
+		}
     }
 }

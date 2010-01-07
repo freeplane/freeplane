@@ -194,7 +194,8 @@ public class XmlRpcHandler extends StreamHandler {
 		try {
 			close();
 			createInfo();
-			log = info + out.toString(getEncoding());
+			final String errorMessage = out.toString(getEncoding());
+			log = info + errorMessage;
 			if (log.equals("")) {
 				return;
 			}

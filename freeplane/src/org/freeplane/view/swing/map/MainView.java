@@ -31,6 +31,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.Arrays;
@@ -315,7 +316,7 @@ public abstract class MainView extends JLabel {
 
 	void updateIcons(final NodeView node) {
 		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
-		final MultipleImage iconImages = new MultipleImage(1.0f);
+		final MultipleImage iconImages = new MultipleImage();
 		boolean iconPresent = false;
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();
@@ -474,5 +475,8 @@ public abstract class MainView extends JLabel {
 		BasicHTML.createHTMLView(this, "<html><b>1</b>2");
     }
 
-	
+	@Override
+    public Point getToolTipLocation(MouseEvent event) {
+        return new Point(0, getHeight());
+    }
 }

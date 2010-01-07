@@ -25,6 +25,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.Action;
 import javax.swing.JRadioButtonMenuItem;
 
+import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 /**
@@ -38,8 +39,11 @@ public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements Pr
 	private static final long serialVersionUID = 1L;
 	private PropertyChangeListener defaultPropertyChanegListener;
 
-	public JAutoRadioButtonMenuItem(final Action a) {
+	public JAutoRadioButtonMenuItem(final IFreeplaneAction a) {
 		super(a);
+		if(a.isSelected()){
+			setSelected(true);
+		}
 	}
 
 	@Override

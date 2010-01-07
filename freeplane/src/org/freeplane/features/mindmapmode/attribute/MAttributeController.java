@@ -21,6 +21,7 @@ package org.freeplane.features.mindmapmode.attribute;
 
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.Vector;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
@@ -656,7 +657,8 @@ public class MAttributeController extends AttributeController {
 
 	@Override
 	public Attribute performRemoveRow(final NodeAttributeTableModel model, final int row) {
-		final Object o = model.getAttributes().elementAt(row);
+		final Vector<Attribute> attributes = model.getAttributes();
+		final Object o = attributes.elementAt(row);
 		final IActor actor = new RemoveAttributeActor(model, row);
 		getModeController().execute(actor, model.getNode().getMap());
 		return (Attribute) o;

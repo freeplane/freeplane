@@ -37,6 +37,7 @@ import java.util.ListIterator;
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.AController.IActionOnChange;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.MapReader;
@@ -46,7 +47,6 @@ import org.freeplane.core.io.UnknownElementWriter;
 import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.MapWriter.Mode;
-import org.freeplane.core.modecontroller.ModeController.IActionOnChange;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.MapModel;
