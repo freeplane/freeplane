@@ -170,6 +170,7 @@ class ScriptingEngine {
 					finally {
 						if (script != null) {
 							InvokerHelper.removeClass(script.getClass());
+							securityManager.setFinalSecurityManager(scriptingSecurityManager);
 						}
 					}
 				}
@@ -183,7 +184,6 @@ class ScriptingEngine {
 			e2 = e;
 		}
 		finally {
-			securityManager.setFinalSecurityManager(scriptingSecurityManager);
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
 			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
