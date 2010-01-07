@@ -148,7 +148,7 @@ public class MModeController extends ModeController {
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.rollback();
 		undo.setEnabled(undoHandler.canUndo());
-		redo.setEnabled(false);
+		redo.setEnabled(undoHandler.canRedo());
 	}
 
 	/**
