@@ -91,9 +91,14 @@ public class ModeController extends AController {
 		}
 
 		public void nodeChanged(final NodeChangeEvent event) {
-			if (!NodeChangeType.REFRESH.equals(event.getProperty())) {
-				action.setSelected();
+			if (NodeChangeType.REFRESH.equals(event.getProperty())) {
+				return;
 			}
+			IMapSelection selection = action.getController().getSelection();
+			if(selection == null || selection.getSelected() == null){
+				return;
+			}
+			action.setSelected();
 		}
 
 		public void onDeselect(final NodeModel node) {

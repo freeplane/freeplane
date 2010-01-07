@@ -76,6 +76,8 @@ public class MModeController extends ModeController {
 		final MMapModel map = (MMapModel) getController().getMap();
 		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
 		undoHandler.commit();
+		undo.setEnabled(undoHandler.canUndo());
+		redo.setEnabled(undoHandler.canRedo());
 	}
 
 	private void createActions() {

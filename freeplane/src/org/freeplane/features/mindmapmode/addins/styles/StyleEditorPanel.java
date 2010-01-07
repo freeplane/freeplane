@@ -685,6 +685,9 @@ public class StyleEditorPanel extends JPanel {
 		mapController.addNodeChangeListener(new INodeChangeListener() {
 			public void nodeChanged(NodeChangeEvent event) {
 				final IMapSelection selection = controller.getSelection();
+				if(selection == null){
+					return;
+				}
 				final NodeModel node = event.getNode();
 				if(selection.getSelected().equals(node)){
 					setStyle(modeController, node);

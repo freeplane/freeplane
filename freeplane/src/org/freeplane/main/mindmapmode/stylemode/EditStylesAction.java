@@ -32,6 +32,7 @@ import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
@@ -62,21 +63,36 @@ public class EditStylesAction extends AFreeplaneAction {
 			@Override
             public void componentHidden(ComponentEvent e) {
 	            final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
-	            MapModel map = mapViewManager.getModel();
+	            final MapModel map = mapViewManager.getModel();
 	            final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
 	            	switch(modeController.getStatus()){
 	            	case JOptionPane.OK_OPTION:
 	            		if(undoHandler.canUndo()){
-	            			undoHandler.commit();
+	            			getModeController().commit();
 	            			final MapModel currentMap = getController().getMap();
 	            			getModeController().getMapController().setSaved(currentMap, false);
 	            			final MapController mapController = modeController.getMapController();
-	            			mapController.setSaved(map, true);
-	            			getModeController().getMapController().fireMapChanged(new MapChangeEvent(map, currentMap, MapStyle.MAP_STYLES, null, null));
+	            			mapController.setSaved(map, false);
+	            			IActor actor = new IActor() {
+								
+								public void undo() {
+			            			getModeController().getMapController().fireMapChanged(new MapChangeEvent(map, currentMap, MapStyle.MAP_STYLES, null, null));
+								}
+								
+								public String getDescription() {
+									// TODO Auto-generated method stub
+									return null;
+								}
+								
+								public void act() {
+			            			getModeController().getMapController().fireMapChanged(new MapChangeEvent(map, currentMap, MapStyle.MAP_STYLES, null, null));
+								}
+							};
+							getModeController().execute(actor, currentMap);
 	            			break;
 	            		}
 	            	case JOptionPane.CANCEL_OPTION:
-	            		undoHandler.rollback();
+	            		getModeController().rollback();
 	            	}
 				mapViewManager.close(true);
 	            super.componentHidden(e);
