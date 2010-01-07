@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="lib" path="D:/Users/Dimitry/bazaar-repo/freeplane/freeplane_program/release_branches/1_0_x/freeplane_plugin_latex/lib/jlatexmath-0.8.4.jar"/>
+	<classpathentry kind="lib" path="D:/Users/Dimitry/bazaar-repo/freeplane/freeplane_program/release_branches/1_0_x/freeplane_plugin_latex/lib/jlatexmath-0.8.5.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
