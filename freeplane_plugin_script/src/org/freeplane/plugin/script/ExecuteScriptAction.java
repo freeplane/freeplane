@@ -22,6 +22,8 @@ package org.freeplane.plugin.script;
 import java.awt.event.ActionEvent;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
@@ -40,8 +42,13 @@ import org.freeplane.features.mindmapmode.MModeController;
 public class ExecuteScriptAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
+	/** controls how often a script is executed in case of a multi selection. */
 	public enum ExecutionMode {
+		/** once with <code>node</code> set to one selected (random) node. */
+		ON_SINGLE_NODE,
+		/** n times for n selected nodes, once for each node. */
 		ON_SELECTED_NODE,
+		/** script on every selected node and recursively on all of its children. */
 		ON_SELECTED_NODE_RECURSIVELY
 	}
 
@@ -49,30 +56,37 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 	private final String script;
 	private ExecutionMode mode;
 
-	public ExecuteScriptAction(final Controller controller, ScriptingEngine engine, String name, String menuItemName, String script, ExecutionMode mode) {
-	    super(name, controller, menuItemName, null);
-	    this.engine = engine;
-	    this.script = script;
-	    this.mode = mode;
-    }
+	public ExecuteScriptAction(final Controller controller, ScriptingEngine engine, String scriptName,
+	                           String menuItemName, String script, ExecutionMode mode) {
+		super(makeMenuItemKey(scriptName, mode), controller, menuItemName, null);
+		this.engine = engine;
+		this.script = script;
+		this.mode = mode;
+	}
 
-    public void actionPerformed(ActionEvent e) {
+	private static String makeMenuItemKey(String scriptName, ExecutionMode mode) {
+		return scriptName + "_" + mode.toString().toLowerCase();
+	}
+
+	public void actionPerformed(ActionEvent e) {
 		getController().getViewController().setWaitingCursor(true);
 		boolean result = true;
 		try {
 			String scriptContent = readScript();
-			// TODO: ensure that a script is invoked only once on every node?
-			// (might be a problem with recursive actions if parent and child
-			// are selected.)
-			for (NodeModel node : getController().getSelection().getSelection()) {
-				if (mode == ExecutionMode.ON_SELECTED_NODE) {
-					result = engine.executeScript(
-							(MModeController) getModeController(), node,
-							scriptContent);
-				} else {
-					result = engine.executeScriptRecursive(
-							(MModeController) getModeController(), node,
-							scriptContent);
+			List<NodeModel> nodes = new ArrayList<NodeModel>();
+			if (mode == ExecutionMode.ON_SINGLE_NODE)
+				nodes.add(getController().getSelection().getSelected());
+			else
+				nodes.addAll(getController().getSelection().getSelection());
+			for (NodeModel node : nodes) {
+				if (mode == ExecutionMode.ON_SELECTED_NODE_RECURSIVELY) {
+					// TODO: ensure that a script is invoked only once on every node?
+					// (might be a problem with recursive actions if parent and child
+					// are selected.)
+					result = engine.executeScriptRecursive((MModeController) getModeController(), node, scriptContent);
+				}
+				else {
+					result = engine.executeScript((MModeController) getModeController(), node, scriptContent);
 				}
 				if (!result) {
 					LogTool.warn("error executing script " + script + " - giving up");
