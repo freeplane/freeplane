@@ -73,8 +73,8 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	}
 
 	static private class MyRenderer extends DefaultTreeCellRenderer {
-		static final Icon iconFull = STORE.getUIIcon("button_ok.png").getIcon();
-		static final Icon iconNotSelected = STORE.getUIIcon("button_cancel.png").getIcon();
+		static final Icon iconFull = STORE.getUIIcon("ok_button.png").getIcon();
+		static final Icon iconNotSelected = STORE.getUIIcon("cancel_button.png").getIcon();
 		static final Icon iconPartial = STORE.getUIIcon("forward.png").getIcon();
 		/**
 		 * 
