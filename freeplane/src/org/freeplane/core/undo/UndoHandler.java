@@ -129,6 +129,7 @@ public class UndoHandler implements IUndoHandler {
 	}
 
 	public void commit() {
+		resetRedo();
 		final CompoundActor compoundActor = new CompoundActor(actorList);
 		actionFrameStarted = false;
 		timeOfLastAdd = 0;
