@@ -226,8 +226,14 @@ public class ModeController extends AController {
 	}
 
 	void removeExtensions(Object key, NodeModel from, final NodeModel which){
+		if(from.equals(which)){
+			for(IExtensionCopier copier:copiers){
+				copier.remove(key, from);
+			}
+			return;
+		}
 		for(IExtensionCopier copier:copiers){
-			copier.remove(key, from);
+			copier.remove(key, from, which);
 		}
 	}
 	

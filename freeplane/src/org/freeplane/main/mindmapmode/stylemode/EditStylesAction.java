@@ -34,6 +34,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.features.common.addins.styles.LogicalStyleController;
 import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -73,22 +74,7 @@ public class EditStylesAction extends AFreeplaneAction {
 	            			getModeController().getMapController().setSaved(currentMap, false);
 	            			final MapController mapController = modeController.getMapController();
 	            			mapController.setSaved(map, false);
-	            			IActor actor = new IActor() {
-								
-								public void undo() {
-			            			getModeController().getMapController().fireMapChanged(new MapChangeEvent(map, currentMap, MapStyle.MAP_STYLES, null, null));
-								}
-								
-								public String getDescription() {
-									// TODO Auto-generated method stub
-									return null;
-								}
-								
-								public void act() {
-			            			getModeController().getMapController().fireMapChanged(new MapChangeEvent(map, currentMap, MapStyle.MAP_STYLES, null, null));
-								}
-							};
-							getModeController().execute(actor, currentMap);
+	            			LogicalStyleController.getController(getModeController()).refreshMap(currentMap);
 	            			break;
 	            		}
 	            	case JOptionPane.CANCEL_OPTION:

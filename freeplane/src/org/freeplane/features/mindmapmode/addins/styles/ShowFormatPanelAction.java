@@ -24,7 +24,7 @@ import org.freeplane.core.ui.SelectableAction;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/view/toolbars", "/map_popup/toolbars" })
 @SelectableAction(checkOnPopup = true)
-public class ApplyFormatPlugin extends ToggleToolbarAction {
+public class ShowFormatPanelAction extends ToggleToolbarAction {
 	/**
 	 * 
 	 */
@@ -32,8 +32,8 @@ public class ApplyFormatPlugin extends ToggleToolbarAction {
 
 	/**
 	 */
-	public ApplyFormatPlugin(final Controller controller) {
-		super(controller, "ApplyFormatPlugin", "/format");
+	public ShowFormatPanelAction(final Controller controller) {
+		super(controller, "ShowFormatPanel", "/format");
 	}
 
 }

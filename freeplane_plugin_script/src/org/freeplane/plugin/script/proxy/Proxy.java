@@ -238,7 +238,9 @@ public interface Proxy {
 	}
 
 	interface NodeStyle {
-		void applyPattern(String patternName);
+		void setStyle(Object key);
+		Object getStyle();
+		Node getStyleNode();
 
 		Color getBackgroundColor();
 

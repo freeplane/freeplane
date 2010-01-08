@@ -108,7 +108,9 @@ public class NodeModel implements MutableTreeNode {
 
 	public void addIcon(final MindIcon icon) {
 		icons.addIcon(icon);
-		getMap().getIconRegistry().addIcon(icon);
+		if(map != null){
+			map.getIconRegistry().addIcon(icon);
+		}
 	}
 	
 	public void addIcon(final MindIcon icon, final int position) {

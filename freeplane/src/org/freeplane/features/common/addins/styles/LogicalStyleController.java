@@ -19,6 +19,12 @@
  */
 package org.freeplane.features.common.addins.styles;
 
+import java.awt.EventQueue;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
@@ -28,10 +34,13 @@ import org.freeplane.core.io.MapWriter;
 import org.freeplane.core.io.NodeBuilder;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 
@@ -40,7 +49,10 @@ import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
  * 28.09.2009
  */
 public class LogicalStyleController implements IExtension{
+	final private ModeController modeController;
+
 	public LogicalStyleController(ModeController modeController){
+		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE_REF", new IAttributeHandler() {
@@ -85,5 +97,50 @@ public class LogicalStyleController implements IExtension{
 	public static LogicalStyleController getController(
 			ModeController modeController) {
 		return (LogicalStyleController) modeController.getExtension(LogicalStyleController.class);
+	}
+
+	public void refreshMap(final MapModel map) {
+		IActor actor = new IActor() {
+			
+			public void undo() {
+    			refreshMapLater(map);
+			}
+			
+			public String getDescription() {
+				return "refreshMap";
+			}
+			
+			public void act() {
+    			refreshMapLater(map);
+			}
+		};
+		getModeController().execute(actor, map);
+	}
+
+	protected ModeController getModeController() {
+		return modeController;
+	}
+
+	private static Map<MapModel, Integer> mapsToRefresh = new HashMap<MapModel, Integer>();
+	private void refreshMapLater(final MapModel map) {
+		Integer count = mapsToRefresh.get(map);
+		if(count == null){
+			mapsToRefresh.put(map, 0);
+		}
+		else{
+			mapsToRefresh.put(map, count + 1);
+		}
+		EventQueue.invokeLater(new Runnable() {
+			
+			public void run() {
+				Integer count = mapsToRefresh.get(map);
+				if(count > 0){
+					mapsToRefresh.put(map, count - 1);
+					EventQueue.invokeLater(this);
+					return;
+				}
+				getModeController().getMapController().fireMapChanged(new MapChangeEvent(this, map, MapStyle.MAP_STYLES, null, null));
+			}
+		});
 	}
 }

@@ -157,23 +157,7 @@ public class StyleEditorPanel extends JPanel {
 			styleController.setFontFamily(node, enabled ? mNodeFontName.getValue() : null);
 		}
 	}
-	private class IconChangeListener extends ChangeListener {
-		public IconChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
 
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
-			final MIconController styleController = (MIconController) mMindMapController
-			    .getExtension(IconController.class);
-			styleController.removeAllIcons(node);
-			if(enabled)
-				styleController.addIcon(node,  mIcon.getIcon());
-		}
-	}
-	
-
-	
 	private class EdgeColorChangeListener extends ChangeListener {
 		public EdgeColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -310,8 +294,6 @@ public class StyleEditorPanel extends JPanel {
 	private ColorProperty mEdgeColor;
 	private ComboProperty mEdgeStyle;
 	private ComboProperty mEdgeWidth;
-	private IconProperty mIcon;
-	private List<MindIcon> mIconInformationVector;
 	private final ModeController mMindMapController;
 	private ColorProperty mNodeBackgroundColor;
 	private ColorProperty mNodeColor;
@@ -324,7 +306,6 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetEdgeColor;
 	private BooleanProperty mSetEdgeStyle;
 	private BooleanProperty mSetEdgeWidth;
-	private BooleanProperty mSetIcon;
 	private BooleanProperty mSetNodeBackgroundColor;
 	private BooleanProperty mSetNodeColor;
 	private BooleanProperty mSetNodeFontBold;
@@ -462,22 +443,6 @@ public class StyleEditorPanel extends JPanel {
 		mNodeFontSize.addPropertyChangeListener(listener);
 	}
 
-	private void addNodeIconControl(final List<IPropertyControl> controls) {
-		mIconInformationVector = new ArrayList<MindIcon>();
-		final ModeController controller = mMindMapController;
-		final Collection<MindIcon> mindIcons = ((MIconController) IconController.getController(controller))
-		    .getMindIcons();
-		mIconInformationVector.addAll(mindIcons);
-		mSetIcon = new BooleanProperty(StyleEditorPanel.SET_ICON);
-		controls.add(mSetIcon);
-		mIcon = new IconProperty(StyleEditorPanel.ICON, mIconInformationVector);
-		controls.add(mIcon);
-		final IconChangeListener listener = new IconChangeListener(mSetIcon,
-			mIcon);
-		mSetIcon.addPropertyChangeListener(listener);
-		mIcon.addPropertyChangeListener(listener);
-	}
-
 	private void addNodeShapeControl(final List<IPropertyControl> controls) {
 		mSetNodeShape = new BooleanProperty(StyleEditorPanel.SET_NODE_STYLE);
 		controls.add(mSetNodeShape);
@@ -497,7 +462,6 @@ public class StyleEditorPanel extends JPanel {
 		addBgColorControl(controls);
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeShape"));
 		addNodeShapeControl(controls);
-		addNodeIconControl(controls);
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeFont"));
 		addFontNameControl(controls);
@@ -638,16 +602,6 @@ public class StyleEditorPanel extends JPanel {
 				mNodeFontItalic.setValue(viewitalic);
 				mNodeFontItalic.setEnabled(mSetNodeFontItalic.getBooleanValue());
 			}
-			MindIcon icon = mIconInformationVector.get(0);
-			try {
-				icon = node.getIcon(0);
-				mSetIcon.setValue(true);
-			}
-			catch (final IndexOutOfBoundsException e) {
-				mSetIcon.setValue(false);
-			}
-			mIcon.setValue(icon.getName());
-			mIcon.setEnabled(mSetIcon.getBooleanValue());
 		}
 		finally {
 			internalChange = false;

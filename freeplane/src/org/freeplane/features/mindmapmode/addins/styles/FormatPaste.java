@@ -30,6 +30,7 @@ import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
+import org.freeplane.features.mindmapmode.icon.MIconController;
 
 /**
  * @author foltin

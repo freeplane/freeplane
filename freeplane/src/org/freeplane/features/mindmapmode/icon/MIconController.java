@@ -41,6 +41,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.icon.IIconInformation;
 import org.freeplane.core.icon.IconController;
@@ -69,6 +70,54 @@ import org.freeplane.view.swing.ui.UserInputListenerFactory;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
+	public static enum Keys{ICONS};
+	private static class ExtensionCopier implements IExtensionCopier{
+
+		public void copy(Object key, NodeModel from, NodeModel to) {
+			if(! key.equals(Keys.ICONS)){
+				return;
+			}
+			copy(from, to);
+		}
+
+		public void copy(NodeModel from, NodeModel to) {
+			List<MindIcon> sourceIcons = from.getIcons();
+			List<MindIcon> targetIcons = to.getIcons();
+			for(MindIcon icon:sourceIcons){
+				if(targetIcons.contains(icon)){
+					continue;
+				}
+				to.addIcon(icon);
+			}
+		}
+
+		public void remove(Object key, NodeModel from) {
+			if(! key.equals(Keys.ICONS)){
+				return;
+			}
+			while(from.removeIcon()>0);
+		}
+
+		public void remove(Object key, NodeModel from, NodeModel which) {
+			if(! key.equals(Keys.ICONS)){
+				return;
+			}
+			List<MindIcon> targetIcons = from.getIcons();
+			List<MindIcon> whichIcons = which.getIcons();
+			for(MindIcon icon:targetIcons){
+				if(! whichIcons.contains(icon)){
+					continue;
+				}
+				int position = targetIcons.lastIndexOf(icon);
+				if(position == -1){
+					continue;
+				}
+				from.removeIcon(position);
+			}
+		}
+		
+	}
+	
 	private final Map<MindIcon, AFreeplaneAction> iconActions = new LinkedHashMap<MindIcon, AFreeplaneAction>();
 	private final IconStore STORE = IconStoreFactory.create();
 	
@@ -80,6 +129,7 @@ public class MIconController extends IconController {
 	 */
 	public MIconController(final ModeController modeController) {
 		super(modeController);
+		modeController.registerExtensionCopier(new ExtensionCopier());
 		iconToolBar = new FreeplaneToolBar();
 		iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
 		iconToolBar.setOrientation(SwingConstants.VERTICAL);
