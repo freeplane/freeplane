@@ -21,7 +21,6 @@
 package org.freeplane.plugin.script;
 
 import java.io.PrintStream;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -31,7 +30,6 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
@@ -178,26 +176,26 @@ class ScriptingRegistration {
 			menuBuilder.addMenuItem(scriptsParentLocation, menuItem, scriptsLocation, MenuBuilder.AS_CHILD);
 		}
 		for (Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
+			final JMenu menuItem = new JMenu();
 			String scriptName = entry.getKey();
-			final String menuItemName = getMenuItemName(scriptName);
-			menuBuilder.addAction(scriptsLocation, new ExecuteScriptAction(controller, scriptingEngine, scriptName,
-			    menuItemName, entry.getValue(),  ExecutionMode.ON_SELECTED_NODE), MenuBuilder.AS_CHILD);
-			final String recursiveMenuItemName = getRecursiveMenuItemName(scriptName);
-			menuBuilder.addAction(scriptsLocation, new ExecuteScriptAction(controller, scriptingEngine, scriptName
-			        + ".recursive", recursiveMenuItemName, entry.getValue(),
-			    ExecuteScriptAction.ExecutionMode.ON_SELECTED_NODE_RECURSIVELY), MenuBuilder.AS_CHILD);
+			String location = scriptsLocation + "/" + scriptName;
+			MenuBuilder.setLabelAndMnemonic(menuItem, scriptName);
+			menuBuilder.addMenuItem(scriptsLocation, menuItem, location, MenuBuilder.AS_CHILD);
+			addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, //
+			    "ExecuteScriptOnSingleNode.text", ExecutionMode.ON_SINGLE_NODE);
+			addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, //
+			    "ExecuteScriptOnSelectedNode.text", ExecutionMode.ON_SELECTED_NODE);
+			addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, //
+			    "ExecuteScriptOnSelectedNodeRecursively.text", ExecutionMode.ON_SELECTED_NODE_RECURSIVELY);
 		}
 	}
 
-	/** adds a resource string to be used as menu text for this script. */
-	private String getMenuItemName(String scriptName) {
-		final String msg = FpStringUtils.format("ExecuteScript.text", new Object[] { scriptName });
-		return msg;
-	}
-
-	/** adds a resource string to be used as menu text for this script. */
-	private String getRecursiveMenuItemName(String scriptName) {
-		final String msg = FpStringUtils.format("ExecuteScriptRecursively.text", new Object[] { scriptName });
-		return msg;
+	private void addMenuItem(final Controller controller, final MenuBuilder menuBuilder,
+	                         final ScriptingEngine scriptingEngine, final String location,
+	                         final Entry<String, String> entry, final String key, final ExecutionMode executionMode) {
+		final String scriptName = entry.getKey();
+		menuBuilder.addAction(location, new ExecuteScriptAction(controller, scriptingEngine, scriptName,
+			ResourceBundles.getText(key), entry.getValue(),
+		    executionMode), MenuBuilder.AS_CHILD);
 	}
 }
