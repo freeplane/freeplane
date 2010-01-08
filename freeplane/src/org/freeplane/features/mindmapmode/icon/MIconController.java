@@ -300,7 +300,7 @@ public class MIconController extends IconController {
 	
 	public int removeIcon(final NodeModel node, final int position) {
 		final int size = node.getIcons().size();
-        final int index = position >= 0 ? position : size-position;
+        final int index = position >= 0 ? position : size+position;
 		if (size == 0 || size <= index) {
         	return size;
         }
@@ -327,6 +327,7 @@ public class MIconController extends IconController {
 
 	public void updateIconToolbar() {
 		iconToolBar.removeAll();
+		iconToolBar.add(getModeController().getAction("RemoveIcon_0_Action")).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconToolBar.add(getModeController().getAction("RemoveIconAction")).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconToolBar.add(getModeController().getAction("RemoveAllIconsAction")).setAlignmentX(
 		    JComponent.CENTER_ALIGNMENT);
