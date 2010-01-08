@@ -157,6 +157,7 @@ public class MIconController extends IconController {
 
 	public void addIconsToMenu(final MenuBuilder builder, final String iconMenuString) {
 		final String category = iconMenuString + "/icons/icons";
+		builder.addAction(category, getModeController().getAction("RemoveIcon_0_Action"), MenuBuilder.AS_CHILD);
 		builder.addAction(category, getModeController().getAction("RemoveIconAction"), MenuBuilder.AS_CHILD);
 		builder.addAction(category, getModeController().getAction("RemoveAllIconsAction"), MenuBuilder.AS_CHILD);
 		builder.addSeparator(category, MenuBuilder.AS_CHILD);
@@ -168,8 +169,8 @@ public class MIconController extends IconController {
 	private void createIconActions() {
 		final ModeController modeController = getModeController();
 		final Controller controller = modeController.getController();
-		final RemoveIconAction removeLastIconAction = new RemoveIconAction(controller);
-		modeController.addAction(removeLastIconAction);
+		modeController.addAction(new RemoveIconAction(controller, 0));
+		modeController.addAction(new RemoveIconAction(controller, -1));
 		modeController.addAction(new RemoveAllIconsAction(controller));
 		for (final MindIcon icon : STORE.getMindIcons()) {
 			final IconAction myAction = new IconAction(controller, icon);
@@ -183,6 +184,7 @@ public class MIconController extends IconController {
 		
 		final List<AFreeplaneAction> actions = new ArrayList<AFreeplaneAction>();
 		actions.addAll(iconActions.values());
+		actions.add(modeController.getAction("RemoveIcon_0_Action"));
 		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
 		
@@ -285,15 +287,42 @@ public class MIconController extends IconController {
 	}
 
 	public void removeAllIcons(final NodeModel node) {
-		((RemoveAllIconsAction) getModeController().getAction("RemoveAllIconsAction")).removeAllIcons(node);
+		final int size = node.getIcons().size();
+        final MIconController iconController = (MIconController) IconController.getController(((RemoveAllIconsAction) getModeController().getAction("RemoveAllIconsAction")).getModeController());
+        for (int i = 0; i < size; i++) {
+        	iconController.removeIcon(node, 0);
+        }
 	}
 
 	public int removeIcon(final NodeModel node) {
-		return ((RemoveIconAction) getModeController().getAction("RemoveIconAction")).removeIcon(node);
-	}
+        return removeIcon(node, -1);
+ 	}
 	
 	public int removeIcon(final NodeModel node, final int position) {
-		return ((RemoveIconAction) getModeController().getAction("RemoveIconAction")).removeIcon(node, position);
+		final int size = node.getIcons().size();
+        final int index = position >= 0 ? position : size-position;
+		if (size == 0 || size <= index) {
+        	return size;
+        }
+        final IActor actor = new IActor() {
+        	private final MindIcon icon = node.getIcon(index);
+        
+        	public void act() {
+        		node.removeIcon(index);
+        		getModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, icon, null);
+        	}
+        
+        	public String getDescription() {
+        		return "removeIcon";
+        	}
+        
+        	public void undo() {
+        		node.addIcon(icon, index);
+        		getModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, null, icon);
+        	}
+        };
+        getModeController().execute(actor, node.getMap());
+        return node.getIcons().size();
 	}
 
 	public void updateIconToolbar() {

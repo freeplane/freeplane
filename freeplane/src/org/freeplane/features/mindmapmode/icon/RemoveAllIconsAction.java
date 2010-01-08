@@ -51,7 +51,8 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		removeAllIcons(node);
+		MIconController iconController = (MIconController) IconController.getController(getModeController());
+		iconController.removeAllIcons(node);
 	}
 
 	public String getDescription() {
@@ -68,13 +69,5 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 
 	public String getShortcutKey() {
 		return getKey() + ".shortcut";
-	}
-
-	public void removeAllIcons(final NodeModel node) {
-		final int size = node.getIcons().size();
-		final MIconController iconController = (MIconController) IconController.getController(getModeController());
-		for (int i = 0; i < size; i++) {
-			iconController.removeIcon(node, 0);
-		}
 	}
 }
