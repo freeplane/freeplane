@@ -169,18 +169,22 @@ public class MNoteController extends NoteController {
 		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
 	    final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
 	    editorPane.addFocusListener(new FocusListener() {
+			private SpellCheckerController spellCheckerController = null;
 			public void focusLost(FocusEvent e) {
+				spellCheckerController.enableAutoSpell(editorPane, false);
 			}
 			
 			public void focusGained(FocusEvent e) {
 				initSpellChecker();
-				editorPane.removeFocusListener(this);
+				spellCheckerController.enableAutoSpell(editorPane, true);
 			}
 			private void initSpellChecker() {
-				final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getModeController());
-				spellCheckerController.enableAutoSpell(editorPane);
+				if(spellCheckerController != null){
+					return;
+				}
+				spellCheckerController = SpellCheckerController.getController(getModeController());
 				spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
-				spellCheckerController.enableShortKey(editorPane);
+				spellCheckerController.enableShortKey(editorPane, true);
 		    }
 		});
 		final Action jumpToMapAction = new JumpToMapAction();

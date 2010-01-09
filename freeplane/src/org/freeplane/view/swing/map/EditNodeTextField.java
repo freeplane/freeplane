@@ -307,7 +307,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.addKeyListener(textFieldListener);
 		textfield.addMouseListener(textFieldListener);
 		textfield.setWrapStyleWord(true);
-		SpellCheckerController.getController(modeController).enableAutoSpell(textfield);
+		SpellCheckerController.getController(modeController).enableAutoSpell(textfield, true);
 		mapView.scrollNodeToVisible(nodeView);
 		final MainView mainView = nodeView.getMainView();
 		final int nodeWidth = mainView.getWidth();
