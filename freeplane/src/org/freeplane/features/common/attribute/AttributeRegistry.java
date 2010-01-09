@@ -141,7 +141,7 @@ public class AttributeRegistry implements IExtension {
 	}
 
 	public void fireAttributeLayoutChanged() {
-		setAttributeLayoutChanged();
+		fireStateChanged();
 	}
 
 	protected void fireAttributesChanged() {

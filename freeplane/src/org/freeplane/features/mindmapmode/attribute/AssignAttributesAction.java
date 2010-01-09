@@ -31,6 +31,7 @@ class AssignAttributesAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private AssignAttributeDialog assignAttributeDialog;
 
 	public AssignAttributesAction(final ModeController modeController) {
 		super("AssignAttributesAction", modeController.getController());
@@ -38,8 +39,10 @@ class AssignAttributesAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = getController();
-		final AssignAttributeDialog assignAttributeDialog = new AssignAttributeDialog(AttributeController
-		    .getController(getModeController()), controller.getViewController().getFrame());
-		assignAttributeDialog.show();
+		if(assignAttributeDialog == null){
+			assignAttributeDialog = new AssignAttributeDialog(AttributeController
+				.getController(getModeController()), controller.getViewController().getFrame());
+		}
+		assignAttributeDialog.setVisible(true);
 	}
 }
