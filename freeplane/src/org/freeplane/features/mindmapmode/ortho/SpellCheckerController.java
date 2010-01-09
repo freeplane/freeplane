@@ -72,18 +72,18 @@ public class SpellCheckerController implements IExtension {
 		popupMenu.add(SpellChecker.createLanguagesMenu());
 	}
 
-	public void enableAutoSpell(final JTextComponent editorPane) {
+	public void enableAutoSpell(final JTextComponent editorPane, final boolean enable) {
 		if (!isSpellCheckerActive()) {
 			return;
 		}
-		SpellChecker.enableAutoSpell(editorPane, true);
+		SpellChecker.enableAutoSpell(editorPane, enable);
 	}
 
-	public void enableShortKey(final JTextComponent editorPane) {
+	public void enableShortKey(final JTextComponent editorPane, final boolean enable) {
 		if (!isSpellCheckerActive()) {
 			return;
 		}
-		SpellChecker.enableShortKey(editorPane, true);
+		SpellChecker.enableShortKey(editorPane, enable);
 	}
 
 	private void init() {

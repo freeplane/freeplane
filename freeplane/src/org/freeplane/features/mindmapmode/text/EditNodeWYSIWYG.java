@@ -121,9 +121,9 @@ class EditNodeWYSIWYG extends EditNodeBase {
 				final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
 				final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getBase()
 				    .getModeController());
-				spellCheckerController.enableAutoSpell(editorPane);
+				spellCheckerController.enableAutoSpell(editorPane, true);
 				spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
-				spellCheckerController.enableShortKey(editorPane);
+				spellCheckerController.enableShortKey(editorPane, true);
 			}
 			return htmlEditorPanel;
 		}

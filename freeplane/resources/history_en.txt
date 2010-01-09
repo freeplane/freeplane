@@ -1,12 +1,24 @@
 ===============================
-<<<<<<< TREE
-1.2.1 alpha
+1.0.38 rc
 ===============================
-*******************************
-Revision 892
+New features:
+lazy loading of the spell check dictionary
+enable spell check for note editor  only while it has focus
+hierarchical menus for groovy scripts
+Resources_ja.properties
+Resources_fr.properties
+jlatexmath-0.8.5.jar
 
-*******************************
-=======
+Bug fixes:
+bug fixes in attribute dialogs
+374]: "Remove Last Icon" keyboard shortcut does not work
+bug fix in UndoHandler for transactions
+373]: Scripting: Compilation errors result in inoperative scripting engine
+372]: Unable to create filter "containing attribute icon.
+371]: Status of arrows for local links is not restored in the menu
+366]: wrong bubble node layout when done the first time fixed (NodeView.java)
+
+===============================
 1.0.37 beta
 ===============================
 New features:

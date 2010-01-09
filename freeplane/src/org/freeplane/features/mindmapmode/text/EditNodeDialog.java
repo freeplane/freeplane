@@ -181,7 +181,7 @@ class EditNodeDialog extends EditNodeBase {
 			textArea.setCaretColor(nodeTextColor);
 			final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getBase()
 			    .getModeController());
-			spellCheckerController.enableAutoSpell(textArea);
+			spellCheckerController.enableAutoSpell(textArea, true);
 			final JPanel buttonPane = new JPanel();
 			buttonPane.add(enterConfirms);
 			buttonPane.add(okButton);
