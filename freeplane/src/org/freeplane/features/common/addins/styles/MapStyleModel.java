@@ -20,6 +20,7 @@
 package org.freeplane.features.common.addins.styles;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -97,7 +98,7 @@ public class MapStyleModel implements IExtension {
 		styleMap.addExtension(IUndoHandler.class, parentMap.getExtension(IUndoHandler.class));
 
 		final MapReader mapReader = modeController.getMapController().getMapReader();
-		final NodeModel root;
+		NodeModel root;
 		try {
 			if(styleMapStr != null){
 				final Reader styleReader; 
@@ -107,8 +108,15 @@ public class MapStyleModel implements IExtension {
 			else{
 				loadingStyleMap = true;
 				try{
-				root = load(ResourceController.getResourceController().getResource("/styles/default.stylemm"),
-					mapReader,styleMap);
+					ResourceController resourceController = ResourceController.getResourceController();
+					File freeplaneUserDirectory = new File(resourceController.getFreeplaneUserDirectory());
+					File styles = new File(freeplaneUserDirectory, "default.stylemm");
+					try{
+						root = load(styles.toURL(), mapReader,styleMap);
+					}
+					catch (Exception e) {
+						root = load(ResourceController.getResourceController().getResource("/styles/default.stylemm"), mapReader,styleMap);
+					}
 				}
 				finally{
 					loadingStyleMap = false;

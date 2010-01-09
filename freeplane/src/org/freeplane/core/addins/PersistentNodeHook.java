@@ -179,7 +179,10 @@ public abstract class PersistentNodeHook {
 		}
 		final MapController mapController = modeController.getMapController();
 		mapController.getReadManager().addElementHandler("hook", createXmlReader());
-		mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(), createXmlWriter());
+		IExtensionElementWriter xmlWriter = createXmlWriter();
+		if(xmlWriter != null){
+			mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(), xmlWriter);
+		}
 		if (this instanceof IExtension) {
 			modeController.addExtension((Class<? extends IExtension>) getClass(), (IExtension) this);
 		}

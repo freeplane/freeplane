@@ -62,6 +62,7 @@ import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
+import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.view.swing.map.MapViewController;
@@ -112,6 +113,7 @@ public class SModeControllerFactory {
         EdgeController.install(modeController, new MEdgeController(modeController));
         CloudController.install(modeController, new MCloudController(modeController));
         LinkController.install(modeController, new LinkController(modeController));
+		MFileManager.install(modeController, new MFileManager(modeController));
         userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(controller, new MMouseMotionListener(
             modeController)));
         
@@ -129,7 +131,7 @@ public class SModeControllerFactory {
         ((MIconController) IconController.getController(modeController)).updateIconToolbar();
         ((MIconController) IconController.getController(modeController)).updateMenus(builder);
         modeController.updateMenus();
-        new MapStyle(modeController);
+        new MapStyle(modeController, false);
 		controller.addModeController(modeController);
 		final SModeController modeController = this.modeController;
 		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController, null, false);
@@ -174,5 +176,6 @@ public class SModeControllerFactory {
 
 	public static void createModeController(MModeController modeController) {
 		modeController.addAction(new EditStylesAction(modeController));
+		modeController.addAction(new EditDefaultStylesAction(modeController));
     }
 }

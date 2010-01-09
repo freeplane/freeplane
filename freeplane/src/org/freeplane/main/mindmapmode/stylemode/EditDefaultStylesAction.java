@@ -22,6 +22,10 @@ package org.freeplane.main.mindmapmode.stylemode;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -31,21 +35,25 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.util.ResUtil;
 import org.freeplane.features.common.addins.styles.LogicalStyleController;
 import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.file.MFileManager;
+import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev
  * 13.09.2009
  */
-public class EditStylesAction extends AFreeplaneAction {
-	public EditStylesAction(MModeController mainModeController) {
-	    super("EditStylesAction", mainModeController.getController());
+public class EditDefaultStylesAction extends AFreeplaneAction {
+	public EditDefaultStylesAction(MModeController mainModeController) {
+	    super("EditDefaultStylesAction", mainModeController.getController());
     }
 
 	private void init() {
@@ -69,16 +77,8 @@ public class EditStylesAction extends AFreeplaneAction {
 	            	switch(modeController.getStatus()){
 	            	case JOptionPane.OK_OPTION:
 	            		if(undoHandler.canUndo()){
-	            			getModeController().commit();
-	            			final MapModel currentMap = getController().getMap();
-	            			getModeController().getMapController().setSaved(currentMap, false);
-	            			final MapController mapController = modeController.getMapController();
-	            			mapController.setSaved(map, false);
-	            			LogicalStyleController.getController(getModeController()).refreshMap(currentMap);
-	            			break;
+	            			((MFileManager)MFileManager.getController(modeController)).save(map);
 	            		}
-	            	case JOptionPane.CANCEL_OPTION:
-	            		getModeController().rollback();
 	            	}
 				mapViewManager.close(true);
 	            super.componentHidden(e);
@@ -96,12 +96,19 @@ public class EditStylesAction extends AFreeplaneAction {
 
 	public void actionPerformed(ActionEvent e) {
 		init();
-		final MapModel map = getController().getMap();
-        final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
-        undoHandler.startTransaction();
-		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
-		final MapModel styleMap = mapStyleModel.getStyleMap();
-		modeController.getMapController().newMapView(styleMap);
+		try {
+			
+			ResourceController resourceController = ResourceController.getResourceController();
+			File freeplaneUserDirectory = new File(resourceController.getFreeplaneUserDirectory());
+			File styles = new File(freeplaneUserDirectory, "default.stylemm");
+			if (! styles.exists()){
+				ResUtil.copyFromURL(resourceController.getResource("/styles/default.stylemm"), freeplaneUserDirectory);
+			}
+			modeController.getMapController().newMap(styles.toURL());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return;
+		}
 		dialog.setLocationRelativeTo(getController().getViewController().getJFrame());
 		dialog.setVisible(true);
 	}

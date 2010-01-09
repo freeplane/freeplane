@@ -253,7 +253,7 @@ public class MModeControllerFactory {
 		AttributeController.install(modeController, new MAttributeController(modeController));
 		modeController.addAction(new EditAttributesAction(controller));
 		SpellCheckerController.install(modeController);
-		new MapStyle(modeController);
+		new MapStyle(modeController, true);
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar();

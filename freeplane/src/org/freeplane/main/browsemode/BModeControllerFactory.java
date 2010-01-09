@@ -80,7 +80,7 @@ public class BModeControllerFactory {
 			LogTool.warn("can not access system clipboard, clipboard controller disabled");
 		}
 		LocationController.install(modeController, new LocationController(modeController));
-		new MapStyle(modeController);
+		new MapStyle(modeController, true);
 		modeController.getMapController().addNodeSelectionListener(new BNodeNoteViewer(modeController.getController()));
 		final BToolbarContributor toolbarContributor = new BToolbarContributor(modeController);
 		modeController.addMenuContributor(toolbarContributor);

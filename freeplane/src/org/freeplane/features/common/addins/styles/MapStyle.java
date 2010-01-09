@@ -56,8 +56,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public enum WriterHint {FORCE_FORMATTING};
 	public static final String MAX_NODE_WIDTH = "max_node_width";
 
-	public MapStyle(final ModeController modeController) {
+	public MapStyle(final ModeController modeController, boolean persistent) {
 		super(modeController);
+		if(persistent){
+			getModeController().getMapController().getWriteManager().addExtensionElementWriter(getExtensionClass(), new XmlWriter());
+		}
+
 		modeController.getMapController().addMapLifeCycleListener(this);
 		if (modeController.getModeName().equals("MindMap")) {
 			modeController.addAction(new MapBackgroundColorAction(this));
@@ -91,7 +95,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 	}
 	protected XmlWriter createXmlWriter() {
-		return new XmlWriter();
+		return null;
 	}
 
 	protected class MyXmlReader extends XmlReader implements IElementContentHandler {
