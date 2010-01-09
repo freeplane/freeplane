@@ -48,7 +48,6 @@ import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
-
 /**
  * @author Dimitry Polivaev
  * 28.09.2009

@@ -139,6 +139,7 @@ public class LogicalStyleController implements IExtension{
 					EventQueue.invokeLater(this);
 					return;
 				}
+				mapsToRefresh.remove(map);
 				getModeController().getMapController().fireMapChanged(new MapChangeEvent(this, map, MapStyle.MAP_STYLES, null, null));
 			}
 		});

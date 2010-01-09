@@ -22,7 +22,7 @@
 				<menu_action action="SelectAllAction" accelerator="control A" />
 				<menu_action action="SelectBranchAction" accelerator="control shift A" />
 			</menu_category>
-			<menu_category name="find">
+ 			<menu_category name="find">
 				<menu_action action="FindAction" accelerator="control F" />
 				<menu_action action="FindNextAction" accelerator="control G" />
 			</menu_category>
@@ -63,10 +63,11 @@
 			<menu_category name="icons" />
 		</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
-<menu_submenu name="patterns" name_ref="extension_menu">
-<menu_category name="patterns">
-</menu_category>
-</menu_submenu>
+           <menu_category name="paste">
+                <menu_action action="FormatCopy" accelerator="alt shift C" />
+                <menu_action action="FormatPaste" accelerator="alt shift V" />
+                <menu_action action="RemoveFormatAction"/>
+            </menu_category>
 			<menu_category name="change">
 			</menu_category>
 			<menu_separator />

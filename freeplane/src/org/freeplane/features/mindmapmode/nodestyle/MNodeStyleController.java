@@ -27,20 +27,13 @@ import java.util.ListIterator;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.IExtensionCopier;
-import org.freeplane.core.modecontroller.INodeChangeListener;
-import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.modecontroller.NodeChangeEvent;
-import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
-import org.freeplane.features.common.addins.styles.LogicalStyleModel;
-import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
-import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 
 /**
  * @author Dimitry Polivaev
@@ -121,6 +114,9 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.registerExtensionCopier(new StyleCopier());
 		modeController.addAction(new BoldAction(controller));
 		modeController.addAction(new ItalicAction(controller));
+		modeController.addAction(new FormatCopy(controller));
+		modeController.addAction(new FormatPaste(controller));
+		modeController.addAction(new RemoveFormatAction(controller));
 		final AMultipleNodeAction increaseNodeFont = new AMultipleNodeAction("IncreaseNodeFontAction", controller) {
 			/**
 			 * 

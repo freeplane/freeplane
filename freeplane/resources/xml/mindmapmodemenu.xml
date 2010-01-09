@@ -141,6 +141,9 @@
 			<menu_category name="icons" />
 		</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
+            <menu_action action="FormatCopy" accelerator="alt shift C" />
+            <menu_action action="FormatPaste" accelerator="alt shift V" />
+            <menu_action action="RemoveFormatAction"/>
 			<menu_category name="change">
 			</menu_category>
 			<menu_separator />

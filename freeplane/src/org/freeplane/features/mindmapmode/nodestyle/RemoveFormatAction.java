@@ -1,4 +1,4 @@
-package org.freeplane.features.mindmapmode.addins.styles;
+package org.freeplane.features.mindmapmode.nodestyle;
 
 import java.awt.event.ActionEvent;
 
@@ -8,8 +8,7 @@ import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 
-@ActionLocationDescriptor(locations = { "/menu_bar/format/styles/manage" })
-public class RemoveFormatAction extends AMultipleNodeAction {
+class RemoveFormatAction extends AMultipleNodeAction {
 
 	public RemoveFormatAction(Controller controller) {
 		super("RemoveFormatAction", controller);

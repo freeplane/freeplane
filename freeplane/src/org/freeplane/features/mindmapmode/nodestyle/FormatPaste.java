@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.addins.styles;
+package org.freeplane.features.mindmapmode.nodestyle;
 
 import java.awt.event.ActionEvent;
 
@@ -35,8 +35,6 @@ import org.freeplane.features.mindmapmode.icon.MIconController;
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" }, //
-accelerator = "alt shift C")
 class FormatCopy extends AFreeplaneAction {
 	private static NodeModel pattern = null;
 	/**
@@ -70,16 +68,14 @@ class FormatCopy extends AFreeplaneAction {
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" }, //
 accelerator = "alt shift V")
-public class FormatPaste extends AMultipleNodeAction {
+class FormatPaste extends AMultipleNodeAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public FormatPaste(final Controller controller, final MenuBuilder menuBuilder) {
+	public FormatPaste(final Controller controller) {
 		super("FormatPaste", controller);
-		menuBuilder.addAnnotatedAction(new FormatCopy(controller));
-		menuBuilder.addAnnotatedAction(this);
 	}
 
 	@Override
