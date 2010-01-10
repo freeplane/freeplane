@@ -25,7 +25,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.ITreeWriter;
@@ -91,6 +93,9 @@ public class LogicalStyleController implements IExtension{
 
 	public static void install(MModeController modeController, LogicalStyleController logicalStyleController) {
 		modeController.addExtension(LogicalStyleController.class, logicalStyleController);
+		Controller controller = modeController.getController();
+		FilterController.getController(controller).getConditionFactory().addConditionController(7,
+				new LogicalStyleFilterController(controller));
 	    
     }
 
