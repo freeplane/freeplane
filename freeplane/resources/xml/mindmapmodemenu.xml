@@ -152,15 +152,6 @@
 					accelerator="alt shift R" />
 				<menu_action action="UsePlainTextAction" accelerator="alt shift P" />
 			</menu_category>
-			<menu_submenu name="styles" name_ref="styles">
-				<menu_category name="manage">
-                    <menu_action action="EditStylesAction" />
-                    <menu_action action="EditDefaultStylesAction" />
-				</menu_category>
-				<menu_separator />
-				<menu_category name="assign">
-				</menu_category>
-			</menu_submenu>
 			<menu_separator />
 			<menu_category name="nodes">
 				<menu_category name="style">
@@ -215,6 +206,16 @@
 				</menu_submenu>
 			</menu_category>
 		</menu_submenu>
+        <menu_submenu name="styles" name_ref="styles">
+            <menu_category name="manage">
+                <menu_action action="EditStylesAction" />
+                <menu_action action="EditDefaultStylesAction" />
+                <menu_action action="RedefineStyleAction" />
+            </menu_category>
+            <menu_separator />
+            <menu_category name="assign">
+            </menu_category>
+        </menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="navigate">
 				<menu_action action="NavigationPreviousMapAction"

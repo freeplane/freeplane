@@ -141,7 +141,6 @@ public class MModeControllerFactory {
 		styleScrollPane.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "styleScrollPaneVisible");
 		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, styleScrollPane);
 		menuBuilder.addAnnotatedAction(new ShowFormatPanelAction(controller));
-		menuBuilder.addAnnotatedAction(new RedefineStyleAction(controller));
 		menuBuilder.addAnnotatedAction(new FitToPage(controller));
 		menuBuilder.addAnnotatedAction(new EncryptedMap(modeController));
 		menuBuilder.addAnnotatedAction(new EnterPassword(modeController));

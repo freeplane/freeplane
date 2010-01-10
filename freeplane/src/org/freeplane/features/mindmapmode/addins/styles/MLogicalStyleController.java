@@ -128,11 +128,12 @@ public class MLogicalStyleController extends LogicalStyleController {
 	    this.modeController = modeController;
 	    modeController.getMapController().addNodeChangeListener(new StyleRemover());
 		modeController.registerExtensionCopier(new ExtensionCopier());
+		modeController.addAction(new RedefineStyleAction(modeController.getController()));
 	    actions = new LinkedList<AssignStyleAction>();
 	    final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 	    modeController.getController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void beforeMapChange(MapModel oldMap, MapModel newMap) {
-				removeStyleMenu(menuBuilder, "/menu_bar/format");
+				removeStyleMenu(menuBuilder, "/menu_bar");
 				removeStyleMenu(menuBuilder, "/node_popup");
 			}
 			
@@ -140,7 +141,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 			
 			public void afterMapChange(MapModel oldMap, MapModel newMap) {
-				addStyleMenu(menuBuilder, "/menu_bar/format", newMap);
+				addStyleMenu(menuBuilder, "/menu_bar", newMap);
 				addStyleMenu(menuBuilder, "/node_popup", newMap);
 			}
 		});
@@ -164,8 +165,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 			
 			public void mapChanged(MapChangeEvent event) {
 				if(event.getProperty().equals(MapStyle.MAP_STYLES)){
-					removeStyleMenu(menuBuilder, "/menu_bar/format");
-					addStyleMenu(menuBuilder, "/menu_bar/format", event.getMap());
+					removeStyleMenu(menuBuilder, "/menu_bar");
+					addStyleMenu(menuBuilder, "/menu_bar", event.getMap());
 					removeStyleMenu(menuBuilder, "/node_popup");
 					addStyleMenu(menuBuilder, "/node_popup", event.getMap());
 				}

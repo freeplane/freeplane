@@ -11,7 +11,7 @@ import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.addins.styles.LogicalStyleModel;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
 
-@ActionLocationDescriptor(locations = { "/menu_bar/format/styles/manage" })
+@ActionLocationDescriptor(locations = { "/menu_bar/styles/manage" })
 public class RedefineStyleAction extends AFreeplaneAction{
 
 	public RedefineStyleAction(Controller controller) {
