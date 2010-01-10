@@ -64,7 +64,7 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 	@Override
 	public void setSelected() {
 		final JComponent toolBar = getToolbar();
-		final boolean isVisible = getController().getViewController().isToolbarVisible(toolBar);;
+		final boolean isVisible = getController().getViewController().isToolbarVisible(toolBar);
 		setSelected(isVisible);
 	}
 }

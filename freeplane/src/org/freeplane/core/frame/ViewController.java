@@ -745,7 +745,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		if (completeKeyString == null) {
 			return true;
 		}
-		return ! "false".equals(ResourceController.getResourceController().getProperty(getPropertyKeyPrefix() + completeKeyString, "true"));
+		return ! "false".equals(ResourceController.getResourceController().getProperty(completeKeyString, "true"));
     }
 
 	public String completeVisiblePropertyKey(JComponent toolBar) {
@@ -761,7 +761,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		else{
 			completeKeyString = keyString;
 		}
-	    return completeKeyString;
+	    return getPropertyKeyPrefix() + completeKeyString;
     }
 
 	protected boolean isFullScreenEnabled() {
