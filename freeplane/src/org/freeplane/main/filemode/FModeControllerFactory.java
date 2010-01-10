@@ -83,6 +83,7 @@ public class FModeControllerFactory {
 		toolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar",ViewController.TOP, toolBar);
 		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(controller).getFilterToolbar());
+		userInputListenerFactory.addToolBar("/status",ViewController.BOTTOM, controller.getViewController().getStatusBar());
 		userInputListenerFactory.setMenuStructure("/xml/filemodemenu.xml");
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();

@@ -55,7 +55,6 @@ class DialogController extends ViewController {
 		getContentPane().setLayout(new BorderLayout());
 		mContentComponent = getScrollPane();
 		getContentPane().add(mContentComponent, BorderLayout.CENTER);
-		getContentPane().add(getStatusBar(), BorderLayout.SOUTH);
 	}
 
 	/*

@@ -124,6 +124,7 @@ public class SModeControllerFactory {
 		userInputListenerFactory.addToolBar("/main_toolbar",ViewController.TOP, toolBar);
 		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT,((MIconController) IconController.getController(modeController))
 			    .getIconToolBarScrollPane());
+		userInputListenerFactory.addToolBar("/status",ViewController.BOTTOM, controller.getViewController().getStatusBar());
 		modeController.addAction(new ToggleToolbarAction(controller, "ToggleLeftToolbarAction", "/icon_toolbar"));
 		userInputListenerFactory.setMenuStructure("/xml/stylemodemenu.xml");
         final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();

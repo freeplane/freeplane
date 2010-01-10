@@ -112,7 +112,6 @@ class ApplicationViewController extends ViewController {
 		else {
 			getContentPane().add(mContentComponent, BorderLayout.CENTER);
 		}
-		getContentPane().add(getStatusBar(), BorderLayout.SOUTH);
 		initFrame(frame);
 	}
 

@@ -361,7 +361,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		return mapViewManager.getMapSelection();
 	}
 
-	public Component getStatusBar() {
+	public JComponent getStatusBar() {
 		return statusPanel;
 	}
 
