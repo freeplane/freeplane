@@ -20,16 +20,18 @@
 package org.freeplane.plugin.script;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 
 /**
  * scans for scripts to be registered via {@link ScriptingRegistration}.
@@ -37,13 +39,40 @@ import org.freeplane.core.util.LogTool;
  * @author Volker Boerchers
  */
 public class ScriptingConfiguration {
+	static class ScriptMetaData {
+		private TreeSet<ExecutionMode> executionModes;
+		private boolean isCached = false;
+		ScriptMetaData() {
+			executionModes = new TreeSet<ExecutionMode>();
+			executionModes.add(ExecutionMode.ON_SINGLE_NODE);
+			executionModes.add(ExecutionMode.ON_SELECTED_NODE);
+			executionModes.add(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY);
+		}
+		public TreeSet<ExecutionMode> getExecutionModes() {
+        	return executionModes;
+        }
+		public void addExecutionMode(ExecutionMode executionMode) {
+        	this.executionModes.add(executionMode);
+        }
+		public void removeExecutionMode(ExecutionMode executionMode) {
+        	this.executionModes.remove(executionMode);
+        }
+		public boolean isCached() {
+        	return isCached;
+        }
+		public void setCached(boolean isCached) {
+        	this.isCached = isCached;
+        }
+    }
+
 	private static final String DEFAULT_SCRIPT_DIRECTORIES = "scripts";
 	private static final String SCRIPT_REGEX = ".*\\.groovy$";
 	// TODO: remove code duplication with LastOpenedList by extracting
 	// list property handling into a utility class, e.g. ConfigurationUtils
 	private static final String SEPARATOR = File.pathSeparator
 			+ File.pathSeparator;
-	private TreeMap<String,String> nameScriptMap;
+	private TreeMap<String,String> nameScriptMap = new TreeMap<String, String>();
+	private TreeMap<String, ScriptMetaData> nameScriptMetaDataMap = new TreeMap<String, ScriptMetaData>();
 
 	ScriptingConfiguration() {
 		initNameScriptMap();
@@ -54,7 +83,6 @@ public class ScriptingConfiguration {
 				.getResourceController();
 		resourceController.setDefaultProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES, DEFAULT_SCRIPT_DIRECTORIES);
 		String dirsString = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES);
-		nameScriptMap = new TreeMap<String, String>();
 		if (dirsString != null) {
 			String[] dirs = dirsString.split(SEPARATOR);
 			for (int i = 0; i < dirs.length; i++) {
@@ -99,33 +127,49 @@ public class ScriptingConfiguration {
 			name = getScriptName(file) + i;
 		}
 		nameScriptMap.put(name, file.getAbsolutePath());
+		addMetaData(file, name);
 	}
 
-	/** get absolute filenames. */
-	List<String> getScripts() {
-		ArrayList<String> result = new ArrayList<String>(nameScriptMap.values());
-		Collections.sort(result);
-		return result;
-	}
+	private void addMetaData(File file, String name) {
+		ScriptMetaData metaData = new ScriptMetaData();
+		if (firstCharIsEquals(file)) {
+			// would make no sense
+			metaData.removeExecutionMode(ExecutionMode.ON_SINGLE_NODE);
+		}
+		nameScriptMetaDataMap.put(name, metaData);
+		// TODO: read optionpanel stuff
+    }
 
-	/** returns a sorted list of script names. */
-	List<String> getScriptNames() {
-		return new ArrayList<String>(nameScriptMap.keySet());
-	}
-
-	/** use this to find the executable file for a given script name. */
-	String getScript(String scriptName) {
-		return nameScriptMap.get(scriptName);
-	}
+	private boolean firstCharIsEquals(File file) {
+        try {
+        	FileReader in = new FileReader(file);
+			final char[] buf = new char[2];
+			boolean result = false;
+			if ((in.read(buf, 0, 1)) > 0) {
+				result = buf[0] == '=';
+			}
+			in.close(); // that's save enough
+			return result;
+        }
+        catch (IOException e) {
+        	return false;
+        }
+    }
 
 	/** some beautification: remove directory and suffix + make first letter uppercase. */
-	String getScriptName(File file) {
+	private String getScriptName(File file) {
 		// TODO: we could add mnemonics handling here! (e.g. by reading '_' as '&')
 		String string = file.getName().replaceFirst("\\.[^.]+", "");
+		// fixup characters that might cause problems in menus
+		string = string.replaceAll("\\s+", "_");
 		return string.length() < 2 ? string : string.substring(0, 1).toUpperCase() + string.substring(1);
 	}
 
 	SortedMap<String, String> getNameScriptMap() {
 		return Collections.unmodifiableSortedMap(nameScriptMap);
 	}
+
+	SortedMap<String, ScriptMetaData> getNameScriptMetaDataMap() {
+    	return Collections.unmodifiableSortedMap(nameScriptMetaDataMap);
+    }
 }

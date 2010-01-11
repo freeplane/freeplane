@@ -22,6 +22,7 @@ package org.freeplane.plugin.script;
 
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import javax.swing.JMenu;
@@ -46,10 +47,7 @@ import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
 class ScriptingRegistration implements IExternalPatternAction {
-	/** create scripts submenu if there are more scripts than this number. */
-	private static final int MINIMAL_SCRIPT_COUNT_FOR_SUBMENU = 1;
-	private static final String MENU_BAR_SCRIPTING_PARENT_LOCATION = "/menu_bar/extras/first";
-	private static final String MENU_BAR_SCRIPTING_LOCATION = MENU_BAR_SCRIPTING_PARENT_LOCATION + "/scripting";
+	private static final String MENU_BAR_SCRIPTING_LOCATION = "/menu_bar/extras/first/scripting";
 
 	final private class PatternScriptModel implements IScriptModel {
 		final private String mOriginalScript;
@@ -79,8 +77,8 @@ class ScriptingRegistration implements IExternalPatternAction {
 
 		public boolean executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			ScriptingEngine.setNoUserPermissionRequired(true);
-			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), 
-			    mScript, modeController, pErrorHandler, pOutStream, getScriptCookies());
+			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
+			    modeController, pErrorHandler, pOutStream, getScriptCookies());
 		}
 
 		public int getAmountOfScripts() {
@@ -123,8 +121,8 @@ class ScriptingRegistration implements IExternalPatternAction {
 
 	public void act(final NodeModel node, final Pattern pattern) {
 		if (pattern.getPatternScript() != null && pattern.getPatternScript().getValue() != null) {
-			ScriptingEngine.executeScript(node, HtmlTools.unescapeHTMLUnicodeEntity(pattern
-			    .getPatternScript().getValue()), modeController, new IErrorHandler() {
+			ScriptingEngine.executeScript(node, HtmlTools.unescapeHTMLUnicodeEntity(pattern.getPatternScript()
+			    .getValue()), modeController, new IErrorHandler() {
 				public void gotoLine(final int pLineNumber) {
 				}
 			}, System.out, getScriptCookies());
@@ -160,8 +158,7 @@ class ScriptingRegistration implements IExternalPatternAction {
 		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
 				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
-				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(controller,
-				    patternScriptModel, false);
+				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(controller, patternScriptModel, false);
 				scriptEditorPanel.setVisible(true);
 				return patternScriptModel.getScript();
 			}
@@ -179,36 +176,45 @@ class ScriptingRegistration implements IExternalPatternAction {
 	private void registerScripts(final Controller controller, final MenuBuilder menuBuilder,
 	                             final ScriptingEngine scriptingEngine) {
 		ScriptingConfiguration configuration = new ScriptingConfiguration();
-		String scriptsParentLocation = MENU_BAR_SCRIPTING_PARENT_LOCATION;
-		String scriptsLocation = MENU_BAR_SCRIPTING_LOCATION;
-		if (configuration.getNameScriptMap().size() >= MINIMAL_SCRIPT_COUNT_FOR_SUBMENU) {
-			scriptsParentLocation = scriptsLocation;
-			scriptsLocation += "/scripts";
-			final JMenu menuItem = new JMenu();
-			MenuBuilder.setLabelAndMnemonic(menuItem, ResourceBundles.getText("ExecuteScripts.text"));
-			menuBuilder.addMenuItem(scriptsParentLocation, menuItem, scriptsLocation, MenuBuilder.AS_CHILD);
-		}
+		String scriptsParentLocation = MENU_BAR_SCRIPTING_LOCATION;
+		String scriptsLocation = scriptsParentLocation + "/scripts";
+		addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, ResourceBundles.getText("ExecuteScripts.text"));
 		for (Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
-			final JMenu menuItem = new JMenu();
 			String scriptName = entry.getKey();
 			String location = scriptsLocation + "/" + scriptName;
-			MenuBuilder.setLabelAndMnemonic(menuItem, scriptName);
-			menuBuilder.addMenuItem(scriptsLocation, menuItem, location, MenuBuilder.AS_CHILD);
-			addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, //
-			    "ExecuteScriptOnSingleNode.text", ExecutionMode.ON_SINGLE_NODE);
-			addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, //
-			    "ExecuteScriptOnSelectedNode.text", ExecutionMode.ON_SELECTED_NODE);
-			addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, //
-			    "ExecuteScriptOnSelectedNodeRecursively.text", ExecutionMode.ON_SELECTED_NODE_RECURSIVELY);
+			addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
+			TreeSet<ExecutionMode> executionModes = configuration.getNameScriptMetaDataMap().get(scriptName)
+			    .getExecutionModes();
+			for (ExecutionMode executionMode : executionModes) {
+				addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, executionMode);
+			}
 		}
+	}
+
+	private void addSubMenu(final MenuBuilder menuBuilder, final String scriptsParentLocation,
+	                        final String scriptsLocation, final String name) {
+		final JMenu menuItem = new JMenu();
+		MenuBuilder.setLabelAndMnemonic(menuItem, name);
+		menuBuilder.addMenuItem(scriptsParentLocation, menuItem, scriptsLocation, MenuBuilder.AS_CHILD);
 	}
 
 	private void addMenuItem(final Controller controller, final MenuBuilder menuBuilder,
 	                         final ScriptingEngine scriptingEngine, final String location,
-	                         final Entry<String, String> entry, final String key, final ExecutionMode executionMode) {
+	                         final Entry<String, String> entry, final ExecutionMode executionMode) {
 		final String scriptName = entry.getKey();
+		String key = null;
+		switch (executionMode) {
+			case ON_SINGLE_NODE:
+				key = "ExecuteScriptOnSingleNode.text";
+				break;
+			case ON_SELECTED_NODE:
+				key = "ExecuteScriptOnSelectedNode.text";
+				break;
+			case ON_SELECTED_NODE_RECURSIVELY:
+				key = "ExecuteScriptOnSelectedNodeRecursively.text";
+				break;
+		}
 		menuBuilder.addAction(location, new ExecuteScriptAction(controller, scriptingEngine, scriptName,
-			ResourceBundles.getText(key), entry.getValue(),
-		    executionMode), MenuBuilder.AS_CHILD);
+		    ResourceBundles.getText(key), entry.getValue(), executionMode), MenuBuilder.AS_CHILD);
 	}
 }
