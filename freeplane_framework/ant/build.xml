@@ -30,6 +30,7 @@
 			<fileset file="${framework.jar}" />
 			<fileset file="${freeplane.exe}" />
 		</copy>
+		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
 		<mkdir dir="${build.core}/org.freeplane.core" />
 		<copy todir="${build.core}/org.freeplane.core">
 			<fileset dir="${workspace}/freeplane/dist/org.freeplane.core" />
@@ -75,7 +76,7 @@
 			<zipfileset dir="${build}" prefix="freeplane-${ver}">
 				<excludesfile name="${build}/freeplane.sh"/>
 			</zipfileset>
-            <zipfileset file="${build}/freeplane.sh" filemode="777" prefix="freeplane-${ver}">
+            <zipfileset file="${build}/freeplane.sh" filemode="775" prefix="freeplane-${ver}">
             </zipfileset>
 			<zipfileset dir="${root}" prefix="freeplane-${ver}">
 				<include name="${license}" />
@@ -85,7 +86,7 @@
 
 	<target name="srczip" depends="mkdistdir">
 		<tar destfile="${dist}/freeplane_src-${ver}.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="777" username="ant" group="ant">
+			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="664">
 				<patternset id="freeplane.sources">
 					<include name="freeplane/**" />
 					<include name="freeplane_plugin*/**" />
@@ -101,18 +102,18 @@
 					<exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho" />
 				</patternset>
 			</tarfileset>
-			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="777" username="ant" group="ant">
+			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
 				<include name="${license}" />
 				<include name="${readme_src}" />
 			</tarfileset>
 		</tar>
 
 		<tar destfile="${dist}/freeplane_srcpure-${ver}.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="777" username="ant" group="ant">
+			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="664">
 				<patternset refid="freeplane.sources" />
 				<exclude name="**/*.jar" />
 			</tarfileset>
-			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="777" username="ant" group="ant">
+			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
 				<include name="${license}" />
 				<include name="${readme_src}" />
 			</tarfileset>
