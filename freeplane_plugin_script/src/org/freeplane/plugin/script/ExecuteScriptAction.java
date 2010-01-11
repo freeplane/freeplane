@@ -113,6 +113,8 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		while ((len = in.read(buf)) > 0) {
 			builder.append(buf, 0, len);
 		}
-		return builder.toString();
+		String result = builder.toString();
+		in.close();
+		return result;
 	}
 }
