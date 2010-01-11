@@ -30,7 +30,6 @@
 			<fileset file="${framework.jar}" />
 			<fileset file="${freeplane.exe}" />
 		</copy>
-		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
 		<mkdir dir="${build.core}/org.freeplane.core" />
 		<copy todir="${build.core}/org.freeplane.core">
 			<fileset dir="${workspace}/freeplane/dist/org.freeplane.core" />
@@ -73,7 +72,11 @@
 
 	<target name="binzip" depends="build, mkdistdir">
 		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="true">
-			<zipfileset dir="${build}" prefix="freeplane-${ver}" />
+			<zipfileset dir="${build}" prefix="freeplane-${ver}">
+				<excludesfile name="${build}/freeplane.sh"/>
+			</zipfileset>
+            <zipfileset file="${build}/freeplane.sh" filemode="777" prefix="freeplane-${ver}">
+            </zipfileset>
 			<zipfileset dir="${root}" prefix="freeplane-${ver}">
 				<include name="${license}" />
 			</zipfileset>
