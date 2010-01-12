@@ -46,9 +46,11 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.SelectionController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
@@ -225,7 +227,8 @@ public class LinkController extends SelectionController implements IExtension {
     		links.setHyperLink(hyperlink);
         }
 		catch (URISyntaxException e1) {
-			LogTool.severe(e1);
+			LogTool.warn(e1);
+			UITools.errorMessage(FpStringUtils.formatText("link_error", link));
 			return;
 		} 
 	}
