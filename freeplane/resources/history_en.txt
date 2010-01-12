@@ -2,6 +2,7 @@
 1.0.38 rc
 ===============================
 New features:
+warn user on loading incorrect links
 lazy loading of the spell check dictionary
 enable spell check for note editor  only while it has focus
 hierarchical menus for groovy scripts
@@ -10,6 +11,10 @@ Resources_fr.properties
 jlatexmath-0.8.5.jar
 
 Bug fixes:
+377]: wikimindmap can be opened by Freemind but not by Freeplane
+set permission to execute freeplane.sh in ant script
+store property 'filter_ignore_case' between sessions
+376]: designating the tab key as the default for insert new child doesn't work on new installations
 bug fixes in attribute dialogs
 374]: "Remove Last Icon" keyboard shortcut does not work
 bug fix in UndoHandler for transactions
