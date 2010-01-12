@@ -20,7 +20,6 @@
 package org.freeplane.plugin.script;
 
 import java.awt.event.ActionEvent;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.ResUtil;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**
@@ -72,7 +72,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		getController().getViewController().setWaitingCursor(true);
 		boolean result = true;
 		try {
-			String scriptContent = readScript();
+			String scriptContent = ResUtil.slurpFile(script);
 			List<NodeModel> nodes = new ArrayList<NodeModel>();
 			if (mode == ExecutionMode.ON_SINGLE_NODE)
 				nodes.add(getController().getSelection().getSelected());
@@ -103,18 +103,4 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 			getController().getViewController().setWaitingCursor(false);
 		}
     }
-
-
-	private String readScript() throws IOException {
-		FileReader in = new FileReader(script);
-		StringBuilder builder = new StringBuilder();
-		final char[] buf = new char[1024];
-		int len;
-		while ((len = in.read(buf)) > 0) {
-			builder.append(buf, 0, len);
-		}
-		String result = builder.toString();
-		in.close();
-		return result;
-	}
 }

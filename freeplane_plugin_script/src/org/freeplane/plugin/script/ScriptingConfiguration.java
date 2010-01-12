@@ -20,7 +20,6 @@
 package org.freeplane.plugin.script;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -28,9 +27,12 @@ import java.util.Collections;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.ResUtil;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 
 /**
@@ -42,36 +44,55 @@ public class ScriptingConfiguration {
 	static class ScriptMetaData {
 		private TreeSet<ExecutionMode> executionModes;
 		private boolean isCached = false;
-		ScriptMetaData() {
+		private final String scriptName;
+
+		ScriptMetaData(String scriptName) {
+			this.scriptName = scriptName;
 			executionModes = new TreeSet<ExecutionMode>();
 			executionModes.add(ExecutionMode.ON_SINGLE_NODE);
 			executionModes.add(ExecutionMode.ON_SELECTED_NODE);
 			executionModes.add(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY);
 		}
+
 		public TreeSet<ExecutionMode> getExecutionModes() {
-        	return executionModes;
-        }
+			return executionModes;
+		}
+
 		public void addExecutionMode(ExecutionMode executionMode) {
-        	this.executionModes.add(executionMode);
-        }
+			this.executionModes.add(executionMode);
+		}
+
 		public void removeExecutionMode(ExecutionMode executionMode) {
-        	this.executionModes.remove(executionMode);
+			this.executionModes.remove(executionMode);
+		}
+
+		public void removeAllExecutionModes() {
+			this.executionModes.clear();
         }
+
+		public String getMenuLocation() {
+			return ScriptingRegistration.MENU_BAR_SCRIPTING_LOCATION + "/" + scriptName;
+		}
+
 		public boolean isCached() {
-        	return isCached;
-        }
+			return isCached;
+		}
+
 		public void setCached(boolean isCached) {
-        	this.isCached = isCached;
+			this.isCached = isCached;
+		}
+
+		public String getScriptName() {
+	        return scriptName;
         }
-    }
+	}
 
 	private static final String DEFAULT_SCRIPT_DIRECTORIES = "scripts";
 	private static final String SCRIPT_REGEX = ".*\\.groovy$";
 	// TODO: remove code duplication with LastOpenedList by extracting
 	// list property handling into a utility class, e.g. ConfigurationUtils
-	private static final String SEPARATOR = File.pathSeparator
-			+ File.pathSeparator;
-	private TreeMap<String,String> nameScriptMap = new TreeMap<String, String>();
+	private static final String SEPARATOR = File.pathSeparator + File.pathSeparator;
+	private TreeMap<String, String> nameScriptMap = new TreeMap<String, String>();
 	private TreeMap<String, ScriptMetaData> nameScriptMetaDataMap = new TreeMap<String, ScriptMetaData>();
 
 	ScriptingConfiguration() {
@@ -79,8 +100,7 @@ public class ScriptingConfiguration {
 	}
 
 	private void initNameScriptMap() {
-		final ResourceController resourceController = ResourceController
-				.getResourceController();
+		final ResourceController resourceController = ResourceController.getResourceController();
 		resourceController.setDefaultProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES, DEFAULT_SCRIPT_DIRECTORIES);
 		String dirsString = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES);
 		if (dirsString != null) {
@@ -98,8 +118,7 @@ public class ScriptingConfiguration {
 	private File getDirectory(String dir) {
 		File file = new File(dir);
 		if (!file.isAbsolute()) {
-			file = new File(ResourceController.getResourceController()
-					.getFreeplaneUserDirectory(), dir);
+			file = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), dir);
 		}
 		return file;
 	}
@@ -123,38 +142,75 @@ public class ScriptingConfiguration {
 
 	private void addScript(File file) {
 		String name = getScriptName(file);
-		for (int i = 2; nameScriptMap.containsKey(name); ++i) {
-			name = getScriptName(file) + i;
+		try {
+			// add suffix if the same script exists in multiple dirs
+			for (int i = 2; nameScriptMap.containsKey(name); ++i) {
+				name = getScriptName(file) + i;
+			}
+			nameScriptMap.put(name, file.getAbsolutePath());
+			addMetaData(file, name);
 		}
-		nameScriptMap.put(name, file.getAbsolutePath());
-		addMetaData(file, name);
+		catch (IOException e) {
+			LogTool.warn("problems with script " + file.getAbsolutePath(), e);
+			nameScriptMap.remove(name);
+			nameScriptMetaDataMap.remove(name);
+		}
 	}
 
-	private void addMetaData(File file, String name) {
-		ScriptMetaData metaData = new ScriptMetaData();
-		if (firstCharIsEquals(file)) {
+	private void addMetaData(File file, String name) throws IOException {
+		ScriptMetaData metaData = new ScriptMetaData(name);
+		String content = ResUtil.slurpFile(file);
+		analyseScriptContent(content, metaData);
+		nameScriptMetaDataMap.put(name, metaData);
+		// TODO: read optionpanel stuff
+	}
+
+	// static + not private to enable tests
+	static void analyseScriptContent(String content, ScriptMetaData metaData) {
+	    if (firstCharIsEquals(content)) {
 			// would make no sense
 			metaData.removeExecutionMode(ExecutionMode.ON_SINGLE_NODE);
 		}
-		nameScriptMetaDataMap.put(name, metaData);
-		// TODO: read optionpanel stuff
+	    setExecutionModes(content, metaData);
+	    setCacheMode(content, metaData);
     }
 
-	private boolean firstCharIsEquals(File file) {
-        try {
-        	FileReader in = new FileReader(file);
-			final char[] buf = new char[2];
-			boolean result = false;
-			if ((in.read(buf, 0, 1)) > 0) {
-				result = buf[0] == '=';
-			}
-			in.close(); // that's save enough
-			return result;
-        }
-        catch (IOException e) {
-        	return false;
-        }
+	private static void setCacheMode(String content, ScriptMetaData metaData) {
+	    Pattern cacheScriptPattern = makeCaseInsensitivePattern("@CacheScriptContent\\s*\\(\\s*(true|false)\\s*\\)");
+	    Matcher matcher = cacheScriptPattern.matcher(content);
+		if (matcher.find())
+	    	metaData.setCached(new Boolean(matcher.group(1)));
     }
+
+	private static void setExecutionModes(String content, ScriptMetaData metaData) {
+	    Pattern executionModePattern = makeCaseInsensitivePattern("@ExecutionModes\\s*\\(\\s*\\{([^}]+)\\}\\s*\\)");
+	    Matcher matcher = executionModePattern.matcher(content);
+	    if (matcher.find()) {
+	    	metaData.removeAllExecutionModes();
+	    	Pattern onSingleNodePattern = makeCaseInsensitivePattern("\\bON_SINGLE_NODE\\b");
+	    	Pattern onSelectedNodesPattern = makeCaseInsensitivePattern("\\bON_SELECTED_NODE\\b");
+	    	Pattern onSelectedNodesRecursivelyPattern = makeCaseInsensitivePattern("\\bON_SELECTED_NODE_RECURSIVELY\\b");
+	    	String[] split = matcher.group(1).split("\\s*,\\s*");
+	    	for (String mode : split) {
+	            if (onSingleNodePattern.matcher(mode).find()) {
+	            	metaData.addExecutionMode(ExecutionMode.ON_SINGLE_NODE);
+	            }
+	            else if (onSelectedNodesPattern.matcher(mode).find()) {
+	            	metaData.addExecutionMode(ExecutionMode.ON_SELECTED_NODE);
+	            }
+	            else if (onSelectedNodesRecursivelyPattern.matcher(mode).find()) {
+	            	metaData.addExecutionMode(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY);
+	            }
+	            else {
+	            	LogTool.warn(metaData.getScriptName() + ": ignoring unknown ExecutionMode '" + mode + "'");
+	            }
+            }
+	    }
+    }
+
+	private static boolean firstCharIsEquals(String content) {
+		return content.isEmpty() ? false : content.charAt(0) == '=';
+	}
 
 	/** some beautification: remove directory and suffix + make first letter uppercase. */
 	private String getScriptName(File file) {
@@ -165,11 +221,15 @@ public class ScriptingConfiguration {
 		return string.length() < 2 ? string : string.substring(0, 1).toUpperCase() + string.substring(1);
 	}
 
+	private static Pattern makeCaseInsensitivePattern(String regexp) {
+	    return Pattern.compile(regexp, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+    }
+
 	SortedMap<String, String> getNameScriptMap() {
 		return Collections.unmodifiableSortedMap(nameScriptMap);
 	}
 
 	SortedMap<String, ScriptMetaData> getNameScriptMetaDataMap() {
-    	return Collections.unmodifiableSortedMap(nameScriptMetaDataMap);
-    }
+		return Collections.unmodifiableSortedMap(nameScriptMetaDataMap);
+	}
 }

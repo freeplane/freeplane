@@ -47,7 +47,7 @@ import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
 class ScriptingRegistration implements IExternalPatternAction {
-	private static final String MENU_BAR_SCRIPTING_LOCATION = "/menu_bar/extras/first/scripting";
+	static final String MENU_BAR_SCRIPTING_LOCATION = "/menu_bar/extras/first/scripting";
 
 	final private class PatternScriptModel implements IScriptModel {
 		final private String mOriginalScript;

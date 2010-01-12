@@ -2,8 +2,8 @@ package org.freeplane.core.util;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,12 +13,10 @@ import java.util.Properties;
 import org.freeplane.core.resources.ResourceController;
 
 public class ResUtil {
-	
 	public static void copyFromURL(final URL resource, final File destinationDirectory) {
 		String path = resource.getPath();
-		int index   = path.lastIndexOf('/');
+		int index = path.lastIndexOf('/');
 		String fileName = index > -1 ? path.substring(index + 1) : path;
-		
 		try {
 			final InputStream in = resource.openStream();
 			final OutputStream out = new FileOutputStream(new File(destinationDirectory, fileName));
@@ -78,5 +76,28 @@ public class ResUtil {
 			throw new RuntimeException(e);
 		}
 		return props;
+	}
+
+	public static String slurpFile(File file) throws IOException {
+		FileReader in = null;
+		try {
+			in = new FileReader(file);
+			StringBuilder builder = new StringBuilder();
+			final char[] buf = new char[1024];
+			int len;
+			while ((len = in.read(buf)) > 0) {
+				builder.append(buf, 0, len);
+			}
+			String result = builder.toString();
+			return result;
+		}
+		finally {
+			if (in != null)
+				in.close();
+		}
+	}
+
+	public static String slurpFile(String fileName) throws IOException {
+		return slurpFile(new File(fileName));
 	}
 }
