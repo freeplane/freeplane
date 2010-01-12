@@ -209,7 +209,7 @@ public class ScriptingConfiguration {
     }
 
 	private static boolean firstCharIsEquals(String content) {
-		return content.isEmpty() ? false : content.charAt(0) == '=';
+		return content.equals("") ? false : content.charAt(0) == '=';
 	}
 
 	/** some beautification: remove directory and suffix + make first letter uppercase. */
