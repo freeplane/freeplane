@@ -296,12 +296,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	}
 
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
-		final FileInputStream input = new FileInputStream(file);
 		try{
 			if (file.length() == 0){
 				return map.getRootNode();
 			}
-			final NodeModel rootNode = loadTreeImpl(map, new BufferedInputStream(input));
+			final NodeModel rootNode = loadTreeImpl(map, file);
 			return rootNode;
 		}
 		catch (final Exception ex) {
@@ -317,12 +316,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 		}
 	}
 
-	private NodeModel loadTreeImpl(final MapModel map, final InputStream input) throws FileNotFoundException,
+	private NodeModel loadTreeImpl(final MapModel map, final File f) throws FileNotFoundException,
 	        IOException, XMLException {
+		BufferedInputStream file = new BufferedInputStream(new FileInputStream(f));
 		int versionInfoLength = EXPECTED_START_STRINGS[0].length();
-		final String buffer = readFileStart(input, versionInfoLength).toString();
+		final String buffer = readFileStart(file, versionInfoLength).toString();
 		final StringBufferInputStream startInput = new StringBufferInputStream(buffer);
-		final InputStream sequencedInput = new SequenceInputStream(startInput, input);
+		final InputStream sequencedInput = new SequenceInputStream(startInput, file);
 		Reader reader = null;
 		for (int i = 0; i < EXPECTED_START_STRINGS.length; i++) {
 			versionInfoLength = EXPECTED_START_STRINGS[i].length();
@@ -344,7 +344,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 				reader = UrlManager.getActualReader(sequencedInput);
 			}
 			else {
-				reader = UrlManager.getUpdateReader(sequencedInput, FREEPLANE_VERSION_UPDATER_XSLT);
+				sequencedInput.close();
+				reader = UrlManager.getUpdateReader(f, FREEPLANE_VERSION_UPDATER_XSLT);
 			}
 		}
 		try {

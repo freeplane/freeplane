@@ -128,9 +128,10 @@ public class UrlManager implements IExtension {
                         xsltInputStream = new BufferedInputStream(updaterUrl.openStream());
                     	final Source xsltSource = new StreamSource(xsltInputStream);
         				input = new BufferedInputStream( new FileInputStream(file));
-        				InputStream cleanedInput = new CleaningInputStream(input);
+                        InputStream cleanedInput = new CleaningInputStream(input);
+                        Reader reader = new InputStreamReader(cleanedInput);
         				Transformer trans = transFact.newTransformer(xsltSource);
-        				trans.transform(new StreamSource(cleanedInput), result);
+        				trans.transform(new StreamSource(reader), result);
         			}
         			catch (final Exception ex) {
         				LogTool.warn(ex);
@@ -163,7 +164,9 @@ public class UrlManager implements IExtension {
         	return new StringReader(writer.getBuffer().toString());
         }
         catch (final Exception ex) {
-        	LogTool.severe(ex);
+			final String message = ex.getMessage();
+			UITools.errorMessage(FpStringUtils.formatText("update_failed", String.valueOf(message)));
+        	LogTool.warn(ex);
 			final InputStream input = new BufferedInputStream( new FileInputStream(file));
         	return UrlManager.getActualReader(input);
         }
