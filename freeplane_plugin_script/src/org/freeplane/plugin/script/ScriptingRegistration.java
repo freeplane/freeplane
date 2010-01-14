@@ -109,7 +109,7 @@ class ScriptingRegistration implements IExternalPatternAction {
 	}
 
 	private static final String SEPARATOR = "OptionPanel.separator.plugins/scripting/separatorPropertyName";
-	static final String OPTION_PANEL_SCRIPTING_TAB = "OptionPanel.plugins/scripting/tab_name";
+	private static final String OPTION_PANEL_SCRIPTING_TAB = "OptionPanel.plugins/scripting/tab_name";
 	final private MModeController modeController;
 	final private HashMap mScriptCookies = new HashMap();
 	private ScriptEditorProperty.IScriptEditorStarter mScriptEditorStarter;
@@ -191,7 +191,6 @@ class ScriptingRegistration implements IExternalPatternAction {
 				    .cacheContent());
 			}
 		}
-		configuration.addScriptConfigurationToOptionPanel(modeController);
 	}
 
 	private void addSubMenu(final MenuBuilder menuBuilder, final String scriptsParentLocation,

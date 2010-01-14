@@ -31,20 +31,10 @@ public class PropertyAdapter {
 	private final String name;
 
 	public PropertyAdapter(final String name) {
-		this(name, makeLabelKey(name), makeTooltipKey(name));
+		this(name, "OptionPanel." + name, "OptionPanel." + name + ".tooltip");
 		if (ResourceController.getResourceController().getText(description, null) == null) {
 			description = null;
 		}
-	}
-
-	/** this method is needed to add missing resources for dynamically added OptionPanel items. */
-	public static String makeLabelKey(final String name) {
-	    return "OptionPanel." + name;
-    }
-	
-	/** this method is needed to add missing resources for dynamically added OptionPanel items. */
-	public static String makeTooltipKey(final String name) {
-		return "OptionPanel." + name + ".tooltip";
 	}
 
 	public PropertyAdapter(final String name, final String label, final String description) {

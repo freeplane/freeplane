@@ -99,15 +99,6 @@ public class ResourceBundles extends ResourceBundle {
 		}
 	}
 
-	public void addResources(final String language, final Map<String, String> properties) {
-		if (language.equalsIgnoreCase(DEFAULT_LANGUAGE)) {
-			defaultResources.putAll(properties);
-		}
-		else if (language.equalsIgnoreCase(lang)) {
-			languageResources.putAll(properties);
-		}
-	}
-
 	@Override
 	public Enumeration getKeys() {
 		final Iterator<String> iterator = defaultResources.keySet().iterator();
