@@ -74,7 +74,7 @@
 	<target name="binzip" depends="build, mkdistdir">
 		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="true">
 			<zipfileset dir="${build}" prefix="freeplane-${ver}">
-				<excludesfile name="${build}/freeplane.sh"/>
+				<exclude name="freeplane.sh"/>
 			</zipfileset>
             <zipfileset file="${build}/freeplane.sh" filemode="775" prefix="freeplane-${ver}">
             </zipfileset>
