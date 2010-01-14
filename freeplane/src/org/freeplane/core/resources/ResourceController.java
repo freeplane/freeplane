@@ -27,14 +27,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.AController.IActionOnChange;
-import org.freeplane.core.modecontroller.INodeSelectionListener;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
 
@@ -66,6 +65,10 @@ public abstract class ResourceController {
 
 	public void addLanguageResources(final String language, final URL url) {
 		resources.addResources(language, url);
+	}
+
+	public void addLanguageResources(final String language, final Map<String, String> properties) {
+		resources.addResources(language, properties);
 	}
 
 	public void addPropertyChangeListener(final IFreeplanePropertyListener listener) {

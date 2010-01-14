@@ -22,6 +22,7 @@ package org.freeplane.plugin.script;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.SortedMap;
@@ -30,9 +31,15 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ui.OptionPanelBuilder;
+import org.freeplane.core.resources.ui.PropertyAdapter;
+import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.ResUtil;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 
 /**
@@ -41,6 +48,8 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
  * @author Volker Boerchers
  */
 public class ScriptingConfiguration {
+	private static final String CACHE_SCRIPT_CONTENT = "CacheScriptContent";
+
 	static class ScriptMetaData {
 		private TreeSet<ExecutionMode> executionModes;
 		private boolean cacheContent = false;
@@ -161,6 +170,7 @@ public class ScriptingConfiguration {
 		ScriptMetaData metaData = new ScriptMetaData(name);
 		String content = ResUtil.slurpFile(file);
 		analyseScriptContent(content, metaData);
+		applyOptions(metaData);
 		nameScriptMetaDataMap.put(name, metaData);
 		// TODO: read optionpanel stuff
 	}
@@ -231,5 +241,72 @@ public class ScriptingConfiguration {
 
 	SortedMap<String, ScriptMetaData> getNameScriptMetaDataMap() {
 		return Collections.unmodifiableSortedMap(nameScriptMetaDataMap);
+	}
+
+	private void applyOptions(ScriptMetaData metaData) {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		ArrayList<ExecutionMode> modes = new ArrayList<ExecutionMode>(3);
+		// if one option was set by the user forget about annotations
+		for (ExecutionMode mode : ExecutionMode.values()) {
+			if (resourceController.getBooleanProperty(makePropertyKey(makeBaseKey(metaData.getScriptName()), mode))) {
+				modes.add(mode);
+			}
+		}
+		if (!modes.isEmpty()) {
+			metaData.getExecutionModes().clear();
+			metaData.getExecutionModes().addAll(modes);
+		}
+		if (resourceController.getBooleanProperty(makePropertyKey(makeBaseKey(metaData.getScriptName()),
+		    CACHE_SCRIPT_CONTENT))) {
+			metaData.setCacheContent(true);
+		}
+	}
+
+	void addScriptConfigurationToOptionPanel(MModeController modeController) {
+		final OptionPanelBuilder controls = modeController.getOptionPanelBuilder();
+		for (String scriptName : nameScriptMap.keySet()) {
+			String key = makeBaseKey(scriptName);
+			addLanguageResources(scriptName, key);
+			controls.addSeparator(ScriptingRegistration.OPTION_PANEL_SCRIPTING_TAB, makeScriptNameKey(scriptName),
+			    IndexedTree.AS_CHILD);
+			final String GROUP = ScriptingRegistration.OPTION_PANEL_SCRIPTING_TAB + "/" + makeScriptNameKey(scriptName);
+			controls
+			    .addBooleanProperty(GROUP, makePropertyKey(key, ExecutionMode.ON_SINGLE_NODE), IndexedTree.AS_CHILD);
+			controls.addBooleanProperty(GROUP, makePropertyKey(key, ExecutionMode.ON_SELECTED_NODE),
+			    IndexedTree.AS_CHILD);
+			controls.addBooleanProperty(GROUP, makePropertyKey(key, ExecutionMode.ON_SELECTED_NODE_RECURSIVELY),
+			    IndexedTree.AS_CHILD);
+			controls.addBooleanProperty(GROUP, makePropertyKey(key, CACHE_SCRIPT_CONTENT), IndexedTree.AS_CHILD);
+		}
+	}
+
+	private String makeBaseKey(String scriptName) {
+		return "scripts_config_" + makeScriptNameKey(scriptName);
+	}
+
+	private void addLanguageResources(String scriptName, String key) {
+		// some dirt to get around missing resource properties for dynamically added OptionPanel items
+		final ResourceController rc = ResourceController.getResourceController();
+		final String languageCode = ((ResourceBundles) rc.getResources()).getLanguageCode();
+		rc.addLanguageResources(languageCode, Collections.singletonMap(makeScriptNameKey(scriptName), scriptName));
+		rc.addLanguageResources(languageCode, Collections.singletonMap(PropertyAdapter.makeLabelKey(makePropertyKey(
+		    key, CACHE_SCRIPT_CONTENT)), FpStringUtils.getOptionalText(CACHE_SCRIPT_CONTENT + ".text")));
+		for (ExecutionMode executionMode : ExecutionMode.values()) {
+			rc.addLanguageResources(languageCode, Collections.singletonMap(PropertyAdapter
+			    .makeLabelKey(makePropertyKey(key, executionMode)), FpStringUtils.getOptionalText(ExecuteScriptAction
+			    .getExecutionModeKey(executionMode))));
+		}
+	}
+
+	private String makeScriptNameKey(String scriptName) {
+		return scriptName.toLowerCase();
+	}
+
+	private String makePropertyKey(String baseKey, String propertyName) {
+		return baseKey + "_" + propertyName.toLowerCase();
+	}
+
+	private String makePropertyKey(String baseKey, ExecutionMode executionMode) {
+		return baseKey + "_" + executionMode.toString().toLowerCase();
 	}
 }
