@@ -1,5 +1,5 @@
 ===============================
-1.0.38 rc
+1.0.38 beta
 ===============================
 New features:
 warn user on loading incorrect links
