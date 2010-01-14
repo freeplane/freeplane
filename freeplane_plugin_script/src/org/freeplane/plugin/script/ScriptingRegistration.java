@@ -22,7 +22,6 @@ package org.freeplane.plugin.script;
 
 import java.io.PrintStream;
 import java.util.HashMap;
-import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import javax.swing.JMenu;
@@ -44,6 +43,7 @@ import org.freeplane.features.mindmapnode.pattern.ScriptEditorProperty;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
+import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
 class ScriptingRegistration implements IExternalPatternAction {
@@ -109,7 +109,7 @@ class ScriptingRegistration implements IExternalPatternAction {
 	}
 
 	private static final String SEPARATOR = "OptionPanel.separator.plugins/scripting/separatorPropertyName";
-	private static final String TAB = "OptionPanel.plugins/scripting/tab_name";
+	private static final String OPTION_PANEL_SCRIPTING_TAB = "OptionPanel.plugins/scripting/tab_name";
 	final private MModeController modeController;
 	final private HashMap mScriptCookies = new HashMap();
 	private ScriptEditorProperty.IScriptEditorStarter mScriptEditorStarter;
@@ -131,9 +131,9 @@ class ScriptingRegistration implements IExternalPatternAction {
 
 	private void addPropertiesToOptionPanel() {
 		final OptionPanelBuilder controls = modeController.getOptionPanelBuilder();
-		controls.addTab(TAB);
-		controls.addSeparator(TAB, SEPARATOR, IndexedTree.AS_CHILD);
-		final String GROUP = TAB + "/" + SEPARATOR;
+		controls.addTab(OPTION_PANEL_SCRIPTING_TAB);
+		controls.addSeparator(OPTION_PANEL_SCRIPTING_TAB, SEPARATOR, IndexedTree.AS_CHILD);
+		final String GROUP = OPTION_PANEL_SCRIPTING_TAB + "/" + SEPARATOR;
 		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 		    IndexedTree.AS_CHILD);
 		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
@@ -183,10 +183,12 @@ class ScriptingRegistration implements IExternalPatternAction {
 			String scriptName = entry.getKey();
 			String location = scriptsLocation + "/" + scriptName;
 			addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
-			TreeSet<ExecutionMode> executionModes = configuration.getNameScriptMetaDataMap().get(scriptName)
-			    .getExecutionModes();
-			for (ExecutionMode executionMode : executionModes) {
-				addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, executionMode);
+			final ScriptMetaData scriptMetaData = configuration.getNameScriptMetaDataMap().get(scriptName);
+			// in the worst case three actions will cache a script - should not matter that much since it's unlikely
+			// that one script is used in multiple modes by the same user
+			for (ExecutionMode executionMode : scriptMetaData.getExecutionModes()) {
+				addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, executionMode, scriptMetaData
+				    .cacheContent());
 			}
 		}
 	}
@@ -200,21 +202,10 @@ class ScriptingRegistration implements IExternalPatternAction {
 
 	private void addMenuItem(final Controller controller, final MenuBuilder menuBuilder,
 	                         final ScriptingEngine scriptingEngine, final String location,
-	                         final Entry<String, String> entry, final ExecutionMode executionMode) {
+	                         final Entry<String, String> entry, final ExecutionMode executionMode, boolean cacheContent) {
 		final String scriptName = entry.getKey();
-		String key = null;
-		switch (executionMode) {
-			case ON_SINGLE_NODE:
-				key = "ExecuteScriptOnSingleNode.text";
-				break;
-			case ON_SELECTED_NODE:
-				key = "ExecuteScriptOnSelectedNode.text";
-				break;
-			case ON_SELECTED_NODE_RECURSIVELY:
-				key = "ExecuteScriptOnSelectedNodeRecursively.text";
-				break;
-		}
+		String key = ExecuteScriptAction.getExecutionModeKey(executionMode);
 		menuBuilder.addAction(location, new ExecuteScriptAction(controller, scriptingEngine, scriptName,
-		    ResourceBundles.getText(key), entry.getValue(), executionMode), MenuBuilder.AS_CHILD);
+		    ResourceBundles.getText(key), entry.getValue(), executionMode, cacheContent), MenuBuilder.AS_CHILD);
 	}
 }

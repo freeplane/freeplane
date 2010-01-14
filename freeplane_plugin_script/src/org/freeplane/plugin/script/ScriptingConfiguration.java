@@ -43,7 +43,7 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 public class ScriptingConfiguration {
 	static class ScriptMetaData {
 		private TreeSet<ExecutionMode> executionModes;
-		private boolean isCached = false;
+		private boolean cacheContent = false;
 		private final String scriptName;
 
 		ScriptMetaData(String scriptName) {
@@ -68,23 +68,23 @@ public class ScriptingConfiguration {
 
 		public void removeAllExecutionModes() {
 			this.executionModes.clear();
-        }
+		}
 
 		public String getMenuLocation() {
 			return ScriptingRegistration.MENU_BAR_SCRIPTING_LOCATION + "/" + scriptName;
 		}
 
-		public boolean isCached() {
-			return isCached;
+		public boolean cacheContent() {
+			return cacheContent;
 		}
 
-		public void setCached(boolean isCached) {
-			this.isCached = isCached;
+		public void setCacheContent(boolean cacheContent) {
+			this.cacheContent = cacheContent;
 		}
 
 		public String getScriptName() {
-	        return scriptName;
-        }
+			return scriptName;
+		}
 	}
 
 	private static final String DEFAULT_SCRIPT_DIRECTORIES = "scripts";
@@ -167,49 +167,49 @@ public class ScriptingConfiguration {
 
 	// static + not private to enable tests
 	static void analyseScriptContent(String content, ScriptMetaData metaData) {
-	    if (firstCharIsEquals(content)) {
+		if (firstCharIsEquals(content)) {
 			// would make no sense
 			metaData.removeExecutionMode(ExecutionMode.ON_SINGLE_NODE);
 		}
-	    setExecutionModes(content, metaData);
-	    setCacheMode(content, metaData);
-    }
+		setExecutionModes(content, metaData);
+		setCacheMode(content, metaData);
+	}
 
 	private static void setCacheMode(String content, ScriptMetaData metaData) {
-	    Pattern cacheScriptPattern = makeCaseInsensitivePattern("@CacheScriptContent\\s*\\(\\s*(true|false)\\s*\\)");
-	    Matcher matcher = cacheScriptPattern.matcher(content);
+		Pattern cacheScriptPattern = makeCaseInsensitivePattern("@CacheScriptContent\\s*\\(\\s*(true|false)\\s*\\)");
+		Matcher matcher = cacheScriptPattern.matcher(content);
 		if (matcher.find())
-	    	metaData.setCached(new Boolean(matcher.group(1)));
-    }
+			metaData.setCacheContent(new Boolean(matcher.group(1)));
+	}
 
 	private static void setExecutionModes(String content, ScriptMetaData metaData) {
-	    Pattern executionModePattern = makeCaseInsensitivePattern("@ExecutionModes\\s*\\(\\s*\\{([^}]+)\\}\\s*\\)");
-	    Matcher matcher = executionModePattern.matcher(content);
-	    if (matcher.find()) {
-	    	metaData.removeAllExecutionModes();
-	    	Pattern onSingleNodePattern = makeCaseInsensitivePattern("\\bON_SINGLE_NODE\\b");
-	    	Pattern onSelectedNodesPattern = makeCaseInsensitivePattern("\\bON_SELECTED_NODE\\b");
-	    	Pattern onSelectedNodesRecursivelyPattern = makeCaseInsensitivePattern("\\bON_SELECTED_NODE_RECURSIVELY\\b");
-	    	String[] split = matcher.group(1).split("\\s*,\\s*");
-	    	for (String mode : split) {
-	            if (onSingleNodePattern.matcher(mode).find()) {
-	            	metaData.addExecutionMode(ExecutionMode.ON_SINGLE_NODE);
-	            }
-	            else if (onSelectedNodesPattern.matcher(mode).find()) {
-	            	metaData.addExecutionMode(ExecutionMode.ON_SELECTED_NODE);
-	            }
-	            else if (onSelectedNodesRecursivelyPattern.matcher(mode).find()) {
-	            	metaData.addExecutionMode(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY);
-	            }
-	            else {
-	            	LogTool.warn(metaData.getScriptName() + ": ignoring unknown ExecutionMode '" + mode + "'");
-	            }
-            }
-	    }
-    }
+		Pattern executionModePattern = makeCaseInsensitivePattern("@ExecutionModes\\s*\\(\\s*\\{([^}]+)\\}\\s*\\)");
+		Matcher matcher = executionModePattern.matcher(content);
+		if (matcher.find()) {
+			metaData.removeAllExecutionModes();
+			Pattern onSingleNodePattern = makeCaseInsensitivePattern("\\bON_SINGLE_NODE\\b");
+			Pattern onSelectedNodesPattern = makeCaseInsensitivePattern("\\bON_SELECTED_NODE\\b");
+			Pattern onSelectedNodesRecursivelyPattern = makeCaseInsensitivePattern("\\bON_SELECTED_NODE_RECURSIVELY\\b");
+			String[] split = matcher.group(1).split("\\s*,\\s*");
+			for (String mode : split) {
+				if (onSingleNodePattern.matcher(mode).find()) {
+					metaData.addExecutionMode(ExecutionMode.ON_SINGLE_NODE);
+				}
+				else if (onSelectedNodesPattern.matcher(mode).find()) {
+					metaData.addExecutionMode(ExecutionMode.ON_SELECTED_NODE);
+				}
+				else if (onSelectedNodesRecursivelyPattern.matcher(mode).find()) {
+					metaData.addExecutionMode(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY);
+				}
+				else {
+					LogTool.warn(metaData.getScriptName() + ": ignoring unknown ExecutionMode '" + mode + "'");
+				}
+			}
+		}
+	}
 
 	private static boolean firstCharIsEquals(String content) {
-		return content.equals("") ? false : content.charAt(0) == '=';
+		return content.length() == 0 ? false : content.charAt(0) == '=';
 	}
 
 	/** some beautification: remove directory and suffix + make first letter uppercase. */
@@ -222,8 +222,8 @@ public class ScriptingConfiguration {
 	}
 
 	private static Pattern makeCaseInsensitivePattern(String regexp) {
-	    return Pattern.compile(regexp, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-    }
+		return Pattern.compile(regexp, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+	}
 
 	SortedMap<String, String> getNameScriptMap() {
 		return Collections.unmodifiableSortedMap(nameScriptMap);
