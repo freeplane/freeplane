@@ -271,6 +271,17 @@ public class HtmlTools {
 		return text.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&quot;", "\"").replaceAll("&amp;", "&");
 	}
 
+	/**
+	 * decodes unicode numbered entities (like &amp;#10; or &amp;#xA;) and the five predefined entities in XML 1.0:
+	 * <ul>
+	 * <li> &amp;quot;
+	 * <li> &amp;amp;
+	 * <li> &amp;apos;
+	 * <li> &amp;lt;
+	 * <li> &amp;gt;
+	 * </ul>
+	 * Converts all whitespace to a space.
+	 */
 	public static String unescapeHTMLUnicodeEntity(final String text) {
 		final StringBuilder result = new StringBuilder(text.length());
 		final StringBuilder entity = new StringBuilder();
@@ -299,6 +310,21 @@ public class HtmlTools {
 						catch (final NumberFormatException e) {
 							result.append('&').append(entity).append(';');
 						}
+					}
+					else if (entity.indexOf("quot") == 0 && entity.length() == "quot".length()) {
+						result.append('"'); // XML entity
+					}
+					else if (entity.indexOf("amp") == 0 && entity.length() == "amp".length()) {
+						result.append('&'); // XML entity
+					}
+					else if (entity.indexOf("apos") == 0 && entity.length() == "apos".length()) {
+						result.append('\''); // XML entity
+					}
+					else if (entity.indexOf("lt") == 0 && entity.length() == "lt".length()) {
+						result.append('<'); // XML entity
+					}
+					else if (entity.indexOf("gt") == 0 && entity.length() == "gt".length()) {
+						result.append('>'); // XML entity
 					}
 					else {
 						result.append('&').append(entity).append(';');
