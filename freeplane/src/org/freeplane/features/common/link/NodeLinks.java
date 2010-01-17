@@ -154,7 +154,7 @@ public class NodeLinks implements IExtension {
 	public void setLocalHyperlink(final NodeModel node, final String targetID) {
 		removeLocalHyperLink(node);
 		if (targetID != null) {
-			final HyperTextLinkModel link = new HyperTextLinkModel(targetID);
+			final HyperTextLinkModel link = new HyperTextLinkModel(node, targetID);
 			links.add(link);
 			addLinkToMap(node.getMap(), link);
 		}

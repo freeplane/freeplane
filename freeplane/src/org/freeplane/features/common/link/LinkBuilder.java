@@ -31,6 +31,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementDOMHandler;
+import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.IExtensionAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.IReadCompletionListener;
@@ -45,7 +46,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
+class LinkBuilder implements IElementHandler, IReadCompletionListener, IExtensionElementWriter,
         IExtensionAttributeWriter, IAttributeWriter {
 	final private HashSet<NodeLinkModel> arrowLinks;
 	private final LinkController linkController;
@@ -61,20 +62,9 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (tag.equals("arrowlink")) {
-			return createArrowLink(null, null);
+			return createArrowLink((NodeModel)parent, null);
 		}
 		return null;
-	}
-
-	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement dom) {
-		if (parent instanceof NodeModel) {
-			final NodeModel node = (NodeModel) parent;
-			if (userObject instanceof NodeLinkModel) {
-				final NodeLinkModel arrowLink = (NodeLinkModel) userObject;
-				arrowLink.setSource(node);
-			}
-			return;
-		}
 	}
 
 	/**

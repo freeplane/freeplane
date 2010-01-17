@@ -26,6 +26,8 @@ import java.awt.event.KeyListener;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,6 +51,7 @@ import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.common.link.HyperTextLinkModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.MapLinks;
@@ -235,6 +238,10 @@ public class MLinkController extends LinkController {
 		}
 
 		private void removeLinksForDeletedSource(final MapLinks links, final NodeModel model) {
+			final List<NodeModel> children = model.getChildren();
+			for(NodeModel child : children){
+				removeLinksForDeletedSource(links, child);
+			}
 			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
 			if(nodeLinks == null){
 				return;
@@ -265,6 +272,10 @@ public class MLinkController extends LinkController {
         }
 
 		private void removeLinksForDeletedTarget(final MapLinks links, final NodeModel model) {
+			final List<NodeModel> children = model.getChildren();
+			for(NodeModel child : children){
+				removeLinksForDeletedTarget(links, child);
+			}
 			final String id = model.getID();
 			final Set<LinkModel> linkModels = links.get(id);
 			if (linkModels == null || linkModels.isEmpty()) {
@@ -282,6 +293,7 @@ public class MLinkController extends LinkController {
 				public void undo() {
 					links.set(id, linkModels);
 				}
+
 			};
 	        final MapModel map = model.getMap();
 			getModeController().execute(actor, map);

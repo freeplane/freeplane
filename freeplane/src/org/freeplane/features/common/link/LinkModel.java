@@ -36,7 +36,7 @@ public class LinkModel {
 		return targetID;
 	}
 
-	public void setTargetID(final String targetID) {
+	void setTargetID(final String targetID) {
 		this.targetID = targetID;
 	}
 }
