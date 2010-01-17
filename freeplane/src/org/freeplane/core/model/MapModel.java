@@ -143,11 +143,20 @@ public class MapModel {
 	 */
 	public NodeModel getNodeForID(final String nodeID) {
 		final NodeModel node = nodes.get(nodeID);
-		if (node == null || node.getParent() == null && node != root) {
-			return null;
+		if (contained(node)) {
+			return node;
 		}
-		return node;
+		return null;
 	}
+
+	private boolean contained(NodeModel node) {
+		if(node == null)
+			return false;
+		if(node.equals(root)){
+			return true;
+		}
+		return contained(node.getParentNode());
+    }
 
 	public int getNumberOfChangesSinceLastSave() {
 		return changesPerformedSinceLastSave;
