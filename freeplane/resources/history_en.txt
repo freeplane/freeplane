@@ -1,4 +1,11 @@
 ===============================
+1.0.39 beta
+===============================
+Bug fixes:
+undo-redo, cut and paste of nodes with links
+local links
+
+===============================
 1.0.38 beta
 ===============================
 New features:
