@@ -363,7 +363,10 @@ public class UrlManager implements IExtension {
 			final String target = uri.getFragment();
 			try {
 				final MapController mapController = modeController.getMapController();
-				mapController.select(mapController.getNodeFromID(target));
+				final NodeModel node = mapController.getNodeFromID(target);
+				if(node != null){
+					mapController.select(node);
+				}
 			}
 			catch (final Exception e) {
 				LogTool.warn("link " + target + " not found", e);

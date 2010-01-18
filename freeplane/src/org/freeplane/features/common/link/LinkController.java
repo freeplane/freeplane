@@ -89,9 +89,11 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 
 			public void onSelect(final NodeModel node) {
-				final URI link = NodeLinks.getLink(node);
-				final String linkString = (link != null ? link.toString() : " ");
-				modeController.getController().getViewController().out(linkString);
+				final URI link = NodeLinks.getValidLink(node);
+				String linkString = (link != null ? link.toString() : null);
+				if(linkString != null){
+					modeController.getController().getViewController().out(linkString);
+				}
 			}
 		};
 		modeController.getMapController().addNodeSelectionListener(listener);
@@ -163,13 +165,11 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		final String adaptedText = uri.toString();
 		if (adaptedText.startsWith("#")) {
-			try {
 				final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
-				return dest.getShortText();
-			}
-			catch (final Exception e) {
+				if(dest != null){
+					return dest.getShortText();
+				}
 				return ResourceBundles.getText("link_not_available_any_more");
-			}
 		}
 		return adaptedText;
 	}
@@ -235,7 +235,7 @@ public class LinkController extends SelectionController implements IExtension {
 
 	public void loadURL() {
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-		final URI link = NodeLinks.getLink(selectedNode);
+		final URI link = NodeLinks.getValidLink(selectedNode);
 		if (link != null) {
 			onDeselect(selectedNode);
 			((UrlManager) modeController.getMapController().getModeController().getExtension(UrlManager.class))

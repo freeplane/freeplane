@@ -191,7 +191,7 @@ public class MModeControllerFactory {
 						if (!mapController.hasChildren(node)) {
 							/* If the link exists, follow the link; toggle folded otherwise */
 							if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isPopupTrigger()
-							        && e.getButton() == MouseEvent.BUTTON1 && (NodeLinks.getLink(node) == null)) {
+							        && e.getButton() == MouseEvent.BUTTON1 && (NodeLinks.getValidLink(node) == null)) {
 								((MTextController) TextController.getController(modeController)).edit(null, false,
 								    false);
 								return;

@@ -233,7 +233,13 @@ class LinkBuilder implements IElementHandler, IReadCompletionListener, IExtensio
 		final NodeLinks links = (NodeLinks) extension;
 		final URI link = links.getHyperLink();
 		if (link != null) {
-			writer.addAttribute("LINK", link.toString());
+			final String string = link.toString();
+			if(string.startsWith("#")){
+				if(((NodeModel)userObject).getMap().getNodeForID(string.substring(1)) == null){
+					return;
+				}
+			}
+			writer.addAttribute("LINK", string);
 		}
 	}
 

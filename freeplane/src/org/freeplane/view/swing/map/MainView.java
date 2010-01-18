@@ -199,7 +199,7 @@ public abstract class MainView extends JLabel {
 	public boolean isInFollowLinkRegion(final double xCoord) {
 		final NodeView nodeView = getNodeView();
 		final NodeModel model = nodeView.getModel();
-		return NodeLinks.getLink(model) != null
+		return NodeLinks.getValidLink(model) != null
 		        && (model.isRoot() || !nodeView.getMap().getModeController().getMapController().hasChildren(model) || isInVerticalRegion(
 		            xCoord, 1. / 2));
 	}
@@ -315,25 +315,31 @@ public abstract class MainView extends JLabel {
 	void updateIcons(final NodeView node) {
 		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		final MultipleImage iconImages = new MultipleImage();
-		boolean iconPresent = false;
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();
 		for(Entry<String, UIIcon> iconEntry : model.getStateIcons().entrySet()) {
-			iconPresent = true;
 			iconImages.addImage(iconEntry.getValue().getIcon());
 		}
 		for(MindIcon myIcon : model.getIcons()) {
-			iconPresent = true;
 			iconImages.addImage(myIcon.getIcon());
 		}
-		final URI link = NodeLinks.getLink(model);
+		addLinkIcon(iconImages, model);
+		setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
+	}
+
+	private void addLinkIcon(final MultipleImage iconImages, final NodeModel model) {
+	    final URI link = NodeLinks.getLink(model);
 		if (link != null) {
-			iconPresent = true;
 			String iconPath = "Link.png";
-			if (link.toString().startsWith("#")) {
+			final String linkText = link.toString();
+			if (linkText.startsWith("#")) {
+				final String id = linkText.substring(1);
+				if(model.getMap().getNodeForID(id) == null){
+					return;
+				}
 				iconPath = "LinkLocal.png";
 			}
-			else if (link.toString().startsWith("mailto:")) {
+			else if (linkText.startsWith("mailto:")) {
 				iconPath = "Mail.png";
 			}
 			else if (executableExtensions.contains(link)) {
@@ -342,8 +348,7 @@ public abstract class MainView extends JLabel {
 			final UIIcon icon = STORE.getUIIcon(iconPath);
 			iconImages.addImage(icon.getIcon());
 		}
-		setIcon((iconPresent ? iconImages : null));
-	}
+    }
 
 	void updateText(String nodeText) {
 		final MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);

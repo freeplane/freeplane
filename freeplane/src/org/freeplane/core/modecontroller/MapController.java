@@ -262,9 +262,11 @@ public class MapController extends SelectionController {
 		while (iterator.hasNext()) {
 			iterator.next().onNodeDeleted(parent, child, index);
 		}
+		child.getMap().unregistryNodes(child);
 	}
 
 	protected void fireNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
+		parent.getMap().registryNodeRecursive(child);
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().onNodeInserted(parent, child, index);
@@ -359,9 +361,6 @@ public class MapController extends SelectionController {
 	public NodeModel getNodeFromID(final String nodeID) {
 		final MapModel map = getController().getMap();
 		final NodeModel node = map.getNodeForID(nodeID);
-		if (node == null) {
-			throw new IllegalArgumentException("Node belonging to the node id " + nodeID + " not found.");
-		}
 		return node;
 	}
 

@@ -107,7 +107,7 @@ class NodeProxy extends AbstractProxy implements Node {
 	}
 
 	public String getNodeID() {
-		return getNode().getID();
+		return getNode().createID();
 	}
 
 	public int getNodeLevel(final boolean countHidden) {

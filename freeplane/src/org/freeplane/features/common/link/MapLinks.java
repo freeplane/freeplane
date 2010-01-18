@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.link;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class MapLinks implements IExtension {
 
 	public boolean add(final LinkModel link) {
 		final String targetID = link.getTargetID();
-		Set<LinkModel> set = get(targetID);
+		Set<LinkModel> set = links.get(targetID);
 		if (set == null) {
 			set = new HashSet<LinkModel>();
 			set.add(link);
@@ -53,12 +54,16 @@ public class MapLinks implements IExtension {
 	}
 
 	public Set<LinkModel> get(final String targetID) {
-		return links.get(targetID);
+		if(targetID == null) {
+			return null;
+		}
+		final Set<LinkModel> set = links.get(targetID);
+		return set == null ? null : Collections.unmodifiableSet(set);
 	}
 
 	public boolean remove(final LinkModel link) {
 		final String targetID = link.getTargetID();
-		final Set<LinkModel> set = get(targetID);
+		final Set<LinkModel> set = links.get(targetID);
 		if (set == null) {
 			return false;
 		}

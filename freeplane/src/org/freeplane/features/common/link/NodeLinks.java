@@ -53,7 +53,7 @@ public class NodeLinks implements IExtension {
 	}
 
 	public static String getLinkAsString(final NodeModel selectedNode) {
-		final URI link = NodeLinks.getLink(selectedNode);
+		final URI link = NodeLinks.getValidLink(selectedNode);
 		return link != null ? link.toString() : null;
 	}
 
@@ -159,4 +159,19 @@ public class NodeLinks implements IExtension {
 			addLinkToMap(node.getMap(), link);
 		}
 	}
+
+	public static URI getValidLink(NodeModel model) {
+	    final URI link = getLink(model);
+	    if(link == null){
+	    	return null;
+	    }
+		final String linkString = link.toString();
+		if (linkString.startsWith("#")) {
+			final String id = linkString.substring(1);
+			if(model.getMap().getNodeForID(id) == null){
+				return null;
+			}
+		}
+		return link;
+    }
 }

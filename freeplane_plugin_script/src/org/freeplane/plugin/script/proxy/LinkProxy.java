@@ -19,7 +19,7 @@ class LinkProxy extends AbstractProxy implements Proxy.Link {
 	}
 
 	public String get() {
-		final URI link = NodeLinks.getLink(getNode());
+		final URI link = NodeLinks.getValidLink(getNode());
 		return link == null ? null : link.toString();
 	}
 
