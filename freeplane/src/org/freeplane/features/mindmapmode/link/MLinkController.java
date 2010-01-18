@@ -246,7 +246,7 @@ public class MLinkController extends LinkController {
 				return;
 			}
 			removeLinksForDeletedSource(links, model, delete);
-			removeLinksForDeletedTarget(links, model, delete);
+			removeLinksForDeletedTarget(links, model);
         }
 
 		private void removeLinksForDeletedSource(final MapLinks links, final NodeModel model, final boolean delete) {
@@ -294,10 +294,10 @@ public class MLinkController extends LinkController {
 			}
 		}
 
-		private void removeLinksForDeletedTarget(final MapLinks links, final NodeModel model, final boolean delete) {
+		private void removeLinksForDeletedTarget(final MapLinks links, final NodeModel model) {
 			final List<NodeModel> children = model.getChildren();
 			for (NodeModel child : children) {
-				removeLinksForDeletedTarget(links, child, delete);
+				removeLinksForDeletedTarget(links, child);
 			}
 			final String id = model.getID();
 			if(id == null){
@@ -309,18 +309,10 @@ public class MLinkController extends LinkController {
 			}
 			final IActor actor = new IActor() {
 				public void act() {
-					if (delete)
-						delete();
-					else
-						insert();
 					refresh();
 				}
 
 				public void undo() {
-					if (delete)
-						insert();
-					else
-						delete();
 					refresh();
 				}
 				private void refresh() {
@@ -332,18 +324,10 @@ public class MLinkController extends LinkController {
 					}
                 }
 
-				private void delete() {
-					links.set(id, Collections.EMPTY_SET);
-				}
-
 				public String getDescription() {
 					return null;
 				}
 
-
-				private void insert() {
-					links.set(id, linkModels);
-				}
 			};
 			final MapModel map = model.getMap();
 			getModeController().execute(actor, map);
