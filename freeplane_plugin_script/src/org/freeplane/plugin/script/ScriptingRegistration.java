@@ -122,13 +122,18 @@ class ScriptingRegistration implements IExternalPatternAction {
 	}
 
 	public void act(final NodeModel node, final Pattern pattern) {
-		if (pattern.getPatternScript() != null && pattern.getPatternScript().getValue() != null) {
-			ScriptingEngine.executeScript(node, HtmlTools.unescapeHTMLUnicodeEntity(pattern
-			    .getPatternScript().getValue()), modeController, new IErrorHandler() {
-				public void gotoLine(final int pLineNumber) {
-				}
-			}, System.out, getScriptCookies());
+		if (pattern.getPatternScript() == null){
+			return;
 		}
+		final String script = pattern.getPatternScript().getValue();
+		if( script == null) {
+			return;
+		}
+		
+		ScriptingEngine.executeScript(node, script, modeController, new IErrorHandler() {
+			public void gotoLine(final int pLineNumber) {
+			}
+		}, System.out, getScriptCookies());
 	}
 
 	private void addPropertiesToOptionPanel() {
