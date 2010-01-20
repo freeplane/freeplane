@@ -84,12 +84,16 @@ public class MindMapLayout implements LayoutManager {
 				if (component instanceof NodeMotionListenerView) {
 				final NodeMotionListenerView nodeMotionListenerView = (NodeMotionListenerView) component;
 				if(nodeMotionListenerView.getMovedView().isContentVisible()){
-					nodeMotionListenerView.setVisible(true);
+					if(! nodeMotionListenerView.isVisible()) {
+						nodeMotionListenerView.setVisible(true);
+					}
 					final INodeViewLayout layout = (INodeViewLayout) nodeMotionListenerView.getMovedView().getLayout();
 					layout.layoutNodeMotionListenerView(nodeMotionListenerView);
 				}
 				else{
-					nodeMotionListenerView.setVisible(false);
+					if(nodeMotionListenerView.isVisible()) {
+						nodeMotionListenerView.setVisible(false);
+					}
 				}
 			}
 		}
