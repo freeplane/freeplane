@@ -4,6 +4,12 @@
 Bug fixes:
 undo-redo, cut and paste of nodes with links
 local links
+move focus to node view after editin latex
+380]: modification time not always shown
+384]: Filtering by icon
+OutlineLayout
+layout bug
+379]: Script run from pattern - doesn't run - Mishandling of Quote characters
 
 ===============================
 1.0.38 beta
