@@ -68,26 +68,22 @@ public class OutlineLayout extends NodeViewLayoutAdapter{
 	}
 
     protected void placeRightChildren() {
-	    final int baseX = getContent().getX() + getHGap();
-        int y = getContent().getY() + getContent().getHeight()+ getVGap() - + getSpaceAround();
-        int right = baseX +  + getContent().getWidth() + getSpaceAround();
+	    int baseX = getContent().getX();
+        int y = getContent().getY() + getContent().getHeight() - getSpaceAround();
+        if(getContent().isVisible()){
+        	baseX += getHGap();
+        	y += getVGap();
+        }
+        int right = baseX + getContent().getWidth() + getSpaceAround();
         NodeView child = null;
         for (int i = 0; i < getChildCount(); i++) {
         	final NodeView component = (NodeView) getView().getComponent(i);
         	child = component;
         	final int additionalCloudHeigth = child.getAdditionalCloudHeigth() / 2;
         	y += additionalCloudHeigth;
-        	final int shiftY = 0;
         	final int childHGap = child.getContent().isVisible() ? getHGap() : 0;
         	final int x = baseX + childHGap - child.getContent().getX();
-        	if (shiftY < 0) {
-        		child.setLocation(x, y);
-        		y -= shiftY;
-        	}
-        	else {
-        		y += shiftY;
-        		child.setLocation(x, y);
-        	}
+        	child.setLocation(x, y);
         	final int childHeight = child.getHeight() - 2 * getSpaceAround();
         	if (childHeight != 0) {
         		y += childHeight + getVGap() + additionalCloudHeigth;
