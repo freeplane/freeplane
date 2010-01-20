@@ -45,7 +45,7 @@ public class UserIcon extends MindIcon {
 		builder.append(SEPARATOR);
 		builder.append("icons");
 		builder.append(SEPARATOR);
-		builder.append(this.fileName);
+		builder.append(this.getFileName());
 		String path = builder.toString().replace(File.separatorChar, '/');
 		return path;
 	}

@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.icon;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -65,10 +66,9 @@ class IconContainedCondition implements ICondition {
 	}
 
 	private static boolean isStateIconContained(final NodeModel node, final String iconName) {
-		final Set<String> stateIcons = node.getStateIcons().keySet();
-		for (final Iterator<String> stateIcon = stateIcons.iterator(); stateIcon.hasNext();) {
-			final String nextIcon = stateIcon.next();
-			if (iconName.equals(nextIcon)) {
+		final Collection<UIIcon> stateIcons = node.getStateIcons().values();
+		for (final UIIcon stateIcon : stateIcons) {
+			if (iconName.equals(stateIcon.getName())) {
 				return true;
 			}
 		}
@@ -105,7 +105,7 @@ class IconContainedCondition implements ICondition {
 		final String text = ResourceBundles.getText("filter_icon") + ' ' + ResourceBundles.getText("filter_contains")
 		        + ' ';
 		component.add(new JLabel(text));
-		component.add(new JLabel(STORE.getMindIcon(getIconName()).getIcon()));
+		component.add(new JLabel(STORE.getUIIcon(getIconName()).getIcon()));
 		return component;
 	}
 

@@ -120,18 +120,20 @@ public class IconStore {
 	 * Returns a UIIcon with a given name. If one is not found in the store,
 	 * it will be created and stored.
 	 * 
-	 * @param fileName of UIIcon to return
+	 * @param name of UIIcon to return
 	 * @return UIIcon with given name
 	 */
-	public UIIcon getUIIcon(String fileName) {
+	public UIIcon getUIIcon(String name) {
 		UIIcon result;
-		String name = fileName.substring(0, fileName.lastIndexOf("."));
-		if(uiIcons.containsKey(fileName)) {
-			result = uiIcons.get(fileName);
+		if(mindIcons.containsKey(name)) {
+			result = mindIcons.get(name);
+		}
+		if(uiIcons.containsKey(name)) {
+			result = uiIcons.get(name);
 		}
 		else {
-			result = new UIIcon(name, fileName);
-			uiIcons.put(fileName, result);
+			result = new UIIcon(name, name);
+			uiIcons.put(name, result);
 		}
 		return result;
 	}
