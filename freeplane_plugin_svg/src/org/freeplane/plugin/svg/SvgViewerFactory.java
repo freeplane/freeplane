@@ -45,8 +45,8 @@ public class SvgViewerFactory implements IViewerFactory {
 					final SVGSVGElement rootElement = document.getRootElement();
 					final SVGLength width = rootElement.getWidth().getBaseVal();
 					final SVGLength height = rootElement.getHeight().getBaseVal();
-					float defaultWidth = width.getValue();	
-					float defaultHeigth = height.getValue();
+					float defaultWidth = (float) Math.ceil(width.getValue());	
+					float defaultHeigth = (float) Math.ceil(height.getValue());
 					if(defaultWidth == 1f && defaultHeigth == 1f){
 						defaultWidth = ResourceController.getResourceController().getIntProperty("default_external_component_width", 200);
 						defaultHeigth = ResourceController.getResourceController().getIntProperty("default_external_component_height", 200);
