@@ -344,12 +344,12 @@ public class LinkController extends SelectionController implements IExtension {
 						scheme = null;
 						ssp = mat.group(1).replace('\\','/');
 						fragment = mat.group(3);
-						return new URI(scheme, ssp, fragment);
+						return new URI(scheme, null, ssp, fragment);
 					}
 					scheme = "file";
 					ssp = "/" + mat.group(1).replace('\\','/');
 					fragment = mat.group(3);
-					return new URI(scheme, ssp, fragment);
+					return new URI(scheme, null, ssp, fragment);
 				}
 			}
 			// if this doesn't work out, we try to
