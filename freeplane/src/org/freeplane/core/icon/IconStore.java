@@ -128,7 +128,7 @@ public class IconStore {
 		if(mindIcons.containsKey(name)) {
 			result = mindIcons.get(name);
 		}
-		if(uiIcons.containsKey(name)) {
+		else if(uiIcons.containsKey(name)) {
 			result = uiIcons.get(name);
 		}
 		else {
