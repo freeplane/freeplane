@@ -46,7 +46,6 @@
             <boolean name = "experimental_file_locking_on"/>
             <string name = "userproperties"/>
             <string name = "patternsfile"/>
-            <string name = "browsemode_initial_map"/>
         </separator>
         <separator name = "automatic_save">
             <number name = "time_for_automatic_save" min = "0"/> 

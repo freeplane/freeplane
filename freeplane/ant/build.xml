@@ -15,7 +15,8 @@
 	<property name="external.jars" value="${commons-lang.jar}:${forms.jar}:${SimplyHTML.jar}:${jortho.jar}" />
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/dist" />
-	<property name="dist.resources" value="${dist}/resources" />
+    <property name="dist.resources" value="${dist}/resources" />
+    <property name="dist.doc" value="${dist}/doc" />
 	<property name="dist.osgi.dir" value="${dist}/org.freeplane.core" />
 	<property name="freeplaneplugin.jar" value="${dist.osgi.dir}/org.freeplane.core.jar" />
 	<property name="debug" value="on" />
@@ -88,10 +89,14 @@
 				<include name="*.jar" />
 			</fileset>
 		</copy>
-		<mkdir dir="${dist.resources}" />
-		<copy todir="${dist.resources}">
-			<fileset dir="external-resources"/>
-		</copy>
+        <mkdir dir="${dist.resources}" />
+        <copy todir="${dist.resources}">
+            <fileset dir="external-resources"/>
+        </copy>
+        <mkdir dir="${dist.doc}" />
+        <copy todir="${dist.doc}">
+            <fileset dir="doc"/>
+        </copy>
         <delete dir="${build}"  quiet="true"/>
 	</target>
 
