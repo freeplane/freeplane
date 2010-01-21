@@ -1,14 +1,23 @@
 ===============================
 1.0.39 beta
 ===============================
+New Features:
+Implemented script content caching
+added script introspection for source annotations @ExecutionModes and @CacheScriptContent
+freeplane_ru.mm, translations fr and it
+
 Bug fixes:
+390]: 1.0.39.-1: cannot insert some kind of links manually
+test as osgi
+fix resource leak
+doc folder
+bug fix for displaying svg graphics with not integer dimension
 undo-redo, cut and paste of nodes with links
 local links
 move focus to node view after editin latex
 380]: modification time not always shown
 384]: Filtering by icon
-OutlineLayout
-layout bug
+layout bugs for filtered maps 
 379]: Script run from pattern - doesn't run - Mishandling of Quote characters
 
 ===============================
