@@ -96,7 +96,7 @@ public class FilterConditionEditor extends Box {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final String FILTER_IGNORE_CASE = "filter_ignore_case";
+	private static final String PROPERTY_FILTER_IGNORE_CASE = "filter_ignore_case";
 	final private JCheckBox caseInsensitive;
 	final private JComboBox elementaryConditions;
 	final private FilterController filterController;
@@ -130,7 +130,7 @@ public class FilterConditionEditor extends Box {
 		add(Box.createHorizontalGlue());
 		add(caseInsensitive);
 		caseInsensitive.setText(ResourceBundles.getText("filter_ignore_case"));
-		caseInsensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(FILTER_IGNORE_CASE));
+		caseInsensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(PROPERTY_FILTER_IGNORE_CASE));
 		mapChanged(filterController.getController().getMap());
 	}
 
@@ -153,7 +153,7 @@ public class FilterConditionEditor extends Box {
 		}
 		final NamedObject simpleCond = (NamedObject) elementaryConditions.getSelectedItem();
 		final boolean ignoreCase = caseInsensitive.isSelected();
-		ResourceController.getResourceController().setProperty(FILTER_IGNORE_CASE, ignoreCase);
+		ResourceController.getResourceController().setProperty(PROPERTY_FILTER_IGNORE_CASE, ignoreCase);
 		final Object selectedItem = filteredPropertiesComponent.getSelectedItem();
 		newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value, ignoreCase);
 		if (values.isEditable()) {
