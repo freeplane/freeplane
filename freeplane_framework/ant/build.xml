@@ -173,7 +173,7 @@
 	</target>
 
 	<target name="dist" depends="binzip, srczip, installer, portableinstaller">
-		<copy file="${workspace}/freeplane/resources/history_en.txt" todir="${dist}" />
+		<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
 	</target>
 
 	<target name="clean">
