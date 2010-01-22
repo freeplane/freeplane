@@ -46,7 +46,7 @@ public abstract class HyperLinkCondition implements ICondition {
 
 	abstract protected boolean checkLink(final URI nodeLink);
 
-	public boolean checkNode(final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		final URI nodeLink = NodeLinks.getValidLink(node);
 		if (nodeLink == null) {
 			return false;
