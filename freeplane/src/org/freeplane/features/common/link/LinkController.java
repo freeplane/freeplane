@@ -323,32 +323,34 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		catch (final URISyntaxException e) {
 			// [scheme:]scheme-specific-part[#fragment] 
-			String scheme = "", ssp = "", fragment = "";
 
 			// we check first if the string matches an SMB
 			// of the form \\host\path[#fragment]
 			{
 				final Matcher mat = patSMB.matcher(inputValue);
 				if (mat.matches()) {
-					scheme = "smb";
-					ssp = "//" + mat.group(1) + "/"
+					String scheme = "smb";
+					String ssp = "//" + mat.group(1) + "/"
 					+ mat.group(2).replace('\\','/');
-					fragment = mat.group(3);
+					String fragment = mat.group(3);
 					return new URI(scheme, ssp, fragment);
 				}
 			}
 			{
 				final Matcher mat = patFile.matcher(inputValue);
 				if (mat.matches()) {
-					if(mat.group(2) == null){
-						scheme = null;
-						ssp = mat.group(1).replace('\\','/');
-						fragment = mat.group(3);
-						return new URI(scheme, null, ssp, fragment);
+					String ssp = mat.group(1);
+					if(File.separatorChar != '/'){
+						ssp = ssp.replace(File.separatorChar, '/');
 					}
-					scheme = "file";
-					ssp = "/" + mat.group(1).replace('\\','/');
-					fragment = mat.group(3);
+					String fragment = mat.group(3);
+					if(mat.group(2) == null){
+						return new URI(null, null, ssp, fragment);
+					}
+					String scheme = "file";
+				    if (ssp.startsWith("//")){
+						ssp = "//" + ssp;
+				    }
 					return new URI(scheme, null, ssp, fragment);
 				}
 			}
@@ -358,9 +360,9 @@ public class LinkController extends SelectionController implements IExtension {
 			{
 				final Matcher mat = patURI.matcher(inputValue);
 				if (mat.matches()) {
-					scheme = mat.group(1);
-					ssp = mat.group(2).replace('\\','/');
-					fragment = mat.group(3);
+					String scheme = mat.group(1);
+					String ssp = mat.group(2).replace('\\','/');
+					String fragment = mat.group(3);
 					return new URI(scheme, ssp, fragment);
 				}
 			}
