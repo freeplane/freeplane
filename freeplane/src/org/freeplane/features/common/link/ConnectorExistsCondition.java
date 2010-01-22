@@ -21,65 +21,41 @@ package org.freeplane.features.common.link;
 
 import java.net.URI;
 
-import javax.swing.JComponent;
-
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public abstract class HyperLinkCondition implements ICondition {
-	static final String TEXT = "TEXT";
-	private String description;
-	final private String hyperlink;
-	private JComponent renderer;
+class ConnectorExistsCondition extends ConnectorLabelCondition {
+	public static final String NAME = "connector_exists";
 
-	public HyperLinkCondition(final String hyperlink) {
-		super();
-		this.hyperlink = hyperlink;
+	public ConnectorExistsCondition() {
+		super(null, false);
 	}
-
-	abstract protected boolean checkLink(final URI nodeLink);
-
-	public boolean checkNode(final NodeModel node) {
-		final URI nodeLink = NodeLinks.getValidLink(node);
-		if (nodeLink == null) {
-			return false;
-		}
-		return checkLink(nodeLink);
-	}
-
-	abstract protected String createDesctiption();
-
-	public String getHyperlink() {
-		return hyperlink;
-	}
-
-	public JComponent getListCellRendererComponent() {
-		if (renderer == null) {
-			renderer = ConditionFactory.createCellRendererComponent(toString());
-		}
-		return renderer;
-	}
-
-	abstract String getName();
 
 	@Override
-	public String toString() {
-		if (description == null) {
-			description = createDesctiption();
-		}
-		return description;
+	protected boolean checkLink(final ConnectorModel connector) {
+		return true;
+	}
+
+	@Override
+	protected String createDesctiption() {
+		final String condition = ResourceBundles.getText(LinkConditionController.CONNECTOR);
+		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_EXIST);
+		return ConditionFactory.createDescription(condition, simpleCondition, getText(), ignoreCase());
 	}
 
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(getName());
-		child.setAttribute(TEXT, hyperlink);
 		element.addChild(child);
+	}
+	
+	@Override
+	String getName() {
+		return NAME;
 	}
 }
