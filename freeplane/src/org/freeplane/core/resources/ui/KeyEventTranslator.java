@@ -244,9 +244,9 @@ class KeyEventTranslator {
 						    .toUpperCase((char) keyCode));
 				}
 				else {
-					if (keyCode == KeyEvent.VK_TAB) {
+					if (keyCode > 0 && keyCode < 32) {
 						evt.consume();
-						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), keyCode, '\0');
+						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), keyCode, KeyEvent.CHAR_UNDEFINED);
 					}
 					else if (keyCode == KeyEvent.VK_SPACE) {
 						if ((modifiers & ~InputEvent.SHIFT_MASK) == 0) {

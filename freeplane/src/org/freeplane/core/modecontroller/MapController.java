@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.modecontroller;
 
+import java.awt.EventQueue;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
@@ -29,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -260,9 +262,11 @@ public class MapController extends SelectionController {
 		while (iterator.hasNext()) {
 			iterator.next().onNodeDeleted(parent, child, index);
 		}
+		child.getMap().unregistryNodes(child);
 	}
 
 	protected void fireNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
+		parent.getMap().registryNodeRecursive(child);
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().onNodeInserted(parent, child, index);
@@ -357,9 +361,6 @@ public class MapController extends SelectionController {
 	public NodeModel getNodeFromID(final String nodeID) {
 		final MapModel map = getController().getMap();
 		final NodeModel node = map.getNodeForID(nodeID);
-		if (node == null) {
-			throw new IllegalArgumentException("Node belonging to the node id " + nodeID + " not found.");
-		}
 		return node;
 	}
 
@@ -521,6 +522,25 @@ public class MapController extends SelectionController {
 		fireNodeChanged(node, nodeChangeEvent);
 	}
 
+	private HashSet<NodeModel> nodeSet;
+	public void delayedNodeRefresh(final NodeModel node) {
+		if (nodeSet == null) {
+			nodeSet = new HashSet<NodeModel>();
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						for (final NodeModel node : nodeSet) {
+							getModeController().getMapController().nodeRefresh(node, NodeModel.NODE_ICON, null, null);
+						}
+					}
+					finally {
+						nodeSet = null;
+					}
+				}
+			});
+		}
+		nodeSet.add(node);
+	}
 	public void refreshMap() {
 		final MapModel map = getController().getMap();
 		final NodeModel root = map.getRootNode();

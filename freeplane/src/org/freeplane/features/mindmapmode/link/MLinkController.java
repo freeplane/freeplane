@@ -20,12 +20,15 @@
 package org.freeplane.features.mindmapmode.link;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,6 +52,7 @@ import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.common.link.HyperTextLinkModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.MapLinks;
@@ -97,124 +101,131 @@ public class MLinkController extends LinkController {
 	}
 
 	private final class TargetLabelSetter implements IActor {
-	    private final String oldLabel;
-	    private final String label;
-	    private final ConnectorModel model;
+		private final String oldLabel;
+		private final String label;
+		private final ConnectorModel model;
 
-	    private TargetLabelSetter(String oldLabel, String label, ConnectorModel model) {
-		    this.oldLabel = oldLabel;
-		    this.label = label;
-		    this.model = model;
-	    }
+		private TargetLabelSetter(String oldLabel, String label, ConnectorModel model) {
+			this.oldLabel = oldLabel;
+			this.label = label;
+			this.model = model;
+		}
 
-	    public void act() {
-	    	model.setTargetLabel(label);
-	    	getModeController().getMapController().nodeChanged(model.getSource());
-	    }
+		public void act() {
+			model.setTargetLabel(label);
+			getModeController().getMapController().nodeChanged(model.getSource());
+		}
 
-	    public String getDescription() {
-	    	return "setTargetLabel";
-	    }
+		public String getDescription() {
+			return "setTargetLabel";
+		}
 
-	    public void undo() {
-	    	model.setTargetLabel(oldLabel);
-	    	getModeController().getMapController().nodeChanged(model.getSource());
-	    }
-    }
+		public void undo() {
+			model.setTargetLabel(oldLabel);
+			getModeController().getMapController().nodeChanged(model.getSource());
+		}
+	}
 
 	private final class SourceLabelSetter implements IActor {
-	    private final ConnectorModel model;
-	    private final String label;
-	    private final String oldLabel;
+		private final ConnectorModel model;
+		private final String label;
+		private final String oldLabel;
 
-	    private SourceLabelSetter(ConnectorModel model, String label, String oldLabel) {
-		    this.model = model;
-		    this.label = label;
-		    this.oldLabel = oldLabel;
-	    }
+		private SourceLabelSetter(ConnectorModel model, String label, String oldLabel) {
+			this.model = model;
+			this.label = label;
+			this.oldLabel = oldLabel;
+		}
 
-	    public void act() {
-	    	model.setSourceLabel(label);
-	    	getModeController().getMapController().nodeChanged(model.getSource());
-	    }
+		public void act() {
+			model.setSourceLabel(label);
+			getModeController().getMapController().nodeChanged(model.getSource());
+		}
 
-	    public String getDescription() {
-	    	return "setSourceLabel";
-	    }
+		public String getDescription() {
+			return "setSourceLabel";
+		}
 
-	    public void undo() {
-	    	model.setSourceLabel(oldLabel);
-	    	getModeController().getMapController().nodeChanged(model.getSource());
-	    }
-    }
+		public void undo() {
+			model.setSourceLabel(oldLabel);
+			getModeController().getMapController().nodeChanged(model.getSource());
+		}
+	}
 
 	private final class MiddleLabelSetter implements IActor {
-	    private final ConnectorModel model;
-	    private final String oldLabel;
-	    private final String label;
+		private final ConnectorModel model;
+		private final String oldLabel;
+		private final String label;
 
-	    private MiddleLabelSetter(ConnectorModel model, String oldLabel, String label) {
-		    this.model = model;
-		    this.oldLabel = oldLabel;
-		    this.label = label;
-	    }
+		private MiddleLabelSetter(ConnectorModel model, String oldLabel, String label) {
+			this.model = model;
+			this.oldLabel = oldLabel;
+			this.label = label;
+		}
 
-	    public void act() {
-	    	model.setMiddleLabel(label);
-	    	getModeController().getMapController().nodeChanged(model.getSource());
-	    }
+		public void act() {
+			model.setMiddleLabel(label);
+			getModeController().getMapController().nodeChanged(model.getSource());
+		}
 
-	    public String getDescription() {
-	    	return "setMiddleLabel";
-	    }
+		public String getDescription() {
+			return "setMiddleLabel";
+		}
 
-	    public void undo() {
-	    	model.setMiddleLabel(oldLabel);
-	    	getModeController().getMapController().nodeChanged(model.getSource());
-	    }
-    }
+		public void undo() {
+			model.setMiddleLabel(oldLabel);
+			getModeController().getMapController().nodeChanged(model.getSource());
+		}
+	}
 
 	private final class PopupEditorKeyListener implements KeyListener {
-	    private final JPopupMenu arrowLinkPopup;
-	    private boolean canceled = false;
+		private final JPopupMenu arrowLinkPopup;
+		private boolean canceled = false;
 
-	    private PopupEditorKeyListener(JPopupMenu arrowLinkPopup) {
-		    this.arrowLinkPopup = arrowLinkPopup;
-	    }
+		private PopupEditorKeyListener(JPopupMenu arrowLinkPopup) {
+			this.arrowLinkPopup = arrowLinkPopup;
+		}
 
-	    public void keyPressed(KeyEvent e) {
-	    	if(e.getKeyCode() == KeyEvent.VK_ENTER){
-	    		arrowLinkPopup.setVisible(false);
-	    		e.consume();
-	    	}
-	    	if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
-	    		canceled = true;
-	    	}
-	    }
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				arrowLinkPopup.setVisible(false);
+				e.consume();
+			}
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				canceled = true;
+			}
+		}
 
-	    protected boolean isCanceled() {
-	    	return canceled;
-	    }
+		protected boolean isCanceled() {
+			return canceled;
+		}
 
-	    public void keyReleased(KeyEvent e) {
-	    }
+		public void keyReleased(KeyEvent e) {
+		}
 
-	    public void keyTyped(KeyEvent e) {
-	    }
-    }
+		public void keyTyped(KeyEvent e) {
+		}
+	}
 
 	/**
 	 * @author Dimitry Polivaev
 	 */
 	private final class NodeDeletionListener implements IMapChangeListener {
 		public void mapChanged(final MapChangeEvent event) {
-			// TODO Auto-generated method stub
 		}
 
 		public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
 		}
 
 		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
+	        if (((MModeController) getModeController()).isUndoAction()) {
+				return;
+			}
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					onChange(child, false);
+				}
+			});
 		}
 
 		public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
@@ -222,75 +233,108 @@ public class MLinkController extends LinkController {
 		}
 
 		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel model, final int oldIndex) {
-			if (((MModeController) getModeController()).isUndoAction()) {
+			onChange(model, true);
+		}
+
+		private void onChange(final NodeModel model, boolean delete) {
+	        if (((MModeController) getModeController()).isUndoAction()) {
 				return;
 			}
-	        final MapModel map = model.getMap();
+			final MapModel map = model.getMap();
 			final MapLinks links = (MapLinks) map.getExtension(MapLinks.class);
 			if (links == null) {
 				return;
 			}
-			removeLinksForDeletedSource(links, model);
+			removeLinksForDeletedSource(links, model, delete);
 			removeLinksForDeletedTarget(links, model);
-		}
+        }
 
-		private void removeLinksForDeletedSource(final MapLinks links, final NodeModel model) {
+		private void removeLinksForDeletedSource(final MapLinks links, final NodeModel model, final boolean delete) {
+			final List<NodeModel> children = model.getChildren();
+			for (NodeModel child : children) {
+				removeLinksForDeletedSource(links, child, delete);
+			}
 			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
-			if(nodeLinks == null){
+			if (nodeLinks == null) {
 				return;
 			}
-			for (final LinkModel link:nodeLinks.getLinks()){
-				if(! (link instanceof NodeLinkModel)){
+			for (final LinkModel link : nodeLinks.getLinks()) {
+				if (!(link instanceof NodeLinkModel)) {
 					continue;
 				}
-				final String id = ((NodeLinkModel)link).getTargetID();
-				final Set<LinkModel> linkModels = links.get(id);
 				final IActor actor = new IActor() {
 					public void act() {
-						linkModels.remove(link);
+						if (delete)
+							delete();
+						else
+							insert();
 					}
+
+					public void undo() {
+						if (delete)
+							insert();
+						else
+							delete();
+					}
+
+					private void delete() {
+	                    links.remove(link);
+                    }
 
 					public String getDescription() {
 						return null;
 					}
 
-					public void undo() {
-						linkModels.add(link);
-					}
+					private void insert() {
+	                    links.add(link);
+                    }
 				};
-		        final MapModel map = model.getMap();
+				final MapModel map = model.getMap();
 				getModeController().execute(actor, map);
-				
 			}
-        }
+		}
 
 		private void removeLinksForDeletedTarget(final MapLinks links, final NodeModel model) {
+			final List<NodeModel> children = model.getChildren();
+			for (NodeModel child : children) {
+				removeLinksForDeletedTarget(links, child);
+			}
 			final String id = model.getID();
+			if(id == null){
+				return;
+			}
 			final Set<LinkModel> linkModels = links.get(id);
 			if (linkModels == null || linkModels.isEmpty()) {
 				return;
 			}
 			final IActor actor = new IActor() {
 				public void act() {
-					links.set(id, Collections.EMPTY_SET);
+					refresh();
 				}
+
+				public void undo() {
+					refresh();
+				}
+				private void refresh() {
+					for(LinkModel link : linkModels){
+						if(link instanceof HyperTextLinkModel){
+							final NodeModel source = ((HyperTextLinkModel) link).getSource();
+							getModeController().getMapController().delayedNodeRefresh(source);
+						}
+					}
+                }
 
 				public String getDescription() {
 					return null;
 				}
 
-				public void undo() {
-					links.set(id, linkModels);
-				}
 			};
-	        final MapModel map = model.getMap();
+			final MapModel map = model.getMap();
 			getModeController().execute(actor, map);
-        }
+		}
 
 		public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-	        // TODO Auto-generated method stub
-	        
-        }
+		}
 	}
 
 	static private ConnectorColorAction colorArrowLinkAction;
@@ -307,11 +351,10 @@ public class MLinkController extends LinkController {
 	}
 
 	public ConnectorModel addConnector(final NodeModel source, final NodeModel target) {
-		return addConnector(source, target.getID());
+		return addConnector(source, target.createID());
 	}
 
-	public void changeArrowsOfArrowLink(final ConnectorModel link, final ArrowType startArrow,
-	                                    final ArrowType endArrow) {
+	public void changeArrowsOfArrowLink(final ConnectorModel link, final ArrowType startArrow, final ArrowType endArrow) {
 		final IActor actor = new IActor() {
 			final private ArrowType oldEndArrow = link.getEndArrow();
 			final private ArrowType oldStartArrow = link.getStartArrow();
@@ -387,7 +430,7 @@ public class MLinkController extends LinkController {
 			}
 
 			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-				if(enterListener.isCanceled()){
+				if (enterListener.isCanceled()) {
 					return;
 				}
 				setSourceLabel(link, sourceLabelEditor.getText());
@@ -398,20 +441,20 @@ public class MLinkController extends LinkController {
 			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 			}
 		});
-		final ChangeConnectorArrowsAction actionNN = new ChangeConnectorArrowsAction(this, "none",
-		    link, ArrowType.NONE, ArrowType.NONE);
+		final ChangeConnectorArrowsAction actionNN = new ChangeConnectorArrowsAction(this, "none", link,
+		    ArrowType.NONE, ArrowType.NONE);
 		final JRadioButtonMenuItem itemnn = new JAutoRadioButtonMenuItem(actionNN);
 		arrowLinkPopup.add(itemnn);
-		final ChangeConnectorArrowsAction actionNT = new ChangeConnectorArrowsAction(this, "forward",
-		    link, ArrowType.NONE, ArrowType.DEFAULT);
+		final ChangeConnectorArrowsAction actionNT = new ChangeConnectorArrowsAction(this, "forward", link,
+		    ArrowType.NONE, ArrowType.DEFAULT);
 		final JRadioButtonMenuItem itemnt = new JAutoRadioButtonMenuItem(actionNT);
 		arrowLinkPopup.add(itemnt);
-		final ChangeConnectorArrowsAction actionTN = new ChangeConnectorArrowsAction(this,
-		    "backward", link, ArrowType.DEFAULT, ArrowType.NONE);
+		final ChangeConnectorArrowsAction actionTN = new ChangeConnectorArrowsAction(this, "backward", link,
+		    ArrowType.DEFAULT, ArrowType.NONE);
 		final JRadioButtonMenuItem itemtn = new JAutoRadioButtonMenuItem(actionTN);
 		arrowLinkPopup.add(itemtn);
-		final ChangeConnectorArrowsAction actionTT = new ChangeConnectorArrowsAction(this, "both",
-		    link, ArrowType.DEFAULT, ArrowType.DEFAULT);
+		final ChangeConnectorArrowsAction actionTT = new ChangeConnectorArrowsAction(this, "both", link,
+		    ArrowType.DEFAULT, ArrowType.DEFAULT);
 		final JRadioButtonMenuItem itemtt = new JAutoRadioButtonMenuItem(actionTT);
 		arrowLinkPopup.add(itemtt);
 	}
@@ -495,11 +538,11 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setMiddleLabel(final ConnectorModel model, String label) {
-		if("".equals(label)){
+		if ("".equals(label)) {
 			label = null;
 		}
 		String oldLabel = model.getMiddleLabel();
-		if("".equals(oldLabel)){
+		if ("".equals(oldLabel)) {
 			oldLabel = null;
 		}
 		if (label == oldLabel || label != null && label.equals(oldLabel)) {
@@ -510,11 +553,11 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setSourceLabel(final ConnectorModel model, String label) {
-		if("".equals(label)){
+		if ("".equals(label)) {
 			label = null;
 		}
 		String oldLabel = model.getSourceLabel();
-		if("".equals(oldLabel)){
+		if ("".equals(oldLabel)) {
 			oldLabel = null;
 		}
 		if (label == oldLabel || label != null && label.equals(oldLabel)) {
@@ -525,11 +568,11 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setTargetLabel(final ConnectorModel model, String label) {
-		if("".equals(label)){
+		if ("".equals(label)) {
 			label = null;
 		}
 		String oldLabel = model.getTargetLabel();
-		if("".equals(oldLabel)){
+		if ("".equals(oldLabel)) {
 			oldLabel = null;
 		}
 		if (label == oldLabel || label != null && label.equals(oldLabel)) {
@@ -538,7 +581,7 @@ public class MLinkController extends LinkController {
 		final IActor actor = new TargetLabelSetter(oldLabel, label, model);
 		getModeController().execute(actor, model.getSource().getMap());
 	}
-	
+
 	public ConnectorModel addConnector(final NodeModel source, final String targetID) {
 		final CreateArrowLinkActor actor = new CreateArrowLinkActor(targetID, source);
 		getModeController().execute(actor, source.getMap());
@@ -571,6 +614,7 @@ public class MLinkController extends LinkController {
 		};
 		getModeController().execute(actor, arrowLink.getSource().getMap());
 	}
+
 	public void setEdgeLike(final ConnectorModel connector, final boolean edgeLike) {
 		final boolean alreadyEdgeLike = connector.isEdgeLike();
 		if (alreadyEdgeLike == edgeLike) {

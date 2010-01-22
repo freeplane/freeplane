@@ -167,7 +167,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 				final NodeModel node = (component).getNodeView().getModel();
 				if (!mapController.hasChildren(node)) {
 					/* If the link exists, follow the link; toggle folded otherwise */
-					if (NodeLinks.getLink(mapController.getSelectedNode()) == null) {
+					if (NodeLinks.getValidLink(mapController.getSelectedNode()) == null) {
 						mapController.toggleFolded();
 					}
 					else {

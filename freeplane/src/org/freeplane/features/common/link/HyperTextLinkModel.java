@@ -19,15 +19,17 @@
  */
 package org.freeplane.features.common.link;
 
+import org.freeplane.core.model.NodeModel;
+
 /**
  * @author Dimitry Polivaev
  */
-class HyperTextLinkModel extends LinkModel {
+public class HyperTextLinkModel extends NodeLinkModel {
 	/**
 	 * @param source
 	 * @param target
 	 */
-	public HyperTextLinkModel(final String targetID) {
-		super(targetID);
+	public HyperTextLinkModel(final NodeModel source, final String targetID) {
+		super(source, targetID);
 	}
 }

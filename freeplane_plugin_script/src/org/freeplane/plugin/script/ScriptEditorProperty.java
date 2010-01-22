@@ -69,7 +69,7 @@ class ScriptEditorProperty extends PropertyBean implements IPropertyControl, Act
 
 	@Override
 	public String getValue() {
-		return HtmlTools.unicodeToHTMLUnicodeEntity(HtmlTools.toXMLEscapedText(script));
+		return script;
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
@@ -85,9 +85,11 @@ class ScriptEditorProperty extends PropertyBean implements IPropertyControl, Act
 	 */
 	private void setScriptValue(String result) {
 		if (result == null) {
-			result = "";
+			script = "";
 		}
-		script = HtmlTools.toXMLUnescapedText(HtmlTools.unescapeHTMLUnicodeEntity(result));
+		else {
+			script = result;
+		}
 		mButton.setText(script);
 	}
 

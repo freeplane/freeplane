@@ -26,7 +26,7 @@ import org.freeplane.core.model.NodeModel;
  * 08.08.2009
  */
 public class NodeLinkModel extends LinkModel {
-	private NodeModel source;
+	final private NodeModel source;
 
 	public NodeLinkModel(NodeModel source, String targetID) {
 		super(targetID);
@@ -37,9 +37,6 @@ public class NodeLinkModel extends LinkModel {
     	return source;
     }
 
-	public void setSource(final NodeModel source) {
-    	this.source = source;
-    }
 	public NodeModel getTarget() {
 		return getSource().getMap().getNodeForID(getTargetID());
 	}

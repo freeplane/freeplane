@@ -102,75 +102,75 @@ public class UrlManager implements IExtension {
 		return (i > 0 && i < s.length() - 1) ? s.substring(i + 1).toLowerCase().trim() : "";
 	}
 
-	public static Reader getUpdateReader(final File file, final String xsltScript) throws FileNotFoundException,
-	        IOException {
-		return UrlManager.getUpdateReader(new BufferedInputStream( new FileInputStream(file)), xsltScript);
-	}
-
 	/**
 	 * Creates a reader that pipes the input file through a XSLT-Script that
 	 * updates the version to the current.
 	 *
 	 * @throws IOException
 	 */
-	public static Reader getUpdateReader(final InputStream file, final String xsltScript) throws IOException {
-		StringWriter writer = null;
-		InputStream inputStream = null;
-		try {
-			URL updaterUrl = null;
-			updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
-			if (updaterUrl == null) {
-				throw new IllegalArgumentException(xsltScript + " not found.");
-			}
-			inputStream = new BufferedInputStream(updaterUrl.openStream());
-			final Source xsltSource = new StreamSource(inputStream);
-			writer = new StringWriter();
-			final Result result = new StreamResult(writer);
-			class TransformerRunnable implements Runnable {
-				private Throwable thrownException = null;
-
-				public void run() {
-					final TransformerFactory transFact = TransformerFactory.newInstance();
-					Transformer trans;
-					try {
-						trans = transFact.newTransformer(xsltSource);
-						InputStream cleanedInput = new CleaningInputStream(file);
-						trans.transform(new StreamSource(cleanedInput), result);
-					}
-					catch (final Exception ex) {
-						LogTool.warn(ex);
-						thrownException = ex;
-					}
-				}
-
-				public Throwable thrownException() {
-					return thrownException;
-				}
-			}
-			final TransformerRunnable transformer = new TransformerRunnable();
-			final Thread transformerThread = new Thread(transformer, "XSLT");
-			transformerThread.start();
-			transformerThread.join();
-			final Throwable thrownException = transformer.thrownException();
-			if (thrownException != null) {
-				throw new TransformerException(thrownException);
-			}
-			return new StringReader(writer.getBuffer().toString());
-		}
-		catch (final Exception ex) {
-			LogTool.severe(ex);
-			return UrlManager.getActualReader(file);
-		}
-		finally {
-			if (inputStream != null) {
-				inputStream.close();
-			}
-			if (writer != null) {
-				writer.close();
-			}
-		}
-	}
-
+	public static Reader getUpdateReader(final File file, final String xsltScript) throws FileNotFoundException,
+	        IOException {
+        try {
+        	final URL updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
+        	if (updaterUrl == null) {
+        		throw new IllegalArgumentException(xsltScript + " not found.");
+        	}
+        	StringWriter writer = new StringWriter();
+        	final Result result = new StreamResult(writer);
+        	class TransformerRunnable implements Runnable {
+        		private Throwable thrownException = null;
+        
+        		public void run() {
+        			final TransformerFactory transFact = TransformerFactory.newInstance();
+        			InputStream xsltInputStream = null;
+        			InputStream input = null;
+        			try {
+                        xsltInputStream = new BufferedInputStream(updaterUrl.openStream());
+                    	final Source xsltSource = new StreamSource(xsltInputStream);
+        				input = new BufferedInputStream( new FileInputStream(file));
+                        InputStream cleanedInput = new CleaningInputStream(input);
+                        Reader reader = new InputStreamReader(cleanedInput);
+        				Transformer trans = transFact.newTransformer(xsltSource);
+        				trans.transform(new StreamSource(reader), result);
+        			}
+        			catch (final Exception ex) {
+        				LogTool.warn(ex);
+        				thrownException = ex;
+        			}
+        			finally{
+        				try {
+	                        if(input != null) input.close();
+	                        if(xsltInputStream != null) xsltInputStream.close();
+                        }
+                        catch (IOException e) {
+	                        e.printStackTrace();
+                        }
+        			}
+        			
+        		}
+        
+        		public Throwable thrownException() {
+        			return thrownException;
+        		}
+        	}
+        	final TransformerRunnable transformer = new TransformerRunnable();
+        	final Thread transformerThread = new Thread(transformer, "XSLT");
+        	transformerThread.start();
+        	transformerThread.join();
+        	final Throwable thrownException = transformer.thrownException();
+        	if (thrownException != null) {
+        		throw new TransformerException(thrownException);
+        	}
+        	return new StringReader(writer.getBuffer().toString());
+        }
+        catch (final Exception ex) {
+			final String message = ex.getMessage();
+			UITools.errorMessage(FpStringUtils.formatText("update_failed", String.valueOf(message)));
+        	LogTool.warn(ex);
+			final InputStream input = new BufferedInputStream( new FileInputStream(file));
+        	return UrlManager.getActualReader(input);
+        }
+ 	}
 	public static void install(final ModeController modeController, final UrlManager urlManager) {
 		modeController.addExtension(UrlManager.class, urlManager);
 	}
@@ -363,7 +363,10 @@ public class UrlManager implements IExtension {
 			final String target = uri.getFragment();
 			try {
 				final MapController mapController = modeController.getMapController();
-				mapController.select(mapController.getNodeFromID(target));
+				final NodeModel node = mapController.getNodeFromID(target);
+				if(node != null){
+					mapController.select(node);
+				}
 			}
 			catch (final Exception e) {
 				LogTool.warn("link " + target + " not found", e);

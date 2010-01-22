@@ -41,13 +41,14 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptEditorProperty.IScriptEditorStarter;
+import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
 class ScriptingRegistration {
 	/** create scripts submenu if there are more scripts than this number. */
 	private static final int MINIMAL_SCRIPT_COUNT_FOR_SUBMENU = 1;
 	private static final String MENU_BAR_SCRIPTING_PARENT_LOCATION = "/menu_bar/extras/first";
-	private static final String MENU_BAR_SCRIPTING_LOCATION = MENU_BAR_SCRIPTING_PARENT_LOCATION + "/scripting";
+	static final String MENU_BAR_SCRIPTING_LOCATION = MENU_BAR_SCRIPTING_PARENT_LOCATION + "/scripting";
 
 	final private class PatternScriptModel implements IScriptModel {
 		final private String mOriginalScript;
@@ -77,8 +78,8 @@ class ScriptingRegistration {
 
 		public boolean executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			ScriptingEngine.setNoUserPermissionRequired(true);
-			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), 
-			    mScript, modeController, pErrorHandler, pOutStream, getScriptCookies());
+			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
+			    modeController, pErrorHandler, pOutStream, getScriptCookies());
 		}
 
 		public int getAmountOfScripts() {
@@ -109,7 +110,7 @@ class ScriptingRegistration {
 	}
 
 	private static final String SEPARATOR = "OptionPanel.separator.plugins/scripting/separatorPropertyName";
-	private static final String TAB = "OptionPanel.plugins/scripting/tab_name";
+	private static final String OPTION_PANEL_SCRIPTING_TAB = "OptionPanel.plugins/scripting/tab_name";
 	final private MModeController modeController;
 	final private HashMap mScriptCookies = new HashMap();
 	private IScriptEditorStarter mScriptEditorStarter;
@@ -121,9 +122,9 @@ class ScriptingRegistration {
 
 	private void addPropertiesToOptionPanel() {
 		final OptionPanelBuilder controls = modeController.getOptionPanelBuilder();
-		controls.addTab(TAB);
-		controls.addSeparator(TAB, SEPARATOR, IndexedTree.AS_CHILD);
-		final String GROUP = TAB + "/" + SEPARATOR;
+		controls.addTab(OPTION_PANEL_SCRIPTING_TAB);
+		controls.addSeparator(OPTION_PANEL_SCRIPTING_TAB, SEPARATOR, IndexedTree.AS_CHILD);
+		final String GROUP = OPTION_PANEL_SCRIPTING_TAB + "/" + SEPARATOR;
 		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 		    IndexedTree.AS_CHILD);
 		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
@@ -147,8 +148,7 @@ class ScriptingRegistration {
 		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
 				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
-				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(controller,
-				    patternScriptModel, false);
+				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(controller, patternScriptModel, false);
 				scriptEditorPanel.setVisible(true);
 				return patternScriptModel.getScript();
 			}
@@ -166,36 +166,36 @@ class ScriptingRegistration {
 	private void registerScripts(final Controller controller, final MenuBuilder menuBuilder,
 	                             final ScriptingEngine scriptingEngine) {
 		ScriptingConfiguration configuration = new ScriptingConfiguration();
-		String scriptsParentLocation = MENU_BAR_SCRIPTING_PARENT_LOCATION;
-		String scriptsLocation = MENU_BAR_SCRIPTING_LOCATION;
-		if (configuration.getNameScriptMap().size() >= MINIMAL_SCRIPT_COUNT_FOR_SUBMENU) {
-			scriptsParentLocation = scriptsLocation;
-			scriptsLocation += "/scripts";
-			final JMenu menuItem = new JMenu();
-			MenuBuilder.setLabelAndMnemonic(menuItem, ResourceBundles.getText("ExecuteScripts.text"));
-			menuBuilder.addMenuItem(scriptsParentLocation, menuItem, scriptsLocation, MenuBuilder.AS_CHILD);
-		}
+		String scriptsParentLocation = MENU_BAR_SCRIPTING_LOCATION;
+		String scriptsLocation = scriptsParentLocation + "/scripts";
+		addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, ResourceBundles.getText("ExecuteScripts.text"));
 		for (Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
-			final JMenu menuItem = new JMenu();
 			String scriptName = entry.getKey();
 			String location = scriptsLocation + "/" + scriptName;
-			MenuBuilder.setLabelAndMnemonic(menuItem, scriptName);
-			menuBuilder.addMenuItem(scriptsLocation, menuItem, location, MenuBuilder.AS_CHILD);
-			addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, //
-			    "ExecuteScriptOnSingleNode.text", ExecutionMode.ON_SINGLE_NODE);
-			addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, //
-			    "ExecuteScriptOnSelectedNode.text", ExecutionMode.ON_SELECTED_NODE);
-			addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, //
-			    "ExecuteScriptOnSelectedNodeRecursively.text", ExecutionMode.ON_SELECTED_NODE_RECURSIVELY);
+			addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
+			final ScriptMetaData scriptMetaData = configuration.getNameScriptMetaDataMap().get(scriptName);
+			// in the worst case three actions will cache a script - should not matter that much since it's unlikely
+			// that one script is used in multiple modes by the same user
+			for (ExecutionMode executionMode : scriptMetaData.getExecutionModes()) {
+				addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, executionMode, scriptMetaData
+				    .cacheContent());
+			}
 		}
+	}
+
+	private void addSubMenu(final MenuBuilder menuBuilder, final String scriptsParentLocation,
+	                        final String scriptsLocation, final String name) {
+		final JMenu menuItem = new JMenu();
+		MenuBuilder.setLabelAndMnemonic(menuItem, name);
+		menuBuilder.addMenuItem(scriptsParentLocation, menuItem, scriptsLocation, MenuBuilder.AS_CHILD);
 	}
 
 	private void addMenuItem(final Controller controller, final MenuBuilder menuBuilder,
 	                         final ScriptingEngine scriptingEngine, final String location,
-	                         final Entry<String, String> entry, final String key, final ExecutionMode executionMode) {
+	                         final Entry<String, String> entry, final ExecutionMode executionMode, boolean cacheContent) {
 		final String scriptName = entry.getKey();
+		String key = ExecuteScriptAction.getExecutionModeKey(executionMode);
 		menuBuilder.addAction(location, new ExecuteScriptAction(controller, scriptingEngine, scriptName,
-			ResourceBundles.getText(key), entry.getValue(),
-		    executionMode), MenuBuilder.AS_CHILD);
+		    ResourceBundles.getText(key), entry.getValue(), executionMode, cacheContent), MenuBuilder.AS_CHILD);
 	}
 }

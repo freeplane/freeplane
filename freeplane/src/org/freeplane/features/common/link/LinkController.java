@@ -46,9 +46,11 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.SelectionController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
@@ -87,9 +89,11 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 
 			public void onSelect(final NodeModel node) {
-				final URI link = NodeLinks.getLink(node);
-				final String linkString = (link != null ? link.toString() : " ");
-				modeController.getController().getViewController().out(linkString);
+				final URI link = NodeLinks.getValidLink(node);
+				String linkString = (link != null ? link.toString() : null);
+				if(linkString != null){
+					modeController.getController().getViewController().out(linkString);
+				}
 			}
 		};
 		modeController.getMapController().addNodeSelectionListener(listener);
@@ -161,13 +165,11 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		final String adaptedText = uri.toString();
 		if (adaptedText.startsWith("#")) {
-			try {
 				final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
-				return dest.getShortText();
-			}
-			catch (final Exception e) {
+				if(dest != null){
+					return dest.getShortText();
+				}
 				return ResourceBundles.getText("link_not_available_any_more");
-			}
 		}
 		return adaptedText;
 	}
@@ -225,14 +227,15 @@ public class LinkController extends SelectionController implements IExtension {
     		links.setHyperLink(hyperlink);
         }
 		catch (URISyntaxException e1) {
-			LogTool.severe(e1);
+			LogTool.warn(e1);
+			UITools.errorMessage(FpStringUtils.formatText("link_error", link));
 			return;
 		} 
 	}
 
 	public void loadURL() {
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-		final URI link = NodeLinks.getLink(selectedNode);
+		final URI link = NodeLinks.getValidLink(selectedNode);
 		if (link != null) {
 			onDeselect(selectedNode);
 			((UrlManager) modeController.getMapController().getModeController().getExtension(UrlManager.class))
@@ -320,33 +323,35 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		catch (final URISyntaxException e) {
 			// [scheme:]scheme-specific-part[#fragment] 
-			String scheme = "", ssp = "", fragment = "";
 
 			// we check first if the string matches an SMB
 			// of the form \\host\path[#fragment]
 			{
 				final Matcher mat = patSMB.matcher(inputValue);
 				if (mat.matches()) {
-					scheme = "smb";
-					ssp = "//" + mat.group(1) + "/"
+					String scheme = "smb";
+					String ssp = "//" + mat.group(1) + "/"
 					+ mat.group(2).replace('\\','/');
-					fragment = mat.group(3);
+					String fragment = mat.group(3);
 					return new URI(scheme, ssp, fragment);
 				}
 			}
 			{
 				final Matcher mat = patFile.matcher(inputValue);
 				if (mat.matches()) {
-					if(mat.group(2) == null){
-						scheme = null;
-						ssp = mat.group(1).replace('\\','/');
-						fragment = mat.group(3);
-						return new URI(scheme, ssp, fragment);
+					String ssp = mat.group(1);
+					if(File.separatorChar != '/'){
+						ssp = ssp.replace(File.separatorChar, '/');
 					}
-					scheme = "file";
-					ssp = "/" + mat.group(1).replace('\\','/');
-					fragment = mat.group(3);
-					return new URI(scheme, ssp, fragment);
+					String fragment = mat.group(3);
+					if(mat.group(2) == null){
+						return new URI(null, null, ssp, fragment);
+					}
+					String scheme = "file";
+				    if (ssp.startsWith("//")){
+						ssp = "//" + ssp;
+				    }
+					return new URI(scheme, null, ssp, fragment);
 				}
 			}
 			// if this doesn't work out, we try to
@@ -355,9 +360,9 @@ public class LinkController extends SelectionController implements IExtension {
 			{
 				final Matcher mat = patURI.matcher(inputValue);
 				if (mat.matches()) {
-					scheme = mat.group(1);
-					ssp = mat.group(2).replace('\\','/');
-					fragment = mat.group(3);
+					String scheme = mat.group(1);
+					String ssp = mat.group(2).replace('\\','/');
+					String fragment = mat.group(3);
 					return new URI(scheme, ssp, fragment);
 				}
 			}

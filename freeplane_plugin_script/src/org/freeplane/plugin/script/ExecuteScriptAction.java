@@ -20,7 +20,6 @@
 package org.freeplane.plugin.script;
 
 import java.awt.event.ActionEvent;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.ResUtil;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**
@@ -55,13 +55,16 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 	final private ScriptingEngine engine;
 	private final String script;
 	private ExecutionMode mode;
+	private final boolean cacheContent;
+	private String content;
 
 	public ExecuteScriptAction(final Controller controller, ScriptingEngine engine, String scriptName,
-	                           String menuItemName, String script, ExecutionMode mode) {
+	                           String menuItemName, String script, ExecutionMode mode, boolean cacheContent) {
 		super(makeMenuItemKey(scriptName, mode), controller, menuItemName, null);
 		this.engine = engine;
 		this.script = script;
 		this.mode = mode;
+		this.cacheContent = cacheContent;
 	}
 
 	private static String makeMenuItemKey(String scriptName, ExecutionMode mode) {
@@ -72,7 +75,9 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		getController().getViewController().setWaitingCursor(true);
 		boolean result = true;
 		try {
-			String scriptContent = readScript();
+			String scriptContent = getContentIfCached();
+			if (scriptContent == null)
+				scriptContent = ResUtil.slurpFile(script);
 			List<NodeModel> nodes = new ArrayList<NodeModel>();
 			if (mode == ExecutionMode.ON_SINGLE_NODE)
 				nodes.add(getController().getSelection().getSelected());
@@ -104,15 +109,26 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		}
     }
 
+	private String getContentIfCached() throws IOException {
+	    if (cacheContent && content == null) {
+	    	content = ResUtil.slurpFile(script);
+	    	// oops, logtool seems to be inoperable right now
+	    	LogTool.info("cached " + String.format("%.1f", content.length()/1000.) + " KB for script " + script);
+	    	System.out.println("cached " + String.format("%.1f", content.length()/1000.) + " KB for script " + script);
+	    }
+	    return content;
+    }
 
-	private String readScript() throws IOException {
-		FileReader in = new FileReader(script);
-		StringBuilder builder = new StringBuilder();
-		final char[] buf = new char[1024];
-		int len;
-		while ((len = in.read(buf)) > 0) {
-			builder.append(buf, 0, len);
-		}
-		return builder.toString();
-	}
+	static String getExecutionModeKey(final ExecutionMode executionMode) {
+    	switch (executionMode) {
+    		case ON_SINGLE_NODE:
+    			return "ExecuteScriptOnSingleNode.text";
+    		case ON_SELECTED_NODE:
+    			return "ExecuteScriptOnSelectedNode.text";
+    		case ON_SELECTED_NODE_RECURSIVELY:
+    			return "ExecuteScriptOnSelectedNodeRecursively.text";
+    		default:
+    			throw new AssertionError("unknown ExecutionMode " + executionMode);
+    	}
+    }
 }

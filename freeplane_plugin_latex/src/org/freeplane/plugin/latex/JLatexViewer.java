@@ -20,6 +20,7 @@ import javax.swing.WindowConstants;
 
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 import org.scilab.forge.jlatexmath.ParseException;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
@@ -48,6 +49,7 @@ class JLatexViewer extends JComponent {
 			public void mouseClicked(final MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					edit();
+					SwingUtilities.getAncestorOfClass(NodeView.class, JLatexViewer.this).requestFocus();
 					e.consume();
 					return;
 				}

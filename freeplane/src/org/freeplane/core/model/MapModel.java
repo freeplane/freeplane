@@ -21,6 +21,7 @@ package org.freeplane.core.model;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -98,22 +99,20 @@ public class MapModel {
 	}
 
 	public String generateNodeID(final String proposedID) {
-		String myProposedID = proposedID != null ? proposedID : "";
+		if (proposedID != null 
+				&& ! "".equals(proposedID)
+				&& getNodeForID(proposedID) == null) {
+			return proposedID;
+		}
 		String returnValue;
 		do {
-			if (!myProposedID.equals("")) {
-				returnValue = myProposedID;
-				myProposedID = "";
-			}
-			else {
 				final String prefix = "ID_";
 				/*
 				 * The prefix is to enable the id to be an ID in the sense of
 				 * XML/DTD.
 				 */
 				returnValue = prefix + Integer.toString(ran.nextInt(UNDEFINED_NODE_ID));
-			}
-		} while (nodes.get(returnValue) != null);
+		} while (nodes.containsKey(returnValue));
 		return returnValue;
 	}
 
@@ -146,9 +145,6 @@ public class MapModel {
 	 */
 	public NodeModel getNodeForID(final String nodeID) {
 		final NodeModel node = nodes.get(nodeID);
-		if (node == null || node.getParent() == null && node != root) {
-			return null;
-		}
 		return node;
 	}
 
@@ -207,7 +203,7 @@ public class MapModel {
 		return id;
 	}
 
-	void registryNodeRecursive(final NodeModel nodeModel) {
+	public void registryNodeRecursive(final NodeModel nodeModel) {
 		final String id = nodeModel.getID();
 		if (id != null) {
 			registryID(id, nodeModel);
@@ -267,4 +263,15 @@ public class MapModel {
 	public void setURL(final URL v) {
 		url = v;
 	}
+
+	public void unregistryNodes(NodeModel node) {
+		final List<NodeModel> children = node.getChildren();
+		for(NodeModel child:children){
+			unregistryNodes(child);
+		}
+		final String id = node.getID();
+		if(id != null){
+			nodes.put(id, null);
+		}
+    }
 }

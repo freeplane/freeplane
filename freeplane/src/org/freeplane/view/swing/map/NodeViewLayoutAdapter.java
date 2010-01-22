@@ -65,7 +65,11 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 				}
 			}
 		}
-		return height + getVGap() * (count - 1);
+		if(count <= 1){
+			return height;
+		}
+		final int contentHeight = height + getVGap() * (count - 1);
+		return contentHeight;
 	}
 
 	/**

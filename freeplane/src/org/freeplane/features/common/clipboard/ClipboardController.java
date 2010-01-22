@@ -385,7 +385,7 @@ public class ClipboardController implements IExtension {
 		}
 		else {
 			final String text = rtfEscapeUnicodeAndSpecialCharacters(mindMapNodeModel.getPlainTextContent());
-			if (NodeLinks.getLink(mindMapNodeModel) != null) {
+			if (NodeLinks.getValidLink(mindMapNodeModel) != null) {
 				final String link = rtfEscapeUnicodeAndSpecialCharacters(NodeLinks.getLinkAsString(mindMapNodeModel));
 				if (link.equals(mindMapNodeModel.toString())) {
 					fileout.write(pre + "<{\\ul\\cf1 " + link + "}>" + "}");
@@ -413,7 +413,7 @@ public class ClipboardController implements IExtension {
 			fileout.write("o");
 		}
 		else {
-			if (NodeLinks.getLink(mindMapNodeModel) != null) {
+			if (NodeLinks.getValidLink(mindMapNodeModel) != null) {
 				final String link = NodeLinks.getLinkAsString(mindMapNodeModel);
 				if (!link.equals(plainTextContent)) {
 					fileout.write(plainTextContent + " ");

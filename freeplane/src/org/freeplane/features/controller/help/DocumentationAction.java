@@ -20,6 +20,8 @@
 package org.freeplane.features.controller.help;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.SwingUtilities;
@@ -44,25 +46,42 @@ class DocumentationAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String map = ResourceBundles.getText("browsemode_initial_map");
-		map = FpStringUtils.removeTranslateComment(map);
-		if (map != null && map != "") {
-			URL url = null;
-			url = ResourceController.getResourceController().getResource(map);
-			final URL endUrl = url;
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						if (getController().selectMode(BModeController.MODENAME)) {
-							getModeController().getMapController().newMap(endUrl);
-						}
-					}
-					catch (final Exception e1) {
-						LogTool.severe(e1);
-					}
-				}
-			});
+		final ResourceController resourceController = ResourceController.getResourceController();
+		final File baseDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+		final String defaultMap = resourceController.getProperty("browsemode_initial_map");
+		final File file;
+		if(defaultMap.endsWith(".mm")){
+			final String languageCode = ((ResourceBundles) resourceController.getResources()).getLanguageCode();
+			String map = defaultMap.substring(0, defaultMap.length() -3) + "_" + languageCode + ".mm";
+			 File localFile = new File(baseDir, map);
+			 if(localFile.canRead()){
+				 file = localFile;
+			 }
+			 else{
+				 file = new File(baseDir, defaultMap);
+			 }
 		}
+		else{
+			 file = new File(baseDir, defaultMap);
+		}
+		try {
+	        final URL endUrl = file.toURL();
+	        SwingUtilities.invokeLater(new Runnable() {
+	        	public void run() {
+	        		try {
+	        			if (getController().selectMode(BModeController.MODENAME)) {
+	        				getModeController().getMapController().newMap(endUrl);
+	        			}
+	        		}
+	        		catch (final Exception e1) {
+	        			LogTool.severe(e1);
+	        		}
+	        	}
+	        });
+        }
+        catch (MalformedURLException e1) {
+        	LogTool.warn(e1);
+        }
 	}
 
 	@Override

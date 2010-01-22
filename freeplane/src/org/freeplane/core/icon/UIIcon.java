@@ -46,10 +46,10 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 
 	protected static final ResourceController RESOURCE_CONTROLLER = ResourceController.getResourceController();
 	
-	protected final String name;
-	protected final String fileName;
-	protected final String description;
-	protected final String shortcutKey;
+	private final String name;
+	private final String fileName;
+	private final String description;
+	private final String shortcutKey;
 
 	private URL resourceURL;
 

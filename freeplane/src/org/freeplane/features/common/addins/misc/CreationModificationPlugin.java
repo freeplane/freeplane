@@ -20,6 +20,7 @@
  */
 package org.freeplane.features.common.addins.misc;
 
+import java.awt.EventQueue;
 import java.text.MessageFormat;
 import java.util.Iterator;
 
@@ -58,14 +59,18 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	 */
 	@Override
 	public void add(final NodeModel node, final IExtension extension) {
-		getModeController().getMapController().removeNodeChangeListener(this);
 		super.add(node, extension);
-		try {
-			setStyleRecursive(node);
-		}
-		finally {
-			getModeController().getMapController().addNodeChangeListener(this);
-		}
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				getModeController().getMapController().removeNodeChangeListener(CreationModificationPlugin.this);
+				try {
+					setStyleRecursive(node);
+				}
+				finally {
+					getModeController().getMapController().addNodeChangeListener(CreationModificationPlugin.this);
+				}
+			}
+		});
 	}
 
 	@Override
