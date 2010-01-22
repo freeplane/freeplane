@@ -5,6 +5,7 @@ New Features:
 Implemented script content caching
 added script introspection for source annotations @ExecutionModes and @CacheScriptContent
 freeplane_ru.mm, translations fr and it
+Filter Hyperlink exists and Connector exists
 
 Bug fixes:
 390]: 1.0.39.-1: cannot insert some kind of links manually
