@@ -272,7 +272,7 @@ public class HtmlTools {
 	}
 
 	public static String unescapeHTMLUnicodeEntity(final String text) {
-		final StringBuilder result = new StringBuilder(text.length());
+		final StringBuilder resultBuilder = new StringBuilder(text.length());
 		final StringBuilder entity = new StringBuilder();
 		boolean readingEntity = false;
 		char myChar;
@@ -290,18 +290,18 @@ public class HtmlTools {
 								c = (char) Integer.parseInt(entity.substring(1), 10);
 							}
 							if(c >= ' ' || c == '\t' || c == '\r' || c == '\n'){
-								result.append(c);
+								resultBuilder.append(c);
 							}
 							else{
-								result.append(' ');
+								resultBuilder.append(' ');
 							}
 						}
 						catch (final NumberFormatException e) {
-							result.append('&').append(entity).append(';');
+							resultBuilder.append('&').append(entity).append(';');
 						}
 					}
 					else {
-						result.append('&').append(entity).append(';');
+						resultBuilder.append('&').append(entity).append(';');
 					}
 					entity.setLength(0);
 					readingEntity = false;
@@ -315,14 +315,15 @@ public class HtmlTools {
 					readingEntity = true;
 				}
 				else {
-					result.append(myChar);
+					resultBuilder.append(myChar);
 				}
 			}
 		}
 		if (entity.length() > 0) {
-			result.append('&').append(entity);
+			resultBuilder.append('&').append(entity);
 		}
-		return result.toString();
+		final String result = resultBuilder.toString();
+		return result;
 	}
 
 	public static String unicodeToHTMLUnicodeEntity(final String text) {
@@ -356,7 +357,7 @@ public class HtmlTools {
 	 * @return the maximal index i such that pI is mapped to i by removing all
 	 *         tags from the original input.
 	 */
-	public int getMaximalOriginalPosition(final int pI, final ArrayList pListOfIndices) {
+	public static int getMaximalOriginalPosition(final int pI, final ArrayList pListOfIndices) {
 		for (int i = pListOfIndices.size() - 1; i >= 0; --i) {
 			final IndexPair pair = (IndexPair) pListOfIndices.get(i);
 			if (pI >= pair.replacedStart) {
@@ -371,7 +372,7 @@ public class HtmlTools {
 		throw new IllegalArgumentException("Position " + pI + " not found.");
 	}
 
-	public int getMinimalOriginalPosition(final int pI, final ArrayList pListOfIndices) {
+	public static int getMinimalOriginalPosition(final int pI, final ArrayList pListOfIndices) {
 		for (final Iterator iter = pListOfIndices.iterator(); iter.hasNext();) {
 			final IndexPair pair = (IndexPair) iter.next();
 			if (pI >= pair.replacedStart && pI <= pair.replacedEnd) {
@@ -386,7 +387,7 @@ public class HtmlTools {
 	 * method is very difficult. If you have a simplier method, please supply
 	 * it. But look that it complies with FindTextTests!!!
 	 */
-	public String getReplaceResult(final Pattern pattern, final String replacement, final String text) {
+	public static String getReplaceResult(final Pattern pattern, final String replacement, final String text) {
 		final ArrayList splittedStringList = new ArrayList();
 		String stringWithoutTags = null;
 		{
@@ -468,7 +469,7 @@ public class HtmlTools {
 	/**
 	 * @return true, if well formed XML.
 	 */
-	public boolean isWellformedXml(final String xml) {
+	public static boolean isWellformedXml(final String xml) {
 		try {
 			final SAXParserFactory factory = SAXParserFactory.newInstance();
 			factory.setValidating(false);
@@ -484,11 +485,11 @@ public class HtmlTools {
 		return false;
 	}
 
-	public String toHtml(final String xhtmlText) {
+	public static String toHtml(final String xhtmlText) {
 		return HtmlTools.SLASHED_TAGS_PATTERN.matcher(xhtmlText).replaceAll("<$1>");
 	}
 
-	public String toXhtml(String htmlText) {
+	public static String toXhtml(String htmlText) {
 		if (!HtmlTools.isHtmlNode(htmlText)) {
 			return null;
 		}
@@ -513,7 +514,7 @@ public class HtmlTools {
 		return htmlText;
 	}
 
-	static public int endOfText(final String html) {
+	public static int endOfText(final String html) {
         int bodyEndPos = html.lastIndexOf("</body>");
         if(bodyEndPos == -1){
         	bodyEndPos = html.lastIndexOf("</BODY>");

@@ -11,7 +11,8 @@ public interface Proxy {
 	/** simplistic interface for unique keys */
 	interface Attributes {
 		String get(String key);
-
+		public List<String> getAttributeNames();
+		public int findAttribute(final String key);
 		boolean remove(String key); // returns true on success
 
 		void set(String key, String value);

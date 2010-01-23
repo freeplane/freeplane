@@ -83,6 +83,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 				nodes.add(getController().getSelection().getSelected());
 			else
 				nodes.addAll(getController().getSelection().getSelection());
+//			getController().getModeController().startTransaction();
 			for (NodeModel node : nodes) {
 				if (mode == ExecutionMode.ON_SELECTED_NODE_RECURSIVELY) {
 					// TODO: ensure that a script is invoked only once on every node?
@@ -95,9 +96,13 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 				}
 				if (!result) {
 					LogTool.warn("error executing script " + script + " - giving up");
+					getController().getModeController().rollback();
 					UITools.errorMessage(ResourceBundles.getText("ExecuteScriptError.text"));
 					break;
 				}
+//				else {
+//					getController().getModeController().commit();
+//				}
 			}
 		}
 		catch (IOException ex) {
