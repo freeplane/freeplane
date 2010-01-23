@@ -3,7 +3,8 @@
  */
 package org.freeplane.plugin.script.proxy;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.attribute.Attribute;
@@ -18,16 +19,23 @@ class AttributesProxy extends AbstractProxy implements Proxy.Attributes {
 		super(delegate, modeController);
 	}
 
-	public int findAttribute(final String key) {
+	public List<String> getAttributeNames() {
+		final ArrayList<String> result = new ArrayList<String>();
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {
-			return -1;
+			return result;
 		}
-		final Vector<Attribute> attributes = nodeAttributeTableModel
-				.getAttributes();
+		for (final Attribute a : nodeAttributeTableModel.getAttributes()) {
+			result.add(a.getName());
+		}
+		return result;
+	}
+
+	public int findAttribute(final String key) {
+		List<String> attributeNames = getAttributeNames();
 		int i = 0;
-		for (final Attribute a : attributes) {
-			if (a.getName().equals(key)) {
+		for (final String a : attributeNames) {
+			if (a.equals(key)) {
 				return i;
 			}
 			i++;
