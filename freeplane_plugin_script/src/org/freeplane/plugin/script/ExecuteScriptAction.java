@@ -96,7 +96,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 				}
 				if (!result) {
 					LogTool.warn("error executing script " + script + " - giving up");
-					getController().getModeController().rollback();
+//					getController().getModeController().rollback();
 					UITools.errorMessage(ResourceBundles.getText("ExecuteScriptError.text"));
 					break;
 				}
