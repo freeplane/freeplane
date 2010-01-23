@@ -85,7 +85,7 @@
 		fo.addParam("bgcolor", "#ffffff");
 		fo.addVariable("openUrl", "_blank");
 		fo.addVariable("initLoadFile", "./<xsl:value-of select="$destination_dir"/>map.mm");
-		fo.addVariable("startCollapsedToLevel","5");
+		fo.addVariable("startCollapsedToLevel","2");
 		fo.write("flashcontent");
 	</script>
    		</body>
