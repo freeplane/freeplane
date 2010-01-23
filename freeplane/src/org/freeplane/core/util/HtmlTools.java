@@ -322,7 +322,7 @@ public class HtmlTools {
 		if (entity.length() > 0) {
 			result.append('&').append(entity);
 		}
-		return result.toString();
+		return toXMLUnescapedText(result.toString());
 	}
 
 	public static String unicodeToHTMLUnicodeEntity(final String text) {
@@ -356,7 +356,7 @@ public class HtmlTools {
 	 * @return the maximal index i such that pI is mapped to i by removing all
 	 *         tags from the original input.
 	 */
-	public int getMaximalOriginalPosition(final int pI, final ArrayList pListOfIndices) {
+	public static int getMaximalOriginalPosition(final int pI, final ArrayList pListOfIndices) {
 		for (int i = pListOfIndices.size() - 1; i >= 0; --i) {
 			final IndexPair pair = (IndexPair) pListOfIndices.get(i);
 			if (pI >= pair.replacedStart) {
@@ -371,7 +371,7 @@ public class HtmlTools {
 		throw new IllegalArgumentException("Position " + pI + " not found.");
 	}
 
-	public int getMinimalOriginalPosition(final int pI, final ArrayList pListOfIndices) {
+	public static int getMinimalOriginalPosition(final int pI, final ArrayList pListOfIndices) {
 		for (final Iterator iter = pListOfIndices.iterator(); iter.hasNext();) {
 			final IndexPair pair = (IndexPair) iter.next();
 			if (pI >= pair.replacedStart && pI <= pair.replacedEnd) {
@@ -386,7 +386,7 @@ public class HtmlTools {
 	 * method is very difficult. If you have a simplier method, please supply
 	 * it. But look that it complies with FindTextTests!!!
 	 */
-	public String getReplaceResult(final Pattern pattern, final String replacement, final String text) {
+	public static String getReplaceResult(final Pattern pattern, final String replacement, final String text) {
 		final ArrayList splittedStringList = new ArrayList();
 		String stringWithoutTags = null;
 		{
@@ -468,7 +468,7 @@ public class HtmlTools {
 	/**
 	 * @return true, if well formed XML.
 	 */
-	public boolean isWellformedXml(final String xml) {
+	public static boolean isWellformedXml(final String xml) {
 		try {
 			final SAXParserFactory factory = SAXParserFactory.newInstance();
 			factory.setValidating(false);
@@ -484,11 +484,11 @@ public class HtmlTools {
 		return false;
 	}
 
-	public String toHtml(final String xhtmlText) {
+	public static String toHtml(final String xhtmlText) {
 		return HtmlTools.SLASHED_TAGS_PATTERN.matcher(xhtmlText).replaceAll("<$1>");
 	}
 
-	public String toXhtml(String htmlText) {
+	public static String toXhtml(String htmlText) {
 		if (!HtmlTools.isHtmlNode(htmlText)) {
 			return null;
 		}
@@ -513,7 +513,7 @@ public class HtmlTools {
 		return htmlText;
 	}
 
-	static public int endOfText(final String html) {
+	public static int endOfText(final String html) {
         int bodyEndPos = html.lastIndexOf("</body>");
         if(bodyEndPos == -1){
         	bodyEndPos = html.lastIndexOf("</BODY>");
