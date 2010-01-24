@@ -83,7 +83,7 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 		final int newButtonNumber = newStroke != null ? newStroke.getKeyCode() - KeyEvent.VK_F1 : -1;
 		if (oldButtonNumber >= 0 && oldButtonNumber < BUTTON_NUMBER) {
 			final int modifiers = oldStroke.getModifiers()
-			        & (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
+			        & (KeyEvent.CTRL_MASK | KeyEvent.META_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
 			final JButton[] buttonRow = buttons.get(modifiers);
 			final JButton button = buttonRow[oldButtonNumber];
 			button.setAction(null);
@@ -91,7 +91,7 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 		}
 		if (newButtonNumber >= 0 && newButtonNumber < BUTTON_NUMBER) {
 			final int modifiers = newStroke.getModifiers()
-			        & (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
+			        & (KeyEvent.CTRL_MASK | KeyEvent.META_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
 			final JButton[] buttonRow = createButtons(modifiers);
 			final JButton button = buttonRow[newButtonNumber];
 			button.setText(action.getActionCommand());
@@ -203,6 +203,9 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 				switch (keyCode) {
 					case KeyEvent.VK_CONTROL:
 						setModifiers(KeyEvent.CTRL_MASK);
+						break;
+					case KeyEvent.VK_META:
+						setModifiers(KeyEvent.META_MASK);
 						break;
 					case KeyEvent.VK_SHIFT:
 						setModifiers(KeyEvent.SHIFT_MASK);
