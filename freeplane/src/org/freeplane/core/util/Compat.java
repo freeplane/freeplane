@@ -42,14 +42,16 @@ public class Compat {
 		if(underMac != null){
 			return underMac;
 		}
-		final String osName = System.getProperty("os.name");
-		if (osName.startsWith("Mac OS")) {
+		if (System.getProperty("os.name").startsWith("Mac OS")){ 
 			underMac = true;
+			return true;
 		}
-		else{
-			underMac = false;
-		}			
-		return underMac;
+		if (System.getProperty("debug.os.name", "").startsWith("Mac")){ 
+			underMac = true;
+			return true;
+		}
+		underMac = false;
+		return false;
 	}
 
 	/**
