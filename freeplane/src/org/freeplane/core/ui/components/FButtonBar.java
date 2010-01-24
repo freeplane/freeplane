@@ -59,7 +59,6 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 	 */
 	private static final long serialVersionUID = 1L;
 	final private Map<Integer, JButton[]> buttons;
-	private boolean isWindowListenerInstalled;
 	private int lastModifiers = -1;
 	private int nextModifiers = 0;
 	private Window ownWindowAncestor;
@@ -229,6 +228,9 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 				switch (keyCode) {
 					case KeyEvent.VK_CONTROL:
 						cleanModifiers(KeyEvent.CTRL_MASK);
+						break;
+					case KeyEvent.VK_META:
+						cleanModifiers(KeyEvent.META_MASK);
 						break;
 					case KeyEvent.VK_SHIFT:
 						cleanModifiers(KeyEvent.SHIFT_MASK);
