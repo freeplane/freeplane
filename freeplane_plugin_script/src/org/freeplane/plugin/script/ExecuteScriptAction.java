@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -83,26 +84,27 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 				nodes.add(getController().getSelection().getSelected());
 			else
 				nodes.addAll(getController().getSelection().getSelection());
-//			getController().getModeController().startTransaction();
+			final MModeController modeController = (MModeController) getController().getModeController();
+			modeController.startTransaction();
 			for (NodeModel node : nodes) {
 				if (mode == ExecutionMode.ON_SELECTED_NODE_RECURSIVELY) {
 					// TODO: ensure that a script is invoked only once on every node?
 					// (might be a problem with recursive actions if parent and child
 					// are selected.)
-					result = engine.executeScriptRecursive((MModeController) getModeController(), node, scriptContent);
+					result = engine.executeScriptRecursive(modeController, node, scriptContent);
 				}
 				else {
-					result = engine.executeScript((MModeController) getModeController(), node, scriptContent);
+					result = engine.executeScript(modeController, node, scriptContent);
 				}
 				if (!result) {
 					LogTool.warn("error executing script " + script + " - giving up");
-//					getController().getModeController().rollback();
+					modeController.delayedRollback();
 					UITools.errorMessage(ResourceBundles.getText("ExecuteScriptError.text"));
 					break;
 				}
-//				else {
-//					getController().getModeController().commit();
-//				}
+				else {
+					modeController.delayedCommit();
+				}
 			}
 		}
 		catch (IOException ex) {

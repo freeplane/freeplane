@@ -23,6 +23,8 @@ import java.util.Vector;
 
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
@@ -60,15 +62,11 @@ public class MModeController extends ModeController {
 	private void addUndoableActor(final IActor actor, final MMapModel map) {
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.addActor(actor);
-		undo.setEnabled(undoHandler.canUndo());
-		redo.setEnabled(false);
 	}
 
 	public void deactivateUndo(final MMapModel map) {
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.deactivate();
-		undo.setEnabled(false);
-		redo.setEnabled(false);
 	}
 
 	@Override
@@ -76,10 +74,19 @@ public class MModeController extends ModeController {
 		final MMapModel map = (MMapModel) getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.commit();
-		undo.setEnabled(undoHandler.canUndo());
-		redo.setEnabled(undoHandler.canRedo());
 	}
 
+	public void delayedCommit() {
+		final MMapModel map = (MMapModel) getController().getMap();
+		final IUndoHandler undoHandler = map.getUndoHandler();
+		undoHandler.delayedCommit();
+	}
+
+	public void delayedRollback() {
+		final MMapModel map = (MMapModel) getController().getMap();
+		final IUndoHandler undoHandler = map.getUndoHandler();
+		undoHandler.delayedRollback();
+	}
 	private void createActions() {
 		final Controller controller = getController();
 		undo = new UndoAction(controller);
@@ -149,8 +156,6 @@ public class MModeController extends ModeController {
 		final MMapModel map = (MMapModel) getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.rollback();
-		undo.setEnabled(undoHandler.canUndo());
-		redo.setEnabled(undoHandler.canRedo());
 	}
 
 	/**
@@ -187,4 +192,5 @@ public class MModeController extends ModeController {
 		undo.actionPerformed(null);
 		redo.reset();
 	}
+
 }

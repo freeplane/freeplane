@@ -22,6 +22,8 @@ package org.freeplane.features.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapSelectionListener;
@@ -35,33 +37,54 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Action redo;
+	private final ChangeListener changeListener;
 
 	public UndoAction(final Controller controller) {
 		super("UndoAction", controller);
 		getController().getMapViewManager().addMapSelectionListener(this);
 		setEnabled(false);
+	    changeListener = new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				final MapModel map = getController().getMap();
+				if(! (map instanceof MMapModel)){
+					return;
+				}
+				final Object eventSource = e.getSource();
+				final IUndoHandler undoHandler = ((MMapModel) map).getUndoHandler();
+				if(! eventSource.equals(undoHandler)){
+					return;
+				}
+				setEnabled(undoHandler.canUndo());
+				redo.setEnabled(undoHandler.canRedo());
+			}
+		};
+
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MMapModel map = (MMapModel) getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.getUndoAction().actionPerformed(e);
-		setEnabled(undoHandler.canUndo());
-		redo.setEnabled(undoHandler.canRedo());
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-		if (newMap == null) {
-			return;
+		if (oldMap instanceof MMapModel) {
+			final IUndoHandler undoHandler = ((MMapModel) oldMap).getUndoHandler();
+			undoHandler.removeChangeListener(changeListener);
 		}
 		if (newMap instanceof MMapModel) {
 			final IUndoHandler undoHandler = ((MMapModel) newMap).getUndoHandler();
 			setEnabled(undoHandler.canUndo());
 			redo.setEnabled(undoHandler.canRedo());
+			undoHandler.addChangeListener(changeListener);
 		}
 	}
 
 	public void afterMapClose(final MapModel oldMap) {
+		if (oldMap instanceof MMapModel) {
+			final IUndoHandler undoHandler = ((MMapModel) oldMap).getUndoHandler();
+			undoHandler.removeChangeListener(changeListener);
+		}
 	}
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
