@@ -6,6 +6,18 @@ Implemented script content caching
 added script introspection for source annotations @ExecutionModes and @CacheScriptContent
 freeplane_ru.mm, translations fr and it
 Filter Hyperlink exists and Connector exists
+enclose the script execution in a UndoHandler transaction and do a rollback on errors
+
+change default settings: 
+freeplane2flash.xsl : fold from level 2
+standarddrawrectangleforselection = true
+time_for_delayed_selection=200 ms
+save_only_intrisically_needed_ids=true
+save_folding=never_save_folding
+load_folding=load_folding_from_map_default_fold_all
+load_folding_start_level=2
+extract a new interface method AttributesProxy.getAttributeNames()
+      
 
 Bug fixes:
 390]: 1.0.39.-1: cannot insert some kind of links manually
