@@ -25,7 +25,7 @@
 	<property name="build.compiler" value="modern" />
 	<property name="classpath" value="${external.jars}:${framework.jar}" />
 
-	<target name="build" depends="clean">
+	<target name="build">
 		<echo>Freeplane Version = ${ver}.</echo>
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" source="${java_source_version}" target="${java_target_version}">
@@ -99,6 +99,8 @@
         </copy>
         <delete dir="${build}"  quiet="true"/>
 	</target>
+	
+	<target name="clean_dist" depends="clean, dist"/>
 
 	<!-- for maven integration -->
 	<!-- make sure you've installed maven properly - see http://maven.apache.org/ -->

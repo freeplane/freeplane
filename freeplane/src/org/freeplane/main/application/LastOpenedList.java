@@ -249,7 +249,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 
 	private void restoreList(final String key, final List<String> list) {
 		final String restored = ResourceController.getResourceController().getProperty(key, null);
-		if (restored != null) {
+		if (restored != null && ! restored.equals("")) {
 			list.addAll(Arrays.asList(restored.split(SEPARATOR)));
 		}
 	}

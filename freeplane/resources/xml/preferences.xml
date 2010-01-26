@@ -68,7 +68,8 @@
             	<choice value="load_folding_from_map_default_fold_all"/>
             	<choice value="load_folding_from_map_default_unfold_all"/>
             	<choice value="always_unfold_all_after_load"/>
-            </combo> 
+            </combo>
+            <number name="load_folding_start_level" min="1"/> 
         </separator>
        <separator name="hyperlink_types">        
             <combo name="links">

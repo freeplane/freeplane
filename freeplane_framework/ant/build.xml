@@ -7,7 +7,7 @@
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/dist" />
 
-	<target name="build" depends="clean">
+	<target name="build">
 		<property name="root" value="." />
 		<property name="freeplane.exe" value="windows-launcher/freeplane.exe" />
 		<property name="license" value="license.txt" />
@@ -97,7 +97,8 @@
 					<include name="freeplane_plugin*/**" />
 					<include name="freeplane_framework/**" />
 					<include name="JOrtho_0.4_freeplane/**" />
-					<exclude name=".*/**" />
+                    <exclude name=".*/**" />
+                    <exclude name="**/backups/**" />
 					<exclude name="bin/**" />
 					<exclude name="build/**" />
 					<exclude name="dist/**" />
@@ -172,7 +173,7 @@
 
 	</target>
 
-	<target name="dist" depends="binzip, srczip, installer, portableinstaller">
+	<target name="dist" depends="clean, binzip, srczip, installer, portableinstaller">
 		<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
 	</target>
 

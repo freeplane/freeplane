@@ -43,6 +43,7 @@ public class NodeBuilder implements IElementDOMHandler {
 	public static final String RESOURCES_LOAD_FOLDING = "load_folding";
 	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL = "load_folding_from_map_default_fold_all";
 	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_UNFOLD_ALL = "load_folding_from_map_default_unfold_all";
+	protected static final String RESOURCES_LOAD_FOLDING_START_LEVEL = "load_folding_start_level";
 	public static final String RESOURCES_NEVER_SAVE_FOLDING = "never_save_folding";
 	public static final String RESOURCES_SAVE_FOLDING = "save_folding";
 	public static final String RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED = "save_folding_if_map_is_changed";
@@ -152,15 +153,15 @@ public class NodeBuilder implements IElementDOMHandler {
 			}
 		});
 		reader.addReadCompletionListener(new IReadCompletionListener() {
-			private void foldAll(final NodeModel node) {
+			private void foldAll(final NodeModel node, int startLevel) {
 				if (node.getChildCount() == 0) {
 					return;
 				}
-				if (!node.getText().equals("")) {
+				if (startLevel <= 0 && !node.getText().equals("")) {
 					node.setFolded(true);
 				}
 				for (final NodeModel child : node.getChildren()) {
-					foldAll(child);
+					foldAll(child, startLevel - 1);
 				}
 			}
 
@@ -171,12 +172,13 @@ public class NodeBuilder implements IElementDOMHandler {
 				if (Boolean.TRUE.equals(mapReader.getCurrentNodeTreeCreator().getHint(NodeBuilder.FOLDING_LOADED))) {
 					return;
 				}
-				final String loadFolding = ResourceController.getResourceController().getProperty(
-				    NodeBuilder.RESOURCES_LOAD_FOLDING);
+				final ResourceController resourceController = ResourceController.getResourceController();
+				final String loadFolding = resourceController.getProperty(NodeBuilder.RESOURCES_LOAD_FOLDING);
 				if (loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
 				        || loadFolding.equals(NodeBuilder.RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL)) {
+					int startLevel = resourceController.getIntProperty(NodeBuilder.RESOURCES_LOAD_FOLDING_START_LEVEL, 2);
 					for (final NodeModel child : topNode.getChildren()) {
-						foldAll(child);
+						foldAll(child, startLevel - 1);
 					}
 				}
 			}
