@@ -192,5 +192,5 @@ then # non-Sun environments don't work currently but we try anyway, who knows.
 fi
 _debug "Calling: '"${JAVACMD}" "-Dorg.freeplane.param1=$1" "-Dorg.freeplane.param2=$2" "-Dorg.freeplane.param3=$3" "-Dorg.freeplane.param4=$4" $defines -jar "${freedir}/framework.jar"  $xargs'."
 ( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
-"${JAVACMD}" "-Dorg.freeplane.param1=$1" "-Dorg.freeplane.param2=$2" "-Dorg.freeplane.param3=$3" "-Dorg.freeplane.param4=$4" $defines -jar "${freedir}/framework.jar"  $xargs
+"${JAVACMD}" -Xmx512m "-Dorg.freeplane.param1=$1" "-Dorg.freeplane.param2=$2" "-Dorg.freeplane.param3=$3" "-Dorg.freeplane.param4=$4" $defines -jar "${freedir}/framework.jar"  $xargs
 
