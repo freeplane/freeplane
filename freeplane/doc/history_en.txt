@@ -7,6 +7,7 @@ added script introspection for source annotations @ExecutionModes and @CacheScri
 freeplane_ru.mm, translations fr and it
 Filter Hyperlink exists and Connector exists
 enclose the script execution in a UndoHandler transaction and do a rollback on errors
+Display node id in status line(can be set in preferences->appearance) 
 
 change default settings: 
 freeplane2flash.xsl : fold from level 2
