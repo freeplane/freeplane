@@ -70,4 +70,8 @@ public class CompoundActor implements IActor {
 			iterator.previous().undo();
 		}
 	}
+
+	public boolean isEmpty() {
+	    return actors.size() == 0;
+    }
 }
