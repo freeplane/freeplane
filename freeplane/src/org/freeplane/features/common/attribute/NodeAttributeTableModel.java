@@ -246,7 +246,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	}
 
 	public boolean isCellEditable(final int arg0, final int arg1) {
-		return !node.getMap().isReadOnly();
+		return false;
 	}
 
 	public void removeTableModelListener(final TableModelListener listener) {

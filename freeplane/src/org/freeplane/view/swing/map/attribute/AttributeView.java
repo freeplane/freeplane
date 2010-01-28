@@ -36,6 +36,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -64,7 +65,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	private void addListeners() {
-		if (getNodeView().getModel().getMap().isReadOnly()) {
+		if (! (getMapView().getModeController() instanceof MModeController)) {
 			return;
 		}
 		getAttributeRegistry().addChangeListener(this);
@@ -72,7 +73,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	private void addTableModelListeners() {
-		if (getNodeView().getModel().getMap().isReadOnly()) {
+		if (! (getMapView().getModeController() instanceof MModeController)) {
 			return;
 		}
 		if (attributeTable != null) {
@@ -169,7 +170,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	private void removeListeners() {
-		if (getNodeView().getModel().getMap().isReadOnly()) {
+		if (! (getMapView().getModeController() instanceof MModeController)) {
 			return;
 		}
 		getAttributeRegistry().removeChangeListener(this);
@@ -204,9 +205,6 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	public void startEditing() {
-		if (getNode().getMap().isReadOnly()) {
-			return;
-		}
 		provideAttributeTable();
 		if (currentAttributeTableModel == reducedAttributeTableModel) {
 			getExtendedAttributeTableModel();

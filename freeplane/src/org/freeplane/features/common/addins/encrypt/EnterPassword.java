@@ -33,6 +33,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.mindmapmode.MModeController;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/crypto" })
 public class EnterPassword extends AFreeplaneAction implements INodeSelectionListener {
@@ -61,7 +62,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 		final MapController mapController = modeController.getMapController();
 		final NodeModel selectedNode = mapController.getSelectedNode();
 		if (selectedNode != null) {
-			if (!selectedNode.getMap().isReadOnly()) {
+			if (modeController instanceof MModeController) {
 				return true;
 			}
 			final EncryptionModel enode = EncryptionModel.getModel(selectedNode);

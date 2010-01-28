@@ -22,6 +22,7 @@ package org.freeplane.view.swing.map.attribute;
 import javax.swing.event.ChangeEvent;
 
 import org.freeplane.features.common.attribute.Attribute;
+import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 
 /**
  * @author Dimitry Polivaev
@@ -84,8 +85,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 	@Override
 	public boolean isCellEditable(final int row, final int col) {
 		if (row != newRow) {
-			final int rowInModel = row < newRow ? row : row - 1;
-			return getNodeAttributeModel().isCellEditable(rowInModel, col);
+			return getAttributeController() instanceof MAttributeController;
 		}
 		return col == 0;
 	}
