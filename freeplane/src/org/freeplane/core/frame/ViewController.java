@@ -108,7 +108,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		super();
 		statusInfos = new HashMap<String, JLabel>();
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
-		status = new JLabel("!");
+		status = new JLabel();
 		statusPanel.add(status);
 		this.controller = controller;
 		controller.setViewController(this);
@@ -385,8 +385,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		if (!ResourceController.getResourceController().getBooleanProperty("leftToolbarVisible")) {
 			controller.getViewController().setLeftToolbarVisible(false);
 		}
-		status.setPreferredSize(status.getPreferredSize());
-		status.setText("");
 		final Frame frame = getFrame();
 		frame.addComponentListener(new ComponentAdapter(){
 
@@ -474,19 +472,20 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	public void addStatusInfo(String key, String info){
-		final JLabel oldLabel = statusInfos.get(key);
-		if(oldLabel == null){
-			JLabel infoLabel = new JLabel(info);
-			infoLabel.setBorder(BorderFactory.createEtchedBorder());
-			statusInfos.put(key, infoLabel);
-			statusPanel.add(infoLabel);
+		JLabel label = statusInfos.get(key);
+		if(label == null){
+			label = new JLabel(info);
+			label.setBorder(BorderFactory.createEtchedBorder());
+			statusInfos.put(key, label);
+			statusPanel.add(label);
 		}
 		else{
-			oldLabel.setText(info);
-			oldLabel.setIcon(null);
-			oldLabel.revalidate();
-			oldLabel.repaint();
+			label.setText(info);
+			label.setIcon(null);
+			label.revalidate();
+			label.repaint();
 		}
+		label.setVisible(info != null);
 	}
 	
 	public void removeStatus(String key){
