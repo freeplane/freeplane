@@ -40,7 +40,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit2]
-FileName=Icon1.rc
+FileName=Icon1Portable.rc
 Folder=Freeplane
 Compile=1
 Link=0
