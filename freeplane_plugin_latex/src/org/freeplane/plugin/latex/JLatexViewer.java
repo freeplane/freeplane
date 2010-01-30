@@ -64,14 +64,15 @@ class JLatexViewer extends JComponent {
 		final JScrollPane editorScrollPane = new JScrollPane(textArea);
 		editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		editorScrollPane.setPreferredSize(new Dimension(500, 160));
-		final JDialog edit = new JDialog(JOptionPane.getFrameForComponent(this), JLatexViewer.editorTitle, true);
-		edit.getContentPane().add(editorScrollPane);
-		edit.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		edit.pack();
+		final JOptionPane editPane = new JOptionPane(editorScrollPane,JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+		final JDialog edit = editPane.createDialog(JOptionPane.getFrameForComponent(this), JLatexViewer.editorTitle);
+		edit.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		edit.setLocationRelativeTo(this);
 		edit.setVisible(true);
-		final String eq = textArea.getText();
-		latexController.setEquationUndoable(model, eq);
+		if (editPane.getValue().equals(JOptionPane.OK_OPTION)){
+			final String eq = textArea.getText();
+			latexController.setEquationUndoable(model, eq);
+		}
 	}
 
 	private void calculateSize() {

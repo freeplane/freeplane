@@ -59,7 +59,7 @@ DWORD calculateMemory()
   MEMORYSTATUS stat;
   stat.dwLength = sizeof (stat);
   GlobalMemoryStatus (&stat);
-  DWORD memory = stat.dwTotalPhys;
+  DWORD memory = stat.dwAvailVirtual;
   const DWORD MAX_MEMORY = 1024 * 1024 * 1024;
   if(memory == -1 )
   {
