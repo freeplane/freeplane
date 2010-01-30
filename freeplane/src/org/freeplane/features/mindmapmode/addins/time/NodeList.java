@@ -737,6 +737,7 @@ class NodeList {
 		sorter.setColumnComparator(IconsHolder.class, TableSorter.COMPARABLE_COMAPRATOR);
 		sorter.setSortingStatus(NodeList.DATE_COLUMN, TableSorter.ASCENDING);
 		final JScrollPane pane = new JScrollPane(timeTable);
+		UITools.setScrollbarIncrement(pane);
 		contentPane.add(pane, new GridBagConstraints(0, 4, 1, 1, 1.0, 10.0, GridBagConstraints.WEST,
 		    GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 		mTreeLabel = new JLabel();

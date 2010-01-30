@@ -42,6 +42,7 @@ import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
@@ -144,8 +145,10 @@ public class OptionPanel {
 		if (selectedPanel != null && tabActionMap.containsKey(selectedPanel)) {
 			((ChangeTabAction) tabActionMap.get(selectedPanel)).actionPerformed(null);
 		}
+		final JScrollPane rightComponent = new JScrollPane(rightStack);
+		UITools.setScrollbarIncrement(rightComponent);
 		final JSplitPane centralPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftBuilder.getPanel(),
-		    new JScrollPane(rightStack));
+		    rightComponent);
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
 		final JButton cancelButton = new JButton();
 		MenuBuilder.setLabelAndMnemonic(cancelButton, ResourceBundles.getText("cancel"));

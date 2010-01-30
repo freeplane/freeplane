@@ -430,6 +430,8 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		elementaryConditionList.addListSelectionListener(conditionListListener);
 		elementaryConditionList.addMouseListener(new ConditionListMouseListener());
 		final JScrollPane conditionScrollPane = new JScrollPane(elementaryConditionList);
+		UITools.setScrollbarIncrement(conditionScrollPane);
+		UITools.addScrollbarIncrementPropertyListener(conditionScrollPane);
 		final JLabel conditionColumnHeader = new JLabel(ResourceBundles.getText("filter_conditions"));
 		conditionColumnHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		conditionScrollPane.setColumnHeaderView(conditionColumnHeader);

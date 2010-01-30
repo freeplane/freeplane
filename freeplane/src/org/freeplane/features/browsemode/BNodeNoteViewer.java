@@ -34,6 +34,7 @@ import org.freeplane.core.icon.UIIcon;
 import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 
@@ -66,6 +67,8 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 					return new Dimension(appletSize.width, Math.min(appletSize.height / 3, 200));
 				}
 			};
+			UITools.setScrollbarIncrement((JScrollPane) noteScrollPane);
+			UITools.addScrollbarIncrementPropertyListener((JScrollPane) noteScrollPane);
 		}
 		return noteScrollPane;
 	}
