@@ -24,7 +24,7 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	public void centerOnNode(final Node center) {
-		final NodeModel nodeModel = ((NodeProxy) center).getNode();
+		final NodeModel nodeModel = ((NodeProxy) center).getDelegate();
 		selection.centerNode(nodeModel);
 
 	}
@@ -66,12 +66,12 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	public void select(final Node toSelect) {
-		final NodeModel nodeModel = ((NodeProxy) toSelect).getNode();
+		final NodeModel nodeModel = ((NodeProxy) toSelect).getDelegate();
 		selection.selectAsTheOnlyOneSelected(nodeModel);
 	}
 
 	public void selectBranch(final Node branchRoot) {
-		final NodeModel nodeModel = ((NodeProxy) branchRoot).getNode();
+		final NodeModel nodeModel = ((NodeProxy) branchRoot).getDelegate();
 		modeController.getMapController().displayNode(nodeModel);
 		selection.selectBranch(nodeModel, false);
 
@@ -79,7 +79,7 @@ class ControllerProxy implements Proxy.Controller {
 
 	public void selectMultipleNodes(final List<Node> toSelect) {
 		for (final Node node : toSelect) {
-			final NodeModel nodeModel = ((NodeProxy) node).getNode();
+			final NodeModel nodeModel = ((NodeProxy) node).getDelegate();
 			if (!selection.isSelected(nodeModel)) {
 				selection.toggleSelected(nodeModel);
 			}

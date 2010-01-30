@@ -11,30 +11,30 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 
-class NodeStyleProxy extends AbstractProxy implements Proxy.NodeStyle {
+class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle {
 	NodeStyleProxy(final NodeModel delegate,
 			final MModeController modeController) {
 		super(delegate, modeController);
 	}
 
 	public void applyPattern(final String patternName) {
-		getPatternController().applyPattern(getNode(), patternName);
+		getPatternController().applyPattern(getDelegate(), patternName);
 	}
 
 	public Color getBackgroundColor() {
-		return getStyleController().getBackgroundColor(getNode());
+		return getStyleController().getBackgroundColor(getDelegate());
 	}
 
 	public Proxy.Edge getEdge() {
-		return new EdgeProxy(getNode(), getModeController());
+		return new EdgeProxy(getDelegate(), getModeController());
 	}
 
 	public Proxy.Font getFont() {
-		return new FontProxy(getNode(), getModeController());
+		return new FontProxy(getDelegate(), getModeController());
 	}
 
 	public Color getNodeTextColor() {
-		return getStyleController().getColor(getNode());
+		return getStyleController().getColor(getDelegate());
 	}
 
 	private MPatternController getPatternController() {
@@ -47,10 +47,10 @@ class NodeStyleProxy extends AbstractProxy implements Proxy.NodeStyle {
 	}
 
 	public void setBackgroundColor(final Color color) {
-		getStyleController().setBackgroundColor(getNode(), color);
+		getStyleController().setBackgroundColor(getDelegate(), color);
 	}
 
 	public void setNodeTextColor(final Color color) {
-		getStyleController().setColor(getNode(), color);
+		getStyleController().setColor(getDelegate(), color);
 	}
 }

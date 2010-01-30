@@ -164,6 +164,10 @@ public interface Proxy {
 		/** empty String means remove link (as in user interface). */
 		boolean set(String target);
 	}
+	
+	interface Map {
+		Node node(String id);
+	}
 
 	interface Node {
 		Connector addConnectorTo(Node target);
@@ -198,6 +202,8 @@ public interface Proxy {
 		Icons getIcons();
 
 		Link getLink();
+		
+		Map getMap();
 
 		String getNodeID();
 

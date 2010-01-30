@@ -12,14 +12,14 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.view.swing.addins.filepreview.ExternalResource;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
 
-class ExternalObjectProxy extends AbstractProxy implements Proxy.ExternalObject {
+class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.ExternalObject {
 	ExternalObjectProxy(final NodeModel delegate,
 			final MModeController modeController) {
 		super(delegate, modeController);
 	}
 
 	private ExternalResource getExternalObjectModel() {
-		return (ExternalResource) getNode()
+		return (ExternalResource) getDelegate()
 				.getExtension(ExternalResource.class);
 	}
 
@@ -42,11 +42,11 @@ class ExternalObjectProxy extends AbstractProxy implements Proxy.ExternalObject 
 		try {
 			ExternalResource externalObject = getExternalObjectModel();
 			if (externalObject != null) {
-				getViewerController().undoableToggleHook(getNode(), externalObject);
+				getViewerController().undoableToggleHook(getDelegate(), externalObject);
 			}
 			externalObject = new ExternalResource();
 			externalObject.setUri(new URI(uri));
-			getViewerController().undoableToggleHook(getNode(), externalObject);
+			getViewerController().undoableToggleHook(getDelegate(), externalObject);
 		} catch (final URISyntaxException e) {
 			LogTool.warn(e);
 		}
@@ -55,7 +55,7 @@ class ExternalObjectProxy extends AbstractProxy implements Proxy.ExternalObject 
 
 	public void setZoom(final float zoom) {
 		final ExternalResource externalObject = getExternalObjectModel();
-		getViewerController().setZoom(getModeController(), getNode().getMap(),
+		getViewerController().setZoom(getModeController(), getDelegate().getMap(),
 				externalObject, zoom);
 
 	}

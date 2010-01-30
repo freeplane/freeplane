@@ -12,7 +12,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
-class ConnectorProxy extends AbstractProxy implements Proxy.Connector {
+class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Connector {
 
 	ConnectorProxy(final ConnectorModel connector,
 			final MModeController modeController) {

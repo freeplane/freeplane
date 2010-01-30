@@ -13,7 +13,7 @@ import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 
-class AttributesProxy extends AbstractProxy implements Proxy.Attributes {
+class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attributes {
 	AttributesProxy(final NodeModel delegate,
 			final MModeController modeController) {
 		super(delegate, modeController);
@@ -58,7 +58,7 @@ class AttributesProxy extends AbstractProxy implements Proxy.Attributes {
 	}
 
 	NodeAttributeTableModel getNodeAttributeTableModel() {
-		return NodeAttributeTableModel.getModel(getNode());
+		return NodeAttributeTableModel.getModel(getDelegate());
 	}
 
 	public boolean remove(final String key) {
@@ -66,7 +66,7 @@ class AttributesProxy extends AbstractProxy implements Proxy.Attributes {
 		if (attributeNumber == -1) {
 			return false;
 		}
-		getAttributeController().removeAttribute(getNode(), attributeNumber);
+		getAttributeController().removeAttribute(getDelegate(), attributeNumber);
 		return true;
 	}
 
@@ -74,10 +74,10 @@ class AttributesProxy extends AbstractProxy implements Proxy.Attributes {
 		final int attributeNumber = findAttribute(key);
 		final Attribute attribute = new Attribute(key, value);
 		if (attributeNumber == -1) {
-			getAttributeController().addAttribute(getNode(), attribute);
+			getAttributeController().addAttribute(getDelegate(), attribute);
 			return;
 		}
-		getAttributeController().setAttribute(getNode(), attributeNumber,
+		getAttributeController().setAttribute(getDelegate(), attributeNumber,
 				attribute);
 	}
 

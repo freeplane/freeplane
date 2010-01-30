@@ -9,17 +9,17 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
-class FontProxy extends AbstractProxy implements Proxy.Font {
+class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
 	FontProxy(final NodeModel delegate, final MModeController modeController) {
 		super(delegate, modeController);
 	}
 
 	public String getName() {
-		return getStyleController().getFontFamilyName(getNode());
+		return getStyleController().getFontFamilyName(getDelegate());
 	}
 
 	public int getSize() {
-		return getStyleController().getFontSize(getNode());
+		return getStyleController().getFontSize(getDelegate());
 	}
 
 	private MNodeStyleController getStyleController() {
@@ -28,65 +28,65 @@ class FontProxy extends AbstractProxy implements Proxy.Font {
 	}
 
 	public boolean isBold() {
-		return getStyleController().isBold(getNode());
+		return getStyleController().isBold(getDelegate());
 	}
 
 	public boolean isBoldSet() {
-		return NodeStyleModel.isBold(getNode()) != null;
+		return NodeStyleModel.isBold(getDelegate()) != null;
 	}
 
 	public boolean isItalic() {
-		return getStyleController().isItalic(getNode());
+		return getStyleController().isItalic(getDelegate());
 	}
 
 	public boolean isItalicSet() {
-		return NodeStyleModel.isItalic(getNode()) != null;
+		return NodeStyleModel.isItalic(getDelegate()) != null;
 	}
 
 	public boolean isNameSet() {
-		return NodeStyleModel.getFontFamilyName(getNode()) != null;
+		return NodeStyleModel.getFontFamilyName(getDelegate()) != null;
 	}
 
 	public boolean isSizeSet() {
-		return NodeStyleModel.getFontSize(getNode()) != null;
+		return NodeStyleModel.getFontSize(getDelegate()) != null;
 	}
 
 	public void resetBold() {
-		getStyleController().setBold(getNode(), null);
+		getStyleController().setBold(getDelegate(), null);
 
 	}
 
 	public void resetItalic() {
-		getStyleController().setItalic(getNode(), null);
+		getStyleController().setItalic(getDelegate(), null);
 
 	}
 
 	public void resetName() {
-		getStyleController().setFontFamily(getNode(), null);
+		getStyleController().setFontFamily(getDelegate(), null);
 
 	}
 
 	public void resetSize() {
-		getStyleController().setFontSize(getNode(), null);
+		getStyleController().setFontSize(getDelegate(), null);
 
 	}
 
 	public void setBold(final boolean bold) {
-		getStyleController().setBold(getNode(), bold);
+		getStyleController().setBold(getDelegate(), bold);
 
 	}
 
 	public void setItalic(final boolean italic) {
-		getStyleController().setItalic(getNode(), italic);
+		getStyleController().setItalic(getDelegate(), italic);
 
 	}
 
 	public void setName(final String name) {
-		getStyleController().setFontFamily(getNode(), name);
+		getStyleController().setFontFamily(getDelegate(), name);
 	}
 
 	public void setSize(final int size) {
-		getStyleController().setFontSize(getNode(), size);
+		getStyleController().setFontSize(getDelegate(), size);
 
 	}
 }
