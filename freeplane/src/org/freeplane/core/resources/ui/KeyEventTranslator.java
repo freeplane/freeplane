@@ -244,17 +244,9 @@ class KeyEventTranslator {
 						    .toUpperCase((char) keyCode));
 				}
 				else {
-					if (keyCode > 0 && keyCode < 32) {
+					if (keyCode > 0 && keyCode <= KeyEvent.VK_SPACE) {
 						evt.consume();
 						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), keyCode, KeyEvent.CHAR_UNDEFINED);
-					}
-					else if (keyCode == KeyEvent.VK_SPACE) {
-						if ((modifiers & ~InputEvent.SHIFT_MASK) == 0) {
-							returnValue = null;
-						}
-						else {
-							returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), 0, ' ');
-						}
 					}
 					else {
 						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), keyCode, evt.getKeyChar());
