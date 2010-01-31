@@ -166,6 +166,7 @@ public interface Proxy {
 	}
 	
 	interface Map {
+		Node getRootNode();
 		Node node(String id);
 	}
 
@@ -217,8 +218,6 @@ public interface Proxy {
 
 		/** use this method to remove all tags from an HTML node. */
 		String getPlainTextContent();
-
-		Node getRootNode();
 
 		NodeStyle getStyle();
 

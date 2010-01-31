@@ -18,4 +18,10 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 		return node != null ? new NodeProxy(node,
 			getModeController()) : null;
     }
+
+	public Node getRootNode() {
+		final NodeModel rootNode = getDelegate().getRootNode();
+		return new NodeProxy(rootNode, getModeController());
+	}
+
 }

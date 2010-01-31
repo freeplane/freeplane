@@ -130,14 +130,6 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return getDelegate().getPlainTextContent();
 	}
 
-	public Node getRootNode() {
-		if (getDelegate().isRoot()) {
-			return this;
-		}
-		final NodeModel rootNode = getDelegate().getMap().getRootNode();
-		return new NodeProxy(rootNode, getModeController());
-	}
-
 	public Proxy.NodeStyle getStyle() {
 		return new NodeStyleProxy(getDelegate(), getModeController());
 	}

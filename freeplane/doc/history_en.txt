@@ -9,12 +9,15 @@ Filter Hyperlink exists and Connector exists
 enclose the script execution in a UndoHandler transaction and do a rollback on errors
 Display node id in status line(can be set in preferences->appearance)
 Add access top map and getting node by id to scripting API
-
 410]: Unable to assign space bar to insert new node
 Move note cursor to the end added
 add MapProxy with method node(id) to scripting api
 
-change default settings: 
+Script API:
+new interface Proxy.Map introduced
+Method Proxy.Node.getRootNode removed
+
+Change default settings: 
 Move note cursor to the end by default
 freeplane2flash.xsl : fold from level 2
 standarddrawrectangleforselection = true
@@ -24,7 +27,6 @@ save_folding=never_save_folding
 load_folding=load_folding_from_map_default_fold_all
 load_folding_start_level=2
 extract a new interface method AttributesProxy.getAttributeNames()
-      
 
 Bug fixes:
 windows launcher checks available memory
