@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -319,4 +320,12 @@ public class UITools {
     		}
     	});
     }
+
+	public static Color getTextColorForBackground(Color color) {
+		int red = color.getRed();
+		int blue = color.getBlue();
+		int green = color.getGreen();
+		return red > 0x80 && blue > 0x80 && green > 0x80 ? Color.BLACK : Color.WHITE;
+	}
+
 }
