@@ -106,11 +106,6 @@ int main(int argc, char *argv[])  {
    int no_of_passed_arguments = no_of_fixed_arguments
             + no_of_passed_arguments_without_caller + one_for_stopping_null;
 
-   char argument_allowing_more_memory[15];
-   DWORD memory = calculateMemory();
-   sprintf(argument_allowing_more_memory, "-Xmx%um", memory);
-
-
    // Pick the path from argv[0]. This is for the case that the launcher is not
    // started from the folder in which it resides.
 
@@ -173,8 +168,20 @@ int main(int argc, char *argv[])  {
    arguments[argumentNumber++] = javaw_path;
    #endif
    
-   arguments[argumentNumber++] = argument_allowing_more_memory;
-
+   const char* freeplaneMaxHeapSizeEnv = getenv("FREEPLANE_MAX_HEAP_SIZE");
+   if(freeplaneMaxHeapSizeEnv)
+   {
+      const char *argv[] = {"-Xmx", freeplaneMaxHeapSizeEnv, 0};
+      char* argument_allowing_more_memory=concat(argv);
+      arguments[argumentNumber++] = argument_allowing_more_memory;
+   }
+   else
+   {
+      char argument_allowing_more_memory[15];
+      DWORD memory = calculateMemory();
+      sprintf(argument_allowing_more_memory, "-Xmx%um", memory);
+      arguments[argumentNumber++] = argument_allowing_more_memory;
+   }
 
 #ifdef PORTABLE_APP
    {
