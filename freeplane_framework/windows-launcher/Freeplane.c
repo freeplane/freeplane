@@ -49,7 +49,7 @@ char *surround_by_quote(const char *in_string) {
 
 char *param2define(int number, const char *in_string) {
    char buf[10];
-   sprintf(buf, "%i", number);
+   sprintf(buf, "%u", number);
    const char *argv[] = {"\"-Dorg.freeplane.param", buf, "=", in_string, "\"", 0};
    return concat(argv);
 }
@@ -78,7 +78,21 @@ DWORD calculateMemory()
   {
       memory = MAX_MEMORY;
   }
-  memory /= 1024;
+  memory /= (1024*1024);
+#if defined (__DEBUG__) || defined (CONSOLE_APP)
+	printf("dwLength = %u\n", stat.dwLength);
+	printf("dwMemoryLoad = %u\n", stat.dwMemoryLoad);
+	printf("dwTotalPhys = %u\n", stat.dwTotalPhys);
+	printf("dwAvailPhys = %u\n", stat.dwAvailPhys);
+	printf("dwTotalPageFile = %u\n", stat.dwTotalPageFile);
+	printf("dwAvailPageFile = %u\n", stat.dwAvailPageFile);
+	printf("dwTotalVirtual = %u\n", stat.dwTotalVirtual);
+	printf("dwAvailVirtual = %u\n", stat.dwAvailVirtual);
+	printf("dwAvailVirtual = %u\n", stat.dwAvailVirtual);
+	printf("memory = %u\n", memory);
+#endif
+
+   return memory;
 
 }
 
@@ -94,7 +108,7 @@ int main(int argc, char *argv[])  {
 
    char argument_allowing_more_memory[15];
    DWORD memory = calculateMemory();
-   sprintf(argument_allowing_more_memory, "-Xmx%ik", memory);
+   sprintf(argument_allowing_more_memory, "-Xmx%um", memory);
 
 
    // Pick the path from argv[0]. This is for the case that the launcher is not
@@ -143,8 +157,12 @@ int main(int argc, char *argv[])  {
          }
       }   
       no_of_passed_arguments+=2;
-#else   
+#else 
+#ifdef CONSOLE_APP 
+      char * javaw_path = "java.exe";
+#else  
       char * javaw_path = "javaw.exe";
+#endif
 #endif
 
    char** arguments = (char **) malloc(no_of_passed_arguments * sizeof(char*));
@@ -207,7 +225,7 @@ int main(int argc, char *argv[])  {
 
    arguments[argumentNumber++] = (char *)0;
 
-#ifdef __DEBUG__
+#if defined (__DEBUG__) || defined (CONSOLE_APP)
       for (int i=0; i < argumentNumber; ++i) {
          printf("Argument %s\n",arguments[i]);
       }
