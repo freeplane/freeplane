@@ -12,6 +12,7 @@ Add access top map and getting node by id to scripting API
 410]: Unable to assign space bar to insert new node
 Move note cursor to the end added
 add MapProxy with method node(id) to scripting api
+workaround for windows launcher "FREEPLANE_MAX_HEAP_SIZE=512m"
 
 Script API:
 new interface Proxy.Map introduced
