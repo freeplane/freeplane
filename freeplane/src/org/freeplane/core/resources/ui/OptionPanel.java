@@ -76,7 +76,7 @@ public class OptionPanel {
 	}
 
 	private static final Color MARKED_BUTTON_COLOR = Color.BLUE;
-	private static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
+	static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
 	private Vector<IPropertyControl> controls;
 	final private IOptionPanelFeedback feedback;
 	private String selectedPanel;
@@ -91,14 +91,6 @@ public class OptionPanel {
 		super();
 		topDialog = d;
 		this.feedback = feedback;
-		final String marshalled = ResourceController.getResourceController().getProperty(
-		    OptionPanel.PREFERENCE_STORAGE_PROPERTY);
-		final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage.decorateDialog(
-		    marshalled, d);
-		if (storage != null) {
-			final OptionPanelWindowConfigurationStorage oWindowSettings = storage;
-			selectedPanel = oWindowSettings.getPanel();
-		}
 		new OptionPanelBuilder();
 	}
 
@@ -213,4 +205,8 @@ public class OptionPanel {
 			}
 		}
 	}
+
+	void setSelectedPanel(String panel) {
+	   selectedPanel = panel;
+    }
 }

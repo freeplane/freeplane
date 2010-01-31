@@ -26,7 +26,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * 27.12.2008
  */
 public class TabProperty implements IPropertyControl {
-	private static final String DEFAULT_LAYOUT_FORMAT = "right:max(40dlu;p), 4dlu, 20dlu:grow, 7dlu";
+	private static final String DEFAULT_LAYOUT_FORMAT = "right:max(40dlu;p), 4dlu, 200dlu:grow, 7dlu";
 	final private String label;
 	final private String layoutFormat;
 

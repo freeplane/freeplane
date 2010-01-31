@@ -78,6 +78,11 @@ public class PropertyAction extends AFreeplaneAction {
 				}
 			}
 		});
+		final String marshalled = ResourceController.getResourceController().getProperty(OptionPanel.PREFERENCE_STORAGE_PROPERTY);
+		final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage.decorateDialog(marshalled, dialog);
+		if (storage != null) {
+			options.setSelectedPanel(storage.getPanel());
+		}
 		options.buildPanel(controls);
 		options.setProperties();
 		dialog.setTitle("Freeplane Properties");
@@ -99,6 +104,9 @@ public class PropertyAction extends AFreeplaneAction {
 			}
 		};
 		UITools.addEscapeActionToDialog(dialog, action);
+		if(storage == null){
+			dialog.pack();
+		}
 		dialog.setVisible(true);
 	}
 }
