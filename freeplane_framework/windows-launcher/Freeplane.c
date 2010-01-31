@@ -169,19 +169,19 @@ int main(int argc, char *argv[])  {
    #endif
    
    const char* freeplaneMaxHeapSizeEnv = getenv("FREEPLANE_MAX_HEAP_SIZE");
+   char* argument_allowing_more_memory;
    if(freeplaneMaxHeapSizeEnv)
    {
       const char *argv[] = {"-Xmx", freeplaneMaxHeapSizeEnv, 0};
-      char* argument_allowing_more_memory=concat(argv);
-      arguments[argumentNumber++] = argument_allowing_more_memory;
+      argument_allowing_more_memory = concat(argv);
    }
    else
    {
-      char argument_allowing_more_memory[15];
+      argument_allowing_more_memory = (char *) malloc((4 + 4 + 1 + 1) * sizeof(char));
       DWORD memory = calculateMemory();
       sprintf(argument_allowing_more_memory, "-Xmx%um", memory);
-      arguments[argumentNumber++] = argument_allowing_more_memory;
    }
+   arguments[argumentNumber++] = argument_allowing_more_memory;
 
 #ifdef PORTABLE_APP
    {
