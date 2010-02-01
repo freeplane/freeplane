@@ -341,7 +341,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_1571818298" MODIFIED="1170402185078" TEXT="Carpetas locales">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" ID="Freeplane_Link_134747683" LINK="C:/Program Files/" MODIFIED="1170402246313" TEXT="C:/Program files/">
+<node CREATED="1124560950701" ID="Freeplane_Link_134747683" LINK="file:/C:/Program%20Files/" MODIFIED="1170402246313" TEXT="C:/Program files/">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950701" LINK="/home/" MODIFIED="1124560950701" TEXT="/home/">
@@ -350,7 +350,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_179286322" MODIFIED="1170402191875" TEXT="Ejecutables">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_801065485" LINK="C:\WINNT\regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
+<node CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_801065485" LINK="file:/C:/WINNT/regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#006600" CREATED="1124560950701" MODIFIED="1124560950701" TEXT="You see that the node is executable by icon.">
 <font NAME="SansSerif" SIZE="12"/>

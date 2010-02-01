@@ -370,7 +370,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_1119935059" MODIFIED="1132094896971" TEXT="lokalen Ordnern">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" ID="Freeplane_Link_1060370167" LINK="C:/Program Files/" MODIFIED="1132094855904" TEXT="C:/Programme/">
+<node CREATED="1124560950701" ID="Freeplane_Link_1060370167" LINK="file:/C:/Program%20Files/" MODIFIED="1132094855904" TEXT="C:/Programme/">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950701" LINK="/home/" MODIFIED="1124560950701" TEXT="/home/">
@@ -379,7 +379,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_1008386972" MODIFIED="1132094998312" TEXT="ausf&#xfc;hrbaren Programmen">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_661824400" LINK="C:\WINNT\regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
+<node CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_661824400" LINK="file:/C:/WINNT/regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#006600" CREATED="1124560950701" ID="Freeplane_Link_1441814137" MODIFIED="1132095064759" TEXT="Sie sehen am Piktogramm, da&#xdf; der Knoten ausf&#xfc;hrbar ist.">
 <font NAME="SansSerif" SIZE="12"/>
@@ -803,7 +803,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#996600" CREATED="1124560950732" ID="Freeplane_Link_1374652558" MODIFIED="1132515147856" TEXT="Gew&#xe4;hlter Ordner">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950732" ID="Freeplane_Link_1320387320" LINK="C:\Programme\Microsoft Office\Office\Bitmaps" MODIFIED="1134584600122" TEXT="C:\Programme\Microsoft Office\Office\Bitmaps">
+<node CREATED="1124560950732" ID="Freeplane_Link_1320387320" LINK="file:/C:/Programme/Microsoft%20Office/Office/Bitmaps" MODIFIED="1134584600122" TEXT="C:\Programme\Microsoft Office\Office\Bitmaps">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
