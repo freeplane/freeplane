@@ -369,7 +369,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" ID="ID_278779728" MODIFIED="1209145035199" TEXT="Map lokal">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" ID="ID_1541289178" LINK="C:/Program Files/" MODIFIED="1124560950701" TEXT="C:/Program Files/">
+<node CREATED="1124560950701" ID="ID_1541289178" LINK="file:/C:/Program%20Files/" MODIFIED="1124560950701" TEXT="C:/Program Files/">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950701" ID="ID_2370204" LINK="/home/" MODIFIED="1124560950701" TEXT="/home/">
@@ -378,7 +378,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" ID="ID_738829620" MODIFIED="1209145122154" TEXT="Bisa dieksekusi">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" ID="ID_372784718" LINK="C:\WINNT\regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
+<node CREATED="1124560950701" ID="ID_372784718" LINK="file:/C:/WINNT/regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#006600" CREATED="1124560950701" ID="ID_785322201" MODIFIED="1209145112239" TEXT="Yang bisa dieksekusi terlihat dari ikonnya.">
 <font NAME="SansSerif" SIZE="12"/>
@@ -807,7 +807,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#996600" CREATED="1124560950732" ID="ID_1028597241" MODIFIED="1209283613201" TEXT="Map terpilih">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950732" LINK="C:\Program Files\Microsoft Office\Office\Bitmaps" MODIFIED="1124560950732" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
+<node CREATED="1124560950732" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps" MODIFIED="1124560950732" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>

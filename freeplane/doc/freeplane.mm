@@ -362,7 +362,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" MODIFIED="1124560950701" TEXT="Local folders">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" LINK="C:/Program%20Files/" MODIFIED="1124560950701" TEXT="C:/Program Files/">
+<node CREATED="1124560950701" LINK="file:/C:/Program%20Files/" MODIFIED="1124560950701" TEXT="C:/Program Files/">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950701" LINK="/home/" MODIFIED="1124560950701" TEXT="/home/">
@@ -371,7 +371,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" MODIFIED="1124560950701" TEXT="Executables">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" LINK="C:\WINNT\regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
+<node CREATED="1124560950701" LINK="file:/C:/WINNT/regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#006600" CREATED="1124560950701" MODIFIED="1124560950701" TEXT="You see that the node is executable by icon.">
 <font NAME="SansSerif" SIZE="12"/>
@@ -792,7 +792,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#996600" CREATED="1124560950732" MODIFIED="1124560950732" TEXT="Selected folder">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950732" LINK="C:\Program%20Files\Microsoft%20Office\Office\Bitmaps" MODIFIED="1124560950732" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
+<node CREATED="1124560950732" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps" MODIFIED="1124560950732" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>

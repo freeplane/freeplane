@@ -1623,7 +1623,7 @@
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="C:/Program Files/" ID="ID_95173170" CREATED="1124560950701" MODIFIED="1124560950701" LINK="C:/Program%20Files/">
+<node TEXT="C:/Program Files/" ID="ID_95173170" CREATED="1124560950701" MODIFIED="1124560950701" LINK="file:/C:/Program%20Files/">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="/home/" ID="ID_888214119" CREATED="1124560950701" MODIFIED="1124560950701" LINK="/home/">

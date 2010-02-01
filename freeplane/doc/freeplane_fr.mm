@@ -754,7 +754,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" ID="Freeplane_Link_1291953455" MODIFIED="1193327965390" TEXT="R&#xe9;pertoires locaux">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" ID="Freeplane_Link_905181246" LINK="C:/Program Files/" MODIFIED="1124560950701" TEXT="C:/Program Files/">
+<node CREATED="1124560950701" ID="Freeplane_Link_905181246" LINK="file:/C:/Program%20Files/" MODIFIED="1124560950701" TEXT="C:/Program Files/">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950701" ID="Freeplane_Link_89859582" LINK="/home/" MODIFIED="1124560950701" TEXT="/home/">
@@ -763,7 +763,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" ID="Freeplane_Link_1178084251" MODIFIED="1193327973906" TEXT="Ex&#xe9;cutables">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_1639510036" LINK="C:\WINNT\regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
+<node CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_1639510036" LINK="file:/C:/WINNT/regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#006600" CREATED="1124560950701" ID="Freeplane_Link_1834359766" MODIFIED="1193328079078" TEXT="Une ic&#xf4;ne vous signale un ex&#xe9;cutable">
 <font NAME="SansSerif" SIZE="12"/>
@@ -2402,7 +2402,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#996600" CREATED="1124560950732" ID="Freeplane_Link_544626837" MODIFIED="1195046790515" TEXT="R&#xe9;pertoire choisi">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950732" ID="Freeplane_Link_1055412959" LINK="C:\Program Files\Microsoft Office\Office\Bitmaps" MODIFIED="1124560950732" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
+<node CREATED="1124560950732" ID="Freeplane_Link_1055412959" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps" MODIFIED="1124560950732" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>

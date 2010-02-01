@@ -349,7 +349,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_137912631" MODIFIED="1212777679733" TEXT="C&#xe1;c th&#x1b0; m&#x1ee5;c tr&#xea;n m&#xe1;y">
 <font NAME="Dialog" SIZE="12"/>
-<node CREATED="1124560950701" LINK="C:/Program Files/" MODIFIED="1124560950701" TEXT="C:/Program Files/">
+<node CREATED="1124560950701" LINK="file:/C:/Program%20Files/" MODIFIED="1124560950701" TEXT="C:/Program Files/">
 <font NAME="Dialog" SIZE="12"/>
 </node>
 <node CREATED="1124560950701" LINK="/home/" MODIFIED="1124560950701" TEXT="/home/">
@@ -358,7 +358,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_774013517" MODIFIED="1212777689162" TEXT="C&#xe1;c ch&#x1b0;&#x1a1;ng tr&#xec;nh">
 <font NAME="Dialog" SIZE="12"/>
-<node CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_26552136" LINK="C:\WINNT\regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
+<node CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_26552136" LINK="file:/C:/WINNT/regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
 <font NAME="Dialog" SIZE="12"/>
 <node COLOR="#006600" CREATED="1124560950701" ID="Freeplane_Link_741962292" MODIFIED="1212777731703" TEXT="Nh&#x1eef;ng n&#xfa;t n&#xe0;o ta c&#xf3; th&#x1ec3; kh&#x1edf;i ch&#x1ea1;y &#x111;&#x1b0;&#x1ee3;c th&#xec; s&#x1ebd; c&#xf3; bi&#x1ec3;u t&#x1b0;&#x1ee3;ng b&#xea;n c&#x1ea1;nh">
 <font NAME="Dialog" SIZE="12"/>
@@ -775,7 +775,7 @@
 <font NAME="Dialog" SIZE="12"/>
 <node COLOR="#996600" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_802327256" MODIFIED="1213145527709" TEXT="Th&#x1b0; m&#x1ee5;c &#x111;&#x1b0;&#x1ee3;c ch&#x1ecd;n">
 <font NAME="Dialog" SIZE="12"/>
-<node CREATED="1124560950732" LINK="C:\Program Files\Microsoft Office\Office\Bitmaps" MODIFIED="1124560950732" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
+<node CREATED="1124560950732" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps" MODIFIED="1124560950732" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
 <font NAME="Dialog" SIZE="12"/>
 </node>
 </node>

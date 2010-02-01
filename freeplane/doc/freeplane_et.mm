@@ -836,7 +836,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="ID_715165450" MODIFIED="1216187545239" TEXT="Kohalikele kaustadele">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" ID="ID_469314055" LINK="C:/Program%20Files/" MODIFIED="1216187545239" TEXT="C:/Program Files/">
+<node CREATED="1124560950701" ID="ID_469314055" LINK="file:/C:/Program%20Files/" MODIFIED="1216187545239" TEXT="C:/Program Files/">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950701" ID="ID_534319083" LINK="/home/" MODIFIED="1216187545239" TEXT="/home/">
@@ -845,7 +845,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="ID_1939211284" MODIFIED="1216187545239" TEXT="K&#xe4;ivitatavatele failidele">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" FOLDED="true" ID="ID_1645120569" LINK="C:\WINNT\regedit.exe" MODIFIED="1216187545239" TEXT="C:\WINNT\regedit.exe">
+<node CREATED="1124560950701" FOLDED="true" ID="ID_1645120569" LINK="file:/C:/WINNT/regedit.exe" MODIFIED="1216187545239" TEXT="C:\WINNT\regedit.exe">
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#006600" CREATED="1124560950701" ID="ID_1388267403" MODIFIED="1216187545239" TEXT="Siit on n&#xe4;ha, et s&#xf5;lmel on k&#xe4;ivitatava faili ikoon ees.">
 <font NAME="SansSerif" SIZE="12"/>
@@ -2469,7 +2469,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#996600" CREATED="1124560950732" FOLDED="true" ID="ID_946625728" MODIFIED="1216217082479" TEXT="Valitud kataloog">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950732" ID="ID_474941936" LINK="C:\Program%20Files\Microsoft%20Office\Office\Bitmaps" MODIFIED="1216187545041" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
+<node CREATED="1124560950732" ID="ID_474941936" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps" MODIFIED="1216187545041" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
