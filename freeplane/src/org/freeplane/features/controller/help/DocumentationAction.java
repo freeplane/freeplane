@@ -40,37 +40,42 @@ class DocumentationAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private String document;
 
-	DocumentationAction(final Controller controller) {
-		super("DocumentationAction", controller);
+	DocumentationAction(final Controller controller, final String actionName, final String document) {
+		super(actionName, controller);
+		this.document = document;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		final File baseDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParentFile();
-		final String defaultMap = resourceController.getProperty("browsemode_initial_map");
 		final File file;
-		if(defaultMap.endsWith(".mm")){
+		final int extPosition = document.lastIndexOf('.');
+		if(extPosition != -1){
 			final String languageCode = ((ResourceBundles) resourceController.getResources()).getLanguageCode();
-			String map = defaultMap.substring(0, defaultMap.length() -3) + "_" + languageCode + ".mm";
+			String map = document.substring(0, extPosition) + "_" + languageCode + document.substring(extPosition);
 			 File localFile = new File(baseDir, map);
 			 if(localFile.canRead()){
 				 file = localFile;
 			 }
 			 else{
-				 file = new File(baseDir, defaultMap);
+				 file = new File(baseDir, document);
 			 }
 		}
 		else{
-			 file = new File(baseDir, defaultMap);
+			 file = new File(baseDir, document);
 		}
 		try {
 	        final URL endUrl = file.toURL();
 	        SwingUtilities.invokeLater(new Runnable() {
 	        	public void run() {
 	        		try {
-	        			if (getController().selectMode(BModeController.MODENAME)) {
+	        			if (endUrl.getFile().endsWith(".mm") && getController().selectMode(BModeController.MODENAME)) {
 	        				getModeController().getMapController().newMap(endUrl);
+	        			}
+	        			else{
+	        				getController().getViewController().openDocument(endUrl);
 	        			}
 	        		}
 	        		catch (final Exception e1) {
