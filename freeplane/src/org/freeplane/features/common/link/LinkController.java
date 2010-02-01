@@ -351,6 +351,9 @@ public class LinkController extends SelectionController implements IExtension {
 				    if (ssp.startsWith("//")){
 						ssp = "//" + ssp;
 				    }
+				    else if (! ssp.startsWith("/")){
+				    	ssp = "/" + ssp;
+				    }
 					return new URI(scheme, null, ssp, fragment);
 				}
 			}
