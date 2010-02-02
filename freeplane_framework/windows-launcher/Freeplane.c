@@ -59,11 +59,7 @@ DWORD calculateMemory()
   MEMORYSTATUS stat;
   stat.dwLength = sizeof (stat);
   GlobalMemoryStatus (&stat);
-  DWORD memory = stat.dwAvailVirtual;
-  if(stat.dwTotalPhys < memory)
-  {
-      memory = stat.dwTotalPhys;
-  }
+  DWORD memory = stat.dwTotalPhys;
   const DWORD MAX_MEMORY = 1024 * 1024 * 1024;
   if(memory == -1 )
   {
@@ -79,6 +75,7 @@ DWORD calculateMemory()
       memory = MAX_MEMORY;
   }
   memory /= (1024*1024);
+/*  
 #if defined (__DEBUG__) || defined (CONSOLE_APP)
 	printf("dwLength = %u\n", stat.dwLength);
 	printf("dwMemoryLoad = %u\n", stat.dwMemoryLoad);
@@ -91,7 +88,7 @@ DWORD calculateMemory()
 	printf("dwAvailVirtual = %u\n", stat.dwAvailVirtual);
 	printf("memory = %u\n", memory);
 #endif
-
+*/   
    return memory;
 
 }
@@ -164,9 +161,29 @@ int main(int argc, char *argv[])  {
    int argumentNumber = 0;
    #ifdef PORTABLE_APP
    arguments[argumentNumber++] = surround_by_quote(javaw_path);
+   arguments[argumentNumber] = "-version";
+   arguments[argumentNumber+1] = 0;
+   {
+      int errorCode = _spawnv(_P_WAIT, javaw_path, arguments);
+      if(errorCode != 0)
+      {  
+         javaw_path = "javaw.exe";
+         arguments[0] = javaw_path;
+      }
+   }
    #else
    arguments[argumentNumber++] = javaw_path;
+   arguments[argumentNumber] = "-version";
+   arguments[argumentNumber+1] = (char *)0;
    #endif
+   
+   {
+      int errorCode = _spawnvp(_P_WAIT, javaw_path, arguments);
+      if(errorCode != 0)
+      {  
+         return argumentNumber;
+      }
+   }
    
    const char* freeplaneMaxHeapSizeEnv = getenv("FREEPLANE_MAX_HEAP_SIZE");
    char* argument_allowing_more_memory;
@@ -174,14 +191,35 @@ int main(int argc, char *argv[])  {
    {
       const char *argv[] = {"-Xmx", freeplaneMaxHeapSizeEnv, 0};
       argument_allowing_more_memory = concat(argv);
+      arguments[argumentNumber++] = argument_allowing_more_memory;
+      arguments[argumentNumber] = "-version";
+      arguments[argumentNumber+1] = (char *)0;
+      int errorCode = _spawnvp(_P_WAIT, javaw_path, arguments);
+      if(errorCode != 0)
+      {  
+         return argumentNumber;
+      }
    }
    else
    {
       argument_allowing_more_memory = (char *) malloc((4 + 4 + 1 + 1) * sizeof(char));
       DWORD memory = calculateMemory();
-      sprintf(argument_allowing_more_memory, "-Xmx%um", memory);
+      int memoryStep = memory/8;
+      arguments[argumentNumber+1] = "-version";
+      arguments[argumentNumber+2] = (char *)0;
+      int errorCode = -1;
+      for(int m = memory; m > memoryStep && errorCode != 0 ; m -= memoryStep )
+      {
+         sprintf(argument_allowing_more_memory, "-Xmx%um", memory);
+         arguments[argumentNumber] = argument_allowing_more_memory;
+         errorCode = _spawnvp(_P_WAIT, javaw_path, arguments);
+      }  
+      argumentNumber++;
+      if(errorCode != 0)
+      {  
+         return argumentNumber;
+      }
    }
-   arguments[argumentNumber++] = argument_allowing_more_memory;
 
 #ifdef PORTABLE_APP
    {
