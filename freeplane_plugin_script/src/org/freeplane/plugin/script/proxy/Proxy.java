@@ -161,7 +161,9 @@ public interface Proxy {
 	interface Link {
 		String get();
 
-		/** empty String means remove link (as in user interface). */
+		/** target is a URI.
+		 * An empty String will remove the link.
+		 * To get a local link (i.e. to another node) target should be: "#" + nodeID */
 		boolean set(String target);
 	}
 	
