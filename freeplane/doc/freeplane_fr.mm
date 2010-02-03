@@ -2737,7 +2737,7 @@
   </head>
   <body>
     <p>
-      Ins&#233;rer une image dans Freeplane: touches Alt + K, ou dans le menu contextuel du n&#339;ud Inser&#233;r &gt; Image. L'insertion d'une image efface le texte d&#233;j&#224; pr&#233;sent dans le n&#339;ud. Les images inser&#233;es par cette m&#233;thode ne sont pas coll&#233;es correctement en dehors de Freeplane et ne sont pas non plus bien export&#233;es en HTML. La gestion des images dans Freeplane en est &#224; ses balbutiements.
+      Ins&#233;rer une image dans Freeplane: touches ALT + SHIFT + K, ou dans le menu contextuel du n&#339;ud Inser&#233;r &gt; Image. L'insertion d'une image efface le texte d&#233;j&#224; pr&#233;sent dans le n&#339;ud. Les images inser&#233;es par cette m&#233;thode ne sont pas coll&#233;es correctement en dehors de Freeplane et ne sont pas non plus bien export&#233;es en HTML. La gestion des images dans Freeplane en est &#224; ses balbutiements.
     </p>
   </body>
 </html>
@@ -2756,7 +2756,7 @@
   </head>
   <body>
     <p>
-      Transformer un lien vers une image en image visible: touches Alt + K. Vous pouvez glisser-d&#233;poser plusieurs fichiers d'images dans Freeplane, s&#233;lectionnez les comme n&#339;uds multiples, et transformez les en images en pressant les touches Alt + K.
+      Transformer un lien vers une image en image visible: touches ALT + SHIFT + K. Vous pouvez glisser-d&#233;poser plusieurs fichiers d'images dans Freeplane, s&#233;lectionnez les comme n&#339;uds multiples, et transformez les en images en pressant les touches ALT + SHIFT + K.
     </p>
   </body>
 </html>
