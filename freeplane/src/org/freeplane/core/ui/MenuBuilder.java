@@ -831,6 +831,13 @@ public class MenuBuilder extends UIBuilder {
 			ResourceController.getResourceController().setProperty(shortcutKey, "");
 			return;
 		}
+		if(item instanceof JMenu){
+			UITools.errorMessage("keystroke " + keyStroke + " requested for submenu " + item.getText() + ", removed");
+		accelerators.put(keyStroke, oldAction);
+		final String shortcutKey = getShortcutKey(node.getKey().toString());
+		ResourceController.getResourceController().setProperty(shortcutKey, "");
+		return;
+		}
 		final KeyStroke removedAccelerator = removeAccelerator(node);
 		item.setAccelerator(keyStroke);
 		if (acceleratorChangeListener != null && (removedAccelerator != null || keyStroke != null)) {
