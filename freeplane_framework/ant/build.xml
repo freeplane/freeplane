@@ -7,6 +7,13 @@
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/dist" />
 
+  <!-- Mac OS X -->
+  <property name="mac-jarbundler" value = "${root}/mac-jarbundler"/>
+	<property name="jarbundler.jar" value = "jarbundler-2.1.0.jar"/>
+	<taskdef name="jarbundler"
+               classpath="${mac-jarbundler}/${jarbundler.jar}"
+               classname="net.sourceforge.jarbundler.JarBundler" />
+
 	<target name="build">
 		<property name="root" value="." />
 		<property name="license" value="license.txt" />
@@ -171,6 +178,146 @@
 			<fileset dir="${workingdir}/.." />
 		</delete>
 
+	</target>
+
+  <!-- Mac OS X 
+    This task just repackages the Unix files created during the "build" task
+      During development we don't need "clean" and "build" to run first
+      When done developing and testing we may want to restore this:
+	<target name="macosxapp" depends="build, mkdistdir">
+        or we may want to set this task to be invoked at the end of the "dist" task
+
+  Remaining steps before release of this file:
+    Move most comments to a Freeplane map, to document the development process
+      Document how to create a Mac icon (.icms) from freeplane.svg:
+        Open freeplane_framework/script/freeplane.svg in The Gimp image editor
+          Actually using Gimpshop.app under Mac OS X Tiger
+          Save as a 128x128 pixel .PNG file to mac-jarbundler/freeplane128x128.png
+            Delete this intermediate file after creating freeplane.icns
+        Open Apple XCode "Icon Composer.app" utility
+          Drag 'n drop freeplane128x128.png into the 128-pixel thumbnail cell
+          Save As mac-jarbundler/freeplane.icns
+    Check any remaining TODO notes commented in this task
+    Confirm that all property tags are in active use, and delete any which are obsolete
+    Break up the long macdefines property into sub-properties?
+    Create a depends clause for this ant task, per the note above
+    Consider filling in more optional jarbuilder fields
+      Check which fields are used by FreeMind
+      PkgInfo file contains: APPL????
+        !! TODO: Check for a JarBundler field corresponding to CFBundleSignature
+      Update JVMVersion to 1.4+ (or should it be 1.5+ ?)
+    Test restoring use of jarfileset inside our jarbundler task
+      Would eliminate the separate ant <copy...> task
+      Probably need to comment out the jar= clause which is disallowed with jarfileset
+        Test whether specifying the OSGI main class is sufficient 
+    Add Mac file associations
+      Check the new icon: When minimized in the dock, still displays as previous icon
+        Previously had adapted the logo from the Wiki for use as an icon
+        Test rebooting to clear any icon cache
+          Use "Safe Boot" to clear all caches if the old icon still persists
+      Freeplane is not listed as an option for .mm files via Open With nor Get Info
+        Check how FreeMind acomplishes its file associations
+        Check JarBundler docs to confirm whether this is an option
+    Get JavaApplicationStub compatible with Tiger, Leopard, Snow Leopard, Intel and PowerPC
+      Our Tiger version is reported as Universal via "Get Info" but may fail under Leopard
+      Then add to ${mac-jarbundler} directory and specify as a jarbundler argument
+    Commit the changes made so far, after cleaning up
+      Check again for any unneeded changes made to this branch, and reverse or delete them
+        bzr status should reveal all changed / added files
+          No need to perform an "ant clean"
+            Output directories are masked by the .bzrignore file
+          Keeping mac-jarbundler/buildOriginal.xml for now, also buildFeb04.xml
+      Perform a full ant build (the default "dist") then backup online and update under:
+        /Applications
+        mac-jarbundler/
+  -->
+	<target name="macosxapp">
+
+    <property name="macappfilename" value="Freeplane" />
+    <property name="macappextension" value="app" />
+    <property name="macappfullpath" value="${dist}/${macappfilename}.${macappextension}" />
+    <property name="macosgidir" value="${build}" />
+    <property name="macpluginsdir" value="plugins" />
+    <property name="macdefines" value="-Dapple.laf.useScreenMenuBar=true -Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
+    <property name="macxargs" value="-xargs ./props.xargs -xargs ./init.xargs" /> 
+    <property name="macmemory" value="-Xmx512m" />
+    <property name="macmainclass" value="org.knopflerfish.framework.Main" />
+    <property name="macicon" value="${mac-jarbundler}/freeplane.icns" />
+
+    <!-- Delete any existing Freeplane.app (it's a directory) -->
+    <delete dir="${dist}/${macappfilename}.${macappextension}"/>
+
+    <jarbundler dir="${dist}"
+                name="${macappfilename}"
+                mainclass="${macmainclass}"
+                version="${ver}"
+                vmoptions="${macmemory} ${macdefines}"
+                arguments="${macxargs}"
+                jar="${macosgidir}/framework.jar"
+                icon="${macicon}"
+                >
+      <!-- For OSGI we want the entire build/ tree except WIndows-related stuff
+             Commented out to allow testing jar=framework.jar
+      <jarfileset dir="${macosgidir}">
+        <exclude name="**/*.bat" />
+        <exclude name="**/*.exe" />
+      </jarfileset>
+      -->
+    </jarbundler>
+
+    <!-- Patch the Info.plist file created by JarBundler, to work with Knopflerfish OSGI
+           Courtesy of Volker who supplied the logic for this <replace> subtask
+      Freeplane failed to start when double-clicking on Freeplane.app in Finder
+        Fixed by editing Info.plist to set the WorkingDirectory to $JAVAROOT
+          Found the idea for WorkingDirectory in a post on Knopflerfish's SF site:
+            http://sourceforge.net/tracker/index.php?func=detail&aid=1651148&group_id=82798&atid=567241
+            The downloadable example code had problems but inspired the solution
+          Traced the issue in console.log: /Library/Logs/Console/502/console.log
+            java.lang.IllegalArgumentException: Bad xargs URL ./props.xargs: 
+              java.net.MalformedURLException: no protocol: ./props.xargs
+            Similar error was reported when tested in iTerm using two tabs:
+              Ran this ant task in the first iTerm tab
+                cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/ant
+                Invoked this ant task using: ant macosxapp
+              Invoked Freeplane in the second iTerm tab
+                Changed to the Java dir inside Freeplane.app:
+                  cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java
+                    Must repeat this "cd" command after each use of ant in the other tab
+                      Recovers the working directory after the build deletes and recreates it
+                Then typed: ../../../../Freeplane.app/Contents/MacOS/JavaApplicationStub
+          Confirmed that invoking JavaApplicationStub in iTerm now starts Freeplane
+    -->
+    <echo message="Adding WorkingDirectory to Info.plist" />
+    <replace file="${macappfullpath}/Contents/Info.plist">
+      <replacetoken><![CDATA[<string>org.knopflerfish.framework.Main</string>]]></replacetoken>
+      <replacevalue><![CDATA[<string>org.knopflerfish.framework.Main</string>
+<key>WorkingDirectory</key>
+  <string>$JAVAROOT</string>]]></replacevalue>
+    </replace>
+
+    <!-- Copy the entire build/ tree except WIndows-related stuff
+          Also exclude the OSGI framework.jar which is copied by the jarbundler task
+          Doing this separately to allow specifying jar=framework.jar in the jarbundler task
+            jarbundler allows either jar= or jarfileset but not both
+            Copying after the jarbundler task which creates the Freeplane.app directory 
+              JarBundler *might* erase the directory if it already exists
+            !! TODO: Test restoring the jarfileset inside jarbundler
+                       Comment out this copy task, and delete it if jarfileset works
+    -->
+		<copy todir="${macappfullpath}/Contents/Resources/Java">
+			<fileset dir="${macosgidir}">
+        <exclude name="**/*.bat" />
+        <exclude name="**/*.exe" />
+        <exclude name="**/framework.jar" />
+      </fileset >
+		</copy>
+
+    <!-- Restore the eXecutable permission flags on the Unix script, for debug testing
+           !! TODO: Trace why permissions are lost here to begin with,
+                      and why chmod appears to fail silently
+     -->
+    <echo message="Setting eXecutable permissions on ${macappfullpath}/Contents/Resources/Java/freeplane.sh" />
+		<chmod file="${macappfullpath}/Contents/Resources/Java/freeplane.sh" perm="ugo+rx" />
 	</target>
 
 	<target name="dist" depends="clean, binzip, srczip, installer, portableinstaller">
