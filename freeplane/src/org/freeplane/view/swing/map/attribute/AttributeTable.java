@@ -52,6 +52,7 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
 import org.freeplane.features.common.attribute.IColumnWidthChangeListener;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -168,8 +169,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		super();
 		this.attributeView = attributeView;
 		addFocusListener(AttributeTable.focusListener);
-		final NodeModel model = attributeView.getNodeView().getModel();
-		if (!model.getMap().isReadOnly()) {
+		if (attributeView.getMapView().getModeController() instanceof MModeController) {
 			getTableHeader().addMouseListener(AttributeTable.componentListener);
 		}
 		else {

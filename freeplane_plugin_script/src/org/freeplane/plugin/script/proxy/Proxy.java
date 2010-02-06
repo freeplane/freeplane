@@ -161,8 +161,15 @@ public interface Proxy {
 	interface Link {
 		String get();
 
-		/** empty String means remove link (as in user interface). */
+		/** target is a URI.
+		 * An empty String will remove the link.
+		 * To get a local link (i.e. to another node) target should be: "#" + nodeID */
 		boolean set(String target);
+	}
+	
+	interface Map {
+		Node getRootNode();
+		Node node(String id);
 	}
 
 	interface Node {
@@ -185,8 +192,12 @@ public interface Proxy {
 
 		Attributes getAttributes();
 
+		/** returns the index (0..) of this node in the (by Y coordinate sorted)
+		 * list of this node's children. Returns -1 if childNode is not a child
+		 * of this node. */
 		int getChildPosition(Node childNode);
 
+		/** returns the children of this node ordered by Y coordinate. */
 		List<Node> getChildren();
 
 		Collection<Connector> getConnectorsIn();
@@ -198,6 +209,9 @@ public interface Proxy {
 		Icons getIcons();
 
 		Link getLink();
+		
+		/** the map this node belongs to. */
+		Map getMap();
 
 		String getNodeID();
 
@@ -211,8 +225,6 @@ public interface Proxy {
 
 		/** use this method to remove all tags from an HTML node. */
 		String getPlainTextContent();
-
-		Node getRootNode();
 
 		NodeStyle getStyle();
 

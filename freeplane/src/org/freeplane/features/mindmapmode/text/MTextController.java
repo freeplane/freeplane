@@ -174,69 +174,60 @@ public class MTextController extends TextController {
 	public void setImageByFileChooser() {
 		boolean picturesAmongSelecteds = false;
 		ModeController modeController = getModeController();
-		for (final ListIterator e = modeController.getMapController().getSelectedNodes().listIterator(); e
-		    .hasNext();) {
-			final URI link = NodeLinks.getLink(((NodeModel) e.next()));
+		for (final NodeModel node : modeController.getMapController().getSelectedNodes()) {
+			final URI link = NodeLinks.getLink(node);
 			if (link != null) {
-				final String string = link.toString();
-				if (string.endsWith(".png") || string.endsWith(".jpg") || string.endsWith(".jpeg")
-				        || string.endsWith(".gif")) {
+				final String linkString = link.toString();
+				final String lowerCase = linkString.toLowerCase();
+				if (lowerCase.endsWith(".png") || lowerCase.endsWith(".jpg") || lowerCase.endsWith(".jpeg")
+				        || lowerCase.endsWith(".gif")) {
 					picturesAmongSelecteds = true;
-					break;
+					final String strText = "<html><img src=\"" + linkString + "\">";
+					((MLinkController) LinkController.getController(modeController)).setLink(node, (URI) null);
+					setNodeText(node, strText);
 				}
 			}
 		}
 		if (picturesAmongSelecteds) {
-			for (final NodeModel node : modeController.getMapController().getSelectedNodes()) {
-				if (NodeLinks.getLink(node) != null) {
-					final URI uri = NodeLinks.getLink(node);
-					final String relative = uri.toString();
-					if (relative != null) {
-						final String strText = "<html><img src=\"" + relative + "\">";
-						((MLinkController) LinkController.getController(modeController)).setLink(node, (URI) null);
-						setNodeText(node, strText);
-					}
-				}
-			}
+			return;
 		}
-		else {
-			Controller controller = modeController.getController();
-			ViewController viewController = controller.getViewController();
-			NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-			MapModel map = selectedNode.getMap();
-			File file = map.getFile();
-			boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
-			if (file == null && useRelativeUri) {
-				JOptionPane.showMessageDialog(viewController.getContentPane(), ResourceBundles
-				    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-			final ExampleFileFilter filter = new ExampleFileFilter();
-			filter.addExtension("jpg");
-			filter.addExtension("jpeg");
-			filter.addExtension("png");
-			filter.addExtension("gif");
-			filter.setDescription(ResourceBundles.getText("bitmaps"));
-			UrlManager urlManager = (UrlManager) modeController.getExtension(UrlManager.class);
-			JFileChooser chooser = urlManager.getFileChooser(null);
-			chooser.setFileFilter(filter);
-			chooser.setAcceptAllFileFilterUsed(false);
-			chooser.setAccessory(new BitmapImagePreview(chooser));
-			final int returnVal = chooser.showOpenDialog(viewController.getContentPane());
-			if (returnVal != JFileChooser.APPROVE_OPTION) {
-				return;
-			}
-			final File input = chooser.getSelectedFile();
-			URI uri = input.toURI();
-			if (uri == null) {
-				return;
-			}
-			if (useRelativeUri) {
-				uri = LinkController.toRelativeURI(map.getFile(), input);
-			}
-			final String strText = "<html><img src=\"" + uri.toString() + "\">";
-			setNodeText(selectedNode, strText);
+		
+		Controller controller = modeController.getController();
+		ViewController viewController = controller.getViewController();
+		NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+		MapModel map = selectedNode.getMap();
+		File file = map.getFile();
+		boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
+		if (file == null && useRelativeUri) {
+			JOptionPane.showMessageDialog(viewController.getContentPane(), ResourceBundles
+				.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+			return;
 		}
+		final ExampleFileFilter filter = new ExampleFileFilter();
+		filter.addExtension("jpg");
+		filter.addExtension("jpeg");
+		filter.addExtension("png");
+		filter.addExtension("gif");
+		filter.setDescription(ResourceBundles.getText("bitmaps"));
+		UrlManager urlManager = (UrlManager) modeController.getExtension(UrlManager.class);
+		JFileChooser chooser = urlManager.getFileChooser(null);
+		chooser.setFileFilter(filter);
+		chooser.setAcceptAllFileFilterUsed(false);
+		chooser.setAccessory(new BitmapImagePreview(chooser));
+		final int returnVal = chooser.showOpenDialog(viewController.getContentPane());
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			return;
+		}
+		final File input = chooser.getSelectedFile();
+		URI uri = input.toURI();
+		if (uri == null) {
+			return;
+		}
+		if (useRelativeUri) {
+			uri = LinkController.toRelativeURI(map.getFile(), input);
+		}
+		final String strText = "<html><img src=\"" + uri.toString() + "\">";
+		setNodeText(selectedNode, strText);
 	}
 
 	public void setNodeText(final NodeModel node, final String newText) {

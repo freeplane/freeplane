@@ -202,8 +202,7 @@ public abstract class MainView extends JLabel {
 		final NodeView nodeView = getNodeView();
 		final NodeModel model = nodeView.getModel();
 		return NodeLinks.getValidLink(model) != null
-		        && (model.isRoot() || !nodeView.getMap().getModeController().getMapController().hasChildren(model) || isInVerticalRegion(
-		            xCoord, 1. / 2));
+		        && isInVerticalRegion(xCoord, 1. / 4);
 	}
 
 	/**
@@ -212,7 +211,8 @@ public abstract class MainView extends JLabel {
 	 * the total width.
 	 */
 	public boolean isInVerticalRegion(final double xCoord, final double p) {
-		return getNodeView().isLeft() ? xCoord > getSize().width * (1.0 - p) : xCoord < getSize().width * p;
+		final NodeView nodeView = getNodeView();
+		return nodeView.isLeft() && ! nodeView.isRoot() ? xCoord > getSize().width * (1.0 - p) : xCoord < getSize().width * p;
 	}
 	
 	@Override

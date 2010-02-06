@@ -191,7 +191,7 @@ public class ExportWithXSLT extends ExportAction {
 		final boolean success = true;
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pDirectoryName
 		        + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
-		getModeController().getMapController().getFilteredXml(map, fileout, Mode.FILE, true);
+		getModeController().getMapController().getFilteredXml(map, fileout, Mode.CLIPBOARD, true);
 		return success;
 	}
 

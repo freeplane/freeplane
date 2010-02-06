@@ -29,9 +29,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -49,7 +51,16 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	public ColorProperty(final String name, final String defaultColor) {
 		super(name);
 		this.defaultColor = defaultColor;
-		mButton = new JButton();
+		mButton = new JButton() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			{
+				setUI(BasicButtonUI.createUI(this));
+			}
+		};
 		mButton.addActionListener(this);
 		color = Color.BLACK;
 	}
@@ -101,13 +112,15 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	/**
 	 */
-	public void setColorValue(Color value) {
-		color = value;
-		if (value == null) {
-			value = Color.WHITE;
+	private void setColorValue(Color input) {
+		color = input;
+		if (input == null) {
+			input = Color.WHITE;
 		}
-		mButton.setBackground(value);
-		mButton.setText(ColorUtils.colorToString(value));
+		mButton.setBackground(input);
+		Color textColor = UITools.getTextColorForBackground(input);
+		mButton.setForeground(textColor);
+		mButton.setText(ColorUtils.colorToString(input));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

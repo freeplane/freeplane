@@ -25,6 +25,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 
 import org.freeplane.features.common.attribute.Attribute;
+import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 
 /**
  * @author Dimitry Polivaev
@@ -92,7 +93,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 
 	@Override
 	public boolean isCellEditable(final int row, final int col) {
-		if (getNodeAttributeModel().isCellEditable(row, col)) {
+		if (getAttributeController() instanceof MAttributeController) {
 			return col == 1;
 		}
 		return false;

@@ -200,6 +200,8 @@
             <boolean name="disable_cursor_move_paper"/>
             <boolean name="enable_leaves_folding"/>
             <string name="foldingsymbolwidth"/>
+            <boolean name="display_node_id"/>
+            <boolean name="goto_note_end_on_edit"/>            
         </separator>
         <separator name="key_typing">
             <boolean name="disable_key_type"/>

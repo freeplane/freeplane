@@ -261,8 +261,11 @@ public class MenuBuilder extends UIBuilder {
 				final MenuPath menuPath = new MenuPath(parent.toString());
 				final String action = attributes.getAttribute("action", null);
 				menuPath.setName(action);
-				final String accelerator = attributes.getAttribute("accelerator", null);
+				String accelerator = attributes.getAttribute("accelerator", null);
 				if (accelerator != null) {
+					if(Compat.isMacOsX()){
+						accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
+					}
 					final String shortcutKey = getShortcutKey(menuPath.path);
 					ResourceController.getResourceController().setDefaultProperty(shortcutKey, accelerator);
 				}
@@ -486,8 +489,11 @@ public class MenuBuilder extends UIBuilder {
 			final String key = actionLocations.length == 0 ? action.getKey() : action.getKey() + "[" + i + "]";
 			final String itemKey = actionLocations[i] + '/' + key;
 			if (i == 0) {
-				final String accelerator = actionAnnotation.accelerator();
+				String accelerator = actionAnnotation.accelerator();
 				if (!accelerator.equals("")) {
+					if(Compat.isMacOsX()){
+						accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
+					}
 					final String shortcutKey = getShortcutKey(itemKey);
 					ResourceController.getResourceController().setDefaultProperty(shortcutKey, accelerator);
 				}
@@ -831,6 +837,13 @@ public class MenuBuilder extends UIBuilder {
 			final String shortcutKey = getShortcutKey(node.getKey().toString());
 			ResourceController.getResourceController().setProperty(shortcutKey, "");
 			return;
+		}
+		if(item instanceof JMenu){
+			UITools.errorMessage("keystroke " + keyStroke + " requested for submenu " + item.getText() + ", removed");
+		accelerators.put(keyStroke, oldAction);
+		final String shortcutKey = getShortcutKey(node.getKey().toString());
+		ResourceController.getResourceController().setProperty(shortcutKey, "");
+		return;
 		}
 		final KeyStroke removedAccelerator = removeAccelerator(node);
 		item.setAccelerator(keyStroke);

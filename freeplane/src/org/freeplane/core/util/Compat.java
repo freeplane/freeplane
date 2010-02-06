@@ -17,6 +17,8 @@ public class Compat {
 	public static final String JAVA_VERSION = System.getProperty("java.version");
 	public static final String VERSION_1_5_0 = "1.5.0";
 	public static final String VERSION_1_6_0 = "1.6.0";
+	private static enum OS {MAC, WINDOWS, OTHER};
+	private static OS os = null;
 
 	public static void checkJavaVersion() {
 		if (Compat.isLowerJdk(VERSION_1_5_0)) {
@@ -38,13 +40,29 @@ public class Compat {
 	}
 
 	public static boolean isMacOsX() {
-		boolean underMac = false;
-		final String osName = System.getProperty("os.name");
-		if (osName.startsWith("Mac OS")) {
-			underMac = true;
-		}
-		return underMac;
+		initOS();
+		return os.equals(OS.MAC);
 	}
+
+
+	private static void initOS() {
+	    if(os == null){
+			final String osProperty = System.getProperty("os.name");
+			if (osProperty.startsWith("Mac OS") || System.getProperty("debug.os.name", "").startsWith("Mac")){ 
+				os = OS.MAC;
+				return;
+			}
+			if (osProperty.startsWith("Windows") || System.getProperty("debug.os.name", "").startsWith("Windows")){ 
+				os = OS.WINDOWS;
+				return;
+			}
+			os = OS.OTHER;
+		}
+    }
+	public static boolean isWindowsOS() {
+		initOS();
+		return os.equals(OS.WINDOWS);
+    }
 
 	/**
 	 * This is a correction of a method getFile of a class URL. Namely, on

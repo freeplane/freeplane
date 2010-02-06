@@ -51,6 +51,7 @@ class PreviewDialog extends JDialog implements ActionListener {
 		view = (Printable) c;
 		final Preview preview = new Preview(printController, view, 1);
 		final JScrollPane scrollPane = new JScrollPane(preview);
+		UITools.setScrollbarIncrement(scrollPane);
 		getContentPane().add(scrollPane, "Center");
 		final JToolBar toolbar = new FreeplaneToolBar();
 		getContentPane().add(toolbar, "North");

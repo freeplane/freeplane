@@ -13,13 +13,13 @@ import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 
-class LinkProxy extends AbstractProxy implements Proxy.Link {
+class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 	LinkProxy(final NodeModel delegate, final MModeController modeController) {
 		super(delegate, modeController);
 	}
 
 	public String get() {
-		final URI link = NodeLinks.getValidLink(getNode());
+		final URI link = NodeLinks.getValidLink(getDelegate());
 		return link == null ? null : link.toString();
 	}
 
@@ -30,7 +30,7 @@ class LinkProxy extends AbstractProxy implements Proxy.Link {
 
 	public boolean set(final String target) {
 		try {
-			getLinkController().setLink(getNode(), new URI(target));
+			getLinkController().setLink(getDelegate(), new URI(target));
 			return true;
 		} catch (final URISyntaxException e) {
 			LogTool.warn(e);

@@ -49,7 +49,7 @@ char *surround_by_quote(const char *in_string) {
 
 char *param2define(int number, const char *in_string) {
    char buf[10];
-   sprintf(buf, "%i", number);
+   sprintf(buf, "%u", number);
    const char *argv[] = {"\"-Dorg.freeplane.param", buf, "=", in_string, "\"", 0};
    return concat(argv);
 }
@@ -74,7 +74,22 @@ DWORD calculateMemory()
   {
       memory = MAX_MEMORY;
   }
-  memory /= 1024;
+  memory /= (1024*1024);
+/*  
+#if defined (__DEBUG__) || defined (CONSOLE_APP)
+	printf("dwLength = %u\n", stat.dwLength);
+	printf("dwMemoryLoad = %u\n", stat.dwMemoryLoad);
+	printf("dwTotalPhys = %u\n", stat.dwTotalPhys);
+	printf("dwAvailPhys = %u\n", stat.dwAvailPhys);
+	printf("dwTotalPageFile = %u\n", stat.dwTotalPageFile);
+	printf("dwAvailPageFile = %u\n", stat.dwAvailPageFile);
+	printf("dwTotalVirtual = %u\n", stat.dwTotalVirtual);
+	printf("dwAvailVirtual = %u\n", stat.dwAvailVirtual);
+	printf("dwAvailVirtual = %u\n", stat.dwAvailVirtual);
+	printf("memory = %u\n", memory);
+#endif
+*/   
+   return memory;
 
 }
 
@@ -87,11 +102,6 @@ int main(int argc, char *argv[])  {
 
    int no_of_passed_arguments = no_of_fixed_arguments
             + no_of_passed_arguments_without_caller + one_for_stopping_null;
-
-   char argument_allowing_more_memory[15];
-   DWORD memory = calculateMemory();
-   sprintf(argument_allowing_more_memory, "-Xmx%ik", memory);
-
 
    // Pick the path from argv[0]. This is for the case that the launcher is not
    // started from the folder in which it resides.
@@ -139,20 +149,77 @@ int main(int argc, char *argv[])  {
          }
       }   
       no_of_passed_arguments+=2;
-#else   
+#else 
+#ifdef CONSOLE_APP 
+      char * javaw_path = "java.exe";
+#else  
       char * javaw_path = "javaw.exe";
+#endif
 #endif
 
    char** arguments = (char **) malloc(no_of_passed_arguments * sizeof(char*));
    int argumentNumber = 0;
    #ifdef PORTABLE_APP
    arguments[argumentNumber++] = surround_by_quote(javaw_path);
+   arguments[argumentNumber] = "-version";
+   arguments[argumentNumber+1] = 0;
+   {
+      int errorCode = _spawnv(_P_WAIT, javaw_path, arguments);
+      if(errorCode != 0)
+      {  
+         javaw_path = "javaw.exe";
+         arguments[0] = javaw_path;
+      }
+   }
    #else
    arguments[argumentNumber++] = javaw_path;
+   arguments[argumentNumber] = "-version";
+   arguments[argumentNumber+1] = (char *)0;
    #endif
    
-   arguments[argumentNumber++] = argument_allowing_more_memory;
-
+   {
+      int errorCode = _spawnvp(_P_WAIT, javaw_path, arguments);
+      if(errorCode != 0)
+      {  
+         return argumentNumber;
+      }
+   }
+   
+   const char* freeplaneMaxHeapSizeEnv = getenv("FREEPLANE_MAX_HEAP_SIZE");
+   char* argument_allowing_more_memory;
+   if(freeplaneMaxHeapSizeEnv)
+   {
+      const char *argv[] = {"-Xmx", freeplaneMaxHeapSizeEnv, 0};
+      argument_allowing_more_memory = concat(argv);
+      arguments[argumentNumber++] = argument_allowing_more_memory;
+      arguments[argumentNumber] = "-version";
+      arguments[argumentNumber+1] = (char *)0;
+      int errorCode = _spawnvp(_P_WAIT, javaw_path, arguments);
+      if(errorCode != 0)
+      {  
+         return argumentNumber;
+      }
+   }
+   else
+   {
+      argument_allowing_more_memory = (char *) malloc((4 + 4 + 1 + 1) * sizeof(char));
+      DWORD memory = calculateMemory();
+      int memoryStep = memory/8;
+      arguments[argumentNumber+1] = "-version";
+      arguments[argumentNumber+2] = (char *)0;
+      int errorCode = -1;
+      for(int m = memory; m > memoryStep && errorCode != 0 ; m -= memoryStep )
+      {
+         sprintf(argument_allowing_more_memory, "-Xmx%um", memory);
+         arguments[argumentNumber] = argument_allowing_more_memory;
+         errorCode = _spawnvp(_P_WAIT, javaw_path, arguments);
+      }  
+      argumentNumber++;
+      if(errorCode != 0)
+      {  
+         return argumentNumber;
+      }
+   }
 
 #ifdef PORTABLE_APP
    {
@@ -203,7 +270,7 @@ int main(int argc, char *argv[])  {
 
    arguments[argumentNumber++] = (char *)0;
 
-#ifdef __DEBUG__
+#if defined (__DEBUG__) || defined (CONSOLE_APP)
       for (int i=0; i < argumentNumber; ++i) {
          printf("Argument %s\n",arguments[i]);
       }

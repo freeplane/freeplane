@@ -62,6 +62,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
@@ -132,6 +133,8 @@ public class MIconController extends IconController {
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		iconToolBar = new FreeplaneToolBar();
 		iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
+		UITools.setScrollbarIncrement(iconToolBarScrollPane);
+		UITools.addScrollbarIncrementPropertyListener(iconToolBarScrollPane);
 		iconToolBar.setOrientation(SwingConstants.VERTICAL);
 		iconToolBarScrollPane.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "leftToolbarVisible");
 		createIconActions();

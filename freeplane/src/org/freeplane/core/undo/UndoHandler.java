@@ -161,7 +161,12 @@ public class UndoHandler implements IUndoHandler {
 		timeOfLastAdd = 0;
 		actorList = transactionList.removeLast();
 		actorIterator = transactionIteratorList.removeLast();
-		addActor(compoundActor);
+		if(! compoundActor.isEmpty()){
+			addActor(compoundActor);
+		}
+		else{
+			fireStateChanged();
+		}
 	}
 	
 	public void delayedCommit(){

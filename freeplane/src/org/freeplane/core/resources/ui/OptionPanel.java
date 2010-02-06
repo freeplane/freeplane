@@ -42,6 +42,7 @@ import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
@@ -75,7 +76,7 @@ public class OptionPanel {
 	}
 
 	private static final Color MARKED_BUTTON_COLOR = Color.BLUE;
-	private static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
+	static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
 	private Vector<IPropertyControl> controls;
 	final private IOptionPanelFeedback feedback;
 	private String selectedPanel;
@@ -90,14 +91,6 @@ public class OptionPanel {
 		super();
 		topDialog = d;
 		this.feedback = feedback;
-		final String marshalled = ResourceController.getResourceController().getProperty(
-		    OptionPanel.PREFERENCE_STORAGE_PROPERTY);
-		final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage.decorateDialog(
-		    marshalled, d);
-		if (storage != null) {
-			final OptionPanelWindowConfigurationStorage oWindowSettings = storage;
-			selectedPanel = oWindowSettings.getPanel();
-		}
 		new OptionPanelBuilder();
 	}
 
@@ -144,8 +137,10 @@ public class OptionPanel {
 		if (selectedPanel != null && tabActionMap.containsKey(selectedPanel)) {
 			((ChangeTabAction) tabActionMap.get(selectedPanel)).actionPerformed(null);
 		}
+		final JScrollPane rightComponent = new JScrollPane(rightStack);
+		UITools.setScrollbarIncrement(rightComponent);
 		final JSplitPane centralPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftBuilder.getPanel(),
-		    new JScrollPane(rightStack));
+		    rightComponent);
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
 		final JButton cancelButton = new JButton();
 		MenuBuilder.setLabelAndMnemonic(cancelButton, ResourceBundles.getText("cancel"));
@@ -210,4 +205,8 @@ public class OptionPanel {
 			}
 		}
 	}
+
+	void setSelectedPanel(String panel) {
+	   selectedPanel = panel;
+    }
 }

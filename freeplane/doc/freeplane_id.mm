@@ -26,7 +26,7 @@
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?project_id=7118" MODIFIED="1208312597618" TEXT="Unduh Aplikasi Freeplane">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?project_id=211069" MODIFIED="1208312597618" TEXT="Unduh Aplikasi Freeplane">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
@@ -60,7 +60,7 @@
 <node COLOR="#000000" CREATED="1124560950701" ID="ID_686268443" MODIFIED="1208963801474" TEXT="Anda dapat memasang applet Freeplane di situs web Anda agar orang dapat membaca MindMap Anda.">
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="ID_1433718684" LINK="http://sourceforge.net/project/showfiles.php?group_id=7118" MODIFIED="1208963819980" TEXT="Unduh applet, yaitu freeplane-browser."/>
+<node CREATED="1124560950701" ID="ID_1433718684" LINK="http://sourceforge.net/project/showfiles.php?group_id=211069" MODIFIED="1208963819980" TEXT="Unduh applet, yaitu freeplane-browser."/>
 <node CREATED="1124560950701" ID="ID_316824945" MODIFIED="1208964470245" TEXT="Paket unduhan berisi freeplanebrowser.jar dan freeplanebrowser.html. Buat tautan dari laman web Anda ke freeplanebrowser.html. Di dalam freeplanebrowser.html, ganti jalur (path) dalam berkas tersebut agar menunjuk ke MindMap yang Anda buat."/>
 <node CREATED="1124560950701" ID="ID_1135453004" MODIFIED="1208964565172" TEXT="Berkas jar dari applet tersebut harus diletakkan di peladen yang sama dengan MindMap yang dibuka, sebagai syarat keamanan dari Java. Anda harus mengunggah berka jar applet Freeplane dan MindMap Anda ke laman web tersebut."/>
 </node>
@@ -369,7 +369,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" ID="ID_278779728" MODIFIED="1209145035199" TEXT="Map lokal">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" ID="ID_1541289178" LINK="C:/Program Files/" MODIFIED="1124560950701" TEXT="C:/Program Files/">
+<node CREATED="1124560950701" ID="ID_1541289178" LINK="file:/C:/Program%20Files/" MODIFIED="1124560950701" TEXT="C:/Program Files/">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950701" ID="ID_2370204" LINK="/home/" MODIFIED="1124560950701" TEXT="/home/">
@@ -378,7 +378,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" ID="ID_738829620" MODIFIED="1209145122154" TEXT="Bisa dieksekusi">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" ID="ID_372784718" LINK="C:\WINNT\regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
+<node CREATED="1124560950701" ID="ID_372784718" LINK="file:/C:/WINNT/regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#006600" CREATED="1124560950701" ID="ID_785322201" MODIFIED="1209145112239" TEXT="Yang bisa dieksekusi terlihat dari ikonnya.">
 <font NAME="SansSerif" SIZE="12"/>
@@ -807,7 +807,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#996600" CREATED="1124560950732" ID="ID_1028597241" MODIFIED="1209283613201" TEXT="Map terpilih">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950732" LINK="C:\Program Files\Microsoft Office\Office\Bitmaps" MODIFIED="1124560950732" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
+<node CREATED="1124560950732" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps" MODIFIED="1124560950732" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
@@ -962,9 +962,9 @@
 </node>
 <node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_271176250" MODIFIED="1209286979321" POSITION="right" TEXT="Menggunakan gambar dalam node">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950732" ID="ID_187126341" MODIFIED="1209287077452" TEXT="Untuk menyisipkan gambar ke dalam Freeplane, tekan Alt + K, atau dari menu konteks node, pilih Sisip &gt; Gambar. Dengan menyisipkan gambar, Anda akan kehiangan semua teks yang sebelumnya ada dalam node tersebut. Gambar yang dimasukkan dengan cara ini tidak akan ditempelkan secara benar di luar Freeplane dan mungkin tidak akan terekspor secara benar ke HTML. Gambar dalam Freeplane masih merupakan fitur tahap awal."/>
+<node CREATED="1124560950732" ID="ID_187126341" MODIFIED="1209287077452" TEXT="Untuk menyisipkan gambar ke dalam Freeplane, tekan ALT + SHIFT + K, atau dari menu konteks node, pilih Sisip &gt; Gambar. Dengan menyisipkan gambar, Anda akan kehiangan semua teks yang sebelumnya ada dalam node tersebut. Gambar yang dimasukkan dengan cara ini tidak akan ditempelkan secara benar di luar Freeplane dan mungkin tidak akan terekspor secara benar ke HTML. Gambar dalam Freeplane masih merupakan fitur tahap awal."/>
 <node CREATED="1124560950732" ID="ID_1340853323" MODIFIED="1209287107225" STYLE="fork" TEXT="Format gambar yang didukung adalah PNG, JPEG dan GIF."/>
-<node CREATED="1124560950732" ID="ID_987713301" MODIFIED="1209287766393" TEXT="Untuk mengubah tautan ke gambar menjadi gambar yang tertampilkan, tekan Alt + K. Anda dapat menyeret dan menjatuhkan beberapa berkas gambar ke dalam Freeplane, memilih beberapa node sekaligus, lalu mengubah semuanya menjadi gambar dengan menekan Alt + K."/>
+<node CREATED="1124560950732" ID="ID_987713301" MODIFIED="1209287766393" TEXT="Untuk mengubah tautan ke gambar menjadi gambar yang tertampilkan, tekan ALT + SHIFT + K. Anda dapat menyeret dan menjatuhkan beberapa berkas gambar ke dalam Freeplane, memilih beberapa node sekaligus, lalu mengubah semuanya menjadi gambar dengan menekan ALT + SHIFT + K."/>
 <node COLOR="#000000" CREATED="1124560950732" ID="ID_238102754" MODIFIED="1209287838507" TEXT="Cara yang lebih teknis dan sedikit lebih sukar untuk menyisipkan gambar adalah sebagai berikut. Anda dapat memasukkan HTML dalam node. Anda perlu memulai isi node dengan tanda &lt;html&gt;. Dengan cara ini, Anda bisa memasukkan gambar ke dalam node.">
 <font NAME="SansSerif" SIZE="12"/>
 </node>

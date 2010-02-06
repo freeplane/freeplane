@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.NodeBuilder;
+import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
@@ -70,6 +71,17 @@ public class MMapController extends MapController {
 			    sSaveIdPropertyChangeListener);
 		}
 		createActions(modeController);
+		addNodeSelectionListener(new INodeSelectionListener() {
+			public void onSelect(NodeModel node) {
+				if(ResourceController.getResourceController().getBooleanProperty("display_node_id")){
+					getController().getViewController().addStatusInfo("display_node_id", "ID=" + node.createID());
+				}
+			}
+			
+			public void onDeselect(NodeModel node) {
+					getController().getViewController().addStatusInfo("display_node_id", null);
+			}
+		});
 	}
 
 	public NodeModel addNewNode(final int newNodeMode, final KeyEvent e) {

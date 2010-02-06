@@ -194,17 +194,10 @@ public class MModeControllerFactory {
 						final NodeModel node = (component).getNodeView().getModel();
 						if (!mapController.hasChildren(node)) {
 							/* If the link exists, follow the link; toggle folded otherwise */
-							if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isPopupTrigger()
-							        && e.getButton() == MouseEvent.BUTTON1 && (NodeLinks.getValidLink(node) == null)) {
+							if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown() && !e.isPopupTrigger()
+							        && e.getButton() == MouseEvent.BUTTON1) {
 								((MTextController) TextController.getController(modeController)).edit(null, false,
 								    false);
-								return;
-							}
-							if (NodeLinks.getLink(mapController.getSelectedNode()) == null) {
-								mapController.toggleFolded();
-							}
-							else {
-								LinkController.getController(modeController).loadURL();
 							}
 							return;
 						}

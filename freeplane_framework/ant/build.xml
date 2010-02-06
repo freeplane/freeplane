@@ -9,7 +9,6 @@
 
 	<target name="build">
 		<property name="root" value="." />
-		<property name="freeplane.exe" value="windows-launcher/freeplane.exe" />
 		<property name="license" value="license.txt" />
 		<property name="readme_src" value="readme.txt" />
 		<property name="build.jars" value="${build}/jars" />
@@ -29,7 +28,8 @@
 		<copy todir="${build}">
 			<fileset dir="${script}" />
 			<fileset file="${framework.jar}" />
-			<fileset file="${freeplane.exe}" />
+            <fileset file="windows-launcher/freeplane.exe" />
+		    <fileset file="windows-launcher/freeplaneConsole.exe" />
 		</copy>
 		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
 		<mkdir dir="${build.core}/org.freeplane.core" />
@@ -143,7 +143,7 @@
             <fileset file="windows-launcher/freeplanePortable.exe" />
         </copy>
         <mkdir dir="${workingdir}/Other/Source" />
-        <copy todir="${workingdir}/Other/Source">
+        <copy tofile="${workingdir}/Other/Source/EULA.txt">
             <fileset file="${workspace}/freeplane/resources/license.txt" />
         </copy>
         <copy tofile="${workingdir}/App/AppInfo/appicon.ico">

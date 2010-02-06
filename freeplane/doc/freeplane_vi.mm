@@ -16,7 +16,7 @@
 <edge WIDTH="thin"/>
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?project_id=7118" MODIFIED="1124560950701" TEXT="T&#x1ea3;i ch&#x1b0;&#x1a1;ng tr&#xec;nh v&#x1ec1;">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?project_id=211069" MODIFIED="1124560950701" TEXT="T&#x1ea3;i ch&#x1b0;&#x1a1;ng tr&#xec;nh v&#x1ec1;">
 <edge WIDTH="thin"/>
 <font NAME="Dialog" SIZE="12"/>
 </node>
@@ -50,7 +50,7 @@
 <node COLOR="#000000" CREATED="1124560950701" ID="Freeplane_Link_1795495302" MODIFIED="1213147541802" TEXT="C&#xf3; th&#x1ec3; c&#xe0;i &#x111;&#x1eb7;t ti&#x1ec3;u d&#x1ee5;ng Freeplane l&#xea;n trang web &#x111;&#x1ec3; ng&#x1b0;&#x1edd;i d&#xf9;ng xem c&#xe1;c s&#x1a1; &#x111;&#x1ed3; tr&#xea;n &#x111;&#xf3;.">
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="Freeplane_Link_1776430598" LINK="http://sourceforge.net/project/showfiles.php?group_id=7118" MODIFIED="1213147559788" TEXT="T&#x1ea3;i ti&#x1ec3;u d&#x1ee5;ng Freeplane-browser v&#x1ec1;."/>
+<node CREATED="1124560950701" ID="Freeplane_Link_1776430598" LINK="http://sourceforge.net/project/showfiles.php?group_id=211069" MODIFIED="1213147559788" TEXT="T&#x1ea3;i ti&#x1ec3;u d&#x1ee5;ng Freeplane-browser v&#x1ec1;."/>
 <node CREATED="1124560950701" ID="Freeplane_Link_758844596" MODIFIED="1213147633070" TEXT="Kho n&#xe9;n &#x111;&#x1b0;&#x1ee3;c t&#x1ea3;i v&#x1ec1; s&#x1ebd; bao g&#x1ed3;m c&#xe1;c t&#x1ead;p tin freeplanebrowser.jar v&#xe0; freeplanebrowser.html. T&#x1ea1;o li&#xea;n k&#x1ebf;t t&#x1eeb; trang web t&#x1edb;i trang freeplanebrowser.html. Trong t&#x1ead;p tin freeplanebrowser.html, h&#xe3;y &#x111;&#x1ed5;i l&#x1ea1;i &#x111;&#x1b0;&#x1edd;ng d&#x1eab;n &#x111;&#x1ec3; n&#xf3; ch&#x1ec9; t&#x1edb;i s&#x1a1; &#x111;&#x1ed3; c&#x1ea7;n cho ng&#x1b0;&#x1edd;i kh&#xe1;c xem."/>
 <node CREATED="1124560950701" ID="Freeplane_Link_939698300" MODIFIED="1213147706542" TEXT="T&#x1ead;p tin jar ph&#x1ea3;i &#x111;&#x1b0;&#x1ee3;c &#x111;&#x1eb7;t tr&#xea;n m&#xe1;y ch&#x1ee7; ch&#x1ee9;a c&#xe1;c s&#x1a1; &#x111;&#x1ed3;, v&#xec; y&#xea;u c&#x1ea7;u b&#x1ea3;o m&#x1ead;t c&#x1ee7;a java. B&#x1ea1;n s&#x1ebd; ph&#x1ea3;i &#x111;&#x1b0;a c&#xe1;c s&#x1a1; &#x111;&#x1ed3; l&#xea;n c&#xf9;ng v&#x1edb;i t&#x1ead;p tin jar c&#x1ee7;a Freeplane l&#xea;n trang web c&#x1ee7;a m&#xec;nh."/>
 </node>
@@ -349,7 +349,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_137912631" MODIFIED="1212777679733" TEXT="C&#xe1;c th&#x1b0; m&#x1ee5;c tr&#xea;n m&#xe1;y">
 <font NAME="Dialog" SIZE="12"/>
-<node CREATED="1124560950701" LINK="C:/Program Files/" MODIFIED="1124560950701" TEXT="C:/Program Files/">
+<node CREATED="1124560950701" LINK="file:/C:/Program%20Files/" MODIFIED="1124560950701" TEXT="C:/Program Files/">
 <font NAME="Dialog" SIZE="12"/>
 </node>
 <node CREATED="1124560950701" LINK="/home/" MODIFIED="1124560950701" TEXT="/home/">
@@ -358,7 +358,7 @@
 </node>
 <node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_774013517" MODIFIED="1212777689162" TEXT="C&#xe1;c ch&#x1b0;&#x1a1;ng tr&#xec;nh">
 <font NAME="Dialog" SIZE="12"/>
-<node CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_26552136" LINK="C:\WINNT\regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
+<node CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_26552136" LINK="file:/C:/WINNT/regedit.exe" MODIFIED="1124560950701" TEXT="C:\WINNT\regedit.exe">
 <font NAME="Dialog" SIZE="12"/>
 <node COLOR="#006600" CREATED="1124560950701" ID="Freeplane_Link_741962292" MODIFIED="1212777731703" TEXT="Nh&#x1eef;ng n&#xfa;t n&#xe0;o ta c&#xf3; th&#x1ec3; kh&#x1edf;i ch&#x1ea1;y &#x111;&#x1b0;&#x1ee3;c th&#xec; s&#x1ebd; c&#xf3; bi&#x1ec3;u t&#x1b0;&#x1ee3;ng b&#xea;n c&#x1ea1;nh">
 <font NAME="Dialog" SIZE="12"/>
@@ -775,7 +775,7 @@
 <font NAME="Dialog" SIZE="12"/>
 <node COLOR="#996600" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_802327256" MODIFIED="1213145527709" TEXT="Th&#x1b0; m&#x1ee5;c &#x111;&#x1b0;&#x1ee3;c ch&#x1ecd;n">
 <font NAME="Dialog" SIZE="12"/>
-<node CREATED="1124560950732" LINK="C:\Program Files\Microsoft Office\Office\Bitmaps" MODIFIED="1124560950732" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
+<node CREATED="1124560950732" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps" MODIFIED="1124560950732" TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps">
 <font NAME="Dialog" SIZE="12"/>
 </node>
 </node>
@@ -850,9 +850,9 @@
 </node>
 <node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_384678455" MODIFIED="1213146556028" POSITION="right" TEXT="Th&#xea;m &#x1ea3;nh v&#xe0;o n&#xfa;t">
 <font NAME="Dialog" SIZE="12"/>
-<node CREATED="1124560950732" ID="Freeplane_Link_105057297" MODIFIED="1213146685402" TEXT="&#x110;&#x1ec3; ch&#xe8;n &#x1ea3;nh v&#xe0;o trong Freeplane, nh&#x1ea5;n Alt + K, ho&#x1eb7;c ch&#x1ecd;n Ch&#xe8;n &gt; &#x1ea2;nh t&#x1eeb; tr&#xec;nh &#x111;&#x1a1;n ng&#x1eef; c&#x1ea3;nh. Khi ch&#xe8;n &#x1ea3;nh, m&#x1ecd;i v&#x103;n b&#x1ea3;n c&#xf3; trong n&#xfa;t s&#x1ebd; b&#x1ecb; xo&#xe1; b&#x1ecf;. Tuy nhi&#xea;n, ta kh&#xf4;ng th&#x1ec3; ch&#xe9;p &#x1ea3;nh v&#xe0; d&#xe1;n v&#xe0;o c&#xe1;c &#x1ee9;ng d&#x1ee5;ng kh&#xe1;c, c&#x169;ng nh&#x1b0; xu&#x1ea5;t &#x1ea3;nh ra HTML. Do v&#x1ead;y, n&#xea;n h&#x1ea1;n ch&#x1ebf; d&#xf9;ng ch&#x1ee9;c n&#x103;ng n&#xe0;y."/>
+<node CREATED="1124560950732" ID="Freeplane_Link_105057297" MODIFIED="1213146685402" TEXT="&#x110;&#x1ec3; ch&#xe8;n &#x1ea3;nh v&#xe0;o trong Freeplane, nh&#x1ea5;n ALT + SHIFT + K, ho&#x1eb7;c ch&#x1ecd;n Ch&#xe8;n &gt; &#x1ea2;nh t&#x1eeb; tr&#xec;nh &#x111;&#x1a1;n ng&#x1eef; c&#x1ea3;nh. Khi ch&#xe8;n &#x1ea3;nh, m&#x1ecd;i v&#x103;n b&#x1ea3;n c&#xf3; trong n&#xfa;t s&#x1ebd; b&#x1ecb; xo&#xe1; b&#x1ecf;. Tuy nhi&#xea;n, ta kh&#xf4;ng th&#x1ec3; ch&#xe9;p &#x1ea3;nh v&#xe0; d&#xe1;n v&#xe0;o c&#xe1;c &#x1ee9;ng d&#x1ee5;ng kh&#xe1;c, c&#x169;ng nh&#x1b0; xu&#x1ea5;t &#x1ea3;nh ra HTML. Do v&#x1ead;y, n&#xea;n h&#x1ea1;n ch&#x1ebf; d&#xf9;ng ch&#x1ee9;c n&#x103;ng n&#xe0;y."/>
 <node CREATED="1124560950732" ID="Freeplane_Link_831132288" MODIFIED="1213146701653" TEXT="C&#xe1;c &#x111;&#x1ecb;nh d&#x1ea1;ng &#x1ea3;nh &#x111;&#x1b0;&#x1ee3;c h&#x1ed7; tr&#x1ee3; l&#xe0; PNG, JPEG v&#xe0; GIF."/>
-<node CREATED="1124560950732" ID="Freeplane_Link_657212533" MODIFIED="1213146790423" TEXT="&#x110;&#x1ec3; chuy&#xea;n li&#xea;n k&#x1ebf;t t&#x1edb;i &#x1ea3;nh th&#xe0;nh &#x1ea3;nh, ta nh&#x1ea5;n Alt + K. Ho&#x1eb7;c, k&#xe9;o v&#xe0; th&#x1ea3; m&#x1ed9;t v&#xe0;i t&#x1ea5;m &#x1ea3;nh v&#xe0;o trong Freeplane &#x111;&#x1ec3; t&#x1ea1;o c&#xe1;c li&#xea;n k&#x1ebf;t t&#x1edb;i ch&#xfa;ng, sau &#x111;&#xf3; ch&#x1ecd;n li&#xea;n k&#x1ebf;t v&#xe0; chuy&#x1ec3;n th&#xe0;nh &#x1ea3;nh (Alt + K)."/>
+<node CREATED="1124560950732" ID="Freeplane_Link_657212533" MODIFIED="1213146790423" TEXT="&#x110;&#x1ec3; chuy&#xea;n li&#xea;n k&#x1ebf;t t&#x1edb;i &#x1ea3;nh th&#xe0;nh &#x1ea3;nh, ta nh&#x1ea5;n ALT + SHIFT + K. Ho&#x1eb7;c, k&#xe9;o v&#xe0; th&#x1ea3; m&#x1ed9;t v&#xe0;i t&#x1ea5;m &#x1ea3;nh v&#xe0;o trong Freeplane &#x111;&#x1ec3; t&#x1ea1;o c&#xe1;c li&#xea;n k&#x1ebf;t t&#x1edb;i ch&#xfa;ng, sau &#x111;&#xf3; ch&#x1ecd;n li&#xea;n k&#x1ebf;t v&#xe0; chuy&#x1ec3;n th&#xe0;nh &#x1ea3;nh (ALT + SHIFT + K)."/>
 <node COLOR="#000000" CREATED="1124560950732" ID="Freeplane_Link_812648089" MODIFIED="1213146838256" TEXT="M&#x1ed9;t c&#xe1;ch kh&#xe1;c l&#xe0; d&#xf9;ng th&#x1ebb; &lt;html&gt; &#x111;&#x1ec3; &#x111;&#x1ecb;nh d&#x1ea1;ng n&#x1ed9;i dung n&#xfa;t d&#x1b0;&#x1edb;i d&#x1ea1;ng HTML, r&#x1ed3;i ch&#xe8;n &#x1ea3;nh b&#x1eb1;ng th&#x1ebb; &lt;img&gt;.">
 <font NAME="Dialog" SIZE="12"/>
 </node>

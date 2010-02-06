@@ -30,12 +30,12 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
@@ -194,8 +194,9 @@ class ScriptingRegistration {
 	                         final ScriptingEngine scriptingEngine, final String location,
 	                         final Entry<String, String> entry, final ExecutionMode executionMode, boolean cacheContent) {
 		final String scriptName = entry.getKey();
-		String key = ExecuteScriptAction.getExecutionModeKey(executionMode);
+		final String key = ExecuteScriptAction.getExecutionModeKey(executionMode);
+		final String menuName = FpStringUtils.format(key, new Object[] { scriptName });
 		menuBuilder.addAction(location, new ExecuteScriptAction(controller, scriptingEngine, scriptName,
-		    ResourceBundles.getText(key), entry.getValue(), executionMode, cacheContent), MenuBuilder.AS_CHILD);
+		    menuName, entry.getValue(), executionMode, cacheContent), MenuBuilder.AS_CHILD);
 	}
 }

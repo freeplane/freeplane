@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -35,13 +36,16 @@ import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev
@@ -294,4 +298,34 @@ public class UITools {
 		final Component parentComponent = viewController.getComponent(node);
 		return JOptionPane.showInputDialog(parentComponent, text, title, type);
 	}
+
+	private static final String SCROLLBAR_INCREMENT = "scrollbar_increment";
+	public static void setScrollbarIncrement(final JScrollPane scrollPane) {
+        final int scrollbarIncrement = ResourceController.getResourceController().getIntProperty(SCROLLBAR_INCREMENT, 1);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(scrollbarIncrement);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(scrollbarIncrement);
+    }
+
+	public static void addScrollbarIncrementPropertyListener(final JScrollPane scrollPane) {
+        ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+    		
+    		public void propertyChanged(String propertyName, String newValue,
+    				String oldValue) {
+    			if(! propertyName.equals(SCROLLBAR_INCREMENT)){
+    				return;
+    			}
+    			final int scrollbarIncrement = Integer.valueOf(newValue);
+    			scrollPane.getHorizontalScrollBar().setUnitIncrement(scrollbarIncrement);
+    			scrollPane.getVerticalScrollBar().setUnitIncrement(scrollbarIncrement);
+    		}
+    	});
+    }
+
+	public static Color getTextColorForBackground(Color color) {
+		int red = color.getRed();
+		int blue = color.getBlue();
+		int green = color.getGreen();
+		return red > 0x80 && blue > 0x80 && green > 0x80 ? Color.BLACK : Color.WHITE;
+	}
+
 }

@@ -36,6 +36,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
@@ -348,7 +349,13 @@ public class MNoteController extends NoteController {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					getHtmlEditorPanel().getMostRecentFocusOwner().requestFocus();
+					final SHTMLPanel htmlEditorPanel = getHtmlEditorPanel();
+					htmlEditorPanel.getMostRecentFocusOwner().requestFocus();
+					if(ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")){
+						final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
+						editorPane.setCaretPosition(editorPane.getDocument().getLength());
+					}
+
 				}
 			});
 		}

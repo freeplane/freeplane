@@ -14,19 +14,19 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 
-class IconsProxy extends AbstractProxy implements Proxy.Icons {
+class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 	IconsProxy(final NodeModel delegate, final MModeController modeController) {
 		super(delegate, modeController);
 	}
 
 	public void addIcon(final String name) {
-		getIconController().addIcon(getNode(),
+		getIconController().addIcon(getDelegate(),
 				IconStoreFactory.create().getMindIcon(name));
 
 	}
 
 	private int findIcon(final String iconID) {
-		final List<MindIcon> icons = getNode().getIcons();
+		final List<MindIcon> icons = getDelegate().getIcons();
 		final int i = 0;
 		for (final MindIcon icon : icons) {
 			if (icon.getName().equals(iconID)) {
@@ -42,7 +42,7 @@ class IconsProxy extends AbstractProxy implements Proxy.Icons {
 	}
 
 	public List<String> getIcons() {
-		final List<MindIcon> icons = getNode().getIcons();
+		final List<MindIcon> icons = getDelegate().getIcons();
 		final int size = icons.size();
 		if (size == 0) {
 			return Collections.emptyList();
@@ -59,7 +59,7 @@ class IconsProxy extends AbstractProxy implements Proxy.Icons {
 		if (index == -1) {
 			return false;
 		}
-		getIconController().removeIcon(getNode(), index);
+		getIconController().removeIcon(getDelegate(), index);
 		return true;
 	}
 }
