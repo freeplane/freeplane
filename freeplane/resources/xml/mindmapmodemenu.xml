@@ -126,6 +126,7 @@
 					accelerator="control K" />
 				<menu_action action="AddConnectorAction" accelerator="control L" />
 				<menu_action action="AddLocalLinkAction" accelerator="alt shift L" />
+				<menu_action action="AddMenuItemLinkAction" accelerator="" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="clouds">
@@ -436,6 +437,7 @@
 				<menu_action action="SetLinkByTextFieldAction" />
 				<menu_action action="AddConnectorAction" />
 				<menu_action action="AddLocalLinkAction" />
+				<menu_action action="AddMenuItemLinkAction" />
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="patterns" name_ref="extension_menu">

@@ -31,10 +31,14 @@ import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
@@ -471,13 +475,33 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 	}
 
-	public void addStatusInfo(String key, String info){
+	public void addStatusInfo(final String key, String info){
 		JLabel label = statusInfos.get(key);
 		if(label == null){
 			label = new JLabel(info);
 			label.setBorder(BorderFactory.createEtchedBorder());
 			statusInfos.put(key, label);
 			statusPanel.add(label);
+			label.addMouseListener(new MouseListener() {
+				public void mouseReleased(MouseEvent e) {
+				}
+				
+				public void mousePressed(MouseEvent e) {
+					if (e.getClickCount() > 1) {
+						Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+						    new StringSelection(statusInfos.get(key).getText()), null);
+					}
+				}
+				
+				public void mouseExited(MouseEvent e) {
+				}
+				
+				public void mouseEntered(MouseEvent e) {
+				}
+				
+				public void mouseClicked(MouseEvent e) {
+				}
+			});
 		}
 		else{
 			label.setText(info);

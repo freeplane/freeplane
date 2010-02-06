@@ -20,8 +20,6 @@
 package org.freeplane.features.common.link;
 
 import java.awt.event.ActionEvent;
-import java.net.URI;
-import java.util.Iterator;
 
 import javax.swing.JMenuItem;
 import javax.swing.event.PopupMenuEvent;
@@ -32,12 +30,8 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.url.UrlManager;
 
 class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public FollowLinkAction(final Controller controller) {
@@ -48,24 +42,17 @@ class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
 		final ModeController modeController = getModeController();
 		final MapController mapController = modeController.getMapController();
 		LinkController linkController = null;
-		for (final Iterator iterator = mapController.getSelectedNodes().iterator(); iterator.hasNext();) {
-			final NodeModel selNode = (NodeModel) iterator.next();
-			final URI link = NodeLinks.getValidLink(selNode);
-			if (link != null) {
-				if (linkController == null) {
-					linkController = LinkController.getController(modeController);
-				}
-				linkController.onDeselect(mapController.getSelectedNode());
-				((UrlManager) mapController.getModeController().getExtension(UrlManager.class)).loadURL(link);
-				linkController.onSelect(mapController.getSelectedNode());
+		for (final NodeModel selNode : mapController.getSelectedNodes()) {
+			if (linkController == null) {
+				linkController = LinkController.getController(modeController);
 			}
+			linkController.loadURL(selNode, e);
 		}
 	}
 
 	private boolean isLinkEnabled() {
-		for (final Iterator iterator = getModeController().getMapController().getSelectedNodes().iterator(); iterator
-		    .hasNext();) {
-			final NodeModel selNode = (NodeModel) iterator.next();
+		final MapController mapController = getModeController().getMapController();
+		for (final NodeModel selNode : mapController.getSelectedNodes()) {
 			if (NodeLinks.getValidLink(selNode) != null) {
 				return true;
 			}

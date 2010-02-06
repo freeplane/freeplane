@@ -57,8 +57,10 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 
@@ -342,13 +344,24 @@ public abstract class MainView extends JLabel {
 			else if (linkText.startsWith("mailto:")) {
 				iconPath = "Mail.png";
 			}
-			else if (executableExtensions.contains(link)) {
+			else if (LinkController.isMenuItemLink(link)) {
+				iconPath = "icons/button.png";
+			}
+			else if (isExecutable(linkText)) {
 				iconPath = "Executable.png";
 			}
 			final UIIcon icon = STORE.getUIIcon(iconPath);
 			iconImages.addImage(icon.getIcon());
 		}
     }
+
+	private boolean isExecutable(final String linkText) {
+		if (linkText == null)
+			return false;
+		final String osNameStart = System.getProperty("os.name").substring(0, 3);
+		return osNameStart.equals("Win")
+		        && executableExtensions.contains(UrlManager.getExtension(linkText.toLowerCase()));
+	}
 
 	void updateText(String nodeText) {
 		final MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);

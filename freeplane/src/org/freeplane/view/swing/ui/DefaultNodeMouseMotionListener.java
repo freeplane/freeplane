@@ -160,7 +160,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 			}
 			final MainView component = (MainView) e.getComponent();
 			if (component.isInFollowLinkRegion(e.getX())) {
-				LinkController.getController(mc).loadURL();
+				LinkController.getController(mc).loadURL(e);
 			}
 			else {
 				final NodeModel node = (component).getNodeView().getModel();
@@ -170,7 +170,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 						mapController.toggleFolded();
 					}
 					else {
-						LinkController.getController(mc).loadURL();
+						LinkController.getController(mc).loadURL(e);
 					}
 					return;
 				}

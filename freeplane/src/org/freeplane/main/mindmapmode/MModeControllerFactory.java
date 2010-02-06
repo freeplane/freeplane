@@ -50,7 +50,6 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
@@ -184,7 +183,7 @@ public class MModeControllerFactory {
 					}
 					final MainView component = (MainView) e.getComponent();
 					if (component.isInFollowLinkRegion(e.getX())) {
-						LinkController.getController(modeController).loadURL();
+						LinkController.getController(modeController).loadURL(e);
 					}
 					else {
 						final NodeModel node = (component).getNodeView().getModel();

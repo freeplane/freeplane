@@ -26,8 +26,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -395,6 +393,7 @@ public class MLinkController extends LinkController {
 		setLinkByTextField = new SetLinkByTextFieldAction(controller);
 		modeController.addAction(setLinkByTextField);
 		modeController.addAction(new AddLocalLinkAction(controller));
+		modeController.addAction(new AddMenuItemLinkAction(controller));
 		modeController.addAction(new ExtractLinkFromTextAction(controller));
 	}
 
