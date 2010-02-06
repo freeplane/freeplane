@@ -26,7 +26,8 @@ bzr commit -m "merged recent commits from main"
 # Push our committed local changes up to the main server
 bzr push bzr+ssh://jayseye@freeplane.bzr.sourceforge.net/bzrroot/freeplane/freeplane_program/development_branches/1_0_x_mac_jarbundler
 
-# Add all new file(s) or directories to bazaar
+# Add all new subdirectories / files to bazaar
 bzr add --dry-run
 (Last chance to remove any unwanted files)
 bzr add
+bzr commit -m "Add new subdirectory freeplane_framework/mac-jarbundler"
