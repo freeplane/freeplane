@@ -47,6 +47,7 @@ import org.freeplane.core.ui.components.UITools;
  * 20.04.2009
  */
 class AccelerateableAction implements IFreeplaneAction {
+	private static final boolean DISABLE_KEY_TYPE = ResourceController.getResourceController().getBooleanProperty("disable_key_type");
 	/**
 	 * 
 	 */
@@ -133,7 +134,7 @@ class AccelerateableAction implements IFreeplaneAction {
 					return true;
 				}
 				if(keyChar != KeyEvent.CHAR_UNDEFINED && (keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK| Event.META_MASK)) == 0){
-					return false;
+					return DISABLE_KEY_TYPE;
 				}
 				final DefaultMutableTreeNode menubarNode = menuBuilder.get(menubarKey);
 				if ((keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK | Event.META_MASK)) == Event.ALT_MASK) {
