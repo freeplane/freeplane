@@ -95,7 +95,7 @@ public class LinkController extends SelectionController implements IExtension {
 			public void onSelect(final NodeModel node) {
 				final URI link = NodeLinks.getValidLink(node);
 				String linkString = (link != null ? link.toString() : null);
-				if (linkString != null) {
+				if(linkString != null){
 					modeController.getController().getViewController().out(linkString);
 				}
 			}
@@ -169,11 +169,11 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		final String adaptedText = uri.toString();
 		if (adaptedText.startsWith("#")) {
-			final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
-			if (dest != null) {
-				return dest.getShortText();
-			}
-			return ResourceBundles.getText("link_not_available_any_more");
+				final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
+				if(dest != null){
+					return dest.getShortText();
+				}
+				return ResourceBundles.getText("link_not_available_any_more");
 		}
 		return adaptedText;
 	}
@@ -223,13 +223,13 @@ public class LinkController extends SelectionController implements IExtension {
 		if (link != null && link.startsWith("#")) {
 			links.setLocalHyperlink(node, link.substring(1));
 		}
-		try {
-			if (link.startsWith("\"") && link.endsWith("\"")) {
-				link = link.substring(1, link.length() - 1);
-			}
-			URI hyperlink = LinkController.createURI(link);
-			links.setHyperLink(hyperlink);
-		}
+        try {
+        	if(link.startsWith("\"") && link.endsWith("\"")){
+        		link = link.substring(1, link.length()-1);
+        	}
+            URI hyperlink = LinkController.createURI(link);
+    		links.setHyperLink(hyperlink);
+        }
 		catch (URISyntaxException e1) {
 			LogTool.warn(e1);
 			UITools.errorMessage(FpStringUtils.formatText("link_error", link));
@@ -291,59 +291,59 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public static URI toRelativeURI(final File map, final File input) {
-		try {
-			final URI fileUri = input.getAbsoluteFile().toURI();
-			if (map == null) {
-				return fileUri;
-			}
-			final URI mapUri = map.getAbsoluteFile().toURI();
-			final String filePathAsString = fileUri.getRawPath();
-			final String mapPathAsString = mapUri.getRawPath();
-			int differencePos;
-			final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
-			final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
-			int lastCommonSeparatorPos = 0;
-			for (differencePos = 1; differencePos <= lastIndexOfSeparatorInMapPath
-			        && differencePos <= lastIndexOfSeparatorInFilePath
-			        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
-				if (filePathAsString.charAt(differencePos) == '/') {
-					lastCommonSeparatorPos = differencePos;
-				}
-			}
-			if (lastCommonSeparatorPos == 0) {
-				return fileUri;
-			}
-			final StringBuilder relativePath = new StringBuilder();
-			for (int i = lastCommonSeparatorPos + 1; i <= lastIndexOfSeparatorInMapPath; i++) {
-				if (mapPathAsString.charAt(i) == '/') {
-					relativePath.append("../");
-				}
-			}
-			relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
-			return new URI(relativePath.toString());
-		}
-		catch (final URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+    	try {
+    		final URI fileUri = input.getAbsoluteFile().toURI();
+    		if(map == null){
+    			return fileUri;
+    		}
+    		final URI mapUri = map.getAbsoluteFile().toURI();
+    		final String filePathAsString = fileUri.getRawPath();
+    		final String mapPathAsString = mapUri.getRawPath();
+    		int differencePos;
+    		final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
+    		final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
+    		int lastCommonSeparatorPos = 0;
+    		for (differencePos = 1; differencePos <= lastIndexOfSeparatorInMapPath
+    		        && differencePos <= lastIndexOfSeparatorInFilePath
+    		        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
+    			if (filePathAsString.charAt(differencePos) == '/') {
+    				lastCommonSeparatorPos = differencePos;
+    			}
+    		}
+    		if (lastCommonSeparatorPos == 0) {
+    			return fileUri;
+    		}
+    		final StringBuilder relativePath = new StringBuilder();
+    		for (int i = lastCommonSeparatorPos + 1; i <= lastIndexOfSeparatorInMapPath; i++) {
+    			if (mapPathAsString.charAt(i) == '/') {
+    				relativePath.append("../");
+    			}
+    		}
+    		relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
+    		return new URI(relativePath.toString());
+    	}
+    	catch (final URISyntaxException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+    	return null;
+    }
 
 	// patterns only need to be compiled once
 	static Pattern patSMB = Pattern.compile( // \\host\path[#fragement]
-	    "(?:\\\\\\\\([^\\\\]+)\\\\)(.*?)(?:#([^#]*))?");
+		"(?:\\\\\\\\([^\\\\]+)\\\\)(.*?)(?:#([^#]*))?");
 	static Pattern patFile = Pattern.compile( // [drive:]path[#fragment]
-	    "((?:\\p{Alpha}:)?([/\\\\])?(?:[^:#?]*))?(?:#([^#]*))?");
+	"((?:\\p{Alpha}:)?([/\\\\])?(?:[^:#?]*))?(?:#([^#]*))?");
 	static Pattern patURI = Pattern.compile( // [scheme:]scheme-specific-part[#fragment]
-	    "(?:(\\p{Alpha}[\\p{Alnum}+.-]+):)?(.*?)(?:#([^#]*))?");
-
+	"(?:(\\p{Alpha}[\\p{Alnum}+.-]+):)?(.*?)(?:#([^#]*))?");
 	/* Function that tries to transform a not necessarily well-formed
 	 * string into a valid URI. We use the fact that the single-argument
 	 * URI constructor doesn't escape invalid characters (especially
 	 * spaces), whereas the 3-argument constructors does do escape
 	 * them (e.g. space into %20).
 	 */
-	public static URI createURI(String inputValue) throws URISyntaxException {
+	public static URI createURI(String inputValue) throws URISyntaxException
+	{
 		try { // first, we try if the string can be interpreted as URI
 			return new URI(inputValue);
 		}
@@ -355,7 +355,8 @@ public class LinkController extends SelectionController implements IExtension {
 				final Matcher mat = patSMB.matcher(inputValue);
 				if (mat.matches()) {
 					String scheme = "smb";
-					String ssp = "//" + mat.group(1) + "/" + mat.group(2).replace('\\', '/');
+					String ssp = "//" + mat.group(1) + "/"
+					+ mat.group(2).replace('\\','/');
 					String fragment = mat.group(3);
 					return new URI(scheme, ssp, fragment);
 				}
@@ -364,20 +365,20 @@ public class LinkController extends SelectionController implements IExtension {
 				final Matcher mat = patFile.matcher(inputValue);
 				if (mat.matches()) {
 					String ssp = mat.group(1);
-					if (File.separatorChar != '/') {
+					if(File.separatorChar != '/'){
 						ssp = ssp.replace(File.separatorChar, '/');
 					}
 					String fragment = mat.group(3);
-					if (mat.group(2) == null) {
+					if(mat.group(2) == null){
 						return new URI(null, null, ssp, fragment);
 					}
 					String scheme = "file";
-					if (ssp.startsWith("//")) {
+				    if (ssp.startsWith("//")){
 						ssp = "//" + ssp;
-					}
-					else if (!ssp.startsWith("/")) {
-						ssp = "/" + ssp;
-					}
+				    }
+				    else if (! ssp.startsWith("/")){
+				    	ssp = "/" + ssp;
+				    }
 					return new URI(scheme, null, ssp, fragment);
 				}
 			}
@@ -388,13 +389,15 @@ public class LinkController extends SelectionController implements IExtension {
 				final Matcher mat = patURI.matcher(inputValue);
 				if (mat.matches()) {
 					String scheme = mat.group(1);
-					String ssp = mat.group(2).replace('\\', '/');
+					String ssp = mat.group(2).replace('\\','/');
 					String fragment = mat.group(3);
 					System.out.println("hi, new URI(" + scheme + ", " + ssp + ", " + fragment + ")");
 					return new URI(scheme, ssp, fragment);
 				}
 			}
-			throw new URISyntaxException(inputValue, "This doesn't look like a valid link (URI, file, SMB or URL).");
+			throw new URISyntaxException(inputValue,
+			"This doesn't look like a valid link (URI, file, SMB or URL).");
+
 		}
 	}
 
