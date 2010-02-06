@@ -1,0 +1,429 @@
+<project name="freeplane" default="dist" basedir="..">
+	<property name="workspace" location=".." />
+	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
+	<property file="ant/ant.properties" />
+	<property name="ver" value="${freeplane_version}" />
+	<property name="root" value="." />
+	<property name="build" value="${root}/build" />
+	<property name="dist" value="${root}/dist" />
+
+  <!-- Mac OS X -->
+  <property name="mac-jarbundler" value = "${root}/mac-jarbundler"/>
+	<property name="jarbundler.jar" value = "jarbundler-2.1.0.jar"/>
+	<taskdef name="jarbundler"
+               classpath="${mac-jarbundler}/${jarbundler.jar}"
+               classname="net.sourceforge.jarbundler.JarBundler" />
+
+	<target name="build">
+		<property name="root" value="." />
+		<property name="license" value="license.txt" />
+		<property name="readme_src" value="readme.txt" />
+		<property name="build.jars" value="${build}/jars" />
+        <property name="build.plugins" value="${build}/plugins" />
+        <property name="build.core" value="${build}/core" />
+        <property name="build.resources" value="${build}/resources" />
+        <property name="build.doc" value="${build}/doc" />
+		<property name="script" value="${root}/script" />
+
+		<ant antfile="ant/build.xml" target="osgi_dist" dir="${workspace}/freeplane" inheritall="false" />
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_help" inheritall="false" />
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_svg" inheritall="false" />
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_latex" inheritall="false" />
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_script" inheritall="false" />
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_bugreport" inheritall="false" />
+		<mkdir dir="${build}" />
+		<copy todir="${build}">
+			<fileset dir="${script}" />
+			<fileset file="${framework.jar}" />
+            <fileset file="windows-launcher/freeplane.exe" />
+		    <fileset file="windows-launcher/freeplaneConsole.exe" />
+		</copy>
+		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
+		<mkdir dir="${build.core}/org.freeplane.core" />
+		<copy todir="${build.core}/org.freeplane.core">
+			<fileset dir="${workspace}/freeplane/dist/org.freeplane.core" />
+		</copy>
+
+		<!-- temporarily remove help plugin 
+		
+		<mkdir dir="${build.plugins}/org.freeplane.plugin.help" />
+		<copy todir="${build.plugins}/org.freeplane.plugin.help">
+			<fileset dir="${workspace}/freeplane_plugin_help/dist/org.freeplane.plugin.help"/>
+		</copy>
+-->
+		<mkdir dir="${build.plugins}/org.freeplane.plugin.latex" />
+		<copy todir="${build.plugins}/org.freeplane.plugin.latex">
+			<fileset dir="${workspace}/freeplane_plugin_latex/dist/org.freeplane.plugin.latex" />
+		</copy>
+		<mkdir dir="${build.plugins}/org.freeplane.plugin.svg" />
+		<copy todir="${build.plugins}/org.freeplane.plugin.svg">
+			<fileset dir="${workspace}/freeplane_plugin_svg/dist/org.freeplane.plugin.svg" />
+		</copy>
+		<mkdir dir="${build.plugins}/org.freeplane.plugin.script" />
+		<copy todir="${build.plugins}/org.freeplane.plugin.script">
+			<fileset dir="${workspace}/freeplane_plugin_script/dist/org.freeplane.plugin.script" />
+		</copy>
+		<mkdir dir="${build.plugins}/org.freeplane.plugin.bugreport" />
+		<copy todir="${build.plugins}/org.freeplane.plugin.bugreport">
+			<fileset dir="${workspace}/freeplane_plugin_bugreport/dist/org.freeplane.plugin.bugreport" />
+		</copy>
+
+        <mkdir dir="${build.resources}" />
+        <copy todir="${build.resources}">
+            <fileset dir="${workspace}/freeplane/dist/resources" />
+        </copy>
+        <mkdir dir="${build.doc}" />
+        <copy todir="${build.doc}">
+            <fileset dir="${workspace}/freeplane/dist/doc" />
+        </copy>
+
+	</target>
+
+	<target name="mkdistdir">
+		<mkdir dir="${dist}" />
+	</target>
+
+	<target name="binzip" depends="build, mkdistdir">
+		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="true">
+			<zipfileset dir="${build}" prefix="freeplane-${ver}">
+				<exclude name="freeplane.sh"/>
+			</zipfileset>
+            <zipfileset file="${build}/freeplane.sh" filemode="775" prefix="freeplane-${ver}">
+            </zipfileset>
+			<zipfileset dir="${root}" prefix="freeplane-${ver}">
+				<include name="${license}" />
+			</zipfileset>
+		</zip>
+	</target>
+
+	<target name="srczip" depends="mkdistdir">
+		<tar destfile="${dist}/freeplane_src-${ver}.tar.gz" compression="gzip" longfile="gnu">
+			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="664">
+				<patternset id="freeplane.sources">
+					<include name="freeplane/**" />
+					<include name="freeplane_plugin*/**" />
+					<include name="freeplane_framework/**" />
+					<include name="JOrtho_0.4_freeplane/**" />
+                    <exclude name=".*/**" />
+                    <exclude name="**/backups/**" />
+					<exclude name="bin/**" />
+					<exclude name="build/**" />
+					<exclude name="dist/**" />
+					<exclude name="*/bin/**" />
+					<exclude name="*/build/**" />
+					<exclude name="*/dist/**" />
+					<exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho" />
+				</patternset>
+			</tarfileset>
+			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
+				<include name="${license}" />
+				<include name="${readme_src}" />
+			</tarfileset>
+		</tar>
+
+		<tar destfile="${dist}/freeplane_srcpure-${ver}.tar.gz" compression="gzip" longfile="gnu">
+			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="664">
+				<patternset refid="freeplane.sources" />
+				<exclude name="**/*.jar" />
+			</tarfileset>
+			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
+				<include name="${license}" />
+				<include name="${readme_src}" />
+			</tarfileset>
+		</tar>
+	</target>
+
+	<target name="installer" depends="build, mkdistdir">
+		<exec osfamily="windows" dir="${workspace}/freeplane_framework/windows-installer" executable="iscc.exe" failifexecutionfails="false" failonerror="true">
+			<arg line="/Q Freeplane_without_Java.iss" />
+		</exec>
+	</target>
+	
+	<target name="portableinstaller" depends="build, mkdistdir">
+		<property name="workingdir" value="${root}/temp/FreeplanePortable" />
+		<delete quiet="true" includeemptydirs="false">
+			<fileset dir="${workingdir}/.." />
+		</delete>
+        <mkdir dir="${workingdir}/App/Freeplane" />
+        <copy todir="${workingdir}">
+            <fileset dir="${root}/windows-portable" />
+            <fileset file="windows-launcher/freeplanePortable.exe" />
+        </copy>
+        <mkdir dir="${workingdir}/Other/Source" />
+        <copy tofile="${workingdir}/Other/Source/EULA.txt">
+            <fileset file="${workspace}/freeplane/resources/license.txt" />
+        </copy>
+        <copy tofile="${workingdir}/App/AppInfo/appicon.ico">
+            <fileset file="windows-launcher/Freeplane_app.ico" />
+        </copy>
+		
+		<copy todir="${workingdir}/App/Freeplane">
+			<fileset dir="${build}">
+				<exclude name="*.exe" />
+				<exclude name="*.bat" />
+				<exclude name="*.sh" />
+			</fileset>
+		</copy>
+		<dirname property="workingdir.path" file="${workingdir}/file" />
+		<exec osfamily="windows" executable="PortableApps.comInstaller.exe" failifexecutionfails="false" failonerror="true">
+			<arg line="${workingdir.path}" />
+		</exec>
+		<move todir="${dist}">
+			<fileset dir="${workingdir}/..">
+				<include name="*.paf.exe" />
+			</fileset>
+		</move>
+
+		<delete quiet="true" includeemptydirs="true">
+			<fileset dir="${workingdir}/.." />
+		</delete>
+
+	</target>
+
+  <!-- Mac OS X 
+    This task just repackages the Unix files created during the "build" task
+      During development we don't need "clean" and "build" to run first
+      When done developing and testing we may want to restore this:
+	<target name="macosxapp" depends="build, mkdistdir">
+        or we may want to set this task to be invoked at the end of the "dist" task
+
+    Create icon(s) from svg, then include and specify to jarbundler
+    Check which other directories / files we need to include in Freeplane.app
+      Help > Documentation F1 reports that it requires dist/doc
+        Same report for Help > Key Reference
+        This works when running freeplane.sh from the command line, from inside Freeplane.app
+        Check whether this gets resolved once we get OSGI working
+  -->
+	<target name="macosxapp">
+
+<!-- Tracing knopflerfish error: 
+    <property name="macstartupdir" value="${workspace}/freeplane/dist/org.freeplane.core/lib" />
+-->
+    <property name="macappfilename" value="Freeplane" />
+    <property name="macappextension" value="app" />
+    <property name="macappfullpath" value="${dist}/${macappfilename}.${macappextension}" />
+    <property name="macosgidir" value="${build}" />
+    <property name="macpluginsdir" value="plugins" />
+    <property name="macdefines" value="-Dapple.laf.useScreenMenuBar=true -Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
+<!-- Tracing knopflerfish error
+
+    These relative paths did not help:
+    <property name="macxargs" value="-xargs ../Resources/Java/props.xargs -xargs ../Resources/Java/init.xargs" /> 
+
+    Absolue paths partially bypass the problem, as a kludge:
+    <property name="macxargs" value="-xargs /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java/props.xargs -xargs /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java/init.xargs" />
+
+    Paths (below) adapted from freeplane.sh cause Bad URL errors:
+-->
+    <property name="macxargs" value="-xargs ./props.xargs -xargs ./init.xargs" /> 
+    <property name="macmemory" value="-Xmx512m" />
+
+
+    <!-- Finished version will start the knopflerfish OSGI framework.jar 
+      Assuming that that jarfile's mainclass is:
+        "org.knopflerfish.framework.Main" 
+          per freeplane_devresources/eclipse/freeplane knopflerfish.launch
+      Note that the name of the jarfile may not be specified when using a jarfilelist
+        "${build}/framework.jar"
+      Freeplane still fails to start when we double-click on Freeplane.app
+        Retesting now that we pass all arguments as done in freeplane.sh
+          Ran freeplane.sh OK from the command line, from inside Freeplane.app
+          Confirm that knopflerfish is actually found 
+            Same symptom occurred when we tested garbing the macmainclass value
+          Testing invoking framework.jar rather than using jarfileset
+            Useing an alternative to jarfileset to copy the build/ tree
+              Testing an ant <copy> task using a fileset
+                Invoking this after the jarbundler task finishes
+                  JarBundler creates the Freeplane.app directory and *might* erase it first
+                Freeplane still fails to start
+          Consider passing the four empty arguments?
+          Test filling in more optional jarbuilder fields
+            PkgInfo file contains: APPL????
+              !! TODO: Fill in the field corresponding to CFBundleSignature
+          Tracing in console.log: /Library/Logs/Console/502/console.log
+            java.lang.IllegalArgumentException: Bad xargs URL ./props.xargs: 
+              java.net.MalformedURLException: no protocol: ./props.xargs
+            Same error if we change to the Java dir inside Freeplane.app in iTerm and invoke via: 
+              open ../xxx/Freeplane.app
+                Perhaps the open command ignores the current directory?
+            Similar error is reported in iTerm if we change to the Java dir inside Freeplane.app:
+              cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java
+                and then type: ../../../../Freeplane.app/Contents/MacOS/JavaApplicationStub
+                  This invocation should ensure that we're in the correct directory
+                    This is relevant because freeplane.sh only works when we cd to its directory
+            Rechecking tracing the xargs passed from freeplane.sh
+              Looks the same, so test:
+                Eliminated the path, just specifying props.xargs: No help
+                Escaped the slash as .//props.xargs: No help
+                - 
+               !! TODO: Consider whether this is related to the freeplane.sh permissions problem
+                  ant may not be running in the directory we think we are,
+                    or perhaps the relative path ./ (in ${dist}) may not work for <chmod ...>
+                      Check ant documentation for the <chmod ...> task
+                ! TODO: Test prepending the problem filespecs with file:// as protocol
+                Tested specifying the full absolue path to the .xargs files
+                  This seems to be bypassing the error,
+                    but now we get an error message about org.freeplane.core
+                      Appears to be a problem processing the contents of init.xargs:
+                        -istart org.freeplane.core
+                          Tested copying JavaApplicationStub to the Java directory,
+                            and invoking it from there as ./JavaApplicationStub
+                              Other problems were reported
+                          Tested making paths relative to the executable JavaApplicationStub
+                            Does not appear to work: same error report as with ./props.xargs
+                          Tested going back to absolute paths, and patching init.xargs
+                            Tested an absolute path in init.xargs to org.freeplane.core
+                            Got a similar error: java.net.MalformedURLException: no protocol: 
+                              /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java/core/org.freeplane.core
+                            Restored the original file since this did not help
+          Resolve the apparent conflict between Mac .app packaging vs OSGI packaging
+            Patch, or create a customized Freeplane.app which works with OSGI?
+              If we can kludge manually, then we might be able to modify jarbundler's source
+            Check for an existing OSGI-based app which has a Mac OS X .app package
+              Check the source / build code for Eclipse.app which is OSGI-based?
+                Eclipse might have their own custom solution rather than use jarbundler
+            Check jarbundler site / docs / community for anything about OSGI / knopflerfish
+              Google search for (jarbundler osgi) found only one possibly-relevant match:
+                http://osdir.com/ml/voip.sip-communicator.devel/2006-12/msg00004.html
+                This list a patch to build.xml which shows only part of the file
+                Could follow up to check whether the full source is available
+            Check knopflerfish / OSGI sites / docs / community for anything Mac OS X related
+              Check patched .app example in detail
+                Downloaded to /Users/jo/Desktop/Downloads/Knopflerfish.app.tgz
+                  Expanded to /Users/jo/Desktop/Downloads/Knopflerfish.app
+                http://sourceforge.net/tracker/index.php?func=detail&aid=1651148&group_id=82798&atid=567241
+                The downloaded code doesn't run, and doesn't match the tracker issue
+                  Might still be able to adapt the idea of patching a symlink inside the .app
+                  Check the tracker date to see if we might reply to Alex, the author
+            Check how far we could go with freeplane.sh patched to use the Mac menu
+              Probably could NOT pass the -Dxxx as a command-line arg
+              Can we change the name from org.knopflerfish.framework.main to Freeplane ?
+              Can we change the icon?
+              Can we create an .app bundle from scratch by hacking together an info.plist ?
+            Test resolving paths by emulating the hierarchy as invoked from freeplane.sh 
+              First checked the xargs paths as invoked by freeplane.sh with DEBUG=run:
+                Reported by freeplane.sh as: -xargs ./props.xargs -xargs ./init.xargs
+                Reported by Knopflerfish as:
+                  Loading xargs file /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java/./props.xargs
+                  Loading xargs file /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java/./init.xargs
+              Commented out the full absolute paths, and restored paths used by freeplane.sh
+              Also performed ant (default is dist, includes clean, build) and macosxapp first
+              Restoring directory in iTerm after each  "ant macosxapp" (in another tab) using:
+                cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java
+                Then confirming successful run via:
+                  chmod a+x freeplane.sh
+                  ./freeplane.sh
+              -
+              Experiment with:
+                Running JavaApplicationStub from different directories: Got same xargs error in:
+                  Freeplane.app
+                    Contents
+                      MacOS
+                      Resources
+                        Java
+                          core
+                            org.freeplane.core
+                              lib
+                Create symlinks
+                Move and/or copy files and/or folders
+                  Tested moving JavaApplicationStub from MacOS directory to the Java directory
+                    Failed, as did symlinking either way
+                Manually editing info.plist seems to work!
+    -->
+    <property name="macmainclass" value="org.knopflerfish.framework.Main" />
+
+    <!-- Initial test starts Freeplane's main jar file "freeplaneeditor.jar"
+      This disables support for plugins, but allows testing other features
+    <property name="macmainclass" value="org.freeplane.main.application.FreeplaneStarter" />
+    -->
+
+    <!-- Delete any existing Freeplane.app (it's a directory) -->
+    <delete dir="${dist}/${macappfilename}.${macappextension}"/>
+
+    <jarbundler dir="${dist}"
+                name="${macappfilename}"
+                mainclass="${macmainclass}"
+                version="${ver}"
+                vmoptions="${macmemory} ${macdefines}"
+                arguments="${macxargs}"
+                jar="${macosgidir}/framework.jar"
+                >
+      <!-- This works without OSGI
+      <jarfileset dir="${macstartupdir}">
+        <include name="**/*.jar" />
+      </jarfileset>
+
+      <jarfileset dir="${macosgidir}">
+        <include name="framework.jar" />
+        <include name="*.xargs" />
+        <include name="${macpluginsdir}/" />
+      </jarfileset>
+      -->
+      <!-- For OSGI we want the entire build/ tree except WIndows-related stuff
+            This also works without OSGI, 
+              so we can delete the old jarfilesets above after OSGI is working
+            Commenting out for now to allow specifying jar=framewok.jar
+      <jarfileset dir="${macosgidir}">
+        <exclude name="**/*.bat" />
+        <exclude name="**/*.exe" />
+      </jarfileset>
+      -->
+    </jarbundler>
+
+    <!-- Patch the Info.plist file created by JarBundler, to work with Knopflerfish OSGI -->
+    <!-- Courtesy of Volker who supplied this logic as a separate target:
+    <target name="patch-plist"> -->
+    <echo message="Adding WorkingDirectory to Info.plist" />
+    <replace file="${macappfullpath}/Contents/Info.plist">
+      <replacetoken><![CDATA[<string>org.knopflerfish.framework.Main</string>]]></replacetoken>
+      <replacevalue><![CDATA[<string>org.knopflerfish.framework.Main</string>
+<key>WorkingDirectory</key>
+  <string>$JAVAROOT</string>]]></replacevalue>
+    </replace>
+    <!-- </target> -->
+
+    <!-- Copy the entire build/ tree except WIndows-related stuff
+          Also exclude the OSGI framework.jar which is copied by the jarbundler task
+          Doing this after the jarbundler task to allow specifying jar=framewok.jar
+    -->
+		<copy todir="${macappfullpath}/Contents/Resources/Java">
+			<fileset dir="${macosgidir}">
+        <exclude name="**/*.bat" />
+        <exclude name="**/*.exe" />
+        <exclude name="**/framework.jar" />
+      </fileset >
+		</copy>
+
+    <!-- Restore the eXecutable permission flags on the Unix script, for debug testing
+           !! TODO: Trace why permissions are lost here to begin with,
+                      and why chmod appears to fail silently
+     -->
+    <echo message="Setting eXecutable permissions on ${macappfullpath}/Contents/Resources/Java/freeplane.sh" />
+		<chmod file="${macappfullpath}/Contents/Resources/Java/freeplane.sh" perm="ugo+rx" />
+	</target>
+
+	<target name="dist" depends="clean, binzip, srczip, installer, portableinstaller">
+		<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
+	</target>
+
+	<target name="clean">
+		<delete quiet="true" includeemptydirs="true">
+			<fileset dir="${build}" />
+			<fileset dir="${dist}" />
+		</delete>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane"/>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_help"/>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_svg"/>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_latex"/>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_script"/>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_bugreport"/>		
+	</target>
+
+</project>
+
