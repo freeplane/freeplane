@@ -407,7 +407,7 @@
 <node COLOR="#000000" CREATED="1124560950701" ID="ID_833832653" MODIFIED="1216187545263" TEXT="Sa v&#xf5;id paigaldada appleti oma veebilehele nii, et teised kasutajad saavad lehitseda Sinu m&#xf5;ttekaarte.">
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node COLOR="#338800" CREATED="1124560950701" ID="ID_506676757" LINK="http://sourceforge.net/project/showfiles.php?group_id=7118" MODIFIED="1216187545263" TEXT="Laadi applet alla - selle nimi on freeplane-browser.">
+<node COLOR="#338800" CREATED="1124560950701" ID="ID_506676757" LINK="http://sourceforge.net/project/showfiles.php?group_id=211069" MODIFIED="1216187545263" TEXT="Laadi applet alla - selle nimi on freeplane-browser.">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950701" ID="ID_19242684" MODIFIED="1216187545263">
