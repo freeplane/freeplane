@@ -112,7 +112,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	/**
 	 */
-	private void setColorValue(Color input) {
+	public void setColorValue(Color input) {
 		color = input;
 		if (input == null) {
 			input = Color.WHITE;
