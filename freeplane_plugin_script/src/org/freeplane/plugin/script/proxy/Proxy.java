@@ -161,7 +161,9 @@ public interface Proxy {
 	interface Link {
 		String get();
 
-		/** empty String means remove link (as in user interface). */
+		/** target is a URI.
+		 * An empty String will remove the link.
+		 * To get a local link (i.e. to another node) target should be: "#" + nodeID */
 		boolean set(String target);
 	}
 	
@@ -190,8 +192,12 @@ public interface Proxy {
 
 		Attributes getAttributes();
 
+		/** returns the index (0..) of this node in the (by Y coordinate sorted)
+		 * list of this node's children. Returns -1 if childNode is not a child
+		 * of this node. */
 		int getChildPosition(Node childNode);
 
+		/** returns the children of this node ordered by Y coordinate. */
 		List<Node> getChildren();
 
 		Collection<Connector> getConnectorsIn();
@@ -204,6 +210,7 @@ public interface Proxy {
 
 		Link getLink();
 		
+		/** the map this node belongs to. */
 		Map getMap();
 
 		String getNodeID();

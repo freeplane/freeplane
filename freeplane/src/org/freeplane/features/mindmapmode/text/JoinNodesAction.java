@@ -21,12 +21,16 @@ package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.icon.IconController;
+import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -34,6 +38,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
+import org.freeplane.features.mindmapmode.icon.MIconController;
 
 class JoinNodesAction extends AFreeplaneAction {
 	final static Pattern BODY_END = Pattern.compile("</body>", Pattern.CASE_INSENSITIVE);
@@ -88,9 +93,11 @@ class JoinNodesAction extends AFreeplaneAction {
 			}
 		}
 		boolean isHtml = false;
+		LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			final String nodeContent = node.toString();
+			icons.addAll(node.getIcons());
 			final boolean isHtmlNode = HtmlTools.isHtmlNode(nodeContent);
 			newContent = addContent(newContent, isHtml, nodeContent, isHtmlNode);
 			if (node != selectedNode) {
@@ -100,5 +107,10 @@ class JoinNodesAction extends AFreeplaneAction {
 		}
 		controller.getSelection().selectAsTheOnlyOneSelected(selectedNode);
 		((MTextController) TextController.getController(getModeController())).setNodeText(selectedNode, newContent);
+		final MIconController iconController = (MIconController)IconController.getController(getModeController());
+		iconController.removeAllIcons(selectedNode);
+		for(MindIcon icon:icons){
+			iconController.addIcon(selectedNode, icon);
+		}
 	}
 }

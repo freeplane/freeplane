@@ -34,11 +34,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Action;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -51,7 +56,7 @@ import org.freeplane.core.ui.IAcceleratorChangeListener;
  * @author Dimitry Polivaev
  * 03.07.2009
  */
-public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeListener, KeyEventDispatcher,
+public class FButtonBar extends JComponent implements IAcceleratorChangeListener, KeyEventDispatcher,
         WindowFocusListener {
 	private static final int BUTTON_NUMBER = 12;
 	/**
@@ -59,7 +64,6 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 	 */
 	private static final long serialVersionUID = 1L;
 	final private Map<Integer, JButton[]> buttons;
-	private boolean isWindowListenerInstalled;
 	private int lastModifiers = -1;
 	private int nextModifiers = 0;
 	private Window ownWindowAncestor;
@@ -71,7 +75,6 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 	private final ModeController modeController;
 
 	public FButtonBar(ModeController modeController) {
-		setRollover(false);
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 		buttons = new HashMap<Integer, JButton[]>();
 		onModifierChange();
@@ -87,14 +90,18 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 			final JButton[] buttonRow = buttons.get(modifiers);
 			final JButton button = buttonRow[oldButtonNumber];
 			button.setAction(null);
-			button.setText(ResourceBundles.getText("f_button_unassigned"));
+			final String text = ResourceBundles.getText("f_button_unassigned");
+			button.setText(text);
+			button.setToolTipText(text);
 		}
 		if (newButtonNumber >= 0 && newButtonNumber < BUTTON_NUMBER) {
 			final int modifiers = newStroke.getModifiers()
 			        & (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
 			final JButton[] buttonRow = createButtons(modifiers);
 			final JButton button = buttonRow[newButtonNumber];
-			button.setText(action.getActionCommand());
+			final String text = action.getActionCommand();
+			button.setText(text);
+			button.setToolTipText(text);
 			button.setAction(action.getAction());
 			button.setEnabled(action.isEnabled());
 		}
@@ -106,10 +113,6 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 		}
 		nextModifiers &= ~modifiers;
 		onModifierChange();
-	}
-
-	@Override
-	protected void configureComponent(final Component comp) {
 	}
 
 	private JButton[] createButtons() {
@@ -184,14 +187,10 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 		}
 		lastModifiers = nextModifiers;
 		removeAll();
-		addSeparator();
 		final JButton[] buttonRow = createButtons(nextModifiers);
 		for (final JButton button : buttonRow) {
 			add(button);
 		}
-		final JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 0));
-		add(panel);
 		revalidate();
 		repaint();
 	}
@@ -279,4 +278,23 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 	public void windowLostFocus(final WindowEvent e) {
 		resetModifiers();
 	}
+
+	@Override
+    public void layout() {
+		int w = getParent().getWidth();
+		int border = 5;
+		int h = getComponent(1).getPreferredSize().height;
+		final int componentCount = getComponentCount();
+		float dw = (w - 2 * border + 0f)/componentCount;
+		int i;
+		float x;
+		for(i = 0, x = border ; i < componentCount; i++, x+= dw){
+			getComponent(i).setBounds((int)x, 0, (int)dw, h);
+		}
+    }
+
+	@Override
+    public Dimension getPreferredSize() {
+	    return new Dimension(getParent().getWidth(), getComponent(1).getPreferredSize().height);
+    }
 }

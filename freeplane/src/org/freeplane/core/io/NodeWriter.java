@@ -83,7 +83,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 			final String additionalInfo = encryptionModel.getEncryptedContent(mapController);
 			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, additionalInfo);
 		}
-		else if (mapController.isFolded(node) && (writeFolded || writer.getHint(Hint.MODE).equals(Mode.CLIPBOARD))) {
+		else if (mapController.isFolded(node) && (writeFolded || ! writer.getHint(Hint.MODE).equals(Mode.FILE))) {
 			writer.addAttribute("FOLDED", "true");
 		}
 		final NodeModel parentNode = node.getParentNode();
