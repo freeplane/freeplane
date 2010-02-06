@@ -322,7 +322,8 @@ public abstract class MainView extends JLabel {
 		for(Entry<String, UIIcon> iconEntry : model.getStateIcons().entrySet()) {
 			iconImages.addImage(iconEntry.getValue().getIcon());
 		}
-		for(MindIcon myIcon : model.getIcons()) {
+		final List<MindIcon> icons = IconController.getIcons(getMap().getModeController(), model);
+		for(MindIcon myIcon : icons) {
 			iconImages.addImage(myIcon.getIcon());
 		}
 		addLinkIcon(iconImages, model);
