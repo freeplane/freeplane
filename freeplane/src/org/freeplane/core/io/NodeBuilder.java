@@ -20,6 +20,7 @@
 package org.freeplane.core.io;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.freeplane.core.io.MapWriter.Hint;
 import org.freeplane.core.io.MapWriter.Mode;
@@ -43,7 +44,7 @@ public class NodeBuilder implements IElementDOMHandler {
 	public static final String RESOURCES_LOAD_FOLDING = "load_folding";
 	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL = "load_folding_from_map_default_fold_all";
 	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_UNFOLD_ALL = "load_folding_from_map_default_unfold_all";
-	protected static final String RESOURCES_LOAD_FOLDING_START_LEVEL = "load_folding_start_level";
+	protected static final String MAX_DISPLAYED_NODE_COUNT = "max_displayed_node_count";
 	public static final String RESOURCES_NEVER_SAVE_FOLDING = "never_save_folding";
 	public static final String RESOURCES_SAVE_FOLDING = "save_folding";
 	public static final String RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED = "save_folding_if_map_is_changed";
@@ -153,15 +154,20 @@ public class NodeBuilder implements IElementDOMHandler {
 			}
 		});
 		reader.addReadCompletionListener(new IReadCompletionListener() {
-			private void foldAll(final NodeModel node, int startLevel) {
+			private void foldAll(final NodeModel node, int nodeCount) {
 				if (node.getChildCount() == 0) {
 					return;
 				}
-				if (startLevel <= 0 && !node.getText().equals("")) {
+				if (nodeCount >= 0) {
+					for (final NodeModel child : node.getChildren()) {
+						nodeCount -= child.getChildCount();
+					}
+				}
+				if (nodeCount < 0) {
 					node.setFolded(true);
 				}
 				for (final NodeModel child : node.getChildren()) {
-					foldAll(child, startLevel - 1);
+					foldAll(child, nodeCount);
 				}
 			}
 
@@ -176,9 +182,10 @@ public class NodeBuilder implements IElementDOMHandler {
 				final String loadFolding = resourceController.getProperty(NodeBuilder.RESOURCES_LOAD_FOLDING);
 				if (loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
 				        || loadFolding.equals(NodeBuilder.RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL)) {
-					int startLevel = resourceController.getIntProperty(NodeBuilder.RESOURCES_LOAD_FOLDING_START_LEVEL, 2);
-					for (final NodeModel child : topNode.getChildren()) {
-						foldAll(child, startLevel - 1);
+					int nodeCount = resourceController.getIntProperty(NodeBuilder.MAX_DISPLAYED_NODE_COUNT, 20);
+					List<NodeModel> children = topNode.getChildren();
+					for (final NodeModel child : children) {
+						foldAll(child, nodeCount - 1 - children.size());
 					}
 				}
 			}
