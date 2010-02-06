@@ -211,6 +211,9 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		if ((mModifiers & (ActionEvent.CTRL_MASK | InputEvent.CTRL_DOWN_MASK)) != 0) {
 			m |= ActionEvent.CTRL_MASK;
 		}
+		if ((mModifiers & (ActionEvent.META_MASK | InputEvent.META_DOWN_MASK)) != 0) {
+			m |= ActionEvent.META_MASK;
+		}
 		if ((mModifiers & (ActionEvent.ALT_MASK | InputEvent.ALT_DOWN_MASK)) != 0) {
 			m |= ActionEvent.ALT_MASK;
 		}

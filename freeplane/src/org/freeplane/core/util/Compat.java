@@ -17,6 +17,7 @@ public class Compat {
 	public static final String JAVA_VERSION = System.getProperty("java.version");
 	public static final String VERSION_1_5_0 = "1.5.0";
 	public static final String VERSION_1_6_0 = "1.6.0";
+	private static Boolean underMac;
 
 	public static void checkJavaVersion() {
 		if (Compat.isLowerJdk(VERSION_1_5_0)) {
@@ -38,12 +39,19 @@ public class Compat {
 	}
 
 	public static boolean isMacOsX() {
-		boolean underMac = false;
-		final String osName = System.getProperty("os.name");
-		if (osName.startsWith("Mac OS")) {
-			underMac = true;
+		if(underMac != null){
+			return underMac;
 		}
-		return underMac;
+		if (System.getProperty("os.name").startsWith("Mac OS")){ 
+			underMac = true;
+			return true;
+		}
+		if (System.getProperty("debug.os.name", "").startsWith("Mac")){ 
+			underMac = true;
+			return true;
+		}
+		underMac = false;
+		return false;
 	}
 
 	/**

@@ -53,7 +53,7 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void disableModifiers() {
-		modifierMask = KeyEvent.ALT_MASK | KeyEvent.CTRL_MASK;
+		modifierMask = KeyEvent.ALT_MASK | KeyEvent.CTRL_MASK| KeyEvent.META_MASK;
 	}
 
 	@Override
