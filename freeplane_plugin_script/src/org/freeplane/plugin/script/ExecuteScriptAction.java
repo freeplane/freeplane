@@ -100,12 +100,10 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 					LogTool.warn("error executing script " + script + " - giving up");
 					modeController.delayedRollback();
 					UITools.errorMessage(ResourceBundles.getText("ExecuteScriptError.text"));
-					break;
-				}
-				else {
-					modeController.delayedCommit();
+					return;
 				}
 			}
+			modeController.delayedCommit();
 		}
 		catch (IOException ex) {
 			LogTool.warn("error reading " + script, ex);
