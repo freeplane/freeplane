@@ -108,7 +108,6 @@ public class GrabKeyDialog extends JDialog {
 				return;
 			}
 			final int keyCode = evt.getKeyCode();
-			KeyEventTranslator.lastKeyTime = evt.getWhen();
 			switch (keyCode) {
 				case KeyEvent.VK_DEAD_GRAVE:
 				case KeyEvent.VK_DEAD_ACUTE:
@@ -144,14 +143,6 @@ public class GrabKeyDialog extends JDialog {
 					KeyEventTranslator.modifiers |= InputEvent.META_MASK;
 					return;
 				default:
-					if (!evt.isMetaDown()) {
-						if (evt.isControlDown() && evt.isAltDown()) {
-							KeyEventTranslator.lastKeyTime = 0L;
-						}
-						else if (!evt.isControlDown() && !evt.isAltDown()) {
-							KeyEventTranslator.lastKeyTime = 0L;
-						}
-					}
 					if (KeyEventTranslator.ALT_KEY_PRESSED_DISABLED) {
 						/* we don't handle key pressed A+ */
 						/* they're too troublesome */
@@ -221,12 +212,6 @@ public class GrabKeyDialog extends JDialog {
 	 */
 	private static String getText(final String resourceString) {
 		return ResourceBundles.getText("GrabKeyDialog." + resourceString);
-	}
-
-	/**
-	 */
-	public static boolean isMacOS() {
-		return false;
 	}
 
 	public static String toString(final KeyEvent evt) {

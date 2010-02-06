@@ -45,6 +45,7 @@ import org.freeplane.core.util.Compat;
  * @author Dimitry Polivaev
  */
 class ApplicationResourceController extends ResourceController {
+	private static final String FREEPLANE_MAC_PROPERTIES = "/freeplane_mac.properties";
 	final private File autoPropertiesFile;
 	final private Properties defProps;
 	private LastOpenedList lastOpened;
@@ -195,11 +196,21 @@ class ApplicationResourceController extends ResourceController {
 	}
 
 	private Properties readDefaultPreferences() {
-		final String propsLoc = ResourceController.FREEPLANE_PROPERTIES;
 		final Properties props = new Properties();
-		readDefaultPreferences(props, propsLoc);
+		readDefaultPreferences(props, ResourceController.FREEPLANE_PROPERTIES);
+		if(Compat.isMacOsX()){
+			readDefaultPreferences(props, FREEPLANE_MAC_PROPERTIES);
+		}
+		final String propsLocs = props.getProperty("load_next_properties", "");
+		readDefaultPreferences(props, propsLocs.split(";"));
 		return props;
 	}
+
+	private void readDefaultPreferences(final Properties props, final String[] locArray) {
+		for (final String loc : locArray) {
+			readDefaultPreferences(props, loc);
+		}
+    }
 
 	private void readDefaultPreferences(final Properties props, final String propsLoc) {
 		final URL defaultPropsURL = getResource(propsLoc);
@@ -212,15 +223,6 @@ class ApplicationResourceController extends ResourceController {
 		catch (final Exception ex) {
 			ex.printStackTrace();
 			System.err.println("Panic! Error while loading default properties.");
-		}
-		final String propsLocs = props.getProperty("load_next_properties", "");
-		props.setProperty("load_next_properties", "");
-		if (propsLocs.equals("")) {
-			return;
-		}
-		final String[] locArray = propsLocs.split(";");
-		for (final String loc : locArray) {
-			readDefaultPreferences(props, loc);
 		}
 	}
 

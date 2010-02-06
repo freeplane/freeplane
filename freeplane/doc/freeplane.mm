@@ -62,7 +62,7 @@
 <node TEXT="You can install the applet at your website so that other users can browse your mind maps." ID="ID_885091125" CREATED="1124560950701" MODIFIED="1124560950701" COLOR="#000000">
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node TEXT="Download the applet, that is freeplane-browser." ID="ID_27097826" CREATED="1124560950701" MODIFIED="1124560950701" LINK="http://sourceforge.net/project/showfiles.php?group_id=7118"/>
+<node TEXT="Download the applet, that is freeplane-browser." ID="ID_27097826" CREATED="1124560950701" MODIFIED="1124560950701" LINK="http://sourceforge.net/project/showfiles.php?group_id=211069"/>
 <node TEXT="The downloaded archive contains freeplanebrowser.jar and freeplanebrowser.html. Create a link from your page to freeplanebrowser.html. In freeplanebrowser.html change the path inside so that it points to your mind map." ID="ID_661301261" CREATED="1124560950701" MODIFIED="1124560950701"/>
 <node TEXT="Applet&apos;s jar file must be located at the same server as the map itself, for java security reasons. You have to upload the Freeplane applet jar file and your mind map file to your web site." ID="ID_1305851546" CREATED="1124560950701" MODIFIED="1124560950701"/>
 </node>

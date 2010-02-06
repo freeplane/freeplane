@@ -26,7 +26,7 @@
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?project_id=7118" MODIFIED="1208312597618" TEXT="Unduh Aplikasi Freeplane">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?project_id=211069" MODIFIED="1208312597618" TEXT="Unduh Aplikasi Freeplane">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
@@ -60,7 +60,7 @@
 <node COLOR="#000000" CREATED="1124560950701" ID="ID_686268443" MODIFIED="1208963801474" TEXT="Anda dapat memasang applet Freeplane di situs web Anda agar orang dapat membaca MindMap Anda.">
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="ID_1433718684" LINK="http://sourceforge.net/project/showfiles.php?group_id=7118" MODIFIED="1208963819980" TEXT="Unduh applet, yaitu freeplane-browser."/>
+<node CREATED="1124560950701" ID="ID_1433718684" LINK="http://sourceforge.net/project/showfiles.php?group_id=211069" MODIFIED="1208963819980" TEXT="Unduh applet, yaitu freeplane-browser."/>
 <node CREATED="1124560950701" ID="ID_316824945" MODIFIED="1208964470245" TEXT="Paket unduhan berisi freeplanebrowser.jar dan freeplanebrowser.html. Buat tautan dari laman web Anda ke freeplanebrowser.html. Di dalam freeplanebrowser.html, ganti jalur (path) dalam berkas tersebut agar menunjuk ke MindMap yang Anda buat."/>
 <node CREATED="1124560950701" ID="ID_1135453004" MODIFIED="1208964565172" TEXT="Berkas jar dari applet tersebut harus diletakkan di peladen yang sama dengan MindMap yang dibuka, sebagai syarat keamanan dari Java. Anda harus mengunggah berka jar applet Freeplane dan MindMap Anda ke laman web tersebut."/>
 </node>
