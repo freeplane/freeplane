@@ -8,7 +8,7 @@
   </head>
   <body width="">
     <p align="center">
-      Freeplane<br/><small>- Freie Mind Mapping Software -</small> 
+      Freeplane<br/><small>- Freie Mind Mapping Software -</small>ï¿½
     </p>
   </body>
 </html></richcontent>
@@ -28,7 +28,7 @@
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="Laden Sie die Anwendung herunter." ID="_Freeplane_Link_1612101865" CREATED="1124560950701" MODIFIED="1134673114322" LINK="http://sourceforge.net/project/showfiles.php?group_id=7118">
+<node TEXT="Laden Sie die Anwendung herunter." ID="_Freeplane_Link_1612101865" CREATED="1124560950701" MODIFIED="1134673114322" LINK="http://sourceforge.net/project/showfiles.php?group_id=211069">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
@@ -62,7 +62,7 @@
 <node TEXT="Sie k&#xf6;nnen die Anwendung auf Ihrer Website (Internetseite) installieren, damit Besucher Ihre MindMaps durchst&#xf6;bern k&#xf6;nnen." ID="Freeplane_Link_413216341" CREATED="1124560950701" MODIFIED="1132078361716" COLOR="#000000">
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node TEXT="Laden Sie die Freeplane-Browser Anwendung herunter." ID="Freeplane_Link_70391546" CREATED="1124560950701" MODIFIED="1132077633356" LINK="http://sourceforge.net/project/showfiles.php?group_id=7118"/>
+<node TEXT="Laden Sie die Freeplane-Browser Anwendung herunter." ID="Freeplane_Link_70391546" CREATED="1124560950701" MODIFIED="1132077633356" LINK="http://sourceforge.net/project/showfiles.php?group_id=211069"/>
 <node TEXT="Das heruntergeladene Archiv enthaelt die Dateien &apos;freeplanebrowser.jar&apos; und &apos;freeplanebrowser.html&apos;. Erzeugen Sie einen Link (Verweis) von Ihrer Seite zur Datei &apos;freeplanebrowser.html&apos;. &#xc4;ndern Sie in der Datei &apos;freeplanebrowser.html&apos; die verweisende Pfadangabe, so da&#xdf; sie auf Ihre MindMap zeigt." ID="Freeplane_Link_1182574839" CREATED="1124560950701" MODIFIED="1132077943209"/>
 <node TEXT="Aus Java(1)-Sicherheitsgr&#xfc;nden mu&#xdf; sich die &apos;.jar&apos;-Datei der Anwendung auf dem selben Server wie die MindMap selbst befinden. Sie m&#xfc;ssen die Freeplane-Anwendung und Ihre MindMap-Datei auf Ihre Website hochladen.&#xa;--------&#xa;anm.d.&#xdc;.&#xa;(1) Java ist eine Laufzeitumgebung, die das Ausf&#xfc;hren von daf&#xfc;r geschriebenen Programmen unabh&#xe4;ngig von der benutzten Computer-Hardware erm&#xf6;glicht." ID="Freeplane_Link_1992245682" CREATED="1124560950701" MODIFIED="1134674470963"/>
 </node>
@@ -527,7 +527,7 @@
     
   </head>
   <body>
-    [Diese Hilfe ist veraltet.] Eine Anmerkung zur Datei 'patterns.xml' folgt: Ein Stil ist auf einen Knoten anwendbar, wenn er eine &lt;node&gt;-Auszeichnung enthält. Er ist auf einen Bogen (eine Kante) anwendbar, wenn er eine &lt;edge&gt;-Auszeichnung enthält. &lt;node&gt;-Auszeichnungen können <font>-Auszeichnungen enthalten. Studieren Sie die mit Freeplane gelieferte Datei 'patterns.xml'.</font>
+    [Diese Hilfe ist veraltet.] Eine Anmerkung zur Datei 'patterns.xml' folgt: Ein Stil ist auf einen Knoten anwendbar, wenn er eine &lt;node&gt;-Auszeichnung enthï¿½lt. Er ist auf einen Bogen (eine Kante) anwendbar, wenn er eine &lt;edge&gt;-Auszeichnung enthï¿½lt. &lt;node&gt;-Auszeichnungen kï¿½nnen <font>-Auszeichnungen enthalten. Studieren Sie die mit Freeplane gelieferte Datei 'patterns.xml'.</font>
   </body>
 </html></richcontent>
 </node>
@@ -553,7 +553,7 @@
     
   </head>
   <body>
-    Um auf eine eMail-Adresse zu verweisen, setzen Sie den Querverweis als <i>mailto:don.bonton@supermail.com</i>.<br/>--------<br/>Anm.d.Ü.<br/>Wobei Sie anstatt <i>don.bonton@supermail.com</i> natürlich die von Ihnen gewünschte eMail-Adresse eintragen.
+    Um auf eine eMail-Adresse zu verweisen, setzen Sie den Querverweis als <i>mailto:don.bonton@supermail.com</i>.<br/>--------<br/>Anm.d.ï¿½.<br/>Wobei Sie anstatt <i>don.bonton@supermail.com</i> natï¿½rlich die von Ihnen gewï¿½nschte eMail-Adresse eintragen.
   </body>
 </html></richcontent>
 <edge WIDTH="thin"/>
@@ -566,7 +566,7 @@
     
   </head>
   <body>
-    Um auf eine eMail-Adresse zu verweisen und gleich einen Betreff für die eMail mitzugeben,<br/>setzen Sie den Querverweis in folgender Form: <i>mailto:don.bonton@supermail.com?subject=Last phone call</i>.<br/>--------<br/>Anm.d.Ü.<br/>Wobei Sie anstatt <i>don.bonton@supermail.com</i> ebenfalls die von Ihnen gewünschte eMail-Adresse und<br/>anstatt <i>Last phone call</i> den von Ihnen gewünschten Betreff eintragen.
+    Um auf eine eMail-Adresse zu verweisen und gleich einen Betreff fï¿½r die eMail mitzugeben,<br/>setzen Sie den Querverweis in folgender Form: <i>mailto:don.bonton@supermail.com?subject=Last phone call</i>.<br/>--------<br/>Anm.d.ï¿½.<br/>Wobei Sie anstatt <i>don.bonton@supermail.com</i> ebenfalls die von Ihnen gewï¿½nschte eMail-Adresse und<br/>anstatt <i>Last phone call</i> den von Ihnen gewï¿½nschten Betreff eintragen.
   </body>
 </html></richcontent>
 </node>
@@ -843,7 +843,7 @@
     
   </head>
   <body>
-    Um Internet Explorer Favoriten (Lesezeichen) in Freeplane zu importieren, wählen Sie vom Hauptmenü ausgehend 'Datei' -&gt; 'Import' -&gt; 'Explorer-Favoriten...'. Sie werden nach dem Pfad zu dem Verzeichnis gefragt, in dem die Favoriten abgelegt sind. Der Name des Verzeichnisses ist "Favoriten" und Sie finden es auf Ihrer Festplatte. Für ein unmodifiziertes, deutsches Windows 2000 lautet der vollständige Pfadname "C:\Dokumente und Einstellungen\&lt;Benutzername&gt;\Favoriten", wobei Sie '&lt;Benutzername&gt;' durch den tatsächlich verwendeten Benutzernamen ersetzen.
+    Um Internet Explorer Favoriten (Lesezeichen) in Freeplane zu importieren, wï¿½hlen Sie vom Hauptmenï¿½ ausgehend 'Datei' -&gt; 'Import' -&gt; 'Explorer-Favoriten...'. Sie werden nach dem Pfad zu dem Verzeichnis gefragt, in dem die Favoriten abgelegt sind. Der Name des Verzeichnisses ist "Favoriten" und Sie finden es auf Ihrer Festplatte. Fï¿½r ein unmodifiziertes, deutsches Windows 2000 lautet der vollstï¿½ndige Pfadname "C:\Dokumente und Einstellungen\&lt;Benutzername&gt;\Favoriten", wobei Sie '&lt;Benutzername&gt;' durch den tatsï¿½chlich verwendeten Benutzernamen ersetzen.
   </body>
 </html></richcontent>
 </node>
@@ -943,7 +943,7 @@
     </table>
     <p class="msonormal">
       <br/>
-       Es gibt vielerlei <font color="#999900">Schrift</font><font color="#336600">farben</font>.
+      ï¿½Es gibt vielerlei <font color="#999900">Schrift</font><font color="#336600">farben</font>.
     </p>
   </body>
 </html></richcontent>

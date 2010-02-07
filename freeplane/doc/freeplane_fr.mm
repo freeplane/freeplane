@@ -7,7 +7,7 @@
   </head>
   <body width="">
     <p align="center">
-      Freeplane<br/><small>- free mind mapping software -</small> 
+      Freeplane<br/><small>- free mind mapping software -</small>ï¿½
     </p>
   </body>
 </html>
@@ -43,7 +43,7 @@
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?project_id=7118" MODIFIED="1192809410203" TEXT="T&#xe9;l&#xe9;charger l&apos;application">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?project_id=211069" MODIFIED="1192809410203" TEXT="T&#xe9;l&#xe9;charger l&apos;application">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
@@ -279,7 +279,7 @@
 </richcontent>
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="Freeplane_Link_1029066685" LINK="http://sourceforge.net/project/showfiles.php?group_id=7118" MODIFIED="1194974557281" TEXT="T&#xe9;l&#xe9;charger l&apos;applet, c&apos;est-&#xe0;-dire le navigateur Freeplane"/>
+<node CREATED="1124560950701" ID="Freeplane_Link_1029066685" LINK="http://sourceforge.net/project/showfiles.php?group_id=211069" MODIFIED="1194974557281" TEXT="T&#xe9;l&#xe9;charger l&apos;applet, c&apos;est-&#xe0;-dire le navigateur Freeplane"/>
 <node CREATED="1124560950701" ID="Freeplane_Link_1948548375" MODIFIED="1194974743765">
 <richcontent TYPE="NODE"><html>
   <head>

@@ -17,7 +17,7 @@
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?project_id=7118" MODIFIED="1170319561858" TEXT="Descargar la aplicaci&#xf3;n">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?project_id=211069" MODIFIED="1170319561858" TEXT="Descargar la aplicaci&#xf3;n">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
@@ -45,7 +45,7 @@
 </node>
 <node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1525986009" MODIFIED="1170327302117" POSITION="left" TEXT="Instalar el applet de Freeplane en su sitio web">
 <node CREATED="1170327314148" ID="Freeplane_Link_728262703" MODIFIED="1170662179237" TEXT="Usted puede instalar el applet en su sitio web para que otros usuarios puedan ver su mapas mentales."/>
-<node CREATED="1124560950701" ID="Freeplane_Link_1253169862" LINK="http://sourceforge.net/project/showfiles.php?group_id=7118" MODIFIED="1170327467943" TEXT="Descargue el applet, que se llama freeplane-browser." VSHIFT="-6"/>
+<node CREATED="1124560950701" ID="Freeplane_Link_1253169862" LINK="http://sourceforge.net/project/showfiles.php?group_id=211069" MODIFIED="1170327467943" TEXT="Descargue el applet, que se llama freeplane-browser." VSHIFT="-6"/>
 <node CREATED="1170327314148" ID="Freeplane_Link_748768856" MODIFIED="1170662189253" TEXT="El fichero descargado contiene los ficheros freeplanebrowser.jar y freeplanebrowser.html. Cree un enlace desde su p&#xe1;gina al freeplanebrowser.html. En el fichero freeplanebrowser.html cambie la ruta para que apunte a su mapa mental."/>
 <node CREATED="1170327314164" ID="Freeplane_Link_1041757100" MODIFIED="1170662204284" TEXT="El fichero de extensi&#xf3;n .jar del applet debe estar alojado en el mismo servidor que el mapa, por razones de seguridad de Java. Tiene que subir por tanto, el fichero .jar del applet de Freeplane y su mapa mental a su sitio web."/>
 </node>

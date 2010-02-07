@@ -24,6 +24,7 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 
 /**
@@ -69,17 +70,8 @@ class KeyEventTranslator {
 	static int c, a, m, s;
 	private static Map<Key, Key> transMap = new HashMap<Key, Key>();
 	static {
-		if (GrabKeyDialog.isMacOS()) {
-			KeyEventTranslator.setModifierMapping(InputEvent.META_MASK, /* == C+ */
-			InputEvent.CTRL_MASK, /* == A+ */
-			/* M+ discarded by key event workaround! */
-			InputEvent.ALT_MASK, /* == M+ */
-			InputEvent.SHIFT_MASK /* == S+ */);
-		}
-		else {
 			KeyEventTranslator.setModifierMapping(InputEvent.CTRL_MASK, InputEvent.ALT_MASK, InputEvent.META_MASK,
 			    InputEvent.SHIFT_MASK);
-		}
 	}
 
 	/**
@@ -271,6 +263,5 @@ class KeyEventTranslator {
 	}
 
 	public static final boolean ALT_KEY_PRESSED_DISABLED = false;
-	static long lastKeyTime;
 	static int modifiers;
 }

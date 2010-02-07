@@ -16,7 +16,7 @@
 <edge WIDTH="thin"/>
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?project_id=7118" MODIFIED="1124560950701" TEXT="T&#x1ea3;i ch&#x1b0;&#x1a1;ng tr&#xec;nh v&#x1ec1;">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?project_id=211069" MODIFIED="1124560950701" TEXT="T&#x1ea3;i ch&#x1b0;&#x1a1;ng tr&#xec;nh v&#x1ec1;">
 <edge WIDTH="thin"/>
 <font NAME="Dialog" SIZE="12"/>
 </node>
@@ -50,7 +50,7 @@
 <node COLOR="#000000" CREATED="1124560950701" ID="Freeplane_Link_1795495302" MODIFIED="1213147541802" TEXT="C&#xf3; th&#x1ec3; c&#xe0;i &#x111;&#x1eb7;t ti&#x1ec3;u d&#x1ee5;ng Freeplane l&#xea;n trang web &#x111;&#x1ec3; ng&#x1b0;&#x1edd;i d&#xf9;ng xem c&#xe1;c s&#x1a1; &#x111;&#x1ed3; tr&#xea;n &#x111;&#xf3;.">
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="Freeplane_Link_1776430598" LINK="http://sourceforge.net/project/showfiles.php?group_id=7118" MODIFIED="1213147559788" TEXT="T&#x1ea3;i ti&#x1ec3;u d&#x1ee5;ng Freeplane-browser v&#x1ec1;."/>
+<node CREATED="1124560950701" ID="Freeplane_Link_1776430598" LINK="http://sourceforge.net/project/showfiles.php?group_id=211069" MODIFIED="1213147559788" TEXT="T&#x1ea3;i ti&#x1ec3;u d&#x1ee5;ng Freeplane-browser v&#x1ec1;."/>
 <node CREATED="1124560950701" ID="Freeplane_Link_758844596" MODIFIED="1213147633070" TEXT="Kho n&#xe9;n &#x111;&#x1b0;&#x1ee3;c t&#x1ea3;i v&#x1ec1; s&#x1ebd; bao g&#x1ed3;m c&#xe1;c t&#x1ead;p tin freeplanebrowser.jar v&#xe0; freeplanebrowser.html. T&#x1ea1;o li&#xea;n k&#x1ebf;t t&#x1eeb; trang web t&#x1edb;i trang freeplanebrowser.html. Trong t&#x1ead;p tin freeplanebrowser.html, h&#xe3;y &#x111;&#x1ed5;i l&#x1ea1;i &#x111;&#x1b0;&#x1edd;ng d&#x1eab;n &#x111;&#x1ec3; n&#xf3; ch&#x1ec9; t&#x1edb;i s&#x1a1; &#x111;&#x1ed3; c&#x1ea7;n cho ng&#x1b0;&#x1edd;i kh&#xe1;c xem."/>
 <node CREATED="1124560950701" ID="Freeplane_Link_939698300" MODIFIED="1213147706542" TEXT="T&#x1ead;p tin jar ph&#x1ea3;i &#x111;&#x1b0;&#x1ee3;c &#x111;&#x1eb7;t tr&#xea;n m&#xe1;y ch&#x1ee7; ch&#x1ee9;a c&#xe1;c s&#x1a1; &#x111;&#x1ed3;, v&#xec; y&#xea;u c&#x1ea7;u b&#x1ea3;o m&#x1ead;t c&#x1ee7;a java. B&#x1ea1;n s&#x1ebd; ph&#x1ea3;i &#x111;&#x1b0;a c&#xe1;c s&#x1a1; &#x111;&#x1ed3; l&#xea;n c&#xf9;ng v&#x1edb;i t&#x1ead;p tin jar c&#x1ee7;a Freeplane l&#xea;n trang web c&#x1ee7;a m&#xec;nh."/>
 </node>
