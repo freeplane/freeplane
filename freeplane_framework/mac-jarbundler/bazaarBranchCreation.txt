@@ -1,0 +1,33 @@
+# Create a new development branch on the server, based on the current release branch:
+bzr branch bzr+ssh://jayseye@freeplane.bzr.sourceforge.net/bzrroot/freeplane/freeplane_program/release_branches/1_0_x bzr+ssh://jayseye@freeplane.bzr.sourceforge.net/bzrroot/freeplane/freeplane_program/development_branches/1_0_x_mac_jarbundler
+
+# Get a local copy of the new branch:
+cd /Users/Shared/Marc/bazaar-freeplane-repo
+bzr branch bzr+ssh://jayseye@freeplane.bzr.sourceforge.net/bzrroot/freeplane/freeplane_program/development_branches/1_0_x_mac_jarbundler
+
+# Incorporate updates from the main branch:
+cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler
+bzr merge bzr+ssh://jayseye@freeplane.bzr.sourceforge.net/bzrroot/freeplane/freeplane_program/release_branches/1_0_x
+bzr commit -m "merged recent commits from main"
+
+# Sync the updates back up to our branch on the server:
+bzr push bzr+ssh://jayseye@freeplane.bzr.sourceforge.net/bzrroot/freeplane/freeplane_program/development_branches/1_0_x_mac_jarbundler
+
+# Incorporate updates from the main branch into our mirror of the main branch:
+cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x
+bzr pull bzr+ssh://jayseye@freeplane.bzr.sourceforge.net/bzrroot/freeplane/freeplane_program/release_branches/1_0_x
+
+# Commit changes to our own local branch in order to incorporate updates from the main branch
+cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler
+bzr commit -m "First test of Freeplane.app for Mac OS X 10.4 Tiger"
+bzr merge bzr+ssh://jayseye@freeplane.bzr.sourceforge.net/bzrroot/freeplane/freeplane_program/release_branches/1_0_x
+bzr commit -m "merged recent commits from main"
+
+# Push our committed local changes up to the main server
+bzr push bzr+ssh://jayseye@freeplane.bzr.sourceforge.net/bzrroot/freeplane/freeplane_program/development_branches/1_0_x_mac_jarbundler
+
+# Add all new subdirectories / files to bazaar
+bzr add --dry-run
+(Last chance to remove any unwanted files)
+bzr add
+bzr commit -m "Add new subdirectory freeplane_framework/mac-jarbundler"

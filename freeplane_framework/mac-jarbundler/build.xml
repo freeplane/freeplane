@@ -187,111 +187,155 @@
 	<target name="macosxapp" depends="build, mkdistdir">
         or we may want to set this task to be invoked at the end of the "dist" task
 
-  Remaining steps before release of this file:
-    Move most comments to a Freeplane map, to document the development process
-      Document how to create a Mac icon (.icms) from freeplane.svg:
-        Open freeplane_framework/script/freeplane.svg in The Gimp image editor
-          Actually using Gimpshop.app under Mac OS X Tiger
-          Save as a 128x128 pixel .PNG file to mac-jarbundler/freeplane128x128.png
-            Delete this intermediate file after creating freeplane.icns
-        Open Apple XCode "Icon Composer.app" utility
-          Drag 'n drop freeplane128x128.png into the 128-pixel thumbnail cell
-          Save As mac-jarbundler/freeplane.icns
-    Check any remaining TODO notes commented in this task
-    Confirm that all property tags are in active use, and delete any which are obsolete
-    Break up the long macdefines and macparams properties into multiple (sub-)properties
-    Create a depends clause for this ant task, per the note above
-    Test restoring use of jarfileset inside our jarbundler task
-      Would eliminate the separate ant <copy...> task
-      Probably need to comment out the jar= clause which is disallowed with jarfileset
-        Test whether specifying the OSGI main class is sufficient 
-    Trace and fix Freeplane exiting immediately from the application menu Freeplane > Quit
-      Any unsaved changes are discarded
-      Should invoke the same logic as File > Quit (displays a File Was Modified, Save? dialog)
-        This works correctly when closing the window via its red Close widget
-      FreeMind correctly displays a File Was Modified, Save? dialog for FreeMind > Quit
-        !! TODO: Check FreeMind source for handling the Application > Quit event
-    Trace and fix Mac file associations
-      All the same symptoms occur under Leopard where we've never before run Freeplane
-        The old logo icon must somehow be incorporated into Freeplane.app ??
-      Cannot assign Freeplane.app for all documents of this type via Get Info
-        The default XCode selection, and its icon, reappear after clicking Change All...
-        The assignment fails even when logged in as root, and even under Leopard
-        Assignment only succeeds for individual files
-          In this case the correct new document icon is displayed in Finder and in Get Info
-      Check the icon used when Freeplane is minimized in the dock
-        Still displays as our previous icon, adapted from the Wiki logo
-          Had used this in an AppleScript implementation of Freeplane.app
-            This had its own applet.icns and is now renamed to FreeplaneAppleScript.app
-        Had been using the program icon as the document icon
-          Ask on developer-list for an alternate .svg file to use
-          Use a larger icon, as the banner is too short
-          Might using the same icon be causing a problem?
-            Testing Banner.svg attachment received from Predrag, now converted to .icns
-              Also changed capitalization in the parameter name, from iconFile to iconfile
-              Did not help, still getting all the same symptoms
-                Also dist/Freeplane.app does not always display the correct icon in Finder
-                  Sometimes looks like an AppleScript icon??
-                  Correct icon displays when logged in as another user (root)
-                    When this happens again, test logging out and in again as Jo
-                      Also test creating a desktop shortcut to the dist directory
-                      Delete the .DS_Store file via iTerm, then re-open via new desktop shortcut
-      Consider building under Leopard or under Linux
-      Test filling in more of the optional JarBundler fields
-        Check which fields are used by FreeMind
-        PkgInfo file contains: APPL????
-          !! TODO: Check for a JarBundler field corresponding to CFBundleSignature
-        Update JVMVersion to 1.4+ (or should it be 1.5+ ?)
-      Adapt to be closer to the way that FreeMind acomplishes its file associations
-        Tested patching Freeplane.app's Info.plist to use the same order of keys as FreeMind
-          Did not appear to make any difference
-        Can select FreeMind to override XCode as the default for all documents of this time
-          XCode actually remains the default in this case, per right-click menu
-          Associations return to XCode if we then select Freeplane and Change All...
-          !! TODO: Test restarting in Safe Mode, and perhaps clearing caches
-            Check whether FreeMind file associations become the default
-      Adapt the four parameters as passed in freeplane.sh
-        Documents still fail to open when Freeplane.app is invoked via Open With...
-          FreeMind is able to open documents invoked via Open With...
-            !! TODO: Check FreeMind source for how it opens documents via Open With...
-        Our old AppleScript Freeplane.app only invoked freeplane.sh:
-          do shell script "cd /Applications/freeplane; /bin/bash -c ./freeplane.sh"
-        Check the syntax for accessing command-line parameters in drag 'n drop apps
-          Nothing found via Google nor in JarBundler docs
-          !! TODO: Check FreeMind startup parameters
-      Comment out the file association subtask for the initial merge
-    Test JavaApplicationStub compatible with Tiger, Leopard, Snow Leopard, Intel and PowerPC
-      Added JavaApplicationStub to ${mac-jarbundler} directory
-      Renamed to FreeplaneJavaApplicationStub for better visibility with 'top' command
-      !! TODO: JavaApplicationStub Find Apple's license and either add it to comments here,
-               or include it in ${mac-jarbundler} directory
-      Added to Bazaar: "bzr add freeplane_framework/mac-jarbundler/FreeplaneJavaApplicationStub"
-    Commit the changes made so far, after cleaning up
-      Check again for any unneeded changes made to this branch, and reverse or delete them
-        Use bzr status to reveal all changed / added files
-          No need to perform an "ant clean"
-            Output directories are masked by the .bzrignore file
-              !! TODO: Check whether we can easily add all .DS_Store files to .bzrignore
-          Keeping mac-jarbundler/buildOriginal.xml for now, also buildFeb04.xml
-      Perform a full ant build (the default "dist") then backup online and update under:
-        /Applications
-        mac-jarbundler/
+    Create icon(s) from svg, then include and specify to jarbundler
+    Check which other directories / files we need to include in Freeplane.app
+      Help > Documentation F1 reports that it requires dist/doc
+        Same report for Help > Key Reference
+        This works when running freeplane.sh from the command line, from inside Freeplane.app
+        Check whether this gets resolved once we get OSGI working
   -->
 	<target name="macosxapp">
 
+<!-- Tracing knopflerfish error: 
+    <property name="macstartupdir" value="${workspace}/freeplane/dist/org.freeplane.core/lib" />
+-->
     <property name="macappfilename" value="Freeplane" />
     <property name="macappextension" value="app" />
     <property name="macappfullpath" value="${dist}/${macappfilename}.${macappextension}" />
     <property name="macosgidir" value="${build}" />
     <property name="macpluginsdir" value="plugins" />
+    <property name="macdefines" value="-Dapple.laf.useScreenMenuBar=true -Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
+<!-- Tracing knopflerfish error
+
+    These relative paths did not help:
+    <property name="macxargs" value="-xargs ../Resources/Java/props.xargs -xargs ../Resources/Java/init.xargs" /> 
+
+    Absolue paths partially bypass the problem, as a kludge:
+    <property name="macxargs" value="-xargs /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java/props.xargs -xargs /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java/init.xargs" />
+
+    Paths (below) adapted from freeplane.sh cause Bad URL errors:
+-->
     <property name="macxargs" value="-xargs ./props.xargs -xargs ./init.xargs" /> 
     <property name="macmemory" value="-Xmx512m" />
-    <property name="macparams" value="-Dorg.freeplane.param1=$1 -Dorg.freeplane.param2=$2 -Dorg.freeplane.param3=$3 -Dorg.freeplane.param4=$4" />
-    <property name="macdefines" value="-Dapple.laf.useScreenMenuBar=true -Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
+
+
+    <!-- Finished version will start the knopflerfish OSGI framework.jar 
+      Assuming that that jarfile's mainclass is:
+        "org.knopflerfish.framework.Main" 
+          per freeplane_devresources/eclipse/freeplane knopflerfish.launch
+      Note that the name of the jarfile may not be specified when using a jarfilelist
+        "${build}/framework.jar"
+      Freeplane still fails to start when we double-click on Freeplane.app
+        Retesting now that we pass all arguments as done in freeplane.sh
+          Ran freeplane.sh OK from the command line, from inside Freeplane.app
+          Confirm that knopflerfish is actually found 
+            Same symptom occurred when we tested garbing the macmainclass value
+          Testing invoking framework.jar rather than using jarfileset
+            Useing an alternative to jarfileset to copy the build/ tree
+              Testing an ant <copy> task using a fileset
+                Invoking this after the jarbundler task finishes
+                  JarBundler creates the Freeplane.app directory and *might* erase it first
+                Freeplane still fails to start
+          Consider passing the four empty arguments?
+          Test filling in more optional jarbuilder fields
+            PkgInfo file contains: APPL????
+              !! TODO: Fill in the field corresponding to CFBundleSignature
+          Tracing in console.log: /Library/Logs/Console/502/console.log
+            java.lang.IllegalArgumentException: Bad xargs URL ./props.xargs: 
+              java.net.MalformedURLException: no protocol: ./props.xargs
+            Same error if we change to the Java dir inside Freeplane.app in iTerm and invoke via: 
+              open ../xxx/Freeplane.app
+                Perhaps the open command ignores the current directory?
+            Similar error is reported in iTerm if we change to the Java dir inside Freeplane.app:
+              cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java
+                and then type: ../../../../Freeplane.app/Contents/MacOS/JavaApplicationStub
+                  This invocation should ensure that we're in the correct directory
+                    This is relevant because freeplane.sh only works when we cd to its directory
+            Rechecking tracing the xargs passed from freeplane.sh
+              Looks the same, so test:
+                Eliminated the path, just specifying props.xargs: No help
+                Escaped the slash as .//props.xargs: No help
+                - 
+               !! TODO: Consider whether this is related to the freeplane.sh permissions problem
+                  ant may not be running in the directory we think we are,
+                    or perhaps the relative path ./ (in ${dist}) may not work for <chmod ...>
+                      Check ant documentation for the <chmod ...> task
+                ! TODO: Test prepending the problem filespecs with file:// as protocol
+                Tested specifying the full absolue path to the .xargs files
+                  This seems to be bypassing the error,
+                    but now we get an error message about org.freeplane.core
+                      Appears to be a problem processing the contents of init.xargs:
+                        -istart org.freeplane.core
+                          Tested copying JavaApplicationStub to the Java directory,
+                            and invoking it from there as ./JavaApplicationStub
+                              Other problems were reported
+                          Tested making paths relative to the executable JavaApplicationStub
+                            Does not appear to work: same error report as with ./props.xargs
+                          Tested going back to absolute paths, and patching init.xargs
+                            Tested an absolute path in init.xargs to org.freeplane.core
+                            Got a similar error: java.net.MalformedURLException: no protocol: 
+                              /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java/core/org.freeplane.core
+                            Restored the original file since this did not help
+          Resolve the apparent conflict between Mac .app packaging vs OSGI packaging
+            Patch, or create a customized Freeplane.app which works with OSGI?
+              If we can kludge manually, then we might be able to modify jarbundler's source
+            Check for an existing OSGI-based app which has a Mac OS X .app package
+              Check the source / build code for Eclipse.app which is OSGI-based?
+                Eclipse might have their own custom solution rather than use jarbundler
+            Check jarbundler site / docs / community for anything about OSGI / knopflerfish
+              Google search for (jarbundler osgi) found only one possibly-relevant match:
+                http://osdir.com/ml/voip.sip-communicator.devel/2006-12/msg00004.html
+                This list a patch to build.xml which shows only part of the file
+                Could follow up to check whether the full source is available
+            Check knopflerfish / OSGI sites / docs / community for anything Mac OS X related
+              Check patched .app example in detail
+                Downloaded to /Users/jo/Desktop/Downloads/Knopflerfish.app.tgz
+                  Expanded to /Users/jo/Desktop/Downloads/Knopflerfish.app
+                http://sourceforge.net/tracker/index.php?func=detail&aid=1651148&group_id=82798&atid=567241
+                The downloaded code doesn't run, and doesn't match the tracker issue
+                  Might still be able to adapt the idea of patching a symlink inside the .app
+                  Check the tracker date to see if we might reply to Alex, the author
+            Check how far we could go with freeplane.sh patched to use the Mac menu
+              Probably could NOT pass the -Dxxx as a command-line arg
+              Can we change the name from org.knopflerfish.framework.main to Freeplane ?
+              Can we change the icon?
+              Can we create an .app bundle from scratch by hacking together an info.plist ?
+            Test resolving paths by emulating the hierarchy as invoked from freeplane.sh 
+              First checked the xargs paths as invoked by freeplane.sh with DEBUG=run:
+                Reported by freeplane.sh as: -xargs ./props.xargs -xargs ./init.xargs
+                Reported by Knopflerfish as:
+                  Loading xargs file /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java/./props.xargs
+                  Loading xargs file /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java/./init.xargs
+              Commented out the full absolute paths, and restored paths used by freeplane.sh
+              Also performed ant (default is dist, includes clean, build) and macosxapp first
+              Restoring directory in iTerm after each  "ant macosxapp" (in another tab) using:
+                cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java
+                Then confirming successful run via:
+                  chmod a+x freeplane.sh
+                  ./freeplane.sh
+              -
+              Experiment with:
+                Running JavaApplicationStub from different directories: Got same xargs error in:
+                  Freeplane.app
+                    Contents
+                      MacOS
+                      Resources
+                        Java
+                          core
+                            org.freeplane.core
+                              lib
+                Create symlinks
+                Move and/or copy files and/or folders
+                  Tested moving JavaApplicationStub from MacOS directory to the Java directory
+                    Failed, as did symlinking either way
+                Manually editing info.plist seems to work!
+    -->
     <property name="macmainclass" value="org.knopflerfish.framework.Main" />
-    <property name="macicon" value="${mac-jarbundler}/freeplane.icns" />
-    <property name="macdocumenticon" value="${mac-jarbundler}/Banner.icns" />
-    <property name="macstubfile" value="${mac-jarbundler}/FreeplaneJavaApplicationStub" />
+
+    <!-- Initial test starts Freeplane's main jar file "freeplaneeditor.jar"
+      This disables support for plugins, but allows testing other features
+    <property name="macmainclass" value="org.freeplane.main.application.FreeplaneStarter" />
+    -->
 
     <!-- Delete any existing Freeplane.app (it's a directory) -->
     <delete dir="${dist}/${macappfilename}.${macappextension}"/>
@@ -300,51 +344,35 @@
                 name="${macappfilename}"
                 mainclass="${macmainclass}"
                 version="${ver}"
-                vmoptions="${macmemory} ${macparams} ${macdefines}"
+                vmoptions="${macmemory} ${macdefines}"
                 arguments="${macxargs}"
                 jar="${macosgidir}/framework.jar"
-                icon="${macicon}"
-                stubfile="${macstubfile}"
                 >
+      <!-- This works without OSGI
+      <jarfileset dir="${macstartupdir}">
+        <include name="**/*.jar" />
+      </jarfileset>
+
+      <jarfileset dir="${macosgidir}">
+        <include name="framework.jar" />
+        <include name="*.xargs" />
+        <include name="${macpluginsdir}/" />
+      </jarfileset>
+      -->
       <!-- For OSGI we want the entire build/ tree except WIndows-related stuff
-             Commented out to allow testing jar=framework.jar
+            This also works without OSGI, 
+              so we can delete the old jarfilesets above after OSGI is working
+            Commenting out for now to allow specifying jar=framewok.jar
       <jarfileset dir="${macosgidir}">
         <exclude name="**/*.bat" />
         <exclude name="**/*.exe" />
       </jarfileset>
       -->
-
-      <!-- Commenting out file associations until this is debugged
-      <documenttype name="Mindmap"
-                    extensions="mm" 
-                    ostypes="MM"
-                    iconfile="${macdocumenticon}"
-                    role="Editor"/>
-      -->
     </jarbundler>
 
-    <!-- Patch the Info.plist file created by JarBundler, to work with Knopflerfish OSGI
-           Courtesy of Volker who supplied the logic for this <replace> subtask
-      Freeplane failed to start when double-clicking on Freeplane.app in Finder
-        Fixed by editing Info.plist to set the WorkingDirectory to $JAVAROOT
-          Found the idea for WorkingDirectory in a post on Knopflerfish's SF site:
-            http://sourceforge.net/tracker/index.php?func=detail&aid=1651148&group_id=82798&atid=567241
-            The downloadable example code had problems but inspired the solution
-          Traced the issue in console.log: /Library/Logs/Console/502/console.log
-            java.lang.IllegalArgumentException: Bad xargs URL ./props.xargs: 
-              java.net.MalformedURLException: no protocol: ./props.xargs
-            Similar error was reported when tested in iTerm using two tabs:
-              Ran this ant task in the first iTerm tab
-                cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/ant
-                Invoked this ant task using: ant macosxapp
-              Invoked Freeplane in the second iTerm tab
-                Changed to the Java dir inside Freeplane.app:
-                  cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java
-                    Must repeat this "cd" command after each use of ant in the other tab
-                      Recovers the working directory after the build deletes and recreates it
-                Then typed: ../../../../Freeplane.app/Contents/MacOS/JavaApplicationStub
-          Confirmed that invoking JavaApplicationStub in iTerm now starts Freeplane
-    -->
+    <!-- Patch the Info.plist file created by JarBundler, to work with Knopflerfish OSGI -->
+    <!-- Courtesy of Volker who supplied this logic as a separate target:
+    <target name="patch-plist"> -->
     <echo message="Adding WorkingDirectory to Info.plist" />
     <replace file="${macappfullpath}/Contents/Info.plist">
       <replacetoken><![CDATA[<string>org.knopflerfish.framework.Main</string>]]></replacetoken>
@@ -352,16 +380,11 @@
 <key>WorkingDirectory</key>
   <string>$JAVAROOT</string>]]></replacevalue>
     </replace>
+    <!-- </target> -->
 
     <!-- Copy the entire build/ tree except WIndows-related stuff
           Also exclude the OSGI framework.jar which is copied by the jarbundler task
-          Doing this separately to allow specifying jar=framework.jar in the jarbundler task
-            jarbundler allows either jar= or jarfileset but not both
-            Copying after the jarbundler task which creates the Freeplane.app directory 
-              JarBundler may erase the directory if it already exists
-                This is documented in their change log
-            !! TODO: Test restoring the jarfileset inside jarbundler
-                       Comment out this copy task, and delete it if jarfileset works
+          Doing this after the jarbundler task to allow specifying jar=framewok.jar
     -->
 		<copy todir="${macappfullpath}/Contents/Resources/Java">
 			<fileset dir="${macosgidir}">
@@ -371,12 +394,15 @@
       </fileset >
 		</copy>
 
-    <!-- Restore the eXecutable permission flags on the Unix script -->
+    <!-- Restore the eXecutable permission flags on the Unix script, for debug testing
+           !! TODO: Trace why permissions are lost here to begin with,
+                      and why chmod appears to fail silently
+     -->
     <echo message="Setting eXecutable permissions on ${macappfullpath}/Contents/Resources/Java/freeplane.sh" />
 		<chmod file="${macappfullpath}/Contents/Resources/Java/freeplane.sh" perm="ugo+rx" />
 	</target>
 
-	<target name="dist" depends="clean, binzip, srczip, installer, portableinstaller, macosxapp">
+	<target name="dist" depends="clean, binzip, srczip, installer, portableinstaller">
 		<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
 	</target>
 
