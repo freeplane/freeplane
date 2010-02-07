@@ -199,33 +199,79 @@
           Save As mac-jarbundler/freeplane.icns
     Check any remaining TODO notes commented in this task
     Confirm that all property tags are in active use, and delete any which are obsolete
-    Break up the long macdefines property into sub-properties?
+    Break up the long macdefines and macparams properties into multiple (sub-)properties
     Create a depends clause for this ant task, per the note above
-    Consider filling in more optional jarbuilder fields
-      Check which fields are used by FreeMind
-      PkgInfo file contains: APPL????
-        !! TODO: Check for a JarBundler field corresponding to CFBundleSignature
-      Update JVMVersion to 1.4+ (or should it be 1.5+ ?)
     Test restoring use of jarfileset inside our jarbundler task
       Would eliminate the separate ant <copy...> task
       Probably need to comment out the jar= clause which is disallowed with jarfileset
         Test whether specifying the OSGI main class is sufficient 
-    Add Mac file associations
-      Check the new icon: When minimized in the dock, still displays as previous icon
-        Previously had adapted the logo from the Wiki for use as an icon
-        Test rebooting to clear any icon cache
-          Use "Safe Boot" to clear all caches if the old icon still persists
-      Freeplane is not listed as an option for .mm files via Open With nor Get Info
-        Check how FreeMind acomplishes its file associations
-        Check JarBundler docs to confirm whether this is an option
-    Get JavaApplicationStub compatible with Tiger, Leopard, Snow Leopard, Intel and PowerPC
-      Our Tiger version is reported as Universal via "Get Info" but may fail under Leopard
-      Then add to ${mac-jarbundler} directory and specify as a jarbundler argument
+    Trace and fix Freeplane exiting immediately from the application menu Freeplane > Quit
+      Any unsaved changes are discarded
+      Should invoke the same logic as File > Quit (displays a File Was Modified, Save? dialog)
+        This works correctly when closing the window via its red Close widget
+      FreeMind correctly displays a File Was Modified, Save? dialog for FreeMind > Quit
+        !! TODO: Check FreeMind source for handling the Application > Quit event
+    Trace and fix Mac file associations
+      All the same symptoms occur under Leopard where we've never before run Freeplane
+        The old logo icon must somehow be incorporated into Freeplane.app ??
+      Cannot assign Freeplane.app for all documents of this type via Get Info
+        The default XCode selection, and its icon, reappear after clicking Change All...
+        The assignment fails even when logged in as root, and even under Leopard
+        Assignment only succeeds for individual files
+          In this case the correct new document icon is displayed in Finder and in Get Info
+      Check the icon used when Freeplane is minimized in the dock
+        Still displays as our previous icon, adapted from the Wiki logo
+          Had used this in an AppleScript implementation of Freeplane.app
+            This had its own applet.icns and is now renamed to FreeplaneAppleScript.app
+        Had been using the program icon as the document icon
+          Ask on developer-list for an alternate .svg file to use
+          Use a larger icon, as the banner is too short
+          Might using the same icon be causing a problem?
+            Testing Banner.svg attachment received from Predrag, now converted to .icns
+              Also changed capitalization in the parameter name, from iconFile to iconfile
+              Did not help, still getting all the same symptoms
+                Also dist/Freeplane.app does not always display the correct icon in Finder
+                  Sometimes looks like an AppleScript icon??
+                  Correct icon displays when logged in as another user (root)
+                    When this happens again, test logging out and in again as Jo
+                      Also test creating a desktop shortcut to the dist directory
+                      Delete the .DS_Store file via iTerm, then re-open via new desktop shortcut
+      Consider building under Leopard or under Linux
+      Test filling in more of the optional JarBundler fields
+        Check which fields are used by FreeMind
+        PkgInfo file contains: APPL????
+          !! TODO: Check for a JarBundler field corresponding to CFBundleSignature
+        Update JVMVersion to 1.4+ (or should it be 1.5+ ?)
+      Adapt to be closer to the way that FreeMind acomplishes its file associations
+        Tested patching Freeplane.app's Info.plist to use the same order of keys as FreeMind
+          Did not appear to make any difference
+        Can select FreeMind to override XCode as the default for all documents of this time
+          XCode actually remains the default in this case, per right-click menu
+          Associations return to XCode if we then select Freeplane and Change All...
+          !! TODO: Test restarting in Safe Mode, and perhaps clearing caches
+            Check whether FreeMind file associations become the default
+      Adapt the four parameters as passed in freeplane.sh
+        Documents still fail to open when Freeplane.app is invoked via Open With...
+          FreeMind is able to open documents invoked via Open With...
+            !! TODO: Check FreeMind source for how it opens documents via Open With...
+        Our old AppleScript Freeplane.app only invoked freeplane.sh:
+          do shell script "cd /Applications/freeplane; /bin/bash -c ./freeplane.sh"
+        Check the syntax for accessing command-line parameters in drag 'n drop apps
+          Nothing found via Google nor in JarBundler docs
+          !! TODO: Check FreeMind startup parameters
+      Comment out the file association subtask for the initial merge
+    Test JavaApplicationStub compatible with Tiger, Leopard, Snow Leopard, Intel and PowerPC
+      Added JavaApplicationStub to ${mac-jarbundler} directory
+      Renamed to FreeplaneJavaApplicationStub for better visibility with 'top' command
+      !! TODO: JavaApplicationStub Find Apple's license and either add it to comments here,
+               or include it in ${mac-jarbundler} directory
+      Added to Bazaar: "bzr add freeplane_framework/mac-jarbundler/FreeplaneJavaApplicationStub"
     Commit the changes made so far, after cleaning up
       Check again for any unneeded changes made to this branch, and reverse or delete them
-        bzr status should reveal all changed / added files
+        Use bzr status to reveal all changed / added files
           No need to perform an "ant clean"
             Output directories are masked by the .bzrignore file
+              !! TODO: Check whether we can easily add all .DS_Store files to .bzrignore
           Keeping mac-jarbundler/buildOriginal.xml for now, also buildFeb04.xml
       Perform a full ant build (the default "dist") then backup online and update under:
         /Applications
@@ -238,11 +284,14 @@
     <property name="macappfullpath" value="${dist}/${macappfilename}.${macappextension}" />
     <property name="macosgidir" value="${build}" />
     <property name="macpluginsdir" value="plugins" />
-    <property name="macdefines" value="-Dapple.laf.useScreenMenuBar=true -Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
     <property name="macxargs" value="-xargs ./props.xargs -xargs ./init.xargs" /> 
     <property name="macmemory" value="-Xmx512m" />
+    <property name="macparams" value="-Dorg.freeplane.param1=$1 -Dorg.freeplane.param2=$2 -Dorg.freeplane.param3=$3 -Dorg.freeplane.param4=$4" />
+    <property name="macdefines" value="-Dapple.laf.useScreenMenuBar=true -Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
     <property name="macmainclass" value="org.knopflerfish.framework.Main" />
     <property name="macicon" value="${mac-jarbundler}/freeplane.icns" />
+    <property name="macdocumenticon" value="${mac-jarbundler}/Banner.icns" />
+    <property name="macstubfile" value="${mac-jarbundler}/FreeplaneJavaApplicationStub" />
 
     <!-- Delete any existing Freeplane.app (it's a directory) -->
     <delete dir="${dist}/${macappfilename}.${macappextension}"/>
@@ -251,10 +300,11 @@
                 name="${macappfilename}"
                 mainclass="${macmainclass}"
                 version="${ver}"
-                vmoptions="${macmemory} ${macdefines}"
+                vmoptions="${macmemory} ${macparams} ${macdefines}"
                 arguments="${macxargs}"
                 jar="${macosgidir}/framework.jar"
                 icon="${macicon}"
+                stubfile="${macstubfile}"
                 >
       <!-- For OSGI we want the entire build/ tree except WIndows-related stuff
              Commented out to allow testing jar=framework.jar
@@ -262,6 +312,14 @@
         <exclude name="**/*.bat" />
         <exclude name="**/*.exe" />
       </jarfileset>
+      -->
+
+      <!-- Commenting out file associations until this is debugged
+      <documenttype name="Mindmap"
+                    extensions="mm" 
+                    ostypes="MM"
+                    iconfile="${macdocumenticon}"
+                    role="Editor"/>
       -->
     </jarbundler>
 
@@ -300,7 +358,8 @@
           Doing this separately to allow specifying jar=framework.jar in the jarbundler task
             jarbundler allows either jar= or jarfileset but not both
             Copying after the jarbundler task which creates the Freeplane.app directory 
-              JarBundler *might* erase the directory if it already exists
+              JarBundler may erase the directory if it already exists
+                This is documented in their change log
             !! TODO: Test restoring the jarfileset inside jarbundler
                        Comment out this copy task, and delete it if jarfileset works
     -->
@@ -312,10 +371,7 @@
       </fileset >
 		</copy>
 
-    <!-- Restore the eXecutable permission flags on the Unix script, for debug testing
-           !! TODO: Trace why permissions are lost here to begin with,
-                      and why chmod appears to fail silently
-     -->
+    <!-- Restore the eXecutable permission flags on the Unix script -->
     <echo message="Setting eXecutable permissions on ${macappfullpath}/Contents/Resources/Java/freeplane.sh" />
 		<chmod file="${macappfullpath}/Contents/Resources/Java/freeplane.sh" perm="ugo+rx" />
 	</target>
