@@ -59,6 +59,7 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.util.Compat;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 
@@ -354,6 +355,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 		final ViewController viewController = controller.getViewController();
 		viewController.updateMenus(menuBuilder);
+		if(Compat.isMacOsX()){
+			menuBuilder.removeElement("/map_popup/toolbars/ToggleMenubarAction");
+		}
 	}
 
 	private void updateModeMenu() {
