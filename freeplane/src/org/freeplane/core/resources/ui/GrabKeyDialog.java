@@ -99,6 +99,10 @@ public class GrabKeyDialog extends JDialog {
 			if(KeyEvent.KEY_PRESSED != evt.getID()){
 				return;
 			}
+			if(Compat.isMacOsX() && evt.getModifiers() == ActionEvent.CTRL_MASK + ActionEvent.META_MASK + ActionEvent.ALT_MASK){
+				return;
+			}
+			
 			if ((getModifierMask() & evt.getModifiers()) != 0) {
 				final KeyEvent evt2 = new KeyEvent(evt.getComponent(), evt.getID(), evt.getWhen(), ~getModifierMask()
 				        & evt.getModifiers(), evt.getKeyCode(), evt.getKeyChar(), evt.getKeyLocation());
