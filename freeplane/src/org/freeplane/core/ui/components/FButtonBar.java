@@ -291,11 +291,35 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		int border = 5;
 		int h = getComponent(1).getPreferredSize().height;
 		final int componentCount = getComponentCount();
-		float dw = (w - 2 * border + 0f)/componentCount;
-		int i;
-		float x;
-		for(i = 0, x = border ; i < componentCount; i++, x+= dw){
-			getComponent(i).setBounds((int)x, 0, (int)dw, h);
+		float availableWidth = w - 2 * border + 0f;
+		final float dw = availableWidth/componentCount;
+		int preferredWidth = 0;
+		int narrowComponentPreferredWidth = 0;
+		int narrowComponentCount = 0;
+		for(int i = 0; i < componentCount; i++){
+			final int cw = getComponent(i).getPreferredSize().width;
+			preferredWidth += cw;
+			if(cw <= dw){
+				narrowComponentPreferredWidth += cw;
+				narrowComponentCount++;
+			}
+		}
+		final float k;
+		if(availableWidth < preferredWidth){
+			k = (availableWidth - narrowComponentPreferredWidth) / (preferredWidth - narrowComponentPreferredWidth);
+		}
+		else{
+			k = availableWidth  / preferredWidth ;
+		}
+		
+		float x = border;
+		for(int i = 0; i < componentCount; i++){
+			float cw = getComponent(i).getPreferredSize().width;
+			if(k>1f || cw > dw){
+				cw *= k;
+			}
+			getComponent(i).setBounds((int)x, 0, (int)cw, h);
+			x+= cw;
 		}
     }
 
