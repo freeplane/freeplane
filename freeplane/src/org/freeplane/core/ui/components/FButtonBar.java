@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -132,7 +133,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			};
 			button.setFocusable(false);
 			button.setEnabled(false);
-			button.setMargin(FreeplaneToolBar.nullInsets);
+			button.setBorder(BorderFactory.createEtchedBorder());
 			if (System.getProperty("os.name").startsWith("Mac OS")) {
 				button.setBorderPainted(false);
 			}
