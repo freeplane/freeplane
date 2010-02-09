@@ -1,4 +1,7 @@
 <project name="freeplane_mac" default="dist" basedir="..">
+	<condition property="isMacOs">
+	      <os family="mac"/>
+	</condition>
 	<property name="workspace" location=".." />
 	<property name="ver" value="1.0.1" />
 	<property name="src" value="src" />
@@ -16,7 +19,7 @@
 	<property name="build.compiler" value="modern" />
 	<property name="classpath" value="${framework.jar}:${freeplane.jars}"/>
 
-	<target name="build">
+	<target name="build" if="isMacOs">
 		<echo>Freeplane Version = ${ver}.</echo>
 		<delete dir="${build}"  quiet="true"/>
         <delete dir="${dist}" quiet="true" />
@@ -24,13 +27,13 @@
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
 			source="${java_source_version}" target="${java_target_version}">
 		</javac>
+		<jar jarfile="lib/plugin.jar" update="false" >
+			<fileset dir="${build}"/>
+		</jar>
 	</target>
 
 
 	<target name="dist" depends="build">
-		<jar jarfile="lib/plugin.jar">
-			<fileset dir="${build}"/>
-		</jar>
 		<delete dir="${dist.osgi.dir}" quiet="true"/>
 		<mkdir dir="${dist.osgi.dir}" />
 		<copy todir="${dist.osgi.dir}">
@@ -41,7 +44,6 @@
 		<mkdir dir="${dist.osgi.dir}/META-INF" />
 		<copyfile dest="${dist.osgi.dir}/META-INF/MANIFEST.MF" src="${osgimanifest}"/>
 		<delete dir="${build}"  quiet="true"/>
-		<delete file="lib/plugin.jar" quiet="true"/>
 	</target>
 
 	<target name="osgi_dist_as_jar" depends="dist">
