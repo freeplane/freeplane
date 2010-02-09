@@ -1,4 +1,20 @@
 ===============================
+1.0.40 beta
+===============================
+New Features:
+Mac OS support
+Scripting API
+
+Bug fixes:
+FButtonBar layout
+Executing of scripts on multiple nodes
+use clipboard mode on export
+385: Unwanted icon delete
+419]: Turn links to images
+420]: Shortcuts (accelerator keys) don't work going from 1.0.37 to 1.0.39
+415]: Truncated F-Bar
+
+===============================
 1.0.39 beta
 ===============================
 New Features:

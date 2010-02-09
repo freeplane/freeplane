@@ -11,7 +11,7 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.0.39 beta"
+#define MyVersion "1.0.40 beta"
 #define MyAppName "Freeplane"
 #define MyAppVerName "Freeplane"
 #define MyAppPublisher "Open source"
@@ -22,7 +22,7 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{D3941722-C4DD-4509-88C4-0E87F675A859}
-AppCopyright=Copyright © 2000-2009 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev, Predrag Cuklin  and others.
+AppCopyright=Copyright ï¿½ 2000-2009 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev, Predrag Cuklin  and others.
 AppName={#MyAppName}
 AppVerName={#MyAppVerName}
 AppPublisher={#MyAppPublisher}
