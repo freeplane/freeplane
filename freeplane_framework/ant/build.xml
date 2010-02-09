@@ -211,14 +211,19 @@
         This works correctly when closing the window via its red Close widget
       FreeMind correctly displays a File Was Modified, Save? dialog for FreeMind > Quit
         !! TODO: Check FreeMind source for handling the Application > Quit event
+    !! TODO: JavaApplicationStub: Find Apple's license and either add it to comments here,
+             or include the license in ${mac-jarbundler} directory
+      Renamed to FreeplaneJavaApplicationStub for better visibility with 'top' command
+    Commit the changes made so far, after cleaning up
+      Check again for any unneeded changes made to this branch, and reverse or delete them
+        Use bzr status to reveal all changed / added files
+          !! TODO: Check whether we can easily add all .DS_Store files to .bzrignore
+      Perform a full ant build (the default "dist") then backup online and update under:
+        /Applications
+        mac-jarbundler/
     Trace and fix Mac file associations
       All the same symptoms occur under Leopard where we've never before run Freeplane
         The old logo icon must somehow be incorporated into Freeplane.app ??
-      Cannot assign Freeplane.app for all documents of this type via Get Info
-        The default XCode selection, and its icon, reappear after clicking Change All...
-        The assignment fails even when logged in as root, and even under Leopard
-        Assignment only succeeds for individual files
-          In this case the correct new document icon is displayed in Finder and in Get Info
       Check the icon used when Freeplane is minimized in the dock
         Still displays as our previous icon, adapted from the Wiki logo
           Had used this in an AppleScript implementation of Freeplane.app
@@ -227,29 +232,16 @@
           Ask on developer-list for an alternate .svg file to use
           Use a larger icon, as the banner is too short
           Might using the same icon be causing a problem?
-            Testing Banner.svg attachment received from Predrag, now converted to .icns
+            Tested Banner.svg attachment received from Predrag, converted to .icns
               Also changed capitalization in the parameter name, from iconFile to iconfile
-              Did not help, still getting all the same symptoms
+              Did not help, still got all the same symptoms
                 Also dist/Freeplane.app does not always display the correct icon in Finder
                   Sometimes looks like an AppleScript icon??
-                  Correct icon displays when logged in as another user (root)
+                  The correct icon displays when logged in as another user (root)
                     When this happens again, test logging out and in again as Jo
                       Also test creating a desktop shortcut to the dist directory
                       Delete the .DS_Store file via iTerm, then re-open via new desktop shortcut
       Consider building under Leopard or under Linux
-      Test filling in more of the optional JarBundler fields
-        Check which fields are used by FreeMind
-        PkgInfo file contains: APPL????
-          !! TODO: Check for a JarBundler field corresponding to CFBundleSignature
-        Update JVMVersion to 1.4+ (or should it be 1.5+ ?)
-      Adapt to be closer to the way that FreeMind acomplishes its file associations
-        Tested patching Freeplane.app's Info.plist to use the same order of keys as FreeMind
-          Did not appear to make any difference
-        Can select FreeMind to override XCode as the default for all documents of this time
-          XCode actually remains the default in this case, per right-click menu
-          Associations return to XCode if we then select Freeplane and Change All...
-          !! TODO: Test restarting in Safe Mode, and perhaps clearing caches
-            Check whether FreeMind file associations become the default
       Adapt the four parameters as passed in freeplane.sh
         Documents still fail to open when Freeplane.app is invoked via Open With...
           FreeMind is able to open documents invoked via Open With...
@@ -258,24 +250,16 @@
           do shell script "cd /Applications/freeplane; /bin/bash -c ./freeplane.sh"
         Check the syntax for accessing command-line parameters in drag 'n drop apps
           Nothing found via Google nor in JarBundler docs
-          !! TODO: Check FreeMind startup parameters
-      Comment out the file association subtask for the initial merge
-    Test JavaApplicationStub compatible with Tiger, Leopard, Snow Leopard, Intel and PowerPC
-      Added JavaApplicationStub to ${mac-jarbundler} directory
-      Renamed to FreeplaneJavaApplicationStub for better visibility with 'top' command
-      !! TODO: JavaApplicationStub Find Apple's license and either add it to comments here,
-               or include it in ${mac-jarbundler} directory
-      Added to Bazaar: "bzr add freeplane_framework/mac-jarbundler/FreeplaneJavaApplicationStub"
-    Commit the changes made so far, after cleaning up
-      Check again for any unneeded changes made to this branch, and reverse or delete them
-        Use bzr status to reveal all changed / added files
-          No need to perform an "ant clean"
-            Output directories are masked by the .bzrignore file
-              !! TODO: Check whether we can easily add all .DS_Store files to .bzrignore
-          Keeping mac-jarbundler/buildOriginal.xml for now, also buildFeb04.xml
-      Perform a full ant build (the default "dist") then backup online and update under:
-        /Applications
-        mac-jarbundler/
+        Commented out for now, as bash syntax "$1" is probably incorrect in this context
+        !! TODO: Check FreeMind startup parameters
+      This is mostly working now, after filling in more of the optional JarBundler fields
+        !! TODO: Check whether JVMVersion should be 1.5+ instead of 1.4+
+        Testing signature="FP"
+          This is the JarBundler field corresponding to CFBundleSignature
+          This fixes the PkgInfo file: previously was "APPL????", now "APPLFP"
+          FreeMind uses "FM" even though the field is documented to require 4 characters
+            Consider testing our own 4 characters *after* Freeplane opens the files like FreeMind
+        Freeplane is started up, or activated if running, but it fails to open the .mm file
   -->
 	<target name="macosxapp">
 
@@ -286,12 +270,21 @@
     <property name="macpluginsdir" value="plugins" />
     <property name="macxargs" value="-xargs ./props.xargs -xargs ./init.xargs" /> 
     <property name="macmemory" value="-Xmx512m" />
+    <!-- Disabling "command-line" parameters because the "$1" syntax is probably incorrect here: 
     <property name="macparams" value="-Dorg.freeplane.param1=$1 -Dorg.freeplane.param2=$2 -Dorg.freeplane.param3=$3 -Dorg.freeplane.param4=$4" />
+    --> 
+    <property name="macparams" value="" />
     <property name="macdefines" value="-Dapple.laf.useScreenMenuBar=true -Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
     <property name="macmainclass" value="org.knopflerfish.framework.Main" />
     <property name="macicon" value="${mac-jarbundler}/freeplane.icns" />
     <property name="macdocumenticon" value="${mac-jarbundler}/Banner.icns" />
     <property name="macstubfile" value="${mac-jarbundler}/FreeplaneJavaApplicationStub" />
+    <property name="macinfostring" value="Freeplane ${ver}" />
+    <property name="macshortname" value="Freeplane" />
+    <property name="macbundleid" value="org.freeplane.core" />
+    <property name="macjvmversion" value="1.4+" />
+    <property name="macsignature" value="FP" />
+
 
     <!-- Delete any existing Freeplane.app (it's a directory) -->
     <delete dir="${dist}/${macappfilename}.${macappextension}"/>
@@ -300,11 +293,16 @@
                 name="${macappfilename}"
                 mainclass="${macmainclass}"
                 version="${ver}"
+                infostring="${macinfostring}"
+                shortname="${macshortname}"
+                bundleid="${macbundleid}"
+                jvmversion="${macjvmversion}"
                 vmoptions="${macmemory} ${macparams} ${macdefines}"
                 arguments="${macxargs}"
                 jar="${macosgidir}/framework.jar"
                 icon="${macicon}"
                 stubfile="${macstubfile}"
+                signature="${macsignature}"
                 >
       <!-- For OSGI we want the entire build/ tree except WIndows-related stuff
              Commented out to allow testing jar=framework.jar
@@ -314,13 +312,13 @@
       </jarfileset>
       -->
 
-      <!-- Commenting out file associations until this is debugged
+      <!-- Commenting out icon for file associations until this is debugged
+                    iconfile="${macdocumenticon}"
+      -->
       <documenttype name="Mindmap"
                     extensions="mm" 
                     ostypes="MM"
-                    iconfile="${macdocumenticon}"
                     role="Editor"/>
-      -->
     </jarbundler>
 
     <!-- Patch the Info.plist file created by JarBundler, to work with Knopflerfish OSGI
