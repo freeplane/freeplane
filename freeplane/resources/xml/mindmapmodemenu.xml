@@ -38,8 +38,8 @@
 				<menu_action action="PrintAction" accelerator="control P" />
 				<menu_action action="PrintPreviewAction" />
 			</menu_category>
-			<menu_separator />
 			<menu_category name="quit">
+				<menu_separator />
 				<menu_action action="QuitAction" accelerator="control Q" />
 			</menu_category>
 			<menu_separator />

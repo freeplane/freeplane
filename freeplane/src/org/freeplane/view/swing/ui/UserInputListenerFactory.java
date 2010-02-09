@@ -355,9 +355,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 		final ViewController viewController = controller.getViewController();
 		viewController.updateMenus(menuBuilder);
-		if(Compat.isMacOsX()){
-			menuBuilder.removeElement("/map_popup/toolbars/ToggleMenubarAction");
-		}
 	}
 
 	private void updateModeMenu() {

@@ -20,9 +20,13 @@
 package org.freeplane.plugin.macos;
 
 import java.io.File;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.IMenuContributor;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -56,6 +60,22 @@ public class MacChanges extends ApplicationAdapter  {
 			fmMacApplication.setEnabledPreferencesMenu(true);
 //			fmMacApplication.removePreferencesMenuItem();
 			mIsStartupPhase = false;
+		}
+		Controller controller = modeController.getController();
+		Set<String> modes = controller.getModes();
+		for(String mode:modes){
+			MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory().getMenuBuilder();
+			String[] keys = {
+					"/map_popup/toolbars/ToggleMenubarAction",
+					"/menu_bar/file/quit",
+					"/menu_bar/extras/first/options/PropertyAction",
+					"/menu_bar/help/doc/AboutAction"
+			};
+			for(String key:keys){
+				if(builder.contains(key)){
+					builder.removeElement(key);
+				}
+			}
 		}
 	}
 
