@@ -5,10 +5,15 @@
 	<property name="ver" value="${freeplane_version}" />
 	<property name="root" value="." />
 	<property name="build" value="${root}/build" />
+    <property name="build.plugins" value="${build}/plugins" />
 	<property name="dist" value="${root}/dist" />
 
-  <!-- Mac OS X -->
-  <property name="mac-jarbundler" value = "${root}/mac-jarbundler"/>
+    <!-- Mac OS X -->
+	<condition property="isMacOs">
+	      <os family="mac"/>
+	</condition>
+
+    <property name="mac-jarbundler" value = "${root}/mac-jarbundler"/>
 	<property name="jarbundler.jar" value = "jarbundler-2.1.0.jar"/>
 	<taskdef name="jarbundler"
                classpath="${mac-jarbundler}/${jarbundler.jar}"
@@ -19,18 +24,11 @@
 		<property name="license" value="license.txt" />
 		<property name="readme_src" value="readme.txt" />
 		<property name="build.jars" value="${build}/jars" />
-        <property name="build.plugins" value="${build}/plugins" />
         <property name="build.core" value="${build}/core" />
         <property name="build.resources" value="${build}/resources" />
         <property name="build.doc" value="${build}/doc" />
 		<property name="script" value="${root}/script" />
 
-		<ant antfile="ant/build.xml" target="osgi_dist" dir="${workspace}/freeplane" inheritall="false" />
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_help" inheritall="false" />
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_svg" inheritall="false" />
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_latex" inheritall="false" />
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_script" inheritall="false" />
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_bugreport" inheritall="false" />
 		<mkdir dir="${build}" />
 		<copy todir="${build}">
 			<fileset dir="${script}" />
@@ -39,30 +37,36 @@
 		    <fileset file="windows-launcher/freeplaneConsole.exe" />
 		</copy>
 		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
+		<ant antfile="ant/build.xml" target="osgi_dist" dir="${workspace}/freeplane" inheritall="false" />
 		<mkdir dir="${build.core}/org.freeplane.core" />
 		<copy todir="${build.core}/org.freeplane.core">
 			<fileset dir="${workspace}/freeplane/dist/org.freeplane.core" />
 		</copy>
 
 		<!-- temporarily remove help plugin 
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_help" inheritall="false" />
 		
 		<mkdir dir="${build.plugins}/org.freeplane.plugin.help" />
 		<copy todir="${build.plugins}/org.freeplane.plugin.help">
 			<fileset dir="${workspace}/freeplane_plugin_help/dist/org.freeplane.plugin.help"/>
 		</copy>
 -->
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_latex" inheritall="false" />
 		<mkdir dir="${build.plugins}/org.freeplane.plugin.latex" />
 		<copy todir="${build.plugins}/org.freeplane.plugin.latex">
 			<fileset dir="${workspace}/freeplane_plugin_latex/dist/org.freeplane.plugin.latex" />
 		</copy>
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_svg" inheritall="false" />
 		<mkdir dir="${build.plugins}/org.freeplane.plugin.svg" />
 		<copy todir="${build.plugins}/org.freeplane.plugin.svg">
 			<fileset dir="${workspace}/freeplane_plugin_svg/dist/org.freeplane.plugin.svg" />
 		</copy>
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_script" inheritall="false" /> 
 		<mkdir dir="${build.plugins}/org.freeplane.plugin.script" />
 		<copy todir="${build.plugins}/org.freeplane.plugin.script">
 			<fileset dir="${workspace}/freeplane_plugin_script/dist/org.freeplane.plugin.script" />
 		</copy>
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_bugreport" inheritall="false" />
 		<mkdir dir="${build.plugins}/org.freeplane.plugin.bugreport" />
 		<copy todir="${build.plugins}/org.freeplane.plugin.bugreport">
 			<fileset dir="${workspace}/freeplane_plugin_bugreport/dist/org.freeplane.plugin.bugreport" />
@@ -282,7 +286,7 @@
     <property name="macinfostring" value="Freeplane ${ver}" />
     <property name="macshortname" value="Freeplane" />
     <property name="macbundleid" value="org.freeplane.core" />
-    <property name="macjvmversion" value="1.4+" />
+    <property name="macjvmversion" value="1.5+" />
     <property name="macsignature" value="FP" />
 
 
@@ -361,13 +365,21 @@
             !! TODO: Test restoring the jarfileset inside jarbundler
                        Comment out this copy task, and delete it if jarfileset works
     -->
-		<copy todir="${macappfullpath}/Contents/Resources/Java">
+		<property name="macjavafullpath" value="${macappfullpath}/Contents/Resources/Java"/>
+		<copy todir="${macjavafullpath}">
 			<fileset dir="${macosgidir}">
         <exclude name="**/*.bat" />
         <exclude name="**/*.exe" />
         <exclude name="**/framework.jar" />
       </fileset >
 		</copy>
+
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_mac" inheritall="false"/> 
+		<mkdir dir="${macjavafullpath}/plugins/org.freeplane.plugin.mac"/>
+		<copy todir="${macjavafullpath}/plugins/org.freeplane.plugin.mac">
+			<fileset dir="${workspace}/freeplane_plugin_mac/dist/org.freeplane.plugin.mac" />
+		</copy>
+			
 
     <!-- Restore the eXecutable permission flags on the Unix script -->
     <echo message="Setting eXecutable permissions on ${macappfullpath}/Contents/Resources/Java/freeplane.sh" />
@@ -393,6 +405,8 @@
 			  dir="${workspace}/freeplane_plugin_latex"/>
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/freeplane_plugin_script"/>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_mac"/>
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/freeplane_plugin_bugreport"/>		
 	</target>
