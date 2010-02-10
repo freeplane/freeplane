@@ -98,10 +98,9 @@ class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	private void newAccelerator(final JMenuItem editedItem) {
-		final Frame frame = JOptionPane.getFrameForComponent(editedItem);
 		final Object key = menuBuilder.getKeyByUserObject(editedItem);
 		final String shortcutKey = menuBuilder.getShortcutKey(key.toString());
-		final GrabKeyDialog grabKeyDialog = new GrabKeyDialog(frame, ResourceController.getResourceController()
+		final GrabKeyDialog grabKeyDialog = new GrabKeyDialog(ResourceController.getResourceController()
 		    .getProperty(shortcutKey));
 		grabKeyDialog.setValidator(new IKeystrokeValidator() {
 			private boolean isValid(final DefaultMutableTreeNode menubarNode, final KeyStroke keystroke) {

@@ -64,8 +64,7 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 	public void layout(final DefaultFormBuilder builder) {
 		mButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
-				final Dialog dialog = (Dialog) SwingUtilities.getAncestorOfClass(Dialog.class, builder.getContainer());
-				final GrabKeyDialog keyDialog = new GrabKeyDialog(dialog, getValue(), modifierMask);
+				final GrabKeyDialog keyDialog = new GrabKeyDialog(getValue(), modifierMask);
 				keyDialog.setVisible(true);
 				if (keyDialog.isOK()) {
 					setValue(keyDialog.getShortcut());
