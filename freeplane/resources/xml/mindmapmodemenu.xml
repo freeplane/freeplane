@@ -284,6 +284,7 @@
 				<menu_separator />
 				<menu_category name="options">
 					<menu_action action="PropertyAction" accelerator="control COMMA" />
+					<menu_action action="SetAcceleratorOnNextClickAction" />
 					<menu_submenu name="acceleratorPresets" name_ref="acceleratorPresets">
 						<menu_category name="new" />
 						<menu_separator />

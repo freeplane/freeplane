@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.GrabKeyDialog;
@@ -53,6 +54,16 @@ class AccelerateableAction implements IFreeplaneAction {
 	 */
 	private final MenuBuilder menuBuilder;
 	final private AFreeplaneAction originalAction;
+	private static boolean newAcceleratorOnNextClickEnabled = false;
+
+	static boolean isNewAcceleratorOnNextClickEnabled() {
+		return newAcceleratorOnNextClickEnabled;
+	}
+
+	static void setNewAcceleratorOnNextClick(
+			boolean enabled) {
+		AccelerateableAction.newAcceleratorOnNextClickEnabled = enabled;
+	}
 
 	public AccelerateableAction(final MenuBuilder menuBuilder, final AFreeplaneAction originalAction) {
 		super();
@@ -61,12 +72,20 @@ class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if (!(e.getModifiers() == ActionEvent.CTRL_MASK + InputEvent.BUTTON1_MASK && e.getSource() instanceof JMenuItem)) {
-			originalAction.actionPerformed(e);
+		if(newAcceleratorOnNextClickEnabled){
+			Controller controller = originalAction.getController();
+			if(controller != null){
+				controller.getViewController().out("");
+			}
+		}
+		if (newAcceleratorOnNextClickEnabled 
+				|| e.getModifiers() == ActionEvent.CTRL_MASK + InputEvent.BUTTON1_MASK && e.getSource() instanceof JMenuItem) {
+			newAcceleratorOnNextClickEnabled = false;
+			final JMenuItem item = (JMenuItem) e.getSource();
+			newAccelerator(item);
 			return;
 		}
-		final JMenuItem item = (JMenuItem) e.getSource();
-		newAccelerator(item);
+		originalAction.actionPerformed(e);
 	}
 
 	public void addPropertyChangeListener(final PropertyChangeListener listener) {
