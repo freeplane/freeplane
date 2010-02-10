@@ -41,7 +41,6 @@ import org.freeplane.core.resources.ui.IKeystrokeValidator;
 import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Compat;
 
 /**
  * @author Dimitry Polivaev
@@ -62,14 +61,7 @@ class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final int acceleratorMofifiers;
-		if(Compat.isMacOsX()){
-			acceleratorMofifiers = ActionEvent.CTRL_MASK + ActionEvent.META_MASK + ActionEvent.ALT_MASK;
-		}
-		else {
-			acceleratorMofifiers = ActionEvent.CTRL_MASK + InputEvent.BUTTON1_MASK;
-		}
-		if (!(e.getModifiers() == acceleratorMofifiers && e.getSource() instanceof JMenuItem)) {
+		if (!(e.getModifiers() == ActionEvent.CTRL_MASK + InputEvent.BUTTON1_MASK && e.getSource() instanceof JMenuItem)) {
 			originalAction.actionPerformed(e);
 			return;
 		}
