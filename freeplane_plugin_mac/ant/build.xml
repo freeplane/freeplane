@@ -1,4 +1,4 @@
-<project name="freeplane_mac" default="dist" basedir="..">
+<project name="freeplane_mac" default="builddist" basedir="..">
 	<condition property="isMacOs">
 	      <os family="mac"/>
 	</condition>
@@ -19,7 +19,7 @@
 	<property name="build.compiler" value="modern" />
 	<property name="classpath" value="${framework.jar}:${freeplane.jars}"/>
 
-	<target name="build" if="isMacOs">
+	<target name="build">
 		<echo>Freeplane Version = ${ver}.</echo>
 		<delete dir="${build}"  quiet="true"/>
         <delete dir="${dist}" quiet="true" />
@@ -33,7 +33,7 @@
 	</target>
 
 
-	<target name="dist" depends="build">
+	<target name="dist">
 		<delete dir="${dist.osgi.dir}" quiet="true"/>
 		<mkdir dir="${dist.osgi.dir}" />
 		<copy todir="${dist.osgi.dir}">
@@ -46,6 +46,8 @@
 		<delete dir="${build}"  quiet="true"/>
 	</target>
 
+	<target name="builddist" depends="clean, build, dist"/>
+	
 	<target name="osgi_dist_as_jar" depends="dist">
 		<jar jarfile="${freeplaneplugin.jar}">
 			<fileset dir="${dist.osgi.dir}">

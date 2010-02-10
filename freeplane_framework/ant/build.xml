@@ -374,7 +374,7 @@
       </fileset >
 		</copy>
 
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_mac" inheritall="false"/> 
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_mac" inheritall="false" target="dist"/> 
 		<mkdir dir="${macjavafullpath}/plugins/org.freeplane.plugin.mac"/>
 		<copy todir="${macjavafullpath}/plugins/org.freeplane.plugin.mac">
 			<fileset dir="${workspace}/freeplane_plugin_mac/dist/org.freeplane.plugin.mac" />
@@ -405,8 +405,6 @@
 			  dir="${workspace}/freeplane_plugin_latex"/>
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/freeplane_plugin_script"/>
-		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
-			  dir="${workspace}/freeplane_plugin_mac"/>
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/freeplane_plugin_bugreport"/>		
 	</target>
