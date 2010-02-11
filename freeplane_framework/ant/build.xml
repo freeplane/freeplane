@@ -5,6 +5,7 @@
 	<property name="ver" value="${freeplane_version}" />
 	<property name="root" value="." />
 	<property name="build" value="${root}/build" />
+	<property name="build4mac" value="${root}/build4mac" />
     <property name="build.plugins" value="${build}/plugins" />
 	<property name="dist" value="${root}/dist" />
 
@@ -269,7 +270,7 @@
 
     <property name="macappfilename" value="Freeplane" />
     <property name="macappextension" value="app" />
-    <property name="macappfullpath" value="${dist}/${macappfilename}.${macappextension}" />
+    <property name="macappfullpath" value="${build4mac}/${macappfilename}.${macappextension}" />
     <property name="macosgidir" value="${build}" />
     <property name="macpluginsdir" value="plugins" />
     <property name="macxargs" value="-xargs ./props.xargs -xargs ./init.xargs" /> 
@@ -291,9 +292,9 @@
 
 
     <!-- Delete any existing Freeplane.app (it's a directory) -->
-    <delete dir="${dist}/${macappfilename}.${macappextension}"/>
-
-    <jarbundler dir="${dist}"
+	<mkdir dir="${build4mac}"/>	
+    <delete dir="${build4mac}/${macappfilename}.${macappextension}"/>
+    <jarbundler dir="${build4mac}"
                 name="${macappfilename}"
                 mainclass="${macmainclass}"
                 version="${ver}"
@@ -341,7 +342,7 @@
                 Invoked this ant task using: ant macosxapp
               Invoked Freeplane in the second iTerm tab
                 Changed to the Java dir inside Freeplane.app:
-                  cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/dist/Freeplane.app/Contents/Resources/Java
+                  cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/build4mac/Freeplane.app/Contents/Resources/Java
                     Must repeat this "cd" command after each use of ant in the other tab
                       Recovers the working directory after the build deletes and recreates it
                 Then typed: ../../../../Freeplane.app/Contents/MacOS/JavaApplicationStub
@@ -386,13 +387,21 @@
 		<chmod file="${macappfullpath}/Contents/Resources/Java/freeplane.sh" perm="ugo+rx" />
 	</target>
 
-	<target name="dist" depends="clean, binzip, srczip, installer, portableinstaller, macosxapp">
+	<target name="zip4mac" depends="macosxapp">
+		<zip destfile="${dist}/freeplane_macos_bin-${ver}.zip" compress="true">
+			<zipfileset dir="${build4mac}" prefix="freeplane-${ver}"/>
+		</zip>
+	</target>
+	<target name="dmg4mac"  depends="macosxapp" if="isMacOs">
+	</target>
+	<target name="dist" depends="clean, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac">
 		<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
 	</target>
 
 	<target name="clean">
 		<delete quiet="true" includeemptydirs="true">
 			<fileset dir="${build}" />
+			<fileset dir="${build4mac}" />
 			<fileset dir="${dist}" />
 		</delete>
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
