@@ -51,7 +51,11 @@ public class GrabKeyDialog extends JDialog {
 	class ActionHandler implements ActionListener {
 		public void actionPerformed(final ActionEvent evt) {
 			if (evt.getSource() == ok) {
-				if (canClose(UITools.getKeyStroke(shortcut.getText()))) {
+				if(shortcut.keyChar == null){
+					isOK = false;
+					dispose();
+				}
+				else if (canClose(UITools.getKeyStroke(shortcut.getText()))) {
 					isOK = true;
 					dispose();
 				}
