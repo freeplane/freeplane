@@ -9,4 +9,4 @@ backups
 ./freeplane_framework/windows-launcher/Freeplane_private.res
 ./freeplane_framework/windows-launcher/Freeplane.o
 ./freeplane_framework/windows-launcher/Makefile.win
-
+./freeplane_framework/build4mac
