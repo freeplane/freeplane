@@ -94,9 +94,12 @@ class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if (isNewAcceleratorOnNextClickEnabled() 
-				|| e.getModifiers() == ActionEvent.CTRL_MASK + InputEvent.BUTTON1_MASK && e.getSource() instanceof JMenuItem) {
+		boolean newAcceleratorOnNextClickEnabled = isNewAcceleratorOnNextClickEnabled();
+		if(newAcceleratorOnNextClickEnabled){
 			setAcceleratorOnNextClickActionDialog.setVisible(false);
+		}
+		if (newAcceleratorOnNextClickEnabled 
+				|| e.getModifiers() == ActionEvent.CTRL_MASK + InputEvent.BUTTON1_MASK && e.getSource() instanceof JMenuItem) {
 			final JMenuItem item = (JMenuItem) e.getSource();
 			newAccelerator(item);
 			return;
