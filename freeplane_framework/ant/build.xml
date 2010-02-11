@@ -8,6 +8,9 @@
 	<property name="build4mac" value="${root}/build4mac" />
     <property name="build.plugins" value="${build}/plugins" />
 	<property name="dist" value="${root}/dist" />
+    <property name="macappfilename" value="Freeplane" />
+    <property name="macappextension" value="app" />
+    <property name="macappfullpath" value="${build4mac}/${macappfilename}.${macappextension}" />
 
     <!-- Mac OS X -->
 	<condition property="isMacOs">
@@ -268,9 +271,6 @@
   -->
 	<target name="macosxapp">
 
-    <property name="macappfilename" value="Freeplane" />
-    <property name="macappextension" value="app" />
-    <property name="macappfullpath" value="${build4mac}/${macappfilename}.${macappextension}" />
     <property name="macosgidir" value="${build}" />
     <property name="macpluginsdir" value="plugins" />
     <property name="macxargs" value="-xargs ./props.xargs -xargs ./init.xargs" /> 
@@ -392,7 +392,10 @@
 			<zipfileset dir="${build4mac}" prefix="freeplane-${ver}"/>
 		</zip>
 	</target>
-	<target name="dmg4mac"  depends="macosxapp" if="isMacOs">
+	<target name="dmg4mac"  depends="macosxapp" if="isMacOs" >
+		<exec executable="hdiutil">
+		<arg line="create -srcfolder ${macappfullpath} ${dist}/freeplane_app-${ver}.dmg"/>
+		</exec>
 	</target>
 	<target name="dist" depends="clean, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac">
 		<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
