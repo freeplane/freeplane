@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Dimitry Polivaev
+ *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
  *
- *  This file author is Dimitry Polivaev
+ *  This file is modified by Dimitry Polivaev in 2008.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,25 +17,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.main.osgi;
+package org.freeplane.main.application;
 
 import org.freeplane.core.util.Compat;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
 
-/**
- * @author Dimitry Polivaev
- * 05.01.2009
- */
-public class Activator implements BundleActivator {
-	private BundleActivator activatorImpl;
-	public void start(BundleContext context) throws Exception {
+public class FreeplaneMain {
+	static public void main(final String[] args) {
 		Compat.checkJavaVersion();
-		activatorImpl = new ActivatorImpl();
-		activatorImpl.start(context);
-	}
-
-	public void stop(BundleContext context) throws Exception {
-		activatorImpl.stop(context);
+		final FreeplaneStarter starter = new FreeplaneStarter();
+		starter.run(args);
 	}
 }
