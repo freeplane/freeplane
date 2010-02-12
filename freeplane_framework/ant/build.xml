@@ -133,6 +133,7 @@
 			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="664">
 				<patternset refid="freeplane.sources" />
 				<exclude name="**/*.jar" />
+				<exclude name="**/*JavaApplicationStub*" />
 			</tarfileset>
 			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
 				<include name="${license}" />
