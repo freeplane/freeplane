@@ -188,87 +188,7 @@
 
 	</target>
 
-  <!-- Mac OS X 
-    This task just repackages the Unix files created during the "build" task
-      During development we don't need "clean" and "build" to run first
-      When done developing and testing we may want to restore this:
-	<target name="macosxapp" depends="build, mkdistdir">
-        or we may want to set this task to be invoked at the end of the "dist" task
-
-  Remaining steps before release of this file:
-    Move most comments to a Freeplane map, to document the development process
-      Document how to create a Mac icon (.icms) from freeplane.svg:
-        Open freeplane_framework/script/freeplane.svg in The Gimp image editor
-          Actually using Gimpshop.app under Mac OS X Tiger
-          Save as a 128x128 pixel .PNG file to mac-jarbundler/freeplane128x128.png
-            Delete this intermediate file after creating freeplane.icns
-        Open Apple XCode "Icon Composer.app" utility
-          Drag 'n drop freeplane128x128.png into the 128-pixel thumbnail cell
-          Save As mac-jarbundler/freeplane.icns
-    Check any remaining TODO notes commented in this task
-    Confirm that all property tags are in active use, and delete any which are obsolete
-    Break up the long macdefines and macparams properties into multiple (sub-)properties
-    Create a depends clause for this ant task, per the note above
-    Test restoring use of jarfileset inside our jarbundler task
-      Would eliminate the separate ant <copy...> task
-      Probably need to comment out the jar= clause which is disallowed with jarfileset
-        Test whether specifying the OSGI main class is sufficient 
-    Trace and fix Freeplane exiting immediately from the application menu Freeplane > Quit
-      Any unsaved changes are discarded
-      Should invoke the same logic as File > Quit (displays a File Was Modified, Save? dialog)
-        This works correctly when closing the window via its red Close widget
-      FreeMind correctly displays a File Was Modified, Save? dialog for FreeMind > Quit
-        !! TODO: Check FreeMind source for handling the Application > Quit event
-    !! TODO: JavaApplicationStub: Find Apple's license and either add it to comments here,
-             or include the license in ${mac-jarbundler} directory
-      Renamed to FreeplaneJavaApplicationStub for better visibility with 'top' command
-    Commit the changes made so far, after cleaning up
-      Check again for any unneeded changes made to this branch, and reverse or delete them
-        Use bzr status to reveal all changed / added files
-          !! TODO: Check whether we can easily add all .DS_Store files to .bzrignore
-      Perform a full ant build (the default "dist") then backup online and update under:
-        /Applications
-        mac-jarbundler/
-    Trace and fix Mac file associations
-      All the same symptoms occur under Leopard where we've never before run Freeplane
-        The old logo icon must somehow be incorporated into Freeplane.app ??
-      Check the icon used when Freeplane is minimized in the dock
-        Still displays as our previous icon, adapted from the Wiki logo
-          Had used this in an AppleScript implementation of Freeplane.app
-            This had its own applet.icns and is now renamed to FreeplaneAppleScript.app
-        Had been using the program icon as the document icon
-          Ask on developer-list for an alternate .svg file to use
-          Use a larger icon, as the banner is too short
-          Might using the same icon be causing a problem?
-            Tested Banner.svg attachment received from Predrag, converted to .icns
-              Also changed capitalization in the parameter name, from iconFile to iconfile
-              Did not help, still got all the same symptoms
-                Also dist/Freeplane.app does not always display the correct icon in Finder
-                  Sometimes looks like an AppleScript icon??
-                  The correct icon displays when logged in as another user (root)
-                    When this happens again, test logging out and in again as Jo
-                      Also test creating a desktop shortcut to the dist directory
-                      Delete the .DS_Store file via iTerm, then re-open via new desktop shortcut
-      Consider building under Leopard or under Linux
-      Adapt the four parameters as passed in freeplane.sh
-        Documents still fail to open when Freeplane.app is invoked via Open With...
-          FreeMind is able to open documents invoked via Open With...
-            !! TODO: Check FreeMind source for how it opens documents via Open With...
-        Our old AppleScript Freeplane.app only invoked freeplane.sh:
-          do shell script "cd /Applications/freeplane; /bin/bash -c ./freeplane.sh"
-        Check the syntax for accessing command-line parameters in drag 'n drop apps
-          Nothing found via Google nor in JarBundler docs
-        Commented out for now, as bash syntax "$1" is probably incorrect in this context
-        !! TODO: Check FreeMind startup parameters
-      This is mostly working now, after filling in more of the optional JarBundler fields
-        !! TODO: Check whether JVMVersion should be 1.5+ instead of 1.4+
-        Testing signature="FP"
-          This is the JarBundler field corresponding to CFBundleSignature
-          This fixes the PkgInfo file: previously was "APPL????", now "APPLFP"
-          FreeMind uses "FM" even though the field is documented to require 4 characters
-            Consider testing our own 4 characters *after* Freeplane opens the files like FreeMind
-        Freeplane is started up, or activated if running, but it fails to open the .mm file
-  -->
+  <!-- Mac OS X -->
 	<target name="macosxapp">
 
     <property name="macosgidir" value="${build}" />
@@ -317,7 +237,7 @@
       </jarfileset>
       -->
 
-      <!-- Commenting out icon for file associations until this is debugged
+      <!-- Commenting out the document icon until we get an appropriate image
                     iconfile="${macdocumenticon}"
       -->
       <documenttype name="Mindmap"
@@ -328,25 +248,11 @@
 
     <!-- Patch the Info.plist file created by JarBundler, to work with Knopflerfish OSGI
            Courtesy of Volker who supplied the logic for this <replace> subtask
-      Freeplane failed to start when double-clicking on Freeplane.app in Finder
-        Fixed by editing Info.plist to set the WorkingDirectory to $JAVAROOT
-          Found the idea for WorkingDirectory in a post on Knopflerfish's SF site:
-            http://sourceforge.net/tracker/index.php?func=detail&aid=1651148&group_id=82798&atid=567241
-            The downloadable example code had problems but inspired the solution
-          Traced the issue in console.log: /Library/Logs/Console/502/console.log
-            java.lang.IllegalArgumentException: Bad xargs URL ./props.xargs: 
-              java.net.MalformedURLException: no protocol: ./props.xargs
-            Similar error was reported when tested in iTerm using two tabs:
-              Ran this ant task in the first iTerm tab
-                cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/ant
-                Invoked this ant task using: ant macosxapp
-              Invoked Freeplane in the second iTerm tab
-                Changed to the Java dir inside Freeplane.app:
-                  cd /Users/Shared/Marc/bazaar-freeplane-repo/1_0_x_mac_jarbundler/freeplane_framework/build4mac/Freeplane.app/Contents/Resources/Java
-                    Must repeat this "cd" command after each use of ant in the other tab
-                      Recovers the working directory after the build deletes and recreates it
-                Then typed: ../../../../Freeplane.app/Contents/MacOS/JavaApplicationStub
-          Confirmed that invoking JavaApplicationStub in iTerm now starts Freeplane
+           Allows Freeplane to start when double-clicking on Freeplane.app in Finder
+           Sets the WorkingDirectory to $JAVAROOT
+              Found this idea in a post on Knopflerfish's SF site:
+                http://sourceforge.net/tracker/index.php?func=detail&aid=1651148&group_id=82798&atid=567241
+                The downloadable example code has problems but inspired the solution
     -->
     <echo message="Adding WorkingDirectory to Info.plist" />
     <replace file="${macappfullpath}/Contents/Info.plist">
