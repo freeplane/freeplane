@@ -3,7 +3,9 @@
 ===============================
 New Features:
 Mac OS support
-Scripting API
+Add methods for output to status line in scripting API to Controller
+CopyIDAction
+SetAcceleratorOnNextClickAction
 
 Bug fixes:
 FButtonBar layout
@@ -13,6 +15,8 @@ use clipboard mode on export
 419]: Turn links to images
 420]: Shortcuts (accelerator keys) don't work going from 1.0.37 to 1.0.39
 415]: Truncated F-Bar
+425]: Drag and drop from file explorer under Linux does not create a node with relative link: rewrite MLinkController.findLink
+429]: Cannot load Freeplane after updating Java: check jre version on start
 
 ===============================
 1.0.39 beta
