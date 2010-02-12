@@ -136,6 +136,7 @@ public class ClipboardController implements IExtension {
 		final Controller controller = modeController.getController();
 		modeController.addAction(new CopyAction(controller));
 		modeController.addAction(new CopySingleAction(controller));
+		modeController.addAction(new CopyIDAction(controller));
 	}
 
 	public String createForNodesFlavor(final Collection<NodeModel> selectedNodes, final boolean copyInvisible)
