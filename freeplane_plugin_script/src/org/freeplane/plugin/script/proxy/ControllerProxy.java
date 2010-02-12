@@ -6,6 +6,9 @@ package org.freeplane.plugin.script.proxy;
 import java.util.AbstractList;
 import java.util.List;
 
+import javax.swing.Icon;
+
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -93,4 +96,22 @@ class ControllerProxy implements Proxy.Controller {
 			modeController.deactivateUndo((MMapModel) map);
 		}
 	}
+	
+	public void setStatusInfo(String info){
+		ViewController viewController = getViewController();
+		viewController.out(info);
+	}
+
+	private ViewController getViewController() {
+		return modeController.getController().getViewController();
+	}
+	public void setStatusInfo(String key, String info){
+		ViewController viewController = getViewController();
+		viewController.addStatusInfo(key, info);
+	}
+	public void setStatusInfo(String key, Icon icon){
+		ViewController viewController = getViewController();
+		viewController.addStatusImage(key, icon);
+	}
+	
 }
