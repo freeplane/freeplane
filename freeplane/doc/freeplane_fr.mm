@@ -1,16 +1,16 @@
 <map version="0.9.0_Beta_8">
 <!-- To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node COLOR="#993300" CREATED="1124560950701" ID="Freeplane_Link_1801386192" MODIFIED="1124560950701">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body width="">
-    <p align="center">
-      Freeplane<br/><small>- free mind mapping software -</small>�
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body width="">
+    <p align="center">
+      Freeplane<br/><small>- free mind mapping software -</small>�
+    </p>
+  </body>
+</html>
 </richcontent>
 <font BOLD="true" NAME="Dialog" SIZE="18"/>
 <node CREATED="1124560950701" ID="Freeplane_Link_590828800" LINK="http://freeplane.sourceforge.net" MODIFIED="1192809229093" POSITION="left" TEXT="Page d&apos;accueil de Freeplane">
@@ -1139,21 +1139,21 @@
 </richcontent>
 </node>
 <node CREATED="1124560950717" ID="Freeplane_Link_1514218661" MODIFIED="1193666704984">
-<richcontent TYPE="NODE"><html>
-  <head>
-    <style type="text/css">
-      <!--
-        p { margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <p>
-      [Ce paragraphe est obsol&#232;te] A remark on the file patterns.xml follows. Physical style applies to n&#339;ud, if there is a &lt;node&gt; tag. It applies to edge, if there is an &lt;edge&gt; tag. &lt;node&gt; tag can have tag as a child. Study the file &quot;patterns.xml&quot; supplied with Freeplane.
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    <style type="text/css">
+      <!--
+        p { margin-top: 0 }
+      -->
+    </style>
+    
+  </head>
+  <body>
+    <p>
+      [Ce paragraphe est obsol&#232;te] A remark on the file patterns.xml follows. Physical style applies to n&#339;ud, if there is a &lt;node&gt; tag. It applies to edge, if there is an &lt;edge&gt; tag. &lt;node&gt; tag can have tag as a child. Study the file &quot;patterns.xml&quot; supplied with Freeplane.
+    </p>
+  </body>
+</html>
 </richcontent>
 </node>
 </node>
@@ -1273,41 +1273,41 @@
 </richcontent>
 </node>
 <node CREATED="1124560950717" ID="Freeplane_Link_97422033" MODIFIED="1193667294546">
-<richcontent TYPE="NODE"><html>
-  <head>
-    <style type="text/css">
-      <!--
-        p { margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <p>
-      Pour lier une adresse mail, validez une adresse au format <i>mailto:paul.toto@supermail.com</i>
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    <style type="text/css">
+      <!--
+        p { margin-top: 0 }
+      -->
+    </style>
+    
+  </head>
+  <body>
+    <p>
+      Pour lier une adresse mail, validez une adresse au format <i>mailto:paul.toto@supermail.com</i>
+    </p>
+  </body>
+</html>
 </richcontent>
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950717" ID="Freeplane_Link_325647039" MODIFIED="1193667359015">
-<richcontent TYPE="NODE"><html>
-  <head>
-    <style type="text/css">
-      <!--
-        p { margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <p>
-      Pour lier une adresse mail en pr&#233;cisant un sujet, validez une adresse au format <i>mailto:paul.toto@supermail.com?subject=Dernier appel t&#233;l&#233;phonique</i>
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    <style type="text/css">
+      <!--
+        p { margin-top: 0 }
+      -->
+    </style>
+    
+  </head>
+  <body>
+    <p>
+      Pour lier une adresse mail en pr&#233;cisant un sujet, validez une adresse au format <i>mailto:paul.toto@supermail.com?subject=Dernier appel t&#233;l&#233;phonique</i>
+    </p>
+  </body>
+</html>
 </richcontent>
 </node>
 <node CREATED="1124560950717" ID="Freeplane_Link_1046747190" MODIFIED="1195046049218">
@@ -2435,21 +2435,21 @@
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="Freeplane_Link_260446736" MODIFIED="1195046836953">
-<richcontent TYPE="NODE"><html>
-  <head>
-    <style type="text/css">
-      <!--
-        p { margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <p>
-      Pour importer les favoris d'Internet Explorer dans Freeplane, menu Fichier &gt; Importer &gt; Favoris d'Explorer. Entrez le r&#233;pertoire o&#249; sont stock&#233;s les favoris. Le nom du r&#233;pertoire est &quot;favoris&quot;. En Windows 2000 vous le trouverez sur votre disque dans le chemin C:\Documents and Settings\&lt;user&gt;\Favoris
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    <style type="text/css">
+      <!--
+        p { margin-top: 0 }
+      -->
+    </style>
+    
+  </head>
+  <body>
+    <p>
+      Pour importer les favoris d'Internet Explorer dans Freeplane, menu Fichier &gt; Importer &gt; Favoris d'Explorer. Entrez le r&#233;pertoire o&#249; sont stock&#233;s les favoris. Le nom du r&#233;pertoire est &quot;favoris&quot;. En Windows 2000 vous le trouverez sur votre disque dans le chemin C:\Documents and Settings\&lt;user&gt;\Favoris
+    </p>
+  </body>
+</html>
 </richcontent>
 </node>
 <node COLOR="#999999" CREATED="1124560950732" ID="Freeplane_Link_908726543" MODIFIED="1194626096328" TEXT="Mots cl&#xe9;s: Microsoft Internet Explorer, MSIE, MS IE.">
@@ -2642,65 +2642,65 @@
 </richcontent>
 </node>
 <node CREATED="1124560950732" ID="Freeplane_Link_1151602814" MODIFIED="1194967309218">
-<richcontent TYPE="NODE"><html>
-  <head>
-    <style type="text/css">
-      <!--
-        body { color: #000000; font-family: SansSerif; font-size: 12pt }
-        p { margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <h3>
-      Exemple HTML
-    </h3>
-    <p class="msonormal">
-      Plusieurs points:
-    </p>
-    <ul type="disc">
-      <li>
-        Point un
-      </li>
-      <li>
-        Point deux
-      </li>
-    </ul>
-    <p class="msonormal">
-      Nous avons des caract&#232;res <b>gras</b> ou <i>italiques</i>. <u>Soulingn&#233;s</u> et <strike>barr&#233;</strike> &#233;galement. Un petit tableau:
-    </p>
-    <table class="msonormaltable" cellspacing="0" style="border: none" cellpadding="0" border="1">
-      <tr>
-        <td style="border: solid windowtext 1.0pt; padding-left: .75pt; padding-bottom: .75pt; padding-top: .75pt; padding-right: .75pt">
-          <p class="msonormal">
-            Cellule1
-          </p>
-        </td>
-        <td style="border-left: none; border: solid windowtext 1.0pt; padding-left: .75pt; padding-bottom: .75pt; padding-top: .75pt; padding-right: .75pt">
-          <p class="msonormal">
-            Cellule2
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="border: solid windowtext 1.0pt; padding-left: .75pt; padding-bottom: .75pt; padding-top: .75pt; padding-right: .75pt; border-top: none">
-          <p class="msonormal">
-            Cellule3
-          </p>
-        </td>
-        <td style="border-left: none; border-bottom: solid windowtext 1.0pt; padding-left: .75pt; padding-bottom: .75pt; padding-top: .75pt; border-right: solid windowtext 1.0pt; padding-right: .75pt; border-top: none">
-          <p class="msonormal">
-            Cellulle4
-          </p>
-        </td>
-      </tr>
-    </table>
-    <p class="msonormal">
-      &#160;Plusieurs <font color="#999900">couleurs</font> de <font color="#336600">caract&#232;res</font> sont possibles.
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    <style type="text/css">
+      <!--
+        body { color: #000000; font-family: SansSerif; font-size: 12pt }
+        p { margin-top: 0 }
+      -->
+    </style>
+    
+  </head>
+  <body>
+    <h3>
+      Exemple HTML
+    </h3>
+    <p class="msonormal">
+      Plusieurs points:
+    </p>
+    <ul type="disc">
+      <li>
+        Point un
+      </li>
+      <li>
+        Point deux
+      </li>
+    </ul>
+    <p class="msonormal">
+      Nous avons des caract&#232;res <b>gras</b> ou <i>italiques</i>. <u>Soulingn&#233;s</u> et <strike>barr&#233;</strike> &#233;galement. Un petit tableau:
+    </p>
+    <table class="msonormaltable" cellspacing="0" style="border: none" cellpadding="0" border="1">
+      <tr>
+        <td style="border: solid windowtext 1.0pt; padding-left: .75pt; padding-bottom: .75pt; padding-top: .75pt; padding-right: .75pt">
+          <p class="msonormal">
+            Cellule1
+          </p>
+        </td>
+        <td style="border-left: none; border: solid windowtext 1.0pt; padding-left: .75pt; padding-bottom: .75pt; padding-top: .75pt; padding-right: .75pt">
+          <p class="msonormal">
+            Cellule2
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="border: solid windowtext 1.0pt; padding-left: .75pt; padding-bottom: .75pt; padding-top: .75pt; padding-right: .75pt; border-top: none">
+          <p class="msonormal">
+            Cellule3
+          </p>
+        </td>
+        <td style="border-left: none; border-bottom: solid windowtext 1.0pt; padding-left: .75pt; padding-bottom: .75pt; padding-top: .75pt; border-right: solid windowtext 1.0pt; padding-right: .75pt; border-top: none">
+          <p class="msonormal">
+            Cellulle4
+          </p>
+        </td>
+      </tr>
+    </table>
+    <p class="msonormal">
+      &#160;Plusieurs <font color="#999900">couleurs</font> de <font color="#336600">caract&#232;res</font> sont possibles.
+    </p>
+  </body>
+</html>
 </richcontent>
 </node>
 <node CREATED="1124560950732" ID="Freeplane_Link_1349362347" MODIFIED="1194967673375">
@@ -2807,128 +2807,128 @@
 <node COLOR="#996600" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_1825247742" MODIFIED="1194968391453" TEXT="Exemple d&apos;images, fonctionne sur certaines versions de Windows">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="Freeplane_Link_1688770779" MODIFIED="1194968725078">
-<richcontent TYPE="NODE"><html>
-  <head>
-    <style type="text/css">
-      <!--
-        body { background-color: #ffffff; font-size: 12pt; font-family: SansSerif }
-        p { margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <p>
-      <img src="file:/C:/Windows/Help/Tours/htmltour/Connected_networks.jpg" />
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    <style type="text/css">
+      <!--
+        body { background-color: #ffffff; font-size: 12pt; font-family: SansSerif }
+        p { margin-top: 0 }
+      -->
+    </style>
+    
+  </head>
+  <body>
+    <p>
+      <img src="file:/C:/Windows/Help/Tours/htmltour/Connected_networks.jpg" />
+    </p>
+  </body>
+</html>
 </richcontent>
 </node>
 <node CREATED="1124560950732" ID="Freeplane_Link_163698799" MODIFIED="1194968767171">
-<richcontent TYPE="NODE"><html>
-  <head>
-    <style type="text/css">
-      <!--
-        p { margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <p>
-      <img src="file:/C:/Windows/Help/Tours/htmltour/Connected_wizard.jpg" />
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    <style type="text/css">
+      <!--
+        p { margin-top: 0 }
+      -->
+    </style>
+    
+  </head>
+  <body>
+    <p>
+      <img src="file:/C:/Windows/Help/Tours/htmltour/Connected_wizard.jpg" />
+    </p>
+  </body>
+</html>
 </richcontent>
 </node>
 <node CREATED="1124560950732" ID="Freeplane_Link_1915243487" MODIFIED="1194968806046">
-<richcontent TYPE="NODE"><html>
-  <head>
-    <style type="text/css">
-      <!--
-        p { margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <p>
-      <img src="file:/C:/Windows/Help/Tours/htmltour/Connected_multiple.jpg" />
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    <style type="text/css">
+      <!--
+        p { margin-top: 0 }
+      -->
+    </style>
+    
+  </head>
+  <body>
+    <p>
+      <img src="file:/C:/Windows/Help/Tours/htmltour/Connected_multiple.jpg" />
+    </p>
+  </body>
+</html>
 </richcontent>
 <node CREATED="1124560950732" ID="Freeplane_Link_453092767" MODIFIED="1194968853953">
-<richcontent TYPE="NODE"><html>
-  <head>
-    <style type="text/css">
-      <!--
-        p { margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <p>
-      <img src="file:/C:/Windows/Help/Tours/htmltour/end_up.jpg" />
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    <style type="text/css">
+      <!--
+        p { margin-top: 0 }
+      -->
+    </style>
+    
+  </head>
+  <body>
+    <p>
+      <img src="file:/C:/Windows/Help/Tours/htmltour/end_up.jpg" />
+    </p>
+  </body>
+</html>
 </richcontent>
 </node>
 </node>
 <node CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_1332419976" MODIFIED="1193212505265">
-<richcontent TYPE="NODE"><html>
-  <head>
-    <style type="text/css">
-      <!--
-        p { margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <p>
-      <img src="file:/C:/Program Files/Microsoft Office/Office11/Bitmaps/Styles/ACRICEPR.GIF" />
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    <style type="text/css">
+      <!--
+        p { margin-top: 0 }
+      -->
+    </style>
+    
+  </head>
+  <body>
+    <p>
+      <img src="file:/C:/Program Files/Microsoft Office/Office11/Bitmaps/Styles/ACRICEPR.GIF" />
+    </p>
+  </body>
+</html>
 </richcontent>
 <node CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_1799711958" MODIFIED="1193212511062">
-<richcontent TYPE="NODE"><html>
-  <head>
-    <style type="text/css">
-      <!--
-        p { margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <p>
-      <img src="file:/C:/Program Files/Microsoft Office/Office11/Bitmaps/Styles/ACSNDSTN.GIF" />
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    <style type="text/css">
+      <!--
+        p { margin-top: 0 }
+      -->
+    </style>
+    
+  </head>
+  <body>
+    <p>
+      <img src="file:/C:/Program Files/Microsoft Office/Office11/Bitmaps/Styles/ACSNDSTN.GIF" />
+    </p>
+  </body>
+</html>
 </richcontent>
 <node CREATED="1124560950732" ID="Freeplane_Link_1719958498" MODIFIED="1193212516703">
-<richcontent TYPE="NODE"><html>
-  <head>
-    <style type="text/css">
-      <!--
-        p { margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <p>
-      <img src="file:/C:/Program Files/Microsoft Office/Office11/Bitmaps/Styles/ACSUMIPT.GIF" />
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    <style type="text/css">
+      <!--
+        p { margin-top: 0 }
+      -->
+    </style>
+    
+  </head>
+  <body>
+    <p>
+      <img src="file:/C:/Program Files/Microsoft Office/Office11/Bitmaps/Styles/ACSUMIPT.GIF" />
+    </p>
+  </body>
+</html>
 </richcontent>
 </node>
 </node>
