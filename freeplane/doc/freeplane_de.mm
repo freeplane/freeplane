@@ -8,7 +8,7 @@
   </head>
   <body width="">
     <p align="center">
-      Freeplane<br/><small>- Freie Mind Mapping Software -</small>�
+      Freeplane<br/><small>- Freie Mind Mapping Software -</small>
     </p>
   </body>
 </html></richcontent>
@@ -527,7 +527,7 @@
     
   </head>
   <body>
-    [Diese Hilfe ist veraltet.] Eine Anmerkung zur Datei 'patterns.xml' folgt: Ein Stil ist auf einen Knoten anwendbar, wenn er eine &lt;node&gt;-Auszeichnung enth�lt. Er ist auf einen Bogen (eine Kante) anwendbar, wenn er eine &lt;edge&gt;-Auszeichnung enth�lt. &lt;node&gt;-Auszeichnungen k�nnen <font>-Auszeichnungen enthalten. Studieren Sie die mit Freeplane gelieferte Datei 'patterns.xml'.</font>
+    [Diese Hilfe ist veraltet.] Eine Anmerkung zur Datei 'patterns.xml' folgt: Ein Stil ist auf einen Knoten anwendbar, wenn er eine &lt;node&gt;-Auszeichnung enthält. Er ist auf einen Bogen (eine Kante) anwendbar, wenn er eine &lt;edge&gt;-Auszeichnung enthält. &lt;node&gt;-Auszeichnungen können <font>-Auszeichnungen enthalten. Studieren Sie die mit Freeplane gelieferte Datei 'patterns.xml'.</font>
   </body>
 </html></richcontent>
 </node>
@@ -553,7 +553,7 @@
     
   </head>
   <body>
-    Um auf eine eMail-Adresse zu verweisen, setzen Sie den Querverweis als <i>mailto:don.bonton@supermail.com</i>.<br/>--------<br/>Anm.d.�.<br/>Wobei Sie anstatt <i>don.bonton@supermail.com</i> nat�rlich die von Ihnen gew�nschte eMail-Adresse eintragen.
+    Um auf eine eMail-Adresse zu verweisen, setzen Sie den Querverweis als <i>mailto:don.bonton@supermail.com</i>.<br/>--------<br/>Wobei Sie anstatt <i>don.bonton@supermail.com</i> natürlich die von Ihnen gewünschte eMail-Adresse eintragen.
   </body>
 </html></richcontent>
 <edge WIDTH="thin"/>
@@ -566,7 +566,7 @@
     
   </head>
   <body>
-    Um auf eine eMail-Adresse zu verweisen und gleich einen Betreff f�r die eMail mitzugeben,<br/>setzen Sie den Querverweis in folgender Form: <i>mailto:don.bonton@supermail.com?subject=Last phone call</i>.<br/>--------<br/>Anm.d.�.<br/>Wobei Sie anstatt <i>don.bonton@supermail.com</i> ebenfalls die von Ihnen gew�nschte eMail-Adresse und<br/>anstatt <i>Last phone call</i> den von Ihnen gew�nschten Betreff eintragen.
+    Um auf eine eMail-Adresse zu verweisen und gleich einen Betreff für die eMail mitzugeben,<br/>setzen Sie den Querverweis in folgender Form: <i>mailto:don.bonton@supermail.com?subject=Last phone call</i>.<br/>--------<br/>Wobei Sie anstatt <i>don.bonton@supermail.com</i> ebenfalls die von Ihnen gewünschte eMail-Adresse und<br/>anstatt <i>Last phone call</i> den von Ihnen gewünschten Betreff eintragen.
   </body>
 </html></richcontent>
 </node>
@@ -843,7 +843,7 @@
     
   </head>
   <body>
-    Um Internet Explorer Favoriten (Lesezeichen) in Freeplane zu importieren, w�hlen Sie vom Hauptmen� ausgehend 'Datei' -&gt; 'Import' -&gt; 'Explorer-Favoriten...'. Sie werden nach dem Pfad zu dem Verzeichnis gefragt, in dem die Favoriten abgelegt sind. Der Name des Verzeichnisses ist "Favoriten" und Sie finden es auf Ihrer Festplatte. F�r ein unmodifiziertes, deutsches Windows 2000 lautet der vollst�ndige Pfadname "C:\Dokumente und Einstellungen\&lt;Benutzername&gt;\Favoriten", wobei Sie '&lt;Benutzername&gt;' durch den tats�chlich verwendeten Benutzernamen ersetzen.
+    Um Internet Explorer Favoriten (Lesezeichen) in Freeplane zu importieren, wählen Sie vom Hauptmenü ausgehend 'Datei' -&gt; 'Import' -&gt; 'Explorer-Favoriten...'. Sie werden nach dem Pfad zu dem Verzeichnis gefragt, in dem die Favoriten abgelegt sind. Der Name des Verzeichnisses ist "Favoriten" und Sie finden es auf Ihrer Festplatte. Für ein unmodifiziertes, deutsches Windows 2000 lautet der vollständige Pfadname "C:\Dokumente und Einstellungen\&lt;Benutzername&gt;\Favoriten", wobei Sie '&lt;Benutzername&gt;' durch den tatsächlich verwendeten Benutzernamen ersetzen.
   </body>
 </html></richcontent>
 </node>
@@ -943,7 +943,7 @@
     </table>
     <p class="msonormal">
       <br/>
-      �Es gibt vielerlei <font color="#999900">Schrift</font><font color="#336600">farben</font>.
+      Es gibt vielerlei <font color="#999900">Schrift</font><font color="#336600">farben</font>.
     </p>
   </body>
 </html></richcontent>

@@ -7,7 +7,7 @@
   </head>
   <body width="">
     <p align="center">
-      Freeplane<br/><small>- free mind mapping software -</small>�
+      Freeplane<br/><small>- free mind mapping software -</small>
     </p>
   </body>
 </html>
