@@ -79,7 +79,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		/** fc, 12.6.2005: XML must not contain any zero characters. */
 		xmlNode = new XMLElement();
 		encryptionModel = EncryptionModel.getModel(node);
-		if (encryptionModel != null && ! encryptionModel.isAccessible() && !Mode.EXPORT.equals(writer.getHint(Hint.MODE))) {
+		if (! (encryptionModel == null ||  encryptionModel.isAccessible() && Mode.EXPORT.equals(writer.getHint(Hint.MODE)))) {
 			final String additionalInfo = encryptionModel.getEncryptedContent(mapController);
 			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, additionalInfo);
 		}
