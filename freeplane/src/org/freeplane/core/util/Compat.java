@@ -1,16 +1,14 @@
 package org.freeplane.core.util;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.plugin.macos.MacChanges;
+
 
 /**
  * Provides methods and constants which are dependend on the underlying java version
@@ -88,7 +86,13 @@ public class Compat {
 
 	public static void macChanges(Controller controller) {
 		if(isMacOsX()){
-			MacChanges.apply(controller);
+			try {
+				Class<?> macChanges = controller.getClass().getClassLoader().loadClass("org.freeplane.plugin.macos.MacChanges");
+				Method method = macChanges.getMethod("apply", Controller.class);
+				method.invoke(null, method);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
