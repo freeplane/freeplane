@@ -89,7 +89,7 @@ public class Compat {
 			try {
 				Class<?> macChanges = controller.getClass().getClassLoader().loadClass("org.freeplane.plugin.macos.MacChanges");
 				Method method = macChanges.getMethod("apply", Controller.class);
-				method.invoke(null, method);
+				method.invoke(null, controller);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
