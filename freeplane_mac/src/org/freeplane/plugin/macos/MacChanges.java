@@ -19,12 +19,16 @@
  */
 package org.freeplane.plugin.macos;
 
+import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.Compat;
@@ -56,6 +60,13 @@ public class MacChanges extends ApplicationAdapter  {
 			// if a handleOpen comes here, directly, we know that FM is currently starting.
 			mIsStartupPhase = true;
 			fmMacApplication = Application.getApplication();
+			try {
+				Image image = ImageIO.read(ResourceController.getResourceController().getResource("/images/freeplane_app_128x128.png"));
+				fmMacApplication.setDockIconImage(image );
+			} 
+			catch (IOException e) {
+				
+			}
 			fmMacApplication.addApplicationListener(this);
 			fmMacApplication.addPreferencesMenuItem();
 			fmMacApplication.addAboutMenuItem();
