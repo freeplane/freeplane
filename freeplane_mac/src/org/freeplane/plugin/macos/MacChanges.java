@@ -40,16 +40,18 @@ import com.apple.eawt.ApplicationEvent;
  */
 public class MacChanges extends ApplicationAdapter  {
 
-	private static final String FREE_MIND_JAVA = "FreeMind.app/Contents/Resources/Java";
-
 	private static Application fmMacApplication;
 
 	private final MModeController modeController;
 
 	private boolean mIsStartupPhase = false;
 	
-	public MacChanges(MModeController modeController) {
-		this.modeController = modeController;
+	static public void apply(Controller controller) {
+		new MacChanges(controller);
+	}
+	
+	private MacChanges(Controller controller) {
+		this.modeController = (MModeController) controller.getModeController(MModeController.MODENAME);
 		if(fmMacApplication==null){
 			// if a handleOpen comes here, directly, we know that FM is currently starting.
 			mIsStartupPhase = true;
@@ -61,7 +63,6 @@ public class MacChanges extends ApplicationAdapter  {
 //			fmMacApplication.removePreferencesMenuItem();
 			mIsStartupPhase = false;
 		}
-		Controller controller = modeController.getController();
 		Set<String> modes = controller.getModes();
 		for(String mode:modes){
 			MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory().getMenuBuilder();

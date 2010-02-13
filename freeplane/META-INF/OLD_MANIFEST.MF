@@ -3,6 +3,7 @@ Main-Class: org.freeplane.main.application.FreeplaneMain
 Class-Path: ../
   freeplaneeditor.jar
   freeplaneviewer.jar
+  freeplanemac.jar
   commons-lang-2.0.jar
   forms-1.0.5.jar
   jortho.jar

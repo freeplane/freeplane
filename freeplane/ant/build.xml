@@ -23,7 +23,7 @@
 	<property name="java_source_version" value="1.5" />
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
-	<property name="classpath" value="${external.jars}:${framework.jar}" />
+	<property name="classpath" value="${external.jars}:${freeplanemac.jar}:${framework.jar}" />
 
 	<target name="build">
 		<echo>Freeplane Version = ${ver}.</echo>

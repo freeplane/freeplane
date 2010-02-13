@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.freeplane.core
 Bundle-Version: 1.0.1
 Bundle-ClassPath: lib/freeplaneviewer.jar,
  lib/freeplaneeditor.jar,
+ lib/freeplanemac.jar,
  lib/freeplaneosgi.jar,
  lib/commons-lang-2.0.jar,
  lib/forms-1.0.5.jar,

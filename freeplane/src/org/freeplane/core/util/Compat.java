@@ -8,7 +8,9 @@ import java.net.URL;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.plugin.macos.MacChanges;
 
 /**
  * Provides methods and constants which are dependend on the underlying java version
@@ -82,5 +84,12 @@ public class Compat {
 		/* This is only for apple but does not harm for the others. */
 		//		if (isMacOsX()) 
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
+	}
+
+	public static void macChanges(Controller controller) {
+		if(isMacOsX()){
+			MacChanges.apply(controller);
+		}
+		
 	}
 }

@@ -51,6 +51,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
+import org.freeplane.plugin.macos.MacChanges;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MMapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
@@ -142,6 +143,7 @@ public class FreeplaneStarter {
 	}
 
 	public void createFrame(final String[] args) {
+		Compat.macChanges(controller);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				viewController.init();

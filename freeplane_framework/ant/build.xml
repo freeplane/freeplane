@@ -88,13 +88,6 @@
 			<param name="pluginname" value="org.freeplane.plugin.bugreport"/>
 	    </antcall>
 
-		<antcall target="makePlugin" inheritall="false">
-			<param name="anttarget" value="dist"/>
-			<param name="targetdir" value="plugins"/>
-			<param name="plugindir" value="freeplane_plugin_mac"/>
-			<param name="pluginname" value="org.freeplane.plugin.mac"/>
-	    </antcall>
-
        <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
             <fileset dir="${workspace}/freeplane/dist/resources" />

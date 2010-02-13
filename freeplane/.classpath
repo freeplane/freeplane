@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="lib/gnu-regexp-1.1.4.jar"/>
 	<classpathentry kind="lib" path="lib/jortho.jar" sourcepath="/JOrtho_0.4_freeplane/src"/>
 	<classpathentry kind="lib" path="lib/SimplyHTML.jar" sourcepath="/simplyHtml/src"/>
+	<classpathentry kind="lib" path="lib/freeplanemac.jar" sourcepath="/freeplane_mac/src"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
