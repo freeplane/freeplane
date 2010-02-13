@@ -21,12 +21,18 @@
                classpath="${mac-jarbundler}/${jarbundler.jar}"
                classname="net.sourceforge.jarbundler.JarBundler" />
 
+	<target name="makePlugin">
+		<ant antfile="ant/build.xml" target="${anttarget}" dir="${workspace}/${plugindir}" inheritall="false" />
+		<mkdir dir="${build}/${targetdir}/${pluginname}" />
+		<copy todir="${build}/${targetdir}/${pluginname}">
+			<fileset dir="${workspace}/${plugindir}/dist/${pluginname}" />
+		</copy>
+	</target>
+	
 	<target name="build">
 		<property name="root" value="." />
 		<property name="license" value="license.txt" />
 		<property name="readme_src" value="readme.txt" />
-		<property name="build.jars" value="${build}/jars" />
-        <property name="build.core" value="${build}/core" />
         <property name="build.resources" value="${build}/resources" />
         <property name="build.doc" value="${build}/doc" />
 		<property name="script" value="${root}/script" />
@@ -39,40 +45,48 @@
 		    <fileset file="windows-launcher/freeplaneConsole.exe" />
 		</copy>
 		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
-		<ant antfile="ant/build.xml" target="osgi_dist" dir="${workspace}/freeplane" inheritall="false" />
-		<mkdir dir="${build.core}/org.freeplane.core" />
-		<copy todir="${build.core}/org.freeplane.core">
-			<fileset dir="${workspace}/freeplane/dist/org.freeplane.core" />
-		</copy>
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="osgi_dist"/>
+			<param name="targetdir" value="core"/>
+			<param name="plugindir" value="freeplane"/>
+			<param name="pluginname" value="org.freeplane.core"/>
+	    </antcall>
 
 		<!-- temporarily remove help plugin 
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_help" inheritall="false" />
-		
-		<mkdir dir="${build.plugins}/org.freeplane.plugin.help" />
-		<copy todir="${build.plugins}/org.freeplane.plugin.help">
-			<fileset dir="${workspace}/freeplane_plugin_help/dist/org.freeplane.plugin.help"/>
-		</copy>
--->
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_latex" inheritall="false" />
-		<mkdir dir="${build.plugins}/org.freeplane.plugin.latex" />
-		<copy todir="${build.plugins}/org.freeplane.plugin.latex">
-			<fileset dir="${workspace}/freeplane_plugin_latex/dist/org.freeplane.plugin.latex" />
-		</copy>
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_svg" inheritall="false" />
-		<mkdir dir="${build.plugins}/org.freeplane.plugin.svg" />
-		<copy todir="${build.plugins}/org.freeplane.plugin.svg">
-			<fileset dir="${workspace}/freeplane_plugin_svg/dist/org.freeplane.plugin.svg" />
-		</copy>
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_script" inheritall="false" /> 
-		<mkdir dir="${build.plugins}/org.freeplane.plugin.script" />
-		<copy todir="${build.plugins}/org.freeplane.plugin.script">
-			<fileset dir="${workspace}/freeplane_plugin_script/dist/org.freeplane.plugin.script" />
-		</copy>
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_bugreport" inheritall="false" />
-		<mkdir dir="${build.plugins}/org.freeplane.plugin.bugreport" />
-		<copy todir="${build.plugins}/org.freeplane.plugin.bugreport">
-			<fileset dir="${workspace}/freeplane_plugin_bugreport/dist/org.freeplane.plugin.bugreport" />
-		</copy>
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_help"/>
+			<param name="pluginname" value="org.freeplane.plugin.help"/>
+	    </antcall>
+		-->
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_latex"/>
+			<param name="pluginname" value="org.freeplane.plugin.latex"/>
+	    </antcall>
+
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_svg"/>
+			<param name="pluginname" value="org.freeplane.plugin.svg"/>
+	    </antcall>
+
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_script"/>
+			<param name="pluginname" value="org.freeplane.plugin.script"/>
+	    </antcall>
+
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_bugreport"/>
+			<param name="pluginname" value="org.freeplane.plugin.bugreport"/>
+	    </antcall>
 
         <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
