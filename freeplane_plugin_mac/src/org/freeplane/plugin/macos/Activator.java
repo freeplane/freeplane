@@ -3,7 +3,6 @@ package org.freeplane.plugin.macos;
 import java.util.Hashtable;
 
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.util.Compat;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
@@ -15,7 +14,8 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(final BundleContext context) throws Exception {
-		if(! Compat.isMacOsX()){
+		final String osProperty = System.getProperty("os.name");
+		if(! osProperty.startsWith("Mac OS")){
 			return;
 		}
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();

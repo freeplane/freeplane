@@ -19,11 +19,29 @@
  */
 package org.freeplane.main.application;
 
+import javax.swing.JOptionPane;
+
 import org.freeplane.core.util.Compat;
 
 public class FreeplaneMain {
+	public static void checkJavaVersion() {
+		final String JAVA_VERSION = System.getProperty("java.version");
+		final String VERSION_1_5_0 = "1.5.0";
+		if (Compat.isLowerJdk(VERSION_1_5_0)) {
+			final String message = "Warning: Freeplane requires version Java 1.5.0 or higher. The running version: "
+			        + JAVA_VERSION + " is installed in " + System.getProperty("java.home") + ".";
+			System.err.println(message);
+			JOptionPane.showMessageDialog(null, message, "error", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
+		final String osProperty = System.getProperty("os.name");
+		if(osProperty.startsWith("Mac OS")){
+			System.setProperty("apple.laf.useScreenMenuBar" , "true");
+		}
+	}
+
 	static public void main(final String[] args) {
-		Compat.checkJavaVersion();
+		checkJavaVersion();
 		final FreeplaneStarter starter = new FreeplaneStarter();
 		starter.run(args);
 	}

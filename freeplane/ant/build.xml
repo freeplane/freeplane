@@ -30,15 +30,12 @@
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" source="${java_source_version}" target="${java_target_version}">
 			<exclude name="org/freeplane/main/application/FreeplaneMain.java" />
-			<exclude name="org/freeplane/core/util/Compat.java" />
 			<exclude name="**/osgi/**" />
 		</javac>
 		<!-- Starter should work with java 1.1, too as it checks the java version.-->
 		<delete failonerror="false" file="${build}/org/freeplane/main/application/FreeplaneMain.class"/>
-		<delete failonerror="false" file="${build}/org/freeplane/core/util/Compat.class"/>
 		<javac verbose="no" srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" source="1.3" target="1.1">
 			<include name="org/freeplane/main/application/FreeplaneMain.java" />
-			<include name="org/freeplane/core/util/Compat.java" />
 		</javac>
 	</target>
 
