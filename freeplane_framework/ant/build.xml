@@ -88,7 +88,14 @@
 			<param name="pluginname" value="org.freeplane.plugin.bugreport"/>
 	    </antcall>
 
-        <mkdir dir="${build.resources}" />
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_mac"/>
+			<param name="pluginname" value="org.freeplane.plugin.mac"/>
+	    </antcall>
+
+       <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
             <fileset dir="${workspace}/freeplane/dist/resources" />
         </copy>
@@ -279,13 +286,6 @@
         <exclude name="**/framework.jar" />
       </fileset >
 		</copy>
-
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_mac" inheritall="false" target="dist"/> 
-		<mkdir dir="${macjavafullpath}/plugins/org.freeplane.plugin.mac"/>
-		<copy todir="${macjavafullpath}/plugins/org.freeplane.plugin.mac">
-			<fileset dir="${workspace}/freeplane_plugin_mac/dist/org.freeplane.plugin.mac" />
-		</copy>
-			
 
     <!-- Restore the eXecutable permission flags on the Unix script -->
     <echo message="Setting eXecutable permissions on ${macappfullpath}/Contents/Resources/Java/freeplane.sh" />
