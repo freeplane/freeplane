@@ -298,7 +298,7 @@
 				<exclude name="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub"/>
 			</zipfileset>
             <zipfileset file="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" filemode="775" 
-            	prefix="freeplane-${ver}/Freeplane.app/Contents/MacOS/FreeplaneJavaApplicationStub"/>
+            	prefix="freeplane-${ver}/Freeplane.app/Contents/MacOS"/>
 		</zip>
 	</target>
 	<target name="dmg4mac"  depends="macosxapp" if="isMacOs" >
