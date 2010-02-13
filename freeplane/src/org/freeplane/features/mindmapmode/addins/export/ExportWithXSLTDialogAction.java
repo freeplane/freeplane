@@ -55,7 +55,7 @@ public class ExportWithXSLTDialogAction extends ExportAction {
 	}
 
 	private void export(final File file) {
-		exp.export(getController().getViewController().getFrame(), getMapXml(Mode.CLIPBOARD), file);
+		exp.export(getController().getViewController().getFrame(), getMapXml(Mode.EXPORT), file);
 	}
 	/**
 	 * @param mode 

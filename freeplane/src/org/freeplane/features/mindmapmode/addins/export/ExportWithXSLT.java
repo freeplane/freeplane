@@ -191,7 +191,7 @@ public class ExportWithXSLT extends ExportAction {
 		final boolean success = true;
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pDirectoryName
 		        + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
-		getModeController().getMapController().getFilteredXml(map, fileout, Mode.CLIPBOARD);
+		getModeController().getMapController().getFilteredXml(map, fileout, Mode.EXPORT);
 		return success;
 	}
 
@@ -232,7 +232,7 @@ public class ExportWithXSLT extends ExportAction {
 		final ModeController modeController = getModeController();
 		final Controller controller = modeController.getController();
 		final MapModel map = controller.getMap();
-		modeController.getMapController().getFilteredXml(map, writer, Mode.CLIPBOARD);
+		modeController.getMapController().getFilteredXml(map, writer, Mode.EXPORT);
 		return writer.getBuffer().toString();
 	}
 
@@ -310,7 +310,7 @@ public class ExportWithXSLT extends ExportAction {
 	 */
 	private boolean transformMapWithXslt(final String xsltFileName, final File saveFile, final String areaCode)
 	        throws IOException {
-		final Mode mode = Mode.valueOf(getProperty("mode", "FILE"));
+		final Mode mode = Mode.valueOf(getProperty("mode", Mode.EXPORT.name()));
 		final String map = getMapXml(mode);
 		final StringReader reader = new StringReader(map);
 		final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);
