@@ -266,8 +266,7 @@ public class MenuBuilder extends UIBuilder {
 					if(Compat.isMacOsX()){
 						accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
 					}
-					final String shortcutKey = getShortcutKey(menuPath.path);
-					ResourceController.getResourceController().setDefaultProperty(shortcutKey, accelerator);
+					setDefaultAccelerator(menuPath.path, accelerator);
 				}
 				try {
 					final AFreeplaneAction theAction = modeController.getAction(action);
@@ -494,11 +493,17 @@ public class MenuBuilder extends UIBuilder {
 					if(Compat.isMacOsX()){
 						accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
 					}
-					final String shortcutKey = getShortcutKey(itemKey);
-					ResourceController.getResourceController().setDefaultProperty(shortcutKey, accelerator);
+					setDefaultAccelerator(itemKey, accelerator);
 				}
 			}
 			addAction(actionLocations[i], itemKey, action, MenuBuilder.AS_CHILD);
+		}
+	}
+
+	private void setDefaultAccelerator(final String itemKey, String accelerator) {
+		final String shortcutKey = getShortcutKey(itemKey);
+		if(null == ResourceController.getResourceController().getProperty(shortcutKey, null)){
+			ResourceController.getResourceController().setDefaultProperty(shortcutKey, accelerator);
 		}
 	}
 

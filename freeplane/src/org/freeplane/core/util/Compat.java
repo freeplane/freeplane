@@ -1,12 +1,14 @@
 package org.freeplane.core.util;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.controller.Controller;
+
 
 /**
  * Provides methods and constants which are dependend on the underlying java version
@@ -15,20 +17,10 @@ import org.freeplane.core.ui.components.UITools;
  */
 public class Compat {
 	public static final String JAVA_VERSION = System.getProperty("java.version");
-	public static final String VERSION_1_5_0 = "1.5.0";
+	
 	public static final String VERSION_1_6_0 = "1.6.0";
 	private static enum OS {MAC, WINDOWS, OTHER};
 	private static OS os = null;
-
-	public static void checkJavaVersion() {
-		if (Compat.isLowerJdk(VERSION_1_5_0)) {
-			final String message = "Warning: Freeplane requires version Java 1.5.0 or higher (your version: "
-			        + JAVA_VERSION + ", installed in " + System.getProperty("java.home") + ").";
-			LogTool.severe(message);
-			UITools.errorMessage(message);
-			System.exit(1);
-		}
-	}
 
 
 	public static URL fileToUrl(final File pFile) throws MalformedURLException {
@@ -71,7 +63,7 @@ public class Compat {
 	 * reasons is that file: something every browser and every system uses
 	 * slightly differently.
 	 */
-	public static String urlGetFile(final URL url) {
+	private static String urlGetFile(final URL url) {
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		if (osNameStart.equals("Win") && url.getProtocol().equals("file")) {
 			final String fileName = url.toString().replaceFirst("^file:", "").replace('/', '\\');
@@ -90,5 +82,18 @@ public class Compat {
 		/* This is only for apple but does not harm for the others. */
 		//		if (isMacOsX()) 
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
+	}
+
+	public static void macChanges(Controller controller) {
+		if(isMacOsX()){
+			try {
+				Class<?> macChanges = controller.getClass().getClassLoader().loadClass("org.freeplane.plugin.macos.MacChanges");
+				Method method = macChanges.getMethod("apply", Controller.class);
+				method.invoke(null, controller);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 }

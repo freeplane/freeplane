@@ -22,11 +22,14 @@ package org.freeplane.core.ui;
 import java.awt.Event;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 
+import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -34,6 +37,8 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.GrabKeyDialog;
@@ -53,6 +58,34 @@ class AccelerateableAction implements IFreeplaneAction {
 	 */
 	private final MenuBuilder menuBuilder;
 	final private AFreeplaneAction originalAction;
+	private static JDialog setAcceleratorOnNextClickActionDialog;
+
+	static boolean isNewAcceleratorOnNextClickEnabled() {
+		return setAcceleratorOnNextClickActionDialog != null;
+	}
+
+	private static final String SET_ACCELERATOR_ON_NEXT_CLICK_ACTION = "set_accelerator_on_next_click_action";
+	static void setNewAcceleratorOnNextClick(Controller controller) {
+		if(isNewAcceleratorOnNextClickEnabled()){
+			return;
+		}
+		String titel = ResourceBundles.getText("SetAcceleratorOnNextClickAction.text");
+		String text = ResourceBundles.getText(SET_ACCELERATOR_ON_NEXT_CLICK_ACTION);
+		String[] options = {FpStringUtils.removeMnemonic(ResourceBundles.getText("cancel"))};
+		final JOptionPane infoPane = new JOptionPane(text, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options);
+		setAcceleratorOnNextClickActionDialog = infoPane.createDialog(controller.getViewController().getFrame(), titel);
+		setAcceleratorOnNextClickActionDialog.setModal(false);
+		setAcceleratorOnNextClickActionDialog.addComponentListener(new ComponentAdapter() {
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				setAcceleratorOnNextClickActionDialog = null;
+			}
+			
+		});
+		setAcceleratorOnNextClickActionDialog.setVisible(true);
+
+	}
 
 	public AccelerateableAction(final MenuBuilder menuBuilder, final AFreeplaneAction originalAction) {
 		super();
@@ -61,12 +94,17 @@ class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if (!(e.getModifiers() == ActionEvent.CTRL_MASK + InputEvent.BUTTON1_MASK && e.getSource() instanceof JMenuItem)) {
-			originalAction.actionPerformed(e);
+		boolean newAcceleratorOnNextClickEnabled = isNewAcceleratorOnNextClickEnabled();
+		if(newAcceleratorOnNextClickEnabled){
+			setAcceleratorOnNextClickActionDialog.setVisible(false);
+		}
+		if (newAcceleratorOnNextClickEnabled 
+				|| e.getModifiers() == ActionEvent.CTRL_MASK + InputEvent.BUTTON1_MASK && e.getSource() instanceof JMenuItem) {
+			final JMenuItem item = (JMenuItem) e.getSource();
+			newAccelerator(item);
 			return;
 		}
-		final JMenuItem item = (JMenuItem) e.getSource();
-		newAccelerator(item);
+		originalAction.actionPerformed(e);
 	}
 
 	public void addPropertyChangeListener(final PropertyChangeListener listener) {
@@ -90,10 +128,9 @@ class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	private void newAccelerator(final JMenuItem editedItem) {
-		final Frame frame = JOptionPane.getFrameForComponent(editedItem);
 		final Object key = menuBuilder.getKeyByUserObject(editedItem);
 		final String shortcutKey = menuBuilder.getShortcutKey(key.toString());
-		final GrabKeyDialog grabKeyDialog = new GrabKeyDialog(frame, ResourceController.getResourceController()
+		final GrabKeyDialog grabKeyDialog = new GrabKeyDialog(ResourceController.getResourceController()
 		    .getProperty(shortcutKey));
 		grabKeyDialog.setValidator(new IKeystrokeValidator() {
 			private boolean isValid(final DefaultMutableTreeNode menubarNode, final KeyStroke keystroke) {

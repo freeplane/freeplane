@@ -1,15 +1,15 @@
 <map version="0.9.0_Beta_8">
 <!-- To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node COLOR="#993300" CREATED="1124560950701" ID="ID_1694064349" MODIFIED="1207926619789">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body width="">
-    <p align="center">
-      Freeplane<br /><small>- perangkat lunak bebas untuk</small><br /><small>pembuatan MindMap -</small>&#160;
-    </p>
-  </body>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body width="">
+    <p align="center">
+      Freeplane<br /><small>- perangkat lunak bebas untuk</small><br /><small>pembuatan MindMap -</small>&#160;
+    </p>
+  </body>
 </html></richcontent>
 <font BOLD="true" NAME="Dialog" SIZE="18"/>
 <node CREATED="1124560950701" ID="ID_278812263" LINK="http://freeplane.sourceforge.net" MODIFIED="1207927061884" POSITION="left" TEXT="Situs web Freeplane">
@@ -519,15 +519,15 @@
 <node CREATED="1124560950717" ID="ID_163328245" MODIFIED="1209174573249" TEXT="Untuk menerapkan gaya fisik, dari menu konteks node pilih Gaya Fisik &gt; Gaya Pilihan Anda. Untuk mempercepat penerapan gaya fisik, gunakan kunci pintasan seperti terlihat di menu konteks tersebut."/>
 <node CREATED="1124560950717" ID="ID_1479089058" MODIFIED="1209174917774" TEXT="Untuk menambahkan gaya fisik Anda sendiri, dengan asumsi Anda punya kemampuan teknis, edit berkas &quot;patterns.xml&quot; berlokasi di map &quot;.freeplane&quot; di home directory Anda."/>
 <node CREATED="1124560950717" ID="Freeplane_Link_1514218661" MODIFIED="1209175093417">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      [Paragraf ini sudah usang.] Berikut catatan tentang berkas patterns.xml. Gaya fisik diterapkan ke node, bila ada tanda &lt;node&gt;. Diterapkan ke tangkai, bila ada tanda &lt;edge&gt;. Tanda &lt;node&gt; bisa berisi tanda lain sebagai anaknya. Pelajari berkas &quot;patterns.xml&quot; yang disediakan dari Freeplane.
-    </p>
-  </body>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      [Paragraf ini sudah usang.] Berikut catatan tentang berkas patterns.xml. Gaya fisik diterapkan ke node, bila ada tanda &lt;node&gt;. Diterapkan ke tangkai, bila ada tanda &lt;edge&gt;. Tanda &lt;node&gt; bisa berisi tanda lain sebagai anaknya. Pelajari berkas &quot;patterns.xml&quot; yang disediakan dari Freeplane.
+    </p>
+  </body>
 </html></richcontent>
 </node>
 </node>
@@ -546,29 +546,29 @@
 <node CREATED="1124560950717" ID="ID_951732434" MODIFIED="1209175545367" TEXT="Untuk menambahkan hipertaut ke node, tekan Ctrl + K atau dari menu konteks node, pilih Sisip &gt; Hipertaut."/>
 <node CREATED="1124560950717" ID="ID_800098735" MODIFIED="1209175628276" TEXT="Untuk mencopot hipertaut, kosongkan setelan hipertaut setelah menekan Ctrl + K."/>
 <node CREATED="1124560950717" ID="ID_292357559" MODIFIED="1209175738865">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Untuk membuat taut ke alamat pos-el, gunakan format <i>mailto:don.bonton@supermail.com</i>.
-    </p>
-  </body>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Untuk membuat taut ke alamat pos-el, gunakan format <i>mailto:don.bonton@supermail.com</i>.
+    </p>
+  </body>
 </html></richcontent>
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950717" ID="ID_299108667" MODIFIED="1209175726237">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Untuk membuat taut ke alamat pos-el dengan subjek, gunakan format <i>mailto:don.bonton@supermail.com?subject=Ini judul suratnya</i>.
-    </p>
-  </body>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Untuk membuat taut ke alamat pos-el dengan subjek, gunakan format <i>mailto:don.bonton@supermail.com?subject=Ini judul suratnya</i>.
+    </p>
+  </body>
 </html></richcontent>
 </node>
 <node CREATED="1124560950717" ID="ID_1536348129" MODIFIED="1209175768918" TEXT="Hipertaut dapat mengacu ke laman web, berkas lokal, local files, atau alamat pos-el."/>
@@ -840,16 +840,16 @@
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="Freeplane_Link_260446736" MODIFIED="1209284330122">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Untuk mengimpor favorit dari Internet Explorer ke dalam Freeplane,dari menu pilih Berkas &gt; Impor &gt; Favorit dari Explorer. Anda akan diminta memasukkan jalur ke map tempat favorit disimpan. Nama map tersebut adalah Favorit (atau Favorites) dan Anda dapat mencarinya di sistem Anda. Di Windows XP dengan antarmuka bahasa Indonesia, jalurnya adalah C:\Documents and Settings\&lt;nama pemakai&gt;\Favorit.
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Untuk mengimpor favorit dari Internet Explorer ke dalam Freeplane,dari menu pilih Berkas &gt; Impor &gt; Favorit dari Explorer. Anda akan diminta memasukkan jalur ke map tempat favorit disimpan. Nama map tersebut adalah Favorit (atau Favorites) dan Anda dapat mencarinya di sistem Anda. Di Windows XP dengan antarmuka bahasa Indonesia, jalurnya adalah C:\Documents and Settings\&lt;nama pemakai&gt;\Favorit.
+    </p>
+  </body>
+</html>
 </richcontent>
 </node>
 <node COLOR="#999999" CREATED="1124560950732" ID="ID_1939528579" MODIFIED="1209284341398" TEXT="Kata kunci: Microsoft Internet Explorer, MSIE, MS IE.">
@@ -892,68 +892,68 @@
 <node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_841140408" MODIFIED="1209286969016" POSITION="right" TEXT="Menggunakan teks kaya melalui HTML dalam node">
 <node CREATED="1124560950732" ID="ID_1000519218" MODIFIED="1209285355456" TEXT="Node yang dimulai dengan &lt;html&gt; dilukis menggunakan HTML yang terkandung di dalamnya. Fitur ini bermanfaat bagi pemakai dengan pengetahuan teknis. Contohnya sebagai berikut."/>
 <node CREATED="1124560950732" ID="ID_854898297" MODIFIED="1209285514234">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <h3>
-      Contoh HTML
-    </h3>
-    <p class="msonormal">
-      Ada beberapa lema:
-    </p>
-    <ul type="disc">
-      <li class="msonormal">
-        Lema satu
-      </li>
-      <li class="msonormal">
-        Lema dua
-      </li>
-    </ul>
-    <p class="msonormal">
-      Anda bisa menggunakan <b>cetak tebal</b> or <i>miring</i>. <u>Garis bawah</u> dan juga <strike>coret</strike>.
-    </p>
-    <p class="msonormal">
-      
-    </p>
-    <p class="msonormal">
-      Anda bisa buat tabel:
-    </p>
-    <table class="msonormaltable" cellpadding="0" border="1" style="border: none" cellspacing="0">
-      <tr>
-        <td style="border: solid windowtext 1.0pt; padding-top: .75pt; padding-right: .75pt; padding-bottom: .75pt; padding-left: .75pt">
-          <p class="msonormal">
-            Sel1
-          </p>
-        </td>
-        <td style="border-left: none; border: solid windowtext 1.0pt; padding-top: .75pt; padding-right: .75pt; padding-bottom: .75pt; padding-left: .75pt">
-          <p class="msonormal">
-            Sel2
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="border: solid windowtext 1.0pt; border-top: none; padding-top: .75pt; padding-right: .75pt; padding-bottom: .75pt; padding-left: .75pt">
-          <p class="msonormal">
-            Sel3
-          </p>
-        </td>
-        <td style="border-left: none; border-top: none; padding-top: .75pt; padding-right: .75pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding-bottom: .75pt; padding-left: .75pt">
-          <p class="msonormal">
-            Sel4.
-          </p>
-        </td>
-      </tr>
-    </table>
-    <p class="msonormal">
-      
-    </p>
-    <p class="msonormal">
-      Anda bisa menggunakan berbagai <font color="#999900">warna latar depan.</font>
-    </p>
-  </body>
-</html>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <h3>
+      Contoh HTML
+    </h3>
+    <p class="msonormal">
+      Ada beberapa lema:
+    </p>
+    <ul type="disc">
+      <li class="msonormal">
+        Lema satu
+      </li>
+      <li class="msonormal">
+        Lema dua
+      </li>
+    </ul>
+    <p class="msonormal">
+      Anda bisa menggunakan <b>cetak tebal</b> or <i>miring</i>. <u>Garis bawah</u> dan juga <strike>coret</strike>.
+    </p>
+    <p class="msonormal">
+      
+    </p>
+    <p class="msonormal">
+      Anda bisa buat tabel:
+    </p>
+    <table class="msonormaltable" cellpadding="0" border="1" style="border: none" cellspacing="0">
+      <tr>
+        <td style="border: solid windowtext 1.0pt; padding-top: .75pt; padding-right: .75pt; padding-bottom: .75pt; padding-left: .75pt">
+          <p class="msonormal">
+            Sel1
+          </p>
+        </td>
+        <td style="border-left: none; border: solid windowtext 1.0pt; padding-top: .75pt; padding-right: .75pt; padding-bottom: .75pt; padding-left: .75pt">
+          <p class="msonormal">
+            Sel2
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="border: solid windowtext 1.0pt; border-top: none; padding-top: .75pt; padding-right: .75pt; padding-bottom: .75pt; padding-left: .75pt">
+          <p class="msonormal">
+            Sel3
+          </p>
+        </td>
+        <td style="border-left: none; border-top: none; padding-top: .75pt; padding-right: .75pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding-bottom: .75pt; padding-left: .75pt">
+          <p class="msonormal">
+            Sel4.
+          </p>
+        </td>
+      </tr>
+    </table>
+    <p class="msonormal">
+      
+    </p>
+    <p class="msonormal">
+      Anda bisa menggunakan berbagai <font color="#999900">warna latar depan.</font>
+    </p>
+  </body>
+</html>
 </richcontent>
 </node>
 <node CREATED="1124560950732" ID="ID_919917120" MODIFIED="1209285575412" TEXT="Node HTML dan gambar tidak didukung ketika mengekspor teks atau RTP (Word, Wordpad). Minimal, penggunaan HTML adalah cara yang mudah untuk publikasi di Web menggunakan applet Freeplane.">
@@ -978,71 +978,71 @@
 <node COLOR="#996600" CREATED="1124560950732" ID="Freeplane_Link_1825247742" MODIFIED="1209287950708" TEXT="Contoh gambar, berhasil dengan baik di beberapa distribusi Windows">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_325280427" MODIFIED="1124560950732">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACBLENDS.GIF"/>
-  </body>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACBLENDS.GIF"/>
+  </body>
 </html></richcontent>
 </node>
 <node CREATED="1124560950732" MODIFIED="1124560950732">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACBLUPRT.GIF"/>
-  </body>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACBLUPRT.GIF"/>
+  </body>
 </html></richcontent>
 </node>
 <node CREATED="1124560950732" MODIFIED="1124560950732">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACEXPDTN.GIF"/>
-  </body>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACEXPDTN.GIF"/>
+  </body>
 </html></richcontent>
 <node CREATED="1124560950732" MODIFIED="1124560950732">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACINDSTR.GIF"/>
-  </body>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACINDSTR.GIF"/>
+  </body>
 </html></richcontent>
 </node>
 </node>
 <node CREATED="1124560950732" MODIFIED="1124560950732">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACRICEPR.GIF"/>
-  </body>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACRICEPR.GIF"/>
+  </body>
 </html></richcontent>
 <node CREATED="1124560950732" ID="ID_1587596019" MODIFIED="1124560950732">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACSNDSTN.GIF"/>
-  </body>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACSNDSTN.GIF"/>
+  </body>
 </html></richcontent>
 <node CREATED="1124560950732" MODIFIED="1124560950732">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACSUMIPT.GIF"/>
-  </body>
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACSUMIPT.GIF"/>
+  </body>
 </html></richcontent>
 </node>
 </node>

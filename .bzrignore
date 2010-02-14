@@ -5,6 +5,7 @@
 ./*/build
 ./*/dist
 backups
+.DS_Store
 ./.metadata
 ./freeplane_framework/windows-launcher/Freeplane_private.h
 ./freeplane_framework/windows-launcher/Freeplane_private.rc
@@ -12,3 +13,5 @@ backups
 ./freeplane_framework/windows-launcher/Freeplane.o
 ./freeplane_framework/windows-launcher/Makefile.win
 ./freeplane/lib/forms-1_2_1.zip
+./freeplane_framework/build4mac
+

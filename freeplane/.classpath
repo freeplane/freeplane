@@ -12,5 +12,7 @@
 	<classpathentry kind="lib" path="lib/jortho.jar" sourcepath="/JOrtho_0.4_freeplane/src"/>
 	<classpathentry kind="lib" path="lib/SimplyHTML.jar" sourcepath="/simplyHtml/src"/>
 	<classpathentry kind="lib" path="lib/forms-1.2.1.jar" sourcepath="lib/forms-1_2_1.zip"/>
+	<classpathentry kind="lib" path="lib/freeplanemac.jar" sourcepath="/freeplane_mac/src"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
+

@@ -20,8 +20,7 @@
 package org.freeplane.core.resources.ui;
 
 import java.awt.AWTEvent;
-import java.awt.Dialog;
-import java.awt.Frame;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +32,7 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -40,7 +40,6 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.resources.ui.KeyEventTranslator.Key;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
@@ -52,7 +51,11 @@ public class GrabKeyDialog extends JDialog {
 	class ActionHandler implements ActionListener {
 		public void actionPerformed(final ActionEvent evt) {
 			if (evt.getSource() == ok) {
-				if (canClose(UITools.getKeyStroke(shortcut.getText()))) {
+				if(shortcut.keyChar == null){
+					isOK = false;
+					dispose();
+				}
+				else if (canClose(UITools.getKeyStroke(shortcut.getText()))) {
 					isOK = true;
 					dispose();
 				}
@@ -253,13 +256,13 @@ public class GrabKeyDialog extends JDialog {
 
 	private IKeystrokeValidator validator;
 
-	public GrabKeyDialog(final Dialog parent, final String input, final int modifierMask) {
-		super(parent, GrabKeyDialog.getText("grab-key.title"), true);
+	public GrabKeyDialog(final String input, final int modifierMask) {
+		super(UITools.getFrame(), GrabKeyDialog.getText("grab-key.title"), true);
 		init(input, modifierMask);
 	}
 
-	public GrabKeyDialog(final Frame parent, final String input) {
-		super(parent, GrabKeyDialog.getText("grab-key.title"), true);
+	public GrabKeyDialog(final String input) {
+		super(UITools.getFrame(), GrabKeyDialog.getText("grab-key.title"), true);
 		init(input, 0);
 	}
 

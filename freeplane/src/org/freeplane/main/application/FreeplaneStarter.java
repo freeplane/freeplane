@@ -52,16 +52,11 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
-import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MMapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 
 public class FreeplaneStarter {
-	static public void main(final String[] args) {
-		final FreeplaneStarter starter = new FreeplaneStarter();
-		starter.run(args);
-	}
 	private static final String PROPERTIES_FOLDER = ".freeplane";
 
 	public static String getResourceBaseDir() {
@@ -96,7 +91,6 @@ public class FreeplaneStarter {
 
 	public FreeplaneStarter() {
 		super();
-		Compat.checkJavaVersion();
 		FreeplaneStarter.showSysInfo();
 	}
 
@@ -150,15 +144,10 @@ public class FreeplaneStarter {
 	}
 
 	public void createFrame(final String[] args) {
+		Compat.macChanges(controller);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				viewController.init();
-				try {
-					final Class<?> macClass = Class.forName("accessories.plugins.MacChanges");
-					macClass.getConstructors()[0].newInstance(new Object[] { this });
-				}
-				catch (final Exception e) {
-				}
 				loadMaps(args);
 				final Frame frame = viewController.getFrame();
 				final int extendedState = frame.getExtendedState();

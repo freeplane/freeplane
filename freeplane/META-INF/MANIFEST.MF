@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.freeplane.core
 Bundle-Version: 1.0.1
 Bundle-ClassPath: lib/freeplaneviewer.jar,
  lib/freeplaneeditor.jar,
+ lib/freeplanemac.jar,
  lib/freeplaneosgi.jar,
  lib/commons-lang-2.0.jar,
  lib/forms-1.2.1.jar,
@@ -89,4 +90,4 @@ Export-Package: com.jgoodies.forms.builder,
  org.freeplane.view.swing.map.link,
  org.freeplane.view.swing.ui,
  org.freeplane.view.swing.ui.mindmapmode
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: J2SE-1.2

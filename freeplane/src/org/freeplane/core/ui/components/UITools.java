@@ -143,6 +143,10 @@ public class UITools {
 		return KeyStroke.getKeyStroke("typed " + keyStrokeDescription);
 	}
 
+	static public void informationMessage(final String message) {
+		UITools.informationMessage(getFrame(), message);
+	}
+
 	static public void informationMessage(final Frame frame, final String message) {
 		UITools.informationMessage(frame, message, "Freeplane");
 	}

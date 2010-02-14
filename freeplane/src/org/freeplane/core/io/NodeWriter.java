@@ -84,7 +84,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		xmlNode = new XMLElement();
 		encryptionModel = EncryptionModel.getModel(node);
         final Object mode = writer.getHint(Hint.MODE);
-		if (encryptionModel != null) {
+		if (! (encryptionModel == null ||  encryptionModel.isAccessible() && Mode.EXPORT.equals(mode))) {
 			final String additionalInfo = encryptionModel.getEncryptedContent(mapController);
 			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, additionalInfo);
 		}
@@ -117,7 +117,8 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
 			writer.addElement(null, xmlNode.getChildAtIndex(i));
 		}
-		if (encryptionModel == null && writeChildren && mapController.childrenUnfolded(node).hasNext()) {
+		if ( (encryptionModel == null || encryptionModel.isAccessible() && Mode.EXPORT.equals(writer.getHint(Hint.MODE))) 
+				&& writeChildren && mapController.childrenUnfolded(node).hasNext()) {
 			saveChildren(writer, node);
 		}
 		return;

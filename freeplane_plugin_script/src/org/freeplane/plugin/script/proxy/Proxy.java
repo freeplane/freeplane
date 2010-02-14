@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.Icon;
+
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.link.ArrowType;
 
@@ -83,6 +86,16 @@ public interface Proxy {
 
 		/** reset undo / redo lists and deactivate Undo for current script */
 		void deactivateUndo();
+		
+		/** The main info for the status line, null to remove*/
+		public void setStatusInfo(String info);
+
+		/** Info for status line, null to remove*/
+		public void setStatusInfo(String key, String info);
+		
+		/** Info for status line, null to remove*/
+		public void setStatusInfo(String key, Icon icon);
+
 	}
 
 	interface Edge {

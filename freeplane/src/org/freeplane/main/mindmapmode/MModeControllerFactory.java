@@ -37,6 +37,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
@@ -258,10 +259,8 @@ public class MModeControllerFactory {
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
 		userInputListenerFactory.addToolBar("/fbuttons", ViewController.TOP, fButtonToolBar);
 		controller.addAction(new ToggleToolbarAction(controller, "ToggleFBarAction", "/fbuttons"));
-
 		SModeControllerFactory.createModeController(modeController);
-		
-		
+		modeController.addAction(new SetAcceleratorOnNextClickAction(controller));
 		userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);
 		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT,((MIconController) IconController.getController(modeController))
 		    .getIconToolBarScrollPane());

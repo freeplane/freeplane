@@ -5,25 +5,38 @@
 	<property name="ver" value="${freeplane_version}" />
 	<property name="root" value="." />
 	<property name="build" value="${root}/build" />
+	<property name="build4mac" value="${root}/build4mac" />
+    <property name="build.plugins" value="${build}/plugins" />
 	<property name="dist" value="${root}/dist" />
+    <property name="macappfullpath" value="${build4mac}/Freeplane.app" />
 
+    <!-- Mac OS X -->
+	<condition property="isMacOs">
+	      <os family="mac"/>
+	</condition>
+
+    <property name="mac-jarbundler" value = "${root}/mac-jarbundler"/>
+	<property name="jarbundler.jar" value = "jarbundler-2.1.0.jar"/>
+	<taskdef name="jarbundler"
+               classpath="${mac-jarbundler}/${jarbundler.jar}"
+               classname="net.sourceforge.jarbundler.JarBundler" />
+
+	<target name="makePlugin">
+		<ant antfile="ant/build.xml" target="${anttarget}" dir="${workspace}/${plugindir}" inheritall="false" />
+		<mkdir dir="${build}/${targetdir}/${pluginname}" />
+		<copy todir="${build}/${targetdir}/${pluginname}">
+			<fileset dir="${workspace}/${plugindir}/dist/${pluginname}" />
+		</copy>
+	</target>
+	
 	<target name="build">
 		<property name="root" value="." />
 		<property name="license" value="license.txt" />
 		<property name="readme_src" value="readme.txt" />
-		<property name="build.jars" value="${build}/jars" />
-        <property name="build.plugins" value="${build}/plugins" />
-        <property name="build.core" value="${build}/core" />
         <property name="build.resources" value="${build}/resources" />
         <property name="build.doc" value="${build}/doc" />
 		<property name="script" value="${root}/script" />
 
-		<ant antfile="ant/build.xml" target="osgi_dist" dir="${workspace}/freeplane" inheritall="false" />
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_help" inheritall="false" />
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_svg" inheritall="false" />
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_latex" inheritall="false" />
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_script" inheritall="false" />
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_bugreport" inheritall="false" />
 		<mkdir dir="${build}" />
 		<copy todir="${build}">
 			<fileset dir="${script}" />
@@ -32,36 +45,50 @@
 		    <fileset file="windows-launcher/freeplaneConsole.exe" />
 		</copy>
 		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
-		<mkdir dir="${build.core}/org.freeplane.core" />
-		<copy todir="${build.core}/org.freeplane.core">
-			<fileset dir="${workspace}/freeplane/dist/org.freeplane.core" />
-		</copy>
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="osgi_dist"/>
+			<param name="targetdir" value="core"/>
+			<param name="plugindir" value="freeplane"/>
+			<param name="pluginname" value="org.freeplane.core"/>
+	    </antcall>
 
 		<!-- temporarily remove help plugin 
-		
-		<mkdir dir="${build.plugins}/org.freeplane.plugin.help" />
-		<copy todir="${build.plugins}/org.freeplane.plugin.help">
-			<fileset dir="${workspace}/freeplane_plugin_help/dist/org.freeplane.plugin.help"/>
-		</copy>
--->
-		<mkdir dir="${build.plugins}/org.freeplane.plugin.latex" />
-		<copy todir="${build.plugins}/org.freeplane.plugin.latex">
-			<fileset dir="${workspace}/freeplane_plugin_latex/dist/org.freeplane.plugin.latex" />
-		</copy>
-		<mkdir dir="${build.plugins}/org.freeplane.plugin.svg" />
-		<copy todir="${build.plugins}/org.freeplane.plugin.svg">
-			<fileset dir="${workspace}/freeplane_plugin_svg/dist/org.freeplane.plugin.svg" />
-		</copy>
-		<mkdir dir="${build.plugins}/org.freeplane.plugin.script" />
-		<copy todir="${build.plugins}/org.freeplane.plugin.script">
-			<fileset dir="${workspace}/freeplane_plugin_script/dist/org.freeplane.plugin.script" />
-		</copy>
-		<mkdir dir="${build.plugins}/org.freeplane.plugin.bugreport" />
-		<copy todir="${build.plugins}/org.freeplane.plugin.bugreport">
-			<fileset dir="${workspace}/freeplane_plugin_bugreport/dist/org.freeplane.plugin.bugreport" />
-		</copy>
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_help"/>
+			<param name="pluginname" value="org.freeplane.plugin.help"/>
+	    </antcall>
+		-->
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_latex"/>
+			<param name="pluginname" value="org.freeplane.plugin.latex"/>
+	    </antcall>
 
-        <mkdir dir="${build.resources}" />
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_svg"/>
+			<param name="pluginname" value="org.freeplane.plugin.svg"/>
+	    </antcall>
+
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_script"/>
+			<param name="pluginname" value="org.freeplane.plugin.script"/>
+	    </antcall>
+
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_bugreport"/>
+			<param name="pluginname" value="org.freeplane.plugin.bugreport"/>
+	    </antcall>
+
+       <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
             <fileset dir="${workspace}/freeplane/dist/resources" />
         </copy>
@@ -81,8 +108,7 @@
 			<zipfileset dir="${build}" prefix="freeplane-${ver}">
 				<exclude name="freeplane.sh"/>
 			</zipfileset>
-            <zipfileset file="${build}/freeplane.sh" filemode="775" prefix="freeplane-${ver}">
-            </zipfileset>
+            <zipfileset file="${build}/freeplane.sh" filemode="775" prefix="freeplane-${ver}"/>
 			<zipfileset dir="${root}" prefix="freeplane-${ver}">
 				<include name="${license}" />
 			</zipfileset>
@@ -118,6 +144,7 @@
 			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="664">
 				<patternset refid="freeplane.sources" />
 				<exclude name="**/*.jar" />
+				<exclude name="**/*JavaApplicationStub*" />
 			</tarfileset>
 			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
 				<include name="${license}" />
@@ -173,13 +200,113 @@
 
 	</target>
 
-	<target name="dist" depends="clean, binzip, srczip, installer, portableinstaller">
+  <!-- Mac OS X -->
+	<target name="macosxapp">
+
+    <property name="macpluginsdir" value="plugins" />
+    <!-- Disabling "command-line" parameters because the "$1" syntax is probably incorrect here: 
+    <property name="macparams" value="-Dorg.freeplane.param1=$1 -Dorg.freeplane.param2=$2 -Dorg.freeplane.param3=$3 -Dorg.freeplane.param4=$4" />
+    --> 
+    <property name="macdefines" value="-Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
+
+
+    <!-- Delete any existing Freeplane.app (it's a directory) -->
+	<mkdir dir="${build4mac}"/>	
+    <delete dir="${build4mac}/Freeplane.app"/>
+    <jarbundler dir="${build4mac}"
+                name="Freeplane"
+                mainclass="org.knopflerfish.framework.Main"
+                version="${ver}"
+                infostring="Freeplane ${ver}"
+                shortname="Freeplane"
+                bundleid="org.freeplane.core"
+                jvmversion="1.2+"
+                vmoptions="-Xmx512m ${macparams} ${macdefines}"
+                arguments="-xargs ./props.xargs -xargs ./init.xargs"
+                jar="${build}/framework.jar"
+                icon="${mac-jarbundler}/freeplane.icns"
+                stubfile="${mac-jarbundler}/FreeplaneJavaApplicationStub"
+                signature="FP"
+                >
+      <!-- For OSGI we want the entire build/ tree except WIndows-related stuff
+             Commented out to allow testing jar=framework.jar
+      <jarfileset dir="${macosgidir}">
+        <exclude name="**/*.bat" />
+        <exclude name="**/*.exe" />
+      </jarfileset>
+      -->
+
+      <!-- Commenting out the document icon until we get an appropriate image
+                    iconfile="${mac-jarbundler}/Banner.icns"
+      -->
+      <documenttype name="Mindmap"
+                    extensions="mm" 
+                    ostypes="MM"
+                    role="Editor"/>
+    </jarbundler>
+	<chmod file="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" perm="ugo+rx" />
+    <!-- Patch the Info.plist file created by JarBundler, to work with Knopflerfish OSGI
+           Courtesy of Volker who supplied the logic for this <replace> subtask
+           Allows Freeplane to start when double-clicking on Freeplane.app in Finder
+           Sets the WorkingDirectory to $JAVAROOT
+              Found this idea in a post on Knopflerfish's SF site:
+                http://sourceforge.net/tracker/index.php?func=detail&aid=1651148&group_id=82798&atid=567241
+                The downloadable example code has problems but inspired the solution
+    -->
+    <echo message="Adding WorkingDirectory to Info.plist" />
+    <replace file="${macappfullpath}/Contents/Info.plist">
+      <replacetoken><![CDATA[<string>org.knopflerfish.framework.Main</string>]]></replacetoken>
+      <replacevalue><![CDATA[<string>org.knopflerfish.framework.Main</string>
+<key>WorkingDirectory</key>
+  <string>$JAVAROOT</string>]]></replacevalue>
+    </replace>
+
+    <!-- Copy the entire build/ tree except WIndows-related stuff
+          Also exclude the OSGI framework.jar which is copied by the jarbundler task
+          Doing this separately to allow specifying jar=framework.jar in the jarbundler task
+            jarbundler allows either jar= or jarfileset but not both
+            Copying after the jarbundler task which creates the Freeplane.app directory 
+              JarBundler may erase the directory if it already exists
+                This is documented in their change log
+            !! TODO: Test restoring the jarfileset inside jarbundler
+                       Comment out this copy task, and delete it if jarfileset works
+    -->
+		<property name="macjavafullpath" value="${macappfullpath}/Contents/Resources/Java"/>
+		<copy todir="${macjavafullpath}">
+			<fileset dir="${build}">
+        <exclude name="**/*.bat" />
+        <exclude name="**/*.exe" />
+        <exclude name="**/framework.jar" />
+      </fileset >
+		</copy>
+
+    <!-- Restore the eXecutable permission flags on the Unix script -->
+    <echo message="Setting eXecutable permissions on ${macappfullpath}/Contents/Resources/Java/freeplane.sh" />
+		<chmod file="${macappfullpath}/Contents/Resources/Java/freeplane.sh" perm="ugo+rx" />
+	</target>
+
+	<target name="zip4mac" depends="macosxapp">
+		<zip destfile="${dist}/freeplane_macos_bin-${ver}.zip" compress="true">
+			<zipfileset dir="${build4mac}" prefix="freeplane-${ver}">
+				<exclude name="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub"/>
+			</zipfileset>
+            <zipfileset file="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" filemode="775" 
+            	prefix="freeplane-${ver}/Freeplane.app/Contents/MacOS"/>
+		</zip>
+	</target>
+	<target name="dmg4mac"  depends="macosxapp" if="isMacOs" >
+		<exec executable="hdiutil">
+		<arg line="create -srcfolder ${macappfullpath} ${dist}/freeplane_app-${ver}.dmg"/>
+		</exec>
+	</target>
+	<target name="dist" depends="clean, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac">
 		<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
 	</target>
 
 	<target name="clean">
 		<delete quiet="true" includeemptydirs="true">
 			<fileset dir="${build}" />
+			<fileset dir="${build4mac}" />
 			<fileset dir="${dist}" />
 		</delete>
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"

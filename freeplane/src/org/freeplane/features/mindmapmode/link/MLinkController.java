@@ -24,8 +24,10 @@ import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -339,8 +341,9 @@ public class MLinkController extends LinkController {
 
 	static private ConnectorColorAction colorArrowLinkAction;
 	static private EdgeLikeConnectorAction edgeLikeLinkAction;
-	static private Pattern mailPattern;
-	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;|]");
+	static final private Pattern urlPattern = Pattern.compile("(https?|ftp|file)://[^ \n()'\",;|]+");
+	static final private Pattern badFilePattern = Pattern.compile("^file:///[^/]");
+	static private Pattern mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
 
@@ -459,32 +462,25 @@ public class MLinkController extends LinkController {
 		arrowLinkPopup.add(itemtt);
 	}
 
-	private void createMailPattern() {
-		if (mailPattern == null) {
-			mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
-		}
-	}
-
 	public String findLink(final String text) {
-		createMailPattern();
-		final Matcher mailMatcher = mailPattern.matcher(text);
-		String link = null;
-		final String[] linkPrefixes = { "http://", "ftp://", "https://" };
-		for (int j = 0; j < linkPrefixes.length; j++) {
-			final int linkStart = text.indexOf(linkPrefixes[j]);
-			if (linkStart != -1) {
-				int linkEnd = linkStart;
-				while (linkEnd < text.length()
-				        && !nonLinkCharacter.matcher(text.substring(linkEnd, linkEnd + 1)).matches()) {
-					linkEnd++;
-				}
-				link = text.substring(linkStart, linkEnd);
+		final Matcher urlMatcher = urlPattern.matcher(text);
+		if (urlMatcher.find()) {
+			String link = urlMatcher.group();
+			try {
+				link = new URL(link).toURI().toString();
+				return link;
+			} catch (MalformedURLException e) {
+				return null;
+			} catch (URISyntaxException e) {
+				return null;
 			}
 		}
-		if (link == null && mailMatcher.find()) {
-			link = "mailto:" + mailMatcher.group();
+		final Matcher mailMatcher = mailPattern.matcher(text);
+		if (mailMatcher.find()) {
+			String link = "mailto:" + mailMatcher.group();
+			return link;
 		}
-		return link;
+		return null;
 	}
 
 	public void setArrowLinkColor(final ConnectorModel arrowLink, final Color color) {

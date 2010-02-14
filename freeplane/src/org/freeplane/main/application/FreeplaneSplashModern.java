@@ -50,7 +50,7 @@ public class FreeplaneSplashModern extends JWindow {
 	private static final long serialVersionUID = 1L;
 	private Font versionTextFont = null;
 	private final String description = "Free mind mapping and knowledge management software";
-	private final String copyright = "\u00a9 2000-2009";
+	private final String copyright = "\u00a9 2000-2010";
 
 	public FreeplaneSplashModern(JFrame frame) {
 		super(frame);
@@ -95,7 +95,7 @@ public class FreeplaneSplashModern extends JWindow {
 			mWidth1 = new Integer(g2.getFontMetrics().stringWidth(freeplaneNumber));
 			mWidth2 = new Integer(g2.getFontMetrics().stringWidth(status));
 		}
-		int xCoordinate = getSize().width - mWidth1.intValue() - 40;
+		int xCoordinate = getSize().width - mWidth1.intValue() - 28;
 		int yCoordinate = 32;
 		g2.drawString(freeplaneNumber, xCoordinate, yCoordinate);
 		g2.drawString(status, xCoordinate + (mWidth1 - mWidth2) / 2, yCoordinate + 16);
