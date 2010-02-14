@@ -60,13 +60,6 @@ public class MacChanges extends ApplicationAdapter  {
 			// if a handleOpen comes here, directly, we know that FM is currently starting.
 			mIsStartupPhase = true;
 			fmMacApplication = Application.getApplication();
-			try {
-				Image image = ImageIO.read(ResourceController.getResourceController().getResource("/images/freeplane_app_128x128.png"));
-				fmMacApplication.setDockIconImage(image );
-			} 
-			catch (IOException e) {
-				
-			}
 			fmMacApplication.addApplicationListener(this);
 			fmMacApplication.addPreferencesMenuItem();
 			fmMacApplication.addAboutMenuItem();

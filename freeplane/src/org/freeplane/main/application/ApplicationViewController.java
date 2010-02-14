@@ -24,6 +24,7 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -33,6 +34,7 @@ import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -435,7 +437,11 @@ class ApplicationViewController extends ViewController {
 	}
 	public void initFrame(final JFrame frame) {
 		final ImageIcon mWindowIcon;
-		if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
+		if (Compat.isMacOsX()) {
+			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+			    "/images/Freeplane_frame_icon.png"));
+		}
+		else if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
 			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
 			    "/images/Freeplane_frame_icon.png"));
 		}
