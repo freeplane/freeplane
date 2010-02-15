@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.util;
 
+import java.awt.event.KeyEvent;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -206,21 +207,9 @@ public class MenuTools {
 		return newNodeModel;
 	}
 
-	// FIXME: is there a better formatter for KeyStrokes?
 	private static String formatKeyStroke(KeyStroke keyStroke) {
-		final String[] components = keyStroke.toString().replaceAll("(typed|released|pressed)", "").split("\\s+");
-		StringBuilder builder = new StringBuilder();
-		for (String s : components) {
-			if (builder.length() > 0)
-				builder.append("+");
-			if (s.length() > 1) {
-				builder.append(s.substring(0, 1).toUpperCase());
-				builder.append(s.substring(1));
-			}
-			else {
-				builder.append(s.toUpperCase());
-			}
-		}
-		return builder.toString();
+		final String keyModifiersText = KeyEvent.getKeyModifiersText(keyStroke.getModifiers());
+		final String keyText = KeyEvent.getKeyText(keyStroke.getKeyCode());
+		return keyModifiersText.length() == 0 ? keyText : keyModifiersText + "+" + keyText;
 	}
 }
