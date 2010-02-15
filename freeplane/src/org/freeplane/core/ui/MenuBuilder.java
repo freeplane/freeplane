@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -62,6 +63,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
@@ -859,4 +861,8 @@ public class MenuBuilder extends UIBuilder {
 	public void setAcceleratorChangeListener(final IAcceleratorChangeListener acceleratorChangeListener) {
 		this.acceleratorChangeListener = acceleratorChangeListener;
 	}
+
+	public Map<KeyStroke, Node> getAcceleratorMap() {
+	    return Collections.unmodifiableMap(accelerators);
+    }
 }
