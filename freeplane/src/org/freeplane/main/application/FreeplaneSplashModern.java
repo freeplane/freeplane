@@ -115,7 +115,9 @@ public class FreeplaneSplashModern extends JWindow {
 	public void setVisible(final boolean b) {
 		super.setVisible(b);
 		if (b) {
+			setAlwaysOnTop(true);
 			getRootPane().paintImmediately(0, 0, getWidth(), getHeight());
+			setAlwaysOnTop(false);
 		}
 	}
 }
