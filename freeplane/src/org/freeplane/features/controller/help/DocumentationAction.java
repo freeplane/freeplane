@@ -25,20 +25,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.SwingUtilities;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.MenuTools;
 import org.freeplane.features.browsemode.BModeController;
+import org.freeplane.main.mindmapmode.MModeControllerFactory;
 
 class DocumentationAction extends AFreeplaneAction {
-	private static final String NAME = "documentation";
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String document;
 
@@ -52,44 +54,62 @@ class DocumentationAction extends AFreeplaneAction {
 		final File baseDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParentFile();
 		final File file;
 		final int extPosition = document.lastIndexOf('.');
-		if(extPosition != -1){
+		if (extPosition != -1) {
 			final String languageCode = ((ResourceBundles) resourceController.getResources()).getLanguageCode();
 			String map = document.substring(0, extPosition) + "_" + languageCode + document.substring(extPosition);
-			 File localFile = new File(baseDir, map);
-			 if(localFile.canRead()){
-				 file = localFile;
-			 }
-			 else{
-				 file = new File(baseDir, document);
-			 }
+			File localFile = new File(baseDir, map);
+			if (localFile.canRead()) {
+				file = localFile;
+			}
+			else {
+				file = new File(baseDir, document);
+			}
 		}
-		else{
-			 file = new File(baseDir, document);
+		else {
+			file = new File(baseDir, document);
 		}
 		try {
-	        final URL endUrl = file.toURL();
-	        SwingUtilities.invokeLater(new Runnable() {
-	        	public void run() {
-	        		try {
-	        			if (endUrl.getFile().endsWith(".mm") && getController().selectMode(BModeController.MODENAME)) {
-	        				getModeController().getMapController().newMap(endUrl);
-	        			}
-	        			else{
-	        				getController().getViewController().openDocument(endUrl);
-	        			}
-	        		}
-	        		catch (final Exception e1) {
-	        			LogTool.severe(e1);
-	        		}
-	        	}
-	        });
-        }
-        catch (MalformedURLException e1) {
-        	LogTool.warn(e1);
-        }
+			final URL endUrl = file.toURL();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						if (endUrl.getFile().endsWith(".mm") && getController().selectMode(BModeController.MODENAME)) {
+							getModeController().getMapController().newMap(endUrl);
+						}
+						else {
+							getController().getViewController().openDocument(endUrl);
+						}
+						appendAcceleratableMenuEntries();
+					}
+					catch (final Exception e1) {
+						LogTool.severe(e1);
+					}
+				}
+			});
+		}
+		catch (MalformedURLException e1) {
+			LogTool.warn(e1);
+		}
 	}
 
 	@Override
 	public void afterMapChange(final Object newMap) {
 	}
+
+	private void appendAcceleratableMenuEntries() {
+		// use the MModeController for the mindmap mode menu - the browse doesn't contain much entries!
+	    final MenuBuilder menuBuilder = MModeControllerFactory.getModeController().getUserInputListenerFactory()
+	        .getMenuBuilder();
+	    final DefaultMutableTreeNode menuEntryTree = MenuTools.createAcceleratebleMenuEntryTree(
+	        FreeplaneMenuBar.MENU_BAR_PREFIX, menuBuilder);
+	    final MapController mapController = getModeController().getMapController();
+		final NodeModel rootNode = mapController.getRootNode();
+	    final NodeModel newNode = mapController.newNode(ResourceBundles.getText("hot_keys"), rootNode.getMap());
+		newNode.setFolded(true);
+	    // FIXME: variable? search for proper insert point?
+//	    final int HOT_KEYS_INDEX = 2;
+//		mapController.insertNodeIntoWithoutUndo(newNode, rootNode, HOT_KEYS_INDEX);
+		mapController.insertNodeIntoWithoutUndo(newNode, rootNode);
+	    MenuTools.insertAsNodeModelRecursively(newNode, menuEntryTree.children(), mapController);
+    }
 }
