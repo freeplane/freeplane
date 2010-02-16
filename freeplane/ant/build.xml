@@ -28,26 +28,29 @@
 	<target name="build">
 		<echo>Freeplane Version = ${ver}.</echo>
 		<mkdir dir="${build}" />
-		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" source="${java_source_version}" target="${java_target_version}">
+		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
+			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
 			<exclude name="org/freeplane/main/application/FreeplaneMain.java" />
 			<exclude name="**/osgi/**" />
 		</javac>
 		<!-- Starter should work with java 1.1, too as it checks the java version.-->
 		<delete failonerror="false" file="${build}/org/freeplane/main/application/FreeplaneMain.class"/>
-		<javac verbose="no" srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" source="1.3" target="1.1">
+		<javac verbose="no" srcdir="${src}" destdir="${build}" classpath="${classpath}" 
+			debug="${debug}" source="1.3" target="1.1" encoding="utf8">
 			<include name="org/freeplane/main/application/FreeplaneMain.java" />
 		</javac>
 	</target>
 
 	<target name="osgi_build" depends="build">
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" 
-			debug="${debug}" source="${java_source_version}" target="${java_target_version}">
+			debug="${debug}" 
+			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
 			<include name="**/osgi/**" />
 			<exclude name="org/freeplane/main/osgi/Activator.java" />
 		</javac>
 		<delete failonerror="false" file="${build}/org/freeplane/main/osgi/Activator.class"/>
 		<javac verbose="no" srcdir="${src}" destdir="${build}" classpath="${classpath}" 
-			debug="${debug}" source="1.3" target="1.2">
+			debug="${debug}" source="1.3" target="1.2" encoding="utf8">
 			<include name="org/freeplane/main/osgi/Activator.java" />
 		</javac>
 	</target>
