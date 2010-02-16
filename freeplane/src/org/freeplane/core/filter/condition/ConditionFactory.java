@@ -45,6 +45,7 @@ public class ConditionFactory {
 	public static final String FILTER_IS_NOT_EQUAL_TO = "filter_is_not_equal_to";
 	public static final String FILTER_LE = "<=";
 	public static final String FILTER_LT = "<";
+	public static final String FILTER_REGEXP = "filter_regexp_matches";
 
 	static public JComponent createCellRendererComponent(final String description) {
 		final JCondition component = new JCondition();
