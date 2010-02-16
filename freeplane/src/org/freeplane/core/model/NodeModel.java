@@ -596,4 +596,8 @@ public class NodeModel implements MutableTreeNode {
 	public String toString() {
 		return getText();
 	}
+
+	public void insert(NodeModel newNodeModel) {
+		insert(newNodeModel, getChildCount());
+	}
 }

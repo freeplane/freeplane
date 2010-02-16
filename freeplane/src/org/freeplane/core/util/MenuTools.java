@@ -203,7 +203,7 @@ public class MenuTools {
 			newNodeModel.setFolded(true);
 		if (menuEntry.getIcon() != null)
 			newNodeModel.addIcon(new IconMindIcon(menuEntry.getIcon()));
-		mapController.insertNodeIntoWithoutUndo(newNodeModel, nodeModel);
+		nodeModel.insert(newNodeModel);
 		return newNodeModel;
 	}
 

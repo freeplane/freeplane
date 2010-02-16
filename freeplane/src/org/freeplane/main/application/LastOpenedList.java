@@ -200,7 +200,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
 	}
 
-	public void open(final String restoreable) throws FileNotFoundException, XMLParseException, MalformedURLException,
+	public void open(final String restoreable) throws Exception,
 	        IOException, URISyntaxException {
 		final boolean changedToMapView = tryToChangeToMapView(restoreable);
 		if ((restoreable != null) && !(changedToMapView)) {
