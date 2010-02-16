@@ -439,7 +439,13 @@ class ApplicationViewController extends ViewController {
 		final ImageIcon mWindowIcon;
 		if (Compat.isMacOsX()) {
 			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-			    "/images/Freeplane_frame_icon.png"));
+					/* Use the 128x128 image for the dock icon
+					*		This avoids the aliasing of the 16x16 image
+					*   !! TODO: Modify related code to display the dock icon properly,
+					*            as a small "logo" in the lower-right corner of the frame thumbnail
+					*/
+			    //"/images/Freeplane_frame_icon.png"));
+			    "/images/freeplane_app_128x128.png"));
 		}
 		else if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
 			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
