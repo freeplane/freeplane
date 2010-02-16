@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.Icon;
 
-import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.link.ArrowType;
 
@@ -96,6 +96,12 @@ public interface Proxy {
 		/** Info for status line, null to remove*/
 		public void setStatusInfo(String key, Icon icon);
 
+		/** returns all nodes whose plaintext content matches regexp. Note that the regexp has to match the
+		 * whole string, i.e. a node text "123" will get matched by "..." or ".2.", but not by "2"! */
+		public List<Node> findByRegexp(String regexp);
+
+		/** returns all nodes for which <code>condition.checkNode(NodeModel)</code> returns true. */
+		public List<Node> find(ICondition condition);
 	}
 
 	interface Edge {

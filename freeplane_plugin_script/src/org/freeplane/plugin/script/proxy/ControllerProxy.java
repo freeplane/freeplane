@@ -4,14 +4,19 @@
 package org.freeplane.plugin.script.proxy;
 
 import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.text.NodeMatchesRegexpCondition;
 import org.freeplane.features.mindmapmode.MMapModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
@@ -29,7 +34,6 @@ class ControllerProxy implements Proxy.Controller {
 	public void centerOnNode(final Node center) {
 		final NodeModel nodeModel = ((NodeProxy) center).getDelegate();
 		selection.centerNode(nodeModel);
-
 	}
 
 	public Node getSelected() {
@@ -37,35 +41,11 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	public List<Node> getSelecteds() {
-		return new AbstractList<Node>() {
-			private final List<NodeModel> selectionCopy = selection.getSelection();
-			@Override
-			public Node get(final int index) {
-				final NodeModel nodeModel = selectionCopy.get(index);
-				return new NodeProxy(nodeModel, modeController);
-			}
-
-			@Override
-			public int size() {
-				return selectionCopy.size();
-			}
-		};
+		return createNodeList(selection.getSelection());
 	}
 
 	public List<Node> getSortedSelection(final boolean differentSubtrees) {
-		return new AbstractList<Node>() {
-			final private List<NodeModel> sortedSelection = selection.getSortedSelection(differentSubtrees);
-			@Override
-			public Node get(final int index) {
-				final NodeModel nodeModel = sortedSelection.get(index);
-				return new NodeProxy(nodeModel, modeController);
-			}
-
-			@Override
-			public int size() {
-				return sortedSelection.size();
-			}
-		};
+		return createNodeList(selection.getSortedSelection(differentSubtrees));
 	}
 
 	public void select(final Node toSelect) {
@@ -77,7 +57,6 @@ class ControllerProxy implements Proxy.Controller {
 		final NodeModel nodeModel = ((NodeProxy) branchRoot).getDelegate();
 		modeController.getMapController().displayNode(nodeModel);
 		selection.selectBranch(nodeModel, false);
-
 	}
 
 	public void selectMultipleNodes(final List<Node> toSelect) {
@@ -87,12 +66,11 @@ class ControllerProxy implements Proxy.Controller {
 				selection.toggleSelected(nodeModel);
 			}
 		}
-
 	}
 
 	public void deactivateUndo() {
 		MapModel map = modeController.getController().getMap();
-		if(map instanceof MapModel){
+		if (map instanceof MapModel) {
 			modeController.deactivateUndo((MMapModel) map);
 		}
 	}
@@ -105,6 +83,7 @@ class ControllerProxy implements Proxy.Controller {
 	private ViewController getViewController() {
 		return modeController.getController().getViewController();
 	}
+
 	public void setStatusInfo(String key, String info){
 		ViewController viewController = getViewController();
 		viewController.addStatusInfo(key, info);
@@ -113,5 +92,51 @@ class ControllerProxy implements Proxy.Controller {
 		ViewController viewController = getViewController();
 		viewController.addStatusImage(key, icon);
 	}
-	
+
+	public List<Node> findByRegexp(String regexp) {
+		return createNodeList(findImpl(new NodeMatchesRegexpCondition(regexp)));
+	}
+
+	public List<Node> find(ICondition condition) {
+		return createNodeList(findImpl(condition));
+	}
+
+	/** finds from root node. */
+	private List<NodeModel> findImpl(ICondition condition) {
+		return findImpl(condition, modeController.getController().getMap().getRootNode());
+	}
+
+	/** finds from any node downwards. */
+	@SuppressWarnings("unchecked")
+    private List<NodeModel> findImpl(ICondition condition, NodeModel node) {
+		// a shortcut for non-matching leaves
+		if (node.isLeaf() && ! condition.checkNode(node))
+			return Collections.EMPTY_LIST;
+		List<NodeModel> matches = new ArrayList<NodeModel>();
+		if (condition.checkNode(node))
+			matches.add(node);
+		final Enumeration<NodeModel> children = node.children();
+		while (children.hasMoreElements()) {
+			final NodeModel child = children.nextElement();
+			matches.addAll(findImpl(condition, child));
+		}
+		return matches;
+    }
+
+	private List<Node> createNodeList(final List<NodeModel> list) {
+		return new AbstractList<Node>() {
+			final private List<NodeModel> nodeModels = list;
+
+			@Override
+			public Node get(final int index) {
+				final NodeModel nodeModel = nodeModels.get(index);
+				return new NodeProxy(nodeModel, modeController);
+			}
+
+			@Override
+			public int size() {
+				return nodeModels.size();
+			}
+		};
+	}
 }
