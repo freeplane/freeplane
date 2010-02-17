@@ -39,6 +39,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.charset.Charset;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -56,6 +58,11 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ui.ComboProperty;
+import org.freeplane.core.resources.ui.IPropertyControl;
+import org.freeplane.core.resources.ui.IPropertyControlCreator;
+import org.freeplane.core.resources.ui.OptionPanelBuilder;
+import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
@@ -64,6 +71,7 @@ import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MMapModel;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -167,6 +175,19 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	public MFileManager(final ModeController modeController) {
 		super(modeController);
 		createActions(modeController);
+		 createPreferences();
+	}
+	private void createPreferences() {
+		final MModeController modeController = (MModeController) getModeController();
+		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
+		optionPanelBuilder.addCreator("Environment/load", new IPropertyControlCreator() {
+			
+			public IPropertyControl createControl() {
+				Set<String> charsets = Charset.availableCharsets().keySet();
+				return new ComboProperty("default_charset", charsets, charsets);
+			}
+		},
+		IndexedTree.AS_CHILD);
 	}
 
 	private void backup(final File file) {
