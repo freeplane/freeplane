@@ -204,7 +204,8 @@
 	<target name="macosxapp">
 
     <property name="macpluginsdir" value="plugins" />
-    <!-- Disabling "command-line" parameters because the "$1" syntax is probably incorrect here: 
+    <!-- !! TODO: Delete this unused property, and also delete its use in below in the jarbundler vmoptions field
+            Disabled "command-line" parameters because the "$1" syntax is probably incorrect here: 
     <property name="macparams" value="-Dorg.freeplane.param1=$1 -Dorg.freeplane.param2=$2 -Dorg.freeplane.param3=$3 -Dorg.freeplane.param4=$4" />
     --> 
     <property name="macdefines" value="-Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
@@ -242,6 +243,7 @@
       <documenttype name="Mindmap"
                     extensions="mm" 
                     ostypes="MM"
+                    iconfile="${mac-jarbundler}/freeplanedoc.icns"
                     role="Editor"/>
     </jarbundler>
 	<chmod file="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" perm="ugo+rx" />
