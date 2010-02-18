@@ -1,5 +1,7 @@
 package org.freeplane.plugin.script.proxy;
 
+import groovy.lang.Closure;
+
 import java.awt.Color;
 import java.util.Collection;
 import java.util.List;
@@ -96,12 +98,27 @@ public interface Proxy {
 		/** Info for status line, null to remove*/
 		public void setStatusInfo(String key, Icon icon);
 
-		/** returns all nodes whose plaintext content matches regexp. Note that the regexp has to match the
-		 * whole string, i.e. a node text "123" will get matched by "..." or ".2.", but not by "2"! */
-		public List<Node> findByRegexp(String regexp);
-
 		/** returns all nodes for which <code>condition.checkNode(NodeModel)</code> returns true. */
 		public List<Node> find(ICondition condition);
+
+		/**
+		 * A find method that uses a Groovy closure ("block") for simple custom searches. As this closure
+		 * will be called with a node as an argument (to be referenced by <code>it</code>) the search can
+		 * evaluate every node property, like attributes, icons, node text or notes.
+		 * <p>
+		 * Examples:
+		 * <pre>
+		 *    def nodesWithNotes = c.find{ it.noteText != null }
+		 *    
+		 *    def matchingNodes = c.find{ it.text.matches(".*\\d.*") }
+		 *    def texts = matchingNodes.collect{ it.text }
+		 *    print "node texts containing numbers:\n " + texts.join("\n ")
+		 * </pre>
+		 * @return all nodes for which <code>closure.call(NodeModel)</code> returns true.
+		 * @param closure a Groovy closure that returns a boolean value. The closure will receive
+		 *        a NodeModel as an argument which can be tested for a match.
+		 */
+		public List<Node> find(Closure closure);
 	}
 
 	interface Edge {
