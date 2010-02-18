@@ -57,10 +57,10 @@ public class MacChanges extends ApplicationAdapter  {
 			fmMacApplication.addPreferencesMenuItem();
 			fmMacApplication.addAboutMenuItem();
 			fmMacApplication.setEnabledPreferencesMenu(true);
+			// wait until handleOpenFile finishes if it was called in event thread
 			try {
 				EventQueue.invokeAndWait(new Runnable() {
 					public void run() {
-						LogTool.info("sync");
 					};
 				});
 			} catch (Exception e) {
@@ -84,12 +84,10 @@ public class MacChanges extends ApplicationAdapter  {
 	public void handleOpenFile(final ApplicationEvent event) {
 		try {
 			ViewController viewController = controller.getViewController();
-			if(viewController == null || ! viewController.isInitialized()) {
+			if(viewController == null) {
 				// restore at startup:
-				System.out.println("load file on startup");
 				System.setProperty("org.freeplane.param1", event.getFilename());
 			} else {
-				System.out.println("load file later");
 				// Direct loading
 				getModeController().getMapController().newMap(Compat.fileToUrl(new File(event.getFilename())));
 			}

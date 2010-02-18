@@ -103,11 +103,9 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
     }
 
 	private int winState;
-	private boolean isInitialized;
 
 	public ViewController(final Controller controller, final IMapViewManager mapViewManager) {
 		super();
-		isInitialized=false;
 		statusInfos = new HashMap<String, JLabel>();
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
 		status = new JLabel();
@@ -407,11 +405,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			
 			
 		});
-		isInitialized=true;
-	}
-
-	public boolean isInitialized() {
-		return isInitialized;
 	}
 
 	abstract public JSplitPane insertComponentIntoSplitPane(JComponent noteViewerComponent);
