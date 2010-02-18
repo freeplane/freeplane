@@ -3,10 +3,13 @@
  */
 package org.freeplane.plugin.script.proxy;
 
+import groovy.lang.Closure;
+
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.List;
 
+import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.link.ConnectorModel;
@@ -219,4 +222,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 				getModeController()) : null;
     }
 
+	public List<Node> find(ICondition condition) {
+		return ProxyUtils.find(condition, getModeController(), getDelegate());
+	}
+
+	public List<Node> find(final Closure closure) {
+		return ProxyUtils.find(closure, getModeController(), getDelegate());
+	}
 }
