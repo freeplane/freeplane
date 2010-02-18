@@ -65,57 +65,30 @@ class NodeConditionController implements IElementaryConditionController {
 
 	protected ICondition createNodeCondition(final NamedObject simpleCondition, final String value,
 	                                         final boolean ignoreCase) {
-		if (ignoreCase) {
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-				if (value.equals("")) {
-					return null;
-				}
-				return new IgnoreCaseNodeContainsCondition(value);
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+			if (value.equals("")) {
+				return null;
 			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new NodeCompareCondition(value, true, 0, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-				return new NodeCompareCondition(value, true, 0, false);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-				return new NodeCompareCondition(value, true, 1, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-				return new NodeCompareCondition(value, true, -1, false);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-				return new NodeCompareCondition(value, true, -1, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-				return new NodeCompareCondition(value, true, 1, false);
-			}
+			// TODO: make ignoreCase a parameter of NodeContainsCondition
+			return ignoreCase ? new IgnoreCaseNodeContainsCondition(value) : new NodeContainsCondition(value);
 		}
-		else {
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-				if (value.equals("")) {
-					return null;
-				}
-				return new NodeContainsCondition(value);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new NodeCompareCondition(value, false, 0, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-				return new NodeCompareCondition(value, false, 0, false);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-				return new NodeCompareCondition(value, false, 1, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-				return new NodeCompareCondition(value, false, -1, false);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-				return new NodeCompareCondition(value, false, -1, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-				return new NodeCompareCondition(value, false, 1, false);
-			}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
+			return new NodeCompareCondition(value, ignoreCase, 0, true);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
+			return new NodeCompareCondition(value, ignoreCase, 0, false);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
+			return new NodeCompareCondition(value, ignoreCase, 1, true);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
+			return new NodeCompareCondition(value, ignoreCase, -1, false);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
+			return new NodeCompareCondition(value, ignoreCase, -1, true);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
+			return new NodeCompareCondition(value, ignoreCase, 1, false);
 		}
 		return null;
 	}
