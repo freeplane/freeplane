@@ -398,7 +398,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final Writer writer = new FileWriter(pathToFilterFile);
 		for (int i = 0; i < filterConditionModel.getSize(); i++) {
 			final ICondition cond = (ICondition) filterConditionModel.getElementAt(i);
-			cond.toXml(saver);
+			if (cond != null && !(cond instanceof NoFilteringCondition))
+				cond.toXml(saver);
 		}
 		final XMLWriter xmlWriter = new XMLWriter(writer);
 		xmlWriter.write(saver, true);

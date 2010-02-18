@@ -24,7 +24,7 @@
         <delete dir="${dist}" quiet="true" />
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
-			source="${java_source_version}" target="${java_target_version}">
+			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
 		</javac>
 	</target>
 

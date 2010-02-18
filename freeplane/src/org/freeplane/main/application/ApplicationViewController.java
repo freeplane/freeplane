@@ -436,20 +436,20 @@ class ApplicationViewController extends ViewController {
 		navigationNextMap.setEnabled(number > 0);
 	}
 	public void initFrame(final JFrame frame) {
-		final ImageIcon mWindowIcon;
-		if (Compat.isMacOsX()) {
-			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-			    "/images/Freeplane_frame_icon.png"));
+    // Preserve the existing icon image under Mac OS X 
+		if (!Compat.isMacOsX()) {
+			final ImageIcon mWindowIcon;
+			if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
+				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+						"/images/Freeplane_frame_icon.png"));
+			}
+			else {
+				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+						"/images/Freeplane_frame_icon_32x32.png"));
+			}
+			frame.setIconImage(mWindowIcon.getImage());
 		}
-		else if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
-			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-			    "/images/Freeplane_frame_icon.png"));
-		}
-		else {
-			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-			    "/images/Freeplane_frame_icon_32x32.png"));
-		}
-		frame.setIconImage(mWindowIcon.getImage());
+
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override

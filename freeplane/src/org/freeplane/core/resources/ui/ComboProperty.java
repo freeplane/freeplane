@@ -20,6 +20,7 @@
 package org.freeplane.core.resources.ui;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
@@ -44,7 +45,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 	JComboBox mComboBox = new JComboBox();
 	private Vector<String> possibleValues;
 
-	public ComboProperty(final String name, final List<String> possibles, final List<String> possibleTranslations) {
+	public ComboProperty(final String name, final Collection<String> possibles, final Collection<String> possibleTranslations) {
 		super(name);
 		fillPossibleValues(possibles);
 		mComboBox.setModel(new DefaultComboBoxModel(new Vector<String>(possibleTranslations)));
@@ -56,7 +57,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 
 	/**
 	 */
-	private void fillPossibleValues(final List<String> possibles) {
+	private void fillPossibleValues(final Collection<String> possibles) {
 		possibleValues = new Vector<String>();
 		possibleValues.addAll(possibles);
 	}
