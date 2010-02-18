@@ -201,7 +201,7 @@
 	</target>
 
   <!-- Mac OS X -->
-	<target name="macosxapp">
+	<target name="macosxapp" depends="build">
 
     <property name="macpluginsdir" value="plugins" />
     <!-- !! TODO: Delete this unused property, and also delete its use in below in the jarbundler vmoptions field
@@ -210,7 +210,14 @@
     --> 
     <property name="macdefines" value="-Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
 
-
+	<!-- uncomment to start remote debug session for the app	
+	<property name="debugparams" value="-Xdebug -Xrunjdwp:transport=dt_socket,address=localhost:8000"/>	
+	-->
+		
+	<condition property="debugparams" else="">
+		<isset property="debugparams"/>
+	</condition>	
+		
     <!-- Delete any existing Freeplane.app (it's a directory) -->
 	<mkdir dir="${build4mac}"/>	
     <delete dir="${build4mac}/Freeplane.app"/>
@@ -222,7 +229,7 @@
                 shortname="Freeplane"
                 bundleid="org.freeplane.core"
                 jvmversion="1.2+"
-                vmoptions="-Xmx512m ${macparams} ${macdefines}"
+                vmoptions="${debugparams} -Xmx512m ${macdefines}"
                 arguments="-xargs ./props.xargs -xargs ./init.xargs"
                 jar="${build}/framework.jar"
                 icon="${mac-jarbundler}/freeplane.icns"

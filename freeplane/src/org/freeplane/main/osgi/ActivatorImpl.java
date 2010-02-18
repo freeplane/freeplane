@@ -46,11 +46,10 @@ class ActivatorImpl implements BundleActivator {
 	private FreeplaneStarter starter;
 
 	private String[] getCallParameters() {
-		int i = 1;
 		String param;
 		final LinkedList<String> parameters = new LinkedList<String>();
-		for (;;) {
-			param = System.getProperty("org.freeplane.param" + i++, null);
+		for (int i = 1;;i++) {
+			param = System.getProperty("org.freeplane.param" + i, null);
 			if (param == null) {
 				break;
 			}
@@ -175,7 +174,11 @@ class ActivatorImpl implements BundleActivator {
                 }});
 			return;
 		}
-		starter.createFrame(getCallParameters());
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				starter.createFrame(getCallParameters());
+			}
+		});
 	}
 
 	public void stop(final BundleContext context) throws Exception {

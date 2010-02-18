@@ -24,6 +24,9 @@
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
 	<property name="classpath" value="${external.jars}:${freeplanemac.jar}:${framework.jar}" />
+	<condition property="isMacOs">
+	      <os family="mac"/>
+	</condition>
 
 	<target name="build">
 		<echo>Freeplane Version = ${ver}.</echo>
@@ -82,6 +85,10 @@
 			<fileset dir="${resources}" />
 		</jar>
 	</target>
+	
+	<target name="buildmac" if="isMacOs">
+		<ant antfile="ant/build.xml" target="build" dir="${workspace}/freeplane_mac" inheritall="false" />
+	</target>	
 
 	<target name="osgi_jar" depends="jar, osgi_build">
 		<jar jarfile="${freeplaneosgi.jar}">
@@ -90,7 +97,8 @@
 			</fileset>
 		</jar>
 	</target>
-	<target name="dist" depends="jar">
+	
+	<target name="dist" depends="jar, buildmac">
 		<!-- third party libs -->
 		<mkdir dir="${freeplane.dist.lib}" />
 		<copy todir="${freeplane.dist.lib}">

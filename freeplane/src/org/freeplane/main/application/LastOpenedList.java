@@ -219,6 +219,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	}
 
 	public void openMapsOnStart() {
+		System.out.println("load maps");
 		final boolean loadLastMap = ResourceController.getResourceController().getBooleanProperty(LOAD_LAST_MAP);
 		final String lastMap;
 		if (loadLastMap && !lastOpenedList.isEmpty()) {

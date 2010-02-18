@@ -6,8 +6,10 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Set;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.MenuBuilder;
 
 
 /**
@@ -84,7 +86,7 @@ public class Compat {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 	}
 
-	public static void macChanges(Controller controller) {
+	public static void macAppChanges(Controller controller) {
 		if(isMacOsX()){
 			try {
 				Class<?> macChanges = controller.getClass().getClassLoader().loadClass("org.freeplane.plugin.macos.MacChanges");
@@ -94,6 +96,23 @@ public class Compat {
 				e.printStackTrace();
 			}
 		}
-		
+	}
+	
+	public static void macMenuChanges(Controller controller) {
+		Set<String> modes = controller.getModes();
+		for(String mode:modes){
+			MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory().getMenuBuilder();
+			String[] keys = {
+					"/map_popup/toolbars/ToggleMenubarAction",
+					"/menu_bar/file/quit",
+					"/menu_bar/extras/first/options/PropertyAction",
+					"/menu_bar/help/doc/AboutAction"
+			};
+			for(String key:keys){
+				if(builder.contains(key)){
+					builder.removeElement(key);
+				}
+			}
+		}
 	}
 }

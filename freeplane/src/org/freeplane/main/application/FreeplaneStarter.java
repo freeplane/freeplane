@@ -99,6 +99,7 @@ public class FreeplaneStarter {
 			applicationResourceController = new ApplicationResourceController();
 			ResourceController.setResourceController(applicationResourceController);
 			controller = new Controller();
+			Compat.macAppChanges(controller);
 			applicationResourceController.init(controller);
 			LogTool.createLogger();
 			Controller.setLookAndFeel(applicationResourceController.getProperty("lookandfeel"));
@@ -143,7 +144,7 @@ public class FreeplaneStarter {
 	}
 
 	public void createFrame(final String[] args) {
-		Compat.macChanges(controller);
+		Compat.macMenuChanges(controller);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				viewController.init();
