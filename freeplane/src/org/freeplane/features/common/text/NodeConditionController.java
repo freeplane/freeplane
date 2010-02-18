@@ -72,6 +72,9 @@ class NodeConditionController implements IElementaryConditionController {
 			// TODO: make ignoreCase a parameter of NodeContainsCondition
 			return ignoreCase ? new IgnoreCaseNodeContainsCondition(value) : new NodeContainsCondition(value);
 		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
+			return new NodeMatchesRegexpCondition(value, ignoreCase);
+		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 			return new NodeCompareCondition(value, ignoreCase, 0, true);
 		}
@@ -99,7 +102,8 @@ class NodeConditionController implements IElementaryConditionController {
 		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
 		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
-		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT), });
+		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT),
+		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_REGEXP), });
 	}
 
 	public ListModel getFilteredProperties() {
@@ -129,6 +133,9 @@ class NodeConditionController implements IElementaryConditionController {
 		}
 		if (element.getName().equalsIgnoreCase(NodeCompareCondition.NAME)) {
 			return NodeCompareCondition.load(element);
+		}
+		if (element.getName().equalsIgnoreCase(NodeMatchesRegexpCondition.NAME)) {
+			return NodeMatchesRegexpCondition.load(element);
 		}
 		return null;
 	}

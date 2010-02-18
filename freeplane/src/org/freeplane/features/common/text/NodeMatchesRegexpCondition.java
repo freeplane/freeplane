@@ -5,9 +5,11 @@ package org.freeplane.features.common.text;
 
 import java.util.regex.Pattern;
 
+import org.freeplane.core.filter.condition.CompareConditionAdapter;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NodeCondition;
+import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.HtmlTools;
@@ -18,14 +20,24 @@ public class NodeMatchesRegexpCondition extends NodeCondition {
 	static final String SEARCH_PATTERN = "SEARCH_PATTERN";
 
 	static ICondition load(final XMLElement element) {
-		return new NodeMatchesRegexpCondition(element.getAttribute(SEARCH_PATTERN, null));
+		final Boolean ignoreCase = Boolean.valueOf(element
+		    .getAttribute(NodeCompareCondition.IGNORE_CASE, "false"));
+		final String searchPattern = element.getAttribute(SEARCH_PATTERN, null);
+		return new NodeMatchesRegexpCondition(searchPattern, ignoreCase);
 	}
 
 	private final Pattern searchPattern;
 
 	public NodeMatchesRegexpCondition(String searchPattern) {
+		this(searchPattern, false);
+	}
+
+	public NodeMatchesRegexpCondition(String searchPattern, boolean ignoreCase) {
 		super();
-		this.searchPattern = Pattern.compile(searchPattern);
+		int flags = 0;
+		if (ignoreCase)
+			flags |= Pattern.CASE_INSENSITIVE;
+		this.searchPattern = Pattern.compile(searchPattern, flags);
 	}
 
 	public boolean checkNode(final NodeModel node) {
@@ -41,7 +53,8 @@ public class NodeMatchesRegexpCondition extends NodeCondition {
 	protected String createDesctiption() {
 		final String nodeCondition = ResourceBundles.getText(NodeConditionController.FILTER_NODE);
 		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_REGEXP);
-		return ConditionFactory.createDescription(nodeCondition, simpleCondition, searchPattern.pattern(), false);
+		return ConditionFactory.createDescription(nodeCondition, simpleCondition, searchPattern.pattern(),
+		    isIgnoreCase());
 	}
 
 	private String getText(final NodeModel node) {
@@ -53,6 +66,11 @@ public class NodeMatchesRegexpCondition extends NodeCondition {
 		child.setName(NAME);
 		super.attributesToXml(child);
 		child.setAttribute(SEARCH_PATTERN, searchPattern.pattern());
+		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, TreeXmlWriter.BooleanToXml(isIgnoreCase()));
 		element.addChild(child);
+	}
+
+	private boolean isIgnoreCase() {
+		return (searchPattern.flags() & Pattern.CASE_INSENSITIVE) != 0;
 	}
 }
