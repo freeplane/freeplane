@@ -91,9 +91,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 			}
 		};
 	}
-public NodeModel getNode() {
-	return getDelegate();
-}
+
 	public Collection<Connector> getConnectorsIn() {
 		return new ConnectorInListProxy(getDelegate(), getModeController());
 	}
