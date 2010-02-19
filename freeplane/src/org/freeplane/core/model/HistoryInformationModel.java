@@ -37,7 +37,7 @@ public class HistoryInformationModel {
 	 * Initializes to today.
 	 */
 	public HistoryInformationModel() {
-		final long now = new Date().getTime();
+		final long now = System.currentTimeMillis();
 		createdAt = now;
 		lastModifiedAt = now;
 	}

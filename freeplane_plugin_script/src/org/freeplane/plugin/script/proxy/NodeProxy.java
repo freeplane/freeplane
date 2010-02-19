@@ -13,6 +13,7 @@ import java.util.List;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.note.NoteController;
@@ -235,15 +236,43 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return getDelegate().getHistoryInformation().getLastModifiedAt();
 	}
 	
-	public void setLastModifiedAt(Date date) {
-		getDelegate().getHistoryInformation().setLastModifiedAt(date);
+	public void setLastModifiedAt(final Date date) {
+		final Date oldDate = getDelegate().getHistoryInformation().getLastModifiedAt();
+		final IActor actor = new IActor() {
+			public void act() {
+				getDelegate().getHistoryInformation().setLastModifiedAt(date);
+			}
+
+			public String getDescription() {
+				return "setLastModifiedAt";
+			}
+
+			public void undo() {
+				getDelegate().getHistoryInformation().setLastModifiedAt(oldDate);
+			}
+		};
+		getModeController().execute(actor, getDelegate().getMap());
 	}
 	
 	public Date getCreatedAt() {
 		return getDelegate().getHistoryInformation().getCreatedAt();
 	}
 	
-	public void setCreatedAt(Date date) {
-		getDelegate().getHistoryInformation().setCreatedAt(date);
+	public void setCreatedAt(final Date date) {
+		final Date oldDate = getDelegate().getHistoryInformation().getCreatedAt();
+		final IActor actor = new IActor() {
+			public void act() {
+				getDelegate().getHistoryInformation().setCreatedAt(date);
+			}
+
+			public String getDescription() {
+				return "setCreatedAt";
+			}
+
+			public void undo() {
+				getDelegate().getHistoryInformation().setCreatedAt(oldDate);
+			}
+		};
+		getModeController().execute(actor, getDelegate().getMap());
 	}
 }
