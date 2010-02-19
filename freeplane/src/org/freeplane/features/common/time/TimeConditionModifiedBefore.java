@@ -29,7 +29,7 @@ import org.freeplane.core.resources.ResourceBundles;
  * @author Dimitry Polivaev
  * Mar 6, 2009
  */
-class TimeConditionModifiedBefore extends TimeCondition {
+public class TimeConditionModifiedBefore extends TimeCondition {
 	static final String NAME = "time_condition_modified_before";
 
 	public TimeConditionModifiedBefore(final Date date) {

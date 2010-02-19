@@ -28,7 +28,7 @@ import org.freeplane.core.resources.ResourceBundles;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-class HyperLinkEqualsCondition extends HyperLinkCondition {
+public class HyperLinkEqualsCondition extends HyperLinkCondition {
 	public static final String NAME = "hyper_link_equals";
 
 	public HyperLinkEqualsCondition(final String hyperlink) {

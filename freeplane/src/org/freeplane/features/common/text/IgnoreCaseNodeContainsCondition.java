@@ -27,7 +27,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class IgnoreCaseNodeContainsCondition extends NodeCondition {
+public class IgnoreCaseNodeContainsCondition extends NodeCondition {
 	static final String NAME = "ignore_case_node_contains_condition";
 	static final String VALUE = "VALUE";
 

@@ -33,7 +33,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-abstract class TimeCondition implements ISelectableCondition {
+public abstract class TimeCondition implements ISelectableCondition {
 	static final String DATE = "DATE";
 	static final String FILTER_CREATED_AFTER = "filter_created_after";
 	static final String FILTER_CREATED_BEFORE = "filter_created_before";

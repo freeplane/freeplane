@@ -30,7 +30,7 @@ import org.freeplane.core.resources.ResourceBundles;
  * @author Dimitry Polivaev
  * Mar 5, 2009
  */
-class TimeConditionCreatedAfter extends TimeConditionCreatedBefore implements ISelectableCondition {
+public class TimeConditionCreatedAfter extends TimeConditionCreatedBefore implements ISelectableCondition {
 	static final String NAME = "time_condition_created_after";
 
 	public TimeConditionCreatedAfter(final Date date) {

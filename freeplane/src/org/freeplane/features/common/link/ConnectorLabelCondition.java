@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.common.link;
 
-import java.net.URI;
 import java.util.Set;
 
 import javax.swing.JComponent;

@@ -23,7 +23,7 @@ import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class IgnoreCaseNoteContainsCondition extends NoteContainsCondition {
+public class IgnoreCaseNoteContainsCondition extends NoteContainsCondition {
 	static final String NAME = "ignore_case_note_contains_condition";
 	static final String VALUE = "VALUE";
 

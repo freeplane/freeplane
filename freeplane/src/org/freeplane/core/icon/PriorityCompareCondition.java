@@ -34,7 +34,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class PriorityCompareCondition extends CompareConditionAdapter {
+public class PriorityCompareCondition extends CompareConditionAdapter {
 	static final String COMPARATION_RESULT = "COMPARATION_RESULT";
 	static final String NAME = "priority_compare_condition";
 	static final String SUCCEED = "SUCCEED";

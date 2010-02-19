@@ -28,7 +28,7 @@ import org.freeplane.core.resources.ResourceBundles;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-class HyperLinkContainsCondition extends HyperLinkCondition {
+public class HyperLinkContainsCondition extends HyperLinkCondition {
 	public static final String NAME = "hyper_link_contains";
 
 	public HyperLinkContainsCondition(final String hyperlink) {

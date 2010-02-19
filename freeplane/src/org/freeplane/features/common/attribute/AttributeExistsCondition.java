@@ -29,7 +29,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-class AttributeExistsCondition extends NodeCondition {
+public class AttributeExistsCondition extends NodeCondition {
 	static final String ATTRIBUTE = "ATTRIBUTE";
 	static final String NAME = "attribute_exists_condition";
 
