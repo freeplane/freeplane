@@ -51,7 +51,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.core.filter.condition.ConjunctConditions;
 import org.freeplane.core.filter.condition.DisjunctConditions;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
@@ -80,7 +80,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			ICondition newCond;
+			ISelectableCondition newCond;
 			newCond = editor.getCondition();
 			if (newCond != null) {
 				final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
@@ -166,11 +166,11 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			final ICondition[] selectedValues = toConditionsArray(elementaryConditionList.getSelectedValues());
+			final ISelectableCondition[] selectedValues = toConditionsArray(elementaryConditionList.getSelectedValues());
 			if (selectedValues.length < 2) {
 				return;
 			}
-			final ICondition newCond = new ConjunctConditions(selectedValues);
+			final ISelectableCondition newCond = new ConjunctConditions(selectedValues);
 			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			model.addElement(newCond);
 			validate();
@@ -188,21 +188,21 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			final ICondition[] selectedValues = toConditionsArray(elementaryConditionList.getSelectedValues());
+			final ISelectableCondition[] selectedValues = toConditionsArray(elementaryConditionList.getSelectedValues());
 			if (selectedValues.length < 2) {
 				return;
 			}
-			final ICondition newCond = new DisjunctConditions(selectedValues);
+			final ISelectableCondition newCond = new DisjunctConditions(selectedValues);
 			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			model.addElement(newCond);
 			validate();
 		}
 	}
 	
-	private ICondition[] toConditionsArray(final Object[] objects) {
-		final ICondition[] conditions = new ICondition[objects.length];
+	private ISelectableCondition[] toConditionsArray(final Object[] objects) {
+		final ISelectableCondition[] conditions = new ISelectableCondition[objects.length];
 		for (int i = 0; i < objects.length; i++) {
-			conditions[i] = (ICondition)objects[i];
+			conditions[i] = (ISelectableCondition)objects[i];
 		}
 		return conditions;
 	}
@@ -225,8 +225,8 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			if (min >= 0) {
 				final int max = elementaryConditionList.getMinSelectionIndex();
 				if (min == max) {
-					final ICondition oldCond = (ICondition) elementaryConditionList.getSelectedValue();
-					final ICondition newCond = new ConditionNotSatisfiedDecorator(oldCond);
+					final ISelectableCondition oldCond = (ISelectableCondition) elementaryConditionList.getSelectedValue();
+					final ISelectableCondition newCond = new ConditionNotSatisfiedDecorator(oldCond);
 					final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 					model.addElement(newCond);
 					validate();

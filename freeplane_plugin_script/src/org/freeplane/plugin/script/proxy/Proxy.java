@@ -1,12 +1,14 @@
 package org.freeplane.plugin.script.proxy;
 
+import groovy.lang.Closure;
+
 import java.awt.Color;
 import java.util.Collection;
 import java.util.List;
 
 import javax.swing.Icon;
 
-import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.link.ArrowType;
 
@@ -96,6 +98,33 @@ public interface Proxy {
 		/** Info for status line, null to remove*/
 		public void setStatusInfo(String key, Icon icon);
 
+		/** Starting from the root node, recursively searches for nodes for which
+		 * <code>condition.checkNode(node)</code> returns true.
+		 * @see Node.find(ICondition) for searches on subtrees */
+		public List<Node> find(ICondition condition);
+
+		/**
+		 * Starting from the root node, recursively searches for nodes for which <code>closure.call(node)</code>
+		 * returns true.
+		 * <p>
+		 * A find method that uses a Groovy closure ("block") for simple custom searches. As this closure
+		 * will be called with a node as an argument (to be referenced by <code>it</code>) the search can
+		 * evaluate every node property, like attributes, icons, node text or notes.
+		 * <p>
+		 * Examples:
+		 * <pre>
+		 *    def nodesWithNotes = c.find{ it.noteText != null }
+		 *    
+		 *    def matchingNodes = c.find{ it.text.matches(".*\\d.*") }
+		 *    def texts = matchingNodes.collect{ it.text }
+		 *    print "node texts containing numbers:\n " + texts.join("\n ")
+		 * </pre>
+		 * @param closure a Groovy closure that returns a boolean value. The closure will receive
+		 *        a NodeModel as an argument which can be tested for a match.
+		 * @return all nodes for which <code>closure.call(NodeModel)</code> returns true.
+		 * @see Node.find(Closure) for searches on subtrees
+		 */
+		public List<Node> find(Closure closure);
 	}
 
 	interface Edge {
@@ -269,6 +298,14 @@ public interface Proxy {
 		void setNoteText(String text);
 
 		void setText(String text);
+
+		/** Starting from this node, recursively searches for nodes for which
+		 * <code>condition.checkNode(node)</code> returns true. */
+		public List<Node> find(ICondition condition);
+
+		/** Starting from this node, recursively searches for nodes for which <code>closure.call(node)</code>
+		 * returns true. See {@link Controller#find(Closure)} for details. */
+		public List<Node> find(Closure closure);
 	}
 
 	interface NodeStyle {

@@ -28,7 +28,7 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
@@ -61,8 +61,8 @@ class AttributeConditionController implements IElementaryConditionController {
 		        && !simpleCond.objectEquals(ConditionFactory.FILTER_DOES_NOT_EXIST);
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCondition, final Object v,
-	                                  final boolean ignoreCase) {
+	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
+	                                            final Object v, final boolean ignoreCase) {
 		final String attribute = (String) selectedItem;
 		final String value = (String) v;
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST)) {
@@ -146,7 +146,7 @@ class AttributeConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ICondition loadCondition(final XMLElement element) {
+	public ISelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(AttributeCompareCondition.NAME)) {
 			return AttributeCompareCondition.load(element);
 		}

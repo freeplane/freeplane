@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Dimitry Polivaev
+ *  Copyright (C) 2010 Dimitry Polivaev, Volker Boerchers
  *
- *  This file author is Dimitry Polivaev
+ *  This file authors are Dimitry Polivaev, Volker Boerchers
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,19 +15,12 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
  */
 package org.freeplane.core.filter.condition;
 
-import javax.swing.JComponent;
-
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 public interface ICondition {
 	boolean checkNode(NodeModel node);
-
-	public JComponent getListCellRendererComponent();
-
-	void toXml(XMLElement element);
 }

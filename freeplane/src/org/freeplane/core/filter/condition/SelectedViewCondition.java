@@ -26,11 +26,11 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class SelectedViewCondition implements ICondition {
+public class SelectedViewCondition implements ISelectableCondition {
 	private static String description;
 	private static JComponent renderer;
 
-	public static ICondition CreateCondition(final Controller controller) {
+	public static ISelectableCondition CreateCondition(final Controller controller) {
 		return new SelectedViewCondition(controller);
 	}
 

@@ -27,20 +27,20 @@ import java.util.ListIterator;
 import javax.swing.JComponent;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-abstract class TimeCondition implements ICondition {
+public abstract class TimeCondition implements ISelectableCondition {
 	static final String DATE = "DATE";
 	static final String FILTER_CREATED_AFTER = "filter_created_after";
 	static final String FILTER_CREATED_BEFORE = "filter_created_before";
 	static final String FILTER_MODIFIED_AFTER = "filter_modified_after";
 	static final String FILTER_MODIFIED_BEFORE = "filter_modified_before";
 
-	public static ICondition create(final NamedObject simpleCond, final Date date) {
+	public static ISelectableCondition create(final NamedObject simpleCond, final Date date) {
 		if (simpleCond.objectEquals(TimeCondition.FILTER_MODIFIED_AFTER)) {
 			return new TimeConditionModifiedAfter(date);
 		}

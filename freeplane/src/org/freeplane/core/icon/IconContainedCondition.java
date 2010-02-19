@@ -20,22 +20,20 @@
 package org.freeplane.core.icon;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.JCondition;
 import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class IconContainedCondition implements ICondition {
+public class IconContainedCondition implements ISelectableCondition {
 	
 	private static final IconStore STORE = IconStoreFactory.create();
 	
@@ -75,7 +73,7 @@ class IconContainedCondition implements ICondition {
 		return false;
 	}
 
-	static ICondition load(final XMLElement element) {
+	static ISelectableCondition load(final XMLElement element) {
 		return new IconContainedCondition(element.getAttribute(IconContainedCondition.ICON, null));
 	}
 

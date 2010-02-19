@@ -28,7 +28,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
@@ -66,8 +66,8 @@ class TimeConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
-	                                  final boolean ignoreCase) {
+	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	                                            final Object value, final boolean ignoreCase) {
 		return TimeCondition.create(simpleCond, (Date) value);
 	}
 
@@ -101,7 +101,7 @@ class TimeConditionController implements IElementaryConditionController {
 		return false;
 	}
 
-	public ICondition loadCondition(final XMLElement element) {
+	public ISelectableCondition loadCondition(final XMLElement element) {
 		try {
 			if (element.getName().equalsIgnoreCase(TimeConditionCreatedBefore.NAME)) {
 				final String dateString = element.getAttribute(TimeCondition.DATE, null);

@@ -26,7 +26,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.resources.NamedObject;
@@ -62,8 +62,8 @@ class PriorityConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
-	                                  final Object valueObj, final boolean ignoreCase) {
+	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
+	                                            final Object valueObj, final boolean ignoreCase) {
 		final String value = ((MindIcon) valueObj).getName().substring(5, 6);
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 			return new PriorityCompareCondition(value, 0, true);
@@ -117,7 +117,7 @@ class PriorityConditionController implements IElementaryConditionController {
 		return false;
 	}
 
-	public ICondition loadCondition(final XMLElement element) {
+	public ISelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(PriorityCompareCondition.NAME)) {
 			return PriorityCompareCondition.load(element);
 		}
