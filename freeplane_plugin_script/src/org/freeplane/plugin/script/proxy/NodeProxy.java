@@ -7,6 +7,7 @@ import groovy.lang.Closure;
 
 import java.util.AbstractList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.freeplane.core.filter.condition.ICondition;
@@ -230,5 +231,21 @@ public NodeModel getNode() {
 
 	public List<Node> find(final Closure closure) {
 		return ProxyUtils.find(closure, getModeController(), getDelegate());
+	}
+	
+	public Date getLastModifiedAt() {
+		return getDelegate().getHistoryInformation().getLastModifiedAt();
+	}
+	
+	public void setLastModifiedAt(Date date) {
+		getDelegate().getHistoryInformation().setLastModifiedAt(date);
+	}
+	
+	public Date getCreatedAt() {
+		return getDelegate().getHistoryInformation().getCreatedAt();
+	}
+	
+	public void setCreatedAt(Date date) {
+		getDelegate().getHistoryInformation().setCreatedAt(date);
 	}
 }

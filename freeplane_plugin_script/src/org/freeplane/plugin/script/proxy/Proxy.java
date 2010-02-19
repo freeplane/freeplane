@@ -4,6 +4,7 @@ import groovy.lang.Closure;
 
 import java.awt.Color;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -301,11 +302,19 @@ public interface Proxy {
 
 		/** Starting from this node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true. */
-		public List<Node> find(ICondition condition);
+		List<Node> find(ICondition condition);
 
 		/** Starting from this node, recursively searches for nodes for which <code>closure.call(node)</code>
 		 * returns true. See {@link Controller#find(Closure)} for details. */
-		public List<Node> find(Closure closure);
+		List<Node> find(Closure closure);
+
+		Date getLastModifiedAt();
+
+		void setLastModifiedAt(Date date);
+
+		Date getCreatedAt();
+
+		void setCreatedAt(Date date);
 	}
 
 	interface NodeStyle {
