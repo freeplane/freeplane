@@ -38,8 +38,8 @@ public interface IElementaryConditionController {
 
 	boolean canSelectValues(final Object property, final NamedObject simpleCond);
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
-	                                  final boolean ignoreCase);
+	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	                                            final Object value, final boolean ignoreCase);
 
 	ComboBoxModel getConditionsForProperty(final Object property);
 
@@ -51,5 +51,5 @@ public interface IElementaryConditionController {
 
 	boolean isCaseDependent(final Object property, final NamedObject simpleCond);
 
-	ICondition loadCondition(final XMLElement element);
+	ISelectableCondition loadCondition(final XMLElement element);
 }

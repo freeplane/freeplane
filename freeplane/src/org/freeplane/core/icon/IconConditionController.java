@@ -27,7 +27,7 @@ import javax.swing.ListModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
@@ -63,8 +63,8 @@ class IconConditionController implements IElementaryConditionController {
 		return controller.getMap().getIconRegistry().getIconsAsListModel().getSize() > 0;
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
-	                                  final boolean ignoreCase) {
+	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	                                            final Object value, final boolean ignoreCase) {
 		return value != null ? new IconContainedCondition(((UIIcon) value).getName()) : null;
 	}
 
@@ -97,7 +97,7 @@ class IconConditionController implements IElementaryConditionController {
 		return false;
 	}
 
-	public ICondition loadCondition(final XMLElement element) {
+	public ISelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(IconContainedCondition.NAME)) {
 			return IconContainedCondition.load(element);
 		}

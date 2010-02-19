@@ -20,7 +20,7 @@
 package org.freeplane.features.common.note;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.NodeCondition;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
@@ -31,7 +31,7 @@ class NoteContainsCondition extends NodeCondition {
 	static final String NAME = "node_contains_condition";
 	static final String VALUE = "VALUE";
 
-	static ICondition load(final XMLElement element) {
+	static ISelectableCondition load(final XMLElement element) {
 		return new NoteContainsCondition(element.getAttribute(NoteContainsCondition.VALUE, null));
 	}
 

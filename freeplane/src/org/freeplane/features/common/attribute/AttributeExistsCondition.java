@@ -20,7 +20,7 @@
 package org.freeplane.features.common.attribute;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.NodeCondition;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
@@ -33,7 +33,7 @@ class AttributeExistsCondition extends NodeCondition {
 	static final String ATTRIBUTE = "ATTRIBUTE";
 	static final String NAME = "attribute_exists_condition";
 
-	static ICondition load(final XMLElement element) {
+	static ISelectableCondition load(final XMLElement element) {
 		return new AttributeExistsCondition(element.getAttribute(AttributeExistsCondition.ATTRIBUTE, null));
 	}
 

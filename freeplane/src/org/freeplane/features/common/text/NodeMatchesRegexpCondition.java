@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import org.freeplane.core.filter.condition.CompareConditionAdapter;
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.NodeCondition;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.NodeModel;
@@ -19,7 +19,7 @@ public class NodeMatchesRegexpCondition extends NodeCondition {
 	static final String NAME = "node_matches_regexp";
 	static final String SEARCH_PATTERN = "SEARCH_PATTERN";
 
-	static ICondition load(final XMLElement element) {
+	static ISelectableCondition load(final XMLElement element) {
 		final Boolean ignoreCase = Boolean.valueOf(element
 		    .getAttribute(NodeCompareCondition.IGNORE_CASE, "false"));
 		final String searchPattern = element.getAttribute(SEARCH_PATTERN, null);

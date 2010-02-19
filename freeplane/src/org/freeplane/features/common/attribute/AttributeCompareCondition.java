@@ -20,7 +20,7 @@
 package org.freeplane.features.common.attribute;
 
 import org.freeplane.core.filter.condition.CompareConditionAdapter;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.NodeModel;
@@ -35,7 +35,7 @@ class AttributeCompareCondition extends CompareConditionAdapter {
 	static final String NAME = "attribute_compare_condition";
 	static final String SUCCEED = "SUCCEED";
 
-	static ICondition load(final XMLElement element) {
+	static ISelectableCondition load(final XMLElement element) {
 		return new AttributeCompareCondition(element.getAttribute(AttributeCompareCondition.ATTRIBUTE, null), element
 		    .getAttribute(CompareConditionAdapter.VALUE, null), TreeXmlReader.xmlToBoolean(element.getAttribute(
 		    CompareConditionAdapter.IGNORE_CASE, null)), Integer.parseInt(element.getAttribute(

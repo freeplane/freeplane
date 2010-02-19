@@ -23,37 +23,8 @@ import javax.swing.JComponent;
 
 import org.freeplane.n3.nanoxml.XMLElement;
 
-/**
- * @author Dimitry Polivaev
- */
-public abstract class NodeCondition implements ISelectableCondition {
-	private String description;
-	private JComponent renderer;
+public interface ISelectableCondition extends ICondition {
+	public JComponent getListCellRendererComponent();
 
-	protected NodeCondition() {
-	}
-
-	public void attributesToXml(final XMLElement child) {
-	}
-
-	abstract protected String createDesctiption();
-
-	public JComponent getListCellRendererComponent() {
-		if (renderer == null) {
-			renderer = ConditionFactory.createCellRendererComponent(toString());
-		}
-		return renderer;
-	}
-
-	protected void setListCellRendererComponent(final JComponent renderer) {
-		this.renderer = renderer;
-	}
-
-	@Override
-	public String toString() {
-		if (description == null) {
-			description = createDesctiption();
-		}
-		return description;
-	}
+	void toXml(XMLElement element);
 }

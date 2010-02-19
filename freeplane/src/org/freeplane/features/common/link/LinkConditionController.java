@@ -27,7 +27,7 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
@@ -60,8 +60,8 @@ public class LinkConditionController implements IElementaryConditionController {
 		return ! simpleCond.objectEquals(ConditionFactory.FILTER_EXIST);
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
-	                                  final boolean ignoreCase) {
+	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	                                            final Object value, final boolean ignoreCase) {
 		final NamedObject namedObject = (NamedObject) selectedItem;
 		if(namedObject.objectEquals(FILTER_LINK)){
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
@@ -133,7 +133,7 @@ public class LinkConditionController implements IElementaryConditionController {
 		return ((NamedObject)property).objectEquals(CONNECTOR_LABEL);
 	}
 
-	public ICondition loadCondition(final XMLElement element) {
+	public ISelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(HyperLinkEqualsCondition.NAME)) {
 			final String target = element.getAttribute(HyperLinkEqualsCondition.TEXT, null);
 			return new HyperLinkEqualsCondition(target);

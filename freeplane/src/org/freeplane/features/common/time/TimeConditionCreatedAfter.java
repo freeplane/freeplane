@@ -22,7 +22,7 @@ package org.freeplane.features.common.time;
 import java.util.Date;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 
@@ -30,7 +30,7 @@ import org.freeplane.core.resources.ResourceBundles;
  * @author Dimitry Polivaev
  * Mar 5, 2009
  */
-class TimeConditionCreatedAfter extends TimeConditionCreatedBefore implements ICondition {
+class TimeConditionCreatedAfter extends TimeConditionCreatedBefore implements ISelectableCondition {
 	static final String NAME = "time_condition_created_after";
 
 	public TimeConditionCreatedAfter(final Date date) {

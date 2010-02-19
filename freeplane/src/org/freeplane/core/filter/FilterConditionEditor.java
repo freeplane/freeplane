@@ -35,7 +35,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.text.JTextComponent;
 
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.NamedObject;
@@ -145,8 +145,8 @@ public class FilterConditionEditor extends Box {
 		}
 	}
 
-	public ICondition getCondition() {
-		ICondition newCond;
+	public ISelectableCondition getCondition() {
+		ISelectableCondition newCond;
 		Object value = values.getSelectedItem();
 		if (value == null) {
 			value = "";

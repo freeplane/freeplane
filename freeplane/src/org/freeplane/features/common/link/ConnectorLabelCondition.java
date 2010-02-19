@@ -25,7 +25,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -33,7 +33,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public abstract class ConnectorLabelCondition implements ICondition {
+public abstract class ConnectorLabelCondition implements ISelectableCondition {
 	static final String TEXT = "TEXT";
 	static final String IGNORE_CASE = "IGNORE_CASE";
 	private String description;

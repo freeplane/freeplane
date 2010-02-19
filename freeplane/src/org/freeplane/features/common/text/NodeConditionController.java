@@ -27,7 +27,7 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
@@ -58,13 +58,13 @@ class NodeConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
-	                                  final boolean ignoreCase) {
+	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	                                            final Object value, final boolean ignoreCase) {
 		return createNodeCondition(simpleCond, (String) value, ignoreCase);
 	}
 
-	protected ICondition createNodeCondition(final NamedObject simpleCondition, final String value,
-	                                         final boolean ignoreCase) {
+	protected ISelectableCondition createNodeCondition(final NamedObject simpleCondition, final String value,
+	                                                   final boolean ignoreCase) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
 			if (value.equals("")) {
 				return null;
@@ -124,7 +124,7 @@ class NodeConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ICondition loadCondition(final XMLElement element) {
+	public ISelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(NodeContainsCondition.NAME)) {
 			return NodeContainsCondition.load(element);
 		}

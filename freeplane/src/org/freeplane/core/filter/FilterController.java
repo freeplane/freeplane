@@ -45,7 +45,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.DefaultConditionRenderer;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.filter.condition.SelectedViewCondition;
 import org.freeplane.core.filter.condition.SelectedViewSnapshotCondition;
@@ -106,7 +106,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
 	
 	
-	private static final ICondition NO_FILTERING = NoFilteringCondition.createCondition();
+	private static final ISelectableCondition NO_FILTERING = NoFilteringCondition.createCondition();
 
 	public static FilterController getController(final Controller controller) {
 		return (FilterController) controller.getExtension(FilterController.class);
@@ -126,7 +126,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private final FilterHistory history;
 	private Filter inactiveFilter;
 	final private String pathToFilterFile;
-	private ICondition selectedViewCondition;
+	private ISelectableCondition selectedViewCondition;
 	private final ButtonModel showAncestors;
 	private final ButtonModel showDescendants;
 
@@ -171,7 +171,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	private void addStandardConditions() {
-		final ICondition noFiltering = NO_FILTERING;
+		final ISelectableCondition noFiltering = NO_FILTERING;
 		filterConditions.insertElementAt(noFiltering, 0);
 		if (selectedViewCondition == null) {
 			selectedViewCondition = SelectedViewCondition.CreateCondition(controller);
@@ -223,8 +223,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	private Filter createFilter() {
-		final ICondition selectedCondition = getSelectedCondition();
-		final ICondition filterCondition;
+		final ISelectableCondition selectedCondition = getSelectedCondition();
+		final ISelectableCondition filterCondition;
 		if (selectedCondition == null || selectedCondition.equals(NO_FILTERING)) {
 			filterCondition = null;
 		}
@@ -333,8 +333,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		return history;
 	}
 
-	ICondition getSelectedCondition() {
-		return (ICondition) getFilterConditions().getSelectedItem();
+	ISelectableCondition getSelectedCondition() {
+		return (ISelectableCondition) getFilterConditions().getSelectedItem();
 	}
 
 	public ButtonModel getShowAncestors() {
@@ -397,7 +397,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		saver.setName("filter_conditions");
 		final Writer writer = new FileWriter(pathToFilterFile);
 		for (int i = 0; i < filterConditionModel.getSize(); i++) {
-			final ICondition cond = (ICondition) filterConditionModel.getElementAt(i);
+			final ISelectableCondition cond = (ISelectableCondition) filterConditionModel.getElementAt(i);
 			if (cond != null && !(cond instanceof NoFilteringCondition))
 				cond.toXml(saver);
 		}

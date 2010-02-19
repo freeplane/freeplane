@@ -8,12 +8,9 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.JComponent;
-
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 public class ProxyUtils {
@@ -51,13 +48,6 @@ public class ProxyUtils {
 					throw new RuntimeException("find(): closure returned " + e.getMessage()
 					        + " instead of boolean/Boolean");
 				}
-			}
-
-			public JComponent getListCellRendererComponent() {
-				return null;
-			}
-
-			public void toXml(XMLElement element) {
 			}
 		};
 		return find(condition, modeController, nodeModel);

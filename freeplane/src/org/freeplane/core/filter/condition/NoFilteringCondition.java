@@ -26,12 +26,12 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class NoFilteringCondition implements ICondition {
+public class NoFilteringCondition implements ISelectableCondition {
 	private static NoFilteringCondition condition;
 	private static String description;
 	private static JComponent renderer;
 
-	public static ICondition createCondition() {
+	public static ISelectableCondition createCondition() {
 		if (NoFilteringCondition.condition == null) {
 			NoFilteringCondition.condition = new NoFilteringCondition();
 		}
