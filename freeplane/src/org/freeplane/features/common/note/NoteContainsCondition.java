@@ -47,11 +47,7 @@ public class NoteContainsCondition extends NodeCondition {
 		if (text == null) {
 			return false;
 		}
-		return checkText(text) || HtmlTools.isHtmlNode(text) && checkText(HtmlTools.htmlToPlain(text));
-	}
-
-	private boolean checkText(final String plainTextContent) {
-		return plainTextContent.indexOf(value) > -1;
+		return text.indexOf(value) > -1;
 	}
 
 	@Override
@@ -66,7 +62,8 @@ public class NoteContainsCondition extends NodeCondition {
 	}
 
 	protected String getText(final NodeModel node) {
-		return NoteModel.getNoteText(node);
+		final String noteText = NoteModel.getNoteText(node);
+		return noteText == null ? null : HtmlTools.htmlToPlain(noteText);
 	}
 
 	public void toXml(final XMLElement element) {
