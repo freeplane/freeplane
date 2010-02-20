@@ -123,15 +123,12 @@ class EditNodeDialog extends EditNodeBase {
 							break;
 						case KeyEvent.VK_ENTER:
 							e.consume();
-							if (enterConfirms.isSelected() && (e.getModifiers() & InputEvent.SHIFT_MASK) != 0) {
+							if ((e.getModifiers() & InputEvent.SHIFT_MASK) != 0
+									|| enterConfirms.isSelected() == ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
 								textArea.insert("\n", textArea.getCaretPosition());
+								break;
 							}
-							else if (enterConfirms.isSelected() || ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
-								submit();
-							}
-							else {
-								textArea.insert("\n", textArea.getCaretPosition());
-							}
+							submit();
 							break;
 						case KeyEvent.VK_TAB:
 							e.consume();
