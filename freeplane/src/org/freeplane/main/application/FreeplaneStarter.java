@@ -157,7 +157,9 @@ public class FreeplaneStarter {
 				}
 				splash.dispose();
 				splash = null;
+				frame.setAlwaysOnTop(true);
 				frame.toFront();
+				frame.setAlwaysOnTop(false);
 			}
 		});
 	}
