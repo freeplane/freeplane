@@ -24,6 +24,7 @@ import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -341,9 +342,6 @@ public class MLinkController extends LinkController {
 
 	static private ConnectorColorAction colorArrowLinkAction;
 	static private EdgeLikeConnectorAction edgeLikeLinkAction;
-	static final private Pattern urlPattern = Pattern.compile("(https?|ftp|file)://[^ \n()'\",;|]+");
-	static final private Pattern badFilePattern = Pattern.compile("^file:///[^/]");
-	static private Pattern mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
 
@@ -462,6 +460,8 @@ public class MLinkController extends LinkController {
 		arrowLinkPopup.add(itemtt);
 	}
 
+	static final private Pattern urlPattern = Pattern.compile("(?:file://[^\\s" + File.pathSeparatorChar + "]+|(:?https?|ftp)://[^\\s()'\",;|]+)");
+	static private Pattern mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
 	public String findLink(final String text) {
 		final Matcher urlMatcher = urlPattern.matcher(text);
 		if (urlMatcher.find()) {
