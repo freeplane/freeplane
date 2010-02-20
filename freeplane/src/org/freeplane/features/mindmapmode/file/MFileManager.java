@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.dnd.DropTarget;
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -340,17 +341,15 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	private NodeModel loadTreeImpl(final MapModel map, final File f) throws FileNotFoundException,
 	        IOException, XMLException {
 		BufferedInputStream file = new BufferedInputStream(new FileInputStream(f));
-		int versionInfoLength = EXPECTED_START_STRINGS[0].length();
-		final String buffer = readFileStart(file, versionInfoLength).toString();
-		final StringBufferInputStream startInput = new StringBufferInputStream(buffer);
-		final InputStream sequencedInput = new SequenceInputStream(startInput, file);
+		int versionInfoLength = 1000;
+		final byte[] buffer = new byte[versionInfoLength];
+		final int readCount = file.read(buffer);
+		final String mapStart = new String(buffer, defaultCharset());
+		final ByteArrayInputStream readBytes = new ByteArrayInputStream(buffer, 0, readCount);
+		final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
 		Reader reader = null;
 		for (int i = 0; i < EXPECTED_START_STRINGS.length; i++) {
 			versionInfoLength = EXPECTED_START_STRINGS[i].length();
-			String mapStart = "";
-			if (buffer.length() >= versionInfoLength) {
-				mapStart = buffer.substring(0, versionInfoLength);
-			}
 			if (mapStart.startsWith(EXPECTED_START_STRINGS[i])) {
 				reader = UrlManager.getActualReader(sequencedInput);
 				break;
@@ -418,19 +417,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 			}
 		}
 		getController().getViewController().setTitle();
-	}
-
-	/**
-	 * Returns pMinimumLength bytes of the files content.
-	 * @throws IOException 
-	 *
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
-	private String readFileStart(final InputStream input, final int pMinimumLength) throws IOException {
-		final byte[] buffer = new byte[pMinimumLength];
-		input.read(buffer);
-		return new String(buffer, defaultCharset());
 	}
 
 	public boolean save(final MapModel map) {
