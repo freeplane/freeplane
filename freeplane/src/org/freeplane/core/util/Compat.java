@@ -87,18 +87,22 @@ public class Compat {
 	}
 
 	public static void macAppChanges(Controller controller) {
-		if(isMacOsX()){
-			try {
-				Class<?> macChanges = controller.getClass().getClassLoader().loadClass("org.freeplane.plugin.macos.MacChanges");
-				Method method = macChanges.getMethod("apply", Controller.class);
-				method.invoke(null, controller);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		if(! isMacOsX()){
+			return;
+		}
+		try {
+			Class<?> macChanges = controller.getClass().getClassLoader().loadClass("org.freeplane.plugin.macos.MacChanges");
+			Method method = macChanges.getMethod("apply", Controller.class);
+			method.invoke(null, controller);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
 	public static void macMenuChanges(Controller controller) {
+		if(! isMacOsX()){
+			return;
+		}
 		Set<String> modes = controller.getModes();
 		for(String mode:modes){
 			MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory().getMenuBuilder();
