@@ -43,6 +43,8 @@ public class MacChanges extends ApplicationAdapter  {
 	private static Application fmMacApplication;
 
 	private final Controller controller;
+
+	private int loadedMapCounter = 0;
 	
 	static public void apply(Controller controller) {
 		new MacChanges(controller);
@@ -86,7 +88,8 @@ public class MacChanges extends ApplicationAdapter  {
 			ViewController viewController = controller.getViewController();
 			if(viewController == null) {
 				// restore at startup:
-				System.setProperty("org.freeplane.param1", event.getFilename());
+				loadedMapCounter++;
+				System.setProperty("org.freeplane.param" + loadedMapCounter, event.getFilename());				
 			} else {
 				// Direct loading
 				getModeController().getMapController().newMap(Compat.fileToUrl(new File(event.getFilename())));
