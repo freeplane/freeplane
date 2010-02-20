@@ -162,9 +162,6 @@
         	<boolean name="paint_connectors_behind"/>
         </separator>
          
-       <separator name="inline_editor">        
-            <boolean name="il__enter_confirms_by_default" />
-        </separator>
        <separator name="edit_long_node_window">        
             <boolean name="el__buttons_above"/>
             <boolean name="el__position_window_below_node" />
@@ -207,6 +204,9 @@
             <boolean name="disable_key_type"/>
             <boolean name="key_type_adds_new"/>
        </separator>
+       <separator name="inline_editor">        
+            <boolean name="il__enter_confirms_by_default" />
+        </separator>
         <separator name="notifications">
             <remind_value name="remind_use_rich_text_in_new_long_nodes"/>
             <boolean name="delete_nodes_without_question"/>
