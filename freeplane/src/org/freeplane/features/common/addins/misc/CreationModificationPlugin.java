@@ -30,6 +30,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
+import org.freeplane.core.model.HistoryInformationModel;
 import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
@@ -80,6 +81,9 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 
 	public void nodeChanged(final NodeChangeEvent event) {
 		if (nodeChangeListenerDisabled) {
+			return;
+		}
+		if (! event.getProperty().equals(HistoryInformationModel.class)) {
 			return;
 		}
 		final NodeModel node = event.getNode();
