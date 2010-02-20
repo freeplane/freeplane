@@ -57,6 +57,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapSelection;
@@ -786,4 +787,18 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	protected boolean isFullScreenEnabled() {
 	    return ! getFrame().isResizable();
     }
+
+	public static void setLookAndFeel(final String lookAndFeel) {
+		try {
+			if (lookAndFeel.equals("default")) {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			}
+			else {
+				UIManager.setLookAndFeel(lookAndFeel);
+			}
+		}
+		catch (final Exception ex) {
+			LogTool.warn("Error while setting Look&Feel" + lookAndFeel, ex);
+		}
+	}
 }

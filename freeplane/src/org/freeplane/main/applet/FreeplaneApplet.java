@@ -27,6 +27,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.browsemode.BModeController;
@@ -108,6 +109,6 @@ public class FreeplaneApplet extends JApplet {
 		String lookAndFeel = "";
 		appletResourceController.setPropertyByParameter("lookandfeel");
 		lookAndFeel = appletResourceController.getProperty("lookandfeel");
-		Controller.setLookAndFeel(lookAndFeel);
+		ViewController.setLookAndFeel(lookAndFeel);
 	}
 }

@@ -27,7 +27,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.UIManager;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
@@ -44,37 +43,6 @@ import org.freeplane.core.util.LogTool;
  * MapModel(editing) or MapView(navigation).
  */
 public class Controller extends AController {
-	public static void setLookAndFeel(final String lookAndFeel) {
-		try {
-			if (lookAndFeel.equals("windows")) {
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-			}
-			else if (lookAndFeel.equals("motif")) {
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-			}
-			else if (lookAndFeel.equals("mac")) {
-				UIManager.setLookAndFeel("javax.swing.plaf.mac.MacLookAndFeel");
-			}
-			else if (lookAndFeel.equals("metal")) {
-				UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-			}
-			else if (lookAndFeel.equals("gtk")) {
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-			}
-			else if (lookAndFeel.equals("nothing")) {
-			}
-			else if (lookAndFeel.indexOf('.') != -1) {
-				UIManager.setLookAndFeel(lookAndFeel);
-			}
-			else {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			}
-		}
-		catch (final Exception ex) {
-			LogTool.warn("Error while setting Look&Feel" + lookAndFeel, ex);
-		}
-	}
-
 	private final ExtensionContainer extensionContainer;
 	/**
 	 * Converts from a local link to the real file URL of the documentation map.
