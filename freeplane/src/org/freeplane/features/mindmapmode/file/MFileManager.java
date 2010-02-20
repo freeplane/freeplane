@@ -430,7 +430,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	private String readFileStart(final InputStream input, final int pMinimumLength) throws IOException {
 		final byte[] buffer = new byte[pMinimumLength];
 		input.read(buffer);
-		return new String(buffer);
+		return new String(buffer, defaultCharset());
 	}
 
 	public boolean save(final MapModel map) {

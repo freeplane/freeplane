@@ -82,7 +82,7 @@ public class UrlManager implements IExtension {
 			return new InputStreamReader(file, defaultCharset());
 	}
 
-	private static Charset defaultCharset() {
+	protected static Charset defaultCharset() {
 		try {
 			return Charset.forName(ResourceController.getResourceController().getProperty("default_charset"));
 		} catch (Exception e) {
