@@ -43,8 +43,8 @@ public class NodeContainsCondition extends NodeCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final String text = getText(node);
-		return checkText(text) || HtmlTools.isHtmlNode(text) && checkText(HtmlTools.htmlToPlain(text));
+		String text = node.getPlainTextContent();
+		return checkText(text);
 	}
 
 	private boolean checkText(final String plainTextContent) {

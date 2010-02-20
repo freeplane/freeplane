@@ -52,8 +52,8 @@ public class NodeCompareCondition extends CompareConditionAdapter {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final String text = node.getText();
-		return checkText(text) || HtmlTools.isHtmlNode(text) && checkText(node.getPlainTextContent());
+		String text = node.getPlainTextContent();
+		return checkText(text);
 	}
 
 	private boolean checkText(final String plainTextContent) {
