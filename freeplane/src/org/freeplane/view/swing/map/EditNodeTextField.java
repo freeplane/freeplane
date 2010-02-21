@@ -189,7 +189,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				case KeyEvent.VK_ENTER:
 				{
 					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("il__enter_confirms_by_default");
-					if(enterConfirms != e.isAltDown() || e.isShiftDown()){
+					if(enterConfirms == e.isAltDown() || e.isShiftDown()){
 						e.consume();
 						final Component component = e.getComponent();
 						final KeyEvent keyEvent = new KeyEvent(component, e.getID(),e.getWhen(), 0, e.getKeyCode(), e.getKeyChar(), e.getKeyLocation());
