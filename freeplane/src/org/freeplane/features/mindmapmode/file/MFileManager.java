@@ -344,7 +344,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 		int versionInfoLength = 1000;
 		final byte[] buffer = new byte[versionInfoLength];
 		final int readCount = file.read(buffer);
-		final String mapStart = new String(buffer, defaultCharset());
+		final String mapStart = new String(buffer, defaultCharset().name());
 		final ByteArrayInputStream readBytes = new ByteArrayInputStream(buffer, 0, readCount);
 		final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
 		Reader reader = null;
