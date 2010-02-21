@@ -46,6 +46,7 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.FixedHTMLWriter;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
@@ -182,7 +183,8 @@ public class MTextController extends TextController {
 				if (lowerCase.endsWith(".png") || lowerCase.endsWith(".jpg") || lowerCase.endsWith(".jpeg")
 				        || lowerCase.endsWith(".gif")) {
 					picturesAmongSelecteds = true;
-					final String strText = "<html><img src=\"" + linkString + "\">";
+					final String encodedLinkString = HtmlTools.unicodeToHTMLUnicodeEntity(linkString);
+					final String strText = "<html><img src=\"" + encodedLinkString + "\">";
 					((MLinkController) LinkController.getController(modeController)).setLink(node, (URI) null);
 					setNodeText(node, strText);
 				}

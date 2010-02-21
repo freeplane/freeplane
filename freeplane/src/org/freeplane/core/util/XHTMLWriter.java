@@ -109,6 +109,12 @@ class XHTMLWriter extends FixedHTMLWriter {
 			else if (c == '<') {
 				insideTag = true;
 			}
+			if (c > 126){
+				super.write("&#x", 0, 3);
+				super.write(Integer.toString(c, 16));
+				super.write(';');
+				return;
+			}
 			super.write(c);
 		}
 
