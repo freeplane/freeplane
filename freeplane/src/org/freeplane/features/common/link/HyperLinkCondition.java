@@ -24,8 +24,8 @@ import java.net.URI;
 import javax.swing.JComponent;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -33,7 +33,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public abstract class HyperLinkCondition implements ICondition {
+public abstract class HyperLinkCondition implements ISelectableCondition {
 	static final String TEXT = "TEXT";
 	private String description;
 	final private String hyperlink;

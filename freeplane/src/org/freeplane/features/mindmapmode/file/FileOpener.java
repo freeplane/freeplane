@@ -20,14 +20,19 @@
 package org.freeplane.features.mindmapmode.file;
 
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.File;
+import java.net.URI;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.components.UITools;
@@ -62,6 +67,8 @@ class FileOpener implements DropTargetListener {
 	public void dragScroll(final DropTargetDragEvent e) {
 	}
 
+	static final private Pattern filePattern = Pattern.compile("file://[^\\s" + File.pathSeparatorChar + "]+");
+	@SuppressWarnings("unchecked")
 	public void drop(final DropTargetDropEvent dtde) {
 		if (!isDropAcceptable(dtde)) {
 			dtde.rejectDrop();
@@ -69,15 +76,30 @@ class FileOpener implements DropTargetListener {
 		}
 		dtde.acceptDrop(DnDConstants.ACTION_COPY);
 		try {
-			final Object data = dtde.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-			if (data == null) {
-				dtde.dropComplete(false);
-				return;
+			Transferable transferable = dtde.getTransferable();
+			if(transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)){
+				final List<File> list = (List<File>)transferable.getTransferData(DataFlavor.javaFileListFlavor);
+				for (File file : list) {
+					modeController.getMapController().newMap(Compat.fileToUrl(file));
+				}
 			}
-			final Iterator iterator = ((List) data).iterator();
-			while (iterator.hasNext()) {
-				final File file = (File) iterator.next();
-				modeController.getMapController().newMap(Compat.fileToUrl(file));
+			if(transferable.isDataFlavorSupported(DataFlavor.stringFlavor)){
+				final String files = (String) transferable.getTransferData(DataFlavor.stringFlavor);
+				Matcher matcher = filePattern.matcher(files);
+				while(matcher.find()){
+					String urlString = matcher.group();
+					if(! urlString.substring(urlString.length() - 3).equalsIgnoreCase(".mm")){
+						continue;
+					}
+					try {
+						URI uri = new URI(urlString);
+						URL	url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+						modeController.getMapController().newMap(url);
+					} catch (Exception e) {
+						e.printStackTrace();
+						continue;
+					}
+				}
 			}
 		}
 		catch (final Exception e) {
@@ -92,19 +114,20 @@ class FileOpener implements DropTargetListener {
 	}
 
 	private boolean isDragAcceptable(final DropTargetDragEvent event) {
-		final DataFlavor[] flavors = event.getCurrentDataFlavors();
-		for (int i = 0; i < flavors.length; i++) {
-			if (flavors[i].isFlavorJavaFileListType()) {
-				return true;
-			}
-		}
-		return false;
+		return isDropAcceptable(event.getCurrentDataFlavors());
 	}
 
 	private boolean isDropAcceptable(final DropTargetDropEvent event) {
-		final DataFlavor[] flavors = event.getCurrentDataFlavors();
+		return isDropAcceptable(event.getCurrentDataFlavors());
+	}
+
+	private boolean isDropAcceptable(final DataFlavor[] flavors) {
 		for (int i = 0; i < flavors.length; i++) {
-			if (flavors[i].isFlavorJavaFileListType()) {
+			DataFlavor dataFlavor = flavors[i];
+			if (dataFlavor.isFlavorJavaFileListType()) {
+				return true;
+			}
+			if (dataFlavor.isFlavorTextType()) {
 				return true;
 			}
 		}

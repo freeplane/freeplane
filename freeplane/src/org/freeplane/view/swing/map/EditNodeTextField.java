@@ -187,26 +187,25 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 					e.consume();
 					break;
 				case KeyEvent.VK_ENTER:
-					if(! e.isAltDown()){ 
-						if(e.isShiftDown()){
-							e.consume();
-							final Component component = e.getComponent();
-							final KeyEvent keyEvent = new KeyEvent(component, e.getID(),e.getWhen(), 0, e.getKeyCode(), e.getKeyChar(), e.getKeyLocation());
-							SwingUtilities.processKeyBindings(keyEvent);
-							break;
-						}
-						else if(! ResourceController.getResourceController().getBooleanProperty("il__enter_confirms_by_default")){
-							break;
-						}
-					}
-					final String output;
-						output = textfield.getText();
-					e.consume();
-					eventSource = CANCEL;
-					hideMe();
-					getEditControl().ok(output);
-					nodeView.requestFocus();
-					break;
+				{
+					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("il__enter_confirms_by_default");
+					if(enterConfirms != e.isAltDown() || e.isShiftDown()){
+						e.consume();
+						final Component component = e.getComponent();
+						final KeyEvent keyEvent = new KeyEvent(component, e.getID(),e.getWhen(), 0, e.getKeyCode(), e.getKeyChar(), e.getKeyLocation());
+						SwingUtilities.processKeyBindings(keyEvent);
+						break;
+					} 
+				}
+				final String output;
+				output = textfield.getText();
+				e.consume();
+				eventSource = CANCEL;
+				hideMe();
+				getEditControl().ok(output);
+				nodeView.requestFocus();
+				break;
+
 				case KeyEvent.VK_TAB:
 					textfield.insert("    ", textfield.getCaretPosition());
 				case KeyEvent.VK_SPACE:

@@ -25,7 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.filter.condition.CompareConditionAdapter;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.JCondition;
 import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -35,7 +35,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class PriorityCompareCondition extends CompareConditionAdapter {
+public class PriorityCompareCondition extends CompareConditionAdapter {
 	static final String COMPARATION_RESULT = "COMPARATION_RESULT";
 	static final String NAME = "priority_compare_condition";
 	static final String SUCCEED = "SUCCEED";
@@ -43,7 +43,7 @@ class PriorityCompareCondition extends CompareConditionAdapter {
 	
 	private static final IconStore STORE = IconStoreFactory.create();
 
-	static ICondition load(final XMLElement element) {
+	static ISelectableCondition load(final XMLElement element) {
 		return new PriorityCompareCondition(element.getAttribute(PriorityCompareCondition.VALUE, null), Integer
 		    .parseInt(element.getAttribute(PriorityCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader
 		    .xmlToBoolean(element.getAttribute(PriorityCompareCondition.SUCCEED, null)));

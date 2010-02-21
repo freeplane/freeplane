@@ -24,6 +24,7 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -33,6 +34,7 @@ import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -433,16 +435,20 @@ class ApplicationViewController extends ViewController {
 		navigationNextMap.setEnabled(number > 0);
 	}
 	public void initFrame(final JFrame frame) {
-		final ImageIcon mWindowIcon;
-		if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
-			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-			    "/images/Freeplane_frame_icon.png"));
+    // Preserve the existing icon image under Mac OS X 
+		if (!Compat.isMacOsX()) {
+			final ImageIcon mWindowIcon;
+			if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
+				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+						"/images/Freeplane_frame_icon.png"));
+			}
+			else {
+				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+						"/images/Freeplane_frame_icon_32x32.png"));
+			}
+			frame.setIconImage(mWindowIcon.getImage());
 		}
-		else {
-			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-			    "/images/Freeplane_frame_icon_32x32.png"));
-		}
-		frame.setIconImage(mWindowIcon.getImage());
+
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override

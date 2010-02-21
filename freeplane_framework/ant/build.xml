@@ -201,15 +201,23 @@
 	</target>
 
   <!-- Mac OS X -->
-	<target name="macosxapp">
+	<target name="macosxapp" depends="build">
 
     <property name="macpluginsdir" value="plugins" />
-    <!-- Disabling "command-line" parameters because the "$1" syntax is probably incorrect here: 
+    <!-- !! TODO: Delete this unused property, and also delete its use in below in the jarbundler vmoptions field
+            Disabled "command-line" parameters because the "$1" syntax is probably incorrect here: 
     <property name="macparams" value="-Dorg.freeplane.param1=$1 -Dorg.freeplane.param2=$2 -Dorg.freeplane.param3=$3 -Dorg.freeplane.param4=$4" />
     --> 
     <property name="macdefines" value="-Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
 
-
+	<!-- uncomment to start remote debug session for the app	
+	<property name="debugparams" value="-Xdebug -Xrunjdwp:transport=dt_socket,address=localhost:8000"/>	
+	-->
+		
+	<condition property="debugparams" else="">
+		<isset property="debugparams"/>
+	</condition>	
+		
     <!-- Delete any existing Freeplane.app (it's a directory) -->
 	<mkdir dir="${build4mac}"/>	
     <delete dir="${build4mac}/Freeplane.app"/>
@@ -221,7 +229,7 @@
                 shortname="Freeplane"
                 bundleid="org.freeplane.core"
                 jvmversion="1.2+"
-                vmoptions="-Xmx512m ${macparams} ${macdefines}"
+                vmoptions="${debugparams} -Xmx512m ${macdefines}"
                 arguments="-xargs ./props.xargs -xargs ./init.xargs"
                 jar="${build}/framework.jar"
                 icon="${mac-jarbundler}/freeplane.icns"
@@ -242,6 +250,7 @@
       <documenttype name="Mindmap"
                     extensions="mm" 
                     ostypes="MM"
+                    iconfile="${mac-jarbundler}/freeplanedoc.icns"
                     role="Editor"/>
     </jarbundler>
 	<chmod file="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" perm="ugo+rx" />
@@ -299,7 +308,7 @@
 		<arg line="create -srcfolder ${macappfullpath} ${dist}/freeplane_app-${ver}.dmg"/>
 		</exec>
 	</target>
-	<target name="dist" depends="clean, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac">
+	<target name="dist" depends="clean, binzip, srczip, installer, portableinstaller, zip4mac">
 		<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
 	</target>
 

@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.dnd.DropTarget;
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -39,6 +40,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.charset.Charset;
+import java.util.LinkedList;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -56,6 +60,11 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ui.ComboProperty;
+import org.freeplane.core.resources.ui.IPropertyControl;
+import org.freeplane.core.resources.ui.IPropertyControlCreator;
+import org.freeplane.core.resources.ui.OptionPanelBuilder;
+import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
@@ -64,6 +73,7 @@ import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MMapModel;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -167,6 +177,23 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	public MFileManager(final ModeController modeController) {
 		super(modeController);
 		createActions(modeController);
+		 createPreferences();
+	}
+	private void createPreferences() {
+		final MModeController modeController = (MModeController) getModeController();
+		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
+		optionPanelBuilder.addCreator("Environment/load", new IPropertyControlCreator() {
+			
+			public IPropertyControl createControl() {
+				Set<String> charsets = Charset.availableCharsets().keySet();
+				LinkedList<String> charsetList = new LinkedList<String>(charsets);
+				charsetList.addFirst("JVMdefault");
+				LinkedList<String> charsetTranslationList = new LinkedList<String>(charsets);
+				charsetTranslationList.addFirst(ResourceBundles.getText("default"));
+				return new ComboProperty("default_charset", charsetList, charsetList);
+			}
+		},
+		IndexedTree.AS_CHILD);
 	}
 
 	private void backup(final File file) {
@@ -319,17 +346,15 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	private NodeModel loadTreeImpl(final MapModel map, final File f) throws FileNotFoundException,
 	        IOException, XMLException {
 		BufferedInputStream file = new BufferedInputStream(new FileInputStream(f));
-		int versionInfoLength = EXPECTED_START_STRINGS[0].length();
-		final String buffer = readFileStart(file, versionInfoLength).toString();
-		final StringBufferInputStream startInput = new StringBufferInputStream(buffer);
-		final InputStream sequencedInput = new SequenceInputStream(startInput, file);
+		int versionInfoLength = 1000;
+		final byte[] buffer = new byte[versionInfoLength];
+		final int readCount = file.read(buffer);
+		final String mapStart = new String(buffer, defaultCharset().name());
+		final ByteArrayInputStream readBytes = new ByteArrayInputStream(buffer, 0, readCount);
+		final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
 		Reader reader = null;
 		for (int i = 0; i < EXPECTED_START_STRINGS.length; i++) {
 			versionInfoLength = EXPECTED_START_STRINGS[i].length();
-			String mapStart = "";
-			if (buffer.length() >= versionInfoLength) {
-				mapStart = buffer.substring(0, versionInfoLength);
-			}
 			if (mapStart.startsWith(EXPECTED_START_STRINGS[i])) {
 				reader = UrlManager.getActualReader(sequencedInput);
 				break;
@@ -397,19 +422,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 			}
 		}
 		getController().getViewController().setTitle();
-	}
-
-	/**
-	 * Returns pMinimumLength bytes of the files content.
-	 * @throws IOException 
-	 *
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
-	private String readFileStart(final InputStream input, final int pMinimumLength) throws IOException {
-		final byte[] buffer = new byte[pMinimumLength];
-		input.read(buffer);
-		return new String(buffer);
 	}
 
 	public boolean save(final MapModel map) {

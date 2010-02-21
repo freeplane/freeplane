@@ -31,10 +31,12 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.security.AccessControlException;
 
 import javax.swing.JFileChooser;
@@ -77,7 +79,19 @@ public class UrlManager implements IExtension {
 	 * @throws FileNotFoundException
 	 */
 	protected static Reader getActualReader(final InputStream file) throws FileNotFoundException {
-		return new InputStreamReader(file);
+			return new InputStreamReader(file, defaultCharset());
+	}
+
+	protected static Charset defaultCharset() {
+		try {
+			String defaultCharsetName = ResourceController.getResourceController().getProperty("default_charset");
+			if(defaultCharsetName.equals("JVMdefault")){
+				return Charset.defaultCharset();
+			}
+			return Charset.forName(defaultCharsetName);
+		} catch (Exception e) {
+			return Charset.defaultCharset();
+		}
 	}
 
 	public static UrlManager getController(final ModeController modeController) {
@@ -129,7 +143,7 @@ public class UrlManager implements IExtension {
                     	final Source xsltSource = new StreamSource(xsltInputStream);
         				input = new BufferedInputStream( new FileInputStream(file));
                         InputStream cleanedInput = new CleaningInputStream(input);
-                        Reader reader = new InputStreamReader(cleanedInput);
+                        Reader reader = new InputStreamReader(cleanedInput, defaultCharset());
         				Transformer trans = transFact.newTransformer(xsltSource);
         				trans.transform(new StreamSource(reader), result);
         			}

@@ -26,7 +26,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public abstract class NodeCondition implements ICondition {
+public abstract class NodeCondition implements ISelectableCondition {
 	private String description;
 	private JComponent renderer;
 

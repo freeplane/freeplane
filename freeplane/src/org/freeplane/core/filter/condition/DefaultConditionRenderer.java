@@ -27,7 +27,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.icon.UIIcon;
 import org.freeplane.core.resources.ResourceBundles;
 
@@ -52,8 +51,8 @@ public class DefaultConditionRenderer implements ListCellRenderer {
 		if (value instanceof UIIcon) {
 			component = new JLabel(((UIIcon) value).getIcon());
 		}
-		else if (value instanceof ICondition) {
-			final ICondition cond = (ICondition) value;
+		else if (value instanceof ISelectableCondition) {
+			final ISelectableCondition cond = (ISelectableCondition) value;
 			component = cond.getListCellRendererComponent();
 		}
 		else {

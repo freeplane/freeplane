@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.common.link;
 
-import java.net.URI;
-
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.resources.ResourceBundles;
 
@@ -28,7 +26,7 @@ import org.freeplane.core.resources.ResourceBundles;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-class ConnectorLabelEqualsCondition extends ConnectorLabelCondition {
+public class ConnectorLabelEqualsCondition extends ConnectorLabelCondition {
 	public static final String NAME = "connector_label_equals";
 
 	public ConnectorLabelEqualsCondition(final String text, boolean ignoreCase) {

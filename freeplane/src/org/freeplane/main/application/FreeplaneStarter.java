@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -99,9 +100,10 @@ public class FreeplaneStarter {
 			applicationResourceController = new ApplicationResourceController();
 			ResourceController.setResourceController(applicationResourceController);
 			controller = new Controller();
+			Compat.macAppChanges(controller);
 			applicationResourceController.init(controller);
 			LogTool.createLogger();
-			Controller.setLookAndFeel(applicationResourceController.getProperty("lookandfeel"));
+			ViewController.setLookAndFeel(applicationResourceController.getProperty("lookandfeel"));
 			final JFrame frame = new JFrame("Freeplane");
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 			splash = new FreeplaneSplashModern(frame);
@@ -144,7 +146,7 @@ public class FreeplaneStarter {
 	}
 
 	public void createFrame(final String[] args) {
-		Compat.macChanges(controller);
+		Compat.macMenuChanges(controller);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				viewController.init();
@@ -157,7 +159,9 @@ public class FreeplaneStarter {
 				}
 				splash.dispose();
 				splash = null;
+				frame.setAlwaysOnTop(true);
 				frame.toFront();
+				frame.setAlwaysOnTop(false);
 			}
 		});
 	}

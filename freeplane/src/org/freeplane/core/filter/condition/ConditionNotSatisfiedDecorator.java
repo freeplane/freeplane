@@ -33,22 +33,22 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class ConditionNotSatisfiedDecorator implements ICondition {
+public class ConditionNotSatisfiedDecorator implements ISelectableCondition {
 	static final String NAME = "negate_condition";
 
 	@SuppressWarnings("unchecked")
-	static ICondition load(final ConditionFactory conditionFactory, final XMLElement element) {
+	static ISelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
 		final Vector<XMLElement> children = element.getChildren();
-		final ICondition cond = conditionFactory.loadCondition(children.get(0));
+		final ISelectableCondition cond = conditionFactory.loadCondition(children.get(0));
 		return new ConditionNotSatisfiedDecorator(cond);
 	}
 
-	final private ICondition originalCondition;
+	final private ISelectableCondition originalCondition;
 
 	/**
 	 *
 	 */
-	public ConditionNotSatisfiedDecorator(final ICondition originalCondition) {
+	public ConditionNotSatisfiedDecorator(final ISelectableCondition originalCondition) {
 		super();
 		assert originalCondition != null;
 		this.originalCondition = originalCondition;

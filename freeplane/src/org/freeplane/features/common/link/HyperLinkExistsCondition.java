@@ -29,7 +29,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-class HyperLinkExistsCondition extends HyperLinkCondition {
+public class HyperLinkExistsCondition extends HyperLinkCondition {
 	public static final String NAME = "hyper_link_exists";
 
 	public HyperLinkExistsCondition() {

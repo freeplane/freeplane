@@ -27,7 +27,7 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
@@ -58,64 +58,40 @@ class NodeConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
-	                                  final boolean ignoreCase) {
+	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	                                            final Object value, final boolean ignoreCase) {
 		return createNodeCondition(simpleCond, (String) value, ignoreCase);
 	}
 
-	protected ICondition createNodeCondition(final NamedObject simpleCondition, final String value,
-	                                         final boolean ignoreCase) {
-		if (ignoreCase) {
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-				if (value.equals("")) {
-					return null;
-				}
-				return new IgnoreCaseNodeContainsCondition(value);
+	protected ISelectableCondition createNodeCondition(final NamedObject simpleCondition, final String value,
+	                                                   final boolean ignoreCase) {
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+			if (value.equals("")) {
+				return null;
 			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new NodeCompareCondition(value, true, 0, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-				return new NodeCompareCondition(value, true, 0, false);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-				return new NodeCompareCondition(value, true, 1, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-				return new NodeCompareCondition(value, true, -1, false);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-				return new NodeCompareCondition(value, true, -1, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-				return new NodeCompareCondition(value, true, 1, false);
-			}
+			// TODO: make ignoreCase a parameter of NodeContainsCondition
+			return ignoreCase ? new IgnoreCaseNodeContainsCondition(value) : new NodeContainsCondition(value);
 		}
-		else {
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-				if (value.equals("")) {
-					return null;
-				}
-				return new NodeContainsCondition(value);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new NodeCompareCondition(value, false, 0, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-				return new NodeCompareCondition(value, false, 0, false);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-				return new NodeCompareCondition(value, false, 1, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-				return new NodeCompareCondition(value, false, -1, false);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-				return new NodeCompareCondition(value, false, -1, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-				return new NodeCompareCondition(value, false, 1, false);
-			}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
+			return new NodeMatchesRegexpCondition(value, ignoreCase);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
+			return new NodeCompareCondition(value, ignoreCase, 0, true);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
+			return new NodeCompareCondition(value, ignoreCase, 0, false);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
+			return new NodeCompareCondition(value, ignoreCase, 1, true);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
+			return new NodeCompareCondition(value, ignoreCase, -1, false);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
+			return new NodeCompareCondition(value, ignoreCase, -1, true);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
+			return new NodeCompareCondition(value, ignoreCase, 1, false);
 		}
 		return null;
 	}
@@ -126,7 +102,8 @@ class NodeConditionController implements IElementaryConditionController {
 		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
 		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
-		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT), });
+		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT),
+		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_REGEXP), });
 	}
 
 	public ListModel getFilteredProperties() {
@@ -147,7 +124,7 @@ class NodeConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ICondition loadCondition(final XMLElement element) {
+	public ISelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(NodeContainsCondition.NAME)) {
 			return NodeContainsCondition.load(element);
 		}
@@ -156,6 +133,9 @@ class NodeConditionController implements IElementaryConditionController {
 		}
 		if (element.getName().equalsIgnoreCase(NodeCompareCondition.NAME)) {
 			return NodeCompareCondition.load(element);
+		}
+		if (element.getName().equalsIgnoreCase(NodeMatchesRegexpCondition.NAME)) {
+			return NodeMatchesRegexpCondition.load(element);
 		}
 		return null;
 	}

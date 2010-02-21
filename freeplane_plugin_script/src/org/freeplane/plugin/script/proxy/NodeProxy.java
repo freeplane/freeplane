@@ -3,12 +3,17 @@
  */
 package org.freeplane.plugin.script.proxy;
 
+import groovy.lang.Closure;
+
 import java.util.AbstractList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
+import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.note.NoteController;
@@ -219,4 +224,55 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 				getModeController()) : null;
     }
 
+	public List<Node> find(ICondition condition) {
+		return ProxyUtils.find(condition, getModeController(), getDelegate());
+	}
+
+	public List<Node> find(final Closure closure) {
+		return ProxyUtils.find(closure, getModeController(), getDelegate());
+	}
+	
+	public Date getLastModifiedAt() {
+		return getDelegate().getHistoryInformation().getLastModifiedAt();
+	}
+	
+	public void setLastModifiedAt(final Date date) {
+		final Date oldDate = getDelegate().getHistoryInformation().getLastModifiedAt();
+		final IActor actor = new IActor() {
+			public void act() {
+				getDelegate().getHistoryInformation().setLastModifiedAt(date);
+			}
+
+			public String getDescription() {
+				return "setLastModifiedAt";
+			}
+
+			public void undo() {
+				getDelegate().getHistoryInformation().setLastModifiedAt(oldDate);
+			}
+		};
+		getModeController().execute(actor, getDelegate().getMap());
+	}
+	
+	public Date getCreatedAt() {
+		return getDelegate().getHistoryInformation().getCreatedAt();
+	}
+	
+	public void setCreatedAt(final Date date) {
+		final Date oldDate = getDelegate().getHistoryInformation().getCreatedAt();
+		final IActor actor = new IActor() {
+			public void act() {
+				getDelegate().getHistoryInformation().setCreatedAt(date);
+			}
+
+			public String getDescription() {
+				return "setCreatedAt";
+			}
+
+			public void undo() {
+				getDelegate().getHistoryInformation().setCreatedAt(oldDate);
+			}
+		};
+		getModeController().execute(actor, getDelegate().getMap());
+	}
 }

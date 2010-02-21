@@ -103,20 +103,10 @@ public class MModeController extends ModeController {
 		optionPanelBuilder = new OptionPanelBuilder();
 		optionPanelBuilder.load(ResourceController.getResourceController().getResource("/xml/preferences.xml"));
 		final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
-		final Vector<String> lafNames = new Vector(lafInfo.length + 5);
-		final Vector<String> translatedLafNames = new Vector(lafInfo.length + 5);
+		final Vector<String> lafNames = new Vector(lafInfo.length + 1);
+		final Vector<String> translatedLafNames = new Vector(lafInfo.length + 1);
 		lafNames.add("default");
-		translatedLafNames.add(FpStringUtils.getOptionalText("default"));
-		lafNames.add("metal");
-		translatedLafNames.add(FpStringUtils.getOptionalText("OptionPanel.metal"));
-		lafNames.add("windows");
-		translatedLafNames.add(FpStringUtils.getOptionalText("OptionPanel.windows"));
-		lafNames.add("motif");
-		translatedLafNames.add(FpStringUtils.getOptionalText("OptionPanel.motif"));
-		lafNames.add("gtk");
-		translatedLafNames.add(FpStringUtils.getOptionalText("OptionPanel.gtk"));
-		lafNames.add("nothing");
-		translatedLafNames.add(FpStringUtils.getOptionalText("OptionPanel.nothing"));
+		translatedLafNames.add(FpStringUtils.getOptionalText("OptionPanel.default"));
 		for (int i = 0; i < lafInfo.length; i++) {
 			final LookAndFeelInfo info = lafInfo[i];
 			final String className = info.getClassName();

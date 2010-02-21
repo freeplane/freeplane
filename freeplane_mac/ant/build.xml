@@ -12,8 +12,7 @@
 	<property name="classpath" value="${framework.jar}:${freeplane.jars}"/>
 
 	<target name="build">
-		<delete dir="${build}"  quiet="true"/>
-		<mkdir dir="${build}" />
+		<mkdir dir="${build}"/>
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
 			source="${java_source_version}" target="${java_target_version}">
 		</javac>

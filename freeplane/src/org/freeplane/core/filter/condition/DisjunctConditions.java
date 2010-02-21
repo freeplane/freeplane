@@ -33,25 +33,25 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class DisjunctConditions implements ICondition {
+public class DisjunctConditions implements ISelectableCondition {
 	static final String NAME = "disjunct_condition";
 
 	@SuppressWarnings("unchecked")
-	static ICondition load(final ConditionFactory conditionFactory, final XMLElement element) {
+	static ISelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
 		final Vector<XMLElement> children = element.getChildren();
-		final ICondition[] conditions = new ICondition[children.size()];
+		final ISelectableCondition[] conditions = new ISelectableCondition[children.size()];
 		for (int i = 0; i < conditions.length; i++) {
 			conditions[i] = conditionFactory.loadCondition(children.get(i));
 		}
 		return new DisjunctConditions(conditions);
 	}
 
-	final private ICondition[] conditions;
+	final private ISelectableCondition[] conditions;
 
 	/**
 	 *
 	 */
-	public DisjunctConditions(final ICondition[] conditions) {
+	public DisjunctConditions(final ISelectableCondition[] conditions) {
 		this.conditions = conditions;
 	}
 
@@ -62,7 +62,7 @@ public class DisjunctConditions implements ICondition {
 	 * .MindMapNode)
 	 */
 	public boolean checkNode(ModeController modeController, final NodeModel node) {
-		for(ICondition condition : conditions) {
+		for(ISelectableCondition condition : conditions) {
 			if (condition.checkNode(modeController, node)) {
 				return true;
 			}
@@ -79,7 +79,7 @@ public class DisjunctConditions implements ICondition {
 	public JComponent getListCellRendererComponent() {
 		final JCondition component = new JCondition();
 		component.add(new JLabel("("));
-		ICondition cond = conditions[0];
+		ISelectableCondition cond = conditions[0];
 		JComponent rendererComponent = cond.getListCellRendererComponent();
 		rendererComponent.setOpaque(false);
 		component.add(rendererComponent);
@@ -99,7 +99,7 @@ public class DisjunctConditions implements ICondition {
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(DisjunctConditions.NAME);
-		for(ICondition condition : conditions) {
+		for(ISelectableCondition condition : conditions) {
 			condition.toXml(child);
 		}
 		element.addChild(child);

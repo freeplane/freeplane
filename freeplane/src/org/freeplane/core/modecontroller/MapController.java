@@ -50,10 +50,12 @@ import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.model.EncryptionModel;
+import org.freeplane.core.model.HistoryInformationModel;
 import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -513,9 +515,34 @@ public class MapController extends SelectionController {
 		if (mapReader.isMapLoadingInProcess()) {
 			return;
 		}
-		if (isUpdate) {
-			if (node.getHistoryInformation() != null) {
-				node.getHistoryInformation().setLastModifiedAt(new Date());
+		if (isUpdate && ! getModeController().isUndoAction()) {
+			final HistoryInformationModel historyInformation = node.getHistoryInformation();
+			if (historyInformation != null) {
+				IActor historyActor = new IActor() {
+					private Date lastModifiedAt = historyInformation.getLastModifiedAt();
+					private Date now = new Date();
+					public void undo() {
+						setDate(historyInformation, lastModifiedAt);
+					}
+
+					private void setDate(
+							final HistoryInformationModel historyInformation,
+							Date lastModifiedAt) {
+						Date oldLastModifiedAt = historyInformation.getLastModifiedAt();
+						historyInformation.setLastModifiedAt(lastModifiedAt);
+						final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(getModeController(), node, HistoryInformationModel.class, oldLastModifiedAt, lastModifiedAt);
+						fireNodeChanged(node, nodeChangeEvent);
+					}
+					
+					public String getDescription() {
+						return null;
+					}
+					
+					public void act() {
+						setDate(historyInformation, now);
+					}
+				};
+				getModeController().execute(historyActor, node.getMap());
 			}
 		}
 		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(modeController, node, property, oldValue, newValue);

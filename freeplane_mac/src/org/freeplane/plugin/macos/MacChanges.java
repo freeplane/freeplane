@@ -19,17 +19,13 @@
  */
 package org.freeplane.plugin.macos;
 
-import java.awt.Image;
+import java.awt.EventQueue;
 import java.io.File;
-import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
-import javax.imageio.ImageIO;
-import javax.swing.SwingUtilities;
-
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IMenuContributor;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
@@ -46,71 +42,57 @@ public class MacChanges extends ApplicationAdapter  {
 
 	private static Application fmMacApplication;
 
-	private final MModeController modeController;
+	private final Controller controller;
 
-	private boolean mIsStartupPhase = false;
+	private int loadedMapCounter = 0;
 	
 	static public void apply(Controller controller) {
 		new MacChanges(controller);
 	}
 	
 	private MacChanges(Controller controller) {
-		this.modeController = (MModeController) controller.getModeController(MModeController.MODENAME);
+		this.controller = controller;
 		if(fmMacApplication==null){
 			// if a handleOpen comes here, directly, we know that FM is currently starting.
-			mIsStartupPhase = true;
 			fmMacApplication = Application.getApplication();
-			try {
-				Image image = ImageIO.read(ResourceController.getResourceController().getResource("/images/freeplane_app_128x128.png"));
-				fmMacApplication.setDockIconImage(image );
-			} 
-			catch (IOException e) {
-				
-			}
 			fmMacApplication.addApplicationListener(this);
 			fmMacApplication.addPreferencesMenuItem();
 			fmMacApplication.addAboutMenuItem();
 			fmMacApplication.setEnabledPreferencesMenu(true);
-//			fmMacApplication.removePreferencesMenuItem();
-			mIsStartupPhase = false;
-		}
-		Set<String> modes = controller.getModes();
-		for(String mode:modes){
-			MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory().getMenuBuilder();
-			String[] keys = {
-					"/map_popup/toolbars/ToggleMenubarAction",
-					"/menu_bar/file/quit",
-					"/menu_bar/extras/first/options/PropertyAction",
-					"/menu_bar/help/doc/AboutAction"
-			};
-			for(String key:keys){
-				if(builder.contains(key)){
-					builder.removeElement(key);
-				}
+			// wait until handleOpenFile finishes if it was called in event thread
+			try {
+				EventQueue.invokeAndWait(new Runnable() {
+					public void run() {
+					};
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
 
 
 	public void handleQuit(ApplicationEvent event) {
-		modeController.getController().quit();
+		getModeController().getController().quit();
 		event.setHandled(false);
 	}
 
 	public void handleAbout(ApplicationEvent event) {
-		modeController.getController().getAction("AboutAction").actionPerformed(null);
+		getModeController().getController().getAction("AboutAction").actionPerformed(null);
 		event.setHandled(true);
 	}
 
 
 	public void handleOpenFile(final ApplicationEvent event) {
 		try {
-			if(mIsStartupPhase) {
+			ViewController viewController = controller.getViewController();
+			if(viewController == null) {
 				// restore at startup:
-				System.setProperty("org.freeplane.param1", event.getFilename());
+				loadedMapCounter++;
+				System.setProperty("org.freeplane.param" + loadedMapCounter, event.getFilename());				
 			} else {
 				// Direct loading
-				modeController.getMapController().newMap(Compat.fileToUrl(new File(event.getFilename())));
+				getModeController().getMapController().newMap(Compat.fileToUrl(new File(event.getFilename())));
 			}
 			event.setHandled(true);
 		} catch (Exception e) {
@@ -119,7 +101,11 @@ public class MacChanges extends ApplicationAdapter  {
 	}
 	
 	public void handlePreferences(ApplicationEvent event) {
-		modeController.getAction("PropertyAction").actionPerformed(null);
+		getModeController().getAction("PropertyAction").actionPerformed(null);
 		event.setHandled(true);
+	}
+
+	private MModeController getModeController() {
+		return (MModeController) controller.getModeController(MModeController.MODENAME);
 	}
 }

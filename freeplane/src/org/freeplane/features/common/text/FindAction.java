@@ -35,7 +35,7 @@ import javax.swing.event.AncestorListener;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterConditionEditor;
 import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
@@ -48,7 +48,7 @@ class FindAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ICondition condition;
+	private ISelectableCondition condition;
 	private FilterConditionEditor editor;
 	private NodeModel findFromNode;
 	private LinkedList findNodeQueue;

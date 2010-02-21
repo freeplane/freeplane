@@ -12,6 +12,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -43,7 +44,7 @@ public class LogicalStyleFilterController implements
 		return true;
 	}
 
-	public ICondition createCondition(Object selectedItem,
+	public ISelectableCondition createCondition(Object selectedItem,
 			NamedObject simpleCond, Object value, boolean ignoreCase) {
 		return new StyleCondition(value);
 	}
@@ -76,7 +77,7 @@ public class LogicalStyleFilterController implements
 		return false;
 	}
 
-	public ICondition loadCondition(XMLElement element) {
+	public ISelectableCondition loadCondition(XMLElement element) {
 		if (element.getName().equalsIgnoreCase(StyleCondition.NAME)) {
 			return StyleCondition.load(element);
 		}

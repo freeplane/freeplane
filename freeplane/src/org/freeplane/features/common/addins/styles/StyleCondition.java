@@ -4,13 +4,14 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class StyleCondition implements ICondition {
+public class StyleCondition implements ISelectableCondition {
 	static final String NAME = "style_equals_condition";
 	final private Object value;
 	private JComponent renderer;
@@ -44,7 +45,7 @@ public class StyleCondition implements ICondition {
 		element.addChild(child);
 	}
 
-	public static ICondition load(XMLElement element) {
+	public static ISelectableCondition load(XMLElement element) {
 		String text = element.getAttribute("TEXT", null);
 		if(text != null){
 			return new StyleCondition(text);

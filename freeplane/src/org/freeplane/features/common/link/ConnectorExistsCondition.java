@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.common.link;
 
-import java.net.URI;
-
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -29,7 +27,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-class ConnectorExistsCondition extends ConnectorLabelCondition {
+public class ConnectorExistsCondition extends ConnectorLabelCondition {
 	public static final String NAME = "connector_exists";
 
 	public ConnectorExistsCondition() {

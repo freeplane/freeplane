@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
@@ -48,7 +49,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 	final JComboBox mComboBox;
 	private Vector<String> possibleValues;
 
-	public ComboProperty(final String name, final List<String> possibles, final List<String> possibleTranslations) {
+	public ComboProperty(final String name, final Collection<String> possibles, final Collection<String> possibleTranslations) {
 		super(name);
 		fillPossibleValues(possibles);
 		mComboBox = new JComboBox();
@@ -62,7 +63,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 
 	/**
 	 */
-	private void fillPossibleValues(final List<String> possibles) {
+	private void fillPossibleValues(final Collection<String> possibles) {
 		possibleValues = new Vector<String>();
 		possibleValues.addAll(possibles);
 	}

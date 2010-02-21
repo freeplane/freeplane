@@ -3,11 +3,13 @@
  */
 package org.freeplane.plugin.script.proxy;
 
-import java.util.AbstractList;
+import groovy.lang.Closure;
+
 import java.util.List;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
@@ -29,7 +31,6 @@ class ControllerProxy implements Proxy.Controller {
 	public void centerOnNode(final Node center) {
 		final NodeModel nodeModel = ((NodeProxy) center).getDelegate();
 		selection.centerNode(nodeModel);
-
 	}
 
 	public Node getSelected() {
@@ -37,35 +38,11 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	public List<Node> getSelecteds() {
-		return new AbstractList<Node>() {
-			private final List<NodeModel> selectionCopy = selection.getSelection();
-			@Override
-			public Node get(final int index) {
-				final NodeModel nodeModel = selectionCopy.get(index);
-				return new NodeProxy(nodeModel, modeController);
-			}
-
-			@Override
-			public int size() {
-				return selectionCopy.size();
-			}
-		};
+		return ProxyUtils.createNodeList(selection.getSelection(), modeController);
 	}
 
 	public List<Node> getSortedSelection(final boolean differentSubtrees) {
-		return new AbstractList<Node>() {
-			final private List<NodeModel> sortedSelection = selection.getSortedSelection(differentSubtrees);
-			@Override
-			public Node get(final int index) {
-				final NodeModel nodeModel = sortedSelection.get(index);
-				return new NodeProxy(nodeModel, modeController);
-			}
-
-			@Override
-			public int size() {
-				return sortedSelection.size();
-			}
-		};
+		return ProxyUtils.createNodeList(selection.getSortedSelection(differentSubtrees), modeController);
 	}
 
 	public void select(final Node toSelect) {
@@ -77,7 +54,6 @@ class ControllerProxy implements Proxy.Controller {
 		final NodeModel nodeModel = ((NodeProxy) branchRoot).getDelegate();
 		modeController.getMapController().displayNode(nodeModel);
 		selection.selectBranch(nodeModel, false);
-
 	}
 
 	public void selectMultipleNodes(final List<Node> toSelect) {
@@ -87,16 +63,15 @@ class ControllerProxy implements Proxy.Controller {
 				selection.toggleSelected(nodeModel);
 			}
 		}
-
 	}
 
 	public void deactivateUndo() {
 		MapModel map = modeController.getController().getMap();
-		if(map instanceof MapModel){
+		if (map instanceof MapModel) {
 			modeController.deactivateUndo((MMapModel) map);
 		}
 	}
-	
+
 	public void setStatusInfo(String info){
 		ViewController viewController = getViewController();
 		viewController.out(info);
@@ -105,13 +80,22 @@ class ControllerProxy implements Proxy.Controller {
 	private ViewController getViewController() {
 		return modeController.getController().getViewController();
 	}
+
 	public void setStatusInfo(String key, String info){
 		ViewController viewController = getViewController();
 		viewController.addStatusInfo(key, info);
 	}
+
 	public void setStatusInfo(String key, Icon icon){
 		ViewController viewController = getViewController();
 		viewController.addStatusImage(key, icon);
 	}
-	
+
+	public List<Node> find(ICondition condition) {
+		return ProxyUtils.find(condition, modeController, modeController.getController().getMap().getRootNode());
+	}
+
+	public List<Node> find(final Closure closure) {
+		return ProxyUtils.find(closure, modeController, modeController.getController().getMap().getRootNode());
+	}
 }
