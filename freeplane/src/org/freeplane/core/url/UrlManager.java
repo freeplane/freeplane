@@ -84,7 +84,11 @@ public class UrlManager implements IExtension {
 
 	protected static Charset defaultCharset() {
 		try {
-			return Charset.forName(ResourceController.getResourceController().getProperty("default_charset"));
+			String defaultCharsetName = ResourceController.getResourceController().getProperty("default_charset");
+			if(defaultCharsetName.equals("JVMdefault")){
+				return Charset.defaultCharset();
+			}
+			return Charset.forName(defaultCharsetName);
 		} catch (Exception e) {
 			return Charset.defaultCharset();
 		}

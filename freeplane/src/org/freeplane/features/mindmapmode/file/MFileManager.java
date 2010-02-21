@@ -41,6 +41,7 @@ import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.util.LinkedList;
 import java.util.Set;
 
 import javax.swing.JFileChooser;
@@ -185,7 +186,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 			
 			public IPropertyControl createControl() {
 				Set<String> charsets = Charset.availableCharsets().keySet();
-				return new ComboProperty("default_charset", charsets, charsets);
+				LinkedList<String> charsetList = new LinkedList<String>(charsets);
+				charsetList.addFirst("JVMdefault");
+				LinkedList<String> charsetTranslationList = new LinkedList<String>(charsets);
+				charsetTranslationList.addFirst(ResourceBundles.getText("default"));
+				return new ComboProperty("default_charset", charsetList, charsetList);
 			}
 		},
 		IndexedTree.AS_CHILD);
