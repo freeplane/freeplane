@@ -189,8 +189,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 				LinkedList<String> charsetList = new LinkedList<String>(charsets);
 				charsetList.addFirst("JVMdefault");
 				LinkedList<String> charsetTranslationList = new LinkedList<String>(charsets);
-				charsetTranslationList.addFirst(ResourceBundles.getText("default"));
-				return new ComboProperty("default_charset", charsetList, charsetList);
+				charsetTranslationList.addFirst(ResourceBundles.getText("OptionPanel.default"));
+				return new ComboProperty("default_charset", charsetList, charsetTranslationList);
 			}
 		},
 		IndexedTree.AS_CHILD);
