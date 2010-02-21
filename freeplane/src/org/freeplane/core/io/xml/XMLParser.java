@@ -49,12 +49,31 @@ class XMLParser extends StdXMLParser implements IXMLParser {
 	                                     final String fullName, final String name, final String prefix)
 	        throws IOException, XMLParseException, Exception {
 		if (skipNextElementContent) {
+			boolean inComment = false;
 			final TreeXmlReader builder = (TreeXmlReader) getBuilder();
 			final StringBuilder waitingBuf = new StringBuilder();
 			int level = 1;
 			for (;;) {
 				final IXMLReader reader = getReader();
 				char ch = reader.read();
+				if(inComment){
+					waitingBuf.append(ch);
+					if(ch != '-'){
+						continue;
+					}
+					ch = reader.read();
+					waitingBuf.append(ch);
+					if(ch != '-'){
+						continue;
+					}
+					ch = reader.read();
+					waitingBuf.append(ch);
+					if(ch != '>'){
+						continue;
+					}
+					inComment = false;
+					continue;
+				}
 				if (ch == '<') {
 					ch = reader.read();
 					if (ch == '/') {
@@ -63,7 +82,16 @@ class XMLParser extends StdXMLParser implements IXMLParser {
 							break;
 						}
 					}
-					else if (ch != '!') {
+					else if (ch == '!') {
+						char read1 = reader.read();
+						char read2 = reader.read();
+						if( read1 != '-' || read2 != '-' ){
+							throw new XMLParseException(reader.getSystemID(), reader.getLineNr(), "Invalid input: <!" + read1 + read2);
+						}
+						inComment = true;
+						waitingBuf.append("<!--");
+					}
+					else{
 						level++;
 					}
 					waitingBuf.append('<');
