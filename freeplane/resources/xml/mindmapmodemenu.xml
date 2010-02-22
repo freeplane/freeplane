@@ -42,7 +42,6 @@
 				<menu_separator />
 				<menu_action action="QuitAction" accelerator="control Q" />
 			</menu_category>
-			<menu_separator />
 		</menu_submenu>
 		<menu_submenu name="edit" name_ref="edit">
 			<menu_category name="UndoAction">
