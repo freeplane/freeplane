@@ -3,9 +3,15 @@
 ===============================
 New Features:
 Mac OS support
-Add methods for output to status line in scripting API to Controller
 CopyIDAction
 SetAcceleratorOnNextClickAction
+Introduce charset option in preferences to overload the default
+
+Script API:
+Node.find() methods for searches on subtrees
+Controller.find(Closure)
+Controller.findByRegexp(String)
+Controller: methods for accessing the status line
 
 Bug fixes:
 FButtonBar layout
@@ -17,6 +23,19 @@ use clipboard mode on export
 415]: Truncated F-Bar
 425]: Drag and drop from file explorer under Linux does not create a node with relative link: rewrite MLinkController.findLink
 429]: Cannot load Freeplane after updating Java: check jre version on start
+fix comment handling in richcontent
+always substitute non ascii character in xhtml
+match plain text instead of html for notes too (like in bug 437)
+433: Same choices in Look and Feel selection 
+441: No Undo for changes of NodeModel.getHistoryInformation().lastModifiedAt 
+442: Freeplane is opened "in the background" 
+437: unexpected behaviour of function (find - Node text - Contains) 
+option enter_confirms_by_default moved to behavior tab
+439: Enter and Alt+Enter  for inline node editor and long node editor
+opening of map files by drag and drop under linux
+390: drag and drop of files to nodes under linux
+426]: Encrypted portions of maps don't export properly:
+do not start node editing on BACKSPACE
 
 ===============================
 1.0.39 beta
