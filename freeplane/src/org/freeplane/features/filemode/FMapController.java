@@ -41,6 +41,7 @@ public class FMapController extends MapController {
 		final FMapModel fileMapModel = new FMapModel(file, getModeController());
 		fireMapCreated(fileMapModel);
 		newMapView(fileMapModel);
+		// FIXME: setSaved(true) necessary? (it's removed from newMapView())
 		return fileMapModel;
 	}
 
