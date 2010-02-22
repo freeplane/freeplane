@@ -26,6 +26,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -80,10 +81,11 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 
 		public RevisionTable(Object[][] data) {
 			super(data, new Object[] { ResourceBundles.getText(key("file_name")),
-			        ResourceBundles.getText(key("file_last_modified")) });
+			        ResourceBundles.getText(key("file_size")), ResourceBundles.getText(key("file_last_modified")) });
 			final Dimension dim = this.getPreferredSize();
-			getColumnModel().getColumn(0).setPreferredWidth((int) (dim.width * 0.75));
-			getColumnModel().getColumn(1).setPreferredWidth((int) (dim.width * 0.25));
+			getColumnModel().getColumn(0).setPreferredWidth((int) (dim.width * 0.62));
+			getColumnModel().getColumn(1).setPreferredWidth((int) (dim.width * 0.13));
+			getColumnModel().getColumn(2).setPreferredWidth((int) (dim.width * 0.25));
 			setRowHeight(20);
 			setRowSelectionAllowed(true);
 			setFocusable(false);
@@ -143,6 +145,8 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 	private final Controller controller;
 	private final File file;
 	private File selectedFile;
+	private SimpleDateFormat dateFormat = new SimpleDateFormat();
+	private NumberFormat fileSizeFormat = NumberFormat.getIntegerInstance();
 
 	private class CloseAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
@@ -164,7 +168,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		final JTable table = createTable(revisions);
 		final JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.getViewport().setBackground(Color.white);
-		scrollPane.getViewport().setPreferredSize(new Dimension(370, 150));
+		scrollPane.getViewport().setPreferredSize(new Dimension(460, 120));
 		add(scrollPane);
 		add(createQuestion());
 		add(createButtonBar());
@@ -195,15 +199,19 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 			}
 		});
 		sortedRevisions.addAll(Arrays.asList(revisions));
-		SimpleDateFormat dateFormat = new SimpleDateFormat();
 		Object[][] data = new Object[sortedRevisions.size() + 1][];
 		int i = 0;
-		data[i++] = new Object[] { new FileWrapper(file), dateFormat.format(file.lastModified()) };
+		data[i++] = createRow(file);
 		for (File f : sortedRevisions) {
-			data[i++] = new Object[] { new FileWrapper(f), dateFormat.format(f.lastModified()) };
+			data[i++] = createRow(f);
 		}
 		sortedRevisions.addAll(Arrays.asList(revisions));
 		return new RevisionTable(data);
+	}
+
+	private Object[] createRow(File file) {
+		return new Object[] { new FileWrapper(file), fileSizeFormat.format(file.length()),
+		        dateFormat.format(file.lastModified()) };
 	}
 
 	private Box createButtonBar() {
