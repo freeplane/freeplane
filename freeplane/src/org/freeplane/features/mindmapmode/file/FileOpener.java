@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 
 class FileOpener implements DropTargetListener {
 	/**
@@ -114,23 +115,13 @@ class FileOpener implements DropTargetListener {
 	}
 
 	private boolean isDragAcceptable(final DropTargetDragEvent event) {
-		return isDropAcceptable(event.getCurrentDataFlavors());
+		return event.isDataFlavorSupported(DataFlavor.javaFileListFlavor)
+		|| !event.isDataFlavorSupported(MindMapNodesSelection.mindMapNodesFlavor)
+		&& event.isDataFlavorSupported(DataFlavor.stringFlavor);
 	}
 
 	private boolean isDropAcceptable(final DropTargetDropEvent event) {
-		return isDropAcceptable(event.getCurrentDataFlavors());
-	}
-
-	private boolean isDropAcceptable(final DataFlavor[] flavors) {
-		for (int i = 0; i < flavors.length; i++) {
-			DataFlavor dataFlavor = flavors[i];
-			if (dataFlavor.isFlavorJavaFileListType()) {
-				return true;
-			}
-			if (dataFlavor.isFlavorTextType()) {
-				return true;
-			}
-		}
-		return false;
+		return event.isDataFlavorSupported(DataFlavor.javaFileListFlavor)
+		|| event.isDataFlavorSupported(DataFlavor.stringFlavor);
 	}
 }
