@@ -114,7 +114,6 @@
         <copy todir="${dist.doc}">
             <fileset dir="doc"/>
         </copy>
-        <delete dir="${build}"  quiet="true"/>
 	</target>
 	
 	<target name="clean_dist" depends="clean, dist"/>

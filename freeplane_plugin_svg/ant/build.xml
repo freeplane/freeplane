@@ -20,8 +20,6 @@
 
 	<target name="build">
 		<echo>Freeplane Version = ${ver}.</echo>
-		<delete dir="${build}"  quiet="true"/>
-        <delete dir="${dist}" quiet="true" />
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
 			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
@@ -42,7 +40,6 @@
 		</copy>
 		<mkdir dir="${dist.osgi.dir}/META-INF" />
 		<copyfile dest="${dist.osgi.dir}/META-INF/MANIFEST.MF" src="${osgimanifest}"/>
-		<delete dir="${build}"  quiet="true"/>
 		<delete file="lib/plugin.jar" quiet="true"/>
 	</target>
 
