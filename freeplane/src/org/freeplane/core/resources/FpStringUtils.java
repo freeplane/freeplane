@@ -26,7 +26,7 @@ public class FpStringUtils {
 		return result;
 	}
 
-	public static String format(final String resourceKey, final Object[] messageArguments) {
+	public static String format(final String resourceKey, final Object... messageArguments) {
 		final MessageFormat formatter = new MessageFormat(ResourceBundles.getText(resourceKey));
 		final String stringResult = formatter.format(messageArguments);
 		return stringResult;
