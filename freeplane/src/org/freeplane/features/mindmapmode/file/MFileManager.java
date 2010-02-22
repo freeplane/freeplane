@@ -83,8 +83,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	private static final String BACKUP_EXTENSION = "bak";
 	private static final String BACKUP_DIR = ".backup";
 	// FIXME: set to 0!!!
-	private static final int DEBUG_OFFSET = 5 * 24 * 3600 * 1000;
-//	private static final int DEBUG_OFFSET = 0;
+//	private static final int DEBUG_OFFSET = 5 * 24 * 3600 * 1000;
+	private static final int DEBUG_OFFSET = 0;
 
 	static private class BackupFlag implements IExtension {
 	}
