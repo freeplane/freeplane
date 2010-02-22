@@ -80,12 +80,6 @@ public class Compat {
 		return new File(Compat.urlGetFile(pUrl));
 	}
 
-	public static void useScreenMenuBar() {
-		/* This is only for apple but does not harm for the others. */
-		//		if (isMacOsX()) 
-		System.setProperty("apple.laf.useScreenMenuBar", "true");
-	}
-
 	public static void macAppChanges(Controller controller) {
 		if(! isMacOsX()){
 			return;

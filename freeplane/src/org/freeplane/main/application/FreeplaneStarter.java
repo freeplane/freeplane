@@ -110,7 +110,6 @@ public class FreeplaneStarter {
 			if(! System.getProperty("org.freeplane.nosplash", "false").equals("true")){
 				splash.setVisible(true);
 			}
-			Compat.useScreenMenuBar();
 			final MMapViewController mapViewController = new MMapViewController();
 			viewController = new ApplicationViewController(controller, mapViewController, frame);
 			System.setSecurityManager(new FreeplaneSecurityManager());
