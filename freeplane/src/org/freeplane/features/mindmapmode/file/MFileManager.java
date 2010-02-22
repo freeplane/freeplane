@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.dnd.DropTarget;
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,13 +33,13 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.SequenceInputStream;
-import java.io.StringBufferInputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -82,8 +83,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	private static final String BACKUP_EXTENSION = "bak";
 	private static final String BACKUP_DIR = ".backup";
 	// FIXME: set to 0!!!
-	//private static final int DEBUG_OFFSET = 5 * 24 * 3600 * 1000;
-	private static final int DEBUG_OFFSET = 0;
+	private static final int DEBUG_OFFSET = 5 * 24 * 3600 * 1000;
+//	private static final int DEBUG_OFFSET = 0;
 
 	static private class BackupFlag implements IExtension {
 	}
@@ -205,7 +206,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			
 			public IPropertyControl createControl() {
 				Set<String> charsets = Charset.availableCharsets().keySet();
-				return new ComboProperty("default_charset", charsets, charsets);
+				LinkedList<String> charsetList = new LinkedList<String>(charsets);
+				charsetList.addFirst("JVMdefault");
+				LinkedList<String> charsetTranslationList = new LinkedList<String>(charsets);
+				charsetTranslationList.addFirst(ResourceBundles.getText("OptionPanel.default"));
+				return new ComboProperty("default_charset", charsetList, charsetTranslationList);
 			}
 		},
 		IndexedTree.AS_CHILD);
@@ -380,17 +385,15 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	private NodeModel loadTreeImpl(final MapModel map, final File f) throws FileNotFoundException,
 	        IOException, XMLException {
 		BufferedInputStream file = new BufferedInputStream(new FileInputStream(f));
-		int versionInfoLength = EXPECTED_START_STRINGS[0].length();
-		final String buffer = readFileStart(file, versionInfoLength).toString();
-		final StringBufferInputStream startInput = new StringBufferInputStream(buffer);
-		final InputStream sequencedInput = new SequenceInputStream(startInput, file);
+		int versionInfoLength = 1000;
+		final byte[] buffer = new byte[versionInfoLength];
+		final int readCount = file.read(buffer);
+		final String mapStart = new String(buffer, defaultCharset().name());
+		final ByteArrayInputStream readBytes = new ByteArrayInputStream(buffer, 0, readCount);
+		final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
 		Reader reader = null;
 		for (int i = 0; i < EXPECTED_START_STRINGS.length; i++) {
 			versionInfoLength = EXPECTED_START_STRINGS[i].length();
-			String mapStart = "";
-			if (buffer.length() >= versionInfoLength) {
-				mapStart = buffer.substring(0, versionInfoLength);
-			}
 			if (mapStart.startsWith(EXPECTED_START_STRINGS[i])) {
 				reader = UrlManager.getActualReader(sequencedInput);
 				break;
@@ -458,19 +461,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 		}
 		getController().getViewController().setTitle();
-	}
-
-	/**
-	 * Returns pMinimumLength bytes of the files content.
-	 * @throws IOException 
-	 *
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
-	private String readFileStart(final InputStream input, final int pMinimumLength) throws IOException {
-		final byte[] buffer = new byte[pMinimumLength];
-		input.read(buffer);
-		return new String(buffer);
 	}
 
 	public boolean save(final MapModel map) {
