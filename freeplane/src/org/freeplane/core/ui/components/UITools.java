@@ -169,10 +169,20 @@ public class UITools {
 		win_width = Math.min(win_width, screenWidth);
 		final int screenHeight = screenSize.height - screenInsets.top - screenInsets.bottom;
 		win_height = Math.min(win_height, screenHeight);
-		win_x = Math.max(screenInsets.left, win_x);
-		win_x = Math.min(screenWidth + screenInsets.left - win_width, win_x);
-		win_y = Math.max(screenInsets.top, win_y);
-		win_y = Math.min(screenHeight + screenInsets.top - win_height, win_y);
+		if(win_x < 0){
+			win_x = screenInsets.left + (screenWidth - win_width) / 2;
+		}
+		else{
+			win_x = Math.max(screenInsets.left, win_x);
+			win_x = Math.min(screenWidth + screenInsets.left - win_width, win_x);
+		}
+		if(win_y < 0){
+			win_y = screenInsets.top + (screenHeight - win_height) / 2;
+		}
+		else{
+			win_y = Math.max(screenInsets.top, win_y);
+			win_y = Math.min(screenHeight + screenInsets.top - win_height, win_y);
+		}
 		frame.setBounds(win_x, win_y, win_width, win_height);
 	}
 
