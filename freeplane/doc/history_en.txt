@@ -8,9 +8,7 @@ SetAcceleratorOnNextClickAction
 Introduce charset option in preferences to overload the default
 
 Script API:
-Node.find() methods for searches on subtrees
-Controller.find(Closure)
-Controller.findByRegexp(String)
+Controller, Node: find methods for searches on the whole map and subtrees
 Controller: methods for accessing the status line
 
 Bug fixes:
