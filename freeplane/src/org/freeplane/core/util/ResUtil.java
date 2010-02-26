@@ -31,10 +31,17 @@ public class ResUtil {
 	/**
 	 */
 	public static void copyFromResource(final String prefix, final String fileName, final File destinationDirectory) {
+		String pathToResource = prefix + fileName;
 		try {
-			final URL resource = ResourceController.getResourceController().getResource(prefix + fileName);
+			final URL resource; 
+			if(pathToResource.startsWith("file:")){
+				resource = new URL(pathToResource);
+			}
+			else{
+				resource = ResourceController.getResourceController().getResource(pathToResource);
+			}
 			if (resource == null) {
-				LogTool.severe("Cannot find resource: " + prefix + fileName);
+				LogTool.severe("Cannot find resource: " + pathToResource);
 				return;
 			}
 			final InputStream in = new BufferedInputStream(resource.openStream());
@@ -42,8 +49,7 @@ public class ResUtil {
 			ResUtil.copyStream(in, out);
 		}
 		catch (final Exception e) {
-			LogTool.severe("File not found or could not be copied. " + "Was searching for " + prefix + fileName
-			        + " and should go to " + destinationDirectory.getAbsolutePath());
+			LogTool.severe("File not found or could not be copied. " + "Was searching for " + pathToResource + " and should go to " + destinationDirectory.getAbsolutePath());
 		}
 	}
 

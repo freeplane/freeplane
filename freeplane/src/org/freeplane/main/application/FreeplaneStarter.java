@@ -204,6 +204,9 @@ public class FreeplaneStarter {
 	 */
 	public void run(final String[] args) {
 		try {
+			if(null == System.getProperty("org.freeplane.core.dir.lib", null)){
+				System.setProperty("org.freeplane.core.dir.lib", "/lib/");
+			}
 			createController();
 			createFrame(args);
 		}
