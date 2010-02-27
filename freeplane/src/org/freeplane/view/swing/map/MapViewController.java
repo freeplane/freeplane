@@ -226,8 +226,9 @@ public class MapViewController implements IMapViewManager {
 		if (view == null) {
 			return null;
 		}
+		view.preparePrinting();
 		final Rectangle innerBounds = view.getInnerBounds();
-		int BOUND = ResourceController.getResourceController().getIntProperty("space_around_exported_image", 0);
+		int BOUND = 1;
 		innerBounds.x -= BOUND;
 		innerBounds.y -= BOUND;
 		innerBounds.width += 2 * BOUND;
