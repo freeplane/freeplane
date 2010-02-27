@@ -57,7 +57,7 @@ class AddLocalLinkAction extends AFreeplaneAction {
 		final String targetId = (target).createID();
 		for (int i = 1; i < selecteds.size(); i++) {
 			final NodeModel source = (NodeModel) selecteds.get(i);
-			((MLinkController) LinkController.getController(modeController)).setLink(source, ("#" + targetId));
+			((MLinkController) LinkController.getController(modeController)).setLink(source, ("#" + targetId), false);
 		}
 	}
 }

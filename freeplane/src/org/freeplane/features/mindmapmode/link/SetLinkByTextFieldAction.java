@@ -50,55 +50,8 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		    getController().getSelection().getSelected(), ResourceBundles.getText("edit_link_manually"), NodeLinks
 		        .getLinkAsString(selectedNode));
 		if (inputValue != null) {
-			if (inputValue.equals("")) {
-				setLink(selectedNode, null);
-				return;
-			}
-			URI link;
-            try {
-	            link = LinkController.createURI(inputValue.trim());
-            }
-			catch (URISyntaxException e1) {
-				LogTool.warn(e1);
-				UITools.errorMessage("wrong URI " + inputValue);
-				return;
-			} 
-			setLink(selectedNode, link);
+			MLinkController linkController = (MLinkController) MLinkController.getController(modeController);
+			linkController.setLink(selectedNode, inputValue.trim(), false);
 		}
-	}
-
-	void setLink(final NodeModel node, final URI link) {
-		final IActor actor = new IActor() {
-			private URI oldlink;
-			private String oldTargetID;
-
-			public void act() {
-				NodeLinks links = NodeLinks.getLinkExtension(node);
-				if (links != null) {
-					oldlink = links.getHyperLink();
-					oldTargetID = links.removeLocalHyperLink(node);
-				}
-				else {
-					links = NodeLinks.createLinkExtension(node);
-				}
-				if (link != null && link.toString().startsWith("#")) {
-					links.setLocalHyperlink(node, link.toString().substring(1));
-				}
-				links.setHyperLink(link);
-				getModeController().getMapController().nodeChanged(node);
-			}
-
-			public String getDescription() {
-				return "setLink";
-			}
-
-			public void undo() {
-				final NodeLinks links = NodeLinks.getLinkExtension(node);
-				links.setLocalHyperlink(node, oldTargetID);
-				links.setHyperLink(oldlink);
-				getModeController().getMapController().nodeChanged(node);
-			}
-		};
-		getModeController().execute(actor, node.getMap());
 	}
 }

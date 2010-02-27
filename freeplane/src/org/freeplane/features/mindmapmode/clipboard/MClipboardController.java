@@ -90,7 +90,8 @@ public class MClipboardController extends ClipboardController {
 				final String body = m.group(2);
 				if (!body.matches(".*<\\s*a.*")) {
 					final String href = m.group(1);
-					((MLinkController) LinkController.getController(getModeController())).setLink(node, href);
+					boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
+					((MLinkController) LinkController.getController(getModeController())).setLink(node, href, useRelativeUri);
 				}
 			}
 			((MMapController) getModeController().getMapController()).insertNode(node, target);
@@ -120,7 +121,7 @@ public class MClipboardController extends ClipboardController {
 				else {
 					uri = file.getAbsoluteFile().toURI();
 				}
-				((MLinkController) LinkController.getController(getModeController())).setLink(node, uri);
+				((MLinkController) LinkController.getController(getModeController())).setLink(node, uri, false);
 				mapController.insertNode(node, target, asSibling, isLeft, isLeft);
 			}
 		}
@@ -646,6 +647,7 @@ public class MClipboardController extends ClipboardController {
 		parentNodes.add(parent);
 		parentNodesDepths.add(new Integer(-1));
 		final MMapController mapController = (MMapController) getModeController().getMapController();
+		boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
 		for (int i = 0; i < textFragments.length; ++i) {
 			final TextFragment textFragment = textFragments[i];
 			final String text = textFragment.text;
@@ -654,7 +656,7 @@ public class MClipboardController extends ClipboardController {
 				pastedNode = node;
 			}
 			if (textFragment.link != null) {
-				((MLinkController) LinkController.getController(getModeController())).setLink(node, textFragment.link);
+				((MLinkController) LinkController.getController(getModeController())).setLink(node, textFragment.link, useRelativeUri);
 			}
 			for (int j = parentNodes.size() - 1; j >= 0; --j) {
 				if (textFragment.depth > ((Integer) parentNodesDepths.get(j)).intValue()) {

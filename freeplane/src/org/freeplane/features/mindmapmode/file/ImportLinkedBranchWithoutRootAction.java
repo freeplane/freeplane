@@ -70,7 +70,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 				final NodeModel importNode = (NodeModel) i.next();
 				((MMapController) modeController.getMapController()).insertNode(importNode, selected);
 			}
-			((MLinkController) LinkController.getController(modeController)).setLink(selected, (URI) null);
+			((MLinkController) LinkController.getController(modeController)).setLink(selected, (URI) null, false);
 		}
 		catch (final Exception ex) {
 			UrlManager.getController(modeController).handleLoadingException(ex);
