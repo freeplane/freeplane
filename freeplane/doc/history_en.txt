@@ -1,4 +1,19 @@
 ===============================
+1.0.41 rc
+===============================
+Bug fixes:
+use node id in links to other maps
+425]: Drag and drop from file explorer under Linux does not create a node with relative link
+Use fractional metrics for calculating bounds of images to be exported
+Reduce size of buffer for exporting map as image
+406]: Clouds are truncated when exporting to bitmap: add small space around the exported image
+Use print instead of paint for exporting maps as bitmaps
+Antialiasing of cloud around the root node
+451]: Error when browsing a map Exported as a Java Applet
+General protection from writing non ASCII characters in XMLWriter
+Adjust calendar dialog size to screen
+
+===============================
 1.0.40 beta
 ===============================
 New Features:
