@@ -21,6 +21,7 @@ package org.freeplane.core.resources.ui;
 
 import java.awt.AWTEvent;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -366,6 +367,7 @@ public class GrabKeyDialog extends JDialog {
 		clear = new JButton((GrabKeyDialog.getText("grab-key.clear")));
 		clear.addActionListener(new ActionHandler());
 		input.add(clear);
+		shortcut.setPreferredSize(new Dimension(200, clear.getPreferredSize().height));
 		assignedTo = new JLabel();
 		updateAssignedTo(null);
 		final Box buttons = Box.createHorizontalBox();
