@@ -930,22 +930,18 @@ public class NodeView extends JComponent implements INodeView {
 	@Override
 	public void paint(final Graphics g) {
 		final PaintingMode paintingMode = map.getPaintingMode();
-		final boolean isRoot = isRoot();
-		if (isRoot) {
-			switch(paintingMode){
-				case CLOUDS:
-				case ALL:
-					paintCloud(g);
-			}
-		}
 		if (isContentVisible()) {
 			final Graphics2D g2 = (Graphics2D) g;
 			final ModeController modeController = map.getModeController();
 			final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+			final boolean isRoot = isRoot();
 			switch(paintingMode){
 				case CLOUDS:
 				case ALL:
 					modeController.getController().getViewController().setEdgesRenderingHint(g2);
+					if (isRoot) {
+						paintCloud(g);
+					}
 					paintCloudsAndEdges(g2);
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
