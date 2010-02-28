@@ -98,18 +98,18 @@ class DocumentationAction extends AFreeplaneAction {
 
 	private void appendAcceleratableMenuEntries() {
 		// use the MModeController for the mindmap mode menu - the browse doesn't contain much entries!
-	    final MenuBuilder menuBuilder = MModeControllerFactory.getModeController().getUserInputListenerFactory()
-	        .getMenuBuilder();
-	    final DefaultMutableTreeNode menuEntryTree = MenuTools.createAcceleratebleMenuEntryTree(
-	        FreeplaneMenuBar.MENU_BAR_PREFIX, menuBuilder);
-	    final MapController mapController = getModeController().getMapController();
+		final MenuBuilder menuBuilder = MModeControllerFactory.getModeController().getUserInputListenerFactory()
+		    .getMenuBuilder();
+		final DefaultMutableTreeNode menuEntryTree = MenuTools.createAcceleratebleMenuEntryTree(
+		    FreeplaneMenuBar.MENU_BAR_PREFIX, menuBuilder);
+		final MapController mapController = getModeController().getMapController();
 		final NodeModel rootNode = mapController.getRootNode();
-	    final NodeModel newNode = mapController.newNode(ResourceBundles.getText("hot_keys"), rootNode.getMap());
+		final NodeModel newNode = mapController.newNode(ResourceBundles.getText("hot_keys"), rootNode.getMap());
 		newNode.setFolded(true);
-	    // FIXME: variable? search for proper insert point?
-//	    final int HOT_KEYS_INDEX = 2;
-//		mapController.insertNodeIntoWithoutUndo(newNode, rootNode, HOT_KEYS_INDEX);
-		mapController.insertNodeIntoWithoutUndo(newNode, rootNode);
-	    MenuTools.insertAsNodeModelRecursively(newNode, menuEntryTree.children(), mapController);
-    }
+		newNode.setLeft(true);
+		// TODO: search for proper insert point?
+		final int HOT_KEYS_INDEX = 2;
+		mapController.insertNodeIntoWithoutUndo(newNode, rootNode, HOT_KEYS_INDEX);
+		MenuTools.insertAsNodeModelRecursively(newNode, menuEntryTree.children(), mapController);
+	}
 }
