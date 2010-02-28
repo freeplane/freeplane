@@ -49,7 +49,6 @@ public class HelpController implements IExtension {
 		controller.addAction(new OpenSourceForgeURLAction("RequestFeatureAction", controller, resourceController.getProperty("featureTrackerLocation")));
 		controller.addAction(new OpenSourceForgeURLAction("AskForHelp", controller, resourceController.getProperty("helpForumLocation")));
 		controller.addAction(new KeyDocumentationAction(controller));
-		controller.addAction(new HotKeyMapAction(controller));
 		webDocu = new OpenURLAction("WebDocuAction", controller, resourceController
 		    .getProperty("webDocuLocation"));
 		controller.addAction(webDocu);

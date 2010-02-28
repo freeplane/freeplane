@@ -305,7 +305,6 @@
 			<menu_category name="doc">
                 <menu_action action="DocumentationAction" accelerator="F1" />
                 <menu_action action="HotKeyInfoAction"/>
-                <menu_action action="HotKeyMapAction"/>
 				<menu_action action="OpenFreeplaneSiteAction" />
 				<menu_action action="ReportBugAction" />
 				<menu_action action="RequestFeatureAction" />
