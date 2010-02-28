@@ -107,7 +107,13 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 				break;
 			}
 		}
-		catch (final Exception e) {
+		catch (final IOException e) {
+			LogTool.severe(e);
+		}
+		catch (final XMLParseException e) {
+			LogTool.severe(e);
+		}
+		catch (final URISyntaxException e) {
 			LogTool.severe(e);
 		}
 	}

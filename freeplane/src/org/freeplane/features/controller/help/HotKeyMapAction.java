@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.IMapLoader;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
@@ -33,7 +32,6 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.MenuTools;
 
 class HotKeyMapAction extends AFreeplaneAction {
@@ -53,17 +51,16 @@ class HotKeyMapAction extends AFreeplaneAction {
 			final DefaultMutableTreeNode menuEntryTree = MenuTools.createAcceleratebleMenuEntryTree(
 			    FreeplaneMenuBar.MENU_BAR_PREFIX, menuBuilder);
 			final MapController mapController = getModeController().getMapController();
-			mapController.newMap(new IMapLoader() {
-				
-				public void load(MapModel map) throws Exception {
-					final NodeModel rootNode = map.getRootNode();
-					rootNode.setText(ResourceBundles.getText("hot_keys"));
-					MenuTools.insertAsNodeModelRecursively(rootNode, menuEntryTree.children(), mapController);
-				}
-			});
-		}
-		catch (Exception ex){
-			LogTool.severe(ex);
+			// create a useless map to avoid NPE later
+			// FIXME: how to avoid that?
+			MapModel map = mapController.newMap((NodeModel) null);
+			mapController.setSaved(map, true);
+			// now do the real thing
+			final NodeModel rootNode = mapController.newNode(ResourceBundles.getText("hot_keys"), map);
+			MenuTools.insertAsNodeModelRecursively(rootNode, menuEntryTree.children(), mapController);
+			// FIXME: how to set the displayed name of the map to something other than "Map1" or the like?
+			map = mapController.newMap(rootNode);
+			mapController.setSaved(map, true);
 		}
 		finally {
 			getController().getViewController().setWaitingCursor(false);

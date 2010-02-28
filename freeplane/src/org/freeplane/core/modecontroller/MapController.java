@@ -450,7 +450,7 @@ public class MapController extends SelectionController {
 		return newModel;
 	}
 
-	public void newMap(final URL url) throws Exception {
+	public void newMap(final URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
 		final IMapViewManager mapViewManager = getController().getMapViewManager();
 		/*
 		 * this can lead to confusion if the user handles multiple maps
@@ -462,20 +462,10 @@ public class MapController extends SelectionController {
 			mapViewManager.tryToChangeToMapView(mapExtensionKey);
 			return;
 		}
-		IMapLoader loader = new IMapLoader() {
-
-			public void load(MapModel map) throws Exception {
-				((UrlManager) getModeController().getExtension(UrlManager.class)).load(url, map);			
-			}
-		};
-		newMap(loader);
-	}
-
-	public void newMap(final IMapLoader loader) throws Exception {
 		try {
 			getController().getViewController().setWaitingCursor(true);
 			final MapModel newModel = newModel(null);
-			loader.load(newModel);
+			((UrlManager) getModeController().getExtension(UrlManager.class)).load(url, newModel);
 			fireMapCreated(newModel);
 			newMapView(newModel);
 			setSaved(newModel, true);
