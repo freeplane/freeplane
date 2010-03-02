@@ -119,7 +119,7 @@
 	</target>
 	
 	<target name="binzip" depends="build, mkdistdir">
-		<zip destfile="${dist}/freeplane_bin-${bzr-branch-nick}-${bzr-branch-nick}.zip" compress="true">
+		<zip destfile="${dist}/freeplane_bin-${ver}-b${bzr-branch-nick}-r${bzr-revno}.zip" compress="true">
 			<zipfileset dir="${build}" prefix="freeplane-${ver}">
 				<exclude name="freeplane.sh"/>
 			</zipfileset>
@@ -131,7 +131,7 @@
 	</target>
 
 	<target name="srczip" depends="mkdistdir">
-		<tar destfile="${dist}/freeplane_src-${bzr-branch-nick}-${bzr-branch-nick}.tar.gz" compression="gzip" longfile="gnu">
+		<tar destfile="${dist}/freeplane_src-${ver}-b${bzr-branch-nick}-r${bzr-revno}.tar.gz" compression="gzip" longfile="gnu">
 			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="664">
 				<patternset id="freeplane.sources">
 					<include name="freeplane/**" />
@@ -155,7 +155,7 @@
 			</tarfileset>
 		</tar>
 
-		<tar destfile="${dist}/freeplane_srcpure-${bzr-branch-nick}-${bzr-branch-nick}.tar.gz" compression="gzip" longfile="gnu">
+		<tar destfile="${dist}/freeplane_srcpure-${ver}-b${bzr-branch-nick}-r${bzr-revno}.tar.gz" compression="gzip" longfile="gnu">
 			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="664">
 				<patternset refid="freeplane.sources" />
 				<exclude name="**/*.jar" />
@@ -310,7 +310,7 @@
 	</target>
 
 	<target name="zip4mac" depends="macosxapp">
-		<zip destfile="${dist}/freeplane_macos_bin-${bzr-branch-nick}-${bzr-branch-nick}.zip" compress="true">
+		<zip destfile="${dist}/freeplane_macos_bin-${ver}-b${bzr-branch-nick}-r${bzr-revno}.zip" compress="true">
 			<zipfileset dir="${build4mac}" prefix="freeplane-${ver}">
 				<exclude name="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub"/>
 			</zipfileset>
@@ -320,7 +320,7 @@
 	</target>
 	<target name="dmg4mac"  depends="macosxapp" if="isMacOs" >
 		<exec executable="hdiutil">
-		<arg line="create -srcfolder ${macappfullpath} ${dist}/freeplane_app-${bzr-branch-nick}-${bzr-branch-nick}.dmg"/>
+		<arg line="create -srcfolder ${macappfullpath} ${dist}/freeplane_app-${ver}-b${bzr-branch-nick}-r${bzr-revno}.dmg"/>
 		</exec>
 	</target>
 	
