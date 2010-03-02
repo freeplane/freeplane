@@ -51,35 +51,32 @@ public class FreeplaneMenuBar extends JMenuBar {
 	}
 
 	static final int KEY_MODIFIERS = KeyEvent.SHIFT_DOWN_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_GRAPH_DOWN_MASK | KeyEvent.ALT_GRAPH_MASK;
-	public static KeyStroke derive(KeyStroke ks, Character keyChar){
+	public static KeyStroke derive(final KeyStroke ks, final Character keyChar){
 		if(ks == null){
 			return ks;
 		}
     	int modifiers = ks.getModifiers();
-    	if(0 == (modifiers  & KEY_MODIFIERS) || ks.getKeyChar() != KeyEvent.CHAR_UNDEFINED){
-    		return ks;
+    	if(ks.getKeyChar() == KeyEvent.CHAR_UNDEFINED){
+    		if(0 != (modifiers  & KEY_MODIFIERS))
+    		{
+    			switch(keyChar){
+    			case '<':
+    				return KeyStroke.getKeyStroke(KeyEvent.VK_LESS, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
+    			case '>':
+    				return KeyStroke.getKeyStroke(KeyEvent.VK_GREATER, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
+    			case '+':
+    				return KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
+    			case '-':
+    				return KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
+    			case '=':
+    				return KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
+    			}
+    		}
+    		if(keyChar != '\0' && keyChar != KeyEvent.CHAR_UNDEFINED){
+    			return KeyStroke.getKeyStroke(keyChar, modifiers);
+    		}
     	}
-    	final int keyCode;
-    	switch(keyChar){
-    		case '<':
-    			keyCode = KeyEvent.VK_LESS;
-    			break;
-    		case '>':
-    			keyCode = KeyEvent.VK_GREATER;
-    			break;
-    		case '+':
-    			keyCode = KeyEvent.VK_PLUS;
-    			break;
-    		case '-':
-    			keyCode = KeyEvent.VK_MINUS;
-    			break;
-    		case '=':
-    			keyCode = KeyEvent.VK_EQUALS;
-    			break;
-    		default:
-    			return ks;
-    	}
-    	return KeyStroke.getKeyStroke(keyCode, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
+		return ks;
     }
 	
 	@Override
