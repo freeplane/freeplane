@@ -21,6 +21,7 @@ Mac OS support
 CopyIDAction
 SetAcceleratorOnNextClickAction
 Introduce charset option in preferences to overload the default
+Filter node text by regular expression
 
 Script API:
 Controller, Node: find methods for searches on the whole map and subtrees
