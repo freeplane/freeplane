@@ -54,7 +54,13 @@ class NewChildAction extends AFreeplaneAction {
 		final ModeController modeController = getModeController();
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		final NodeModel target = mapController.getSelectedNode();
-		((MTextController) TextController.getController(modeController)).stopEditing();
+		modeController.startTransaction();
+		try{
+			((MTextController) TextController.getController(modeController)).stopEditing();
+		}
+		finally{
+			modeController.commit();
+		}
 		final NodeModel targetNode = target;
 		final NodeModel newNode;
 		switch (newNodeMode) {

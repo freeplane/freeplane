@@ -512,7 +512,7 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setLink(final NodeModel node, final String link, boolean makeRelative) {
-		if (link != null) {
+		if (link != null && ! "".equals(link)) {
 			try {
 				final URI uri = new URI(link);
 				setLink(node, uri, makeRelative);

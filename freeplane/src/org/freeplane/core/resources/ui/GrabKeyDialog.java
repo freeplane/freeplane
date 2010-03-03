@@ -21,6 +21,7 @@ package org.freeplane.core.resources.ui;
 
 import java.awt.AWTEvent;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,15 +61,11 @@ public class GrabKeyDialog extends JDialog {
 					dispose();
 				}
 			}
-			else if (evt.getSource() == remove) {
-				shortcut.setText(null);
-				isOK = true;
-				dispose();
-			}
 			else if (evt.getSource() == cancel) {
 				dispose();
 			}
 			else if (evt.getSource() == clear) {
+				shortcut.keyChar = KeyEvent.CHAR_UNDEFINED;
 				shortcut.setText(null);
 				shortcut.requestFocus();
 			}
@@ -129,8 +126,12 @@ public class GrabKeyDialog extends JDialog {
 				case KeyEvent.VK_DEAD_IOTA:
 				case KeyEvent.VK_DEAD_VOICED_SOUND:
 				case KeyEvent.VK_DEAD_SEMIVOICED_SOUND:
-				case '\0':
 					return;
+				case '\0':
+					if(evt.getKeyChar() == KeyEvent.CHAR_UNDEFINED || evt.getKeyChar() == 0){
+						return;
+					}
+					break;
 				case KeyEvent.VK_WINDOWS:
 					if (Compat.isWindowsOS()){
 						return;
@@ -248,7 +249,6 @@ public class GrabKeyDialog extends JDialog {
 	private boolean isOK;
 	private int modifierMask;
 	private JButton ok;
-	private JButton remove;
 	private InputPane shortcut;
 	public Character getKeyChar() {
 	    return shortcut.getKeyChar();
@@ -366,6 +366,7 @@ public class GrabKeyDialog extends JDialog {
 		clear = new JButton((GrabKeyDialog.getText("grab-key.clear")));
 		clear.addActionListener(new ActionHandler());
 		input.add(clear);
+		shortcut.setPreferredSize(new Dimension(200, clear.getPreferredSize().height));
 		assignedTo = new JLabel();
 		updateAssignedTo(null);
 		final Box buttons = Box.createHorizontalBox();

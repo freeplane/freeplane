@@ -140,7 +140,9 @@ public class UITools {
 		if (keyStroke != null) {
 			return keyStroke;
 		}
-		return KeyStroke.getKeyStroke("typed " + keyStrokeDescription);
+		int lastSpacePos = keyStrokeDescription.lastIndexOf(' ') + 1;
+		final String modifiedDescription = keyStrokeDescription.substring(0, lastSpacePos) + "typed " +  keyStrokeDescription.substring(lastSpacePos);
+		return KeyStroke.getKeyStroke(modifiedDescription);
 	}
 
 	static public void informationMessage(final String message) {
