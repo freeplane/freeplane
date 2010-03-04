@@ -63,7 +63,6 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
@@ -792,6 +791,7 @@ public class MenuBuilder extends UIBuilder {
 		return oldAccelerator;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void removeAccelerators(final DefaultMutableTreeNode node) {
 		if (node.getUserObject() instanceof JMenuItem) {
 			setAccelerator((Node) node, null);

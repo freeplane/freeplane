@@ -21,14 +21,11 @@ package org.freeplane.features.browsemode;
 
 import java.util.ListIterator;
 
-import javax.swing.ImageIcon;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.icon.UIIcon;
 import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 
