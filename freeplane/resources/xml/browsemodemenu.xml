@@ -16,7 +16,6 @@
 			<menu_category name="quit">
 				<menu_action action="QuitAction" accelerator="control Q" />
 			</menu_category>
-			<menu_separator />
 		</menu_submenu>
 		<menu_submenu name="EditAction" name_ref="edit">
 			<menu_category name="PasteAction">
@@ -85,12 +84,15 @@
 			<menu_category name="folding">
 				<menu_action action="ToggleFoldedAction" accelerator="SPACE" />
 				<menu_action action="ToggleChildrenFoldedAction"   accelerator="control SPACE" />
+				<menu_action action="FoldAllAction" accelerator="alt HOME" />
+				<menu_action action="FoldOneLevelAction" accelerator="alt PAGE_UP" />
+				<menu_action action="UnfoldAllAction" accelerator="alt END" />
+				<menu_action action="UnfoldOneLevelAction" accelerator="alt PAGE_DOWN" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="links">
 				<menu_action action="FollowLinkAction" /> <!-- goto -->
 			</menu_category>
-			<menu_separator />
 		</menu_submenu>
 		<menu_submenu name="mindmaps" name_ref="mindmaps">
 			<menu_category name="modes"></menu_category>
