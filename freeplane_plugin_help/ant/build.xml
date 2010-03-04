@@ -1,6 +1,5 @@
 <project name="freeplane_help" default="dist" basedir="..">
 	<property name="workspace" location=".." />
-	<property name="ver" value="1.0.1" />
 	<property name="src" value="src" />
 	<property name="resources" value="resources" />
 	<property name="root" value="."/>
@@ -21,7 +20,6 @@
 	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}:${jhall.jar}"/>
 
 	<target name="build">
-		<echo>Freeplane Version = ${ver}.</echo>
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
 			source="${java_source_version}" target="${java_target_version}" encoding="utf8">

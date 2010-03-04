@@ -2,13 +2,15 @@
 	<property name="workspace" location=".." />
 	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
 	<property file="ant/ant.properties" />
-	<property name="ver" value="${freeplane_version}" />
 	<property name="root" value="." />
 	<property name="build" value="${root}/build" />
 	<property name="build4mac" value="${root}/build4mac" />
     <property name="build.plugins" value="${build}/plugins" />
 	<property name="dist" value="${root}/dist" />
     <property name="macappfullpath" value="${build4mac}/Freeplane.app" />
+	<condition property="ver" value="${freeplane_version}_${minor}" else="${freeplane_version}">
+		<isset property="minor" />
+	</condition>
 
     <!-- Mac OS X -->
 	<condition property="isMacOs">
@@ -30,6 +32,7 @@
 	</target>
 	
 	<target name="build">
+		<echo>Freeplane Version = ${ver}.</echo>
 		<property name="root" value="." />
 		<property name="license" value="license.txt" />
 		<property name="readme_src" value="readme.txt" />
@@ -340,7 +343,7 @@
 	
 	<target name="dist" depends="clean, bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac">
         <copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
-        <copy file="${build}/bzrinfo.txt" todir="${dist}" failonerror="false"/>
+        <copy file="${build}/bzrinfo.txt" tofile="${dist}/$bzrinfo{branch-nick}-${ver}.txt" failonerror="false"/>
 	</target>
 
 	<target name="clean">
