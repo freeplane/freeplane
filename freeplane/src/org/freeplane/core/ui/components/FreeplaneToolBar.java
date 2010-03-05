@@ -21,6 +21,8 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Insets;
+import java.awt.event.HierarchyBoundsListener;
+import java.awt.event.HierarchyEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
@@ -64,6 +66,17 @@ public class FreeplaneToolBar extends JToolBar {
 		this.setMargin(FreeplaneToolBar.nullInsets);
 		setFloatable(false);
 		setRollover(true);
+		setLayout(ToolbarLayout.getInstance());
+		addHierarchyBoundsListener(new HierarchyBoundsListener() {
+			
+			public void ancestorResized(HierarchyEvent e) {
+				revalidate();
+				repaint();
+			}
+			
+			public void ancestorMoved(HierarchyEvent e) {
+			}
+		});
 	}
 
 	/*
@@ -134,4 +147,6 @@ public class FreeplaneToolBar extends JToolBar {
 			abstractButton.setBorderPainted(false);
 		}
 	}
+	
+	
 }
