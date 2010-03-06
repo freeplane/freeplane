@@ -137,7 +137,7 @@ public class FreeplaneToolBar extends JToolBar {
 				abstractButton.setText(null);
 			}
 		}
-		if (javax.swing.UIManager.getLookAndFeel().getName().startsWith("Mac OS")) {
+		if (System.getProperty("os.name").equals("Mac OS X")) {
 			abstractButton.putClientProperty("JButton.buttonType", "segmented");
 			abstractButton.putClientProperty("JButton.segmentPosition", "middle");
 		    Dimension buttonSize = new Dimension(22, 22);
