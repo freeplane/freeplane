@@ -402,7 +402,10 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 			mStylePatternFrame = new StylePatternPanel(mController, StylePatternPanelType.WITH_NAME_AND_CHILDS);
 			mStylePatternFrame.init();
 			mStylePatternFrame.addListeners();
-			mRightStack.add(new JScrollPane(mStylePatternFrame), ManagePatternsPopupDialog.STACK_PATTERN_FRAME);
+			JScrollPane scrollPane = new JScrollPane(mStylePatternFrame);
+			mRightStack.add(scrollPane, ManagePatternsPopupDialog.STACK_PATTERN_FRAME);
+			UITools.setScrollbarIncrement(scrollPane);
+
 			final JScrollPane leftPane = new JScrollPane(mList);
 			mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPane, mRightStack);
 			jContentPane.add(mSplitPane, new GridBagConstraints(0, 0, 2, 1, 1.0, 8.0, GridBagConstraints.WEST,
