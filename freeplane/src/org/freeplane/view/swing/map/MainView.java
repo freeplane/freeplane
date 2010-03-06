@@ -461,13 +461,30 @@ public abstract class MainView extends JLabel {
 	@Override
     public void setText(String text) {
 		if (! (BasicHTML.isHTMLString(text) && useFractionalMetrics())){
-			super.setText(text);
+			try{
+				super.setText(text);
+			}
+			catch (Exception ex){
+				setTextWithExceptionInfo(text, ex);
+			}
 			return;
 		}
 		setFractionalMetrics();
-		super.setText(text);
+		try{
+			super.setText(text);
+		}
+		catch (Exception ex){
+			setTextWithExceptionInfo(text, ex);
+		}
+		finally{
 		unsetFractionalMetrics();
+		}
     }
+
+	private void setTextWithExceptionInfo(String text, Exception ex) {
+		String string = HtmlTools.combineTextWithExceptionInfo(text, ex);
+		super.setText(string);
+	}
 
 	private void unsetFractionalMetrics() {
 		BasicHTML.createHTMLView(standardLabel, "<html><b>1</b>2");

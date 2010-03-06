@@ -35,6 +35,7 @@ import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 
@@ -51,7 +52,7 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 		this.controller = controller;
 	}
 
-	protected JComponent getNoteViewerComponent(final String text) {
+	protected JComponent getNoteViewerComponent() {
 		if (noteViewer == null) {
 			noteViewer = new JLabel();
 			noteViewer.setBackground(Color.WHITE);
@@ -80,11 +81,22 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 	public void onSelect(final NodeModel pNode) {
 		final String noteText = NoteModel.getNoteText(pNode);
 		if (noteText != null && !noteText.equals("")) {
-			controller.getViewController().insertComponentIntoSplitPane(getNoteViewerComponent(noteText));
-			noteViewer.setText(noteText != null ? noteText : "");
+			controller.getViewController().insertComponentIntoSplitPane(getNoteViewerComponent());
+			noteViewer.setText(noteText);
+			try{
+				noteViewer.setText(noteText);
+			}
+			catch (Exception ex){
+				setTextWithExceptionInfo(noteText, ex);
+			}
 		}
 	}
 
+	private void setTextWithExceptionInfo(String text, Exception ex) {
+		String string = HtmlTools.combineTextWithExceptionInfo(text, ex);
+		noteViewer.setText(string);
+	}
+	
 	public void onUpdate(final NodeModel pNode) {
 		setStateIcon(pNode, true);
 	}
