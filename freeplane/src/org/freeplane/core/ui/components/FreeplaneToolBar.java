@@ -43,18 +43,6 @@ public class FreeplaneToolBar extends JToolBar {
 
 	/**
 	 */
-	public FreeplaneToolBar(final int arg0) {
-		this("", arg0);
-	}
-
-	/**
-	 */
-	public FreeplaneToolBar(final String arg0) {
-		this(arg0, SwingConstants.HORIZONTAL);
-	}
-
-	/**
-	 */
 	public FreeplaneToolBar(final String name, final int orientation) {
 		super(name, orientation);
 		this.setMargin(FreeplaneToolBar.nullInsets);

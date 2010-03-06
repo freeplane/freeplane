@@ -84,7 +84,6 @@ public class MIconController extends IconController {
 		iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
 		UITools.setScrollbarIncrement(iconToolBarScrollPane);
 		UITools.addScrollbarIncrementPropertyListener(iconToolBarScrollPane);
-		iconToolBar.setOrientation(SwingConstants.VERTICAL);
 		createIconActions();
 		createPreferences();
 	}
