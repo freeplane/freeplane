@@ -20,6 +20,7 @@
 package org.freeplane.main.filemode;
 
 import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
@@ -76,7 +77,7 @@ public class FModeControllerFactory {
 		modeController.addAction(new CenterAction(controller));
 		modeController.addAction(new OpenPathAction(controller));
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
-		userInputListenerFactory.addMainToolBar("/main_toolbar", new FreeplaneToolBar());
+		userInputListenerFactory.addMainToolBar("/main_toolbar", new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL));
 		userInputListenerFactory.addMainToolBar("/filter_toolbar", FilterController.getController(controller).getFilterToolbar());
 		userInputListenerFactory.setMenuStructure("/xml/filemodemenu.xml");
 		userInputListenerFactory.updateMenus(modeController);

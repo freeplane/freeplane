@@ -22,35 +22,37 @@ class ToolbarLayout implements LayoutManager{
 		int lastBlockWidth = 0;
 		int lastBlockHeight = 0;
 		int lastBlockStart = 0;
+		int lastBlockFinish = 0;
 		for(int i = 0;; i++){
 			Component component = i < container.getComponentCount() ? container.getComponent(i) : null;
 			if(component == null || component instanceof Separator){
-				if(component == null){
-					lastBlockWidth += blockWidth;
-					lastBlockHeight = Math.max(blockHeight, lastBlockHeight);
-				}
-				if(component == null || lastBlockWidth + blockWidth > maxWidth){
+				if(i > container.getComponentCount() || lastBlockWidth + blockWidth > maxWidth){
 					int x = 0;
-					for(int j = lastBlockStart; j < i; j++){
+					for(int j = lastBlockStart; j < lastBlockFinish; j++){
 						final Component c = container.getComponent(j);
 						Dimension cPreferredSize = c.getPreferredSize();
 						c.setBounds(x, heigth, cPreferredSize.width, lastBlockHeight);
 						x += cPreferredSize.width;
 					}
 					heigth += lastBlockHeight;
-					lastBlockWidth = 0;
-					lastBlockHeight = 0;
-					lastBlockStart = i;
+					lastBlockWidth = blockWidth;
+					lastBlockHeight = blockHeight;
+					lastBlockStart = lastBlockFinish;
 				}
 				else{
 					lastBlockWidth += blockWidth;
 					lastBlockHeight = Math.max(blockHeight, lastBlockHeight);
 				}
+				lastBlockFinish = i;
 				blockWidth = 0;
 				blockHeight = 0;
 			}
 			if(component == null){
-				break;
+				if(lastBlockStart == container.getComponentCount()){
+					break;
+				}
+				lastBlockFinish = container.getComponentCount();
+				continue;
 			}
 			Dimension compPreferredSize = component.getPreferredSize();
 			blockWidth += compPreferredSize.width;
@@ -76,8 +78,8 @@ class ToolbarLayout implements LayoutManager{
 				if(lastBlockWidth + blockWidth > maxWidth){
 					width = Math.max(width, lastBlockWidth);
 					heigth += lastBlockHeight;
-					lastBlockWidth = 0;
-					lastBlockHeight = 0;
+					lastBlockWidth = blockWidth;
+					lastBlockHeight = blockHeight;
 				}
 				else{
 					lastBlockWidth += blockWidth;

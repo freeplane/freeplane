@@ -24,6 +24,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
@@ -236,7 +237,7 @@ public class MModeControllerFactory {
 		new MapStyle(modeController);
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
-		final FreeplaneToolBar toolbar = new FreeplaneToolBar();
+		final FreeplaneToolBar toolbar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
 		userInputListenerFactory.addMainToolBar("/main_toolbar", toolbar);
 		userInputListenerFactory.addMainToolBar("/filter_toolbar", FilterController.getController(controller).getFilterToolbar());
 		final FButtonBar fButtonToolBar = new FButtonBar(modeController);

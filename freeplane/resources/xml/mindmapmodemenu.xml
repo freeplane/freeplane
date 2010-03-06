@@ -464,8 +464,6 @@
 			<menu_action action="SaveAction" />
 			<menu_action action="SaveAsAction" />
 		</menu_category>
-		<menu_category name="font">
-		</menu_category>
 		<menu_separator />
 		<menu_category name="undo">
 			<menu_action action="UndoAction" />
@@ -477,14 +475,15 @@
 			<menu_action action="CopyAction" />
 			<menu_action action="PasteAction" />
 		</menu_category>
-		<menu_separator />
 		<menu_category name="insert">
 			<menu_action action="NewChildAction" />
 		</menu_category>
+		<menu_separator />
 		<menu_category name="font">
 			<menu_action action="ItalicAction" />
 			<menu_action action="BoldAction" />
 		</menu_category>
+		<menu_separator />
 		<menu_category name="clouds">
 			<menu_action action="CloudAction" />
 			<menu_action action="CloudColorAction" />

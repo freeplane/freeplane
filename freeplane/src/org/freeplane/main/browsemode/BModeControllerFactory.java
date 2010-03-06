@@ -22,6 +22,7 @@ package org.freeplane.main.browsemode;
 import java.security.AccessControlException;
 
 import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
@@ -85,7 +86,7 @@ public class BModeControllerFactory {
 		modeController.addMenuContributor(toolbarContributor);
 		controller.getMapViewManager().addMapViewChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
-		userInputListenerFactory.addMainToolBar("/main_toolbar", new FreeplaneToolBar());
+		userInputListenerFactory.addMainToolBar("/main_toolbar", new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL));
 		userInputListenerFactory.addMainToolBar("/filter_toolbar", FilterController.getController(controller).getFilterToolbar());
 		userInputListenerFactory.setMenuStructure(menuStructure);
 		userInputListenerFactory.updateMenus(modeController);

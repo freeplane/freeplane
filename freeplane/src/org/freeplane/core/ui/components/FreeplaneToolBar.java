@@ -20,6 +20,7 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
@@ -41,13 +42,6 @@ public class FreeplaneToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 *
-	 */
-	public FreeplaneToolBar() {
-		this("", SwingConstants.HORIZONTAL);
-	}
-
-	/**
 	 */
 	public FreeplaneToolBar(final int arg0) {
 		this("", arg0);
@@ -61,22 +55,24 @@ public class FreeplaneToolBar extends JToolBar {
 
 	/**
 	 */
-	public FreeplaneToolBar(final String arg0, final int arg1) {
-		super(arg0, arg1);
+	public FreeplaneToolBar(final String name, final int orientation) {
+		super(name, orientation);
 		this.setMargin(FreeplaneToolBar.nullInsets);
 		setFloatable(false);
 		setRollover(true);
-		setLayout(ToolbarLayout.getInstance());
-		addHierarchyBoundsListener(new HierarchyBoundsListener() {
-			
-			public void ancestorResized(HierarchyEvent e) {
-				revalidate();
-				repaint();
-			}
-			
-			public void ancestorMoved(HierarchyEvent e) {
-			}
-		});
+		if(orientation == HORIZONTAL){
+			setLayout(ToolbarLayout.getInstance());
+			addHierarchyBoundsListener(new HierarchyBoundsListener() {
+
+				public void ancestorResized(HierarchyEvent e) {
+					revalidate();
+					repaint();
+				}
+
+				public void ancestorMoved(HierarchyEvent e) {
+				}
+			});
+		}
 	}
 
 	/*
@@ -131,8 +127,6 @@ public class FreeplaneToolBar extends JToolBar {
 			return;
 		}
 		final AbstractButton abstractButton = (AbstractButton) comp;
-		abstractButton.setFocusable(false);
-		abstractButton.setMargin(FreeplaneToolBar.nullInsets);
 		if (null != abstractButton.getIcon()) {
 			final String text = abstractButton.getText();
 			final String toolTipText = abstractButton.getToolTipText();
@@ -143,9 +137,15 @@ public class FreeplaneToolBar extends JToolBar {
 				abstractButton.setText(null);
 			}
 		}
-		if (System.getProperty("os.name").startsWith("Mac OS")) {
-			abstractButton.setBorderPainted(false);
+		if (javax.swing.UIManager.getLookAndFeel().getName().startsWith("Mac OS")) {
+			abstractButton.putClientProperty("JButton.buttonType", "segmented");
+			abstractButton.putClientProperty("JButton.segmentPosition", "middle");
+		    Dimension buttonSize = new Dimension(22, 22);
+		    abstractButton.setPreferredSize(buttonSize);
+		    abstractButton.setFocusPainted(false);
 		}
+		abstractButton.setFocusable(false);
+		abstractButton.setMargin(FreeplaneToolBar.nullInsets);
 	}
 	
 	
