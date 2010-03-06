@@ -142,6 +142,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			    .getText());
 			final File newFile = map.getFile();
 			((MLinkController) LinkController.getController(controller.getModeController())).setLink(newNode, newUri, false);
+			map.destroy();
 		}
 	}
 	
