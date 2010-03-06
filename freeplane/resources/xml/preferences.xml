@@ -6,6 +6,7 @@
        	    <combo name = "language">
                 <choice value="automatic"/>
                 <choice value="ar"/>
+                <choice value="ca"/>
                 <choice value="cs"/>
                 <choice value="de"/>
                 <choice value="da"/>
