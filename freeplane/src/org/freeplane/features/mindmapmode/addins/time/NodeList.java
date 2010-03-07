@@ -44,6 +44,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -76,6 +77,7 @@ import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
@@ -487,7 +489,13 @@ class NodeList {
 	public static void replace(final IReplaceInputInformation info, final String searchString,
 	                           final String replaceString) {
 		final String regExp = "(" + NodeList.getPureRegularExpression(searchString) + ")";
-		final Pattern p = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
+		Pattern p;
+		try {
+			p = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
+		} catch (PatternSyntaxException e) {
+			UITools.errorMessage(FpStringUtils.format("wrong_regexp", searchString, e.getMessage()));
+			return;
+		}
 		final String replacement = NodeList.getPureRegularExpression(replaceString);
 		final int length = info.getLength();
 		for (int i = 0; i < length; i++) {
