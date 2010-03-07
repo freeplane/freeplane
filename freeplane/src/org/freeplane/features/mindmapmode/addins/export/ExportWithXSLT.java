@@ -335,7 +335,8 @@ public class ExportWithXSLT extends ExportAction {
 			trans.transform(new StreamSource(reader), result);
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogTool.warn(e);
+			
 			return false;
 		};
 		return true;
