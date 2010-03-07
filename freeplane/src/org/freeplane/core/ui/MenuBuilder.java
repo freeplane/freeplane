@@ -271,7 +271,7 @@ public class MenuBuilder extends UIBuilder {
 				try {
 					final AFreeplaneAction theAction = modeController.getAction(action);
 					if (theAction == null) {
-						System.err.println("action " + action + " not found");
+						LogTool.severe("action " + action + " not found");
 						return null;
 					}
 					if (tag.equals("menu_radio_action")) {

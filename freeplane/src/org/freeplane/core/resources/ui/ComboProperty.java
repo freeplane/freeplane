@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.LogTool;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -82,7 +83,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 			mComboBox.setSelectedIndex(possibleValues.indexOf(value));
 		}
 		else {
-			System.err.println("Can't set the value:" + value + " into the combo box " + getName() + "/" + getLabel());
+			LogTool.severe("Can't set the value:" + value + " into the combo box " + getName() + "/" + getLabel());
 			if (mComboBox.getModel().getSize() > 0) {
 				mComboBox.setSelectedIndex(0);
 			}

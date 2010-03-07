@@ -346,12 +346,12 @@ public class UrlManager implements IExtension {
 		}
 		catch (final AccessControlException ex) {
 			UITools.errorMessage("Could not open URL " + url + ". Access Denied.");
-			System.err.println(ex);
+			LogTool.warn(ex.getMessage());
 			return;
 		}
 		catch (final Exception ex) {
 			UITools.errorMessage("Could not open URL " + url + ".");
-			System.err.println(ex);
+			LogTool.warn(ex.getMessage());
 			return;
 		}
 		try {

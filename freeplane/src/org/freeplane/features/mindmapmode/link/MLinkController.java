@@ -461,7 +461,7 @@ public class MLinkController extends LinkController {
 	}
 
 	static final private Pattern urlPattern = Pattern.compile("(?:file://[^\\s" + File.pathSeparatorChar + "]+|(:?https?|ftp)://[^\\s()'\",;|]+)");
-	static private Pattern mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
+	static private Pattern mailPattern = Pattern.compile("([^@ <>\\*'\"]+@[^@ <>\\*'\"]+)");
 	public String findLink(final String text) {
 		final Matcher urlMatcher = urlPattern.matcher(text);
 		if (urlMatcher.find()) {

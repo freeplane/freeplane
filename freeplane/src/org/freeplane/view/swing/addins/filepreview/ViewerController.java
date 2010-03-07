@@ -40,6 +40,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
@@ -519,8 +520,9 @@ final private Set<IViewerFactory> factories;
 	        viewer = factory.createViewer(model, absoluteUri);
         }
         catch (Exception e) {
-        	LogTool.warn(e);
-        }
+        	String info = HtmlTools.combineTextWithExceptionInfo(uri.toString(), e);
+			return new JLabel(info);
+       }
 		if(viewer == null){
 			return new JLabel(uri.toString());
 		}

@@ -520,7 +520,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	 */
 	boolean saveInternal(final MMapModel map, final File file, final boolean isInternal) {
 		if (!isInternal && map.isReadOnly()) {
-			System.err.println("Attempt to save read-only map.");
+			LogTool.severe("Attempt to save read-only map.");
 			return false;
 		}
 		try {

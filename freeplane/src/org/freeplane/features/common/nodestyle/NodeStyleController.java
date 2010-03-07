@@ -130,8 +130,9 @@ public class NodeStyleController implements IExtension {
 
 			private String getShape(final NodeModel node) {
 				String returnedString = NodeStyleModel.getShape(node);
+				NodeModel parentNode = node.getParentNode();
 				if (NodeStyleModel.getShape(node) == null) {
-					if (node.isRoot()) {
+					if (parentNode == null) {
 						returnedString = ResourceController.getResourceController().getProperty(
 						    NodeStyleController.RESOURCES_ROOT_NODE_SHAPE);
 					}
@@ -139,7 +140,7 @@ public class NodeStyleController implements IExtension {
 						final String stdstyle = ResourceController.getResourceController().getProperty(
 						    NodeStyleController.RESOURCES_NODE_SHAPE);
 						if (stdstyle.equals(NodeStyleModel.SHAPE_AS_PARENT)) {
-							returnedString = getShape(node.getParentNode());
+							returnedString = getShape(parentNode);
 						}
 						else {
 							returnedString = stdstyle;
@@ -151,7 +152,7 @@ public class NodeStyleController implements IExtension {
 					    NodeStyleController.RESOURCES_ROOT_NODE_SHAPE);
 				}
 				else if (NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
-					returnedString = getShape(node.getParentNode());
+					returnedString = getShape(parentNode);
 				}
 				if (returnedString.equals(NodeStyleModel.SHAPE_COMBINED)) {
 					if (getModeController().getMapController().isFolded(node)) {
