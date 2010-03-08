@@ -42,7 +42,7 @@ import org.freeplane.features.mindmapmode.icon.MIconController;
 
 class JoinNodesAction extends AFreeplaneAction {
 	final static Pattern BODY_END = Pattern.compile("</body>", Pattern.CASE_INSENSITIVE);
-	final static Pattern BODY_START = Pattern.compile(".*(<body>|</head>)|<html>", Pattern.CASE_INSENSITIVE);
+	final static Pattern BODY_START = Pattern.compile("<body>", Pattern.CASE_INSENSITIVE);
 	/**
 	 * 
 	 */
