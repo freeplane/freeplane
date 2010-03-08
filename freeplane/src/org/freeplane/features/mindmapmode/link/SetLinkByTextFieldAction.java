@@ -51,7 +51,19 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		        .getLinkAsString(selectedNode));
 		if (inputValue != null) {
 			MLinkController linkController = (MLinkController) MLinkController.getController(modeController);
-			linkController.setLink(selectedNode, inputValue.trim(), false);
+			if (inputValue.equals("")) {
+				linkController.setLink(selectedNode, (URI) null, false);
+				return;
+			}
+			try {
+				URI link = LinkController.createURI(inputValue.trim());
+				linkController.setLink(selectedNode, link, false);
+			}
+			catch (URISyntaxException e1) {
+				LogTool.warn(e1);
+				UITools.errorMessage("wrong URI " + inputValue);
+				return;
+			} 
 		}
 	}
 }
