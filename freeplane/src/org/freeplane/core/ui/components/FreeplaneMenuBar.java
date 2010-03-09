@@ -48,6 +48,8 @@ public class FreeplaneMenuBar extends JMenuBar {
 	public static final String VIEW_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/view";
 
 	public FreeplaneMenuBar() {
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(
+	              KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10,0), "none");
 	}
 
 	static final int KEY_MODIFIERS = KeyEvent.SHIFT_DOWN_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_GRAPH_DOWN_MASK | KeyEvent.ALT_GRAPH_MASK;

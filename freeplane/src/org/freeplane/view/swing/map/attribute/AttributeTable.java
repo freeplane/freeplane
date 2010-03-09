@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
@@ -123,8 +124,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		 */
 		public void focusLost(final FocusEvent event) {
 			final Component oppositeComponent = event.getOppositeComponent();
-			final Component newTable = SwingUtilities.getAncestorOfClass(AttributeTable.class, oppositeComponent);
-			if (focusedTable != null && focusedTable != newTable) {
+			final Component newTable;
+			if(oppositeComponent instanceof AttributeTable){
+				newTable = oppositeComponent;
+			}
+			else{
+				newTable= SwingUtilities.getAncestorOfClass(AttributeTable.class, oppositeComponent);
+			}
+			if (focusedTable != null && focusedTable != newTable && ! event.isTemporary()) {
 				if (focusedTable.isEditing()) {
 					focusedTable.getCellEditor().stopCellEditing();
 				}
@@ -164,6 +171,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	final private AttributeView attributeView;
 	private int highRowIndex = 0;
+	private static DefaultCellEditor dce;
 
 	AttributeTable(final AttributeView attributeView) {
 		super();
@@ -237,9 +245,18 @@ assert 	highRowIndex >= 0;
 	}
 
 	@Override
-	public TableCellEditor getCellEditor(final int row, final int column) {
-		final JComboBox comboBox = new JComboBox();
-		final DefaultCellEditor dce = new DefaultCellEditor(comboBox);
+	public TableCellEditor getCellEditor(final int row, final int col) {
+		final JComboBox comboBox;
+		if(dce != null){
+			dce.stopCellEditing();
+			comboBox = (JComboBox) dce.getComponent();
+		}
+		else{
+			comboBox = new JComboBox();
+			comboBox.addFocusListener(AttributeTable.focusListener);
+			comboBox.getEditor().getEditorComponent().addFocusListener(AttributeTable.focusListener);
+			dce = new DefaultCellEditor(comboBox);
+		}
 		return dce;
 	}
 
@@ -325,9 +342,6 @@ assert 	highRowIndex >= 0;
 		}
 	}
 
-	/**
-	 *
-	 */
 	@Override
 	public Component prepareEditor(final TableCellEditor tce, final int row, final int col) {
 		ComboBoxModel model;
@@ -347,13 +361,14 @@ assert 	highRowIndex >= 0;
 			default:
 				model = AttributeTable.getDefaultComboBoxModel();
 		}
-		comboBox.setModel(model);
-		model.setSelectedItem(getValueAt(row, col));
-		comboBox.addFocusListener(AttributeTable.focusListener);
-		comboBox.getEditor().getEditorComponent().addFocusListener(AttributeTable.focusListener);
-		final Component editor = super.prepareEditor(tce, row, col);
-		updateFontSize(editor, getZoom());
-		return editor;
+		Object[] items = new Object[model.getSize()];
+		for(int i = 0; i < items.length; i++){
+			items[i] = model.getElementAt(i);
+		}
+		DefaultComboBoxModel currentModel = new DefaultComboBoxModel(items);
+		comboBox.setModel(currentModel);
+		updateFontSize(comboBox, getZoom());
+		return super.prepareEditor(tce, row, col);
 	}
 
 	@Override
@@ -404,16 +419,8 @@ assert 	highRowIndex >= 0;
 
 	@Override
 	public void removeEditor() {
-		removeListenerFromEditor();
 		getAttributeTableModel().editingCanceled();
 		super.removeEditor();
-	}
-
-	private void removeListenerFromEditor() {
-		final JComboBox comboBox = (JComboBox) getEditorComponent();
-		comboBox.removeFocusListener(AttributeTable.focusListener);
-		comboBox.getEditor().getEditorComponent().removeFocusListener(AttributeTable.focusListener);
-		comboBox.setModel(new DefaultComboBoxModel());
 	}
 
 	/**

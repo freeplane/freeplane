@@ -40,6 +40,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -159,9 +160,10 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		final Window windowAncestor = SwingUtilities.getWindowAncestor(e.getComponent());
 		if (windowAncestor == ownWindowAncestor) {
 			processDispatchedKeyEvent(e);
-			return processF10(e);
 		}
-		resetModifiers();
+		else{
+			resetModifiers();
+		}
 		return false;
 	}
 
@@ -244,21 +246,6 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 				}
 				break;
 		}
-	}
-
-	private boolean processF10(final KeyEvent e) {
-		if(modeController.getController().getModeController() != modeController){
-			return false;
-		}
-		final int keyCode = e.getKeyCode();
-		if (keyCode < KeyEvent.VK_F1 || keyCode > KeyEvent.VK_F12) {
-			return false;
-		}
-		if (e.getID() == KeyEvent.KEY_PRESSED) {
-			createButtons(nextModifiers)[keyCode - KeyEvent.VK_F1].doClick();
-			return true;
-		}
-		return false;
 	}
 
 	private void resetModifiers() {
