@@ -460,7 +460,7 @@ public class MLinkController extends LinkController {
 		arrowLinkPopup.add(itemtt);
 	}
 
-	static final private Pattern urlPattern = Pattern.compile("(?:file://[^\\s" + File.pathSeparatorChar + "]+|(:?https?|ftp)://[^\\s()'\",;|<>]+)");
+	static final private Pattern urlPattern = Pattern.compile("file://[^\\s" + File.pathSeparatorChar + "]+|(:?https?|ftp)://[^\\s()'\",;|<>{}]+");
 	static private Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
 	public String findLink(final String text) {
 		final Matcher urlMatcher = urlPattern.matcher(text);
