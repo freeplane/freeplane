@@ -23,20 +23,25 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.MenuTools;
+import org.freeplane.core.util.MenuTools.MenuEntry;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
 
@@ -110,6 +115,73 @@ class DocumentationAction extends AFreeplaneAction {
 		// TODO: search for proper insert point?
 		final int HOT_KEYS_INDEX = 2;
 		mapController.insertNodeIntoWithoutUndo(newNode, rootNode, HOT_KEYS_INDEX);
+		insertAcceleratorHtmlTable(newNode, menuEntryTree);
 		MenuTools.insertAsNodeModelRecursively(newNode, menuEntryTree.children(), mapController);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void insertAcceleratorHtmlTable(NodeModel newNode, DefaultMutableTreeNode menuEntryTree) {
+		final MapController mapController = getModeController().getMapController();
+		final String title = ResourceBundles.getText("hot_keys_table");
+		final MapModel map = mapController.getRootNode().getMap();
+		final NodeModel titleNode = mapController.newNode(title, map);
+		titleNode.setFolded(true);
+		newNode.insert(titleNode);
+		final NodeModel tableNode = mapController.newNode(formatAsHtml(menuEntryTree.children(), title), map);
+		titleNode.insert(tableNode);
+	}
+
+	// ==========================================================================
+	//                 format accelerator map as html text
+	// ==========================================================================
+	private static String formatAsHtml(Enumeration<DefaultMutableTreeNode> children, String title) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("<html><head/><body>");
+		appendAsHtml(builder, children, title, 2);
+		builder.append("</body></html>");
+		return builder.toString();
+	}
+
+	private static void appendAsHtml(StringBuilder builder, Enumeration<DefaultMutableTreeNode> children, String title,
+	                                 int level) {
+		builder.append("<h").append(level).append('>').append(title).append("</h1>");
+		appendChildrenAsHtml(builder, children, title, level);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static void appendChildrenAsHtml(StringBuilder builder, Enumeration<DefaultMutableTreeNode> children,
+	                                         String title, int level) {
+		ArrayList<MenuEntry> menuEntries = new ArrayList<MenuEntry>();
+		ArrayList<DefaultMutableTreeNode> submenus = new ArrayList<DefaultMutableTreeNode>();
+		// sort and divide
+		while (children.hasMoreElements()) {
+			DefaultMutableTreeNode node = children.nextElement();
+			if (node.isLeaf()) {
+				menuEntries.add((MenuEntry) node.getUserObject());
+			}
+			else {
+				submenus.add(node);
+			}
+		}
+		// actions
+		if (!menuEntries.isEmpty()) {
+			builder.append("<table>");
+			for (MenuEntry entry : menuEntries) {
+				final String keystroke = entry.getKeyStroke() == null ? "" //
+				        : MenuTools.formatKeyStroke(entry.getKeyStroke());
+				builder.append(el("tr", el("td", entry.getLabel()) + el("td", keystroke)
+				        + el("td", entry.getToolTipText())));
+			}
+			builder.append("</table>");
+		}
+		// submenus
+		for (DefaultMutableTreeNode node : submenus) {
+			final String subtitle = (level > 2 ? title + "&#8594;" : "") + String.valueOf(node.getUserObject());
+			appendAsHtml(builder, node.children(), subtitle, level + 1);
+		}
+	}
+
+	private static String el(String name, String content) {
+		return HtmlTools.element(name, content);
 	}
 }

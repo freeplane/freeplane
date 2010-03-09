@@ -45,12 +45,14 @@ public class MenuTools {
 		private final String label;
 		private final Icon icon;
 		private final KeyStroke keyStroke;
+		private final String toolTipText;
 
-		public MenuEntry(String key, String label, Icon icon, KeyStroke keyStroke) {
+		public MenuEntry(String key, String label, Icon icon, KeyStroke keyStroke, String toolTipText) {
 			this.key = key;
 			this.label = label;
 			this.icon = icon;
 			this.keyStroke = keyStroke;
+			this.toolTipText = toolTipText;
 		}
 
 		public String getKey() {
@@ -67,6 +69,10 @@ public class MenuTools {
 
 		public KeyStroke getKeyStroke() {
 			return keyStroke;
+		}
+
+		public String getToolTipText() {
+			return toolTipText;
 		}
 
 		@Override
@@ -134,7 +140,7 @@ public class MenuTools {
 			JMenuItem jMenuItem = (JMenuItem) userObject;
 			final String key = String.valueOf(node.getKey());
 			return new DefaultMutableTreeNode(new MenuEntry(key, jMenuItem.getText(), jMenuItem.getIcon(),
-			    menuKeyToKeyStrokeMap.get(key)));
+			    menuKeyToKeyStrokeMap.get(key), jMenuItem.getToolTipText()));
 		}
 		// the other expected types are String and javax.swing.JPopupMenu.Separator
 		// - just omit them
@@ -207,7 +213,7 @@ public class MenuTools {
 		return newNodeModel;
 	}
 
-	private static String formatKeyStroke(KeyStroke keyStroke) {
+	public static String formatKeyStroke(KeyStroke keyStroke) {
 		final String keyModifiersText = KeyEvent.getKeyModifiersText(keyStroke.getModifiers());
 		final String keyText = KeyEvent.getKeyText(keyStroke.getKeyCode());
 		return keyModifiersText.length() == 0 ? keyText : keyModifiersText + "+" + keyText;

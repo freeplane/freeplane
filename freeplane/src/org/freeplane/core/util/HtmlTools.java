@@ -25,6 +25,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -530,4 +531,33 @@ public class HtmlTools {
         }
         return bodyEndPos;
     }
+
+	public static String element(String name, String content) {
+		return element(name, null, content);
+	}
+
+	public static String element(String name, Map<String, String> attributes, String content) {
+		final String head = "<" + name + toAttributeString(attributes);
+		if (content != null && content.length() > 0) {
+			return head + ">" + content + "</" + name + ">";
+		}
+		else {
+			return " />";
+		}
+	}
+
+	private static String toAttributeString(Map<String, String> attributes) {
+		if (attributes == null || attributes.isEmpty())
+			return "";
+		StringBuilder builder = new StringBuilder();
+		for (Map.Entry<String, String> entry : attributes.entrySet()) {
+			if (builder.length() > 0)
+				builder.append(' ');
+			builder.append(entry.getKey());
+			builder.append("=\"");
+			builder.append(entry.getKey());
+			builder.append('"');
+		}
+		return builder.toString();
+	}
 }
