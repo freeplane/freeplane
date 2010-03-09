@@ -46,6 +46,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogTool;
 
 /**
  * @author Dimitry Polivaev
@@ -115,6 +116,7 @@ public class UITools {
 		else {
 			myMessage = ResourceBundles.getText("undefined_error");
 		}
+		LogTool.warn(myMessage);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
