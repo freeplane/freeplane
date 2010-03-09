@@ -144,7 +144,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		return controller;
 	}
 
-	final String getIconKey() {
+	public final String getIconKey() {
 		return key + ".icon";
 	}
 

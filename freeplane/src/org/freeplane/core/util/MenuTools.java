@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.Icon;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -34,6 +33,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.IndexedTree.Node;
@@ -43,14 +44,14 @@ public class MenuTools {
 	public static class MenuEntry {
 		private final String key;
 		private final String label;
-		private final Icon icon;
+		private final String iconKey;
 		private final KeyStroke keyStroke;
 		private final String toolTipText;
 
-		public MenuEntry(String key, String label, Icon icon, KeyStroke keyStroke, String toolTipText) {
+		public MenuEntry(String key, String label, String iconKey, KeyStroke keyStroke, String toolTipText) {
 			this.key = key;
 			this.label = label;
-			this.icon = icon;
+			this.iconKey = iconKey;
 			this.keyStroke = keyStroke;
 			this.toolTipText = toolTipText;
 		}
@@ -63,8 +64,8 @@ public class MenuTools {
 			return label;
 		}
 
-		public Icon getIcon() {
-			return icon;
+		public String getIconKey() {
+			return iconKey;
 		}
 
 		public KeyStroke getKeyStroke() {
@@ -78,20 +79,6 @@ public class MenuTools {
 		@Override
 		public String toString() {
 			return label;
-		}
-	}
-
-	private static class IconMindIcon extends MindIcon {
-		private Icon icon;
-
-		// FIXME: improve by conditional cast to ImageIcon? ImageIcon at least has a description
-		public IconMindIcon(Icon icon) {
-			super("", "");
-			this.icon = icon;
-		}
-
-		public Icon getIcon() {
-			return icon;
 		}
 	}
 
@@ -138,9 +125,11 @@ public class MenuTools {
 		final Object userObject = menuNode.getUserObject();
 		if (userObject instanceof JMenuItem) {
 			JMenuItem jMenuItem = (JMenuItem) userObject;
+			IFreeplaneAction action = (IFreeplaneAction) jMenuItem.getAction();
 			final String key = String.valueOf(node.getKey());
-			return new DefaultMutableTreeNode(new MenuEntry(key, jMenuItem.getText(), jMenuItem.getIcon(),
-			    menuKeyToKeyStrokeMap.get(key), jMenuItem.getToolTipText()));
+			final String iconKey = action == null ? null : action.getIconKey();
+			return new DefaultMutableTreeNode(new MenuEntry(key, jMenuItem.getText(), iconKey, menuKeyToKeyStrokeMap
+			    .get(key), jMenuItem.getToolTipText()));
 		}
 		// the other expected types are String and javax.swing.JPopupMenu.Separator
 		// - just omit them
@@ -207,10 +196,25 @@ public class MenuTools {
 		final NodeModel newNodeModel = mapController.newNode(text, nodeModel.getMap());
 		if (!treeNode.isLeaf())
 			newNodeModel.setFolded(true);
-		if (menuEntry.getIcon() != null)
-			newNodeModel.addIcon(new IconMindIcon(menuEntry.getIcon()));
+		if (menuEntry.getIconKey() != null) {
+			addIcon(menuEntry, newNodeModel);
+		}
 		nodeModel.insert(newNodeModel);
 		return newNodeModel;
+	}
+
+	private static void addIcon(final MenuEntry menuEntry, final NodeModel newNodeModel) {
+		final String iconKey = menuEntry.getIconKey();
+		String resource = ResourceController.getResourceController().getProperty(iconKey, null);
+		if (resource == null) {
+			// LogTool.info("no icon for key '" + iconKey + "'");
+			return;
+		}
+		// icons are expected to live in the directory /images/icons/
+		// but the menu icons live in /images - set a relative path to navigate one level up
+		String name = resource.replaceAll("/images/(.*).png", "../$1");
+		final MindIcon mindIcon = new MindIcon(name, name + ".png", "");
+		newNodeModel.addIcon(mindIcon);
 	}
 
 	public static String formatKeyStroke(KeyStroke keyStroke) {

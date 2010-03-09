@@ -29,4 +29,6 @@ public interface IFreeplaneAction extends Action {
 	public void afterMapChange(Object newMap);
 
 	public boolean isSelected();
+
+	public String getIconKey();
 }
