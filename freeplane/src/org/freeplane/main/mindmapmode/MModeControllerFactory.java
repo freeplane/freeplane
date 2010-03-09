@@ -147,7 +147,7 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new SplitNode(controller));
 
 		new UnfoldAll(modeController).addActionsAtMenuBuilder(menuBuilder);
-		new ChangeNodeLevelController(modeController.getController(), menuBuilder);
+		new ChangeNodeLevelController(modeController.getController()).addActionsAtMenuBuilder(menuBuilder);
 		ExportWithXSLT.createXSLTExportActions(modeController, "/xml/ExportWithXSLT.xml");
 		ExportToImage.createActions(modeController);
 		NodeHistory.install(modeController);
