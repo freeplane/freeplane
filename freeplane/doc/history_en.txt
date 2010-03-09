@@ -1,6 +1,14 @@
 ===============================
-1.0.41 rc
+1.0.41 beta
 ===============================
+New features:
+add empty icon empty.png to resources
+Take link icons URLs from properties
+Wrap toolbars for narrow windors
+add bzr info to distributions
+Filter by regexp
+
+
 Bug fixes:
 use node id in links to other maps
 425]: Drag and drop from file explorer under Linux does not create a node with relative link
@@ -12,6 +20,26 @@ Antialiasing of cloud around the root node
 451]: Error when browsing a map Exported as a Java Applet
 General protection from writing non ASCII characters in XMLWriter
 Adjust calendar dialog size to screen
+SimplyHTML.jar: bug fix for drag and drop
+AttributePopupMenu: do not display it if table is being edited
+uri pattern in MLinkController
+bug fix in JoinNodesAction for not standard html nodes
+bug fixes in AttributeTable and FButtonBar
+482]: Scroll speed of some dialogs are slow.
+479]: Valid URL triggers Automatic Bug Report
+bug fixes for automatic bug reports
+470]: Experimental file locking problem in  - Export Branch as new map
+467: Scroll speed of Manage Patterns Dialogs
+Toolbar layout bug fix
+Painting of toggled buttons under mac improved
+463]: display warning if applet can not display images because of SecurityException "no file access"
+bug fix for full screen under linux
+fix build target dmg4mac
+462]: Escape key deletes the currently typed text in node and the parent node's text if created just before
+454]: Clear hyperlink
+450]: Some French Keyboard keys do not work under Linux
+
+
 
 ===============================
 1.0.40 beta
