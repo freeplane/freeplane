@@ -88,10 +88,6 @@ public class FreeplaneApplet extends JApplet {
 		controller.addAction(new NextNodeAction(controller, Direction.BACK));
 		controller.selectMode(browseController);
 		appletViewController.init();
-		final JComponent toolBar = browseController.getUserInputListenerFactory().getToolBar("/main_toolbar");
-		toolBar.setVisible(true);
-		final String propertyName = appletViewController.completeVisiblePropertyKey(toolBar);
-		ResourceController.getResourceController().setProperty(propertyName, true);
 		controller.getViewController().setMenubarVisible(false);
 	}
 
