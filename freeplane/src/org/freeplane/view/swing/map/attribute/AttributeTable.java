@@ -42,6 +42,8 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
@@ -123,6 +125,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		 * java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
 		 */
 		public void focusLost(final FocusEvent event) {
+			if(event.isTemporary()){
+				return;
+			}
 			final Component oppositeComponent = event.getOppositeComponent();
 			final Component newTable;
 			if(oppositeComponent instanceof AttributeTable){
@@ -131,7 +136,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			else{
 				newTable= SwingUtilities.getAncestorOfClass(AttributeTable.class, oppositeComponent);
 			}
-			if (focusedTable != null && focusedTable != newTable && ! event.isTemporary()) {
+			if (focusedTable == null){
+				return;
+			}
+			if (focusedTable != newTable) {
 				if (focusedTable.isEditing()) {
 					focusedTable.getCellEditor().stopCellEditing();
 				}
@@ -144,6 +152,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					}
 				}
 				focusedTable = null;
+				return;
 			}
 		}
 	}
