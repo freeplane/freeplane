@@ -41,8 +41,7 @@ public class MindIconFactory {
 	 * @return
 	 */
 	public static MindIcon create(String name) {
-		return new MindIcon(name, 
-					   name + ".png",
-					   ResourceBundles.getText(String.format(DESC_KEY, name)));
+		final String description = name.indexOf('/') > 0 ? "" : ResourceBundles.getText(String.format(DESC_KEY, name));
+		return new MindIcon(name, name + ".png", description);
 	}
 }
