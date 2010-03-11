@@ -79,12 +79,12 @@ class DocumentationAction extends AFreeplaneAction {
 				public void run() {
 					try {
 						if (endUrl.getFile().endsWith(".mm") && getController().selectMode(BModeController.MODENAME)) {
-							getModeController().getMapController().newMap(endUrl);
+							if (getModeController().getMapController().newMap(endUrl))
+								appendAcceleratableMenuEntries();
 						}
 						else {
 							getController().getViewController().openDocument(endUrl);
 						}
-						appendAcceleratableMenuEntries();
 					}
 					catch (final Exception e1) {
 						LogTool.severe(e1);

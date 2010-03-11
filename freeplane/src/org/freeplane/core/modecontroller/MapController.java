@@ -450,17 +450,20 @@ public class MapController extends SelectionController {
 		return newModel;
 	}
 
-	public void newMap(final URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
+	/** creates a new MapView for the url unless it is already opened.
+	 * @returns false if the map was already opened and true if it is newly created. */
+	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
 		final IMapViewManager mapViewManager = getController().getMapViewManager();
 		/*
 		 * this can lead to confusion if the user handles multiple maps
 		 * with the same name. Obviously, this is wrong. Get a better
 		 * check whether or not the file is already opened.
+		 * VB: this comment seems to be out-of-date since the url is checked.
 		 */
 		final String mapExtensionKey = mapViewManager.checkIfFileIsAlreadyOpened(url);
 		if (mapExtensionKey != null) {
 			mapViewManager.tryToChangeToMapView(mapExtensionKey);
-			return;
+			return false;
 		}
 		try {
 			getController().getViewController().setWaitingCursor(true);
@@ -469,6 +472,7 @@ public class MapController extends SelectionController {
 			fireMapCreated(newModel);
 			newMapView(newModel);
 			setSaved(newModel, true);
+			return true;
 		}
 		finally {
 			getController().getViewController().setWaitingCursor(false);
