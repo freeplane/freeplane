@@ -14,19 +14,62 @@ import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.link.ArrowType;
 
 public interface Proxy {
-	/** simplistic interface for unique keys */
+	/** Attributes are designed to be non-unique, i.e. the same attribute. */
 	interface Attributes {
-		String get(String key);
+		/** returns the <em>first</em> value of an attribute with the given name or null otherwise. */
+		String get(final String name);
+		
+		/** returns all values for the attribute name. */
+		List<String> getValues(final String name);
 
+		/** returns all attribute names in the proper sequence.
+		 * <pre>
+		 *   // rename attribute
+		 *   int i = 0;
+		 *   for (String name : attributes.getAttributeNames()) {
+		 *       if (name.equals("xy"))
+		 *           attributes.set(i, "xyz", attributes.get(i));
+		 *       ++i;
+		 *   }
+		 * </pre> */
 		public List<String> getAttributeNames();
 
+		/** returns the attribute value at the given index.
+		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
+		 *         &lt; 0 || index &gt;= size())</tt>.*/
+		String get(final int index);
+
+		/** sets the value of the attribute at an index. This method will not create new attributes.
+		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
+		 *         &lt; 0 || index &gt;= size())</tt>. */
+		void set(final int index, final String value);
+		
+		/** sets name and value of the attribute at the given index. This method will not create new attributes.
+		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
+		 *         &lt; 0 || index &gt;= size())</tt>. */
+		void set(final int index, final String name, final String value);
+
 		/** returns the index of an attribute if it exists or -1 otherwise */
-		public int findAttribute(final String key);
+		public int findAttribute(final String name);
 
-		/** returns true on removal of an existing attribute and false otherwise. */
-		boolean remove(String key);
+		/** removes <em>all</em> attributes with this name.
+		 * @returns true on removal of an existing attribute and false otherwise. */
+		boolean remove(final String name);
 
-		void set(String key, String value);
+		/** removes the attribute at the given index.
+		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
+		 *         &lt; 0 || index &gt;= size())</tt>. */
+		void remove(final int index);
+
+		/** adds an attribute if there is no attribute with the given name or changes
+		 * the value <em>of the first</em> attribute with the given name. */
+		void set(final String name, final String value);
+
+		/** adds an attribute no matter if an attribute with the given name already exists. */
+		void add(final String name, final String value);
+		
+		/** the number of attributes (possibly non-unique). */
+		int size();
 	}
 
 	interface Connector {
