@@ -537,13 +537,11 @@ public class HtmlTools {
 	}
 
 	public static String element(String name, Map<String, String> attributes, String content) {
-		final String head = "<" + name + toAttributeString(attributes);
-		if (content != null && content.length() > 0) {
-			return head + ">" + content + "</" + name + ">";
-		}
-		else {
-			return " />";
-		}
+		StringBuilder builder = new StringBuilder();
+		builder.append("<").append(name).append(toAttributeString(attributes)).append(">");
+		if (content != null && content.length() > 0)
+			builder.append(content);
+		return builder.append("</").append(name).append(">").toString();
 	}
 
 	private static String toAttributeString(Map<String, String> attributes) {
