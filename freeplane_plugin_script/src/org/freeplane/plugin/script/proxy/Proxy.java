@@ -14,13 +14,14 @@ import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.link.ArrowType;
 
 public interface Proxy {
-	/** Attributes are designed to be non-unique, i.e. the same attribute. */
+	/** Attributes are name - value pairs assigned to a node. A node may have multiple attributes
+	 * with the same name. */
 	interface Attributes {
 		/** returns the <em>first</em> value of an attribute with the given name or null otherwise. */
 		String get(final String name);
-		
+
 		/** returns all values for the attribute name. */
-		List<String> getValues(final String name);
+		List<String> getAll(final String name);
 
 		/** returns all attribute names in the proper sequence.
 		 * <pre>
@@ -43,13 +44,15 @@ public interface Proxy {
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
 		 *         &lt; 0 || index &gt;= size())</tt>. */
 		void set(final int index, final String value);
-		
+
 		/** sets name and value of the attribute at the given index. This method will not create new attributes.
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
 		 *         &lt; 0 || index &gt;= size())</tt>. */
 		void set(final int index, final String name, final String value);
 
-		/** returns the index of an attribute if it exists or -1 otherwise */
+		/** returns the index of the first attribute with the given name if one exists or -1 otherwise.
+		         * For searches for <em>all</em> attributes with a given name <code>getAttributeNames()</code>
+		         * must be used. */
 		public int findAttribute(final String name);
 
 		/** removes <em>all</em> attributes with this name.
@@ -67,8 +70,8 @@ public interface Proxy {
 
 		/** adds an attribute no matter if an attribute with the given name already exists. */
 		void add(final String name, final String value);
-		
-		/** the number of attributes (possibly non-unique). */
+
+		/** the number of attributes. It is <code>size() == getAttributeNames().size()</code>. */
 		int size();
 	}
 
@@ -132,13 +135,13 @@ public interface Proxy {
 
 		/** reset undo / redo lists and deactivate Undo for current script */
 		void deactivateUndo();
-		
+
 		/** The main info for the status line, null to remove*/
 		public void setStatusInfo(String info);
 
 		/** Info for status line, null to remove*/
 		public void setStatusInfo(String key, String info);
-		
+
 		/** Info for status line, null to remove*/
 		public void setStatusInfo(String key, Icon icon);
 
@@ -252,9 +255,11 @@ public interface Proxy {
 		 * To get a local link (i.e. to another node) target should be: "#" + nodeID */
 		boolean set(String target);
 	}
-	
+
 	interface Map {
 		Node getRootNode();
+
+		/** returns the node if the map contains it or null otherwise. */
 		Node node(String id);
 	}
 
@@ -295,7 +300,7 @@ public interface Proxy {
 		Icons getIcons();
 
 		Link getLink();
-		
+
 		/** the map this node belongs to. */
 		Map getMap();
 
