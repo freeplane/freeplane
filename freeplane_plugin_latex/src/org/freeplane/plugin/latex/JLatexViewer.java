@@ -101,10 +101,12 @@ class JLatexViewer extends JComponent {
 		model = latexExtension;
 		try {
 	        teXFormula = new TeXFormula(model.getEquation());
+			teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE);
         }
         catch (Exception e) {
 			try {
 		        teXFormula = new TeXFormula("\\mbox{" +e.getMessage() +"}");
+				teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE);
 	        }
 	        catch (Exception e1) {
 		        teXFormula = new TeXFormula("\\mbox{Can not parse given equation}");
