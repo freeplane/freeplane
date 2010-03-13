@@ -546,9 +546,10 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 	}
 
 	private void okPressed() {
-		result = ManagePatternsPopupDialog.OK;
-		writePatternBackToModel();
-		close();
+		if (writePatternBackToModel()){
+			result = ManagePatternsPopupDialog.OK;
+			close();
+		}
 	}
 
 	private void removePattern(final ActionEvent actionEvent) {
@@ -587,35 +588,39 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		ManagePatternsPopupDialog.sLastSelectedPattern = pLastSelectedPattern;
 	}
 
-	private void writePatternBackToModel() {
-		if (getLastSelectedPattern() != null) {
-			final Pattern pattern = getLastSelectedPattern();
-			final Pattern resultPatternCopy = mStylePatternFrame.getResultPattern();
-			final String oldPatternName = pattern.getName();
-			final String newPatternName = resultPatternCopy.getName();
-			if (!(oldPatternName.equals(newPatternName))) {
-				for (final Iterator iter = mPatternListModel.getPatternList().iterator(); iter.hasNext();) {
-					final Pattern otherPattern = (Pattern) iter.next();
-					if (otherPattern == pattern) {
-						continue;
-					}
-					if (otherPattern.getName().equals(newPatternName)) {
-						JOptionPane.showMessageDialog(this, ResourceBundles
-						    .getText("ManagePatternsPopupDialog.DuplicateNameMessage"));
-					}
-				}
-			}
+	private boolean writePatternBackToModel() {
+		final Pattern pattern = getLastSelectedPattern();
+		if (pattern == null) {
+			return true;
+		}
+		final Pattern resultPatternCopy = mStylePatternFrame.getResultPattern();
+		final String oldPatternName = pattern.getName();
+		final String newPatternName = resultPatternCopy.getName();
+		if (!(oldPatternName.equals(newPatternName))) {
 			for (final Iterator iter = mPatternListModel.getPatternList().iterator(); iter.hasNext();) {
 				final Pattern otherPattern = (Pattern) iter.next();
-				if (otherPattern.getPatternChild() != null
-				        && oldPatternName.equals(otherPattern.getPatternChild().getValue())) {
-					otherPattern.getPatternChild().setValue(newPatternName);
+				if (otherPattern == pattern) {
+					continue;
+				}
+				if (otherPattern.getName().equals(newPatternName)) {
+					JOptionPane.showMessageDialog(this, ResourceBundles
+							.getText("ManagePatternsPopupDialog.DuplicateNameMessage"));
+					return false;
 				}
 			}
-			mStylePatternFrame.getResultPattern(pattern);
-			if (pattern.getPatternChild() != null && oldPatternName.equals(pattern.getPatternChild().getValue())) {
-				pattern.getPatternChild().setValue(newPatternName);
+		}
+		for (final Iterator iter = mPatternListModel.getPatternList().iterator(); iter.hasNext();) {
+			final Pattern otherPattern = (Pattern) iter.next();
+			if (otherPattern.getPatternChild() != null
+					&& oldPatternName.equals(otherPattern.getPatternChild().getValue())) {
+				otherPattern.getPatternChild().setValue(newPatternName);
 			}
 		}
+		mStylePatternFrame.getResultPattern(pattern);
+		if (pattern.getPatternChild() != null && oldPatternName.equals(pattern.getPatternChild().getValue())) {
+			pattern.getPatternChild().setValue(newPatternName);
+		}
+		return true;
 	}
+	
 }

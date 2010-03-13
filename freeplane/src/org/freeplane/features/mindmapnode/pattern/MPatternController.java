@@ -38,7 +38,9 @@ import org.freeplane.core.icon.IconStore;
 import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.KeyAlreadyUsedException;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
@@ -154,8 +156,23 @@ public class MPatternController implements IExtension {
 	public void createPatternSubMenu(final MenuBuilder builder, final String formatMenuString) {
 		final String group = formatMenuString + "/patterns/patterns";
 		builder.removeChildElements(group);
+		StringBuilder sb = null;
 		for (int i = 0; i < patterns.length; ++i) {
-			builder.addAction(group, patterns[i], MenuBuilder.AS_CHILD);
+			try {
+				builder.addAction(group, patterns[i], MenuBuilder.AS_CHILD);
+			} catch (KeyAlreadyUsedException e) {
+				if(! formatMenuString.startsWith("/menu_bar/")){
+					continue;
+				}
+				if(sb == null){
+					sb = new StringBuilder(ResourceBundles.getText("doubled_patterns_ignored"));
+				}
+				sb.append('\n');
+				sb.append(patterns[i].getKey());
+			}
+		}
+		if(sb != null){
+			UITools.errorMessage(sb.toString());
 		}
 	}
 

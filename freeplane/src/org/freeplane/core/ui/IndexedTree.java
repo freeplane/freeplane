@@ -115,7 +115,7 @@ public class IndexedTree {
 	                                         final int position) {
 		final DefaultMutableTreeNode existingNode = get(key);
 		if (existingNode != null) {
-			throw new RuntimeException(key.toString() + " added twice");
+			throw new KeyAlreadyUsedException(key.toString() + " added twice");
 		}
 		final DefaultMutableTreeNode relativeNode = getNode(relativeKey);
 		if (relativeNode == null) {
