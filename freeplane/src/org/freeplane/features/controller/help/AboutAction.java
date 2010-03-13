@@ -52,7 +52,7 @@ class AboutAction extends AFreeplaneAction {
 		sb.append('\n');
 		sb.append(FpStringUtils.format("main_resource_directory", ResourceController.getResourceController().getResourceBaseDir()));
 		sb.append('\n');
-		sb.append(FpStringUtils.format("user_directory", ResourceController.getResourceController().getFreeplaneUserDirectory()));
+		sb.append(FpStringUtils.format("user_config_folder", ResourceController.getResourceController().getFreeplaneUserDirectory()));
 		JOptionPane.showMessageDialog(getController().getViewController().getViewport(), sb.toString(), ResourceBundles.getText("AboutAction.text"),
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
