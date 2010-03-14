@@ -35,19 +35,18 @@
 		<xsl:if test="@TYPE='NOTE'">
 			<xsl:text>&#xA;NOTE: </xsl:text>
 		</xsl:if>
-		<xsl:variable name="text">
-			<xsl:apply-templates/>
-		</xsl:variable>
-		<xsl:value-of select="$text" />
+		<xsl:apply-templates/>
+		<xsl:text>&#xA;</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="child::text()">
-		<xsl:text> </xsl:text>
 		<xsl:value-of select="normalize-space(.)" />
 	</xsl:template>
 
-	<xsl:template match="p|br|tr|div|li">
-		<xsl:text>&#xA;</xsl:text>
+	<xsl:template match="p|br|tr|div|li|pre">
+		<xsl:if test="preceding-sibling::*">
+			<xsl:text>&#xA;</xsl:text>
+		</xsl:if>
 		<xsl:apply-templates/>
 	</xsl:template>
 
@@ -56,7 +55,10 @@
 		<xsl:variable name="target" select="arrowlink/@DESTINATION" />
 		<xsl:number level="multiple" count="node" format="1" />
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="@TEXT" />
+		<xsl:if test="@TEXT">
+			<xsl:value-of select="normalize-space(@TEXT)" />
+			<xsl:text>&#xA;</xsl:text>
+    	</xsl:if>
 		<xsl:apply-templates select="richcontent"/>
 		<xsl:if test="arrowlink/@DESTINATION != ''">
 			<xsl:text> (see:</xsl:text>
@@ -65,7 +67,6 @@
 			</xsl:for-each>
 			<xsl:text>)</xsl:text>
 		</xsl:if>
-		<xsl:text>&#xA;</xsl:text>
 		<xsl:apply-templates select="node"/>
 	</xsl:template>
 
