@@ -18,24 +18,24 @@
     <!-- match "node" -->
     <xsl:template match="node">
     	<xsl:variable name="depth" select="count(ancestor::node)" />
-    	<xsl:variable name="heading" select="node and @TEXT and not(contains(@TEXT, '&#xA;')) and $depth &lt;= 5" />
 		<xsl:if test="@TEXT">
-	    	<xsl:if test="$heading">
-	    		<xsl:call-template name="chars">
-	    			<xsl:with-param name="char" select="'='"/>
-	    			<xsl:with-param name="count" select="$depth"/>
-	    		</xsl:call-template>
-	    	</xsl:if>
-			<xsl:value-of select="normalize-space(@TEXT)" />
-	    	<xsl:if test="$heading">
-	    		<xsl:call-template name="chars">
-	    			<xsl:with-param name="char" select="'='"/>
-	    			<xsl:with-param name="count" select="$depth"/>
-	    		</xsl:call-template>
-	    	</xsl:if>
-	    	<xsl:if test="not($heading)">
-				<xsl:text>&#xA;</xsl:text>
-	    	</xsl:if>
+			<xsl:choose>
+		    	<xsl:when test="node and @TEXT and not(contains(@TEXT, '&#xA;')) and $depth &lt;= 5">
+		    		<xsl:call-template name="chars">
+		    			<xsl:with-param name="char" select="'='"/>
+		    			<xsl:with-param name="count" select="$depth"/>
+		    		</xsl:call-template>
+					<xsl:value-of select="normalize-space(@TEXT)" />
+					<xsl:call-template name="chars">
+						<xsl:with-param name="char" select="'='" />
+						<xsl:with-param name="count" select="$depth" />
+					</xsl:call-template>
+		    	</xsl:when>
+				<xsl:otherwise>
+				<xsl:value-of select="normalize-space(@TEXT)" />
+					<xsl:text>&#xA;</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>&#xA;</xsl:text>
     	</xsl:if>
 		<xsl:apply-templates select="richcontent"/>
@@ -68,7 +68,7 @@
     <xsl:template match="text()" mode="html">
         <xsl:value-of select="normalize-space(.)" />
     </xsl:template>
-	<xsl:template match="p|br|tr" mode="html">
+	<xsl:template match="p|br|div" mode="html">
 		<xsl:if test="preceding-sibling::*">
 			<xsl:text>&#xA;&#xA;</xsl:text>
 		</xsl:if>
@@ -100,6 +100,40 @@
         <xsl:text>&#xA;&lt;/pre&gt;&#xA;</xsl:text>
     </xsl:template>
     
+    <xsl:template match="table" mode="html">
+    	<xsl:text>&#xA;{| </xsl:text>
+        <xsl:apply-templates select="@*" mode="table_attributes" />
+         <xsl:apply-templates mode="html" />
+    	<xsl:text>&#xA;|}&#xA;</xsl:text>
+    </xsl:template>
+    <xsl:template match="th" mode="html">
+    	<xsl:text>&#xA;! </xsl:text>
+        <xsl:apply-templates select="@*" mode="table_attributes" />
+         <xsl:apply-templates mode="html" />
+    </xsl:template>
+    <xsl:template match="tr" mode="html">
+    	<xsl:text>&#xA;|- </xsl:text>
+       	<xsl:if test="@*">
+	         <xsl:apply-templates select="@*" mode="table_attributes" />
+	         <xsl:text> | </xsl:text>
+       	</xsl:if>
+         <xsl:apply-templates mode="html" />
+    </xsl:template>
+    <xsl:template match="td" mode="html">
+       	<xsl:text>&#xA;| </xsl:text>
+       	<xsl:if test="@*">
+	         <xsl:apply-templates select="@*" mode="table_attributes" />
+	         <xsl:text> | </xsl:text>
+       	</xsl:if>
+         <xsl:apply-templates mode="html" />
+    </xsl:template>
+    
+    <xsl:template match="@*" mode="table_attributes">
+         <xsl:value-of select = "name(.)"/>
+         <xsl:text>="</xsl:text>
+         <xsl:value-of select = "string(.)" />
+         <xsl:text>" </xsl:text>
+    </xsl:template>
  </xsl:stylesheet>
 
  	  	 
