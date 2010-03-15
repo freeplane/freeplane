@@ -31,6 +31,11 @@
 						<xsl:with-param name="count" select="$depth" />
 					</xsl:call-template>
 		    	</xsl:when>
+		    	<xsl:when test="contains(@TEXT, '&#xA;')">
+			        <xsl:text>&#xA;&lt;pre&gt;&#xA;</xsl:text>
+					<xsl:value-of select="@TEXT" />
+        			<xsl:text>&#xA;&lt;/pre&gt;&#xA;</xsl:text>
+		    	</xsl:when>
 				<xsl:otherwise>
 				<xsl:value-of select="normalize-space(@TEXT)" />
 					<xsl:text>&#xA;</xsl:text>
