@@ -7,7 +7,10 @@ Take link icons URLs from properties
 Wrap toolbars for narrow windors
 add bzr info to distributions
 Filter by regexp
+Export to mediawiki (from export using XSLT dialog)
 
+Script API:
+support for multiple valued attributes
 
 Bug fixes:
 use node id in links to other maps
