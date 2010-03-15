@@ -42,16 +42,6 @@
     
     -->
   <xsl:template match="/">
-  <xsl:variable name="bgcolor">
-  		<xsl:choose>
-		<xsl:when test="map/node/hook[@NAME='MapStyle']/@background">
-			<xsl:value-of select="map/node/hook[@NAME='MapStyle']/@background"/>
-		</xsl:when> 
-		<xsl:otherwise>
-			<xsl:text>#ffffff</xsl:text>
-		</xsl:otherwise>
-		</xsl:choose>
-  </xsl:variable>
     <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
       <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -78,7 +68,7 @@
 		height: 100%;
 		margin: 0;
 		padding: 0;
-		background-color: <xsl:value-of select="$bgcolor"/>;
+		background-color: #9999ff;
 	}
 
 </style>
@@ -90,9 +80,9 @@
 	</div>
 	
 	<script type="text/javascript">
-		var fo = new FlashObject("./<xsl:value-of select="$destination_dir"/>visorFreemind.swf", "visorFreeMind", "100%", "100%", 6, "<xsl:value-of select="$bgcolor"/>");
+		var fo = new FlashObject("./<xsl:value-of select="$destination_dir"/>visorFreemind.swf", "visorFreeMind", "100%", "100%", 6, "#9999ff");
 		fo.addParam("quality", "high");
-		fo.addParam("bgcolor", "<xsl:value-of select="$bgcolor"/>");
+		fo.addParam("bgcolor", "#ffffff");
 		fo.addVariable("openUrl", "_blank");
 		fo.addVariable("initLoadFile", "./<xsl:value-of select="$destination_dir"/>map.mm");
 		fo.addVariable("startCollapsedToLevel","2");
