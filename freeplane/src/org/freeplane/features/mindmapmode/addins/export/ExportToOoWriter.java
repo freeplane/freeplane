@@ -97,7 +97,8 @@ public class ExportToOoWriter extends ExportAction {
 			return;
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			UITools.errorMessage(e.getMessage());
+			LogTool.warn(e);
 			return;
 		}
 	}

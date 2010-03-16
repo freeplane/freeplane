@@ -58,31 +58,47 @@ class JoinNodesAction extends AFreeplaneAction {
 		joinNodes(selectedNode, selectedNodes);
 	}
 
-	private String addContent(String content, final boolean isHtml, String nodeContent, final boolean isHtmlNode) {
+	private String addContent(String joinedContent, final boolean isHtml, String nodeContent, final boolean isHtmlNode) {
 		if (isHtml) {
-			final String start[] = JoinNodesAction.BODY_END.split(content, -2);
-			content = start[0];
+			final String joinedContentParts[] = JoinNodesAction.BODY_END.split(joinedContent, -2);
+			joinedContent = joinedContentParts[0];
 			if (!isHtmlNode) {
-				final String end[] = JoinNodesAction.BODY_START.split(content, 2);
+				final String end[] = JoinNodesAction.BODY_START.split(joinedContent, 2);
+				if(end.length == 1){
+					end[0] = "<html>";
+				}
 				nodeContent = end[0] + "<body><p>" + nodeContent + "</p>";
 			}
 		}
-		if (isHtmlNode & !content.equals("")) {
-			final String end[] = JoinNodesAction.BODY_START.split(nodeContent, 2);
-			nodeContent = end[1];
+		if (isHtmlNode & !joinedContent.equals("")) {
+			final String nodeContentParts[] = JoinNodesAction.BODY_START.split(nodeContent, 2);
+			// if no <body> tag is found
+			if(nodeContentParts.length == 1){
+				nodeContent = nodeContent.substring(6);
+				nodeContentParts[0] = "<html>";
+			}
+			else{
+				nodeContent = nodeContentParts[1];
+			}
 			if (!isHtml) {
-				content = end[0] + "<body><p>" + content + "</p>";
+				joinedContent = nodeContentParts[0] + "<body><p>" + joinedContent + "</p>";
 			}
 		}
-		if (!(isHtml || isHtmlNode || content.equals(""))) {
-			content += " ";
+		if(joinedContent.equals("")){
+			return nodeContent;
 		}
-		content += nodeContent;
-		return content;
+		if (isHtml || isHtmlNode) {
+			joinedContent += '\n';
+		}
+		else{
+			joinedContent += ' ';
+		}
+		joinedContent += nodeContent;
+		return joinedContent;
 	}
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
-		String newContent = "";
+		String joinedContent = "";
 		final Controller controller = getController();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
@@ -99,14 +115,14 @@ class JoinNodesAction extends AFreeplaneAction {
 			final String nodeContent = node.toString();
 			icons.addAll(node.getIcons());
 			final boolean isHtmlNode = HtmlTools.isHtmlNode(nodeContent);
-			newContent = addContent(newContent, isHtml, nodeContent, isHtmlNode);
+			joinedContent = addContent(joinedContent, isHtml, nodeContent, isHtmlNode);
 			if (node != selectedNode) {
 				((MMapController) getModeController().getMapController()).deleteNode(node);
 			}
 			isHtml = isHtml || isHtmlNode;
 		}
 		controller.getSelection().selectAsTheOnlyOneSelected(selectedNode);
-		((MTextController) TextController.getController(getModeController())).setNodeText(selectedNode, newContent);
+		((MTextController) TextController.getController(getModeController())).setNodeText(selectedNode, joinedContent);
 		final MIconController iconController = (MIconController)IconController.getController(getModeController());
 		iconController.removeAllIcons(selectedNode);
 		for(MindIcon icon:icons){

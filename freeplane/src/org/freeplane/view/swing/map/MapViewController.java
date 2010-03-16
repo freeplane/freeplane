@@ -46,7 +46,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.addins.styles.MapStyle;
-import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.addins.styles.MapViewLayout;
 
 /**
@@ -225,12 +224,17 @@ public class MapViewController implements IMapViewManager {
 		if (view == null) {
 			return null;
 		}
-		final Rectangle innerBounds = (view).getInnerBounds();
-		BufferedImage myImage = (BufferedImage) (view).createImage(view.getWidth(), view.getHeight());
+		view.preparePrinting();
+		final Rectangle innerBounds = view.getInnerBounds();
+		int BOUND = 1;
+		innerBounds.x -= BOUND;
+		innerBounds.y -= BOUND;
+		innerBounds.width += 2 * BOUND;
+		innerBounds.height += 2 * BOUND;
+		BufferedImage myImage = (BufferedImage) view.createImage(innerBounds.width, innerBounds.height);
 		final Graphics g = myImage.getGraphics();
-		g.clipRect(innerBounds.x, innerBounds.y, innerBounds.width, innerBounds.height);
-		view.paint(g);
-		myImage = myImage.getSubimage(innerBounds.x, innerBounds.y, innerBounds.width, innerBounds.height);
+		g.translate(-innerBounds.x, -innerBounds.y);
+		view.print(g);
 		return myImage;
 	}
 

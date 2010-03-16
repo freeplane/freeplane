@@ -185,7 +185,7 @@ public class MTextController extends TextController {
 					picturesAmongSelecteds = true;
 					final String encodedLinkString = HtmlTools.unicodeToHTMLUnicodeEntity(linkString);
 					final String strText = "<html><img src=\"" + encodedLinkString + "\">";
-					((MLinkController) LinkController.getController(modeController)).setLink(node, (URI) null);
+					((MLinkController) LinkController.getController(modeController)).setLink(node, (URI) null, false);
 					setNodeText(node, strText);
 				}
 			}

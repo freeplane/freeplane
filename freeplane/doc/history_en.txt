@@ -1,11 +1,62 @@
 ===============================
+1.0.41 beta
+===============================
+New features:
+add empty icon empty.png to resources
+Take link icons URLs from properties
+Wrap toolbars for narrow windors
+add bzr info to distributions
+Filter by regexp
+Export to mediawiki (from export using XSLT dialog)
+
+Script API:
+support for multiple valued attributes
+
+Bug fixes:
+use node id in links to other maps
+425]: Drag and drop from file explorer under Linux does not create a node with relative link
+Use fractional metrics for calculating bounds of images to be exported
+Reduce size of buffer for exporting map as image
+406]: Clouds are truncated when exporting to bitmap: add small space around the exported image
+Use print instead of paint for exporting maps as bitmaps
+Antialiasing of cloud around the root node
+451]: Error when browsing a map Exported as a Java Applet
+General protection from writing non ASCII characters in XMLWriter
+Adjust calendar dialog size to screen
+SimplyHTML.jar: bug fix for drag and drop
+AttributePopupMenu: do not display it if table is being edited
+uri pattern in MLinkController
+bug fix in JoinNodesAction for not standard html nodes
+bug fixes in AttributeTable and FButtonBar
+482]: Scroll speed of some dialogs are slow.
+479]: Valid URL triggers Automatic Bug Report
+bug fixes for automatic bug reports
+470]: Experimental file locking problem in  - Export Branch as new map
+467: Scroll speed of Manage Patterns Dialogs
+Toolbar layout bug fix
+Painting of toggled buttons under mac improved
+463]: display warning if applet can not display images because of SecurityException "no file access"
+bug fix for full screen under linux
+fix build target dmg4mac
+462]: Escape key deletes the currently typed text in node and the parent node's text if created just before
+454]: Clear hyperlink
+450]: Some French Keyboard keys do not work under Linux
+
+
+
+===============================
 1.0.40 beta
 ===============================
 New Features:
 Mac OS support
-Add methods for output to status line in scripting API to Controller
 CopyIDAction
 SetAcceleratorOnNextClickAction
+Introduce charset option in preferences to overload the default
+Filter node text by regular expression
+
+Script API:
+Controller, Node: find methods for searches on the whole map and subtrees
+Controller: methods for accessing the status line
 
 Bug fixes:
 FButtonBar layout
@@ -17,6 +68,19 @@ use clipboard mode on export
 415]: Truncated F-Bar
 425]: Drag and drop from file explorer under Linux does not create a node with relative link: rewrite MLinkController.findLink
 429]: Cannot load Freeplane after updating Java: check jre version on start
+fix comment handling in richcontent
+always substitute non ascii character in xhtml
+match plain text instead of html for notes too (like in bug 437)
+433: Same choices in Look and Feel selection 
+441: No Undo for changes of NodeModel.getHistoryInformation().lastModifiedAt 
+442: Freeplane is opened "in the background" 
+437: unexpected behaviour of function (find - Node text - Contains) 
+option enter_confirms_by_default moved to behavior tab
+439: Enter and Alt+Enter  for inline node editor and long node editor
+opening of map files by drag and drop under linux
+390: drag and drop of files to nodes under linux
+426]: Encrypted portions of maps don't export properly:
+do not start node editing on BACKSPACE
 
 ===============================
 1.0.39 beta

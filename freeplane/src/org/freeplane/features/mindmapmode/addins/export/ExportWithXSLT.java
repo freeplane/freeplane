@@ -237,7 +237,11 @@ public class ExportWithXSLT extends ExportAction {
 	}
 
 	String getProperty(final String key) {
-		return getProperty(key, null);
+		String property = getProperty(key, null);
+		if(property == null || ! property.startsWith("$")){
+			return property;
+		}
+		return System.getProperty(property.substring(1), null);
 	}
 
 	String getProperty(final String key, final String value) {
@@ -331,7 +335,8 @@ public class ExportWithXSLT extends ExportAction {
 			trans.transform(new StreamSource(reader), result);
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogTool.warn(e);
+			
 			return false;
 		};
 		return true;

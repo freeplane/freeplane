@@ -1,8 +1,6 @@
 <project name="freeplane" default="dist" basedir="..">
 	<property name="workspace" location=".." />
 	<property file="viewer-resources/version.properties"/>
-	<property name="ver" value="${freeplane_version}" />
-	<property name="ver" value="1.0.1" />
 	<property name="src" value="src" />
 	<property name="resources" value="resources" />
 	<property name="viewer-resources" value="viewer-resources" />
@@ -29,7 +27,6 @@
 	</condition>
 
 	<target name="build">
-		<echo>Freeplane Version = ${ver}.</echo>
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
 			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
@@ -114,7 +111,6 @@
         <copy todir="${dist.doc}">
             <fileset dir="doc"/>
         </copy>
-        <delete dir="${build}"  quiet="true"/>
 	</target>
 	
 	<target name="clean_dist" depends="clean, dist"/>

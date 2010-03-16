@@ -14,19 +14,65 @@ import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.link.ArrowType;
 
 public interface Proxy {
-	/** simplistic interface for unique keys */
+	/** Attributes are name - value pairs assigned to a node. A node may have multiple attributes
+	 * with the same name. */
 	interface Attributes {
-		String get(String key);
+		/** returns the <em>first</em> value of an attribute with the given name or null otherwise. */
+		String get(final String name);
 
+		/** returns all values for the attribute name. */
+		List<String> getAll(final String name);
+
+		/** returns all attribute names in the proper sequence.
+		 * <pre>
+		 *   // rename attribute
+		 *   int i = 0;
+		 *   for (String name : attributes.getAttributeNames()) {
+		 *       if (name.equals("xy"))
+		 *           attributes.set(i, "xyz", attributes.get(i));
+		 *       ++i;
+		 *   }
+		 * </pre> */
 		public List<String> getAttributeNames();
 
-		/** returns the index of an attribute if it exists or -1 otherwise */
-		public int findAttribute(final String key);
+		/** returns the attribute value at the given index.
+		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
+		 *         &lt; 0 || index &gt;= size())</tt>.*/
+		String get(final int index);
 
-		/** returns true on removal of an existing attribute and false otherwise. */
-		boolean remove(String key);
+		/** sets the value of the attribute at an index. This method will not create new attributes.
+		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
+		 *         &lt; 0 || index &gt;= size())</tt>. */
+		void set(final int index, final String value);
 
-		void set(String key, String value);
+		/** sets name and value of the attribute at the given index. This method will not create new attributes.
+		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
+		 *         &lt; 0 || index &gt;= size())</tt>. */
+		void set(final int index, final String name, final String value);
+
+		/** returns the index of the first attribute with the given name if one exists or -1 otherwise.
+		         * For searches for <em>all</em> attributes with a given name <code>getAttributeNames()</code>
+		         * must be used. */
+		public int findAttribute(final String name);
+
+		/** removes <em>all</em> attributes with this name.
+		 * @returns true on removal of an existing attribute and false otherwise. */
+		boolean remove(final String name);
+
+		/** removes the attribute at the given index.
+		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
+		 *         &lt; 0 || index &gt;= size())</tt>. */
+		void remove(final int index);
+
+		/** adds an attribute if there is no attribute with the given name or changes
+		 * the value <em>of the first</em> attribute with the given name. */
+		void set(final String name, final String value);
+
+		/** adds an attribute no matter if an attribute with the given name already exists. */
+		void add(final String name, final String value);
+
+		/** the number of attributes. It is <code>size() == getAttributeNames().size()</code>. */
+		int size();
 	}
 
 	interface Connector {
@@ -89,13 +135,13 @@ public interface Proxy {
 
 		/** reset undo / redo lists and deactivate Undo for current script */
 		void deactivateUndo();
-		
+
 		/** The main info for the status line, null to remove*/
 		public void setStatusInfo(String info);
 
 		/** Info for status line, null to remove*/
 		public void setStatusInfo(String key, String info);
-		
+
 		/** Info for status line, null to remove*/
 		public void setStatusInfo(String key, Icon icon);
 
@@ -209,9 +255,11 @@ public interface Proxy {
 		 * To get a local link (i.e. to another node) target should be: "#" + nodeID */
 		boolean set(String target);
 	}
-	
+
 	interface Map {
 		Node getRootNode();
+
+		/** returns the node if the map contains it or null otherwise. */
 		Node node(String id);
 	}
 
@@ -252,7 +300,7 @@ public interface Proxy {
 		Icons getIcons();
 
 		Link getLink();
-		
+
 		/** the map this node belongs to. */
 		Map getMap();
 

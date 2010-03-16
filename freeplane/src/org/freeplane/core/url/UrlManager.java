@@ -346,12 +346,12 @@ public class UrlManager implements IExtension {
 		}
 		catch (final AccessControlException ex) {
 			UITools.errorMessage("Could not open URL " + url + ". Access Denied.");
-			System.err.println(ex);
+			LogTool.warn(ex.getMessage());
 			return;
 		}
 		catch (final Exception ex) {
 			UITools.errorMessage("Could not open URL " + url + ".");
-			System.err.println(ex);
+			LogTool.warn(ex.getMessage());
 			return;
 		}
 		try {
@@ -433,7 +433,7 @@ public class UrlManager implements IExtension {
 		final String path = uri.getPath();
 		URL url = new URL(map.getURL(), path);
 		try {
-			return new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), url.getRef());
+			return new URI(url.getProtocol(), url.getHost(), url.getPath(), uri.getQuery(), uri.getFragment());
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 			return null;

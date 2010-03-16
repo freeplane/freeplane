@@ -74,7 +74,7 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 		final NodeModel node = ((MMapController) getModeController().getMapController()).addNewNode(target, target
 		    .getChildCount(), target.isNewChildLeft());
 		((MTextController) TextController.getController(getModeController())).setNodeText(node, nodeContent);
-		((MLinkController) LinkController.getController(getModeController())).setLink(node, link);
+		((MLinkController) LinkController.getController(getModeController())).setLink(node, link, false);
 		return node;
 	}
 

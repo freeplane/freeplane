@@ -66,7 +66,7 @@ public class LockManager extends TimerTask {
 	@Override
 	public synchronized void run() {
 		if (lockedSemaphoreFile == null) {
-			System.err.println("unexpected: lockedSemaphoreFile is null upon lock update");
+			LogTool.severe("unexpected: lockedSemaphoreFile is null upon lock update");
 			return;
 		}
 		try {
@@ -130,7 +130,7 @@ public class LockManager extends TimerTask {
 			lock = semaphoreOutputStream.getChannel().tryLock();
 			if (lock == null) {
 				semaphoreOutputStream.close();
-				System.err.println("Locking failed.");
+				LogTool.severe("Locking failed.");
 				throw new Exception();
 			}
 		}

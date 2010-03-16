@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.common.text;
 
+import java.util.regex.PatternSyntaxException;
+
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -29,8 +31,10 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -73,7 +77,12 @@ class NodeConditionController implements IElementaryConditionController {
 			return ignoreCase ? new IgnoreCaseNodeContainsCondition(value) : new NodeContainsCondition(value);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
-			return new NodeMatchesRegexpCondition(value, ignoreCase);
+			try {
+				return new NodeMatchesRegexpCondition(value, ignoreCase);
+			} catch (PatternSyntaxException e) {
+				UITools.errorMessage(FpStringUtils.format("wrong_regexp", value, e.getMessage()));
+				return null;
+			}
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 			return new NodeCompareCondition(value, ignoreCase, 0, true);

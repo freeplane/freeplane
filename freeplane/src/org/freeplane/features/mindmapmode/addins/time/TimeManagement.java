@@ -267,6 +267,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		gb1.gridx = 0;
 		gb1.gridwidth = 4;
 		gb1.fill = GridBagConstraints.BOTH;
+		gb1.weighty = 1;
 		gb1.gridy = 0;
 		calendar.getDayChooser().addPropertyChangeListener(this);
 		contentPane.add(calendar, gb1);
@@ -369,6 +370,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			calendar.setDate(TimeManagement.lastDate);
 		}
 		dialog.pack();
+		UITools.setBounds(dialog, -1, -1, dialog.getWidth(), dialog.getHeight());
 		calendar.getDayChooser().setFocus();
 		dialog.setVisible(true);
 	}

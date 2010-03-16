@@ -48,6 +48,7 @@ import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.icon.IconStore;
 import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
@@ -149,8 +150,11 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	final private JTree tree;
 	final private DefaultTreeModel treeModel;
 
-	public ImportAttributesDialog(final Controller controller, final Component parentComponent) {
-		super(controller.getViewController().getFrame(), ResourceBundles.getText("attributes_import"), true);
+	public ImportAttributesDialog(final Controller controller,
+			final Component parentComponent) {
+		super(controller.getViewController().getFrame(), 
+				FpStringUtils.removeMnemonic(ResourceBundles.getText("attributes_import")),
+				true);
 		this.controller = controller;
 		this.parentComponent = parentComponent;
 		final TreeNodeInfo nodeInfo = new TreeNodeInfo(ResourceBundles.getText("attribute_top"));

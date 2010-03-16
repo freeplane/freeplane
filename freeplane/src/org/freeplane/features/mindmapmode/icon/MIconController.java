@@ -131,11 +131,10 @@ public class MIconController extends IconController {
 	public MIconController(final ModeController modeController) {
 		super(modeController);
 		modeController.registerExtensionCopier(new ExtensionCopier());
-		iconToolBar = new FreeplaneToolBar();
+		iconToolBar = new FreeplaneToolBar("icon_toolbar", SwingConstants.VERTICAL);
 		iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
 		UITools.setScrollbarIncrement(iconToolBarScrollPane);
 		UITools.addScrollbarIncrementPropertyListener(iconToolBarScrollPane);
-		iconToolBar.setOrientation(SwingConstants.VERTICAL);
 		iconToolBarScrollPane.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "leftToolbarVisible");
 		createIconActions();
 		createPreferences();

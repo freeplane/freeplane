@@ -104,22 +104,24 @@ public class NoteController implements IExtension {
 		}
 		node.setStateIcon(NoteController.NODE_NOTE_ICON, (showIcon) ? noteIcon : null, true);
 		if (enabled) {
-			final NodeStyleController style = (NodeStyleController) getModeController().getExtension(NodeStyleController.class);
-			final Font defaultFont = style.getDefaultFont(node.getMap());
-			final StringBuilder rule = new StringBuilder();
-			rule.append("font-family: " + defaultFont.getFamily() + ";");
-			rule.append("font-size: " + defaultFont.getSize() + "pt;");
-			rule.append("margin-top:0;");
-			final String noteText = NoteModel.getNoteText(node).replaceFirst("<body>",
-			    "<body><div style=\"" + rule + "\">").replaceFirst("</body>", "</div></body>");
-			(getModeController().getMapController()).setToolTip(node, "nodeNoteText", new ITooltipProvider() {
-				public String getTooltip() {
-					return noteText;
-				}
-			});
+			final String noteText = NoteModel.getNoteText(node);
+			if(noteText != null){
+				final NodeStyleController style = (NodeStyleController) getModeController().getExtension(NodeStyleController.class);
+				final Font defaultFont = style.getDefaultFont(node.getMap());
+				final StringBuilder rule = new StringBuilder();
+				rule.append("font-family: " + defaultFont.getFamily() + ";");
+				rule.append("font-size: " + defaultFont.getSize() + "pt;");
+				rule.append("margin-top:0;");
+				final String tooltipText = noteText.replaceFirst("<body>",
+						"<body><div style=\"" + rule + "\">").replaceFirst("</body>", "</div></body>");
+				(getModeController().getMapController()).setToolTip(node, "nodeNoteText", new ITooltipProvider() {
+					public String getTooltip() {
+						return tooltipText;
+					}
+				});
+			}
+			return;
 		}
-		else {
-			(getModeController().getMapController()).setToolTip(node, "nodeNoteText", null);
-		}
+		(getModeController().getMapController()).setToolTip(node, "nodeNoteText", null);
 	}
 }

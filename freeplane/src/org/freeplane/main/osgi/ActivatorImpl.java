@@ -23,6 +23,7 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.jar.Manifest;
@@ -123,6 +124,18 @@ class ActivatorImpl implements BundleActivator {
     }
 
 	private void startFramework(final BundleContext context) {
+		if(null == System.getProperty("org.freeplane.core.dir.lib", null)){
+			File root = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+			try {
+				String rootUrl = root.toURI().toURL().toString();
+				if(! rootUrl.endsWith("/")){
+					rootUrl = rootUrl + "/";
+				}
+				String libUrl = rootUrl + "core/org.freeplane.core/lib/";
+				System.setProperty("org.freeplane.core.dir.lib", libUrl);
+			} catch (MalformedURLException e) {
+			}
+		}
 		starter = new FreeplaneStarter();
 		loadPlugins(context);
 		final Controller controller = starter.createController();

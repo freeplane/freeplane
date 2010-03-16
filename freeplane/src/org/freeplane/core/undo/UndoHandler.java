@@ -163,6 +163,8 @@ public class UndoHandler implements IUndoHandler {
 		actorIterator = transactionIteratorList.removeLast();
 		if(! compoundActor.isEmpty()){
 			addActor(compoundActor);
+			actionFrameStarted = false;
+			timeOfLastAdd = 0;
 		}
 		else{
 			fireStateChanged();

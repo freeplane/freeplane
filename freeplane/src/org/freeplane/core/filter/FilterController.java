@@ -36,6 +36,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataEvent;
@@ -240,7 +241,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	private JToolBar createFilterToolbar() {
-		final JToolBar filterToolbar = new FreeplaneToolBar();
+		final JToolBar filterToolbar = new FreeplaneToolBar("filter_toolbar", SwingConstants.HORIZONTAL);
 		filterToolbar.setVisible(ResourceController.getResourceController().getBooleanProperty("filter_toolbar_visible"));
 		filterToolbar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "filter_toolbar_visible");
 		filterToolbar.setFocusable(false);

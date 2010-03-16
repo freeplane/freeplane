@@ -6,9 +6,10 @@
        	    <combo name = "language">
                 <choice value="automatic"/>
                 <choice value="ar"/>
+                <choice value="ca"/>
                 <choice value="cs"/>
                 <choice value="de"/>
-                <choice value="dk"/>
+                <choice value="da"/>
                 <choice value="en"/>
                 <choice value="el"/>
                 <choice value="es"/>
@@ -20,7 +21,7 @@
                 <choice value="id"/>
                 <choice value="it"/>
                 <choice value="ja"/>
-                <choice value="kr"/>
+                <choice value="ko"/>
                 <choice value="lt"/>
                 <choice value="nl"/>
                 <choice value="nn"/>
@@ -30,7 +31,7 @@
                 <choice value="pt_PT"/>
                 <choice value="ru"/>
                 <choice value="sk"/>
-                <choice value="se"/>
+                <choice value="sv"/>
                 <choice value="sl"/>
                 <choice value="tr"/>
                 <choice value="uk_UA"/>

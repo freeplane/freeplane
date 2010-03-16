@@ -53,7 +53,7 @@ class PreviewDialog extends JDialog implements ActionListener {
 		final JScrollPane scrollPane = new JScrollPane(preview);
 		UITools.setScrollbarIncrement(scrollPane);
 		getContentPane().add(scrollPane, "Center");
-		final JToolBar toolbar = new FreeplaneToolBar();
+		final JToolBar toolbar = new FreeplaneToolBar("preview_toolbar", SwingConstants.HORIZONTAL);
 		getContentPane().add(toolbar, "North");
 		pageNumber = new JLabel("- 1 -");
 		final JButton button = getButton("Back24.gif", new BrowseAction(preview, pageNumber, -1));

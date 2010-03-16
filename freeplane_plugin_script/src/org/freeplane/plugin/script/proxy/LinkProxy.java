@@ -30,7 +30,7 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 
 	public boolean set(final String target) {
 		try {
-			getLinkController().setLink(getDelegate(), new URI(target));
+			getLinkController().setLink(getDelegate(), new URI(target), false);
 			return true;
 		} catch (final URISyntaxException e) {
 			LogTool.warn(e);

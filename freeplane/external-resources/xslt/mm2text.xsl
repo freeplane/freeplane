@@ -15,7 +15,7 @@
 
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:output method="text" indent="no" encoding="ISO-8859-1" />
+	<xsl:output method="text" indent="no"/>
 	<xsl:strip-space elements="map node" />
 	<xsl:key name="refid" match="node" use="@ID" />
 
@@ -27,12 +27,39 @@
 		<xsl:apply-templates />
 	</xsl:template>
 
+	<xsl:template match="/map">
+		<xsl:apply-templates select="node"/>
+	</xsl:template>
+	
+	<xsl:template match="richcontent">
+		<xsl:if test="@TYPE='NOTE'">
+			<xsl:text>&#xA;NOTE: </xsl:text>
+		</xsl:if>
+		<xsl:apply-templates/>
+		<xsl:text>&#xA;</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="child::text()">
+		<xsl:value-of select="normalize-space(.)" />
+	</xsl:template>
+
+	<xsl:template match="p|br|tr|div|li|pre">
+		<xsl:if test="preceding-sibling::*">
+			<xsl:text>&#xA;</xsl:text>
+		</xsl:if>
+		<xsl:apply-templates/>
+	</xsl:template>
+
 	<xsl:template match="node">
 		<xsl:variable name="thisid" select="@ID" />
 		<xsl:variable name="target" select="arrowlink/@DESTINATION" />
 		<xsl:number level="multiple" count="node" format="1" />
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="@TEXT" />
+		<xsl:if test="@TEXT">
+			<xsl:value-of select="normalize-space(@TEXT)" />
+			<xsl:text>&#xA;</xsl:text>
+    	</xsl:if>
+		<xsl:apply-templates select="richcontent"/>
 		<xsl:if test="arrowlink/@DESTINATION != ''">
 			<xsl:text> (see:</xsl:text>
 			<xsl:for-each select="key('refid', $target)">
@@ -40,8 +67,7 @@
 			</xsl:for-each>
 			<xsl:text>)</xsl:text>
 		</xsl:if>
-		<xsl:text>&#xA;</xsl:text>
-		<xsl:apply-templates />
+		<xsl:apply-templates select="node"/>
 	</xsl:template>
 
 </xsl:stylesheet> 

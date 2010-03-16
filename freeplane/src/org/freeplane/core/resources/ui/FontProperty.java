@@ -28,6 +28,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.util.LogTool;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -71,7 +72,7 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 				return;
 			}
 		}
-		System.err.println("Unknown value:" + pValue);
+		LogTool.severe("Unknown value:" + pValue);
 		if (mFontComboBox.getModel().getSize() > 0) {
 			mFontComboBox.setSelectedIndex(0);
 		}

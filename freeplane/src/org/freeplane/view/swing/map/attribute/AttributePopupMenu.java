@@ -81,6 +81,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 
 	@Override
 	protected void firePopupMenuWillBecomeVisible() {
+		super.firePopupMenuWillBecomeVisible();
 		if (row != -1) {
 			table.addRowSelectionInterval(row, row);
 		}
@@ -197,6 +198,10 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	private void maybeShowPopup(final MouseEvent e) {
 		if (e.isPopupTrigger()) {
 			selectTable(e.getComponent(), e.getPoint());
+			if(table.isEditing()){
+				return;
+			}
+			table.requestFocus();
 			make();
 			show(e.getComponent(), e.getX(), e.getY());
 		}
@@ -238,6 +243,9 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		}
 		if (component instanceof AttributeTable) {
 			table = (AttributeTable) component;
+			if(table.isEditing()){
+				return;
+			}
 			oldTable = false;
 			row = table.rowAtPoint(point);
 			if (table.getValueAt(row, 0).equals("")) {
@@ -246,16 +254,18 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 			if(row >= 0){
 				table.changeSelection(row, table.columnAtPoint(point), false, false);
 			}
+			return;
 		}
-		else if (component instanceof JTableHeader) {
+		if (component instanceof JTableHeader) {
 			final JTableHeader header = (JTableHeader) component;
-			oldTable = false;
 			table = (AttributeTable) header.getTable();
+			if(table.isEditing()){
+				return;
+			}
+			oldTable = false;
 			row = -1;
+			return;
 		}
-		else {
-			throw new AssertionError();
-		}
-		table.requestFocus();
+		throw new AssertionError();
 	}
 }

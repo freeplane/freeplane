@@ -110,7 +110,6 @@ public class FreeplaneStarter {
 			if(! System.getProperty("org.freeplane.nosplash", "false").equals("true")){
 				splash.setVisible(true);
 			}
-			Compat.useScreenMenuBar();
 			final MMapViewController mapViewController = new MMapViewController();
 			viewController = new ApplicationViewController(controller, mapViewController, frame);
 			System.setSecurityManager(new FreeplaneSecurityManager());
@@ -159,9 +158,7 @@ public class FreeplaneStarter {
 				}
 				splash.dispose();
 				splash = null;
-				frame.setAlwaysOnTop(true);
 				frame.toFront();
-				frame.setAlwaysOnTop(false);
 			}
 		});
 	}
@@ -208,6 +205,9 @@ public class FreeplaneStarter {
 	 */
 	public void run(final String[] args) {
 		try {
+			if(null == System.getProperty("org.freeplane.core.dir.lib", null)){
+				System.setProperty("org.freeplane.core.dir.lib", "/lib/");
+			}
 			createController();
 			createFrame(args);
 		}

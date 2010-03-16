@@ -41,12 +41,23 @@ public class Compat {
 
 	private static void initOS() {
 	    if(os == null){
-			final String osProperty = System.getProperty("os.name");
-			if (osProperty.startsWith("Mac OS") || System.getProperty("debug.os.name", "").startsWith("Mac")){ 
+			String osProperty;
+			try {
+				osProperty = System.getProperty("os.name");
+			} catch (SecurityException e) {
+				osProperty = "";
+			}
+			String debugOsName;
+			try {
+				debugOsName = System.getProperty("freeplane.debug.os.name", "");
+			} catch (SecurityException e) {
+				debugOsName = "";
+			}
+			if (osProperty.startsWith("Mac OS") || debugOsName.startsWith("Mac")){ 
 				os = OS.MAC;
 				return;
 			}
-			if (osProperty.startsWith("Windows") || System.getProperty("debug.os.name", "").startsWith("Windows")){ 
+			if (osProperty.startsWith("Windows") || debugOsName.startsWith("Windows")){ 
 				os = OS.WINDOWS;
 				return;
 			}
@@ -78,12 +89,6 @@ public class Compat {
 
 	public static File urlToFile(final URL pUrl) throws URISyntaxException {
 		return new File(Compat.urlGetFile(pUrl));
-	}
-
-	public static void useScreenMenuBar() {
-		/* This is only for apple but does not harm for the others. */
-		//		if (isMacOsX()) 
-		System.setProperty("apple.laf.useScreenMenuBar", "true");
 	}
 
 	public static void macAppChanges(Controller controller) {

@@ -460,8 +460,8 @@ public class MLinkController extends LinkController {
 		arrowLinkPopup.add(itemtt);
 	}
 
-	static final private Pattern urlPattern = Pattern.compile("(?:file://[^\\s" + File.pathSeparatorChar + "]+|(:?https?|ftp)://[^\\s()'\",;|]+)");
-	static private Pattern mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
+	static final private Pattern urlPattern = Pattern.compile("file://[^\\s" + File.pathSeparatorChar + "]+|(:?https?|ftp)://[^\\s()'\",;|<>{}]+");
+	static private Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
 	public String findLink(final String text) {
 		final Matcher urlMatcher = urlPattern.matcher(text);
 		if (urlMatcher.find()) {
@@ -511,22 +511,61 @@ public class MLinkController extends LinkController {
 		getModeController().execute(actor, link.getSource().getMap());
 	}
 
-	public void setLink(final NodeModel node, final String link) {
-		if (link != null) {
+	public void setLink(final NodeModel node, final String link, boolean makeRelative) {
+		if (link != null && ! "".equals(link)) {
 			try {
 				final URI uri = new URI(link);
-				setLink(node, uri);
+				setLink(node, uri, makeRelative);
 			}
 			catch (final URISyntaxException e) {
 				e.printStackTrace();
 			}
 			return;
 		}
-		setLinkByTextField.setLink(node, null);
+		setLink(node, (URI)null, false);
 	}
 
-	public void setLink(final NodeModel node, final URI uri) {
-		setLinkByTextField.setLink(node, uri);
+	public void setLink(final NodeModel node, final URI argUri, boolean makeRelative) {
+		final URI uri;
+		if(makeRelative && "file".equals(argUri.getScheme())){
+			File mapFile = node.getMap().getFile();
+			uri = LinkController.toRelativeURI(mapFile, new File(argUri));
+		}
+		else{
+			uri = argUri;
+		}
+		final IActor actor = new IActor() {
+			private URI oldlink;
+			private String oldTargetID;
+		
+			public void act() {
+				NodeLinks links = NodeLinks.getLinkExtension(node);
+				if (links != null) {
+					oldlink = links.getHyperLink();
+					oldTargetID = links.removeLocalHyperLink(node);
+				}
+				else {
+					links = NodeLinks.createLinkExtension(node);
+				}
+				if (uri != null && uri.toString().startsWith("#")) {
+					links.setLocalHyperlink(node, uri.toString().substring(1));
+				}
+				links.setHyperLink(uri);
+				getModeController().getMapController().nodeChanged(node);
+			}
+		
+			public String getDescription() {
+				return "setLink";
+			}
+		
+			public void undo() {
+				final NodeLinks links = NodeLinks.getLinkExtension(node);
+				links.setLocalHyperlink(node, oldTargetID);
+				links.setHyperLink(oldlink);
+				getModeController().getMapController().nodeChanged(node);
+			}
+		};
+		setLinkByTextField.getModeController().execute(actor, node.getMap());
 	}
 
 	public void setLinkByFileChooser() {

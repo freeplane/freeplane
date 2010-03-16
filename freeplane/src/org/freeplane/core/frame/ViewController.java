@@ -32,6 +32,7 @@ import java.awt.Graphics2D;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
@@ -712,6 +713,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			winState = frame.getExtendedState();
 			frame.dispose();
 			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			frame.setBounds(0, 0, screenSize.width, screenSize.height);
 			frame.setUndecorated(true);
 			frame.setResizable(false);
 			getFreeplaneMenuBar().setVisible(isMenubarVisible());

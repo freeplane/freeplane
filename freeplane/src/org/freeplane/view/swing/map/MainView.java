@@ -68,6 +68,10 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
  * Base class for all node views.
  */
 public abstract class MainView extends JLabel {
+	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty("executable_icon");
+	private static final String MAIL_ICON = ResourceController.getResourceController().getProperty("mail_icon");
+	private static final String LINK_LOCAL_ICON = ResourceController.getResourceController().getProperty("link_local_icon");
+	private static final String LINK_ICON = ResourceController.getResourceController().getProperty("link_icon");
 	public static final Set<String> executableExtensions = new HashSet<String>(Arrays.asList(new String[] { "exe", "com", "vbs", "bat",
 	        "lnk" }));
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -333,20 +337,20 @@ public abstract class MainView extends JLabel {
 	private void addLinkIcon(final MultipleImage iconImages, final NodeModel model) {
 	    final URI link = NodeLinks.getLink(model);
 		if (link != null) {
-			String iconPath = "Link.png";
+			String iconPath = LINK_ICON;
 			final String linkText = link.toString();
 			if (linkText.startsWith("#")) {
 				final String id = linkText.substring(1);
 				if(model.getMap().getNodeForID(id) == null){
 					return;
 				}
-				iconPath = "LinkLocal.png";
+				iconPath = LINK_LOCAL_ICON;
 			}
 			else if (linkText.startsWith("mailto:")) {
-				iconPath = "Mail.png";
+				iconPath = MAIL_ICON;
 			}
 			else if (executableExtensions.contains(link)) {
-				iconPath = "Executable.png";
+				iconPath = EXECUTABLE_ICON;
 			}
 			final UIIcon icon = STORE.getUIIcon(iconPath);
 			iconImages.addImage(icon.getIcon());
@@ -464,13 +468,30 @@ public abstract class MainView extends JLabel {
 	@Override
     public void setText(String text) {
 		if (! (BasicHTML.isHTMLString(text) && useFractionalMetrics())){
-			super.setText(text);
+			try{
+				super.setText(text);
+			}
+			catch (Exception ex){
+				setTextWithExceptionInfo(text, ex);
+			}
 			return;
 		}
 		setFractionalMetrics();
-		super.setText(text);
+		try{
+			super.setText(text);
+		}
+		catch (Exception ex){
+			setTextWithExceptionInfo(text, ex);
+		}
+		finally{
 		unsetFractionalMetrics();
+		}
     }
+
+	private void setTextWithExceptionInfo(String text, Exception ex) {
+		String string = HtmlTools.combineTextWithExceptionInfo(text, ex);
+		super.setText(string);
+	}
 
 	private void unsetFractionalMetrics() {
 		BasicHTML.createHTMLView(standardLabel, "<html><b>1</b>2");

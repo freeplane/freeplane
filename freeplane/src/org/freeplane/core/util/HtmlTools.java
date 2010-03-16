@@ -530,4 +530,17 @@ public class HtmlTools {
         }
         return bodyEndPos;
     }
+
+	static public String combineTextWithExceptionInfo(String text, Exception ex) {
+		String escaped = toXMLEscapedText(text).replaceAll("\n", "<br>\n");
+		StringBuilder sb = new StringBuilder();
+		sb.append("<html><body>");
+		sb.append(ex.getClass().getSimpleName());
+		sb.append("<br>\n");
+		sb.append(ex.getMessage());
+		sb.append("<br>\n");
+		sb.append(escaped);
+		String string = sb.toString();
+		return string;
+	}
 }

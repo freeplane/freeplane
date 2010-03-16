@@ -1,4 +1,6 @@
 /*
+ * Modified by Dimitry Polivaev (2010)
+ * 
  * XMLWriter.java NanoXML/Java $Revision: 1.4 $ $Date: 2002/03/24 11:37:51 $
  * $Name: RELEASE_2_2_1 $ This file is part of NanoXML 2 for Java. Copyright (C)
  * 2000-2002 Marc De Scheemaecker, All Rights Reserved. This software is
@@ -93,7 +95,7 @@ class XMLWriter {
 	/**
 	*/
 	public void write(final String content) {
-		writer.print(content);
+		writeEncoded(content, false, true);
 	}
 
 	/**
@@ -127,11 +129,11 @@ class XMLWriter {
 		if (xml.getName() == null) {
 			if (xml.getContent() != null) {
 				if (prettyPrint) {
-					this.writeEncoded(xml.getContent().trim(), false);
+					this.writeEncoded(xml.getContent().trim(), false, false);
 					writer.println();
 				}
 				else {
-					this.writeEncoded(xml.getContent(), false);
+					this.writeEncoded(xml.getContent(), false, false);
 				}
 			}
 		}
@@ -173,12 +175,12 @@ class XMLWriter {
 				final String key = (String) enumeration.nextElement();
 				final String value = xml.getAttribute(key, null);
 				writer.print(" " + key + "=\"");
-				this.writeEncoded(value, true);
+				this.writeEncoded(value, true, false);
 				writer.print('"');
 			}
 			if ((xml.getContent() != null) && (xml.getContent().length() > 0)) {
 				writer.print('>');
-				this.writeEncoded(xml.getContent(), false);
+				this.writeEncoded(xml.getContent(), false, false);
 				if (endElement) {
 					endElement(fullName, prettyPrint);
 				}
@@ -224,25 +226,35 @@ class XMLWriter {
 	 *            the string to write.
 	 * @param atributeValue TODO
 	 */
-	private void writeEncoded(final String str, final boolean atributeValue) {
+	private void writeEncoded(final String str, final boolean atributeValue, final boolean xmlInclude) {
 		for (int i = 0; i < str.length(); i++) {
 			final char c = str.charAt(i);
+			if (c > 0x7E) {
+				writer.print("&#x");
+				writer.print(Integer.toString(c, 16));
+				writer.print(';');
+				continue;
+			}
+			if(xmlInclude){
+				writer.print(c);
+				continue;
+			}
 			switch (c) {
 				case '<':
 					writer.print("&lt;");
-					break;
+					continue;
 				case '>':
 					writer.print("&gt;");
-					break;
+					continue;
 				case '&':
 					writer.print("&amp;");
-					break;
+					continue;
 				case '\'':
 					writer.print("&apos;");
-					break;
+					continue;
 				case '"':
 					writer.print("&quot;");
-					break;
+					continue;
 				case 0x0A:
 					if (atributeValue) {
 						writer.print("&#xa;");
@@ -250,16 +262,15 @@ class XMLWriter {
 					else {
 						writer.print(c);
 					}
-					break;
+					continue;
 				default:
-					if ((c < ' ') || (c > 0x7E)) {
+					if (c < ' ') {
 						writer.print("&#x");
 						writer.print(Integer.toString(c, 16));
 						writer.print(';');
+						continue;
 					}
-					else {
-						writer.print(c);
-					}
+					writer.print(c);
 			}
 		}
 	}
