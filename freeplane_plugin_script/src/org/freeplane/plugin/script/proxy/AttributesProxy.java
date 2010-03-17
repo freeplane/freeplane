@@ -92,6 +92,15 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	}
 
 	public boolean remove(final String name) {
+		final int index = findAttribute(name);
+		if (index == -1) {
+			return false;
+		}
+		getAttributeController().removeAttribute(getDelegate(), index);
+		return true;
+	}
+
+	public boolean removeAll(final String name) {
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {
 			return false;
