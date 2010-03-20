@@ -31,6 +31,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
 
 public class XmlRpcHandler extends StreamHandler {
@@ -243,6 +244,9 @@ public class XmlRpcHandler extends StreamHandler {
 		String option = ResourceController.getResourceController().getProperty(OPTION, BugReportDialogManager.ASK);
 		if (option.equals(BugReportDialogManager.ASK)) {
 			String question = ResourceBundles.getText("org.freeplane.plugin.bugreport.question");
+			if(!question.startsWith("<html>")){
+					question = HtmlTools.plainToHTML(question);
+			}
 			final Object[] options = new Object[] { ResourceBundles.getText("org.freeplane.plugin.bugreport.always_agree"),
 					ResourceBundles.getText("org.freeplane.plugin.bugreport.agree"),
 					ResourceBundles.getText("org.freeplane.plugin.bugreport.deny"),

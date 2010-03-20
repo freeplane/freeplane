@@ -12,6 +12,7 @@ import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
 
 class ManualBugReporter implements IBugReportListener{
@@ -61,6 +62,9 @@ class ManualBugReporter implements IBugReportListener{
 		String option = ResourceController.getResourceController().getProperty(OPTION, BugReportDialogManager.ASK);
 		if (option.equals(BugReportDialogManager.ASK)) {
 			String question = ResourceBundles.getText("org.freeplane.plugin.bugreport.wanted_bug");
+			if(!question.startsWith("<html>")){
+					question = HtmlTools.plainToHTML(question);
+			}
 			final Object[] options = new Object[] { FpStringUtils.removeMnemonic(ResourceBundles.getText("ok")),
 					FpStringUtils.removeMnemonic(ResourceBundles.getText("cancel")),
 					ResourceBundles.getText("org.freeplane.plugin.bugreport.never") };
