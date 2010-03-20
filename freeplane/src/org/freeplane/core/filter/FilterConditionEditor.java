@@ -171,7 +171,7 @@ public class FilterConditionEditor extends Box {
 	}
 
 	public String getSearchTerm() {
-		return filteredPropertiesComponent.getSelectedItem().toString();
+		return values.getSelectedItem().toString();
 	}
 
 	/**
