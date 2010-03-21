@@ -98,8 +98,7 @@ class FindAction extends AFreeplaneAction {
 			return;
 		}
 		final boolean found = find(getModeController().getMapController().getSelectedNode());
-		searchTerm = editor.getSearchTerm();
-		searchTerm = searchTerm.startsWith("<html>") ? HtmlTools.toXMLEscapedText(searchTerm) : searchTerm;
+		searchTerm = condition.toString();
 		if (!found) {
 			final String messageText = ResourceBundles.getText("no_found_from");
 			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
