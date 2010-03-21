@@ -28,17 +28,18 @@ class ManualBugReporter implements IBugReportListener{
 			return;
 		}
 		final String log = report.get("log");
+		final String hash = report.get("hash");
 		EventQueue.invokeLater(new Runnable() {
 			
 			public void run() {
-				openBugTracker(log);
+				openBugTracker(log, hash);
 			}
 		});
 	}
 
 	static final private String OPTION = "org.freeplane.plugin.manualbugreport";
-	private void openBugTracker(String log) {
-		String option = showBugReportDialog(log);
+	private void openBugTracker(String log, String hash) {
+		String option = showBugReportDialog(log, hash);
 		if (! BugReportDialogManager.ALLOWED.equals(option)) {
 			return;
 		}
@@ -57,7 +58,7 @@ class ManualBugReporter implements IBugReportListener{
 		}
 	}
 
-	private String showBugReportDialog(String log) {
+	private String showBugReportDialog(String log, String hash) {
 		final String title = ResourceBundles.getText("org.freeplane.plugin.bugreport.freeplane_team").replaceAll("\\n", "\n");
 		String option = ResourceController.getResourceController().getProperty(OPTION, BugReportDialogManager.ASK);
 		if (option.equals(BugReportDialogManager.ASK)) {
@@ -70,6 +71,10 @@ class ManualBugReporter implements IBugReportListener{
 					ResourceBundles.getText("org.freeplane.plugin.bugreport.never") };
 			final String reportName = ResourceBundles.getText("org.freeplane.plugin.bugreport.lastreport");
 			int choice = BugReportDialogManager.showBugReportDialog(title, question, JOptionPane.QUESTION_MESSAGE, options, options[0], reportName, log);
+			ReportRegistry register = ReportRegistry.getInstance();
+			if(choice != 2){
+				register.unregisterReport(hash);
+			}
 			switch (choice) {
 			case 0:
 				option = BugReportDialogManager.ALLOWED;

@@ -85,7 +85,6 @@ public class XmlRpcHandler extends StreamHandler {
 	private boolean isRunning;
 	private String log = null;
 	private MessageDigest md = null;
-	final private ReportRegistry register;
 	private boolean reportCollected = false;
 	private IBugReportListener bugReportListener;
 
@@ -108,7 +107,6 @@ public class XmlRpcHandler extends StreamHandler {
 		}
 		setFormatter(new BugFormatter());
 		setLevel(Level.SEVERE);
-		register = new ReportRegistry();
 	}
 
 	private String calculateHash() {
@@ -213,7 +211,8 @@ public class XmlRpcHandler extends StreamHandler {
 			if (hash == null) {
 				return;
 			}
-			if (register.isReportRegistered(hash)) {
+			ReportRegistry register = ReportRegistry.getInstance();
+			if (register .isReportRegistered(hash)) {
 				return;
 			}
 			String option = showBugReportDialog();
