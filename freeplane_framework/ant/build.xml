@@ -111,7 +111,7 @@
         <delete file="${build}/bzrinfo.txt" quiet="true"/>
         <delete file="${dist}/bzr.properties" quiet="true"/>
 		<exec dir="${build}" executable="bzr" output="${build}/bzrinfo.txt" 
-			failifexecutionfails="true" failonerror="true" logError="true">
+			failifexecutionfails="false" failonerror="false" logError="true">
 		    <arg value="version-info"/>
 		</exec>
 		<native2ascii src="${build}" dest="${dist}" includes="bzrinfo.txt" ext=".properties"/>
@@ -128,7 +128,7 @@
 			</and>
 		</condition>
         <exec dir="${build}" executable="bzr" output="${build}/bzrinfo.txt" append="true"
-            failifexecutionfails="true" failonerror="true" logError="true">
+            failifexecutionfails="false" failonerror="false" logError="true">
             <arg value="info"/>
         </exec>
 		<fixcrlf srcdir="${build}"
