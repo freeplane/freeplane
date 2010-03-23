@@ -26,6 +26,7 @@ import java.util.ListIterator;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.JCondition;
 import org.freeplane.core.icon.factory.IconStoreFactory;
@@ -112,5 +113,10 @@ public class IconContainedCondition implements ISelectableCondition {
 		child.setName(IconContainedCondition.NAME);
 		child.setAttribute(IconContainedCondition.ICON, iconName);
 		element.addChild(child);
+	}
+	
+	@Override
+	public String toString() {
+		return ResourceBundles.getText("filter_icon") + " \"" + getIconName() + "\"";
 	}
 }
