@@ -66,28 +66,6 @@ import com.lightdev.app.shtm.SHTMLPanel;
  * @author Dimitry Polivaev
  */
 public class MNoteController extends NoteController {
-	private class JumpToMapAction extends AbstractAction {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		/**
-		 * @param noteController
-		 */
-		JumpToMapAction() {
-		}
-
-		public void actionPerformed(final ActionEvent e) {
-			if (getPositionToRecover() != null) {
-				mSplitPane.setDividerLocation(getPositionToRecover().intValue());
-				setPositionToRecover(null);
-			}
-			final Controller controller = getModeController().getController();
-			final NodeModel node = controller.getSelection().getSelected();
-			controller.getViewController().getComponent(node).requestFocus();
-		}
-	}
 
 	final class NoteDocumentListener implements DocumentListener {
 		public void changedUpdate(final DocumentEvent arg0) {
@@ -188,12 +166,6 @@ public class MNoteController extends NoteController {
 				spellCheckerController.enableShortKey(editorPane, true);
 		    }
 		});
-		final Action jumpToMapAction = new JumpToMapAction();
-		final String keystroke = ResourceController.getResourceController().getAdjustableProperty(
-		    "acceleratorForMindMap//menu_bar/navigate/notes/SelectNoteAction");
-		htmlEditorPanel.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-		    KeyStroke.getKeyStroke(keystroke), "jumpToMapAction");
-		htmlEditorPanel.getActionMap().put("jumpToMapAction", jumpToMapAction);
 		return htmlEditorPanel;
 	}
 
@@ -229,10 +201,6 @@ public class MNoteController extends NoteController {
 
 	boolean isLastContentEmpty() {
 		return mLastContentEmpty;
-	}
-
-	public boolean isSelected() {
-		return getSplitPane() != null;
 	}
 
 	@Override
@@ -357,6 +325,20 @@ public class MNoteController extends NoteController {
 			});
 		}
 		southPanel.revalidate();
+	}
+	
+	boolean isEditing(){
+		return SwingUtilities.isDescendingFrom(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), noteViewerComponent);
+	}
+	
+	void setFocusToMap(){
+		if (getPositionToRecover() != null) {
+			mSplitPane.setDividerLocation(getPositionToRecover().intValue());
+			setPositionToRecover(null);
+		}
+		final Controller controller = getModeController().getController();
+		final NodeModel node = controller.getSelection().getSelected();
+		controller.getViewController().getComponent(node).requestFocus();
 	}
 
 	public void shutdownController() {
