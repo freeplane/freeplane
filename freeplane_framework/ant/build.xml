@@ -346,6 +346,13 @@
         <copy file="${build}/bzrinfo.txt" tofile="${dist}/bzrinfo${branch-nick}-${ver}.txt" failonerror="false"/>
 	</target>
 
+	<target name="check-translation">
+		<ant antfile="ant/build.xml" target="check-translation" dir="${workspace}/freeplane" />
+	</target>
+	<target name="format-translation">
+		<ant antfile="ant/build.xml" target="format-translation" dir="${workspace}/freeplane" />
+	</target>
+
 	<target name="clean">
 		<delete quiet="true" includeemptydirs="true">
 			<fileset dir="${build}" />
