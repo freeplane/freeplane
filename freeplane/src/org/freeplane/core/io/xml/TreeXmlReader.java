@@ -70,7 +70,7 @@ public class TreeXmlReader implements IXMLBuilder {
 			return null;
 		}
 		if (string.startsWith("java.awt.Point")) {
-			string = string.replaceAll("java\\.awt\\.Point\\[x=([0-9]*),y=([0-9]*)\\]", "$1;$2");
+			string = string.replaceAll("java\\.awt\\.Point\\[x=(-?[0-9]+),y=(-?[0-9]+)\\]", "$1;$2");
 		}
 		final StringTokenizer tok = new StringTokenizer(string, ";");
 		if (tok.countTokens() != 2) {
