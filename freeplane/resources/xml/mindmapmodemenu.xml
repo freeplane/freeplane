@@ -255,8 +255,8 @@
 			<menu_action action="ReapplyFilterAction" />
 			<menu_action action="UnfoldFilteredAncestorsAction" />
 			<menu_separator />
-			<menu_action action="ApplyNoFilteringAction" />
-			<menu_action action="ApplySelectedViewConditionAction" />
+			<menu_action action="ApplyNoFilteringAction" accelerator="shift F2"/>
+			<menu_action action="ApplySelectedViewConditionAction"  accelerator="shift F3"/>
 			<menu_action action="ApplyToVisibleAction" />
 			<menu_action action="ShowAncestorsAction" />
 			<menu_action action="ShowDescendantsAction" />
