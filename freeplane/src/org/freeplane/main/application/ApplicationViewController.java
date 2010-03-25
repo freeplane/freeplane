@@ -238,7 +238,11 @@ class ApplicationViewController extends ViewController {
 
 	@Override
 	public void openDocument(final URI uri) throws IOException {
-		final String uriString = uri.toString();
+		String uriString = uri.toString();
+		final String UNC_PREFIX = "file:////";
+		if(uriString.startsWith(UNC_PREFIX)){
+			uriString = "file://" + uriString.substring(UNC_PREFIX.length());
+		}
 		final String osName = System.getProperty("os.name");
 		if (osName.substring(0, 3).equals("Win")) {
 			String propertyString = "default_browser_command_windows";
