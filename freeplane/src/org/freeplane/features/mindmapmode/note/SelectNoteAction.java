@@ -54,6 +54,10 @@ class SelectNoteAction extends AFreeplaneAction {
 	 * )
 	 */
 	public void actionPerformed(final ActionEvent e) {
+		if(noteController.isEditing()){
+			noteController.setFocusToMap();
+			return;
+		}
 		final JSplitPane splitPane = noteController.getSplitPaneToScreen();
 		final int oldSize = splitPane.getDividerLocation();
 		noteController.setPositionToRecover(new Integer(oldSize));

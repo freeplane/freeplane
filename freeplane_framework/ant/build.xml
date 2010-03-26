@@ -111,7 +111,7 @@
         <delete file="${build}/bzrinfo.txt" quiet="true"/>
         <delete file="${dist}/bzr.properties" quiet="true"/>
 		<exec dir="${build}" executable="bzr" output="${build}/bzrinfo.txt" 
-			failifexecutionfails="true" failonerror="true" logError="true">
+			failifexecutionfails="false" failonerror="false" logError="true">
 		    <arg value="version-info"/>
 		</exec>
 		<native2ascii src="${build}" dest="${dist}" includes="bzrinfo.txt" ext=".properties"/>
@@ -128,7 +128,7 @@
 			</and>
 		</condition>
         <exec dir="${build}" executable="bzr" output="${build}/bzrinfo.txt" append="true"
-            failifexecutionfails="true" failonerror="true" logError="true">
+            failifexecutionfails="false" failonerror="false" logError="true">
             <arg value="info"/>
         </exec>
 		<fixcrlf srcdir="${build}"
@@ -344,6 +344,13 @@
 	<target name="dist" depends="clean, bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac">
         <copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
         <copy file="${build}/bzrinfo.txt" tofile="${dist}/bzrinfo${branch-nick}-${ver}.txt" failonerror="false"/>
+	</target>
+
+	<target name="check-translation">
+		<ant antfile="ant/build.xml" target="check-translation" dir="${workspace}/freeplane" />
+	</target>
+	<target name="format-translation">
+		<ant antfile="ant/build.xml" target="format-translation" dir="${workspace}/freeplane" />
 	</target>
 
 	<target name="clean">

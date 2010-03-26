@@ -48,10 +48,12 @@
 				<menu_action action="UndoAction" accelerator="control Z" />
 				<menu_action action="RedoAction" accelerator="control Y" />
 			</menu_category>
+			<menu_separator />
 			<menu_category name="select">
 				<menu_action action="SelectAllAction" accelerator="control A" />
 				<menu_action action="SelectBranchAction" accelerator="control shift A" />
 			</menu_category>
+			<menu_separator />
 			<menu_category name="paste">
 				<menu_action action="CutAction" accelerator="control X" />
 				<menu_action action="CopyAction" accelerator="control C" />
@@ -60,13 +62,16 @@
 				<menu_action action="PasteAction" accelerator="control V" />
 				<menu_action action="SelectedPasteAction" />
 			</menu_category>
+			<menu_separator />
 			<menu_category name="edit">
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
 				<menu_action action="EditAttributesAction" accelerator="alt F9" />
+				<menu_separator />
 				<menu_action action="DeleteAction" accelerator="DELETE" />
 				<!-- <menu_action action="remove" /> -->
 			</menu_category>
+			<menu_separator />
 			<menu_category name="find">
 				<menu_action action="FindAction" accelerator="control F" />
 				<menu_action action="FindNextAction" accelerator="control G" />
@@ -252,17 +257,19 @@
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="filter" name_ref="menu_filter">
-			<menu_action action="ShowFilterToolbarAction" />
-			<menu_action action="UnfoldFilteredAncestorsAction" />
-			<menu_action action="ApplyNoFilteringAction" />
-			<menu_action action="ApplySelectedViewConditionAction" />
-			<menu_action action="ApplyToVisibleAction" />
-			<menu_action action="ShowAncestorsAction" />
-			<menu_action action="ShowDescendantsAction" />
-			<menu_action action="EditFilterAction" />
 			<menu_action action="UndoFilterAction" />
 			<menu_action action="RedoFilterAction" />
 			<menu_action action="ReapplyFilterAction" />
+			<menu_action action="UnfoldFilteredAncestorsAction" />
+			<menu_separator />
+			<menu_action action="ApplyNoFilteringAction" accelerator="shift F2"/>
+			<menu_action action="ApplySelectedViewConditionAction"  accelerator="shift F3"/>
+			<menu_action action="ApplyToVisibleAction" />
+			<menu_action action="ShowAncestorsAction" />
+			<menu_action action="ShowDescendantsAction" />
+			<menu_separator />
+			<menu_action action="ShowFilterToolbarAction" />
+			<menu_action action="EditFilterAction" />
 		</menu_submenu>
 		<menu_submenu name="extras" name_ref="menu_extras">
 			<menu_category name="first">

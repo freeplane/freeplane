@@ -170,10 +170,6 @@ public class FilterConditionEditor extends Box {
 		return newCond;
 	}
 
-	public String getSearchTerm() {
-		return filteredPropertiesComponent.getSelectedItem().toString();
-	}
-
 	/**
 	 */
 	public void mapChanged(final MapModel newMap) {

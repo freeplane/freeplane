@@ -17,7 +17,8 @@ public interface Proxy {
 	/** Attributes are name - value pairs assigned to a node. A node may have multiple attributes
 	 * with the same name. */
 	interface Attributes {
-		/** returns the <em>first</em> value of an attribute with the given name or null otherwise. */
+		/** returns the <em>first</em> value of an attribute with the given name or null otherwise.
+		 * @deprecated use {@link #get(int)} or {@link #getAll(String)} instead. */
 		String get(final String name);
 
 		/** returns all values for the attribute name. */
@@ -55,9 +56,14 @@ public interface Proxy {
 		         * must be used. */
 		public int findAttribute(final String name);
 
+		/** removes the <em>first</em> attribute with this name.
+		 * @returns true on removal of an existing attribute and false otherwise.
+		 * @deprecated use {@link #remove(int)} or {@link #removeAll(String)} instead. */
+		boolean remove(final String name);
+		
 		/** removes <em>all</em> attributes with this name.
 		 * @returns true on removal of an existing attribute and false otherwise. */
-		boolean remove(final String name);
+		boolean removeAll(final String name);
 
 		/** removes the attribute at the given index.
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index

@@ -7,6 +7,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -27,7 +29,9 @@ import javax.swing.JTextArea;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
 
 public class XmlRpcHandler extends StreamHandler {
@@ -59,11 +63,8 @@ public class XmlRpcHandler extends StreamHandler {
 		}
 	}
 
-	static final private String ALLOWED = "org.freeplane.plugin.bugreport.allowed";
-	static final private String ASK = "org.freeplane.plugin.bugreport.ask";
 	private final static String BUG_TRACKER_REFERENCE_URL = "http://freeplane.sourceforge.net/info/bugtracker.ref.txt";
 	private static String BUG_TRACKER_URL = null;
-	static final private String DENIED = "org.freeplane.plugin.bugreport.denied";
 	static boolean disabled = false;
 	private static String info;
 	static final private String OPTION = "org.freeplane.plugin.bugreport";
@@ -84,8 +85,16 @@ public class XmlRpcHandler extends StreamHandler {
 	private boolean isRunning;
 	private String log = null;
 	private MessageDigest md = null;
-	final private ReportRegistry register;
 	private boolean reportCollected = false;
+	private IBugReportListener bugReportListener;
+
+	public IBugReportListener getBugReportListener() {
+		return bugReportListener;
+	}
+
+	public void setBugReportListener(IBugReportListener bugReportListener) {
+		this.bugReportListener = bugReportListener;
+	}
 
 	public XmlRpcHandler() {
 		super();
@@ -98,7 +107,6 @@ public class XmlRpcHandler extends StreamHandler {
 		}
 		setFormatter(new BugFormatter());
 		setLevel(Level.SEVERE);
-		register = new ReportRegistry();
 	}
 
 	private String calculateHash() {
@@ -203,16 +211,22 @@ public class XmlRpcHandler extends StreamHandler {
 			if (hash == null) {
 				return;
 			}
-			if (register.isReportRegistered(hash)) {
+			ReportRegistry register = ReportRegistry.getInstance();
+			if (register .isReportRegistered(hash)) {
 				return;
 			}
-			if (ALLOWED.equals(showBugReportDialog(log))) {
+			String option = showBugReportDialog();
+			if (BugReportDialogManager.ALLOWED.equals(option)) {
 				register.registerReport(hash);
 				final Map<String, String> report = new LinkedHashMap<String, String>();
 				report.put("hash", hash);
 				report.put("log", log);
 				report.put("version", version);
-				sendReport(report);
+				final String status = sendReport(report);
+				if(bugReportListener == null || status == null){
+					return;
+				}
+				bugReportListener.onReportSent(report, status);
 			}
 		}
 		catch (final UnsupportedEncodingException e) {
@@ -223,6 +237,43 @@ public class XmlRpcHandler extends StreamHandler {
 			reportCollected = false;
 			isRunning = false;
 		}
+	}
+
+	private String showBugReportDialog() {
+		String option = ResourceController.getResourceController().getProperty(OPTION, BugReportDialogManager.ASK);
+		if (option.equals(BugReportDialogManager.ASK)) {
+			String question = ResourceBundles.getText("org.freeplane.plugin.bugreport.question");
+			if(!question.startsWith("<html>")){
+					question = HtmlTools.plainToHTML(question);
+			}
+			final Object[] options = new Object[] { ResourceBundles.getText("org.freeplane.plugin.bugreport.always_agree"),
+					ResourceBundles.getText("org.freeplane.plugin.bugreport.agree"),
+					ResourceBundles.getText("org.freeplane.plugin.bugreport.deny"),
+					ResourceBundles.getText("org.freeplane.plugin.bugreport.always_deny") };
+			final String title = ResourceBundles.getText("org.freeplane.plugin.bugreport.dialog.title");
+			String reportName = ResourceBundles.getText("org.freeplane.plugin.bugreport.report");
+			int choice = BugReportDialogManager.showBugReportDialog(title, question, JOptionPane.INFORMATION_MESSAGE, options, options[1], reportName, log);
+			switch (choice) {
+			case 0:
+				option = BugReportDialogManager.ALLOWED;
+				ResourceController.getResourceController().setProperty(OPTION, option);
+				break;
+			case 1:
+				option = BugReportDialogManager.ALLOWED;
+				break;
+			case 2:
+				option = BugReportDialogManager.DENIED;
+				break;
+			case 3:
+				option = BugReportDialogManager.DENIED;
+				ResourceController.getResourceController().setProperty(OPTION, option);
+				break;
+			default:
+				option = BugReportDialogManager.DENIED;
+				break;
+			}
+		}
+		return option;
 	}
 
 	private String sendReport(final Map<String, String> reportFields) {
@@ -246,13 +297,11 @@ public class XmlRpcHandler extends StreamHandler {
 			wr.flush();
 			// Get the response
 			final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			String line = rd.readLine();
-			if (line != "ok") {
-				do {
-					System.out.println(line);
-					line = rd.readLine();
-				} while (line != null);
+			final String line = rd.readLine();
+			if(line != null){
+				System.out.println(line);
 			}
+				
 			wr.close();
 			rd.close();
 			return line;
@@ -262,54 +311,6 @@ public class XmlRpcHandler extends StreamHandler {
 		return null;
 	}
 
-	private String showBugReportDialog(final String log) {
-		final String option = ResourceController.getResourceController().getProperty(OPTION, ASK);
-		if (!option.equals(ASK)) {
-			return option;
-		}
-		final Box messagePane = Box.createVerticalBox();
-		final JLabel messageLabel = new JLabel(ResourceBundles.getText("org.freeplane.plugin.bugreport.question"));
-		messageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-		messagePane.add(messageLabel);
-		messagePane.add(Box.createVerticalStrut(10));
-		final JLabel messageLabel2 = new JLabel(ResourceBundles.getText("org.freeplane.plugin.bugreport.report"));
-		messageLabel2.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-		messagePane.add(messageLabel2);
-		final JTextArea historyArea = new JTextArea(log);
-		historyArea.setEditable(false);
-		final JScrollPane historyPane = new JScrollPane(historyArea);
-		historyPane.setPreferredSize(new Dimension(500, 300));
-		historyPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-		messagePane.add(historyPane);
-		final Object[] options = new Object[] { ResourceBundles.getText("org.freeplane.plugin.bugreport.always_agree"),
-		        ResourceBundles.getText("org.freeplane.plugin.bugreport.agree"),
-		        ResourceBundles.getText("org.freeplane.plugin.bugreport.deny"),
-		        ResourceBundles.getText("org.freeplane.plugin.bugreport.always_deny") };
-		final int choice = JOptionPane.showOptionDialog(UITools.getFrame(), messagePane, ResourceBundles
-		    .getText("org.freeplane.plugin.bugreport.dialog.title"), JOptionPane.DEFAULT_OPTION,
-		    JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
-		final String decision;
-		switch (choice) {
-			case 0:
-				decision = ALLOWED;
-				ResourceController.getResourceController().setProperty(OPTION, decision);
-				break;
-			case 1:
-				decision = ALLOWED;
-				break;
-			case 2:
-				decision = DENIED;
-				break;
-			case 3:
-				decision = DENIED;
-				ResourceController.getResourceController().setProperty(OPTION, decision);
-				break;
-			default:
-				decision = DENIED;
-				break;
-		}
-		return decision;
-	}
 
 	private void startSubmit() {
 		isRunning = true;

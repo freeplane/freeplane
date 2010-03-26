@@ -10,6 +10,7 @@
 	<property file="${workspace}/freeplane_framework/ant/ant.properties" />
 	<property file="${workspace}/freeplane/ant/ant.properties" />
 	<property file="ant/ant.properties" />
+	<property name="freeplaneant.jar" value="${workspace}/freeplane_framework/ant/lib/freeplaneant.jar" />
 	<property name="external.jars" value="${commons-lang.jar}:${forms.jar}:${SimplyHTML.jar}:${jortho.jar}" />
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/dist" />
@@ -26,7 +27,11 @@
 	      <os family="mac"/>
 	</condition>
 
+	<taskdef name="format-translation" classname="org.freeplane.ant.FormatTranslation" classpath="${freeplaneant.jar}"/>
+	<taskdef name="check-translation" classname="org.freeplane.ant.FormatTranslationCheck" classpath="${freeplaneant.jar}"/>
+
 	<target name="build">
+		<antcall target="check-translation" />
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
 			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
@@ -165,6 +170,15 @@
 		</jar>
 	</target>
 	
+	<target name="check-translation">
+		<check-translation dir="${root}/viewer-resources/translations" includes="*.properties" />
+		<check-translation dir="${root}/resources/translations" includes="*.properties" />
+	</target>
+	<target name="format-translation">
+		<format-translation dir="${root}/viewer-resources/translations" includes="*.properties" />
+		<format-translation dir="${root}/resources/translations" includes="*.properties" />
+	</target>
+
 	<target name="clean">
 		<delete dir="${build}" quiet="true" />
 		<delete dir="${dist}" quiet="true" />

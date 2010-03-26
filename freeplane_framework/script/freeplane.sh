@@ -121,9 +121,9 @@ output_debug_info() {
 
 #--------- Put the environment together --------------------------------
 
-userfpdir=${HOME}/.freeplane
+userfpdir="${HOME}/.freeplane"
 _source /etc/freeplane/freeplanerc
-_source ${userfpdir}/freeplanerc
+_source "${userfpdir}/freeplanerc"
 
 findjava
 if [ $? -ne 0 ]
@@ -142,7 +142,7 @@ then # if we have 'readlink' we can use it to get an absolute path
 else
 	freefile="$0"
 fi
-freepath=$(dirname "${freefile}")
+freepath="$(dirname "${freefile}")"
 
 # we try different possibilities to find framework.jar
 for jar in "${FREEPLANE_BASE_DIR}" \
@@ -162,35 +162,47 @@ then
 	exit 1
 fi
 
-if [ ! -f ${userfpdir}/patterns.xml ] && [ -f /etc/freeplane/patterns.xml ]
+if [ ! -f "${userfpdir}/patterns.xml" ] && [ -f /etc/freeplane/patterns.xml ]
 then
-	if [ ! -d ${userfpdir} ]
+	if [ ! -d "${userfpdir}" ]
 	then
 		_debug "Creating directory ${userfpdir}."
-		mkdir -p ${userfpdir}
+		mkdir -p "${userfpdir}"
 	fi
 	_debug "Copying patterns.xml to ${userfpdir}."
-	cp /etc/freeplane/patterns.xml ${userfpdir}/patterns.xml
+	cp /etc/freeplane/patterns.xml "${userfpdir}/patterns.xml"
 fi
 
 #--------- Call (at last) Freeplane -------------------------------------
-fwdir=${freedir}/fwdir
+fwdir="${freedir}/fwdir"
 
-defines=
-defines="$defines -Dorg.knopflerfish.framework.bundlestorage=memory"
-defines="$defines -Dorg.freeplane.globalresourcedir=${freedir}/resources"
-defines="$defines -Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"
-
-xargs=
-xargs="$xargs -xargs ${freedir}/props.xargs"
-xargs="$xargs -xargs ${freedir}/init.xargs"
-
-call=
 if [ "${JAVA_TYPE}" != "sun" ]
 then # non-Sun environments don't work currently but we try anyway, who knows.
-	defines="$defines -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D"
+	defines=-Dgnu.java.awt.peer.gtk.Graphics=Graphics2D
 fi
-_debug "Calling: '"${JAVACMD}" "-Dorg.freeplane.param1=$1" "-Dorg.freeplane.param2=$2" "-Dorg.freeplane.param3=$3" "-Dorg.freeplane.param4=$4" $defines -jar "${freedir}/framework.jar"  $xargs'."
+_debug "Calling: "\
+"${JAVACMD}" -Xmx512m\
+ "-Dorg.freeplane.param1=$1"\
+ "-Dorg.freeplane.param2=$2"\
+ "-Dorg.freeplane.param3=$3"\
+ "-Dorg.freeplane.param4=$4"\
+ "-Dorg.knopflerfish.framework.bundlestorage=memory"\
+ "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
+ "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\
+ $defines\
+ -jar "${freedir}/framework.jar"\
+ -xargs "${freedir}/props.xargs"\
+ -xargs "${freedir}/init.xargs"
 ( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
-"${JAVACMD}" -Xmx512m "-Dorg.freeplane.param1=$1" "-Dorg.freeplane.param2=$2" "-Dorg.freeplane.param3=$3" "-Dorg.freeplane.param4=$4" $defines -jar "${freedir}/framework.jar"  $xargs
-
+"${JAVACMD}" -Xmx512m\
+ "-Dorg.freeplane.param1=$1"\
+ "-Dorg.freeplane.param2=$2"\
+ "-Dorg.freeplane.param3=$3"\
+ "-Dorg.freeplane.param4=$4"\
+ "-Dorg.knopflerfish.framework.bundlestorage=memory"\
+ "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
+ "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\
+ $defines\
+ -jar "${freedir}/framework.jar"\
+ -xargs "${freedir}/props.xargs"\
+ -xargs "${freedir}/init.xargs"
