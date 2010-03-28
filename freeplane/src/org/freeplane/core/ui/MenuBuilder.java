@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -790,6 +791,7 @@ public class MenuBuilder extends UIBuilder {
 		return oldAccelerator;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void removeAccelerators(final DefaultMutableTreeNode node) {
 		final Object userObject = node.getUserObject();
 		if (userObject instanceof JMenuItem && !(userObject instanceof JMenu)) {
@@ -860,4 +862,8 @@ public class MenuBuilder extends UIBuilder {
 	public void setAcceleratorChangeListener(final IAcceleratorChangeListener acceleratorChangeListener) {
 		this.acceleratorChangeListener = acceleratorChangeListener;
 	}
+
+	public Map<KeyStroke, Node> getAcceleratorMap() {
+	    return Collections.unmodifiableMap(accelerators);
+    }
 }

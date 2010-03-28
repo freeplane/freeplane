@@ -26,6 +26,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.freeplane.core.icon.factory.MindIconFactory;
+import org.freeplane.core.resources.ResourceController;
+
 /**
  * 
  * Stores all kinds of icons used in Freeplane.
@@ -111,6 +114,11 @@ public class IconStore {
 			result = mindIcons.get(name);
 		}
 		else {
+			// icons in directory /image are not registered
+			final MindIcon mindIcon = MindIconFactory.create(name);
+			if (ResourceController.getResourceController().getResource(mindIcon.getPath()) != null) {
+				return mindIcon;
+			}
 			result = IconNotFound.instance();
 		}
 		return result;

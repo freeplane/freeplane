@@ -90,14 +90,14 @@ public class ChangeNodeLevelController {
 
 	final private Controller controller;;
 
-	/**
-	 *
-	 */
-	public ChangeNodeLevelController(final Controller controller, final MenuBuilder menuBuilder) {
+	public ChangeNodeLevelController(final Controller controller) {
 		this.controller = controller;
-		menuBuilder.addAnnotatedAction(new ChangeNodeLevelLeftsAction());
-		menuBuilder.addAnnotatedAction(new ChangeNodeLevelRightsAction());
 	}
+
+	public void addActionsAtMenuBuilder(final MenuBuilder menuBuilder) {
+	    menuBuilder.addAnnotatedAction(new ChangeNodeLevelLeftsAction());
+		menuBuilder.addAnnotatedAction(new ChangeNodeLevelRightsAction());
+    }
 
 	private boolean checkSelection(final ModeController modeController) {
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();

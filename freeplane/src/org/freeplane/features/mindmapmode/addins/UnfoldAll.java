@@ -20,16 +20,18 @@ package org.freeplane.features.mindmapmode.addins;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.AMultipleNodeAction;
 
 /**
  * @author foltin
@@ -38,9 +40,6 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
 	accelerator = "alt HOME")
 	private class FoldAllAction extends AMultipleNodeAction {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		public FoldAllAction() {
@@ -55,9 +54,6 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
 	accelerator = "alt PAGE_UP")
 	private class FoldOneLevelAction extends AMultipleNodeAction {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		public FoldOneLevelAction() {
@@ -72,9 +68,6 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
 	accelerator = "alt END")
 	private class UnfoldAllAction extends AMultipleNodeAction {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		public UnfoldAllAction() {
@@ -89,9 +82,6 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
 	accelerator = "alt PAGE_DOWN")
 	private class UnfoldOneLevelAction extends AMultipleNodeAction {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		public UnfoldOneLevelAction() {
@@ -105,26 +95,31 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 
 	final private Controller controller;
 
-	/**
-	 *
-	 */
 	public UnfoldAll(final ModeController modeController) {
 		super();
 		controller = modeController.getController();
 		modeController.getUserInputListenerFactory().addMouseWheelEventHandler(this);
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		menuBuilder.addAnnotatedAction(new UnfoldAllAction());
-		menuBuilder.addAnnotatedAction(new FoldAllAction());
-		menuBuilder.addAnnotatedAction(new UnfoldOneLevelAction());
-		menuBuilder.addAnnotatedAction(new FoldOneLevelAction());
 	}
 
-	/**
-	 */
+	public void addActionsAtMenuBuilder(MenuBuilder menuBuilder) {
+		for (AMultipleNodeAction aMultipleNodeAction : getAnnotatedActions()) {
+			menuBuilder.addAnnotatedAction(aMultipleNodeAction);
+		}
+	}
+
+	public List<AMultipleNodeAction> getAnnotatedActions() {
+		ArrayList<AMultipleNodeAction> result = new ArrayList<AMultipleNodeAction>();
+		result.add(new UnfoldAllAction());
+		result.add(new FoldAllAction());
+		result.add(new UnfoldOneLevelAction());
+		result.add(new FoldOneLevelAction());
+		return result;
+	}
+
 	protected void foldAll(final NodeModel node) {
 		final MapController modeController = controller.getModeController().getMapController();
-		for (final Iterator i = modeController.childrenUnfolded(node); i.hasNext();) {
-			foldAll((NodeModel) i.next());
+		for (Iterator<NodeModel> i = modeController.childrenUnfolded(node); i.hasNext(); ) {
+			foldAll(i.next());
 		}
 		setFolded(node, true);
 	}
@@ -138,21 +133,19 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	 *            node to start from.
 	 */
 	public void foldLastBranches(final NodeModel node) {
+		final MapController mapController = controller.getModeController().getMapController();
 		boolean nodeHasChildWhichIsLeave = false;
-		for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
-			final NodeModel child = (NodeModel) i.next();
-			if (child.getChildCount() == 0) {
+		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
+			if (i.next().getChildCount() == 0) {
 				nodeHasChildWhichIsLeave = true;
 			}
 		}
 		setFolded(node, nodeHasChildWhichIsLeave);
-		for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
-			foldLastBranches((NodeModel) i.next());
+		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
+			foldLastBranches(i.next());
 		}
 	}
 
-	/**
-	 */
 	protected void foldOneStage(final NodeModel node) {
 		foldStageN(node, getMaxDepth(node) - 1);
 	}
@@ -161,8 +154,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		final int k = node.depth();
 		if (k < stage) {
 			setFolded(node, false);
-			for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i
-			    .hasNext();) {
+			final MapController mapController = controller.getModeController().getMapController();
+			for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
 				foldStageN((NodeModel) i.next(), stage);
 			}
 		}
@@ -171,16 +164,15 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
-	/**
-	 */
 	protected int getMaxDepth(final NodeModel node) {
-		if (controller.getModeController().getMapController().isFolded(node)
-		        || !controller.getModeController().getMapController().hasChildren(node)) {
+		final MapController mapController = controller.getModeController().getMapController();
+		if (mapController.isFolded(node)
+		        || !mapController.hasChildren(node)) {
 			return node.depth();
 		}
 		int k = 0;
-		for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
-			final int l = getMaxDepth((NodeModel) i.next());
+		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
+			final int l = getMaxDepth(i.next());
 			if (l > k) {
 				k = l;
 			}
@@ -189,14 +181,15 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	public int getMinDepth(final NodeModel node) {
-		if (controller.getModeController().getMapController().isFolded(node)) {
+		final MapController mapController = controller.getModeController().getMapController();
+		if (mapController.isFolded(node)) {
 			return node.depth();
 		}
-		if (!controller.getModeController().getMapController().hasChildren(node)) {
+		if (!mapController.hasChildren(node)) {
 			return Integer.MAX_VALUE;
 		}
 		int k = Integer.MAX_VALUE;
-		for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
 			final int l = getMinDepth((NodeModel) i.next());
 			if (l < k) {
 				k = l;
@@ -230,13 +223,12 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 
 	public void unfoldAll(final NodeModel node) {
 		setFolded(node, false);
-		for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
-			unfoldAll((NodeModel) i.next());
+		final MapController mapController = controller.getModeController().getMapController();
+		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
+			unfoldAll(i.next());
 		}
 	}
 
-	/**
-	 */
 	protected void unfoldOneStage(final NodeModel node) {
 		int minDepth = getMinDepth(node);
 		if (minDepth < Integer.MAX_VALUE) {
@@ -249,8 +241,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		final int k = node.depth();
 		if (k < stage) {
 			setFolded(node, false);
-			for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i
-			    .hasNext();) {
+			final MapController mapController = controller.getModeController().getMapController();
+			for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
 				unfoldStageN((NodeModel) i.next(), stage);
 			}
 		}

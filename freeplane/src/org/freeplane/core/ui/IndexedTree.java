@@ -34,7 +34,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * 25.12.2008
  */
 public class IndexedTree {
-	protected static class Node extends DefaultMutableTreeNode {
+	public static class Node extends DefaultMutableTreeNode {
 		/**
 		 * 
 		 */
@@ -50,7 +50,7 @@ public class IndexedTree {
 			this.key = key;
 		}
 
-		Object getKey() {
+		public Object getKey() {
 			return key;
 		}
 	}

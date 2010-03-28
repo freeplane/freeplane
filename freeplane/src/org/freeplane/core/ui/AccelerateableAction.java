@@ -20,7 +20,6 @@
 package org.freeplane.core.ui;
 
 import java.awt.Event;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -215,4 +214,8 @@ class AccelerateableAction implements IFreeplaneAction {
 	public void setEnabled(final boolean b) {
 		originalAction.setEnabled(b);
 	}
+
+	public String getIconKey() {
+	    return originalAction.getIconKey();
+    }
 }

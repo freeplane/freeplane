@@ -561,7 +561,7 @@ public class NodeModel implements MutableTreeNode {
 
 	public final void setText(final String text) {
 		this.userObject = XmlTool.makeValidXml(text);
-		xmlText = HtmlTools.getInstance().toXhtml(text);
+		xmlText = HtmlTools.toXhtml(text);
 		if(xmlText != null && ! xmlText.startsWith("<")){
 			this.userObject = " " + text;
 			xmlText = null;
@@ -599,7 +599,7 @@ public class NodeModel implements MutableTreeNode {
 
 	public final void setXmlText(final String pXmlText) {
 		xmlText = XmlTool.makeValidXml(pXmlText);
-		userObject = HtmlTools.getInstance().toHtml(xmlText);
+		userObject = HtmlTools.toHtml(xmlText);
 	}
 
 	@Override
@@ -613,5 +613,9 @@ public class NodeModel implements MutableTreeNode {
 			return 0;
 		}
 		return parentNode.depth() + 1;
+	}
+
+	public void insert(NodeModel newNodeModel) {
+		insert(newNodeModel, getChildCount());
 	}
 }

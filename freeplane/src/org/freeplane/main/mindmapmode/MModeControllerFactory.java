@@ -54,7 +54,6 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
@@ -152,8 +151,8 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new SortNodes(controller));
 		menuBuilder.addAnnotatedAction(new SplitNode(controller));
 
-		new UnfoldAll(modeController);
-		new ChangeNodeLevelController(modeController.getController(), menuBuilder);
+		new UnfoldAll(modeController).addActionsAtMenuBuilder(menuBuilder);
+		new ChangeNodeLevelController(modeController.getController()).addActionsAtMenuBuilder(menuBuilder);
 		ExportWithXSLT.createXSLTExportActions(modeController, "/xml/ExportWithXSLT.xml");
 		ExportToImage.createActions(modeController);
 		NodeHistory.install(modeController);

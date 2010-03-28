@@ -29,16 +29,13 @@ import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.browsemode.BNodeNoteViewer;
 import org.freeplane.features.browsemode.BToolbarContributor;
-import org.freeplane.features.common.addins.misc.NextNodeAction;
-import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
 import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
@@ -49,6 +46,7 @@ import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.mindmapmode.addins.UnfoldAll;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
@@ -93,6 +91,10 @@ public class BModeControllerFactory {
 		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status",ViewController.BOTTOM, controller.getViewController().getStatusBar());
 		userInputListenerFactory.setMenuStructure(menuStructure);
+		final UnfoldAll unfoldAll = new UnfoldAll(modeController);
+		for (AFreeplaneAction annotatedAction : unfoldAll.getAnnotatedActions()) {
+			modeController.addAction(annotatedAction);
+		}
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
 		new ViewerController(modeController);
