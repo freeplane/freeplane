@@ -20,18 +20,21 @@
 package org.freeplane.features.common.link;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.Action;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
@@ -50,10 +53,10 @@ import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 
 /**
@@ -71,6 +74,7 @@ public class LinkController extends SelectionController implements IExtension {
 	private static ArrowLinkListener listener = null;
 	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
 	public static final int STANDARD_WIDTH = 1;
+	public static final String MENUITEM_SCHEME = "menuitem";
 	static Color standardColor = null;
 
 	public static LinkController getController(final ModeController modeController) {
@@ -230,18 +234,40 @@ public class LinkController extends SelectionController implements IExtension {
 			LogTool.warn(e1);
 			UITools.errorMessage(FpStringUtils.formatText("link_error", link));
 			return;
-		} 
+		}
 	}
 
-	public void loadURL() {
-		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+	public void loadURL(MouseEvent e) {
+		loadURL(modeController.getMapController().getSelectedNode(), new ActionEvent(e.getSource(), e.getID(), null));
+	}
+
+	// TODO: document why ActionEvent?
+	void loadURL(final NodeModel selectedNode, ActionEvent e) {
 		final URI link = NodeLinks.getValidLink(selectedNode);
 		if (link != null) {
 			onDeselect(selectedNode);
-			((UrlManager) modeController.getMapController().getModeController().getExtension(UrlManager.class))
-			    .loadURL(link);
+			if (isMenuItemLink(link)) {
+				if (e == null) {
+					throw new IllegalArgumentException("ActionEvent is needed for menu item links");
+				}
+				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+				final DefaultMutableTreeNode treeNode = menuBuilder.get(parseMenuItemLink(link));
+				if (!treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
+					throw new RuntimeException("node " + treeNode + " should have been an executable action");
+				}
+				JMenuItem menuItem = (JMenuItem) treeNode.getUserObject();
+				final Action action = menuItem.getAction();
+				action.actionPerformed(e);
+			}
+			else {
+				getURLManager().loadURL(link);
+			}
 			onSelect(modeController.getController().getSelection().getSelected());
 		}
+	}
+
+	private UrlManager getURLManager() {
+		return (UrlManager) modeController.getMapController().getModeController().getExtension(UrlManager.class);
 	}
 
 	public IPropertyHandler<Color, ConnectorModel> removeColorGetter(final Integer key) {
@@ -323,7 +349,6 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		catch (final URISyntaxException e) {
 			// [scheme:]scheme-specific-part[#fragment] 
-
 			// we check first if the string matches an SMB
 			// of the form \\host\path[#fragment]
 			{
@@ -366,6 +391,7 @@ public class LinkController extends SelectionController implements IExtension {
 					String scheme = mat.group(1);
 					String ssp = mat.group(2).replace('\\','/');
 					String fragment = mat.group(3);
+					System.out.println("hi, new URI(" + scheme + ", " + ssp + ", " + fragment + ")");
 					return new URI(scheme, ssp, fragment);
 				}
 			}
@@ -373,5 +399,31 @@ public class LinkController extends SelectionController implements IExtension {
 			"This doesn't look like a valid link (URI, file, SMB or URL).");
 
 		}
+	}
+
+	/** 
+	 * the syntax of menu item URIs is
+	 * <pre>
+	 *   "menuitem" + ":" + "_" + <menuItemKey>
+	 * </pre>
+	 * Compared to <code>mailto:abc@somewhere.com</code> a "_" is added to prevent the rest being parsed
+	 * as a regular path. (Menu item keys start with "/").
+	 */
+	public static String createMenuItemLink(final String menuItemKey) {
+		return MENUITEM_SCHEME + ":_" + menuItemKey;
+	}
+
+	public static boolean isMenuItemLink(final URI uri) {
+		return String.valueOf(uri.toString()).startsWith(MENUITEM_SCHEME + ":_");
+	}
+
+	public static String parseMenuItemLink(final String link) {
+		if (link == null || !link.startsWith(MENUITEM_SCHEME + ":_"))
+			throw new IllegalArgumentException("not a menu item link: " + link);
+		return link.substring((MENUITEM_SCHEME + ":_").length());
+	}
+
+	public static String parseMenuItemLink(final URI uri) {
+		return parseMenuItemLink(uri.toString());
 	}
 }

@@ -55,7 +55,7 @@ import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 /**
  * @author foltin
  */
-class EditNodeDialog extends EditNodeBase {
+public class EditNodeDialog extends EditNodeBase {
 	class LongNodeDialog extends EditDialog {
 		/**
 		 * 
@@ -63,7 +63,7 @@ class EditNodeDialog extends EditNodeBase {
 		private static final long serialVersionUID = 1L;
 		final private JTextArea textArea;
 
-		LongNodeDialog(final Frame frame) {
+		public LongNodeDialog(final Frame frame) {
 			super(EditNodeDialog.this, frame);
 			final ViewController viewController = getModeController().getController().getViewController();
 			textArea = new JTextArea(getText());

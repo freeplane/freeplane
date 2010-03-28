@@ -189,7 +189,7 @@ public class MModeControllerFactory {
 					}
 					final MainView component = (MainView) e.getComponent();
 					if (component.isInFollowLinkRegion(e.getX())) {
-						LinkController.getController(modeController).loadURL();
+						LinkController.getController(modeController).loadURL(e);
 					}
 					else {
 						final NodeModel node = (component).getNodeView().getModel();
