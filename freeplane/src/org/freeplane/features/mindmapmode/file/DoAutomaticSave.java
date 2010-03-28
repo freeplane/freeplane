@@ -34,6 +34,7 @@ import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MMapModel;
 
 public class DoAutomaticSave extends TimerTask {
+	static final String AUTOSAVE_EXTENSION = "autosave";
 	/**
 	 * This value is compared with the result of
 	 * getNumberOfChangesSinceLastSave(). If the values coincide, no further
@@ -87,7 +88,7 @@ public class DoAutomaticSave extends TimerTask {
 						}
 						pathToStore.mkdirs();
 						final File tempFile = MFileManager.renameBackupFiles(pathToStore, name, numberOfFiles,
-						    "autosave");
+						    AUTOSAVE_EXTENSION);
 						if (tempFile == null) {
 							return;
 						}

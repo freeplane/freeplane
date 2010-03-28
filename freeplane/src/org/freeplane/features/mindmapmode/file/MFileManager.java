@@ -33,16 +33,15 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.SequenceInputStream;
-import java.io.StringBufferInputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -80,7 +79,13 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 /**
  * @author Dimitry Polivaev
  */
-public class MFileManager extends UrlManager implements IMapViewChangeListener{
+public class MFileManager extends UrlManager implements IMapViewChangeListener {
+	private static final String BACKUP_EXTENSION = "bak";
+	private static final String BACKUP_DIR = ".backup";
+	// FIXME: set to 0!!!
+//	private static final int DEBUG_OFFSET = 5 * 24 * 3600 * 1000;
+	private static final int DEBUG_OFFSET = 0;
+
 	static private class BackupFlag implements IExtension {
 	}
 
@@ -113,12 +118,26 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	        "<map version=\"0.7.1\"" };
 	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 
-	private static void backupFile(final File file, final int backupFileNumber, final String dir, final String extension) {
+	private File[] findNewerFileRevisions(final File file, final File backupDir) {
+		final Pattern pattern = Pattern.compile("^" + file.getName() + "\\.+\\d+\\.(" + BACKUP_EXTENSION + "|"
+		        + DoAutomaticSave.AUTOSAVE_EXTENSION + ")");
+		if (backupDir.exists()) {
+			return backupDir.listFiles(new java.io.FileFilter() {
+				public boolean accept(File f) {
+					return pattern.matcher(f.getName()).matches()
+					        && f.lastModified() > (file.lastModified() - DEBUG_OFFSET);
+				}
+			});
+		}
+		return new File[0];
+	}
+
+	private static void backupFile(final File file, final int backupFileNumber, final String extension) {
 		if (backupFileNumber == 0) {
 			return;
 		}
 		final String name = file.getName();
-		final File backupDir = new File(file.getParentFile(), dir);
+		final File backupDir = backupDir(file);
 		backupDir.mkdir();
 		if (backupDir.exists()) {
 			final File backupFile = MFileManager.renameBackupFiles(backupDir, name, backupFileNumber, extension);
@@ -126,6 +145,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 				file.renameTo(backupFile);
 			}
 		}
+	}
+
+	private static File backupDir(final File file) {
+		return new File(file.getParentFile(), BACKUP_DIR);
 	}
 
 	static File createBackupFile(final File backupDir, final String name, final int number, final String extension) {
@@ -171,9 +194,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 
 	FileFilter filefilter = new MindMapFilter();
 
-	/**
-	 * @param modeController
-	 */
 	public MFileManager(final ModeController modeController) {
 		super(modeController);
 		createActions(modeController);
@@ -201,12 +221,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 			return;
 		}
 		final int backupFileNumber = ResourceController.getResourceController().getIntProperty(BACKUP_FILE_NUMBER, 0);
-		MFileManager.backupFile(file, backupFileNumber, ".backup", "bak");
+		MFileManager.backupFile(file, backupFileNumber, BACKUP_EXTENSION);
 	}
 
-	/**
-	 *
-	 */
 	private void createActions(final ModeController modeController) {
 		final Controller controller = modeController.getController();
 		getController().addAction(new OpenAction(controller));
@@ -247,9 +264,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 		return rootText;
 	}
 
-	/**
-	 * @return
-	 */
 	public URI getLinkByFileChooser(final MapModel map) {
 		return getLinkByFileChooser(map, getFileFilter());
 	}
@@ -291,6 +305,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	public void load(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException,
 	        URISyntaxException {
 		final File file = Compat.urlToFile(url);
+		File alternativeFile = null;
 		if (!file.exists()) {
 			throw new FileNotFoundException(FpStringUtils.formatText("file_not_found", file.getPath()));
 		}
@@ -298,6 +313,20 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 			((MMapModel) map).setReadOnly(true);
 		}
 		else {
+			File[] revisions = findNewerFileRevisions(file, backupDir(file));
+			if (revisions.length > 0) {
+				final NewerFileRevisionsFoundDialog newerFileRevisionsFoundDialog = new NewerFileRevisionsFoundDialog(
+				    file, revisions, getController());
+				if (!newerFileRevisionsFoundDialog.confirmContinue()) {
+					return;
+				}
+				if (newerFileRevisionsFoundDialog.getSelectedFile() != null) {
+					LogTool.info("opening " + newerFileRevisionsFoundDialog.getSelectedFile() + " instead of " + file);
+					System.out.println("opening " + newerFileRevisionsFoundDialog.getSelectedFile() + " instead of "
+					        + file);
+					alternativeFile = newerFileRevisionsFoundDialog.getSelectedFile();
+				}
+			}
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
@@ -316,7 +345,17 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 				((MMapModel) map).setReadOnly(true);
 			}
 		}
-		final NodeModel root = loadTree(map, file);
+		NodeModel root = null;
+		if (alternativeFile == null) {
+			root = loadTree(map, file);
+			map.setSaved(true);
+		}
+		else {
+			// load the alternative file but pretend it's the old one
+			root = loadTree(map, alternativeFile);
+			setFile(map, file);
+			map.setSaved(false);
+		}
 		if (root != null) {
 			((MMapModel) map).setRoot(root);
 		}

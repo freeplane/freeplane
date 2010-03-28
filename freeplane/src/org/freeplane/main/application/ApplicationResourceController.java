@@ -44,7 +44,7 @@ import org.freeplane.core.util.Compat;
 /**
  * @author Dimitry Polivaev
  */
-class ApplicationResourceController extends ResourceController {
+public class ApplicationResourceController extends ResourceController {
 	private static final String FREEPLANE_MAC_PROPERTIES = "/freeplane_mac.properties";
 	final private File autoPropertiesFile;
 	final private Properties defProps;

@@ -466,7 +466,8 @@ public class MapController extends SelectionController {
 			((UrlManager) getModeController().getExtension(UrlManager.class)).load(url, newModel);
 			fireMapCreated(newModel);
 			newMapView(newModel);
-			setSaved(newModel, true);
+			// FIXME: removed to be able to set state in MFileManager
+//			setSaved(newModel, true);
 			return true;
 		}
 		finally {
@@ -476,7 +477,8 @@ public class MapController extends SelectionController {
 
 	public void newMapView(final MapModel mapModel) {
 		getController().getMapViewManager().newMapView(mapModel, getModeController());
-		setSaved(mapModel, false);
+		// FIXME: removed to be able to set state in MFileManager
+//		setSaved(mapModel, true);
 	}
 
 	public MapModel newMap(final NodeModel root) {
