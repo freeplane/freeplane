@@ -322,7 +322,7 @@ public class MLinkController extends LinkController {
 					for(LinkModel link : linkModels){
 						if(link instanceof HyperTextLinkModel){
 							final NodeModel source = ((HyperTextLinkModel) link).getSource();
-							getModeController().getMapController().delayedNodeRefresh(source);
+							getModeController().getMapController().delayedNodeRefresh(source, NodeModel.NODE_ICON, null, null);
 						}
 					}
                 }

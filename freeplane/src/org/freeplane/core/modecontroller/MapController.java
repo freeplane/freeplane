@@ -551,18 +551,15 @@ public class MapController extends SelectionController {
 	}
 
 	private HashSet<NodeModel> nodeSet;
-	public void delayedNodeRefresh(final NodeModel node) {
+	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue, final Object newValue) {
 		if (nodeSet == null) {
 			nodeSet = new HashSet<NodeModel>();
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					try {
-						for (final NodeModel node : nodeSet) {
-							getModeController().getMapController().nodeRefresh(node, NodeModel.NODE_ICON, null, null);
-						}
-					}
-					finally {
-						nodeSet = null;
+					final Collection<NodeModel> set = nodeSet;
+					nodeSet = null;
+					for (final NodeModel node : set) {
+						getModeController().getMapController().nodeRefresh(node, property, oldValue, newValue);
 					}
 				}
 			});
