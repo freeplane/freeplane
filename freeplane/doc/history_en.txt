@@ -1,4 +1,13 @@
 ===============================
+1.0.42 rc
+===============================
+New features: Automatic bug report requests user support depending on submitted information
+
+Bug fixes:
+HierarchicalIcons caused endless node refresh
+Text properties and documentation improvements
+
+===============================
 1.0.41 beta
 ===============================
 New features:
