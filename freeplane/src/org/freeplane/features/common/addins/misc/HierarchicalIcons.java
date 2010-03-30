@@ -55,6 +55,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
         IReadCompletionListener, IExtension {
 
 
+	public static final String ICONS = "hierarchical_icons";
+
 	public HierarchicalIcons(final ModeController modeController) {
 		super(modeController);
 		modeController.getMapController().getReadManager().addReadCompletionListener(this);
@@ -213,7 +215,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		else {
 			node.removeStateIcons(getHookName());
 		}
-		getModeController().getMapController().delayedNodeRefresh(node);
+		getModeController().getMapController().delayedNodeRefresh(node, HierarchicalIcons.ICONS, null, null);
 	}
 
 

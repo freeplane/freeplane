@@ -1,16 +1,14 @@
 ===============================
-1.2.1 alpha
+1.0.42 rc
 ===============================
 New features:
 Keyboard shortcut documentation: Map and HTML table generation added for the documentation map
 Hyperlinks for menu items
 Check for newer auto save files on opening of a map
-
-
+New features: Automatic bug report requests user support depending on submitted information
 Bug fixes:
-
-
-
+HierarchicalIcons caused endless node refresh
+Text properties and documentation improvements
 
 ===============================
 1.0.41 beta

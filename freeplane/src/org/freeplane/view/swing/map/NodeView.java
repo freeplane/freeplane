@@ -49,6 +49,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.addins.styles.MapViewLayout;
+import org.freeplane.features.common.addins.misc.HierarchicalIcons;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.cloud.CloudController;
@@ -835,11 +836,12 @@ public class NodeView extends JComponent implements INodeView {
 		if( ! node.isRoot() && node.getParent() == null){
 			return;
 		}
-		if (event.getProperty() == NodeChangeType.FOLDING) {
+		final Object property = event.getProperty();
+		if (property == NodeChangeType.FOLDING) {
 			treeStructureChanged();
 			return;
 		}
-		if(event.getProperty().equals(NodeModel.NODE_ICON)){
+		if(property.equals(NodeModel.NODE_ICON) || property.equals(HierarchicalIcons.ICONS)){
 			mainView.updateIcons(this);
 			revalidate();
 			return;
