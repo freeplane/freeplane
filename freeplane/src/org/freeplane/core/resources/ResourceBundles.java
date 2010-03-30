@@ -32,7 +32,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.MultipleValueMap;
+import org.freeplane.core.util.collection.MultipleValueMap;
 
 /**
  * Class for managing localized resources. See translation property files.
