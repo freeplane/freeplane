@@ -22,8 +22,8 @@ package org.freeplane.core.filter;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
-import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 

@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *  Copyright (C) 2008 Dimitry Polivaev
  *
- *  This file is modified by Dimitry Polivaev in 2008.
+ *  This file author is Dimitry Polivaev
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,15 +17,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.model;
 
-public interface IPropertyHandler<V, M> {
-	final static public Integer DEFAULT = 1<<9;
-	final static public Integer DEFAULT_STYLE = 1<<8;
-	final static public Integer STYLE = 1<<7;
-	final static public Integer NODE = 1<<6;
-	final static public Integer AUTO = 1<<5;
-	final static public Integer MODIFICATION = 1<<4;
 
-	V getProperty(M model, V currentValue);
+/**
+ * @author Dimitry Polivaev
+ */
+public interface IMapChangeListener {
+	public void mapChanged(MapChangeEvent event);
+
+	void onNodeDeleted(NodeModel parent, NodeModel child, int index);
+
+	void onNodeInserted(NodeModel parent, NodeModel child, int newIndex);
+
+	void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex);
+
+	void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex);
+
+	void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index);
 }

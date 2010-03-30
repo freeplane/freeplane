@@ -17,15 +17,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.controller;
 
-import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 
-/**
- * @author Dimitry Polivaev
- */
-public interface IMapLifeCycleListener {
-	public void onCreate(MapModel map);
+/** */
+public interface INodeSelectionListener {
+	/**
+	 * Is sent when a node is deselected.
+	 */
+	void onDeselect(NodeModel node);
 
-	public void onRemove(MapModel map);
+	/**
+	 * Is sent when a node is selected.
+	 */
+	void onSelect(NodeModel node);
 }

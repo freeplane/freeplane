@@ -30,7 +30,7 @@ import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.JCondition;
 import org.freeplane.core.icon.factory.IconStoreFactory;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;

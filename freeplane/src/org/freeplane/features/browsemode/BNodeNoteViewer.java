@@ -30,9 +30,9 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.icon.UIIcon;
 import org.freeplane.core.icon.factory.IconStoreFactory;
-import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;

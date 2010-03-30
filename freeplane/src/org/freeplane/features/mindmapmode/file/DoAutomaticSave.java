@@ -25,8 +25,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.TimerTask;
 
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;

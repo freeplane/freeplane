@@ -23,10 +23,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.icon.IconController;
-import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;

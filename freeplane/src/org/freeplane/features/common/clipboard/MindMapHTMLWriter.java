@@ -29,8 +29,8 @@ import java.util.ListIterator;
 
 import org.freeplane.core.icon.IconController;
 import org.freeplane.core.icon.MindIcon;
-import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;

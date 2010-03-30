@@ -19,7 +19,7 @@
  */
 package org.freeplane.main.osgi;
 
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 
 /**
  * @author Dimitry Polivaev

@@ -28,7 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 

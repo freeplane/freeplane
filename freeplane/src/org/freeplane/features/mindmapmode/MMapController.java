@@ -29,11 +29,11 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.io.NodeBuilder;
-import org.freeplane.core.modecontroller.INodeSelectionListener;
-import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.model.EncryptionModel;
+import org.freeplane.core.model.MapController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeBuilder;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.IFreeplanePropertyListener;

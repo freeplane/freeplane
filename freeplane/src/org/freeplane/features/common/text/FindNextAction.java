@@ -22,7 +22,7 @@ package org.freeplane.features.common.text;
 import java.awt.event.ActionEvent;
 import java.util.regex.Matcher;
 
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;

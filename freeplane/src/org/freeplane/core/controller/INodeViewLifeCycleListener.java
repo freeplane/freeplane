@@ -17,8 +17,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.controller;
 
-public interface INodeChangeListener {
-	public void nodeChanged(NodeChangeEvent event);
+import java.awt.Container;
+
+public interface INodeViewLifeCycleListener {
+	public void onViewCreated(Container nodeView);
+
+	public void onViewRemoved(Container nodeView);
 }

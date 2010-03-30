@@ -9,7 +9,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import org.freeplane.core.filter.condition.ICondition;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.plugin.script.proxy.Proxy.Node;

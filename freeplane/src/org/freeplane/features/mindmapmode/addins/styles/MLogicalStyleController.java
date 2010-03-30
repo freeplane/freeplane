@@ -25,17 +25,17 @@ import java.util.List;
 
 import javax.swing.JMenu;
 
+import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.frame.IMapSelectionListener;
-import org.freeplane.core.modecontroller.IMapChangeListener;
-import org.freeplane.core.modecontroller.INodeChangeListener;
-import org.freeplane.core.modecontroller.INodeSelectionListener;
-import org.freeplane.core.modecontroller.MapChangeEvent;
-import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.modecontroller.NodeChangeEvent;
+import org.freeplane.core.model.IMapChangeListener;
+import org.freeplane.core.model.INodeChangeListener;
+import org.freeplane.core.model.MapChangeEvent;
+import org.freeplane.core.model.MapController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.ModeController;
+import org.freeplane.core.model.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.MenuBuilder;

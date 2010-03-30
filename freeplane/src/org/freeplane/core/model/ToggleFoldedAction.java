@@ -17,36 +17,28 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.model;
 
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 /**
  * @author foltin
  */
-class ToggleChildrenFoldedAction extends AFreeplaneAction {
-	static final String NAME = "toggleChildrenFolded";
+class ToggleFoldedAction extends AFreeplaneAction {
+	static final String NAME = "toggleFolded";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private MapController mapController;
 
-	public ToggleChildrenFoldedAction(final MapController mapController) {
-		super("ToggleChildrenFoldedAction", mapController.getModeController().getController());
-		this.mapController = mapController;
+	public ToggleFoldedAction(final Controller controller) {
+		super("ToggleFoldedAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Controller controller = getController();
-		final IMapSelection mapSelection = controller.getSelection();
-		final NodeModel model = mapSelection.getSelected();
-		mapController.toggleFolded(getModeController().getMapController().childrenUnfolded(model));
-		mapSelection.selectAsTheOnlyOneSelected(model);
-		controller.getViewController().obtainFocusForSelected();
+		getModeController().getMapController().toggleFolded();
 	}
 }

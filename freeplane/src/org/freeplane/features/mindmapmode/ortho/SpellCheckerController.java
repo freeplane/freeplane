@@ -29,7 +29,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;

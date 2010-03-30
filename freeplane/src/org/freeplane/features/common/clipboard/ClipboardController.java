@@ -41,11 +41,11 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.io.MapWriter.Mode;
-import org.freeplane.core.modecontroller.IMapSelection;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.model.MapWriter.Mode;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;

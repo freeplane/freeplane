@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.mindmapmode.text;
 
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 
 /**

@@ -22,8 +22,8 @@ package org.freeplane.features.mindmapmode;
 import java.awt.EventQueue;
 import java.util.Timer;
 
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;

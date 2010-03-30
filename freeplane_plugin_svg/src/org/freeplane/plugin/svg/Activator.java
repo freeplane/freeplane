@@ -4,7 +4,7 @@ import java.util.Hashtable;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.mindmapmode.MModeController;

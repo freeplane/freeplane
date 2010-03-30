@@ -32,9 +32,9 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.controller.AController.IActionOnChange;
-import org.freeplane.core.modecontroller.INodeSelectionListener;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
 

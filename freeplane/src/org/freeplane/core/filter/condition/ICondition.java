@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.filter.condition;
 
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 
 public interface ICondition {

@@ -24,8 +24,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.modecontroller.IMapChangeListener;
-import org.freeplane.core.modecontroller.MapChangeEvent;
+import org.freeplane.core.model.IMapChangeListener;
+import org.freeplane.core.model.MapChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.SysUtil;
 

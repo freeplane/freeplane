@@ -44,13 +44,13 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.io.MapReader;
-import org.freeplane.core.io.MapReader.NodeTreeCreator;
-import org.freeplane.core.io.MapWriter.Hint;
-import org.freeplane.core.io.MapWriter.Mode;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.MapReader;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.model.MapReader.NodeTreeCreator;
+import org.freeplane.core.model.MapWriter.Hint;
+import org.freeplane.core.model.MapWriter.Mode;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;

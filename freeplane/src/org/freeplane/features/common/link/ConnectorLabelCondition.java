@@ -24,8 +24,8 @@ import java.util.Set;
 import javax.swing.JComponent;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.filter.condition.ISelectableCondition;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 

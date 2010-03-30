@@ -28,7 +28,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.icon.IconController;
-import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.MapController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;

@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.ModeController;
 
 /**
  * @author Dimitry Polivaev

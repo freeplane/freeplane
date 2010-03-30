@@ -23,14 +23,14 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
 
+import org.freeplane.core.controller.ExclusivePropertyChain;
+import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.modecontroller.ExclusivePropertyChain;
-import org.freeplane.core.modecontroller.IPropertyHandler;
-import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;

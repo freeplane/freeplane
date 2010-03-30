@@ -49,10 +49,10 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.modecontroller.INodeChangeListener;
-import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.modecontroller.NodeChangeEvent;
+import org.freeplane.core.model.INodeChangeListener;
+import org.freeplane.core.model.MapController;
+import org.freeplane.core.model.ModeController;
+import org.freeplane.core.model.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.common.addins.styles.MapStyleModel;

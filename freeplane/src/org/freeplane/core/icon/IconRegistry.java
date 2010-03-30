@@ -24,7 +24,7 @@ import java.util.ListIterator;
 import javax.swing.ListModel;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.MapController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.collection.SortedComboBoxModel;

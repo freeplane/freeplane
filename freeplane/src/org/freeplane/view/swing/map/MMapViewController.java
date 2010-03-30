@@ -21,7 +21,7 @@ package org.freeplane.view.swing.map;
 
 import java.awt.event.KeyEvent;
 
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
 import org.freeplane.features.mindmapmode.text.INodeTextFieldCreator;

@@ -17,27 +17,37 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode;
+package org.freeplane.core.controller;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.ModeController;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 
-class NodeDownAction extends AFreeplaneAction {
+/**
+ * @author foltin
+ */
+class CenterSelectedNodeAction extends AFreeplaneAction {
+	static final String NAME = "center_selected";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public NodeDownAction(final Controller controller) {
-		super("NodeDownAction", controller);
+	public CenterSelectedNodeAction(final Controller controller) {
+		super("CenterSelectedNodeAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = getModeController();
-		((MMapController) modeController.getMapController()).moveNodes(modeController.getMapController()
-		    .getSelectedNode(), modeController.getMapController().getSelectedNodes(), 1);
+		final IMapSelection selection = getController().getSelection();
+		final Component mapView = getController().getViewController().getMapView();
+		final JRootPane rootPane = SwingUtilities.getRootPane(mapView);
+		if (!rootPane.isValid()) {
+			rootPane.revalidate();
+		}
+		selection.centerNode(selection.getSelected());
 	}
 }

@@ -17,23 +17,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.controller;
 
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.model.INodeView;
 
-/**
- * @author Dimitry Polivaev
- */
-public interface IMapChangeListener {
-	public void mapChanged(MapChangeEvent event);
-
-	void onNodeDeleted(NodeModel parent, NodeModel child, int index);
-
-	void onNodeInserted(NodeModel parent, NodeModel child, int newIndex);
-
-	void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex);
-
-	void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex);
-
-	void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index);
+public interface INodeViewVisitor {
+	void visit(INodeView view);
 }

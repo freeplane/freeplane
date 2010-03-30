@@ -30,9 +30,9 @@ import javax.swing.event.EventListenerList;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.collection.IListModel;
 import org.freeplane.core.util.collection.SortedComboBoxModel;

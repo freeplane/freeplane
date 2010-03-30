@@ -17,12 +17,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.model;
 
-import java.awt.Container;
+/**
+ * @author Dimitry Polivaev
+ * 02.01.2009
+ */
+public interface IEncrypter {
+	public String decrypt(String str);
 
-public interface INodeViewLifeCycleListener {
-	public void onViewCreated(Container nodeView);
-
-	public void onViewRemoved(Container nodeView);
+	public String encrypt(final String str);
 }

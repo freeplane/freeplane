@@ -5,7 +5,7 @@ import java.lang.ref.WeakReference;
 import java.util.Enumeration;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;

@@ -29,7 +29,7 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;

@@ -21,8 +21,6 @@ package org.freeplane.core.model;
 
 import java.awt.Component;
 
-import org.freeplane.core.modecontroller.IMapChangeListener;
-import org.freeplane.core.modecontroller.INodeChangeListener;
 
 /**
  * @author Dimitry Polivaev

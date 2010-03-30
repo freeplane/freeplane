@@ -22,7 +22,7 @@ package org.freeplane.features.mindmapmode.attribute;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.attribute.AttributeController;
 

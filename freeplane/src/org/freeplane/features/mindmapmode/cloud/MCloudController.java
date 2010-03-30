@@ -23,8 +23,8 @@ import java.awt.Color;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtensionCopier;
-import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.addins.styles.LogicalStyleKeys;

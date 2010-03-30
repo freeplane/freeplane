@@ -17,14 +17,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.model;
 
-/**
- * @author Dimitry Polivaev
- * 02.01.2009
- */
-public interface IEncrypter {
-	public String decrypt(String str);
-
-	public String encrypt(final String str);
+public interface INodeChangeListener {
+	public void nodeChanged(NodeChangeEvent event);
 }

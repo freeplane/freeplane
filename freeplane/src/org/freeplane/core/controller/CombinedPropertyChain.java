@@ -17,31 +17,29 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.controller;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.TreeMap;
 
-public class ExclusivePropertyChain<V, T> {
-	final private Map<Integer, IPropertyHandler<V, T>> map = new TreeMap<Integer, IPropertyHandler<V, T>>();
+public class CombinedPropertyChain<V, T> {
+	final private TreeMap<Integer, IPropertyHandler<?, ?>> handlers = new TreeMap<Integer, IPropertyHandler<?, ?>>();
 
-	public IPropertyHandler<V, T> addGetter(final Integer key, final IPropertyHandler<V, T> getter) {
-		return map.put(key, getter);
+	public IPropertyHandler addGetter(final Integer key, final IPropertyHandler getter) {
+		return (IPropertyHandler) handlers.put(-key, getter);
 	}
 
 	public V getProperty(final T node) {
-		final Iterator<IPropertyHandler<V, T>> iterator = map.values().iterator();
+		final Iterator iterator = handlers.values().iterator();
+		V property = null;
 		while (iterator.hasNext()) {
-			final V property = iterator.next().getProperty(node, null);
-			if (property != null) {
-				return property;
-			}
+			final IPropertyHandler<V, T> getter = (IPropertyHandler) iterator.next();
+			property = getter.getProperty(node, property);
 		}
-		return null;
+		return property;
 	}
 
-	public IPropertyHandler<V, T> removeGetter(final Integer key) {
-		return map.remove(key);
+	public IPropertyHandler removeGetter(final Integer key) {
+		return (IPropertyHandler) handlers.remove(-key);
 	}
 }

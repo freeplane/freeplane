@@ -27,9 +27,9 @@ import java.io.IOException;
 import java.io.StringWriter;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.io.MapWriter.Mode;
-import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.MapController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.MapWriter.Mode;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;

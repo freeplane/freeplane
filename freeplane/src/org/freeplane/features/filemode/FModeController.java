@@ -22,7 +22,7 @@ package org.freeplane.features.filemode;
 import java.io.File;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 
 public class FModeController extends ModeController {
 	static public final String MODENAME = "File";

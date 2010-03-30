@@ -17,18 +17,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.io;
+package org.freeplane.core.model;
 
 import java.util.HashMap;
 import java.util.List;
 
-import org.freeplane.core.io.MapWriter.Hint;
-import org.freeplane.core.io.MapWriter.Mode;
+import org.freeplane.core.io.IAttributeHandler;
+import org.freeplane.core.io.IElementDOMHandler;
+import org.freeplane.core.io.IReadCompletionListener;
+import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.model.EncryptionModel;
-import org.freeplane.core.model.HistoryInformationModel;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.model.MapWriter.Hint;
+import org.freeplane.core.model.MapWriter.Mode;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.XMLElement;
 

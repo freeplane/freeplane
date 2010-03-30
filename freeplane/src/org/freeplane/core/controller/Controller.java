@@ -32,9 +32,8 @@ import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.modecontroller.IMapSelection;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
 
@@ -56,6 +55,7 @@ public class Controller extends AController {
 		super();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		addAction(new QuitAction(this));
+		addAction(new CenterSelectedNodeAction(this));
 	}
 
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {

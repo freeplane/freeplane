@@ -22,7 +22,7 @@ package org.freeplane.view.swing.ui.mindmapmode;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.features.common.link.ConnectorModel;

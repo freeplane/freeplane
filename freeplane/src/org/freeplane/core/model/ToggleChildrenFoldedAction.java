@@ -17,38 +17,36 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.model;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JRootPane;
-import javax.swing.SwingUtilities;
-
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 /**
  * @author foltin
  */
-class CenterSelectedNodeAction extends AFreeplaneAction {
-	static final String NAME = "center_selected";
+class ToggleChildrenFoldedAction extends AFreeplaneAction {
+	static final String NAME = "toggleChildrenFolded";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	final private MapController mapController;
 
-	public CenterSelectedNodeAction(final Controller controller) {
-		super("CenterSelectedNodeAction", controller);
+	public ToggleChildrenFoldedAction(final MapController mapController) {
+		super("ToggleChildrenFoldedAction", mapController.getModeController().getController());
+		this.mapController = mapController;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final IMapSelection selection = getController().getSelection();
-		final Component mapView = getController().getViewController().getMapView();
-		final JRootPane rootPane = SwingUtilities.getRootPane(mapView);
-		if (!rootPane.isValid()) {
-			rootPane.revalidate();
-		}
-		selection.centerNode(selection.getSelected());
+		final Controller controller = getController();
+		final IMapSelection mapSelection = controller.getSelection();
+		final NodeModel model = mapSelection.getSelected();
+		mapController.toggleFolded(getModeController().getMapController().childrenUnfolded(model));
+		mapSelection.selectAsTheOnlyOneSelected(model);
+		controller.getViewController().obtainFocusForSelected();
 	}
 }

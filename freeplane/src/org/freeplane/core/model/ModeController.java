@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.model;
 
 import java.awt.Container;
 import java.util.Collection;
@@ -29,12 +29,12 @@ import java.util.ListIterator;
 
 import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IMapSelection;
+import org.freeplane.core.controller.INodeSelectionListener;
+import org.freeplane.core.controller.INodeViewLifeCycleListener;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.IExtensionCopier;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.model.NodeModel.NodeChangeType;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
@@ -52,84 +52,6 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
  * MindMapController as a sample.
  */
 public class ModeController extends AController {
-	private static class ActionEnablerOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange {
-		final AFreeplaneAction action;
-
-		public ActionEnablerOnChange(final AFreeplaneAction action) {
-			super();
-			this.action = action;
-		}
-
-		public AFreeplaneAction getAction() {
-			return action;
-		}
-
-		public void nodeChanged(final NodeChangeEvent event) {
-			action.setEnabled();
-		}
-
-		public void onDeselect(final NodeModel node) {
-		}
-
-		public void onSelect(final NodeModel node) {
-			action.setEnabled();
-		}
-	}
-
-	private static class ActionSelectorOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange, IMapChangeListener {
-		final AFreeplaneAction action;
-
-		public ActionSelectorOnChange(final AFreeplaneAction action) {
-			super();
-			this.action = action;
-		}
-
-		public AFreeplaneAction getAction() {
-			return action;
-		}
-
-		public void nodeChanged(final NodeChangeEvent event) {
-			if (NodeChangeType.REFRESH.equals(event.getProperty())) {
-				return;
-			}
-			IMapSelection selection = action.getController().getSelection();
-			if(selection == null || selection.getSelected() == null){
-				return;
-			}
-			action.setSelected();
-		}
-
-		public void onDeselect(final NodeModel node) {
-		}
-
-		public void onSelect(final NodeModel node) {
-			action.setSelected();
-		}
-
-		public void mapChanged(MapChangeEvent event) {
-			final Object property = event.getProperty();
-			if (property.equals(MapStyle.MAP_STYLES)) {
-				action.setSelected();
-				return;
-			}
-        }
-
-		public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
-        }
-
-		public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-        }
-
-		public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-        }
-
-		public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
-        }
-
-		public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-        }
-	}
-
 	final private Controller controller;
 	private final ExtensionContainer extensionContainer;
 	private final Collection<IExtensionCopier> copiers;
@@ -159,16 +81,8 @@ public class ModeController extends AController {
 	@Override
 	public void addAction(final AFreeplaneAction action) {
 		super.addAction(action);
-		if (AFreeplaneAction.checkEnabledOnChange(action)) {
-			final ActionEnablerOnChange listener = new ActionEnablerOnChange(action);
-			mapController.addNodeSelectionListener(listener);
-			mapController.addNodeChangeListener(listener);
-		}
-		if (AFreeplaneAction.checkSelectionOnChange(action)) {
-			final ActionSelectorOnChange listener = new ActionSelectorOnChange(action);
-			mapController.addNodeSelectionListener(listener);
-			mapController.addNodeChangeListener(listener);
-			mapController.addMapChangeListener(listener);
+		if (mapController != null) {
+			mapController.addListenerForAction(action);
 		}
 	}
 
@@ -358,16 +272,10 @@ public class ModeController extends AController {
 	@Override
 	public AFreeplaneAction removeAction(final String key) {
 		final AFreeplaneAction action = super.removeAction(key);
-		if (AFreeplaneAction.checkEnabledOnChange(action)) {
-			mapController.removeNodeSelectionListener(ActionEnablerOnChange.class, action);
-			mapController.removeNodeChangeListener(ActionEnablerOnChange.class, action);
+		if(mapController != null){
+			mapController.removeListenerForAction(action);
 		}
-		if (AFreeplaneAction.checkSelectionOnChange(action)) {
-			mapController.removeNodeSelectionListener(ActionSelectorOnChange.class, action);
-			mapController.removeNodeChangeListener(ActionSelectorOnChange.class, action);
-			mapController.removeMapChangeListener(ActionSelectorOnChange.class, action);
-
-		}
+		
 		return action;
 	}
 

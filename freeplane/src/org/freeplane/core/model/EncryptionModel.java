@@ -29,10 +29,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.icon.IconStore;
 import org.freeplane.core.icon.UIIcon;
 import org.freeplane.core.icon.factory.IconStoreFactory;
-import org.freeplane.core.io.MapWriter;
-import org.freeplane.core.io.MapWriter.Mode;
-import org.freeplane.core.modecontroller.IEncrypter;
-import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.MapWriter.Mode;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 

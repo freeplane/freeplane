@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.io;
+package org.freeplane.core.model;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -25,10 +25,11 @@ import java.util.Arrays;
 
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.IAttributeWriter;
+import org.freeplane.core.io.IElementWriter;
+import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.n3.nanoxml.XMLElement;
 

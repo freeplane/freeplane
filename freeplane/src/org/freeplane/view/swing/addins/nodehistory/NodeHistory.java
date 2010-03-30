@@ -22,10 +22,10 @@ import java.util.ListIterator;
 import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewManager;
-import org.freeplane.core.modecontroller.INodeSelectionListener;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.common.link.LinkController;

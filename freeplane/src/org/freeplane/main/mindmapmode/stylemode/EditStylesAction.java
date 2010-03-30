@@ -28,8 +28,8 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.modecontroller.MapChangeEvent;
-import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.MapChangeEvent;
+import org.freeplane.core.model.MapController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;

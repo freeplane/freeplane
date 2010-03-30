@@ -30,7 +30,7 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.MapController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.addins.styles.MapStyle;

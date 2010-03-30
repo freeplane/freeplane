@@ -36,12 +36,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.ReadManager;
-import org.freeplane.core.io.MapWriter.Mode;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.MapReader;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.model.MapWriter.Mode;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;

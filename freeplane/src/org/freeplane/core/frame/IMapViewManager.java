@@ -28,9 +28,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import org.freeplane.core.modecontroller.IMapSelection;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 

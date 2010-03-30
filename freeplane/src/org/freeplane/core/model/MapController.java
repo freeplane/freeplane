@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.model;
 
 import java.awt.EventQueue;
 import java.io.FileNotFoundException;
@@ -39,30 +39,134 @@ import java.util.ListIterator;
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IMapLifeCycleListener;
+import org.freeplane.core.controller.IMapSelection;
+import org.freeplane.core.controller.INodeSelectionListener;
+import org.freeplane.core.controller.SelectionController;
 import org.freeplane.core.controller.AController.IActionOnChange;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.io.IAttributeHandler;
-import org.freeplane.core.io.MapReader;
-import org.freeplane.core.io.MapWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.UnknownElementWriter;
 import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.io.MapWriter.Mode;
-import org.freeplane.core.model.EncryptionModel;
-import org.freeplane.core.model.HistoryInformationModel;
-import org.freeplane.core.model.ITooltipProvider;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.model.MapWriter.Mode;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MapController extends SelectionController {
+	private static class ActionEnablerOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange {
+		final AFreeplaneAction action;
+
+		public ActionEnablerOnChange(final AFreeplaneAction action) {
+			super();
+			this.action = action;
+		}
+
+		public AFreeplaneAction getAction() {
+			return action;
+		}
+
+		public void nodeChanged(final NodeChangeEvent event) {
+			action.setEnabled();
+		}
+
+		public void onDeselect(final NodeModel node) {
+		}
+
+		public void onSelect(final NodeModel node) {
+			action.setEnabled();
+		}
+	}
+
+	private static class ActionSelectorOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange, IMapChangeListener {
+		final AFreeplaneAction action;
+
+		public ActionSelectorOnChange(final AFreeplaneAction action) {
+			super();
+			this.action = action;
+		}
+
+		public AFreeplaneAction getAction() {
+			return action;
+		}
+
+		public void nodeChanged(final NodeChangeEvent event) {
+			if (NodeChangeType.REFRESH.equals(event.getProperty())) {
+				return;
+			}
+			IMapSelection selection = action.getController().getSelection();
+			if(selection == null || selection.getSelected() == null){
+				return;
+			}
+			action.setSelected();
+		}
+
+		public void onDeselect(final NodeModel node) {
+		}
+
+		public void onSelect(final NodeModel node) {
+			action.setSelected();
+		}
+
+		public void mapChanged(MapChangeEvent event) {
+			final Object property = event.getProperty();
+			if (property.equals(MapStyle.MAP_STYLES)) {
+				action.setSelected();
+				return;
+			}
+        }
+
+		public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+        }
+
+		public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+        }
+
+		public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+        }
+
+		public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
+        }
+
+		public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+        }
+	}
+
+	public void addListenerForAction(final AFreeplaneAction action) {
+		if (AFreeplaneAction.checkEnabledOnChange(action)) {
+			final ActionEnablerOnChange listener = new ActionEnablerOnChange(action);
+			addNodeSelectionListener(listener);
+			addNodeChangeListener(listener);
+		}
+		if (AFreeplaneAction.checkSelectionOnChange(action)) {
+			final ActionSelectorOnChange listener = new ActionSelectorOnChange(action);
+			addNodeSelectionListener(listener);
+			addNodeChangeListener(listener);
+			addMapChangeListener(listener);
+		}
+	}
+	
+	public void removeListenerForAction(final AFreeplaneAction action) {
+		if (AFreeplaneAction.checkEnabledOnChange(action)) {
+			removeNodeSelectionListener(ActionEnablerOnChange.class, action);
+			removeNodeChangeListener(ActionEnablerOnChange.class, action);
+		}
+		if (AFreeplaneAction.checkSelectionOnChange(action)) {
+			removeNodeSelectionListener(ActionSelectorOnChange.class, action);
+			removeNodeChangeListener(ActionSelectorOnChange.class, action);
+			removeMapChangeListener(ActionSelectorOnChange.class, action);
+
+		}
+	}
+
 	/**
 	 * This class sortes nodes by ascending depth of their paths to root. This
 	 * is useful to assure that children are cutted <b>before </b> their
@@ -199,7 +303,6 @@ public class MapController extends SelectionController {
 	private void createActions(final ModeController modeController) {
 		modeController.addAction(new ToggleFoldedAction(controller));
 		modeController.addAction(new ToggleChildrenFoldedAction(this));
-		modeController.addAction(new CenterSelectedNodeAction(controller));
 	}
 
 	public void displayNode(final NodeModel node) {

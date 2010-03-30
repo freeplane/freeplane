@@ -9,9 +9,9 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.mindmapmode.MMapModel;

@@ -39,10 +39,10 @@ import java.util.ListIterator;
 import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 
-import org.freeplane.core.modecontroller.MapChangeEvent;
-import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.INodeView;
+import org.freeplane.core.model.MapChangeEvent;
+import org.freeplane.core.model.ModeController;
+import org.freeplane.core.model.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
 import org.freeplane.core.resources.ResourceController;

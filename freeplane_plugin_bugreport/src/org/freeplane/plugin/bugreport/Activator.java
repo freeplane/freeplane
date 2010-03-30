@@ -3,7 +3,7 @@ package org.freeplane.plugin.bugreport;
 import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ModeController;
 import org.freeplane.main.osgi.IControllerExtensionProvider;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
