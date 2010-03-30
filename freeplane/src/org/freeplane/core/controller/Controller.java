@@ -55,6 +55,7 @@ public class Controller extends AController {
 		super();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		addAction(new QuitAction(this));
+		addAction(new MoveToRootAction(this));
 		addAction(new CenterSelectedNodeAction(this));
 	}
 

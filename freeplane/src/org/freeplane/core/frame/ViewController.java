@@ -167,7 +167,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		this.mapViewManager = mapViewManager;
 		mapViewManager.addMapViewChangeListener(this);
 		controller.addAction(new CloseAction(controller));
-		controller.addAction(new MoveToRootAction(controller));
 		zoomIn = new ZoomInAction(this);
 		controller.addAction(zoomIn);
 		zoomOut = new ZoomOutAction(this);
