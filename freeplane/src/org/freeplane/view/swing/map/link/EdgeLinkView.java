@@ -36,19 +36,18 @@ import org.freeplane.view.swing.map.edge.EdgeViewFactory;
 public class EdgeLinkView implements ILinkView {
 	private final ConnectorModel model;
 	private final EdgeView edgeView;
-	
-	
-	public EdgeLinkView(ConnectorModel model,  NodeView source, NodeView target) {
-	    super();
-	    this.model = model;
-	    edgeView = EdgeViewFactory.getInstance().getEdge(source, target);
-	    edgeView.setColor(edgeView.getColor().darker());
-    }
 
-	public boolean detectCollision(Point p, boolean selectedOnly) {
+	public EdgeLinkView(final ConnectorModel model, final NodeView source, final NodeView target) {
+		super();
+		this.model = model;
+		edgeView = EdgeViewFactory.getInstance().getEdge(source, target);
+		edgeView.setColor(edgeView.getColor().darker());
+	}
+
+	public boolean detectCollision(final Point p, final boolean selectedOnly) {
 		if (selectedOnly) {
 			final NodeView source = edgeView.getSource();
-			if ((source == null || !source.isSelected())){
+			if ((source == null || !source.isSelected())) {
 				final NodeView target = edgeView.getTarget();
 				if ((target == null || !target.isSelected())) {
 					return false;
@@ -62,11 +61,11 @@ public class EdgeLinkView implements ILinkView {
 		return model;
 	}
 
-	public void increaseBounds(Rectangle innerBounds) {
+	public void increaseBounds(final Rectangle innerBounds) {
 		//edge link does not increase inner bounds 
 	}
 
-	public void paint(Graphics graphics) {
+	public void paint(final Graphics graphics) {
 		edgeView.paint((Graphics2D) graphics);
 	}
 }

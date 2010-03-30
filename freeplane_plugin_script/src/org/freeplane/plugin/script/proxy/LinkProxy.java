@@ -24,15 +24,15 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 	}
 
 	private MLinkController getLinkController() {
-		return (MLinkController) LinkController
-				.getController(getModeController());
+		return (MLinkController) LinkController.getController(getModeController());
 	}
 
 	public boolean set(final String target) {
 		try {
 			getLinkController().setLink(getDelegate(), new URI(target), false);
 			return true;
-		} catch (final URISyntaxException e) {
+		}
+		catch (final URISyntaxException e) {
 			LogTool.warn(e);
 			return false;
 		}

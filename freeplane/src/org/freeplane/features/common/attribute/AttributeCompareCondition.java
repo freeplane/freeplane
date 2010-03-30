@@ -64,7 +64,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		final IAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		for (int i = 0; i < attributes.getRowCount(); i++) {
 			try {

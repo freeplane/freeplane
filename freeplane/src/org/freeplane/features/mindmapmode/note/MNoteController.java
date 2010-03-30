@@ -32,10 +32,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -50,7 +47,6 @@ import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogTool;
-import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
@@ -68,7 +64,6 @@ import com.lightdev.app.shtm.SHTMLPanel;
  * @author Dimitry Polivaev
  */
 public class MNoteController extends NoteController {
-
 	final class NoteDocumentListener implements DocumentListener {
 		public void changedUpdate(final DocumentEvent arg0) {
 			docEvent();
@@ -148,25 +143,27 @@ public class MNoteController extends NoteController {
 		}
 		htmlEditorPanel = MTextController.createSHTMLPanel();
 		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
-	    final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
-	    editorPane.addFocusListener(new FocusListener() {
+		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
+		editorPane.addFocusListener(new FocusListener() {
 			private SpellCheckerController spellCheckerController = null;
-			public void focusLost(FocusEvent e) {
+
+			public void focusLost(final FocusEvent e) {
 				spellCheckerController.enableAutoSpell(editorPane, false);
 			}
-			
-			public void focusGained(FocusEvent e) {
+
+			public void focusGained(final FocusEvent e) {
 				initSpellChecker();
 				spellCheckerController.enableAutoSpell(editorPane, true);
 			}
+
 			private void initSpellChecker() {
-				if(spellCheckerController != null){
+				if (spellCheckerController != null) {
 					return;
 				}
 				spellCheckerController = SpellCheckerController.getController(getModeController());
 				spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
 				spellCheckerController.enableShortKey(editorPane, true);
-		    }
+			}
 		});
 		return htmlEditorPanel;
 	}
@@ -210,7 +207,7 @@ public class MNoteController extends NoteController {
 		final ModeController modeController = getModeController();
 		final Controller controller = modeController.getController();
 		final IMapSelection selection = controller.getSelection();
-		if(selection == null){
+		if (selection == null) {
 			return;
 		}
 		final NodeModel selected = selection.getSelected();
@@ -278,7 +275,8 @@ public class MNoteController extends NoteController {
 		if (ResourceController.getResourceController().getBooleanProperty(
 		    MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
 			// set default font for notes:
-			final NodeStyleController style = (NodeStyleController) getModeController().getExtension(NodeStyleController.class);
+			final NodeStyleController style = (NodeStyleController) getModeController().getExtension(
+			    NodeStyleController.class);
 			final Font defaultFont = style.getDefaultFont(getModeController().getController().getMap());
 			String rule = "body {";
 			rule += "font-family: " + defaultFont.getFamily() + ";";
@@ -313,28 +311,28 @@ public class MNoteController extends NoteController {
 		});
 		noteViewerComponent.setVisible(true);
 		mSplitPane = getModeController().getController().getViewController().insertComponentIntoSplitPane(southPanel);
-		if(requestFocus){
+		if (requestFocus) {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					final SHTMLPanel htmlEditorPanel = getHtmlEditorPanel();
 					htmlEditorPanel.getMostRecentFocusOwner().requestFocus();
-					if(ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")){
+					if (ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")) {
 						final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
 						editorPane.setCaretPosition(editorPane.getDocument().getLength());
 					}
-
 				}
 			});
 		}
 		southPanel.revalidate();
 	}
-	
-	boolean isEditing(){
-		return SwingUtilities.isDescendingFrom(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), noteViewerComponent);
+
+	boolean isEditing() {
+		return SwingUtilities.isDescendingFrom(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
+		    noteViewerComponent);
 	}
-	
-	void setFocusToMap(){
+
+	void setFocusToMap() {
 		if (getPositionToRecover() != null) {
 			mSplitPane.setDividerLocation(getPositionToRecover().intValue());
 			setPositionToRecover(null);

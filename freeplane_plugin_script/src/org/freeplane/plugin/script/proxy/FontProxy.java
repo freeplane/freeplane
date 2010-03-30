@@ -23,8 +23,7 @@ class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
 	}
 
 	private MNodeStyleController getStyleController() {
-		return (MNodeStyleController) NodeStyleController
-				.getController(getModeController());
+		return (MNodeStyleController) NodeStyleController.getController(getModeController());
 	}
 
 	public boolean isBold() {
@@ -53,32 +52,26 @@ class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
 
 	public void resetBold() {
 		getStyleController().setBold(getDelegate(), null);
-
 	}
 
 	public void resetItalic() {
 		getStyleController().setItalic(getDelegate(), null);
-
 	}
 
 	public void resetName() {
 		getStyleController().setFontFamily(getDelegate(), null);
-
 	}
 
 	public void resetSize() {
 		getStyleController().setFontSize(getDelegate(), null);
-
 	}
 
 	public void setBold(final boolean bold) {
 		getStyleController().setBold(getDelegate(), bold);
-
 	}
 
 	public void setItalic(final boolean italic) {
 		getStyleController().setItalic(getDelegate(), italic);
-
 	}
 
 	public void setName(final String name) {
@@ -87,6 +80,5 @@ class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
 
 	public void setSize(final int size) {
 		getStyleController().setFontSize(getDelegate(), size);
-
 	}
 }

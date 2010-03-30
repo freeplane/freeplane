@@ -52,24 +52,28 @@ public class FreeplaneSplashModern extends JWindow {
 	private final String description = "Free mind mapping and knowledge management software";
 	private final String copyright = "\u00a9 2000-2010";
 
-	public FreeplaneSplashModern(JFrame frame) {
+	public FreeplaneSplashModern(final JFrame frame) {
 		super(frame);
 		InputStream fontInputStream = null;
 		try {
-			fontInputStream = ResourceController.getResourceController().getResource("/fonts/BPreplay.ttf").openStream();
+			fontInputStream = ResourceController.getResourceController().getResource("/fonts/BPreplay.ttf")
+			    .openStream();
 			versionTextFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream).deriveFont(16f);
-		} catch (Exception e) {
+		}
+		catch (final Exception e) {
 			versionTextFont = new Font("Arial", Font.PLAIN, 16);
 		}
-		finally{
-			if (fontInputStream != null)
+		finally {
+			if (fontInputStream != null) {
 				try {
 					fontInputStream.close();
-				} catch (IOException e) {
 				}
+				catch (final IOException e) {
+				}
+			}
 		}
-		splashImage = new ImageIcon(ResourceController.getResourceController().getResource("/images/Freeplane_splash.png"));
-
+		splashImage = new ImageIcon(ResourceController.getResourceController().getResource(
+		    "/images/Freeplane_splash.png"));
 		getRootPane().setOpaque(false);
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
@@ -78,9 +82,10 @@ public class FreeplaneSplashModern extends JWindow {
 	}
 
 	private Integer mWidth1;
-	private ImageIcon splashImage;
+	private final ImageIcon splashImage;
 	private Integer mWidth2;
 	private Integer mWidth3;
+
 	@Override
 	public void paint(final Graphics g) {
 		final Graphics2D g2 = (Graphics2D) g;
@@ -88,9 +93,9 @@ public class FreeplaneSplashModern extends JWindow {
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2.setFont(versionTextFont);
 		g2.setColor(new Color(0x4a, 0x00, 0x65));
-		FreeplaneVersion version = FreeplaneVersion.getVersion();
-		final String freeplaneNumber = version.numberToString() ;
-		String status = version.getType().toUpperCase();
+		final FreeplaneVersion version = FreeplaneVersion.getVersion();
+		final String freeplaneNumber = version.numberToString();
+		final String status = version.getType().toUpperCase();
 		if (mWidth1 == null) {
 			mWidth1 = new Integer(g2.getFontMetrics().stringWidth(freeplaneNumber));
 			mWidth2 = new Integer(g2.getFontMetrics().stringWidth(status));

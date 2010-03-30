@@ -40,13 +40,13 @@ public class SharpBezierEdgeView extends EdgeView {
 	private int deltaY;
 	Point2D.Float one, two;
 
-	public SharpBezierEdgeView(NodeView source, NodeView target) {
-	    super(source, target);
-    }
+	public SharpBezierEdgeView(final NodeView source, final NodeView target) {
+		super(source, target);
+	}
 
-	public SharpBezierEdgeView(NodeView target) {
-	    super(target);
-    }
+	public SharpBezierEdgeView(final NodeView target) {
+		super(target);
+	}
 
 	@Override
 	protected void createStart() {
@@ -91,37 +91,37 @@ public class SharpBezierEdgeView extends EdgeView {
 
 	@Override
 	protected void draw(final Graphics2D g) {
-		GeneralPath graph =  update();
+		final GeneralPath graph = update();
 		g.setColor(getColor());
 		g.setPaint(getColor());
 		g.setStroke(getStroke());
 		g.fill(graph);
 		g.draw(graph);
-//		g.setColor(Color.WHITE);
-//		g.drawOval(start.x, start.y, 4, 4);
-//		g.drawOval((int)one.x, (int)one.y, 4, 4);
-//		g.drawOval((int)two.x, (int)two.y, 4, 4);
-//		g.drawOval(end.x, end.y, 4, 4);
+		//		g.setColor(Color.WHITE);
+		//		g.drawOval(start.x, start.y, 4, 4);
+		//		g.drawOval((int)one.x, (int)one.y, 4, 4);
+		//		g.drawOval((int)two.x, (int)two.y, 4, 4);
+		//		g.drawOval(end.x, end.y, 4, 4);
 	}
 
 	private GeneralPath update() {
 		final float zoom = getMap().getZoom();
-		float xctrlRelative = (float) Math.max(SharpBezierEdgeView.XCTRL * zoom, Math.abs(start.y - end.y)/4);
-		if(getTarget().isLeft()){
-			xctrlRelative = - xctrlRelative;
+		float xctrlRelative = Math.max(SharpBezierEdgeView.XCTRL * zoom, Math.abs(start.y - end.y) / 4);
+		if (getTarget().isLeft()) {
+			xctrlRelative = -xctrlRelative;
 		}
 		one = new Point2D.Float(start.x + xctrlRelative, start.y);
 		two = new Point2D.Float(end.x - xctrlRelative, end.y);
 		final float w = (getWidth() / 2f + 1) * zoom;
 		final float w2 = w / 2;
-		CubicCurve2D.Float line1 = new CubicCurve2D.Float();
-		CubicCurve2D.Float line2 = new CubicCurve2D.Float();
-		float wEnd = deltaY > 0 ? w2 : -w2;
+		final CubicCurve2D.Float line1 = new CubicCurve2D.Float();
+		final CubicCurve2D.Float line2 = new CubicCurve2D.Float();
+		final float wEnd = deltaY > 0 ? w2 : -w2;
 		line1.setCurve(start.x - deltaX, start.y - deltaY, one.x - deltaX, one.y - deltaY, two.x, two.y - wEnd, end.x,
-		    end.y - wEnd/4);
-		line2.setCurve(end.x, end.y+ wEnd/4, two.x, two.y + wEnd, one.x + deltaX, one.y + deltaY, start.x + deltaX, start.y
-		        + deltaY);
-		GeneralPath graph = new GeneralPath();
+		    end.y - wEnd / 4);
+		line2.setCurve(end.x, end.y + wEnd / 4, two.x, two.y + wEnd, one.x + deltaX, one.y + deltaY, start.x + deltaX,
+		    start.y + deltaY);
+		final GeneralPath graph = new GeneralPath();
 		graph.append(line1, true);
 		graph.append(line2, true);
 		graph.closePath();
@@ -129,9 +129,9 @@ public class SharpBezierEdgeView extends EdgeView {
 	}
 
 	@Override
-    public boolean detectCollision(Point p) {
-		CubicCurve2D.Float line1 = new CubicCurve2D.Float();
-		line1.setCurve(start.x, start.y , one.x , one.y , two.x, two.y, end.x, end.y);
-	    return new CollisionDetector().detectCollision(p, line1);
-    }
+	public boolean detectCollision(final Point p) {
+		final CubicCurve2D.Float line1 = new CubicCurve2D.Float();
+		line1.setCurve(start.x, start.y, one.x, one.y, two.x, two.y, end.x, end.y);
+		return new CollisionDetector().detectCollision(p, line1);
+	}
 }

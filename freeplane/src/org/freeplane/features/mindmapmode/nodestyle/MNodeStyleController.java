@@ -39,23 +39,20 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
  * @author Dimitry Polivaev
  */
 public class MNodeStyleController extends NodeStyleController {
-	
-	private static class StyleCopier implements IExtensionCopier{
-
-		public void copy(Object key, NodeModel from, NodeModel to) {
-			if(! key.equals(LogicalStyleKeys.NODE_STYLE)){
+	private static class StyleCopier implements IExtensionCopier {
+		public void copy(final Object key, final NodeModel from, final NodeModel to) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
 			}
 			copy(from, to);
 		}
 
-
-		public void copy(NodeModel from, NodeModel to) {
+		public void copy(final NodeModel from, final NodeModel to) {
 			final IExtension fromStyle = from.getExtension(NodeStyleModel.class);
-			if(fromStyle == null){
+			if (fromStyle == null) {
 				return;
 			}
-			NodeStyleModel toStyle = NodeStyleModel.createNodeStyleModel(to);
+			final NodeStyleModel toStyle = NodeStyleModel.createNodeStyleModel(to);
 			toStyle.setBold(((NodeStyleModel) fromStyle).isBold());
 			toStyle.setItalic(((NodeStyleModel) fromStyle).isItalic());
 			toStyle.setFontFamilyName(((NodeStyleModel) fromStyle).getFontFamilyName());
@@ -65,47 +62,47 @@ public class MNodeStyleController extends NodeStyleController {
 			toStyle.setBackgroundColor(((NodeStyleModel) fromStyle).getBackgroundColor());
 		}
 
-		public void remove(Object key, NodeModel from) {
-			if(! key.equals(LogicalStyleKeys.NODE_STYLE)){
+		public void remove(final Object key, final NodeModel from) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
 			}
 			from.removeExtension(NodeStyleModel.class);
 		}
 
-		public void remove(Object key, NodeModel from, NodeModel which) {
-			if(! key.equals(LogicalStyleKeys.NODE_STYLE)){
+		public void remove(final Object key, final NodeModel from, final NodeModel which) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
 			}
-	    	final NodeStyleModel whichStyle = (NodeStyleModel) which.getExtension(NodeStyleModel.class);
-	    	if(whichStyle == null){
-	    		return;
-	    	}
-	    	final NodeStyleModel fromStyle = (NodeStyleModel) from.getExtension(NodeStyleModel.class);
-	    	if(fromStyle == null){
-	    		return;
-	    	}
-	    	if(null != whichStyle.isBold()){
+			final NodeStyleModel whichStyle = (NodeStyleModel) which.getExtension(NodeStyleModel.class);
+			if (whichStyle == null) {
+				return;
+			}
+			final NodeStyleModel fromStyle = (NodeStyleModel) from.getExtension(NodeStyleModel.class);
+			if (fromStyle == null) {
+				return;
+			}
+			if (null != whichStyle.isBold()) {
 				fromStyle.setBold(null);
-	    	}
-	    	if(null != whichStyle.isItalic()){
+			}
+			if (null != whichStyle.isItalic()) {
 				fromStyle.setItalic(null);
-	    	}
-	    	if(null != whichStyle.getFontFamilyName()){
+			}
+			if (null != whichStyle.getFontFamilyName()) {
 				fromStyle.setFontFamilyName(null);
-	    	}
-	    	if(null != whichStyle.getFontSize()){
+			}
+			if (null != whichStyle.getFontSize()) {
 				fromStyle.setFontSize(null);
-	    	}
-	    	if(null != whichStyle.getShape()){
+			}
+			if (null != whichStyle.getShape()) {
 				fromStyle.setShape(null);
-	    	}
-	    	if(null != whichStyle.getColor()){
+			}
+			if (null != whichStyle.getColor()) {
 				fromStyle.setColor(null);
-	    	}
-	    	if(null != whichStyle.getBackgroundColor()){
+			}
+			if (null != whichStyle.getBackgroundColor()) {
 				fromStyle.setBackgroundColor(null);
-	    	}
-        }		
+			}
+		}
 	}
 
 	public MNodeStyleController(final ModeController modeController) {
@@ -313,9 +310,8 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setFontSize(final int size) {
-		List<NodeModel> selectedNodes = getModeController().getMapController().getSelectedNodes();
-		for (final NodeModel selected  : selectedNodes)
-		{
+		final List<NodeModel> selectedNodes = getModeController().getMapController().getSelectedNodes();
+		for (final NodeModel selected : selectedNodes) {
 			setFontSize(selected, size);
 		}
 	}

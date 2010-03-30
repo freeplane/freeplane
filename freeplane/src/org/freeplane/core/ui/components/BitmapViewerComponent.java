@@ -30,40 +30,38 @@ import java.net.URI;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
-
-
 /**
  * @author Dimitry Polivaev
  * 22.08.2009
  */
-public class BitmapViewerComponent extends JComponent{
-
+public class BitmapViewerComponent extends JComponent {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-	private BufferedImage image;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final BufferedImage image;
 	private int hint;
+
 	protected int getHint() {
-    	return hint;
-    }
+		return hint;
+	}
 
-	public void setHint(int hint) {
-    	this.hint = hint;
-    }
+	public void setHint(final int hint) {
+		this.hint = hint;
+	}
 
-	public BitmapViewerComponent(URI uri) throws MalformedURLException, IOException {
-		this.image = ImageIO.read(uri.toURL());
+	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
+		image = ImageIO.read(uri.toURL());
 		hint = Image.SCALE_SMOOTH;
-    }
-	
-	public Dimension getOriginalSize(){
+	}
+
+	public Dimension getOriginalSize() {
 		return new Dimension(image.getWidth(), image.getHeight());
 	}
-	
+
 	@Override
-    protected void paintComponent(Graphics g) {
-		if(image == null){
+	protected void paintComponent(final Graphics g) {
+		if (image == null) {
 			super.paintComponent(g);
 			return;
 		}
@@ -74,30 +72,30 @@ public class BitmapViewerComponent extends JComponent{
 		final int height = getHeight();
 		final int imageWidth = image.getWidth();
 		final int imageHeight = image.getHeight();
-		if(width == 0 || height == 0 || imageWidth == 0 || imageHeight == 0){
+		if (width == 0 || height == 0 || imageWidth == 0 || imageHeight == 0) {
 			return;
 		}
-		if(imageWidth != width || imageHeight != height){
-			double kComponent = (double)height / (double)width;
-			double kImage = (double)imageHeight / (double)imageWidth;
-			if(kComponent >= kImage){
-				final int calcHeight = (int)(width * kImage);
+		if (imageWidth != width || imageHeight != height) {
+			final double kComponent = (double) height / (double) width;
+			final double kImage = (double) imageHeight / (double) imageWidth;
+			if (kComponent >= kImage) {
+				final int calcHeight = (int) (width * kImage);
 				scaledImage = image.getScaledInstance(width, calcHeight, hint);
 				x = 0;
 				y = (height - calcHeight) / 2;
 			}
-			else{
-				final int calcWidth = (int)(height / kImage);
+			else {
+				final int calcWidth = (int) (height / kImage);
 				scaledImage = image.getScaledInstance(calcWidth, height, hint);
 				x = (width - calcWidth) / 2;
 				y = 0;
 			}
 		}
-		else{
+		else {
 			scaledImage = image;
 			x = 0;
 			y = 0;
 		}
 		g.drawImage(scaledImage, x, y, null);
-    }
+	}
 }

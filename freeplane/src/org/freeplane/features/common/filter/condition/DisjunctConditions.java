@@ -60,8 +60,8 @@ public class DisjunctConditions implements ISelectableCondition {
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
-		for(ISelectableCondition condition : conditions) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
+		for (final ISelectableCondition condition : conditions) {
 			if (condition.checkNode(modeController, node)) {
 				return true;
 			}
@@ -98,7 +98,7 @@ public class DisjunctConditions implements ISelectableCondition {
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(DisjunctConditions.NAME);
-		for(ISelectableCondition condition : conditions) {
+		for (final ISelectableCondition condition : conditions) {
 			condition.toXml(child);
 		}
 		element.addChild(child);

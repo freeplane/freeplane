@@ -126,7 +126,7 @@ public class NodeHistory implements IExtension {
 			return;
 		}
 		final NodeModel toBeSelected = currentNodeHolder.getNode();
-		if(removed(toBeSelected)){
+		if (removed(toBeSelected)) {
 			currentNodeHolder = lastNodeHolder;
 			go(back);
 			return;
@@ -164,14 +164,14 @@ public class NodeHistory implements IExtension {
 	}
 
 	private boolean removed(final NodeModel toBeSelected) {
-	    if (toBeSelected == null) {
-	    	return true;
-	    }
-	    if(toBeSelected.isRoot()){
-	    	return false;
-	    }
-	    return removed(toBeSelected.getParentNode());
-    }
+		if (toBeSelected == null) {
+			return true;
+		}
+		if (toBeSelected.isRoot()) {
+			return false;
+		}
+		return removed(toBeSelected.getParentNode());
+	}
 
 	private void go(final boolean back, final boolean fast) {
 		NodeHolder lastCurrentNodeHolder;

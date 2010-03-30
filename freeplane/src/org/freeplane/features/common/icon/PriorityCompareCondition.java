@@ -40,7 +40,6 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 	static final String NAME = "priority_compare_condition";
 	static final String SUCCEED = "SUCCEED";
 	static final String VALUE = "VALUE";
-	
 	private static final IconStore STORE = IconStoreFactory.create();
 
 	static ISelectableCondition load(final XMLElement element) {
@@ -65,7 +64,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 		setListCellRendererComponent(renderer);
 	}
 
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		final List<MindIcon> icons = IconController.getIcons(modeController, node);
 		for (final MindIcon icon : icons) {
 			final String iconName = icon.getFileName();

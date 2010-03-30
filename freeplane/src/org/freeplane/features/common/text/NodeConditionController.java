@@ -78,7 +78,8 @@ class NodeConditionController implements IElementaryConditionController {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
 			try {
 				return new NodeMatchesRegexpCondition(value, ignoreCase);
-			} catch (PatternSyntaxException e) {
+			}
+			catch (final PatternSyntaxException e) {
 				UITools.errorMessage(TextUtil.format("wrong_regexp", value, e.getMessage()));
 				return null;
 			}

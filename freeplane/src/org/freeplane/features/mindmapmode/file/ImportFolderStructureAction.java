@@ -22,7 +22,6 @@ package org.freeplane.features.mindmapmode.file;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 

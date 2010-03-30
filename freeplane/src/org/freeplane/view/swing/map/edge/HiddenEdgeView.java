@@ -33,13 +33,13 @@ import org.freeplane.view.swing.map.NodeView;
 public class HiddenEdgeView extends BezierEdgeView {
 	private static Stroke STROKE;
 
-	public HiddenEdgeView(NodeView source, NodeView target) {
-	    super(source, target);
-    }
+	public HiddenEdgeView(final NodeView source, final NodeView target) {
+		super(source, target);
+	}
 
-	public HiddenEdgeView(NodeView target) {
-	    super(target);
-    }
+	public HiddenEdgeView(final NodeView target) {
+		super(target);
+	}
 
 	protected static Stroke getHiddenStroke() {
 		if (HiddenEdgeView.STROKE == null) {
@@ -64,12 +64,10 @@ public class HiddenEdgeView extends BezierEdgeView {
 	}
 
 	@Override
-    public boolean detectCollision(Point p) {
+	public boolean detectCollision(final Point p) {
 		if (!getTarget().isSelected()) {
 			return false;
 		}
-	    return super.detectCollision(p);
-    }
-	
-	
+		return super.detectCollision(p);
+	}
 }

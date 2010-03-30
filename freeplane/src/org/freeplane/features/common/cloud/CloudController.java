@@ -58,8 +58,8 @@ public class CloudController implements IExtension {
 	private static Color standardColor = null;
 
 	protected static Color getStandardColor() {
-    	return standardColor;
-    }
+		return standardColor;
+	}
 
 	public static CloudController getController(final ModeController modeController) {
 		return (CloudController) modeController.getExtension(CloudController.class);
@@ -103,25 +103,24 @@ public class CloudController implements IExtension {
 		cloudBuilder.registerBy(readManager, writeManager);
 	}
 
-
-	protected CloudModel getStyleCloud(MapModel map, Object styleKey) {
+	protected CloudModel getStyleCloud(final MapModel map, final Object styleKey) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		final NodeModel styleNode = model.getStyleNode(styleKey);
-		if(styleNode == null){
+		if (styleNode == null) {
 			return null;
 		}
 		final CloudModel styleModel = CloudModel.getModel(styleNode);
 		return styleModel;
-    }
-	
+	}
+
 	public IPropertyHandler<CloudModel, NodeModel> addCloudGetter(final Integer key,
-		final IPropertyHandler<CloudModel, NodeModel> getter) {
+	                                                              final IPropertyHandler<CloudModel, NodeModel> getter) {
 		return cloudHandlers.addGetter(key, getter);
 	}
 
 	public Color getColor(final NodeModel node) {
 		final CloudModel cloud = getCloud(node);
-		return cloud != null ? cloud.getColor() :null;
+		return cloud != null ? cloud.getColor() : null;
 	}
 
 	public Color getExteriorColor(final NodeModel node) {
@@ -147,6 +146,7 @@ public class CloudController implements IExtension {
 			standardColor = ColorUtils.stringToColor(stdColor);
 		}
 	}
+
 	/** gets iterative level which is required for painting and layout. */
 	public int getCloudIterativeLevel(final NodeModel target) {
 		int iterativeLevel = 0;
@@ -161,11 +161,11 @@ public class CloudController implements IExtension {
 		return iterativeLevel;
 	}
 
-	public boolean cloudExist(NodeModel model) {
-	    return getCloud(model) != null;
-    }
+	public boolean cloudExist(final NodeModel model) {
+		return getCloud(model) != null;
+	}
 
-	public CloudModel getCloud(NodeModel model) {
-	    return cloudHandlers.getProperty(model);
-    }
+	public CloudModel getCloud(final NodeModel model) {
+		return cloudHandlers.getProperty(model);
+	}
 }

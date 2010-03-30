@@ -20,7 +20,6 @@
 package org.freeplane.features.common.cloud;
 
 import java.awt.Color;
-import java.util.ListIterator;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.common.map.NodeModel;
@@ -31,11 +30,11 @@ public class CloudModel implements IExtension {
 	}
 
 	public static CloudModel createModel(final NodeModel node) {
-		CloudModel extension = (CloudModel) node.getExtension(CloudModel.class);
-		if(extension != null){
+		final CloudModel extension = (CloudModel) node.getExtension(CloudModel.class);
+		if (extension != null) {
 			return extension;
 		}
-		CloudModel cloudModel = new CloudModel();
+		final CloudModel cloudModel = new CloudModel();
 		node.addExtension(cloudModel);
 		return cloudModel;
 	}
@@ -51,6 +50,7 @@ public class CloudModel implements IExtension {
 	}
 
 	private Color color;
+
 	public CloudModel() {
 		color = CloudController.getStandardColor();
 	}

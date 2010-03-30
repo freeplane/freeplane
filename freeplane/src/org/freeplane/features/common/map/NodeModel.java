@@ -72,14 +72,15 @@ public class NodeModel implements MutableTreeNode {
 	private int position = NodeModel.UNKNOWN_POSITION;
 	private NodeModel preferredChild;
 	private Object userObject = "no text";
+
 	public Object getUserObject() {
-    	return userObject;
-    }
+		return userObject;
+	}
 
 	private Map<String, ITooltipProvider> toolTip = null;
 	private Collection<INodeView> views = null;
 	private String xmlText = "no text";
-	
+
 	public NodeModel(final MapModel map) {
 		this("", map);
 	}
@@ -93,10 +94,10 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public void acceptViewVisitor(final INodeViewVisitor visitor) {
-		if(views == null){
+		if (views == null) {
 			return;
 		}
-		for(INodeView view :views){
+		for (final INodeView view : views) {
 			visitor.visit(view);
 		}
 	}
@@ -107,11 +108,11 @@ public class NodeModel implements MutableTreeNode {
 
 	public void addIcon(final MindIcon icon) {
 		icons.addIcon(icon);
-		if(map != null){
+		if (map != null) {
 			map.getIconRegistry().addIcon(icon);
 		}
 	}
-	
+
 	public void addIcon(final MindIcon icon, final int position) {
 		icons.addIcon(icon, position);
 		getMap().getIconRegistry().addIcon(icon);
@@ -204,7 +205,7 @@ public class NodeModel implements MutableTreeNode {
 	public int getChildPosition(final NodeModel childNode) {
 		int position = 0;
 		for (final ListIterator<NodeModel> i = children.listIterator(); i.hasNext(); ++position) {
-			if (((NodeModel) i.next()) == childNode) {
+			if ((i.next()) == childNode) {
 				return position;
 			}
 		}
@@ -213,7 +214,7 @@ public class NodeModel implements MutableTreeNode {
 
 	public List<NodeModel> getChildren() {
 		List<NodeModel> childrenList;
-		if(children != null) {
+		if (children != null) {
 			childrenList = children;
 		}
 		else {
@@ -356,7 +357,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public void insert(final MutableTreeNode child, int index) {
-		if (! isAccessible()){
+		if (!isAccessible()) {
 			throw new IllegalArgumentException("Trying to insert nodes into a ciphered node.");
 		}
 		final NodeModel childNode = (NodeModel) child;
@@ -373,9 +374,9 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	private boolean isAccessible() {
-	    final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
+		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
 		return encryptionModel == null || encryptionModel.isAccessible();
-    }
+	}
 
 	/**
 	 * Returns whether the argument is parent or parent of one of the grandpa's
@@ -477,7 +478,7 @@ public class NodeModel implements MutableTreeNode {
 	public int removeIcon() {
 		return icons.removeIcon();
 	}
-	
+
 	/**
 	 * @param remove icons with given position
 	 *  
@@ -532,7 +533,7 @@ public class NodeModel implements MutableTreeNode {
 	 */
 	public void setMap(final MapModel map) {
 		this.map = map;
-		for(NodeModel child : children){
+		for (final NodeModel child : children) {
 			child.setMap(map);
 		}
 	}
@@ -545,41 +546,41 @@ public class NodeModel implements MutableTreeNode {
 		parent = newParent;
 	}
 
-	public void setStateIcon(final String key, final UIIcon icon, boolean register) {
+	public void setStateIcon(final String key, final UIIcon icon, final boolean register) {
 		icons.setStateIcon(key, icon);
 		if (register && icon != null && map != null) {
 			map.getIconRegistry().addIcon(icon);
 		}
 	}
-	
+
 	public void removeStateIcons(final String key) {
-		if(icons != null) {
+		if (icons != null) {
 			icons.removeStateIcons(key);
 		}
 	}
 
 	public final void setText(final String text) {
-		this.userObject = XmlTool.makeValidXml(text);
+		userObject = XmlTool.makeValidXml(text);
 		xmlText = HtmlTools.toXhtml(text);
-		if(xmlText != null && ! xmlText.startsWith("<")){
-			this.userObject = " " + text;
+		if (xmlText != null && !xmlText.startsWith("<")) {
+			userObject = " " + text;
 			xmlText = null;
 		}
 	}
 
 	public final void setUserObject(final Object data) {
-		if(data instanceof String){
+		if (data instanceof String) {
 			setText(data.toString());
 			return;
 		}
-		this.userObject = data;
+		userObject = data;
 		xmlText = null;
 	}
 
 	/**
 	 */
 	public void setToolTip(final String key, final ITooltipProvider tooltip) {
-		if(tooltip == null && toolTip == null){
+		if (tooltip == null && toolTip == null) {
 			return;
 		}
 		createToolTip();
@@ -605,7 +606,7 @@ public class NodeModel implements MutableTreeNode {
 	public String toString() {
 		return getText();
 	}
-	
+
 	public int depth() {
 		final NodeModel parentNode = getParentNode();
 		if (parentNode == null) {
@@ -614,7 +615,7 @@ public class NodeModel implements MutableTreeNode {
 		return parentNode.depth() + 1;
 	}
 
-	public void insert(NodeModel newNodeModel) {
+	public void insert(final NodeModel newNodeModel) {
 		insert(newNodeModel, getChildCount());
 	}
 }

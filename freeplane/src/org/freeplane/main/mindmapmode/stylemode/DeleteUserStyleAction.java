@@ -28,7 +28,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
-import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -39,40 +38,40 @@ import org.freeplane.features.mindmapmode.map.MMapController;
  * 02.10.2009
  */
 public class DeleteUserStyleAction extends AFreeplaneAction {
-	public DeleteUserStyleAction(Controller controller) {
-	    super("DeleteUserStyleAction", controller);
-    }
+	public DeleteUserStyleAction(final Controller controller) {
+		super("DeleteUserStyleAction", controller);
+	}
 
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		final Controller controller = modeController.getController();
 		final NodeModel selected = controller.getSelection().getSelected();
-		if(selected.depth() < 2){
+		if (selected.depth() < 2) {
 			UITools.errorMessage(TextUtil.getText("can_not_delete_style_group"));
 			return;
 		}
-		if(selected.getUserObject() instanceof NamedObject){
+		if (selected.getUserObject() instanceof NamedObject) {
 			UITools.errorMessage(TextUtil.getText("can_not_delete_predefined_style"));
 			return;
 		}
 		final MapModel map = selected.getMap();
-	    final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		mapController.deleteNode(selected);
-		IActor actor = new IActor() {
+		final IActor actor = new IActor() {
 			public void undo() {
 				styleModel.addStyleNode(selected);
 			}
-			
+
 			public String getDescription() {
 				return "DeleteStyle";
 			}
-			
+
 			public void act() {
 				styleModel.removeStyleNode(selected);
 			}

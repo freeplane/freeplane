@@ -65,10 +65,10 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void setValue(final boolean booleanValue) {
-	    mCheckBox.setSelected(booleanValue);
-    }
+		mCheckBox.setSelected(booleanValue);
+	}
 
 	public boolean getBooleanValue() {
-	    return mCheckBox.isSelected();
-    }
+		return mCheckBox.isSelected();
+	}
 }

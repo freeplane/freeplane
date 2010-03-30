@@ -21,8 +21,6 @@ package org.freeplane.core.resources.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -49,7 +47,8 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 	final JComboBox mComboBox;
 	private Vector<String> possibleValues;
 
-	public ComboProperty(final String name, final Collection<String> possibles, final Collection<String> possibleTranslations) {
+	public ComboProperty(final String name, final Collection<String> possibles,
+	                     final Collection<String> possibleTranslations) {
 		super(name);
 		fillPossibleValues(possibles);
 		mComboBox = new JComboBox();
@@ -70,7 +69,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 
 	@Override
 	public String getValue() {
-		return (String) possibleValues.get(mComboBox.getSelectedIndex());
+		return possibleValues.get(mComboBox.getSelectedIndex());
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
@@ -109,8 +108,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 		}
 	}
 
-	public void actionPerformed(ActionEvent e) {
-	   firePropertyChangeEvent();	    
-    }
-
+	public void actionPerformed(final ActionEvent e) {
+		firePropertyChangeEvent();
+	}
 }

@@ -31,7 +31,7 @@ import javax.swing.event.ChangeListener;
 
 public class UndoHandler implements IUndoHandler {
 	final private List<ChangeListener> listeners;
-	
+
 	private class RedoAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			redo();
@@ -45,10 +45,9 @@ public class UndoHandler implements IUndoHandler {
 	}
 
 	public static final int COMMIT_DELAY = 2;
-	
-	private static class ActorList extends LinkedList<IActor> {
 
-        private static final long serialVersionUID = 1L;
+	private static class ActorList extends LinkedList<IActor> {
+		private static final long serialVersionUID = 1L;
 		int commitDelay = COMMIT_DELAY;
 	}
 
@@ -82,8 +81,8 @@ public class UndoHandler implements IUndoHandler {
 		undoAction = new UndoAction();
 		event = new ChangeEvent(this);
 	}
-	
-	public void deactivate(){
+
+	public void deactivate() {
 		deactivated = true;
 		fireStateChanged();
 		startActionFrame();
@@ -99,22 +98,21 @@ public class UndoHandler implements IUndoHandler {
 		resetRedo();
 		actorList.commitDelay = COMMIT_DELAY;
 		final long currentTime = System.currentTimeMillis();
-		if(deactivated){
-			if(! actionFrameStarted && currentTime - timeOfLastAdd > UndoHandler.TIME_TO_BEGIN_NEW_ACTION){
+		if (deactivated) {
+			if (!actionFrameStarted && currentTime - timeOfLastAdd > UndoHandler.TIME_TO_BEGIN_NEW_ACTION) {
 				deactivated = false;
 			}
 			else {
-				if (actorList.size() > 0){
+				if (actorList.size() > 0) {
 					actorList.clear();
 					actorIterator = actorList.listIterator();
 				}
 				return;
 			}
 		}
-		
 		if ((actorList.size() > 0)
-				&& (actionFrameStarted || currentTime - timeOfLastAdd < UndoHandler.TIME_TO_BEGIN_NEW_ACTION)) {
-			final IActor lastActor = (IActor) actorIterator.previous();
+		        && (actionFrameStarted || currentTime - timeOfLastAdd < UndoHandler.TIME_TO_BEGIN_NEW_ACTION)) {
+			final IActor lastActor = actorIterator.previous();
 			CompoundActor compoundActor;
 			if (!(lastActor instanceof CompoundActor)) {
 				compoundActor = new CompoundActor();
@@ -141,10 +139,10 @@ public class UndoHandler implements IUndoHandler {
 	}
 
 	private void fireStateChanged() {
-		for(ChangeListener listener : listeners){
+		for (final ChangeListener listener : listeners) {
 			listener.stateChanged(event);
 		}
-    }
+	}
 
 	public boolean canRedo() {
 		return actorIterator.hasNext();
@@ -161,18 +159,18 @@ public class UndoHandler implements IUndoHandler {
 		timeOfLastAdd = 0;
 		actorList = transactionList.removeLast();
 		actorIterator = transactionIteratorList.removeLast();
-		if(! compoundActor.isEmpty()){
+		if (!compoundActor.isEmpty()) {
 			addActor(compoundActor);
 			actionFrameStarted = false;
 			timeOfLastAdd = 0;
 		}
-		else{
+		else {
 			fireStateChanged();
 		}
 	}
-	
-	public void delayedCommit(){
-		if(actorList.commitDelay == 0){
+
+	public void delayedCommit() {
+		if (actorList.commitDelay == 0) {
 			commit();
 			return;
 		}
@@ -184,8 +182,8 @@ public class UndoHandler implements IUndoHandler {
 		});
 	}
 
-	public void delayedRollback(){
-		if(actorList.commitDelay == 0){
+	public void delayedRollback() {
+		if (actorList.commitDelay == 0) {
 			rollback();
 			return;
 		}
@@ -234,7 +232,7 @@ public class UndoHandler implements IUndoHandler {
 	 */
 	public void redo() {
 		if (canRedo()) {
-			final IActor redoActor = (IActor) actorIterator.next();
+			final IActor redoActor = actorIterator.next();
 			isUndoActionRunning = true;
 			redoActor.act();
 			isUndoActionRunning = false;
@@ -254,7 +252,7 @@ public class UndoHandler implements IUndoHandler {
 		try {
 			isUndoActionRunning = true;
 			while (actorIterator.hasPrevious()) {
-				final IActor actor = (IActor) actorIterator.previous();
+				final IActor actor = actorIterator.previous();
 				actor.undo();
 			}
 		}
@@ -264,7 +262,6 @@ public class UndoHandler implements IUndoHandler {
 		actorList = transactionList.removeLast();
 		actorIterator = transactionIteratorList.removeLast();
 		fireStateChanged();
-
 	}
 
 	private void startActionFrame() {
@@ -292,7 +289,7 @@ public class UndoHandler implements IUndoHandler {
 	 */
 	public void undo() {
 		if (canUndo()) {
-			final IActor actor = (IActor) actorIterator.previous();
+			final IActor actor = actorIterator.previous();
 			try {
 				isUndoActionRunning = true;
 				actor.undo();
@@ -304,12 +301,11 @@ public class UndoHandler implements IUndoHandler {
 		}
 	}
 
-	public void addChangeListener(ChangeListener listener) {
-	    listeners.add(listener);
-	    
-    }
+	public void addChangeListener(final ChangeListener listener) {
+		listeners.add(listener);
+	}
 
-	public void removeChangeListener(ChangeListener listener) {
-	    listeners.remove(listener);
-    }
+	public void removeChangeListener(final ChangeListener listener) {
+		listeners.remove(listener);
+	}
 }

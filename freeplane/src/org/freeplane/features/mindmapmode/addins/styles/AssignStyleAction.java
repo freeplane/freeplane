@@ -25,7 +25,6 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.addins.styles.LogicalStyleController;
@@ -36,30 +35,29 @@ import org.freeplane.features.common.map.NodeModel;
  * @author Dimitry Polivaev
  * 28.09.2009
  */
-@SelectableAction(checkOnNodeChange=true)
+@SelectableAction(checkOnNodeChange = true)
 public class AssignStyleAction extends AMultipleNodeAction {
 	final private Object style;
-	public AssignStyleAction(Object style, Controller controller, String title, ImageIcon icon) {
-	    super("AssignStyleAction." + NamedObject.toKeyString(style), controller, title, icon);
-	    this.style = style;
-    }
+
+	public AssignStyleAction(final Object style, final Controller controller, final String title, final ImageIcon icon) {
+		super("AssignStyleAction." + NamedObject.toKeyString(style), controller, title, icon);
+		this.style = style;
+	}
 
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Override
-    protected void actionPerformed(ActionEvent e, NodeModel node) {
-		MLogicalStyleController controller = (MLogicalStyleController) getModeController().getExtension(LogicalStyleController.class);
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
+		final MLogicalStyleController controller = (MLogicalStyleController) getModeController().getExtension(
+		    LogicalStyleController.class);
 		controller.setStyle(node, style);
-		
-    }
+	}
 
 	@Override
-    public void setSelected() {
+	public void setSelected() {
 		setSelected(style.equals(LogicalStyleModel.getStyle(getController().getSelection().getSelected())));
-    }
-	
-	
+	}
 }

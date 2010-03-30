@@ -36,12 +36,13 @@ import org.freeplane.n3.nanoxml.XMLException;
  * @author Dimitry Polivaev
  * 20.12.2008
  */
-public class MapReader implements IElementDOMHandler{
+public class MapReader implements IElementDOMHandler {
 	public class NodeTreeCreator {
 		private MapModel createdMap;
-		private HashMap<Object, Object> hints;
+		private final HashMap<Object, Object> hints;
 		private NodeModel mapChild = null;
 		private final HashMap<String, String> newIds;
+
 		public NodeTreeCreator() {
 			super();
 			newIds = new HashMap<String, String>();
@@ -87,6 +88,7 @@ public class MapReader implements IElementDOMHandler{
 		void start(final MapModel map) {
 			createdMap = map;
 		}
+
 		public MapModel getCreatedMap() {
 			return createdMap;
 		}
@@ -100,15 +102,14 @@ public class MapReader implements IElementDOMHandler{
 		}
 
 		NodeModel getMapChild() {
-	        return mapChild;
-        }
+			return mapChild;
+		}
 
-		public void setMapChild(NodeModel mapChild) {
-	        this.mapChild = mapChild;
-	        
-        }
+		public void setMapChild(final NodeModel mapChild) {
+			this.mapChild = mapChild;
+		}
 
-		public void substituteNodeID(String value, String realId) {
+		public void substituteNodeID(final String value, final String realId) {
 			newIds.put(value, realId);
 		}
 	}
@@ -118,8 +119,8 @@ public class MapReader implements IElementDOMHandler{
 	private NodeTreeCreator nodeTreeCreator;
 
 	public NodeTreeCreator getCurrentNodeTreeCreator() {
-    	return nodeTreeCreator;
-    }
+		return nodeTreeCreator;
+	}
 
 	public MapReader(final ReadManager readManager) {
 		this.readManager = readManager;
@@ -132,18 +133,18 @@ public class MapReader implements IElementDOMHandler{
 	}
 
 	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader, final Mode mode)
-            throws IOException, XMLException {
-    	final NodeTreeCreator oldNodeTreeCreator = nodeTreeCreator;
-    	try {
-    		nodeTreeCreator = new NodeTreeCreator();
-    		nodeTreeCreator.setHint(Hint.MODE, mode);
-    		final NodeModel topNode = nodeTreeCreator.createNodeTreeFromXml(map, pReader);
-    		return topNode;
-    	}
-    	finally {
-    		nodeTreeCreator = oldNodeTreeCreator;
-    	}
-    }
+	        throws IOException, XMLException {
+		final NodeTreeCreator oldNodeTreeCreator = nodeTreeCreator;
+		try {
+			nodeTreeCreator = new NodeTreeCreator();
+			nodeTreeCreator.setHint(Hint.MODE, mode);
+			final NodeModel topNode = nodeTreeCreator.createNodeTreeFromXml(map, pReader);
+			return topNode;
+		}
+		finally {
+			nodeTreeCreator = oldNodeTreeCreator;
+		}
+	}
 
 	public void endElement(final Object parent, final String tag, final Object element, final XMLElement dom) {
 		final MapModel map = (MapModel) element;
@@ -157,7 +158,7 @@ public class MapReader implements IElementDOMHandler{
 	}
 
 	public NodeTreeCreator nodeTreeCreator(final MapModel map) {
-		NodeTreeCreator nodeTreeCreator = new NodeTreeCreator();
+		final NodeTreeCreator nodeTreeCreator = new NodeTreeCreator();
 		nodeTreeCreator.start(map);
 		return nodeTreeCreator;
 	}

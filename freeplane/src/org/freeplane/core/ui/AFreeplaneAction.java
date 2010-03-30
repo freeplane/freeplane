@@ -69,7 +69,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		if (annotation == null) {
 			return false;
 		}
-		return ! "".equals(annotation.checkOnPropertyChange());
+		return !"".equals(annotation.checkOnPropertyChange());
 	}
 
 	static public boolean checkSelectionOnPopup(final AFreeplaneAction action) {

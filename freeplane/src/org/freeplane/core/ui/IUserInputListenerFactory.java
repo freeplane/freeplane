@@ -19,21 +19,20 @@
  */
 package org.freeplane.core.ui;
 
-import java.awt.Component;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
+
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 public interface IUserInputListenerFactory {
 	void addMouseWheelEventHandler(final IMouseWheelEventHandler handler);
-	
+
 	void addToolBar(final String name, final int position, final JComponent toolBar);
 
 	IMouseListener getMapMouseListener();

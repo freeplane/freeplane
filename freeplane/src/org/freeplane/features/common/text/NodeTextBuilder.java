@@ -93,11 +93,11 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final Object data = ((NodeModel) userObject).getUserObject();
-		if(data.getClass().equals(NamedObject.class)){
-			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((NamedObject)data).getObject().toString());
+		if (data.getClass().equals(NamedObject.class)) {
+			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((NamedObject) data).getObject().toString());
 			return;
 		}
-		if(! data.getClass().equals(String.class)){
+		if (!data.getClass().equals(String.class)) {
 			return;
 		}
 		final String text = (String) data;

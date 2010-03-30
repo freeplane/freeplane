@@ -19,10 +19,7 @@
  */
 package org.freeplane.features.mindmapmode.clipboard;
 
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -34,7 +31,6 @@ import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.map.MMapController;
 
 class CutAction extends AFreeplaneAction {
 	/**
@@ -60,7 +56,8 @@ class CutAction extends AFreeplaneAction {
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final MClipboardController clipboardController = (MClipboardController) mMindMapController.getExtension(ClipboardController.class);
+		final MClipboardController clipboardController = (MClipboardController) mMindMapController
+		    .getExtension(ClipboardController.class);
 		clipboardController.cut(controller.getSelection().getSortedSelection(true));
 		controller.getViewController().obtainFocusForSelected();
 	}

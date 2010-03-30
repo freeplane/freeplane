@@ -42,10 +42,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 @NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
 @ActionLocationDescriptor(locations = "/menu_bar/format/nodes")
-public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener,
-        IReadCompletionListener, IExtension {
-
-	
+public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener, IReadCompletionListener,
+        IExtension {
 	private boolean setStyleActive = false;
 
 	/**
@@ -106,6 +104,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			}
 		});
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see freeplane.extensions.NodeHook#invoke(freeplane.modes.MindMapNode)
@@ -115,24 +114,24 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		super.remove(node, extension);
 	}
 
-
 	private void setStyleImpl(final NodeModel node) {
-		MLogicalStyleController styleController = (MLogicalStyleController) getModeController().getExtension(LogicalStyleController.class);
-		Object style = getStyle(node);
+		final MLogicalStyleController styleController = (MLogicalStyleController) getModeController().getExtension(
+		    LogicalStyleController.class);
+		final Object style = getStyle(node);
 		styleController.setStyle(node, style);
 	}
 
-	private Object getStyle(NodeModel node) {
+	private Object getStyle(final NodeModel node) {
 		final int depth = node.depth();
 		final MapModel map = node.getMap();
 		final MapStyleModel extension = MapStyleModel.getExtension(map);
-		String name = depth == 0 ? "AutomaticLayout.level.root" : "AutomaticLayout.level," + depth;
-		NamedObject obj = NamedObject.formatText(name);
-		if(extension.getStyleNode(obj) != null){
+		final String name = depth == 0 ? "AutomaticLayout.level.root" : "AutomaticLayout.level," + depth;
+		final NamedObject obj = NamedObject.formatText(name);
+		if (extension.getStyleNode(obj) != null) {
 			return obj;
 		}
 		return MapStyleModel.DEFAULT_STYLE;
-    }
+	}
 
 	/**
 	 */
@@ -153,8 +152,8 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		}
 	}
 
-	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-	    // TODO Auto-generated method stub
-	    
-    }
+	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+	                           final NodeModel child, final int newIndex) {
+		// TODO Auto-generated method stub
+	}
 }

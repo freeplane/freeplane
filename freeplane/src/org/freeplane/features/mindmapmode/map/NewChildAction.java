@@ -29,7 +29,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtil;
-import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -53,17 +52,17 @@ class NewChildAction extends AFreeplaneAction {
 	public NodeModel addNewNode(int newNodeMode, final KeyEvent e) {
 		final ModeController modeController = getModeController();
 		final TextController textController = TextController.getController(modeController);
-		if(textController instanceof MTextController){
+		if (textController instanceof MTextController) {
 			((MTextController) textController).stopEditing();
 		}
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		final NodeModel target = mapController.getSelectedNode();
-		if(textController instanceof MTextController){
+		if (textController instanceof MTextController) {
 			modeController.startTransaction();
-			try{
+			try {
 				((MTextController) TextController.getController(modeController)).stopEditing();
 			}
-			finally{
+			finally {
 				modeController.commit();
 			}
 		}
@@ -79,19 +78,17 @@ class NewChildAction extends AFreeplaneAction {
 						childPosition++;
 					}
 					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
-					if(newNode == null){
+					if (newNode == null) {
 						return null;
 					}
 					mapController.select(newNode);
 					if (e != null) {
-						((MTextController) textController).edit(newNode, targetNode, e,
-						    true, false, false);
+						((MTextController) textController).edit(newNode, targetNode, e, true, false, false);
 					}
 					else {
 						EventQueue.invokeLater(new Runnable() {
 							public void run() {
-								((MTextController) textController).edit(newNode,
-								    targetNode, e, true, false, false);
+								((MTextController) textController).edit(newNode, targetNode, e, true, false, false);
 							}
 						});
 					}
@@ -110,7 +107,7 @@ class NewChildAction extends AFreeplaneAction {
 				final int position = ResourceController.getResourceController().getProperty("placenewbranches").equals(
 				    "last") ? targetNode.getChildCount() : 0;
 				newNode = addNewNode(targetNode, position, targetNode.isNewChildLeft());
-				if(newNode == null){
+				if (newNode == null) {
 					return null;
 				}
 				if (newNodeMode == MMapController.NEW_CHILD) {
@@ -118,8 +115,7 @@ class NewChildAction extends AFreeplaneAction {
 				}
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						((MTextController) textController).edit(newNode, targetNode, e,
-						    true, parentFolded, false);
+						((MTextController) textController).edit(newNode, targetNode, e, true, parentFolded, false);
 					}
 				});
 				break;
@@ -132,7 +128,7 @@ class NewChildAction extends AFreeplaneAction {
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
 		final MMapController mapController = (MMapController) getModeController().getMapController();
-		if (! mapController.isWriteable(parent)) {
+		if (!mapController.isWriteable(parent)) {
 			final String message = TextUtil.getText("node_is_write_protected");
 			UITools.errorMessage(message);
 			return null;

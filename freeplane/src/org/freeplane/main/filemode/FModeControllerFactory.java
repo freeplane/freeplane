@@ -25,11 +25,7 @@ import javax.swing.SwingConstants;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
-import org.freeplane.features.common.addins.misc.NextNodeAction;
-import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
 import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.cloud.CloudController;
@@ -80,11 +76,13 @@ public class FModeControllerFactory {
 		modeController.addAction(new CenterAction(controller));
 		modeController.addAction(new OpenPathAction(controller));
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
-		FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
+		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
 		toolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
-		userInputListenerFactory.addToolBar("/main_toolbar",ViewController.TOP, toolBar);
-		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(controller).getFilterToolbar());
-		userInputListenerFactory.addToolBar("/status",ViewController.BOTTOM, controller.getViewController().getStatusBar());
+		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
+		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(
+		    controller).getFilterToolbar());
+		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
+		    .getStatusBar());
 		userInputListenerFactory.setMenuStructure("/xml/filemodemenu.xml");
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();

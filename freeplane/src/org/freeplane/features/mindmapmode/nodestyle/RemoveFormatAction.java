@@ -4,13 +4,11 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.map.NodeModel;
 
 class RemoveFormatAction extends AMultipleNodeAction {
-
-	public RemoveFormatAction(Controller controller) {
+	public RemoveFormatAction(final Controller controller) {
 		super("RemoveFormatAction", controller);
 	}
 
@@ -20,8 +18,7 @@ class RemoveFormatAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void actionPerformed(ActionEvent e, NodeModel node) {
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		getModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
 	}
-
 }

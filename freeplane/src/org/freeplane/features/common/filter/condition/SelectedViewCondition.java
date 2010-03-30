@@ -42,7 +42,7 @@ public class SelectedViewCondition implements ISelectableCondition {
 		this.controller = controller;
 	}
 
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		return controller.getSelection().isSelected(node);
 	}
 

@@ -38,7 +38,7 @@ class LicenseAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		UITools.informationMessage(getController().getViewController().getFrame(), TextUtil
-		    .getText("license_text"), TextUtil.getText(NAME));
+		UITools.informationMessage(getController().getViewController().getFrame(), TextUtil.getText("license_text"),
+		    TextUtil.getText(NAME));
 	}
 }

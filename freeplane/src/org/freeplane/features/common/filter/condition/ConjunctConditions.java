@@ -25,7 +25,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.util.TextUtil;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -61,8 +60,8 @@ public class ConjunctConditions implements ISelectableCondition {
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
-		for(ISelectableCondition condition : conditions) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
+		for (final ISelectableCondition condition : conditions) {
 			if (!condition.checkNode(modeController, node)) {
 				return false;
 			}
@@ -99,7 +98,7 @@ public class ConjunctConditions implements ISelectableCondition {
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(ConjunctConditions.NAME);
-		for(ISelectableCondition condition : conditions) {
+		for (final ISelectableCondition condition : conditions) {
 			condition.toXml(child);
 		}
 		element.addChild(child);

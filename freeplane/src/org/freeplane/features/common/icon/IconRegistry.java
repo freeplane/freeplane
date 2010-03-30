@@ -58,7 +58,7 @@ public class IconRegistry implements IExtension {
 	}
 
 	private void registryNodeIcons(final MapController mapController, final NodeModel node) {
-		for(MindIcon icon : node.getIcons()) {
+		for (final MindIcon icon : node.getIcons()) {
 			addIcon(icon);
 		}
 		final ListIterator<NodeModel> iterator = mapController.childrenUnfolded(node);
@@ -67,14 +67,12 @@ public class IconRegistry implements IExtension {
 			registryNodeIcons(mapController, next);
 		}
 	}
-	
+
 	public void addIcons(final MapModel map) {
-		IconRegistry newRegistry = map.getIconRegistry() ;
+		final IconRegistry newRegistry = map.getIconRegistry();
 		final SortedComboBoxModel newMapIcons = newRegistry.mapIcons;
-		for(Object uiIcon:newMapIcons){
+		for (final Object uiIcon : newMapIcons) {
 			mapIcons.add(uiIcon);
 		}
 	}
-
-
 }

@@ -20,7 +20,6 @@
 package org.freeplane.core.resources.ui;
 
 import java.awt.AWTEvent;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -33,7 +32,6 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -52,7 +50,7 @@ public class GrabKeyDialog extends JDialog {
 	class ActionHandler implements ActionListener {
 		public void actionPerformed(final ActionEvent evt) {
 			if (evt.getSource() == ok) {
-				if(shortcut.keyChar == null){
+				if (shortcut.keyChar == null) {
 					isOK = false;
 					dispose();
 				}
@@ -91,12 +89,12 @@ public class GrabKeyDialog extends JDialog {
 		private int getModifierMask() {
 			return modifierMask;
 		}
-		
+
 		private Character keyChar = null;
 
 		@Override
 		protected void processKeyEvent(final KeyEvent evt) {
-			if(KeyEvent.KEY_PRESSED != evt.getID()){
+			if (KeyEvent.KEY_PRESSED != evt.getID()) {
 				return;
 			}
 			if ((getModifierMask() & evt.getModifiers()) != 0) {
@@ -128,12 +126,12 @@ public class GrabKeyDialog extends JDialog {
 				case KeyEvent.VK_DEAD_SEMIVOICED_SOUND:
 					return;
 				case '\0':
-					if(evt.getKeyChar() == KeyEvent.CHAR_UNDEFINED || evt.getKeyChar() == 0){
+					if (evt.getKeyChar() == KeyEvent.CHAR_UNDEFINED || evt.getKeyChar() == 0) {
 						return;
 					}
 					break;
 				case KeyEvent.VK_WINDOWS:
-					if (Compat.isWindowsOS()){
+					if (Compat.isWindowsOS()) {
 						return;
 					}
 				case KeyEvent.VK_ALT:
@@ -189,8 +187,8 @@ public class GrabKeyDialog extends JDialog {
 		}
 
 		public Character getKeyChar() {
-        	return keyChar;
-        }
+			return keyChar;
+		}
 	}
 
 	/**
@@ -250,9 +248,10 @@ public class GrabKeyDialog extends JDialog {
 	private int modifierMask;
 	private JButton ok;
 	private InputPane shortcut;
+
 	public Character getKeyChar() {
-	    return shortcut.getKeyChar();
-    }
+		return shortcut.getKeyChar();
+	}
 
 	private IKeystrokeValidator validator;
 

@@ -29,8 +29,6 @@ import java.util.ListIterator;
 
 import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapSelection;
-import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.controller.INodeViewLifeCycleListener;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
@@ -41,9 +39,6 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.features.common.addins.styles.MapStyle;
-import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.features.common.url.UrlManager;
 
 /**
  * Derive from this class to implement the Controller for your mode. Overload
@@ -89,46 +84,45 @@ public class ModeController extends AController {
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
 		extensionContainer.addExtension(clazz, extension);
 	}
-	
-	public void registerExtensionCopier(IExtensionCopier copier){
+
+	public void registerExtensionCopier(final IExtensionCopier copier) {
 		copiers.add(copier);
 	}
 
-	public void unregisterExtensionCopier(IExtensionCopier copier){
+	public void unregisterExtensionCopier(final IExtensionCopier copier) {
 		copiers.remove(copier);
 	}
 
-	void copyExtensions(Object key, NodeModel from, NodeModel to){
-		for(IExtensionCopier copier:copiers){
+	void copyExtensions(final Object key, final NodeModel from, final NodeModel to) {
+		for (final IExtensionCopier copier : copiers) {
 			copier.copy(key, from, to);
 		}
 	}
-	
-	public void undoableCopyExtensions(final Object key, final NodeModel from, final NodeModel to){
-		MapModel map = to.getMap();
-		if(map == null){
+
+	public void undoableCopyExtensions(final Object key, final NodeModel from, final NodeModel to) {
+		final MapModel map = to.getMap();
+		if (map == null) {
 			copyExtensions(key, from, to);
 			return;
 		}
-		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
-		if(undoHandler == null){
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+		if (undoHandler == null) {
 			copyExtensions(key, from, to);
 			return;
 		}
 		final NodeModel backup = new NodeModel(null);
 		copyExtensions(key, to, backup);
-		IActor actor = new IActor() {
-			
+		final IActor actor = new IActor() {
 			public void undo() {
 				removeExtensions(key, to);
 				copyExtensions(key, backup, to);
 				getMapController().nodeChanged(to);
 			}
-			
+
 			public String getDescription() {
 				return "undoableCopyExtensions";
 			}
-			
+
 			public void act() {
 				copyExtensions(key, from, to);
 				getMapController().nodeChanged(to);
@@ -137,42 +131,41 @@ public class ModeController extends AController {
 		execute(actor, map);
 	}
 
-	void removeExtensions(Object key, NodeModel from, final NodeModel which){
-		if(from.equals(which)){
-			for(IExtensionCopier copier:copiers){
+	void removeExtensions(final Object key, final NodeModel from, final NodeModel which) {
+		if (from.equals(which)) {
+			for (final IExtensionCopier copier : copiers) {
 				copier.remove(key, from);
 			}
 			return;
 		}
-		for(IExtensionCopier copier:copiers){
+		for (final IExtensionCopier copier : copiers) {
 			copier.remove(key, from, which);
 		}
 	}
-	
-	public void undoableRemoveExtensions(final Object key, final NodeModel from, final NodeModel which){
-		MapModel map = from.getMap();
-		if(map == null){
+
+	public void undoableRemoveExtensions(final Object key, final NodeModel from, final NodeModel which) {
+		final MapModel map = from.getMap();
+		if (map == null) {
 			removeExtensions(key, from, which);
 			return;
 		}
-		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
-		if(undoHandler == null){
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+		if (undoHandler == null) {
 			removeExtensions(key, from, which);
 			return;
 		}
 		final NodeModel backup = new NodeModel(null);
 		copyExtensions(key, from, backup);
-		IActor actor = new IActor() {
-			
+		final IActor actor = new IActor() {
 			public void undo() {
 				copyExtensions(key, backup, from);
 				getMapController().nodeChanged(from);
 			}
-			
+
 			public String getDescription() {
 				return "undoableCopyExtensions";
 			}
-			
+
 			public void act() {
 				removeExtensions(key, from, which);
 				getMapController().nodeChanged(from);
@@ -181,13 +174,11 @@ public class ModeController extends AController {
 		execute(actor, map);
 	}
 
-	
-	void removeExtensions(Object key, NodeModel from){
-		for(IExtensionCopier copier:copiers){
+	void removeExtensions(final Object key, final NodeModel from) {
+		for (final IExtensionCopier copier : copiers) {
 			copier.remove(key, from, from);
 		}
 	}
-	
 
 	public void addINodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
 		nodeViewListeners.add(listener);
@@ -199,12 +190,12 @@ public class ModeController extends AController {
 
 	public void commit() {
 	}
-	
+
 	public boolean isUndoAction() {
 		return false;
 	}
 
-	public void execute(final IActor actor, MapModel map) {
+	public void execute(final IActor actor, final MapModel map) {
 		actor.act();
 	}
 
@@ -258,13 +249,13 @@ public class ModeController extends AController {
 	}
 
 	public void onViewCreated(final Container node) {
-		for(INodeViewLifeCycleListener hook : nodeViewListeners) {
+		for (final INodeViewLifeCycleListener hook : nodeViewListeners) {
 			hook.onViewCreated(node);
 		}
 	}
 
 	public void onViewRemoved(final Container node) {
-		for(INodeViewLifeCycleListener hook : nodeViewListeners) {
+		for (final INodeViewLifeCycleListener hook : nodeViewListeners) {
 			hook.onViewRemoved(node);
 		}
 	}
@@ -272,10 +263,9 @@ public class ModeController extends AController {
 	@Override
 	public AFreeplaneAction removeAction(final String key) {
 		final AFreeplaneAction action = super.removeAction(key);
-		if(mapController != null){
+		if (mapController != null) {
 			mapController.removeListenerForAction(action);
 		}
-		
 		return action;
 	}
 

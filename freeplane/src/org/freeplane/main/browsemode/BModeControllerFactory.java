@@ -85,14 +85,16 @@ public class BModeControllerFactory {
 		modeController.addMenuContributor(toolbarContributor);
 		controller.getMapViewManager().addMapViewChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
-		FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
+		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
 		toolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
-		userInputListenerFactory.addToolBar("/main_toolbar",ViewController.TOP, toolBar);
-		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(controller).getFilterToolbar());
-		userInputListenerFactory.addToolBar("/status",ViewController.BOTTOM, controller.getViewController().getStatusBar());
+		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
+		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(
+		    controller).getFilterToolbar());
+		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
+		    .getStatusBar());
 		userInputListenerFactory.setMenuStructure(menuStructure);
 		final UnfoldAll unfoldAll = new UnfoldAll(modeController);
-		for (AFreeplaneAction annotatedAction : unfoldAll.getAnnotatedActions()) {
+		for (final AFreeplaneAction annotatedAction : unfoldAll.getAnnotatedActions()) {
 			modeController.addAction(annotatedAction);
 		}
 		userInputListenerFactory.updateMenus(modeController);

@@ -119,8 +119,7 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 				return AttributeRegistryTableModel.visibilityColumnName;
 			case 2:
 				if (AttributeRegistryTableModel.restrictionColumnName == null) {
-					AttributeRegistryTableModel.restrictionColumnName = TextUtil
-					    .getText("attributes_restriction");
+					AttributeRegistryTableModel.restrictionColumnName = TextUtil.getText("attributes_restriction");
 				}
 				return AttributeRegistryTableModel.restrictionColumnName;
 			case 3:

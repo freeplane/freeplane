@@ -26,7 +26,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.TextUtil;
 

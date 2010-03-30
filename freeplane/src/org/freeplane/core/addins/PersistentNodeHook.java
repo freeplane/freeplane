@@ -71,11 +71,11 @@ public abstract class PersistentNodeHook {
 		}
 
 		@Override
-        public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			setSelected(!isActiveForSelection());
-	        super.actionPerformed(e);
+			super.actionPerformed(e);
 			setSelected(isActiveForSelection());
-        }
+		}
 
 		@Override
 		public void setSelected() {
@@ -100,7 +100,7 @@ public abstract class PersistentNodeHook {
 				if (extension == null) {
 					extension = createExtension(node);
 				}
-				if(extension != null){
+				if (extension != null) {
 					add(node, extension);
 				}
 			}
@@ -130,7 +130,7 @@ public abstract class PersistentNodeHook {
 		                       final XMLElement lastBuiltElement) {
 			if (getHookAnnotation().onceForMap()) {
 				final XMLElement parentNodeElement = lastBuiltElement.getParent().getParent();
-				if (parentNodeElement == null || ! parentNodeElement.getName().equals("map")) {
+				if (parentNodeElement == null || !parentNodeElement.getName().equals("map")) {
 					return;
 				}
 			}
@@ -138,7 +138,7 @@ public abstract class PersistentNodeHook {
 				selectableHookAction.setEnabled(true);
 			}
 			final NodeModel node = (NodeModel) userObject;
-			if(node.getExtension(getExtensionClass()) != null){
+			if (node.getExtension(getExtensionClass()) != null) {
 				return;
 			}
 			add(node, createExtension(node, lastBuiltElement));
@@ -179,8 +179,8 @@ public abstract class PersistentNodeHook {
 		}
 		final MapController mapController = modeController.getMapController();
 		mapController.getReadManager().addElementHandler("hook", createXmlReader());
-		IExtensionElementWriter xmlWriter = createXmlWriter();
-		if(xmlWriter != null){
+		final IExtensionElementWriter xmlWriter = createXmlWriter();
+		if (xmlWriter != null) {
 			mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(), xmlWriter);
 		}
 		if (this instanceof IExtension) {

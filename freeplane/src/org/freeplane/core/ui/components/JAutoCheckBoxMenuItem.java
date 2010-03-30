@@ -37,7 +37,7 @@ public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements Property
 
 	public JAutoCheckBoxMenuItem(final IFreeplaneAction a) {
 		super(a);
-		if(a.isSelected()){
+		if (a.isSelected()) {
 			setSelected(true);
 		}
 	}

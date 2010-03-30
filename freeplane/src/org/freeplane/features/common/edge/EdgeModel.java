@@ -28,7 +28,6 @@ public class EdgeModel implements IExtension {
 	public static final int WIDTH_PARENT = -1;
 	public static final int DEFAULT_WIDTH = -1;
 	static public final String EDGEWIDTH_THIN = "thin";
-
 	public static final int WIDTH_THIN = 0;
 
 	public static EdgeModel createEdgeModel(final NodeModel node) {

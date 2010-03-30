@@ -130,7 +130,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		final Locale defaultLocale = Locale.getDefault();
 		final String language = defaultLocale.getLanguage();
 		final String DEFAULT_LANGUAGE = "en";
-		final String translatedWebUpdate  = getWebUpdateUrl(language);
+		final String translatedWebUpdate = getWebUpdateUrl(language);
 		final FreeplaneVersion localVersion = FreeplaneVersion.getVersion();
 		final HttpVersionClient translatedVersionClient = new HttpVersionClient(translatedWebUpdate, localVersion);
 		FreeplaneVersion lastTranslatedVersion = translatedVersionClient.getRemoteVersion();
@@ -166,15 +166,15 @@ class UpdateCheckAction extends AFreeplaneAction {
 
 	private String getWebUpdateUrl(final String language) {
 		{
-		final String webUpdateUrl = ResourceController.getResourceController().getProperty(WEB_UPDATE_LOCATION_KEY);
-		final FreeplaneVersion localVersion = FreeplaneVersion.getVersion();
-		StringBuilder sb = new StringBuilder(webUpdateUrl);
-		sb.append(localVersion.getType());
-		sb.append('/');
-		sb.append("history_"); 
-		sb.append(language );
-		sb.append(".txt");
-		return sb.toString();
+			final String webUpdateUrl = ResourceController.getResourceController().getProperty(WEB_UPDATE_LOCATION_KEY);
+			final FreeplaneVersion localVersion = FreeplaneVersion.getVersion();
+			final StringBuilder sb = new StringBuilder(webUpdateUrl);
+			sb.append(localVersion.getType());
+			sb.append('/');
+			sb.append("history_");
+			sb.append(language);
+			sb.append(".txt");
+			return sb.toString();
 		}
 	}
 
@@ -261,22 +261,21 @@ class UpdateCheckAction extends AFreeplaneAction {
 		historyPane.setPreferredSize(new Dimension(500, 300));
 		historyPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		messagePane.add(historyPane);
-		final JCheckBox updateAutomatically = new JCheckBox(TextUtil
-		    .getText("OptionPanel.check_updates_automatically"), ResourceController.getResourceController()
-		    .getBooleanProperty(CHECK_UPDATES_AUTOMATICALLY));
+		final JCheckBox updateAutomatically = new JCheckBox(
+		    TextUtil.getText("OptionPanel.check_updates_automatically"), ResourceController.getResourceController()
+		        .getBooleanProperty(CHECK_UPDATES_AUTOMATICALLY));
 		updateAutomatically.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		messagePane.add(updateAutomatically);
 		final Object[] options;
 		if (newVersion != null) {
-			options = new Object[] { TextUtil.getText("download"),
-			        TextUtil.removeMnemonic(TextUtil.getText("cancel")) };
+			options = new Object[] { TextUtil.getText("download"), TextUtil.removeMnemonic(TextUtil.getText("cancel")) };
 		}
 		else {
 			options = new Object[] { TextUtil.removeMnemonic(TextUtil.getText("CloseAction.text")) };
 		}
 		final int choice = JOptionPane.showOptionDialog(getController().getViewController().getFrame(), messagePane,
-		    TextUtil.getText("updatecheckdialog"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
-		    null, options, options[0]);
+		    TextUtil.getText("updatecheckdialog"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+		    options, options[0]);
 		ResourceController.getResourceController().setProperty(CHECK_UPDATES_AUTOMATICALLY,
 		    Boolean.toString(updateAutomatically.isSelected()));
 		return choice;

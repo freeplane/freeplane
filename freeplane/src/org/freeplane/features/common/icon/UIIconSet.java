@@ -29,38 +29,36 @@ import javax.swing.Icon;
 import org.freeplane.core.ui.components.MultipleImage;
 
 public class UIIconSet extends UIIcon {
-
 	final Collection<UIIcon> uiIcons;
-	final float zoom; 
-	
+	final float zoom;
+
 	public Collection<UIIcon> getIcons() {
 		return uiIcons;
 	}
 
 	List<Icon> imageIcons;
-	
 	private MultipleImage compoundIcon;
-	
-	public UIIconSet(final Collection<UIIcon> uiIcons, float zoom) {
+
+	public UIIconSet(final Collection<UIIcon> uiIcons, final float zoom) {
 		super("", "");
 		this.zoom = zoom;
-		this.uiIcons    = Collections.unmodifiableCollection(uiIcons);
-		this.imageIcons = new LinkedList<Icon>();
-		for(UIIcon uiIcon : uiIcons) {
+		this.uiIcons = Collections.unmodifiableCollection(uiIcons);
+		imageIcons = new LinkedList<Icon>();
+		for (final UIIcon uiIcon : uiIcons) {
 			final Icon icon;
-			if(zoom == 1f) {
+			if (zoom == 1f) {
 				icon = uiIcon.getIcon();
 			}
-			else{
+			else {
 				icon = new ZoomedIcon(uiIcon, zoom).getIcon();
 			}
 			imageIcons.add(icon);
 		}
 	}
-	
+
 	@Override
 	public Icon getIcon() {
-		if(compoundIcon == null) {
+		if (compoundIcon == null) {
 			compoundIcon = new MultipleImage();
 			for (final Icon icon : imageIcons) {
 				compoundIcon.addImage(icon);
@@ -68,24 +66,27 @@ public class UIIconSet extends UIIcon {
 		}
 		return compoundIcon;
 	}
-	
+
 	@Override
-	public int compareTo(UIIcon uiIcon) {
+	public int compareTo(final UIIcon uiIcon) {
 		return 1;
 	}
-	
+
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (this.getClass() != obj.getClass())
+		}
+		if (this.getClass() != obj.getClass()) {
 			return false;
-		UIIconSet uiIconSet = (UIIconSet)obj;
+		}
+		final UIIconSet uiIconSet = (UIIconSet) obj;
 		return zoom == uiIconSet.zoom && uiIcons.equals(uiIconSet.uiIcons);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return 31 * uiIcons.hashCode();

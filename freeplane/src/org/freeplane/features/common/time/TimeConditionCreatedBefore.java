@@ -37,7 +37,7 @@ public class TimeConditionCreatedBefore extends TimeCondition {
 		super(date);
 	}
 
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		final Date createdAt = node.getHistoryInformation().getCreatedAt();
 		final Date filterDate = getDate();
 		final boolean before = createdAt.getTime() < filterDate.getTime();

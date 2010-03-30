@@ -28,17 +28,16 @@ import org.freeplane.features.mindmapmode.MModeController;
  * @author Dimitry Polivaev
  * 18.09.2009
  */
-class SModeController extends MModeController{
-
+class SModeController extends MModeController {
 	private final ControlToolbar controlToolbar;
 
-	public SModeController(Controller controller) {
-	    super(controller);
-		Window dialog = ((DialogController)controller.getViewController()).getDialog();
+	public SModeController(final Controller controller) {
+		super(controller);
+		final Window dialog = ((DialogController) controller.getViewController()).getDialog();
 		controlToolbar = new ControlToolbar(controller, "styledialog", dialog);
 		controller.addAction(controlToolbar.getOkAction());
 		controller.addAction(controlToolbar.getCancelAction());
-    }
+	}
 
 	public int getStatus() {
 		return controlToolbar.getStatus();

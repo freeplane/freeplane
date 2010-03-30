@@ -23,8 +23,6 @@ import java.util.Vector;
 
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
@@ -61,7 +59,7 @@ public class MModeController extends ModeController {
 	}
 
 	private void addUndoableActor(final IActor actor, final MapModel map) {
-		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.addActor(actor);
 	}
 
@@ -73,21 +71,22 @@ public class MModeController extends ModeController {
 	@Override
 	public void commit() {
 		final MMapModel map = (MMapModel) getController().getMap();
-		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.commit();
 	}
 
 	public void delayedCommit() {
 		final MMapModel map = (MMapModel) getController().getMap();
-		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.delayedCommit();
 	}
 
 	public void delayedRollback() {
 		final MMapModel map = (MMapModel) getController().getMap();
-		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.delayedRollback();
 	}
+
 	private void createActions() {
 		final Controller controller = getController();
 		undo = new UndoAction(controller);
@@ -120,7 +119,7 @@ public class MModeController extends ModeController {
 	}
 
 	@Override
-	public void execute(final IActor actor, MapModel map) {
+	public void execute(final IActor actor, final MapModel map) {
 		actor.act();
 		addUndoableActor(actor, map);
 	}
@@ -134,18 +133,19 @@ public class MModeController extends ModeController {
 		return optionPanelBuilder;
 	}
 
+	@Override
 	public boolean isUndoAction() {
 		final MapModel model = getController().getMap();
 		if (!(model instanceof MMapModel)) {
 			return false;
 		}
-		return ((IUndoHandler)((MMapModel) model).getExtension(IUndoHandler.class)).isUndoActionRunning();
+		return ((IUndoHandler) ((MMapModel) model).getExtension(IUndoHandler.class)).isUndoActionRunning();
 	}
 
 	@Override
 	public void rollback() {
 		final MMapModel map = (MMapModel) getController().getMap();
-		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.rollback();
 	}
 
@@ -160,7 +160,7 @@ public class MModeController extends ModeController {
 	public void shutdown() {
 		super.shutdown();
 		final MNoteController noteController = (MNoteController) NoteController.getController(this);
-		if(noteController != null){
+		if (noteController != null) {
 			noteController.shutdownController();
 		}
 	}
@@ -168,7 +168,7 @@ public class MModeController extends ModeController {
 	@Override
 	public void startTransaction() {
 		final MMapModel map = (MMapModel) getController().getMap();
-		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.startTransaction();
 	}
 
@@ -180,7 +180,7 @@ public class MModeController extends ModeController {
 	public void startup() {
 		super.startup();
 		final NoteController noteController = NoteController.getController(this);
-		if(noteController != null){
+		if (noteController != null) {
 			((MNoteController) noteController).startupController();
 		}
 	}
@@ -189,5 +189,4 @@ public class MModeController extends ModeController {
 		undo.actionPerformed(null);
 		redo.reset();
 	}
-
 }

@@ -42,7 +42,9 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		MODE
 	};
 
-	public enum Mode { CLIPBOARD, FILE, EXPORT, STYLE };
+	public enum Mode {
+		CLIPBOARD, FILE, EXPORT, STYLE
+	};
 
 	private NodeWriter currentNodeWriter;
 	final private MapController mapController;
@@ -77,11 +79,11 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		writeNode(writer, rootNode, saveInvisible, true);
 	}
 
-	public void writeMapAsXml(final MapModel map, final Writer fileout, final Mode mode, final boolean saveInvisible, boolean forceFormat)
-	        throws IOException {
+	public void writeMapAsXml(final MapModel map, final Writer fileout, final Mode mode, final boolean saveInvisible,
+	                          final boolean forceFormat) throws IOException {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, fileout);
 		xmlWriter.setHint(Hint.MODE, mode);
-		if(forceFormat){
+		if (forceFormat) {
 			xmlWriter.setHint(MapStyle.WriterHint.FORCE_FORMATTING);
 		}
 		final XMLElement xmlMap = new XMLElement("map");
@@ -95,11 +97,11 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		final NodeWriter oldNodeWriter = currentNodeWriter;
 		final Object mode = xmlWriter.getHint(Hint.MODE);
 		final String nodeTag;
-		if(Mode.STYLE.equals(mode)){
+		if (Mode.STYLE.equals(mode)) {
 			nodeTag = NodeBuilder.XML_STYLENODE;
 		}
-		else{
-			nodeTag=NodeBuilder.XML_NODE;
+		else {
+			nodeTag = NodeBuilder.XML_NODE;
 		}
 		if (oldNodeWriter != null) {
 			writeManager.removeElementWriter(oldNodeWriter.getNodeTag(), oldNodeWriter);

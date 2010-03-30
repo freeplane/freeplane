@@ -21,16 +21,12 @@ package org.freeplane.features.common.time;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.ListIterator;
 
 import javax.swing.JComponent;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.icon.MindIcon;
-import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class TimeCondition implements ISelectableCondition {

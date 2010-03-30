@@ -48,7 +48,8 @@ public class MenuTools {
 		private final KeyStroke keyStroke;
 		private final String toolTipText;
 
-		public MenuEntry(String key, String label, String iconKey, KeyStroke keyStroke, String toolTipText) {
+		public MenuEntry(final String key, final String label, final String iconKey, final KeyStroke keyStroke,
+		                 final String toolTipText) {
 			this.key = key;
 			this.label = label;
 			this.iconKey = iconKey;
@@ -93,39 +94,40 @@ public class MenuTools {
 	 * @param menuRootKey the key of the node that should form the root of the output.
 	 * @param menuBuilder access point for the menu(s).
 	 */
-	public static DefaultMutableTreeNode createMenuEntryTree(String menuRootKey, final MenuBuilder menuBuilder) {
-		final HashMap<String, KeyStroke> menuKeyToKeyStrokeMap = invertAcceleratorMap(menuBuilder.getAcceleratorMap());
+	public static DefaultMutableTreeNode createMenuEntryTree(final String menuRootKey, final MenuBuilder menuBuilder) {
+		final HashMap<String, KeyStroke> menuKeyToKeyStrokeMap = MenuTools.invertAcceleratorMap(menuBuilder
+		    .getAcceleratorMap());
 		final DefaultMutableTreeNode menuRoot = menuBuilder.get(menuRootKey);
-		final DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(menuNode2menuEntryNode(menuRoot,
+		final DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(MenuTools.menuNode2menuEntryNode(menuRoot,
 		    menuKeyToKeyStrokeMap));
-		addChildrenRecursively(treeRoot, menuRoot.children(), menuKeyToKeyStrokeMap);
+		MenuTools.addChildrenRecursively(treeRoot, menuRoot.children(), menuKeyToKeyStrokeMap);
 		return treeRoot;
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void addChildrenRecursively(DefaultMutableTreeNode treeNode, Enumeration menuChildren,
-	                                           HashMap<String, KeyStroke> menuKeyToKeyStrokeMap) {
+	private static void addChildrenRecursively(final DefaultMutableTreeNode treeNode, final Enumeration menuChildren,
+	                                           final HashMap<String, KeyStroke> menuKeyToKeyStrokeMap) {
 		while (menuChildren.hasMoreElements()) {
-			DefaultMutableTreeNode childMenu = (DefaultMutableTreeNode) menuChildren.nextElement();
-			final DefaultMutableTreeNode treeChild = menuNode2menuEntryNode(childMenu, menuKeyToKeyStrokeMap);
+			final DefaultMutableTreeNode childMenu = (DefaultMutableTreeNode) menuChildren.nextElement();
+			final DefaultMutableTreeNode treeChild = MenuTools.menuNode2menuEntryNode(childMenu, menuKeyToKeyStrokeMap);
 			if (treeChild != null) {
 				treeNode.add(treeChild);
-				addChildrenRecursively(treeChild, childMenu.children(), menuKeyToKeyStrokeMap);
+				MenuTools.addChildrenRecursively(treeChild, childMenu.children(), menuKeyToKeyStrokeMap);
 			}
 			else {
-				addChildrenRecursively(treeNode, childMenu.children(), menuKeyToKeyStrokeMap);
+				MenuTools.addChildrenRecursively(treeNode, childMenu.children(), menuKeyToKeyStrokeMap);
 			}
 		}
 	}
 
 	// in: node for JMenu, out: node for MenuEntry
-	private static DefaultMutableTreeNode menuNode2menuEntryNode(DefaultMutableTreeNode menuNode,
-	                                                             HashMap<String, KeyStroke> menuKeyToKeyStrokeMap) {
-		IndexedTree.Node node = (Node) menuNode;
+	private static DefaultMutableTreeNode menuNode2menuEntryNode(final DefaultMutableTreeNode menuNode,
+	                                                             final HashMap<String, KeyStroke> menuKeyToKeyStrokeMap) {
+		final IndexedTree.Node node = (Node) menuNode;
 		final Object userObject = menuNode.getUserObject();
 		if (userObject instanceof JMenuItem) {
-			JMenuItem jMenuItem = (JMenuItem) userObject;
-			IFreeplaneAction action = (IFreeplaneAction) jMenuItem.getAction();
+			final JMenuItem jMenuItem = (JMenuItem) userObject;
+			final IFreeplaneAction action = (IFreeplaneAction) jMenuItem.getAction();
 			final String key = String.valueOf(node.getKey());
 			final String iconKey = action == null ? null : action.getIconKey();
 			return new DefaultMutableTreeNode(new MenuEntry(key, jMenuItem.getText(), iconKey, menuKeyToKeyStrokeMap
@@ -140,19 +142,21 @@ public class MenuTools {
 	 * Same as {@link #createMenuEntryTree(String, Controller)} but all MenuEntries without associated accelerator
 	 * and (then) empty submenus are removed from the result.
 	 */
-	public static DefaultMutableTreeNode createAcceleratebleMenuEntryTree(String menuRootKey, MenuBuilder menuBuilder) {
-		final DefaultMutableTreeNode menuEntryTreeNode = createMenuEntryTree(menuRootKey, menuBuilder);
-		DefaultMutableTreeNode result = new DefaultMutableTreeNode(menuEntryTreeNode.getUserObject());
-		addAcceleratableChildrenRecursively(result, menuEntryTreeNode.children());
+	public static DefaultMutableTreeNode createAcceleratebleMenuEntryTree(final String menuRootKey,
+	                                                                      final MenuBuilder menuBuilder) {
+		final DefaultMutableTreeNode menuEntryTreeNode = MenuTools.createMenuEntryTree(menuRootKey, menuBuilder);
+		final DefaultMutableTreeNode result = new DefaultMutableTreeNode(menuEntryTreeNode.getUserObject());
+		MenuTools.addAcceleratableChildrenRecursively(result, menuEntryTreeNode.children());
 		return result;
 	}
 
 	// filters out non-acceleratable menu entries
 	@SuppressWarnings("unchecked")
-	private static void addAcceleratableChildrenRecursively(DefaultMutableTreeNode target, Enumeration sourceChildren) {
+	private static void addAcceleratableChildrenRecursively(final DefaultMutableTreeNode target,
+	                                                        final Enumeration sourceChildren) {
 		while (sourceChildren.hasMoreElements()) {
-			DefaultMutableTreeNode sourceChild = (DefaultMutableTreeNode) sourceChildren.nextElement();
-			MenuEntry menuEntry = (MenuEntry) sourceChild.getUserObject();
+			final DefaultMutableTreeNode sourceChild = (DefaultMutableTreeNode) sourceChildren.nextElement();
+			final MenuEntry menuEntry = (MenuEntry) sourceChild.getUserObject();
 			if (sourceChild.isLeaf()) {
 				if (menuEntry.getKeyStroke() != null) {
 					target.add(new DefaultMutableTreeNode(menuEntry));
@@ -161,7 +165,7 @@ public class MenuTools {
 			else {
 				final DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(menuEntry);
 				target.add(newNode);
-				addAcceleratableChildrenRecursively(newNode, sourceChild.children());
+				MenuTools.addAcceleratableChildrenRecursively(newNode, sourceChild.children());
 				if (newNode.isLeaf()) {
 					target.remove(newNode);
 				}
@@ -169,35 +173,37 @@ public class MenuTools {
 		}
 	}
 
-	private static HashMap<String, KeyStroke> invertAcceleratorMap(Map<KeyStroke, Node> acceleratorMap) {
-		HashMap<String, KeyStroke> result = new HashMap<String, KeyStroke>();
-		for (Entry<KeyStroke, Node> entry : acceleratorMap.entrySet()) {
+	private static HashMap<String, KeyStroke> invertAcceleratorMap(final Map<KeyStroke, Node> acceleratorMap) {
+		final HashMap<String, KeyStroke> result = new HashMap<String, KeyStroke>();
+		for (final Entry<KeyStroke, Node> entry : acceleratorMap.entrySet()) {
 			result.put(String.valueOf(entry.getValue().getKey()), entry.getKey());
 		}
 		return result;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void insertAsNodeModelRecursively(NodeModel nodeModel, Enumeration children,
-	                                                MapController mapController) {
+	public static void insertAsNodeModelRecursively(final NodeModel nodeModel, final Enumeration children,
+	                                                final MapController mapController) {
 		while (children.hasMoreElements()) {
 			final DefaultMutableTreeNode child = (DefaultMutableTreeNode) children.nextElement();
-			final NodeModel newNodeModel = insertAsNodeModel(nodeModel, child, mapController);
-			if (!child.isLeaf())
-				insertAsNodeModelRecursively(newNodeModel, child.children(), mapController);
+			final NodeModel newNodeModel = MenuTools.insertAsNodeModel(nodeModel, child, mapController);
+			if (!child.isLeaf()) {
+				MenuTools.insertAsNodeModelRecursively(newNodeModel, child.children(), mapController);
+			}
 		}
 	}
 
-	private static NodeModel insertAsNodeModel(NodeModel nodeModel, DefaultMutableTreeNode treeNode,
-	                                           MapController mapController) {
+	private static NodeModel insertAsNodeModel(final NodeModel nodeModel, final DefaultMutableTreeNode treeNode,
+	                                           final MapController mapController) {
 		final MenuEntry menuEntry = (MenuEntry) treeNode.getUserObject();
 		final String text = menuEntry.getKeyStroke() == null ? menuEntry.getLabel() : menuEntry.getLabel() + ": "
-		        + formatKeyStroke(menuEntry.getKeyStroke());
+		        + MenuTools.formatKeyStroke(menuEntry.getKeyStroke());
 		final NodeModel newNodeModel = mapController.newNode(text, nodeModel.getMap());
-		if (!treeNode.isLeaf())
+		if (!treeNode.isLeaf()) {
 			newNodeModel.setFolded(true);
+		}
 		if (menuEntry.getIconKey() != null) {
-			addIcon(menuEntry, newNodeModel);
+			MenuTools.addIcon(menuEntry, newNodeModel);
 		}
 		nodeModel.insert(newNodeModel);
 		return newNodeModel;
@@ -205,19 +211,19 @@ public class MenuTools {
 
 	private static void addIcon(final MenuEntry menuEntry, final NodeModel newNodeModel) {
 		final String iconKey = menuEntry.getIconKey();
-		String resource = ResourceController.getResourceController().getProperty(iconKey, null);
+		final String resource = ResourceController.getResourceController().getProperty(iconKey, null);
 		if (resource == null) {
 			// LogTool.info("no icon for key '" + iconKey + "'");
 			return;
 		}
 		// icons are expected to live in the directory /images/icons/
 		// but the menu icons live in /images - set a relative path to navigate one level up
-		String name = resource.replaceAll("/images/(.*).png", "../$1");
+		final String name = resource.replaceAll("/images/(.*).png", "../$1");
 		final MindIcon mindIcon = new MindIcon(name, name + ".png", "");
 		newNodeModel.addIcon(mindIcon);
 	}
 
-	public static String formatKeyStroke(KeyStroke keyStroke) {
+	public static String formatKeyStroke(final KeyStroke keyStroke) {
 		final String keyModifiersText = KeyEvent.getKeyModifiersText(keyStroke.getModifiers());
 		final String keyText = KeyEvent.getKeyText(keyStroke.getKeyCode());
 		return keyModifiersText.length() == 0 ? keyText : keyModifiersText + "+" + keyText;

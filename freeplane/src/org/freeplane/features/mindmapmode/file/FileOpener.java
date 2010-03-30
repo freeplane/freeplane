@@ -29,7 +29,6 @@ import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,6 +68,7 @@ class FileOpener implements DropTargetListener {
 	}
 
 	static final private Pattern filePattern = Pattern.compile("file://[^\\s" + File.pathSeparatorChar + "]+");
+
 	@SuppressWarnings("unchecked")
 	public void drop(final DropTargetDropEvent dtde) {
 		if (!isDropAcceptable(dtde)) {
@@ -77,26 +77,27 @@ class FileOpener implements DropTargetListener {
 		}
 		dtde.acceptDrop(DnDConstants.ACTION_COPY);
 		try {
-			Transferable transferable = dtde.getTransferable();
-			if(transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)){
-				final List<File> list = (List<File>)transferable.getTransferData(DataFlavor.javaFileListFlavor);
-				for (File file : list) {
+			final Transferable transferable = dtde.getTransferable();
+			if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+				final List<File> list = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+				for (final File file : list) {
 					modeController.getMapController().newMap(Compat.fileToUrl(file));
 				}
 			}
-			if(transferable.isDataFlavorSupported(DataFlavor.stringFlavor)){
+			if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				final String files = (String) transferable.getTransferData(DataFlavor.stringFlavor);
-				Matcher matcher = filePattern.matcher(files);
-				while(matcher.find()){
-					String urlString = matcher.group();
-					if(! urlString.substring(urlString.length() - 3).equalsIgnoreCase(".mm")){
+				final Matcher matcher = filePattern.matcher(files);
+				while (matcher.find()) {
+					final String urlString = matcher.group();
+					if (!urlString.substring(urlString.length() - 3).equalsIgnoreCase(".mm")) {
 						continue;
 					}
 					try {
-						URI uri = new URI(urlString);
-						URL	url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+						final URI uri = new URI(urlString);
+						final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
 						modeController.getMapController().newMap(url);
-					} catch (Exception e) {
+					}
+					catch (final Exception e) {
 						e.printStackTrace();
 						continue;
 					}
@@ -116,12 +117,12 @@ class FileOpener implements DropTargetListener {
 
 	private boolean isDragAcceptable(final DropTargetDragEvent event) {
 		return event.isDataFlavorSupported(DataFlavor.javaFileListFlavor)
-		|| !event.isDataFlavorSupported(MindMapNodesSelection.mindMapNodesFlavor)
-		&& event.isDataFlavorSupported(DataFlavor.stringFlavor);
+		        || !event.isDataFlavorSupported(MindMapNodesSelection.mindMapNodesFlavor)
+		        && event.isDataFlavorSupported(DataFlavor.stringFlavor);
 	}
 
 	private boolean isDropAcceptable(final DropTargetDropEvent event) {
 		return event.isDataFlavorSupported(DataFlavor.javaFileListFlavor)
-		|| event.isDataFlavorSupported(DataFlavor.stringFlavor);
+		        || event.isDataFlavorSupported(DataFlavor.stringFlavor);
 	}
 }

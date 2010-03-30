@@ -43,7 +43,7 @@ public class NoFilteringCondition implements ISelectableCondition {
 		super();
 	}
 
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		return true;
 	}
 

@@ -28,9 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 class RootMainView extends MainView {
 	/**
@@ -77,9 +75,9 @@ class RootMainView extends MainView {
 	@Override
 	public Dimension getPreferredSize() {
 		final Dimension prefSize = super.getPreferredSize();
-        if (isPreferredSizeSet()) {
-            return prefSize;
-        }
+		if (isPreferredSizeSet()) {
+			return prefSize;
+		}
 		prefSize.width *= 1.1;
 		prefSize.height *= 2;
 		return prefSize;
@@ -138,6 +136,7 @@ class RootMainView extends MainView {
 			graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
 		}
 	}
+
 	@Override
 	public void setDraggedOver(final Point p) {
 		setDraggedOver((dropPosition(p.getX())) ? NodeView.DRAGGED_OVER_SON_LEFT : NodeView.DRAGGED_OVER_SON);

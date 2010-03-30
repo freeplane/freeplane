@@ -41,7 +41,6 @@ public class ResourceBundles extends ResourceBundle {
 	private static final String DEFAULT_LANGUAGE = "en";
 	public static final String POSTFIX_TRANSLATE_ME = "[translate me]";
 	public static final String RESOURCE_LANGUAGE = "language";
-
 	/**
 	 *
 	 */

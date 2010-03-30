@@ -27,10 +27,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.Map.Entry;
 
 import javax.swing.JPanel;
@@ -44,7 +42,6 @@ import org.freeplane.core.resources.ui.ColorProperty;
 import org.freeplane.core.resources.ui.ComboProperty;
 import org.freeplane.core.resources.ui.FontProperty;
 import org.freeplane.core.resources.ui.IPropertyControl;
-import org.freeplane.core.resources.ui.IconProperty;
 import org.freeplane.core.resources.ui.NextLineProperty;
 import org.freeplane.core.resources.ui.SeparatorProperty;
 import org.freeplane.core.util.TextUtil;
@@ -53,8 +50,6 @@ import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
-import org.freeplane.features.common.icon.IconController;
-import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
@@ -64,7 +59,6 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
-import org.freeplane.features.mindmapmode.icon.MIconController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -77,81 +71,85 @@ public class StyleEditorPanel extends JPanel {
 		}
 
 		@Override
-		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) mMindMapController
 			    .getExtension(NodeStyleController.class);
 			styleController.setBackgroundColor(node, enabled ? mNodeBackgroundColor.getColorValue() : null);
 		}
 	}
+
 	private class NodeShapeChangeListener extends ChangeListener {
 		public NodeShapeChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
-		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) mMindMapController
 			    .getExtension(NodeStyleController.class);
 			styleController.setShape(node, enabled ? mNodeShape.getValue() : null);
 		}
 	}
-	
+
 	private class ColorChangeListener extends ChangeListener {
 		public ColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
-		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) mMindMapController
 			    .getExtension(NodeStyleController.class);
 			styleController.setColor(node, enabled ? mNodeColor.getColorValue() : null);
 		}
 	}
+
 	private class FontBoldChangeListener extends ChangeListener {
 		public FontBoldChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
-		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) mMindMapController
 			    .getExtension(NodeStyleController.class);
 			styleController.setBold(node, enabled ? mNodeFontBold.getBooleanValue() : null);
 		}
 	}
-	
+
 	private class FontItalicChangeListener extends ChangeListener {
 		public FontItalicChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
-		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) mMindMapController
 			    .getExtension(NodeStyleController.class);
 			styleController.setItalic(node, enabled ? mNodeFontItalic.getBooleanValue() : null);
 		}
 	}
+
 	private class FontSizeChangeListener extends ChangeListener {
 		public FontSizeChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
-		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) mMindMapController
 			    .getExtension(NodeStyleController.class);
 			styleController.setFontSize(node, enabled ? Integer.valueOf(mNodeFontSize.getValue()) : null);
 		}
 	}
+
 	private class FontNameChangeListener extends ChangeListener {
 		public FontNameChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
-		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) mMindMapController
 			    .getExtension(NodeStyleController.class);
 			styleController.setFontFamily(node, enabled ? mNodeFontName.getValue() : null);
@@ -164,7 +162,7 @@ public class StyleEditorPanel extends JPanel {
 		}
 
 		@Override
-		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MEdgeController styleController = (MEdgeController) mMindMapController
 			    .getExtension(EdgeController.class);
 			styleController.setColor(node, enabled ? mEdgeColor.getColorValue() : null);
@@ -177,40 +175,45 @@ public class StyleEditorPanel extends JPanel {
 		}
 
 		@Override
-		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MEdgeController styleController = (MEdgeController) mMindMapController
 			    .getExtension(EdgeController.class);
 			styleController.setStyle(node, enabled ? EdgeStyle.getStyle(mEdgeStyle.getValue()) : null);
 		}
 	}
+
 	private class EdgeWidthChangeListener extends ChangeListener {
 		public EdgeWidthChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
-		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MEdgeController styleController = (MEdgeController) mMindMapController
 			    .getExtension(EdgeController.class);
-			styleController.setWidth(node, enabled ? getEdgeWidthTransformation().get(mEdgeWidth.getValue()) : EdgeModel.DEFAULT_WIDTH);
+			styleController.setWidth(node, enabled ? getEdgeWidthTransformation().get(mEdgeWidth.getValue())
+			        : EdgeModel.DEFAULT_WIDTH);
 		}
 	}
-	
+
 	private class CloudColorChangeListener extends ChangeListener {
 		public CloudColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
-		void applyValue(final boolean enabled, final NodeModel node, PropertyChangeEvent evt) {
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MCloudController styleController = (MCloudController) mMindMapController
 			    .getExtension(CloudController.class);
-			if(enabled)
+			if (enabled) {
 				styleController.setColor(node, mCloudColor.getColorValue());
-			else 
+			}
+			else {
 				styleController.setCloud(node, false);
+			}
 		}
 	}
+
 	private abstract class ChangeListener implements PropertyChangeListener {
 		final private IPropertyControl mProperty;
 		final private BooleanProperty mSet;
@@ -250,8 +253,8 @@ public class StyleEditorPanel extends JPanel {
 	private static final String EDGE_STYLE = "edgestyle";
 	private static final String[] EDGE_STYLES = StyleEditorPanel.initializeEdgeStyles();
 	private static final String EDGE_WIDTH = "edgewidth";
-	private static final String[] EDGE_WIDTHS = new String[] { "EdgeWidth_thin", "EdgeWidth_1",
-	        "EdgeWidth_2", "EdgeWidth_4", "EdgeWidth_8" };
+	private static final String[] EDGE_WIDTHS = new String[] { "EdgeWidth_thin", "EdgeWidth_1", "EdgeWidth_2",
+	        "EdgeWidth_4", "EdgeWidth_8" };
 	private static final String ICON = "icon";
 	private static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
 	private static final String NODE_COLOR = "nodecolor";
@@ -315,13 +318,14 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetNodeShape;
 	final private String[] sizes = new String[] { "2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24",
 	        "30", "36", "48", "72" };
-	private boolean addStyleBox;
-	private MUIFactory uiFactory;
+	private final boolean addStyleBox;
+	private final MUIFactory uiFactory;
 
 	/**
 	 * @throws HeadlessException
 	 */
-	public StyleEditorPanel(final ModeController pMindMapController, MUIFactory uiFactory, boolean addStyleBox) throws HeadlessException {
+	public StyleEditorPanel(final ModeController pMindMapController, final MUIFactory uiFactory,
+	                        final boolean addStyleBox) throws HeadlessException {
 		super();
 		mMindMapController = pMindMapController;
 		this.addStyleBox = addStyleBox;
@@ -334,8 +338,7 @@ public class StyleEditorPanel extends JPanel {
 		mNodeBackgroundColor = new ColorProperty(StyleEditorPanel.NODE_BACKGROUND_COLOR, ResourceController
 		    .getResourceController().getDefaultProperty(NODE_BACKGROUND_COLOR));
 		controls.add(mNodeBackgroundColor);
-		final BgColorChangeListener listener = new BgColorChangeListener(mSetNodeBackgroundColor,
-		    mNodeBackgroundColor);
+		final BgColorChangeListener listener = new BgColorChangeListener(mSetNodeBackgroundColor, mNodeBackgroundColor);
 		mSetNodeBackgroundColor.addPropertyChangeListener(listener);
 		mNodeBackgroundColor.addPropertyChangeListener(listener);
 	}
@@ -346,8 +349,7 @@ public class StyleEditorPanel extends JPanel {
 		mCloudColor = new ColorProperty(StyleEditorPanel.CLOUD_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
 		controls.add(mCloudColor);
-		final CloudColorChangeListener listener = new CloudColorChangeListener(mSetCloudColor,
-			mCloudColor);
+		final CloudColorChangeListener listener = new CloudColorChangeListener(mSetCloudColor, mCloudColor);
 		mSetCloudColor.addPropertyChangeListener(listener);
 		mCloudColor.addPropertyChangeListener(listener);
 	}
@@ -358,8 +360,7 @@ public class StyleEditorPanel extends JPanel {
 		mNodeColor = new ColorProperty(StyleEditorPanel.NODE_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(NODE_TEXT_COLOR));
 		controls.add(mNodeColor);
-		final ColorChangeListener listener = new ColorChangeListener(mSetNodeColor,
-			mNodeColor);
+		final ColorChangeListener listener = new ColorChangeListener(mSetNodeColor, mNodeColor);
 		mSetNodeColor.addPropertyChangeListener(listener);
 		mNodeColor.addPropertyChangeListener(listener);
 	}
@@ -370,8 +371,7 @@ public class StyleEditorPanel extends JPanel {
 		mEdgeColor = new ColorProperty(StyleEditorPanel.EDGE_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(EdgeController.RESOURCES_EDGE_COLOR));
 		controls.add(mEdgeColor);
-		final EdgeColorChangeListener listener = new EdgeColorChangeListener(mSetEdgeColor,
-			mEdgeColor);
+		final EdgeColorChangeListener listener = new EdgeColorChangeListener(mSetEdgeColor, mEdgeColor);
 		mSetEdgeColor.addPropertyChangeListener(listener);
 		mEdgeColor.addPropertyChangeListener(listener);
 	}
@@ -381,8 +381,7 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(mSetEdgeStyle);
 		mEdgeStyle = new ComboProperty(StyleEditorPanel.EDGE_STYLE, EDGE_STYLES);
 		controls.add(mEdgeStyle);
-		final EdgeStyleChangeListener listener = new EdgeStyleChangeListener(mSetEdgeStyle,
-			mEdgeStyle);
+		final EdgeStyleChangeListener listener = new EdgeStyleChangeListener(mSetEdgeStyle, mEdgeStyle);
 		mSetEdgeStyle.addPropertyChangeListener(listener);
 		mEdgeStyle.addPropertyChangeListener(listener);
 	}
@@ -392,8 +391,7 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(mSetEdgeWidth);
 		mEdgeWidth = new ComboProperty(StyleEditorPanel.EDGE_WIDTH, EDGE_WIDTHS);
 		controls.add(mEdgeWidth);
-		final EdgeWidthChangeListener listener = new EdgeWidthChangeListener(mSetEdgeWidth,
-			mEdgeWidth);
+		final EdgeWidthChangeListener listener = new EdgeWidthChangeListener(mSetEdgeWidth, mEdgeWidth);
 		mSetEdgeWidth.addPropertyChangeListener(listener);
 		mEdgeWidth.addPropertyChangeListener(listener);
 	}
@@ -403,8 +401,7 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(mSetNodeFontBold);
 		mNodeFontBold = new BooleanProperty(StyleEditorPanel.NODE_FONT_BOLD);
 		controls.add(mNodeFontBold);
-		final FontBoldChangeListener listener = new FontBoldChangeListener(mSetNodeFontBold,
-			mNodeFontBold);
+		final FontBoldChangeListener listener = new FontBoldChangeListener(mSetNodeFontBold, mNodeFontBold);
 		mSetNodeFontBold.addPropertyChangeListener(listener);
 		mNodeFontBold.addPropertyChangeListener(listener);
 	}
@@ -414,8 +411,7 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(mSetNodeFontItalic);
 		mNodeFontItalic = new BooleanProperty(StyleEditorPanel.NODE_FONT_ITALIC);
 		controls.add(mNodeFontItalic);
-		final FontItalicChangeListener listener = new FontItalicChangeListener(mSetNodeFontItalic,
-			mNodeFontItalic);
+		final FontItalicChangeListener listener = new FontItalicChangeListener(mSetNodeFontItalic, mNodeFontItalic);
 		mSetNodeFontItalic.addPropertyChangeListener(listener);
 		mNodeFontItalic.addPropertyChangeListener(listener);
 	}
@@ -425,8 +421,7 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(mSetNodeFontName);
 		mNodeFontName = new FontProperty(StyleEditorPanel.NODE_FONT_NAME);
 		controls.add(mNodeFontName);
-		final FontNameChangeListener listener = new FontNameChangeListener(mSetNodeFontName,
-			mNodeFontName);
+		final FontNameChangeListener listener = new FontNameChangeListener(mSetNodeFontName, mNodeFontName);
 		mSetNodeFontName.addPropertyChangeListener(listener);
 		mNodeFontName.addPropertyChangeListener(listener);
 	}
@@ -437,8 +432,7 @@ public class StyleEditorPanel extends JPanel {
 		final List<String> sizesVector = new ArrayList<String>(Arrays.asList(sizes));
 		mNodeFontSize = new ComboProperty(StyleEditorPanel.NODE_FONT_SIZE, sizesVector, sizesVector);
 		controls.add(mNodeFontSize);
-		final FontSizeChangeListener listener = new FontSizeChangeListener(mSetNodeFontSize,
-			mNodeFontSize);
+		final FontSizeChangeListener listener = new FontSizeChangeListener(mSetNodeFontSize, mNodeFontSize);
 		mSetNodeFontSize.addPropertyChangeListener(listener);
 		mNodeFontSize.addPropertyChangeListener(listener);
 	}
@@ -449,8 +443,7 @@ public class StyleEditorPanel extends JPanel {
 		mNodeShape = new ComboProperty(StyleEditorPanel.NODE_SHAPE, new String[] { "fork", "bubble", "as_parent",
 		        "combined" });
 		controls.add(mNodeShape);
-		final NodeShapeChangeListener listener = new NodeShapeChangeListener(mSetNodeShape,
-			mNodeShape);
+		final NodeShapeChangeListener listener = new NodeShapeChangeListener(mSetNodeShape, mNodeShape);
 		mSetNodeShape.addPropertyChangeListener(listener);
 		mNodeShape.addPropertyChangeListener(listener);
 	}
@@ -480,8 +473,7 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private HashMap<String, Integer> getEdgeWidthTransformation() {
-		final HashMap<String, Integer> transformator = new HashMap<String, Integer>(
-		    StyleEditorPanel.EDGE_WIDTHS.length);
+		final HashMap<String, Integer> transformator = new HashMap<String, Integer>(StyleEditorPanel.EDGE_WIDTHS.length);
 		int i = 0;
 		transformator.put(StyleEditorPanel.EDGE_WIDTHS[i++], EdgeModel.WIDTH_THIN);
 		transformator.put(StyleEditorPanel.EDGE_WIDTHS[i++], 1);
@@ -495,15 +487,15 @@ public class StyleEditorPanel extends JPanel {
 	 * Creates all controls and adds them to the frame.
 	 * @param modeController 
 	 */
-	public void init(ModeController modeController) {
+	public void init(final ModeController modeController) {
 		final String form = "right:max(40dlu;p), 4dlu, 20dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu";
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.setDefaultDialogBorder();
-		if(addStyleBox){
-			String label = TextUtil.getText("OptionPanel.separator.NodeStyle");
+		if (addStyleBox) {
+			final String label = TextUtil.getText("OptionPanel.separator.NodeStyle");
 			rightBuilder.appendSeparator(label);
-			Container styleBox = uiFactory.createStyleBox();
+			final Container styleBox = uiFactory.createStyleBox();
 			rightBuilder.nextLine();
 			rightBuilder.append("");
 			rightBuilder.append(styleBox, 5);
@@ -518,7 +510,7 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	public void setStyle(final ModeController modeController, final NodeModel node) {
-		if(internalChange){
+		if (internalChange) {
 			return;
 		}
 		internalChange = true;
@@ -535,7 +527,8 @@ public class StyleEditorPanel extends JPanel {
 				final Color color = NodeStyleModel.getBackgroundColor(node);
 				final Color viewColor = styleController.getBackgroundColor(node);
 				mSetNodeBackgroundColor.setValue(color != null);
-				mNodeBackgroundColor.setColorValue(viewColor != null ? viewColor : modeController.getController().getMapViewManager().getBackgroundColor(node));
+				mNodeBackgroundColor.setColorValue(viewColor != null ? viewColor : modeController.getController()
+				    .getMapViewManager().getBackgroundColor(node));
 				mNodeBackgroundColor.setEnabled(mSetNodeBackgroundColor.getBooleanValue());
 			}
 			{
@@ -621,33 +614,32 @@ public class StyleEditorPanel extends JPanel {
 		}
 		return null;
 	}
-	
+
 	private void addListeners(final ModeController modeController) {
 		final Controller controller = modeController.getController();
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
-			public void onSelect(NodeModel node) {
+			public void onSelect(final NodeModel node) {
 				final IMapSelection selection = controller.getSelection();
-				if(selection.size() == 1 ){
+				if (selection.size() == 1) {
 					setStyle(modeController, node);
 				}
 			}
-			
-			public void onDeselect(NodeModel node) {
+
+			public void onDeselect(final NodeModel node) {
 			}
 		});
 		mapController.addNodeChangeListener(new INodeChangeListener() {
-			public void nodeChanged(NodeChangeEvent event) {
+			public void nodeChanged(final NodeChangeEvent event) {
 				final IMapSelection selection = controller.getSelection();
-				if(selection == null){
+				if (selection == null) {
 					return;
 				}
 				final NodeModel node = event.getNode();
-				if(selection.getSelected().equals(node)){
+				if (selection.getSelected().equals(node)) {
 					setStyle(modeController, node);
 				}
 			}
 		});
 	}
-
 }

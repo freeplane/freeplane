@@ -98,24 +98,22 @@ public class SpellCheckerController implements IExtension {
 		}
 		setSpellCheckOptions(resourceController);
 		resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
-			public void propertyChanged(String propertyName, String newValue, String oldValue) {
-				if(propertyName.startsWith("spelling_opt")){
+			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+				if (propertyName.startsWith("spelling_opt")) {
 					setSpellCheckOptions(resourceController);
 				}
 			}
 		});
-
 		final String[] dictionaryList = orthoDir.list(new FilenameFilter() {
 			public boolean accept(final File dir, final String name) {
 				return name.length() == "dictionary_XX.ortho".length() && name.startsWith("dictionary_")
-				&& name.endsWith(".ortho");
+				        && name.endsWith(".ortho");
 			}
 		});
 		if (dictionaryList.length == 0) {
 			return;
 		}
-		SpellChecker.setUserDictionaryProvider(new FileUserDictionary(resourceController
-			.getFreeplaneUserDirectory()));
+		SpellChecker.setUserDictionaryProvider(new FileUserDictionary(resourceController.getFreeplaneUserDirectory()));
 		final StringBuilder availableLocales = new StringBuilder();
 		for (int i = 0; i < dictionaryList.length; i++) {
 			final String language = dictionaryList[i].substring("dictionary_".length(), "dictionary_".length() + 2);
@@ -130,12 +128,11 @@ public class SpellCheckerController implements IExtension {
 			LogTool.severe(e);
 			return;
 		}
-
 		String spellingLanguage = resourceController.getProperty(SPELLING_LANGUAGE, null);
-		if(spellingLanguage == null){
+		if (spellingLanguage == null) {
 			spellingLanguage = ((ResourceBundles) resourceController.getResources()).getLanguageCode();
 		}
-		if(! spellingLanguage.equals("disabled")){
+		if (!spellingLanguage.equals("disabled")) {
 			SpellChecker.setLanguage(spellingLanguage);
 		}
 		languageChangeListener = new LanguageChangeListener() {
@@ -143,7 +140,7 @@ public class SpellCheckerController implements IExtension {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						final Locale currentLocale = ev.getCurrentLocale();
-						if(currentLocale == null){
+						if (currentLocale == null) {
 							resourceController.setProperty(SPELLING_LANGUAGE, "disabled");
 							return;
 						}
@@ -153,18 +150,19 @@ public class SpellCheckerController implements IExtension {
 			}
 		};
 		SpellChecker.addLanguageChangeLister(languageChangeListener);
-
 	}
 
 	private void setSpellCheckOptions(final ResourceController resourceController) {
-	    final SpellCheckerOptions options = SpellChecker.getOptions();
-	    options.setCaseSensitive(resourceController.getBooleanProperty("spelling_opt_case_sensitive"));
-	    options.setIgnoreAllCapsWords(resourceController.getBooleanProperty("spelling_opt_ignore_all_caps_words"));
-	    options.setIgnoreCapitalization(resourceController.getBooleanProperty("spelling_opt_ignore_capitalization"));
-	    options.setIgnoreWordsWithNumbers(resourceController.getBooleanProperty("spelling_opt_ignore_words_with_numbers"));
-	    options.setSuggestionsLimitDialog(resourceController.getIntProperty("spelling_opt_suggestions_limit_dialog", 15));
-	    options.setSuggestionsLimitMenu(resourceController.getIntProperty("spelling_opt_suggestions_limit_menu", 15));
-    }
+		final SpellCheckerOptions options = SpellChecker.getOptions();
+		options.setCaseSensitive(resourceController.getBooleanProperty("spelling_opt_case_sensitive"));
+		options.setIgnoreAllCapsWords(resourceController.getBooleanProperty("spelling_opt_ignore_all_caps_words"));
+		options.setIgnoreCapitalization(resourceController.getBooleanProperty("spelling_opt_ignore_capitalization"));
+		options.setIgnoreWordsWithNumbers(resourceController
+		    .getBooleanProperty("spelling_opt_ignore_words_with_numbers"));
+		options.setSuggestionsLimitDialog(resourceController
+		    .getIntProperty("spelling_opt_suggestions_limit_dialog", 15));
+		options.setSuggestionsLimitMenu(resourceController.getIntProperty("spelling_opt_suggestions_limit_menu", 15));
+	}
 
 	public boolean isSpellCheckerActive() {
 		init();

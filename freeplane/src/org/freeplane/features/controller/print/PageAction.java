@@ -31,7 +31,6 @@ import java.awt.print.PageFormat;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -70,6 +69,7 @@ class PageAction extends AbstractPrintAction {
 	PageAction(final PrintController controller) {
 		super("PageAction", controller);
 	}
+
 	public void actionPerformed(final ActionEvent e) {
 		if (!getPrintController().acquirePrinterJobAndPageFormat()) {
 			return;
@@ -77,15 +77,18 @@ class PageAction extends AbstractPrintAction {
 		final Frame frame = getPrintController().getController().getViewController().getFrame();
 		final JDialog dialog = new JDialog(frame, TextUtil.getText("printing_settings"), /* modal=*/
 		true);
-		ButtonGroup fitButtons = new ButtonGroup();
+		final ButtonGroup fitButtons = new ButtonGroup();
 		final FitMap fitMap = FitMap.valueOf();
-		final JRadioButton fitToPage = new JRadioButton(TextUtil.getText("fit_map_to_page"), fitMap==FitMap.PAGE);
+		final JRadioButton fitToPage = new JRadioButton(TextUtil.getText("fit_map_to_page"), fitMap == FitMap.PAGE);
 		fitButtons.add(fitToPage);
-		final JRadioButton fitToWidth = new JRadioButton(TextUtil.getText("fit_map_to_page_width"), fitMap==FitMap.WIDTH);
+		final JRadioButton fitToWidth = new JRadioButton(TextUtil.getText("fit_map_to_page_width"),
+		    fitMap == FitMap.WIDTH);
 		fitButtons.add(fitToWidth);
-		final JRadioButton fitToHeighth = new JRadioButton(TextUtil.getText("fit_map_to_page_height"), fitMap==FitMap.HEIGHT);
+		final JRadioButton fitToHeighth = new JRadioButton(TextUtil.getText("fit_map_to_page_height"),
+		    fitMap == FitMap.HEIGHT);
 		fitButtons.add(fitToHeighth);
-		final JRadioButton userDefaultScale = new JRadioButton(TextUtil.getText("user_defined_scale"), fitMap==FitMap.USER_DEFINED);
+		final JRadioButton userDefaultScale = new JRadioButton(TextUtil.getText("user_defined_scale"),
+		    fitMap == FitMap.USER_DEFINED);
 		fitButtons.add(userDefaultScale);
 		final JLabel userZoomL = new JLabel(TextUtil.getText("user_zoom"));
 		final JTextField userZoom = new JTextField(ResourceController.getResourceController().getProperty("user_zoom"),
@@ -143,13 +146,13 @@ class PageAction extends AbstractPrintAction {
 		if (aListener.getEventSource() == 1) {
 			ResourceController.getResourceController().setProperty("user_zoom", userZoom.getText());
 			final FitMap fitMapDecision;
-			if(fitToPage.isSelected()){
+			if (fitToPage.isSelected()) {
 				fitMapDecision = FitMap.PAGE;
 			}
-			else if(fitToWidth.isSelected()){
+			else if (fitToWidth.isSelected()) {
 				fitMapDecision = FitMap.WIDTH;
 			}
-			else if(fitToHeighth.isSelected()){
+			else if (fitToHeighth.isSelected()) {
 				fitMapDecision = FitMap.HEIGHT;
 			}
 			else {

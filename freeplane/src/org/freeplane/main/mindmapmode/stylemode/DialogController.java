@@ -40,16 +40,16 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 class DialogController extends ViewController {
 	final private JDialog dialog;
+
 	public JDialog getDialog() {
 		return dialog;
 	}
 
 	private JComponent mContentComponent = null;
+
 	/** Contains the value where the Note Window should be displayed (right, left, top, bottom) */
 	/** Contains the Note Window Component */
-
-	public DialogController(final Controller controller, final IMapViewManager mapViewController,
-	                                 final JDialog dialog) {
+	public DialogController(final Controller controller, final IMapViewManager mapViewController, final JDialog dialog) {
 		super(controller, mapViewController, "dialog_");
 		this.dialog = dialog;
 		getContentPane().setLayout(new BorderLayout());
@@ -139,7 +139,7 @@ class DialogController extends ViewController {
 	}
 
 	@Override
-    public void removeSplitPane() {
+	public void removeSplitPane() {
 		throw new UnsupportedOperationException();
-    }
+	}
 }

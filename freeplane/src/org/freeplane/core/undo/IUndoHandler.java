@@ -21,17 +21,19 @@ package org.freeplane.core.undo;
 
 import java.awt.event.ActionListener;
 
-import org.freeplane.core.extension.IExtension;
 import javax.swing.event.ChangeListener;
-public interface IUndoHandler extends IExtension{
+
+import org.freeplane.core.extension.IExtension;
+
+public interface IUndoHandler extends IExtension {
 	void addActor(IActor actor);
 
 	boolean canRedo();
 
 	boolean canUndo();
-	
+
 	void addChangeListener(ChangeListener listener);
-	
+
 	void removeChangeListener(ChangeListener listener);
 
 	void commit();
@@ -53,10 +55,10 @@ public interface IUndoHandler extends IExtension{
 	void startTransaction();
 
 	void undo();
-	
+
 	void deactivate();
-	
+
 	public void delayedCommit();
-	
+
 	public void delayedRollback();
 }

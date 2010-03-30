@@ -21,11 +21,8 @@ package org.freeplane.features.mindmapmode.addins.styles;
 
 import java.awt.Container;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.Collection;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.event.ListDataEvent;
@@ -35,9 +32,6 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.frame.IMapSelectionListener;
-import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IMenuContributor;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.common.addins.styles.LogicalStyleController;
 import org.freeplane.features.common.addins.styles.LogicalStyleModel;
 import org.freeplane.features.common.addins.styles.MapStyle;
@@ -46,14 +40,14 @@ import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
-public class MUIFactory implements INodeSelectionListener, INodeChangeListener, IMapChangeListener, IMapSelectionListener {
+public class MUIFactory implements INodeSelectionListener, INodeChangeListener, IMapChangeListener,
+        IMapSelectionListener {
 	private static final String[] sizes = { "8", "10", "12", "14", "16", "18", "20", "24", "28" };
 	final private Controller controller;
 	private boolean ignoreChangeEvent = false;
@@ -64,20 +58,20 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		this.modeController = modeController;
 		size = new DefaultComboBoxModel(MUIFactory.sizes);
 		styles = new DefaultComboBoxModel();
-		final MNodeStyleController styleController = (MNodeStyleController) modeController.getExtension(NodeStyleController.class);
+		final MNodeStyleController styleController = (MNodeStyleController) modeController
+		    .getExtension(NodeStyleController.class);
 		controller = modeController.getController();
 		final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		final String[] envFonts = gEnv.getAvailableFontFamilyNames();
 		fonts = new DefaultComboBoxModel(envFonts);
 		final ListDataListener fontsListener = new ListDataListener() {
-			
-			public void intervalRemoved(ListDataEvent e) {
+			public void intervalRemoved(final ListDataEvent e) {
 			}
-			
-			public void intervalAdded(ListDataEvent e) {
+
+			public void intervalAdded(final ListDataEvent e) {
 			}
-			
-			public void contentsChanged(ListDataEvent e) {
+
+			public void contentsChanged(final ListDataEvent e) {
 				if (e.getIndex0() != -1) {
 					return;
 				}
@@ -85,54 +79,54 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 					return;
 				}
 				ignoreChangeEvent = true;
-				DefaultComboBoxModel source = (DefaultComboBoxModel) e.getSource();
+				final DefaultComboBoxModel source = (DefaultComboBoxModel) e.getSource();
 				styleController.setFontFamily((String) source.getSelectedItem());
 				ignoreChangeEvent = false;
 			}
 		};
 		fonts.addListDataListener(fontsListener);
 		final ListDataListener sizeListener = new ListDataListener() {
-				public void intervalRemoved(ListDataEvent e) {
-				}
-				
-				public void intervalAdded(ListDataEvent e) {
-				}
-				
-				public void contentsChanged(ListDataEvent e) {
-					if (e.getIndex0() != -1) {
-						return;
-					}
-					if (ignoreChangeEvent) {
-						return;
-					}
-				try {
-					DefaultComboBoxModel source = (DefaultComboBoxModel) e.getSource();
-	                final int intSize = Integer.parseInt(((String) source.getSelectedItem()));
-	                styleController.setFontSize(intSize);
-                }
-                catch (NumberFormatException nfe) {
-                }
+			public void intervalRemoved(final ListDataEvent e) {
 			}
-		};
-		size.addListDataListener(sizeListener);
-		
-		final ListDataListener styleListener = new ListDataListener() {
-			public void intervalRemoved(ListDataEvent e) {
+
+			public void intervalAdded(final ListDataEvent e) {
 			}
-			
-			public void intervalAdded(ListDataEvent e) {
-			}
-			
-			public void contentsChanged(ListDataEvent e) {
+
+			public void contentsChanged(final ListDataEvent e) {
 				if (e.getIndex0() != -1) {
 					return;
 				}
 				if (ignoreChangeEvent) {
 					return;
 				}
-				DefaultComboBoxModel source = (DefaultComboBoxModel) e.getSource();
+				try {
+					final DefaultComboBoxModel source = (DefaultComboBoxModel) e.getSource();
+					final int intSize = Integer.parseInt(((String) source.getSelectedItem()));
+					styleController.setFontSize(intSize);
+				}
+				catch (final NumberFormatException nfe) {
+				}
+			}
+		};
+		size.addListDataListener(sizeListener);
+		final ListDataListener styleListener = new ListDataListener() {
+			public void intervalRemoved(final ListDataEvent e) {
+			}
+
+			public void intervalAdded(final ListDataEvent e) {
+			}
+
+			public void contentsChanged(final ListDataEvent e) {
+				if (e.getIndex0() != -1) {
+					return;
+				}
+				if (ignoreChangeEvent) {
+					return;
+				}
+				final DefaultComboBoxModel source = (DefaultComboBoxModel) e.getSource();
 				final Object style = source.getSelectedItem();
-				MLogicalStyleController controller = (MLogicalStyleController) modeController.getExtension(LogicalStyleController.class);
+				final MLogicalStyleController controller = (MLogicalStyleController) modeController
+				    .getExtension(LogicalStyleController.class);
 				controller.setStyle(style);
 			}
 		};
@@ -140,7 +134,8 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	}
 
 	private void changeToolbar(final NodeModel node) {
-		final MNodeStyleController styleController = (MNodeStyleController) modeController.getExtension(NodeStyleController.class);
+		final MNodeStyleController styleController = (MNodeStyleController) modeController
+		    .getExtension(NodeStyleController.class);
 		selectFontSize(Integer.toString(styleController.getFontSize(node)));
 		selectFontName(styleController.getFontFamilyName(node));
 		selectStyle(LogicalStyleModel.getStyle(node));
@@ -175,74 +170,76 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		ignoreChangeEvent = false;
 	}
 
-	private void selectStyle(Object style) {
+	private void selectStyle(final Object style) {
 		ignoreChangeEvent = true;
 		styles.setSelectedItem(style);
 		ignoreChangeEvent = false;
 	}
 
 	public Container createStyleBox() {
-		JComboBox stylesBox = new JComboBox(styles);
+		final JComboBox stylesBox = new JComboBox(styles);
 		return stylesBox;
 	}
 
 	public Container createSizeBox() {
-		JComboBox sizeBox = new JComboBox(size);
+		final JComboBox sizeBox = new JComboBox(size);
 		sizeBox.setEditor(new BasicComboBoxEditor());
 		sizeBox.setEditable(true);
 		return sizeBox;
 	}
 
 	public Container createFontBox() {
-		JComboBox fontsBox = new JComboBox(fonts);
+		final JComboBox fontsBox = new JComboBox(fonts);
 		fontsBox.setMaximumRowCount(9);
 		return fontsBox;
 	}
 
-	public void mapChanged(MapChangeEvent event) {
+	public void mapChanged(final MapChangeEvent event) {
 		final Object property = event.getProperty();
 		if (property.equals(MapStyle.MAP_STYLES)) {
 			updateMapStyles(event.getMap());
 			changeToolbar(controller.getSelection().getSelected());
 			return;
 		}
-    }
+	}
 
-	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
-   }
+	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+	}
 
-	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-   }
+	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
+	}
 
-	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-    }
+	public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+	                        final NodeModel child, final int newIndex) {
+	}
 
-	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
-    }
+	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
+	}
 
-	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-    }
+	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+	                           final NodeModel child, final int newIndex) {
+	}
 
-	public void afterMapChange(MapModel oldMap, MapModel newMap) {
+	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		updateMapStyles(newMap);
 	}
 
-	private void updateMapStyles(MapModel newMap) {
+	private void updateMapStyles(final MapModel newMap) {
 		ignoreChangeEvent = true;
 		styles.removeAllElements();
-		if(newMap == null){
+		if (newMap == null) {
 			return;
 		}
-		Collection<Object> styleObjects = MapStyleModel.getExtension(newMap).getStyles();
-		for(Object style:styleObjects){
+		final Collection<Object> styleObjects = MapStyleModel.getExtension(newMap).getStyles();
+		for (final Object style : styleObjects) {
 			styles.addElement(style);
 		}
 		ignoreChangeEvent = false;
 	}
 
-	public void afterMapClose(MapModel oldMap) {
+	public void afterMapClose(final MapModel oldMap) {
 	}
 
-	public void beforeMapChange(MapModel oldMap, MapModel newMap) {
+	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 }

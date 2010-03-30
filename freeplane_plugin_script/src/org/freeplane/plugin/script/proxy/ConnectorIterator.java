@@ -15,11 +15,10 @@ class ConnectorIterator implements Iterator<Proxy.Connector> {
 	private final MModeController modeController;
 	private ConnectorModel next;
 
-	public ConnectorIterator(final Iterator<LinkModel> iterator,
-			final MModeController modeController) {
+	public ConnectorIterator(final Iterator<LinkModel> iterator, final MModeController modeController) {
 		this.iterator = iterator;
 		this.modeController = modeController;
-		this.next = getNextConnectorModel();
+		next = getNextConnectorModel();
 	}
 
 	private ConnectorModel getNextConnectorModel() {

@@ -19,52 +19,25 @@
  */
 package org.freeplane.main.mindmapmode;
 
-import java.awt.Container;
-import java.awt.GraphicsEnvironment;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.Collection;
-
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import javax.swing.plaf.basic.BasicComboBoxEditor;
-
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.INodeSelectionListener;
-import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.features.common.addins.styles.LogicalStyleController;
-import org.freeplane.features.common.addins.styles.LogicalStyleModel;
-import org.freeplane.features.common.addins.styles.MapStyle;
-import org.freeplane.features.common.addins.styles.MapStyleModel;
-import org.freeplane.features.common.map.IMapChangeListener;
-import org.freeplane.features.common.map.INodeChangeListener;
-import org.freeplane.features.common.map.MapChangeEvent;
-import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeChangeEvent;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 import org.freeplane.features.mindmapmode.addins.styles.MUIFactory;
-import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
-class MToolbarContributor implements IMenuContributor{
-private MUIFactory uiFactory;
-public MToolbarContributor(ModeController modeController, MUIFactory uiFactory) {
+class MToolbarContributor implements IMenuContributor {
+	private final MUIFactory uiFactory;
+
+	public MToolbarContributor(final ModeController modeController, final MUIFactory uiFactory) {
 		super();
 		this.modeController = modeController;
 		this.uiFactory = uiFactory;
 	}
-final private ModeController modeController;
+
+	final private ModeController modeController;
+
 	public void updateMenus(final MenuBuilder builder) {
-		AFreeplaneAction action = modeController.getAction("IncreaseNodeFontAction");
+		final AFreeplaneAction action = modeController.getAction("IncreaseNodeFontAction");
 		builder.addComponent("/main_toolbar/font", uiFactory.createFontBox(), action, MenuBuilder.AS_CHILD);
 		builder.addComponent("/main_toolbar/font", uiFactory.createSizeBox(), action, MenuBuilder.AS_CHILD);
 		builder.addComponent("/main_toolbar/font", uiFactory.createStyleBox(), action, MenuBuilder.AS_CHILD);

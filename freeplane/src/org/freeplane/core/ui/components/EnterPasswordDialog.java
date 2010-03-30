@@ -270,8 +270,7 @@ public class EnterPasswordDialog extends JDialog {
 
 	private void okPressed() {
 		if (!checkEqualAndMinimumSize()) {
-			JOptionPane
-			    .showMessageDialog(this, TextUtil.getText("accessories/plugins/EncryptNode.properties_1"));
+			JOptionPane.showMessageDialog(this, TextUtil.getText("accessories/plugins/EncryptNode.properties_1"));
 			return;
 		}
 		password = new StringBuilder();

@@ -26,10 +26,8 @@ package org.freeplane.view.swing.addins.filepreview;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.LayoutManager;
 
-import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.view.swing.map.MapView;
@@ -38,43 +36,43 @@ public class ViewerLayoutManager implements LayoutManager {
 	private float zoom;
 
 	/**
-     * 
-     */
-	public ViewerLayoutManager(float zoom) {
+	 * 
+	 */
+	public ViewerLayoutManager(final float zoom) {
 		super();
 		this.zoom = zoom;
 	}
 
-	public void addLayoutComponent(String name, Component comp) {
-    }
+	public void addLayoutComponent(final String name, final Component comp) {
+	}
 
 	public void layoutContainer(final Container parent) {
-		if(! parent.isPreferredSizeSet()){
+		if (!parent.isPreferredSizeSet()) {
 			throw new IllegalStateException("preferred size not set for " + parent);
 		}
-    	Dimension preferredSize = parent.getPreferredSize();
-    	MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, parent);
-    	if(mapView == null){
-    		return;
-    	}
-    	float newZoom = mapView.getZoom();
-    	if(zoom != newZoom){
-    		float ratio = newZoom/ zoom;
-    		preferredSize.width = (int)(Math.rint(preferredSize.width * ratio));
-    		preferredSize.height = (int)(Math.rint(preferredSize.height * ratio));
-    		parent.setPreferredSize(preferredSize);
-    		zoom = newZoom;
-    	}
-    }
+		final Dimension preferredSize = parent.getPreferredSize();
+		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, parent);
+		if (mapView == null) {
+			return;
+		}
+		final float newZoom = mapView.getZoom();
+		if (zoom != newZoom) {
+			final float ratio = newZoom / zoom;
+			preferredSize.width = (int) (Math.rint(preferredSize.width * ratio));
+			preferredSize.height = (int) (Math.rint(preferredSize.height * ratio));
+			parent.setPreferredSize(preferredSize);
+			zoom = newZoom;
+		}
+	}
 
-	public Dimension minimumLayoutSize(Container parent) {
-	    return new Dimension(0, 0);
-    }
+	public Dimension minimumLayoutSize(final Container parent) {
+		return new Dimension(0, 0);
+	}
 
-	public Dimension preferredLayoutSize(Container parent) {
-	    return parent.getPreferredSize();
-    }
+	public Dimension preferredLayoutSize(final Container parent) {
+		return parent.getPreferredSize();
+	}
 
-	public void removeLayoutComponent(Component comp) {
-    }
+	public void removeLayoutComponent(final Component comp) {
+	}
 }

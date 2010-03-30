@@ -50,7 +50,8 @@ import org.freeplane.core.util.TextUtil;
  * 20.04.2009
  */
 class AccelerateableAction implements IFreeplaneAction {
-	private static final boolean DISABLE_KEY_TYPE = ResourceController.getResourceController().getBooleanProperty("disable_key_type");
+	private static final boolean DISABLE_KEY_TYPE = ResourceController.getResourceController().getBooleanProperty(
+	    "disable_key_type");
 	/**
 	 * 
 	 */
@@ -63,26 +64,25 @@ class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	private static final String SET_ACCELERATOR_ON_NEXT_CLICK_ACTION = "set_accelerator_on_next_click_action";
-	static void setNewAcceleratorOnNextClick(Controller controller) {
-		if(isNewAcceleratorOnNextClickEnabled()){
+
+	static void setNewAcceleratorOnNextClick(final Controller controller) {
+		if (AccelerateableAction.isNewAcceleratorOnNextClickEnabled()) {
 			return;
 		}
-		String titel = TextUtil.getText("SetAcceleratorOnNextClickAction.text");
-		String text = TextUtil.getText(SET_ACCELERATOR_ON_NEXT_CLICK_ACTION);
-		String[] options = {TextUtil.removeMnemonic(TextUtil.getText("cancel"))};
-		final JOptionPane infoPane = new JOptionPane(text, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options);
+		final String titel = TextUtil.getText("SetAcceleratorOnNextClickAction.text");
+		final String text = TextUtil.getText(SET_ACCELERATOR_ON_NEXT_CLICK_ACTION);
+		final String[] options = { TextUtil.removeMnemonic(TextUtil.getText("cancel")) };
+		final JOptionPane infoPane = new JOptionPane(text, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null,
+		    options);
 		setAcceleratorOnNextClickActionDialog = infoPane.createDialog(controller.getViewController().getFrame(), titel);
 		setAcceleratorOnNextClickActionDialog.setModal(false);
 		setAcceleratorOnNextClickActionDialog.addComponentListener(new ComponentAdapter() {
-
 			@Override
-			public void componentHidden(ComponentEvent e) {
+			public void componentHidden(final ComponentEvent e) {
 				setAcceleratorOnNextClickActionDialog = null;
 			}
-			
 		});
 		setAcceleratorOnNextClickActionDialog.setVisible(true);
-
 	}
 
 	public AccelerateableAction(final MenuBuilder menuBuilder, final AFreeplaneAction originalAction) {
@@ -92,12 +92,12 @@ class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		boolean newAcceleratorOnNextClickEnabled = isNewAcceleratorOnNextClickEnabled();
-		if(newAcceleratorOnNextClickEnabled){
+		final boolean newAcceleratorOnNextClickEnabled = AccelerateableAction.isNewAcceleratorOnNextClickEnabled();
+		if (newAcceleratorOnNextClickEnabled) {
 			setAcceleratorOnNextClickActionDialog.setVisible(false);
 		}
-		if (newAcceleratorOnNextClickEnabled 
-				|| e.getModifiers() == ActionEvent.CTRL_MASK + InputEvent.BUTTON1_MASK && e.getSource() instanceof JMenuItem) {
+		if (newAcceleratorOnNextClickEnabled || e.getModifiers() == ActionEvent.CTRL_MASK + InputEvent.BUTTON1_MASK
+		        && e.getSource() instanceof JMenuItem) {
 			final JMenuItem item = (JMenuItem) e.getSource();
 			newAccelerator(item);
 			return;
@@ -128,8 +128,8 @@ class AccelerateableAction implements IFreeplaneAction {
 	private void newAccelerator(final JMenuItem editedItem) {
 		final Object key = menuBuilder.getKeyByUserObject(editedItem);
 		final String shortcutKey = menuBuilder.getShortcutKey(key.toString());
-		final GrabKeyDialog grabKeyDialog = new GrabKeyDialog(ResourceController.getResourceController()
-		    .getProperty(shortcutKey));
+		final GrabKeyDialog grabKeyDialog = new GrabKeyDialog(ResourceController.getResourceController().getProperty(
+		    shortcutKey));
 		grabKeyDialog.setValidator(new IKeystrokeValidator() {
 			private boolean isValid(final DefaultMutableTreeNode menubarNode, final KeyStroke keystroke) {
 				final Enumeration menuElements = menubarNode.children();
@@ -160,7 +160,7 @@ class AccelerateableAction implements IFreeplaneAction {
 				return true;
 			}
 
-			public boolean isValid(final KeyStroke keystroke, Character keyChar) {
+			public boolean isValid(final KeyStroke keystroke, final Character keyChar) {
 				if (keystroke == null) {
 					return true;
 				}
@@ -168,7 +168,8 @@ class AccelerateableAction implements IFreeplaneAction {
 				if (menubarKey == null) {
 					return true;
 				}
-				if(keyChar != KeyEvent.CHAR_UNDEFINED && (keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK| Event.META_MASK)) == 0){
+				if (keyChar != KeyEvent.CHAR_UNDEFINED
+				        && (keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK | Event.META_MASK)) == 0) {
 					return DISABLE_KEY_TYPE;
 				}
 				final DefaultMutableTreeNode menubarNode = menuBuilder.get(menubarKey);
@@ -185,11 +186,13 @@ class AccelerateableAction implements IFreeplaneAction {
 						}
 					}
 				}
-				if (!isValid(menubarNode, keystroke))
+				if (!isValid(menubarNode, keystroke)) {
 					return false;
+				}
 				final KeyStroke derivedKS = FreeplaneMenuBar.derive(keystroke, keyChar);
-				if (derivedKS == keystroke)
+				if (derivedKS == keystroke) {
 					return true;
+				}
 				return isValid(menubarNode, derivedKS);
 			}
 		});
@@ -215,6 +218,6 @@ class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	public String getIconKey() {
-	    return originalAction.getIconKey();
-    }
+		return originalAction.getIconKey();
+	}
 }

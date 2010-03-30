@@ -36,11 +36,11 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElementWriter  {
+class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElementWriter {
 	private final MapController mapController;
-	private CloudController cc;
+	private final CloudController cc;
 
-	public CloudBuilder(final MapController mapController, CloudController cc) {
+	public CloudBuilder(final MapController mapController, final CloudController cc) {
 		this.mapController = mapController;
 		this.cc = cc;
 	}
@@ -66,8 +66,8 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElem
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler("cloud", "STYLE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-//				final CloudModel cloud = (CloudModel) userObject;
-//				cloud.setStyle(value.toString());
+				//				final CloudModel cloud = (CloudModel) userObject;
+				//				cloud.setStyle(value.toString());
 			}
 		});
 		reader.addAttributeHandler("cloud", "COLOR", new IAttributeHandler() {
@@ -78,8 +78,8 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElem
 		});
 		reader.addAttributeHandler("cloud", "WIDTH", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-//				final CloudModel cloud = (CloudModel) userObject;
-//				cloud.setWidth(Integer.parseInt(value.toString()));
+				//				final CloudModel cloud = (CloudModel) userObject;
+				//				cloud.setWidth(Integer.parseInt(value.toString()));
 			}
 		});
 	}
@@ -95,42 +95,43 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElem
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
-	public void writeContent(ITreeWriter writer, Object userObject, String tag) throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
-		if(! forceFormatting){
+		if (!forceFormatting) {
 			return;
 		}
 		writeContentImpl(writer, (NodeModel) userObject, null);
-    }
+	}
+
 	public void writeContent(final ITreeWriter writer, final Object userObject, final IExtension extension)
 	        throws IOException {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
-		if(forceFormatting){
+		if (forceFormatting) {
 			return;
 		}
 		writeContentImpl(writer, null, extension);
 	}
 
-	private void writeContentImpl(final ITreeWriter writer, NodeModel node, final IExtension extension) throws IOException {
-	    final CloudModel model = extension != null ? (CloudModel) extension : cc.getCloud(node);
-		if(model == null){
+	private void writeContentImpl(final ITreeWriter writer, final NodeModel node, final IExtension extension)
+	        throws IOException {
+		final CloudModel model = extension != null ? (CloudModel) extension : cc.getCloud(node);
+		if (model == null) {
 			return;
 		}
 		final XMLElement cloud = new XMLElement();
 		cloud.setName("cloud");
-//		final String style = model.getStyle();
-//		if (style != null) {
-//			cloud.setAttribute("STYLE", style);
-//		}
+		//		final String style = model.getStyle();
+		//		if (style != null) {
+		//			cloud.setAttribute("STYLE", style);
+		//		}
 		final Color color = model.getColor();
 		if (color != null) {
 			cloud.setAttribute("COLOR", ColorUtils.colorToString(color));
 		}
-//		final int width = model.getWidth();
-//		if (width != CloudController.DEFAULT_WIDTH) {
-//			cloud.setAttribute("WIDTH", Integer.toString(width));
-//		}
+		//		final int width = model.getWidth();
+		//		if (width != CloudController.DEFAULT_WIDTH) {
+		//			cloud.setAttribute("WIDTH", Integer.toString(width));
+		//		}
 		writer.addElement(model, cloud);
-    }
-
+	}
 }

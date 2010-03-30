@@ -23,7 +23,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -50,11 +49,10 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.icon.IconStore;
-import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.MapModel;
@@ -72,9 +70,7 @@ import org.freeplane.n3.nanoxml.XMLParserFactory;
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class ExportWithXSLT extends ExportAction {
-	
 	private static final IconStore STORE = IconStoreFactory.create();
-	
 	private static final String NAME_EXTENSION_PROPERTY = "name_extension";
 	/**
 	 * 
@@ -84,20 +80,20 @@ public class ExportWithXSLT extends ExportAction {
 	/**
 	 * @param map 
 	 */
-	static void copyIconsToDirectory(MapModel map, final String directoryName) {
-		ListModel icons = map.getIconRegistry().getIconsAsListModel();
+	static void copyIconsToDirectory(final MapModel map, final String directoryName) {
+		final ListModel icons = map.getIconRegistry().getIconsAsListModel();
 		for (int i = 0; i < icons.getSize(); i++) {
-				UIIcon icon = (UIIcon) icons.getElementAt(i);
-				String iconName = icon.getName();
-				StringBuilder sb = new StringBuilder(directoryName);
-				int lastIndexOfSeparator = iconName.lastIndexOf('/');
-				if(lastIndexOfSeparator != -1){
-					sb.append(File.separatorChar);
-					sb.append(iconName.substring(0, lastIndexOfSeparator));
-				}
-				File destinationDirectory = new File(sb.toString());
-				destinationDirectory.mkdirs();
-				FileUtil.copyFromURL(icon.getUrl(), destinationDirectory);
+			final UIIcon icon = (UIIcon) icons.getElementAt(i);
+			final String iconName = icon.getName();
+			final StringBuilder sb = new StringBuilder(directoryName);
+			final int lastIndexOfSeparator = iconName.lastIndexOf('/');
+			if (lastIndexOfSeparator != -1) {
+				sb.append(File.separatorChar);
+				sb.append(iconName.substring(0, lastIndexOfSeparator));
+			}
+			final File destinationDirectory = new File(sb.toString());
+			destinationDirectory.mkdirs();
+			FileUtil.copyFromURL(icon.getUrl(), destinationDirectory);
 		}
 	}
 
@@ -177,17 +173,17 @@ public class ExportWithXSLT extends ExportAction {
 	/**
 	 * @param map 
 	 */
-	private boolean copyIcons(MapModel map, final String directoryName) {
+	private boolean copyIcons(final MapModel map, final String directoryName) {
 		boolean success;
 		final String iconDirectoryName = directoryName + File.separatorChar + "icons";
 		success = FileUtil.createDirectory(iconDirectoryName);
 		if (success) {
-			copyIconsToDirectory(map, iconDirectoryName);
+			ExportWithXSLT.copyIconsToDirectory(map, iconDirectoryName);
 		}
 		return success;
 	}
 
-	private boolean copyMap(MapModel map, final String pDirectoryName) throws IOException {
+	private boolean copyMap(final MapModel map, final String pDirectoryName) throws IOException {
 		final boolean success = true;
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pDirectoryName
 		        + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
@@ -237,8 +233,8 @@ public class ExportWithXSLT extends ExportAction {
 	}
 
 	String getProperty(final String key) {
-		String property = getProperty(key, null);
-		if(property == null || ! property.startsWith("$")){
+		final String property = getProperty(key, null);
+		if (property == null || !property.startsWith("$")) {
 			return property;
 		}
 		return System.getProperty(property.substring(1), null);
@@ -336,7 +332,6 @@ public class ExportWithXSLT extends ExportAction {
 		}
 		catch (final Exception e) {
 			LogTool.warn(e);
-			
 			return false;
 		};
 		return true;

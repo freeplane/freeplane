@@ -53,7 +53,7 @@ public class AttributeExistsCondition extends NodeCondition {
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		final IAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		for (int i = 0; i < attributes.getRowCount(); i++) {
 			if (attributes.getValueAt(i, 0).equals(attribute)) {

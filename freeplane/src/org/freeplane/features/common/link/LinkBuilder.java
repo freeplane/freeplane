@@ -30,7 +30,6 @@ import java.util.Iterator;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
-import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.IExtensionAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
@@ -62,7 +61,7 @@ class LinkBuilder implements IElementHandler, IReadCompletionListener, IExtensio
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (tag.equals("arrowlink")) {
-			return createArrowLink((NodeModel)parent, null);
+			return createArrowLink((NodeModel) parent, null);
 		}
 		return null;
 	}
@@ -184,7 +183,7 @@ class LinkBuilder implements IElementHandler, IReadCompletionListener, IExtensio
 		final XMLElement arrowLink = new XMLElement();
 		arrowLink.setName("arrowlink");
 		final boolean isEdgeLike = model.isEdgeLike();
-		if (isEdgeLike ) {
+		if (isEdgeLike) {
 			arrowLink.setAttribute("EDGE_LIKE", Boolean.TRUE.toString());
 		}
 		final Color color = model.getColor();
@@ -234,8 +233,8 @@ class LinkBuilder implements IElementHandler, IReadCompletionListener, IExtensio
 		final URI link = links.getHyperLink();
 		if (link != null) {
 			final String string = link.toString();
-			if(string.startsWith("#")){
-				if(((NodeModel)userObject).getMap().getNodeForID(string.substring(1)) == null){
+			if (string.startsWith("#")) {
+				if (((NodeModel) userObject).getMap().getNodeForID(string.substring(1)) == null) {
 					return;
 				}
 			}

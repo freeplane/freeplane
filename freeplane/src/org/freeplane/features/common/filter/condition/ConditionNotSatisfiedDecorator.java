@@ -59,7 +59,7 @@ public class ConditionNotSatisfiedDecorator implements ISelectableCondition {
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		return !originalCondition.checkNode(modeController, node);
 	}
 

@@ -30,9 +30,8 @@ import org.freeplane.features.common.icon.MindIcon;
  *
  */
 public class MindIconFactory {
-
 	private static final String DESC_KEY = "icon_%s";
-	
+
 	/**
 	 * Constructs a MindIcon with the given name from the property file.
 	 * The name of the icon is the file name without the extension.
@@ -40,7 +39,7 @@ public class MindIconFactory {
 	 * @param name of the icon
 	 * @return
 	 */
-	public static MindIcon create(String name) {
+	public static MindIcon create(final String name) {
 		final String description = name.indexOf('/') > 0 ? "" : TextUtil.getText(String.format(DESC_KEY, name));
 		return new MindIcon(name, name + ".png", description);
 	}

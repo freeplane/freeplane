@@ -56,12 +56,8 @@ public class ConditionFactory {
 
 	public static String createDescription(final String attribute, final String simpleCondition, final String value,
 	                                       final boolean ignoreCase) {
-		final String description = attribute
-		        + " "
-		        + simpleCondition
-		        + (value != null ? " \"" + value + "\"" : "")
-		        + (ignoreCase && value != null ? ", " + TextUtil.getText(ConditionFactory.FILTER_IGNORE_CASE)
-		                : "");
+		final String description = attribute + " " + simpleCondition + (value != null ? " \"" + value + "\"" : "")
+		        + (ignoreCase && value != null ? ", " + TextUtil.getText(ConditionFactory.FILTER_IGNORE_CASE) : "");
 		return description;
 	}
 

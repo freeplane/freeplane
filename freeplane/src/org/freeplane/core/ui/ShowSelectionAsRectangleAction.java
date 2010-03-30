@@ -44,8 +44,9 @@ public class ShowSelectionAsRectangleAction extends AFreeplaneAction {
 	}
 
 	private void toggleSelectionAsRectangle() {
-		ResourceController.getResourceController().setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, Boolean.toString(!isSelectionAsRectangle()) );
-    }
+		ResourceController.getResourceController().setProperty(
+		    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, Boolean.toString(!isSelectionAsRectangle()));
+	}
 
 	@Override
 	public void setSelected() {
@@ -53,6 +54,7 @@ public class ShowSelectionAsRectangleAction extends AFreeplaneAction {
 	}
 
 	private boolean isSelectionAsRectangle() {
-		return Boolean.parseBoolean(ResourceController.getResourceController().getProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION));
-    }
+		return Boolean.parseBoolean(ResourceController.getResourceController().getProperty(
+		    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION));
+	}
 }

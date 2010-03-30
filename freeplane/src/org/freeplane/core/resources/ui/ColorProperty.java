@@ -56,7 +56,6 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
-
 			{
 				setUI(BasicButtonUI.createUI(this));
 			}
@@ -118,7 +117,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 			input = Color.WHITE;
 		}
 		mButton.setBackground(input);
-		Color textColor = UITools.getTextColorForBackground(input);
+		final Color textColor = UITools.getTextColorForBackground(input);
 		mButton.setForeground(textColor);
 		mButton.setText(ColorUtils.colorToString(input));
 	}

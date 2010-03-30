@@ -39,59 +39,57 @@ import javax.swing.border.MatteBorder;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
 
-
 public class BitmapImagePreview extends JComponent implements PropertyChangeListener {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected static final int BORDER_WIDTH = 2;
 	protected final JFileChooser fc;
 
-	public BitmapImagePreview(JFileChooser fc) {
+	public BitmapImagePreview(final JFileChooser fc) {
 		super();
-        this.fc = fc;
+		this.fc = fc;
 		setBorder(new MatteBorder(BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH, Color.BLACK));
-		int previewSize = ResourceController.getResourceController().getIntProperty("image_preview_size", 300);
-        setPreferredSize(new Dimension(previewSize, previewSize));
-        fc.addPropertyChangeListener(this);
+		final int previewSize = ResourceController.getResourceController().getIntProperty("image_preview_size", 300);
+		setPreferredSize(new Dimension(previewSize, previewSize));
+		fc.addPropertyChangeListener(this);
 	}
 
-	public void propertyChange(PropertyChangeEvent e) {
-        String prop = e.getPropertyName();
-    
-        //If the directory changed, don't show an image.
-        final File file;
-        if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(prop)) {
-            file = null;
-    
-        //If a file became selected, find out which one.
-        } else if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(prop)) {
-        	file = (File) e.getNewValue();
-        }
-        else{
-        	return;
-        }
-        if(getComponentCount() == 1){
-        	remove(0);
-        }
-        repaint();
-        if(file == null){
-        	return;
-        }
-        try {
-	        updateView(file);
-        }
-        catch (MalformedURLException e1) {
-	        LogTool.warn(e1);
-        }
-        catch (IOException e1) {
-	        LogTool.warn(e1);
-        }
-    }
+	public void propertyChange(final PropertyChangeEvent e) {
+		final String prop = e.getPropertyName();
+		//If the directory changed, don't show an image.
+		final File file;
+		if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(prop)) {
+			file = null;
+			//If a file became selected, find out which one.
+		}
+		else if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(prop)) {
+			file = (File) e.getNewValue();
+		}
+		else {
+			return;
+		}
+		if (getComponentCount() == 1) {
+			remove(0);
+		}
+		repaint();
+		if (file == null) {
+			return;
+		}
+		try {
+			updateView(file);
+		}
+		catch (final MalformedURLException e1) {
+			LogTool.warn(e1);
+		}
+		catch (final IOException e1) {
+			LogTool.warn(e1);
+		}
+	}
 
-	protected void updateView(File file) throws MalformedURLException, IOException {
-		BitmapViewerComponent viewer = new BitmapViewerComponent(file.toURI());
+	protected void updateView(final File file) throws MalformedURLException, IOException {
+		final BitmapViewerComponent viewer = new BitmapViewerComponent(file.toURI());
 		viewer.setHint(Image.SCALE_FAST);
 		final Dimension size = getSize();
 		size.width -= 2 * BORDER_WIDTH;
@@ -99,8 +97,8 @@ public class BitmapImagePreview extends JComponent implements PropertyChangeList
 		viewer.setPreferredSize(size);
 		viewer.setSize(size);
 		viewer.setLocation(BORDER_WIDTH, BORDER_WIDTH);
-        add(viewer);
+		add(viewer);
 		viewer.revalidate();
 		viewer.repaint();
-    }
+	}
 }

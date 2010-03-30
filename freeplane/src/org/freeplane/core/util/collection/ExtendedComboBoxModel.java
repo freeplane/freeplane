@@ -123,14 +123,14 @@ public class ExtendedComboBoxModel extends DefaultComboBoxModel {
 		return extIdx > -1 ? extIdx + getOwnSize() : -1;
 	}
 
-	private int getExtensionIndex(Object o) {
-			final int size = extension.getSize();
-			for (int count = 0; count < size; count++) {
-				if (extension.getElementAt(count).equals(o)) {
-					return count;
-				}
+	private int getExtensionIndex(final Object o) {
+		final int size = extension.getSize();
+		for (int count = 0; count < size; count++) {
+			if (extension.getElementAt(count).equals(o)) {
+				return count;
 			}
-			return -1;
+		}
+		return -1;
 	}
 
 	private ExtendedComboBoxModel getModel() {

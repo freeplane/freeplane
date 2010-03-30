@@ -5,7 +5,6 @@ import javax.swing.JComponent;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
-import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -17,11 +16,11 @@ public class StyleCondition implements ISelectableCondition {
 	private JComponent renderer;
 	private String description;
 
-	public StyleCondition(Object value) {
+	public StyleCondition(final Object value) {
 		this.value = value;
 	}
 
-	public boolean checkNode(ModeController modeController, NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		return LogicalStyleModel.getStyle(node).equals(value);
 	}
 
@@ -32,26 +31,25 @@ public class StyleCondition implements ISelectableCondition {
 		return renderer;
 	}
 
-	public void toXml(XMLElement element) {
+	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(NAME);
-		if(value instanceof String){
+		if (value instanceof String) {
 			child.setAttribute("TEXT", (String) value);
 		}
-		else if(value instanceof NamedObject){
+		else if (value instanceof NamedObject) {
 			child.setAttribute("LOCALIZED_TEXT", ((NamedObject) value).getObject().toString());
 		}
-
 		element.addChild(child);
 	}
 
-	public static ISelectableCondition load(XMLElement element) {
-		String text = element.getAttribute("TEXT", null);
-		if(text != null){
+	public static ISelectableCondition load(final XMLElement element) {
+		final String text = element.getAttribute("TEXT", null);
+		if (text != null) {
 			return new StyleCondition(text);
 		}
-		String name = element.getAttribute("LOCALIZED_TEXT", null);
-		if(name != null){
+		final String name = element.getAttribute("LOCALIZED_TEXT", null);
+		if (name != null) {
 			return new StyleCondition(new NamedObject(name));
 		}
 		return null;
@@ -69,5 +67,4 @@ public class StyleCondition implements ISelectableCondition {
 		final String filterStyle = TextUtil.getText(LogicalStyleFilterController.FILTER_STYLE);
 		return filterStyle + " '" + value.toString() + '\'';
 	}
-
 }

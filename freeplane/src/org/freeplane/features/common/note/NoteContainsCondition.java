@@ -43,7 +43,7 @@ public class NoteContainsCondition extends NodeCondition {
 		this.value = value;
 	}
 
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		final String text = getText(node);
 		if (text == null) {
 			return false;

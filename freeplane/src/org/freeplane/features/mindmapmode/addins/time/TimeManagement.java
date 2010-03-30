@@ -169,7 +169,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			cal.set(Calendar.SECOND, 0);
 		}
 		catch (final Exception e) {
-		    LogTool.warn(e);
+			LogTool.warn(e);
 		}
 		return cal.getTime();
 	}
@@ -291,8 +291,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 					final String dateAsString = df.format(getCalendarDate());
 					final Window parentWindow = (Window) dialog.getParent();
 					final Component mostRecentFocusOwner = parentWindow.getMostRecentFocusOwner();
-					if(mostRecentFocusOwner instanceof JTextComponent){
-						JTextComponent text = (JTextComponent) mostRecentFocusOwner;
+					if (mostRecentFocusOwner instanceof JTextComponent) {
+						final JTextComponent text = (JTextComponent) mostRecentFocusOwner;
 						text.replaceSelection(dateAsString);
 						return;
 					}
@@ -300,20 +300,21 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 						final NodeModel element = (NodeModel) i.next();
 						final String text = element.getText();
 						final StringBuilder newText = new StringBuilder();
-						if (HtmlTools.isHtmlNode(text)){
-							int bodyEndPos = HtmlTools.endOfText(text);
+						if (HtmlTools.isHtmlNode(text)) {
+							final int bodyEndPos = HtmlTools.endOfText(text);
 							newText.append(text.substring(0, bodyEndPos));
 							newText.append("<p>");
 							newText.append(dateAsString);
 							newText.append("</p>");
 							newText.append(text.substring(bodyEndPos));
 						}
-						else{
+						else {
 							newText.append(text);
 							newText.append(" ");
 							newText.append(dateAsString);
 						}
-						((MTextController) TextController.getController(mController)).setNodeText(element, newText.toString());
+						((MTextController) TextController.getController(mController)).setNodeText(element, newText
+						    .toString());
 					}
 				}
 			});

@@ -21,9 +21,7 @@ package org.freeplane.features.common.addins.styles;
 
 import java.awt.EventQueue;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
@@ -38,85 +36,79 @@ import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.MapReader;
-import org.freeplane.features.common.map.MapWriter;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 
 /**
  * @author Dimitry Polivaev
  * 28.09.2009
  */
-public class LogicalStyleController implements IExtension{
+public class LogicalStyleController implements IExtension {
 	final private ModeController modeController;
 
-	public LogicalStyleController(ModeController modeController){
+	public LogicalStyleController(final ModeController modeController) {
 		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE_REF", new IAttributeHandler() {
-			public void setAttribute(Object node, String value) {
+			public void setAttribute(final Object node, final String value) {
 				final LogicalStyleModel extension = LogicalStyleModel.createExtension((NodeModel) node);
 				extension.setStyle(value);
 			}
 		});
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, "LOCALIZED_STYLE_REF", new IAttributeHandler() {
-			public void setAttribute(Object node, String value) {
+			public void setAttribute(final Object node, final String value) {
 				final LogicalStyleModel extension = LogicalStyleModel.createExtension((NodeModel) node);
 				extension.setStyle(NamedObject.formatText(value));
 			}
 		});
 		final WriteManager writeManager = mapController.getWriteManager();
 		writeManager.addAttributeWriter(NodeBuilder.XML_NODE, new IAttributeWriter() {
-			public void writeAttributes(ITreeWriter writer, Object node, String tag) {
+			public void writeAttributes(final ITreeWriter writer, final Object node, final String tag) {
 				final LogicalStyleModel extension = LogicalStyleModel.getExtension((NodeModel) node);
-				if(extension == null){
+				if (extension == null) {
 					return;
 				}
 				final Object style = extension.getStyle();
-				if(style == null || style.equals(MapStyleModel.DEFAULT_STYLE)){
+				if (style == null || style.equals(MapStyleModel.DEFAULT_STYLE)) {
 					return;
 				}
-				String value = NamedObject.toKeyString(style);
-				if(style instanceof NamedObject){
+				final String value = NamedObject.toKeyString(style);
+				if (style instanceof NamedObject) {
 					writer.addAttribute("LOCALIZED_STYLE_REF", value);
 				}
-				else{
+				else {
 					writer.addAttribute("STYLE_REF", value);
 				}
 			}
 		});
 	}
 
-	public static void install(MModeController modeController, LogicalStyleController logicalStyleController) {
+	public static void install(final MModeController modeController, final LogicalStyleController logicalStyleController) {
 		modeController.addExtension(LogicalStyleController.class, logicalStyleController);
-		Controller controller = modeController.getController();
+		final Controller controller = modeController.getController();
 		FilterController.getController(controller).getConditionFactory().addConditionController(7,
-				new LogicalStyleFilterController(controller));
-	    
-    }
+		    new LogicalStyleFilterController(controller));
+	}
 
-	public static LogicalStyleController getController(
-			ModeController modeController) {
+	public static LogicalStyleController getController(final ModeController modeController) {
 		return (LogicalStyleController) modeController.getExtension(LogicalStyleController.class);
 	}
 
 	public void refreshMap(final MapModel map) {
-		IActor actor = new IActor() {
-			
+		final IActor actor = new IActor() {
 			public void undo() {
-    			refreshMapLater(map);
+				refreshMapLater(map);
 			}
-			
+
 			public String getDescription() {
 				return "refreshMap";
 			}
-			
+
 			public void act() {
-    			refreshMapLater(map);
+				refreshMapLater(map);
 			}
 		};
 		getModeController().execute(actor, map);
@@ -127,25 +119,26 @@ public class LogicalStyleController implements IExtension{
 	}
 
 	private static Map<MapModel, Integer> mapsToRefresh = new HashMap<MapModel, Integer>();
+
 	private void refreshMapLater(final MapModel map) {
-		Integer count = mapsToRefresh.get(map);
-		if(count == null){
+		final Integer count = mapsToRefresh.get(map);
+		if (count == null) {
 			mapsToRefresh.put(map, 0);
 		}
-		else{
+		else {
 			mapsToRefresh.put(map, count + 1);
 		}
 		EventQueue.invokeLater(new Runnable() {
-			
 			public void run() {
-				Integer count = mapsToRefresh.get(map);
-				if(count > 0){
+				final Integer count = mapsToRefresh.get(map);
+				if (count > 0) {
 					mapsToRefresh.put(map, count - 1);
 					EventQueue.invokeLater(this);
 					return;
 				}
 				mapsToRefresh.remove(map);
-				getModeController().getMapController().fireMapChanged(new MapChangeEvent(this, map, MapStyle.MAP_STYLES, null, null));
+				getModeController().getMapController().fireMapChanged(
+				    new MapChangeEvent(this, map, MapStyle.MAP_STYLES, null, null));
 			}
 		});
 	}

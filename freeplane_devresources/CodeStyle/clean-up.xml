@@ -8,7 +8,7 @@
 <setting id="cleanup.add_missing_deprecated_annotations" value="true"/>
 <setting id="cleanup.convert_to_enhanced_for_loop" value="false"/>
 <setting id="cleanup.remove_unnecessary_nls_tags" value="true"/>
-<setting id="cleanup.sort_members" value="true"/>
+<setting id="cleanup.sort_members" value="false"/>
 <setting id="cleanup.remove_unused_local_variables" value="true"/>
 <setting id="cleanup.never_use_parentheses_in_expressions" value="true"/>
 <setting id="cleanup.remove_unused_private_members" value="true"/>

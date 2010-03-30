@@ -30,32 +30,32 @@ public class LogicalStyleModel implements IExtension {
 	private Object style;
 
 	public Object getStyle() {
-    	return style;
-    }
+		return style;
+	}
 
-	public void setStyle(Object style) {
-    	this.style = style;
-    }
-	
-	static public LogicalStyleModel getExtension(NodeModel node){
+	public void setStyle(final Object style) {
+		this.style = style;
+	}
+
+	static public LogicalStyleModel getExtension(final NodeModel node) {
 		return (LogicalStyleModel) node.getExtension(LogicalStyleModel.class);
 	}
-	
-	static public Object getStyle(NodeModel node){
-		final LogicalStyleModel extension = getExtension(node);
-		if(extension == null){
+
+	static public Object getStyle(final NodeModel node) {
+		final LogicalStyleModel extension = LogicalStyleModel.getExtension(node);
+		if (extension == null) {
 			return MapStyleModel.DEFAULT_STYLE;
 		}
 		final Object style = extension.getStyle();
-		if(style == null){
+		if (style == null) {
 			return MapStyleModel.DEFAULT_STYLE;
 		}
-		return style ;
+		return style;
 	}
-	
-	static public LogicalStyleModel createExtension(NodeModel node){
+
+	static public LogicalStyleModel createExtension(final NodeModel node) {
 		LogicalStyleModel extension = (LogicalStyleModel) node.getExtension(LogicalStyleModel.class);
-		if(extension == null){
+		if (extension == null) {
 			extension = new LogicalStyleModel();
 			node.addExtension(extension);
 		}

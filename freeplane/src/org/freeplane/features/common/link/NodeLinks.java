@@ -160,18 +160,18 @@ public class NodeLinks implements IExtension {
 		}
 	}
 
-	public static URI getValidLink(NodeModel model) {
-	    final URI link = getLink(model);
-	    if(link == null){
-	    	return null;
-	    }
+	public static URI getValidLink(final NodeModel model) {
+		final URI link = NodeLinks.getLink(model);
+		if (link == null) {
+			return null;
+		}
 		final String linkString = link.toString();
 		if (linkString.startsWith("#")) {
 			final String id = linkString.substring(1);
-			if(model.getMap().getNodeForID(id) == null){
+			if (model.getMap().getNodeForID(id) == null) {
 				return null;
 			}
 		}
 		return link;
-    }
+	}
 }

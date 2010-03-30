@@ -65,7 +65,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	private void addListeners() {
-		if (! (getMapView().getModeController() instanceof MModeController)) {
+		if (!(getMapView().getModeController() instanceof MModeController)) {
 			return;
 		}
 		getAttributeRegistry().addChangeListener(this);
@@ -73,7 +73,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	private void addTableModelListeners() {
-		if (! (getMapView().getModeController() instanceof MModeController)) {
+		if (!(getMapView().getModeController() instanceof MModeController)) {
 			return;
 		}
 		if (attributeTable != null) {
@@ -170,7 +170,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	private void removeListeners() {
-		if (! (getMapView().getModeController() instanceof MModeController)) {
+		if (!(getMapView().getModeController() instanceof MModeController)) {
 			return;
 		}
 		getAttributeRegistry().removeChangeListener(this);

@@ -60,8 +60,8 @@ import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapChangeEvent;
@@ -83,7 +83,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	private static final String BACKUP_EXTENSION = "bak";
 	private static final String BACKUP_DIR = ".backup";
 	// FIXME: set to 0!!!
-//	private static final int DEBUG_OFFSET = 5 * 24 * 3600 * 1000;
+	//	private static final int DEBUG_OFFSET = 5 * 24 * 3600 * 1000;
 	private static final int DEBUG_OFFSET = 0;
 
 	static private class BackupFlag implements IExtension {
@@ -123,7 +123,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		        + DoAutomaticSave.AUTOSAVE_EXTENSION + ")");
 		if (backupDir.exists()) {
 			return backupDir.listFiles(new java.io.FileFilter() {
-				public boolean accept(File f) {
+				public boolean accept(final File f) {
 					return pattern.matcher(f.getName()).matches()
 					        && f.lastModified() > (file.lastModified() - DEBUG_OFFSET);
 				}
@@ -137,7 +137,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			return;
 		}
 		final String name = file.getName();
-		final File backupDir = backupDir(file);
+		final File backupDir = MFileManager.backupDir(file);
 		backupDir.mkdir();
 		if (backupDir.exists()) {
 			final File backupFile = MFileManager.renameBackupFiles(backupDir, name, backupFileNumber, extension);
@@ -197,23 +197,22 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	public MFileManager(final ModeController modeController) {
 		super(modeController);
 		createActions(modeController);
-		 createPreferences();
+		createPreferences();
 	}
+
 	private void createPreferences() {
 		final MModeController modeController = (MModeController) getModeController();
 		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
 		optionPanelBuilder.addCreator("Environment/load", new IPropertyControlCreator() {
-			
 			public IPropertyControl createControl() {
-				Set<String> charsets = Charset.availableCharsets().keySet();
-				LinkedList<String> charsetList = new LinkedList<String>(charsets);
+				final Set<String> charsets = Charset.availableCharsets().keySet();
+				final LinkedList<String> charsetList = new LinkedList<String>(charsets);
 				charsetList.addFirst("JVMdefault");
-				LinkedList<String> charsetTranslationList = new LinkedList<String>(charsets);
+				final LinkedList<String> charsetTranslationList = new LinkedList<String>(charsets);
 				charsetTranslationList.addFirst(TextUtil.getText("OptionPanel.default"));
 				return new ComboProperty("default_charset", charsetList, charsetTranslationList);
 			}
-		},
-		IndexedTree.AS_CHILD);
+		}, IndexedTree.AS_CHILD);
 	}
 
 	private void backup(final File file) {
@@ -270,8 +269,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public URI getLinkByFileChooser(final MapModel map, final FileFilter fileFilter) {
 		JFileChooser chooser = null;
-		File file = map.getFile();
-		boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
+		final File file = map.getFile();
+		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
+		    "relative");
 		if (file == null && useRelativeUri) {
 			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), TextUtil
 			    .getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
@@ -313,7 +313,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			((MMapModel) map).setReadOnly(true);
 		}
 		else {
-			File[] revisions = findNewerFileRevisions(file, backupDir(file));
+			final File[] revisions = findNewerFileRevisions(file, MFileManager.backupDir(file));
 			if (revisions.length > 0) {
 				final NewerFileRevisionsFoundDialog newerFileRevisionsFoundDialog = new NewerFileRevisionsFoundDialog(
 				    file, revisions, getController());
@@ -330,8 +330,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
-					UITools.informationMessage(getController().getViewController().getFrame(), TextUtil
-					    .formatText("map_locked_by_open", file.getName(), lockingUser));
+					UITools.informationMessage(getController().getViewController().getFrame(), TextUtil.formatText(
+					    "map_locked_by_open", file.getName(), lockingUser));
 					((MMapModel) map).setReadOnly(true);
 				}
 				else {
@@ -362,8 +362,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
-		try{
-			if (file.length() == 0){
+		try {
+			if (file.length() == 0) {
 				return map.getRootNode();
 			}
 			final NodeModel rootNode = loadTreeImpl(map, file);
@@ -377,14 +377,14 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			result.setText(errorMessage);
 			return result;
 		}
-		finally{
+		finally {
 			setFile(map, file);
 		}
 	}
 
-	private NodeModel loadTreeImpl(final MapModel map, final File f) throws FileNotFoundException,
-	        IOException, XMLException {
-		BufferedInputStream file = new BufferedInputStream(new FileInputStream(f));
+	private NodeModel loadTreeImpl(final MapModel map, final File f) throws FileNotFoundException, IOException,
+	        XMLException {
+		final BufferedInputStream file = new BufferedInputStream(new FileInputStream(f));
 		int versionInfoLength = 1000;
 		final byte[] buffer = new byte[versionInfoLength];
 		final int readCount = file.read(buffer);
@@ -426,7 +426,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	public void loadURL(final URI relative) {
 		final MapModel map = getController().getMap();
 		if (map.getFile() == null) {
-			if (! relative.toString().startsWith("#") &&  !relative.isAbsolute() || relative.isOpaque()) {
+			if (!relative.toString().startsWith("#") && !relative.isAbsolute() || relative.isOpaque()) {
 				getController().getViewController().out("You must save the current map first!");
 				final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
 				if (!result) {
@@ -529,7 +529,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		setLastCurrentDir(f.getParentFile());
 		final String ext = FileUtil.getExtension(f.getName());
 		if (!ext.equals(org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-			f = new File(f.getParent(), f.getName() + org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION);
+			f = new File(f.getParent(), f.getName()
+			        + org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION);
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
@@ -628,20 +629,20 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return lockingUser;
 	}
 
-	public void afterViewChange(Component oldView, Component newView) {
-    }
+	public void afterViewChange(final Component oldView, final Component newView) {
+	}
 
-	public void afterViewClose(Component oldView) {
-    }
+	public void afterViewClose(final Component oldView) {
+	}
 
-	public void afterViewCreated(Component mapView) {
+	public void afterViewCreated(final Component mapView) {
 		final ModeController modeController = getModeController();
 		if (mapView != null) {
 			final FileOpener fileOpener = new FileOpener(modeController);
 			new DropTarget(mapView, fileOpener);
 		}
-    }
+	}
 
-	public void beforeViewChange(Component oldView, Component newView) {
-    }
+	public void beforeViewChange(final Component oldView, final Component newView) {
+	}
 }

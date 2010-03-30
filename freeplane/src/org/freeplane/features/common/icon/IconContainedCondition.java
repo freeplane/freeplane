@@ -27,7 +27,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.util.TextUtil;
-import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.filter.condition.JCondition;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
@@ -36,30 +35,16 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class IconContainedCondition implements ISelectableCondition {
-	
 	private static final IconStore STORE = IconStoreFactory.create();
-	
 	static final String ICON = "ICON";
 	static final String NAME = "icon_contained_condition";
 
-	static private int iconFirstIndex(ModeController modeController, final NodeModel node, final String iconName) {		
+	static private int iconFirstIndex(final ModeController modeController, final NodeModel node, final String iconName) {
 		final List<MindIcon> icons = IconController.getIcons(modeController, node);
 		for (final ListIterator<MindIcon> i = icons.listIterator(); i.hasNext();) {
 			final MindIcon nextIcon = i.next();
 			if (iconName.equals(nextIcon.getName())) {
 				return i.previousIndex();
-			}
-		}
-		return -1;
-	}
-
-	static private int iconLastIndex(ModeController modeController, final NodeModel node, final String iconName) {
-		final List<MindIcon> icons = IconController.getIcons(modeController, node);
-		final ListIterator<MindIcon> i = icons.listIterator(icons.size());
-		while (i.hasPrevious()) {
-			final MindIcon nextIcon = i.previous();
-			if (iconName.equals(nextIcon.getName())) {
-				return i.nextIndex();
 			}
 		}
 		return -1;
@@ -85,7 +70,7 @@ public class IconContainedCondition implements ISelectableCondition {
 		this.iconName = iconName;
 	}
 
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		return IconContainedCondition.iconFirstIndex(modeController, node, iconName) != -1
 		        || IconContainedCondition.isStateIconContained(node, iconName);
 	}
@@ -102,8 +87,7 @@ public class IconContainedCondition implements ISelectableCondition {
 	 */
 	public JComponent getListCellRendererComponent() {
 		final JCondition component = new JCondition();
-		final String text = TextUtil.getText("filter_icon") + ' ' + TextUtil.getText("filter_contains")
-		        + ' ';
+		final String text = TextUtil.getText("filter_icon") + ' ' + TextUtil.getText("filter_contains") + ' ';
 		component.add(new JLabel(text));
 		component.add(new JLabel(STORE.getUIIcon(getIconName()).getIcon()));
 		return component;
@@ -115,7 +99,7 @@ public class IconContainedCondition implements ISelectableCondition {
 		child.setAttribute(IconContainedCondition.ICON, iconName);
 		element.addChild(child);
 	}
-	
+
 	@Override
 	public String toString() {
 		return TextUtil.getText("filter_icon") + " \"" + getIconName() + "\"";

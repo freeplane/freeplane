@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.resources;
 
-import java.awt.Font;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -32,11 +31,9 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.controller.AController.IActionOnChange;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
-import org.freeplane.features.common.map.ModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -94,7 +91,7 @@ public abstract class ResourceController {
 	protected void firePropertyChanged(final String property, final String value, final String oldValue) {
 		if (oldValue == null || !oldValue.equals(value)) {
 			setProperty(property, value);
-			for (IFreeplanePropertyListener listener : getPropertyChangeListeners()) {
+			for (final IFreeplanePropertyListener listener : getPropertyChangeListeners()) {
 				listener.propertyChanged(property, value, oldValue);
 			}
 		}
@@ -215,10 +212,10 @@ public abstract class ResourceController {
 	abstract public void setProperty(final String property, final String value);
 
 	public boolean isApplet() {
-	    return false;
-    }
+		return false;
+	}
 
-	public void removePropertyChangeListener(final Class<? extends IActionOnChange> clazz, AFreeplaneAction action) {
+	public void removePropertyChangeListener(final Class<? extends IActionOnChange> clazz, final AFreeplaneAction action) {
 		final Iterator<IFreeplanePropertyListener> iterator = propertyChangeListeners.iterator();
 		while (iterator.hasNext()) {
 			final IFreeplanePropertyListener next = iterator.next();
@@ -227,5 +224,5 @@ public abstract class ResourceController {
 				return;
 			}
 		}
-    }
+	}
 }

@@ -21,7 +21,6 @@ package org.freeplane.features.common.map;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -61,7 +60,7 @@ public class MapModel {
 		final Controller controller = modeController.getController();
 		nodes = new HashMap<String, NodeModel>();
 		final FilterController filterController = FilterController.getController(controller);
-		if(filterController != null){
+		if (filterController != null) {
 			filter = filterController.createTransparentFilter();
 		}
 		if (root == null) {
@@ -96,19 +95,17 @@ public class MapModel {
 	}
 
 	public String generateNodeID(final String proposedID) {
-		if (proposedID != null 
-				&& ! "".equals(proposedID)
-				&& getNodeForID(proposedID) == null) {
+		if (proposedID != null && !"".equals(proposedID) && getNodeForID(proposedID) == null) {
 			return proposedID;
 		}
 		String returnValue;
 		do {
-				final String prefix = "ID_";
-				/*
-				 * The prefix is to enable the id to be an ID in the sense of
-				 * XML/DTD.
-				 */
-				returnValue = prefix + Integer.toString(ran.nextInt(UNDEFINED_NODE_ID));
+			final String prefix = "ID_";
+			/*
+			 * The prefix is to enable the id to be an ID in the sense of
+			 * XML/DTD.
+			 */
+			returnValue = prefix + Integer.toString(ran.nextInt(UNDEFINED_NODE_ID));
 		} while (nodes.containsKey(returnValue));
 		return returnValue;
 	}
@@ -261,14 +258,14 @@ public class MapModel {
 		url = v;
 	}
 
-	public void unregistryNodes(NodeModel node) {
+	public void unregistryNodes(final NodeModel node) {
 		final List<NodeModel> children = node.getChildren();
-		for(NodeModel child:children){
+		for (final NodeModel child : children) {
 			unregistryNodes(child);
 		}
 		final String id = node.getID();
-		if(id != null){
+		if (id != null) {
 			nodes.put(id, null);
 		}
-    }
+	}
 }

@@ -62,7 +62,7 @@ public class OptionPanel {
 
 		public void actionPerformed(final ActionEvent arg0) {
 			cardLayout.show(centralPanel, tabName);
-			for(JButton button : tabButtonMap.values()) {	
+			for (final JButton button : tabButtonMap.values()) {
 				button.setForeground(null);
 			}
 			getTabButton(tabName).setForeground(OptionPanel.MARKED_BUTTON_COLOR);
@@ -134,7 +134,7 @@ public class OptionPanel {
 		}
 		rightStack.add(rightBuilder.getPanel(), lastTabName);
 		if (selectedPanel != null && tabActionMap.containsKey(selectedPanel)) {
-			((ChangeTabAction) tabActionMap.get(selectedPanel)).actionPerformed(null);
+			(tabActionMap.get(selectedPanel)).actionPerformed(null);
 		}
 		final JScrollPane rightComponent = new JScrollPane(rightStack);
 		UITools.setScrollbarIncrement(rightComponent);
@@ -170,7 +170,7 @@ public class OptionPanel {
 
 	private Properties getOptionProperties() {
 		final Properties p = new Properties();
-		for(IPropertyControl control : controls) {
+		for (final IPropertyControl control : controls) {
 			if (control instanceof PropertyBean) {
 				final PropertyBean bean = (PropertyBean) control;
 				final String value = bean.getValue();
@@ -195,7 +195,7 @@ public class OptionPanel {
 	}
 
 	public void setProperties() {
-		for(IPropertyControl control : controls) {
+		for (final IPropertyControl control : controls) {
 			if (control instanceof PropertyBean) {
 				final PropertyBean bean = (PropertyBean) control;
 				final String name = bean.getName();
@@ -205,7 +205,7 @@ public class OptionPanel {
 		}
 	}
 
-	void setSelectedPanel(String panel) {
-	   selectedPanel = panel;
-    }
+	void setSelectedPanel(final String panel) {
+		selectedPanel = panel;
+	}
 }

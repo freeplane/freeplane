@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Vector;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -249,14 +248,13 @@ class NodeList {
 		final private String iconNames;
 		List<MindIcon> icons = new ArrayList<MindIcon>();
 
-		public IconsHolder(ModeController modeController, final NodeModel node) {
+		public IconsHolder(final ModeController modeController, final NodeModel node) {
 			icons.addAll(IconController.getIcons(modeController, node));
-			if(icons.size() > 0) {
+			if (icons.size() > 0) {
 				final List<MindIcon> toSort = new ArrayList<MindIcon>(icons);
 				Collections.sort(toSort);
-				
-				StringBuilder builder = new StringBuilder();
-				for(MindIcon icon : toSort) {
+				final StringBuilder builder = new StringBuilder();
+				for (final MindIcon icon : toSort) {
 					builder.append(icon.getName()).append(" ");
 				}
 				iconNames = builder.toString();
@@ -296,7 +294,7 @@ class NodeList {
 			if (value instanceof IconsHolder) {
 				final IconsHolder iconsHolder = (IconsHolder) value;
 				final MultipleImage iconImages = new MultipleImage();
-				for (MindIcon icon : iconsHolder.getIcons()) {
+				for (final MindIcon icon : iconsHolder.getIcons()) {
 					iconImages.addImage(icon.getIcon());
 				}
 				if (iconImages.getImageCount() > 0) {
@@ -418,8 +416,7 @@ class NodeList {
 
 	private class ReplaceAllInfo implements IReplaceInputInformation {
 		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) TextController.getController(getModeController())).setNodeText(nodeHolder.node,
-			    newText);
+			((MTextController) TextController.getController(getModeController())).setNodeText(nodeHolder.node, newText);
 		}
 
 		public int getLength() {
@@ -433,8 +430,7 @@ class NodeList {
 
 	private class ReplaceSelectedInfo implements IReplaceInputInformation {
 		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) TextController.getController(getModeController())).setNodeText(nodeHolder.node,
-			    newText);
+			((MTextController) TextController.getController(getModeController())).setNodeText(nodeHolder.node, newText);
 		}
 
 		public int getLength() {
@@ -492,7 +488,8 @@ class NodeList {
 		Pattern p;
 		try {
 			p = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
-		} catch (PatternSyntaxException e) {
+		}
+		catch (final PatternSyntaxException e) {
 			UITools.errorMessage(TextUtil.format("wrong_regexp", searchString, e.getMessage()));
 			return;
 		}
@@ -501,11 +498,11 @@ class NodeList {
 		for (int i = 0; i < length; i++) {
 			final NodeHolder nodeHolder = info.getNodeHolderAt(i);
 			final String text = nodeHolder.node.getText();
-			final String replaceResult; 
-			if(HtmlTools.isHtmlNode(text)){
-				replaceResult = replace(p, replacement, text);
+			final String replaceResult;
+			if (HtmlTools.isHtmlNode(text)) {
+				replaceResult = NodeList.replace(p, replacement, text);
 			}
-			else{
+			else {
 				replaceResult = p.matcher(text).replaceAll(replacement);
 			}
 			if (!StringUtils.equals(text, replaceResult)) {
@@ -514,13 +511,11 @@ class NodeList {
 		}
 	}
 
-	private static String replace(final Pattern p, final String replacement,
-			String replaceResult) {
+	private static String replace(final Pattern p, final String replacement, String replaceResult) {
 		Object before;
 		do {
 			before = replaceResult;
-			replaceResult = HtmlTools.getInstance().getReplaceResult(p,
-					replacement, replaceResult);
+			replaceResult = HtmlTools.getInstance().getReplaceResult(p, replacement, replaceResult);
 		} while (!replaceResult.equals(before));
 		return replaceResult;
 	}
@@ -540,7 +535,7 @@ class NodeList {
 	private org.freeplane.features.mindmapmode.addins.time.TableSorter sorter;
 	private JTable timeTable;
 	private DefaultTableModel timeTableModel;
-	private boolean searchInAllMaps;
+	private final boolean searchInAllMaps;
 
 	public NodeList(final ModeController modeController, final boolean showAllNodes, final boolean searchInAllMaps) {
 		this.modeController = modeController;
@@ -627,9 +622,9 @@ class NodeList {
 			final NodeModel focussedNode = getMindMapNode(focussedRow);
 			final MapModel map = focussedNode.getMap();
 			final List<NodeModel> selectedNodes = new ArrayList<NodeModel>();
-			for (int row : selectedRows) {
+			for (final int row : selectedRows) {
 				final NodeModel node = getMindMapNode(row);
-				if(! node.getMap().equals(map)){
+				if (!node.getMap().equals(map)) {
 					continue;
 				}
 				selectedNodes.add(node);
@@ -639,19 +634,18 @@ class NodeList {
 		}
 	}
 
-	private void selectMap(MapModel map) {
-	    if(map.equals(controller.getMap())){
-	    	return;
-	    }
-	    final IMapViewManager mapViewManager = controller.getMapViewManager();
+	private void selectMap(final MapModel map) {
+		if (map.equals(controller.getMap())) {
+			return;
+		}
+		final IMapViewManager mapViewManager = controller.getMapViewManager();
 		final Map<String, MapModel> maps = mapViewManager.getMaps(MModeController.MODENAME);
-	    for(Map.Entry<String, MapModel> entry : maps.entrySet()){
-	    	if(map.equals(entry.getValue())){
-	    		mapViewManager.tryToChangeToMapView(entry.getKey());
-	    	}
-	    }
-	    
-    }
+		for (final Map.Entry<String, MapModel> entry : maps.entrySet()) {
+			if (map.equals(entry.getValue())) {
+				mapViewManager.tryToChangeToMapView(entry.getKey());
+			}
+		}
+	}
 
 	private void selectSelectedRows() {
 		selectNodes(timeTable.getSelectedRow(), timeTable.getSelectedRows());
@@ -695,9 +689,8 @@ class NodeList {
 		gbl.columnWeights = new double[] { 1.0f };
 		gbl.rowWeights = new double[] { 1.0f };
 		contentPane.setLayout(gbl);
-		contentPane
-		    .add(new JLabel(TextUtil.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)), new GridBagConstraints(0, 0, 1,
-		        1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		contentPane.add(new JLabel(TextUtil.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)), new GridBagConstraints(0, 0, 1,
+		    1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextSearchField = new JTextField();
 		mFilterTextSearchField.getDocument().addDocumentListener(new FilterTextDocumentListener());
 		mFilterTextSearchField.addKeyListener(new KeyAdapter() {
@@ -710,9 +703,8 @@ class NodeList {
 		});
 		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		contentPane.add(new JLabel(TextUtil.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)),
-		    new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-		        new Insets(0, 0, 0, 0), 0, 0));
+		contentPane.add(new JLabel(TextUtil.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)), new GridBagConstraints(0, 2,
+		    1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextReplaceField = new JTextField();
 		contentPane.add(/* new JScrollPane */(mFilterTextReplaceField), new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
@@ -751,8 +743,7 @@ class NodeList {
 		mTreeLabel = new JLabel();
 		contentPane.add(new JScrollPane(mTreeLabel), new GridBagConstraints(0, 5, 1, 1, 1.0, 1.0,
 		    GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-		final AbstractAction selectAction = new AbstractAction(TextUtil
-		    .getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
+		final AbstractAction selectAction = new AbstractAction(TextUtil.getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
 			/**
 			     * 
 			     */
@@ -763,8 +754,7 @@ class NodeList {
 			}
 		};
 		final JButton selectButton = new JButton(selectAction);
-		final AbstractAction exportAction = new AbstractAction(TextUtil
-		    .getText("plugins/TimeManagement.xml_Export")) {
+		final AbstractAction exportAction = new AbstractAction(TextUtil.getText("plugins/TimeManagement.xml_Export")) {
 			/**
 			     * 
 			     */
@@ -811,8 +801,7 @@ class NodeList {
 			}
 		};
 		final JButton gotoButton = new JButton(gotoAction);
-		final AbstractAction disposeAction = new AbstractAction(TextUtil
-		    .getText(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
+		final AbstractAction disposeAction = new AbstractAction(TextUtil.getText(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
 			/**
 			     * 
 			     */
@@ -883,7 +872,8 @@ class NodeList {
 		if (storage != null) {
 			timeTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			int column = 0;
-			for (final TimeWindowColumnSetting setting : ((TimeWindowConfigurationStorage) storage).getListTimeWindowColumnSettingList()) {
+			for (final TimeWindowColumnSetting setting : ((TimeWindowConfigurationStorage) storage)
+			    .getListTimeWindowColumnSettingList()) {
 				timeTable.getColumnModel().getColumn(column).setPreferredWidth(setting.getColumnWidth());
 				sorter.setSortingStatus(column, setting.getColumnSorting());
 				column++;
@@ -930,13 +920,13 @@ class NodeList {
 		model.addColumn(NodeList.COLUMN_CREATED);
 		model.addColumn(NodeList.COLUMN_MODIFIED);
 		model.addColumn(NodeList.COLUMN_NOTES);
-		if(searchInAllMaps == false){
+		if (searchInAllMaps == false) {
 			final NodeModel node = controller.getMap().getRootNode();
 			updateModel(model, node);
 		}
-		else{
+		else {
 			final Map<String, MapModel> maps = controller.getMapViewManager().getMaps(MModeController.MODENAME);
-			for(MapModel map : maps.values()){
+			for (final MapModel map : maps.values()) {
 				final NodeModel node = map.getRootNode();
 				updateModel(model, node);
 			}

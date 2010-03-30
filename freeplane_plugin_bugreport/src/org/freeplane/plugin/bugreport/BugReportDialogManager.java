@@ -11,12 +11,13 @@ import javax.swing.JTextArea;
 import org.freeplane.core.ui.components.UITools;
 
 class BugReportDialogManager {
-
 	static String ALLOWED = "org.freeplane.plugin.bugreport.allowed";
 	static String ASK = "org.freeplane.plugin.bugreport.ask";
 	static String DENIED = "org.freeplane.plugin.bugreport.denied";
-	
-	static int showBugReportDialog(final String title, final String question, int messageType, Object[] options, Object firstChoice, final String reportName, final String log) {
+
+	static int showBugReportDialog(final String title, final String question, final int messageType,
+	                               final Object[] options, final Object firstChoice, final String reportName,
+	                               final String log) {
 		final Box messagePane = Box.createVerticalBox();
 		final JLabel messageLabel = new JLabel(question);
 		messageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
@@ -31,8 +32,8 @@ class BugReportDialogManager {
 		historyPane.setPreferredSize(new Dimension(500, 300));
 		historyPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		messagePane.add(historyPane);
-		final int choice = JOptionPane.showOptionDialog(UITools.getFrame(), messagePane, title, JOptionPane.DEFAULT_OPTION,
-		    messageType, null, options, firstChoice);
+		final int choice = JOptionPane.showOptionDialog(UITools.getFrame(), messagePane, title,
+		    JOptionPane.DEFAULT_OPTION, messageType, null, options, firstChoice);
 		return choice;
 	}
 }

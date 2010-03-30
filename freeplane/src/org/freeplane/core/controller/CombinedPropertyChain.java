@@ -26,7 +26,7 @@ public class CombinedPropertyChain<V, T> {
 	final private TreeMap<Integer, IPropertyHandler<?, ?>> handlers = new TreeMap<Integer, IPropertyHandler<?, ?>>();
 
 	public IPropertyHandler addGetter(final Integer key, final IPropertyHandler getter) {
-		return (IPropertyHandler) handlers.put(-key, getter);
+		return handlers.put(-key, getter);
 	}
 
 	public V getProperty(final T node) {
@@ -40,6 +40,6 @@ public class CombinedPropertyChain<V, T> {
 	}
 
 	public IPropertyHandler removeGetter(final Integer key) {
-		return (IPropertyHandler) handlers.remove(-key);
+		return handlers.remove(-key);
 	}
 }

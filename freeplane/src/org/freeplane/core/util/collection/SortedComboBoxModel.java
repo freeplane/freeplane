@@ -37,7 +37,7 @@ public class SortedComboBoxModel extends AbstractListModel implements ComboBoxMo
 	 */
 	private static final long serialVersionUID = 1L;
 	private Object selectedItem;
-	private SortedSet model;
+	private final SortedSet model;
 
 	public SortedComboBoxModel() {
 		model = new TreeSet();
@@ -79,7 +79,7 @@ public class SortedComboBoxModel extends AbstractListModel implements ComboBoxMo
 	*/
 	public int getIndexOf(final Object o) {
 		int count = -1;
-		for (Object element:this) {
+		for (final Object element : this) {
 			count++;
 			if (element.equals(o)) {
 				return count;
@@ -127,6 +127,7 @@ public class SortedComboBoxModel extends AbstractListModel implements ComboBoxMo
 			fireContentsChanged(this, 0, getSize());
 		}
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see javax.swing.ComboBoxModel#getSelectedItem()

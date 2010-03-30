@@ -46,14 +46,14 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 
 	/**
 	 */
-	public RemoveIconAction(final Controller controller, int position) {
-		super(position == -1 ? "RemoveIconAction" : "RemoveIcon_"+ position + "_Action", controller);
+	public RemoveIconAction(final Controller controller, final int position) {
+		super(position == -1 ? "RemoveIconAction" : "RemoveIcon_" + position + "_Action", controller);
 		this.position = position;
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		MIconController iconController = (MIconController) IconController.getController(getModeController());
+		final MIconController iconController = (MIconController) IconController.getController(getModeController());
 		iconController.removeIcon(node, position);
 		return;
 	}
@@ -73,5 +73,4 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 	public String getShortcutKey() {
 		return getKey() + ".shortcut";
 	}
-
 }

@@ -19,13 +19,9 @@
  */
 package org.freeplane.main.mindmapmode.stylemode;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.util.List;
 
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -37,29 +33,21 @@ import org.freeplane.core.frame.ToggleToolbarAction;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
-import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.addins.styles.MapStyle;
-import org.freeplane.features.common.attribute.AttributeController;
+import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
-import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.addins.styles.StyleEditorPanel;
-import org.freeplane.features.mindmapmode.attribute.MAttributeController;
-import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
@@ -68,7 +56,6 @@ import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
-import org.freeplane.view.swing.map.attribute.EditAttributesAction;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
@@ -89,7 +76,7 @@ public class SModeControllerFactory {
 
 	private SModeController modeController;
 
-	SModeController createModeController(JDialog dialog) {
+	SModeController createModeController(final JDialog dialog) {
 		final Controller controller = new Controller();
 		final MapViewController mapViewController = new MapViewController();
 		final DialogController viewController = new DialogController(controller, mapViewController, dialog);
@@ -103,55 +90,54 @@ public class SModeControllerFactory {
 		modeController.addAction(new DeleteUserStyleAction(controller));
 		modeController.addAction(new NewLevelStyleAction(controller));
 		modeController.addAction(new DeleteLevelStyleAction(controller));
-        final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
-        userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener(modeController));
-        modeController.setUserInputListenerFactory(userInputListenerFactory);
-        controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController(controller));
-        modeController.setMapController(new MMapController(modeController));
-        TextController.install(modeController, new TextController(modeController));
-        IconController.install(modeController, new MIconController(modeController));
-        NodeStyleController.install(modeController, new MNodeStyleController(modeController));
-        EdgeController.install(modeController, new MEdgeController(modeController));
-        CloudController.install(modeController, new MCloudController(modeController));
-        LinkController.install(modeController, new LinkController(modeController));
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
+		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener(modeController));
+		modeController.setUserInputListenerFactory(userInputListenerFactory);
+		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController(controller));
+		modeController.setMapController(new MMapController(modeController));
+		TextController.install(modeController, new TextController(modeController));
+		IconController.install(modeController, new MIconController(modeController));
+		NodeStyleController.install(modeController, new MNodeStyleController(modeController));
+		EdgeController.install(modeController, new MEdgeController(modeController));
+		CloudController.install(modeController, new MCloudController(modeController));
+		LinkController.install(modeController, new LinkController(modeController));
 		MFileManager.install(modeController, new MFileManager(modeController));
-        userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(controller, new MMouseMotionListener(
-            modeController)));
-        
-        final JPopupMenu popupmenu = new JPopupMenu();
-        userInputListenerFactory.setNodePopupMenu(popupmenu);
-		FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
+		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(controller, new MMouseMotionListener(
+		    modeController)));
+		final JPopupMenu popupmenu = new JPopupMenu();
+		userInputListenerFactory.setNodePopupMenu(popupmenu);
+		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
 		toolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
-		userInputListenerFactory.addToolBar("/main_toolbar",ViewController.TOP, toolBar);
-		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT,((MIconController) IconController.getController(modeController))
-			    .getIconToolBarScrollPane());
-		userInputListenerFactory.addToolBar("/status",ViewController.BOTTOM, controller.getViewController().getStatusBar());
+		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
+		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT, ((MIconController) IconController
+		    .getController(modeController)).getIconToolBarScrollPane());
+		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
+		    .getStatusBar());
 		modeController.addAction(new ToggleToolbarAction(controller, "ToggleLeftToolbarAction", "/icon_toolbar"));
 		userInputListenerFactory.setMenuStructure("/xml/stylemodemenu.xml");
-        final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
-        userInputListenerFactory.updateMenus(modeController);
-        ((MIconController) IconController.getController(modeController)).updateIconToolbar();
-        ((MIconController) IconController.getController(modeController)).updateMenus(builder);
-        modeController.updateMenus();
-        new MapStyle(modeController, false);
+		final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		userInputListenerFactory.updateMenus(modeController);
+		((MIconController) IconController.getController(modeController)).updateIconToolbar();
+		((MIconController) IconController.getController(modeController)).updateMenus(builder);
+		modeController.updateMenus();
+		new MapStyle(modeController, false);
 		controller.addModeController(modeController);
 		final SModeController modeController = this.modeController;
 		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController, null, false);
 		styleEditorPanel.init(modeController);
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
-			public void onSelect(NodeModel node) {
+			public void onSelect(final NodeModel node) {
 				final IMapSelection selection = controller.getSelection();
-				if(selection.size() == 1 && node.depth() >= 2){
+				if (selection.size() == 1 && node.depth() >= 2) {
 					return;
 				}
-
 				final NodeModel nextSelection;
-				if(node.depth() < 2){
-					if(node.depth() == 1 && node.hasChildren()){
+				if (node.depth() < 2) {
+					if (node.depth() == 1 && node.hasChildren()) {
 						nextSelection = (NodeModel) node.getChildAt(0);
 					}
-					else{
+					else {
 						nextSelection = (NodeModel) (node.getMap().getRootNode().getChildAt(0).getChildAt(0));
 					}
 				}
@@ -164,20 +150,20 @@ public class SModeControllerFactory {
 					}
 				});
 			}
-			
-			public void onDeselect(NodeModel node) {
+
+			public void onDeselect(final NodeModel node) {
 			}
 		});
-		JScrollPane styleScrollPane = new JScrollPane(styleEditorPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
+		final JScrollPane styleScrollPane = new JScrollPane(styleEditorPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
 		this.modeController = null;
 		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, styleScrollPane);
 		return modeController;
 	}
 
-
-	public static void createModeController(MModeController modeController) {
+	public static void createModeController(final MModeController modeController) {
 		modeController.addAction(new EditStylesAction(modeController));
 		modeController.addAction(new EditDefaultStylesAction(modeController));
-    }
+	}
 }

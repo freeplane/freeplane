@@ -25,9 +25,10 @@ import org.freeplane.core.resources.ResourceController;
  * @author Dimitry Polivaev
  * 30.08.2009
  */
-public enum FitMap{USER_DEFINED, WIDTH, HEIGHT, PAGE;
-
-public static FitMap valueOf() {
-	final String fitMapStr = ResourceController.getResourceController().getProperty("fit_map");
-	return valueOf(fitMapStr);
-}}
+public enum FitMap {
+	USER_DEFINED, WIDTH, HEIGHT, PAGE;
+	public static FitMap valueOf() {
+		final String fitMapStr = ResourceController.getResourceController().getProperty("fit_map");
+		return FitMap.valueOf(fitMapStr);
+	}
+}

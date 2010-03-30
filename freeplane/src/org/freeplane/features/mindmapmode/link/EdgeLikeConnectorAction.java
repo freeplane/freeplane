@@ -22,10 +22,8 @@ package org.freeplane.features.mindmapmode.link;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.map.NodeModel;
 
 class EdgeLikeConnectorAction extends AFreeplaneAction {
 	/**
@@ -40,8 +38,7 @@ class EdgeLikeConnectorAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
-		linkController.setEdgeLike(arrowLink, ! arrowLink.isEdgeLike());
+		final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+		linkController.setEdgeLike(arrowLink, !arrowLink.isEdgeLike());
 	}
-
 }

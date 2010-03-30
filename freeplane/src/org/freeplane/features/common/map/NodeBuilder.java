@@ -104,16 +104,15 @@ public class NodeBuilder implements IElementDOMHandler {
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeBuilder.XML_NODE_ENCRYPTED_CONTENT,
 		    new IAttributeHandler() {
-			private void createEncryptedNode(final NodeModel node, final String additionalInfo) {
-				final EncryptionModel encryptionModel = new EncryptionModel(node, additionalInfo);
-				node.addExtension(encryptionModel);
-			}
+			    private void createEncryptedNode(final NodeModel node, final String additionalInfo) {
+				    final EncryptionModel encryptionModel = new EncryptionModel(node, additionalInfo);
+				    node.addExtension(encryptionModel);
+			    }
 
 			    public void setAttribute(final Object userObject, final String value) {
 				    final NodeModel node = (NodeModel) userObject;
-					createEncryptedNode(node, value);
-					node.setFolded(true);
-				    
+				    createEncryptedNode(node, value);
+				    node.setFolded(true);
 			    }
 		    });
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeBuilder.XML_NODE_HISTORY_CREATED_AT,
@@ -183,8 +182,8 @@ public class NodeBuilder implements IElementDOMHandler {
 				final String loadFolding = resourceController.getProperty(NodeBuilder.RESOURCES_LOAD_FOLDING);
 				if (loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
 				        || loadFolding.equals(NodeBuilder.RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL)) {
-					int nodeCount = resourceController.getIntProperty(NodeBuilder.MAX_DISPLAYED_NODE_COUNT, 20);
-					List<NodeModel> children = topNode.getChildren();
+					final int nodeCount = resourceController.getIntProperty(NodeBuilder.MAX_DISPLAYED_NODE_COUNT, 20);
+					final List<NodeModel> children = topNode.getChildren();
 					for (final NodeModel child : children) {
 						foldAll(child, nodeCount - 1 - children.size());
 					}
@@ -226,7 +225,7 @@ public class NodeBuilder implements IElementDOMHandler {
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
-	private void setMapChild(NodeModel mapChild) {
-	    mapReader.getCurrentNodeTreeCreator().setMapChild(mapChild);
-    }
+	private void setMapChild(final NodeModel mapChild) {
+		mapReader.getCurrentNodeTreeCreator().setMapChild(mapChild);
+	}
 }

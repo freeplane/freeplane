@@ -64,14 +64,15 @@ class SelectMenuItemDialog extends JDialog {
 	private static final String SELECTION_ROOT_KEY = FreeplaneMenuBar.MENU_BAR_PREFIX;
 	private static final Dimension DIALOG_DIMENSION = new Dimension(350, 350);
 	private JButton btnOK;
-	private JTree tree;
+	private final JTree tree;
 	private String menuItemKey;
 
 	private class CloseAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final Object source = e.getSource();
 			if (source == btnOK) {
-				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+				final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
+				    .getLastSelectedPathComponent();
 				// this condition actually has to be true due to the TreeSelectionListener
 				if (selectedNode != null && selectedNode.isLeaf()) {
 					menuItemKey = ((SelectMenuItemDialog.MenuEntry) selectedNode.getUserObject()).getKey();
@@ -95,14 +96,17 @@ class SelectMenuItemDialog extends JDialog {
 			    .getResource("/images/icons/button.png")));
 		}
 
-		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
-		                                              boolean leaf, int row, boolean hasFocus) {
+		@Override
+		public Component getTreeCellRendererComponent(final JTree tree, final Object value, final boolean sel,
+		                                              final boolean expanded, final boolean leaf, final int row,
+		                                              final boolean hasFocus) {
 			super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 			if (leaf) {
 				final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 				final SelectMenuItemDialog.MenuEntry menuEntry = (SelectMenuItemDialog.MenuEntry) node.getUserObject();
-				if (menuEntry.getIcon() != null)
+				if (menuEntry.getIcon() != null) {
 					setIcon(menuEntry.getIcon());
+				}
 			}
 			return this;
 		}
@@ -113,7 +117,7 @@ class SelectMenuItemDialog extends JDialog {
 		private final String label;
 		private final Icon icon;
 
-		public MenuEntry(String key, String label, Icon icon) {
+		public MenuEntry(final String key, final String label, final Icon icon) {
 			this.key = key;
 			this.label = label;
 			this.icon = icon;
@@ -133,7 +137,7 @@ class SelectMenuItemDialog extends JDialog {
 		}
 	}
 
-	public SelectMenuItemDialog(Controller controller, NodeModel node) {
+	public SelectMenuItemDialog(final Controller controller, final NodeModel node) {
 		super(UITools.getFrame(), TextUtil.getText("select_menu_item_dialog"), true);
 		controller.getViewController().scrollNodeToVisible(node);
 		UITools.setDialogLocationRelativeTo(this, controller, node);
@@ -152,7 +156,7 @@ class SelectMenuItemDialog extends JDialog {
 		controllerBox.setBorder(new EmptyBorder(5, 0, 5, 0));
 		final CloseAction closeAction = new CloseAction();
 		btnOK = createButton("ok", closeAction);
-		JButton btnCancel = createButton("cancel", closeAction);
+		final JButton btnCancel = createButton("cancel", closeAction);
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnOK);
 		controllerBox.add(Box.createHorizontalGlue());
@@ -161,29 +165,29 @@ class SelectMenuItemDialog extends JDialog {
 		return controllerBox;
 	}
 
-	private JButton createButton(String key, final CloseAction closeAction) {
-		JButton button = new JButton();
+	private JButton createButton(final String key, final CloseAction closeAction) {
+		final JButton button = new JButton();
 		MenuBuilder.setLabelAndMnemonic(button, TextUtil.getText(key));
 		button.addActionListener(closeAction);
 		button.setMaximumSize(new Dimension(1000, 1000));
 		return button;
 	}
 
-	private JTree createTree(Controller controller) {
-		MModeController modeController = (MModeController) controller.getModeController();
+	private JTree createTree(final Controller controller) {
+		final MModeController modeController = (MModeController) controller.getModeController();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		final DefaultMutableTreeNode menuRoot = menuBuilder.get(SELECTION_ROOT_KEY);
-		final Object rootLabel = (menuRoot.getUserObject() instanceof JMenuItem) ? convert(menuRoot) : TextUtil
-		    .getText("select_menu_item_root_node");
-		DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(rootLabel);
-		addChildrenRecursive(treeRoot, menuRoot.children());
-		JTree jTree = new JTree(treeRoot);
+		final Object rootLabel = (menuRoot.getUserObject() instanceof JMenuItem) ? SelectMenuItemDialog
+		    .convert(menuRoot) : TextUtil.getText("select_menu_item_root_node");
+		final DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(rootLabel);
+		SelectMenuItemDialog.addChildrenRecursive(treeRoot, menuRoot.children());
+		final JTree jTree = new JTree(treeRoot);
 		jTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		// replace the standard icons
 		jTree.setCellRenderer(new MenuIconRenderer());
 		jTree.addTreeSelectionListener(new TreeSelectionListener() {
-			public void valueChanged(TreeSelectionEvent e) {
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+			public void valueChanged(final TreeSelectionEvent e) {
+				final DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 				btnOK.setEnabled(node != null && node.isLeaf());
 			}
 		});
@@ -191,26 +195,26 @@ class SelectMenuItemDialog extends JDialog {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void addChildrenRecursive(DefaultMutableTreeNode treeNode, Enumeration menuChildren) {
+	private static void addChildrenRecursive(final DefaultMutableTreeNode treeNode, final Enumeration menuChildren) {
 		while (menuChildren.hasMoreElements()) {
-			DefaultMutableTreeNode childMenu = (DefaultMutableTreeNode) menuChildren.nextElement();
-			final DefaultMutableTreeNode treeChild = convert(childMenu);
+			final DefaultMutableTreeNode childMenu = (DefaultMutableTreeNode) menuChildren.nextElement();
+			final DefaultMutableTreeNode treeChild = SelectMenuItemDialog.convert(childMenu);
 			if (treeChild != null) {
 				treeNode.add(treeChild);
-				addChildrenRecursive(treeChild, childMenu.children());
+				SelectMenuItemDialog.addChildrenRecursive(treeChild, childMenu.children());
 			}
 			else {
-				addChildrenRecursive(treeNode, childMenu.children());
+				SelectMenuItemDialog.addChildrenRecursive(treeNode, childMenu.children());
 			}
 		}
 	}
 
 	// in: node for JMenu, out: node for MenuEntry
-	private static DefaultMutableTreeNode convert(DefaultMutableTreeNode menuNode) {
-		IndexedTree.Node node = (Node) menuNode;
+	private static DefaultMutableTreeNode convert(final DefaultMutableTreeNode menuNode) {
+		final IndexedTree.Node node = (Node) menuNode;
 		final Object userObject = menuNode.getUserObject();
 		if (userObject instanceof JMenuItem) {
-			JMenuItem jMenuItem = (JMenuItem) userObject;
+			final JMenuItem jMenuItem = (JMenuItem) userObject;
 			return new DefaultMutableTreeNode(new MenuEntry(String.valueOf(node.getKey()), jMenuItem.getText(),
 			    jMenuItem.getIcon()));
 		}

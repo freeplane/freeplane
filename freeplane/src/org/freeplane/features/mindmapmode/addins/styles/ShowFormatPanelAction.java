@@ -35,5 +35,4 @@ public class ShowFormatPanelAction extends ToggleToolbarAction {
 	public ShowFormatPanelAction(final Controller controller) {
 		super(controller, "ShowFormatPanel", "/format");
 	}
-
 }

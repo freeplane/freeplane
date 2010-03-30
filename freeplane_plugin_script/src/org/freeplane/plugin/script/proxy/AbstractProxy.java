@@ -22,7 +22,7 @@ public abstract class AbstractProxy<T> {
 	public T getDelegate() {
 		return delegate;
 	}
-	
+
 	public MModeController getModeController() {
 		return modeController;
 	}
@@ -31,5 +31,4 @@ public abstract class AbstractProxy<T> {
 	public int hashCode() {
 		return delegate.hashCode() * 31 + getClass().hashCode();
 	}
-
 }

@@ -95,7 +95,7 @@ public class FilterHistory {
 		}
 	}
 
-	private void undoImpl(ModeController modeController, final MapModel map) {
+	private void undoImpl(final ModeController modeController, final MapModel map) {
 		if (!filters.hasPrevious()) {
 			return;
 		}

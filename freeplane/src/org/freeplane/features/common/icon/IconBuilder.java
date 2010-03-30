@@ -33,15 +33,14 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class IconBuilder implements IElementDOMHandler, IElementWriter {
-	
 	private final IconStore store;
-	private IconController iconController;
-	
-	public IconBuilder(IconController iconController, final IconStore icons) {
-		this.store = icons;
+	private final IconController iconController;
+
+	public IconBuilder(final IconController iconController, final IconStore icons) {
+		store = icons;
 		this.iconController = iconController;
 	}
-	
+
 	static class IconProperties {
 		String iconName;
 	}
@@ -83,15 +82,15 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
-	public void writeContent(ITreeWriter writer, Object element, String tag) throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object element, final String tag) throws IOException {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
-		NodeModel node = (NodeModel) element;
-		final List<MindIcon> icons = forceFormatting ? iconController.getIcons(node) : node .getIcons();
+		final NodeModel node = (NodeModel) element;
+		final List<MindIcon> icons = forceFormatting ? iconController.getIcons(node) : node.getIcons();
 		for (int i = 0; i < icons.size(); ++i) {
 			final XMLElement iconElement = new XMLElement();
 			iconElement.setName("icon");
 			iconElement.setAttribute("BUILTIN", (icons.get(i)).getName());
 			writer.addElement(node, iconElement);
 		}
-    }
+	}
 }

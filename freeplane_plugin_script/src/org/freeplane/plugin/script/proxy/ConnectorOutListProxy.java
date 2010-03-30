@@ -14,16 +14,14 @@ class ConnectorOutListProxy extends AbstractCollection<Proxy.Connector> {
 	private final MModeController modeController;
 	private final NodeModel node;
 
-	public ConnectorOutListProxy(final NodeModel node,
-			final MModeController modeController) {
+	public ConnectorOutListProxy(final NodeModel node, final MModeController modeController) {
 		this.node = node;
 		this.modeController = modeController;
 	}
 
 	@Override
 	public Iterator<Proxy.Connector> iterator() {
-		return new ConnectorIterator(NodeLinks.getLinks(node).iterator(),
-				modeController);
+		return new ConnectorIterator(NodeLinks.getLinks(node).iterator(), modeController);
 	}
 
 	@Override

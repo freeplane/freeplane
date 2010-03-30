@@ -19,16 +19,13 @@
  */
 package org.freeplane.core.resources.ui;
 
-import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
 
 import org.freeplane.core.util.TextUtil;
 
@@ -53,7 +50,7 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void disableModifiers() {
-		modifierMask = KeyEvent.ALT_MASK | KeyEvent.CTRL_MASK| KeyEvent.META_MASK;
+		modifierMask = KeyEvent.ALT_MASK | KeyEvent.CTRL_MASK | KeyEvent.META_MASK;
 	}
 
 	@Override

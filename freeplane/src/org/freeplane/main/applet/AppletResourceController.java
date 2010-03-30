@@ -132,9 +132,7 @@ class AppletResourceController extends ResourceController {
 	}
 
 	@Override
-    public boolean isApplet() {
-	    return true;
-    }
-	
-	
+	public boolean isApplet() {
+		return true;
+	}
 }

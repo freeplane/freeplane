@@ -21,16 +21,11 @@ package org.freeplane.main.mindmapmode.stylemode;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
-import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.map.MMapController;
@@ -39,45 +34,44 @@ import org.freeplane.features.mindmapmode.map.MMapController;
  * @author Dimitry Polivaev
  * 02.10.2009
  */
-public class NewLevelStyleAction extends AFreeplaneAction{
-
-	public NewLevelStyleAction(Controller controller) {
-	    super("NewLevelStyleAction", controller);
-    }
+public class NewLevelStyleAction extends AFreeplaneAction {
+	public NewLevelStyleAction(final Controller controller) {
+		super("NewLevelStyleAction", controller);
+	}
 
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	public void actionPerformed(ActionEvent e) {
-	    final MapModel map = getController().getMap();
+	public void actionPerformed(final ActionEvent e) {
+		final MapModel map = getController().getMap();
 		final NodeModel levelStyleParentNode = getLevelStyleParentNode(map);
-	    final String styleName = "AutomaticLayout.level," + levelStyleParentNode.getChildCount();
-	    final NamedObject styleObject = NamedObject.formatText(styleName);
-	    final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-	    final MMapController mapController = (MMapController) getModeController().getMapController();
-	    final NodeModel node = new NodeModel(map);
-	    node.setUserObject(styleObject);
+		final String styleName = "AutomaticLayout.level," + levelStyleParentNode.getChildCount();
+		final NamedObject styleObject = NamedObject.formatText(styleName);
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		final MMapController mapController = (MMapController) getModeController().getMapController();
+		final NodeModel node = new NodeModel(map);
+		node.setUserObject(styleObject);
 		mapController.insertNode(node, levelStyleParentNode, false, false, true);
 		mapController.select(node);
-		IActor actor = new IActor() {
+		final IActor actor = new IActor() {
 			public void undo() {
 				styleModel.removeStyleNode(node);
 			}
-			
+
 			public String getDescription() {
 				return "NewLevelStyle";
 			}
-			
+
 			public void act() {
 				styleModel.addStyleNode(node);
 			}
 		};
 		getModeController().execute(actor, map);
-    }
+	}
 
 	private NodeModel getLevelStyleParentNode(final MapModel map) {
-	    return (NodeModel) map.getRootNode().getChildAt(1);
-    }
+		return (NodeModel) map.getRootNode().getChildAt(1);
+	}
 }

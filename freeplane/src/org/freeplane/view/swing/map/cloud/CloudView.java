@@ -46,13 +46,13 @@ public class CloudView {
 
 	/** the layout functions can get the additional height of the clouded node . */
 	static public int getAdditionalHeigth(final NodeView source) {
-		CloudView heightCalculator = new CloudView(null, source);
+		final CloudView heightCalculator = new CloudView(null, source);
 		return (int) (1.1 * heightCalculator.getDistanceToConvexHull());
 	}
 
 	protected CloudModel cloudModel;
 	protected NodeView source;
-	private int iterativeLevel;
+	private final int iterativeLevel;
 
 	public CloudView(final CloudModel cloudModel, final NodeView source) {
 		this.cloudModel = cloudModel;
@@ -63,7 +63,7 @@ public class CloudView {
 
 	public CloudView() {
 		iterativeLevel = -1;
-    }
+	}
 
 	public Color getColor() {
 		final NodeModel model = source.getModel();

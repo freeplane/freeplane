@@ -24,7 +24,6 @@ import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelListener;
 import java.net.URL;
 import java.util.Collections;
@@ -55,12 +54,9 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
@@ -101,7 +97,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		});
 		toolBars = new LinkedHashMap<String, JComponent>();
 		toolbarLists = new List[4];
-		for(int j = 0; j < 4; j++){
+		for (int j = 0; j < 4; j++) {
 			toolbarLists[j] = new LinkedList<JComponent>();
 		}
 	}
@@ -292,7 +288,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			newItem.setSelected(false);
 			group.add(newItem);
 			newItem.addActionListener(mapsMenuActionListener);
-			if(displayName.length() > 0){
+			if (displayName.length() > 0) {
 				newItem.setMnemonic(displayName.charAt(0));
 			}
 			final MapView currentMapView = (MapView) mapViewManager.getMapViewComponent();

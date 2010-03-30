@@ -38,7 +38,6 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.common.url.UrlManager;
 
 class MindMapHTMLWriter {
@@ -125,12 +124,12 @@ class MindMapHTMLWriter {
 	final private Writer fileout;
 	final private MapController mapController;
 	private boolean writeFoldingCode;
-	private NodeStyleController nodeStyleController;
+	private final NodeStyleController nodeStyleController;
 
 	MindMapHTMLWriter(final MapController mapController, final Writer fileout) {
 		this.mapController = mapController;
 		final ModeController modeController = mapController.getModeController();
-		this. nodeStyleController =  NodeStyleController.getController(modeController);
+		nodeStyleController = NodeStyleController.getController(modeController);
 		this.fileout = fileout;
 		writeFoldingCode = false;
 		basedOnHeadings = (getProperty("html_export_folding").equals("html_export_based_on_headings"));
@@ -348,8 +347,8 @@ class MindMapHTMLWriter {
 		final List<MindIcon> icons = IconController.getIcons(mapController.getModeController(), model);
 		for (int i = 0; i < icons.size(); ++i) {
 			final String iconFileName = ((MindIcon) icons.get(i)).getFileName();
-			fileout.write("<img src=\"" + iconFileName + "\" alt=\""
-			        + ((MindIcon) icons.get(i)).getDescription() + "\">");
+			fileout.write("<img src=\"" + iconFileName + "\" alt=\"" + ((MindIcon) icons.get(i)).getDescription()
+			        + "\">");
 		}
 	}
 

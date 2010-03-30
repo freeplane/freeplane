@@ -42,9 +42,9 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 	private final NodeModel node;
 	private long remindUserAt = 0;
 	private Timer timer;
-	private ReminderHook reminderHook;
+	private final ReminderHook reminderHook;
 
-	public ReminderExtension(ReminderHook reminderHook, final NodeModel node) {
+	public ReminderExtension(final ReminderHook reminderHook, final NodeModel node) {
 		this.node = node;
 		this.reminderHook = reminderHook;
 	}
@@ -57,63 +57,62 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 		return remindUserAt;
 	}
 
-
 	void setRemindUserAt(final long remindUserAt) {
 		this.remindUserAt = remindUserAt;
 	}
 
-	public void scheduleTimer(TimerTask task, Date date) {
-		if(timer == null){
+	public void scheduleTimer(final TimerTask task, final Date date) {
+		if (timer == null) {
 			timer = SysUtil.createTimer(getClass().getSimpleName());
 		}
 		timer.schedule(task, date);
-	    
-    }
+	}
 
 	public void deactivateTimer() {
-		if(timer == null){
+		if (timer == null) {
 			return;
 		}
 		timer.cancel();
 		timer = null;
-    }
+	}
 
-	private void displayStateIcon(NodeModel parent, ClockState state) {
-	    if(!isAncestorNode(parent)){
+	private void displayStateIcon(final NodeModel parent, final ClockState state) {
+		if (!isAncestorNode(parent)) {
 			return;
 		}
 		reminderHook.displayState(this, state, parent, true);
-    }
+	}
 
-	private boolean isAncestorNode(NodeModel parent) {
-		for(NodeModel n = node; n != null; n = n.getParentNode()){
-			if(n.equals(parent)){
+	private boolean isAncestorNode(final NodeModel parent) {
+		for (NodeModel n = node; n != null; n = n.getParentNode()) {
+			if (n.equals(parent)) {
 				return true;
 			}
 		}
 		return false;
-    }
+	}
 
-	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
 		displayStateIcon(parent, ClockState.CLOCK_VISIBLE);
-    }
+	}
 
-	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+	                        final NodeModel child, final int newIndex) {
 		displayStateIcon(newParent, ClockState.CLOCK_VISIBLE);
-    }
+	}
 
-	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
-		displayStateIcon(oldParent, ClockState.REMOVE_CLOCK);
-    }
-
-	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
 		displayStateIcon(oldParent, ClockState.REMOVE_CLOCK);
 	}
 
-	public void mapChanged(MapChangeEvent event) {
+	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+	                           final NodeModel child, final int newIndex) {
+		displayStateIcon(oldParent, ClockState.REMOVE_CLOCK);
 	}
 
-	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+	public void mapChanged(final MapChangeEvent event) {
 	}
 
+	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+	}
 }

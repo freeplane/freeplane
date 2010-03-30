@@ -34,7 +34,6 @@ import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
@@ -164,18 +163,18 @@ class ScriptingRegistration {
 
 	private void registerScripts(final Controller controller, final MenuBuilder menuBuilder,
 	                             final ScriptingEngine scriptingEngine) {
-		ScriptingConfiguration configuration = new ScriptingConfiguration();
-		String scriptsParentLocation = MENU_BAR_SCRIPTING_LOCATION;
-		String scriptsLocation = scriptsParentLocation + "/scripts";
+		final ScriptingConfiguration configuration = new ScriptingConfiguration();
+		final String scriptsParentLocation = MENU_BAR_SCRIPTING_LOCATION;
+		final String scriptsLocation = scriptsParentLocation + "/scripts";
 		addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtil.getText("ExecuteScripts.text"));
-		for (Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
-			String scriptName = entry.getKey();
-			String location = scriptsLocation + "/" + scriptName;
+		for (final Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
+			final String scriptName = entry.getKey();
+			final String location = scriptsLocation + "/" + scriptName;
 			addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
 			final ScriptMetaData scriptMetaData = configuration.getNameScriptMetaDataMap().get(scriptName);
 			// in the worst case three actions will cache a script - should not matter that much since it's unlikely
 			// that one script is used in multiple modes by the same user
-			for (ExecutionMode executionMode : scriptMetaData.getExecutionModes()) {
+			for (final ExecutionMode executionMode : scriptMetaData.getExecutionModes()) {
 				addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, executionMode, scriptMetaData
 				    .cacheContent());
 			}
@@ -191,11 +190,12 @@ class ScriptingRegistration {
 
 	private void addMenuItem(final Controller controller, final MenuBuilder menuBuilder,
 	                         final ScriptingEngine scriptingEngine, final String location,
-	                         final Entry<String, String> entry, final ExecutionMode executionMode, boolean cacheContent) {
+	                         final Entry<String, String> entry, final ExecutionMode executionMode,
+	                         final boolean cacheContent) {
 		final String scriptName = entry.getKey();
 		final String key = ExecuteScriptAction.getExecutionModeKey(executionMode);
 		final String menuName = TextUtil.format(key, new Object[] { scriptName });
-		menuBuilder.addAction(location, new ExecuteScriptAction(controller, scriptingEngine, scriptName,
-		    menuName, entry.getValue(), executionMode, cacheContent), MenuBuilder.AS_CHILD);
+		menuBuilder.addAction(location, new ExecuteScriptAction(controller, scriptingEngine, scriptName, menuName,
+		    entry.getValue(), executionMode, cacheContent), MenuBuilder.AS_CHILD);
 	}
 }

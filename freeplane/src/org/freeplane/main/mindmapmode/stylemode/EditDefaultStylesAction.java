@@ -23,9 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -34,33 +31,26 @@ import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.FileUtil;
-import org.freeplane.features.common.addins.styles.LogicalStyleController;
-import org.freeplane.features.common.addins.styles.MapStyle;
-import org.freeplane.features.common.addins.styles.MapStyleModel;
-import org.freeplane.features.common.map.MapChangeEvent;
-import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
-import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev
  * 13.09.2009
  */
 public class EditDefaultStylesAction extends AFreeplaneAction {
-	public EditDefaultStylesAction(MModeController mainModeController) {
-	    super("EditDefaultStylesAction", mainModeController.getController());
-    }
+	public EditDefaultStylesAction(final MModeController mainModeController) {
+		super("EditDefaultStylesAction", mainModeController.getController());
+	}
 
 	private void init() {
-		if(dialog != null){
+		if (dialog != null) {
 			return;
 		}
-	    dialog = new JDialog(getController().getViewController().getJFrame());
+		dialog = new JDialog(getController().getViewController().getJFrame());
 		dialog.setSize(800, 300);
 		dialog.setModal(true);
 		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -68,44 +58,42 @@ public class EditDefaultStylesAction extends AFreeplaneAction {
 		final ViewController viewController = modeController.getController().getViewController();
 		viewController.init();
 		dialog.addComponentListener(new ComponentAdapter() {
-
 			@Override
-            public void componentHidden(ComponentEvent e) {
-	            final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
-	            final MapModel map = mapViewManager.getModel();
-	            final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
-	            	switch(modeController.getStatus()){
-	            	case JOptionPane.OK_OPTION:
-	            		if(undoHandler.canUndo()){
-	            			((MFileManager)MFileManager.getController(modeController)).save(map);
-	            		}
-	            	}
+			public void componentHidden(final ComponentEvent e) {
+				final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
+				final MapModel map = mapViewManager.getModel();
+				final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+				switch (modeController.getStatus()) {
+					case JOptionPane.OK_OPTION:
+						if (undoHandler.canUndo()) {
+							((MFileManager) MFileManager.getController(modeController)).save(map);
+						}
+				}
 				mapViewManager.close(true);
-	            super.componentHidden(e);
-            }
-			
+				super.componentHidden(e);
+			}
 		});
-    }
+	}
 
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JDialog dialog;
 	private SModeController modeController;
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		init();
 		try {
-			
-			ResourceController resourceController = ResourceController.getResourceController();
-			File freeplaneUserDirectory = new File(resourceController.getFreeplaneUserDirectory());
-			File styles = new File(freeplaneUserDirectory, "default.stylemm");
-			if (! styles.exists()){
+			final ResourceController resourceController = ResourceController.getResourceController();
+			final File freeplaneUserDirectory = new File(resourceController.getFreeplaneUserDirectory());
+			final File styles = new File(freeplaneUserDirectory, "default.stylemm");
+			if (!styles.exists()) {
 				FileUtil.copyFromURL(resourceController.getResource("/styles/default.stylemm"), freeplaneUserDirectory);
 			}
 			modeController.getMapController().newMap(styles.toURL());
-		} catch (Exception e1) {
+		}
+		catch (final Exception e1) {
 			e1.printStackTrace();
 			return;
 		}

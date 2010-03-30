@@ -39,7 +39,7 @@ public class TimeConditionCreatedAfter extends TimeConditionCreatedBefore implem
 	}
 
 	@Override
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		return !super.checkNode(modeController, node);
 	}
 

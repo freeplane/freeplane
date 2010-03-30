@@ -35,7 +35,6 @@ import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.features.common.addins.encrypt.EnterPassword;
 import org.freeplane.features.common.addins.misc.BlinkingNodeHook;
@@ -73,11 +72,10 @@ import org.freeplane.features.mindmapmode.addins.export.ExportToImage;
 import org.freeplane.features.mindmapmode.addins.export.ExportToOoWriter;
 import org.freeplane.features.mindmapmode.addins.export.ExportWithXSLT;
 import org.freeplane.features.mindmapmode.addins.export.ImportMindmanagerFiles;
-import org.freeplane.features.mindmapmode.addins.styles.RedefineStyleAction;
-import org.freeplane.features.mindmapmode.addins.styles.ShowFormatPanelAction;
 import org.freeplane.features.mindmapmode.addins.styles.AutomaticLayout;
 import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 import org.freeplane.features.mindmapmode.addins.styles.MUIFactory;
+import org.freeplane.features.mindmapmode.addins.styles.ShowFormatPanelAction;
 import org.freeplane.features.mindmapmode.addins.styles.StyleEditorPanel;
 import org.freeplane.features.mindmapmode.addins.time.ReminderHook;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
@@ -136,9 +134,10 @@ public class MModeControllerFactory {
 		new ReminderHook(modeController);
 		new ViewerController(modeController);
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		StyleEditorPanel panel = new StyleEditorPanel(modeController, uiFactory, true);
+		final StyleEditorPanel panel = new StyleEditorPanel(modeController, uiFactory, true);
 		panel.init(modeController);
-		JScrollPane styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		final JScrollPane styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		styleScrollPane.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "styleScrollPaneVisible");
 		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, styleScrollPane);
 		menuBuilder.addAnnotatedAction(new ShowFormatPanelAction(controller));
@@ -150,7 +149,6 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new SaveAll(controller));
 		menuBuilder.addAnnotatedAction(new SortNodes(controller));
 		menuBuilder.addAnnotatedAction(new SplitNode(controller));
-
 		new UnfoldAll(modeController).addActionsAtMenuBuilder(menuBuilder);
 		new ChangeNodeLevelController(modeController.getController()).addActionsAtMenuBuilder(menuBuilder);
 		ExportWithXSLT.createXSLTExportActions(modeController, "/xml/ExportWithXSLT.xml");
@@ -195,8 +193,8 @@ public class MModeControllerFactory {
 						final NodeModel node = (component).getNodeView().getModel();
 						if (!mapController.hasChildren(node)) {
 							/* If the link exists, follow the link; toggle folded otherwise */
-							if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown() && !e.isPopupTrigger()
-							        && e.getButton() == MouseEvent.BUTTON1) {
+							if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown()
+							        && !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1) {
 								((MTextController) TextController.getController(modeController)).edit(null, false,
 								    false);
 							}
@@ -224,7 +222,6 @@ public class MModeControllerFactory {
 		controller.getMapViewManager().addMapSelectionListener(uiFactory);
 		final MToolbarContributor menuContributor = new MToolbarContributor(modeController, uiFactory);
 		modeController.addMenuContributor(menuContributor);
-
 		EdgeController.install(modeController, new MEdgeController(modeController));
 		CloudController.install(modeController, new MCloudController(modeController));
 		NoteController.install(modeController, new MNoteController(modeController));
@@ -252,8 +249,10 @@ public class MModeControllerFactory {
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
 		toolbar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolbar);
-		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(controller).getFilterToolbar());
-		userInputListenerFactory.addToolBar("/status",ViewController.BOTTOM, controller.getViewController().getStatusBar());
+		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(
+		    controller).getFilterToolbar());
+		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
+		    .getStatusBar());
 		final FButtonBar fButtonToolBar = new FButtonBar(modeController);
 		fButtonToolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "fbarVisible");
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
@@ -262,8 +261,8 @@ public class MModeControllerFactory {
 		SModeControllerFactory.createModeController(modeController);
 		modeController.addAction(new SetAcceleratorOnNextClickAction(controller));
 		userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);
-		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT,((MIconController) IconController.getController(modeController))
-		    .getIconToolBarScrollPane());
+		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT, ((MIconController) IconController
+		    .getController(modeController)).getIconToolBarScrollPane());
 		modeController.addAction(new ToggleToolbarAction(controller, "ToggleLeftToolbarAction", "/icon_toolbar"));
 		new RevisionPlugin(modeController);
 		userInputListenerFactory.setMenuStructure("/xml/mindmapmodemenu.xml");

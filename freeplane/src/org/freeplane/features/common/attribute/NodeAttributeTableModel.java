@@ -135,12 +135,12 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	 * @see freeplane.modes.attributes.AttributeTableModel#get(int)
 	 */
 	public Attribute getAttribute(final int row) {
-		return (Attribute) attributes.get(row);
+		return attributes.get(row);
 	}
 
 	public List<String> getAttributeKeyList() {
 		final Vector<String> returnValue = new Vector<String>();
-		for(Attribute attr : getAttributes()) {
+		for (final Attribute attr : getAttributes()) {
 			returnValue.add(attr.getName());
 		}
 		return returnValue;
@@ -151,7 +151,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 			return -1;
 		}
 		int pos = 0;
-		for(Attribute attr : getAttributes()) {
+		for (final Attribute attr : getAttributes()) {
 			if (pKey.equals(attr.getName())) {
 				return pos;
 			}
@@ -200,7 +200,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	}
 
 	public Object getName(final int row) {
-		final Attribute attr = (Attribute) attributes.get(row);
+		final Attribute attr = attributes.get(row);
 		return attr.getName();
 	}
 
@@ -217,7 +217,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	}
 
 	public Object getValue(final int row) {
-		final Attribute attr = (Attribute) attributes.get(row);
+		final Attribute attr = attributes.get(row);
 		return attr.getValue();
 	}
 
@@ -268,7 +268,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	private void saveAttribute(final ITreeWriter writer, final int i) throws IOException {
 		final XMLElement attributeElement = new XMLElement();
 		attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE);
-		final Attribute attr = (Attribute) attributes.get(i);
+		final Attribute attr = attributes.get(i);
 		attributeElement.setAttribute("NAME", attr.getName());
 		attributeElement.setAttribute("VALUE", attr.getValue());
 		writer.addElement(attr, attributeElement);
@@ -292,7 +292,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	}
 
 	public void setName(final int row, final Object newName) {
-		final Attribute attr = (Attribute) attributes.get(row);
+		final Attribute attr = attributes.get(row);
 		attr.setName(newName.toString());
 		fireTableRowsUpdated(row, row);
 	}
@@ -343,7 +343,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	}
 
 	public void setValue(final int row, final Object newValue) {
-		final Attribute attr = (Attribute) attributes.get(row);
+		final Attribute attr = attributes.get(row);
 		attr.setValue(newValue.toString());
 		fireTableRowsUpdated(row, row);
 	}

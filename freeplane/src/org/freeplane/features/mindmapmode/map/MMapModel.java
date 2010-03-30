@@ -41,6 +41,7 @@ public class MMapModel extends MapModel {
 	private LockManager lockManager;
 	private Timer timerForAutomaticSaving;
 	private int titleNumber = 0;
+
 	/**
 	 * The current version and all other version that don't need XML update for
 	 * sure.
@@ -94,7 +95,7 @@ public class MMapModel extends MapModel {
 	}
 
 	public void scheduleTimerForAutomaticSaving(final ModeController modeController) {
-		if(! (UrlManager.getController(modeController) instanceof MFileManager)){
+		if (!(UrlManager.getController(modeController) instanceof MFileManager)) {
 			return;
 		}
 		final int numberOfTempFiles = Integer.parseInt(ResourceController.getResourceController().getProperty(

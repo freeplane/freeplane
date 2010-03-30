@@ -29,7 +29,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
-import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.map.MMapController;
@@ -38,50 +37,49 @@ import org.freeplane.features.mindmapmode.map.MMapController;
  * @author Dimitry Polivaev
  * 02.10.2009
  */
-public class NewUserStyleAction extends AFreeplaneAction{
-
-	public NewUserStyleAction(Controller controller) {
-	    super("NewUserStyleAction", controller);
-    }
+public class NewUserStyleAction extends AFreeplaneAction {
+	public NewUserStyleAction(final Controller controller) {
+		super("NewUserStyleAction", controller);
+	}
 
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	public void actionPerformed(ActionEvent e) {
-	    final String styleName = JOptionPane.showInputDialog(TextUtil.getText("enter_new_style_name"));
-	    if(styleName == null){
-	    	return;
-	    }
-	    final MapModel map = getController().getMap();
-	    final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-	    if (null != styleModel.getStyleNode(styleName)){
-	    	UITools.errorMessage(TextUtil.getText("style_already_exists"));
-	    	return;
-	    }
-	    final MMapController mapController = (MMapController) getModeController().getMapController();
-	    final NodeModel node = new NodeModel(map);
-	    node.setUserObject(styleName);
+	public void actionPerformed(final ActionEvent e) {
+		final String styleName = JOptionPane.showInputDialog(TextUtil.getText("enter_new_style_name"));
+		if (styleName == null) {
+			return;
+		}
+		final MapModel map = getController().getMap();
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		if (null != styleModel.getStyleNode(styleName)) {
+			UITools.errorMessage(TextUtil.getText("style_already_exists"));
+			return;
+		}
+		final MMapController mapController = (MMapController) getModeController().getMapController();
+		final NodeModel node = new NodeModel(map);
+		node.setUserObject(styleName);
 		mapController.insertNode(node, getUserStyleParentNode(map), false, false, true);
 		mapController.select(node);
-		IActor actor = new IActor() {
+		final IActor actor = new IActor() {
 			public void undo() {
 				styleModel.removeStyleNode(node);
 			}
-			
+
 			public String getDescription() {
 				return "NewStyle";
 			}
-			
+
 			public void act() {
 				styleModel.addStyleNode(node);
 			}
 		};
 		getModeController().execute(actor, map);
-    }
+	}
 
 	private NodeModel getUserStyleParentNode(final MapModel map) {
-	    return (NodeModel) map.getRootNode().getChildAt(2);
-    }
+		return (NodeModel) map.getRootNode().getChildAt(2);
+	}
 }

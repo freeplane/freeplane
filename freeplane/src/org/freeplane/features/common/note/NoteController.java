@@ -25,7 +25,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
@@ -105,15 +104,16 @@ public class NoteController implements IExtension {
 		node.setStateIcon(NoteController.NODE_NOTE_ICON, (showIcon) ? noteIcon : null, true);
 		if (enabled) {
 			final String noteText = NoteModel.getNoteText(node);
-			if(noteText != null){
-				final NodeStyleController style = (NodeStyleController) getModeController().getExtension(NodeStyleController.class);
+			if (noteText != null) {
+				final NodeStyleController style = (NodeStyleController) getModeController().getExtension(
+				    NodeStyleController.class);
 				final Font defaultFont = style.getDefaultFont(node.getMap());
 				final StringBuilder rule = new StringBuilder();
 				rule.append("font-family: " + defaultFont.getFamily() + ";");
 				rule.append("font-size: " + defaultFont.getSize() + "pt;");
 				rule.append("margin-top:0;");
-				final String tooltipText = noteText.replaceFirst("<body>",
-						"<body><div style=\"" + rule + "\">").replaceFirst("</body>", "</div></body>");
+				final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
+				    .replaceFirst("</body>", "</div></body>");
 				(getModeController().getMapController()).setToolTip(node, "nodeNoteText", new ITooltipProvider() {
 					public String getTooltip() {
 						return tooltipText;

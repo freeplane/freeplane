@@ -83,7 +83,7 @@ public class DesEncrypter implements IEncrypter {
 			}
 			final byte[] dec = DesEncrypter.fromBase64(str);
 			init(salt);
-			if(dcipher == null){
+			if (dcipher == null) {
 				return null;
 			}
 			final byte[] utf8 = dcipher.doFinal(dec);

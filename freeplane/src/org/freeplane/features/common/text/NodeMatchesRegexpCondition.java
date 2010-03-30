@@ -22,7 +22,6 @@ package org.freeplane.features.common.text;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
@@ -37,32 +36,32 @@ public class NodeMatchesRegexpCondition extends NodeCondition {
 	static final String SEARCH_PATTERN = "SEARCH_PATTERN";
 
 	static ISelectableCondition load(final XMLElement element) {
-		final Boolean ignoreCase = Boolean.valueOf(element
-		    .getAttribute(NodeCompareCondition.IGNORE_CASE, "false"));
+		final Boolean ignoreCase = Boolean.valueOf(element.getAttribute(NodeCompareCondition.IGNORE_CASE, "false"));
 		final String searchPattern = element.getAttribute(SEARCH_PATTERN, null);
 		return new NodeMatchesRegexpCondition(searchPattern, ignoreCase);
 	}
 
 	private final Pattern searchPattern;
 
-	public NodeMatchesRegexpCondition(String searchPattern) {
+	public NodeMatchesRegexpCondition(final String searchPattern) {
 		this(searchPattern, false);
 	}
 
-	public NodeMatchesRegexpCondition(String searchPattern, boolean ignoreCase) {
+	public NodeMatchesRegexpCondition(final String searchPattern, final boolean ignoreCase) {
 		super();
 		int flags = 0;
-		if (ignoreCase)
+		if (ignoreCase) {
 			flags |= Pattern.CASE_INSENSITIVE;
+		}
 		this.searchPattern = Pattern.compile(searchPattern, flags);
 	}
 
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
-		String text = node.getPlainTextContent();
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
+		final String text = node.getPlainTextContent();
 		return checkText(text);
 	}
 
-	boolean checkText(String text) {
+	boolean checkText(final String text) {
 		return searchPattern.matcher(text).matches();
 	}
 
@@ -72,10 +71,6 @@ public class NodeMatchesRegexpCondition extends NodeCondition {
 		final String simpleCondition = TextUtil.getText(ConditionFactory.FILTER_REGEXP);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, searchPattern.pattern(),
 		    isIgnoreCase());
-	}
-
-	private String getText(final NodeModel node) {
-		return node.getText();
 	}
 
 	public void toXml(final XMLElement element) {

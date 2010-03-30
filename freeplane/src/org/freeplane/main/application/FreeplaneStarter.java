@@ -34,11 +34,11 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
-import org.freeplane.features.common.addins.styles.MapViewLayout;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.addins.misc.NextNodeAction;
 import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
+import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.icon.IconController;
@@ -61,13 +61,14 @@ public class FreeplaneStarter {
 	private static final String PROPERTIES_FOLDER = ".freeplane";
 
 	public static String getResourceBaseDir() {
-	    return System.getProperty(FreeplaneStarter.ORG_FREEPLANE_GLOBALRESOURCEDIR,
+		return System.getProperty(FreeplaneStarter.ORG_FREEPLANE_GLOBALRESOURCEDIR,
 		    FreeplaneStarter.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
-    }
+	}
 
 	public static String getFreeplaneUserDirectory() {
-	    return System.getProperty("user.home") + File.separator + PROPERTIES_FOLDER;
-    }
+		return System.getProperty("user.home") + File.separator + PROPERTIES_FOLDER;
+	}
+
 	public static void showSysInfo() {
 		final StringBuilder info = new StringBuilder();
 		info.append("freeplane_version = ");
@@ -107,7 +108,7 @@ public class FreeplaneStarter {
 			final JFrame frame = new JFrame("Freeplane");
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 			splash = new FreeplaneSplashModern(frame);
-			if(! System.getProperty("org.freeplane.nosplash", "false").equals("true")){
+			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {
 				splash.setVisible(true);
 			}
 			final MMapViewController mapViewController = new MMapViewController();
@@ -167,7 +168,8 @@ public class FreeplaneStarter {
 		boolean fileLoaded = false;
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
-			if (fileArgument.toLowerCase().endsWith(org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
+			if (fileArgument.toLowerCase().endsWith(
+			    org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
 				if (!FileUtil.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 				}
@@ -205,7 +207,7 @@ public class FreeplaneStarter {
 	 */
 	public void run(final String[] args) {
 		try {
-			if(null == System.getProperty("org.freeplane.core.dir.lib", null)){
+			if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
 				System.setProperty("org.freeplane.core.dir.lib", "/lib/");
 			}
 			createController();

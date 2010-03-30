@@ -75,23 +75,25 @@ public class Filter {
 	}
 
 	static private Icon filterIcon;
+
 	void displayFilterStatus() {
-	    if(filterIcon == null){
+		if (filterIcon == null) {
 			filterIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/filter.png"));
 		}
-		if(getCondition() != null){
+		if (getCondition() != null) {
 			controller.getViewController().addStatusImage("filter", filterIcon);
 		}
-		else{
+		else {
 			controller.getViewController().removeStatus("filter");
 		}
-    }
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see
 	 * freeplane.controller.filter.Filter#applyFilter(freeplane.modes.MindMap)
 	 */
-	public void applyFilter(ModeController modeController, final MapModel map, final boolean force) {
+	public void applyFilter(final ModeController modeController, final MapModel map, final boolean force) {
 		if (map == null) {
 			return;
 		}
@@ -119,8 +121,9 @@ public class Filter {
 		}
 	}
 
-	private boolean applyFilter(ModeController modeController, final NodeModel node, final boolean isAncestorSelected,
-	                            final boolean isAncestorEclipsed, boolean isDescendantSelected) {
+	private boolean applyFilter(final ModeController modeController, final NodeModel node,
+	                            final boolean isAncestorSelected, final boolean isAncestorEclipsed,
+	                            boolean isDescendantSelected) {
 		final boolean conditionSatisfied = checkNode(modeController, node);
 		resetFilter(node);
 		if (isAncestorSelected) {
@@ -136,7 +139,8 @@ public class Filter {
 		if (isAncestorEclipsed) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_ECLIPSED);
 		}
-		if (filterChildren(modeController, node, conditionSatisfied || isAncestorSelected, !conditionSatisfied || isAncestorEclipsed)) {
+		if (filterChildren(modeController, node, conditionSatisfied || isAncestorSelected, !conditionSatisfied
+		        || isAncestorEclipsed)) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_ANCESTOR);
 			isDescendantSelected = true;
 		}
@@ -159,7 +163,7 @@ public class Filter {
 		return 0 != (options & FilterInfo.FILTER_SHOW_DESCENDANT);
 	}
 
-	private boolean checkNode(ModeController modeController, final NodeModel node) {
+	private boolean checkNode(final ModeController modeController, final NodeModel node) {
 		if (condition == null) {
 			return true;
 		}
@@ -172,13 +176,15 @@ public class Filter {
 	/**
 	 * @param c
 	 */
-	private boolean filterChildren(ModeController modeController, final NodeModel parent, final boolean isAncestorSelected,
-	                               final boolean isAncestorEclipsed) {
-		final ListIterator<NodeModel> iterator = controller.getModeController().getMapController().childrenUnfolded(parent);
+	private boolean filterChildren(final ModeController modeController, final NodeModel parent,
+	                               final boolean isAncestorSelected, final boolean isAncestorEclipsed) {
+		final ListIterator<NodeModel> iterator = controller.getModeController().getMapController().childrenUnfolded(
+		    parent);
 		boolean isDescendantSelected = false;
 		while (iterator.hasNext()) {
 			final NodeModel node = iterator.next();
-			isDescendantSelected = applyFilter(modeController, node, isAncestorSelected, isAncestorEclipsed, isDescendantSelected);
+			isDescendantSelected = applyFilter(modeController, node, isAncestorSelected, isAncestorEclipsed,
+			    isDescendantSelected);
 		}
 		return isDescendantSelected;
 	}

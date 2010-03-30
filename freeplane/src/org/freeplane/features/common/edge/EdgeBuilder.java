@@ -36,9 +36,9 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IElementWriter {
-	private EdgeController ec;
+	private final EdgeController ec;
 
-	public EdgeBuilder(EdgeController ec) {
+	public EdgeBuilder(final EdgeController ec) {
 		this.ec = ec;
 	}
 
@@ -108,31 +108,31 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IEleme
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
-
-	public void writeContent(ITreeWriter writer, Object element, String tag) throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object element, final String tag) throws IOException {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
-		if(! forceFormatting){
+		if (!forceFormatting) {
 			return;
 		}
-		NodeModel node = (NodeModel) element;
+		final NodeModel node = (NodeModel) element;
 		writeContent(writer, node, null, forceFormatting);
-    }
+	}
+
 	public void writeContent(final ITreeWriter writer, final Object userObject, final IExtension extension)
 	        throws IOException {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
-		if(forceFormatting){
+		if (forceFormatting) {
 			return;
 		}
 		final EdgeModel model = (EdgeModel) extension;
 		writeContent(writer, null, model, forceFormatting);
 	}
 
-	private void writeContent(final ITreeWriter writer, NodeModel node,
-                              final EdgeModel model, final boolean forceFormatting) throws IOException {
-	    final EdgeStyle styleObj = forceFormatting ? ec.getStyle(node): model.getStyle();
+	private void writeContent(final ITreeWriter writer, final NodeModel node, final EdgeModel model,
+	                          final boolean forceFormatting) throws IOException {
+		final EdgeStyle styleObj = forceFormatting ? ec.getStyle(node) : model.getStyle();
 		final String style = EdgeStyle.toString(styleObj);
-		final Color color = forceFormatting ? ec.getColor(node): model.getColor();
-		final int width = forceFormatting ? ec.getWidth(node): model.getWidth();
+		final Color color = forceFormatting ? ec.getColor(node) : model.getColor();
+		final int width = forceFormatting ? ec.getWidth(node) : model.getWidth();
 		if (forceFormatting || style != null || color != null || width != EdgeModel.DEFAULT_WIDTH) {
 			final XMLElement edge = new XMLElement();
 			edge.setName("edge");
@@ -162,5 +162,5 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IEleme
 				writer.addElement(model, edge);
 			}
 		}
-    }
+	}
 }

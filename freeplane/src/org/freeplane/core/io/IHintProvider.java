@@ -27,5 +27,6 @@ public interface IHintProvider {
 	public Object getHint(Object key);
 
 	public void setHint(Object key, Object value);
+
 	public void setHint(Object key);
 }

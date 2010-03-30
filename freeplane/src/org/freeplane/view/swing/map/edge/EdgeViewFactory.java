@@ -33,7 +33,7 @@ public class EdgeViewFactory {
 	final private static EdgeViewFactory instance = new EdgeViewFactory();
 
 	public EdgeView getEdge(final NodeView nodeView) {
-		if(nodeView.getMap().getLayoutType() == MapViewLayout.OUTLINE){
+		if (nodeView.getMap().getLayoutType() == MapViewLayout.OUTLINE) {
 			return new OutlineEdgeView(nodeView);
 		}
 		final NodeModel model = nodeView.getModel();
@@ -63,7 +63,7 @@ public class EdgeViewFactory {
 	}
 
 	public EdgeView getEdge(final NodeView source, final NodeView target) {
-		if(source.getMap().getLayoutType() == MapViewLayout.OUTLINE){
+		if (source.getMap().getLayoutType() == MapViewLayout.OUTLINE) {
 			return new OutlineLinkView(source, target);
 		}
 		final NodeModel model = target.getModel();
@@ -93,7 +93,6 @@ public class EdgeViewFactory {
 	}
 
 	public static EdgeViewFactory getInstance() {
-	    return instance;
-    }
-
+		return instance;
+	}
 }

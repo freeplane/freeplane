@@ -25,12 +25,8 @@ import java.util.List;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtil;
-import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.link.NodeLinkModel;
-import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
@@ -55,10 +51,9 @@ class AddConnectorAction extends AFreeplaneAction {
 			UITools.errorMessage(TextUtil.getText("less_than_two_selected_nodes"));
 			return;
 		}
-		MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+		final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
 		for (int i = 1; i < selecteds.size(); i++) {
 			linkController.addConnector((NodeModel) selecteds.get(i), (NodeModel) selecteds.get(0));
 		}
 	}
-
 }

@@ -29,7 +29,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -51,8 +50,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
@@ -76,7 +75,7 @@ public class UrlManager implements IExtension {
 	 * @throws FileNotFoundException
 	 */
 	protected static Reader getActualReader(final InputStream file) throws FileNotFoundException {
-			return new InputStreamReader(file, FileUtil.defaultCharset());
+		return new InputStreamReader(file, FileUtil.defaultCharset());
 	}
 
 	public static UrlManager getController(final ModeController modeController) {
@@ -91,67 +90,71 @@ public class UrlManager implements IExtension {
 	 */
 	public static Reader getUpdateReader(final File file, final String xsltScript) throws FileNotFoundException,
 	        IOException {
-        try {
-        	final URL updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
-        	if (updaterUrl == null) {
-        		throw new IllegalArgumentException(xsltScript + " not found.");
-        	}
-        	StringWriter writer = new StringWriter();
-        	final Result result = new StreamResult(writer);
-        	class TransformerRunnable implements Runnable {
-        		private Throwable thrownException = null;
-        
-        		public void run() {
-        			final TransformerFactory transFact = TransformerFactory.newInstance();
-        			InputStream xsltInputStream = null;
-        			InputStream input = null;
-        			try {
-                        xsltInputStream = new BufferedInputStream(updaterUrl.openStream());
-                    	final Source xsltSource = new StreamSource(xsltInputStream);
-        				input = new BufferedInputStream( new FileInputStream(file));
-                        InputStream cleanedInput = new CleaningInputStream(input);
-                        Reader reader = new InputStreamReader(cleanedInput, FileUtil.defaultCharset());
-        				Transformer trans = transFact.newTransformer(xsltSource);
-        				trans.transform(new StreamSource(reader), result);
-        			}
-        			catch (final Exception ex) {
-        				LogTool.warn(ex);
-        				thrownException = ex;
-        			}
-        			finally{
-        				try {
-	                        if(input != null) input.close();
-	                        if(xsltInputStream != null) xsltInputStream.close();
-                        }
-                        catch (IOException e) {
-	                        e.printStackTrace();
-                        }
-        			}
-        			
-        		}
-        
-        		public Throwable thrownException() {
-        			return thrownException;
-        		}
-        	}
-        	final TransformerRunnable transformer = new TransformerRunnable();
-        	final Thread transformerThread = new Thread(transformer, "XSLT");
-        	transformerThread.start();
-        	transformerThread.join();
-        	final Throwable thrownException = transformer.thrownException();
-        	if (thrownException != null) {
-        		throw new TransformerException(thrownException);
-        	}
-        	return new StringReader(writer.getBuffer().toString());
-        }
-        catch (final Exception ex) {
+		try {
+			final URL updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
+			if (updaterUrl == null) {
+				throw new IllegalArgumentException(xsltScript + " not found.");
+			}
+			final StringWriter writer = new StringWriter();
+			final Result result = new StreamResult(writer);
+			class TransformerRunnable implements Runnable {
+				private Throwable thrownException = null;
+
+				public void run() {
+					final TransformerFactory transFact = TransformerFactory.newInstance();
+					InputStream xsltInputStream = null;
+					InputStream input = null;
+					try {
+						xsltInputStream = new BufferedInputStream(updaterUrl.openStream());
+						final Source xsltSource = new StreamSource(xsltInputStream);
+						input = new BufferedInputStream(new FileInputStream(file));
+						final InputStream cleanedInput = new CleaningInputStream(input);
+						final Reader reader = new InputStreamReader(cleanedInput, FileUtil.defaultCharset());
+						final Transformer trans = transFact.newTransformer(xsltSource);
+						trans.transform(new StreamSource(reader), result);
+					}
+					catch (final Exception ex) {
+						LogTool.warn(ex);
+						thrownException = ex;
+					}
+					finally {
+						try {
+							if (input != null) {
+								input.close();
+							}
+							if (xsltInputStream != null) {
+								xsltInputStream.close();
+							}
+						}
+						catch (final IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+
+				public Throwable thrownException() {
+					return thrownException;
+				}
+			}
+			final TransformerRunnable transformer = new TransformerRunnable();
+			final Thread transformerThread = new Thread(transformer, "XSLT");
+			transformerThread.start();
+			transformerThread.join();
+			final Throwable thrownException = transformer.thrownException();
+			if (thrownException != null) {
+				throw new TransformerException(thrownException);
+			}
+			return new StringReader(writer.getBuffer().toString());
+		}
+		catch (final Exception ex) {
 			final String message = ex.getMessage();
 			UITools.errorMessage(TextUtil.formatText("update_failed", String.valueOf(message)));
-        	LogTool.warn(ex);
-			final InputStream input = new BufferedInputStream( new FileInputStream(file));
-        	return UrlManager.getActualReader(input);
-        }
- 	}
+			LogTool.warn(ex);
+			final InputStream input = new BufferedInputStream(new FileInputStream(file));
+			return UrlManager.getActualReader(input);
+		}
+	}
+
 	public static void install(final ModeController modeController, final UrlManager urlManager) {
 		modeController.addExtension(UrlManager.class, urlManager);
 	}
@@ -215,8 +218,7 @@ public class UrlManager implements IExtension {
 		final String exceptionType = ex.getClass().getName();
 		if (exceptionType.equals("freeplane.main.XMLParseException")) {
 			final int showDetail = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
-			    TextUtil.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION,
-			    JOptionPane.ERROR_MESSAGE);
+			    TextUtil.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
 				UITools.errorMessage(ex);
 			}
@@ -271,7 +273,7 @@ public class UrlManager implements IExtension {
 			try {
 				final MapController mapController = modeController.getMapController();
 				final NodeModel node = mapController.getNodeFromID(target);
-				if(node != null){
+				if (node != null) {
 					mapController.select(node);
 				}
 			}
@@ -286,10 +288,11 @@ public class UrlManager implements IExtension {
 			uri = getAbsoluteUri(uri);
 			try {
 				if ((extension != null)
-						&& extension.equals(org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-					URL	url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+				        && extension
+				            .equals(org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+					final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
 					modeController.getMapController().newMap(url);
-					String ref = uri.getFragment();
+					final String ref = uri.getFragment();
 					if (ref != null) {
 						final ModeController newModeController = getController().getModeController();
 						final MapController newMapController = newModeController.getMapController();
@@ -299,7 +302,7 @@ public class UrlManager implements IExtension {
 				}
 				getController().getViewController().openDocument(uri);
 			}
-			catch (Exception e) {
+			catch (final Exception e) {
 				LogTool.warn("link " + uri + " not found", e);
 				UITools.errorMessage(TextUtil.formatText("link_not_found", uri.toString()));
 			}
@@ -311,51 +314,53 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	private URI getAbsoluteUri(URI uri) throws MalformedURLException {
-		if(uri.isAbsolute()){
+	private URI getAbsoluteUri(final URI uri) throws MalformedURLException {
+		if (uri.isAbsolute()) {
 			return uri;
 		}
 		final MapModel map = getController().getMap();
 		return getAbsoluteUri(map, uri);
-   }
+	}
 
 	public URI getAbsoluteUri(final MapModel map, final URI uri) throws MalformedURLException {
 		if (uri.isAbsolute()) {
 			return uri;
 		}
 		final String path = uri.getPath();
-		URL url = new URL(map.getURL(), path);
+		final URL url = new URL(map.getURL(), path);
 		try {
 			return new URI(url.getProtocol(), url.getHost(), url.getPath(), uri.getQuery(), uri.getFragment());
-		} catch (URISyntaxException e) {
+		}
+		catch (final URISyntaxException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
+
 	public URL getAbsoluteUrl(final MapModel map, final URI uri) throws MalformedURLException {
 		final String path = uri.isOpaque() ? uri.getSchemeSpecificPart() : uri.getPath();
-		StringBuilder sb = new StringBuilder(path);
+		final StringBuilder sb = new StringBuilder(path);
 		final String query = uri.getQuery();
-		if(query != null){
+		if (query != null) {
 			sb.append('?');
 			sb.append(query);
 		}
 		final String fragment = uri.getFragment();
-		if(fragment != null){
+		if (fragment != null) {
 			sb.append('#');
 			sb.append(fragment);
 		}
 		if (!uri.isAbsolute() || uri.isOpaque()) {
-			URL mapUrl = map.getURL();
-			String scheme = uri.getScheme();
-			if(scheme == null || mapUrl.getProtocol().equals(scheme)){
+			final URL mapUrl = map.getURL();
+			final String scheme = uri.getScheme();
+			if (scheme == null || mapUrl.getProtocol().equals(scheme)) {
 				final URL url = new URL(mapUrl, sb.toString());
 				return url;
 			}
 		}
 		final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), sb.toString());
 		return url;
-    }
+	}
 
 	public void setLastCurrentDir(final File lastCurrentDir) {
 		UrlManager.lastCurrentDir = lastCurrentDir;

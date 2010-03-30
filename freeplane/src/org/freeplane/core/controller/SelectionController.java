@@ -48,7 +48,7 @@ public class SelectionController {
 	public void onDeselect(final NodeModel node) {
 		try {
 			final HashSet<INodeSelectionListener> copy = new HashSet<INodeSelectionListener>(nodeSelectionListeners);
-			for(INodeSelectionListener listener : copy) {
+			for (final INodeSelectionListener listener : copy) {
 				listener.onDeselect(node);
 			}
 		}
@@ -58,7 +58,7 @@ public class SelectionController {
 	}
 
 	public void onSelect(final NodeModel node) {
-		for (INodeSelectionListener listener : nodeSelectionListeners) {
+		for (final INodeSelectionListener listener : nodeSelectionListeners) {
 			listener.onSelect(node);
 		}
 	}

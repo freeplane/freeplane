@@ -45,10 +45,10 @@ public class NamedObject {
 		this.name = name;
 	}
 
-	public NamedObject(String object) {
+	public NamedObject(final String object) {
 		this.object = object;
-		this.name = TextUtil.getText(object);
-    }
+		name = TextUtil.getText(object);
+	}
 
 	public Object getObject() {
 		return object;
@@ -64,34 +64,34 @@ public class NamedObject {
 	}
 
 	@Override
-    public boolean equals(Object obj) {
-		if(! (obj instanceof NamedObject)){
+	public boolean equals(final Object obj) {
+		if (!(obj instanceof NamedObject)) {
 			return false;
 		}
-		NamedObject nobj = (NamedObject) obj;
+		final NamedObject nobj = (NamedObject) obj;
 		return object.equals(nobj.object) && name.equals(nobj.name);
-    }
+	}
 
 	@Override
-    public int hashCode() {
-	    return 37 * object.hashCode() + name.hashCode();
-    }
-	
-	static public String toKeyString(Object obj){
-		if(obj instanceof NamedObject){
-			return ((NamedObject)obj).getObject().toString();
+	public int hashCode() {
+		return 37 * object.hashCode() + name.hashCode();
+	}
+
+	static public String toKeyString(final Object obj) {
+		if (obj instanceof NamedObject) {
+			return ((NamedObject) obj).getObject().toString();
 		}
 		return obj.toString();
 	}
 
-	public static NamedObject formatText(String value) {
+	public static NamedObject formatText(final String value) {
 		final int separatorPos = value.indexOf(',');
-		if(separatorPos == -1){
+		if (separatorPos == -1) {
 			return new NamedObject(value);
 		}
-		String key = value.substring(0, separatorPos);
-		String s1 = value.substring(separatorPos+1);
+		final String key = value.substring(0, separatorPos);
+		final String s1 = value.substring(separatorPos + 1);
 		final String text = TextUtil.formatText(key, s1);
 		return new NamedObject(value, text);
-    }
+	}
 }

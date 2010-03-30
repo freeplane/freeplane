@@ -9,7 +9,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 /** Select Note Window at the position action */
-@SelectableAction(checkOnPopup=true)
+@SelectableAction(checkOnPopup = true)
 class SetNoteWindowPosition extends AFreeplaneAction {
 	/**
 	 * 
@@ -26,17 +26,15 @@ class SetNoteWindowPosition extends AFreeplaneAction {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		resourceController.setProperty("note_location", position);
 		final ViewController viewController = getModeController().getController().getViewController();
-		
-		String useSplitPaneProp = resourceController.getProperty(MNoteController.RESOURCES_USE_SPLIT_PANE);
-		boolean useSplitPane = useSplitPaneProp == null ? false : Boolean.parseBoolean(useSplitPaneProp);
-		
+		final String useSplitPaneProp = resourceController.getProperty(MNoteController.RESOURCES_USE_SPLIT_PANE);
+		final boolean useSplitPane = useSplitPaneProp == null ? false : Boolean.parseBoolean(useSplitPaneProp);
 		viewController.changeNoteWindowLocation(useSplitPane);
 	}
+
 	@Override
 	public void setSelected() {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		final boolean isSelected = resourceController.getProperty("note_location").equals(position);
 		setSelected(isSelected);
 	}
-
 }

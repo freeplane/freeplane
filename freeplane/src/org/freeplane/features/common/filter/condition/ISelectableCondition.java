@@ -20,6 +20,7 @@
 package org.freeplane.features.common.filter.condition;
 
 import javax.swing.JComponent;
+
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public interface ISelectableCondition extends ICondition {

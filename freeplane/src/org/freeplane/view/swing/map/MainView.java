@@ -53,8 +53,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.FileUtil;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.IconStore;
@@ -70,28 +70,29 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
  * Base class for all node views.
  */
 public abstract class MainView extends JLabel {
-	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty("executable_icon");
+	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty(
+	    "executable_icon");
 	private static final String MAIL_ICON = ResourceController.getResourceController().getProperty("mail_icon");
-	private static final String LINK_LOCAL_ICON = ResourceController.getResourceController().getProperty("link_local_icon");
+	private static final String LINK_LOCAL_ICON = ResourceController.getResourceController().getProperty(
+	    "link_local_icon");
 	private static final String LINK_ICON = ResourceController.getResourceController().getProperty("link_icon");
-	public static final Set<String> executableExtensions = new HashSet<String>(Arrays.asList(new String[] { "exe", "com", "vbs", "bat",
-	        "lnk" }));
+	public static final Set<String> executableExtensions = new HashSet<String>(Arrays.asList(new String[] { "exe",
+	        "com", "vbs", "bat", "lnk" }));
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	static Dimension minimumSize = new Dimension(0, 0);
-    final static private Graphics2D fmg;
-    static{
-    	fmg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics();
-    	fmg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-    }
+	final static private Graphics2D fmg;
+	static {
+		fmg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics();
+		fmg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+	}
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final JComponent standardLabel = new JLabel();
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
-
 	private static final IconStore STORE = IconStoreFactory.create();
-	
+
 	MainView() {
 		setUI(MainViewUI.createUI(this));
 		setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -134,7 +135,6 @@ public abstract class MainView extends JLabel {
 	public int getDraggedOver() {
 		return isDraggedOver;
 	}
-
 
 	protected int getIconWidth() {
 		final Icon icon = getIcon();
@@ -181,10 +181,10 @@ public abstract class MainView extends JLabel {
 			return preferredSize;
 		}
 		final float zoom = getZoom();
-		int d = 2 * (int)(Math.floor(zoom));
+		final int d = 2 * (int) (Math.floor(zoom));
 		preferredSize.width += d;
 		preferredSize.height += d;
- 		return preferredSize;
+		return preferredSize;
 	}
 
 	abstract Point getRightPoint();
@@ -197,8 +197,8 @@ public abstract class MainView extends JLabel {
 	}
 
 	private MapView getMap() {
-	    return getNodeView().getMap();
-    }
+		return getNodeView().getMap();
+	}
 
 	int getZoomedFoldingSymbolHalfWidth() {
 		return getNodeView().getZoomedFoldingSymbolHalfWidth();
@@ -207,8 +207,7 @@ public abstract class MainView extends JLabel {
 	public boolean isInFollowLinkRegion(final double xCoord) {
 		final NodeView nodeView = getNodeView();
 		final NodeModel model = nodeView.getModel();
-		return NodeLinks.getValidLink(model) != null
-		        && isInVerticalRegion(xCoord, 1. / 4);
+		return NodeLinks.getValidLink(model) != null && isInVerticalRegion(xCoord, 1. / 4);
 	}
 
 	/**
@@ -218,18 +217,18 @@ public abstract class MainView extends JLabel {
 	 */
 	public boolean isInVerticalRegion(final double xCoord, final double p) {
 		final NodeView nodeView = getNodeView();
-		return nodeView.isLeft() && ! nodeView.isRoot() ? xCoord > getSize().width * (1.0 - p) : xCoord < getSize().width * p;
+		return nodeView.isLeft() && !nodeView.isRoot() ? xCoord > getSize().width * (1.0 - p)
+		        : xCoord < getSize().width * p;
 	}
-	
+
 	@Override
-    public void paint(Graphics g) {
-		switch(getMap().getPaintingMode())
-		{
+	public void paint(final Graphics g) {
+		switch (getMap().getPaintingMode()) {
 			case CLOUDS:
 				return;
 		}
-	    super.paint(g);
-    }
+		super.paint(g);
+	}
 
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
@@ -239,19 +238,19 @@ public abstract class MainView extends JLabel {
 	public void paintDragOver(final Graphics2D graphics) {
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SON) {
 			if (getNodeView().isLeft()) {
-				graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getMap().getBackground(),
-				    getWidth() / 4, 0, NodeView.dragColor));
+				graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getMap().getBackground(), getWidth() / 4, 0,
+				    NodeView.dragColor));
 				graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
 			}
 			else {
-				graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getMap().getBackground(),
-				    getWidth() * 3 / 4, 0, NodeView.dragColor));
+				graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getMap().getBackground(), getWidth() * 3 / 4, 0,
+				    NodeView.dragColor));
 				graphics.fillRect(getWidth() / 4, 0, getWidth() - 1, getHeight() - 1);
 			}
 		}
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SIBLING) {
-			graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5, getMap().getBackground(), 0,
-			    getHeight() / 5, NodeView.dragColor));
+			graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5, getMap().getBackground(), 0, getHeight() / 5,
+			    NodeView.dragColor));
 			graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
 		}
 	}
@@ -277,7 +276,7 @@ public abstract class MainView extends JLabel {
 			paintBackground(graphics, getNodeView().getTextBackground());
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see javax.swing.JComponent#processKeyBinding(javax.swing.KeyStroke,
@@ -325,11 +324,11 @@ public abstract class MainView extends JLabel {
 		final MultipleImage iconImages = new MultipleImage();
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();
-		for(Entry<String, UIIcon> iconEntry : model.getStateIcons().entrySet()) {
+		for (final Entry<String, UIIcon> iconEntry : model.getStateIcons().entrySet()) {
 			iconImages.addImage(iconEntry.getValue().getIcon());
 		}
 		final List<MindIcon> icons = IconController.getIcons(getMap().getModeController(), model);
-		for(MindIcon myIcon : icons) {
+		for (final MindIcon myIcon : icons) {
 			iconImages.addImage(myIcon.getIcon());
 		}
 		addLinkIcon(iconImages, model);
@@ -337,13 +336,13 @@ public abstract class MainView extends JLabel {
 	}
 
 	private void addLinkIcon(final MultipleImage iconImages, final NodeModel model) {
-	    final URI link = NodeLinks.getLink(model);
+		final URI link = NodeLinks.getLink(model);
 		if (link != null) {
 			String iconPath = LINK_ICON;
 			final String linkText = link.toString();
 			if (linkText.startsWith("#")) {
 				final String id = linkText.substring(1);
-				if(model.getMap().getNodeForID(id) == null){
+				if (model.getMap().getNodeForID(id) == null) {
 					return;
 				}
 				iconPath = LINK_LOCAL_ICON;
@@ -363,11 +362,12 @@ public abstract class MainView extends JLabel {
 			final UIIcon icon = STORE.getUIIcon(iconPath);
 			iconImages.addImage(icon.getIcon());
 		}
-    }
+	}
 
 	private boolean isExecutable(final String linkText) {
-		if (linkText == null)
+		if (linkText == null) {
 			return false;
+		}
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		return osNameStart.equals("Win")
 		        && executableExtensions.contains(FileUtil.getExtension(linkText.toLowerCase()));
@@ -375,22 +375,21 @@ public abstract class MainView extends JLabel {
 
 	void updateText(String nodeText) {
 		final MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
-		if(map == null){
+		if (map == null) {
 			return;
 		}
 		final boolean isHtml = nodeText.startsWith("<html>");
 		boolean widthMustBeRestricted = false;
 		boolean isLong = false;
 		int iconWidth = getIconWidth();
-		if(iconWidth != 0){
+		if (iconWidth != 0) {
 			iconWidth += map.getZoomed(getIconTextGap());
 		}
 		if (!isHtml) {
 			final String[] lines = nodeText.split("\n");
 			for (int line = 0; line < lines.length; line++) {
 				setText(lines[line]);
-				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map.getMaxNodeWidth())
-				        + iconWidth;
+				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map.getMaxNodeWidth()) + iconWidth;
 				if (widthMustBeRestricted) {
 					break;
 				}
@@ -413,8 +412,7 @@ public abstract class MainView extends JLabel {
 			}
 			if (nodeText.length() < 30000) {
 				setText(nodeText);
-				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map.getMaxNodeWidth())
-				        + iconWidth;
+				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map.getMaxNodeWidth()) + iconWidth;
 			}
 			else {
 				widthMustBeRestricted = true;
@@ -449,18 +447,18 @@ public abstract class MainView extends JLabel {
 	}
 
 	@Override
-    public FontMetrics getFontMetrics(Font font) {
-		if(! useFractionalMetrics()){
+	public FontMetrics getFontMetrics(final Font font) {
+		if (!useFractionalMetrics()) {
 			return super.getFontMetrics(font);
 		}
 		fmg.setFont(font);
 		final FontMetrics fontMetrics = fmg.getFontMetrics();
 		return fontMetrics;
-    }
+	}
 
 	boolean useFractionalMetrics() {
-		MapView map = getMap();
-		if(map.isPrinting()){
+		final MapView map = getMap();
+		if (map.isPrinting()) {
 			return true;
 		}
 		final float zoom = map.getZoom();
@@ -474,51 +472,51 @@ public abstract class MainView extends JLabel {
 	}
 
 	public boolean isEdited() {
-	    return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
-    }
+		return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
+	}
 
 	FontMetrics getFontMetrics() {
 		return getFontMetrics(getFont());
-    }
+	}
 
 	@Override
-    public void setText(String text) {
-		if (! (BasicHTML.isHTMLString(text) && useFractionalMetrics())){
-			try{
+	public void setText(final String text) {
+		if (!(BasicHTML.isHTMLString(text) && useFractionalMetrics())) {
+			try {
 				super.setText(text);
 			}
-			catch (Exception ex){
+			catch (final Exception ex) {
 				setTextWithExceptionInfo(text, ex);
 			}
 			return;
 		}
 		setFractionalMetrics();
-		try{
+		try {
 			super.setText(text);
 		}
-		catch (Exception ex){
+		catch (final Exception ex) {
 			setTextWithExceptionInfo(text, ex);
 		}
-		finally{
-		unsetFractionalMetrics();
+		finally {
+			unsetFractionalMetrics();
 		}
-    }
+	}
 
-	private void setTextWithExceptionInfo(String text, Exception ex) {
-		String string = HtmlTools.combineTextWithExceptionInfo(text, ex);
+	private void setTextWithExceptionInfo(final String text, final Exception ex) {
+		final String string = HtmlTools.combineTextWithExceptionInfo(text, ex);
 		super.setText(string);
 	}
 
 	private void unsetFractionalMetrics() {
 		BasicHTML.createHTMLView(standardLabel, "<html><b>1</b>2");
-    }
+	}
 
 	private void setFractionalMetrics() {
 		BasicHTML.createHTMLView(this, "<html><b>1</b>2");
-    }
+	}
 
 	@Override
-    public Point getToolTipLocation(MouseEvent event) {
-        return new Point(0, getHeight());
-    }
+	public Point getToolTipLocation(final MouseEvent event) {
+		return new Point(0, getHeight());
+	}
 }

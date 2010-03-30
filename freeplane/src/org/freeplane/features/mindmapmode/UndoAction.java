@@ -44,40 +44,39 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
 		super("UndoAction", controller);
 		getController().getMapViewManager().addMapSelectionListener(this);
 		setEnabled(false);
-	    changeListener = new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
+		changeListener = new ChangeListener() {
+			public void stateChanged(final ChangeEvent e) {
 				final MapModel map = getController().getMap();
-				if(! (map instanceof MMapModel)){
+				if (!(map instanceof MMapModel)) {
 					return;
 				}
 				final Object eventSource = e.getSource();
-				final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
-				if(! eventSource.equals(undoHandler)){
+				final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+				if (!eventSource.equals(undoHandler)) {
 					return;
 				}
 				setEnabled(undoHandler.canUndo());
 				redo.setEnabled(undoHandler.canRedo());
 			}
 		};
-
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MapModel map = getController().getMap();
-		final IUndoHandler undoHandler = (IUndoHandler)map.getExtension(IUndoHandler.class);
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.getUndoAction().actionPerformed(e);
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		if (oldMap instanceof MMapModel) {
-			final IUndoHandler undoHandler = (IUndoHandler)oldMap.getExtension(IUndoHandler.class);
+			final IUndoHandler undoHandler = (IUndoHandler) oldMap.getExtension(IUndoHandler.class);
 			undoHandler.removeChangeListener(changeListener);
 		}
-		if(newMap == null){
+		if (newMap == null) {
 			return;
 		}
-		final IUndoHandler undoHandler = (IUndoHandler)( newMap.getExtension(IUndoHandler.class));
-		if (undoHandler  != null) {
+		final IUndoHandler undoHandler = (IUndoHandler) (newMap.getExtension(IUndoHandler.class));
+		if (undoHandler != null) {
 			setEnabled(undoHandler.canUndo());
 			redo.setEnabled(undoHandler.canRedo());
 			undoHandler.addChangeListener(changeListener);
@@ -86,7 +85,7 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
 
 	public void afterMapClose(final MapModel oldMap) {
 		if (oldMap instanceof MMapModel) {
-			final IUndoHandler undoHandler = (IUndoHandler)oldMap.getExtension(IUndoHandler.class);
+			final IUndoHandler undoHandler = (IUndoHandler) oldMap.getExtension(IUndoHandler.class);
 			undoHandler.removeChangeListener(changeListener);
 		}
 	}

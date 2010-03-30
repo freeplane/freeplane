@@ -23,16 +23,15 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 
 import javax.swing.JApplet;
-import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.features.browsemode.BModeController;
-import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.addins.misc.NextNodeAction;
 import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
+import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.icon.IconController;

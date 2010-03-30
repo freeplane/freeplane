@@ -3,12 +3,12 @@ package org.freeplane.plugin.bugreport;
 import org.freeplane.core.resources.ResourceController;
 
 class ReportRegistry {
-	
 	private static final ReportRegistry instance = new ReportRegistry();
 
-	static ReportRegistry getInstance(){
+	static ReportRegistry getInstance() {
 		return instance;
 	}
+
 	boolean isReportRegistered(final String hash) {
 		return null != ResourceController.getResourceController().getProperty("org.freeplane.plugin.bugreport." + hash,
 		    null);

@@ -21,37 +21,25 @@ package org.freeplane.features.common.addins.styles;
 
 import java.awt.Color;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.security.AccessControlException;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.undo.UndoHandler;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.map.MapWriter.Mode;
-import org.freeplane.features.mindmapmode.map.MMapModel;
-import org.freeplane.n3.nanoxml.XMLException;
-import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev
@@ -60,16 +48,17 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 public class MapStyleModel implements IExtension {
 	public static final NamedObject DEFAULT_STYLE = new NamedObject("default");
 	private static final String STYLES = "styles";
-	private Map<Object, NodeModel> styleNodes; 
+	private Map<Object, NodeModel> styleNodes;
 	private static boolean loadingStyleMap = false;
 	private MapModel styleMap;
+
 	public static MapStyleModel getExtension(final MapModel map) {
 		return MapStyleModel.getExtension(map.getRootNode());
 	}
 
 	public MapModel getStyleMap() {
-    	return styleMap;
-    }
+		return styleMap;
+	}
 
 	public static MapStyleModel getExtension(final NodeModel node) {
 		return (MapStyleModel) node.getExtension(MapStyleModel.class);
@@ -80,93 +69,90 @@ public class MapStyleModel implements IExtension {
 	public MapStyleModel() {
 	}
 
-	void createStyleMap(MapModel parentMap, ModeController modeController, String styleMapStr) {
-	    if(loadingStyleMap){
+	void createStyleMap(final MapModel parentMap, final ModeController modeController, final String styleMapStr) {
+		if (loadingStyleMap) {
 			styleMap = null;
 			styleNodes = null;
 			return;
 		}
 		styleNodes = new LinkedHashMap<Object, NodeModel>();
-		styleMap = new MapModel(modeController, null){
-
+		styleMap = new MapModel(modeController, null) {
 			@Override
-            public String getTitle() {
-	            return TextUtil.getText(STYLES);
-            }
-			
+			public String getTitle() {
+				return TextUtil.getText(STYLES);
+			}
 		};
 		styleMap.addExtension(IUndoHandler.class, parentMap.getExtension(IUndoHandler.class));
-
 		final MapReader mapReader = modeController.getMapController().getMapReader();
 		NodeModel root;
 		try {
-			if(styleMapStr != null){
-				final Reader styleReader; 
+			if (styleMapStr != null) {
+				final Reader styleReader;
 				styleReader = new StringReader(styleMapStr);
 				root = mapReader.createNodeTreeFromXml(styleMap, styleReader, Mode.FILE);
 			}
-			else{
+			else {
 				loadingStyleMap = true;
-				try{
-					ResourceController resourceController = ResourceController.getResourceController();
-					File freeplaneUserDirectory = new File(resourceController.getFreeplaneUserDirectory());
-					File styles = new File(freeplaneUserDirectory, "default.stylemm");
-					try{
-						root = load(styles.toURL(), mapReader,styleMap);
+				try {
+					final ResourceController resourceController = ResourceController.getResourceController();
+					final File freeplaneUserDirectory = new File(resourceController.getFreeplaneUserDirectory());
+					final File styles = new File(freeplaneUserDirectory, "default.stylemm");
+					try {
+						root = load(styles.toURL(), mapReader, styleMap);
 					}
-					catch (Exception e) {
-						root = load(ResourceController.getResourceController().getResource("/styles/default.stylemm"), mapReader,styleMap);
+					catch (final Exception e) {
+						root = load(ResourceController.getResourceController().getResource("/styles/default.stylemm"),
+						    mapReader, styleMap);
 					}
 				}
-				finally{
+				finally {
 					loadingStyleMap = false;
 				}
 			}
 			styleMap.setRoot(root);
-			MapStyleModel extension = getExtension(styleMap);
-			if(extension == null){
+			MapStyleModel extension = MapStyleModel.getExtension(styleMap);
+			if (extension == null) {
 				loadingStyleMap = true;
-				try{
+				try {
 					extension = new MapStyleModel();
 					styleMap.getRootNode().addExtension(extension);
 				}
-				finally{
+				finally {
 					loadingStyleMap = false;
 				}
 			}
 			extension.styleNodes = styleNodes;
 			createNodeStyleMap(root);
-			
 			styleMap.setReadOnly(false);
 		}
-		catch (Exception e) {
+		catch (final Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }
+	}
 
-	private void createNodeStyleMap(NodeModel node) {
-	    if(node.hasChildren()){
-	    	final Enumeration<NodeModel> children = node.children();
-	    	while(children.hasMoreElements()){
-	    		createNodeStyleMap(children.nextElement());
-	    	}
-	    	return;
-	    }
-	    if(node.depth() >= 2) {
-	    	addStyleNode(node);
-	    }
-    }
+	private void createNodeStyleMap(final NodeModel node) {
+		if (node.hasChildren()) {
+			final Enumeration<NodeModel> children = node.children();
+			while (children.hasMoreElements()) {
+				createNodeStyleMap(children.nextElement());
+			}
+			return;
+		}
+		if (node.depth() >= 2) {
+			addStyleNode(node);
+		}
+	}
 
-	public void addStyleNode(NodeModel node) {
-	    final Object userObject = node.getUserObject();
-	    styleNodes.put(userObject, node);
-    }
+	public void addStyleNode(final NodeModel node) {
+		final Object userObject = node.getUserObject();
+		styleNodes.put(userObject, node);
+	}
 
-	public void removeStyleNode(NodeModel node) {
-	    final Object userObject = node.getUserObject();
-	    styleNodes.remove(userObject);
-    }
+	public void removeStyleNode(final NodeModel node) {
+		final Object userObject = node.getUserObject();
+		styleNodes.remove(userObject);
+	}
 
 	private NodeModel load(final URL url, final MapReader mapReader, final MapModel map) throws Exception {
 		InputStreamReader urlStreamReader = null;
@@ -176,7 +162,7 @@ public class MapStyleModel implements IExtension {
 		return root;
 	}
 
-	public NodeModel getStyleNode(final Object style){
+	public NodeModel getStyleNode(final Object style) {
 		return styleNodes.get(style);
 	}
 
@@ -189,9 +175,9 @@ public class MapStyleModel implements IExtension {
 	}
 
 	public Collection<Object> getStyles() {
-	    return styleNodes.keySet();
-	    
-    }
+		return styleNodes.keySet();
+	}
+
 	private float zoom = 1f;
 
 	public float getZoom() {
@@ -202,33 +188,32 @@ public class MapStyleModel implements IExtension {
 		return mapViewLayout;
 	}
 
-	void setMapViewLayout(MapViewLayout mapViewLayout) {
+	void setMapViewLayout(final MapViewLayout mapViewLayout) {
 		this.mapViewLayout = mapViewLayout;
 	}
 
-	void setZoom(float zoom) {
+	void setZoom(final float zoom) {
 		this.zoom = zoom;
 	}
-	
+
 	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
-	
-	private int maxNodeWidth = getDefaultMaxNodeWidth();
+	private int maxNodeWidth = MapStyleModel.getDefaultMaxNodeWidth();
+
 	public int getMaxNodeWidth() {
 		return maxNodeWidth;
 	}
 
-	public void setMaxNodeWidth(int maxNodeWidth) {
+	public void setMaxNodeWidth(final int maxNodeWidth) {
 		this.maxNodeWidth = maxNodeWidth;
 	}
 
 	static int getDefaultMaxNodeWidth() {
 		try {
-			return Integer.parseInt(ResourceController.getResourceController()
-					.getProperty("max_node_width"));
+			return Integer.parseInt(ResourceController.getResourceController().getProperty("max_node_width"));
 		}
 		catch (final NumberFormatException e) {
 			return Integer.parseInt(ResourceController.getResourceController().getProperty(
-					"el__max_default_window_width")) * 2 / 3;
+			    "el__max_default_window_width")) * 2 / 3;
 		}
 	}
 }

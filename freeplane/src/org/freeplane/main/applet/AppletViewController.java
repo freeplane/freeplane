@@ -170,7 +170,7 @@ class AppletViewController extends ViewController {
 	}
 
 	@Override
-	public void openDocument(final URL doc){
+	public void openDocument(final URL doc) {
 		applet.getAppletContext().showDocument(doc, "_blank");
 	}
 

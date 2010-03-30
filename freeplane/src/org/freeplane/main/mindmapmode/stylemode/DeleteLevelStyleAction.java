@@ -28,7 +28,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
-import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -39,46 +38,47 @@ import org.freeplane.features.mindmapmode.map.MMapController;
  * 02.10.2009
  */
 public class DeleteLevelStyleAction extends AFreeplaneAction {
-	public DeleteLevelStyleAction(Controller controller) {
-	    super("DeleteLevelStyleAction", controller);
-    }
+	public DeleteLevelStyleAction(final Controller controller) {
+		super("DeleteLevelStyleAction", controller);
+	}
 
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
-	    final MapModel map = getController().getMap();
+		final MapModel map = getController().getMap();
 		final NodeModel levelStyleParentNode = getLevelStyleParentNode(map);
-	    final int childNumber = levelStyleParentNode.getChildCount() - 1;
-		if(childNumber < 1){
+		final int childNumber = levelStyleParentNode.getChildCount() - 1;
+		if (childNumber < 1) {
 			UITools.errorMessage(TextUtil.getText("can_not_delete_root_style"));
 			return;
 		}
 		final String styleName = "AutomaticLayout.level," + childNumber;
-	    final NamedObject styleObject = NamedObject.formatText(styleName);
-	    final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		final NamedObject styleObject = NamedObject.formatText(styleName);
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		final NodeModel node = styleModel.getStyleNode(styleObject);
 		mapController.deleteNode(node);
-		IActor actor = new IActor() {
+		final IActor actor = new IActor() {
 			public void undo() {
 				styleModel.addStyleNode(node);
 			}
-			
+
 			public String getDescription() {
 				return "DeleteStyle";
 			}
-			
+
 			public void act() {
 				styleModel.removeStyleNode(node);
 			}
 		};
 		getModeController().execute(actor, map);
 	}
+
 	private NodeModel getLevelStyleParentNode(final MapModel map) {
-	    return (NodeModel) map.getRootNode().getChildAt(1);
-    }
+		return (NodeModel) map.getRootNode().getChildAt(1);
+	}
 }

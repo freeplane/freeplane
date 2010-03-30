@@ -31,18 +31,19 @@ import org.freeplane.core.ui.SelectableAction;
 @SelectableAction(checkOnPopup = true)
 public class ToggleFullScreenAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	public ToggleFullScreenAction(ViewController viewController) {
-	    super("ToggleFullScreenAction", viewController.getController());
-    }
+	public ToggleFullScreenAction(final ViewController viewController) {
+		super("ToggleFullScreenAction", viewController.getController());
+	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		final ViewController viewController = getController().getViewController();
 		viewController.setFullScreen(!viewController.isFullScreenEnabled());
 	}
+
 	@Override
 	public void setSelected() {
 		final ViewController viewController = getController().getViewController();

@@ -37,8 +37,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -85,13 +83,13 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		 */
 		private static final long serialVersionUID = 1L;
 
-		private HorizontalToolbarPanel(LayoutManager layout) {
+		private HorizontalToolbarPanel(final LayoutManager layout) {
 			super(layout);
 		}
 
 		@Override
 		public void validateTree() {
-			if(! isValid()){
+			if (!isValid()) {
 				super.validateTree();
 				resizeToolbarPane();
 			}
@@ -116,17 +114,18 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			}
 			if (oldPreferredSize.height != preferredSize.height) {
 				setPreferredSize(preferredSize);
-				EventQueue.invokeLater(new Runnable(){
+				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						getParent().invalidate();
 						((JComponent) getContentPane()).revalidate();
-		            }});
+					}
+				});
 			}
 		}
 	}
 
 	public static final String VISIBLE_PROPERTY_KEY = "VISIBLE_PROPERTY_KEY";
-	public static final int TOP = 0, LEFT =1, RIGHT = 2, BOTTOM = 3; 
+	public static final int TOP = 0, LEFT = 1, RIGHT = 2, BOTTOM = 3;
 	public static final String RESOURCE_ANTIALIAS = "antialias";
 	private static final String[] zooms = { "25%", "50%", "75%", "100%", "150%", "200%", "300%", "400%" };
 	private boolean antialiasAll = false;
@@ -143,13 +142,14 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	private final DefaultComboBoxModel zoomModel;
 	final private ZoomOutAction zoomOut;
 	private Rectangle frameSize;
-	public Rectangle getFrameSize() {
-    	return frameSize;
-    }
 
-	public void setFrameSize(Rectangle frameSize) {
-    	this.frameSize = frameSize;
-    }
+	public Rectangle getFrameSize() {
+		return frameSize;
+	}
+
+	public void setFrameSize(final Rectangle frameSize) {
+		this.frameSize = frameSize;
+	}
 
 	private int winState;
 	final private String propertyKeyPrefix;
@@ -226,7 +226,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		setTitle();
 		viewNumberChanged(mapViewManager.getViewNumber());
 		newModeController.getUserInputListenerFactory().updateMapList();
-		if(pNewMap != null){
+		if (pNewMap != null) {
 			newModeController.setVisible(true);
 		}
 	}
@@ -396,24 +396,20 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
 		final Frame frame = getFrame();
-		frame.addComponentListener(new ComponentAdapter(){
-
+		frame.addComponentListener(new ComponentAdapter() {
 			@Override
-            public void componentResized(ComponentEvent e) {
+			public void componentResized(final ComponentEvent e) {
 				final Frame frame = (Frame) e.getComponent();
-				if(frame.getExtendedState() != Frame.NORMAL || isFullScreenEnabled()){
+				if (frame.getExtendedState() != Frame.NORMAL || isFullScreenEnabled()) {
 					return;
 				}
 				frameSize = frame.getBounds();
-            }
+			}
 
 			@Override
-            public void componentMoved(ComponentEvent e) {
+			public void componentMoved(final ComponentEvent e) {
 				componentResized(e);
-            }
-			
-			
-			
+			}
 		});
 	}
 
@@ -422,14 +418,15 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	abstract public boolean isApplet();
 
 	public boolean isMenubarVisible() {
-		final String property ;
-		if(isFullScreenEnabled()){
+		final String property;
+		if (isFullScreenEnabled()) {
 			property = "menubarVisible.fullscreen";
 		}
-		else{
+		else {
 			property = "menubarVisible";
 		}
-		final boolean booleanProperty = ResourceController.getResourceController().getBooleanProperty(getPropertyKeyPrefix() + property);
+		final boolean booleanProperty = ResourceController.getResourceController().getBooleanProperty(
+		    getPropertyKeyPrefix() + property);
 		return booleanProperty;
 	}
 
@@ -453,16 +450,16 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	public void out(final String msg) {
 		status.setText(msg);
 	}
-	
-	public void addStatusImage(String key, Icon image){
+
+	public void addStatusImage(final String key, final Icon image) {
 		final JLabel oldLabel = statusInfos.get(key);
-		if(oldLabel == null){
-			JLabel imageLabel = new JLabel(image);
+		if (oldLabel == null) {
+			final JLabel imageLabel = new JLabel(image);
 			imageLabel.setBorder(BorderFactory.createEtchedBorder());
 			statusInfos.put(key, imageLabel);
 			statusPanel.add(imageLabel, 0);
 		}
-		else{
+		else {
 			oldLabel.setText(null);
 			oldLabel.setIcon(image);
 			oldLabel.revalidate();
@@ -470,15 +467,15 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 	}
 
-	public void addStatusInfo(String key, String info){
+	public void addStatusInfo(final String key, final String info) {
 		JLabel label = statusInfos.get(key);
-		if(label == null){
+		if (label == null) {
 			label = new JLabel(info);
 			label.setBorder(BorderFactory.createEtchedBorder());
 			statusInfos.put(key, label);
 			statusPanel.add(label);
 		}
-		else{
+		else {
 			label.setText(info);
 			label.setIcon(null);
 			label.revalidate();
@@ -486,14 +483,13 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		label.setVisible(info != null);
 	}
-	
-	public void removeStatus(String key){
+
+	public void removeStatus(final String key) {
 		final JLabel oldLabel = statusInfos.remove(key);
-		if(oldLabel == null){
+		if (oldLabel == null) {
 			return;
 		}
 		statusPanel.remove(oldLabel);
-		
 	}
 
 	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
@@ -537,7 +533,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		if (oldModeController != null) {
 			final IUserInputListenerFactory userInputListenerFactory = oldModeController.getUserInputListenerFactory();
-			for(int j = 0; j < 4; j++){
+			for (int j = 0; j < 4; j++) {
 				final Iterable<JComponent> modeToolBars = userInputListenerFactory.getToolBars(j);
 				if (modeToolBars != null) {
 					for (final Component toolBar : modeToolBars) {
@@ -548,7 +544,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			}
 		}
 		final IUserInputListenerFactory newUserInputListenerFactory = newModeController.getUserInputListenerFactory();
-		for(int j = 0; j < 4; j++){
+		for (int j = 0; j < 4; j++) {
 			final Iterable<JComponent> newToolBars = newUserInputListenerFactory.getToolBars(j);
 			if (newToolBars != null) {
 				int i = 0;
@@ -586,11 +582,11 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
 
 	public void setMenubarVisible(final boolean visible) {
-		final String property ;
-		if(isFullScreenEnabled()){
+		final String property;
+		if (isFullScreenEnabled()) {
 			property = "menubarVisible.fullscreen";
 		}
-		else{
+		else {
 			property = "menubarVisible";
 		}
 		ResourceController.getResourceController().setProperty(getPropertyKeyPrefix() + property, visible);
@@ -701,8 +697,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex - 0.5f)));
 		}
 	}
-	
-	void setFullScreen(boolean fullScreen) {
+
+	void setFullScreen(final boolean fullScreen) {
 		final Frame frame = getFrame();
 		if (fullScreen == isFullScreenEnabled()) {
 			return;
@@ -711,14 +707,14 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			winState = frame.getExtendedState();
 			frame.dispose();
 			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			frame.setBounds(0, 0, screenSize.width, screenSize.height);
 			frame.setUndecorated(true);
 			frame.setResizable(false);
 			getFreeplaneMenuBar().setVisible(isMenubarVisible());
-			for(int j = 0; j < 4; j++){
+			for (int j = 0; j < 4; j++) {
 				final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory()
-				.getToolBars(j);
+				    .getToolBars(j);
 				for (final JComponent toolBar : toolBars) {
 					toolBar.setVisible(isToolbarVisible(toolBar));
 				}
@@ -732,9 +728,9 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			frame.setBounds(frameSize);
 			frame.setExtendedState(winState);
 			getFreeplaneMenuBar().setVisible(isMenubarVisible());
-			for(int j = 0; j < 4; j++){
+			for (int j = 0; j < 4; j++) {
 				final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory()
-				.getToolBars(j);
+				    .getToolBars(j);
 				for (final JComponent toolBar : toolBars) {
 					toolBar.setVisible(isToolbarVisible(toolBar));
 				}
@@ -743,38 +739,38 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 	}
 
-	boolean isToolbarVisible(JComponent toolBar) {
+	boolean isToolbarVisible(final JComponent toolBar) {
 		final String completeKeyString = completeVisiblePropertyKey(toolBar);
 		if (completeKeyString == null) {
 			return true;
 		}
-		return ! "false".equals(ResourceController.getResourceController().getProperty(completeKeyString, "true"));
-    }
+		return !"false".equals(ResourceController.getResourceController().getProperty(completeKeyString, "true"));
+	}
 
-	public String completeVisiblePropertyKey(JComponent toolBar) {
+	public String completeVisiblePropertyKey(final JComponent toolBar) {
 		final Object key = toolBar.getClientProperty(VISIBLE_PROPERTY_KEY);
-		if(key == null){
+		if (key == null) {
 			return null;
 		}
 		final String keyString = key.toString();
-	    final String completeKeyString;
-		if(isFullScreenEnabled()){
+		final String completeKeyString;
+		if (isFullScreenEnabled()) {
 			completeKeyString = keyString + ".fullscreen";
 		}
-		else{
+		else {
 			completeKeyString = keyString;
 		}
-	    return getPropertyKeyPrefix() + completeKeyString;
-    }
+		return getPropertyKeyPrefix() + completeKeyString;
+	}
 
 	protected boolean isFullScreenEnabled() {
-	    return ! getFrame().isResizable();
-    }
-	
-	protected String getPropertyKeyPrefix(){
-		return propertyKeyPrefix ;
+		return !getFrame().isResizable();
 	}
-	
+
+	protected String getPropertyKeyPrefix() {
+		return propertyKeyPrefix;
+	}
+
 	public static void setLookAndFeel(final String lookAndFeel) {
 		try {
 			if (lookAndFeel.equals("default")) {

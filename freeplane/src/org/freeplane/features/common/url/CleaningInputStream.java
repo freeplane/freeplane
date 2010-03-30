@@ -29,55 +29,55 @@ import java.io.PushbackInputStream;
  */
 public class CleaningInputStream extends InputStream {
 	private static final int MAX_PUSHED_BACK = 4;
-	private PushbackInputStream in;
-	private int pushedBack = 0; 
-	public CleaningInputStream(InputStream in) {
-	    super();
-	    this.in=new PushbackInputStream(in, MAX_PUSHED_BACK);
-    }
+	private final PushbackInputStream in;
+	private int pushedBack = 0;
+
+	public CleaningInputStream(final InputStream in) {
+		super();
+		this.in = new PushbackInputStream(in, MAX_PUSHED_BACK);
+	}
 
 	@Override
-    public int read() throws IOException {
-		byte b = (byte)in.read();
-		if(pushedBack > 0){
+	public int read() throws IOException {
+		byte b = (byte) in.read();
+		if (pushedBack > 0) {
 			pushedBack--;
 			return b;
 		}
-		if(b == '&'){
-			byte[] bytes = new byte[MAX_PUSHED_BACK];
-			int i = 0; 
+		if (b == '&') {
+			final byte[] bytes = new byte[MAX_PUSHED_BACK];
+			int i = 0;
 			bytes[i++] = b = (byte) in.read();
-			if(b == '#'){
+			if (b == '#') {
 				bytes[i++] = b = (byte) in.read();
-				if(b == 'x'|| b >= '0' || b <= '3'){
+				if (b == 'x' || b >= '0' || b <= '3') {
 					bytes[i++] = (byte) in.read();
 					bytes[i++] = (byte) in.read();
 				}
 			}
-			if(isValidInput(i, bytes)){
+			if (isValidInput(i, bytes)) {
 				pushedBack = i;
 				in.unread(bytes, 0, i);
 				return '&';
 			}
-			else{
+			else {
 				return ' ';
 			}
 		}
 		return b;
-    }
+	}
 
-	private boolean isValidInput(int i, byte[] bytes) {
-		if(i != MAX_PUSHED_BACK || bytes[i-1] != ';'){
+	private boolean isValidInput(final int i, final byte[] bytes) {
+		if (i != MAX_PUSHED_BACK || bytes[i - 1] != ';') {
 			return true;
 		}
-		final int  c;
-		if(bytes[1] == 'x'){
-			 c = Character.digit(bytes[2], 16);
+		final int c;
+		if (bytes[1] == 'x') {
+			c = Character.digit(bytes[2], 16);
 		}
-		else{
+		else {
 			c = Character.digit(bytes[1], 10) * 10 + Character.digit(bytes[2], 10);
 		}
-		return  c >= ' ' || c == '\t' || c == '\r' || c == '\n';
-    }
-
+		return c >= ' ' || c == '\t' || c == '\r' || c == '\n';
+	}
 }

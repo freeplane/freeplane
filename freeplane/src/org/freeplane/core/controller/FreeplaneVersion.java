@@ -86,24 +86,24 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	private String mType;
 
 	public int getMaj() {
-    	return mMaj;
-    }
+		return mMaj;
+	}
 
 	public int getMid() {
-    	return mMid;
-    }
+		return mMid;
+	}
 
 	public int getMin() {
-    	return mMin;
-    }
+		return mMin;
+	}
 
 	public int getNum() {
-    	return mNum;
-    }
+		return mNum;
+	}
 
 	public String getType() {
-    	return mType;
-    }
+		return mType;
+	}
 
 	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin, final String pType, final int pNum) {
 		super();
@@ -160,6 +160,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 		}
 		return buf.toString();
 	}
+
 	public String numberToString() {
 		final StringBuilder buf = new StringBuilder();
 		buf.append(mMaj);

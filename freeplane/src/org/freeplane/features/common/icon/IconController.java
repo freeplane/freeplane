@@ -25,18 +25,15 @@ import java.util.List;
 
 import org.freeplane.core.controller.CombinedPropertyChain;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.ExclusivePropertyChain;
 import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.features.common.addins.styles.LogicalStyleModel;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
-import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
@@ -44,7 +41,7 @@ import org.freeplane.features.common.map.NodeModel;
  * @author Dimitry Polivaev
  */
 public class IconController implements IExtension {
-	final private CombinedPropertyChain< List<MindIcon>, NodeModel> iconHandlers;
+	final private CombinedPropertyChain<List<MindIcon>, NodeModel> iconHandlers;
 
 	public static IconController getController(final ModeController modeController) {
 		return (IconController) modeController.getExtension(IconController.class);
@@ -75,10 +72,10 @@ public class IconController implements IExtension {
 		addIconGetter(IPropertyHandler.NODE, new IPropertyHandler<List<MindIcon>, NodeModel>() {
 			public List<MindIcon> getProperty(final NodeModel node, final List<MindIcon> currentValue) {
 				final List<MindIcon> icons = node.getIcons();
-				if(currentValue.isEmpty()){
+				if (currentValue.isEmpty()) {
 					return icons;
 				}
-				if(icons.isEmpty()){
+				if (icons.isEmpty()) {
 					return currentValue;
 				}
 				final ArrayList<MindIcon> arrayList = new ArrayList<MindIcon>(icons.size() + currentValue.size());
@@ -90,12 +87,12 @@ public class IconController implements IExtension {
 		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<List<MindIcon>, NodeModel>() {
 			public List<MindIcon> getProperty(final NodeModel node, final List<MindIcon> currentValue) {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-                final NodeModel styleNode = model.getStyleNode(LogicalStyleModel.getStyle(node));
-				final List<MindIcon> styleIcons ;
-				if(styleNode == null || styleNode.equals(node)){
-					styleIcons = Collections.emptyList(); 
+				final NodeModel styleNode = model.getStyleNode(LogicalStyleModel.getStyle(node));
+				final List<MindIcon> styleIcons;
+				if (styleNode == null || styleNode.equals(node)) {
+					styleIcons = Collections.emptyList();
 				}
-				else{
+				else {
 					styleIcons = styleNode.getIcons();
 				}
 				return styleIcons;
@@ -106,24 +103,26 @@ public class IconController implements IExtension {
 	public ModeController getModeController() {
 		return modeController;
 	}
-	public IPropertyHandler<List<MindIcon>, NodeModel> addIconGetter(final Integer key,
-		final IPropertyHandler<List<MindIcon>, NodeModel> getter) {
+
+	public IPropertyHandler<List<MindIcon>, NodeModel> addIconGetter(
+	                                                                 final Integer key,
+	                                                                 final IPropertyHandler<List<MindIcon>, NodeModel> getter) {
 		return iconHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyHandler<List<MindIcon>, NodeModel> removeIconGetter(final Integer key,
-		final IPropertyHandler<List<MindIcon>, NodeModel> getter) {
+	public IPropertyHandler<List<MindIcon>, NodeModel> removeIconGetter(
+	                                                                    final Integer key,
+	                                                                    final IPropertyHandler<List<MindIcon>, NodeModel> getter) {
 		return iconHandlers.addGetter(key, getter);
 	}
-	
-	public List<MindIcon> getIcons(NodeModel node){
+
+	public List<MindIcon> getIcons(final NodeModel node) {
 		return iconHandlers.getProperty(node);
 	}
 
-	public static List<MindIcon> getIcons(ModeController modeController, final NodeModel node) {
-    	IconController iconController = getController(modeController);
-        final List<MindIcon> icons = iconController.getIcons(node);
-        return icons;
-    }
-
+	public static List<MindIcon> getIcons(final ModeController modeController, final NodeModel node) {
+		final IconController iconController = IconController.getController(modeController);
+		final List<MindIcon> icons = iconController.getIcons(node);
+		return icons;
+	}
 }

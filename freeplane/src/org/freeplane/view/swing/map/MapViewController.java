@@ -114,7 +114,7 @@ public class MapViewController implements IMapViewManager {
 		if (mapView != null) {
 			final ModeController modeController = mapView.getModeController();
 			lastModeName = modeController.getModeName();
-			float mapViewZoom = mapView.getZoom();
+			final float mapViewZoom = mapView.getZoom();
 			if (zoom != mapViewZoom) {
 				setZoom(mapViewZoom);
 			}
@@ -129,7 +129,7 @@ public class MapViewController implements IMapViewManager {
 	 */
 	public boolean changeToMapView(final String mapViewDisplayName) {
 		MapView mapViewCandidate = null;
-		for (MapView mapView : mapViewVector) {
+		for (final MapView mapView : mapViewVector) {
 			if (StringUtils.equals(mapViewDisplayName, mapView.getName())) {
 				mapViewCandidate = mapView;
 				break;
@@ -149,7 +149,7 @@ public class MapViewController implements IMapViewManager {
 			return true;
 		}
 		MapView mapViewCandidate = null;
-		for (MapView mapView : mapViewVector) {
+		for (final MapView mapView : mapViewVector) {
 			if (modeName.equals(mapView.getModeController().getModeName())) {
 				mapViewCandidate = mapView;
 				break;
@@ -171,7 +171,7 @@ public class MapViewController implements IMapViewManager {
 	 * @see org.freeplane.core.frame.IMapViewController#checkIfFileIsAlreadyOpened(java.net.URL)
 	 */
 	public String checkIfFileIsAlreadyOpened(final URL urlToCheck) throws MalformedURLException {
-		for (MapView mapView : mapViewVector) {
+		for (final MapView mapView : mapViewVector) {
 			if (getModel(mapView) != null) {
 				final URL mapViewUrl = getModel(mapView).getURL();
 				if (sameFile(urlToCheck, mapViewUrl)) {
@@ -226,12 +226,12 @@ public class MapViewController implements IMapViewManager {
 		}
 		view.preparePrinting();
 		final Rectangle innerBounds = view.getInnerBounds();
-		int BOUND = 1;
+		final int BOUND = 1;
 		innerBounds.x -= BOUND;
 		innerBounds.y -= BOUND;
 		innerBounds.width += 2 * BOUND;
 		innerBounds.height += 2 * BOUND;
-		BufferedImage myImage = (BufferedImage) view.createImage(innerBounds.width, innerBounds.height);
+		final BufferedImage myImage = (BufferedImage) view.createImage(innerBounds.width, innerBounds.height);
 		final Graphics g = myImage.getGraphics();
 		g.translate(-innerBounds.x, -innerBounds.y);
 		view.print(g);
@@ -281,7 +281,7 @@ public class MapViewController implements IMapViewManager {
 	 */
 	public List<String> getMapKeys() {
 		final LinkedList<String> returnValue = new LinkedList<String>();
-		for (MapView mapView : mapViewVector) {
+		for (final MapView mapView : mapViewVector) {
 			returnValue.add(mapView.getName());
 		}
 		return Collections.unmodifiableList(returnValue);
@@ -292,7 +292,7 @@ public class MapViewController implements IMapViewManager {
 	 */
 	public Map<String, MapModel> getMaps() {
 		final HashMap<String, MapModel> returnValue = new HashMap<String, MapModel>(mapViewVector.size());
-		for (MapView mapView : mapViewVector) {
+		for (final MapView mapView : mapViewVector) {
 			returnValue.put(mapView.getName(), getModel(mapView));
 		}
 		return Collections.unmodifiableMap(returnValue);
@@ -477,8 +477,8 @@ public class MapViewController implements IMapViewManager {
 		if (mapView == null) {
 			return;
 		}
-		MapModel map = mapView.getModel();
-		MapStyle mapStyle = (MapStyle) mapView.getModeController().getExtension(MapStyle.class); 
+		final MapModel map = mapView.getModel();
+		final MapStyle mapStyle = (MapStyle) mapView.getModeController().getExtension(MapStyle.class);
 		mapStyle.setZoom(map, zoom);
 		mapView.setZoom(zoom);
 	}
@@ -506,17 +506,17 @@ public class MapViewController implements IMapViewManager {
 		changeToMapView(getMapView());
 	}
 
-	public boolean isLeftTreeSupported(Component mapViewComponent) {
-		return ((MapView)mapViewComponent).getLayoutType() != MapViewLayout.OUTLINE;
-    }
+	public boolean isLeftTreeSupported(final Component mapViewComponent) {
+		return ((MapView) mapViewComponent).getLayoutType() != MapViewLayout.OUTLINE;
+	}
 
-	public Map<String, MapModel> getMaps(String modename) {
-			final HashMap<String, MapModel> returnValue = new HashMap<String, MapModel>(mapViewVector.size());
-			for (MapView mapView : mapViewVector) {
-				if(mapView.getModeController().getModeName().equals(modename)){
-					returnValue.put(mapView.getName(), getModel(mapView));
-				}
+	public Map<String, MapModel> getMaps(final String modename) {
+		final HashMap<String, MapModel> returnValue = new HashMap<String, MapModel>(mapViewVector.size());
+		for (final MapView mapView : mapViewVector) {
+			if (mapView.getModeController().getModeName().equals(modename)) {
+				returnValue.put(mapView.getName(), getModel(mapView));
 			}
-			return Collections.unmodifiableMap(returnValue);
 		}
+		return Collections.unmodifiableMap(returnValue);
+	}
 }

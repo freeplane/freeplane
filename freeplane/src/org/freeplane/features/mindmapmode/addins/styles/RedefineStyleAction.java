@@ -12,9 +12,8 @@ import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.map.NodeModel;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/styles/manage" })
-public class RedefineStyleAction extends AFreeplaneAction{
-
-	public RedefineStyleAction(Controller controller) {
+public class RedefineStyleAction extends AFreeplaneAction {
+	public RedefineStyleAction(final Controller controller) {
 		super("RedefineStyleAction", controller);
 	}
 
@@ -23,14 +22,13 @@ public class RedefineStyleAction extends AFreeplaneAction{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public void actionPerformed(ActionEvent e) {
-		NodeModel node = getController().getSelection().getSelected();
-		Object style = LogicalStyleModel.getStyle(node);
-		MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
-		NodeModel styleNode = extension.getStyleNode(style);
+	public void actionPerformed(final ActionEvent e) {
+		final NodeModel node = getController().getSelection().getSelected();
+		final Object style = LogicalStyleModel.getStyle(node);
+		final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
+		final NodeModel styleNode = extension.getStyleNode(style);
 		getModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
 		getModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
 		LogicalStyleController.getController(getModeController()).refreshMap(node.getMap());
 	}
-
 }

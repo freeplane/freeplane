@@ -29,15 +29,16 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		return nodeAttributeTableModel.getAttribute(index).getValue();
 	}
 
-	public List<String> getAll(String name) {
+	public List<String> getAll(final String name) {
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {
 			return Collections.emptyList();
 		}
 		final ArrayList<String> result = new ArrayList<String>();
-		for (Attribute attribute : nodeAttributeTableModel.getAttributes()) {
-			if (attribute.getName().equals(name))
+		for (final Attribute attribute : nodeAttributeTableModel.getAttributes()) {
+			if (attribute.getName().equals(name)) {
 				result.add(attribute.getValue());
+			}
 		}
 		return result;
 	}
@@ -54,7 +55,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		return result;
 	}
 
-	public String get(int index) {
+	public String get(final int index) {
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {
 			throw new IndexOutOfBoundsException("get:" + index);
@@ -63,7 +64,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		return value == null ? null : value.toString();
 	}
 
-	public void set(int index, String value) {
+	public void set(final int index, final String value) {
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {
 			throw new IndexOutOfBoundsException("set1:" + index);
@@ -71,7 +72,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		getAttributeController().performSetValueAt(nodeAttributeTableModel, value, index, 1);
 	}
 
-	public void set(int index, String name, String value) {
+	public void set(final int index, final String name, final String value) {
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {
 			throw new IndexOutOfBoundsException("set2:" + index);
@@ -80,7 +81,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	}
 
 	public int findAttribute(final String name) {
-		List<String> attributeNames = getAttributeNames();
+		final List<String> attributeNames = getAttributeNames();
 		int i = 0;
 		for (final String a : attributeNames) {
 			if (a.equals(name)) {
@@ -105,11 +106,12 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		if (nodeAttributeTableModel == null) {
 			return false;
 		}
-		ArrayList<Integer> toRemove = new ArrayList<Integer>();
+		final ArrayList<Integer> toRemove = new ArrayList<Integer>();
 		final Vector<Attribute> attributes = nodeAttributeTableModel.getAttributes();
 		for (int i = 0; i < attributes.size(); ++i) {
-			if (attributes.get(i).getName().equals(name))
+			if (attributes.get(i).getName().equals(name)) {
 				toRemove.add(i);
+			}
 		}
 		// do it backwards in order not to invalidate the first indexes
 		for (int i = toRemove.size() - 1; i >= 0; --i) {
@@ -118,7 +120,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		return !toRemove.isEmpty();
 	}
 
-	public void remove(int index) {
+	public void remove(final int index) {
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {
 			throw new IndexOutOfBoundsException("remove:" + index);
@@ -136,7 +138,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		getAttributeController().setAttribute(getDelegate(), index, attribute);
 	}
 
-	public void add(String name, String value) {
+	public void add(final String name, final String value) {
 		final Attribute attribute = new Attribute(name, value);
 		getAttributeController().addAttribute(getDelegate(), attribute);
 	}

@@ -20,7 +20,6 @@
 package org.freeplane.features.common.map;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.core.io.IAttributeWriter;
@@ -28,7 +27,6 @@ import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.map.MapWriter.Hint;
 import org.freeplane.features.common.map.MapWriter.Mode;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -42,7 +40,8 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	private XMLElement xmlNode;
 	final private String nodeTag;
 
-	public NodeWriter(final MapController mapController, String nodeTag, final boolean writeChildren, final boolean writeInvisible) {
+	public NodeWriter(final MapController mapController, final String nodeTag, final boolean writeChildren,
+	                  final boolean writeInvisible) {
 		this.mapController = mapController;
 		this.writeChildren = writeChildren;
 		this.writeInvisible = writeInvisible;
@@ -83,24 +82,25 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		/** fc, 12.6.2005: XML must not contain any zero characters. */
 		xmlNode = new XMLElement();
 		encryptionModel = EncryptionModel.getModel(node);
-        final Object mode = writer.getHint(Hint.MODE);
-		if (! (encryptionModel == null ||  encryptionModel.isAccessible() && Mode.EXPORT.equals(mode))) {
+		final Object mode = writer.getHint(Hint.MODE);
+		if (!(encryptionModel == null || encryptionModel.isAccessible() && Mode.EXPORT.equals(mode))) {
 			final String additionalInfo = encryptionModel.getEncryptedContent(mapController);
 			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, additionalInfo);
 		}
-		else if (mapController.isFolded(node) && (writeFolded || ! writer.getHint(Hint.MODE).equals(Mode.FILE))) {
+		else if (mapController.isFolded(node) && (writeFolded || !writer.getHint(Hint.MODE).equals(Mode.FILE))) {
 			writer.addAttribute("FOLDED", "true");
 		}
 		final NodeModel parentNode = node.getParentNode();
 		if (parentNode != null && parentNode.isRoot()) {
 			writer.addAttribute("POSITION", node.isLeft() ? "left" : "right");
 		}
-		final boolean saveID = ! mode.equals(Mode.STYLE) && ! MapController.saveOnlyIntrinsicallyNeededIds();
+		final boolean saveID = !mode.equals(Mode.STYLE) && !MapController.saveOnlyIntrinsicallyNeededIds();
 		if (saveID) {
 			final String id = node.createID();
 			writer.addAttribute("ID", id);
 		}
-		if (! mode.equals(Mode.STYLE) && node.getHistoryInformation() != null
+		if (!mode.equals(Mode.STYLE)
+		        && node.getHistoryInformation() != null
 		        && ResourceController.getResourceController().getBooleanProperty(
 		            NodeBuilder.RESOURCES_SAVE_MODIFICATION_TIMES)) {
 			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter.dateToString(node
@@ -117,14 +117,14 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
 			writer.addElement(null, xmlNode.getChildAtIndex(i));
 		}
-		if ( (encryptionModel == null || encryptionModel.isAccessible() && Mode.EXPORT.equals(writer.getHint(Hint.MODE))) 
-				&& writeChildren && mapController.childrenUnfolded(node).hasNext()) {
+		if ((encryptionModel == null || encryptionModel.isAccessible() && Mode.EXPORT.equals(writer.getHint(Hint.MODE)))
+		        && writeChildren && mapController.childrenUnfolded(node).hasNext()) {
 			saveChildren(writer, node);
 		}
 		return;
 	}
 
 	String getNodeTag() {
-	    return nodeTag;
-    }
+		return nodeTag;
+	}
 }

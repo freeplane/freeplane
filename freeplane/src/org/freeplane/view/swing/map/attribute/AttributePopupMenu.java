@@ -198,7 +198,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	private void maybeShowPopup(final MouseEvent e) {
 		if (e.isPopupTrigger()) {
 			selectTable(e.getComponent(), e.getPoint());
-			if(table.isEditing()){
+			if (table.isEditing()) {
 				return;
 			}
 			table.requestFocus();
@@ -243,7 +243,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		}
 		if (component instanceof AttributeTable) {
 			table = (AttributeTable) component;
-			if(table.isEditing()){
+			if (table.isEditing()) {
 				return;
 			}
 			oldTable = false;
@@ -251,7 +251,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 			if (table.getValueAt(row, 0).equals("")) {
 				row--;
 			}
-			if(row >= 0){
+			if (row >= 0) {
 				table.changeSelection(row, table.columnAtPoint(point), false, false);
 			}
 			return;
@@ -259,7 +259,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		if (component instanceof JTableHeader) {
 			final JTableHeader header = (JTableHeader) component;
 			table = (AttributeTable) header.getTable();
-			if(table.isEditing()){
+			if (table.isEditing()) {
 				return;
 			}
 			oldTable = false;

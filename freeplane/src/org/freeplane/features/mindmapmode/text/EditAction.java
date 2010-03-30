@@ -84,7 +84,7 @@ class EditAction extends AFreeplaneAction {
 			return;
 		}
 		final Controller controller = getController();
-		if(controller.getMap() != nodeModel.getMap()){
+		if (controller.getMap() != nodeModel.getMap()) {
 			return;
 		}
 		final ViewController viewController = controller.getViewController();
@@ -92,7 +92,7 @@ class EditAction extends AFreeplaneAction {
 		map.validate();
 		map.invalidate();
 		final Component node = viewController.getComponent(nodeModel);
-		if(node == null){
+		if (node == null) {
 			return;
 		}
 		node.requestFocus();

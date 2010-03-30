@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.common.text;
 
-import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
@@ -43,8 +42,8 @@ public class NodeContainsCondition extends NodeCondition {
 		this.value = value;
 	}
 
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
-		String text = node.getPlainTextContent();
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
+		final String text = node.getPlainTextContent();
 		return checkText(text);
 	}
 
@@ -57,10 +56,6 @@ public class NodeContainsCondition extends NodeCondition {
 		final String nodeCondition = TextUtil.getText(NodeConditionController.FILTER_NODE);
 		final String simpleCondition = TextUtil.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false);
-	}
-
-	private String getText(final NodeModel node) {
-		return node.getText();
 	}
 
 	public void toXml(final XMLElement element) {

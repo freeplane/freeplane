@@ -37,7 +37,7 @@ public class TimeConditionModifiedBefore extends TimeCondition {
 		super(date);
 	}
 
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		final Date lastModifiedAt = node.getHistoryInformation().getLastModifiedAt();
 		final Date filterDate = getDate();
 		final boolean before = lastModifiedAt.getTime() < filterDate.getTime();

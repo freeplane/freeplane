@@ -56,9 +56,8 @@ import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.MapModel;
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
-	
 	private static final IconStore STORE = IconStoreFactory.create();
-	
+
 	static private class AttributeTreeNodeInfo extends TreeNodeInfo {
 		final private boolean restricted;
 
@@ -149,11 +148,9 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	final private JTree tree;
 	final private DefaultTreeModel treeModel;
 
-	public ImportAttributesDialog(final Controller controller,
-			final Component parentComponent) {
-		super(controller.getViewController().getFrame(), 
-				TextUtil.removeMnemonic(TextUtil.getText("attributes_import")),
-				true);
+	public ImportAttributesDialog(final Controller controller, final Component parentComponent) {
+		super(controller.getViewController().getFrame(),
+		    TextUtil.removeMnemonic(TextUtil.getText("attributes_import")), true);
 		this.controller = controller;
 		this.parentComponent = parentComponent;
 		final TreeNodeInfo nodeInfo = new TreeNodeInfo(TextUtil.getText("attribute_top"));
@@ -323,8 +320,8 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	public void show() {
 		createMapSubTrees(topNode);
 		if (topNode.getChildCount() == 0) {
-			JOptionPane.showMessageDialog(parentComponent, TextUtil
-			    .getText("attributes_no_import_candidates_found"), getTitle(), JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(parentComponent, TextUtil.getText("attributes_no_import_candidates_found"),
+			    getTitle(), JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
 		treeModel.reload();

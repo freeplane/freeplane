@@ -46,7 +46,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			super("FoldAllAction", controller);
 		}
 
-		public void actionPerformed(final ActionEvent e, NodeModel node) {
+		@Override
+		public void actionPerformed(final ActionEvent e, final NodeModel node) {
 			foldAll(node);
 		}
 	}
@@ -60,7 +61,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			super("FoldOneLevelAction", controller);
 		}
 
-		public void actionPerformed(final ActionEvent e, NodeModel node) {
+		@Override
+		public void actionPerformed(final ActionEvent e, final NodeModel node) {
 			foldOneStage(node);
 		}
 	}
@@ -74,7 +76,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			super("UnfoldAllAction", controller);
 		}
 
-		public void actionPerformed(final ActionEvent e, NodeModel node) {
+		@Override
+		public void actionPerformed(final ActionEvent e, final NodeModel node) {
 			unfoldAll(node);
 		}
 	}
@@ -88,7 +91,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			super("UnfoldOneLevelAction", controller);
 		}
 
-		public void actionPerformed(final ActionEvent e, NodeModel node) {
+		@Override
+		public void actionPerformed(final ActionEvent e, final NodeModel node) {
 			unfoldOneStage(node);
 		}
 	}
@@ -101,14 +105,14 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		modeController.getUserInputListenerFactory().addMouseWheelEventHandler(this);
 	}
 
-	public void addActionsAtMenuBuilder(MenuBuilder menuBuilder) {
-		for (AMultipleNodeAction aMultipleNodeAction : getAnnotatedActions()) {
+	public void addActionsAtMenuBuilder(final MenuBuilder menuBuilder) {
+		for (final AMultipleNodeAction aMultipleNodeAction : getAnnotatedActions()) {
 			menuBuilder.addAnnotatedAction(aMultipleNodeAction);
 		}
 	}
 
 	public List<AMultipleNodeAction> getAnnotatedActions() {
-		ArrayList<AMultipleNodeAction> result = new ArrayList<AMultipleNodeAction>();
+		final ArrayList<AMultipleNodeAction> result = new ArrayList<AMultipleNodeAction>();
 		result.add(new UnfoldAllAction());
 		result.add(new FoldAllAction());
 		result.add(new UnfoldOneLevelAction());
@@ -118,7 +122,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 
 	protected void foldAll(final NodeModel node) {
 		final MapController modeController = controller.getModeController().getMapController();
-		for (Iterator<NodeModel> i = modeController.childrenUnfolded(node); i.hasNext(); ) {
+		for (final Iterator<NodeModel> i = modeController.childrenUnfolded(node); i.hasNext();) {
 			foldAll(i.next());
 		}
 		setFolded(node, true);
@@ -156,7 +160,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			setFolded(node, false);
 			final MapController mapController = controller.getModeController().getMapController();
 			for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
-				foldStageN((NodeModel) i.next(), stage);
+				foldStageN(i.next(), stage);
 			}
 		}
 		else {
@@ -166,8 +170,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 
 	protected int getMaxDepth(final NodeModel node) {
 		final MapController mapController = controller.getModeController().getMapController();
-		if (mapController.isFolded(node)
-		        || !mapController.hasChildren(node)) {
+		if (mapController.isFolded(node) || !mapController.hasChildren(node)) {
 			return node.depth();
 		}
 		int k = 0;
@@ -190,7 +193,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 		int k = Integer.MAX_VALUE;
 		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
-			final int l = getMinDepth((NodeModel) i.next());
+			final int l = getMinDepth(i.next());
 			if (l < k) {
 				k = l;
 			}
@@ -243,7 +246,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			setFolded(node, false);
 			final MapController mapController = controller.getModeController().getMapController();
 			for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
-				unfoldStageN((NodeModel) i.next(), stage);
+				unfoldStageN(i.next(), stage);
 			}
 		}
 		else {

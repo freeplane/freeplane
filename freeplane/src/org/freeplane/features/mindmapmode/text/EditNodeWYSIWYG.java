@@ -201,7 +201,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			final ViewController viewController = getModeController().getController().getViewController();
 			final Font font = viewController.getFont(node);
 			final Color nodeTextBackground = viewController.getBackgroundColor(node);
-			StringBuilder ruleBuilder = new StringBuilder(100); 
+			final StringBuilder ruleBuilder = new StringBuilder(100);
 			ruleBuilder.append("body {");
 			ruleBuilder.append("font-family: ").append(font.getFamily()).append(";");
 			ruleBuilder.append("font-size: ").append(font.getSize()).append("pt;");

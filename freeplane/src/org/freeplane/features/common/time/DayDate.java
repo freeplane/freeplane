@@ -39,8 +39,8 @@ class DayDate extends Date {
 	}
 
 	DayDate() {
-        this(new Date());
-    }
+		this(new Date());
+	}
 
 	@Override
 	public String toString() {

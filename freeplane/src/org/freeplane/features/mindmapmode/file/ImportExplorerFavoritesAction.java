@@ -29,8 +29,8 @@ import javax.swing.JFileChooser;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.NodeModel;
@@ -97,7 +97,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 						final NodeModel node = addNode(target, FileUtil.removeExtension(list[i].getName()));
 						in = new BufferedReader(new FileReader(list[i]));
 						String line = null;
-						while ( (line = in.readLine()) != null) {
+						while ((line = in.readLine()) != null) {
 							if (line.startsWith("URL=")) {
 								((MLinkController) LinkController.getController(getModeController())).setLink(node,
 								    line.substring(4), false);
@@ -109,13 +109,14 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 						LogTool.severe(e);
 					}
 					finally {
-					    try {
-					        if(in != null) {
-					            in.close();
-					        }
-                        } catch (IOException e) {
-                            LogTool.warn(e);
-                        }
+						try {
+							if (in != null) {
+								in.close();
+							}
+						}
+						catch (final IOException e) {
+							LogTool.warn(e);
+						}
 					}
 				}
 			}

@@ -169,7 +169,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 				if (doPasswordCheckAndDecryptNode(encNode)) {
 					node.setFolded(false);
 				}
-				else{
+				else {
 					return;
 				}
 			}

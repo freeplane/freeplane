@@ -44,15 +44,17 @@ class AboutAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		StringBuilder sb = new StringBuilder(TextUtil.getText("about_text"));
+		final StringBuilder sb = new StringBuilder(TextUtil.getText("about_text"));
 		sb.append(FreeplaneVersion.getVersion());
 		sb.append('\n');
 		sb.append(TextUtil.format("java_version", Compat.JAVA_VERSION));
 		sb.append('\n');
-		sb.append(TextUtil.format("main_resource_directory", ResourceController.getResourceController().getResourceBaseDir()));
+		sb.append(TextUtil.format("main_resource_directory", ResourceController.getResourceController()
+		    .getResourceBaseDir()));
 		sb.append('\n');
-		sb.append(TextUtil.format("user_config_folder", ResourceController.getResourceController().getFreeplaneUserDirectory()));
-		JOptionPane.showMessageDialog(getController().getViewController().getViewport(), sb.toString(), TextUtil.getText("AboutAction.text"),
-		    JOptionPane.INFORMATION_MESSAGE);
+		sb.append(TextUtil.format("user_config_folder", ResourceController.getResourceController()
+		    .getFreeplaneUserDirectory()));
+		JOptionPane.showMessageDialog(getController().getViewController().getViewport(), sb.toString(), TextUtil
+		    .getText("AboutAction.text"), JOptionPane.INFORMATION_MESSAGE);
 	}
 }

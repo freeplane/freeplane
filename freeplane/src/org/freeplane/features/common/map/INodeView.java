@@ -21,7 +21,6 @@ package org.freeplane.features.common.map;
 
 import java.awt.Component;
 
-
 /**
  * @author Dimitry Polivaev
  * 10.01.2009

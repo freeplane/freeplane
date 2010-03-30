@@ -19,6 +19,7 @@ public interface Proxy {
 	interface Attributes {
 		/** returns the <em>first</em> value of an attribute with the given name or null otherwise.
 		 * @deprecated use {@link #get(int)} or {@link #getAll(String)} instead. */
+		@Deprecated
 		String get(final String name);
 
 		/** returns all values for the attribute name. */
@@ -59,8 +60,9 @@ public interface Proxy {
 		/** removes the <em>first</em> attribute with this name.
 		 * @returns true on removal of an existing attribute and false otherwise.
 		 * @deprecated use {@link #remove(int)} or {@link #removeAll(String)} instead. */
+		@Deprecated
 		boolean remove(final String name);
-		
+
 		/** removes <em>all</em> attributes with this name.
 		 * @returns true on removal of an existing attribute and false otherwise. */
 		boolean removeAll(final String name);
@@ -373,7 +375,9 @@ public interface Proxy {
 
 	interface NodeStyle {
 		void setStyle(Object key);
+
 		Object getStyle();
+
 		Node getStyleNode();
 
 		Color getBackgroundColor();

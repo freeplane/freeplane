@@ -45,7 +45,7 @@ public class SelectedViewSnapshotCondition implements ISelectableCondition {
 		selectedNodes.addAll(controller.getSelection().getSelection());
 	}
 
-	public boolean checkNode(ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final ModeController modeController, final NodeModel node) {
 		return selectedNodes.contains(node);
 	}
 

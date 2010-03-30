@@ -116,9 +116,9 @@ public class MNodeDropListener implements DropTargetListener {
 			}
 			final boolean dropAsSibling = mainView.dropAsSibling(dtde.getLocation().getX());
 			final MMapController mapController = (MMapController) modeController.getMapController();
-			if ((dropAction == DnDConstants.ACTION_MOVE || dropAction == DnDConstants.ACTION_COPY)){
+			if ((dropAction == DnDConstants.ACTION_MOVE || dropAction == DnDConstants.ACTION_COPY)) {
 				final NodeModel parent = dropAsSibling ? targetNode.getParentNode() : targetNode;
-				if( !mapController.isWriteable(parent)) {
+				if (!mapController.isWriteable(parent)) {
 					dtde.rejectDrop();
 					final String message = TextUtil.getText("node_is_write_protected");
 					UITools.errorMessage(message);
@@ -136,10 +136,9 @@ public class MNodeDropListener implements DropTargetListener {
 			if (dropAction == DnDConstants.ACTION_LINK) {
 				int yesorno = JOptionPane.YES_OPTION;
 				if (controller.getSelection().size() >= 5) {
-					yesorno = JOptionPane.showConfirmDialog(controller.getViewController().getContentPane(),
-					    TextUtil.getText("lots_of_links_warning"), Integer.toString(controller.getSelection()
-					        .size())
-					            + " links to the same node", JOptionPane.YES_NO_OPTION);
+					yesorno = JOptionPane.showConfirmDialog(controller.getViewController().getContentPane(), TextUtil
+					    .getText("lots_of_links_warning"), Integer.toString(controller.getSelection().size())
+					        + " links to the same node", JOptionPane.YES_NO_OPTION);
 				}
 				if (yesorno == JOptionPane.YES_OPTION) {
 					for (final Iterator<NodeModel> it = controller.getSelection().getSelection().iterator(); it

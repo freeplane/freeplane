@@ -102,7 +102,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 			}
 		});
 		numOfIcons = icons.size();
-		xDimension = (int)Math.ceil(Math.sqrt(numOfIcons));
+		xDimension = (int) Math.ceil(Math.sqrt(numOfIcons));
 		if (numOfIcons <= xDimension * (xDimension - 1)) {
 			yDimension = xDimension - 1;
 		}
@@ -115,7 +115,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		iconPanel.setLayout(gridlayout);
 		iconLabels = new JLabel[numOfIcons];
 		for (int i = 0; i < numOfIcons; ++i) {
-			final IIconInformation icon = (IIconInformation) icons.get(i);
+			final IIconInformation icon = icons.get(i);
 			iconPanel.add(iconLabels[i] = new JLabel(icon.getIcon()));
 			iconLabels[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 			iconLabels[i].addMouseListener(this);
@@ -185,7 +185,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 
 	private int findIndexByKeyEvent(final KeyEvent keyEvent) {
 		for (int i = 0; i < icons.size(); i++) {
-			final IIconInformation info = (IIconInformation) icons.get(i);
+			final IIconInformation info = icons.get(i);
 			final KeyStroke iconKeyStroke = info.getKeyStroke();
 			if (iconKeyStroke != null
 			        && (keyEvent.getKeyCode() == iconKeyStroke.getKeyCode()
@@ -340,7 +340,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		setSelectedPosition(position);
 		highlight(position);
 		final int index = calculateIndex(position);
-		final IIconInformation iconInformation = (IIconInformation) icons.get(index);
+		final IIconInformation iconInformation = icons.get(index);
 		final String keyStroke = ResourceController.getResourceController().getAdjustableProperty(
 		    iconInformation.getShortcutKey());
 		if (keyStroke != null) {

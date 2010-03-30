@@ -21,7 +21,6 @@ package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -64,7 +63,7 @@ class JoinNodesAction extends AFreeplaneAction {
 			joinedContent = joinedContentParts[0];
 			if (!isHtmlNode) {
 				final String end[] = JoinNodesAction.BODY_START.split(joinedContent, 2);
-				if(end.length == 1){
+				if (end.length == 1) {
 					end[0] = "<html>";
 				}
 				nodeContent = end[0] + "<body><p>" + nodeContent + "</p>";
@@ -73,24 +72,24 @@ class JoinNodesAction extends AFreeplaneAction {
 		if (isHtmlNode & !joinedContent.equals("")) {
 			final String nodeContentParts[] = JoinNodesAction.BODY_START.split(nodeContent, 2);
 			// if no <body> tag is found
-			if(nodeContentParts.length == 1){
+			if (nodeContentParts.length == 1) {
 				nodeContent = nodeContent.substring(6);
 				nodeContentParts[0] = "<html>";
 			}
-			else{
+			else {
 				nodeContent = nodeContentParts[1];
 			}
 			if (!isHtml) {
 				joinedContent = nodeContentParts[0] + "<body><p>" + joinedContent + "</p>";
 			}
 		}
-		if(joinedContent.equals("")){
+		if (joinedContent.equals("")) {
 			return nodeContent;
 		}
 		if (isHtml || isHtmlNode) {
 			joinedContent += '\n';
 		}
-		else{
+		else {
 			joinedContent += ' ';
 		}
 		joinedContent += nodeContent;
@@ -109,7 +108,7 @@ class JoinNodesAction extends AFreeplaneAction {
 			}
 		}
 		boolean isHtml = false;
-		LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
+		final LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			final String nodeContent = node.toString();
@@ -123,9 +122,9 @@ class JoinNodesAction extends AFreeplaneAction {
 		}
 		controller.getSelection().selectAsTheOnlyOneSelected(selectedNode);
 		((MTextController) TextController.getController(getModeController())).setNodeText(selectedNode, joinedContent);
-		final MIconController iconController = (MIconController)IconController.getController(getModeController());
+		final MIconController iconController = (MIconController) IconController.getController(getModeController());
 		iconController.removeAllIcons(selectedNode);
-		for(MindIcon icon:icons){
+		for (final MindIcon icon : icons) {
 			iconController.addIcon(selectedNode, icon);
 		}
 	}

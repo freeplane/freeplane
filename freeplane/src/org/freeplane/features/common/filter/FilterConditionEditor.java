@@ -130,7 +130,8 @@ public class FilterConditionEditor extends Box {
 		add(Box.createHorizontalGlue());
 		add(caseInsensitive);
 		caseInsensitive.setText(TextUtil.getText("filter_ignore_case"));
-		caseInsensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(PROPERTY_FILTER_IGNORE_CASE));
+		caseInsensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
+		    PROPERTY_FILTER_IGNORE_CASE));
 		mapChanged(filterController.getController().getMap());
 	}
 

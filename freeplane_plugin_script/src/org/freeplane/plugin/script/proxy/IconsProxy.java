@@ -20,9 +20,7 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 	}
 
 	public void addIcon(final String name) {
-		getIconController().addIcon(getDelegate(),
-				IconStoreFactory.create().getMindIcon(name));
-
+		getIconController().addIcon(getDelegate(), IconStoreFactory.create().getMindIcon(name));
 	}
 
 	private int findIcon(final String iconID) {
@@ -37,8 +35,7 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 	}
 
 	MIconController getIconController() {
-		return (MIconController) IconController
-				.getController(getModeController());
+		return (MIconController) IconController.getController(getModeController());
 	}
 
 	public List<String> getIcons() {

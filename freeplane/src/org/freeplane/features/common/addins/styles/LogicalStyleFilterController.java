@@ -1,7 +1,5 @@
 package org.freeplane.features.common.addins.styles;
 
-import java.util.Collection;
-
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -12,27 +10,24 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
-import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class LogicalStyleFilterController implements
-		IElementaryConditionController {
-
+public class LogicalStyleFilterController implements IElementaryConditionController {
 	static final String FILTER_STYLE = "filter_style";
-
 	private final Controller controller;
-	public LogicalStyleFilterController(Controller controller) {
+
+	public LogicalStyleFilterController(final Controller controller) {
 		super();
 		this.controller = controller;
 	}
 
-	public boolean canEditValues(Object property, NamedObject simpleCond) {
+	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
 		return false;
 	}
 
-	public boolean canHandle(Object selectedItem) {
+	public boolean canHandle(final Object selectedItem) {
 		if (!(selectedItem instanceof NamedObject)) {
 			return false;
 		}
@@ -40,21 +35,21 @@ public class LogicalStyleFilterController implements
 		return namedObject.objectEquals(LogicalStyleFilterController.FILTER_STYLE);
 	}
 
-	public boolean canSelectValues(Object property, NamedObject simpleCond) {
+	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
 		return true;
 	}
 
-	public ISelectableCondition createCondition(Object selectedItem,
-			NamedObject simpleCond, Object value, boolean ignoreCase) {
+	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	                                            final Object value, final boolean ignoreCase) {
 		return new StyleCondition(value);
 	}
 
-	public ComboBoxModel getConditionsForProperty(Object property) {
+	public ComboBoxModel getConditionsForProperty(final Object property) {
 		return new DefaultComboBoxModel(getStyleConditionNames());
 	}
 
 	private Object[] getStyleConditionNames() {
-		return new NamedObject[] { TextUtil.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO)};
+		return new NamedObject[] { TextUtil.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO) };
 	}
 
 	public ListModel getFilteredProperties() {
@@ -67,21 +62,20 @@ public class LogicalStyleFilterController implements
 		return null;
 	}
 
-	public ComboBoxModel getValuesForProperty(Object property) {
-		MapStyleModel mapStyles = MapStyleModel.getExtension(controller.getMap());
-		Object[]  styles= mapStyles.getStyles().toArray();
+	public ComboBoxModel getValuesForProperty(final Object property) {
+		final MapStyleModel mapStyles = MapStyleModel.getExtension(controller.getMap());
+		final Object[] styles = mapStyles.getStyles().toArray();
 		return new DefaultComboBoxModel(styles);
 	}
 
-	public boolean isCaseDependent(Object property, NamedObject simpleCond) {
+	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
 		return false;
 	}
 
-	public ISelectableCondition loadCondition(XMLElement element) {
+	public ISelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(StyleCondition.NAME)) {
 			return StyleCondition.load(element);
 		}
 		return null;
 	}
-
 }
