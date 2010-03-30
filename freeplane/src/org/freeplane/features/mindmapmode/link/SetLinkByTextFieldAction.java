@@ -23,8 +23,6 @@ import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -32,6 +30,8 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 
 class SetLinkByTextFieldAction extends AFreeplaneAction {
 	/**

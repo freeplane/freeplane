@@ -21,8 +21,8 @@ package org.freeplane.features.common.attribute;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.model.MapModel;
+import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.map.MapModel;
 
 /**
  * @author Dimitry Polivaev

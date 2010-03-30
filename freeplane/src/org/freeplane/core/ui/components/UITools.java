@@ -42,11 +42,11 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

@@ -4,9 +4,9 @@ import java.util.Hashtable;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.browsemode.BModeController;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;

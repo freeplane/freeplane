@@ -25,13 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**

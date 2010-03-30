@@ -23,10 +23,10 @@ import java.util.Comparator;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.features.mindmapmode.MMapController;
+import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.mindmapmode.map.MMapController;
 
 /**
  * @author foltin

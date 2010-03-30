@@ -21,8 +21,8 @@ package org.freeplane.features.common.link;
 
 import java.net.URI;
 
-import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.features.common.filter.condition.ConditionFactory;
 
 /**
  * @author Dimitry Polivaev

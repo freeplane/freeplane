@@ -10,12 +10,12 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.freeplane.core.controller.IMapSelection;
-import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
-import org.freeplane.features.mindmapmode.MMapModel;
+import org.freeplane.features.common.filter.condition.ICondition;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.map.MMapModel;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class ControllerProxy implements Proxy.Controller {

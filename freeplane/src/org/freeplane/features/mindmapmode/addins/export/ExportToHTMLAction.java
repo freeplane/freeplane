@@ -24,15 +24,15 @@ import java.io.File;
 import java.io.IOException;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.url.UrlManager;
 
 @ActionLocationDescriptor(accelerator = "control E", locations = { "/menu_bar/file/export/html" })
 class ExportToHTMLAction extends AFreeplaneAction {

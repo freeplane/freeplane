@@ -6,10 +6,10 @@ import java.util.Enumeration;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.NodeModel;
 
 public class NextNodeAction extends AFreeplaneAction {
 	public enum Direction{BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD};

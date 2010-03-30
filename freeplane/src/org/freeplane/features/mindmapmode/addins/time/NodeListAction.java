@@ -21,9 +21,9 @@ package org.freeplane.features.mindmapmode.addins.time;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
+import org.freeplane.features.common.map.ModeController;
 
 /**
  * @author Dimitry Polivaev

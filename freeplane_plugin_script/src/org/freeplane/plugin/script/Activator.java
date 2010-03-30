@@ -2,7 +2,7 @@ package org.freeplane.plugin.script;
 
 import java.util.Hashtable;
 
-import org.freeplane.core.model.ModeController;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;

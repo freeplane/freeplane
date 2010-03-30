@@ -27,8 +27,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
@@ -36,9 +34,12 @@ import org.freeplane.core.resources.ui.PropertyAction;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.note.NoteController;
+import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.file.MFileManager;
+import org.freeplane.features.mindmapmode.map.MMapModel;
 import org.freeplane.features.mindmapmode.note.MNoteController;
 
 public class MModeController extends ModeController {

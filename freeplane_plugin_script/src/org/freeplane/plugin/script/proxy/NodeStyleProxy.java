@@ -5,10 +5,10 @@ package org.freeplane.plugin.script.proxy;
 
 import java.awt.Color;
 
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.addins.styles.LogicalStyleController;
 import org.freeplane.features.common.addins.styles.LogicalStyleModel;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;

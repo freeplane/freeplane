@@ -25,13 +25,13 @@ import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.icon.IconController;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 
 /**

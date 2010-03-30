@@ -24,7 +24,7 @@ import java.util.Iterator;
 
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.IMapViewChangeListener;
-import org.freeplane.core.model.MapModel;
+import org.freeplane.features.common.map.MapModel;
 
 /**
  * @author Dimitry Polivaev

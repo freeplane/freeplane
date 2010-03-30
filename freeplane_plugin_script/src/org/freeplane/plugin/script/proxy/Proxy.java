@@ -9,8 +9,8 @@ import java.util.List;
 
 import javax.swing.Icon;
 
-import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.features.common.edge.EdgeStyle;
+import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.link.ArrowType;
 
 public interface Proxy {

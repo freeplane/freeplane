@@ -6,10 +6,10 @@ package org.freeplane.plugin.script.proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 

@@ -23,16 +23,16 @@ import java.awt.Font;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.icon.UIIcon;
-import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.model.ITooltipProvider;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.common.addins.styles.MapStyle;
+import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.icon.UIIcon;
+import org.freeplane.features.common.icon.factory.IconStoreFactory;
+import org.freeplane.features.common.map.ITooltipProvider;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 /**

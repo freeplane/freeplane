@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

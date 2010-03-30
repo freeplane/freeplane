@@ -29,8 +29,8 @@ import java.util.Set;
 import java.util.jar.Manifest;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;

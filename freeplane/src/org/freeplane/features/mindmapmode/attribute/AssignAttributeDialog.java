@@ -52,8 +52,6 @@ import javax.swing.event.ListDataListener;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.frame.IMapSelectionListener;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.MenuBuilder;
@@ -63,6 +61,8 @@ import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.NodeModel;
 
 class AssignAttributeDialog extends JDialog implements IAttributesListener, IMapSelectionListener {
 	private class AddAction extends IteratingAction {

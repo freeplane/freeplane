@@ -3,10 +3,10 @@ package org.freeplane.features.mindmapmode.nodestyle;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
+import org.freeplane.features.common.map.NodeModel;
 
 class RemoveFormatAction extends AMultipleNodeAction {
 

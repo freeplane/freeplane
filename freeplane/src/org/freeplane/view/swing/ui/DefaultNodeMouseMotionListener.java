@@ -14,15 +14,15 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.MapController;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.INodeMouseMotionListener;
 import org.freeplane.core.util.SysUtil;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;

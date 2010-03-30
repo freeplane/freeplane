@@ -34,16 +34,16 @@ import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.IMapLifeCycleListener;
 import org.freeplane.core.controller.INodeViewVisitor;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.IMapChangeListener;
-import org.freeplane.core.model.INodeView;
-import org.freeplane.core.model.MapChangeEvent;
-import org.freeplane.core.model.MapController;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.SysUtil;
+import org.freeplane.features.common.map.IMapChangeListener;
+import org.freeplane.features.common.map.INodeView;
+import org.freeplane.features.common.map.MapChangeEvent;
+import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

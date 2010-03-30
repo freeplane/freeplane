@@ -29,21 +29,21 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtil;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.mindmapmode.MMapController;
+import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
+import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ExportBranchAction extends AFreeplaneAction {
@@ -82,9 +82,9 @@ class ExportBranchAction extends AFreeplaneAction {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
 			final String ext = FileUtil.getExtension(chosenFile.getName());
-			if (!ext.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+			if (!ext.equals(org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				chosenFile = new File(chosenFile.getParent(), chosenFile.getName()
-				        + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION);
+				        + org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION);
 			}
 			try {
 				Compat.fileToUrl(chosenFile);

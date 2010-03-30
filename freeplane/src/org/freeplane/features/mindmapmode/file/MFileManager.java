@@ -51,11 +51,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewChangeListener;
-import org.freeplane.core.model.MapChangeEvent;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.model.MapWriter.Mode;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -66,14 +61,19 @@ import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.mindmapmode.MMapController;
-import org.freeplane.features.mindmapmode.MMapModel;
+import org.freeplane.features.common.map.MapChangeEvent;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.map.MapWriter.Mode;
+import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.map.MMapController;
+import org.freeplane.features.mindmapmode.map.MMapModel;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -516,7 +516,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final JFileChooser chooser = getFileChooser();
 		if (getMapsParentFile() == null) {
 			chooser.setSelectedFile(new File(getFileNameProposal(map)
-			        + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION));
+			        + org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION));
 		}
 		else {
 			chooser.setSelectedFile(map.getFile());
@@ -529,8 +529,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		File f = chooser.getSelectedFile();
 		setLastCurrentDir(f.getParentFile());
 		final String ext = FileUtil.getExtension(f.getName());
-		if (!ext.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-			f = new File(f.getParent(), f.getName() + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION);
+		if (!ext.equals(org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+			f = new File(f.getParent(), f.getName() + org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION);
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),

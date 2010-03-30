@@ -27,19 +27,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.freeplane.core.icon.IconController;
-import org.freeplane.core.icon.MindIcon;
-import org.freeplane.core.model.MapController;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
+import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.url.UrlManager;
 
 class MindMapHTMLWriter {
 	private static String el = System.getProperty("line.separator");

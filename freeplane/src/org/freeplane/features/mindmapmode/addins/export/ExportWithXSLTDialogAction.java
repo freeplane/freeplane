@@ -26,9 +26,9 @@ import java.io.StringWriter;
 import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.MapWriter.Mode;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.MapWriter.Mode;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**

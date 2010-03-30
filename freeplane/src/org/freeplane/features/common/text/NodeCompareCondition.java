@@ -19,14 +19,14 @@
  */
 package org.freeplane.features.common.text;
 
-import org.freeplane.core.filter.condition.CompareConditionAdapter;
-import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
+import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeCompareCondition extends CompareConditionAdapter {

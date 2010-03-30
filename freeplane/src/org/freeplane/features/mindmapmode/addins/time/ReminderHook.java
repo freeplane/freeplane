@@ -27,16 +27,16 @@ import java.util.TimerTask;
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.icon.IconStore;
-import org.freeplane.core.icon.UIIcon;
-import org.freeplane.core.icon.factory.IconStoreFactory;
-import org.freeplane.core.model.ITooltipProvider;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.features.common.icon.IconStore;
+import org.freeplane.features.common.icon.UIIcon;
+import org.freeplane.features.common.icon.factory.IconStoreFactory;
+import org.freeplane.features.common.map.ITooltipProvider;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

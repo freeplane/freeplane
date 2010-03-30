@@ -3,13 +3,13 @@ package org.freeplane.features.mindmapmode.addins.styles;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.addins.styles.LogicalStyleController;
 import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.addins.styles.LogicalStyleModel;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
+import org.freeplane.features.common.map.NodeModel;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/styles/manage" })
 public class RedefineStyleAction extends AFreeplaneAction{

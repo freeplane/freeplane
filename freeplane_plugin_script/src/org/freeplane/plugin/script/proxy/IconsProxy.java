@@ -7,10 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-import org.freeplane.core.icon.IconController;
-import org.freeplane.core.icon.MindIcon;
-import org.freeplane.core.icon.factory.IconStoreFactory;
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.icon.MindIcon;
+import org.freeplane.features.common.icon.factory.IconStoreFactory;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 

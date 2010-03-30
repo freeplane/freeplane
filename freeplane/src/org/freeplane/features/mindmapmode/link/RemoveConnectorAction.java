@@ -21,12 +21,12 @@ package org.freeplane.features.mindmapmode.link;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.map.NodeModel;
 
 class RemoveConnectorAction extends AFreeplaneAction {
 	/**

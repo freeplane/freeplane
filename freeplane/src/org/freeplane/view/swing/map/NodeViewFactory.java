@@ -27,7 +27,7 @@ import java.awt.LayoutManager;
 
 import javax.swing.JComponent;
 
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 

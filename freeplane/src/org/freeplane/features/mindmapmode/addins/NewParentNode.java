@@ -22,12 +22,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.mindmapmode.MMapController;
+import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.mindmapmode.map.MMapController;
 
 /**
  * @author foltin The original version was sent by Stephen Viles (sviles) https:

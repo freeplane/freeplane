@@ -26,14 +26,14 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.icon.IIconInformation;
-import org.freeplane.core.icon.IconController;
-import org.freeplane.core.icon.MindIcon;
-import org.freeplane.core.icon.factory.ImageIconFactory;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.common.icon.IIconInformation;
+import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.icon.MindIcon;
+import org.freeplane.features.common.icon.factory.ImageIconFactory;
+import org.freeplane.features.common.map.NodeModel;
 
 class IconAction extends AMultipleNodeAction implements IIconInformation {
 	/**

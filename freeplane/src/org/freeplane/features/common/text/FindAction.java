@@ -34,14 +34,14 @@ import javax.swing.event.AncestorListener;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
-import org.freeplane.core.filter.FilterConditionEditor;
-import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.filter.condition.ISelectableCondition;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.features.common.filter.FilterConditionEditor;
+import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.map.NodeModel;
 
 class FindAction extends AFreeplaneAction {
 	/**

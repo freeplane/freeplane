@@ -34,10 +34,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
+import org.freeplane.features.common.map.ModeController;
 
 class FileOpener implements DropTargetListener {
 	/**

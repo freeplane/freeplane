@@ -19,8 +19,8 @@
  */
 package org.freeplane.features.mindmapmode.text;
 
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

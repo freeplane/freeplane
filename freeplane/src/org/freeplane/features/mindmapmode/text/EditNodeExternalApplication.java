@@ -25,11 +25,11 @@ import java.io.FileWriter;
 import java.text.MessageFormat;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Daniel Polansky

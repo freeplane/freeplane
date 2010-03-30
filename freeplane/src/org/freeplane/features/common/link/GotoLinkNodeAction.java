@@ -23,9 +23,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.common.map.NodeModel;
 
 /** Follow a graphical link (AKA connector) action. */
 class GotoLinkNodeAction extends AFreeplaneAction {

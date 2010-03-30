@@ -27,14 +27,14 @@ import java.util.Iterator;
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.HistoryInformationModel;
-import org.freeplane.core.model.INodeChangeListener;
-import org.freeplane.core.model.ITooltipProvider;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeChangeEvent;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.ActionLocationDescriptor;
+import org.freeplane.features.common.map.HistoryInformationModel;
+import org.freeplane.features.common.map.INodeChangeListener;
+import org.freeplane.features.common.map.ITooltipProvider;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeChangeEvent;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

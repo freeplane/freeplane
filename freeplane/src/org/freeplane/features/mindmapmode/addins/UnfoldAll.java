@@ -25,13 +25,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.MapController;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author foltin

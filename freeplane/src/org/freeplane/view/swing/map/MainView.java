@@ -49,12 +49,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.JTextComponent;
 
-import org.freeplane.core.icon.IconController;
-import org.freeplane.core.icon.IconStore;
-import org.freeplane.core.icon.MindIcon;
-import org.freeplane.core.icon.UIIcon;
-import org.freeplane.core.icon.factory.IconStoreFactory;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
@@ -62,8 +56,14 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.FileUtil;
 import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.icon.IconStore;
+import org.freeplane.features.common.icon.MindIcon;
+import org.freeplane.features.common.icon.UIIcon;
+import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 /**

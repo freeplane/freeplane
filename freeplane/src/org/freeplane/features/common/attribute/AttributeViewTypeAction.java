@@ -3,8 +3,8 @@ package org.freeplane.features.common.attribute;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.common.map.MapModel;
 
 public abstract class AttributeViewTypeAction extends AFreeplaneAction {
 	public AttributeViewTypeAction(String key, Controller controller) {

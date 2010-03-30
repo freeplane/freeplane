@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.controller;
 
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.NodeModel;
 
 /** */
 public interface INodeSelectionListener {

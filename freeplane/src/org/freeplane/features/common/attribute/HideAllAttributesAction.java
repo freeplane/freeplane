@@ -22,8 +22,8 @@ package org.freeplane.features.common.attribute;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.features.common.map.MapModel;
 
 @SelectableAction(checkOnPopup=true)
 class HideAllAttributesAction extends AttributeViewTypeAction {

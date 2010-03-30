@@ -25,7 +25,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.model.MapModel;
+import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.text.NodeTextBuilder;
 import org.freeplane.n3.nanoxml.XMLElement;
 

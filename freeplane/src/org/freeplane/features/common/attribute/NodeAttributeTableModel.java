@@ -29,12 +29,12 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.icon.UIIcon;
-import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.model.ITooltipProvider;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.common.icon.UIIcon;
+import org.freeplane.features.common.icon.factory.IconStoreFactory;
+import org.freeplane.features.common.map.ITooltipProvider;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

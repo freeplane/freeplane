@@ -6,8 +6,8 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.common.map.NodeModel;
 
 public class CopyIDAction extends AFreeplaneAction {
 

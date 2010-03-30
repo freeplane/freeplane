@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.url.UrlManager;
 
 class OpenAction extends AFreeplaneAction {
 	/**

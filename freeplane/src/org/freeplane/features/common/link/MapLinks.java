@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.MapModel;
+import org.freeplane.features.common.map.MapModel;
 
 /**
  * @author Dimitry Polivaev

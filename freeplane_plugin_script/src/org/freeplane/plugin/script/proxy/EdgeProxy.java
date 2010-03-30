@@ -5,9 +5,9 @@ package org.freeplane.plugin.script.proxy;
 
 import java.awt.Color;
 
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 

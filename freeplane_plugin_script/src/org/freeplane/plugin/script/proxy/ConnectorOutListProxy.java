@@ -6,8 +6,8 @@ package org.freeplane.plugin.script.proxy;
 import java.util.AbstractCollection;
 import java.util.Iterator;
 
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
 class ConnectorOutListProxy extends AbstractCollection<Proxy.Connector> {

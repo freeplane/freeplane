@@ -32,10 +32,10 @@ import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to

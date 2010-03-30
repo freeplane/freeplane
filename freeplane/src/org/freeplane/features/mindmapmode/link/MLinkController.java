@@ -43,11 +43,6 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.IMapChangeListener;
-import org.freeplane.core.model.MapChangeEvent;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.undo.IActor;
@@ -59,6 +54,11 @@ import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.MapLinks;
 import org.freeplane.features.common.link.NodeLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.map.IMapChangeListener;
+import org.freeplane.features.common.map.MapChangeEvent;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**

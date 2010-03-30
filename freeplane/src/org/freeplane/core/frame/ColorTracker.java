@@ -37,8 +37,8 @@ import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.features.common.map.NodeModel;
 
 public class ColorTracker implements ActionListener, Serializable {
 	static class Closer extends WindowAdapter implements Serializable {

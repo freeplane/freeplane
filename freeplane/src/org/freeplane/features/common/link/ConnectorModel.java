@@ -22,7 +22,7 @@ package org.freeplane.features.common.link;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.NodeModel;
 
 public class ConnectorModel extends NodeLinkModel {
 	private Color color;

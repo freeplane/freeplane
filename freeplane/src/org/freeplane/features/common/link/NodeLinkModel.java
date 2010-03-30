@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.common.link;
 
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

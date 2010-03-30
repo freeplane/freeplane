@@ -29,10 +29,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.MapController;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.mindmapmode.nodelocation.MLocationController;

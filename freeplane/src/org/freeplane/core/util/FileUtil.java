@@ -14,7 +14,7 @@ import java.util.Properties;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.url.UrlManager;
 
 public class FileUtil {
 	public static void copyFromURL(final URL resource, final File destinationDirectory) {

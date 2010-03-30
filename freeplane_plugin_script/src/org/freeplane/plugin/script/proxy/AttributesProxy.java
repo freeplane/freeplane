@@ -8,10 +8,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.attribute.Attribute;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 

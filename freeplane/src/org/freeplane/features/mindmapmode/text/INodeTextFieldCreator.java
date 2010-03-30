@@ -21,8 +21,8 @@ package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.KeyEvent;
 
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 
 /**

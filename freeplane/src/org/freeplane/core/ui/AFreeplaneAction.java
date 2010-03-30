@@ -26,10 +26,10 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.map.ModeController;
 
 /**
  * @author Dimitry Polivaev

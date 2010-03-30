@@ -29,9 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.freeplane.core.controller.IMapSelection;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 
 /**

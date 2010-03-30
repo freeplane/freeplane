@@ -23,12 +23,12 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.addins.styles.MapViewLayout;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
 
 
 /**

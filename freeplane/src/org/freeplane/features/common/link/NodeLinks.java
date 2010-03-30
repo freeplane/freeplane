@@ -26,8 +26,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

@@ -27,11 +27,12 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.PropertyBean;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.features.common.map.ModeController;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 class ScriptEditorProperty extends PropertyBean implements IPropertyControl, ActionListener {

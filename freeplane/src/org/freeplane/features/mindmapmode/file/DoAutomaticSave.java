@@ -25,13 +25,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.TimerTask;
 
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
-import org.freeplane.features.mindmapmode.MMapModel;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.mindmapmode.map.MMapModel;
 
 public class DoAutomaticSave extends TimerTask {
 	static final String AUTOSAVE_EXTENSION = "autosave";

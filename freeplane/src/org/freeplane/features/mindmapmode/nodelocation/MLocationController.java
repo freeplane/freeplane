@@ -19,9 +19,9 @@
  */
 package org.freeplane.features.mindmapmode.nodelocation;
 
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.mindmapmode.MModeController;

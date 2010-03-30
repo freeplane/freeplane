@@ -30,9 +30,9 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.MapReader;
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.MapReader;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class AttributeBuilder implements IElementDOMHandler {

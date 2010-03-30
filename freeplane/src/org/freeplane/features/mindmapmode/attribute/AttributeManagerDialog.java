@@ -45,13 +45,13 @@ import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapSelectionListener;
-import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.collection.IListModel;
 import org.freeplane.features.common.attribute.AttributeRegistry;
+import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**

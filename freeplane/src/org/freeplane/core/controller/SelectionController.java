@@ -22,8 +22,8 @@ package org.freeplane.core.controller;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

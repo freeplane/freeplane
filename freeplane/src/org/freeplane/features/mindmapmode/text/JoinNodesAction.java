@@ -29,16 +29,16 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.icon.IconController;
-import org.freeplane.core.icon.MindIcon;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.icon.MindIcon;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.icon.MIconController;
+import org.freeplane.features.mindmapmode.map.MMapController;
 
 class JoinNodesAction extends AFreeplaneAction {
 	final static Pattern BODY_END = Pattern.compile("</body>", Pattern.CASE_INSENSITIVE);

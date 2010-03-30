@@ -28,15 +28,15 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
+import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ImportExplorerFavoritesAction extends AFreeplaneAction {

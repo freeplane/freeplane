@@ -28,12 +28,12 @@ import javax.swing.JLabel;
 
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
 
 public class BToolbarContributor implements IMenuContributor, IMapViewChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";

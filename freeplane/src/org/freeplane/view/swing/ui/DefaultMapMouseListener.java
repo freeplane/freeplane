@@ -25,11 +25,11 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.view.swing.map.MapView;
 
 /**

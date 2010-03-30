@@ -26,11 +26,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.map.ModeController;
 
 /**
  * @author foltin

@@ -1,6 +1,6 @@
 package org.freeplane.plugin.script.proxy;
 
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
 public class ProxyFactory {

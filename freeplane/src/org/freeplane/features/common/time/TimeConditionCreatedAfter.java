@@ -21,11 +21,11 @@ package org.freeplane.features.common.time;
 
 import java.util.Date;
 
-import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ISelectableCondition;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.features.common.filter.condition.ConditionFactory;
+import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

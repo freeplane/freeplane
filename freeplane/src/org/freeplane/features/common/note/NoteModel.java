@@ -20,9 +20,9 @@
 package org.freeplane.features.common.note;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.XmlTool;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

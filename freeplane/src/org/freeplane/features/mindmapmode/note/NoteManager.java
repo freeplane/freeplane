@@ -25,8 +25,8 @@ import java.util.regex.Pattern;
 import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.controller.INodeSelectionListener;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.note.MNoteController.NoteDocumentListener;
 

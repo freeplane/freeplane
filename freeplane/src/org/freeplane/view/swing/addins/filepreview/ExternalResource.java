@@ -11,10 +11,10 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
 
 public class ExternalResource implements IExtension {

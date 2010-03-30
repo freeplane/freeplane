@@ -31,10 +31,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.clipboard.ClipboardController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController.IDataFlavorHandler;
 
 class SelectedPasteAction extends AFreeplaneAction {

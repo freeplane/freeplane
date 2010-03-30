@@ -23,7 +23,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev 20.11.2008

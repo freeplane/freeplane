@@ -2,13 +2,13 @@ package org.freeplane.features.common.addins.styles;
 
 import javax.swing.JComponent;
 
-import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
-import org.freeplane.core.filter.condition.ISelectableCondition;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.features.common.filter.condition.ConditionFactory;
+import org.freeplane.features.common.filter.condition.ICondition;
+import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class StyleCondition implements ISelectableCondition {

@@ -43,21 +43,21 @@ import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.controller.SelectionController;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.model.MapController;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.url.UrlManager;
 
 /**
  * @author Dimitry Polivaev

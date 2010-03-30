@@ -30,10 +30,10 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.model.MapController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.addins.styles.MapStyle;
+import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElementWriter  {

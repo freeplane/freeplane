@@ -21,12 +21,12 @@ package org.freeplane.features.mindmapmode.edge;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 
 @SelectableAction(checkOnNodeChange = true)
 class EdgeStyleAsParentAction extends AMultipleNodeAction {

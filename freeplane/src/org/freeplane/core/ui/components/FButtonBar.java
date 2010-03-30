@@ -47,10 +47,10 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IAcceleratorChangeListener;
+import org.freeplane.features.common.map.ModeController;
 
 /**
  * @author Dimitry Polivaev

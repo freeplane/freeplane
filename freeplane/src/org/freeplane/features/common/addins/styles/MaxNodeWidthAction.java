@@ -9,10 +9,10 @@ import javax.swing.SpinnerNumberModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.common.map.MapModel;
 
 public class MaxNodeWidthAction extends AFreeplaneAction {
 

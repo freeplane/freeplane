@@ -22,7 +22,7 @@ package org.freeplane.core.ui;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import org.freeplane.core.model.ModeController;
+import org.freeplane.features.common.map.ModeController;
 
 /**
  * listener, that blocks the controler if the menu is active (PN) Take care!

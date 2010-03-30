@@ -30,13 +30,13 @@ import javax.swing.event.EventListenerList;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.model.MapController;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.collection.IListModel;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.core.util.collection.SortedMapVector;
+import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.attribute.IAttributesListener;
 import org.freeplane.n3.nanoxml.XMLElement;
 

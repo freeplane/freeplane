@@ -34,9 +34,9 @@ import java.util.Vector;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.controller.AController.IActionOnChange;
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.map.ModeController;
 
 /**
  * @author Dimitry Polivaev

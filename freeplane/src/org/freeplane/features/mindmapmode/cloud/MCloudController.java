@@ -23,14 +23,14 @@ import java.awt.Color;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtensionCopier;
-import org.freeplane.core.model.MapController;
-import org.freeplane.core.model.ModeController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeModel;
+import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 

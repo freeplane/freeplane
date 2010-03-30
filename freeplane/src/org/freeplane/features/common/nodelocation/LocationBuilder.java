@@ -25,8 +25,8 @@ import org.freeplane.core.io.IExtensionAttributeWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.model.NodeBuilder;
-import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.map.NodeBuilder;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

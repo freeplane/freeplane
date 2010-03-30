@@ -30,14 +30,14 @@ import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.icon.MindIcon;
-import org.freeplane.core.model.MapController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.IndexedTree.Node;
+import org.freeplane.features.common.icon.MindIcon;
+import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.NodeModel;
 
 public class MenuTools {
 	/** The userObject type for createMenuEntryTree(). */

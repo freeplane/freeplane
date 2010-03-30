@@ -26,9 +26,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JEditorPane;
 import javax.swing.JSplitPane;
 
-import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.common.map.ModeController;
 
 import com.lightdev.app.shtm.SHTMLPanel;
 

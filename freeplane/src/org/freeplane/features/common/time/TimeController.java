@@ -20,7 +20,7 @@
 package org.freeplane.features.common.time;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.filter.FilterController;
+import org.freeplane.features.common.filter.FilterController;
 
 /**
  * @author Dimitry Polivaev

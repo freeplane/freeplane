@@ -29,10 +29,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
-import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.icon.IconController;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
@@ -43,7 +40,10 @@ import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.addins.misc.NextNodeAction;
 import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
+import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.time.TimeController;
@@ -167,7 +167,7 @@ public class FreeplaneStarter {
 		boolean fileLoaded = false;
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
-			if (fileArgument.toLowerCase().endsWith(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
+			if (fileArgument.toLowerCase().endsWith(org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
 				if (!FileUtil.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 				}
