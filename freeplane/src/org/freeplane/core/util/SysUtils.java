@@ -26,7 +26,7 @@ import java.util.Timer;
  * @author Dimitry Polivaev
  * 22.07.2009
  */
-public class SysUtil {
+public class SysUtils {
 	static public Timer createTimer(final String name) {
 		return new Timer(name + '(' + new Date().toString() + ')');
 	}

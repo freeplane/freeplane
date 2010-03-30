@@ -35,11 +35,11 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.MenuTools;
-import org.freeplane.core.util.TextUtil;
-import org.freeplane.core.util.MenuTools.MenuEntry;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.MenuUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.core.util.MenuUtils.MenuEntry;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
@@ -90,13 +90,13 @@ class DocumentationAction extends AFreeplaneAction {
 						}
 					}
 					catch (final Exception e1) {
-						LogTool.severe(e1);
+						LogUtils.severe(e1);
 					}
 				}
 			});
 		}
 		catch (final MalformedURLException e1) {
-			LogTool.warn(e1);
+			LogUtils.warn(e1);
 		}
 	}
 
@@ -108,24 +108,24 @@ class DocumentationAction extends AFreeplaneAction {
 		// use the MModeController for the mindmap mode menu - the browse doesn't contain much entries!
 		final MenuBuilder menuBuilder = MModeController.getMModeController(getController())
 		    .getUserInputListenerFactory().getMenuBuilder();
-		final DefaultMutableTreeNode menuEntryTree = MenuTools.createAcceleratebleMenuEntryTree(
+		final DefaultMutableTreeNode menuEntryTree = MenuUtils.createAcceleratebleMenuEntryTree(
 		    FreeplaneMenuBar.MENU_BAR_PREFIX, menuBuilder);
 		final MapController mapController = getModeController().getMapController();
 		final NodeModel rootNode = mapController.getRootNode();
-		final NodeModel newNode = mapController.newNode(TextUtil.getText("hot_keys"), rootNode.getMap());
+		final NodeModel newNode = mapController.newNode(TextUtils.getText("hot_keys"), rootNode.getMap());
 		newNode.setFolded(true);
 		newNode.setLeft(true);
 		// TODO: search for proper insert point?
 		final int HOT_KEYS_INDEX = 2;
 		mapController.insertNodeIntoWithoutUndo(newNode, rootNode, HOT_KEYS_INDEX);
 		insertAcceleratorHtmlTable(newNode, menuEntryTree);
-		MenuTools.insertAsNodeModelRecursively(newNode, menuEntryTree.children(), mapController);
+		MenuUtils.insertAsNodeModelRecursively(newNode, menuEntryTree.children(), mapController);
 	}
 
 	@SuppressWarnings("unchecked")
 	private void insertAcceleratorHtmlTable(final NodeModel newNode, final DefaultMutableTreeNode menuEntryTree) {
 		final MapController mapController = getModeController().getMapController();
-		final String title = TextUtil.getText("hot_keys_table");
+		final String title = TextUtils.getText("hot_keys_table");
 		final MapModel map = mapController.getRootNode().getMap();
 		final NodeModel titleNode = mapController.newNode(title, map);
 		titleNode.setFolded(true);
@@ -178,7 +178,7 @@ class DocumentationAction extends AFreeplaneAction {
 			builder.append("<table cellspacing=\"0\" cellpadding=\"0\">");
 			for (final MenuEntry entry : menuEntries) {
 				final String keystroke = entry.getKeyStroke() == null ? "" //
-				        : MenuTools.formatKeyStroke(entry.getKeyStroke());
+				        : MenuUtils.formatKeyStroke(entry.getKeyStroke());
 				builder.append(DocumentationAction.el("tr", DocumentationAction.el("td", entry.getLabel() + "&#xa0;")
 				        + DocumentationAction.el("td", keystroke)
 				        + DocumentationAction.el("td", entry.getToolTipText())));
@@ -193,6 +193,6 @@ class DocumentationAction extends AFreeplaneAction {
 	}
 
 	private static String el(final String name, final String content) {
-		return HtmlTools.element(name, content);
+		return HtmlUtils.element(name, content);
 	}
 }

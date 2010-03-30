@@ -30,8 +30,8 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.map.NodeModel;
@@ -102,7 +102,7 @@ class JoinNodesAction extends AFreeplaneAction {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (getModeController().getMapController().hasChildren(node)) {
-				UITools.informationMessage(controller.getViewController().getFrame(), TextUtil
+				UITools.informationMessage(controller.getViewController().getFrame(), TextUtils
 				    .getText("cannot_join_nodes_with_children"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -113,7 +113,7 @@ class JoinNodesAction extends AFreeplaneAction {
 			final NodeModel node = (NodeModel) it.next();
 			final String nodeContent = node.toString();
 			icons.addAll(node.getIcons());
-			final boolean isHtmlNode = HtmlTools.isHtmlNode(nodeContent);
+			final boolean isHtmlNode = HtmlUtils.isHtmlNode(nodeContent);
 			joinedContent = addContent(joinedContent, isHtml, nodeContent, isHtmlNode);
 			if (node != selectedNode) {
 				((MMapController) getModeController().getMapController()).deleteNode(node);

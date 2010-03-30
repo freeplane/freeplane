@@ -28,8 +28,8 @@ import javax.imageio.ImageIO;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 
 /**
@@ -72,7 +72,7 @@ public class ExportToImage extends ExportAction {
 			}
 		}
 		catch (final OutOfMemoryError ex) {
-			UITools.errorMessage(TextUtil.getText("out_of_memory"));
+			UITools.errorMessage(TextUtils.getText("out_of_memory"));
 		}
 	}
 
@@ -91,8 +91,8 @@ public class ExportToImage extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			LogTool.warn(e1);
-			UITools.errorMessage(TextUtil.getText("export_failed"));
+			LogUtils.warn(e1);
+			UITools.errorMessage(TextUtils.getText("export_failed"));
 		}
 		getController().getViewController().setWaitingCursor(false);
 		return true;

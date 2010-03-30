@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.resources.components;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 /**
  * @author foltin
@@ -38,11 +38,11 @@ public class RemindValueProperty extends ThreeCheckBoxProperty {
 		state = newState;
 		String[] strings;
 		strings = new String[3];
-		strings[ThreeCheckBoxProperty.TRUE_VALUE_INT] = TextUtil.getText("OptionalDontShowMeAgainDialog.ok")
+		strings[ThreeCheckBoxProperty.TRUE_VALUE_INT] = TextUtils.getText("OptionalDontShowMeAgainDialog.ok")
 		    .replaceFirst("&", "");
-		strings[ThreeCheckBoxProperty.FALSE_VALUE_INT] = TextUtil.getText("OptionalDontShowMeAgainDialog.cancel")
+		strings[ThreeCheckBoxProperty.FALSE_VALUE_INT] = TextUtils.getText("OptionalDontShowMeAgainDialog.cancel")
 		    .replaceFirst("&", "");
-		strings[ThreeCheckBoxProperty.DON_T_TOUCH_VALUE_INT] = TextUtil.getText("OptionPanel.ask")
+		strings[ThreeCheckBoxProperty.DON_T_TOUCH_VALUE_INT] = TextUtils.getText("OptionPanel.ask")
 		    .replaceFirst("&", "");
 		mButton.setText(strings[state]);
 	}

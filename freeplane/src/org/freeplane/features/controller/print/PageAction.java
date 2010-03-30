@@ -39,7 +39,7 @@ import javax.swing.JTextField;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 class PageAction extends AbstractPrintAction {
 	private final class ActionListenerImplementation implements ActionListener {
@@ -75,27 +75,27 @@ class PageAction extends AbstractPrintAction {
 			return;
 		}
 		final Frame frame = getPrintController().getController().getViewController().getFrame();
-		final JDialog dialog = new JDialog(frame, TextUtil.getText("printing_settings"), /* modal=*/
+		final JDialog dialog = new JDialog(frame, TextUtils.getText("printing_settings"), /* modal=*/
 		true);
 		final ButtonGroup fitButtons = new ButtonGroup();
 		final FitMap fitMap = FitMap.valueOf();
-		final JRadioButton fitToPage = new JRadioButton(TextUtil.getText("fit_map_to_page"), fitMap == FitMap.PAGE);
+		final JRadioButton fitToPage = new JRadioButton(TextUtils.getText("fit_map_to_page"), fitMap == FitMap.PAGE);
 		fitButtons.add(fitToPage);
-		final JRadioButton fitToWidth = new JRadioButton(TextUtil.getText("fit_map_to_page_width"),
+		final JRadioButton fitToWidth = new JRadioButton(TextUtils.getText("fit_map_to_page_width"),
 		    fitMap == FitMap.WIDTH);
 		fitButtons.add(fitToWidth);
-		final JRadioButton fitToHeighth = new JRadioButton(TextUtil.getText("fit_map_to_page_height"),
+		final JRadioButton fitToHeighth = new JRadioButton(TextUtils.getText("fit_map_to_page_height"),
 		    fitMap == FitMap.HEIGHT);
 		fitButtons.add(fitToHeighth);
-		final JRadioButton userDefaultScale = new JRadioButton(TextUtil.getText("user_defined_scale"),
+		final JRadioButton userDefaultScale = new JRadioButton(TextUtils.getText("user_defined_scale"),
 		    fitMap == FitMap.USER_DEFINED);
 		fitButtons.add(userDefaultScale);
-		final JLabel userZoomL = new JLabel(TextUtil.getText("user_zoom"));
+		final JLabel userZoomL = new JLabel(TextUtils.getText("user_zoom"));
 		final JTextField userZoom = new JTextField(ResourceController.getResourceController().getProperty("user_zoom"),
 		    3);
 		userZoom.setEditable(userDefaultScale.isSelected());
 		final JButton okButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okButton, TextUtil.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getText("ok"));
 		final JPanel panel = new JPanel();
 		final GridBagLayout gridbag = new GridBagLayout();
 		final ActionListenerImplementation aListener = new ActionListenerImplementation(dialog);

@@ -167,7 +167,7 @@ class XHTMLWriter extends FixedHTMLWriter {
 			reader.close();
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 	}
 

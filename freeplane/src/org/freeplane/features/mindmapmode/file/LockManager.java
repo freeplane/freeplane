@@ -28,9 +28,9 @@ import java.nio.channels.FileLock;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.freeplane.core.util.FileUtil;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.SysUtil;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.SysUtils;
 
 public class LockManager extends TimerTask {
 	private File lockedSemaphoreFile = null;
@@ -66,15 +66,15 @@ public class LockManager extends TimerTask {
 	@Override
 	public synchronized void run() {
 		if (lockedSemaphoreFile == null) {
-			LogTool.severe("unexpected: lockedSemaphoreFile is null upon lock update");
+			LogUtils.severe("unexpected: lockedSemaphoreFile is null upon lock update");
 			return;
 		}
 		try {
-			FileUtil.setHidden(lockedSemaphoreFile, false, /* synchro= */true);
+			FileUtils.setHidden(lockedSemaphoreFile, false, /* synchro= */true);
 			writeSemaphoreFile(lockedSemaphoreFile);
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 	}
 
@@ -106,7 +106,7 @@ public class LockManager extends TimerTask {
 		}
 		writeSemaphoreFile(semaphoreFile);
 		if (lockTimer == null) {
-			lockTimer = SysUtil.createTimer(getClass().getSimpleName());
+			lockTimer = SysUtils.createTimer(getClass().getSimpleName());
 			lockTimer.schedule(this, lockUpdatePeriod, lockUpdatePeriod);
 		}
 		releaseLock();
@@ -130,7 +130,7 @@ public class LockManager extends TimerTask {
 			lock = semaphoreOutputStream.getChannel().tryLock();
 			if (lock == null) {
 				semaphoreOutputStream.close();
-				LogTool.severe("Locking failed.");
+				LogUtils.severe("Locking failed.");
 				throw new Exception();
 			}
 		}
@@ -141,7 +141,7 @@ public class LockManager extends TimerTask {
 		semaphoreOutputStream.write(System.getProperty("user.name").getBytes());
 		semaphoreOutputStream.write('\n');
 		semaphoreOutputStream.write(String.valueOf(System.currentTimeMillis()).getBytes());
-		FileUtil.setHidden(inSemaphoreFile, true, /* synchro= */false);
+		FileUtils.setHidden(inSemaphoreFile, true, /* synchro= */false);
 		if (lock != null) {
 			lock.release();
 		}

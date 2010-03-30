@@ -32,7 +32,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 
@@ -97,7 +97,7 @@ public class Controller extends AController {
 	}
 
 	public ModeController getModeController(final String modeName) {
-		LogTool.info("requesting mode: " + modeName);
+		LogUtils.info("requesting mode: " + modeName);
 		return modeControllers.get(modeName);
 	}
 
@@ -173,12 +173,12 @@ public class Controller extends AController {
 	}
 
 	public static Process exec(final String string) throws IOException {
-		LogTool.info("execute " + string);
+		LogUtils.info("execute " + string);
 		return Runtime.getRuntime().exec(string);
 	}
 
 	public static Process exec(final String[] command) throws IOException {
-		LogTool.info("execute " + Arrays.toString(command));
+		LogUtils.info("execute " + Arrays.toString(command));
 		return Runtime.getRuntime().exec(command);
 	}
 }

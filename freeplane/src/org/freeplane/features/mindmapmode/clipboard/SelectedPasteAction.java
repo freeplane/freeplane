@@ -32,7 +32,7 @@ import javax.swing.JRadioButton;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController.IDataFlavorHandler;
@@ -72,7 +72,7 @@ class SelectedPasteAction extends AFreeplaneAction {
 		int i = 0;
 		selectedHandler = null;
 		for (final IDataFlavorHandler handler : flavorHandlers) {
-			final JRadioButton radioButton = new JRadioButton(TextUtil.getText(handler.getClass().getSimpleName()));
+			final JRadioButton radioButton = new JRadioButton(TextUtils.getText(handler.getClass().getSimpleName()));
 			group.add(radioButton);
 			if (selectedHandler == null) {
 				selectedHandler = handler;

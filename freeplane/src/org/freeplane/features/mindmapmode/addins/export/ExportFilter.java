@@ -24,7 +24,7 @@ import java.io.File;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.util.FileUtil;
+import org.freeplane.core.util.FileUtils;
 
 /**
  * @author Dimitry Polivaev
@@ -44,7 +44,7 @@ class ExportFilter extends FileFilter {
 		if (f.isDirectory()) {
 			return true;
 		}
-		final String extension = FileUtil.getExtension(f.getName());
+		final String extension = FileUtils.getExtension(f.getName());
 		return StringUtils.equalsIgnoreCase(extension, type);
 	}
 

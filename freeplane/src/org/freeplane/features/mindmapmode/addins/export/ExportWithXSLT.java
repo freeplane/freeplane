@@ -49,9 +49,9 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.FileUtil;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.icon.IconStore;
 import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
@@ -93,7 +93,7 @@ public class ExportWithXSLT extends ExportAction {
 			}
 			final File destinationDirectory = new File(sb.toString());
 			destinationDirectory.mkdirs();
-			FileUtil.copyFromURL(icon.getUrl(), destinationDirectory);
+			FileUtils.copyFromURL(icon.getUrl(), destinationDirectory);
 		}
 	}
 
@@ -130,7 +130,7 @@ public class ExportWithXSLT extends ExportAction {
 			}
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 	}
 
@@ -166,7 +166,7 @@ public class ExportWithXSLT extends ExportAction {
 		final File destinationDirectory = new File(directoryName);
 		while (tokenizer.hasMoreTokens()) {
 			final String next = tokenizer.nextToken();
-			FileUtil.copyFromResource(filePrefix, next, destinationDirectory);
+			FileUtils.copyFromResource(filePrefix, next, destinationDirectory);
 		}
 	}
 
@@ -176,7 +176,7 @@ public class ExportWithXSLT extends ExportAction {
 	private boolean copyIcons(final MapModel map, final String directoryName) {
 		boolean success;
 		final String iconDirectoryName = directoryName + File.separatorChar + "icons";
-		success = FileUtil.createDirectory(iconDirectoryName);
+		success = FileUtils.createDirectory(iconDirectoryName);
 		if (success) {
 			ExportWithXSLT.copyIconsToDirectory(map, iconDirectoryName);
 		}
@@ -204,7 +204,7 @@ public class ExportWithXSLT extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			LogTool.severe(e1);
+			LogUtils.severe(e1);
 		}
 	}
 
@@ -247,7 +247,7 @@ public class ExportWithXSLT extends ExportAction {
 	private String getTranslatableResourceString(final String resourceName) {
 		final String returnValue = getProperty(resourceName);
 		if (returnValue != null && returnValue.startsWith("%")) {
-			return TextUtil.getText(returnValue.substring(1));
+			return TextUtils.getText(returnValue.substring(1));
 		}
 		return returnValue;
 	}
@@ -274,7 +274,7 @@ public class ExportWithXSLT extends ExportAction {
 			}
 			if (success && StringUtils.equals(getProperty("create_dir"), "true")) {
 				final String directoryName = saveFile.getAbsolutePath() + "_files";
-				success = FileUtil.createDirectory(directoryName);
+				success = FileUtils.createDirectory(directoryName);
 				if (success) {
 					final String files = getProperty("files_to_copy");
 					final String filePrefix = getProperty("file_prefix");
@@ -300,7 +300,7 @@ public class ExportWithXSLT extends ExportAction {
 			}
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 			mTransformResultWithoutError = false;
 		}
 	}
@@ -315,7 +315,7 @@ public class ExportWithXSLT extends ExportAction {
 		final StringReader reader = new StringReader(map);
 		final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);
 		if (xsltUrl == null) {
-			LogTool.severe("Can't find " + xsltFileName + " as resource.");
+			LogUtils.severe("Can't find " + xsltFileName + " as resource.");
 			throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");
 		}
 		final InputStream xsltFile = new BufferedInputStream(xsltUrl.openStream());
@@ -331,7 +331,7 @@ public class ExportWithXSLT extends ExportAction {
 			trans.transform(new StreamSource(reader), result);
 		}
 		catch (final Exception e) {
-			LogTool.warn(e);
+			LogUtils.warn(e);
 			return false;
 		};
 		return true;

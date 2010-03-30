@@ -34,7 +34,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 
@@ -92,7 +92,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getDelete() {
 		if (delete == null) {
-			delete = new JMenuItem(TextUtil.getText("attributes_popup_delete"));
+			delete = new JMenuItem(TextUtils.getText("attributes_popup_delete"));
 			delete.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					table.removeRow(row);
@@ -107,7 +107,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getDown() {
 		if (down == null) {
-			down = new JMenuItem(TextUtil.getText("attributes_popup_down"));
+			down = new JMenuItem(TextUtils.getText("attributes_popup_down"));
 			down.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					table.moveRowDown(row);
@@ -122,7 +122,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getInsert() {
 		if (insert == null) {
-			insert = new JMenuItem(TextUtil.getText("attributes_popup_new"));
+			insert = new JMenuItem(TextUtils.getText("attributes_popup_new"));
 			insert.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					table.insertRow(row + 1);
@@ -137,7 +137,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getOptimalWidth() {
 		if (optimalWidth == null) {
-			optimalWidth = new JMenuItem(TextUtil.getText("attributes_popup_optimal_width"));
+			optimalWidth = new JMenuItem(TextUtils.getText("attributes_popup_optimal_width"));
 			optimalWidth.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					table.setOptimalColumnWidths();
@@ -156,7 +156,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getUp() {
 		if (up == null) {
-			up = new JMenuItem(TextUtil.getText("attributes_popup_up"));
+			up = new JMenuItem(TextUtils.getText("attributes_popup_up"));
 			up.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					table.moveRowUp(row);

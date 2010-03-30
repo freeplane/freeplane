@@ -31,7 +31,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.HtmlTools;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
@@ -100,7 +100,7 @@ class EditAction extends AFreeplaneAction {
 		getModeController().setBlocked(true);
 		String text = nodeModel.toString();
 		final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
-		final boolean isHtmlNode = HtmlTools.isHtmlNode(text);
+		final boolean isHtmlNode = HtmlUtils.isHtmlNode(text);
 		final boolean editDefinitivelyLong = editLong;
 		boolean useRichTextInNewLongNodes = true;
 		if (!isHtmlNode && editDefinitivelyLong) {
@@ -111,7 +111,7 @@ class EditAction extends AFreeplaneAction {
 		final boolean editInternalWysiwyg = editHtml && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
 		final boolean editExternal = editHtml && StringUtils.equals(htmlEditingOption, "external");
 		if (editHtml && !isHtmlNode) {
-			text = HtmlTools.plainToHTML(text);
+			text = HtmlUtils.plainToHTML(text);
 		}
 		if (editInternalWysiwyg) {
 			final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(nodeModel, text, firstEvent,

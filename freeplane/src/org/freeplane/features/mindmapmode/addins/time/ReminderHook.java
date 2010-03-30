@@ -30,7 +30,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.icon.IconStore;
 import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
@@ -238,7 +238,7 @@ public class ReminderHook extends PersistentNodeHook {
 		scheduleTimer(model, new TimerBlinkTask(this, model, false));
 		final Date date = new Date(model.getRemindUserAt());
 		final Object[] messageArguments = { date };
-		final MessageFormat formatter = new MessageFormat(TextUtil
+		final MessageFormat formatter = new MessageFormat(TextUtils
 		    .getText("plugins/TimeManagement.xml_reminderNode_tooltip"));
 		final String message = formatter.format(messageArguments);
 		setToolTip(model.getNode(), message);

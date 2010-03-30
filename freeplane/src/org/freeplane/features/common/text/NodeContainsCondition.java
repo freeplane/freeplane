@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.common.text;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.filter.condition.NodeCondition;
@@ -53,8 +53,8 @@ public class NodeContainsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = TextUtil.getText(NodeConditionController.FILTER_NODE);
-		final String simpleCondition = TextUtil.getText(ConditionFactory.FILTER_CONTAINS);
+		final String nodeCondition = TextUtils.getText(NodeConditionController.FILTER_NODE);
+		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false);
 	}
 

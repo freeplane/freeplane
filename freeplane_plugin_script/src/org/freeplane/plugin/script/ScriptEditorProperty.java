@@ -29,7 +29,7 @@ import javax.swing.JPopupMenu;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.PropertyBean;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -73,8 +73,8 @@ class ScriptEditorProperty extends PropertyBean implements IPropertyControl, Act
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtil.getText(getLabel()), mButton);
-		label.setToolTipText(TextUtil.getText(getDescription()));
+		final JLabel label = builder.append(TextUtils.getText(getLabel()), mButton);
+		label.setToolTipText(TextUtils.getText(getDescription()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

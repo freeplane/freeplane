@@ -32,7 +32,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLException;
 
@@ -64,7 +64,7 @@ public class OptionPanelBuilder {
 			for (int i = 0; i < childrenCount; i++) {
 				final String choice = data.getChildAtIndex(i).getAttribute("value", null);
 				choices.add(choice);
-				translations.add(TextUtil.getOptionalText("OptionPanel." + choice));
+				translations.add(TextUtils.getOptionalText("OptionPanel." + choice));
 			}
 			return createComboProperty(name, choices, translations);
 		}

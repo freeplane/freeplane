@@ -31,8 +31,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.FileUtil;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 
 /**
@@ -136,7 +136,7 @@ public class ScriptingConfiguration {
 			}
 		}
 		else {
-			LogTool.warn("not a (script) directory: " + dir);
+			LogUtils.warn("not a (script) directory: " + dir);
 		}
 	}
 
@@ -151,7 +151,7 @@ public class ScriptingConfiguration {
 			addMetaData(file, name);
 		}
 		catch (final IOException e) {
-			LogTool.warn("problems with script " + file.getAbsolutePath(), e);
+			LogUtils.warn("problems with script " + file.getAbsolutePath(), e);
 			nameScriptMap.remove(name);
 			nameScriptMetaDataMap.remove(name);
 		}
@@ -159,7 +159,7 @@ public class ScriptingConfiguration {
 
 	private void addMetaData(final File file, final String name) throws IOException {
 		final ScriptMetaData metaData = new ScriptMetaData(name);
-		final String content = FileUtil.slurpFile(file);
+		final String content = FileUtils.slurpFile(file);
 		ScriptingConfiguration.analyseScriptContent(content, metaData);
 		nameScriptMetaDataMap.put(name, metaData);
 		// TODO: read optionpanel stuff
@@ -208,7 +208,7 @@ public class ScriptingConfiguration {
 					metaData.addExecutionMode(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY);
 				}
 				else {
-					LogTool.warn(metaData.getScriptName() + ": ignoring unknown ExecutionMode '" + mode + "'");
+					LogUtils.warn(metaData.getScriptName() + ": ignoring unknown ExecutionMode '" + mode + "'");
 				}
 			}
 		}

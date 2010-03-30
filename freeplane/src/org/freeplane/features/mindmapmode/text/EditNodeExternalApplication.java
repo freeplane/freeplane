@@ -26,8 +26,8 @@ import java.text.MessageFormat;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.FileUtil;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
@@ -63,14 +63,14 @@ class EditNodeExternalApplication extends EditNodeBase {
 					    .format(new String[] { temporaryFile.toString() });
 					final Process htmlEditorProcess = Controller.exec(expandedHtmlEditingCommand);
 					htmlEditorProcess.waitFor();
-					final String content = FileUtil.readFile(temporaryFile);
+					final String content = FileUtils.readFile(temporaryFile);
 					if (content == null) {
 						getEditControl().cancel();
 					}
 					getEditControl().ok(content);
 				}
 				catch (final Exception e) {
-					LogTool.severe(e);
+					LogUtils.severe(e);
 					try {
 						if (writer != null) {
 							writer.close();

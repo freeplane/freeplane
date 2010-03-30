@@ -50,8 +50,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
@@ -172,7 +172,7 @@ public class LinkController extends SelectionController implements IExtension {
 			if (dest != null) {
 				return dest.getShortText();
 			}
-			return TextUtil.getText("link_not_available_any_more");
+			return TextUtils.getText("link_not_available_any_more");
 		}
 		return adaptedText;
 	}
@@ -230,8 +230,8 @@ public class LinkController extends SelectionController implements IExtension {
 			links.setHyperLink(hyperlink);
 		}
 		catch (final URISyntaxException e1) {
-			LogTool.warn(e1);
-			UITools.errorMessage(TextUtil.formatText("link_error", link));
+			LogUtils.warn(e1);
+			UITools.errorMessage(TextUtils.formatText("link_error", link));
 			return;
 		}
 	}

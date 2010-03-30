@@ -26,7 +26,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
@@ -52,11 +52,11 @@ public class DeleteUserStyleAction extends AFreeplaneAction {
 		final Controller controller = modeController.getController();
 		final NodeModel selected = controller.getSelection().getSelected();
 		if (selected.depth() < 2) {
-			UITools.errorMessage(TextUtil.getText("can_not_delete_style_group"));
+			UITools.errorMessage(TextUtils.getText("can_not_delete_style_group"));
 			return;
 		}
 		if (selected.getUserObject() instanceof NamedObject) {
-			UITools.errorMessage(TextUtil.getText("can_not_delete_predefined_style"));
+			UITools.errorMessage(TextUtils.getText("can_not_delete_predefined_style"));
 			return;
 		}
 		final MapModel map = selected.getMap();

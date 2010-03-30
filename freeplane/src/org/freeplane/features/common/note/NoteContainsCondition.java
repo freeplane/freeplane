@@ -19,8 +19,8 @@
  */
 package org.freeplane.features.common.note;
 
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.filter.condition.NodeCondition;
@@ -57,14 +57,14 @@ public class NoteContainsCondition extends NodeCondition {
 	}
 
 	protected String createDesctiption(final boolean ignoreCase) {
-		final String nodeCondition = TextUtil.getText(NoteConditionController.FILTER_NOTE);
-		final String simpleCondition = TextUtil.getText(ConditionFactory.FILTER_CONTAINS);
+		final String nodeCondition = TextUtils.getText(NoteConditionController.FILTER_NOTE);
+		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, ignoreCase);
 	}
 
 	protected String getText(final NodeModel node) {
 		final String noteText = NoteModel.getNoteText(node);
-		return noteText == null ? null : HtmlTools.htmlToPlain(noteText);
+		return noteText == null ? null : HtmlUtils.htmlToPlain(noteText);
 	}
 
 	public void toXml(final XMLElement element) {

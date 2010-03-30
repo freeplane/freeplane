@@ -29,8 +29,8 @@ import javax.swing.ListModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -77,15 +77,15 @@ class TimeConditionController implements IElementaryConditionController {
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(TextUtil.createTranslatedString(FILTER_TIME));
+		list.addElement(TextUtils.createTranslatedString(FILTER_TIME));
 		return list;
 	}
 
 	public Object[] getTimeConditionNames() {
-		return new NamedObject[] { TextUtil.createTranslatedString(TimeCondition.FILTER_MODIFIED_AFTER),
-		        TextUtil.createTranslatedString(TimeCondition.FILTER_MODIFIED_BEFORE),
-		        TextUtil.createTranslatedString(TimeCondition.FILTER_CREATED_AFTER),
-		        TextUtil.createTranslatedString(TimeCondition.FILTER_CREATED_BEFORE) };
+		return new NamedObject[] { TextUtils.createTranslatedString(TimeCondition.FILTER_MODIFIED_AFTER),
+		        TextUtils.createTranslatedString(TimeCondition.FILTER_MODIFIED_BEFORE),
+		        TextUtils.createTranslatedString(TimeCondition.FILTER_CREATED_AFTER),
+		        TextUtils.createTranslatedString(TimeCondition.FILTER_CREATED_BEFORE) };
 	}
 
 	public ComboBoxEditor getValueEditor() {
@@ -125,7 +125,7 @@ class TimeConditionController implements IElementaryConditionController {
 			}
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		return null;
 	}

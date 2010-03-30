@@ -21,9 +21,9 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 
 public class XmlRpcHandler extends StreamHandler {
 	private class SubmitRunner implements Runnable {
@@ -130,7 +130,7 @@ public class XmlRpcHandler extends StreamHandler {
 			return XmlRpcHandler.toHexString(digest);
 		}
 		catch (final Exception e) {
-			LogTool.warn(e);
+			LogUtils.warn(e);
 			return null;
 		}
 	}
@@ -221,7 +221,7 @@ public class XmlRpcHandler extends StreamHandler {
 			}
 		}
 		catch (final UnsupportedEncodingException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		finally {
 			out = null;
@@ -233,16 +233,16 @@ public class XmlRpcHandler extends StreamHandler {
 	private String showBugReportDialog() {
 		String option = ResourceController.getResourceController().getProperty(OPTION, BugReportDialogManager.ASK);
 		if (option.equals(BugReportDialogManager.ASK)) {
-			String question = TextUtil.getText("org.freeplane.plugin.bugreport.question");
+			String question = TextUtils.getText("org.freeplane.plugin.bugreport.question");
 			if (!question.startsWith("<html>")) {
-				question = HtmlTools.plainToHTML(question);
+				question = HtmlUtils.plainToHTML(question);
 			}
-			final Object[] options = new Object[] { TextUtil.getText("org.freeplane.plugin.bugreport.always_agree"),
-			        TextUtil.getText("org.freeplane.plugin.bugreport.agree"),
-			        TextUtil.getText("org.freeplane.plugin.bugreport.deny"),
-			        TextUtil.getText("org.freeplane.plugin.bugreport.always_deny") };
-			final String title = TextUtil.getText("org.freeplane.plugin.bugreport.dialog.title");
-			final String reportName = TextUtil.getText("org.freeplane.plugin.bugreport.report");
+			final Object[] options = new Object[] { TextUtils.getText("org.freeplane.plugin.bugreport.always_agree"),
+			        TextUtils.getText("org.freeplane.plugin.bugreport.agree"),
+			        TextUtils.getText("org.freeplane.plugin.bugreport.deny"),
+			        TextUtils.getText("org.freeplane.plugin.bugreport.always_deny") };
+			final String title = TextUtils.getText("org.freeplane.plugin.bugreport.dialog.title");
+			final String reportName = TextUtils.getText("org.freeplane.plugin.bugreport.report");
 			final int choice = BugReportDialogManager.showBugReportDialog(title, question,
 			    JOptionPane.INFORMATION_MESSAGE, options, options[1], reportName, log);
 			switch (choice) {

@@ -22,7 +22,7 @@ package org.freeplane.core.controller;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
@@ -53,7 +53,7 @@ public class SelectionController {
 			}
 		}
 		catch (final RuntimeException e) {
-			LogTool.severe("Error in node selection listeners", e);
+			LogUtils.severe("Error in node selection listeners", e);
 		}
 	}
 

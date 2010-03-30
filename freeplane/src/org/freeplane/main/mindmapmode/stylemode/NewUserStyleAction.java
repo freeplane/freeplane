@@ -27,7 +27,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
@@ -48,14 +48,14 @@ public class NewUserStyleAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public void actionPerformed(final ActionEvent e) {
-		final String styleName = JOptionPane.showInputDialog(TextUtil.getText("enter_new_style_name"));
+		final String styleName = JOptionPane.showInputDialog(TextUtils.getText("enter_new_style_name"));
 		if (styleName == null) {
 			return;
 		}
 		final MapModel map = getController().getMap();
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		if (null != styleModel.getStyleNode(styleName)) {
-			UITools.errorMessage(TextUtil.getText("style_already_exists"));
+			UITools.errorMessage(TextUtils.getText("style_already_exists"));
 			return;
 		}
 		final MMapController mapController = (MMapController) getModeController().getMapController();

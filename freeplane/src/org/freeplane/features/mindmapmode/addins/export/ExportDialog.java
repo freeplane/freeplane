@@ -38,9 +38,9 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.FileUtil;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
 /**
@@ -86,8 +86,8 @@ public class ExportDialog {
 		super();
 		filechooser = new JFileChooser();
 		filechooser.setAcceptAllFileFilterUsed(false); // the user can't select an "All Files filter"
-		filechooser.setDialogTitle(TextUtil.getText("export_using_xslt"));
-		filechooser.setToolTipText(TextUtil.getText("select_file_export_to")); // "Select the file to export to"
+		filechooser.setDialogTitle(TextUtils.getText("export_using_xslt"));
+		filechooser.setToolTipText(TextUtils.getText("select_file_export_to")); // "Select the file to export to"
 	}
 
 	private void addXsltFile(final String[] filters, final String description, final File somefile) {
@@ -112,8 +112,8 @@ public class ExportDialog {
 	void export(final Component parentframe, final StreamSource xmlSource, final File xmlSourceFile) {
 		gatherXsltScripts();
 		if (filtermap.isEmpty()) {
-			JOptionPane.showMessageDialog(parentframe, TextUtil.formatText("xslt_export_file_not_found_in_dirs",
-			    getXsltUserDirectory().getAbsolutePath(), getXsltSysDirectory().getAbsolutePath()), TextUtil
+			JOptionPane.showMessageDialog(parentframe, TextUtils.formatText("xslt_export_file_not_found_in_dirs",
+			    getXsltUserDirectory().getAbsolutePath(), getXsltSysDirectory().getAbsolutePath()), TextUtils
 			    .getText("xslt_export_not_possible"), JOptionPane.WARNING_MESSAGE);
 			/* "No XSLT export file could be found,\n neither in '"
 			+ getXsltUserDirectory() + "'\n nor in '"
@@ -125,7 +125,7 @@ public class ExportDialog {
 		// And then use it
 		final String absolutePathWithoutExtension;
 		if (xmlSourceFile != null) {
-			absolutePathWithoutExtension = FileUtil.removeExtension(xmlSourceFile.getAbsolutePath());
+			absolutePathWithoutExtension = FileUtils.removeExtension(xmlSourceFile.getAbsolutePath());
 		}
 		else {
 			absolutePathWithoutExtension = null;
@@ -178,7 +178,7 @@ public class ExportDialog {
 					return;
 				}
 				if (selectedFile.exists()) {
-					final String overwriteText = MessageFormat.format(TextUtil.getText("file_already_exists"),
+					final String overwriteText = MessageFormat.format(TextUtils.getText("file_already_exists"),
 					    new Object[] { selectedFile.toString() });
 					final int overwriteMap = JOptionPane.showConfirmDialog(UITools.getFrame(), overwriteText,
 					    overwriteText, JOptionPane.YES_NO_OPTION);
@@ -228,12 +228,12 @@ public class ExportDialog {
 			if (m.matches()) { // if it does
 				final String extension = m.group(1);
 				final String[] filters = new String[] { extension };
-				addXsltFile(filters, TextUtil.formatText("exported_file", extension), somefile);
+				addXsltFile(filters, TextUtils.formatText("exported_file", extension), somefile);
 			}
 		}
 		catch (final IOException e) {
-			LogTool.warn(e);
-			UITools.errorMessage(TextUtil.getText("export_failed"));
+			LogUtils.warn(e);
+			UITools.errorMessage(TextUtils.getText("export_failed"));
 		}
 		finally {
 			if (xsl != null) {
@@ -241,7 +241,7 @@ public class ExportDialog {
 					xsl.close();
 				}
 				catch (final IOException e) {
-					LogTool.severe(e);
+					LogUtils.severe(e);
 				}
 			}
 		}

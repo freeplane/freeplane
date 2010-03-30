@@ -27,7 +27,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -47,7 +47,7 @@ class CutAction extends AFreeplaneAction {
 		final Controller controller = getController();
 		final NodeModel root = controller.getMap().getRootNode();
 		if (controller.getSelection().isSelected(root)) {
-			UITools.errorMessage(TextUtil.getText("cannot_delete_root"));
+			UITools.errorMessage(TextUtils.getText("cannot_delete_root"));
 			return;
 		}
 		final int showResult = OptionalDontShowMeAgainDialog.show(controller, "really_cut_node", "confirmation",

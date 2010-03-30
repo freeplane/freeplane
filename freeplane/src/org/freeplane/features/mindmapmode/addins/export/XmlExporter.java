@@ -29,7 +29,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.stream.StreamResult;
 
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 
 /**
  * @author joerg
@@ -52,7 +52,7 @@ class XmlExporter {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		finally {
 			try {

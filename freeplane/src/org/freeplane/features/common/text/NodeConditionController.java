@@ -30,7 +30,7 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
@@ -80,7 +80,7 @@ class NodeConditionController implements IElementaryConditionController {
 				return new NodeMatchesRegexpCondition(value, ignoreCase);
 			}
 			catch (final PatternSyntaxException e) {
-				UITools.errorMessage(TextUtil.format("wrong_regexp", value, e.getMessage()));
+				UITools.errorMessage(TextUtils.format("wrong_regexp", value, e.getMessage()));
 				return null;
 			}
 		}
@@ -107,17 +107,17 @@ class NodeConditionController implements IElementaryConditionController {
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
 		return new DefaultComboBoxModel(new NamedObject[] {
-		        TextUtil.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
-		        TextUtil.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
-		        TextUtil.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
 		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT),
-		        TextUtil.createTranslatedString(ConditionFactory.FILTER_REGEXP), });
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_REGEXP), });
 	}
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(TextUtil.createTranslatedString(NodeConditionController.FILTER_NODE));
+		list.addElement(TextUtils.createTranslatedString(NodeConditionController.FILTER_NODE));
 		return list;
 	}
 

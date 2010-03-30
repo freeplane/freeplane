@@ -33,7 +33,7 @@ import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -53,7 +53,7 @@ class ExportPdf extends ExportVectorGraphic {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final File chosenFile = chooseFile("pdf", TextUtil.getText("export_pdf_text"), null);
+		final File chosenFile = chooseFile("pdf", TextUtils.getText("export_pdf_text"), null);
 		if (chosenFile == null) {
 			return;
 		}
@@ -85,7 +85,7 @@ class ExportPdf extends ExportVectorGraphic {
 			ostream.close();
 		}
 		catch (final Exception ex) {
-			org.freeplane.core.util.LogTool.warn(ex);
+			org.freeplane.core.util.LogUtils.warn(ex);
 			UITools.errorMessage(ex.getLocalizedMessage());
 		}
 		getController().getViewController().setWaitingCursor(false);

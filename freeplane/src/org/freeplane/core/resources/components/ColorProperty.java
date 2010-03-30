@@ -34,7 +34,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -65,7 +65,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final Color result = ColorTracker.showCommonJColorChooserDialog(mButton.getRootPane(), TextUtil
+		final Color result = ColorTracker.showCommonJColorChooserDialog(mButton.getRootPane(), TextUtils
 		    .getOptionalText(getLabel()), getColorValue());
 		setColorValue(result);
 		firePropertyChangeEvent();
@@ -83,9 +83,9 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtil.getOptionalText(getLabel()), mButton);
-		label.setToolTipText(TextUtil.getOptionalText(getDescription()));
-		final JMenuItem item = new JMenuItem(TextUtil.getOptionalText("ColorProperty.ResetColor"));
+		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), mButton);
+		label.setToolTipText(TextUtils.getOptionalText(getDescription()));
+		final JMenuItem item = new JMenuItem(TextUtils.getOptionalText("ColorProperty.ResetColor"));
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				setValue(defaultColor);

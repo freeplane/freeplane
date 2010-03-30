@@ -10,9 +10,9 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 
 class ManualBugReporter implements IBugReportListener {
 	final private Controller controller;
@@ -48,27 +48,27 @@ class ManualBugReporter implements IBugReportListener {
 			controller.getViewController().openDocument(new URL(location));
 		}
 		catch (final MalformedURLException ex) {
-			UITools.errorMessage(TextUtil.getText("url_error") + "\n" + ex);
-			LogTool.warn(ex);
+			UITools.errorMessage(TextUtils.getText("url_error") + "\n" + ex);
+			LogUtils.warn(ex);
 		}
 		catch (final Exception ex) {
 			UITools.errorMessage(ex);
-			LogTool.warn(ex);
+			LogUtils.warn(ex);
 		}
 	}
 
 	private String showBugReportDialog(final String log, final String hash) {
-		final String title = TextUtil.getText("org.freeplane.plugin.bugreport.freeplane_team").replaceAll("\\n", "\n");
+		final String title = TextUtils.getText("org.freeplane.plugin.bugreport.freeplane_team").replaceAll("\\n", "\n");
 		String option = ResourceController.getResourceController().getProperty(OPTION, BugReportDialogManager.ASK);
 		if (option.equals(BugReportDialogManager.ASK)) {
-			String question = TextUtil.getText("org.freeplane.plugin.bugreport.wanted_bug");
+			String question = TextUtils.getText("org.freeplane.plugin.bugreport.wanted_bug");
 			if (!question.startsWith("<html>")) {
-				question = HtmlTools.plainToHTML(question);
+				question = HtmlUtils.plainToHTML(question);
 			}
-			final Object[] options = new Object[] { TextUtil.removeMnemonic(TextUtil.getText("ok")),
-			        TextUtil.removeMnemonic(TextUtil.getText("cancel")),
-			        TextUtil.getText("org.freeplane.plugin.bugreport.never") };
-			final String reportName = TextUtil.getText("org.freeplane.plugin.bugreport.lastreport");
+			final Object[] options = new Object[] { TextUtils.removeMnemonic(TextUtils.getText("ok")),
+			        TextUtils.removeMnemonic(TextUtils.getText("cancel")),
+			        TextUtils.getText("org.freeplane.plugin.bugreport.never") };
+			final String reportName = TextUtils.getText("org.freeplane.plugin.bugreport.lastreport");
 			final int choice = BugReportDialogManager.showBugReportDialog(title, question,
 			    JOptionPane.QUESTION_MESSAGE, options, options[0], reportName, log);
 			final ReportRegistry register = ReportRegistry.getInstance();

@@ -32,7 +32,7 @@ import javax.imageio.ImageReader;
 import javax.swing.JComponent;
 
 import org.freeplane.core.ui.components.BitmapViewerComponent;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 /**
  * @author Dimitry Polivaev
@@ -78,7 +78,7 @@ public class BitmapViewerFactory implements IViewerFactory {
 	}
 
 	public String getDescription() {
-		return TextUtil.getText("bitmaps");
+		return TextUtils.getText("bitmaps");
 	}
 
 	public Dimension getOriginalSize(final JComponent viewer) {

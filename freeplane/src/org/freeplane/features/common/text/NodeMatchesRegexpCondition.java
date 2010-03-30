@@ -22,7 +22,7 @@ package org.freeplane.features.common.text;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
@@ -67,8 +67,8 @@ public class NodeMatchesRegexpCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = TextUtil.getText(NodeConditionController.FILTER_NODE);
-		final String simpleCondition = TextUtil.getText(ConditionFactory.FILTER_REGEXP);
+		final String nodeCondition = TextUtils.getText(NodeConditionController.FILTER_NODE);
+		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, searchPattern.pattern(),
 		    isIgnoreCase());
 	}

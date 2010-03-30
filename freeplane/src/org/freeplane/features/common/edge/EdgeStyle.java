@@ -1,6 +1,6 @@
 package org.freeplane.features.common.edge;
 
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 
 public enum EdgeStyle {
 	EDGESTYLE_BEZIER("bezier", 1f), EDGESTYLE_HIDDEN("hide_edge", 1f), EDGESTYLE_HORIZONTAL("horizontal", 1f), EDGESTYLE_LINEAR(
@@ -39,7 +39,7 @@ public enum EdgeStyle {
 				return style;
 			}
 		}
-		LogTool.warn("unknown edge style name " + name);
+		LogUtils.warn("unknown edge style name " + name);
 		return null;
 	}
 

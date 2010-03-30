@@ -40,8 +40,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 
 /**
  * A dialog for getting shortcut keys.
@@ -218,7 +218,7 @@ public class GrabKeyDialog extends JDialog {
 	/**
 	 */
 	private static String getText(final String resourceString) {
-		return TextUtil.getText("GrabKeyDialog." + resourceString);
+		return TextUtils.getText("GrabKeyDialog." + resourceString);
 	}
 
 	public static String toString(final KeyEvent evt) {
@@ -315,7 +315,7 @@ public class GrabKeyDialog extends JDialog {
 			}
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		return null;
 	}

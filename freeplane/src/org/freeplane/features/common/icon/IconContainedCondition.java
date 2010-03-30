@@ -26,7 +26,7 @@ import java.util.ListIterator;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.filter.condition.JCondition;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
@@ -87,7 +87,7 @@ public class IconContainedCondition implements ISelectableCondition {
 	 */
 	public JComponent getListCellRendererComponent() {
 		final JCondition component = new JCondition();
-		final String text = TextUtil.getText("filter_icon") + ' ' + TextUtil.getText("filter_contains") + ' ';
+		final String text = TextUtils.getText("filter_icon") + ' ' + TextUtils.getText("filter_contains") + ' ';
 		component.add(new JLabel(text));
 		component.add(new JLabel(STORE.getUIIcon(getIconName()).getIcon()));
 		return component;
@@ -102,6 +102,6 @@ public class IconContainedCondition implements ISelectableCondition {
 
 	@Override
 	public String toString() {
-		return TextUtil.getText("filter_icon") + " \"" + getIconName() + "\"";
+		return TextUtils.getText("filter_icon") + " \"" + getIconName() + "\"";
 	}
 }

@@ -67,8 +67,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -172,7 +172,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		zoomOut = new ZoomOutAction(this);
 		controller.addAction(zoomOut);
 		controller.addAction(new ToggleFullScreenAction(this));
-		userDefinedZoom = TextUtil.getText("user_defined_zoom");
+		userDefinedZoom = TextUtils.getText("user_defined_zoom");
 		zoomModel = new DefaultComboBoxModel(getZooms());
 		zoomModel.addElement(userDefinedZoom);
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -182,7 +182,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		catch (final Exception e) {
 			zoomModel.setSelectedItem("100%");
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		controller.addAction(new ToggleMenubarAction(controller, this));
 		controller.addAction(new ToggleToolbarAction(controller, "ToggleToolbarAction", "/main_toolbar"));
@@ -611,15 +611,15 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			setTitle("");
 			return;
 		}
-		final Object[] messageArguments = { TextUtil.getText(("mode_" + modeController.getModeName())) };
-		final MessageFormat formatter = new MessageFormat(TextUtil.getText("mode_title"));
+		final Object[] messageArguments = { TextUtils.getText(("mode_" + modeController.getModeName())) };
+		final MessageFormat formatter = new MessageFormat(TextUtils.getText("mode_title"));
 		String title = formatter.format(messageArguments);
 		String rawTitle = "";
 		final MapModel model = mapViewManager.getModel();
 		if (model != null) {
 			rawTitle = mapViewManager.getMapViewComponent().getName();
 			title = rawTitle + (model.isSaved() ? "" : "*") + " - " + title
-			        + (model.isReadOnly() ? " (" + TextUtil.getText("read_only") + ")" : "");
+			        + (model.isReadOnly() ? " (" + TextUtils.getText("read_only") + ")" : "");
 			final File file = model.getFile();
 			if (file != null) {
 				title += " " + file.getAbsolutePath();
@@ -644,7 +644,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		mapViewManager.setZoom(zoom);
 		setZoomComboBox(zoom);
 		final Object[] messageArguments = { String.valueOf(zoom * 100f) };
-		final String stringResult = TextUtil.format("user_defined_zoom_status_bar", messageArguments);
+		final String stringResult = TextUtils.format("user_defined_zoom_status_bar", messageArguments);
 		out(stringResult);
 	}
 
@@ -781,7 +781,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			}
 		}
 		catch (final Exception ex) {
-			LogTool.warn("Error while setting Look&Feel" + lookAndFeel, ex);
+			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel, ex);
 		}
 	}
 }

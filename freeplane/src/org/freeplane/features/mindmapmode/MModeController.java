@@ -31,7 +31,7 @@ import org.freeplane.core.resources.components.PropertyAction;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.note.NoteController;
@@ -106,7 +106,7 @@ public class MModeController extends ModeController {
 		final Vector<String> lafNames = new Vector(lafInfo.length + 1);
 		final Vector<String> translatedLafNames = new Vector(lafInfo.length + 1);
 		lafNames.add("default");
-		translatedLafNames.add(TextUtil.getOptionalText("OptionPanel.default"));
+		translatedLafNames.add(TextUtils.getOptionalText("OptionPanel.default"));
 		for (int i = 0; i < lafInfo.length; i++) {
 			final LookAndFeelInfo info = lafInfo[i];
 			final String className = info.getClassName();

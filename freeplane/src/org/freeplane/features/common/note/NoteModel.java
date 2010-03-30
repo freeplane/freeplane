@@ -20,8 +20,8 @@
 package org.freeplane.features.common.note;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.XmlTool;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.XmlUtils;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
@@ -69,8 +69,8 @@ public class NoteModel implements IExtension {
 			noteText = null;
 			return;
 		}
-		noteText = XmlTool.makeValidXml(pNoteText);
-		xmlNoteText = HtmlTools.getInstance().toXhtml(noteText);
+		noteText = XmlUtils.makeValidXml(pNoteText);
+		xmlNoteText = HtmlUtils.getInstance().toXhtml(noteText);
 		if (xmlNoteText != null && !xmlNoteText.startsWith("<")) {
 			noteText = xmlNoteText;
 		}
@@ -82,7 +82,7 @@ public class NoteModel implements IExtension {
 			noteText = null;
 			return;
 		}
-		xmlNoteText = XmlTool.makeValidXml(pXmlNoteText);
-		noteText = HtmlTools.getInstance().toHtml(xmlNoteText);
+		xmlNoteText = XmlUtils.makeValidXml(pXmlNoteText);
+		noteText = HtmlUtils.getInstance().toHtml(xmlNoteText);
 	}
 }

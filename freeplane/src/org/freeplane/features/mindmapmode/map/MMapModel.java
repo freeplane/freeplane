@@ -25,8 +25,8 @@ import java.util.Timer;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
-import org.freeplane.core.util.SysUtil;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.SysUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -91,7 +91,7 @@ public class MMapModel extends MapModel {
 		if (titleNumber == 0) {
 			titleNumber = MMapModel.unnamedMapsNumber++;
 		}
-		return TextUtil.getText("mindmap") + titleNumber;
+		return TextUtils.getText("mindmap") + titleNumber;
 	}
 
 	public void scheduleTimerForAutomaticSaving(final ModeController modeController) {
@@ -110,7 +110,7 @@ public class MMapModel extends MapModel {
 		if (delay == 0) {
 			return;
 		}
-		final Timer timer = SysUtil.createTimer("TimerForAutomaticSaving");
+		final Timer timer = SysUtils.createTimer("TimerForAutomaticSaving");
 		timer.schedule(new DoAutomaticSave(modeController, this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown),
 		    delay, delay);
 		this.setTimerForAutomaticSaving(timer);

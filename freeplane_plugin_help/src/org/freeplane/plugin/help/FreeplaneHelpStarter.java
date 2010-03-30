@@ -29,7 +29,7 @@ import javax.help.HelpSet;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 
 /**
  * @author foltin
@@ -60,7 +60,7 @@ class FreeplaneHelpStarter extends AFreeplaneAction {
 			hb.setViewDisplayed(true);
 		}
 		catch (final Exception ee) {
-			LogTool.severe("HelpSet " + helpHS + " not found", ee);
+			LogUtils.severe("HelpSet " + helpHS + " not found", ee);
 			return;
 		}
 	}

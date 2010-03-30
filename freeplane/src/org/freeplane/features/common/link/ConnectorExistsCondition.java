@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.common.link;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -41,8 +41,8 @@ public class ConnectorExistsCondition extends ConnectorLabelCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String condition = TextUtil.getText(LinkConditionController.CONNECTOR);
-		final String simpleCondition = TextUtil.getText(ConditionFactory.FILTER_EXIST);
+		final String condition = TextUtils.getText(LinkConditionController.CONNECTOR);
+		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_EXIST);
 		return ConditionFactory.createDescription(condition, simpleCondition, getText(), ignoreCase());
 	}
 

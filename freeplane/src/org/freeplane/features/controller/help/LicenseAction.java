@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 class LicenseAction extends AFreeplaneAction {
 	private static final String NAME = "license";
@@ -38,7 +38,7 @@ class LicenseAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		UITools.informationMessage(getController().getViewController().getFrame(), TextUtil.getText("license_text"),
-		    TextUtil.getText(NAME));
+		UITools.informationMessage(getController().getViewController().getFrame(), TextUtils.getText("license_text"),
+		    TextUtils.getText(NAME));
 	}
 }

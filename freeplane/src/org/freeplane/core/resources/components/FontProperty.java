@@ -27,8 +27,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -55,8 +55,8 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtil.getOptionalText(getLabel()), mFontComboBox);
-		label.setToolTipText(TextUtil.getOptionalText(getDescription()));
+		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), mFontComboBox);
+		label.setToolTipText(TextUtils.getOptionalText(getDescription()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {
@@ -72,7 +72,7 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 				return;
 			}
 		}
-		LogTool.severe("Unknown value:" + pValue);
+		LogUtils.severe("Unknown value:" + pValue);
 		if (mFontComboBox.getModel().getSize() > 0) {
 			mFontComboBox.setSelectedIndex(0);
 		}

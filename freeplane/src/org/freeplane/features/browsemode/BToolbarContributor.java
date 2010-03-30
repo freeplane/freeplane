@@ -31,7 +31,7 @@ import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 
@@ -53,7 +53,7 @@ public class BToolbarContributor implements IMenuContributor, IMapViewChangeList
 					modeController.getMapController().newMap(new URL(urlText));
 				}
 				catch (final Exception e1) {
-					LogTool.warn(e1);
+					LogUtils.warn(e1);
 				}
 			}
 		});

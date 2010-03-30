@@ -25,7 +25,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -50,8 +50,8 @@ public class StringProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtil.getOptionalText(getLabel()), mTextField);
-		label.setToolTipText(TextUtil.getOptionalText(getDescription()));
+		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), mTextField);
+		label.setToolTipText(TextUtils.getOptionalText(getDescription()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

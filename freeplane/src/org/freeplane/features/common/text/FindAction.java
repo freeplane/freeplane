@@ -36,8 +36,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.FilterConditionEditor;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
@@ -84,7 +84,7 @@ class FindAction extends AFreeplaneAction {
 			public void ancestorRemoved(final AncestorEvent event) {
 			}
 		});
-		final int run = UITools.showConfirmDialog(getController(), selected, editor, TextUtil
+		final int run = UITools.showConfirmDialog(getController(), selected, editor, TextUtils
 		    .getText("FindAction.text"), JOptionPane.OK_CANCEL_OPTION);
 		final Container parent = editor.getParent();
 		if (parent != null) {
@@ -100,7 +100,7 @@ class FindAction extends AFreeplaneAction {
 		final boolean found = find(getModeController().getMapController().getSelectedNode());
 		searchTerm = condition.toString();
 		if (!found) {
-			final String messageText = TextUtil.getText("no_found_from");
+			final String messageText = TextUtils.getText("no_found_from");
 			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
 			    Matcher.quoteReplacement(searchTerm)).replaceAll("\\$2", Matcher.quoteReplacement(getFindFromText())));
 			searchTerm = null;
@@ -176,7 +176,7 @@ class FindAction extends AFreeplaneAction {
 	}
 
 	public String getFindFromText() {
-		final String plainNodeText = HtmlTools.htmlToPlain(findFromNode.toString()).replaceAll("\n", " ");
+		final String plainNodeText = HtmlUtils.htmlToPlain(findFromNode.toString()).replaceAll("\n", " ");
 		return plainNodeText.length() <= 30 ? plainNodeText : plainNodeText.substring(0, 30) + "...";
 	}
 

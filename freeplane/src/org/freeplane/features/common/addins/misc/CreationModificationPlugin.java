@@ -28,7 +28,7 @@ import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.ActionLocationDescriptor;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.HistoryInformationModel;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.ITooltipProvider;
@@ -120,7 +120,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 		final Object[] messageArguments = { node.getHistoryInformation().getCreatedAt(),
 		        node.getHistoryInformation().getLastModifiedAt() };
 		if (tooltipFormat == null) {
-			tooltipFormat = TextUtil.getText("CreationModificationPlugin.tooltip_format");
+			tooltipFormat = TextUtils.getText("CreationModificationPlugin.tooltip_format");
 		}
 		final MessageFormat formatter = new MessageFormat(tooltipFormat);
 		final String message = formatter.format(messageArguments);

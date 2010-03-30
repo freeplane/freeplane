@@ -34,8 +34,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.FileUtil;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.addins.misc.NextNodeAction;
 import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
 import org.freeplane.features.common.addins.styles.MapViewLayout;
@@ -81,7 +81,7 @@ public class FreeplaneStarter {
 		info.append(System.getProperty("os.name"));
 		info.append("; os_version = ");
 		info.append(System.getProperty("os.version"));
-		LogTool.info(info.toString());
+		LogUtils.info(info.toString());
 	}
 
 	private ApplicationResourceController applicationResourceController;
@@ -103,7 +103,7 @@ public class FreeplaneStarter {
 			controller = new Controller();
 			Compat.macAppChanges(controller);
 			applicationResourceController.init(controller);
-			LogTool.createLogger();
+			LogUtils.createLogger();
 			ViewController.setLookAndFeel(applicationResourceController.getProperty("lookandfeel"));
 			final JFrame frame = new JFrame("Freeplane");
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
@@ -140,7 +140,7 @@ public class FreeplaneStarter {
 			return controller;
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 			throw new RuntimeException(e);
 		}
 	}
@@ -170,7 +170,7 @@ public class FreeplaneStarter {
 			String fileArgument = args[i];
 			if (fileArgument.toLowerCase().endsWith(
 			    org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
-				if (!FileUtil.isAbsolutePath(fileArgument)) {
+				if (!FileUtils.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 				}
 				try {
@@ -214,7 +214,7 @@ public class FreeplaneStarter {
 			createFrame(args);
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 			JOptionPane.showMessageDialog(UITools.getFrame(), "freeplane.main.Freeplane can't be started",
 			    "Startup problem", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
@@ -234,10 +234,10 @@ public class FreeplaneStarter {
 			});
 		}
 		catch (final InterruptedException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		catch (final InvocationTargetException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 	}
 }

@@ -43,8 +43,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
@@ -113,9 +113,9 @@ public class UITools {
 			myMessage = message.toString();
 		}
 		else {
-			myMessage = TextUtil.getText("undefined_error");
+			myMessage = TextUtils.getText("undefined_error");
 		}
-		LogTool.warn(myMessage);
+		LogUtils.warn(myMessage);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);

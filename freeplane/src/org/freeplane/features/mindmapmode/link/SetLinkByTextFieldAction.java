@@ -26,8 +26,8 @@ import java.net.URISyntaxException;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.ModeController;
@@ -47,7 +47,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		final ModeController modeController = getModeController();
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
 		final String inputValue = UITools.showInputDialog(getController(),
-		    getController().getSelection().getSelected(), TextUtil.getText("edit_link_manually"), NodeLinks
+		    getController().getSelection().getSelected(), TextUtils.getText("edit_link_manually"), NodeLinks
 		        .getLinkAsString(selectedNode));
 		if (inputValue != null) {
 			final MLinkController linkController = (MLinkController) MLinkController.getController(modeController);
@@ -60,7 +60,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 				linkController.setLink(selectedNode, link, false);
 			}
 			catch (final URISyntaxException e1) {
-				LogTool.warn(e1);
+				LogUtils.warn(e1);
 				UITools.errorMessage("wrong URI " + inputValue);
 				return;
 			}

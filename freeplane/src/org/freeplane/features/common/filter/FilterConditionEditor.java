@@ -37,7 +37,7 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
@@ -129,7 +129,7 @@ public class FilterConditionEditor extends Box {
 		caseInsensitive = new JCheckBox();
 		add(Box.createHorizontalGlue());
 		add(caseInsensitive);
-		caseInsensitive.setText(TextUtil.getText("filter_ignore_case"));
+		caseInsensitive.setText(TextUtils.getText("filter_ignore_case"));
 		caseInsensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
 		    PROPERTY_FILTER_IGNORE_CASE));
 		mapChanged(filterController.getController().getMap());

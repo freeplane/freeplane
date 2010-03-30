@@ -39,7 +39,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.addins.encrypt.DesEncrypter;
 
 /**
@@ -115,10 +115,10 @@ class SignedScriptHandler {
 			SignedScriptHandler.mKeyStore.load(fis, pPassword);
 		}
 		catch (final FileNotFoundException e) {
-			LogTool.warn(e);
+			LogUtils.warn(e);
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		finally {
 			if (fis != null) {
@@ -126,7 +126,7 @@ class SignedScriptHandler {
 					fis.close();
 				}
 				catch (final IOException e) {
-					LogTool.severe(e);
+					LogUtils.severe(e);
 				}
 			}
 		}
@@ -178,13 +178,13 @@ class SignedScriptHandler {
 				return verify;
 			}
 			catch (final Exception e) {
-				LogTool.severe(e);
+				LogUtils.severe(e);
 				try {
 					pOutStream.write(e.toString().getBytes());
 					pOutStream.write("\n".getBytes());
 				}
 				catch (final Exception e1) {
-					LogTool.severe(e1);
+					LogUtils.severe(e1);
 				}
 			}
 		}
@@ -220,7 +220,7 @@ class SignedScriptHandler {
 			return content.toString();
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 			UITools.errorMessage(e.getLocalizedMessage());
 		}
 		return content.mScript;

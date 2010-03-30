@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MultipleValueMap;
 
 /**
@@ -58,8 +58,8 @@ public class ResourceBundles extends ResourceBundle {
 			defaultResources = getLanguageResources(DEFAULT_LANGUAGE);
 		}
 		catch (final Exception ex) {
-			LogTool.severe(ex);
-			LogTool.severe("Error loading Resources");
+			LogUtils.severe(ex);
+			LogUtils.severe("Error loading Resources");
 		}
 	}
 
@@ -74,7 +74,7 @@ public class ResourceBundles extends ResourceBundle {
 			externalResources.put(language, url);
 		}
 		catch (final IOException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 	}
 
@@ -151,7 +151,7 @@ public class ResourceBundles extends ResourceBundle {
 			return languageResources.get(key);
 		}
 		catch (final Exception ex) {
-			LogTool.severe("Warning - resource string not found:" + key);
+			LogUtils.severe("Warning - resource string not found:" + key);
 			return defaultResources.get(key) + ResourceBundles.POSTFIX_TRANSLATE_ME;
 		}
 	}
@@ -178,7 +178,7 @@ public class ResourceBundles extends ResourceBundle {
 			loadLocalLanguageResources();
 		}
 		catch (final IOException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 	}
 }

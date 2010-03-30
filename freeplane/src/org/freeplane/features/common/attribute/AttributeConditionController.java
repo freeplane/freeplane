@@ -28,7 +28,7 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
@@ -116,10 +116,10 @@ class AttributeConditionController implements IElementaryConditionController {
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
 		return new DefaultComboBoxModel(new NamedObject[] {
-		        TextUtil.createTranslatedString(ConditionFactory.FILTER_EXIST),
-		        TextUtil.createTranslatedString(ConditionFactory.FILTER_DOES_NOT_EXIST),
-		        TextUtil.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
-		        TextUtil.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST),
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_DOES_NOT_EXIST),
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
 		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT) });
 	}

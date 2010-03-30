@@ -3,7 +3,7 @@ package org.freeplane.features.common.addins.styles;
 import javax.swing.JComponent;
 
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.ModeController;
@@ -64,7 +64,7 @@ public class StyleCondition implements ISelectableCondition {
 	}
 
 	private String createDesctiption() {
-		final String filterStyle = TextUtil.getText(LogicalStyleFilterController.FILTER_STYLE);
+		final String filterStyle = TextUtils.getText(LogicalStyleFilterController.FILTER_STYLE);
 		return filterStyle + " '" + value.toString() + '\'';
 	}
 }

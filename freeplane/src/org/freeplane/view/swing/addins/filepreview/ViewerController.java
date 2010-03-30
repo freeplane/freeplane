@@ -34,8 +34,8 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
@@ -359,7 +359,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
 		    "relative");
 		if (file == null && useRelativeUri) {
-			JOptionPane.showMessageDialog(viewController.getContentPane(), TextUtil
+			JOptionPane.showMessageDialog(viewController.getContentPane(), TextUtils
 			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
@@ -516,7 +516,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			viewer = factory.createViewer(model, absoluteUri);
 		}
 		catch (final Exception e) {
-			final String info = HtmlTools.combineTextWithExceptionInfo(uri.toString(), e);
+			final String info = HtmlUtils.combineTextWithExceptionInfo(uri.toString(), e);
 			return new JLabel(info);
 		}
 		if (viewer == null) {

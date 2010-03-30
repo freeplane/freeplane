@@ -8,7 +8,7 @@ import javax.swing.ListModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
@@ -49,12 +49,12 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 	}
 
 	private Object[] getStyleConditionNames() {
-		return new NamedObject[] { TextUtil.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO) };
+		return new NamedObject[] { TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO) };
 	}
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(TextUtil.createTranslatedString(FILTER_STYLE));
+		list.addElement(TextUtils.createTranslatedString(FILTER_STYLE));
 		return list;
 	}
 

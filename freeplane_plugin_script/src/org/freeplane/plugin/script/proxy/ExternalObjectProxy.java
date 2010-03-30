@@ -6,7 +6,7 @@ package org.freeplane.plugin.script.proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.view.swing.addins.filepreview.ExternalResource;
@@ -46,7 +46,7 @@ class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.Exte
 			getViewerController().undoableToggleHook(getDelegate(), externalObject);
 		}
 		catch (final URISyntaxException e) {
-			LogTool.warn(e);
+			LogUtils.warn(e);
 		}
 	}
 

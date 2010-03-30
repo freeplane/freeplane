@@ -50,9 +50,9 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -169,7 +169,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			cal.set(Calendar.SECOND, 0);
 		}
 		catch (final Exception e) {
-			LogTool.warn(e);
+			LogUtils.warn(e);
 		}
 		return cal.getTime();
 	}
@@ -179,7 +179,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	}
 
 	private String getResourceString(final String string) {
-		return TextUtil.getText(string);
+		return TextUtils.getText(string);
 	}
 
 	/**
@@ -300,8 +300,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 						final NodeModel element = (NodeModel) i.next();
 						final String text = element.getText();
 						final StringBuilder newText = new StringBuilder();
-						if (HtmlTools.isHtmlNode(text)) {
-							final int bodyEndPos = HtmlTools.endOfText(text);
+						if (HtmlUtils.isHtmlNode(text)) {
+							final int bodyEndPos = HtmlUtils.endOfText(text);
 							newText.append(text.substring(0, bodyEndPos));
 							newText.append("<p>");
 							newText.append(dateAsString);

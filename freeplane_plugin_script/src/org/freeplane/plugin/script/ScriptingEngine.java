@@ -38,8 +38,8 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.NodeModel;
@@ -222,7 +222,7 @@ class ScriptingEngine {
 		}
 		if (e2 != null) {
 			pMindMapController.getMapController().select(node);
-			LogTool.warn(e2);
+			LogUtils.warn(e2);
 			pOutStream.print(e2.getMessage());
 			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
 			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");
@@ -230,7 +230,7 @@ class ScriptingEngine {
 			        + ((cause.length() != 0 && message.length() != 0) ? ", " : "") + message);
 			return false;
 		}
-		pOutStream.print(TextUtil.getText("plugins/ScriptEditor/window.Result") + value);
+		pOutStream.print(TextUtils.getText("plugins/ScriptEditor/window.Result") + value);
 		if (assignResult && value != null) {
 			if (assignTo == null) {
 				((MTextController) TextController.getController(pMindMapController))

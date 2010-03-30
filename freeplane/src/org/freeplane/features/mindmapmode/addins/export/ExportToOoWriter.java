@@ -41,8 +41,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.MapWriter.Mode;
@@ -71,8 +71,8 @@ public class ExportToOoWriter extends ExportAction {
 			exportToOoWriter(chosenFile);
 		}
 		catch (final Exception ex) {
-			LogTool.warn(ex);
-			UITools.errorMessage(TextUtil.getText("export_failed"));
+			LogUtils.warn(ex);
+			UITools.errorMessage(TextUtils.getText("export_failed"));
 		}
 		getController().getViewController().setWaitingCursor(false);
 	}
@@ -84,7 +84,7 @@ public class ExportToOoWriter extends ExportAction {
 	        throws IOException {
 		final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);
 		if (xsltUrl == null) {
-			LogTool.severe("Can't find " + xsltFileName + " as resource.");
+			LogUtils.severe("Can't find " + xsltFileName + " as resource.");
 			throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");
 		}
 		final InputStream xsltStream = new BufferedInputStream(xsltUrl.openStream());
@@ -98,7 +98,7 @@ public class ExportToOoWriter extends ExportAction {
 		}
 		catch (final Exception e) {
 			UITools.errorMessage(e.getMessage());
-			LogTool.warn(e);
+			LogUtils.warn(e);
 			return;
 		}
 	}
@@ -110,7 +110,7 @@ public class ExportToOoWriter extends ExportAction {
 		try {
 			final URL resource = ResourceController.getResourceController().getResource(fileName);
 			if (resource == null) {
-				LogTool.severe("Cannot find resource: " + fileName);
+				LogUtils.severe("Cannot find resource: " + fileName);
 				return;
 			}
 			final InputStream in = resource.openStream();
@@ -123,9 +123,9 @@ public class ExportToOoWriter extends ExportAction {
 			return;
 		}
 		catch (final Exception e) {
-			LogTool.severe("File not found or could not be copied. " + "Was earching for " + fileName
+			LogUtils.severe("File not found or could not be copied. " + "Was earching for " + fileName
 			        + " and should go to " + out);
-			LogTool.severe(e);
+			LogUtils.severe(e);
 			return;
 		}
 	}
@@ -170,7 +170,7 @@ public class ExportToOoWriter extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		};
 		return;
 	}

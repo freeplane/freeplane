@@ -29,7 +29,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.util.HtmlTools;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -101,14 +101,14 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			return;
 		}
 		final String text = (String) data;
-		if (!HtmlTools.isHtmlNode(text)) {
+		if (!HtmlUtils.isHtmlNode(text)) {
 			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 		}
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object element, final String tag) throws IOException {
 		final NodeModel node = (NodeModel) element;
-		if (HtmlTools.isHtmlNode(node.toString())) {
+		if (HtmlUtils.isHtmlNode(node.toString())) {
 			final XMLElement htmlElement = new XMLElement();
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
 			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE);

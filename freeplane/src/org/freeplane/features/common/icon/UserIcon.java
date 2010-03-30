@@ -24,7 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 
 /**
  * 
@@ -58,7 +58,7 @@ public class UserIcon extends MindIcon {
 			result = new File(urlString).toURI().toURL();
 		}
 		catch (final MalformedURLException e) {
-			LogTool.warn(String.format("could not create URL from [%s]", urlString));
+			LogUtils.warn(String.format("could not create URL from [%s]", urlString));
 		}
 		return result;
 	}

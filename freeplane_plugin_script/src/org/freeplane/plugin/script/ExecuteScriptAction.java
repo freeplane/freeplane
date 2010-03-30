@@ -27,9 +27,9 @@ import java.util.List;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.FileUtil;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
@@ -78,7 +78,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		try {
 			String scriptContent = getContentIfCached();
 			if (scriptContent == null) {
-				scriptContent = FileUtil.slurpFile(script);
+				scriptContent = FileUtils.slurpFile(script);
 			}
 			final List<NodeModel> nodes = new ArrayList<NodeModel>();
 			if (mode == ExecutionMode.ON_SINGLE_NODE) {
@@ -100,17 +100,17 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 					result = engine.executeScript(modeController, node, scriptContent);
 				}
 				if (!result) {
-					LogTool.warn("error executing script " + script + " - giving up");
+					LogUtils.warn("error executing script " + script + " - giving up");
 					modeController.delayedRollback();
-					UITools.errorMessage(TextUtil.getText("ExecuteScriptError.text"));
+					UITools.errorMessage(TextUtils.getText("ExecuteScriptError.text"));
 					return;
 				}
 			}
 			modeController.delayedCommit();
 		}
 		catch (final IOException ex) {
-			LogTool.warn("error reading " + script, ex);
-			UITools.errorMessage(TextUtil.getText("ReadScriptError.text"));
+			LogUtils.warn("error reading " + script, ex);
+			UITools.errorMessage(TextUtils.getText("ReadScriptError.text"));
 		}
 		finally {
 			getController().getViewController().setWaitingCursor(false);
@@ -119,9 +119,9 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 
 	private String getContentIfCached() throws IOException {
 		if (cacheContent && content == null) {
-			content = FileUtil.slurpFile(script);
+			content = FileUtils.slurpFile(script);
 			// oops, logtool seems to be inoperable right now
-			LogTool.info("cached " + String.format("%.1f", content.length() / 1000.) + " KB for script " + script);
+			LogUtils.info("cached " + String.format("%.1f", content.length() / 1000.) + " KB for script " + script);
 			System.out
 			    .println("cached " + String.format("%.1f", content.length() / 1000.) + " KB for script " + script);
 		}

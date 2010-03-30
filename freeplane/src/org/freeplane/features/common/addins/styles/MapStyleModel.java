@@ -34,7 +34,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.ModeController;
@@ -79,7 +79,7 @@ public class MapStyleModel implements IExtension {
 		styleMap = new MapModel(modeController, null) {
 			@Override
 			public String getTitle() {
-				return TextUtil.getText(STYLES);
+				return TextUtils.getText(STYLES);
 			}
 		};
 		styleMap.addExtension(IUndoHandler.class, parentMap.getExtension(IUndoHandler.class));

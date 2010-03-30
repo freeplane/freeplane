@@ -43,7 +43,7 @@ import org.freeplane.core.resources.components.IKeystrokeValidator;
 import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 /**
  * @author Dimitry Polivaev
@@ -69,9 +69,9 @@ class AccelerateableAction implements IFreeplaneAction {
 		if (AccelerateableAction.isNewAcceleratorOnNextClickEnabled()) {
 			return;
 		}
-		final String titel = TextUtil.getText("SetAcceleratorOnNextClickAction.text");
-		final String text = TextUtil.getText(SET_ACCELERATOR_ON_NEXT_CLICK_ACTION);
-		final String[] options = { TextUtil.removeMnemonic(TextUtil.getText("cancel")) };
+		final String titel = TextUtils.getText("SetAcceleratorOnNextClickAction.text");
+		final String text = TextUtils.getText(SET_ACCELERATOR_ON_NEXT_CLICK_ACTION);
+		final String[] options = { TextUtils.removeMnemonic(TextUtils.getText("cancel")) };
 		final JOptionPane infoPane = new JOptionPane(text, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null,
 		    options);
 		setAcceleratorOnNextClickActionDialog = infoPane.createDialog(controller.getViewController().getFrame(), titel);
@@ -143,7 +143,7 @@ class AccelerateableAction implements IFreeplaneAction {
 								return true;
 							}
 							final int replace = JOptionPane.showConfirmDialog(grabKeyDialog, menuItem.getText(),
-							    TextUtil.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
+							    TextUtils.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
 							if (replace == JOptionPane.YES_OPTION) {
 								menuBuilder.setAccelerator(menuItemNode, null);
 								final String shortcutKey = menuBuilder.getShortcutKey(menuItemNode.getKey().toString());
@@ -180,7 +180,7 @@ class AccelerateableAction implements IFreeplaneAction {
 						final JMenu menu = menuBar.getMenu(i);
 						final char c = (char) menu.getMnemonic();
 						if (Character.toLowerCase(keystroke.getKeyCode()) == Character.toLowerCase(c)) {
-							JOptionPane.showMessageDialog(grabKeyDialog, menu.getText(), TextUtil
+							JOptionPane.showMessageDialog(grabKeyDialog, menu.getText(), TextUtils
 							    .getText("used_in_menu"), JOptionPane.WARNING_MESSAGE);
 							return false;
 						}

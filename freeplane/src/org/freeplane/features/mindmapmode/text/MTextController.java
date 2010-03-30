@@ -40,9 +40,9 @@ import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.FixedHTMLWriter;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.MapModel;
@@ -149,10 +149,10 @@ public class MTextController extends TextController {
 				return strings;
 			}
 			catch (final IOException e) {
-				LogTool.severe(e);
+				LogUtils.severe(e);
 			}
 			catch (final BadLocationException e) {
-				LogTool.severe(e);
+				LogUtils.severe(e);
 			}
 		}
 		else {
@@ -180,7 +180,7 @@ public class MTextController extends TextController {
 				if (lowerCase.endsWith(".png") || lowerCase.endsWith(".jpg") || lowerCase.endsWith(".jpeg")
 				        || lowerCase.endsWith(".gif")) {
 					picturesAmongSelecteds = true;
-					final String encodedLinkString = HtmlTools.unicodeToHTMLUnicodeEntity(linkString);
+					final String encodedLinkString = HtmlUtils.unicodeToHTMLUnicodeEntity(linkString);
 					final String strText = "<html><img src=\"" + encodedLinkString + "\">";
 					((MLinkController) LinkController.getController(modeController)).setLink(node, (URI) null, false);
 					setNodeText(node, strText);
@@ -198,7 +198,7 @@ public class MTextController extends TextController {
 		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
 		    "relative");
 		if (file == null && useRelativeUri) {
-			JOptionPane.showMessageDialog(viewController.getContentPane(), TextUtil
+			JOptionPane.showMessageDialog(viewController.getContentPane(), TextUtils
 			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
@@ -207,7 +207,7 @@ public class MTextController extends TextController {
 		filter.addExtension("jpeg");
 		filter.addExtension("png");
 		filter.addExtension("gif");
-		filter.setDescription(TextUtil.getText("bitmaps"));
+		filter.setDescription(TextUtils.getText("bitmaps"));
 		final UrlManager urlManager = (UrlManager) modeController.getExtension(UrlManager.class);
 		final JFileChooser chooser = urlManager.getFileChooser(null);
 		chooser.setFileFilter(filter);

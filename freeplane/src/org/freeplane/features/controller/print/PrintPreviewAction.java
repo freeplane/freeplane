@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 class PrintPreviewAction extends AbstractPrintAction {
 	static final String NAME = "printPreview";
@@ -45,7 +45,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 			return;
 		}
 		final Component mapView = controller.getViewController().getMapView();
-		final PreviewDialog previewDialog = new PreviewDialog(getPrintController(), TextUtil
+		final PreviewDialog previewDialog = new PreviewDialog(getPrintController(), TextUtils
 		    .getText("print_preview_title"), mapView);
 		previewDialog.pack();
 		previewDialog.setLocationRelativeTo(JOptionPane.getFrameForComponent(mapView));

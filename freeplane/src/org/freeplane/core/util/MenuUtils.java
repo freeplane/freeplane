@@ -39,7 +39,7 @@ import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 
-public class MenuTools {
+public class MenuUtils {
 	/** The userObject type for createMenuEntryTree(). */
 	public static class MenuEntry {
 		private final String key;
@@ -95,12 +95,12 @@ public class MenuTools {
 	 * @param menuBuilder access point for the menu(s).
 	 */
 	public static DefaultMutableTreeNode createMenuEntryTree(final String menuRootKey, final MenuBuilder menuBuilder) {
-		final HashMap<String, KeyStroke> menuKeyToKeyStrokeMap = MenuTools.invertAcceleratorMap(menuBuilder
+		final HashMap<String, KeyStroke> menuKeyToKeyStrokeMap = MenuUtils.invertAcceleratorMap(menuBuilder
 		    .getAcceleratorMap());
 		final DefaultMutableTreeNode menuRoot = menuBuilder.get(menuRootKey);
-		final DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(MenuTools.menuNode2menuEntryNode(menuRoot,
+		final DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(MenuUtils.menuNode2menuEntryNode(menuRoot,
 		    menuKeyToKeyStrokeMap));
-		MenuTools.addChildrenRecursively(treeRoot, menuRoot.children(), menuKeyToKeyStrokeMap);
+		MenuUtils.addChildrenRecursively(treeRoot, menuRoot.children(), menuKeyToKeyStrokeMap);
 		return treeRoot;
 	}
 
@@ -109,13 +109,13 @@ public class MenuTools {
 	                                           final HashMap<String, KeyStroke> menuKeyToKeyStrokeMap) {
 		while (menuChildren.hasMoreElements()) {
 			final DefaultMutableTreeNode childMenu = (DefaultMutableTreeNode) menuChildren.nextElement();
-			final DefaultMutableTreeNode treeChild = MenuTools.menuNode2menuEntryNode(childMenu, menuKeyToKeyStrokeMap);
+			final DefaultMutableTreeNode treeChild = MenuUtils.menuNode2menuEntryNode(childMenu, menuKeyToKeyStrokeMap);
 			if (treeChild != null) {
 				treeNode.add(treeChild);
-				MenuTools.addChildrenRecursively(treeChild, childMenu.children(), menuKeyToKeyStrokeMap);
+				MenuUtils.addChildrenRecursively(treeChild, childMenu.children(), menuKeyToKeyStrokeMap);
 			}
 			else {
-				MenuTools.addChildrenRecursively(treeNode, childMenu.children(), menuKeyToKeyStrokeMap);
+				MenuUtils.addChildrenRecursively(treeNode, childMenu.children(), menuKeyToKeyStrokeMap);
 			}
 		}
 	}
@@ -144,9 +144,9 @@ public class MenuTools {
 	 */
 	public static DefaultMutableTreeNode createAcceleratebleMenuEntryTree(final String menuRootKey,
 	                                                                      final MenuBuilder menuBuilder) {
-		final DefaultMutableTreeNode menuEntryTreeNode = MenuTools.createMenuEntryTree(menuRootKey, menuBuilder);
+		final DefaultMutableTreeNode menuEntryTreeNode = MenuUtils.createMenuEntryTree(menuRootKey, menuBuilder);
 		final DefaultMutableTreeNode result = new DefaultMutableTreeNode(menuEntryTreeNode.getUserObject());
-		MenuTools.addAcceleratableChildrenRecursively(result, menuEntryTreeNode.children());
+		MenuUtils.addAcceleratableChildrenRecursively(result, menuEntryTreeNode.children());
 		return result;
 	}
 
@@ -165,7 +165,7 @@ public class MenuTools {
 			else {
 				final DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(menuEntry);
 				target.add(newNode);
-				MenuTools.addAcceleratableChildrenRecursively(newNode, sourceChild.children());
+				MenuUtils.addAcceleratableChildrenRecursively(newNode, sourceChild.children());
 				if (newNode.isLeaf()) {
 					target.remove(newNode);
 				}
@@ -186,9 +186,9 @@ public class MenuTools {
 	                                                final MapController mapController) {
 		while (children.hasMoreElements()) {
 			final DefaultMutableTreeNode child = (DefaultMutableTreeNode) children.nextElement();
-			final NodeModel newNodeModel = MenuTools.insertAsNodeModel(nodeModel, child, mapController);
+			final NodeModel newNodeModel = MenuUtils.insertAsNodeModel(nodeModel, child, mapController);
 			if (!child.isLeaf()) {
-				MenuTools.insertAsNodeModelRecursively(newNodeModel, child.children(), mapController);
+				MenuUtils.insertAsNodeModelRecursively(newNodeModel, child.children(), mapController);
 			}
 		}
 	}
@@ -197,13 +197,13 @@ public class MenuTools {
 	                                           final MapController mapController) {
 		final MenuEntry menuEntry = (MenuEntry) treeNode.getUserObject();
 		final String text = menuEntry.getKeyStroke() == null ? menuEntry.getLabel() : menuEntry.getLabel() + ": "
-		        + MenuTools.formatKeyStroke(menuEntry.getKeyStroke());
+		        + MenuUtils.formatKeyStroke(menuEntry.getKeyStroke());
 		final NodeModel newNodeModel = mapController.newNode(text, nodeModel.getMap());
 		if (!treeNode.isLeaf()) {
 			newNodeModel.setFolded(true);
 		}
 		if (menuEntry.getIconKey() != null) {
-			MenuTools.addIcon(menuEntry, newNodeModel);
+			MenuUtils.addIcon(menuEntry, newNodeModel);
 		}
 		nodeModel.insert(newNodeModel);
 		return newNodeModel;

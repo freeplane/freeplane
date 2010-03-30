@@ -32,7 +32,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.util.FileUtil;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
@@ -89,7 +89,7 @@ public class EditDefaultStylesAction extends AFreeplaneAction {
 			final File freeplaneUserDirectory = new File(resourceController.getFreeplaneUserDirectory());
 			final File styles = new File(freeplaneUserDirectory, "default.stylemm");
 			if (!styles.exists()) {
-				FileUtil.copyFromURL(resourceController.getResource("/styles/default.stylemm"), freeplaneUserDirectory);
+				FileUtils.copyFromURL(resourceController.getResource("/styles/default.stylemm"), freeplaneUserDirectory);
 			}
 			modeController.getMapController().newMap(styles.toURL());
 		}

@@ -24,7 +24,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.util.SysUtil;
+import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
@@ -63,7 +63,7 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 
 	public void scheduleTimer(final TimerTask task, final Date date) {
 		if (timer == null) {
-			timer = SysUtil.createTimer(getClass().getSimpleName());
+			timer = SysUtils.createTimer(getClass().getSimpleName());
 		}
 		timer.schedule(task, date);
 	}

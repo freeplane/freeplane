@@ -52,8 +52,8 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
@@ -351,7 +351,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			loadConditions(filterConditions, pathToFilterFile);
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		addStandardConditions();
 		filterConditions.setSelectedItem(filterConditions.getElementAt(0));
@@ -377,8 +377,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		catch (final AccessControlException e) {
 		}
 		catch (final Exception e) {
-			LogTool.warn(e);
-			UITools.errorMessage(TextUtil.getText("filters_not_loaded"));
+			LogUtils.warn(e);
+			UITools.errorMessage(TextUtils.getText("filters_not_loaded"));
 		}
 	}
 
@@ -387,7 +387,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			saveConditions(getFilterConditions(), pathToFilterFile);
 		}
 		catch (final Exception e) {
-			LogTool.warn(e);
+			LogUtils.warn(e);
 		}
 	}
 

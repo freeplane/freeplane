@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.icon.IconStore;
 import org.freeplane.features.common.icon.UIIcon;
@@ -111,7 +111,7 @@ public class EncryptionModel implements IExtension {
 				isDecrypted = true;
 			}
 			catch (final Exception e) {
-				LogTool.severe(e);
+				LogUtils.severe(e);
 				setAccessible(false);
 				return true;
 			}
@@ -163,7 +163,7 @@ public class EncryptionModel implements IExtension {
 				generateEncryptedContent(mapController);
 			}
 			catch (final Exception e) {
-				LogTool.severe(e);
+				LogUtils.severe(e);
 			}
 		}
 		return encryptedContent;
@@ -197,7 +197,7 @@ public class EncryptionModel implements IExtension {
 			mapController.insertNodeIntoWithoutUndo(node, target, target.getChildCount());
 		}
 		catch (final Exception ee) {
-			LogTool.severe(ee);
+			LogUtils.severe(ee);
 		}
 	}
 

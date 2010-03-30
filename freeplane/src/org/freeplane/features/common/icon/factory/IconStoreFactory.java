@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.icon.IconGroup;
 import org.freeplane.features.common.icon.IconNotFound;
 import org.freeplane.features.common.icon.IconStore;
@@ -71,7 +71,7 @@ public class IconStoreFactory {
 	private static void setIconGroups(final IconStore iconStore) {
 		final String[] groupNames = RESOURCE_CONTROLLER.getProperty(GROUP_NAMES_KEY).split(SEPARATOR);
 		for (final String groupName : groupNames) {
-			final String description = TextUtil.getText(String.format(GROUP_DESC_KEY, groupName));
+			final String description = TextUtils.getText(String.format(GROUP_DESC_KEY, groupName));
 			List<MindIcon> icons;
 			UIIcon groupIcon = null;
 			if ("user".equals(groupName)) {

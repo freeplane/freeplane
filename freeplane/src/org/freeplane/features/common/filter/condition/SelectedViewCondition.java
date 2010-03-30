@@ -22,7 +22,7 @@ package org.freeplane.features.common.filter.condition;
 import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -56,7 +56,7 @@ public class SelectedViewCondition implements ISelectableCondition {
 	@Override
 	public String toString() {
 		if (SelectedViewCondition.description == null) {
-			SelectedViewCondition.description = TextUtil.getText("filter_selected_node_view");
+			SelectedViewCondition.description = TextUtils.getText("filter_selected_node_view");
 		}
 		return SelectedViewCondition.description;
 	}

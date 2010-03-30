@@ -43,7 +43,7 @@ import java.util.Vector;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -95,10 +95,10 @@ public class ClipboardController implements IExtension {
 			    getAsHTML(selectedNodes), null, null);
 		}
 		catch (final UnsupportedFlavorException ex) {
-			LogTool.severe(ex);
+			LogUtils.severe(ex);
 		}
 		catch (final IOException ex) {
-			LogTool.severe(ex);
+			LogUtils.severe(ex);
 		}
 		return null;
 	}
@@ -114,7 +114,7 @@ public class ClipboardController implements IExtension {
 			    saveInvisible, true);
 		}
 		catch (final IOException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		return new MindMapNodesSelection(stringWriter.toString(), null, null, null, null, null);
 	}
@@ -165,7 +165,7 @@ public class ClipboardController implements IExtension {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 			return null;
 		}
 	}
@@ -181,7 +181,7 @@ public class ClipboardController implements IExtension {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 			return null;
 		}
 	}
@@ -195,7 +195,7 @@ public class ClipboardController implements IExtension {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 			return null;
 		}
 	}
@@ -258,7 +258,7 @@ public class ClipboardController implements IExtension {
 			return true;
 		}
 		catch (final Exception e) {
-			LogTool.severe("Error in MindMapMapModel.saveTXT(): ", e);
+			LogUtils.severe("Error in MindMapMapModel.saveTXT(): ", e);
 			return false;
 		}
 	}
@@ -284,7 +284,7 @@ public class ClipboardController implements IExtension {
 			return copy;
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 			return null;
 		}
 	}
@@ -347,7 +347,7 @@ public class ClipboardController implements IExtension {
 			return true;
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 			return false;
 		}
 	}

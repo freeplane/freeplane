@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.print.Printable;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 
 class PrintAction extends AbstractPrintAction {
 	static final String NAME = "print";
@@ -57,7 +57,7 @@ class PrintAction extends AbstractPrintAction {
 				printController.getPrinterJob().print();
 			}
 			catch (final Exception ex) {
-				LogTool.severe(ex);
+				LogUtils.severe(ex);
 			}
 		}
 	}

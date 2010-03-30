@@ -22,7 +22,7 @@ package org.freeplane.features.common.filter.condition;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -57,7 +57,7 @@ public class NoFilteringCondition implements ISelectableCondition {
 	@Override
 	public String toString() {
 		if (NoFilteringCondition.description == null) {
-			NoFilteringCondition.description = TextUtil.getText("filter_no_filtering");
+			NoFilteringCondition.description = TextUtils.getText("filter_no_filtering");
 		}
 		return NoFilteringCondition.description;
 	}

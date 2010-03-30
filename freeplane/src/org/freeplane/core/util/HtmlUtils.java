@@ -37,7 +37,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /** */
-public class HtmlTools {
+public class HtmlUtils {
 	public static class IndexPair {
 		public boolean mIsAlreadyAppended = false;
 		public boolean mIsTag;
@@ -84,22 +84,22 @@ public class HtmlTools {
 	private static final Pattern FIND_TAGS_PATTERN = Pattern.compile("([^<]*)(<[^>]+>)");
 	private static final Pattern HTML_PATTERN = Pattern.compile("(?s)^\\s*<\\s*html.*?>.*");
 	private static Pattern[] PATTERNS;
-	private static HtmlTools sInstance = new HtmlTools();
+	private static HtmlUtils sInstance = new HtmlUtils();
 	private static final Pattern SLASHED_TAGS_PATTERN = Pattern.compile("<((" + "br|area|base|basefont|"
 	        + "bgsound|button|col|colgroup|embed|hr" + "|img|input|isindex|keygen|link|meta"
 	        + "|object|plaintext|spacer|wbr" + ")(\\s[^>]*)?)/>");
 	private static final Pattern TAGS_PATTERN = Pattern.compile("(?s)<[^><]*>");
 
-	public static HtmlTools getInstance() {
-		return HtmlTools.sInstance;
+	public static HtmlUtils getInstance() {
+		return HtmlUtils.sInstance;
 	}
 
 	public static String htmlToPlain(final String text) {
-		return HtmlTools.htmlToPlain(text, /* strictHTMLOnly= */true);
+		return HtmlUtils.htmlToPlain(text, /* strictHTMLOnly= */true);
 	}
 
 	public static String htmlToPlain(final String text, final boolean strictHTMLOnly) {
-		if (strictHTMLOnly && !HtmlTools.isHtmlNode(text)) {
+		if (strictHTMLOnly && !HtmlUtils.isHtmlNode(text)) {
 			return text;
 		}
 		if (PATTERNS == null) {
@@ -129,7 +129,7 @@ public class HtmlTools {
 		intermediate = PATTERNS[12].matcher(intermediate).replaceAll("");
 		intermediate = PATTERNS[13].matcher(intermediate).replaceAll("");
 		intermediate = intermediate.trim();
-		intermediate = HtmlTools.unescapeHTMLUnicodeEntity(intermediate);
+		intermediate = HtmlUtils.unescapeHTMLUnicodeEntity(intermediate);
 		intermediate = PATTERNS[14].matcher(intermediate).replaceAll("<");
 		intermediate = PATTERNS[15].matcher(intermediate).replaceAll(">");
 		intermediate = PATTERNS[16].matcher(intermediate).replaceAll("\"");
@@ -150,7 +150,7 @@ public class HtmlTools {
 				return false;
 			}
 		}
-		return HtmlTools.HTML_PATTERN.matcher(text.toLowerCase(Locale.ENGLISH)).matches();
+		return HtmlUtils.HTML_PATTERN.matcher(text.toLowerCase(Locale.ENGLISH)).matches();
 	}
 
 	public static String plainToHTML(final String text) {
@@ -191,7 +191,7 @@ public class HtmlTools {
 	}
 
 	public static String removeAllTagsFromString(final String text) {
-		return HtmlTools.TAGS_PATTERN.matcher(text).replaceAll("");
+		return HtmlUtils.TAGS_PATTERN.matcher(text).replaceAll("");
 	}
 
 	/**
@@ -199,8 +199,8 @@ public class HtmlTools {
 	 * make it compareable.
 	 */
 	public static String removeHtmlTagsFromString(final String text) {
-		if (HtmlTools.isHtmlNode(text)) {
-			return HtmlTools.removeAllTagsFromString(text);
+		if (HtmlUtils.isHtmlNode(text)) {
+			return HtmlUtils.removeAllTagsFromString(text);
 		}
 		else {
 			return text;
@@ -350,7 +350,7 @@ public class HtmlTools {
 	/**
 	 *
 	 */
-	private HtmlTools() {
+	private HtmlUtils() {
 		super();
 	}
 
@@ -393,7 +393,7 @@ public class HtmlTools {
 		String stringWithoutTags = null;
 		{
 			final StringBuffer sb = new StringBuffer();
-			final Matcher matcher = HtmlTools.FIND_TAGS_PATTERN.matcher(text);
+			final Matcher matcher = HtmlUtils.FIND_TAGS_PATTERN.matcher(text);
 			int lastMatchEnd = 0;
 			while (matcher.find()) {
 				final String textWithoutTag = matcher.group(1);
@@ -478,20 +478,20 @@ public class HtmlTools {
 			return true;
 		}
 		catch (final SAXParseException e) {
-			LogTool.warn("XmlParseError on line " + e.getLineNumber() + " of " + xml, e);
+			LogUtils.warn("XmlParseError on line " + e.getLineNumber() + " of " + xml, e);
 		}
 		catch (final Exception e) {
-			LogTool.severe("XmlParseError", e);
+			LogUtils.severe("XmlParseError", e);
 		}
 		return false;
 	}
 
 	public static String toHtml(final String xhtmlText) {
-		return HtmlTools.SLASHED_TAGS_PATTERN.matcher(xhtmlText).replaceAll("<$1>");
+		return HtmlUtils.SLASHED_TAGS_PATTERN.matcher(xhtmlText).replaceAll("<$1>");
 	}
 
 	public static String toXhtml(String htmlText) {
-		if (!HtmlTools.isHtmlNode(htmlText)) {
+		if (!HtmlUtils.isHtmlNode(htmlText)) {
 			return null;
 		}
 		final StringReader reader = new StringReader(htmlText);
@@ -499,16 +499,16 @@ public class HtmlTools {
 		try {
 			XHTMLWriter.html2xhtml(reader, writer);
 			final String resultXml = writer.toString();
-			if (!HtmlTools.isWellformedXml(resultXml)) {
-				return HtmlTools.toXMLEscapedText(htmlText);
+			if (!HtmlUtils.isWellformedXml(resultXml)) {
+				return HtmlUtils.toXMLEscapedText(htmlText);
 			}
 			return resultXml;
 		}
 		catch (final IOException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		catch (final BadLocationException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		htmlText = htmlText.replaceAll("<", "&gt;");
 		htmlText = htmlText.replaceAll(">", "&lt;");
@@ -533,7 +533,7 @@ public class HtmlTools {
 	}
 
 	static public String combineTextWithExceptionInfo(final String text, final Exception ex) {
-		final String escaped = HtmlTools.toXMLEscapedText(text).replaceAll("\n", "<br>\n");
+		final String escaped = HtmlUtils.toXMLEscapedText(text).replaceAll("\n", "<br>\n");
 		final StringBuilder sb = new StringBuilder();
 		sb.append("<html><body>");
 		sb.append(ex.getClass().getSimpleName());
@@ -546,12 +546,12 @@ public class HtmlTools {
 	}
 
 	public static String element(final String name, final String content) {
-		return HtmlTools.element(name, null, content);
+		return HtmlUtils.element(name, null, content);
 	}
 
 	public static String element(final String name, final Map<String, String> attributes, final String content) {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("<").append(name).append(HtmlTools.toAttributeString(attributes)).append(">");
+		builder.append("<").append(name).append(HtmlUtils.toAttributeString(attributes)).append(">");
 		if (content != null && content.length() > 0) {
 			builder.append(content);
 		}

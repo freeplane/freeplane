@@ -42,8 +42,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
@@ -159,7 +159,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
 			styleSheet.removeStyle("p");
 			styleSheet.removeStyle("body");
-			getBase().getEditControl().split(HtmlTools.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()),
+			getBase().getEditControl().split(HtmlUtils.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()),
 			    htmlEditorPanel.getCaretPosition());
 			super.split();
 		}
@@ -173,7 +173,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("p");
 			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("body");
 			if (htmlEditorPanel.needsSaving()) {
-				getBase().getEditControl().ok(HtmlTools.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()));
+				getBase().getEditControl().ok(HtmlUtils.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()));
 			}
 			else {
 				getBase().getEditControl().cancel();
@@ -252,8 +252,8 @@ class EditNodeWYSIWYG extends EditNodeBase {
 				UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, getController(), node);
 			}
 			String content = node.toString();
-			if (!HtmlTools.isHtmlNode(content)) {
-				content = HtmlTools.plainToHTML(content);
+			if (!HtmlUtils.isHtmlNode(content)) {
+				content = HtmlUtils.plainToHTML(content);
 			}
 			htmlEditorPanel.setCurrentDocumentContent(content);
 			if (firstEvent instanceof KeyEvent) {
@@ -270,7 +270,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			EditNodeWYSIWYG.htmlEditorWindow.show();
 		}
 		catch (final Exception ex) {
-			LogTool.severe("Loading of WYSIWYG HTML editor failed. Use the other editors instead.", ex);
+			LogUtils.severe("Loading of WYSIWYG HTML editor failed. Use the other editors instead.", ex);
 		}
 	}
 }

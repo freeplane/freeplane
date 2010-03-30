@@ -41,7 +41,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
@@ -122,7 +122,7 @@ public class OptionPanel {
 				rightBuilder = new DefaultFormBuilder(rightLayout);
 				rightBuilder.setDefaultDialogBorder();
 				lastTabName = newTab.getLabel();
-				final JButton tabButton = new JButton(TextUtil.getOptionalText(lastTabName));
+				final JButton tabButton = new JButton(TextUtils.getOptionalText(lastTabName));
 				final ChangeTabAction changeTabAction = new ChangeTabAction(cardLayout, rightStack, lastTabName);
 				tabButton.addActionListener(changeTabAction);
 				registerTabButton(tabButton, lastTabName, changeTabAction);
@@ -142,14 +142,14 @@ public class OptionPanel {
 		    rightComponent);
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
 		final JButton cancelButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtil.getText("cancel"));
+		MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getText("cancel"));
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				closeWindow();
 			}
 		});
 		final JButton okButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okButton, TextUtil.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getText("ok"));
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				feedback.writeProperties(getOptionProperties());

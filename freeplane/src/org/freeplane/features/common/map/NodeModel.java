@@ -37,8 +37,8 @@ import org.freeplane.core.controller.INodeViewVisitor;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.SmallExtensionMap;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.XmlTool;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.XmlUtils;
 import org.freeplane.features.common.filter.Filter;
 import org.freeplane.features.common.filter.FilterInfo;
 import org.freeplane.features.common.icon.MindIcon;
@@ -290,7 +290,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public String getPlainTextContent() {
-		return HtmlTools.htmlToPlain(getText());
+		return HtmlUtils.htmlToPlain(getText());
 	}
 
 	public String getShortText() {
@@ -560,8 +560,8 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public final void setText(final String text) {
-		userObject = XmlTool.makeValidXml(text);
-		xmlText = HtmlTools.toXhtml(text);
+		userObject = XmlUtils.makeValidXml(text);
+		xmlText = HtmlUtils.toXhtml(text);
 		if (xmlText != null && !xmlText.startsWith("<")) {
 			userObject = " " + text;
 			xmlText = null;
@@ -598,8 +598,8 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public final void setXmlText(final String pXmlText) {
-		xmlText = XmlTool.makeValidXml(pXmlText);
-		userObject = HtmlTools.toHtml(xmlText);
+		xmlText = XmlUtils.makeValidXml(pXmlText);
+		userObject = HtmlUtils.toHtml(xmlText);
 	}
 
 	@Override

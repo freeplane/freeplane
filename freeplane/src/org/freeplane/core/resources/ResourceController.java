@@ -33,7 +33,7 @@ import java.util.Vector;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.AController.IActionOnChange;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 
 /**
  * @author Dimitry Polivaev
@@ -51,7 +51,7 @@ public abstract class ResourceController {
 
 	static public void setResourceController(final ResourceController resourceController) {
 		ResourceController.resourceController = resourceController;
-		LogTool.info("called ResourceController.setResourceController(...)");
+		LogUtils.info("called ResourceController.setResourceController(...)");
 	}
 
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();

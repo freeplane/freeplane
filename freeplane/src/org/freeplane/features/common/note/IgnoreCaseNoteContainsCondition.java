@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.common.note;
 
-import org.freeplane.core.util.HtmlTools;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -44,7 +44,7 @@ public class IgnoreCaseNoteContainsCondition extends NoteContainsCondition {
 	@Override
 	protected String getText(final NodeModel node) {
 		final String noteText = NoteModel.getNoteText(node);
-		return noteText == null ? null : HtmlTools.htmlToPlain(noteText).toLowerCase();
+		return noteText == null ? null : HtmlUtils.htmlToPlain(noteText).toLowerCase();
 	}
 
 	@Override

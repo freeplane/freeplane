@@ -49,7 +49,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
@@ -138,7 +138,7 @@ class SelectMenuItemDialog extends JDialog {
 	}
 
 	public SelectMenuItemDialog(final Controller controller, final NodeModel node) {
-		super(UITools.getFrame(), TextUtil.getText("select_menu_item_dialog"), true);
+		super(UITools.getFrame(), TextUtils.getText("select_menu_item_dialog"), true);
 		controller.getViewController().scrollNodeToVisible(node);
 		UITools.setDialogLocationRelativeTo(this, controller, node);
 		setSize(DIALOG_DIMENSION);
@@ -167,7 +167,7 @@ class SelectMenuItemDialog extends JDialog {
 
 	private JButton createButton(final String key, final CloseAction closeAction) {
 		final JButton button = new JButton();
-		MenuBuilder.setLabelAndMnemonic(button, TextUtil.getText(key));
+		MenuBuilder.setLabelAndMnemonic(button, TextUtils.getText(key));
 		button.addActionListener(closeAction);
 		button.setMaximumSize(new Dimension(1000, 1000));
 		return button;
@@ -178,7 +178,7 @@ class SelectMenuItemDialog extends JDialog {
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		final DefaultMutableTreeNode menuRoot = menuBuilder.get(SELECTION_ROOT_KEY);
 		final Object rootLabel = (menuRoot.getUserObject() instanceof JMenuItem) ? SelectMenuItemDialog
-		    .convert(menuRoot) : TextUtil.getText("select_menu_item_root_node");
+		    .convert(menuRoot) : TextUtils.getText("select_menu_item_root_node");
 		final DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(rootLabel);
 		SelectMenuItemDialog.addChildrenRecursive(treeRoot, menuRoot.children());
 		final JTree jTree = new JTree(treeRoot);

@@ -21,7 +21,7 @@ package org.freeplane.features.common.attribute;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.IListModel;
 
 /**
@@ -36,7 +36,7 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 	 */
 	private static final long serialVersionUID = 1L;
 	static private String visibilityColumnName = null;
-	final private String allAttributes = TextUtil.getText("attributes_all");
+	final private String allAttributes = TextUtils.getText("attributes_all");
 	final private AttributeRegistry attributeRegistry;
 
 	AttributeRegistryTableModel(final AttributeRegistry registry) {
@@ -109,22 +109,22 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 		switch (column) {
 			case 0:
 				if (AttributeRegistryTableModel.attributeColumnName == null) {
-					AttributeRegistryTableModel.attributeColumnName = TextUtil.getText("attributes_attribute");
+					AttributeRegistryTableModel.attributeColumnName = TextUtils.getText("attributes_attribute");
 				}
 				return AttributeRegistryTableModel.attributeColumnName;
 			case 1:
 				if (AttributeRegistryTableModel.visibilityColumnName == null) {
-					AttributeRegistryTableModel.visibilityColumnName = TextUtil.getText("attributes_visible");
+					AttributeRegistryTableModel.visibilityColumnName = TextUtils.getText("attributes_visible");
 				}
 				return AttributeRegistryTableModel.visibilityColumnName;
 			case 2:
 				if (AttributeRegistryTableModel.restrictionColumnName == null) {
-					AttributeRegistryTableModel.restrictionColumnName = TextUtil.getText("attributes_restriction");
+					AttributeRegistryTableModel.restrictionColumnName = TextUtils.getText("attributes_restriction");
 				}
 				return AttributeRegistryTableModel.restrictionColumnName;
 			case 3:
 				if (AttributeRegistryTableModel.editorColumnName == null) {
-					AttributeRegistryTableModel.editorColumnName = TextUtil.getText("attributes_edit");
+					AttributeRegistryTableModel.editorColumnName = TextUtils.getText("attributes_edit");
 				}
 				return AttributeRegistryTableModel.editorColumnName;
 		}

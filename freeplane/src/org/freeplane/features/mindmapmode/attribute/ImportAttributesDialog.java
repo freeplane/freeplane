@@ -47,7 +47,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
@@ -150,10 +150,10 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 
 	public ImportAttributesDialog(final Controller controller, final Component parentComponent) {
 		super(controller.getViewController().getFrame(),
-		    TextUtil.removeMnemonic(TextUtil.getText("attributes_import")), true);
+		    TextUtils.removeMnemonic(TextUtils.getText("attributes_import")), true);
 		this.controller = controller;
 		this.parentComponent = parentComponent;
-		final TreeNodeInfo nodeInfo = new TreeNodeInfo(TextUtil.getText("attribute_top"));
+		final TreeNodeInfo nodeInfo = new TreeNodeInfo(TextUtils.getText("attribute_top"));
 		topNode = new DefaultMutableTreeNode(nodeInfo);
 		treeModel = new DefaultTreeModel(topNode);
 		tree = new JTree(treeModel);
@@ -166,7 +166,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		final Box buttons = Box.createHorizontalBox();
 		buttons.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final JButton okBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okBtn, TextUtil.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(okBtn, TextUtils.getText("ok"));
 		okBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				performImport(topNode);
@@ -174,7 +174,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 			}
 		});
 		final JButton cancelBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(cancelBtn, TextUtil.getText("cancel"));
+		MenuBuilder.setLabelAndMnemonic(cancelBtn, TextUtils.getText("cancel"));
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				dispose();
@@ -320,7 +320,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	public void show() {
 		createMapSubTrees(topNode);
 		if (topNode.getChildCount() == 0) {
-			JOptionPane.showMessageDialog(parentComponent, TextUtil.getText("attributes_no_import_candidates_found"),
+			JOptionPane.showMessageDialog(parentComponent, TextUtils.getText("attributes_no_import_candidates_found"),
 			    getTitle(), JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}

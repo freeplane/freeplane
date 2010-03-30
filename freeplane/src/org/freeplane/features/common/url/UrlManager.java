@@ -50,9 +50,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.FileUtil;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
@@ -75,7 +75,7 @@ public class UrlManager implements IExtension {
 	 * @throws FileNotFoundException
 	 */
 	protected static Reader getActualReader(final InputStream file) throws FileNotFoundException {
-		return new InputStreamReader(file, FileUtil.defaultCharset());
+		return new InputStreamReader(file, FileUtils.defaultCharset());
 	}
 
 	public static UrlManager getController(final ModeController modeController) {
@@ -109,12 +109,12 @@ public class UrlManager implements IExtension {
 						final Source xsltSource = new StreamSource(xsltInputStream);
 						input = new BufferedInputStream(new FileInputStream(file));
 						final InputStream cleanedInput = new CleaningInputStream(input);
-						final Reader reader = new InputStreamReader(cleanedInput, FileUtil.defaultCharset());
+						final Reader reader = new InputStreamReader(cleanedInput, FileUtils.defaultCharset());
 						final Transformer trans = transFact.newTransformer(xsltSource);
 						trans.transform(new StreamSource(reader), result);
 					}
 					catch (final Exception ex) {
-						LogTool.warn(ex);
+						LogUtils.warn(ex);
 						thrownException = ex;
 					}
 					finally {
@@ -148,8 +148,8 @@ public class UrlManager implements IExtension {
 		}
 		catch (final Exception ex) {
 			final String message = ex.getMessage();
-			UITools.errorMessage(TextUtil.formatText("update_failed", String.valueOf(message)));
-			LogTool.warn(ex);
+			UITools.errorMessage(TextUtils.formatText("update_failed", String.valueOf(message)));
+			LogUtils.warn(ex);
 			final InputStream input = new BufferedInputStream(new FileInputStream(file));
 			return UrlManager.getActualReader(input);
 		}
@@ -218,7 +218,7 @@ public class UrlManager implements IExtension {
 		final String exceptionType = ex.getClass().getName();
 		if (exceptionType.equals("freeplane.main.XMLParseException")) {
 			final int showDetail = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
-			    TextUtil.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+			    TextUtils.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
 				UITools.errorMessage(ex);
 			}
@@ -227,7 +227,7 @@ public class UrlManager implements IExtension {
 			UITools.errorMessage(ex.getMessage());
 		}
 		else {
-			LogTool.severe(ex);
+			LogUtils.severe(ex);
 			UITools.errorMessage(ex);
 		}
 	}
@@ -241,12 +241,12 @@ public class UrlManager implements IExtension {
 		}
 		catch (final AccessControlException ex) {
 			UITools.errorMessage("Could not open URL " + url + ". Access Denied.");
-			LogTool.warn(ex.getMessage());
+			LogUtils.warn(ex.getMessage());
 			return;
 		}
 		catch (final Exception ex) {
 			UITools.errorMessage("Could not open URL " + url + ".");
-			LogTool.warn(ex.getMessage());
+			LogUtils.warn(ex.getMessage());
 			return;
 		}
 		try {
@@ -261,7 +261,7 @@ public class UrlManager implements IExtension {
 			}
 		}
 		catch (final Exception ex) {
-			LogTool.severe(ex);
+			LogUtils.severe(ex);
 			return;
 		}
 	}
@@ -278,13 +278,13 @@ public class UrlManager implements IExtension {
 				}
 			}
 			catch (final Exception e) {
-				LogTool.warn("link " + target + " not found", e);
-				UITools.errorMessage(TextUtil.formatText("link_not_found", target));
+				LogUtils.warn("link " + target + " not found", e);
+				UITools.errorMessage(TextUtils.formatText("link_not_found", target));
 			}
 			return;
 		}
 		try {
-			final String extension = FileUtil.getExtension(uri.getRawPath());
+			final String extension = FileUtils.getExtension(uri.getRawPath());
 			uri = getAbsoluteUri(uri);
 			try {
 				if ((extension != null)
@@ -303,14 +303,14 @@ public class UrlManager implements IExtension {
 				getController().getViewController().openDocument(uri);
 			}
 			catch (final Exception e) {
-				LogTool.warn("link " + uri + " not found", e);
-				UITools.errorMessage(TextUtil.formatText("link_not_found", uri.toString()));
+				LogUtils.warn("link " + uri + " not found", e);
+				UITools.errorMessage(TextUtils.formatText("link_not_found", uri.toString()));
 			}
 			return;
 		}
 		catch (final MalformedURLException ex) {
-			LogTool.warn("URL " + uriString + " not found", ex);
-			UITools.errorMessage(TextUtil.formatText("link_not_found", uriString));
+			LogUtils.warn("URL " + uriString + " not found", ex);
+			UITools.errorMessage(TextUtils.formatText("link_not_found", uriString));
 		}
 	}
 

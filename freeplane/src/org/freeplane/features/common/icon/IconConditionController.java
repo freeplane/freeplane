@@ -27,7 +27,7 @@ import javax.swing.ListModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
@@ -74,12 +74,12 @@ class IconConditionController implements IElementaryConditionController {
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(TextUtil.createTranslatedString(FILTER_ICON));
+		list.addElement(TextUtils.createTranslatedString(FILTER_ICON));
 		return list;
 	}
 
 	public Object[] getIconConditionNames() {
-		return new NamedObject[] { TextUtil.createTranslatedString(ConditionFactory.FILTER_CONTAINS), };
+		return new NamedObject[] { TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS), };
 	}
 
 	public ComboBoxEditor getValueEditor() {

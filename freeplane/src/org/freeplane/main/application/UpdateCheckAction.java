@@ -25,7 +25,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 /**
  * Checks for updates.
@@ -114,7 +114,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 				continue;
 			}
 			ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
-			final String updateAvailable = TextUtil.formatText("new_version_available", lastVersion.toString());
+			final String updateAvailable = TextUtils.formatText("new_version_available", lastVersion.toString());
 			putValue(SHORT_DESCRIPTION, updateAvailable);
 			putValue(LONG_DESCRIPTION, updateAvailable);
 			if (menuBuilder.get(UPDATE_BUTTON_PATH) == null) {
@@ -237,7 +237,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 			    new URL(ResourceController.getResourceController().getProperty(WEB_DOWNLOAD_LOCATION_KEY)));
 		}
 		catch (final MalformedURLException ex) {
-			UITools.errorMessage(TextUtil.getText("url_error") + "\n" + ex);
+			UITools.errorMessage(TextUtils.getText("url_error") + "\n" + ex);
 		}
 		catch (final Exception ex) {
 			UITools.errorMessage(ex);
@@ -248,10 +248,10 @@ class UpdateCheckAction extends AFreeplaneAction {
 		final Box messagePane = Box.createVerticalBox();
 		final JLabel messageLabel;
 		if (newVersion != null) {
-			messageLabel = new JLabel(TextUtil.formatText(info, newVersion.toString()));
+			messageLabel = new JLabel(TextUtils.formatText(info, newVersion.toString()));
 		}
 		else {
-			messageLabel = new JLabel(TextUtil.getText(info));
+			messageLabel = new JLabel(TextUtils.getText(info));
 		}
 		messageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		messagePane.add(messageLabel);
@@ -262,19 +262,19 @@ class UpdateCheckAction extends AFreeplaneAction {
 		historyPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		messagePane.add(historyPane);
 		final JCheckBox updateAutomatically = new JCheckBox(
-		    TextUtil.getText("OptionPanel.check_updates_automatically"), ResourceController.getResourceController()
+		    TextUtils.getText("OptionPanel.check_updates_automatically"), ResourceController.getResourceController()
 		        .getBooleanProperty(CHECK_UPDATES_AUTOMATICALLY));
 		updateAutomatically.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		messagePane.add(updateAutomatically);
 		final Object[] options;
 		if (newVersion != null) {
-			options = new Object[] { TextUtil.getText("download"), TextUtil.removeMnemonic(TextUtil.getText("cancel")) };
+			options = new Object[] { TextUtils.getText("download"), TextUtils.removeMnemonic(TextUtils.getText("cancel")) };
 		}
 		else {
-			options = new Object[] { TextUtil.removeMnemonic(TextUtil.getText("CloseAction.text")) };
+			options = new Object[] { TextUtils.removeMnemonic(TextUtils.getText("CloseAction.text")) };
 		}
 		final int choice = JOptionPane.showOptionDialog(getController().getViewController().getFrame(), messagePane,
-		    TextUtil.getText("updatecheckdialog"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+		    TextUtils.getText("updatecheckdialog"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
 		    options, options[0]);
 		ResourceController.getResourceController().setProperty(CHECK_UPDATES_AUTOMATICALLY,
 		    Boolean.toString(updateAutomatically.isSelected()));

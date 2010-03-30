@@ -48,9 +48,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FixedHTMLWriter;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
@@ -159,7 +159,7 @@ public class MClipboardController extends ClipboardController {
 					mapController.insertNode(newModel, target, asSibling, isLeft, wasLeft != isLeft);
 				}
 				catch (final XMLException e) {
-					LogTool.severe("error on paste", e);
+					LogUtils.severe("error on paste", e);
 				}
 			}
 			nodeTreeCreator.finish(target);
@@ -328,7 +328,7 @@ public class MClipboardController extends ClipboardController {
 						headerFound = true;
 					}
 					catch (final NumberFormatException e) {
-						LogTool.severe(e);
+						LogUtils.severe(e);
 					}
 				}
 				else {
@@ -372,10 +372,10 @@ public class MClipboardController extends ClipboardController {
 				split(doc, parent, htmlFragments, 0);
 			}
 			catch (final IOException e) {
-				LogTool.severe(e);
+				LogUtils.severe(e);
 			}
 			catch (final BadLocationException e) {
-				LogTool.severe(e);
+				LogUtils.severe(e);
 			}
 			return htmlFragments.toArray(new TextFragment[htmlFragments.size()]);
 		}
@@ -430,7 +430,7 @@ public class MClipboardController extends ClipboardController {
 		    "cut_out_pictures_when_pasting_html"), "true")) {
 			in = in.replaceAll("(?i)(?s)<img[^>]*>", "");
 		}
-		in = HtmlTools.unescapeHTMLUnicodeEntity(in);
+		in = HtmlUtils.unescapeHTMLUnicodeEntity(in);
 		return in;
 	}
 
@@ -611,7 +611,7 @@ public class MClipboardController extends ClipboardController {
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		if (asSibling && !mapController.isWriteable(target.getParentNode()) || !asSibling
 		        && !mapController.isWriteable(target)) {
-			final String message = TextUtil.getText("node_is_write_protected");
+			final String message = TextUtils.getText("node_is_write_protected");
 			UITools.errorMessage(message);
 			return;
 		}

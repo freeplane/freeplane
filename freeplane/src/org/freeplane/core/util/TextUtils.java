@@ -7,7 +7,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 
-public class TextUtil {
+public class TextUtils {
 	/**
 	 * Example: expandPlaceholders("Hello $1.","Dolly"); => "Hello Dolly."
 	 */
@@ -31,29 +31,29 @@ public class TextUtil {
 	}
 
 	public static String format(final String resourceKey, final Object... messageArguments) {
-		final MessageFormat formatter = new MessageFormat(TextUtil.getText(resourceKey));
+		final MessageFormat formatter = new MessageFormat(TextUtils.getText(resourceKey));
 		final String stringResult = formatter.format(messageArguments);
 		return stringResult;
 	}
 
 	public static String formatText(final String key, final String s1) {
-		final String format = TextUtil.getText(key);
+		final String format = TextUtils.getText(key);
 		if (format == null) {
 			return null;
 		}
-		return TextUtil.expandPlaceholders(format, s1);
+		return TextUtils.expandPlaceholders(format, s1);
 	}
 
 	public static String formatText(final String key, final String s1, final String s2) {
-		final String format = TextUtil.getText(key);
+		final String format = TextUtils.getText(key);
 		if (format == null) {
 			return null;
 		}
-		return TextUtil.expandPlaceholders(format, s1, s2);
+		return TextUtils.expandPlaceholders(format, s1, s2);
 	}
 
 	public static String getOptionalText(final String string) {
-		return string == null ? null : TextUtil.getText(string);
+		return string == null ? null : TextUtils.getText(string);
 	}
 
 	public static String removeMnemonic(final String rawLabel) {
@@ -73,7 +73,7 @@ public class TextUtil {
 	}
 
 	public static NamedObject createTranslatedString(final String key) {
-		final String fs = TextUtil.getText(key);
+		final String fs = TextUtils.getText(key);
 		return new NamedObject(key, fs);
 	}
 

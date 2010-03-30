@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.common.link;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 
 /**
@@ -62,8 +62,8 @@ public class ConnectorLabelEqualsCondition extends ConnectorLabelCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String condition = TextUtil.getText(LinkConditionController.CONNECTOR_LABEL);
-		final String simpleCondition = TextUtil.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
+		final String condition = TextUtils.getText(LinkConditionController.CONNECTOR_LABEL);
+		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
 		return ConditionFactory.createDescription(condition, simpleCondition, getText(), ignoreCase());
 	}
 

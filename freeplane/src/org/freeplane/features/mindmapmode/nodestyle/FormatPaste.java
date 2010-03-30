@@ -25,7 +25,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.map.NodeModel;
 
@@ -85,7 +85,7 @@ class FormatPaste extends AMultipleNodeAction {
 	private void pasteFormat(final NodeModel node) {
 		final NodeModel pattern = FormatCopy.getPattern();
 		if (pattern == null) {
-			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), TextUtil
+			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), TextUtils
 			    .getText("no_format_copy_before_format_paste"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
 			return;
 		}

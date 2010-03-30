@@ -34,7 +34,7 @@ import org.freeplane.core.resources.ResourceController;
 /**
  * @author foltin
  */
-public class LogTool {
+public class LogUtils {
 	//	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static final Logger LOGGER = Logger.global;
 	static private boolean loggerCreated = false;
@@ -73,7 +73,7 @@ public class LogTool {
 			System.setErr(new PrintStream(los, true));
 		}
 		catch (final Exception e) {
-			LogTool.warn("Error creating logging File Handler", e);
+			LogUtils.warn("Error creating logging File Handler", e);
 		}
 	}
 
@@ -107,7 +107,7 @@ public class LogTool {
 	}
 
 	public static void severe(final Throwable e) {
-		LogTool.severe("", e);
+		LogUtils.severe("", e);
 	}
 
 	public static void warn(final String msg) {
@@ -119,6 +119,6 @@ public class LogTool {
 	}
 
 	public static void warn(final Throwable e) {
-		LogTool.warn("", e);
+		LogUtils.warn("", e);
 	}
 }

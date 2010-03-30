@@ -6,7 +6,7 @@ package org.freeplane.plugin.script.proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.NodeModel;
@@ -33,7 +33,7 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 			return true;
 		}
 		catch (final URISyntaxException e) {
-			LogTool.warn(e);
+			LogUtils.warn(e);
 			return false;
 		}
 	}

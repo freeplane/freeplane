@@ -29,9 +29,9 @@ import javax.swing.JFileChooser;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.FileUtil;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
@@ -52,7 +52,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle(TextUtil.getText("select_favorites_folder"));
+		chooser.setDialogTitle(TextUtils.getText("select_favorites_folder"));
 		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File folder = chooser.getSelectedFile();
@@ -90,11 +90,11 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 				}
 			}
 			for (int i = 0; i < list.length; i++) {
-				if (!list[i].isDirectory() && FileUtil.getExtension(list[i]).equals("url")) {
+				if (!list[i].isDirectory() && FileUtils.getExtension(list[i]).equals("url")) {
 					favoritesFound = true;
 					BufferedReader in = null;
 					try {
-						final NodeModel node = addNode(target, FileUtil.removeExtension(list[i].getName()));
+						final NodeModel node = addNode(target, FileUtils.removeExtension(list[i].getName()));
 						in = new BufferedReader(new FileReader(list[i]));
 						String line = null;
 						while ((line = in.readLine()) != null) {
@@ -106,7 +106,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 						}
 					}
 					catch (final Exception e) {
-						LogTool.severe(e);
+						LogUtils.severe(e);
 					}
 					finally {
 						try {
@@ -115,7 +115,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 							}
 						}
 						catch (final IOException e) {
-							LogTool.warn(e);
+							LogUtils.warn(e);
 						}
 					}
 				}

@@ -15,7 +15,7 @@ import java.util.Properties;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 
-public class FileUtil {
+public class FileUtils {
 	public static void copyFromURL(final URL resource, final File destinationDirectory) {
 		final String path = resource.getPath();
 		final int index = path.lastIndexOf('/');
@@ -23,10 +23,10 @@ public class FileUtil {
 		try {
 			final InputStream in = resource.openStream();
 			final OutputStream out = new FileOutputStream(new File(destinationDirectory, fileName));
-			FileUtil.copyStream(in, out);
+			FileUtils.copyStream(in, out);
 		}
 		catch (final Exception e) {
-			LogTool.severe("File not found or could not be copied. " + "Was searching for " + path
+			LogUtils.severe("File not found or could not be copied. " + "Was searching for " + path
 			        + " and should go to " + destinationDirectory.getAbsolutePath());
 		}
 	}
@@ -44,15 +44,15 @@ public class FileUtil {
 				resource = ResourceController.getResourceController().getResource(pathToResource);
 			}
 			if (resource == null) {
-				LogTool.severe("Cannot find resource: " + pathToResource);
+				LogUtils.severe("Cannot find resource: " + pathToResource);
 				return;
 			}
 			final InputStream in = new BufferedInputStream(resource.openStream());
 			final OutputStream out = new FileOutputStream(new File(destinationDirectory, fileName));
-			FileUtil.copyStream(in, out);
+			FileUtils.copyStream(in, out);
 		}
 		catch (final Exception e) {
-			LogTool.severe("File not found or could not be copied. " + "Was searching for " + pathToResource
+			LogUtils.severe("File not found or could not be copied. " + "Was searching for " + pathToResource
 			        + " and should go to " + destinationDirectory.getAbsolutePath());
 		}
 	}
@@ -80,7 +80,7 @@ public class FileUtil {
 	public static Properties loadProperties(final String classpathRessource) {
 		final Properties props = new Properties();
 		try {
-			props.load(FileUtil.class.getResource(classpathRessource).openStream());
+			props.load(FileUtils.class.getResource(classpathRessource).openStream());
 		}
 		catch (final IOException e) {
 			throw new RuntimeException(e);
@@ -109,7 +109,7 @@ public class FileUtil {
 	}
 
 	public static String slurpFile(final String fileName) throws IOException {
-		return FileUtil.slurpFile(new File(fileName));
+		return FileUtils.slurpFile(new File(fileName));
 	}
 
 	public static Charset defaultCharset() {
@@ -129,7 +129,7 @@ public class FileUtil {
 	 * Returns the lowercase of the extension of a file.
 	 */
 	public static String getExtension(final File f) {
-		return FileUtil.getExtension(f.toString());
+		return FileUtils.getExtension(f.toString());
 	}
 
 	/**
@@ -178,13 +178,13 @@ public class FileUtil {
 			bufferedReader.close();
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 			if (bufferedReader != null) {
 				try {
 					bufferedReader.close();
 				}
 				catch (final Exception ex) {
-					LogTool.severe(ex);
+					LogUtils.severe(ex);
 				}
 			}
 			return null;
@@ -212,7 +212,7 @@ public class FileUtil {
 				}
 			}
 			catch (final Exception e) {
-				LogTool.severe(e);
+				LogUtils.severe(e);
 			}
 		}
 	}

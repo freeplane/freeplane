@@ -25,8 +25,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -57,8 +57,8 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtil.getOptionalText(getLabel()), spinner);
-		label.setToolTipText(TextUtil.getOptionalText(getDescription()));
+		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), spinner);
+		label.setToolTipText(TextUtils.getOptionalText(getDescription()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {
@@ -72,12 +72,12 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 			intValue = Integer.parseInt(value);
 			final int stepModul = (intValue - min) % step;
 			if (intValue < min || intValue > max || (stepModul != 0)) {
-				LogTool.severe("Actual value of property " + getName() + " is not in the allowed range: " + value);
+				LogUtils.severe("Actual value of property " + getName() + " is not in the allowed range: " + value);
 				intValue = min;
 			}
 		}
 		catch (final NumberFormatException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		spinner.setValue(new Integer(intValue));
 	}

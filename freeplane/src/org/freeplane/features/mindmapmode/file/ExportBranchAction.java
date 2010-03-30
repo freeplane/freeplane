@@ -34,8 +34,8 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.FileUtil;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
@@ -81,7 +81,7 @@ class ExportBranchAction extends AFreeplaneAction {
 		final int returnVal = chooser.showSaveDialog(controller.getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
-			final String ext = FileUtil.getExtension(chosenFile.getName());
+			final String ext = FileUtils.getExtension(chosenFile.getName());
 			if (!ext.equals(org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				chosenFile = new File(chosenFile.getParent(), chosenFile.getName()
 				        + org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION);
@@ -95,7 +95,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			}
 			if (chosenFile.exists()) {
 				final int overwriteMap = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(),
-				    TextUtil.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+				    TextUtils.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {
 					return;
 				}

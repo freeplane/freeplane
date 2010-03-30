@@ -24,7 +24,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -83,7 +83,7 @@ public class DisjunctConditions implements ISelectableCondition {
 		rendererComponent.setOpaque(false);
 		component.add(rendererComponent);
 		for (int i = 1; i < conditions.length; i++) {
-			final String or = TextUtil.removeMnemonic(TextUtil.getText("filter_or"));
+			final String or = TextUtils.removeMnemonic(TextUtils.getText("filter_or"));
 			final String text = ' ' + or + ' ';
 			component.add(new JLabel(text));
 			cond = conditions[i];

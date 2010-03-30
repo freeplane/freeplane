@@ -64,8 +64,8 @@ import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -271,7 +271,7 @@ public class MenuBuilder extends UIBuilder {
 				try {
 					final AFreeplaneAction theAction = modeController.getAction(action);
 					if (theAction == null) {
-						LogTool.severe("action " + action + " not found");
+						LogUtils.severe("action " + action + " not found");
 						return null;
 					}
 					if (tag.equals("menu_radio_action")) {
@@ -287,7 +287,7 @@ public class MenuBuilder extends UIBuilder {
 					}
 				}
 				catch (final Exception e) {
-					LogTool.severe(e);
+					LogUtils.severe(e);
 				}
 				return menuPath;
 			}
@@ -304,7 +304,7 @@ public class MenuBuilder extends UIBuilder {
 				if (!contains(menuPath.path)) {
 					if (tag.equals("menu_submenu")) {
 						final JMenu menuItem = new JMenu();
-						MenuBuilder.setLabelAndMnemonic(menuItem, TextUtil.getText(attributes.getAttribute("name_ref",
+						MenuBuilder.setLabelAndMnemonic(menuItem, TextUtils.getText(attributes.getAttribute("name_ref",
 						    null)));
 						addMenuItem(menuPath.parentPath, menuItem, menuPath.path, MenuBuilder.AS_CHILD);
 					}
@@ -363,14 +363,14 @@ public class MenuBuilder extends UIBuilder {
 
 	static public JMenu createMenu(final String name) {
 		final JMenu menu = new JMenu();
-		final String text = TextUtil.getText(name);
+		final String text = TextUtils.getText(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
 
 	static public JMenuItem createMenuItem(final String name) {
 		final JMenuItem menu = new JMenuItem();
-		final String text = TextUtil.getText(name);
+		final String text = TextUtils.getText(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
@@ -383,30 +383,30 @@ public class MenuBuilder extends UIBuilder {
 				final String shortcutKey = (String) property.getKey();
 				final String keystrokeString = (String) property.getValue();
 				if (!shortcutKey.startsWith(SHORTCUT_PROPERTY_PREFIX)) {
-					LogTool.warn("wrong property key " + shortcutKey);
+					LogUtils.warn("wrong property key " + shortcutKey);
 					continue;
 				}
 				final int pos = shortcutKey.indexOf("/", SHORTCUT_PROPERTY_PREFIX.length());
 				if (pos <= 0) {
-					LogTool.warn("wrong property key " + shortcutKey);
+					LogUtils.warn("wrong property key " + shortcutKey);
 					continue;
 				}
 				final String modeName = shortcutKey.substring(SHORTCUT_PROPERTY_PREFIX.length(), pos);
 				final String itemKey = shortcutKey.substring(pos + 1);
 				final ModeController modeController = controller.getModeController(modeName);
 				if (modeController == null) {
-					LogTool.warn("unknown mode name in " + shortcutKey);
+					LogUtils.warn("unknown mode name in " + shortcutKey);
 					continue;
 				}
 				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 				final Node node = (Node) menuBuilder.get(itemKey);
 				if (node == null) {
-					LogTool.warn("wrong key in " + shortcutKey);
+					LogUtils.warn("wrong key in " + shortcutKey);
 					continue;
 				}
 				final Object obj = node.getUserObject();
 				if (!(obj instanceof JMenuItem)) {
-					LogTool.warn("wrong key in " + shortcutKey);
+					LogUtils.warn("wrong key in " + shortcutKey);
 					continue;
 				}
 				final KeyStroke keyStroke;
@@ -458,7 +458,7 @@ public class MenuBuilder extends UIBuilder {
 		if (rawLabel == null) {
 			return;
 		}
-		item.setText(TextUtil.removeMnemonic(rawLabel));
+		item.setText(TextUtils.removeMnemonic(rawLabel));
 		final int mnemoSignIndex = rawLabel.indexOf("&");
 		if (mnemoSignIndex >= 0 && mnemoSignIndex + 1 < rawLabel.length()) {
 			final char charAfterMnemoSign = rawLabel.charAt(mnemoSignIndex + 1);

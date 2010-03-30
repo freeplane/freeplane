@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.map.ModeController;
@@ -39,7 +39,7 @@ class EdgeWidthAction extends AMultipleNodeAction {
 	private static String getWidthTitle(final ModeController controller, final int width) {
 		String returnValue;
 		if (width <= 0) {
-			returnValue = TextUtil.getText(EdgeWidthAction.width2String(width) + ".text");
+			returnValue = TextUtils.getText(EdgeWidthAction.width2String(width) + ".text");
 		}
 		else {
 			returnValue = Integer.toString(width);

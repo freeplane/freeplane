@@ -29,7 +29,7 @@ import java.util.ListIterator;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.HtmlTools;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.MindIcon;
@@ -437,7 +437,7 @@ class MindMapHTMLWriter {
 				end = output.length();
 			}
 			output = output.substring(start, end);
-			fileout.write(HtmlTools.unicodeToHTMLUnicodeEntity(output));
+			fileout.write(HtmlUtils.unicodeToHTMLUnicodeEntity(output));
 		}
 		else {
 			fileout.write(MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(model.toString()));

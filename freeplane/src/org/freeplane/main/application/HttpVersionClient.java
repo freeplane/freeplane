@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.freeplane.core.controller.FreeplaneVersion;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 
 /**
  * Handles communication with update webservice.
@@ -74,11 +74,11 @@ class HttpVersionClient {
 			return;
 		}
 		catch (final IOException e) {
-			LogTool.warn("Could not read update url - check your internet connection.");
+			LogUtils.warn("Could not read update url - check your internet connection.");
 			return;
 		}
 		catch (final IllegalArgumentException e) {
-			LogTool.warn("Could not read version.");
+			LogUtils.warn("Could not read version.");
 			return;
 		}
 		finally {
@@ -87,7 +87,7 @@ class HttpVersionClient {
 					in.close();
 				}
 				catch (final IOException e) {
-					LogTool.warn("Couldn't close buffered reader.");
+					LogUtils.warn("Couldn't close buffered reader.");
 					return;
 				}
 			}

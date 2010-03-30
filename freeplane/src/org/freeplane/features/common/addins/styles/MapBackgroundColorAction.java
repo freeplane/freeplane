@@ -27,7 +27,7 @@ import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 /**
  * @author Dimitry Polivaev
@@ -64,7 +64,7 @@ class MapBackgroundColorAction extends AFreeplaneAction {
 			oldBackgroundColor = ColorUtils.stringToColor(colorPropertyString);
 		}
 		final Color actionColor = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection()
-		    .getSelected(), TextUtil.getText("choose_map_background_color"), oldBackgroundColor);
+		    .getSelected(), TextUtils.getText("choose_map_background_color"), oldBackgroundColor);
 		mapStyle.setBackgroundColor(model, actionColor);
 	}
 }

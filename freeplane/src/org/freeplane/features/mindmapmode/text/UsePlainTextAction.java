@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.util.HtmlTools;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
 
@@ -40,8 +40,8 @@ class UsePlainTextAction extends AMultipleNodeAction {
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final String nodeText = node.getText();
-		if (HtmlTools.isHtmlNode(nodeText)) {
-			((MTextController) TextController.getController(getModeController())).setNodeText(node, HtmlTools
+		if (HtmlUtils.isHtmlNode(nodeText)) {
+			((MTextController) TextController.getController(getModeController())).setNodeText(node, HtmlUtils
 			    .htmlToPlain(nodeText));
 		}
 	}

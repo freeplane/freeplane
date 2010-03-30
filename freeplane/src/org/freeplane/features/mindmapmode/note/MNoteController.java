@@ -46,7 +46,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
@@ -305,7 +305,7 @@ public class MNoteController extends NoteController {
 					    .openDocument(new URL(pE.getActionCommand()));
 				}
 				catch (final Exception e) {
-					LogTool.severe(e);
+					LogUtils.severe(e);
 				}
 			}
 		});

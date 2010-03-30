@@ -30,8 +30,8 @@ import javax.swing.JOptionPane;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.FileUtil;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.url.UrlManager;
 
@@ -67,12 +67,12 @@ abstract public class ExportAction extends AFreeplaneAction {
 		}
 		File chosenFile = chooser.getSelectedFile();
 		UrlManager.getController(mindMapController).setLastCurrentDir(chosenFile.getParentFile());
-		final String ext = FileUtil.getExtension(chosenFile.getName());
+		final String ext = FileUtils.getExtension(chosenFile.getName());
 		if (!StringUtils.equalsIgnoreCase(ext, type)) {
 			chosenFile = new File(chosenFile.getParent(), chosenFile.getName() + "." + type);
 		}
 		if (chosenFile.exists()) {
-			final String overwriteText = MessageFormat.format(TextUtil.getText("file_already_exists"),
+			final String overwriteText = MessageFormat.format(TextUtils.getText("file_already_exists"),
 			    new Object[] { chosenFile.toString() });
 			final int overwriteMap = JOptionPane.showConfirmDialog(component, overwriteText, overwriteText,
 			    JOptionPane.YES_NO_OPTION);

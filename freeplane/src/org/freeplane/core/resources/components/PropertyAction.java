@@ -36,7 +36,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanel.IOptionPanelFeedback;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 /**
  * @author foltin
@@ -72,7 +72,7 @@ public class PropertyAction extends AFreeplaneAction {
 					ResourceController.getResourceController().setProperty(key, newProperty);
 				}
 				if (propertiesChanged) {
-					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtil
+					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils
 					    .getText("option_changes_may_require_restart"));
 					ResourceController.getResourceController().saveProperties(getController());
 				}

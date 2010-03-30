@@ -18,7 +18,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.scilab.forge.jlatexmath.TeXConstants;
@@ -41,7 +41,7 @@ class JLatexViewer extends JComponent {
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setModel(latexExtension);
 		if (JLatexViewer.editorTitle == null) {
-			JLatexViewer.editorTitle = TextUtil.getText("plugins/latex/LatexNodeHook.editorTitle");
+			JLatexViewer.editorTitle = TextUtils.getText("plugins/latex/LatexNodeHook.editorTitle");
 		}
 		addMouseListener(new MouseAdapter() {
 			@Override

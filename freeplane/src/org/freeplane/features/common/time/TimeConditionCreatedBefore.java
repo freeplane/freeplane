@@ -21,7 +21,7 @@ package org.freeplane.features.common.time;
 
 import java.util.Date;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -46,9 +46,9 @@ public class TimeConditionCreatedBefore extends TimeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String filterTime = TextUtil.getText(TimeConditionController.FILTER_TIME);
+		final String filterTime = TextUtils.getText(TimeConditionController.FILTER_TIME);
 		final String dateAsString = TimeCondition.format(getDate());
-		final String before = TextUtil.getText(FILTER_CREATED_BEFORE);
+		final String before = TextUtils.getText(FILTER_CREATED_BEFORE);
 		return ConditionFactory.createDescription(filterTime, before, dateAsString, false);
 	}
 

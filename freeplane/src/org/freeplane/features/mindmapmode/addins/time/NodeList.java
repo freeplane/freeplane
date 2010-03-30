@@ -78,10 +78,10 @@ import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.SysUtil;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.SysUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.MindIcon;
@@ -137,7 +137,7 @@ class NodeList {
 							mFlatNodeTableFilterModel.setFilter(text);
 						}
 						catch (final BadLocationException e) {
-							LogTool.severe(e);
+							LogUtils.severe(e);
 							mFlatNodeTableFilterModel.resetFilter();
 						}
 					}
@@ -152,7 +152,7 @@ class NodeList {
 				mTypeDelayTimer.cancel();
 				mTypeDelayTimer = null;
 			}
-			mTypeDelayTimer = SysUtil.createTimer(getClass().getSimpleName());
+			mTypeDelayTimer = SysUtils.createTimer(getClass().getSimpleName());
 			mTypeDelayTimer.schedule(new DelayedTextEntry(event), NodeList.TYPE_DELAY_TIME);
 		}
 
@@ -336,7 +336,7 @@ class NodeList {
 			final String nodeText = node.getText();
 			if (untaggedNodeText == null || (originalNodeText != null && !originalNodeText.equals(nodeText))) {
 				originalNodeText = nodeText;
-				untaggedNodeText = HtmlTools.removeHtmlTagsFromString(nodeText).replaceAll("\\s+", " ");
+				untaggedNodeText = HtmlUtils.removeHtmlTagsFromString(nodeText).replaceAll("\\s+", " ");
 			}
 			return untaggedNodeText;
 		}
@@ -387,7 +387,7 @@ class NodeList {
 			}
 			if (untaggedNotesText == null || (originalNotesText != null && !originalNotesText.equals(notesText))) {
 				originalNotesText = notesText;
-				untaggedNotesText = HtmlTools.removeHtmlTagsFromString(notesText).replaceAll("\\s+", " ");
+				untaggedNotesText = HtmlUtils.removeHtmlTagsFromString(notesText).replaceAll("\\s+", " ");
 			}
 			return untaggedNotesText;
 		}
@@ -490,7 +490,7 @@ class NodeList {
 			p = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
 		}
 		catch (final PatternSyntaxException e) {
-			UITools.errorMessage(TextUtil.format("wrong_regexp", searchString, e.getMessage()));
+			UITools.errorMessage(TextUtils.format("wrong_regexp", searchString, e.getMessage()));
 			return;
 		}
 		final String replacement = NodeList.getPureRegularExpression(replaceString);
@@ -499,7 +499,7 @@ class NodeList {
 			final NodeHolder nodeHolder = info.getNodeHolderAt(i);
 			final String text = nodeHolder.node.getText();
 			final String replaceResult;
-			if (HtmlTools.isHtmlNode(text)) {
+			if (HtmlUtils.isHtmlNode(text)) {
 				replaceResult = NodeList.replace(p, replacement, text);
 			}
 			else {
@@ -515,7 +515,7 @@ class NodeList {
 		Object before;
 		do {
 			before = replaceResult;
-			replaceResult = HtmlTools.getInstance().getReplaceResult(p, replacement, replaceResult);
+			replaceResult = HtmlUtils.getInstance().getReplaceResult(p, replacement, replaceResult);
 		} while (!replaceResult.equals(before));
 		return replaceResult;
 	}
@@ -613,7 +613,7 @@ class NodeList {
 			mFilterTextSearchField.setText("");
 		}
 		catch (final BadLocationException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 	}
 
@@ -652,12 +652,12 @@ class NodeList {
 	}
 
 	public void startup() {
-		NodeList.COLUMN_MODIFIED = TextUtil.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
-		NodeList.COLUMN_CREATED = TextUtil.getText(PLUGINS_TIME_LIST_XML_CREATED);
-		NodeList.COLUMN_ICONS = TextUtil.getText(PLUGINS_TIME_LIST_XML_ICONS);
-		NodeList.COLUMN_TEXT = TextUtil.getText(PLUGINS_TIME_LIST_XML_TEXT);
-		NodeList.COLUMN_DATE = TextUtil.getText(PLUGINS_TIME_LIST_XML_DATE);
-		NodeList.COLUMN_NOTES = TextUtil.getText(PLUGINS_TIME_LIST_XML_NOTES);
+		NodeList.COLUMN_MODIFIED = TextUtils.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
+		NodeList.COLUMN_CREATED = TextUtils.getText(PLUGINS_TIME_LIST_XML_CREATED);
+		NodeList.COLUMN_ICONS = TextUtils.getText(PLUGINS_TIME_LIST_XML_ICONS);
+		NodeList.COLUMN_TEXT = TextUtils.getText(PLUGINS_TIME_LIST_XML_TEXT);
+		NodeList.COLUMN_DATE = TextUtils.getText(PLUGINS_TIME_LIST_XML_DATE);
+		NodeList.COLUMN_NOTES = TextUtils.getText(PLUGINS_TIME_LIST_XML_NOTES);
 		dialog = new JDialog(modeController.getController().getViewController().getFrame(), true /* modal */);
 		String windowTitle;
 		if (showAllNodes) {
@@ -666,7 +666,7 @@ class NodeList {
 		else {
 			windowTitle = PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE;
 		}
-		dialog.setTitle(TextUtil.getText(windowTitle));
+		dialog.setTitle(TextUtils.getText(windowTitle));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
 			@Override
@@ -689,7 +689,7 @@ class NodeList {
 		gbl.columnWeights = new double[] { 1.0f };
 		gbl.rowWeights = new double[] { 1.0f };
 		contentPane.setLayout(gbl);
-		contentPane.add(new JLabel(TextUtil.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)), new GridBagConstraints(0, 0, 1,
+		contentPane.add(new JLabel(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)), new GridBagConstraints(0, 0, 1,
 		    1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextSearchField = new JTextField();
 		mFilterTextSearchField.getDocument().addDocumentListener(new FilterTextDocumentListener());
@@ -703,7 +703,7 @@ class NodeList {
 		});
 		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		contentPane.add(new JLabel(TextUtil.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)), new GridBagConstraints(0, 2,
+		contentPane.add(new JLabel(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)), new GridBagConstraints(0, 2,
 		    1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextReplaceField = new JTextField();
 		contentPane.add(/* new JScrollPane */(mFilterTextReplaceField), new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0,
@@ -743,7 +743,7 @@ class NodeList {
 		mTreeLabel = new JLabel();
 		contentPane.add(new JScrollPane(mTreeLabel), new GridBagConstraints(0, 5, 1, 1, 1.0, 1.0,
 		    GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-		final AbstractAction selectAction = new AbstractAction(TextUtil.getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
+		final AbstractAction selectAction = new AbstractAction(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
 			/**
 			     * 
 			     */
@@ -754,7 +754,7 @@ class NodeList {
 			}
 		};
 		final JButton selectButton = new JButton(selectAction);
-		final AbstractAction exportAction = new AbstractAction(TextUtil.getText("plugins/TimeManagement.xml_Export")) {
+		final AbstractAction exportAction = new AbstractAction(TextUtils.getText("plugins/TimeManagement.xml_Export")) {
 			/**
 			     * 
 			     */
@@ -765,7 +765,7 @@ class NodeList {
 			}
 		};
 		final JButton exportButton = new JButton(exportAction);
-		final AbstractAction replaceAllAction = new AbstractAction(TextUtil
+		final AbstractAction replaceAllAction = new AbstractAction(TextUtils
 		    .getText("plugins/TimeManagement.xml_Replace_All")) {
 			/**
 			     * 
@@ -777,7 +777,7 @@ class NodeList {
 			}
 		};
 		final JButton replaceAllButton = new JButton(replaceAllAction);
-		final AbstractAction replaceSelectedAction = new AbstractAction(TextUtil
+		final AbstractAction replaceSelectedAction = new AbstractAction(TextUtils
 		    .getText("plugins/TimeManagement.xml_Replace_Selected")) {
 			/**
 			     * 
@@ -789,7 +789,7 @@ class NodeList {
 			}
 		};
 		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
-		final AbstractAction gotoAction = new AbstractAction(TextUtil.getText("plugins/TimeManagement.xml_Goto")) {
+		final AbstractAction gotoAction = new AbstractAction(TextUtils.getText("plugins/TimeManagement.xml_Goto")) {
 			/**
 			     * 
 			     */
@@ -801,7 +801,7 @@ class NodeList {
 			}
 		};
 		final JButton gotoButton = new JButton(gotoAction);
-		final AbstractAction disposeAction = new AbstractAction(TextUtil.getText(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
+		final AbstractAction disposeAction = new AbstractAction(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
 			/**
 			     * 
 			     */
@@ -822,7 +822,7 @@ class NodeList {
 		contentPane.add(/* new JScrollPane */(bar), new GridBagConstraints(0, 6, 1, 1, 1.0, 1.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		final JMenuBar menuBar = new JMenuBar();
-		final JMenu menu = new JMenu(TextUtil.getText("plugins/TimeManagement.xml_menu_actions"));
+		final JMenu menu = new JMenu(TextUtils.getText("plugins/TimeManagement.xml_menu_actions"));
 		final AbstractAction[] actionList = new AbstractAction[] { selectAction, gotoAction, replaceSelectedAction,
 		        replaceAllAction, exportAction, disposeAction };
 		for (int i = 0; i < actionList.length; i++) {

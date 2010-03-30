@@ -21,7 +21,7 @@ package org.freeplane.core.resources.components;
 
 import javax.swing.JLabel;
 
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -46,7 +46,7 @@ public class Text implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		builder.append(new JLabel(TextUtil.getOptionalText(getLabel())), builder.getColumnCount() - builder.getColumn()
+		builder.append(new JLabel(TextUtils.getOptionalText(getLabel())), builder.getColumnCount() - builder.getColumn()
 		        + 1);
 		builder.nextLine();
 	}

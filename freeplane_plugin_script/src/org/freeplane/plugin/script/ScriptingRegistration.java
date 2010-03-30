@@ -32,7 +32,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
@@ -166,7 +166,7 @@ class ScriptingRegistration {
 		final ScriptingConfiguration configuration = new ScriptingConfiguration();
 		final String scriptsParentLocation = MENU_BAR_SCRIPTING_LOCATION;
 		final String scriptsLocation = scriptsParentLocation + "/scripts";
-		addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtil.getText("ExecuteScripts.text"));
+		addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));
 		for (final Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
 			final String scriptName = entry.getKey();
 			final String location = scriptsLocation + "/" + scriptName;
@@ -194,7 +194,7 @@ class ScriptingRegistration {
 	                         final boolean cacheContent) {
 		final String scriptName = entry.getKey();
 		final String key = ExecuteScriptAction.getExecutionModeKey(executionMode);
-		final String menuName = TextUtil.format(key, new Object[] { scriptName });
+		final String menuName = TextUtils.format(key, new Object[] { scriptName });
 		menuBuilder.addAction(location, new ExecuteScriptAction(controller, scriptingEngine, scriptName, menuName,
 		    entry.getValue(), executionMode, cacheContent), MenuBuilder.AS_CHILD);
 	}

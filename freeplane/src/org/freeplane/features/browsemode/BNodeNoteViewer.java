@@ -32,7 +32,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.HtmlTools;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.NodeModel;
@@ -93,7 +93,7 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 	}
 
 	private void setTextWithExceptionInfo(final String text, final Exception ex) {
-		final String string = HtmlTools.combineTextWithExceptionInfo(text, ex);
+		final String string = HtmlUtils.combineTextWithExceptionInfo(text, ex);
 		noteViewer.setText(string);
 	}
 

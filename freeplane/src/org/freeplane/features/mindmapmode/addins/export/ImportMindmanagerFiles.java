@@ -43,7 +43,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -91,7 +91,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 				final String xsltFileName = "/xslt/mindmanager2mm.xsl";
 				final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);
 				if (xsltUrl == null) {
-					LogTool.severe("Can't find " + xsltFileName + " as resource.");
+					LogUtils.severe("Can't find " + xsltFileName + " as resource.");
 					throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");
 				}
 				final InputStream xsltFile = xsltUrl.openStream();
@@ -108,13 +108,13 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 			}
 		}
 		catch (final IOException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		catch (final XMLParseException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 		catch (final URISyntaxException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 	}
 
@@ -128,7 +128,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 			return null;
 		}
 		return writer.toString();

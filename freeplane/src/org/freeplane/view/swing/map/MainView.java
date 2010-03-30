@@ -53,8 +53,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.FileUtil;
-import org.freeplane.core.util.HtmlTools;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.IconStore;
@@ -370,7 +370,7 @@ public abstract class MainView extends JLabel {
 		}
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		return osNameStart.equals("Win")
-		        && executableExtensions.contains(FileUtil.getExtension(linkText.toLowerCase()));
+		        && executableExtensions.contains(FileUtils.getExtension(linkText.toLowerCase()));
 	}
 
 	void updateText(String nodeText) {
@@ -429,13 +429,13 @@ public abstract class MainView extends JLabel {
 			String text = "<html><table border=1 style=\"border-color: white\">";
 			for (int line = startingLine; line < lines.length; line++) {
 				text += "<tr><td style=\"border-color: white;\">"
-				        + HtmlTools.toXMLEscapedText(lines[line])
+				        + HtmlUtils.toXMLEscapedText(lines[line])
 				            .replaceAll("\t", "<td style=\"border-color: white\">");
 			}
 			setText(text);
 		}
 		else if (isLong) {
-			String text = HtmlTools.plainToHTML(nodeText);
+			String text = HtmlUtils.plainToHTML(nodeText);
 			if (widthMustBeRestricted) {
 				text = text.replaceFirst("(?i)<p>", "<p width=\"" + map.getMaxNodeWidth() + "\">");
 			}
@@ -503,7 +503,7 @@ public abstract class MainView extends JLabel {
 	}
 
 	private void setTextWithExceptionInfo(final String text, final Exception ex) {
-		final String string = HtmlTools.combineTextWithExceptionInfo(text, ex);
+		final String string = HtmlUtils.combineTextWithExceptionInfo(text, ex);
 		super.setText(string);
 	}
 

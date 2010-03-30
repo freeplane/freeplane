@@ -31,8 +31,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapWriter.Mode;
@@ -67,7 +67,7 @@ class RevertAction extends AFreeplaneAction {
 					mapController.newMap(Compat.fileToUrl(new File(this.getLocalFileName())));
 				}
 				else {
-					String filePrefix = TextUtil.getText("freeplane_reverted");
+					String filePrefix = TextUtils.getText("freeplane_reverted");
 					if (this.getFilePrefix() != null) {
 						filePrefix = this.getFilePrefix();
 					}
@@ -81,7 +81,7 @@ class RevertAction extends AFreeplaneAction {
 				}
 			}
 			catch (final Exception e) {
-				LogTool.severe(e);
+				LogUtils.severe(e);
 			}
 		}
 
@@ -130,14 +130,14 @@ class RevertAction extends AFreeplaneAction {
 		try {
 			final File file = getController().getMap().getFile();
 			if (file == null) {
-				UITools.errorMessage(TextUtil.getText("map_not_saved"));
+				UITools.errorMessage(TextUtils.getText("map_not_saved"));
 				return;
 			}
 			final RevertActionInstance doAction = createRevertXmlAction(file);
 			doAction.act();
 		}
 		catch (final IOException e) {
-			LogTool.severe(e);
+			LogUtils.severe(e);
 		}
 	}
 

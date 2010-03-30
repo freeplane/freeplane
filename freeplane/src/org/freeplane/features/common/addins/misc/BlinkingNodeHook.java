@@ -36,7 +36,7 @@ import org.freeplane.core.controller.INodeViewVisitor;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.SysUtil;
+import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapChangeEvent;
@@ -61,7 +61,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 			final MapController mapController = getModeController().getMapController();
 			mapController.addMapChangeListener(this);
 			mapController.addMapLifeCycleListener(this);
-			timer = SysUtil.createTimer(getClass().getSimpleName());
+			timer = SysUtils.createTimer(getClass().getSimpleName());
 			timer.schedule(this, 500, 500);
 			BlinkingNodeHook.colors.clear();
 			BlinkingNodeHook.colors.add(Color.BLUE);

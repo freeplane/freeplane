@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mindmapmode.MModeController;
 
 class SaveAction extends AFreeplaneAction {
@@ -40,10 +40,10 @@ class SaveAction extends AFreeplaneAction {
 		final boolean success = ((MModeController) getModeController()).save();
 		final Controller controller = getController();
 		if (success) {
-			controller.getViewController().out(TextUtil.getText("saved"));
+			controller.getViewController().out(TextUtils.getText("saved"));
 		}
 		else {
-			controller.getViewController().out(TextUtil.getText("saving_canceled"));
+			controller.getViewController().out(TextUtils.getText("saving_canceled"));
 		}
 		controller.getViewController().setTitle();
 	}

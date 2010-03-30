@@ -30,8 +30,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.TextUtil;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -39,7 +39,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 	static public Vector<String> translate(final String[] possibles) {
 		final Vector<String> possibleTranslations = new Vector<String>(possibles.length);
 		for (int i = 0; i < possibles.length; i++) {
-			possibleTranslations.add(TextUtil.getText("OptionPanel." + possibles[i]));
+			possibleTranslations.add(TextUtils.getText("OptionPanel." + possibles[i]));
 		}
 		return possibleTranslations;
 	}
@@ -73,8 +73,8 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtil.getOptionalText(getLabel()), mComboBox);
-		label.setToolTipText(TextUtil.getOptionalText(getDescription()));
+		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), mComboBox);
+		label.setToolTipText(TextUtils.getOptionalText(getDescription()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {
@@ -87,7 +87,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 			mComboBox.setSelectedIndex(possibleValues.indexOf(value));
 		}
 		else {
-			LogTool.severe("Can't set the value:" + value + " into the combo box " + getName() + "/" + getLabel());
+			LogUtils.severe("Can't set the value:" + value + " into the combo box " + getName() + "/" + getLabel());
 			if (mComboBox.getModel().getSize() > 0) {
 				mComboBox.setSelectedIndex(0);
 			}

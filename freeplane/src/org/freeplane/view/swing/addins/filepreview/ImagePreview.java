@@ -11,7 +11,7 @@ import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.BitmapViewerComponent;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.view.swing.addins.filepreview.ViewerController.FactoryFileFilter;
 
 /* ImagePreview.java by FileChooserDemo2.java. */
@@ -31,11 +31,11 @@ public class ImagePreview extends BitmapImagePreview {
 			viewer = filter.getFactory().createViewer(file.getAbsoluteFile().toURI(), size);
 		}
 		catch (final MalformedURLException e) {
-			LogTool.warn(e);
+			LogUtils.warn(e);
 			return;
 		}
 		catch (final IOException e) {
-			LogTool.warn(e);
+			LogUtils.warn(e);
 			return;
 		}
 		if (viewer == null) {
