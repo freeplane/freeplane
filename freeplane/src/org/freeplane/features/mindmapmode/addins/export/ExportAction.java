@@ -33,6 +33,7 @@ import org.freeplane.core.model.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.FileUtil;
 
 /**
  * @author foltin
@@ -66,7 +67,7 @@ abstract public class ExportAction extends AFreeplaneAction {
 		}
 		File chosenFile = chooser.getSelectedFile();
 		UrlManager.getController(mindMapController).setLastCurrentDir(chosenFile.getParentFile());
-		final String ext = UrlManager.getExtension(chosenFile.getName());
+		final String ext = FileUtil.getExtension(chosenFile.getName());
 		if (!StringUtils.equalsIgnoreCase(ext, type)) {
 			chosenFile = new File(chosenFile.getParent(), chosenFile.getName() + "." + type);
 		}

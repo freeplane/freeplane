@@ -40,8 +40,8 @@ import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.FileUtil;
 import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
 /**
@@ -126,7 +126,7 @@ public class ExportDialog {
 		// And then use it
 		final String absolutePathWithoutExtension;
 		if(xmlSourceFile != null){
-			absolutePathWithoutExtension = UrlManager.removeExtension(xmlSourceFile.getAbsolutePath());
+			absolutePathWithoutExtension = FileUtil.removeExtension(xmlSourceFile.getAbsolutePath());
 		}
 		else{
 			absolutePathWithoutExtension = null;

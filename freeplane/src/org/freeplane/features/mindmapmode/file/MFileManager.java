@@ -69,6 +69,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.FileUtil;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MMapModel;
@@ -95,7 +96,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			if (f.isDirectory()) {
 				return true;
 			}
-			final String extension = UrlManager.getExtension(f.getName());
+			final String extension = FileUtil.getExtension(f.getName());
 			if (extension != null) {
 				if (extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 					return true;
@@ -388,7 +389,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		int versionInfoLength = 1000;
 		final byte[] buffer = new byte[versionInfoLength];
 		final int readCount = file.read(buffer);
-		final String mapStart = new String(buffer, defaultCharset().name());
+		final String mapStart = new String(buffer, FileUtil.defaultCharset().name());
 		final ByteArrayInputStream readBytes = new ByteArrayInputStream(buffer, 0, readCount);
 		final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
 		Reader reader = null;
@@ -527,7 +528,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 		File f = chooser.getSelectedFile();
 		setLastCurrentDir(f.getParentFile());
-		final String ext = UrlManager.getExtension(f.getName());
+		final String ext = FileUtil.getExtension(f.getName());
 		if (!ext.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 			f = new File(f.getParent(), f.getName() + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION);
 		}

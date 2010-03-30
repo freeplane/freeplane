@@ -22,7 +22,7 @@ package org.freeplane.core.controller;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import org.freeplane.core.util.ResUtil;
+import org.freeplane.core.util.FileUtil;
 
 public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	private static final FreeplaneVersion VERSION = FreeplaneVersion.loadVersion();
@@ -71,7 +71,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	}
 
 	private static FreeplaneVersion loadVersion() {
-		final Properties versionProperties = ResUtil.loadProperties(VERSION_PROPERTIES);
+		final Properties versionProperties = FileUtil.loadProperties(VERSION_PROPERTIES);
 		final String versionString = versionProperties.getProperty(VERSION_KEY);
 		final String versionStatus = versionProperties.getProperty("freeplane_version_status");
 		final FreeplaneVersion version = FreeplaneVersion.getVersion(versionString);

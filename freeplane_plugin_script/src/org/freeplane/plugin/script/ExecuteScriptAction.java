@@ -31,7 +31,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.ResUtil;
+import org.freeplane.core.util.FileUtil;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**
@@ -78,7 +78,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		try {
 			String scriptContent = getContentIfCached();
 			if (scriptContent == null)
-				scriptContent = ResUtil.slurpFile(script);
+				scriptContent = FileUtil.slurpFile(script);
 			List<NodeModel> nodes = new ArrayList<NodeModel>();
 			if (mode == ExecutionMode.ON_SINGLE_NODE)
 				nodes.add(getController().getSelection().getSelected());
@@ -116,7 +116,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 
 	private String getContentIfCached() throws IOException {
 	    if (cacheContent && content == null) {
-	    	content = ResUtil.slurpFile(script);
+	    	content = FileUtil.slurpFile(script);
 	    	// oops, logtool seems to be inoperable right now
 	    	LogTool.info("cached " + String.format("%.1f", content.length()/1000.) + " KB for script " + script);
 	    	System.out.println("cached " + String.format("%.1f", content.length()/1000.) + " KB for script " + script);

@@ -28,8 +28,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.FileUtil;
 
 /**
  * @author Daniel Polansky
@@ -63,7 +63,7 @@ class EditNodeExternalApplication extends EditNodeBase {
 					    .format(new String[] { temporaryFile.toString() });
 					final Process htmlEditorProcess = Controller.exec(expandedHtmlEditingCommand);
 					htmlEditorProcess.waitFor();
-					final String content = UrlManager.readFile(temporaryFile);
+					final String content = FileUtil.readFile(temporaryFile);
 					if (content == null) {
 						getEditControl().cancel();
 					}

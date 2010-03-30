@@ -36,9 +36,9 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.FileUtil;
 import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.addins.misc.NextNodeAction;
 import org.freeplane.features.common.addins.misc.NextNodeAction.Direction;
@@ -168,7 +168,7 @@ public class FreeplaneStarter {
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			if (fileArgument.toLowerCase().endsWith(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
-				if (!UrlManager.isAbsolutePath(fileArgument)) {
+				if (!FileUtil.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 				}
 				try {

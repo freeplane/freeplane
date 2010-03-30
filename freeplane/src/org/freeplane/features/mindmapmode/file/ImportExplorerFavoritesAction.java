@@ -31,8 +31,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.FileUtil;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
@@ -90,11 +90,11 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 				}
 			}
 			for (int i = 0; i < list.length; i++) {
-				if (!list[i].isDirectory() && UrlManager.getExtension(list[i]).equals("url")) {
+				if (!list[i].isDirectory() && FileUtil.getExtension(list[i]).equals("url")) {
 					favoritesFound = true;
 					BufferedReader in = null;
 					try {
-						final NodeModel node = addNode(target, UrlManager.removeExtension(list[i].getName()));
+						final NodeModel node = addNode(target, FileUtil.removeExtension(list[i].getName()));
 						in = new BufferedReader(new FileReader(list[i]));
 						String line = null;
 						while ( (line = in.readLine()) != null) {

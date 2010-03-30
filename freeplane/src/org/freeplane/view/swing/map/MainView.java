@@ -59,8 +59,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.core.util.FileUtil;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
@@ -370,7 +370,7 @@ public abstract class MainView extends JLabel {
 			return false;
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		return osNameStart.equals("Win")
-		        && executableExtensions.contains(UrlManager.getExtension(linkText.toLowerCase()));
+		        && executableExtensions.contains(FileUtil.getExtension(linkText.toLowerCase()));
 	}
 
 	void updateText(String nodeText) {

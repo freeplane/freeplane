@@ -61,6 +61,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.FileUtil;
 
 /**
  * @author Dimitry Polivaev
@@ -284,7 +285,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			if (f.isDirectory()) {
 				return true;
 			}
-			final String extension = UrlManager.getExtension(f.getName());
+			final String extension = FileUtil.getExtension(f.getName());
 			if (extension != null) {
 				if (extension.equals(FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT)) {
 					return true;

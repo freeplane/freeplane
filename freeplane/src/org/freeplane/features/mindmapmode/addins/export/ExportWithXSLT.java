@@ -60,7 +60,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.ResUtil;
+import org.freeplane.core.util.FileUtil;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -97,7 +97,7 @@ public class ExportWithXSLT extends ExportAction {
 				}
 				File destinationDirectory = new File(sb.toString());
 				destinationDirectory.mkdirs();
-				ResUtil.copyFromURL(icon.getUrl(), destinationDirectory);
+				FileUtil.copyFromURL(icon.getUrl(), destinationDirectory);
 		}
 	}
 
@@ -170,7 +170,7 @@ public class ExportWithXSLT extends ExportAction {
 		final File destinationDirectory = new File(directoryName);
 		while (tokenizer.hasMoreTokens()) {
 			final String next = tokenizer.nextToken();
-			ResUtil.copyFromResource(filePrefix, next, destinationDirectory);
+			FileUtil.copyFromResource(filePrefix, next, destinationDirectory);
 		}
 	}
 
@@ -180,7 +180,7 @@ public class ExportWithXSLT extends ExportAction {
 	private boolean copyIcons(MapModel map, final String directoryName) {
 		boolean success;
 		final String iconDirectoryName = directoryName + File.separatorChar + "icons";
-		success = ResUtil.createDirectory(iconDirectoryName);
+		success = FileUtil.createDirectory(iconDirectoryName);
 		if (success) {
 			copyIconsToDirectory(map, iconDirectoryName);
 		}
@@ -278,7 +278,7 @@ public class ExportWithXSLT extends ExportAction {
 			}
 			if (success && StringUtils.equals(getProperty("create_dir"), "true")) {
 				final String directoryName = saveFile.getAbsolutePath() + "_files";
-				success = ResUtil.createDirectory(directoryName);
+				success = FileUtil.createDirectory(directoryName);
 				if (success) {
 					final String files = getProperty("files_to_copy");
 					final String filePrefix = getProperty("file_prefix");

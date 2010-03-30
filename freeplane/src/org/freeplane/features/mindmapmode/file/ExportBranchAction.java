@@ -38,6 +38,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.FileUtil;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
@@ -80,7 +81,7 @@ class ExportBranchAction extends AFreeplaneAction {
 		final int returnVal = chooser.showSaveDialog(controller.getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
-			final String ext = UrlManager.getExtension(chosenFile.getName());
+			final String ext = FileUtil.getExtension(chosenFile.getName());
 			if (!ext.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				chosenFile = new File(chosenFile.getParent(), chosenFile.getName()
 				        + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION);

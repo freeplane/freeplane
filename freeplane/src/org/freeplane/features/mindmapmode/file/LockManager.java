@@ -28,8 +28,8 @@ import java.nio.channels.FileLock;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.FileUtil;
 import org.freeplane.core.util.SysUtil;
 
 public class LockManager extends TimerTask {
@@ -70,7 +70,7 @@ public class LockManager extends TimerTask {
 			return;
 		}
 		try {
-			UrlManager.setHidden(lockedSemaphoreFile, false, /* synchro= */true);
+			FileUtil.setHidden(lockedSemaphoreFile, false, /* synchro= */true);
 			writeSemaphoreFile(lockedSemaphoreFile);
 		}
 		catch (final Exception e) {
@@ -141,7 +141,7 @@ public class LockManager extends TimerTask {
 		semaphoreOutputStream.write(System.getProperty("user.name").getBytes());
 		semaphoreOutputStream.write('\n');
 		semaphoreOutputStream.write(String.valueOf(System.currentTimeMillis()).getBytes());
-		UrlManager.setHidden(inSemaphoreFile, true, /* synchro= */false);
+		FileUtil.setHidden(inSemaphoreFile, true, /* synchro= */false);
 		if (lock != null) {
 			lock.release();
 		}

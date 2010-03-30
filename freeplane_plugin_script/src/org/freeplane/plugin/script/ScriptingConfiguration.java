@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
-import org.freeplane.core.util.ResUtil;
+import org.freeplane.core.util.FileUtil;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 
 /**
@@ -159,7 +159,7 @@ public class ScriptingConfiguration {
 
 	private void addMetaData(File file, String name) throws IOException {
 		ScriptMetaData metaData = new ScriptMetaData(name);
-		String content = ResUtil.slurpFile(file);
+		String content = FileUtil.slurpFile(file);
 		analyseScriptContent(content, metaData);
 		nameScriptMetaDataMap.put(name, metaData);
 		// TODO: read optionpanel stuff
