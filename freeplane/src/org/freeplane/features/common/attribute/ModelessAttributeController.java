@@ -21,6 +21,7 @@ package org.freeplane.features.common.attribute;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.map.MapModel;
 
@@ -38,20 +39,14 @@ public class ModelessAttributeController implements IExtension {
 		    new AttributeConditionController(controller));
 	}
 
-	final private HideAllAttributesAction hideAllAttributes;
-	final private ShowAllAttributesAction showAllAttributes;
-	final private ShowAttributeDialogAction showAttributeManagerAction;
-	final private ShowSelectedAttributesAction showSelectedAttributes;
 	final private Controller controller;
 
 	public ModelessAttributeController(final Controller controller) {
 		super();
 		this.controller = controller;
-		showAttributeManagerAction = new ShowAttributeDialogAction(controller);
-		showAllAttributes = new ShowAllAttributesAction(controller);
-		showSelectedAttributes = new ShowSelectedAttributesAction(controller);
-		hideAllAttributes = new HideAllAttributesAction(controller);
-		controller.addAction(showAttributeManagerAction);
+		final AFreeplaneAction showAllAttributes = new ShowAllAttributesAction(controller);
+		final AFreeplaneAction showSelectedAttributes = new ShowSelectedAttributesAction(controller);
+		final AFreeplaneAction hideAllAttributes = new HideAllAttributesAction(controller);
 		controller.addAction(showAllAttributes);
 		controller.addAction(showSelectedAttributes);
 		controller.addAction(hideAllAttributes);

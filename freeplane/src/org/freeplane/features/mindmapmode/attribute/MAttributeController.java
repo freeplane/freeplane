@@ -520,6 +520,7 @@ public class MAttributeController extends AttributeController {
 	 */
 	private void createActions() {
 		modeController.addAction(new AssignAttributesAction(getModeController()));
+		modeController.addAction(new ShowAttributeDialogAction(getModeController().getController()));
 	}
 
 	public int editAttribute(final NodeModel pNode, final String pName, final String pNewValue) {
