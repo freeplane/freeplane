@@ -49,12 +49,11 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
@@ -147,7 +146,7 @@ public class UrlManager implements IExtension {
         }
         catch (final Exception ex) {
 			final String message = ex.getMessage();
-			UITools.errorMessage(FpStringUtils.formatText("update_failed", String.valueOf(message)));
+			UITools.errorMessage(TextUtil.formatText("update_failed", String.valueOf(message)));
         	LogTool.warn(ex);
 			final InputStream input = new BufferedInputStream( new FileInputStream(file));
         	return UrlManager.getActualReader(input);
@@ -216,7 +215,7 @@ public class UrlManager implements IExtension {
 		final String exceptionType = ex.getClass().getName();
 		if (exceptionType.equals("freeplane.main.XMLParseException")) {
 			final int showDetail = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
-			    ResourceBundles.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION,
+			    TextUtil.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION,
 			    JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
 				UITools.errorMessage(ex);
@@ -278,7 +277,7 @@ public class UrlManager implements IExtension {
 			}
 			catch (final Exception e) {
 				LogTool.warn("link " + target + " not found", e);
-				UITools.errorMessage(FpStringUtils.formatText("link_not_found", target));
+				UITools.errorMessage(TextUtil.formatText("link_not_found", target));
 			}
 			return;
 		}
@@ -302,13 +301,13 @@ public class UrlManager implements IExtension {
 			}
 			catch (Exception e) {
 				LogTool.warn("link " + uri + " not found", e);
-				UITools.errorMessage(FpStringUtils.formatText("link_not_found", uri.toString()));
+				UITools.errorMessage(TextUtil.formatText("link_not_found", uri.toString()));
 			}
 			return;
 		}
 		catch (final MalformedURLException ex) {
 			LogTool.warn("URL " + uriString + " not found", ex);
-			UITools.errorMessage(FpStringUtils.formatText("link_not_found", uriString));
+			UITools.errorMessage(TextUtil.formatText("link_not_found", uriString));
 		}
 	}
 

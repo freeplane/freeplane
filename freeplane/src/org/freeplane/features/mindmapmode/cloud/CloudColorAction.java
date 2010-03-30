@@ -24,8 +24,8 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ColorTracker;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -54,7 +54,7 @@ class CloudColorAction extends AMultipleNodeAction {
 			selectedColor = cloudController.getColor(selected);
 		}
 		actionColor = ColorTracker.showCommonJColorChooserDialog(getController(), controller.getController()
-		    .getSelection().getSelected(), ResourceBundles.getText("choose_cloud_color"), selectedColor);
+		    .getSelection().getSelected(), TextUtil.getText("choose_cloud_color"), selectedColor);
 		super.actionPerformed(e);
 	}
 

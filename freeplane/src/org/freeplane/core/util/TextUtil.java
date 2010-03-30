@@ -1,9 +1,13 @@
-package org.freeplane.core.resources;
+package org.freeplane.core.util;
 
 import java.text.MessageFormat;
 import java.util.regex.Matcher;
 
-public class FpStringUtils {
+import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.ResourceController;
+
+public class TextUtil {
 	/**
 	 * Example: expandPlaceholders("Hello $1.","Dolly"); => "Hello Dolly."
 	 */
@@ -27,29 +31,29 @@ public class FpStringUtils {
 	}
 
 	public static String format(final String resourceKey, final Object... messageArguments) {
-		final MessageFormat formatter = new MessageFormat(ResourceBundles.getText(resourceKey));
+		final MessageFormat formatter = new MessageFormat(TextUtil.getText(resourceKey));
 		final String stringResult = formatter.format(messageArguments);
 		return stringResult;
 	}
 
 	public static String formatText(final String key, final String s1) {
-		final String format = ResourceBundles.getText(key);
+		final String format = TextUtil.getText(key);
 		if (format == null) {
 			return null;
 		}
-		return FpStringUtils.expandPlaceholders(format, s1);
+		return TextUtil.expandPlaceholders(format, s1);
 	}
 
 	public static String formatText(final String key, final String s1, final String s2) {
-		final String format = ResourceBundles.getText(key);
+		final String format = TextUtil.getText(key);
 		if (format == null) {
 			return null;
 		}
-		return FpStringUtils.expandPlaceholders(format, s1, s2);
+		return TextUtil.expandPlaceholders(format, s1, s2);
 	}
 
 	public static String getOptionalText(final String string) {
-		return string == null ? null : ResourceBundles.getText(string);
+		return string == null ? null : TextUtil.getText(string);
 	}
 
 	public static String removeMnemonic(final String rawLabel) {
@@ -66,5 +70,25 @@ public class FpStringUtils {
 			    .substring(0, inputString.length() - ResourceBundles.POSTFIX_TRANSLATE_ME.length());
 		}
 		return inputString;
+	}
+
+	public static NamedObject createTranslatedString(final String key) {
+		final String fs = TextUtil.getText(key);
+		return new NamedObject(key, fs);
+	}
+
+	public static String getText(final String key) {
+		if (key == null) {
+			return null;
+		}
+		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(key);
+	}
+
+	public static String getText(final String key, final String defaultString) {
+		if (key == null) {
+			return defaultString;
+		}
+		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(key,
+		    defaultString);
 	}
 }

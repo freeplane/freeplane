@@ -38,12 +38,12 @@ import java.util.Map;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.ModeController;
@@ -91,7 +91,7 @@ public class MapStyleModel implements IExtension {
 
 			@Override
             public String getTitle() {
-	            return ResourceBundles.getText(STYLES);
+	            return TextUtil.getText(STYLES);
             }
 			
 		};

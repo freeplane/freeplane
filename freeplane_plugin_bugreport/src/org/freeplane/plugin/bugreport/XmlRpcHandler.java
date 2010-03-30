@@ -27,12 +27,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.freeplane.core.controller.FreeplaneVersion;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 
 public class XmlRpcHandler extends StreamHandler {
 	private class SubmitRunner implements Runnable {
@@ -242,16 +242,16 @@ public class XmlRpcHandler extends StreamHandler {
 	private String showBugReportDialog() {
 		String option = ResourceController.getResourceController().getProperty(OPTION, BugReportDialogManager.ASK);
 		if (option.equals(BugReportDialogManager.ASK)) {
-			String question = ResourceBundles.getText("org.freeplane.plugin.bugreport.question");
+			String question = TextUtil.getText("org.freeplane.plugin.bugreport.question");
 			if(!question.startsWith("<html>")){
 					question = HtmlTools.plainToHTML(question);
 			}
-			final Object[] options = new Object[] { ResourceBundles.getText("org.freeplane.plugin.bugreport.always_agree"),
-					ResourceBundles.getText("org.freeplane.plugin.bugreport.agree"),
-					ResourceBundles.getText("org.freeplane.plugin.bugreport.deny"),
-					ResourceBundles.getText("org.freeplane.plugin.bugreport.always_deny") };
-			final String title = ResourceBundles.getText("org.freeplane.plugin.bugreport.dialog.title");
-			String reportName = ResourceBundles.getText("org.freeplane.plugin.bugreport.report");
+			final Object[] options = new Object[] { TextUtil.getText("org.freeplane.plugin.bugreport.always_agree"),
+					TextUtil.getText("org.freeplane.plugin.bugreport.agree"),
+					TextUtil.getText("org.freeplane.plugin.bugreport.deny"),
+					TextUtil.getText("org.freeplane.plugin.bugreport.always_deny") };
+			final String title = TextUtil.getText("org.freeplane.plugin.bugreport.dialog.title");
+			String reportName = TextUtil.getText("org.freeplane.plugin.bugreport.report");
 			int choice = BugReportDialogManager.showBugReportDialog(title, question, JOptionPane.INFORMATION_MESSAGE, options, options[1], reportName, log);
 			switch (choice) {
 			case 0:

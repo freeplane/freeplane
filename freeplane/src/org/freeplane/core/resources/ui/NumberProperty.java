@@ -25,8 +25,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -57,8 +57,8 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), spinner);
-		label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
+		final JLabel label = builder.append(TextUtil.getOptionalText(getLabel()), spinner);
+		label.setToolTipText(TextUtil.getOptionalText(getDescription()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

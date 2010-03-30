@@ -24,8 +24,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -85,7 +84,7 @@ public class ConjunctConditions implements ISelectableCondition {
 		rendererComponent.setOpaque(false);
 		component.add(rendererComponent);
 		for (int i = 1; i < conditions.length; i++) {
-			final String and = FpStringUtils.removeMnemonic(ResourceBundles.getText("filter_and"));
+			final String and = TextUtil.removeMnemonic(TextUtil.getText("filter_and"));
 			final String text = ' ' + and + ' ';
 			component.add(new JLabel(text));
 			cond = conditions[i];

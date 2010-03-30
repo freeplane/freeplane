@@ -33,11 +33,11 @@ import java.util.Map.Entry;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.ModeController;
 
 /**
@@ -97,7 +97,7 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 					if (controller.getAction(key) != null) {
 						continue;
 					}
-					final String title = ResourceBundles.getText(key + ".text", propName);
+					final String title = TextUtil.getText(key + ".text", propName);
 					final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
 					    prop.toURL(), key, title, controller);
 					controller.addAction(loadAcceleratorPresetsAction);
@@ -141,14 +141,14 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final String keyset = JOptionPane.showInputDialog(ResourceBundles.getText("enter_keyset_name"));
+		final String keyset = JOptionPane.showInputDialog(TextUtil.getText("enter_keyset_name"));
 		if (keyset == null || keyset.equals("")) {
 			return;
 		}
 		final File acceleratorsUserDirectory = LoadAcceleratorPresetsAction.getAcceleratorsUserDirectory();
 		final File keysetFile = new File(acceleratorsUserDirectory, keyset + ".properties");
 		if (keysetFile.exists()) {
-			final int confirm = JOptionPane.showConfirmDialog(UITools.getFrame(), ResourceBundles
+			final int confirm = JOptionPane.showConfirmDialog(UITools.getFrame(), TextUtil
 			    .getText("overwrite_keyset_question"), "Freeplane", JOptionPane.YES_NO_OPTION);
 			if (confirm != JOptionPane.YES_OPTION) {
 				return;
@@ -174,7 +174,7 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 			if (getController().getAction(key) != null) {
 				return;
 			}
-			final String title = ResourceBundles.getText(key + ".text", keyset);
+			final String title = TextUtil.getText(key + ".text", keyset);
 			final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
 			    keysetFile.toURL(), key, title, getController());
 			if(null == getController().getAction(loadAcceleratorPresetsAction.getKey())){
@@ -185,7 +185,7 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 			}
 		}
 		catch (final IOException e1) {
-			UITools.errorMessage(ResourceBundles.getText("can_not_save_key_set"));
+			UITools.errorMessage(TextUtil.getText("can_not_save_key_set"));
 		}
 	}
 }

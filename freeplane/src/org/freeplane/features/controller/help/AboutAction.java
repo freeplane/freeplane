@@ -25,11 +25,10 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.TextUtil;
 
 class AboutAction extends AFreeplaneAction {
 	/**
@@ -45,15 +44,15 @@ class AboutAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		StringBuilder sb = new StringBuilder(ResourceBundles.getText("about_text"));
+		StringBuilder sb = new StringBuilder(TextUtil.getText("about_text"));
 		sb.append(FreeplaneVersion.getVersion());
 		sb.append('\n');
-		sb.append(FpStringUtils.format("java_version", Compat.JAVA_VERSION));
+		sb.append(TextUtil.format("java_version", Compat.JAVA_VERSION));
 		sb.append('\n');
-		sb.append(FpStringUtils.format("main_resource_directory", ResourceController.getResourceController().getResourceBaseDir()));
+		sb.append(TextUtil.format("main_resource_directory", ResourceController.getResourceController().getResourceBaseDir()));
 		sb.append('\n');
-		sb.append(FpStringUtils.format("user_config_folder", ResourceController.getResourceController().getFreeplaneUserDirectory()));
-		JOptionPane.showMessageDialog(getController().getViewController().getViewport(), sb.toString(), ResourceBundles.getText("AboutAction.text"),
+		sb.append(TextUtil.format("user_config_folder", ResourceController.getResourceController().getFreeplaneUserDirectory()));
+		JOptionPane.showMessageDialog(getController().getViewController().getViewport(), sb.toString(), TextUtil.getText("AboutAction.text"),
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
 }

@@ -35,11 +35,11 @@ import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.NodeModel;
@@ -230,7 +230,7 @@ class ScriptingEngine {
 			        + ((cause.length() != 0 && message.length() != 0) ? ", " : "") + message);
 			return false;
 		}
-		pOutStream.print(ResourceBundles.getText("plugins/ScriptEditor/window.Result") + value);
+		pOutStream.print(TextUtil.getText("plugins/ScriptEditor/window.Result") + value);
 		if (assignResult && value != null) {
 			if (assignTo == null) {
 				((MTextController) TextController.getController(pMindMapController))

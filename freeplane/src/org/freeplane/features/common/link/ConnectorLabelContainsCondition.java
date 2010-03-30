@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.common.link;
 
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 
 /**
@@ -60,8 +60,8 @@ public class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String condition = ResourceBundles.getText(LinkConditionController.CONNECTOR_LABEL);
-		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_CONTAINS);
+		final String condition = TextUtil.getText(LinkConditionController.CONNECTOR_LABEL);
+		final String simpleCondition = TextUtil.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(condition, simpleCondition, getText(), ignoreCase());
 	}
 

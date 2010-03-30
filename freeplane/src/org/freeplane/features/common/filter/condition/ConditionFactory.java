@@ -28,7 +28,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -60,7 +60,7 @@ public class ConditionFactory {
 		        + " "
 		        + simpleCondition
 		        + (value != null ? " \"" + value + "\"" : "")
-		        + (ignoreCase && value != null ? ", " + ResourceBundles.getText(ConditionFactory.FILTER_IGNORE_CASE)
+		        + (ignoreCase && value != null ? ", " + TextUtil.getText(ConditionFactory.FILTER_IGNORE_CASE)
 		                : "");
 		return description;
 	}

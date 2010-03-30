@@ -27,8 +27,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.icon.IconGroup;
 import org.freeplane.features.common.icon.IconNotFound;
 import org.freeplane.features.common.icon.IconStore;
@@ -81,7 +81,7 @@ public class IconStoreFactory {
 	private static void setIconGroups(IconStore iconStore) {
 		String[] groupNames = RESOURCE_CONTROLLER.getProperty(GROUP_NAMES_KEY).split(SEPARATOR);
 		for(String groupName : groupNames) {
-			String description = ResourceBundles.getText(String.format(GROUP_DESC_KEY, groupName));
+			String description = TextUtil.getText(String.format(GROUP_DESC_KEY, groupName));
 			
 			List<MindIcon> icons;
 			UIIcon groupIcon = null;

@@ -23,10 +23,10 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
@@ -54,7 +54,7 @@ public class DeleteLevelStyleAction extends AFreeplaneAction {
 		final NodeModel levelStyleParentNode = getLevelStyleParentNode(map);
 	    final int childNumber = levelStyleParentNode.getChildCount() - 1;
 		if(childNumber < 1){
-			UITools.errorMessage(ResourceBundles.getText("can_not_delete_root_style"));
+			UITools.errorMessage(TextUtil.getText("can_not_delete_root_style"));
 			return;
 		}
 		final String styleName = "AutomaticLayout.level," + childNumber;

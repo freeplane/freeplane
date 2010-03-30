@@ -29,10 +29,10 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.map.NodeModel;
@@ -103,7 +103,7 @@ class JoinNodesAction extends AFreeplaneAction {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (getModeController().getMapController().hasChildren(node)) {
-				UITools.informationMessage(controller.getViewController().getFrame(), ResourceBundles
+				UITools.informationMessage(controller.getViewController().getFrame(), TextUtil
 				    .getText("cannot_join_nodes_with_children"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 				return;
 			}

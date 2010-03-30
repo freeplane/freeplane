@@ -43,13 +43,13 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
@@ -134,7 +134,7 @@ class SelectMenuItemDialog extends JDialog {
 	}
 
 	public SelectMenuItemDialog(Controller controller, NodeModel node) {
-		super(UITools.getFrame(), ResourceBundles.getText("select_menu_item_dialog"), true);
+		super(UITools.getFrame(), TextUtil.getText("select_menu_item_dialog"), true);
 		controller.getViewController().scrollNodeToVisible(node);
 		UITools.setDialogLocationRelativeTo(this, controller, node);
 		setSize(DIALOG_DIMENSION);
@@ -163,7 +163,7 @@ class SelectMenuItemDialog extends JDialog {
 
 	private JButton createButton(String key, final CloseAction closeAction) {
 		JButton button = new JButton();
-		MenuBuilder.setLabelAndMnemonic(button, ResourceBundles.getText(key));
+		MenuBuilder.setLabelAndMnemonic(button, TextUtil.getText(key));
 		button.addActionListener(closeAction);
 		button.setMaximumSize(new Dimension(1000, 1000));
 		return button;
@@ -173,7 +173,7 @@ class SelectMenuItemDialog extends JDialog {
 		MModeController modeController = (MModeController) controller.getModeController();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		final DefaultMutableTreeNode menuRoot = menuBuilder.get(SELECTION_ROOT_KEY);
-		final Object rootLabel = (menuRoot.getUserObject() instanceof JMenuItem) ? convert(menuRoot) : ResourceBundles
+		final Object rootLabel = (menuRoot.getUserObject() instanceof JMenuItem) ? convert(menuRoot) : TextUtil
 		    .getText("select_menu_item_root_node");
 		DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(rootLabel);
 		addChildrenRecursive(treeRoot, menuRoot.children());

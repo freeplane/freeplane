@@ -24,8 +24,8 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ColorTracker;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -48,7 +48,7 @@ class EdgeColorAction extends AMultipleNodeAction {
 		final Controller controller = modeController.getController();
 		final Color edgeColor = EdgeController.getController(controller.getModeController()).getColor(model);
 		actionColor = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection().getSelected(),
-		    ResourceBundles.getText("choose_edge_color"), edgeColor);
+		    TextUtil.getText("choose_edge_color"), edgeColor);
 		super.actionPerformed(e);
 	}
 

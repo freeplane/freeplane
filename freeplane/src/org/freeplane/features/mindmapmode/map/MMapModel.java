@@ -22,11 +22,11 @@ package org.freeplane.features.mindmapmode.map;
 import java.awt.EventQueue;
 import java.util.Timer;
 
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.SysUtil;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -90,7 +90,7 @@ public class MMapModel extends MapModel {
 		if (titleNumber == 0) {
 			titleNumber = MMapModel.unnamedMapsNumber++;
 		}
-		return ResourceBundles.getText("mindmap") + titleNumber;
+		return TextUtil.getText("mindmap") + titleNumber;
 	}
 
 	public void scheduleTimerForAutomaticSaving(final ModeController modeController) {

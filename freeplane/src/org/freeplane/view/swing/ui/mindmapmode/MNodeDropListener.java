@@ -33,9 +33,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 import org.freeplane.features.common.link.LinkController;
@@ -120,7 +120,7 @@ public class MNodeDropListener implements DropTargetListener {
 				final NodeModel parent = dropAsSibling ? targetNode.getParentNode() : targetNode;
 				if( !mapController.isWriteable(parent)) {
 					dtde.rejectDrop();
-					final String message = ResourceBundles.getText("node_is_write_protected");
+					final String message = TextUtil.getText("node_is_write_protected");
 					UITools.errorMessage(message);
 					return;
 				}
@@ -137,7 +137,7 @@ public class MNodeDropListener implements DropTargetListener {
 				int yesorno = JOptionPane.YES_OPTION;
 				if (controller.getSelection().size() >= 5) {
 					yesorno = JOptionPane.showConfirmDialog(controller.getViewController().getContentPane(),
-					    ResourceBundles.getText("lots_of_links_warning"), Integer.toString(controller.getSelection()
+					    TextUtil.getText("lots_of_links_warning"), Integer.toString(controller.getSelection()
 					        .size())
 					            + " links to the same node", JOptionPane.YES_NO_OPTION);
 				}
@@ -157,7 +157,7 @@ public class MNodeDropListener implements DropTargetListener {
 					NodeModel actualNode = targetNode;
 					do {
 						if (selecteds.contains(actualNode)) {
-							final String message = ResourceBundles.getText("cannot_move_to_child");
+							final String message = TextUtil.getText("cannot_move_to_child");
 							JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), message,
 							    "Freeplane", JOptionPane.WARNING_MESSAGE);
 							dtde.dropComplete(true);

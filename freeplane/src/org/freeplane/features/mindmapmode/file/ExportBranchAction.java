@@ -29,13 +29,13 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtil;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
@@ -95,7 +95,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			}
 			if (chosenFile.exists()) {
 				final int overwriteMap = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(),
-				    ResourceBundles.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+				    TextUtil.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {
 					return;
 				}

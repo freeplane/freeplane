@@ -23,11 +23,10 @@ import java.awt.event.ActionEvent;
 import java.net.URL;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 
 class KeyDocumentationAction extends AFreeplaneAction {
 	/**
@@ -42,8 +41,8 @@ class KeyDocumentationAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String urlText = ResourceBundles.getText("pdfKeyDocLocation");
-		urlText = FpStringUtils.removeTranslateComment(urlText);
+		String urlText = TextUtil.getText("pdfKeyDocLocation");
+		urlText = TextUtil.removeTranslateComment(urlText);
 		try {
 			if (urlText != null && urlText != "") {
 				URL url = null;

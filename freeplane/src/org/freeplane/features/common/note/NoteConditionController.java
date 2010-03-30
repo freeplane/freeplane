@@ -27,7 +27,7 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
@@ -85,13 +85,13 @@ class NoteConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
-		return new DefaultComboBoxModel(new NamedObject[] { ResourceBundles
+		return new DefaultComboBoxModel(new NamedObject[] { TextUtil
 		    .createTranslatedString(ConditionFactory.FILTER_CONTAINS) });
 	}
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(ResourceBundles.createTranslatedString(NoteConditionController.FILTER_NOTE));
+		list.addElement(TextUtil.createTranslatedString(NoteConditionController.FILTER_NOTE));
 		return list;
 	}
 

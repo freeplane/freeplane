@@ -26,9 +26,9 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.ModeController;
 
 /**
@@ -90,7 +90,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		super();
 		this.controller = controller;
 		this.key = key;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceBundles.getText(getTextKey()));
+		MenuBuilder.setLabelAndMnemonic(this, TextUtil.getText(getTextKey()));
 		final String iconResource = ResourceController.getResourceController().getProperty(getIconKey(), null);
 		if (iconResource != null) {
 			final URL url = ResourceController.getResourceController().getResource(iconResource);
@@ -102,7 +102,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 				putValue(SMALL_ICON, icon);
 			}
 		}
-		final String tooltip = ResourceBundles.getText(getTooltipKey(), null);
+		final String tooltip = TextUtil.getText(getTooltipKey(), null);
 		if (tooltip != null && !"".equals(tooltip)) {
 			putValue(Action.SHORT_DESCRIPTION, tooltip);
 			putValue(Action.LONG_DESCRIPTION, tooltip);

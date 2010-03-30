@@ -38,6 +38,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.MenuTools;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.core.util.MenuTools.MenuEntry;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.common.map.MapController;
@@ -109,7 +110,7 @@ class DocumentationAction extends AFreeplaneAction {
 		    FreeplaneMenuBar.MENU_BAR_PREFIX, menuBuilder);
 		final MapController mapController = getModeController().getMapController();
 		final NodeModel rootNode = mapController.getRootNode();
-		final NodeModel newNode = mapController.newNode(ResourceBundles.getText("hot_keys"), rootNode.getMap());
+		final NodeModel newNode = mapController.newNode(TextUtil.getText("hot_keys"), rootNode.getMap());
 		newNode.setFolded(true);
 		newNode.setLeft(true);
 		// TODO: search for proper insert point?
@@ -122,7 +123,7 @@ class DocumentationAction extends AFreeplaneAction {
 	@SuppressWarnings("unchecked")
 	private void insertAcceleratorHtmlTable(NodeModel newNode, DefaultMutableTreeNode menuEntryTree) {
 		final MapController mapController = getModeController().getMapController();
-		final String title = ResourceBundles.getText("hot_keys_table");
+		final String title = TextUtil.getText("hot_keys_table");
 		final MapModel map = mapController.getRootNode().getMap();
 		final NodeModel titleNode = mapController.newNode(title, map);
 		titleNode.setFolded(true);

@@ -27,12 +27,12 @@ import java.io.IOException;
 import java.io.StringWriter;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapWriter.Mode;
@@ -67,7 +67,7 @@ class RevertAction extends AFreeplaneAction {
 					mapController.newMap(Compat.fileToUrl(new File(this.getLocalFileName())));
 				}
 				else {
-					String filePrefix = ResourceBundles.getText("freeplane_reverted");
+					String filePrefix = TextUtil.getText("freeplane_reverted");
 					if (this.getFilePrefix() != null) {
 						filePrefix = this.getFilePrefix();
 					}
@@ -130,7 +130,7 @@ class RevertAction extends AFreeplaneAction {
 		try {
 			final File file = getController().getMap().getFile();
 			if (file == null) {
-				UITools.errorMessage(ResourceBundles.getText("map_not_saved"));
+				UITools.errorMessage(TextUtil.getText("map_not_saved"));
 				return;
 			}
 			final RevertActionInstance doAction = createRevertXmlAction(file);

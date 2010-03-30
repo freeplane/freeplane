@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.resources.ui;
 
-import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.util.TextUtil;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -44,7 +44,7 @@ public class SeparatorProperty implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		builder.appendSeparator(FpStringUtils.getOptionalText(getLabel()));
+		builder.appendSeparator(TextUtil.getOptionalText(getLabel()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

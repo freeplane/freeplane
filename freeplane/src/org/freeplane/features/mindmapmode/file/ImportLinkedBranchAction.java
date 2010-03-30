@@ -29,10 +29,10 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.MapModel;
@@ -58,7 +58,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		final ViewController viewController = getController().getViewController();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog((viewController.getMapView()), ResourceBundles
+			JOptionPane.showMessageDialog((viewController.getMapView()), TextUtil
 			    .getText("import_linked_branch_no_link"));
 			return;
 		}

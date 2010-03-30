@@ -8,12 +8,11 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 
 class ManualBugReporter implements IBugReportListener{
 	final private Controller controller;
@@ -49,7 +48,7 @@ class ManualBugReporter implements IBugReportListener{
 			controller.getViewController().openDocument(new URL(location));
 		}
 		catch (final MalformedURLException ex) {
-			UITools.errorMessage(ResourceBundles.getText("url_error") + "\n" + ex);
+			UITools.errorMessage(TextUtil.getText("url_error") + "\n" + ex);
 			LogTool.warn(ex);
 		}
 		catch (final Exception ex) {
@@ -59,17 +58,17 @@ class ManualBugReporter implements IBugReportListener{
 	}
 
 	private String showBugReportDialog(String log, String hash) {
-		final String title = ResourceBundles.getText("org.freeplane.plugin.bugreport.freeplane_team").replaceAll("\\n", "\n");
+		final String title = TextUtil.getText("org.freeplane.plugin.bugreport.freeplane_team").replaceAll("\\n", "\n");
 		String option = ResourceController.getResourceController().getProperty(OPTION, BugReportDialogManager.ASK);
 		if (option.equals(BugReportDialogManager.ASK)) {
-			String question = ResourceBundles.getText("org.freeplane.plugin.bugreport.wanted_bug");
+			String question = TextUtil.getText("org.freeplane.plugin.bugreport.wanted_bug");
 			if(!question.startsWith("<html>")){
 					question = HtmlTools.plainToHTML(question);
 			}
-			final Object[] options = new Object[] { FpStringUtils.removeMnemonic(ResourceBundles.getText("ok")),
-					FpStringUtils.removeMnemonic(ResourceBundles.getText("cancel")),
-					ResourceBundles.getText("org.freeplane.plugin.bugreport.never") };
-			final String reportName = ResourceBundles.getText("org.freeplane.plugin.bugreport.lastreport");
+			final Object[] options = new Object[] { TextUtil.removeMnemonic(TextUtil.getText("ok")),
+					TextUtil.removeMnemonic(TextUtil.getText("cancel")),
+					TextUtil.getText("org.freeplane.plugin.bugreport.never") };
+			final String reportName = TextUtil.getText("org.freeplane.plugin.bugreport.lastreport");
 			int choice = BugReportDialogManager.showBugReportDialog(title, question, JOptionPane.QUESTION_MESSAGE, options, options[0], reportName, log);
 			ReportRegistry register = ReportRegistry.getInstance();
 			if(choice != 2){

@@ -51,10 +51,10 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.core.util.collection.IListModel;
 
 class ListDialog extends JDialog {
@@ -185,18 +185,18 @@ class ListDialog extends JDialog {
 		super(frame, title, true);
 		this.data = data;
 		final JButton closeButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(closeButton, ResourceBundles.getText("CloseAction.text"));
+		MenuBuilder.setLabelAndMnemonic(closeButton, TextUtil.getText("CloseAction.text"));
 		closeButton.addActionListener(new CloseAction());
 		getRootPane().setDefaultButton(closeButton);
 		addButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(addButton, ResourceBundles.getText("add"));
+		MenuBuilder.setLabelAndMnemonic(addButton, TextUtil.getText("add"));
 		final AddAction addAction = new AddAction();
 		addButton.addActionListener(addAction);
 		renameButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(renameButton, ResourceBundles.getText("rename"));
+		MenuBuilder.setLabelAndMnemonic(renameButton, TextUtil.getText("rename"));
 		renameButton.addActionListener(new RenameAction());
 		deleteButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(deleteButton, ResourceBundles.getText("delete"));
+		MenuBuilder.setLabelAndMnemonic(deleteButton, TextUtil.getText("delete"));
 		deleteButton.addActionListener(new DeleteAction());
 		textField = new JTextField(20);
 		textField.getDocument().addDocumentListener(new TextChangeListener());

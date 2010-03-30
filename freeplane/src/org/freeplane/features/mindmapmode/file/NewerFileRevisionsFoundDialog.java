@@ -48,11 +48,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.QuitAction;
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.main.application.ApplicationResourceController;
 
 /**
@@ -80,8 +79,8 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		private static final long serialVersionUID = 1L;
 
 		public RevisionTable(Object[][] data) {
-			super(data, new Object[] { ResourceBundles.getText(key("file_name")),
-			        ResourceBundles.getText(key("file_size")), ResourceBundles.getText(key("file_last_modified")) });
+			super(data, new Object[] { TextUtil.getText(key("file_name")),
+			        TextUtil.getText(key("file_size")), TextUtil.getText(key("file_last_modified")) });
 			final Dimension dim = this.getPreferredSize();
 			getColumnModel().getColumn(0).setPreferredWidth((int) (dim.width * 0.62));
 			getColumnModel().getColumn(1).setPreferredWidth((int) (dim.width * 0.13));
@@ -106,7 +105,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 							}
 							else {
 								setSelectedFile(fileWrapper.getFile());
-								btnReplace.setToolTipText(FpStringUtils.format(key("replace.tooltip"), file.getName(),
+								btnReplace.setToolTipText(TextUtil.format(key("replace.tooltip"), file.getName(),
 								    fileWrapper.toString()));
 							}
 						}
@@ -158,7 +157,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 	}
 
 	public NewerFileRevisionsFoundDialog(File file, File[] revisions, Controller controller) {
-		super(UITools.getFrame(), ResourceBundles.getText(key("title")), true);
+		super(UITools.getFrame(), TextUtil.getText(key("title")), true);
 		this.file = file;
 		this.controller = controller;
 		setBackground(Color.white);
@@ -179,7 +178,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 	}
 
 	private Component createQuestion() {
-		String text = FpStringUtils.format(key("question"), file.getName());
+		String text = TextUtil.format(key("question"), file.getName());
 		final JTextArea textArea = new JTextArea(text);
 		textArea.setLineWrap(true);
 		textArea.setFont(new Font("Dialog", Font.BOLD, 12));
@@ -237,12 +236,12 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 
 	private JButton createButton(String key, String tooltipKey, final ActionListener closeAction) {
 		JButton button = new JButton();
-		MenuBuilder.setLabelAndMnemonic(button, ResourceBundles.getText(key));
+		MenuBuilder.setLabelAndMnemonic(button, TextUtil.getText(key));
 		button.addActionListener(closeAction);
 		button.setMaximumSize(new Dimension(1000, 1000));
 		final String selectedFileName = getSelectedFile() == null ? null : getSelectedFile().getName();
 		// arguments are only used for one button but they don't hurt for the other
-		button.setToolTipText(FpStringUtils.format(tooltipKey, file.getName(), selectedFileName));
+		button.setToolTipText(TextUtil.format(tooltipKey, file.getName(), selectedFileName));
 		return button;
 	}
 

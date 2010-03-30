@@ -26,7 +26,7 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.filter.condition.JCondition;
@@ -87,7 +87,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 
 	@Override
 	protected String createDesctiption() {
-		final String priorityCondition = ResourceBundles.getText(PriorityConditionController.FILTER_PRIORITY);
+		final String priorityCondition = TextUtil.getText(PriorityConditionController.FILTER_PRIORITY);
 		return super.createDescription(priorityCondition, comparationResult, succeed);
 	}
 

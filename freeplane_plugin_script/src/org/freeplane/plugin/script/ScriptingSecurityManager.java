@@ -25,7 +25,7 @@ import java.net.InetAddress;
 import java.security.Permission;
 import java.util.HashSet;
 
-import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.util.TextUtil;
 
 /**
  * @author foltin
@@ -249,7 +249,7 @@ class ScriptingSecurityManager extends SecurityManager {
 	}
 
 	private SecurityException getException(final int pPermissionGroup, final int pPermission) {
-		return new SecurityException(FpStringUtils.format("plugins/ScriptEditor.FORBIDDEN_ACTION", new Integer[] {
+		return new SecurityException(TextUtil.format("plugins/ScriptEditor.FORBIDDEN_ACTION", new Integer[] {
 		        new Integer(pPermissionGroup), new Integer(pPermission) }));
 	}
 }

@@ -38,7 +38,6 @@ import javax.swing.JPanel;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.controller.INodeSelectionListener;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.BooleanProperty;
 import org.freeplane.core.resources.ui.ColorProperty;
@@ -48,6 +47,7 @@ import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IconProperty;
 import org.freeplane.core.resources.ui.NextLineProperty;
 import org.freeplane.core.resources.ui.SeparatorProperty;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeController;
@@ -501,7 +501,7 @@ public class StyleEditorPanel extends JPanel {
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.setDefaultDialogBorder();
 		if(addStyleBox){
-			String label = ResourceBundles.getText("OptionPanel.separator.NodeStyle");
+			String label = TextUtil.getText("OptionPanel.separator.NodeStyle");
 			rightBuilder.appendSeparator(label);
 			Container styleBox = uiFactory.createStyleBox();
 			rightBuilder.nextLine();

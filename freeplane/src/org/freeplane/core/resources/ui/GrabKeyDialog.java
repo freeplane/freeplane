@@ -40,10 +40,10 @@ import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 
 /**
  * A dialog for getting shortcut keys.
@@ -220,7 +220,7 @@ public class GrabKeyDialog extends JDialog {
 	/**
 	 */
 	private static String getText(final String resourceString) {
-		return ResourceBundles.getText("GrabKeyDialog." + resourceString);
+		return TextUtil.getText("GrabKeyDialog." + resourceString);
 	}
 
 	public static String toString(final KeyEvent evt) {

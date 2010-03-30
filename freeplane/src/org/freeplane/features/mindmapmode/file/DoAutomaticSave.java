@@ -25,9 +25,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.TimerTask;
 
-import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.url.UrlManager;
@@ -98,7 +98,7 @@ public class DoAutomaticSave extends TimerTask {
 						((MFileManager) UrlManager.getController(modeController)).saveInternal((MMapModel) model,
 						    tempFile, true /*=internal call*/);
 						modeController.getController().getViewController().out(
-						    FpStringUtils.format("automatically_save_message", new Object[] { tempFile.toString() }));
+						    TextUtil.format("automatically_save_message", new Object[] { tempFile.toString() }));
 					}
 					catch (final Exception e) {
 						LogTool.severe("Error in automatic MapModel.save(): ", e);

@@ -19,6 +19,8 @@
  */
 package org.freeplane.core.resources;
 
+import org.freeplane.core.util.TextUtil;
+
 /**
  * Utility Class for displaying local object names in GUI components.
  *
@@ -45,7 +47,7 @@ public class NamedObject {
 
 	public NamedObject(String object) {
 		this.object = object;
-		this.name = ResourceBundles.getText(object);
+		this.name = TextUtil.getText(object);
     }
 
 	public Object getObject() {
@@ -89,7 +91,7 @@ public class NamedObject {
 		}
 		String key = value.substring(0, separatorPos);
 		String s1 = value.substring(separatorPos+1);
-		final String text = FpStringUtils.formatText(key, s1);
+		final String text = TextUtil.formatText(key, s1);
 		return new NamedObject(value, text);
     }
 }

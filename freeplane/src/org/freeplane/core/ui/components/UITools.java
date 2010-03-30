@@ -43,9 +43,9 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
@@ -114,7 +114,7 @@ public class UITools {
 			myMessage = message.toString();
 		}
 		else {
-			myMessage = ResourceBundles.getText("undefined_error");
+			myMessage = TextUtil.getText("undefined_error");
 		}
 		LogTool.warn(myMessage);
 		EventQueue.invokeLater(new Runnable() {

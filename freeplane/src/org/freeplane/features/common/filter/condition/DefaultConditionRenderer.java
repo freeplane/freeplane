@@ -27,7 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.icon.UIIcon;
 
 /**
@@ -45,7 +45,7 @@ public class DefaultConditionRenderer implements ListCellRenderer {
 	public Component getListCellRendererComponent(final JList list, final Object value, final int index,
 	                                              final boolean isSelected, final boolean cellHasFocus) {
 		if (value == null) {
-			return new JLabel(ResourceBundles.getText("filter_no_filtering"));
+			return new JLabel(TextUtil.getText("filter_no_filtering"));
 		}
 		JComponent component;
 		if (value instanceof UIIcon) {

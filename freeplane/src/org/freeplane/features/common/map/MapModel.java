@@ -32,7 +32,7 @@ import java.util.Random;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.Filter;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.icon.IconRegistry;
@@ -65,7 +65,7 @@ public class MapModel {
 			filter = filterController.createTransparentFilter();
 		}
 		if (root == null) {
-			root = new NodeModel(ResourceBundles.getText("new_mindmap"), this);
+			root = new NodeModel(TextUtil.getText("new_mindmap"), this);
 			setRoot(root);
 		}
 		else {

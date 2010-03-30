@@ -42,26 +42,6 @@ public class ResourceBundles extends ResourceBundle {
 	public static final String POSTFIX_TRANSLATE_ME = "[translate me]";
 	public static final String RESOURCE_LANGUAGE = "language";
 
-	public static NamedObject createTranslatedString(final String key) {
-		final String fs = ResourceBundles.getText(key);
-		return new NamedObject(key, fs);
-	}
-
-	public static String getText(final String key) {
-		if (key == null) {
-			return null;
-		}
-		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(key);
-	}
-
-	public static String getText(final String key, final String defaultString) {
-		if (key == null) {
-			return defaultString;
-		}
-		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(key,
-		    defaultString);
-	}
-
 	/**
 	 *
 	 */
@@ -145,7 +125,7 @@ public class ResourceBundles extends ResourceBundle {
 		return new HashMap(bundle);
 	}
 
-	String getResourceString(final String key) {
+	public String getResourceString(final String key) {
 		final String resourceString = getResourceString(key, key);
 		if (resourceString == key) {
 			System.err.println("missing key " + key);
@@ -154,7 +134,7 @@ public class ResourceBundles extends ResourceBundle {
 		return resourceString;
 	}
 
-	String getResourceString(final String key, final String resource) {
+	public String getResourceString(final String key, final String resource) {
 		String value = languageResources.get(key);
 		if (value != null) {
 			return value;

@@ -27,7 +27,7 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
@@ -97,27 +97,27 @@ public class LinkConditionController implements IElementaryConditionController {
 		final Object[] linkConditionNames;
 		if(no.getObject().equals(FILTER_LINK)){
 			linkConditionNames = new NamedObject[] { 
-					ResourceBundles.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
-			        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
-			        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_EXIST)};
+					TextUtil.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
+			        TextUtil.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+			        TextUtil.createTranslatedString(ConditionFactory.FILTER_EXIST)};
 		}
 		else if(no.getObject().equals(CONNECTOR_LABEL)){
 			linkConditionNames = new NamedObject[] {
-					ResourceBundles.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
-			        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_CONTAINS)};
+					TextUtil.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
+			        TextUtil.createTranslatedString(ConditionFactory.FILTER_CONTAINS)};
 		}
 		else {
 			linkConditionNames = new NamedObject[] {
-					ResourceBundles.createTranslatedString(ConditionFactory.FILTER_EXIST)};
+					TextUtil.createTranslatedString(ConditionFactory.FILTER_EXIST)};
 		}
 		return new DefaultComboBoxModel(linkConditionNames);
 	}
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(ResourceBundles.createTranslatedString(FILTER_LINK));
-		list.addElement(ResourceBundles.createTranslatedString(CONNECTOR_LABEL));
-		list.addElement(ResourceBundles.createTranslatedString(CONNECTOR));
+		list.addElement(TextUtil.createTranslatedString(FILTER_LINK));
+		list.addElement(TextUtil.createTranslatedString(CONNECTOR_LABEL));
+		list.addElement(TextUtil.createTranslatedString(CONNECTOR));
 		return list;
 	}
 

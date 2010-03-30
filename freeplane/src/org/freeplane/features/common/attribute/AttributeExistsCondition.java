@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.common.attribute;
 
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.filter.condition.NodeCondition;
@@ -65,7 +65,7 @@ public class AttributeExistsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_EXIST);
+		final String simpleCondition = TextUtil.getText(ConditionFactory.FILTER_EXIST);
 		return ConditionFactory.createDescription(attribute, simpleCondition, null, false);
 	}
 

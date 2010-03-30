@@ -37,14 +37,13 @@ import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.GrabKeyDialog;
 import org.freeplane.core.resources.ui.IKeystrokeValidator;
 import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtil;
 
 /**
  * @author Dimitry Polivaev
@@ -68,9 +67,9 @@ class AccelerateableAction implements IFreeplaneAction {
 		if(isNewAcceleratorOnNextClickEnabled()){
 			return;
 		}
-		String titel = ResourceBundles.getText("SetAcceleratorOnNextClickAction.text");
-		String text = ResourceBundles.getText(SET_ACCELERATOR_ON_NEXT_CLICK_ACTION);
-		String[] options = {FpStringUtils.removeMnemonic(ResourceBundles.getText("cancel"))};
+		String titel = TextUtil.getText("SetAcceleratorOnNextClickAction.text");
+		String text = TextUtil.getText(SET_ACCELERATOR_ON_NEXT_CLICK_ACTION);
+		String[] options = {TextUtil.removeMnemonic(TextUtil.getText("cancel"))};
 		final JOptionPane infoPane = new JOptionPane(text, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options);
 		setAcceleratorOnNextClickActionDialog = infoPane.createDialog(controller.getViewController().getFrame(), titel);
 		setAcceleratorOnNextClickActionDialog.setModal(false);
@@ -144,7 +143,7 @@ class AccelerateableAction implements IFreeplaneAction {
 								return true;
 							}
 							final int replace = JOptionPane.showConfirmDialog(grabKeyDialog, menuItem.getText(),
-							    ResourceBundles.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
+							    TextUtil.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
 							if (replace == JOptionPane.YES_OPTION) {
 								menuBuilder.setAccelerator(menuItemNode, null);
 								final String shortcutKey = menuBuilder.getShortcutKey(menuItemNode.getKey().toString());
@@ -180,7 +179,7 @@ class AccelerateableAction implements IFreeplaneAction {
 						final JMenu menu = menuBar.getMenu(i);
 						final char c = (char) menu.getMnemonic();
 						if (Character.toLowerCase(keystroke.getKeyCode()) == Character.toLowerCase(c)) {
-							JOptionPane.showMessageDialog(grabKeyDialog, menu.getText(), ResourceBundles
+							JOptionPane.showMessageDialog(grabKeyDialog, menu.getText(), TextUtil
 							    .getText("used_in_menu"), JOptionPane.WARNING_MESSAGE);
 							return false;
 						}

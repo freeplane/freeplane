@@ -45,12 +45,12 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
@@ -609,7 +609,7 @@ public class MClipboardController extends ClipboardController {
 	    }
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		if (asSibling && ! mapController.isWriteable(target.getParentNode()) || ! asSibling && ! mapController.isWriteable(target)) {
-			final String message = ResourceBundles.getText("node_is_write_protected");
+			final String message = TextUtil.getText("node_is_write_protected");
 			UITools.errorMessage(message);
 			return;
 		}

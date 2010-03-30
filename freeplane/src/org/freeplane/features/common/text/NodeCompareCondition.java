@@ -21,8 +21,8 @@ package org.freeplane.features.common.text;
 
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.ModeController;
@@ -68,7 +68,7 @@ public class NodeCompareCondition extends CompareConditionAdapter {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = ResourceBundles.getText(NodeConditionController.FILTER_NODE);
+		final String nodeCondition = TextUtil.getText(NodeConditionController.FILTER_NODE);
 		return super.createDescription(nodeCondition, comparationResult, succeed);
 	}
 

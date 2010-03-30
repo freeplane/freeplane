@@ -47,13 +47,13 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.ToggleToolbarAction;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
@@ -379,7 +379,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		}
 		catch (final Exception e) {
 			LogTool.warn(e);
-			UITools.errorMessage(ResourceBundles.getText("filters_not_loaded"));
+			UITools.errorMessage(TextUtil.getText("filters_not_loaded"));
 		}
 	}
 

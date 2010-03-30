@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 
 /**
  * 
@@ -86,7 +86,7 @@ public class IconGroup {
 
 	public String getDescription() {
 		if(description == null) {
-			description = ResourceBundles.getText("IconGroupPopupAction." + name.toLowerCase() + ".text");
+			description = TextUtil.getText("IconGroupPopupAction." + name.toLowerCase() + ".text");
 		}
 		return description;
 	}

@@ -25,11 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -99,7 +99,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 				if (!result) {
 					LogTool.warn("error executing script " + script + " - giving up");
 					modeController.delayedRollback();
-					UITools.errorMessage(ResourceBundles.getText("ExecuteScriptError.text"));
+					UITools.errorMessage(TextUtil.getText("ExecuteScriptError.text"));
 					return;
 				}
 			}
@@ -107,7 +107,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		}
 		catch (IOException ex) {
 			LogTool.warn("error reading " + script, ex);
-			UITools.errorMessage(ResourceBundles.getText("ReadScriptError.text"));
+			UITools.errorMessage(TextUtil.getText("ReadScriptError.text"));
 		}
 		finally{
 			getController().getViewController().setWaitingCursor(false);

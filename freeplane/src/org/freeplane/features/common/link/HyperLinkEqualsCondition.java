@@ -21,7 +21,7 @@ package org.freeplane.features.common.link;
 
 import java.net.URI;
 
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 
 /**
@@ -42,8 +42,8 @@ public class HyperLinkEqualsCondition extends HyperLinkCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String condition = ResourceBundles.getText(LinkConditionController.FILTER_LINK);
-		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
+		final String condition = TextUtil.getText(LinkConditionController.FILTER_LINK);
+		final String simpleCondition = TextUtil.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
 		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), false);
 	}
 

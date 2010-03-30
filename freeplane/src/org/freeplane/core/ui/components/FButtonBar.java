@@ -47,9 +47,9 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IAcceleratorChangeListener;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.ModeController;
 
 /**
@@ -90,7 +90,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			final JButton[] buttonRow = buttons.get(modifiers);
 			final JButton button = buttonRow[oldButtonNumber];
 			button.setAction(null);
-			final String text = ResourceBundles.getText("f_button_unassigned");
+			final String text = TextUtil.getText("f_button_unassigned");
 			button.setText(text);
 			button.setToolTipText(text);
 		}
@@ -119,7 +119,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		final JButton[] buttons = new JButton[BUTTON_NUMBER];
 		for (int i = 0; i < BUTTON_NUMBER; i++) {
 			final String name = "/images/f" + (i + 1) + ".png";
-			final JButton button = buttons[i] = new JButton(ResourceBundles.getText("f_button_unassigned"),
+			final JButton button = buttons[i] = new JButton(TextUtil.getText("f_button_unassigned"),
 			    new ImageIcon(ResourceController.getResourceController().getResource(name))) {
 				/**
 				 * 

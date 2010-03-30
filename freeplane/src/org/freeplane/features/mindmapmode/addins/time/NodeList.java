@@ -73,8 +73,6 @@ import javax.swing.text.Document;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.UIBuilder;
@@ -84,6 +82,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.SysUtil;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.MindIcon;
@@ -494,7 +493,7 @@ class NodeList {
 		try {
 			p = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
 		} catch (PatternSyntaxException e) {
-			UITools.errorMessage(FpStringUtils.format("wrong_regexp", searchString, e.getMessage()));
+			UITools.errorMessage(TextUtil.format("wrong_regexp", searchString, e.getMessage()));
 			return;
 		}
 		final String replacement = NodeList.getPureRegularExpression(replaceString);
@@ -659,12 +658,12 @@ class NodeList {
 	}
 
 	public void startup() {
-		NodeList.COLUMN_MODIFIED = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
-		NodeList.COLUMN_CREATED = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_CREATED);
-		NodeList.COLUMN_ICONS = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_ICONS);
-		NodeList.COLUMN_TEXT = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_TEXT);
-		NodeList.COLUMN_DATE = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_DATE);
-		NodeList.COLUMN_NOTES = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_NOTES);
+		NodeList.COLUMN_MODIFIED = TextUtil.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
+		NodeList.COLUMN_CREATED = TextUtil.getText(PLUGINS_TIME_LIST_XML_CREATED);
+		NodeList.COLUMN_ICONS = TextUtil.getText(PLUGINS_TIME_LIST_XML_ICONS);
+		NodeList.COLUMN_TEXT = TextUtil.getText(PLUGINS_TIME_LIST_XML_TEXT);
+		NodeList.COLUMN_DATE = TextUtil.getText(PLUGINS_TIME_LIST_XML_DATE);
+		NodeList.COLUMN_NOTES = TextUtil.getText(PLUGINS_TIME_LIST_XML_NOTES);
 		dialog = new JDialog(modeController.getController().getViewController().getFrame(), true /* modal */);
 		String windowTitle;
 		if (showAllNodes) {
@@ -673,7 +672,7 @@ class NodeList {
 		else {
 			windowTitle = PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE;
 		}
-		dialog.setTitle(ResourceBundles.getText(windowTitle));
+		dialog.setTitle(TextUtil.getText(windowTitle));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
 			@Override
@@ -697,7 +696,7 @@ class NodeList {
 		gbl.rowWeights = new double[] { 1.0f };
 		contentPane.setLayout(gbl);
 		contentPane
-		    .add(new JLabel(ResourceBundles.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)), new GridBagConstraints(0, 0, 1,
+		    .add(new JLabel(TextUtil.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)), new GridBagConstraints(0, 0, 1,
 		        1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextSearchField = new JTextField();
 		mFilterTextSearchField.getDocument().addDocumentListener(new FilterTextDocumentListener());
@@ -711,7 +710,7 @@ class NodeList {
 		});
 		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		contentPane.add(new JLabel(ResourceBundles.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)),
+		contentPane.add(new JLabel(TextUtil.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)),
 		    new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
 		        new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextReplaceField = new JTextField();
@@ -752,7 +751,7 @@ class NodeList {
 		mTreeLabel = new JLabel();
 		contentPane.add(new JScrollPane(mTreeLabel), new GridBagConstraints(0, 5, 1, 1, 1.0, 1.0,
 		    GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-		final AbstractAction selectAction = new AbstractAction(ResourceBundles
+		final AbstractAction selectAction = new AbstractAction(TextUtil
 		    .getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
 			/**
 			     * 
@@ -764,7 +763,7 @@ class NodeList {
 			}
 		};
 		final JButton selectButton = new JButton(selectAction);
-		final AbstractAction exportAction = new AbstractAction(ResourceBundles
+		final AbstractAction exportAction = new AbstractAction(TextUtil
 		    .getText("plugins/TimeManagement.xml_Export")) {
 			/**
 			     * 
@@ -776,7 +775,7 @@ class NodeList {
 			}
 		};
 		final JButton exportButton = new JButton(exportAction);
-		final AbstractAction replaceAllAction = new AbstractAction(ResourceBundles
+		final AbstractAction replaceAllAction = new AbstractAction(TextUtil
 		    .getText("plugins/TimeManagement.xml_Replace_All")) {
 			/**
 			     * 
@@ -788,7 +787,7 @@ class NodeList {
 			}
 		};
 		final JButton replaceAllButton = new JButton(replaceAllAction);
-		final AbstractAction replaceSelectedAction = new AbstractAction(ResourceBundles
+		final AbstractAction replaceSelectedAction = new AbstractAction(TextUtil
 		    .getText("plugins/TimeManagement.xml_Replace_Selected")) {
 			/**
 			     * 
@@ -800,7 +799,7 @@ class NodeList {
 			}
 		};
 		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
-		final AbstractAction gotoAction = new AbstractAction(ResourceBundles.getText("plugins/TimeManagement.xml_Goto")) {
+		final AbstractAction gotoAction = new AbstractAction(TextUtil.getText("plugins/TimeManagement.xml_Goto")) {
 			/**
 			     * 
 			     */
@@ -812,7 +811,7 @@ class NodeList {
 			}
 		};
 		final JButton gotoButton = new JButton(gotoAction);
-		final AbstractAction disposeAction = new AbstractAction(ResourceBundles
+		final AbstractAction disposeAction = new AbstractAction(TextUtil
 		    .getText(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
 			/**
 			     * 
@@ -834,7 +833,7 @@ class NodeList {
 		contentPane.add(/* new JScrollPane */(bar), new GridBagConstraints(0, 6, 1, 1, 1.0, 1.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		final JMenuBar menuBar = new JMenuBar();
-		final JMenu menu = new JMenu(ResourceBundles.getText("plugins/TimeManagement.xml_menu_actions"));
+		final JMenu menu = new JMenu(TextUtil.getText("plugins/TimeManagement.xml_menu_actions"));
 		final AbstractAction[] actionList = new AbstractAction[] { selectAction, gotoAction, replaceSelectedAction,
 		        replaceAllAction, exportAction, disposeAction };
 		for (int i = 0; i < actionList.length; i++) {

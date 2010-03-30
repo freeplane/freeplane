@@ -58,8 +58,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
@@ -67,6 +65,7 @@ import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -305,7 +304,7 @@ public class MenuBuilder extends UIBuilder {
 				if (!contains(menuPath.path)) {
 					if (tag.equals("menu_submenu")) {
 						final JMenu menuItem = new JMenu();
-						MenuBuilder.setLabelAndMnemonic(menuItem, ResourceBundles.getText(attributes.getAttribute(
+						MenuBuilder.setLabelAndMnemonic(menuItem, TextUtil.getText(attributes.getAttribute(
 						    "name_ref", null)));
 						addMenuItem(menuPath.parentPath, menuItem, menuPath.path, MenuBuilder.AS_CHILD);
 					}
@@ -364,14 +363,14 @@ public class MenuBuilder extends UIBuilder {
 
 	static public JMenu createMenu(final String name) {
 		final JMenu menu = new JMenu();
-		final String text = ResourceBundles.getText(name);
+		final String text = TextUtil.getText(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
 
 	static public JMenuItem createMenuItem(final String name) {
 		final JMenuItem menu = new JMenuItem();
-		final String text = ResourceBundles.getText(name);
+		final String text = TextUtil.getText(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
@@ -459,7 +458,7 @@ public class MenuBuilder extends UIBuilder {
 		if (rawLabel == null) {
 			return;
 		}
-		item.setText(FpStringUtils.removeMnemonic(rawLabel));
+		item.setText(TextUtil.removeMnemonic(rawLabel));
 		final int mnemoSignIndex = rawLabel.indexOf("&");
 		if (mnemoSignIndex >= 0 && mnemoSignIndex + 1 < rawLabel.length()) {
 			final char charAfterMnemoSign = rawLabel.charAt(mnemoSignIndex + 1);

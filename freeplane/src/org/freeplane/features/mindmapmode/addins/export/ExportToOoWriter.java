@@ -38,11 +38,11 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.MapWriter.Mode;
@@ -72,7 +72,7 @@ public class ExportToOoWriter extends ExportAction {
 		}
 		catch (final Exception ex) {
 			LogTool.warn(ex);
-			UITools.errorMessage(ResourceBundles.getText("export_failed"));
+			UITools.errorMessage(TextUtil.getText("export_failed"));
 		}
 		getController().getViewController().setWaitingCursor(false);
 	}

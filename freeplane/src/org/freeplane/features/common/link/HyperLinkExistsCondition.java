@@ -21,7 +21,7 @@ package org.freeplane.features.common.link;
 
 import java.net.URI;
 
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -43,8 +43,8 @@ public class HyperLinkExistsCondition extends HyperLinkCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String condition = ResourceBundles.getText(LinkConditionController.FILTER_LINK);
-		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_EXIST);
+		final String condition = TextUtil.getText(LinkConditionController.FILTER_LINK);
+		final String simpleCondition = TextUtil.getText(ConditionFactory.FILTER_EXIST);
 		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), false);
 	}
 

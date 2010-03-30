@@ -25,9 +25,9 @@ import java.io.File;
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtil;
 
 public class OpenPathAction extends AFreeplaneAction {
 	/**
@@ -37,12 +37,12 @@ public class OpenPathAction extends AFreeplaneAction {
 
 	public OpenPathAction(final Controller controller) {
 		super("OpenPathAction", controller);
-		putValue(Action.NAME, ResourceBundles.getText("OpenAction.text"));
+		putValue(Action.NAME, TextUtil.getText("OpenAction.text"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final String inputValue = UITools.showInputDialog(getController(),
-		    getController().getSelection().getSelected(), ResourceBundles.getText("open"), "");
+		    getController().getSelection().getSelected(), TextUtil.getText("open"), "");
 		if (inputValue != null) {
 			final File newCenter = new File(inputValue);
 			if (newCenter.exists()) {

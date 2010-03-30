@@ -37,7 +37,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.NodeModel;
 
 public class ColorTracker implements ActionListener, Serializable {
@@ -85,7 +85,7 @@ public class ColorTracker implements ActionListener, Serializable {
 		final ColorTracker ok = new ColorTracker(pane);
 		final JDialog dialog = JColorChooser.createDialog(component, title, true, pane, ok, null);
 		final Container container = (Container) dialog.getContentPane().getComponent(1);
-		final JButton defaultBtn = new JButton(ResourceBundles.getText("reset_to_default"));
+		final JButton defaultBtn = new JButton(TextUtil.getText("reset_to_default"));
 		defaultBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				dialog.dispose();

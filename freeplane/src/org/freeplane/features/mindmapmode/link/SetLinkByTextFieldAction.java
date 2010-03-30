@@ -23,11 +23,11 @@ import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.ModeController;
@@ -47,7 +47,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		final ModeController modeController = getModeController();
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
 		final String inputValue = UITools.showInputDialog(getController(),
-		    getController().getSelection().getSelected(), ResourceBundles.getText("edit_link_manually"), NodeLinks
+		    getController().getSelection().getSelected(), TextUtil.getText("edit_link_manually"), NodeLinks
 		        .getLinkAsString(selectedNode));
 		if (inputValue != null) {
 			MLinkController linkController = (MLinkController) MLinkController.getController(modeController);

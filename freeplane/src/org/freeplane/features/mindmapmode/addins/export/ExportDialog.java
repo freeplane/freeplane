@@ -36,12 +36,11 @@ import javax.swing.JOptionPane;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
 /**
@@ -87,8 +86,8 @@ public class ExportDialog {
 		super();
 		filechooser = new JFileChooser();
 		filechooser.setAcceptAllFileFilterUsed(false); // the user can't select an "All Files filter"
-		filechooser.setDialogTitle(ResourceBundles.getText("export_using_xslt"));
-		filechooser.setToolTipText(ResourceBundles.getText("select_file_export_to")); // "Select the file to export to"
+		filechooser.setDialogTitle(TextUtil.getText("export_using_xslt"));
+		filechooser.setToolTipText(TextUtil.getText("select_file_export_to")); // "Select the file to export to"
 	}
 
 	private void addXsltFile(final String[] filters, final String description, final File somefile) {
@@ -113,8 +112,8 @@ public class ExportDialog {
 	void export(final Component parentframe, StreamSource xmlSource, final File xmlSourceFile) {
 		gatherXsltScripts();
 		if (filtermap.isEmpty()) {
-			JOptionPane.showMessageDialog(parentframe, FpStringUtils.formatText("xslt_export_file_not_found_in_dirs",
-			    getXsltUserDirectory().getAbsolutePath(), getXsltSysDirectory().getAbsolutePath()), ResourceBundles
+			JOptionPane.showMessageDialog(parentframe, TextUtil.formatText("xslt_export_file_not_found_in_dirs",
+			    getXsltUserDirectory().getAbsolutePath(), getXsltSysDirectory().getAbsolutePath()), TextUtil
 			    .getText("xslt_export_not_possible"), JOptionPane.WARNING_MESSAGE);
 			/* "No XSLT export file could be found,\n neither in '"
 			+ getXsltUserDirectory() + "'\n nor in '"
@@ -177,7 +176,7 @@ public class ExportDialog {
 					return;
 				}
 				if (selectedFile.exists()) {
-					final String overwriteText = MessageFormat.format(ResourceBundles.getText("file_already_exists"),
+					final String overwriteText = MessageFormat.format(TextUtil.getText("file_already_exists"),
 					    new Object[] { selectedFile.toString() });
 					final int overwriteMap = JOptionPane.showConfirmDialog(UITools.getFrame(), overwriteText,
 					    overwriteText, JOptionPane.YES_NO_OPTION);
@@ -227,12 +226,12 @@ public class ExportDialog {
 			if (m.matches()) { // if it does
 				final String extension = m.group(1);
 				final String[] filters = new String[] { extension };
-				addXsltFile(filters, FpStringUtils.formatText("exported_file", extension), somefile);
+				addXsltFile(filters, TextUtil.formatText("exported_file", extension), somefile);
 			}
 		}
 		catch (final IOException e) {
 			LogTool.warn(e);
-			UITools.errorMessage(ResourceBundles.getText("export_failed"));
+			UITools.errorMessage(TextUtil.getText("export_failed"));
 		}
 		finally {
 			if (xsl != null) {

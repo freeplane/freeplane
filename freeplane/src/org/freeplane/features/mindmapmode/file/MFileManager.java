@@ -51,8 +51,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewChangeListener;
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.ComboProperty;
 import org.freeplane.core.resources.ui.IPropertyControl;
@@ -64,6 +62,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.FileUtil;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapModel;
@@ -110,7 +109,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 		@Override
 		public String getDescription() {
-			return ResourceBundles.getText("mindmaps_desc");
+			return TextUtil.getText("mindmaps_desc");
 		}
 	}
 
@@ -210,7 +209,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				LinkedList<String> charsetList = new LinkedList<String>(charsets);
 				charsetList.addFirst("JVMdefault");
 				LinkedList<String> charsetTranslationList = new LinkedList<String>(charsets);
-				charsetTranslationList.addFirst(ResourceBundles.getText("OptionPanel.default"));
+				charsetTranslationList.addFirst(TextUtil.getText("OptionPanel.default"));
 				return new ComboProperty("default_charset", charsetList, charsetTranslationList);
 			}
 		},
@@ -274,7 +273,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		File file = map.getFile();
 		boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
 		if (file == null && useRelativeUri) {
-			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ResourceBundles
+			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), TextUtil
 			    .getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
@@ -308,7 +307,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final File file = Compat.urlToFile(url);
 		File alternativeFile = null;
 		if (!file.exists()) {
-			throw new FileNotFoundException(FpStringUtils.formatText("file_not_found", file.getPath()));
+			throw new FileNotFoundException(TextUtil.formatText("file_not_found", file.getPath()));
 		}
 		if (!file.canWrite()) {
 			((MMapModel) map).setReadOnly(true);
@@ -331,7 +330,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
-					UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils
+					UITools.informationMessage(getController().getViewController().getFrame(), TextUtil
 					    .formatText("map_locked_by_open", file.getName(), lockingUser));
 					((MMapModel) map).setReadOnly(true);
 				}
@@ -341,7 +340,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 			catch (final Exception e) {
 				LogTool.severe(e);
-				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
+				UITools.informationMessage(getController().getViewController().getFrame(), TextUtil.formatText(
 				    "locking_failed_by_open", file.getName()));
 				((MMapModel) map).setReadOnly(true);
 			}
@@ -487,13 +486,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 			final String lockingUser = tryToLock(map, file);
 			if (lockingUser != null) {
-				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
+				UITools.informationMessage(getController().getViewController().getFrame(), TextUtil.formatText(
 				    "map_locked_by_save_as", file.getName(), lockingUser));
 				return false;
 			}
 		}
 		catch (final Exception e) {
-			UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
+			UITools.informationMessage(getController().getViewController().getFrame(), TextUtil.formatText(
 			    "locking_failed_by_save_as", file.getName()));
 			return false;
 		}
@@ -521,7 +520,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		else {
 			chooser.setSelectedFile(map.getFile());
 		}
-		chooser.setDialogTitle(ResourceBundles.getText("SaveAsAction.text"));
+		chooser.setDialogTitle(TextUtil.getText("SaveAsAction.text"));
 		final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return false;
@@ -534,7 +533,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
-			    ResourceBundles.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+			    TextUtil.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
 			}
@@ -582,7 +581,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			return true;
 		}
 		catch (final IOException e) {
-			final String message = FpStringUtils.formatText("save_failed", file.getName());
+			final String message = TextUtil.formatText("save_failed", file.getName());
 			if (!isInternal) {
 				UITools.errorMessage(message);
 			}
@@ -620,7 +619,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
 		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
-			UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
+			UITools.informationMessage(getController().getViewController().getFrame(), TextUtil.formatText(
 			    "locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
 		}
 		if (lockingUser == null) {

@@ -28,10 +28,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
@@ -80,7 +79,7 @@ class NodeConditionController implements IElementaryConditionController {
 			try {
 				return new NodeMatchesRegexpCondition(value, ignoreCase);
 			} catch (PatternSyntaxException e) {
-				UITools.errorMessage(FpStringUtils.format("wrong_regexp", value, e.getMessage()));
+				UITools.errorMessage(TextUtil.format("wrong_regexp", value, e.getMessage()));
 				return null;
 			}
 		}
@@ -107,17 +106,17 @@ class NodeConditionController implements IElementaryConditionController {
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
 		return new DefaultComboBoxModel(new NamedObject[] {
-		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
-		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
-		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
+		        TextUtil.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+		        TextUtil.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
+		        TextUtil.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
 		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT),
-		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_REGEXP), });
+		        TextUtil.createTranslatedString(ConditionFactory.FILTER_REGEXP), });
 	}
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(ResourceBundles.createTranslatedString(NodeConditionController.FILTER_NODE));
+		list.addElement(TextUtil.createTranslatedString(NodeConditionController.FILTER_NODE));
 		return list;
 	}
 

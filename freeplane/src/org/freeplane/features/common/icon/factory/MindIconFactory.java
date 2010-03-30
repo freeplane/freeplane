@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.common.icon.factory;
 
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.icon.MindIcon;
 
 /**
@@ -41,7 +41,7 @@ public class MindIconFactory {
 	 * @return
 	 */
 	public static MindIcon create(String name) {
-		final String description = name.indexOf('/') > 0 ? "" : ResourceBundles.getText(String.format(DESC_KEY, name));
+		final String description = name.indexOf('/') > 0 ? "" : TextUtil.getText(String.format(DESC_KEY, name));
 		return new MindIcon(name, name + ".png", description);
 	}
 }

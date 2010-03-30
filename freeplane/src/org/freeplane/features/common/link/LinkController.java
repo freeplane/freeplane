@@ -45,14 +45,13 @@ import org.freeplane.core.controller.SelectionController;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
@@ -173,7 +172,7 @@ public class LinkController extends SelectionController implements IExtension {
 				if(dest != null){
 					return dest.getShortText();
 				}
-				return ResourceBundles.getText("link_not_available_any_more");
+				return TextUtil.getText("link_not_available_any_more");
 		}
 		return adaptedText;
 	}
@@ -232,7 +231,7 @@ public class LinkController extends SelectionController implements IExtension {
         }
 		catch (URISyntaxException e1) {
 			LogTool.warn(e1);
-			UITools.errorMessage(FpStringUtils.formatText("link_error", link));
+			UITools.errorMessage(TextUtil.formatText("link_error", link));
 			return;
 		}
 	}

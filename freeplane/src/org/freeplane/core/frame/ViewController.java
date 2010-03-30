@@ -64,14 +64,13 @@ import javax.swing.UIManager;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
-import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -174,7 +173,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		zoomOut = new ZoomOutAction(this);
 		controller.addAction(zoomOut);
 		controller.addAction(new ToggleFullScreenAction(this));
-		userDefinedZoom = ResourceBundles.getText("user_defined_zoom");
+		userDefinedZoom = TextUtil.getText("user_defined_zoom");
 		zoomModel = new DefaultComboBoxModel(getZooms());
 		zoomModel.addElement(userDefinedZoom);
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -617,15 +616,15 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			setTitle("");
 			return;
 		}
-		final Object[] messageArguments = { ResourceBundles.getText(("mode_" + modeController.getModeName())) };
-		final MessageFormat formatter = new MessageFormat(ResourceBundles.getText("mode_title"));
+		final Object[] messageArguments = { TextUtil.getText(("mode_" + modeController.getModeName())) };
+		final MessageFormat formatter = new MessageFormat(TextUtil.getText("mode_title"));
 		String title = formatter.format(messageArguments);
 		String rawTitle = "";
 		final MapModel model = mapViewManager.getModel();
 		if (model != null) {
 			rawTitle = mapViewManager.getMapViewComponent().getName();
 			title = rawTitle + (model.isSaved() ? "" : "*") + " - " + title
-			        + (model.isReadOnly() ? " (" + ResourceBundles.getText("read_only") + ")" : "");
+			        + (model.isReadOnly() ? " (" + TextUtil.getText("read_only") + ")" : "");
 			final File file = model.getFile();
 			if (file != null) {
 				title += " " + file.getAbsolutePath();
@@ -650,7 +649,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		mapViewManager.setZoom(zoom);
 		setZoomComboBox(zoom);
 		final Object[] messageArguments = { String.valueOf(zoom * 100f) };
-		final String stringResult = FpStringUtils.format("user_defined_zoom_status_bar", messageArguments);
+		final String stringResult = TextUtil.format("user_defined_zoom_status_bar", messageArguments);
 		out(stringResult);
 	}
 

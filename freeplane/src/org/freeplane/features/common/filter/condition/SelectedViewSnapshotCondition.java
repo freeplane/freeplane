@@ -24,7 +24,7 @@ import java.util.HashSet;
 import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -59,7 +59,7 @@ public class SelectedViewSnapshotCondition implements ISelectableCondition {
 	@Override
 	public String toString() {
 		if (SelectedViewSnapshotCondition.description == null) {
-			SelectedViewSnapshotCondition.description = ResourceBundles.getText("filter_selected_node_view_snapshot");
+			SelectedViewSnapshotCondition.description = TextUtil.getText("filter_selected_node_view_snapshot");
 		}
 		return SelectedViewSnapshotCondition.description;
 	}

@@ -24,11 +24,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
@@ -133,7 +133,7 @@ class NewChildAction extends AFreeplaneAction {
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		if (! mapController.isWriteable(parent)) {
-			final String message = ResourceBundles.getText("node_is_write_protected");
+			final String message = TextUtil.getText("node_is_write_protected");
 			UITools.errorMessage(message);
 			return null;
 		}

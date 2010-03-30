@@ -36,7 +36,6 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
@@ -44,6 +43,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.MapModel;
@@ -201,7 +201,7 @@ public class MTextController extends TextController {
 		File file = map.getFile();
 		boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
 		if (file == null && useRelativeUri) {
-			JOptionPane.showMessageDialog(viewController.getContentPane(), ResourceBundles
+			JOptionPane.showMessageDialog(viewController.getContentPane(), TextUtil
 				.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
@@ -210,7 +210,7 @@ public class MTextController extends TextController {
 		filter.addExtension("jpeg");
 		filter.addExtension("png");
 		filter.addExtension("gif");
-		filter.setDescription(ResourceBundles.getText("bitmaps"));
+		filter.setDescription(TextUtil.getText("bitmaps"));
 		UrlManager urlManager = (UrlManager) modeController.getExtension(UrlManager.class);
 		JFileChooser chooser = urlManager.getFileChooser(null);
 		chooser.setFileFilter(filter);
