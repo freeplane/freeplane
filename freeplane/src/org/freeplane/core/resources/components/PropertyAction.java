@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources.ui;
+package org.freeplane.core.resources.components;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -33,7 +33,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ui.OptionPanel.IOptionPanelFeedback;
+import org.freeplane.core.resources.components.OptionPanel.IOptionPanelFeedback;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtil;

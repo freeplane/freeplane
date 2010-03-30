@@ -17,35 +17,28 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources.ui;
+package org.freeplane.core.resources.components;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.JTextField;
 
-import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.TextUtil;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class NumberProperty extends PropertyBean implements IPropertyControl {
-	final private int max;
-	final private int min;
-	final private JSpinner spinner;
-	final private int step;
+public class StringProperty extends PropertyBean implements IPropertyControl {
+	final JTextField mTextField;
 
 	/**
 	 */
-	public NumberProperty(final String name, final int min, final int max, final int step) {
+	public StringProperty(final String name) {
 		super(name);
-		this.min = min;
-		this.max = max;
-		this.step = step;
-		spinner = new JSpinner(new SpinnerNumberModel(min, min, max, step));
-		spinner.addChangeListener(new ChangeListener() {
-			public void stateChanged(final ChangeEvent pE) {
+		mTextField = new JTextField();
+		mTextField.addActionListener(new ActionListener() {
+			public void actionPerformed(final ActionEvent pE) {
 				firePropertyChangeEvent();
 			}
 		});
@@ -53,32 +46,21 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 
 	@Override
 	public String getValue() {
-		return spinner.getValue().toString();
+		return mTextField.getText();
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtil.getOptionalText(getLabel()), spinner);
+		final JLabel label = builder.append(TextUtil.getOptionalText(getLabel()), mTextField);
 		label.setToolTipText(TextUtil.getOptionalText(getDescription()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {
-		spinner.setEnabled(pEnabled);
+		mTextField.setEnabled(pEnabled);
 	}
 
 	@Override
 	public void setValue(final String value) {
-		int intValue = 100;
-		try {
-			intValue = Integer.parseInt(value);
-			final int stepModul = (intValue - min) % step;
-			if (intValue < min || intValue > max || (stepModul != 0)) {
-				LogTool.severe("Actual value of property " + getName() + " is not in the allowed range: " + value);
-				intValue = min;
-			}
-		}
-		catch (final NumberFormatException e) {
-			LogTool.severe(e);
-		}
-		spinner.setValue(new Integer(intValue));
+		mTextField.setText(value);
+		mTextField.selectAll();
 	}
 }

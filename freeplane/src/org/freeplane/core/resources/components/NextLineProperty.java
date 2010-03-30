@@ -2,8 +2,6 @@
  *  Freeplane - mind map editor
  *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
  *
- *  This file is modified by Dimitry Polivaev in 2008.
- *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 2 of the License, or
@@ -17,26 +15,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources.ui;
-
-import org.freeplane.core.util.TextUtil;
+package org.freeplane.core.resources.components;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class SeparatorProperty implements IPropertyControl {
-	private final String label;
-
-	public SeparatorProperty(final String label) {
+public class NextLineProperty implements IPropertyControl {
+	public NextLineProperty() {
 		super();
-		this.label = label;
 	}
 
 	public String getDescription() {
 		return null;
-	}
-
-	public String getLabel() {
-		return label;
 	}
 
 	public String getName() {
@@ -44,7 +33,7 @@ public class SeparatorProperty implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		builder.appendSeparator(TextUtil.getOptionalText(getLabel()));
+		builder.nextLine();
 	}
 
 	public void setEnabled(final boolean pEnabled) {

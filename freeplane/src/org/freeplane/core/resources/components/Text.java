@@ -17,50 +17,40 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources.ui;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+package org.freeplane.core.resources.components;
 
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 import org.freeplane.core.util.TextUtil;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class StringProperty extends PropertyBean implements IPropertyControl {
-	final JTextField mTextField;
+public class Text implements IPropertyControl {
+	private final String label;
 
-	/**
-	 */
-	public StringProperty(final String name) {
-		super(name);
-		mTextField = new JTextField();
-		mTextField.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent pE) {
-				firePropertyChangeEvent();
-			}
-		});
+	public Text(final String label) {
+		super();
+		this.label = label;
 	}
 
-	@Override
-	public String getValue() {
-		return mTextField.getText();
+	public String getDescription() {
+		return null;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public String getName() {
+		return null;
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtil.getOptionalText(getLabel()), mTextField);
-		label.setToolTipText(TextUtil.getOptionalText(getDescription()));
+		builder.append(new JLabel(TextUtil.getOptionalText(getLabel())), builder.getColumnCount() - builder.getColumn()
+		        + 1);
+		builder.nextLine();
 	}
 
 	public void setEnabled(final boolean pEnabled) {
-		mTextField.setEnabled(pEnabled);
-	}
-
-	@Override
-	public void setValue(final String value) {
-		mTextField.setText(value);
-		mTextField.selectAll();
 	}
 }

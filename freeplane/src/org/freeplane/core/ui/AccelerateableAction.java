@@ -38,8 +38,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ui.GrabKeyDialog;
-import org.freeplane.core.resources.ui.IKeystrokeValidator;
+import org.freeplane.core.resources.components.GrabKeyDialog;
+import org.freeplane.core.resources.components.IKeystrokeValidator;
 import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;

@@ -26,8 +26,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ui.OptionPanelBuilder;
-import org.freeplane.core.resources.ui.PropertyAction;
+import org.freeplane.core.resources.components.OptionPanelBuilder;
+import org.freeplane.core.resources.components.PropertyAction;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;

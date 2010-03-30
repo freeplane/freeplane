@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources.ui;
+package org.freeplane.core.resources.components;
 
 import java.awt.CardLayout;
 import java.awt.Component;

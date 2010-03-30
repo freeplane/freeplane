@@ -1,6 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *  Copyright (C) 2009 Dimitry
+ *
+ *  This file author is Dimitry
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,27 +17,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources.ui;
+package org.freeplane.core.resources.components;
 
-import com.jgoodies.forms.builder.DefaultFormBuilder;
+import javax.swing.KeyStroke;
 
-public class NextLineProperty implements IPropertyControl {
-	public NextLineProperty() {
-		super();
-	}
-
-	public String getDescription() {
-		return null;
-	}
-
-	public String getName() {
-		return null;
-	}
-
-	public void layout(final DefaultFormBuilder builder) {
-		builder.nextLine();
-	}
-
-	public void setEnabled(final boolean pEnabled) {
-	}
+/**
+ * @author Dimitry Polivaev
+ * 12.04.2009
+ */
+public interface IKeystrokeValidator {
+	boolean isValid(KeyStroke keystroke, Character character);
 }

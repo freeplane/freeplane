@@ -29,7 +29,7 @@ import javax.swing.JMenu;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ui.OptionPanelBuilder;
+import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtil;

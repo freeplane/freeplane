@@ -27,8 +27,8 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.ui.IPropertyControl;
-import org.freeplane.core.resources.ui.PropertyBean;
+import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.PropertyBean;
 import org.freeplane.core.util.TextUtil;
 import org.freeplane.features.common.map.ModeController;
 

@@ -17,31 +17,36 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources.ui;
+package org.freeplane.core.resources.components;
 
-import com.jgoodies.forms.builder.DefaultFormBuilder;
+import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev
- * 27.12.2008
+ * 26.12.2008
  */
-public class TabProperty implements IPropertyControl {
-	private static final String DEFAULT_LAYOUT_FORMAT = "right:max(40dlu;p), 4dlu, 200dlu:grow, 7dlu";
-	final private String label;
-	final private String layoutFormat;
+public class PropertyAdapter {
+	private String description;
+	private final String label;
+	private final String name;
 
-	public TabProperty(final String label) {
-		this(label, TabProperty.DEFAULT_LAYOUT_FORMAT);
+	public PropertyAdapter(final String name) {
+		this(name, "OptionPanel." + name, "OptionPanel." + name + ".tooltip");
+		if (ResourceController.getResourceController().getText(description, null) == null) {
+			description = null;
+		}
 	}
 
-	public TabProperty(final String label, final String layoutFormat) {
+	public PropertyAdapter(final String name, final String label, final String description) {
 		super();
+		assert name != null;
+		this.name = name;
 		this.label = label;
-		this.layoutFormat = layoutFormat;
+		this.description = description;
 	}
 
 	public String getDescription() {
-		return layoutFormat;
+		return description;
 	}
 
 	public String getLabel() {
@@ -49,12 +54,6 @@ public class TabProperty implements IPropertyControl {
 	}
 
 	public String getName() {
-		return null;
-	}
-
-	public void layout(final DefaultFormBuilder builder) {
-	}
-
-	public void setEnabled(final boolean pEnabled) {
+		return name;
 	}
 }

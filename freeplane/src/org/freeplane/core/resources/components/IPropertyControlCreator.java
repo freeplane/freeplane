@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2009 Dimitry
+ *  Copyright (C) 2008 Dimitry Polivaev
  *
- *  This file author is Dimitry
+ *  This file author is Dimitry Polivaev
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,14 +17,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources.ui;
-
-import javax.swing.KeyStroke;
+package org.freeplane.core.resources.components;
 
 /**
  * @author Dimitry Polivaev
- * 12.04.2009
+ * 26.12.2008
  */
-public interface IKeystrokeValidator {
-	boolean isValid(KeyStroke keystroke, Character character);
+public interface IPropertyControlCreator {
+	IPropertyControl createControl();
 }
