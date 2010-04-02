@@ -44,7 +44,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/change" })
 public class CreationModificationPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
 	private boolean nodeChangeListenerDisabled;
-	private String tooltipFormat = "<html>Created:  {0,date} {0,time}<br>Modified: {1,date} {1,time}</html>";
+	private String tooltipFormat  = null;
 
 	/**
 	 *
@@ -118,9 +118,15 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 
 	private void setStyle(final NodeModel node) {
 		final Object[] messageArguments = { node.getHistoryInformation().getCreatedAt(),
-		        node.getHistoryInformation().getLastModifiedAt() };
+				node.getHistoryInformation().getLastModifiedAt() };
 		if (tooltipFormat == null) {
-			tooltipFormat = TextUtils.getText("CreationModificationPlugin.tooltip_format");
+			StringBuilder sb = new StringBuilder();
+			sb.append("<html>");
+			sb.append(TextUtils.getText("plugins/TimeList.xml_Created"));
+			sb.append(":  {0,date} {0,time}<br>");
+			sb.append(TextUtils.getText("plugins/TimeList.xml_Modified"));
+			sb.append(": {1,date} {1,time}</html>");
+			tooltipFormat = sb.toString();
 		}
 		final MessageFormat formatter = new MessageFormat(tooltipFormat);
 		final String message = formatter.format(messageArguments);
