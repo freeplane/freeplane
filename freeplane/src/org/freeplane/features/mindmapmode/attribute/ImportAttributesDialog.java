@@ -194,6 +194,9 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	}
 
 	private void createAttributeSubTrees(final DefaultMutableTreeNode mapInfo, final AttributeRegistry attributes) {
+		if(attributes == null){
+			return;
+		}
 		for (int i = 0; i < attributes.size(); i++) {
 			final AttributeRegistryElement element = attributes.getElement(i);
 			final TreeNodeInfo treeNodeInfo = new AttributeTreeNodeInfo(element.getKey().toString(), element
