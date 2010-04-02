@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.text;
+package org.freeplane.features.common.filter;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -39,10 +39,9 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.filter.FilterConditionEditor;
-import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.text.TextController.Direction;
 
 class FindAction extends AFreeplaneAction {
@@ -105,7 +104,7 @@ class FindAction extends AFreeplaneAction {
 			UITools.informationMessage(getController().getViewController().getFrame(), TextUtils.getText("no_previous_find"));
 			return;
 		}
-		TextController textController = TextController.getController(getModeController());
+		FilterController filterController = FilterController.getController(getController());
 		NodeModel start = getController().getSelection().getSelected();
 		NodeModel root = findRoot.get();
 		if(root == null){
@@ -121,7 +120,7 @@ class FindAction extends AFreeplaneAction {
 				}
 			}
 		}
-		NodeModel next = textController.findNext(start, Direction.FORWARD, null);
+		NodeModel next = filterController.findNext(start, Direction.FORWARD, null);
 		if (next == null) {
 			displayNotFoundMessage(start);
 			return;

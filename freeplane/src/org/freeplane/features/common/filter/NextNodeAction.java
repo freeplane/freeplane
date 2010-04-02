@@ -1,4 +1,4 @@
-package org.freeplane.features.common.text;
+package org.freeplane.features.common.filter;
 
 import java.awt.event.ActionEvent;
 
@@ -6,6 +6,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.text.TextController.Direction;
 
 public class NextNodeAction extends AFreeplaneAction {
@@ -24,9 +25,9 @@ public class NextNodeAction extends AFreeplaneAction {
 	 * 
 	 */
 	public void actionPerformed(ActionEvent e) {
-		TextController textController = TextController.getController(getModeController());
+		FilterController filterController = FilterController.getController(getController());
 		NodeModel start = getController().getSelection().getSelected();
-		NodeModel next = textController.findNext(start, direction, null);
+		NodeModel next = filterController.findNext(start, direction, null);
 		getModeController().getMapController().select(next);
 	}
 }

@@ -61,6 +61,9 @@ import org.freeplane.features.common.filter.condition.NoFilteringCondition;
 import org.freeplane.features.common.filter.condition.SelectedViewCondition;
 import org.freeplane.features.common.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController.Direction;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -170,6 +173,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.addAction(applyToVisibleAction);
 		pathToFilterFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
 		        + "auto." + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
+		final FindAction find = new FindAction(controller);
+		controller.addAction(find);
+		controller.addAction(new FindNextAction(controller, find));
+
 	}
 
 	private void addStandardConditions() {
@@ -444,5 +451,81 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		updateSettingsFromFilter(filter);
 		final boolean isActive = filter.getCondition() != null;
 		applyToVisibleNodeOnly.setSelected(isActive);
+	}
+
+	NodeModel findNext(final NodeModel start, Direction direction, ISelectableCondition condition) {
+		NodeModel next = start;
+		for(;;) {
+			do {
+				switch (direction) {
+				case FORWARD:
+				case FORWARD_N_FOLD:
+					next = getNext(direction, next);
+					break;
+				case BACK:
+				case BACK_N_FOLD:
+					next = getPrevious(direction, next);
+					break;
+				}
+			} while (!next.isVisible());
+			if(next == start){
+				break;
+			}
+			if(condition == null || condition.checkNode(getModeController(), next))
+			{
+				return next;
+			}
+		} 
+		return null;
+	}
+	private NodeModel getNext(Direction direction, NodeModel selected) {
+			if(selected.getChildCount() != 0){
+				return (NodeModel) selected.getChildAt(0);
+			}
+			for(;;){
+				NodeModel parentNode = selected.getParentNode();
+				if(parentNode == null){
+					return selected;
+				}
+				int index = parentNode.getIndex(selected)+1;
+				int childCount = parentNode.getChildCount();
+				if(index < childCount){
+					if(direction == Direction.FORWARD_N_FOLD){
+						getModeController().getMapController().setFolded(selected, true);
+					}
+					return (NodeModel) parentNode.getChildAt(index);
+				}
+				selected = parentNode;
+			}
+	}
+	private ModeController getModeController() {
+	    return getController().getModeController();
+    }
+
+	private NodeModel getPrevious(Direction direction, NodeModel selected) {
+		for(;;){
+			NodeModel parentNode = selected.getParentNode();
+			if(parentNode == null){
+				break;
+			}
+			if(direction == Direction.BACK_N_FOLD){
+				getModeController().getMapController().setFolded(selected, true);
+			}
+			int index = parentNode.getIndex(selected)-1;
+			if(index < 0){
+				if(direction == Direction.BACK_N_FOLD){
+					getModeController().getMapController().setFolded(parentNode, true);
+				}
+				return parentNode;
+			}
+			selected = (NodeModel) parentNode.getChildAt(index);
+			break;
+		}
+		for(;;){
+			if(selected.getChildCount() == 0){
+				return selected;
+			}
+			selected = (NodeModel) selected.getChildAt(selected.getChildCount() - 1);
+		}
 	}
 }

@@ -17,11 +17,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.text;
+package org.freeplane.features.common.filter;
 
 import java.awt.event.ActionEvent;
 import java.util.regex.Matcher;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -34,8 +35,8 @@ class FindNextAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	final private FindAction find;
 
-	public FindNextAction(final ModeController controller, final FindAction find) {
-		super("FindNextAction", controller.getController());
+	public FindNextAction(final Controller controller, final FindAction find) {
+		super("FindNextAction", controller);
 		this.find = find;
 	}
 

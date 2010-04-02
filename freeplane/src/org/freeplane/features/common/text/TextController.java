@@ -53,7 +53,6 @@ public class TextController implements IExtension {
 	public TextController(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
-		createActions(modeController);
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -61,89 +60,9 @@ public class TextController implements IExtension {
 		textBuilder.registerBy(readManager, writeManager);
 	}
 
-	/**
-	 * @param modeController
-	 */
-	private void createActions(final ModeController modeController) {
-		final FindAction find = new FindAction(modeController.getController());
-		modeController.addAction(find);
-		modeController.addAction(new FindNextAction(modeController, find));
-	}
 
 	public ModeController getModeController() {
 		return modeController;
-	}
-	
-	NodeModel findNext(final NodeModel start, Direction direction, ISelectableCondition condition) {
-		NodeModel next = start;
-		for(;;) {
-			do {
-				switch (direction) {
-				case FORWARD:
-				case FORWARD_N_FOLD:
-					next = getNext(direction, next);
-					break;
-				case BACK:
-				case BACK_N_FOLD:
-					next = getPrevious(direction, next);
-					break;
-				}
-			} while (!next.isVisible());
-			if(next == start){
-				break;
-			}
-			if(condition == null || condition.checkNode(getModeController(), next))
-			{
-				return next;
-			}
-		} 
-		return null;
-	}
-	private NodeModel getNext(Direction direction, NodeModel selected) {
-			if(selected.getChildCount() != 0){
-				return (NodeModel) selected.getChildAt(0);
-			}
-			for(;;){
-				NodeModel parentNode = selected.getParentNode();
-				if(parentNode == null){
-					return selected;
-				}
-				int index = parentNode.getIndex(selected)+1;
-				int childCount = parentNode.getChildCount();
-				if(index < childCount){
-					if(direction == Direction.FORWARD_N_FOLD){
-						getModeController().getMapController().setFolded(selected, true);
-					}
-					return (NodeModel) parentNode.getChildAt(index);
-				}
-				selected = parentNode;
-			}
-	}
-	private NodeModel getPrevious(Direction direction, NodeModel selected) {
-		for(;;){
-			NodeModel parentNode = selected.getParentNode();
-			if(parentNode == null){
-				break;
-			}
-			if(direction == Direction.BACK_N_FOLD){
-				getModeController().getMapController().setFolded(selected, true);
-			}
-			int index = parentNode.getIndex(selected)-1;
-			if(index < 0){
-				if(direction == Direction.BACK_N_FOLD){
-					getModeController().getMapController().setFolded(parentNode, true);
-				}
-				return parentNode;
-			}
-			selected = (NodeModel) parentNode.getChildAt(index);
-			break;
-		}
-		for(;;){
-			if(selected.getChildCount() == 0){
-				return selected;
-			}
-			selected = (NodeModel) selected.getChildAt(selected.getChildCount() - 1);
-		}
 	}
 
 }
