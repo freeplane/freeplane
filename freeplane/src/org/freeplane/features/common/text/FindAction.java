@@ -22,6 +22,7 @@ package org.freeplane.features.common.text;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -42,6 +43,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.features.common.text.TextController.Direction;
 
 class FindAction extends AFreeplaneAction {
 	/**
@@ -50,10 +52,7 @@ class FindAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private ISelectableCondition condition;
 	private FilterConditionEditor editor;
-	private NodeModel findFromNode;
-	private LinkedList findNodeQueue;
-	private ArrayList findNodesUnfoldedByLastFind;
-	private String searchTerm;
+	private WeakReference<NodeModel> findRoot;
 
 	public FindAction(final Controller controller) {
 		super("FindAction", controller);
@@ -64,12 +63,13 @@ class FindAction extends AFreeplaneAction {
 		if (selection == null) {
 			return;
 		}
-		final NodeModel selected = selection.getSelected();
+		NodeModel start = selection.getSelected();
+		findRoot = new WeakReference<NodeModel>(start);
 		if (editor == null) {
 			editor = new FilterConditionEditor(FilterController.getController(getController()));
 		}
 		else {
-			editor.mapChanged(selected.getMap());
+			editor.mapChanged(start.getMap());
 		}
 		editor.addAncestorListener(new AncestorListener() {
 			public void ancestorAdded(final AncestorEvent event) {
@@ -84,7 +84,7 @@ class FindAction extends AFreeplaneAction {
 			public void ancestorRemoved(final AncestorEvent event) {
 			}
 		});
-		final int run = UITools.showConfirmDialog(getController(), selected, editor, ResourceBundles
+		final int run = UITools.showConfirmDialog(getController(), start, editor, ResourceBundles
 		    .getText("FindAction.text"), JOptionPane.OK_CANCEL_OPTION);
 		final Container parent = editor.getParent();
 		if (parent != null) {
@@ -97,90 +97,53 @@ class FindAction extends AFreeplaneAction {
 		if (condition == null) {
 			return;
 		}
-		final boolean found = find(getModeController().getMapController().getSelectedNode());
-		searchTerm = condition.toString();
-		if (!found) {
-			final String messageText = ResourceBundles.getText("no_found_from");
-			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
-			    Matcher.quoteReplacement(searchTerm)).replaceAll("\\$2", Matcher.quoteReplacement(getFindFromText())));
-			searchTerm = null;
-		}
+		findNext();
 	}
 
-	/**
-	 * Display a node in the display (used by find and the goto action by arrow
-	 * link actions).
-	 */
-	public void displayNode(final NodeModel node, final ArrayList nodesUnfoldedByDisplay) {
-		final NodeModel[] path = node.getPathToRoot();
-		for (int i = 0; i < path.length - 1; i++) {
-			final NodeModel nodeOnPath = path[i];
-			if (getModeController().getMapController().isFolded(nodeOnPath)) {
-				if (nodesUnfoldedByDisplay != null) {
-					nodesUnfoldedByDisplay.add(nodeOnPath);
-				}
-				getModeController().getMapController().setFolded(nodeOnPath, false);
-			}
+	void findNext() {
+		if (condition == null) {
+			UITools.informationMessage(getController().getViewController().getFrame(), ResourceBundles
+			    .getText("no_previous_find"));
+			return;
 		}
-	}
-
-	private boolean find(final LinkedList /* queue of MindMapNode */nodes) {
-		if (!findNodesUnfoldedByLastFind.isEmpty()) {
-			final ListIterator i = findNodesUnfoldedByLastFind.listIterator(findNodesUnfoldedByLastFind.size());
-			while (i.hasPrevious()) {
-				final NodeModel node = (NodeModel) i.previous();
-				try {
-					getModeController().getMapController().setFolded(node, true);
-				}
-				catch (final Exception e) {
+		TextController textController = TextController.getController(getModeController());
+		NodeModel start = getController().getSelection().getSelected();
+		NodeModel root = findRoot.get();
+		if(root == null){
+			root = start;
+			findRoot = new WeakReference<NodeModel>(root);
+		}
+		else {
+			for(NodeModel node = start; node != root; node = node.getParentNode()){
+				if(node == null){
+					root = start;
+					findRoot = new WeakReference<NodeModel>(root);
+					break;
 				}
 			}
-			findNodesUnfoldedByLastFind = new ArrayList();
 		}
-		while (!nodes.isEmpty()) {
-			final NodeModel node = (NodeModel) nodes.removeFirst();
-			for (final ListIterator i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
-				nodes.addLast(i.next());
-			}
-			if (!node.isVisible()) {
-				continue;
-			}
-			findNodeQueue = nodes;
-			final boolean found = condition.checkNode(node);
-			if (found) {
-				displayNode(node, findNodesUnfoldedByLastFind);
-				getModeController().getMapController().select(node);
-				return true;
+		NodeModel next = textController.findNext(start, Direction.FORWARD, null);
+		if (next == null) {
+			displayNotFoundMessage(start);
+			return;
+		}
+		for(NodeModel node = next.getParentNode(); node != root; node = node.getParentNode()){
+			if(node == null){
+				displayNotFoundMessage(root);
+				return;
 			}
 		}
-		getModeController().getMapController().select(findFromNode);
-		return false;
+		getModeController().getMapController().select(next);
 	}
 
-	public boolean find(final NodeModel node) {
-		findNodesUnfoldedByLastFind = new ArrayList();
-		final LinkedList nodes = new LinkedList();
-		nodes.addFirst(node);
-		findFromNode = node;
-		return find(nodes);
+	private void displayNotFoundMessage(NodeModel start) {
+		final String messageText = ResourceBundles.getText("no_more_found_from");
+		UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
+		    Matcher.quoteReplacement(condition.toString())).replaceAll("\\$2", Matcher.quoteReplacement(getFindFromText(start))));
 	}
-
-	public boolean findNext() {
-		if (condition != null) {
-			if (findNodeQueue.isEmpty()) {
-				return find(getModeController().getMapController().getSelectedNode());
-			}
-			return find(findNodeQueue);
-		}
-		return false;
-	}
-
-	public String getFindFromText() {
-		final String plainNodeText = HtmlTools.htmlToPlain(findFromNode.toString()).replaceAll("\n", " ");
+	public String getFindFromText(NodeModel node) {
+		final String plainNodeText = HtmlTools.htmlToPlain(node.toString()).replaceAll("\n", " ");
 		return plainNodeText.length() <= 30 ? plainNodeText : plainNodeText.substring(0, 30) + "...";
 	}
 
-	public String getSearchTerm() {
-		return searchTerm;
-	}
 }
