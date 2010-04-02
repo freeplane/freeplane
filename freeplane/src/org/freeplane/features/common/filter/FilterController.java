@@ -129,6 +129,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private final ButtonModel showAncestors;
 	private final ButtonModel showDescendants;
 
+
+	private JComboBox activeFilterConditionComboBox;
+
 	public FilterController(final Controller controller) {
 		this.controller = controller;
 		history = new FilterHistory(controller);
@@ -186,11 +189,15 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		history.clear();
 		if (newMap != null) {
+			filterToolbar.setEnabled(true);
+			activeFilterConditionComboBox.setEnabled(true);
 			final Filter filter = newMap.getFilter();
 			updateSettingsFromFilter(filter);
 		}
 		else {
 			filterConditions.setSelectedItem(filterConditions.getElementAt(0));
+			filterToolbar.setEnabled(false);
+			activeFilterConditionComboBox.setEnabled(false);
 		}
 	}
 
@@ -255,7 +262,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JToggleButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"),
 		    applyToVisibleNodeOnly);
 		final JButton btnEdit = new JButton(controller.getAction("EditFilterAction"));
-		final JComboBox activeFilterConditionComboBox = new JComboBox(getFilterConditions()) {
+		activeFilterConditionComboBox = new JComboBox(getFilterConditions()) {
 			/**
 			 * 
 			 */
