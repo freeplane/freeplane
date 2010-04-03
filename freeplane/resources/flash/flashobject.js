@@ -16,7 +16,7 @@
  *
  */
 
-var FlashObject = function(swf, id, w, h, ver, c) {
+var FlashObject = function(swf, id, w, h, ver) {
 	this.swf = swf;
 	this.id = id;
 	this.width = w;
@@ -31,7 +31,6 @@ var FlashObject = function(swf, id, w, h, ver, c) {
 	this.sq = document.location.search.split("?")[1] || "";
 	this.bypassTxt = "<p>Already have Macromedia Flash Player? <a href='?detectflash=false&"+ this.sq +"'>Click here if you have Flash Player "+ this.version +" installed</a>.</p>";
 	
-	if (c) this.color = this.addParam('bgcolor', c);
 	this.addParam('quality', 'high'); // default to high
 	this.doDetect = getQueryParamValue('detectflash');
 }

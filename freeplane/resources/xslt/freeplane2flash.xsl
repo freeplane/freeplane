@@ -24,8 +24,9 @@
       
   -->
 
-  <xsl:output method="xml" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" 
-    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
+  <xsl:output method="xml" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
+  indent="yes" 
+  doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
  
 <!-- fc, 20.10.2004: The following parameter is set by freeplane. -->
 <xsl:param name="destination_dir">./</xsl:param>
@@ -42,6 +43,16 @@
     
     -->
   <xsl:template match="/">
+  <xsl:variable name="bgcolor">
+  		<xsl:choose>
+		<xsl:when test="map/node/hook[@NAME='MapStyle']/@background">
+			<xsl:value-of select="map/node/hook[@NAME='MapStyle']/@background"/>
+		</xsl:when> 
+		<xsl:otherwise>
+			<xsl:text>#ffffff</xsl:text>
+		</xsl:otherwise>
+		</xsl:choose>
+  </xsl:variable>
     <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
       <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -68,7 +79,7 @@
 		height: 100%;
 		margin: 0;
 		padding: 0;
-		background-color: #9999ff;
+		background-color: <xsl:value-of select="$bgcolor"/>;
 	}
 
 </style>
@@ -80,9 +91,9 @@
 	</div>
 	
 	<script type="text/javascript">
-		var fo = new FlashObject("./<xsl:value-of select="$destination_dir"/>visorFreemind.swf", "visorFreeMind", "100%", "100%", 6, "#9999ff");
+		var fo = new FlashObject("./<xsl:value-of select="$destination_dir"/>visorFreeplane.swf", "visorFreeplane", "100%", "100%", 8);
 		fo.addParam("quality", "high");
-		fo.addParam("bgcolor", "#ffffff");
+		fo.addVariable("bgcolor", 0x<xsl:value-of select="substring-after($bgcolor, '#')"/>);
 		fo.addVariable("openUrl", "_blank");
 		fo.addVariable("initLoadFile", "./<xsl:value-of select="$destination_dir"/>map.mm");
 		fo.addVariable("startCollapsedToLevel","2");
