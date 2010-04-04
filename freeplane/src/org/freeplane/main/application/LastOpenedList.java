@@ -49,6 +49,7 @@ import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
@@ -309,7 +310,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			}
 			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i++, controller, this);
 			final IFreeplaneAction decoratedAction = menuBuilder.decorateAction(lastOpenedActionListener);
-			JMenuItem item = new JMenuItem(decoratedAction);
+			JMenuItem item = new JFreeplaneMenuItem(decoratedAction);
 			item.setText(key);
 			item.setMnemonic(0);
 			menuBuilder.addMenuItem(MENU_CATEGORY, item, MENU_CATEGORY + '/' + lastOpenedActionListener.getKey(), UIBuilder.AS_CHILD);

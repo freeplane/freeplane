@@ -33,6 +33,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 
@@ -88,7 +89,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	public void layout(final DefaultFormBuilder builder) {
 		final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), mButton);
 		label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
-		final JMenuItem item = new JMenuItem(FpStringUtils.getOptionalText("ColorProperty.ResetColor"));
+		final JMenuItem item = new JFreeplaneMenuItem(FpStringUtils.getOptionalText("ColorProperty.ResetColor"));
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				setValue(defaultColor);

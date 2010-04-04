@@ -19,11 +19,13 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
@@ -32,7 +34,7 @@ import org.freeplane.core.ui.SelectableAction;
  * @author Dimitry Polivaev
  * Feb 23, 2009
  */
-public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements PropertyChangeListener {
+public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements PropertyChangeListener , IKeyBindingManager{
 	/**
 	 * 
 	 */
@@ -60,5 +62,23 @@ public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements Pr
 		else {
 			defaultPropertyChanegListener.propertyChange(e);
 		}
+	}
+
+	private boolean isKeyBindingProcessed = false;
+	
+	@Override
+	protected boolean processKeyBinding(KeyStroke ks, KeyEvent e,
+			int condition, boolean pressed) {
+		try{
+			isKeyBindingProcessed = true;
+			return super.processKeyBinding(ks, e, condition, pressed);
+		}
+		finally{
+			isKeyBindingProcessed = false;
+		}
+	}
+
+	public boolean isKeyBindingProcessed() {
+		return isKeyBindingProcessed;
 	}
 }
