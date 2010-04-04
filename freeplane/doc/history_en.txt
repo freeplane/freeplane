@@ -1,11 +1,24 @@
 ===============================
-1.0.42 rc
+1.2.1 alpha
 ===============================
 New features:
 Keyboard shortcut documentation: Map and HTML table generation added for the documentation map
 Hyperlinks for menu items
 Check for newer auto save files on opening of a map
+
+
+Bug fixes:
+
+
+
+
+
+
+===============================
+1.0.42 rc
+===============================
 New features: Automatic bug report requests user support depending on submitted information
+
 Bug fixes:
 HierarchicalIcons caused endless node refresh
 Text properties and documentation improvements
@@ -234,7 +247,6 @@ bug fix in open url
 insert 4 spaces if tab is pressed in text editor
 Replace Freeplane by FreeMind for old program versions in history_en.txt
 
->>>>>>> MERGE-SOURCE
 ===============================
 1.0.35 beta
 ===============================
@@ -304,6 +316,8 @@ include freeplane_framework into src dist
 Refactoring for icons (Tamas)
 
 Bug fixes:
+bug fix for full screen mode: properly display modal dialogs on top
+System dependent memory allocation for windows OS
 0000243: Find and replace doesn't replace all occurrence of a pattern within a node 
 0000245: Navigation in File Mode is (almost) not working
 0000253: can't edit name on exported branch as a new card
