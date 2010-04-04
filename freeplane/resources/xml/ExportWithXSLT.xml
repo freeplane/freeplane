@@ -53,7 +53,7 @@
             file_description="accessories/plugins/ExportWithXSLT_Applet.properties_webpage"
             xslt_file="/xslt/freeplane2flash.xsl"
             create_dir="true"
-            files_to_copy="visorFreemind.swf,flashobject.js"
+            files_to_copy="visorFreeplane.swf,flashobject.js"
             file_prefix="/flash/"
             copy_map="true"
             load_file="true" />

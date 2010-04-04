@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
+import javax.swing.text.JTextComponent;
 
 /**
  * This is the menu bar for Freeplane. Actions are defined in MenuListener.
@@ -86,7 +87,13 @@ public class FreeplaneMenuBar extends JMenuBar {
 
 	@Override
 	public boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
-		if (super.processKeyBinding(ks, e, condition, pressed)) {
+		// ignore key events without modifiers if text component is a source
+		if(e.getKeyChar() != KeyEvent.CHAR_UNDEFINED  && e.getKeyChar() != '\0'
+				&& 0 == (e.getModifiers()  & ~KEY_MODIFIERS)
+				&& e.getSource() instanceof JTextComponent){
+			return false;
+		}
+		if(super.processKeyBinding(ks, e, condition, pressed)){
 			return true;
 		}
 		final KeyStroke derivedKS = FreeplaneMenuBar.derive(ks, e.getKeyChar());

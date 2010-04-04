@@ -62,6 +62,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
+import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -369,7 +370,7 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	static public JMenuItem createMenuItem(final String name) {
-		final JMenuItem menu = new JMenuItem();
+		final JMenuItem menu = new JFreeplaneMenuItem();
 		final String text = TextUtils.getText(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
@@ -526,7 +527,7 @@ public class MenuBuilder extends UIBuilder {
 			item = new JAutoCheckBoxMenuItem(decorateAction(category, action));
 		}
 		else {
-			item = new JMenuItem(decorateAction(category, action));
+			item = new JFreeplaneMenuItem(decorateAction(category, action));
 		}
 		addMenuItem(category, item, key, position);
 		addListeners(key, action);

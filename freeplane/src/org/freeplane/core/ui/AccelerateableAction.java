@@ -42,6 +42,7 @@ import org.freeplane.core.resources.components.GrabKeyDialog;
 import org.freeplane.core.resources.components.IKeystrokeValidator;
 import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.components.IKeyBindingManager;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 
@@ -96,9 +97,14 @@ class AccelerateableAction implements IFreeplaneAction {
 		if (newAcceleratorOnNextClickEnabled) {
 			setAcceleratorOnNextClickActionDialog.setVisible(false);
 		}
-		if (newAcceleratorOnNextClickEnabled || e.getModifiers() == ActionEvent.CTRL_MASK + InputEvent.BUTTON1_MASK
-		        && e.getSource() instanceof JMenuItem) {
-			final JMenuItem item = (JMenuItem) e.getSource();
+		Object source = e.getSource();
+		if ((newAcceleratorOnNextClickEnabled 
+				|| 0 != (e.getModifiers() & ActionEvent.CTRL_MASK))  
+				&& source instanceof IKeyBindingManager
+				&& ! ((IKeyBindingManager)source).isKeyBindingProcessed()
+				&& source instanceof JMenuItem
+		) {
+			final JMenuItem item = (JMenuItem) source;
 			newAccelerator(item);
 			return;
 		}

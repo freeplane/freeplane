@@ -19,16 +19,18 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
-public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements PropertyChangeListener {
+public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements PropertyChangeListener , IKeyBindingManager{
 	/**
 	 * 
 	 */
@@ -56,5 +58,23 @@ public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements Property
 		else {
 			defaultPropertyChanegListener.propertyChange(e);
 		}
+	}
+
+	private boolean isKeyBindingProcessed = false;
+	
+	@Override
+	protected boolean processKeyBinding(KeyStroke ks, KeyEvent e,
+			int condition, boolean pressed) {
+		try{
+			isKeyBindingProcessed = true;
+			return super.processKeyBinding(ks, e, condition, pressed);
+		}
+		finally{
+			isKeyBindingProcessed = false;
+		}
+	}
+
+	public boolean isKeyBindingProcessed() {
+		return isKeyBindingProcessed;
 	}
 }

@@ -106,9 +106,9 @@ public class SharpBezierEdgeView extends EdgeView {
 
 	private GeneralPath update() {
 		final float zoom = getMap().getZoom();
-		float xctrlRelative = Math.max(SharpBezierEdgeView.XCTRL * zoom, Math.abs(start.y - end.y) / 4);
-		if (getTarget().isLeft()) {
-			xctrlRelative = -xctrlRelative;
+		float xctrlRelative = (float) SharpBezierEdgeView.XCTRL * zoom;
+		if(getTarget().isLeft()){
+			xctrlRelative = - xctrlRelative;
 		}
 		one = new Point2D.Float(start.x + xctrlRelative, start.y);
 		two = new Point2D.Float(end.x - xctrlRelative, end.y);
