@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Map.Entry;
 
 import javax.swing.JPanel;
@@ -506,8 +507,13 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 			threeCheckBoxProperty.setValue(ThreeCheckBoxProperty.FALSE_VALUE);
 			return;
 		}
-		property.setValue(transformer.transform(patternProperty.getValue()));
-		threeCheckBoxProperty.setValue(ThreeCheckBoxProperty.TRUE_VALUE);
+		try {
+			property.setValue(transformer.transform(patternProperty.getValue()));
+			threeCheckBoxProperty.setValue(ThreeCheckBoxProperty.TRUE_VALUE);
+		} catch (NoSuchElementException e) {
+			property.setValue(defaultValue);
+			threeCheckBoxProperty.setValue(ThreeCheckBoxProperty.DON_T_TOUCH_VALUE);
+		}
 	}
 
 	/**

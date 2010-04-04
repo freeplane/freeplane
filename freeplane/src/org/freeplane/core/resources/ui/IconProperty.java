@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -95,7 +96,9 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 			if (icon.getName().equals(value)) {
 				mActualIcon = icon;
 				setIcon(mActualIcon);
+				return;
 			}
 		}
+		throw new NoSuchElementException();
 	}
 }
