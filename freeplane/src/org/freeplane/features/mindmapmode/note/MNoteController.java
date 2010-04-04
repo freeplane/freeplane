@@ -44,6 +44,8 @@ import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
+import org.freeplane.core.frame.IMapViewChangeListener;
+import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogUtils;
@@ -358,9 +360,23 @@ public class MNoteController extends NoteController {
 		final ModeController modeController = getModeController();
 		noteManager = new NoteManager(this);
 		if (shouldUseSplitPane()) {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					showNotesPanel(false);
+			final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
+			mapViewManager.addMapViewChangeListener(new IMapViewChangeListener() {
+				public void beforeViewChange(Component oldView, Component newView) {
+				}
+				
+				public void afterViewCreated(Component mapView) {
+				}
+				
+				public void afterViewClose(Component oldView) {
+				}
+				
+				public void afterViewChange(Component oldView, Component newView) {
+					if (newView != null 
+							&& modeController.equals(modeController.getController().getModeController())) {
+						showNotesPanel(false);
+						mapViewManager.removeMapViewChangeListener(this);
+					}
 				}
 			});
 		}
