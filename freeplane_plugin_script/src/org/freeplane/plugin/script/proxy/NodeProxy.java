@@ -6,6 +6,7 @@ package org.freeplane.plugin.script.proxy;
 import groovy.lang.Closure;
 
 import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -72,7 +73,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	public List<Node> getChildren() {
-		return new AbstractList<Node>() {
+		return new ArrayList<Node>( new AbstractList<Node>() {
 			@Override
 			public Node get(final int index) {
 				final NodeModel child = (NodeModel) getDelegate().getChildAt(index);
@@ -83,7 +84,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 			public int size() {
 				return getDelegate().getChildCount();
 			}
-		};
+		});
 	}
 
 	public Collection<Connector> getConnectorsIn() {

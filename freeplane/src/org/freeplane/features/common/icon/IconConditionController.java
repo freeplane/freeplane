@@ -60,12 +60,12 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
-		return controller.getMap().getIconRegistry().getIconsAsListModel().getSize() > 0;
+		return true;
 	}
 
 	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean ignoreCase) {
-		return value != null ? new IconContainedCondition(((UIIcon) value).getName()) : null;
+		return value instanceof UIIcon ? new IconContainedCondition(((UIIcon) value).getName()) : null;
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object property) {

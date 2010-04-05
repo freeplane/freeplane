@@ -51,7 +51,6 @@ class FindAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private ISelectableCondition condition;
 	private FilterConditionEditor editor;
-	private WeakReference<NodeModel> findRoot;
 
 	public FindAction(final Controller controller) {
 		super("FindAction", controller);
@@ -63,7 +62,6 @@ class FindAction extends AFreeplaneAction {
 			return;
 		}
 		NodeModel start = selection.getSelected();
-		findRoot = new WeakReference<NodeModel>(start);
 		if (editor == null) {
 			editor = new FilterConditionEditor(FilterController.getController(getController()));
 		}
@@ -106,30 +104,10 @@ class FindAction extends AFreeplaneAction {
 		}
 		FilterController filterController = FilterController.getController(getController());
 		NodeModel start = getController().getSelection().getSelected();
-		NodeModel root = findRoot.get();
-		if(root == null){
-			root = start;
-			findRoot = new WeakReference<NodeModel>(root);
-		}
-		else {
-			for(NodeModel node = start; node != root; node = node.getParentNode()){
-				if(node == null){
-					root = start;
-					findRoot = new WeakReference<NodeModel>(root);
-					break;
-				}
-			}
-		}
 		NodeModel next = filterController.findNext(start, Direction.FORWARD, condition);
 		if (next == null) {
 			displayNotFoundMessage(start);
 			return;
-		}
-		for(NodeModel node = next.getParentNode(); node != root; node = node.getParentNode()){
-			if(node == null){
-				displayNotFoundMessage(root);
-				return;
-			}
 		}
 		getModeController().getMapController().select(next);
 	}

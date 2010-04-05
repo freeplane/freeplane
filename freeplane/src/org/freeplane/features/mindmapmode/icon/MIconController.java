@@ -390,11 +390,16 @@ public class MIconController extends IconController {
 			insertSubmenus(iconToolBar);
 			return;
 		}
-		for (final IconGroup group : STORE.getGroups()) {
-			for (final MindIcon icon : group.getIcons()) {
-				final AFreeplaneAction iconAction = iconActions.get(icon);
-				iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
-			}
+		String[] fpIcons = ResourceController.getResourceController().getProperty("icons.list").split(";");
+		for(String icon : fpIcons) {
+			MindIcon mindIcon = STORE.getMindIcon(icon);
+			final AFreeplaneAction iconAction = iconActions.get(mindIcon);
+			iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		}
+		Collection<MindIcon> userIcons = STORE.getUserIcons();
+		for(MindIcon icon : userIcons) {
+			final AFreeplaneAction iconAction = iconActions.get(icon);
+			iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		}
 	}
 
