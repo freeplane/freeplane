@@ -61,19 +61,6 @@ public class FreeplaneToolBar extends JToolBar {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.JToolBar#add(javax.swing.Action)
-	 */
-	@Override
-	public JButton add(final Action arg0) {
-		final String actionName = (String) arg0.getValue(Action.NAME);
-		arg0.putValue(Action.SHORT_DESCRIPTION, actionName);
-		final JButton returnValue = super.add(arg0);
-		returnValue.setName(actionName);
-		configureComponent(returnValue);
-		return returnValue;
-	}
 
 	@Override
 	public Component add(final Component comp) {
@@ -113,6 +100,9 @@ public class FreeplaneToolBar extends JToolBar {
 			return;
 		}
 		final AbstractButton abstractButton = (AbstractButton) comp;
+		final String actionName = (String) abstractButton.getAction().getValue(Action.NAME);
+		abstractButton.setName(actionName);
+		
 		if (null != abstractButton.getIcon()) {
 			final String text = abstractButton.getText();
 			final String toolTipText = abstractButton.getToolTipText();

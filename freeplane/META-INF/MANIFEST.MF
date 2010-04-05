@@ -15,6 +15,7 @@ Bundle-ClassPath: lib/freeplaneviewer.jar,
 Bundle-Activator: org.freeplane.main.osgi.Activator
 Import-Package: org.osgi.framework
 Export-Package: com.jgoodies.forms.builder,
+ com.lightdev.app.shtm,
  org.apache.commons.lang,
  org.freeplane.core.addins,
  org.freeplane.core.controller,

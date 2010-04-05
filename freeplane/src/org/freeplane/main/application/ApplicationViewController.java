@@ -91,6 +91,7 @@ class ApplicationViewController extends ViewController {
 		controller.addAction(navigationNextMap);
 		resourceController = ResourceController.getResourceController();
 		this.frame = frame;
+		((JComponent)getContentPane()).putClientProperty(Controller.class, controller);
 		getContentPane().setLayout(new BorderLayout());
 		// --- Set Note Window Location ---
 		mLocationPreferenceValue = resourceController.getProperty("note_location", "bottom");
