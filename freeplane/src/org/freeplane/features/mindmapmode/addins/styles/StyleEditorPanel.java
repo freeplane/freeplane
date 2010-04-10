@@ -21,6 +21,7 @@ package org.freeplane.features.mindmapmode.addins.styles;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.HeadlessException;
 import java.beans.PropertyChangeEvent;
@@ -36,6 +37,9 @@ import javax.swing.JPanel;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.controller.INodeSelectionListener;
+import org.freeplane.core.frame.IMapViewChangeListener;
+import org.freeplane.core.frame.IMapViewManager;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
@@ -641,5 +645,24 @@ public class StyleEditorPanel extends JPanel {
 				}
 			}
 		});
+		IMapViewManager mapViewManager = controller.getMapViewManager();
+		mapViewManager.addMapViewChangeListener(new IMapViewChangeListener() {
+			public void beforeViewChange(Component oldView, Component newView) {
+			}
+			
+			public void afterViewCreated(Component mapView) {
+			}
+			
+			public void afterViewClose(Component oldView) {
+			}
+			
+			public void afterViewChange(Component oldView, Component newView) {
+				Container panel = (Container) getComponent(0);
+				for(int i = 0; i < panel.getComponentCount(); i++){
+					panel.getComponent(i).setEnabled(newView != null);
+				}
+			}
+		});
+		
 	}
 }
