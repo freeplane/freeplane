@@ -132,4 +132,6 @@ public interface IMapViewManager {
 	public boolean isLeftTreeSupported(Component mapViewComponent);
 
 	public Map<String, MapModel> getMaps(String modename);
+
+	public List<Component> getViews(MapModel map);
 }

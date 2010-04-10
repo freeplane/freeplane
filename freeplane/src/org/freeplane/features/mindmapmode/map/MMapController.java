@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mindmapmode.map;
 
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -99,19 +100,23 @@ public class MMapController extends MapController {
 	public boolean close(final boolean force) {
 		final MapModel map = getController().getMap();
 		if (!force && !map.isSaved()) {
-			final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
-			final String title = TextUtils.removeMnemonic(TextUtils.getText("SaveAction.text"));
-			final int returnVal = JOptionPane.showOptionDialog(getController().getViewController().getContentPane(),
-			    text, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-			if (returnVal == JOptionPane.YES_OPTION) {
-				final boolean savingNotCancelled = ((MFileManager) UrlManager.getController(getModeController()))
-				    .save(map);
-				if (!savingNotCancelled) {
+			List<Component> views = getController().getMapViewManager().getViews(map);
+			if(views.size() == 1)
+			{
+				final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
+				final String title = TextUtils.removeMnemonic(TextUtils.getText("SaveAction.text"));
+				final int returnVal = JOptionPane.showOptionDialog(getController().getViewController().getContentPane(),
+					text, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+				if (returnVal == JOptionPane.YES_OPTION) {
+					final boolean savingNotCancelled = ((MFileManager) UrlManager.getController(getModeController()))
+					.save(map);
+					if (!savingNotCancelled) {
+						return false;
+					}
+				}
+				else if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
 					return false;
 				}
-			}
-			else if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
-				return false;
 			}
 		}
 		return super.close(force);
@@ -120,6 +125,7 @@ public class MMapController extends MapController {
 	private void createActions(final MModeController modeController) {
 		final Controller controller = modeController.getController();
 		modeController.addAction(new NewMapAction(controller));
+		modeController.addAction(new NewMapViewAction(controller));
 		modeController.addAction(new NewSiblingAction(controller));
 		modeController.addAction(new NewPreviousSiblingAction(controller));
 		newChild = new NewChildAction(controller);

@@ -519,4 +519,14 @@ public class MapViewController implements IMapViewManager {
 		}
 		return Collections.unmodifiableMap(returnValue);
 	}
+
+	public List<Component> getViews(MapModel map) {
+		LinkedList<Component> list = new LinkedList<Component>();
+		for(MapView view:mapViewVector){
+			if(view.getModel().equals(map)){
+				list.add(view);
+			}
+		}
+		return list;
+    }
 }

@@ -4,6 +4,7 @@
 		<menu_submenu name="file" name_ref="file">
 			<menu_category name="open">
 				<menu_action action="NewMapAction" accelerator="control N" />
+				<menu_action action="NewMapViewAction" />
 				<menu_action action="OpenAction" accelerator="control O" />
 				<menu_action action="SaveAction" accelerator="control S" />
 				<menu_action action="SaveAsAction" accelerator="control shift S" />
