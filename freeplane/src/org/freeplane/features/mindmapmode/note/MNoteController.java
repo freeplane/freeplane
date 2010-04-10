@@ -362,6 +362,7 @@ public class MNoteController extends NoteController {
 		if (shouldUseSplitPane()) {
 			final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
 			mapViewManager.addMapViewChangeListener(new IMapViewChangeListener() {
+				boolean called = false;
 				public void beforeViewChange(Component oldView, Component newView) {
 				}
 				
@@ -372,12 +373,26 @@ public class MNoteController extends NoteController {
 				}
 				
 				public void afterViewChange(Component oldView, Component newView) {
+					if(called){
+						return;
+					}
 					if (newView != null 
 							&& modeController.equals(modeController.getController().getModeController())) {
 						showNotesPanel(false);
-						mapViewManager.removeMapViewChangeListener(this);
+						called = true;
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								removeViewListener();
+							}
+
+						});
 					}
 				}
+				private void removeViewListener() {
+					mapViewManager.removeMapViewChangeListener(this);
+				}
+				
+				
 			});
 		}
 		modeController.getMapController().addNodeSelectionListener(noteManager);
