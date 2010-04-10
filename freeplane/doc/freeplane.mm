@@ -1,6 +1,6 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node ID="ID_911274459" CREATED="1270892460624" MODIFIED="1270897070604" COLOR="#993300">
+<node ID="ID_911274459" CREATED="1270892460624" MODIFIED="1270902628947" COLOR="#993300">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -14,12 +14,10 @@
 </html></richcontent>
 <font NAME="Dialog" SIZE="18" BOLD="true"/>
 <hook NAME="MapStyle" max_node_width="600"/>
-<node TEXT="Press Ctrl + F to search. Press Ctrl + G to find next." POSITION="right" ID="ID_1238769160" CREATED="1270892460655" MODIFIED="1270892601950" COLOR="#0033ff"/>
 <node TEXT=" Press right arrow to unfold a node" POSITION="right" ID="ID_182998712" CREATED="1270892460656" MODIFIED="1270892617335" COLOR="#0033ff"/>
-<node TEXT="Introduction" FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1270892460656" COLOR="#407000">
+<node TEXT="Introduction" FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1270902628939" COLOR="#407000">
 <node TEXT="Freeplane makes it possible to create so called mind maps. Still, many people use it as an alternative to a tabbed notebook or a personal information manager." ID="ID_519782030" CREATED="1270892460656" MODIFIED="1270892460656"/>
 <node TEXT="Information is stored in text boxes, called nodes. Nodes are connected together using curved lines called edges." ID="ID_509076620" CREATED="1270892460656" MODIFIED="1270892460656"/>
-<node TEXT="This is a documentation for Freeplane 0.8.0. Keyboard mappings and positions of functions in menus can change from version to version." ID="ID_865707602" CREATED="1270892460656" MODIFIED="1270892460656"/>
 </node>
 <node TEXT="Demonstration of some features" FOLDED="true" POSITION="right" ID="_Freeplane_Link_706084071" CREATED="1270892460656" MODIFIED="1270897070601" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
@@ -593,7 +591,7 @@
 <node TEXT="Size of pictures inserted as external objects can be changed by clicking on its right down edge" ID="ID_1150877481" CREATED="1270895237078" MODIFIED="1270895280019"/>
 </node>
 </node>
-<node TEXT="Searching and Filtering" FOLDED="true" POSITION="right" ID="Freeplane_Link_423038022" CREATED="1270892460681" MODIFIED="1270897056110" COLOR="#407000">
+<node TEXT="Searching and Filtering" FOLDED="true" POSITION="right" ID="Freeplane_Link_423038022" CREATED="1270892460681" MODIFIED="1270902628944" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="You can search and filter nodes based on its text, icons, connectors, hyperlinks and attributes" ID="ID_1565729150" CREATED="1270896350974" MODIFIED="1270896413699"/>
 <node TEXT="To find text in a node and all its descendant nodes, press Ctrl + F or in the &quot;edit&quot; menu use Find." ID="ID_966700848" CREATED="1270892460681" MODIFIED="1270892460681">
@@ -910,13 +908,13 @@
 <node TEXT="To export a branch to HTML, press Control + H. Exported HTML page may contain folding support, depending on the settings in preferences." ID="ID_1502864159" CREATED="1270892460690" MODIFIED="1270892460690"/>
 <node TEXT="To use another exporting functions, use choices from menu File-&gt;Export" ID="ID_1838606785" CREATED="1270892460690" MODIFIED="1270894997870"/>
 </node>
-<node TEXT="Exporting as bitmap or vector picture" POSITION="right" ID="Freeplane_Link_1908686168" CREATED="1270892460690" MODIFIED="1270897195121" COLOR="#407000">
+<node TEXT="Exporting as bitmap or vector picture" FOLDED="true" POSITION="right" ID="Freeplane_Link_1908686168" CREATED="1270892460690" MODIFIED="1270902568318" COLOR="#407000">
 <node TEXT="To export the map as PNG picture, in pull-down menu use File &gt; Export &gt; As PNG." ID="ID_216678851" CREATED="1270892460690" MODIFIED="1270892460690"/>
 <node TEXT="To export the map as JPEG picture, in pull-down menu use File &gt; Export &gt; As JPEG." ID="ID_1167222044" CREATED="1270892460691" MODIFIED="1270892460691"/>
 <node TEXT="To export the map as SVG, in pull-down menu use File &gt; Export &gt; As SVG. This function is only available if you have installed SVG plug-in." ID="ID_160100374" CREATED="1270892460691" MODIFIED="1270892460691"/>
 </node>
 <node TEXT="Exporting to other XML formats" FOLDED="true" POSITION="right" ID="Freeplane_Link_329770204" CREATED="1270892460691" MODIFIED="1270897284295" COLOR="#407000">
-<node TEXT="To export the map to another XML format for that you have an XSLT transformation sheet, in pull-down menu use File &gt; Export &gt; Using XSLT." ID="ID_1483460074" CREATED="1270892460691" MODIFIED="1270897280333" COLOR="#996600">
+<node TEXT="To export the map to another XML format for that you have an XSLT transformation sheet, in pull-down menu use File &gt; Export &gt; Using XSLT." FOLDED="true" ID="ID_1483460074" CREATED="1270892460691" MODIFIED="1270902568320" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="The Export Using XSLT function applies an XSL Transformation to the Freeplane mindmap, to create a new file." ID="ID_1796935486" CREATED="1270897200986" MODIFIED="1270897200986"/>
 <node TEXT="In the Freeplane Export using XSLT dialog box, the Files of type combo is populated with the list of user defined XSL files." ID="ID_1457131583" CREATED="1270897200986" MODIFIED="1270897200986"/>
@@ -1046,10 +1044,10 @@
 </node>
 <node TEXT="Small maps can also use export as Flash which also offers limited browsing functionality" ID="ID_814739863" CREATED="1270895588942" MODIFIED="1270895623099"/>
 </node>
-<node TEXT="Credits" FOLDED="true" POSITION="left" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1270896550186" COLOR="#006699">
+<node TEXT="Credits" FOLDED="true" POSITION="left" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1270902568325" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
-<node TEXT="Authors" FOLDED="true" ID="Freeplane_Link_415458128" CREATED="1270892460646" MODIFIED="1270896807238" COLOR="#006699">
+<node TEXT="Authors" FOLDED="true" ID="Freeplane_Link_415458128" CREATED="1270892460646" MODIFIED="1270902568324" COLOR="#006699">
 <node TEXT="Joerg Mueller" ID="_Freeplane_Link_1896457660" CREATED="1270892460646" MODIFIED="1270896496444" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
@@ -1073,7 +1071,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 </node>
-<node TEXT="Graphical Design by Predrag Cuclin" ID="ID_1094825033" CREATED="1270892460648" MODIFIED="1270896528779" COLOR="#996600">
+<node TEXT="Graphical Design by Predrag Cuklin" ID="ID_1094825033" CREATED="1270892460648" MODIFIED="1270902561031" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 </node>
