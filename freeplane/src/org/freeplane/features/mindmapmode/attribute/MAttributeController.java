@@ -163,7 +163,7 @@ public class MAttributeController extends AttributeController {
 			final Attribute newAttribute = new Attribute(name, value);
 			model.getAttributes().add(row, newAttribute);
 			model.setStateIcon();
-			model.fireTableRowsDeleted(row, row);
+			model.fireTableRowsInserted(row, row);
 		}
 
 		public String getDescription() {
@@ -205,21 +205,24 @@ public class MAttributeController extends AttributeController {
 		private final MapModel map;
 		private final String name;
 		private final AttributeRegistry registry;
+		private boolean visible;
 
 		private RegistryAttributeActor(final String name, final boolean manual, final AttributeRegistry registry,
 		                               final MapModel map) {
 			this.name = name;
 			this.registry = registry;
 			this.manual = manual;
+			this.visible = registry.getElement(name).isVisible();
 			this.map = map;
 		}
 
 		public void act() {
 			final AttributeRegistryElement attributeRegistryElement = new AttributeRegistryElement(registry, name);
 			attributeRegistryElement.setManual(manual);
+			attributeRegistryElement.setVisibility(visible);
 			final int index = registry.getElements().add(name, attributeRegistryElement);
 			registry.getTableModel().fireTableRowsInserted(index, index);
-			if (manual) {
+			if (manual || visible) {
 				final ModeController modeController = registry.getAttributeController().getModeController();
 				modeController.getMapController().setSaved(map, false);
 			}
@@ -633,26 +636,26 @@ public class MAttributeController extends AttributeController {
 
 	@Override
 	public void performRemoveAttribute(final String name) {
-		final MapModel map = getModeController().getController().getMap();
-		final AttributeRegistry attributeRegistry = AttributeRegistry.getRegistry(map);
-		final IActor actor = new UnregistryAttributeActor(name, attributeRegistry, map);
-		getModeController().execute(actor, map);
 		final IVisitor remover = new AttributeRemover(name);
 		final Iterator iterator = new Iterator(remover);
 		final NodeModel root = modeController.getMapController().getRootNode();
 		iterator.iterate(root);
+		final MapModel map = getModeController().getController().getMap();
+		final AttributeRegistry attributeRegistry = AttributeRegistry.getRegistry(map);
+		final IActor actor = new UnregistryAttributeActor(name, attributeRegistry, map);
+		getModeController().execute(actor, map);
 	}
 
 	@Override
 	public void performRemoveAttributeValue(final String name, final String value) {
-		final MapModel map = getModeController().getController().getMap();
-		final AttributeRegistry attributeRegistry = AttributeRegistry.getRegistry(map);
-		final IActor unregistryActor = new UnregistryAttributeValueActor(attributeRegistry.getElement(name), value);
-		getModeController().execute(unregistryActor, map);
 		final IVisitor remover = new AttributeValueRemover(name, value);
 		final Iterator iterator = new Iterator(remover);
 		final NodeModel root = modeController.getMapController().getRootNode();
 		iterator.iterate(root);
+		final MapModel map = getModeController().getController().getMap();
+		final AttributeRegistry attributeRegistry = AttributeRegistry.getRegistry(map);
+		final IActor unregistryActor = new UnregistryAttributeValueActor(attributeRegistry.getElement(name), value);
+		getModeController().execute(unregistryActor, map);
 	}
 
 	@Override
