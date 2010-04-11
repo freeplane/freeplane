@@ -352,6 +352,9 @@
 	<target name="format-translation">
 		<ant antfile="ant/build.xml" target="format-translation" dir="${workspace}/freeplane" />
 	</target>
+	<target name="translate">
+		<ant antfile="ant/build.xml" target="translate" dir="${workspace}/freeplane" />
+	</target>
 
 	<target name="clean">
 		<delete quiet="true" includeemptydirs="true">
