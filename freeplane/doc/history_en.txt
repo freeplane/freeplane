@@ -12,7 +12,8 @@ Map background color properly displayed in flash browser
 551: deleting nodes via scripting interface using each iterator throws exception
 448: separators of pulldown menu Navigate
 453: Icon repeated twice   
-548: Assign new short cut only on real menu item mouse click 
+548: Assign new short cut only on real menu item mouse click
+Bug fix for removing attributes / values using AttributeManagerDialog 
 Translations
 
 ===============================
