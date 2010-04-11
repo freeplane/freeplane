@@ -205,14 +205,14 @@ public class MAttributeController extends AttributeController {
 		private final MapModel map;
 		private final String name;
 		private final AttributeRegistry registry;
-		private boolean visible;
+		private final boolean visible;
 
-		private RegistryAttributeActor(final String name, final boolean manual, final AttributeRegistry registry,
-		                               final MapModel map) {
+		private RegistryAttributeActor(final String name, final boolean manual, boolean visible,
+		                               final AttributeRegistry registry, final MapModel map) {
 			this.name = name;
 			this.registry = registry;
 			this.manual = manual;
-			this.visible = registry.getElement(name).isVisible();
+			this.visible = visible;
 			this.map = map;
 		}
 
@@ -465,7 +465,7 @@ public class MAttributeController extends AttributeController {
 		final private RegistryAttributeActor registryActor;
 
 		private UnregistryAttributeActor(final String name, final AttributeRegistry registry, final MapModel map) {
-			registryActor = new RegistryAttributeActor(name, registry.getElement(name).isManual(), registry, map);
+			registryActor = new RegistryAttributeActor(name, registry.getElement(name).isManual(), registry.getElement(name).isVisible(), registry, map);
 		}
 
 		public void act() {
@@ -568,7 +568,7 @@ public class MAttributeController extends AttributeController {
 		}
 		catch (final NoSuchElementException ex) {
 			final AttributeRegistry registry = AttributeRegistry.getRegistry(map);
-			final IActor nameActor = new RegistryAttributeActor(name, false, registry, map);
+			final IActor nameActor = new RegistryAttributeActor(name, false, false, registry, map);
 			getModeController().execute(nameActor, map);
 			final AttributeRegistryElement element = registry.getElement(name);
 			final IActor valueActor = new RegistryAttributeValueActor(element, value);
@@ -590,7 +590,7 @@ public class MAttributeController extends AttributeController {
 			attributeRegistry.getElement(name);
 		}
 		catch (final NoSuchElementException ex) {
-			final IActor actor = new RegistryAttributeActor(name, true, attributeRegistry, map);
+			final IActor actor = new RegistryAttributeActor(name, true, false, attributeRegistry, map);
 			getModeController().execute(actor, map);
 			return;
 		}
@@ -613,7 +613,7 @@ public class MAttributeController extends AttributeController {
 			return;
 		}
 		catch (final NoSuchElementException ex) {
-			final IActor nameActor = new RegistryAttributeActor(name, true, attributeRegistry, map);
+			final IActor nameActor = new RegistryAttributeActor(name, true, false, attributeRegistry, map);
 			getModeController().execute(nameActor, map);
 			final AttributeRegistryElement element = attributeRegistry.getElement(name);
 			final IActor valueActor = new RegistryAttributeValueActor(element, value);
@@ -677,7 +677,7 @@ public class MAttributeController extends AttributeController {
 		final int iOld = registry.getElements().indexOf(oldName);
 		final AttributeRegistryElement oldElement = registry.getElement(iOld);
 		final SortedComboBoxModel values = oldElement.getValues();
-		final IActor registryActor = new RegistryAttributeActor(newName, oldElement.isManual(), registry, map);
+		final IActor registryActor = new RegistryAttributeActor(newName, oldElement.isManual(), oldElement.isVisible(), registry, map);
 		getModeController().execute(registryActor, map);
 		final AttributeRegistryElement newElement = registry.getElement(newName);
 		for (int i = 0; i < values.getSize(); i++) {
@@ -784,7 +784,7 @@ public class MAttributeController extends AttributeController {
 					}
 				}
 				catch (final NoSuchElementException ex) {
-					final IActor registryActor = new RegistryAttributeActor(name, false, registry, map);
+					final IActor registryActor = new RegistryAttributeActor(name, false, false, registry, map);
 					getModeController().execute(registryActor, map);
 				}
 				break;
