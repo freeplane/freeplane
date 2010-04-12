@@ -180,6 +180,10 @@
 		<format-translation dir="${root}/resources/translations" includes="*.properties" />
 		<format-translation dir="${root}/viewer-resources/translations" includes="*.properties" />
 	</target>
+	<target name="format-translation-force">
+		<format-translation dir="${root}/resources/translations" writeifunchanged="true" includes="*.properties" />
+		<format-translation dir="${root}/viewer-resources/translations" writeifunchanged="true" includes="*.properties" />
+	</target>
 	<target name="translate">
 		<translator translationsdir="${root}/resources/translations"
 			    sourcefile="${root}/viewer-resources/translations/Resources_en.properties" includes="*.properties" />
