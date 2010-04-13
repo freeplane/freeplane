@@ -499,8 +499,8 @@
 </richcontent>
 </node>
 <node TEXT="This text can be displayed and edited in the note editor." ID="ID_1163876330" CREATED="1271096088819" MODIFIED="1271096200432"/>
-<node TEXT="Use Ctrl + &lt; to switsch between the map and the note." ID="ID_510313925" CREATED="1271096117483" MODIFIED="1271096198823"/>
-<node TEXT="The note editor can be placed an any side of the map from View-&gt;Note position." ID="ID_1710319301" CREATED="1271096150723" MODIFIED="1271096197176"/>
+<node TEXT="Use Ctrl + &lt; to switch between the map and the note." ID="ID_510313925" CREATED="1271096117483" MODIFIED="1271026201490"/>
+<node TEXT="The note editor can be placed on any side of the map from View-&gt;Note position." ID="ID_1710319301" CREATED="1271096150723" MODIFIED="1271026201490"/>
 </node>
 <node TEXT="Adding connectors" FOLDED="true" POSITION="right" ID="_Freeplane_Link_1996597932" CREATED="1270892460679" MODIFIED="1270896807234" COLOR="#407000">
 <node TEXT="To create a graphical connector between two nodes, drag a node and drop it to another node holding both shift and control keys; release the mouse button before releasing shift and control keys." ID="ID_985897417" CREATED="1270892460679" MODIFIED="1270894186580">
@@ -939,8 +939,10 @@
 <node TEXT="To move to the top of the current subtree, press PageUp." ID="ID_991946266" CREATED="1270892460687" MODIFIED="1270892460687"/>
 <node TEXT="To move to the bottom of the current subtree, press PageDown." ID="ID_697637157" CREATED="1270892460688" MODIFIED="1270892460688"/>
 <node TEXT="To move to the central node, press Escape." ID="ID_897038230" CREATED="1270892460688" MODIFIED="1270892460688"/>
-<node TEXT="To move back and forth in the history of visited nodes Alt - Left respectively Alt - Right." ID="ID_380593497" CREATED="1271026015708" MODIFIED="1271026201490"/>
-<node TEXT="Menu Navigage contains further navigation options" ID="ID_1560577856" CREATED="1271097838819" MODIFIED="1271097934700"/>
+<node TEXT="To move back and forth in the history of visited nodes use functions Navigate->Next (Alt + Right) respectively Navigate->Previous (Alt + Left)." ID="ID_380593497" CREATED="1271026015708" MODIFIED="1271177015781"/>
+<node TEXT="For reading all nodes of a map conveniently use functions Navigate-&gt;Next node (Ctrl + Alt + Right) and Navigate-&gt;Previous node  (Ctrl + Alt + Left)." ID="ID_1006152714" CREATED="1271176654062" MODIFIED="1271177015781"/>
+<node TEXT="If you want nodes to be folded again after visiting them use Navigate-&gt;Next node (fold) (Ctrl + Alt + Shift + Right) and Navigate-&gt;Previous node  (fold) (Ctrl + Alt + Shift + Left)." ID="ID_261764750" CREATED="1271177016593" MODIFIED="1271177157078"/>
+<node TEXT="Menu Navigate contains further navigation options" ID="ID_1560577856" CREATED="1271097838819" MODIFIED="1271177183968"/>
 </node>
 <node TEXT="Folding and unfolding" FOLDED="true" POSITION="right" ID="Freeplane_Link_4727471" CREATED="1270892460688" MODIFIED="1271097940654" COLOR="#407000">
 <node TEXT="Folded node is marked with a small circle attached in the outter direction." ID="ID_1622399561" CREATED="1270892460688" MODIFIED="1270892460688"/>
@@ -1075,6 +1077,9 @@
 <node TEXT="Automatic backup" FOLDED="true" POSITION="right" ID="ID_1283343603" CREATED="1271096741387" MODIFIED="1271096748636" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Old map versions and automatically saved copies of edited map are put in folder .backup created in each folder containing edited maps." ID="ID_1590067344" CREATED="1271096749626" MODIFIED="1271096798248"/>
+<node TEXT="Automatically save happens every minute and the last 10 autosave files are kept as a protection against accidental terminations of Freeplane, e.g. on computer shutdown." ID="ID_1073721425" CREATED="1271177847312" MODIFIED="1271178201171"/>
+<node TEXT="To restore automatically stored files you have to manually rename a autosave file, for instance to restore &quot;freeplane.mm&quot; from the most recent autosave file copy .backup\freeplane.mm.10.autosave to freeplane.mm." ID="ID_206842943" CREATED="1271178201859" MODIFIED="1271178346250"/>
+<node TEXT="Automatic save and backup can be adjusted to your needs via Tools-&gt;Preferences-&gt;Environment-&gt;Automatic Save." ID="ID_3064437" CREATED="1271178347062" MODIFIED="1271178453968"/>
 </node>
 <node TEXT="Advanced features" FOLDED="true" POSITION="right" ID="ID_827349258" CREATED="1271021855439" MODIFIED="1271022745220" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
