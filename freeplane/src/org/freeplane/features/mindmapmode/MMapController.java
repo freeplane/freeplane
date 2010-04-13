@@ -334,11 +334,9 @@ public class MMapController extends MapController {
 				final ResourceController resourceController = ResourceController.getResourceController();
 				if (resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
 				    NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
-					nodeChanged(node);
+					setSaved(node.getMap(), false);
 				}
-				else {
-					nodeRefresh(node);
-				}
+				nodeRefresh(node);
 			}
 
 			public String getDescription() {
