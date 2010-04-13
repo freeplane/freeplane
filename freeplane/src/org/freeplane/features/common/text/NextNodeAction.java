@@ -30,7 +30,7 @@ public class NextNodeAction extends AFreeplaneAction {
 	public void actionPerformed(ActionEvent e) {
 		TextController textController = TextController.getController(getModeController());
 		NodeModel start = getController().getSelection().getSelected();
-		NodeModel next = textController.findNext(start, direction, null);
+		NodeModel next = textController.findNext(start, null, direction, null);
 		getModeController().getMapController().select(next);
 
 	}

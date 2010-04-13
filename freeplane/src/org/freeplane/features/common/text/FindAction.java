@@ -52,6 +52,7 @@ class FindAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private ISelectableCondition condition;
 	private FilterConditionEditor editor;
+	private WeakReference<NodeModel> root;
 
 	public FindAction(final Controller controller) {
 		super("FindAction", controller);
@@ -95,20 +96,32 @@ class FindAction extends AFreeplaneAction {
 		if (condition == null) {
 			return;
 		}
+		root = new WeakReference<NodeModel> (getController().getSelection().getSelected());
 		findNext();
 	}
 
 	void findNext() {
-		if (condition == null) {
+		if (condition == null || root.get() == null) {
 			UITools.informationMessage(getController().getViewController().getFrame(), ResourceBundles
 			    .getText("no_previous_find"));
+			condition = null;
 			return;
 		}
 		TextController textController = TextController.getController(getModeController());
 		NodeModel start = getController().getSelection().getSelected();
-		NodeModel next = textController.findNext(start, Direction.FORWARD, condition);
+		NodeModel root = this.root.get();
+		for(NodeModel n = start; ! root.equals(n); n = n.getParentNode()){
+			if(n == null){
+				UITools.informationMessage(getController().getViewController().getFrame(), ResourceBundles
+					    .getText("no_previous_find"));
+				condition = null;
+				return;
+			}
+		}
+		NodeModel next = textController.findNext(start, root, Direction.FORWARD, condition);
 		if (next == null) {
-			displayNotFoundMessage(start);
+			displayNotFoundMessage(root);
+			condition = null;
 			return;
 		}
 		getModeController().getMapController().select(next);
