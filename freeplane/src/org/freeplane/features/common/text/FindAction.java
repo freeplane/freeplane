@@ -24,6 +24,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
@@ -34,10 +35,13 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterConditionEditor;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -46,13 +50,31 @@ import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.text.TextController.Direction;
 
 class FindAction extends AFreeplaneAction {
+	static private class FindNodeList implements IExtension{
+		String rootID;
+		final LinkedList<String> nodesUnfoldedByDisplay = new LinkedList<String>();
+		ISelectableCondition condition;
+		static FindNodeList create(MapModel map){
+			FindNodeList list = get(map);
+			if(list == null){
+				list = new FindNodeList();
+				map.addExtension(list);
+			}
+			return list;
+		}
+		private static FindNodeList get(MapModel map) {
+			if(map == null){
+				return null;
+			}
+			FindNodeList list = (FindNodeList) map.getExtension(FindNodeList.class);
+			return list;
+		}
+	}
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ISelectableCondition condition;
 	private FilterConditionEditor editor;
-	private WeakReference<NodeModel> root;
 
 	public FindAction(final Controller controller) {
 		super("FindAction", controller);
@@ -92,42 +114,82 @@ class FindAction extends AFreeplaneAction {
 		if (run != JOptionPane.OK_OPTION) {
 			return;
 		}
-		condition = editor.getCondition();
-		if (condition == null) {
+		final FindNodeList info = FindNodeList.create(getController().getMap());
+		info.condition = editor.getCondition();
+		if (info.condition == null) {
 			return;
 		}
-		root = new WeakReference<NodeModel> (getController().getSelection().getSelected());
+		info.rootID = getController().getSelection().getSelected().createID();
 		findNext();
 	}
 
 	void findNext() {
-		if (condition == null || root.get() == null) {
-			UITools.informationMessage(getController().getViewController().getFrame(), ResourceBundles
-			    .getText("no_previous_find"));
-			condition = null;
+		MapModel map = getController().getMap();
+		final FindNodeList info = FindNodeList.get(map);
+		if (info == null ||info.condition == null) {
+			displayNoPreviousFindMessage();
 			return;
 		}
 		TextController textController = TextController.getController(getModeController());
 		NodeModel start = getController().getSelection().getSelected();
-		NodeModel root = this.root.get();
+		NodeModel root = map.getNodeForID(info.rootID);
+		if (root == null) {
+			info.condition = null;
+			displayNoPreviousFindMessage();
+			return;
+		}
 		for(NodeModel n = start; ! root.equals(n); n = n.getParentNode()){
 			if(n == null){
-				UITools.informationMessage(getController().getViewController().getFrame(), ResourceBundles
-					    .getText("no_previous_find"));
-				condition = null;
+				info.condition = null;
+				displayNoPreviousFindMessage();
 				return;
 			}
 		}
-		NodeModel next = textController.findNext(start, root, Direction.FORWARD, condition);
+		NodeModel next = textController.findNext(start, root, Direction.FORWARD, info.condition);
 		if (next == null) {
-			displayNotFoundMessage(root);
-			condition = null;
+			displayNotFoundMessage(root, info.condition);
+			info.condition = null;
 			return;
 		}
-		getModeController().getMapController().select(next);
+		displayNode(info, next);
 	}
 
-	private void displayNotFoundMessage(NodeModel start) {
+	private void displayNoPreviousFindMessage() {
+		UITools.informationMessage(getController().getViewController().getFrame(), ResourceBundles
+		    .getText("no_previous_find"));
+	}
+
+	/**
+	 * Display a node in the display (used by find and the goto action by arrow
+	 * link actions).
+	 */
+	private void displayNode(FindNodeList info, final NodeModel node) {
+		MapModel map = node.getMap();
+		final LinkedList<String> nodesUnfoldedByDisplay = new LinkedList<String>();
+		NodeModel nodeOnPath = null;
+		for (nodeOnPath = node; 
+		nodeOnPath != null && ! info.nodesUnfoldedByDisplay.contains(nodeOnPath.createID());
+		nodeOnPath = nodeOnPath.getParentNode()
+			) {
+			if(getModeController().getMapController().isFolded(nodeOnPath)){
+				nodesUnfoldedByDisplay.add(nodeOnPath.createID());
+			}
+		}
+		ListIterator<String> oldPathIterator = info.nodesUnfoldedByDisplay.listIterator(info.nodesUnfoldedByDisplay.size());
+		while(oldPathIterator.hasPrevious()){
+			String oldPathNodeID = oldPathIterator.previous();
+			NodeModel oldPathNode = map.getNodeForID(oldPathNodeID);
+			if(oldPathNode != null && oldPathNode.equals(nodeOnPath)){
+				break;
+			}
+			oldPathIterator.remove();
+			getModeController().getMapController().setFolded(oldPathNode, true);
+		}
+		info.nodesUnfoldedByDisplay.addAll(nodesUnfoldedByDisplay);
+		getModeController().getMapController().select(node);
+	}
+
+	private void displayNotFoundMessage(NodeModel start, ICondition condition) {
 		final String messageText = ResourceBundles.getText("no_more_found_from");
 		UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
 		    Matcher.quoteReplacement(condition.toString())).replaceAll("\\$2", Matcher.quoteReplacement(getFindFromText(start))));
