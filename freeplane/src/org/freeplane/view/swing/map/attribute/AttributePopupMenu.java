@@ -248,8 +248,10 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 			}
 			oldTable = false;
 			row = table.rowAtPoint(point);
-			if (table.getValueAt(row, 0).equals("")) {
-				row--;
+			if(row >= 0){
+				if (table.getValueAt(row, 0).equals("")) {
+					row--;
+				}
 			}
 			if(row >= 0){
 				table.changeSelection(row, table.columnAtPoint(point), false, false);
