@@ -183,7 +183,9 @@ class FindAction extends AFreeplaneAction {
 				break;
 			}
 			oldPathIterator.remove();
-			getModeController().getMapController().setFolded(oldPathNode, true);
+			if(oldPathNode != null){
+				getModeController().getMapController().setFolded(oldPathNode, true);
+			}
 		}
 		info.nodesUnfoldedByDisplay.addAll(nodesUnfoldedByDisplay);
 		getModeController().getMapController().select(node);
