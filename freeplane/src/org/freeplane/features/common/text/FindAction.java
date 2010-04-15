@@ -148,7 +148,6 @@ class FindAction extends AFreeplaneAction {
 		NodeModel next = textController.findNext(start, root, Direction.FORWARD, info.condition);
 		if (next == null) {
 			displayNotFoundMessage(root, info.condition);
-			info.condition = null;
 			return;
 		}
 		displayNode(info, next);
