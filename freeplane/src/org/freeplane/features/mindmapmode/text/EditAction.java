@@ -207,7 +207,9 @@ class EditAction extends AFreeplaneAction {
 			    }
 
 			    public void ok(final String newText) {
-				    setNodeText(nodeModel, newText);
+			    	if(nodeModel.getMap().equals(getController().getMap())){
+			    		setNodeText(nodeModel, newText);
+			    	}
 				    endEdit();
 			    }
 

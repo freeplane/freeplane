@@ -27,7 +27,7 @@ public class NextNodeAction extends AFreeplaneAction {
 	public void actionPerformed(ActionEvent e) {
 		FilterController filterController = FilterController.getController(getController());
 		NodeModel start = getController().getSelection().getSelected();
-		NodeModel next = filterController.findNext(start, direction, null);
+		NodeModel next = filterController.findNext(start, null, direction, null);
 		getModeController().getMapController().select(next);
 	}
 }
