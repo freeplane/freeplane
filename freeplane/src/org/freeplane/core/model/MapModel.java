@@ -200,7 +200,10 @@ public class MapModel {
 		return id;
 	}
 
-	public void registryNodeRecursive(final NodeModel nodeModel) {
+	public void registryNodeRecursive(final NodeModel nodeModel, final int depth) {
+		if(depth > 400){
+			throw new StackOverflowError();
+		}
 		final String id = nodeModel.getID();
 		if (id != null) {
 			registryID(id, nodeModel);
@@ -208,7 +211,7 @@ public class MapModel {
 		final Iterator<NodeModel> iterator = nodeModel.getChildren().iterator();
 		while (iterator.hasNext()) {
 			final NodeModel next = iterator.next();
-			registryNodeRecursive(next);
+			registryNodeRecursive(next, depth+1);
 		}
 	}
 
