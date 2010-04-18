@@ -32,10 +32,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.TreeSet;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -51,6 +53,7 @@ import org.freeplane.core.controller.QuitAction;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.main.application.ApplicationResourceController;
 
@@ -168,7 +171,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		setBackground(Color.white);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		UITools.addEscapeActionToDialog(this);
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		final JTable table = createTable(revisions);
 		final JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.getViewport().setBackground(Color.white);
@@ -179,15 +182,17 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		getRootPane().setDefaultButton(btnCancel);
 		pack();
 		//		LogTool.severe("hi, NewerFileRevisionsFoundDialog, thread " + Thread.currentThread(), new Exception("dummy"));
+		setLocationRelativeTo(UITools.getFrame());
 		setVisible(true);
 	}
 
 	private Component createQuestion() {
 		final String text = TextUtils.format(NewerFileRevisionsFoundDialog.key("question"), file.getName());
-		final JTextArea textArea = new JTextArea(text);
-		textArea.setLineWrap(true);
+		String html = HtmlUtils.plainToHTML(text);
+		final JLabel textArea = new JLabel(html);
+		textArea.setAlignmentX(0.5f);
 		textArea.setFont(new Font("Dialog", Font.BOLD, 12));
-		textArea.setEditable(false);
+		textArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		return textArea;
 	}
 
