@@ -38,19 +38,20 @@ import org.freeplane.features.common.map.NodeModel;
  */
 public class Filter {
 	static Filter createTransparentFilter(final Controller controller) {
-		return new Filter(controller, null, true, false, false);
+		return new Filter(controller, null, true, false, false, false);
 	}
 
 	final private boolean appliesToVisibleNodesOnly;
 	final private ISelectableCondition condition;
 	final private Controller controller;
 	final private int options;
+	final private boolean unfold;
 
 	/**
 	 * @param b 
 	 */
 	public Filter(final Controller controller, final ISelectableCondition condition, final boolean areAnchestorsShown,
-	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
+	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly, final boolean unfold) {
 		super();
 		this.controller = controller;
 		this.condition = condition;
@@ -64,6 +65,7 @@ public class Filter {
 		}
 		this.options = options;
 		appliesToVisibleNodesOnly = condition != null && applyToVisibleNodesOnly;
+		this.unfold = unfold;
 	}
 
 	void addFilterResult(final NodeModel node, final int flag) {
@@ -143,6 +145,9 @@ public class Filter {
 		        || isAncestorEclipsed)) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_ANCESTOR);
 			isDescendantSelected = true;
+			if(true && unfold && ! isVisible(node)  && node.isFolded()){
+				modeController.getMapController().setFolded(node, false);
+			}
 		}
 		return isDescendantSelected;
 	}
@@ -173,9 +178,6 @@ public class Filter {
 		return condition.checkNode(modeController, node);
 	}
 
-	/**
-	 * @param c
-	 */
 	private boolean filterChildren(final ModeController modeController, final NodeModel parent,
 	                               final boolean isAncestorSelected, final boolean isAncestorEclipsed) {
 		final ListIterator<NodeModel> iterator = controller.getModeController().getMapController().childrenUnfolded(
@@ -249,4 +251,8 @@ public class Filter {
 		}
 		mapSelection.setSiblingMaxLevel(selected.getNodeLevel(false));
 	}
+
+	public boolean unfoldsInvisibleNodes() {
+	    return unfold;
+    }
 }

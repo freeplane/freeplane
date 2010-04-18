@@ -20,18 +20,20 @@
 package org.freeplane.features.common.filter;
 
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.core.ui.SelectableAction;
 
 /**
  * @author Dimitry Polivaev
- * Mar 28, 2009
+ * Mar 31, 2009
  */
+@SelectableAction
 class UnfoldFilteredAncestorsAction extends AFreeplaneAction {
+	final static String NAME = "ApplyToVisibleAction";
 	/**
 	 * 
 	 */
@@ -40,39 +42,23 @@ class UnfoldFilteredAncestorsAction extends AFreeplaneAction {
 	 * 
 	 */
 	private final FilterController filterController;
-	private boolean unfoldAll;
 
-	/**
-	 * @param filterController TODO
-	 *
-	 */
 	UnfoldFilteredAncestorsAction(final FilterController filterController) {
 		super("UnfoldFilteredAncestorsAction", filterController.getController());
 		this.filterController = filterController;
+		filterController.getUnfoldInvisibleAncestors().addChangeListener(new ChangeListener() {
+			public void stateChanged(final ChangeEvent e) {
+				setSelected(isModelSelected());
+			}
+		});
+		setSelected(isModelSelected());
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		unfoldAll = filterController.getSelectedCondition() == null
-		        || filterController.getShowDescendants().isSelected();
-		unfoldAncestors(filterController.getController().getMap().getRootNode());
+		filterController.getUnfoldInvisibleAncestors().setSelected(!isModelSelected());
 	}
 
-	private void setFolded(final NodeModel node, final boolean state) {
-		final ModeController modeController = filterController.getController().getModeController();
-		final MapController mapController = modeController.getMapController();
-		if (mapController.hasChildren(node) && (mapController.isFolded(node) != state)) {
-			mapController.setFolded(node, state);
-		}
-	}
-
-	private void unfoldAncestors(final NodeModel parent) {
-		for (final Iterator i = filterController.getController().getModeController().getMapController()
-		    .childrenUnfolded(parent); i.hasNext();) {
-			final NodeModel node = (NodeModel) i.next();
-			if (unfoldAll || node.getFilterInfo().isAncestor() || node.getFilterInfo().isUnset()) {
-				setFolded(node, false);
-				unfoldAncestors(node);
-			}
-		}
+	private boolean isModelSelected() {
+		return filterController.getUnfoldInvisibleAncestors().isSelected();
 	}
 }

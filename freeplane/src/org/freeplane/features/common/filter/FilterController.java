@@ -131,6 +131,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private ISelectableCondition selectedViewCondition;
 	private final ButtonModel showAncestors;
 	private final ButtonModel showDescendants;
+	private final ButtonModel unfold;
 
 
 	private JComboBox activeFilterConditionComboBox;
@@ -147,6 +148,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		showDescendants.addChangeListener(filterChangeListener);
 		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
 		applyToVisibleNodeOnly.setSelected(false);
+		unfold = new JToggleButton.ToggleButtonModel();
+		unfold.setSelected(true);
 		controller.getMapViewManager().addMapSelectionListener(this);
 		final AFreeplaneAction showFilterToolbar = new ToggleToolbarAction(controller, "ShowFilterToolbarAction",
 		    "/filter_toolbar");
@@ -248,7 +251,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			filterCondition = selectedCondition;
 		}
 		final Filter filter = new Filter(controller, filterCondition, showAncestors.isSelected(), showDescendants
-		    .isSelected(), applyToVisibleNodeOnly.isSelected());
+		    .isSelected(), applyToVisibleNodeOnly.isSelected(), unfold.isSelected());
 		return filter;
 	}
 
@@ -260,7 +263,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.setFocusable(false);
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
 		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));
-		final JButton btnUnfoldAncestors = new JButton(controller.getAction("UnfoldFilteredAncestorsAction"));
+		final JToggleButton btnUnfoldAncestors = new JAutoToggleButton(controller.getAction("UnfoldFilteredAncestorsAction"), unfold);
+		btnUnfoldAncestors.setSelected(unfold.isSelected());
 		final JToggleButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"),
 		    showAncestors);
 		showAncestorsBox.setSelected(showAncestors.isSelected());
@@ -288,10 +292,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.add(showAncestorsBox);
 		filterToolbar.add(showDescendantsBox);
 		filterToolbar.add(applyToVisibleBox);
+		filterToolbar.add(btnUnfoldAncestors);
 		filterToolbar.add(activeFilterConditionComboBox);
 		filterToolbar.add(applyBtn);
 		filterToolbar.add(noFilteringBtn);
-		filterToolbar.add(btnUnfoldAncestors);
 		filterToolbar.add(btnEdit);
 		activeFilterConditionComboBox.setFocusable(false);
 		activeFilterConditionComboBox.setRenderer(this.getConditionRenderer());
@@ -307,6 +311,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	protected ButtonModel getApplyToVisibleNodeOnly() {
 		return applyToVisibleNodeOnly;
+	}
+
+	protected ButtonModel getUnfoldInvisibleAncestors() {
+		return unfold;
 	}
 
 	public ConditionFactory getConditionFactory() {
@@ -441,6 +449,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		showAncestors.setSelected(filter.areAncestorsShown());
 		showDescendants.setSelected(filter.areDescendantsShown());
 		applyToVisibleNodeOnly.setSelected(filter.appliesToVisibleNodesOnly());
+		if(filter.getCondition() != null){
+			unfold.setSelected(filter.unfoldsInvisibleNodes());
+		}
 		filterConditions.addListDataListener(filterChangeListener);
 		showAncestors.addChangeListener(filterChangeListener);
 		showDescendants.addChangeListener(filterChangeListener);
