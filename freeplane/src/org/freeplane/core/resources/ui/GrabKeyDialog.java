@@ -355,7 +355,6 @@ public class GrabKeyDialog extends JDialog {
 		};
 		content.setBorder(new EmptyBorder(12, 12, 12, 12));
 		setContentPane(content);
-		new JLabel(GrabKeyDialog.getText("grab-key.caption"));
 		final Box input = Box.createHorizontalBox();
 		shortcut = new InputPane();
 		if (inputText != null) {
