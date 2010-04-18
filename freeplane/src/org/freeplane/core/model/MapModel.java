@@ -200,7 +200,10 @@ public class MapModel {
 		return id;
 	}
 
-	public void registryNodeRecursive(final NodeModel nodeModel, final int depth) {
+	public void registryNodeRecursive(final NodeModel nodeModel) {
+		registryNodeRecursive(nodeModel, 0);
+	}
+	private void registryNodeRecursive(final NodeModel nodeModel, final int depth) {
 		if(depth > 400){
 			throw new StackOverflowError();
 		}
