@@ -67,6 +67,7 @@
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
 				<menu_action action="EditAttributesAction" accelerator="alt F9" />
+				<menu_action action="SelectNoteAction" accelerator="control LESS"/> <!-- goto -->
 				<menu_separator />
 				<menu_action action="DeleteAction" accelerator="DELETE" />
 				<!-- <menu_action action="remove" /> -->
@@ -243,10 +244,6 @@
 			<menu_separator />
 			<menu_category name="links">
 				<menu_action action="FollowLinkAction" accelerator="control ENTER" /> <!-- goto -->
-			</menu_category>
-			<menu_separator/>
-			<menu_category name="notes">
-				<menu_action action="SelectNoteAction" /> <!-- goto -->
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="filter" name_ref="menu_filter">
