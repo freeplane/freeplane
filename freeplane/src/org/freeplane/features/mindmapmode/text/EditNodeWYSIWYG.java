@@ -234,18 +234,17 @@ class EditNodeWYSIWYG extends EditNodeBase {
 				document.setBase(new URL("file: "));
 			}
 			int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
+			preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
+			    .getProperty("el__min_default_window_height")));
+			preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
+			    .getProperty("el__max_default_window_height")));
 			int preferredWidth = (int) (viewController.getComponent(node).getWidth() * 1.2);
-			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth, preferredHeight));
-			Dimension windowPreferredSize = EditNodeWYSIWYG.htmlEditorWindow.getPreferredSize();
-			preferredWidth = Math.max(windowPreferredSize.width, Integer.parseInt(ResourceController.getResourceController()
+			preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
 			    .getProperty("el__min_default_window_width")));
-			preferredWidth = Math.min(windowPreferredSize.width, Integer.parseInt(ResourceController.getResourceController()
+			preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
 			    .getProperty("el__max_default_window_width")));
-			preferredHeight = Math.max(windowPreferredSize.height, Integer.parseInt(ResourceController.getResourceController()
-					.getProperty("el__min_default_window_height")));
-			preferredHeight = Math.min(windowPreferredSize.height, Integer.parseInt(ResourceController.getResourceController()
-					.getProperty("el__max_default_window_height")));
-			EditNodeWYSIWYG.htmlEditorWindow.setSize(preferredWidth, preferredHeight);
+			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth, preferredHeight));
+			EditNodeWYSIWYG.htmlEditorWindow.pack();
 			if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
 				UITools.setDialogLocationUnder(EditNodeWYSIWYG.htmlEditorWindow, getController(), node);
 			}
