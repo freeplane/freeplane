@@ -1,6 +1,6 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node ID="ID_911274459" CREATED="1270892460624" MODIFIED="1271097759528" COLOR="#993300">
+<node ID="ID_911274459" CREATED="1270892460624" MODIFIED="1272035320705" COLOR="#993300">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8,12 +8,13 @@
   </head>
   <body width="">
     <p align="center">
-      Freeplane<br/><small>- free mind mapping software -</small>&#xa0;
+      Freeplane<br/><small>- free mind mapping software -</small>&#160;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <font NAME="Dialog" SIZE="18" BOLD="true"/>
-<hook NAME="MapStyle" zoom="1.5" max_node_width="600"/>
+<hook NAME="MapStyle" max_node_width="600"/>
 <node TEXT="Press the right arrow key, or click the left mouse button on this node to unfold it" POSITION="right" ID="ID_182998712" CREATED="1270892460656" MODIFIED="1271973103178" COLOR="#0033ff">
 <node TEXT="Press the left arrow key to unfold nodes located to the left of the central &quot;root&quot; node" ID="ID_1776790765" CREATED="1271002221874" MODIFIED="1271973207142"/>
 </node>
@@ -1719,7 +1720,7 @@
 <node TEXT="The mode in which mind maps are created and edited." ID="ID_1644920951" CREATED="1267720608578" MODIFIED="1267720623453"/>
 </node>
 <node TEXT="Map Browser" ID="ID_279798661" CREATED="1266256155296" MODIFIED="1271854131256">
-<node TEXT="This is a read-only mode for browsing maps rather than editing them. It is has two main uses: First, when using Export &gt; As Java Applet..., the applet opens the map only for reading, because editing maps is not supported via the Web. Second, this Help file, when accessed via Help &gt; Documentation, is opened in read-only mode in order to preserve its contents while users learn various Freeplane features. Otherwise this Map Browser mode is generally unused." ID="ID_1882001495" CREATED="1271854355433" MODIFIED="1271967552143"/>
+<node TEXT="This is a read-only mode for browsing maps rather than editing them. It is has two main uses: First, when using Export &gt; As Java Applet..., the applet opens the map only for reading, because editing maps is not supported via the Web. Second, Freeplane&apos;s Help file, when accessed via Help &gt; Documentation or F1, is opened in read-only mode in order to preserve its contents while users learn various Freeplane features. Otherwise this Map Browser mode is generally unused." ID="ID_1882001495" CREATED="1271854355433" MODIFIED="1272028384550"/>
 </node>
 <node TEXT="File Explorer" ID="ID_1843939382" CREATED="1266256175390" MODIFIED="1271098042618">
 <node TEXT="Contains the same information as Windows Explorer (the file manager, not the Web browser), in a mind map format. Contains hyperlinks that will open a window for the corresponding folder. This feature exists mainly to demonstrate that it is possible for software developers to write custom &quot;modes&quot; for viewing data from sources other than mind maps." ID="ID_1642131000" CREATED="1267720624750" MODIFIED="1271855514399"/>
@@ -1904,11 +1905,26 @@
 <node TEXT="To view, edit or execute a file, follow the link of its node." ID="ID_355560243" CREATED="1270892460643" MODIFIED="1270892460643"/>
 <node TEXT="This File mode is mainly a demonstration of browsing data from sources other than a mind map. It is also possible for software developers to write other &quot;modes&quot; using additional data sources." ID="_Freeplane_Link_279880616" CREATED="1270892460643" MODIFIED="1271968440585"/>
 </node>
-<node TEXT="Browsing mind maps" POSITION="left" ID="_Freeplane_Link_1530607683" CREATED="1270892460643" MODIFIED="1270892460643" COLOR="#407000">
-<node TEXT="To browse mind maps in read-only mode rather than to edit them, switch to Browse mode in pull-down menu using Maps &gt; Map Browser." ID="ID_752234886" CREATED="1270892460643" MODIFIED="1271972741548"/>
-<node TEXT="Browsing is the only thing you can do in the Freeplane applet, which you can create using Export, and then publish on a website. So normally, browse mode is only used in the applet." ID="ID_872290173" CREATED="1270892460643" MODIFIED="1271972687281"/>
+<node TEXT="Macintosh Usage Notes" POSITION="left" ID="_Freeplane_Link_1530607683" CREATED="1270892460643" MODIFIED="1272028601505" COLOR="#407000">
+<node TEXT="Freeplane recently added full support for Apple&apos;s Mac OS X operating system. Some of the documentation is still oriented toward PC users running Windows or Linux. Mac users will be able to follow along by keeping some differences in mind, listed below." ID="ID_752234886" CREATED="1270892460643" MODIFIED="1272034409877">
+<node TEXT="Command key versus the Control key" ID="ID_274373799" CREATED="1272034412047" MODIFIED="1272034460891">
+<node TEXT="When Freeplane runs under Mac OS X, it normally let you use the Apple Command key in place of the Control key. The Command key is marked with a cloverleaf &#x2318; symbol, and may also be marked with &quot;command&quot; or &quot;cmd&quot; or an Apple logo." ID="ID_395674676" CREATED="1272029514331" MODIFIED="1272034612835"/>
+<node TEXT="When you see the Control key mentioned in Freeplane&apos;s documentation, in most cases you should use the Command key instead. " ID="ID_124270811" CREATED="1272034546855" MODIFIED="1272034546856"/>
+<node TEXT="In a very few cases, Freeplane actually requires using the Control key rather than the Command key, even though you&apos;re using a Mac. Where possible this will be corrected in the future. Meanwhile if the documentation says to use the Control key, yet the Command key fails to work as a substitute on your Mac, try the Control key instead." ID="ID_1031450682" CREATED="1272034546807" MODIFIED="1272034546808"/>
 </node>
-<node TEXT="Installing Freeplane applet at your web site" POSITION="left" ID="_Freeplane_Link_1525986009" CREATED="1270892460644" MODIFIED="1271097759527" COLOR="#407000">
+<node TEXT="Mice, Right Clicks and Context Menus" ID="ID_1326732850" CREATED="1272034661406" MODIFIED="1272034719554">
+<node TEXT="Many Apple-branded mice and trackpads have only one clickable &quot;button.&quot; To bring up a context-sensitive menu (or &quot;context menu&quot;), Mac users can hold down the Control key while clicking the mouse (abbreviated as &quot;Control + click&quot;). Yes, use the Control key here, rather than the Command key, because this function is built into Mac OS X so Freeplane cannot change it. Apple makes Control + click equivalent to the &quot;right click&quot; which is available on mice with two buttons." ID="ID_1259415390" CREATED="1272030826942" MODIFIED="1272034317363"/>
+</node>
+<node TEXT="Zooming" ID="ID_590901264" CREATED="1272034779740" MODIFIED="1272034791305">
+<node TEXT="Mac OS X provides a means to zoom in on (magnify) part of the screen, by holding down the Control key while turning the mouse wheel forward. This facility is built into the Mac operating system, so the function is unavailable for Freeplane to use for control of its own Zoom function. So Mac users must use one of the alternate means which Freeplane provides to adjust its zoom level. " ID="ID_1955741602" CREATED="1272031370038" MODIFIED="1272034875880"/>
+<node TEXT="If you are unfamiliar with OS X&apos;s Control + mouse wheel function, be aware that some mouse functions become awkward to use, or even unusable, while zoomed in. To return the screen to normal, hold down the Conrol key and turn the mouse wheel backward to zoom back out all the way." ID="ID_842528755" CREATED="1272034875909" MODIFIED="1272034875910"/>
+</node>
+<node TEXT="Freeplane Wiki" ID="ID_1142057644" CREATED="1272034993198" MODIFIED="1272035003988">
+<node TEXT="Visit the Macintosh page on Freeplane&apos;s online Wiki to learn more about running Freeplane on a Mac." ID="ID_275313424" CREATED="1272035005736" MODIFIED="1272035180163" LINK="http://freeplane.sourceforge.net/wiki/index.php/Macintosh"/>
+</node>
+</node>
+</node>
+<node TEXT="Using the Freeplane applet on your web site" POSITION="left" ID="_Freeplane_Link_1525986009" CREATED="1270892460644" MODIFIED="1272028557952" COLOR="#407000">
 <node TEXT="Use File &gt; Export &gt; As Java Applet... to create a set of files for your web site" ID="ID_885091125" CREATED="1270892460644" MODIFIED="1271020276571" COLOR="#000000">
 <font NAME="Dialog" SIZE="12"/>
 </node>
