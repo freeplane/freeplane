@@ -52,8 +52,10 @@ public class HelpController implements IExtension {
 		webDocu = new OpenURLAction("WebDocuAction", controller, resourceController
 		    .getProperty("webDocuLocation"));
 		controller.addAction(webDocu);
-		final String defaultMap = resourceController.getProperty("browsemode_initial_map");
+		final String defaultMap = resourceController.getProperty("docu_map");
 		controller.addAction(new DocumentationAction(controller, "DocumentationAction", defaultMap));
+		final String referenceMap = resourceController.getProperty("menuref_map");
+		controller.addAction(new DocumentationAction(controller, "MenuReferenceAction", referenceMap));
 		final String hotKeyInfo = resourceController.getProperty("hot_key_info");
 		controller.addAction(new DocumentationAction(controller, "HotKeyInfoAction", hotKeyInfo));
 		controller.addAction(new LicenseAction(controller));
