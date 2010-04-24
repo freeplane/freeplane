@@ -333,6 +333,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="To rotate among open maps use Navigate &gt; Previous Map (Shift + Alt + Left) and Navigate &gt; Next Map (Shift + Alt + Right)." ID="ID_233995891" CREATED="1271000255265" MODIFIED="1272006995061"/>
+<node TEXT="To switch between the last two maps press Ctrl + 1." ID="ID_771867461" CREATED="1272092801195" MODIFIED="1272092861615"/>
 </node>
 </node>
 <node TEXT="Editing map content" FOLDED="true" POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1272092212339" COLOR="#006666">

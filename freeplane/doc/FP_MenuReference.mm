@@ -3,7 +3,10 @@
 <node TEXT="Freeplane menu reference" ID="ID_1768565753" CREATED="1271097953627" MODIFIED="1272090985186" COLOR="#006699" LINK="freeplane.mm">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <hook NAME="MapStyle" max_node_width="600"/>
-<node TEXT="File" FOLDED="true" POSITION="left" ID="ID_726273295" CREATED="1266240579156" MODIFIED="1271098042655" COLOR="#000000">
+<node TEXT="Main menu" POSITION="right" ID="ID_1695865256" CREATED="1272093120291" MODIFIED="1272093132582" COLOR="#006666">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="File" FOLDED="true" ID="ID_726273295" CREATED="1266240579156" MODIFIED="1272093139523" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="New" FOLDED="true" ID="ID_368992923" CREATED="1266240728734" MODIFIED="1271098042637" COLOR="#000000">
 <node TEXT="Creates a new Freeplane map. This map resides only in memory until it is saved." ID="ID_1224589686" CREATED="1266243689843" MODIFIED="1271530999506" COLOR="#000000"/>
 </node>
@@ -127,7 +130,8 @@
 <node TEXT="Close all open maps and exit Freeplane." ID="ID_1940308908" CREATED="1266589936070" MODIFIED="1271531705292"/>
 </node>
 </node>
-<node TEXT="Edit" FOLDED="true" POSITION="left" ID="ID_1125565961" CREATED="1266240582250" MODIFIED="1271098042553" COLOR="#000000">
+<node TEXT="Edit" FOLDED="true" ID="ID_1125565961" CREATED="1266240582250" MODIFIED="1272093139526" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Undo" FOLDED="true" ID="ID_397188011" CREATED="1266244578015" MODIFIED="1271098042534" COLOR="#000000">
 <node TEXT="Reverse previous changes or edits. The number of Undo actions stored by FreePlane is determined in Preferences. SEE ALSO: Tools &gt; Preferences &gt; Behavior &gt; Undo." ID="ID_115741308" CREATED="1266590364632" MODIFIED="1266590520663"/>
 </node>
@@ -193,7 +197,8 @@
 <node TEXT="Same as Find and Replace... but applied to all open maps. SEE ALSO: Find and Replace..." ID="ID_264652060" CREATED="1266591545695" MODIFIED="1266591573648"/>
 </node>
 </node>
-<node TEXT="View" FOLDED="true" POSITION="left" ID="ID_389115947" CREATED="1266240584812" MODIFIED="1271098042561" COLOR="#000000">
+<node TEXT="View" FOLDED="true" ID="ID_389115947" CREATED="1266240584812" MODIFIED="1272093139527" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Toolbar" FOLDED="true" ID="ID_926021846" CREATED="1266247097703" MODIFIED="1271098042554" COLOR="#000000">
 <node TEXT="Toggles the main toolbar on and off." ID="ID_641371847" CREATED="1266591746476" MODIFIED="1266591753820"/>
 </node>
@@ -237,7 +242,8 @@
 <node TEXT="Determines how node attributes are displayed. Options are: Show All Attributes; Show Selected Attributes; Hide All Attributes. SEE ALSO: Tools &gt; Attribute Manager; Tools &gt; Assign Attributes; Edit &gt; Edit Attributes." ID="ID_1065342219" CREATED="1266593893960" MODIFIED="1266593992351"/>
 </node>
 </node>
-<node TEXT="Insert" FOLDED="true" POSITION="left" ID="ID_108574210" CREATED="1266240590140" MODIFIED="1271098042567" COLOR="#000000">
+<node TEXT="Insert" FOLDED="true" ID="ID_108574210" CREATED="1266240590140" MODIFIED="1272093139529" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="New Child Node" FOLDED="true" ID="ID_942355748" CREATED="1266249828031" MODIFIED="1271098042561" COLOR="#000000">
 <node TEXT="Creates a new node as a child of an the currently-selected node. The Ins key will also create a new child node." ID="ID_1856786037" CREATED="1266257552140" MODIFIED="1272004185220"/>
 </node>
@@ -288,10 +294,11 @@
 <node TEXT="Opens the LaTeX editor for the node selected." ID="ID_1356853070" CREATED="1266258023468" MODIFIED="1271532609145"/>
 </node>
 </node>
-<node TEXT="Icons" FOLDED="true" POSITION="left" ID="ID_68469558" CREATED="1266240681421" MODIFIED="1271098042567" COLOR="#000000">
+<node TEXT="Icons" FOLDED="true" ID="ID_68469558" CREATED="1266240681421" MODIFIED="1272093139531" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Icons may be attached to, or removed from any node. A number of icons are included with Freeplane, arranged in a hierarchy. User-supplied icons are also supported." ID="ID_1105036662" CREATED="1266594258148" MODIFIED="1271654373663"/>
 </node>
-<node TEXT="Format" FOLDED="true" POSITION="left" ID="ID_258919699" CREATED="1266240683718" MODIFIED="1271098042588">
+<node TEXT="Format" FOLDED="true" ID="ID_258919699" CREATED="1266240683718" MODIFIED="1272093139533" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Change format..." FOLDED="true" ID="ID_1944419701" CREATED="1266251248593" MODIFIED="1271098042568">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
@@ -407,7 +414,8 @@
 </node>
 </node>
 </node>
-<node TEXT="Navigate" FOLDED="true" POSITION="left" ID="ID_1496009393" CREATED="1266240686343" MODIFIED="1271098042604" COLOR="#000000">
+<node TEXT="Navigate" FOLDED="true" ID="ID_1496009393" CREATED="1266240686343" MODIFIED="1272093139534" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Previous Map" FOLDED="true" ID="ID_1708693409" CREATED="1266254847750" MODIFIED="1271098042588">
 <node TEXT="Moves to the previous map listed under the Maps menu. This only works if multiple maps are open." ID="ID_1442859212" CREATED="1266594677648" MODIFIED="1271835385793"/>
 </node>
@@ -477,7 +485,8 @@
 <node TEXT="If the node is hyperlinked, this command will execute the link. SEE ALSO: Insert &gt; Hyperlink (File Chooser)...; Insert &gt; Hyperlink (Text Field)..." ID="ID_942157628" CREATED="1266595981992" MODIFIED="1266596044945"/>
 </node>
 </node>
-<node TEXT="Filter" FOLDED="true" POSITION="left" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1271098042606" COLOR="#000000">
+<node TEXT="Filter" FOLDED="true" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1272093139536" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Undo" FOLDED="true" ID="ID_1234931801" CREATED="1266256117500" MODIFIED="1266256118781">
 <node TEXT="Reverses the effect of the previously-used filtering command." ID="ID_124761199" CREATED="1271842248323" MODIFIED="1271842384171"/>
 </node>
@@ -512,7 +521,8 @@
 <node TEXT="Opens the Filter Composer dialog to create / manage filters." ID="ID_1081902137" CREATED="1271843484591" MODIFIED="1271843564579"/>
 </node>
 </node>
-<node TEXT="Tools" FOLDED="true" POSITION="left" ID="ID_1833899525" CREATED="1266240695203" MODIFIED="1271098042616" COLOR="#000000">
+<node TEXT="Tools" FOLDED="true" ID="ID_1833899525" CREATED="1266240695203" MODIFIED="1272093139538" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Join Nodes" FOLDED="true" ID="ID_1720469761" CREATED="1266247462656" MODIFIED="1271098042606" COLOR="#000000">
 <node TEXT="Joins two nodes into one. Only works on nodes that do not have children." ID="ID_351515654" CREATED="1267747213492" MODIFIED="1267747236180"/>
 </node>
@@ -617,7 +627,8 @@
 </node>
 </node>
 </node>
-<node TEXT="Maps" FOLDED="true" POSITION="left" ID="ID_539574104" CREATED="1266240697187" MODIFIED="1271098042619" COLOR="#000000">
+<node TEXT="Maps" FOLDED="true" ID="ID_539574104" CREATED="1266240697187" MODIFIED="1272093139539" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Mind Map Editor" FOLDED="true" ID="ID_186835536" CREATED="1266256150921" MODIFIED="1271098042616">
 <node TEXT="The mode in which mind maps are created and edited." ID="ID_1644920951" CREATED="1267720608578" MODIFIED="1267720623453"/>
 </node>
@@ -631,7 +642,8 @@
 <node TEXT="Lists all maps that are currently open. Clicking on the name of a map switches to that map." ID="ID_599811416" CREATED="1267720737078" MODIFIED="1267720757984"/>
 </node>
 </node>
-<node TEXT="Help" FOLDED="true" POSITION="left" ID="ID_1022410641" CREATED="1266240698937" MODIFIED="1266252127312" COLOR="#000000">
+<node TEXT="Help" FOLDED="true" ID="ID_1022410641" CREATED="1266240698937" MODIFIED="1272093139541" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Documentation" FOLDED="true" ID="ID_604224444" CREATED="1271855545007" MODIFIED="1271855551496">
 <node TEXT="Opens this Help file in read-only mode." ID="ID_71306706" CREATED="1271855552670" MODIFIED="1271855578836"/>
 </node>
@@ -657,8 +669,11 @@
 <node TEXT="Manually check whether a newer version of Freeplane has been released. This check will be done automatically if the corresponding checkbox is enabled at the bottom of the dialog which opens." ID="ID_1365637235" CREATED="1271862957486" MODIFIED="1271863050179"/>
 </node>
 </node>
-<node TEXT="Context menus" FOLDED="true" POSITION="left" ID="ID_84557432" CREATED="1266248900265" MODIFIED="1271098059864" COLOR="#000000">
-<node TEXT="Main Screen" FOLDED="true" ID="ID_1631658252" CREATED="1266248911203" MODIFIED="1271098042623" COLOR="#000000">
+</node>
+<node TEXT="Context menus" POSITION="left" ID="ID_84557432" CREATED="1266248900265" MODIFIED="1272092776724" COLOR="#006666">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Main Screen" FOLDED="true" ID="ID_1631658252" CREATED="1266248911203" MODIFIED="1272093022484" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Menubar" FOLDED="true" ID="ID_59191819" CREATED="1266591819023" MODIFIED="1271098042619">
 <node TEXT="Toggles the main menu on and off." ID="ID_834667996" CREATED="1266591901913" MODIFIED="1266591911710"/>
 </node>
@@ -681,7 +696,8 @@
 <node TEXT="Toggles the Note Window open and closed." ID="ID_1009962179" CREATED="1266592142273" MODIFIED="1266592154992"/>
 </node>
 </node>
-<node TEXT="Node" FOLDED="true" ID="ID_1654949965" CREATED="1266592168273" MODIFIED="1271098042632">
+<node TEXT="Node" FOLDED="true" ID="ID_1654949965" CREATED="1266592168273" MODIFIED="1272093022482" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Edit Node" FOLDED="true" ID="ID_133224710" CREATED="1266592215867" MODIFIED="1271098042623">
 <node TEXT="See Edit &gt; Edit Node." ID="ID_1145960350" CREATED="1266592255913" MODIFIED="1266592262867"/>
 </node>
@@ -738,7 +754,8 @@
 <node TEXT="See Format &gt; Physical Style" ID="ID_272429174" CREATED="1266592609851" MODIFIED="1266592616226"/>
 </node>
 </node>
-<node TEXT="Node in Edit mode" FOLDED="true" ID="ID_147862907" CREATED="1266592652382" MODIFIED="1271098042633">
+<node TEXT="Node in Edit mode" FOLDED="true" ID="ID_147862907" CREATED="1266592652382" MODIFIED="1272093022479" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Copy" FOLDED="true" ID="ID_307433692" CREATED="1266592665179" MODIFIED="1271098042632">
 <node TEXT="See Edit &gt; Copy" ID="ID_1556196716" CREATED="1266592804413" MODIFIED="1266592809054"/>
 </node>
@@ -760,7 +777,8 @@
 </node>
 </node>
 </node>
-<node TEXT="Note Window" FOLDED="true" ID="ID_1420586322" CREATED="1266592942335" MODIFIED="1271858606929">
+<node TEXT="Note Window" FOLDED="true" ID="ID_1420586322" CREATED="1266592942335" MODIFIED="1272093022474" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Undo" FOLDED="true" ID="ID_1095352741" CREATED="1266592963976" MODIFIED="1271098042634">
 <node TEXT="See Edit &gt; Undo" ID="ID_1505836654" CREATED="1266592993726" MODIFIED="1266592998367"/>
 </node>
