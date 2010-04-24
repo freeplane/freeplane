@@ -52,6 +52,7 @@ public abstract class EdgeView {
 	protected Point start, end;
 	private NodeView target;
 	private Color color;
+	private Integer width;
 
 	protected void createStart() {
 		start = source.getMainViewOutPoint(getTarget(), end);
@@ -96,11 +97,18 @@ public abstract class EdgeView {
 		return target;
 	}
 
-	protected int getWidth() {
+	public int getWidth() {
+		if(width != null){
+			return width;
+		}
 		final NodeModel model = target.getModel();
 		final int width = EdgeController.getController(target.getMap().getModeController()).getWidth(model);
 		return width;
 	}
+
+	public void setWidth(int width) {
+    	this.width = width;
+    }
 
 	protected boolean isTargetEclipsed() {
 		return getTarget().isParentHidden();

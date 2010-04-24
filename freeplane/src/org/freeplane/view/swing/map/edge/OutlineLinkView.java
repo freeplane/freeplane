@@ -69,11 +69,6 @@ public class OutlineLinkView extends EdgeView {
 	
 	@Override
 	protected Stroke getStroke() {
-		final EdgeController edgeController = EdgeController.getController(getSource().getMap().getModeController());
-		final NodeModel model = getTarget().getModel();
-		int edgeWidth = edgeController.getWidth(model);
-		final EdgeStyle style = edgeController.getStyle(model);
-		edgeWidth = style.getNodeLineWidth(edgeWidth);
-		return new BasicStroke(edgeWidth);
+		return new BasicStroke(getWidth());
 	}
 }

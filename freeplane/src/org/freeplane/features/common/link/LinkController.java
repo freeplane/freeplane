@@ -70,7 +70,7 @@ public class LinkController extends SelectionController implements IExtension {
 
 	private static ArrowLinkListener listener = null;
 	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
-	public static final int STANDARD_WIDTH = 1;
+	public static final int STANDARD_WIDTH = 2;
 	static Color standardColor = null;
 
 	public static LinkController getController(final ModeController modeController) {

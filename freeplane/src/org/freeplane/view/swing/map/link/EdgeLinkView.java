@@ -19,12 +19,15 @@
  */
 package org.freeplane.view.swing.map.link;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.EdgeViewFactory;
@@ -38,11 +41,21 @@ public class EdgeLinkView implements ILinkView {
 	private final EdgeView edgeView;
 	
 	
-	public EdgeLinkView(ConnectorModel model,  NodeView source, NodeView target) {
+	public EdgeLinkView(ConnectorModel model, ModeController modeController,  NodeView source, NodeView target) {
 	    super();
 	    this.model = model;
 	    edgeView = EdgeViewFactory.getInstance().getEdge(source, target);
-	    edgeView.setColor(edgeView.getColor().darker());
+		Color color;
+		if (model.isEdgeLike()){
+			color = edgeView.getColor().darker();
+		}
+		else{
+			LinkController controller = LinkController.getController(modeController);
+			color = controller.getColor(model);
+			int width = controller.getWidth(model);
+			edgeView.setWidth(width);
+		}
+	    edgeView.setColor(color);
     }
 
 	public boolean detectCollision(Point p, boolean selectedOnly) {
