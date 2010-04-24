@@ -92,7 +92,6 @@ public class FreeplaneStarter {
 
 	public FreeplaneStarter() {
 		super();
-		FreeplaneStarter.showSysInfo();
 	}
 
 	public Controller createController() {
@@ -103,6 +102,7 @@ public class FreeplaneStarter {
 			Compat.macAppChanges(controller);
 			applicationResourceController.init(controller);
 			LogTool.createLogger();
+			FreeplaneStarter.showSysInfo();
 			ViewController.setLookAndFeel(applicationResourceController.getProperty("lookandfeel"));
 			final JFrame frame = new JFrame("Freeplane");
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);

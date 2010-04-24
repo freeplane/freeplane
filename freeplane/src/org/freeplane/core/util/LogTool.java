@@ -62,7 +62,7 @@ public class LogTool {
 			parentLogger.addHandler(mFileHandler);
 			final ConsoleHandler stdConsoleHandler = new ConsoleHandler();
 			stdConsoleHandler.setFormatter(new StdFormatter());
-			stdConsoleHandler.setLevel(Level.WARNING);
+			stdConsoleHandler.setLevel(Level.INFO);
 			parentLogger.addHandler(stdConsoleHandler);
 			LoggingOutputStream los;
 			Logger logger = Logger.getLogger(StdFormatter.STDOUT.getName());
