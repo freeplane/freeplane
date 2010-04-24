@@ -264,12 +264,6 @@
 </node>
 <node TEXT="Navigation" FOLDED="true" POSITION="right" ID="ID_1233270983" CREATED="1272091279810" MODIFIED="1272092212344" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Selecting nodes" FOLDED="true" ID="ID_138479182" CREATED="1271003237850" MODIFIED="1271096963292" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="By default nodes are selected by placing the mouse cursor over a node (after a short delay)." ID="ID_485160362" CREATED="1271003250866" MODIFIED="1271523474424"/>
-<node TEXT="This can be changed via Tools &gt; Preferences &gt; Behaviour &gt; Selection Method" ID="ID_1399586050" CREATED="1271003344288" MODIFIED="1271003686538"/>
-<node TEXT="Available selection methods are &quot;By Click&quot;, &quot;Direct&quot;, and &quot;Delayed&quot; (default)" ID="ID_676805584" CREATED="1271003687538" MODIFIED="1271006910934"/>
-</node>
 <node TEXT="Navigation in Map" FOLDED="true" ID="_Freeplane_Link_1540212684" CREATED="1270892460687" MODIFIED="1271097939214" COLOR="#407000">
 <node TEXT="To move the cursor up, down, left or right, use arrow keys." ID="ID_990469408" CREATED="1270892460687" MODIFIED="1270892460687"/>
 <node TEXT="To move to the top of the current subtree, press PageUp." ID="ID_991946266" CREATED="1270892460687" MODIFIED="1270892460687"/>
@@ -278,14 +272,9 @@
 <node TEXT="To move back and forth in the history of visited nodes use Navigate &gt; Previous (or press Alt + Left), or Navigate &gt; Next (or press Alt + Right), respectively." ID="ID_380593497" CREATED="1271026015708" MODIFIED="1272005896937"/>
 <node TEXT="For visiting all nodes of a map conveniently use Navigate &gt; Next node (Control + Alt + Right) and Navigate &gt; Previous node  (Control + Alt + Left)." ID="ID_1006152714" CREATED="1271176654062" MODIFIED="1272005977304"/>
 <node TEXT="If you want nodes to be folded again after visiting them use the menu choices &quot;Navigate &gt; Next node (fold)&quot; (or press Control + Alt + Shift + Right), and &quot;Navigate &gt; Previous node (fold)&quot; (or press Control + Alt + Shift + Left)." ID="ID_261764750" CREATED="1271177016593" MODIFIED="1272006159893"/>
-</node>
-<node TEXT="Folding and unfolding" FOLDED="true" ID="Freeplane_Link_4727471" CREATED="1270892460688" MODIFIED="1271097940654" COLOR="#407000">
-<node TEXT="A folded node is marked with a small circle attached in the direction farthest from the root node." ID="ID_1622399561" CREATED="1270892460688" MODIFIED="1272006260711"/>
-<node TEXT="To fold a node use Toggle &gt; Folded or press the Space bar." ID="ID_1439689412" CREATED="1270892460688" MODIFIED="1272006435049"/>
-<node TEXT="To unfold a node use Toggle &gt; Folded, or press the Space bar, or press the arrow key in the direction of unfolding." ID="ID_643756713" CREATED="1270892460688" MODIFIED="1272006501051"/>
-<node TEXT="To fold or unfold nodes in levels, hold Alt while using mousewheel, or press Alt + PageUp or Alt + PageDown. With large maps, use this function carefully; it may lead to memory problems." ID="ID_926272054" CREATED="1270892460688" MODIFIED="1270892460688"/>
-<node TEXT="To unfold all nodes use Navigate &gt; Unfold All, or press the circled plus button in the main toolbar, or press Alt + End." ID="ID_1233324949" CREATED="1270892460688" MODIFIED="1272006731309"/>
-<node TEXT="To fold all nodes use Navigate &gt; Fold All, or click the circled minus button in the main toolbar, or press Alt + Home." ID="ID_1337518584" CREATED="1270892460688" MODIFIED="1272006720983"/>
+<node TEXT="By default nodes are selected by placing the mouse cursor over a node (after a short delay)." ID="ID_485160362" CREATED="1271003250866" MODIFIED="1271523474424"/>
+<node TEXT="This can be changed via Tools &gt; Preferences &gt; Behaviour &gt; Selection Method" ID="ID_1399586050" CREATED="1271003344288" MODIFIED="1271003686538"/>
+<node TEXT="Available selection methods are &quot;By Click&quot;, &quot;Direct&quot;, and &quot;Delayed&quot; (default)" ID="ID_676805584" CREATED="1271003687538" MODIFIED="1271006910934"/>
 </node>
 <node TEXT="Selecting multiple nodes" FOLDED="true" ID="Freeplane_Link_653540280" CREATED="1270892460681" MODIFIED="1270892460681" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
@@ -300,6 +289,14 @@
 </node>
 <node TEXT="To select a complete subtree, use Control + Shift + A,  or hold Shift while moving with arrow keys from a node to its parent, or hold Alt Gr while clicking." ID="ID_350782537" CREATED="1270892460682" MODIFIED="1272003039472"/>
 <node TEXT="To cancel the selection of multiple nodes, click on the map background or on an unselected node." ID="ID_451303534" CREATED="1270892460682" MODIFIED="1272003070882"/>
+</node>
+<node TEXT="Folding and unfolding" FOLDED="true" ID="Freeplane_Link_4727471" CREATED="1270892460688" MODIFIED="1271097940654" COLOR="#407000">
+<node TEXT="A folded node is marked with a small circle attached in the direction farthest from the root node." ID="ID_1622399561" CREATED="1270892460688" MODIFIED="1272006260711"/>
+<node TEXT="To fold a node use Toggle &gt; Folded or press the Space bar." ID="ID_1439689412" CREATED="1270892460688" MODIFIED="1272006435049"/>
+<node TEXT="To unfold a node use Toggle &gt; Folded, or press the Space bar, or press the arrow key in the direction of unfolding." ID="ID_643756713" CREATED="1270892460688" MODIFIED="1272006501051"/>
+<node TEXT="To fold or unfold nodes in levels, hold Alt while using mousewheel, or press Alt + PageUp or Alt + PageDown. With large maps, use this function carefully; it may lead to memory problems." ID="ID_926272054" CREATED="1270892460688" MODIFIED="1270892460688"/>
+<node TEXT="To unfold all nodes use Navigate &gt; Unfold All, or press the circled plus button in the main toolbar, or press Alt + End." ID="ID_1233324949" CREATED="1270892460688" MODIFIED="1272006731309"/>
+<node TEXT="To fold all nodes use Navigate &gt; Fold All, or click the circled minus button in the main toolbar, or press Alt + Home." ID="ID_1337518584" CREATED="1270892460688" MODIFIED="1272006720983"/>
 </node>
 <node TEXT="Scrolling the map" FOLDED="true" ID="Freeplane_Link_467411537" CREATED="1270892460689" MODIFIED="1270892460689" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
@@ -327,13 +324,13 @@
 <node TEXT="To search the entire map for all occurrences of matching text, with an optional to supply replacement text, use &quot;Edit &gt; Find and Replace...&quot; A similar method can be used across all currently-open maps by choosing &quot;Edit &gt;Find and Replace in all maps.&quot;" ID="ID_1761633870" CREATED="1271096970387" MODIFIED="1271992556423"/>
 <node TEXT="You can build filters to see only a subset of map nodes. Use the Filter Toolbar or the Filter Menu." ID="ID_1773253238" CREATED="1270897010863" MODIFIED="1271992588658"/>
 </node>
-<node TEXT="Changing to a different mind map" ID="Freeplane_Link_516331171" CREATED="1270892460688" MODIFIED="1270892460688" COLOR="#407000">
+<node TEXT="Changing to a different mind map" FOLDED="true" ID="Freeplane_Link_516331171" CREATED="1270892460688" MODIFIED="1270892460688" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="To change to another mind map which is already open, pull down the Maps menu and choose the corresponding filename, or right click on the background and select a different map from the context menu." ID="ID_213892338" CREATED="1270892460689" MODIFIED="1272006924275">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="To rotate among open maps use Navigate &gt; Previous Map (Shift + Alt + Left) and Navigate &gt; Next Map (Shift + Alt + Right)." ID="ID_233995891" CREATED="1271000255265" MODIFIED="1272006995061"/>
-<node TEXT="To switch between the two last edited maps press Ctrl + 1." ID="ID_771867461" CREATED="1272092801195" MODIFIED="1272095642833"/>
+<node TEXT="To switch between the two last edited maps use Ctrl + 1." ID="ID_771867461" CREATED="1272092801195" MODIFIED="1272096101491"/>
 </node>
 </node>
 <node TEXT="Editing map content" FOLDED="true" POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1272092212339" COLOR="#006666">
