@@ -327,13 +327,13 @@
 <node TEXT="To search the entire map for all occurrences of matching text, with an optional to supply replacement text, use &quot;Edit &gt; Find and Replace...&quot; A similar method can be used across all currently-open maps by choosing &quot;Edit &gt;Find and Replace in all maps.&quot;" ID="ID_1761633870" CREATED="1271096970387" MODIFIED="1271992556423"/>
 <node TEXT="You can build filters to see only a subset of map nodes. Use the Filter Toolbar or the Filter Menu." ID="ID_1773253238" CREATED="1270897010863" MODIFIED="1271992588658"/>
 </node>
-<node TEXT="Changing to a different mind map" FOLDED="true" ID="Freeplane_Link_516331171" CREATED="1270892460688" MODIFIED="1270892460688" COLOR="#407000">
+<node TEXT="Changing to a different mind map" ID="Freeplane_Link_516331171" CREATED="1270892460688" MODIFIED="1270892460688" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="To change to another mind map which is already open, pull down the Maps menu and choose the corresponding filename, or right click on the background and select a different map from the context menu." ID="ID_213892338" CREATED="1270892460689" MODIFIED="1272006924275">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="To rotate among open maps use Navigate &gt; Previous Map (Shift + Alt + Left) and Navigate &gt; Next Map (Shift + Alt + Right)." ID="ID_233995891" CREATED="1271000255265" MODIFIED="1272006995061"/>
-<node TEXT="To switch between the last two maps press Ctrl + 1." ID="ID_771867461" CREATED="1272092801195" MODIFIED="1272092861615"/>
+<node TEXT="To switch between the two last edited maps press Ctrl + 1." ID="ID_771867461" CREATED="1272092801195" MODIFIED="1272095642833"/>
 </node>
 </node>
 <node TEXT="Editing map content" FOLDED="true" POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1272092212339" COLOR="#006666">
