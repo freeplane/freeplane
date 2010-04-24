@@ -2,10 +2,14 @@
 1.0.43 rc
 ===============================
 New features:
-Documentation map improved 
-Find and Find next search the complete map from the selected node
+Documentation map reworked 
+Menu reference map added
 New number icons added to flash browser (0, 8 and 9)
 Display icon toolbar with the scroll pane as default
+Paint all links with line width = 2
+Preserve links colors and edge widths in Outline View
+Action "note edit switch" moved to menu Edit
+
 
 Bug fixes:
 Map background color properly displayed in flash browser
@@ -14,6 +18,7 @@ Map background color properly displayed in flash browser
 453: Icon repeated twice   
 548: Assign new short cut only on real menu item mouse click
 Bug fix for removing attributes / values using AttributeManagerDialog 
+576]: PanelOption : the default Window size for SimplyHTML
 Translations
 
 ===============================
