@@ -25,6 +25,7 @@ import java.net.URISyntaxException;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -61,7 +62,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 			}
 			catch (URISyntaxException e1) {
 				LogTool.warn(e1);
-				UITools.errorMessage("wrong URI " + inputValue);
+				UITools.errorMessage(FpStringUtils.format("invalid_uri", inputValue));
 				return;
 			} 
 		}

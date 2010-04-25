@@ -89,7 +89,7 @@ class ExportBranchAction extends AFreeplaneAction {
 				Compat.fileToUrl(chosenFile);
 			}
 			catch (final MalformedURLException ex) {
-				UITools.errorMessage("couldn't create valid URL!");
+				UITools.errorMessage(ResourceBundles.getText("invalid_url"));
 				return;
 			}
 			if (chosenFile.exists()) {

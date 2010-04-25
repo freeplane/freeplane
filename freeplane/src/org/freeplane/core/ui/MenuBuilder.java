@@ -836,15 +836,17 @@ public class MenuBuilder extends UIBuilder {
 		final Node oldAction = accelerators.put(keyStroke, node);
 		final JMenuItem item = (JMenuItem) node.getUserObject();
 		if (keyStroke != null && oldAction != null) {
-			UITools.errorMessage("keystroke " + keyStroke + " requested for action " + item.getActionCommand()
-			        + " is already in use for action " + ((JMenuItem) oldAction.getUserObject()).getActionCommand());
+			UITools.errorMessage(FpStringUtils.format("action_keystroke_in_use_error", 
+					keyStroke, item.getActionCommand(), 
+					((JMenuItem) oldAction.getUserObject()).getActionCommand()));
 			accelerators.put(keyStroke, oldAction);
 			final String shortcutKey = getShortcutKey(node.getKey().toString());
 			ResourceController.getResourceController().setProperty(shortcutKey, "");
 			return;
 		}
 		if(item instanceof JMenu){
-			UITools.errorMessage("keystroke " + keyStroke + " requested for submenu " + item.getText() + ", removed");
+			UITools.errorMessage(FpStringUtils.format("submenu_keystroke_in_use_error", 
+					keyStroke, item.getText()));
 		accelerators.put(keyStroke, oldAction);
 		final String shortcutKey = getShortcutKey(node.getKey().toString());
 		ResourceController.getResourceController().setProperty(shortcutKey, "");

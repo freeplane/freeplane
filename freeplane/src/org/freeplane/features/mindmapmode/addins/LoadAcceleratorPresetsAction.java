@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -105,7 +106,9 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 					    loadAcceleratorPresetsAction, MenuBuilder.AS_CHILD);
 				}
 				catch (final Exception e) {
-					UITools.errorMessage("can not load accelerators from" + prop.getPath());
+					UITools.errorMessage(
+							FpStringUtils.format("accelerators_loading_error"
+									, prop.getPath()));
 				}
 			}
 		}

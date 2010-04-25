@@ -86,7 +86,7 @@ public class PropertyAction extends AFreeplaneAction {
 		}
 		options.buildPanel(controls);
 		options.setProperties();
-		final String title = FpStringUtils.removeMnemonic(ResourceBundles.getText("PropertyAction.text"));
+		final String title = ResourceBundles.getText("PropertyAction.dialog");
 		dialog.setTitle(title);
 		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {

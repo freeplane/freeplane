@@ -32,6 +32,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -72,7 +73,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			((MLinkController) LinkController.getController(modeController)).setLink(node, (URI) null, false);
 		}
 		catch (final MalformedURLException ex) {
-			UITools.errorMessage("Couldn't create valid URL for:" + map.getFile());
+			UITools.errorMessage(FpStringUtils.format("invalid_url_msg", map.getFile()));
 			LogTool.warn(ex);
 			return;
 		}

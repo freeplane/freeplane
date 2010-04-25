@@ -344,13 +344,8 @@ public class UrlManager implements IExtension {
 		try {
 			urlStreamReader = new InputStreamReader(url.openStream());
 		}
-		catch (final AccessControlException ex) {
-			UITools.errorMessage("Could not open URL " + url + ". Access Denied.");
-			LogTool.warn(ex.getMessage());
-			return;
-		}
 		catch (final Exception ex) {
-			UITools.errorMessage("Could not open URL " + url + ".");
+			UITools.errorMessage(FpStringUtils.format("url_open_error", url.toString()));
 			LogTool.warn(ex.getMessage());
 			return;
 		}

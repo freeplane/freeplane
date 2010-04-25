@@ -43,6 +43,7 @@ import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IFreeplaneAction;
@@ -267,7 +268,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		}
 		catch (final Exception ex) {
 			remove(restoreable);
-			UITools.errorMessage("An error occured on opening the file: " + restoreable + ".");
+			UITools.errorMessage(FpStringUtils.format("file_error", restoreable ));
 			LogTool.warn(ex);
 		}
 	}
