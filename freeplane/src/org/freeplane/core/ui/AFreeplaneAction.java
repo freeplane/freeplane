@@ -82,7 +82,6 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	// TODO ARCH rladstaetter 18.02.2009 actions should not have a dependency on the controller
 	final private Controller controller;
-	private boolean enableOnMapChange;
 	final private String key;
 	private boolean selected = false;
 
@@ -129,14 +128,14 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	public void afterMapChange(final Object newMap) {
 		if (newMap == null) {
-			enableOnMapChange = enableOnMapChange || isEnabled();
-			setEnabled(false);
+			if(isEnabled()){
+				setEnabled(false);
+			}
 		}
 		else {
-			if (enableOnMapChange) {
+			if (!isEnabled()) {
 				setEnabled(true);
 			}
-			enableOnMapChange = false;
 		}
 	}
 
