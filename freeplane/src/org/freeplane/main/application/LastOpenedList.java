@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewChangeListener;
@@ -44,6 +45,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IFreeplaneAction;
@@ -267,8 +269,12 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			open(restoreable);
 		}
 		catch (final Exception ex) {
-			remove(restoreable);
-			UITools.errorMessage(FpStringUtils.format("file_error", restoreable ));
+			final String message = FpStringUtils.format("remove_file_from_list_on_error", restoreable );
+			int remove = JOptionPane.showConfirmDialog(UITools.getFrame(), message, "Freeplane", JOptionPane.YES_NO_OPTION);
+			if(remove == JOptionPane.YES_OPTION)
+			{
+				remove(restoreable);
+			}
 			LogTool.warn(ex);
 		}
 	}

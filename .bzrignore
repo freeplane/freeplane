@@ -3,6 +3,7 @@
 ./*/dist
 backups
 .DS_Store
+.backup
 ./.metadata
 ./freeplane_framework/windows-launcher/Freeplane_private.h
 ./freeplane_framework/windows-launcher/Freeplane_private.rc
