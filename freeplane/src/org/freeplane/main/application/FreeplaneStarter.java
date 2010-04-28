@@ -187,14 +187,6 @@ public class FreeplaneStarter {
 				}
 			}
 		}
-		if (fileLoaded  || alwaysLoadLastMaps) {
-			return;
-		}
-		/*
-		 * nothing loaded so far. Perhaps, we should display a new map...
-		 * According to Summary: On first start Freeplane should show new map
-		 * to newbies https: &aid=1752516&group_id=7118
-		 */
 		if (null != controller.getMap()) {
 			return;
 		}
