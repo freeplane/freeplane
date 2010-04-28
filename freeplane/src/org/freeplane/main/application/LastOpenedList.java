@@ -211,13 +211,12 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			final StringTokenizer token = new StringTokenizer(restoreable, ":");
 			if (token.hasMoreTokens()) {
 				final String mode = token.nextToken();
-				if (controller.selectMode(mode)) {
-					String fileName = token.nextToken("").substring(1);
-					if(PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")){
-						fileName = USER_DRIVE + fileName.substring(1);
-					}
-					controller.getModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
+				controller.selectMode(mode);
+				String fileName = token.nextToken("").substring(1);
+				if(PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")){
+					fileName = USER_DRIVE + fileName.substring(1);
 				}
+				controller.getModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
 			}
 		}
 	}

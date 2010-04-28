@@ -71,7 +71,8 @@ class DocumentationAction extends AFreeplaneAction {
 	        SwingUtilities.invokeLater(new Runnable() {
 	        	public void run() {
 	        		try {
-	        			if (endUrl.getFile().endsWith(".mm") && getController().selectMode(BModeController.MODENAME)) {
+	        			if (endUrl.getFile().endsWith(".mm") ) {
+	        				getController().selectMode(BModeController.MODENAME);
 	        				getModeController().getMapController().newMap(endUrl);
 	        			}
 	        			else{
