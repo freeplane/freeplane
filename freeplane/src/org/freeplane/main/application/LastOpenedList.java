@@ -20,6 +20,8 @@
 package org.freeplane.main.application;
 
 import java.awt.Component;
+import java.awt.Frame;
+import java.awt.Window;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -269,7 +271,12 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		}
 		catch (final Exception ex) {
 			final String message = FpStringUtils.format("remove_file_from_list_on_error", restoreable );
-			int remove = JOptionPane.showConfirmDialog(UITools.getFrame(), message, "Freeplane", JOptionPane.YES_NO_OPTION);
+			Frame frame = UITools.getFrame();
+			Window[] ownedWindows = frame.getOwnedWindows();
+			if(ownedWindows.length > 0 && ownedWindows[0].getClass().equals(FreeplaneSplashModern.class)){
+				ownedWindows[0].setVisible(false);
+			}
+			int remove = JOptionPane.showConfirmDialog(frame, message, "Freeplane", JOptionPane.YES_NO_OPTION);
 			if(remove == JOptionPane.YES_OPTION)
 			{
 				remove(restoreable);
