@@ -1160,7 +1160,9 @@
 </node>
 <node TEXT="Menu Differences" FOLDED="true" ID="ID_1110596300" CREATED="1272475775170" MODIFIED="1272475793114">
 <node TEXT="A few menu items are relocated in accordance with Mac OS X standards. These are listed below." ID="ID_1853446063" CREATED="1272475795702" MODIFIED="1272475981316"/>
-<node TEXT="Help &gt; About Freeplane is moved to the Freeplane application menu." ID="ID_1154800735" CREATED="1272475988527" MODIFIED="1272476052913"/>
+<node TEXT="Help &gt; About is moved to the Freeplane application menu &gt; About Freeplane." ID="ID_1154800735" CREATED="1272475988527" MODIFIED="1272490731402"/>
+<node TEXT="Tools &gt; Preferences is moved to the Freeplane application menu &gt; Preferences." ID="ID_1860427078" CREATED="1272490956135" MODIFIED="1272491068596"/>
+<node TEXT="File &gt; Quit is moved to the Freeplane application menu &gt; Quit Freeplane." ID="ID_1745832189" CREATED="1272491194401" MODIFIED="1272491228343"/>
 </node>
 <node TEXT="Zooming" FOLDED="true" ID="ID_590901264" CREATED="1272034779740" MODIFIED="1272034791305">
 <node TEXT="Mac OS X provides a means to zoom in on (magnify) part of the screen, by holding down the Control key while turning the mouse wheel forward. This facility is built into the Mac operating system, so the function is unavailable for Freeplane to use for control of its own Zoom function. So Mac users must use one of the alternate means which Freeplane provides to adjust its zoom level. " ID="ID_1955741602" CREATED="1272031370038" MODIFIED="1272034875880"/>
