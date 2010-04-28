@@ -73,6 +73,8 @@ public class FreeplaneMenuBar extends JMenuBar {
     				return KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
     			case '=':
     				return KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
+    			case '.':
+    				return KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
     			}
     		}
     		if(keyChar != '\0' && keyChar != KeyEvent.CHAR_UNDEFINED){
