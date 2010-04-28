@@ -14,13 +14,13 @@
 <node TEXT="Open a map that has already been saved." ID="ID_1263580030" CREATED="1266243738562" MODIFIED="1266252127468" COLOR="#000000"/>
 </node>
 <node TEXT="Save" FOLDED="true" ID="ID_1692895250" CREATED="1266240710515" MODIFIED="1271098042638" COLOR="#000000">
-<node TEXT="Save a map that has alrerady been created. If you are saving the map for the first time, you will be presented with the Save dialog box. If the map has already been saved once, it is automatically overwritten with the most recent Save. This is a controlled save, not an automatic save. (A controlled save is done manually, using any of: File &gt; Save, File &gt; Save As..., the Save or Save As icon on the toolbar, or Control + S.) SEE ALSO: Automatic save." ID="ID_324068736" CREATED="1266243759625" MODIFIED="1272001046754" COLOR="#000000"/>
+<node TEXT="Save a map that has alrerady been created. If you are saving the map for the first time, you will be presented with the Save dialog box. If the map has already been saved once, it is automatically overwritten with the most recent Save. This is a controlled save, not an automatic save. (A controlled save is done manually, using any of: File &gt; Save, File &gt; Save As..., the Save or Save As icon on the toolbar, or Ctrl + S.) SEE ALSO: Automatic save." ID="ID_324068736" CREATED="1266243759625" MODIFIED="1272495649879" COLOR="#000000"/>
 </node>
 <node TEXT="Save As..." FOLDED="true" ID="ID_818986161" CREATED="1266240712359" MODIFIED="1271098042638" COLOR="#000000">
 <node TEXT="Save an existing map, which has previously been saved, using a new file name." ID="ID_20106150" CREATED="1266243892937" MODIFIED="1271647896680" COLOR="#000000"/>
 </node>
 <node TEXT="Revert" FOLDED="true" ID="ID_1689665561" CREATED="1266240740062" MODIFIED="1271098042639" COLOR="#000000">
-<node ID="ID_1182324893" CREATED="1266240906265" MODIFIED="1272000850682" COLOR="#000000">
+<node ID="ID_1182324893" CREATED="1266240906265" MODIFIED="1272495688478" COLOR="#000000">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -28,10 +28,11 @@
   </head>
   <body>
     <p>
-      Reverts the map to the last controlled save. (A controlled save is done manually using any of: File &gt; Save, File &gt; Save As..., the Save or Save As icon on the toolbar, or Control + S.) Automatic saves are ignored. <u>This is an unforgiving command</u>, and cannot be reversed with Edit &gt; Undo. SEE ALSO: Edit &gt; Undo and Edit &gt; Redo for discreet changes to individual nodes.
+      Reverts the map to the last controlled save. (A controlled save is done manually using any of: File &gt; Save, File &gt; Save As..., the Save or Save As icon on the toolbar, or Ctrl + S.) Automatic saves are ignored. <u>This is an unforgiving command</u>, and cannot be reversed with Edit &gt; Undo. SEE ALSO: Edit &gt; Undo and Edit &gt; Redo for discreet changes to individual nodes.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="Create Encrypted Map" FOLDED="true" ID="ID_1741781785" CREATED="1266240744406" MODIFIED="1271098042639" COLOR="#000000">
@@ -218,7 +219,7 @@
 <node TEXT="Toggles the display of the map to a vertical orientation, as in a traditional outline. Node spacing may be fine-tuned using Preferences. Some aspects of visual appearance are simplified while in Outline view, and more information may be visible onscreen at one time than in the normal Mind Map view." ID="ID_1390220676" CREATED="1266593482726" MODIFIED="1271650910782"/>
 </node>
 <node TEXT="Set maximum node width" FOLDED="true" ID="ID_1050573960" CREATED="1266247228437" MODIFIED="1271859196610" COLOR="#000000">
-<node TEXT="Measured in pixels. Default is 600. This affects all nodes in a map. If you want to control the width of a particular node, use the Edit Long Node... command and use Control + Enter to shorten each line." ID="ID_1703616593" CREATED="1266247266625" MODIFIED="1272001768119" COLOR="#000000"/>
+<node TEXT="Measured in pixels. Default is 600. This affects all nodes in a map. If you want to control the width of a particular node, use the Edit Long Node... command and use Ctrl + Enter to shorten each line." ID="ID_1703616593" CREATED="1266247266625" MODIFIED="1272495988107" COLOR="#000000"/>
 </node>
 <node TEXT="Center selected node" FOLDED="true" ID="ID_1011127671" CREATED="1266249670203" MODIFIED="1271098042557" COLOR="#000000">
 <node TEXT="Bring the selected node to the center of the screen." ID="ID_29730008" CREATED="1266593526070" MODIFIED="1266593537695"/>
@@ -273,19 +274,19 @@
 <node TEXT="Insert an image file of type: bitmap, giff, jpg, jpeg, or png." ID="ID_1927196799" CREATED="1266257430281" MODIFIED="1266257475984"/>
 </node>
 <node TEXT="Hyperlink (File Chooser)..." FOLDED="true" ID="ID_178833757" CREATED="1266249910406" MODIFIED="1271098042563" COLOR="#000000">
-<node TEXT="Opens a dialog box to navigate to the file to which the node will be hyperlinked. NOTE: To delete the link choose Insert &gt; Hyperlink (Text Field)... or press Control + K, then delete the text in the dialog which opens." ID="ID_63859182" CREATED="1266594047023" MODIFIED="1272000133515"/>
+<node TEXT="Opens a dialog box to navigate to the file to which the node will be hyperlinked. NOTE: To delete the link choose Insert &gt; Hyperlink (Text Field)... or press Ctrl + K, then delete the text in the dialog which opens." ID="ID_63859182" CREATED="1266594047023" MODIFIED="1272495459193"/>
 </node>
 <node TEXT="Hyperlink (Text Field)..." FOLDED="true" ID="ID_873690575" CREATED="1266249928203" MODIFIED="1271098042564" COLOR="#000000">
-<node TEXT="Opens a dialog box allowing manual entry (or pasting) of the link text. Useful for hyperlinks to web pages. NOTE: To delete the link choose Insert &gt; Hyperlink (Text Field)... or press Control + K, then delete the text in the dialog which opens." ID="ID_1417646603" CREATED="1266594083085" MODIFIED="1272000146307"/>
+<node TEXT="Opens a dialog box allowing manual entry (or pasting) of the link text. Useful for hyperlinks to web pages. NOTE: To delete the link choose Insert &gt; Hyperlink (Text Field)... or press Ctrl + K, then delete the text in the dialog which opens." ID="ID_1417646603" CREATED="1266594083085" MODIFIED="1272495499188"/>
 </node>
 <node TEXT="Add Connector" FOLDED="true" ID="ID_646708313" CREATED="1266249966500" MODIFIED="1271098042564" COLOR="#000000">
 <node TEXT="Creates a connector between two or more nodes. All of the nodes to be connected must be selected before this command is invoked." ID="ID_1624469639" CREATED="1266594128851" MODIFIED="1266594159945"/>
 </node>
 <node TEXT="Add Local Hyperlink" FOLDED="true" ID="ID_271903009" CREATED="1266251024562" MODIFIED="1271098042565" COLOR="#000000">
-<node TEXT="Creates a link between two nodes in the current map. The two nodes must be selected before this command is invoked: The first selected node is the target of the link, which is added to the second node, and represented there as a small green arrow. NOTE: To delete the link choose Insert &gt; Hyperlink (Text Field)... or press Control + K, then delete the node ID in the dialog which opens." ID="ID_1285047908" CREATED="1266251035078" MODIFIED="1272000202062" COLOR="#000000"/>
+<node TEXT="Creates a link between two nodes in the current map. The two nodes must be selected before this command is invoked: The first selected node is the target of the link, which is added to the second node, and represented there as a small green arrow. NOTE: To delete the link choose Insert &gt; Hyperlink (Text Field)... or press Ctrl + K, then delete the node ID in the dialog which opens." ID="ID_1285047908" CREATED="1266251035078" MODIFIED="1272495718567" COLOR="#000000"/>
 </node>
 <node TEXT="Cloud" FOLDED="true" ID="ID_1259373322" CREATED="1266250644843" MODIFIED="1271098042565" COLOR="#000000">
-<node TEXT="Places a cloud around all of the selected nodes. This is useful for highlighting certain nodes. The cloud covers the node selected and all of its child nodes. Multiple clouds can be created at the same time by holding the Control key (for selecting discreet nodes), or the Shift key for selecting all the nodes between the first node selected and the last. SEE ALSO: Format &gt; Cloud Color..." ID="ID_471274727" CREATED="1266257029468" MODIFIED="1271654099280"/>
+<node TEXT="Places a cloud around all of the selected nodes. This is useful for highlighting certain nodes. The cloud covers the node selected and all of its child nodes. Multiple clouds can be created at the same time by holding the Ctrl key (for selecting discreet nodes), or the Shift key for selecting all the nodes between the first node selected and the last. SEE ALSO: Format &gt; Cloud Color..." ID="ID_471274727" CREATED="1266257029468" MODIFIED="1272495744781"/>
 </node>
 <node TEXT="External Object..." FOLDED="true" ID="ID_334408230" CREATED="1266250647515" MODIFIED="1271098042566" COLOR="#000000">
 <node TEXT="Insert a bitmap or SVG image file." ID="ID_984131568" CREATED="1266257490828" MODIFIED="1271654189947"/>
@@ -350,7 +351,7 @@
 <node TEXT="Sets the background color of the entire map using a color chooser dialog." ID="ID_1460771363" CREATED="1266256525625" MODIFIED="1271834353314"/>
 </node>
 <node TEXT="Reset Position" FOLDED="true" ID="ID_286609105" CREATED="1266252216156" MODIFIED="1271098042573">
-<node TEXT="Returns the node to the position it had when it was first created. If you have moved nodes around and want to reformat your map, this command will do so. Esc followed by Control + A will select all the nodes in a map." ID="ID_828714332" CREATED="1266252583531" MODIFIED="1272001918472"/>
+<node TEXT="Returns the node to the position it had when it was first created. If you have moved nodes around and want to reformat your map, this command will do so. Esc followed by Ctrl + A will select all the nodes in a map." ID="ID_828714332" CREATED="1266252583531" MODIFIED="1272495546167"/>
 </node>
 <node TEXT="Show icons hierarchically" FOLDED="true" ID="ID_1164550160" CREATED="1266252231218" MODIFIED="1271098042574">
 <edge COLOR="#000000"/>
@@ -539,7 +540,7 @@
 <node TEXT="Opens a dialog box to add (or remove) a password used to encrypt the map file." ID="ID_648523041" CREATED="1267721007546" MODIFIED="1271845635726"/>
 </node>
 <node TEXT="Change Revisions background color" FOLDED="true" ID="ID_974319465" CREATED="1266247833890" MODIFIED="1271862708257" COLOR="#000000" BACKGROUND_COLOR="#ffffff">
-<node TEXT="Changes the background color of nodes which are subsequently edited. This function affects only the current map, and it can be toggled off at any time. The background color of any affected node(s) can be restored to the default, or to any other color, by using the Format &gt; Node Background Color.... command. Multiple nodes can be changed simultaneously by holding the Control key and selecting each node to be changed. SEE ALSO: [Right Click Context Menu] &gt; Format &gt; Node Background Color..." ID="ID_1510254995" CREATED="1267721443828" MODIFIED="1271846398678" BACKGROUND_COLOR="#ffffff"/>
+<node TEXT="Changes the background color of nodes which are subsequently edited. This function affects only the current map, and it can be toggled off at any time. The background color of any affected node(s) can be restored to the default, or to any other color, by using the Format &gt; Node Background Color.... command. Multiple nodes can be changed simultaneously by holding the Ctrl key and selecting each node to be changed. SEE ALSO: [Right Click Context Menu] &gt; Format &gt; Node Background Color..." ID="ID_1510254995" CREATED="1267721443828" MODIFIED="1272495773553" BACKGROUND_COLOR="#ffffff"/>
 </node>
 <node TEXT="Show Modification Times" FOLDED="true" ID="ID_208481180" CREATED="1266247851640" MODIFIED="1271862728580" COLOR="#000000">
 <node TEXT="Toggles the display of a ToolTip which displays when hovering the mouse over a node. It affects only the current map, and shows the creation date and the last modification date." ID="ID_198955102" CREATED="1267746222164" MODIFIED="1271846750140"/>

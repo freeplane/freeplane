@@ -631,7 +631,7 @@
 </node>
 </node>
 <node TEXT="If in Freeplane you copy a branch and paste it into an editor that understands Rich Text Format (RTF), the formatting including color and font is pasted too. Editors that understand RTF include Microsoft Word, Wordpad and Outlook, some tabbed notebooks in Linux, and TextEdit in Mac OS X." ID="ID_411576634" CREATED="1270892460687" MODIFIED="1272004922587"/>
-<node TEXT="To copy a node without its descendants, use Edit &gt; Copy Single or press Ctrl + SHIFT + C." ID="ID_620029478" CREATED="1270892460687" MODIFIED="1272493342282"/>
+<node TEXT="To copy a node without its descendants, use Edit &gt; Copy Single or press Ctrl + Shift + C." ID="ID_620029478" CREATED="1270892460687" MODIFIED="1272494935882"/>
 </node>
 <node TEXT="Adding hyperlinks" FOLDED="true" ID="Freeplane_Link_203858515" CREATED="1270892460675" MODIFIED="1270896647956" COLOR="#407000">
 <node TEXT="Hyperlinks can link to web pages, e-mail addresses, local files, or other nodes" ID="ID_959010942" CREATED="1270892460676" MODIFIED="1271979068159"/>
@@ -812,9 +812,9 @@
 </node>
 <node TEXT="Using pictures in nodes" FOLDED="true" ID="Freeplane_Link_271176250" CREATED="1270892460699" MODIFIED="1270896807236" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="The first way to insert a picture into Freeplane is to use &quot;Insert &gt; Image (File Chooser or Link)...&quot; in either the main menu or the node context menu, or press ALT + SHIFT + K. This method of inserting a picture has some limitations: it supports only the PNG, JPEG and GIF image formats; any text present in the node will be lost; images inserted in this way are not correctly pasted outside Freeplane; and the images will not be included when using Export." ID="ID_1950962853" CREATED="1270892460699" MODIFIED="1271984614018" HGAP="22" VSHIFT="24"/>
+<node TEXT="The first way to insert a picture into Freeplane is to use &quot;Insert &gt; Image (File Chooser or Link)...&quot; in either the main menu or the node context menu, or press Alt + Shift + K. This method of inserting a picture has some limitations: it supports only the PNG, JPEG and GIF image formats; any text present in the node will be lost; images inserted in this way are not correctly pasted outside Freeplane; and the images will not be included when using Export." ID="ID_1950962853" CREATED="1270892460699" MODIFIED="1272494818935" HGAP="22" VSHIFT="24"/>
 <node TEXT="A new method is also supported in which text is not lost and SVG is supported, but still these images can not be Exported. Use Insert &gt; External Object in the main menu. Images can be resized by using the handle on the bottom right of the picture." ID="ID_692449557" CREATED="1271527733841" MODIFIED="1271984742644"/>
-<node TEXT="If you drag an image from your computer&apos;s filesystem, and drop it onto a node in Freeplane, this will create a hyperlink which points to the image. To convert such a link into a visible image, first select the link and then choose &quot;Insert &gt; Image (File Chooser or Link)...&quot; or press ALT + SHIFT + K. This method also works with multiple image links at once, if you first select all their nodes." ID="ID_890405454" CREATED="1270892460700" MODIFIED="1271988518942"/>
+<node TEXT="If you drag an image from your computer&apos;s filesystem, and drop it onto a node in Freeplane, this will create a hyperlink which points to the image. To convert such a link into a visible image, first select the link and then choose &quot;Insert &gt; Image (File Chooser or Link)...&quot; or press Alt + Shift + K. This method also works with multiple image links at once, if you first select all their nodes." ID="ID_890405454" CREATED="1270892460700" MODIFIED="1272494873541"/>
 <node TEXT="A more technical and not so user-friendly way to insert an image follows. It is possible to include HTML in nodes. You have to start the node content with the tag &lt;html&gt;. This way, you can have pictures in the nodes." ID="ID_1512479346" CREATED="1270892460700" MODIFIED="1271964655456" COLOR="#000000">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
