@@ -645,7 +645,10 @@
 <node TEXT="Help" FOLDED="true" ID="ID_1022410641" CREATED="1266240698937" MODIFIED="1272093139541" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Documentation" FOLDED="true" ID="ID_604224444" CREATED="1271855545007" MODIFIED="1271855551496">
-<node TEXT="Opens this Help file in read-only mode." ID="ID_71306706" CREATED="1271855552670" MODIFIED="1271855578836"/>
+<node TEXT="Opens the main Help file in read-only mode." ID="ID_71306706" CREATED="1271855552670" MODIFIED="1272474423019"/>
+</node>
+<node TEXT="Menu Reference" FOLDED="true" ID="ID_927207434" CREATED="1272474644405" MODIFIED="1272474650088">
+<node TEXT="Opens this Menu Reference file in read-only mode." ID="ID_384986588" CREATED="1272474651792" MODIFIED="1272474669985"/>
 </node>
 <node TEXT="Key Reference" FOLDED="true" ID="ID_82273720" CREATED="1271855625345" MODIFIED="1271855630428">
 <node TEXT="Opens an Adobe Acrobat-format .PDF file which serves as a quick reference guide for using hotkey shortcuts." ID="ID_1837024531" CREATED="1271855631331" MODIFIED="1271855726958"/>
