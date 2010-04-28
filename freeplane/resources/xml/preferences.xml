@@ -44,6 +44,7 @@
             <number name = "last_opened_list_length" min="1" max="50"/> 
             <boolean name = "load_last_map"/>
             <boolean name = "load_last_maps"/>
+            <boolean name = "always_load_last_maps"/>
             <boolean name = "experimental_file_locking_on"/>
             <string name = "patternsfile"/>
         </separator>

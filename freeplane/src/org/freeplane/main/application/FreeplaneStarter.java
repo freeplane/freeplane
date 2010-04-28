@@ -163,6 +163,10 @@ public class FreeplaneStarter {
 	}
 
 	private void loadMaps(final String[] args) {
+		boolean alwaysLoadLastMaps = ! ResourceController.getResourceController().getBooleanProperty("always_load_last_maps");
+		if(alwaysLoadLastMaps){
+			applicationResourceController.getLastOpenedList().openMapsOnStart();
+		}
 		boolean fileLoaded = false;
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
@@ -183,10 +187,9 @@ public class FreeplaneStarter {
 				}
 			}
 		}
-		if (fileLoaded) {
+		if (fileLoaded  || alwaysLoadLastMaps) {
 			return;
 		}
-		applicationResourceController.getLastOpenedList().openMapsOnStart();
 		/*
 		 * nothing loaded so far. Perhaps, we should display a new map...
 		 * According to Summary: On first start Freeplane should show new map
