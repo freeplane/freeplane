@@ -668,6 +668,9 @@
 <node TEXT="License" FOLDED="true" ID="ID_1881309718" CREATED="1271857117445" MODIFIED="1271857121646">
 <node TEXT="Opens a window displaying a short summary of Freeplane&apos;s copyright and licensing information, including information about where to find full copies of the GNU General Public License." ID="ID_1830436655" CREATED="1271857123250" MODIFIED="1271857252582"/>
 </node>
+<node TEXT="About" FOLDED="true" ID="ID_1959296182" CREATED="1272489323245" MODIFIED="1272489330582">
+<node TEXT="Opens a dialog with copyright, version, and technical information." ID="ID_585968650" CREATED="1272489332743" MODIFIED="1272489540551"/>
+</node>
 <node TEXT="Check for Updates" FOLDED="true" ID="ID_1051551158" CREATED="1271862920378" MODIFIED="1271862935343">
 <node TEXT="Manually check whether a newer version of Freeplane has been released. This check will be done automatically if the corresponding checkbox is enabled at the bottom of the dialog which opens." ID="ID_1365637235" CREATED="1271862957486" MODIFIED="1271863050179"/>
 </node>

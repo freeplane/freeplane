@@ -1158,6 +1158,10 @@
 <node TEXT="Mice, Right Clicks and Context Menus" FOLDED="true" ID="ID_1326732850" CREATED="1272034661406" MODIFIED="1272034719554">
 <node TEXT="Many Apple-branded mice and trackpads have only one clickable &quot;button.&quot; To bring up a context-sensitive menu (or &quot;context menu&quot;), Mac users can hold down the Control key while clicking the mouse (abbreviated as &quot;Control + click&quot;). Yes, use the Control key here, rather than the Command key, because this function is built into Mac OS X so Freeplane cannot change it. Apple makes Control + click equivalent to the &quot;right click&quot; which is available on mice with two buttons." ID="ID_1259415390" CREATED="1272030826942" MODIFIED="1272034317363"/>
 </node>
+<node TEXT="Menu Differences" FOLDED="true" ID="ID_1110596300" CREATED="1272475775170" MODIFIED="1272475793114">
+<node TEXT="A few menu items are relocated in accordance with Mac OS X standards. These are listed below." ID="ID_1853446063" CREATED="1272475795702" MODIFIED="1272475981316"/>
+<node TEXT="Help &gt; About Freeplane is moved to the Freeplane application menu." ID="ID_1154800735" CREATED="1272475988527" MODIFIED="1272476052913"/>
+</node>
 <node TEXT="Zooming" FOLDED="true" ID="ID_590901264" CREATED="1272034779740" MODIFIED="1272034791305">
 <node TEXT="Mac OS X provides a means to zoom in on (magnify) part of the screen, by holding down the Control key while turning the mouse wheel forward. This facility is built into the Mac operating system, so the function is unavailable for Freeplane to use for control of its own Zoom function. So Mac users must use one of the alternate means which Freeplane provides to adjust its zoom level. " ID="ID_1955741602" CREATED="1272031370038" MODIFIED="1272034875880"/>
 <node TEXT="If you are unfamiliar with OS X&apos;s Control + mouse wheel function, be aware that some mouse functions become awkward to use, or even unusable, while zoomed in. To return the screen to normal, hold down the Conrol key and turn the mouse wheel backward to zoom back out all the way." ID="ID_842528755" CREATED="1272034875909" MODIFIED="1272034875910"/>
