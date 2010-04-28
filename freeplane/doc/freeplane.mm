@@ -284,24 +284,24 @@
 <node TEXT="To move to the bottom of the current subtree, press PageDown." ID="ID_697637157" CREATED="1270892460688" MODIFIED="1270892460688"/>
 <node TEXT="To move to the central node, press Escape." ID="ID_897038230" CREATED="1270892460688" MODIFIED="1270892460688"/>
 <node TEXT="To move back and forth in the history of visited nodes use Navigate &gt; Previous (or press Alt + Left), or Navigate &gt; Next (or press Alt + Right), respectively." ID="ID_380593497" CREATED="1271026015708" MODIFIED="1272005896937"/>
-<node TEXT="For visiting all nodes of a map conveniently use Navigate &gt; Next node (Control + Alt + Right) and Navigate &gt; Previous node  (Control + Alt + Left)." ID="ID_1006152714" CREATED="1271176654062" MODIFIED="1272005977304"/>
-<node TEXT="If you want nodes to be folded again after visiting them use the menu choices &quot;Navigate &gt; Next node (fold)&quot; (or press Control + Alt + Shift + Right), and &quot;Navigate &gt; Previous node (fold)&quot; (or press Control + Alt + Shift + Left)." ID="ID_261764750" CREATED="1271177016593" MODIFIED="1272006159893"/>
+<node TEXT="For visiting all nodes of a map conveniently use Navigate &gt; Next node (Ctrl + Alt + Right) and Navigate &gt; Previous node  (Ctrl + Alt + Left)." ID="ID_1006152714" CREATED="1271176654062" MODIFIED="1272492990600"/>
+<node TEXT="If you want nodes to be folded again after visiting them use the menu choices &quot;Navigate &gt; Next node (fold)&quot; (or press Ctrl + Alt + Shift + Right), and &quot;Navigate &gt; Previous node (fold)&quot; (or press Ctrl + Alt + Shift + Left)." ID="ID_261764750" CREATED="1271177016593" MODIFIED="1272493020145"/>
 <node TEXT="By default nodes are selected by placing the mouse cursor over a node (after a short delay)." ID="ID_485160362" CREATED="1271003250866" MODIFIED="1271523474424"/>
 <node TEXT="This can be changed via Tools &gt; Preferences &gt; Behaviour &gt; Selection Method" ID="ID_1399586050" CREATED="1271003344288" MODIFIED="1271003686538"/>
 <node TEXT="Available selection methods are &quot;By Click&quot;, &quot;Direct&quot;, and &quot;Delayed&quot; (default)" ID="ID_676805584" CREATED="1271003687538" MODIFIED="1271006910934"/>
 </node>
 <node TEXT="Selecting multiple nodes" FOLDED="true" ID="Freeplane_Link_653540280" CREATED="1270892460681" MODIFIED="1270892460681" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="To select multiple nodes, hold Control or Shift while clicking." ID="ID_1435652978" CREATED="1270892460681" MODIFIED="1272002252144">
+<node TEXT="To select multiple nodes, hold Ctrl or Shift while clicking." ID="ID_1435652978" CREATED="1270892460681" MODIFIED="1272493053481">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="To add single nodes to already selected nodes, hold Control when clicking." ID="ID_741729737" CREATED="1270892460682" MODIFIED="1272002290197">
+<node TEXT="To add single nodes to already selected nodes, hold Ctrl when clicking." ID="ID_741729737" CREATED="1270892460682" MODIFIED="1272493061144">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="To select a continuous range of nodes, hold Shift when clicking, or hold Shift while moving around with arrow keys." ID="ID_133089768" CREATED="1270892460682" MODIFIED="1272002462553">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="To select a complete subtree, use Control + Shift + A,  or hold Shift while moving with arrow keys from a node to its parent, or hold Alt Gr while clicking." ID="ID_350782537" CREATED="1270892460682" MODIFIED="1272003039472"/>
+<node TEXT="To select a complete subtree, use Ctrl + Shift + A,  or hold Shift while moving with arrow keys from a node to its parent, or hold Alt Gr while clicking." ID="ID_350782537" CREATED="1270892460682" MODIFIED="1272493086268"/>
 <node TEXT="To cancel the selection of multiple nodes, click on the map background or on an unselected node." ID="ID_451303534" CREATED="1270892460682" MODIFIED="1272003070882"/>
 </node>
 <node TEXT="Folding and unfolding" FOLDED="true" ID="Freeplane_Link_4727471" CREATED="1270892460688" MODIFIED="1271097940654" COLOR="#407000">
@@ -322,15 +322,15 @@
 <node TEXT="Zooming" FOLDED="true" ID="Freeplane_Link_913137192" CREATED="1270892460689" MODIFIED="1270892460689" COLOR="#407000">
 <node TEXT="The View menu includes the commands Zoom In, Zoom Out, and Zoom to Fit to Page." ID="ID_1270232158" CREATED="1272007214049" MODIFIED="1272007381056"/>
 <node TEXT="The main toolbar contains a zoom control field in with presets for various percentages. These settings may also be chosen by pressing Alt + up or down arrow." ID="ID_1692671423" CREATED="1272007458262" MODIFIED="1272007861269"/>
-<node TEXT="On some operating systems you may zoom by using the mouse wheel while holding the Control key." ID="ID_961139916" CREATED="1270892460689" MODIFIED="1272007876867"/>
+<node TEXT="On some operating systems you may zoom by using the mouse wheel while holding the Ctrl key." ID="ID_961139916" CREATED="1270892460689" MODIFIED="1272493152779"/>
 </node>
 <node TEXT="Searching and Filtering" FOLDED="true" ID="Freeplane_Link_423038022" CREATED="1270892460681" MODIFIED="1270902628944" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="You can search and filter nodes based on its text, icons, creation/modification time, position, priority, connectors, hyperlinks, notes and attributes." ID="ID_1565729150" CREATED="1270896350974" MODIFIED="1271992110624"/>
-<node TEXT="To find text or other criteria in a node and all its descendant nodes, use Edit &gt; Find... or press Control + F." ID="ID_966700848" CREATED="1270892460681" MODIFIED="1272000492024">
+<node TEXT="To find text or other criteria in a node and all its descendant nodes, use Edit &gt; Find... or press Ctrl + F." ID="ID_966700848" CREATED="1270892460681" MODIFIED="1272493172097">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="To find the next match of your previous search, use Edit &gt; Find Next or press Control + G." ID="ID_1646223708" CREATED="1270892460681" MODIFIED="1272000492025">
+<node TEXT="To find the next match of your previous search, use Edit &gt; Find Next or press Ctrl + G." ID="ID_1646223708" CREATED="1270892460681" MODIFIED="1272493190054">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="The search is a breadth-first search. In other words, the deeper a node, the later it will be found." ID="ID_829330412" CREATED="1270892460681" MODIFIED="1271991558922"/>
@@ -355,7 +355,7 @@
 <node TEXT="To create a sibling node below, press Enter." ID="ID_1715555696" CREATED="1270892460671" MODIFIED="1270892460671"/>
 <node TEXT="To create a sibling node above, press Shift + Enter." ID="ID_291613396" CREATED="1270892460671" MODIFIED="1270892460671"/>
 <node TEXT="To delete a node, press delete." ID="ID_1638437345" CREATED="1270892460671" MODIFIED="1270892460671"/>
-<node TEXT="To delete (cut) a node while keeping a copy for pasting, press Control + X." ID="ID_1718916776" CREATED="1270892460671" MODIFIED="1271975443333"/>
+<node TEXT="To delete (cut) a node while keeping a copy for pasting, press Ctrl + X." ID="ID_1718916776" CREATED="1270892460671" MODIFIED="1272493203885"/>
 <node TEXT="Alternatively, use the node context menu, by right-clicking a node (on Mac OS X use Control + click)." ID="ID_86882063" CREATED="1270892460671" MODIFIED="1272002166588"/>
 </node>
 <node TEXT="Editing node text" FOLDED="true" ID="Freeplane_Link_1700974092" CREATED="1270892460671" MODIFIED="1270895775578" COLOR="#407000">
@@ -383,14 +383,14 @@
 <node TEXT="You can move nodes around using drag and drop." ID="ID_926620656" CREATED="1270892460682" MODIFIED="1270892460682">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="Alternatively you can use the keyboard: Keep Control pressed and move the node around with the arrow keys." ID="ID_1633776428" CREATED="1271027579490" MODIFIED="1272000492025"/>
+<node TEXT="Alternatively you can use the keyboard: Keep Ctrl pressed and move the node around with the arrow keys." ID="ID_1633776428" CREATED="1271027579490" MODIFIED="1272493243815"/>
 <node TEXT="To drop a node as a child, position the cursor at the outer part of the node while dropping." ID="ID_1311351928" CREATED="1270892460682" MODIFIED="1270997425658">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="To drop a node as a sibling, position the cursor at the top part of the target node while dropping." ID="ID_716707755" CREATED="1270892460683" MODIFIED="1270892460683">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="To copy nodes rather than move, hold Control while dragging, or drag with middle mouse button." ID="_Freeplane_Link_1994214827" CREATED="1270892460683" MODIFIED="1272002302210">
+<node TEXT="To copy nodes rather than move, hold Ctrl while dragging, or drag with middle mouse button." ID="_Freeplane_Link_1994214827" CREATED="1270892460683" MODIFIED="1272493278219">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="To edit an existing map, drag its file and drop it on the background of Freeplane." ID="ID_694691711" CREATED="1270892460683" MODIFIED="1270894390580"/>
@@ -631,28 +631,28 @@
 </node>
 </node>
 <node TEXT="If in Freeplane you copy a branch and paste it into an editor that understands Rich Text Format (RTF), the formatting including color and font is pasted too. Editors that understand RTF include Microsoft Word, Wordpad and Outlook, some tabbed notebooks in Linux, and TextEdit in Mac OS X." ID="ID_411576634" CREATED="1270892460687" MODIFIED="1272004922587"/>
-<node TEXT="To copy a node without its descendants, use Edit &gt; Copy Single or press Control + SHIFT + C." ID="ID_620029478" CREATED="1270892460687" MODIFIED="1272005001668"/>
+<node TEXT="To copy a node without its descendants, use Edit &gt; Copy Single or press Ctrl + SHIFT + C." ID="ID_620029478" CREATED="1270892460687" MODIFIED="1272493342282"/>
 </node>
 <node TEXT="Adding hyperlinks" FOLDED="true" ID="Freeplane_Link_203858515" CREATED="1270892460675" MODIFIED="1270896647956" COLOR="#407000">
 <node TEXT="Hyperlinks can link to web pages, e-mail addresses, local files, or other nodes" ID="ID_959010942" CREATED="1270892460676" MODIFIED="1271979068159"/>
-<node TEXT="To add a hyperlink to a node, use Insert &gt; Hyperlink (Text Field)... or press Control + K." ID="ID_745700749" CREATED="1270892460675" MODIFIED="1272000492024"/>
+<node TEXT="To add a hyperlink to a node, use Insert &gt; Hyperlink (Text Field)... or press Ctrl + K." ID="ID_745700749" CREATED="1270892460675" MODIFIED="1272493356026"/>
 <node TEXT="To remove a hyperlink, clear its contents in the dialog after choosing Insert &gt; Hyperlink (Text Field)..." ID="ID_1001948679" CREATED="1270892460675" MODIFIED="1271978808409"/>
 <node TEXT="To link to an e-mail address, create a hyperlink such as mailto:don.bonton@supermail.com." ID="ID_9407796" CREATED="1270892460675" MODIFIED="1271978889981">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="To link to an e-mail address and include a Subject, use a format such as mailto:don.bonton@supermail.com?subject=Last phone call." ID="ID_1116507628" CREATED="1270892460676" MODIFIED="1271978999424"/>
-<node TEXT="To add a link to file use Insert &gt; Hyperlink (File Chooser)... or press Control + Shift + K." ID="ID_1159570525" CREATED="1270894120878" MODIFIED="1272000492024"/>
+<node TEXT="To add a link to file use Insert &gt; Hyperlink (File Chooser)... or press Ctrl + Shift + K." ID="ID_1159570525" CREATED="1270894120878" MODIFIED="1272493377302"/>
 <node TEXT="To link to another node first select the node you want to link from, then press Shift and select the node you want to link to, then choose Insert &gt; Add Local Hyperlink." ID="ID_1153372393" CREATED="1271979133506" MODIFIED="1271979244916"/>
 </node>
 <node TEXT="Adding Icons" FOLDED="true" ID="Freeplane_Link_1044397139" CREATED="1270892460676" MODIFIED="1270892460676" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 <node TEXT=" A node can have several icons. " ID="ID_1983709741" CREATED="1270892460676" MODIFIED="1270892460676"/>
-<node TEXT="To add icons to a node, select a node and click one of the icons displayed in the left toolbar. While moving the mouse cursor to the left toolbar, hold ALT or CONTROL so that you do not lose focus." ID="ID_1126175660" CREATED="1270892460676" MODIFIED="1271525036192"/>
+<node TEXT="To add icons to a node, select a node and click one of the icons displayed in the left toolbar. While moving the mouse cursor to the left toolbar, hold Alt or Ctrl so that you do not lose focus." ID="ID_1126175660" CREATED="1270892460676" MODIFIED="1272493795374"/>
 <node TEXT="To remove one icon, press the red cross at the top of the icon toolbar." ID="ID_1703076068" CREATED="1270892460676" MODIFIED="1271525049746"/>
 <node TEXT="To remove all icons, press the trash can icon at the top of the icon toolbar." ID="ID_1240276527" CREATED="1270892460676" MODIFIED="1271525056145"/>
-<node TEXT="To add a new icon to a node without using the left toolbar, use the Icons menu or press Control + F2." ID="ID_911756077" CREATED="1270892460676" MODIFIED="1272000492024"/>
+<node TEXT="To add a new icon to a node without using the left toolbar, use the Icons menu or press Ctrl + F2." ID="ID_911756077" CREATED="1270892460676" MODIFIED="1272493455955"/>
 <node TEXT="To use your own icons, you have to add them to the Freeplane user directory, e.g. as ~/.freeplane/icons/myicon.png" ID="ID_537134358" CREATED="1270892460676" MODIFIED="1271525202187"/>
 <node TEXT="To hide or show the icon toolbar, use View &gt; Toggle Secondary Toolbar." ID="ID_250751508" CREATED="1270892460677" MODIFIED="1271979430486"/>
 <node TEXT="This node shows some of the icons which come included with Freeplane." ID="ID_1664464562" CREATED="1270892460677" MODIFIED="1271979617186">
@@ -707,14 +707,14 @@
 </html></richcontent>
 </node>
 <node TEXT="This text can be displayed and edited in the note editor." ID="ID_1163876330" CREATED="1271096088819" MODIFIED="1271096200432"/>
-<node TEXT="Use Edit &gt; Note Edit Switch or press Control + &lt; to switch between the map and the note." ID="ID_510313925" CREATED="1271096117483" MODIFIED="1272000492024"/>
+<node TEXT="Use Edit &gt; Note Edit Switch or press Ctrl + &lt; to switch between the map and the note." ID="ID_510313925" CREATED="1271096117483" MODIFIED="1272493474233"/>
 <node TEXT="The note editor can be placed on any side of the map window using View &gt; Note Position." ID="ID_1710319301" CREATED="1271096150723" MODIFIED="1271979785294"/>
 </node>
 <node TEXT="Adding connectors" FOLDED="true" ID="_Freeplane_Link_1996597932" CREATED="1270892460679" MODIFIED="1270896807234" COLOR="#407000">
-<node TEXT="To create a graphical connector between two nodes, drag a node and drop it onto another node holding both Shift and Control keys; release the mouse button before releasing Shift and Control keys." ID="ID_985897417" CREATED="1270892460679" MODIFIED="1272002201623">
+<node TEXT="To create a graphical connector between two nodes, drag a node and drop it onto another node holding both Shift and Ctrl keys; release the mouse button before releasing Shift and Ctrl keys." ID="ID_985897417" CREATED="1270892460679" MODIFIED="1272493497893">
 <arrowlink DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="255;0;" ENDINCLINATION="255;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node TEXT="Alternatively, you can select two nodes using the Control key and then choose &quot;Add connector&quot; from the &quot;Insert&quot; menu, or the shortcut Control + L" ID="ID_1564001222" CREATED="1270892460679" MODIFIED="1272002218812"/>
+<node TEXT="Alternatively, you can select two nodes using the Ctrl key and then choose &quot;Add connector&quot; from the &quot;Insert&quot; menu, or the shortcut Ctrl + L" ID="ID_1564001222" CREATED="1270892460679" MODIFIED="1272493517907"/>
 <node TEXT="To change the color of the link, use the link&apos;s context menu by right-clicking the graphical link (or use Control + click on Mac OS X)." ID="_Freeplane_Link_208378337" CREATED="1270892460679" MODIFIED="1272002232959"/>
 <node TEXT="To change the arrows of the link, use the link&apos;s context menu." ID="_Freeplane_Link_1484370636" CREATED="1270892460679" MODIFIED="1271981445467"/>
 <node TEXT="To add labels to link, use the link&apos;s context menu" ID="ID_469749659" CREATED="1270894208830" MODIFIED="1271981694196"/>
@@ -914,8 +914,8 @@
 <node TEXT="To remove the attached LaTeX, select the node and click again on Insert &gt; Latex." ID="ID_1638605492" CREATED="1271097172667" MODIFIED="1271989157243"/>
 </node>
 <node TEXT="Using undo" FOLDED="true" ID="Freeplane_Link_1318678369" CREATED="1270892460689" MODIFIED="1270892460689" COLOR="#407000">
-<node TEXT="To undo, use Edit &gt; Undo or press Control + Z." ID="ID_1877729417" CREATED="1270892460690" MODIFIED="1272007940924"/>
-<node TEXT="To redo, use Edit &gt; Redo or press Control + Y." ID="ID_1501637074" CREATED="1270892460690" MODIFIED="1272007964800"/>
+<node TEXT="To undo, use Edit &gt; Undo or press Ctrl + Z." ID="ID_1877729417" CREATED="1270892460690" MODIFIED="1272493559789"/>
+<node TEXT="To redo, use Edit &gt; Redo or press Ctrl + Y." ID="ID_1501637074" CREATED="1270892460690" MODIFIED="1272493598705"/>
 <node TEXT="To set the number of steps kept for undoing, use Tools &gt; Preferences and click on Behavior." ID="ID_139456632" CREATED="1270892460690" MODIFIED="1272008138944"/>
 </node>
 </node>
@@ -928,11 +928,11 @@
 <node TEXT="The outline view is better for printing large maps." ID="ID_823999289" CREATED="1271095978107" MODIFIED="1271096007386"/>
 </node>
 <node TEXT="Formatting a node" FOLDED="true" ID="Freeplane_Link_1660149394" CREATED="1270892460672" MODIFIED="1270896430199" COLOR="#407000">
-<node TEXT="To make a node bold, use Format &gt; Bold or press Control + B." ID="ID_896067797" CREATED="1270892460672" MODIFIED="1272000389841">
+<node TEXT="To make a node bold, use Format &gt; Bold or press Ctrl + B." ID="ID_896067797" CREATED="1270892460672" MODIFIED="1272493615110">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="To make a node italic, use Format &gt; Italic or press Control + I." ID="ID_1435353677" CREATED="1270892460673" MODIFIED="1272000492023">
+<node TEXT="To make a node italic, use Format &gt; Italic or press Ctrl + I." ID="ID_1435353677" CREATED="1270892460673" MODIFIED="1272493636292">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
@@ -941,11 +941,11 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="To change the background color of a node, use Format &gt; Node Background Color..." ID="ID_256179041" CREATED="1270892460673" MODIFIED="1271977299778"/>
-<node TEXT="To increase node font size, Use Format &gt; Larger Font or press Control + plus (not the plus sign on the numeric keyboard)." ID="ID_1900176546" CREATED="1270892460673" MODIFIED="1271977399390">
+<node TEXT="To increase node font size, Use Format &gt; Larger Font or press Ctrl + plus (not the plus sign on the numeric keyboard)." ID="ID_1900176546" CREATED="1270892460673" MODIFIED="1272493651474">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="To decrease node font size, use Format &gt; Smaller Font or press Control + minus (not the minus sign on the numeric keyboard)." ID="ID_1484559422" CREATED="1270892460673" MODIFIED="1271977525264">
+<node TEXT="To decrease node font size, use Format &gt; Smaller Font or press Ctrl + minus (not the minus sign on the numeric keyboard)." ID="ID_1484559422" CREATED="1270892460673" MODIFIED="1272493684277">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
@@ -986,7 +986,7 @@
 </node>
 <node TEXT="Highlighting nodes with clouds" FOLDED="true" ID="Freeplane_Link_1697687428" CREATED="1270892460674" MODIFIED="1270892460674" COLOR="#407000">
 <node TEXT="Clouds are well-suited to highlighting a region. The node and all its descendants are highlighted." ID="ID_1689467777" CREATED="1270892460675" MODIFIED="1271978399511"/>
-<node TEXT="To add a cloud use use Insert &gt; Cloud or press Control + Shift + B." ID="ID_1388258473" CREATED="1270892460675" MODIFIED="1272000492023"/>
+<node TEXT="To add a cloud use use Insert &gt; Cloud or press Ctrl + Shift + B." ID="ID_1388258473" CREATED="1270892460675" MODIFIED="1272493669767"/>
 <node TEXT="To change the cloud color use Format &gt; Cloud Color..." ID="ID_238365883" CREATED="1270892460675" MODIFIED="1271978529781"/>
 <node TEXT="Clouds can have various background colors like green ..." FOLDED="true" ID="ID_703286001" CREATED="1270892460675" MODIFIED="1270892460675">
 <cloud COLOR="#e1f2e1" WIDTH="0"/>
