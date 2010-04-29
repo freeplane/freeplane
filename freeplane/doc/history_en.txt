@@ -26,7 +26,7 @@ Bug fix for removing attributes / values using AttributeManagerDialog
 Translations
 
 ===============================
-1.0.42 rc
+1.0.42 rc, 2010-03-30
 ===============================
 New features: Automatic bug report requests user support depending on submitted information
 
@@ -35,7 +35,7 @@ HierarchicalIcons caused endless node refresh
 Text properties and documentation improvements
 
 ===============================
-1.0.41 beta
+1.0.41 beta, 2010-03-15
 ===============================
 New features:
 add empty icon empty.png to resources
@@ -79,9 +79,8 @@ fix build target dmg4mac
 450]: Some French Keyboard keys do not work under Linux
 
 
-
 ===============================
-1.0.40 beta
+1.0.40 beta, 2010-02-23
 ===============================
 New Features:
 Mac OS support
@@ -119,7 +118,7 @@ opening of map files by drag and drop under linux
 do not start node editing on BACKSPACE
 
 ===============================
-1.0.39 beta
+1.0.39 beta, 2010-02-01
 ===============================
 New Features:
 Implemented script content caching
@@ -168,7 +167,7 @@ layout bugs for filtered maps
 379]: Script run from pattern - doesn't run - Mishandling of Quote characters
 
 ===============================
-1.0.38 beta
+1.0.38 beta, 2010-01-14
 ===============================
 New features:
 warn user on loading incorrect links
@@ -193,10 +192,9 @@ bug fix in UndoHandler for transactions
 366]: wrong bubble node layout when done the first time fixed (NodeView.java)
 
 ===============================
-1.0.37 beta
+1.0.37 beta, 2010-01-02
 ===============================
 New features:
-
 Loading and execution of external Groovy scripts (Volker Boerchers, Dimitry)
 http://freeplane.sourceforge.net/mediawiki-1.14.1/index.php/External_script_file_execution
 
@@ -226,8 +224,9 @@ better solution for inserting nodes into encrypted nodes
 performance optimizations
 load all plug-ins from <install-dir>/plugins und <user-home>/.freeplane/plugins on start 
 355]: note tooltip appears truncated on the right side: always place tooltip under the node
+
 ===============================
-1.0.36 beta
+1.0.36 beta, 2009-12-21
 ===============================
 Bug fixes:
 remove memory leak for long node editor
@@ -259,7 +258,7 @@ insert 4 spaces if tab is pressed in text editor
 Replace Freeplane by FreeMind for old program versions in history_en.txt
 
 ===============================
-1.0.35 beta
+1.0.35 beta, 2009-12-06
 ===============================
 New features:
 Freeplane as Portable App (*.paf.exe)
@@ -287,7 +286,7 @@ bug fix for Clear Case: do not lock read file
 key mapping guide
 
 ===============================
-1.0.34 beta
+1.0.34 beta, 2009-11-06
 ===============================
 New features:
 menu hierarchy for user icons based of folder structure
@@ -302,9 +301,8 @@ use wider sharp bezier edges (299]: Thicker edge width and few proposal about Be
 bug 303: Hierarchical Icons unacceptably slow performance
 bug 291: Priority filtering is broken
 
-
 ===============================
-1.0.33 alpha
+1.0.33 alpha, 2009-10-30
 ===============================
 Bug fixes:
 Improved node selection using arrow keys for outline view 
@@ -322,7 +320,7 @@ include freeplane_framework into src dist
 250: Tag balancer in xhtml writer
 
 ===============================
-1.0.32 alpha
+1.0.32 alpha, 2009-10-22
 ===============================
 Refactoring for icons (Tamas)
 
@@ -339,7 +337,7 @@ System dependent memory allocation for windows OS
 0000277: After saving a new map, exception thrown when selecting "Map1" on right-click menu
 
 ===============================
-1.0.30 alpha
+1.0.30 alpha, 2009-09-02
 ===============================
 New features:
 Search and Replace in all maps
@@ -354,7 +352,7 @@ Consider edge width in outline view
 remove timer for blinking node if the node is removed from map
 
 ===============================
-1.0.29 alpha
+1.0.29 alpha, 2009-09-02
 ===============================
 New features:
 Outline view available from menu View
@@ -368,8 +366,9 @@ bug fix: do not create already existing edgemodel and cloudmodel on loading
 [Bugs 0000214]: mouse pointer after note
 [Bugs 0000212]: Link with clouds -  not visible
 [Bugs 0000207]: user's icons break edge nodes
+
 ===============================
-1.0.28 alpha
+1.0.28 alpha, 2009-08-27
 ===============================
 Bug fixes:
 Save map after node is encrypted
@@ -383,7 +382,7 @@ Middle lable positioning for connectors
 Encrypted nodes
 
 ===============================
-1.0.27 alpha
+1.0.27 alpha, 2009-08-24
 ===============================
 New features:
 External bitmap and SVG images can be attached using menu Insert->External object
@@ -408,7 +407,7 @@ Performance optimization: do not paint links which both source and target
 	are far away from the visible part of the screen
        
 ===============================
-1.0.26 alpha
+1.0.26 alpha, 2009-08-17
 ===============================
 New features:
 proper use of ESCAPE=cancel and ENTER=save when link label is edited
@@ -435,8 +434,9 @@ work around for external html containing unknown tags
 
 Performance issues:
 repaint only visible part of the map
+
 ===============================
-1.0.25 alpha
+1.0.25 alpha, 2009-08-11
 ===============================
 New features:
 edge like links (available from link menu)
@@ -447,13 +447,13 @@ bug fix in map positioning if root is selected after the filter was applied
 bug fixes in calculating text area editor size
 
 ===============================
-1.0.24 alpha
+1.0.24 alpha, 2009-08-07
 ===============================
 Bug fixes
 bug fix in node editor
 
 ===============================
-1.0.23 alpha
+1.0.23 alpha, 2009-08-06
 ===============================
 Bug fixes
 export only packages from java 5 (important for compatibility with java 7)
@@ -463,7 +463,7 @@ bug fix: do not process document events after text area is hidden
 ignore wrong zip file by importMindManagerFiles
 
 ===============================
-1.0.22 alpha
+1.0.22 alpha, 2009-08-03
 ===============================
 New features:
 inline editor width step  as a setting
@@ -481,7 +481,7 @@ bug fix for  cut / paste alert [freeplane - Open Discussion]
 bug fix: close edit field if node is deleted
 
 ===============================
-1.0.21 alpha
+1.0.21 alpha, 2009-08-02
 ===============================
 New features:
 New text input component
@@ -499,10 +499,9 @@ bug fix in last opened list for '&' in file names
 bug fix if in "import folder structure"
 
 ===============================
-1.0.20 alpha
+1.0.20 alpha, 2009-07-25
 ===============================
 Bug fixes
-
 [Bugs 0000146]: Freeplane hangs after being idle for longer time : 
 	- reminder could lead to out-of-memory and freeze the program
 Resize tool bar and properly display F-Bar on key events
@@ -510,16 +509,14 @@ Resize tool bar and properly display F-Bar on key events
 [Bugs 0000157]: Freeplane hangs at start when last opened map file names contained ';' character 
 
 ===============================
-1.0.19 alpha
+1.0.19 alpha, 2009-07-22
 ===============================
 New features:
-
 Filter tool bar can be hidden like all other tool bars,
 active filter status is displayed in status line  
 test feature: stack traces can be obtained by command "stack" from the console 
 
-Bug fixes
-
+Bug fixes:
 properly display button selection in tool bars
 links to mind map files
 child nodes of encrypted node loaded in wrong order
@@ -527,10 +524,9 @@ bug fix in pasting file list from clipboard
 bug fix for loading maps with auto layout
 
 ===============================
-1.0.18 alpha
+1.0.18 alpha, 2009-07-20
 ===============================
 New features:
-
 Hot key CONTROL+ALT+SHIFT+ 'B' for awakening frozen application up and sending a bug report  
 use uri for links
 include styles made by Ryan
@@ -540,8 +536,7 @@ use only no more than one icon if pattern with icon is applied
 replace alt accelerators by alt+shift accelerators to keep alt not used because of possible mnemonic use
 improvements in export with xslt dialog
 
-Bug fixes
-
+Bug fixes:
 bug fix: update map view name after exporting branch
 transactions for undo (startTransaction/commit/rollback) for dialog operations used in AttributeManager
 bug fix: use cloud properties copying/pasting format
@@ -549,7 +544,7 @@ bug fix in f-bar
 save note when note window is closed
 
 ===============================
-1.0.17 alpha
+1.0.17 alpha, 2009-07-16
 ===============================
 New features:
 Delayed F-bar switch if modifier key is pressed
@@ -569,7 +564,7 @@ Bug fix in ReminderExtension
 [Bugs 0000140]:Sometimes most recent files menu is not updated with the last file opened.
 
 ===============================
-1.0.16 alpha
+1.0.16 alpha, 2009-07-10
 ===============================
 Bug fixes: 
 [Bugs 0000130]: Ambiguous filter options state in menu after switching to another tab
@@ -577,9 +572,8 @@ Bug fixes:
 Bug fix for copying single nodes
 Bug fix for loading maps with automatic layout
 
-
 ===============================
-1.0.15 alpha
+1.0.15 alpha, 2009-07-07
 ===============================
 Bug fixes: 
 Bug fixes for saving maps,
@@ -587,7 +581,7 @@ Bug fix for loading preset hot keys,
 Bug fix for file locking
 
 ===============================
-1.0.14 alpha
+1.0.14 alpha, 2009-07-06
 ===============================
 New features:
 F-Toolbar
@@ -600,7 +594,7 @@ Other important bug fixes
 Bug fixes for automatically reported bugs
 
 ===============================
-1.0.13 alpha
+1.0.13 alpha, 2009-06-16
 ===============================
 New features:
 [Feature Requests 0000104]: protocol handler: FreeMind patch for linking to arbitrary URL integrated
@@ -610,9 +604,8 @@ Bug fixes:
 [Bugs 0000094]: Error splitting (rich text) long node - with revsion tracking
 Bug fixes for automatically reported bugs
 
-
 ===============================
-1.0.12 alpha
+1.0.12 alpha, 2009-06-15
 ===============================
 New features:
 Automatic backup for all loaded files on first save.
@@ -624,11 +617,11 @@ Bug fixes:
 [Bugs 0000076]: Notes window size not remembered between sessions
 [Bugs 0000094]: Error splitting (rich text) long node - with revsion tracking
 Bug fix in showing modification times
+
 ===============================
-1.0.11 alpha
+1.0.11 alpha, 2009-06-09
 ===============================
 New features:
-
 use .freeplane as user folder 
 Search and filter on note content
 Icon toolbar menu improved
@@ -642,16 +635,14 @@ Internal representation of linked files should not use escape characters
 [Bugs 0000067]: Display message if invalid hyperlink to an external map file is handled
 
 ===============================
-1.0.10 alpha
+1.0.10 alpha, 2009-06-01
 ===============================
 New features:
-
 Lock map files on load/save
 Patterns support clouds, "Floating node" pattern
 Load all previously loaded maps on start
 
 Bug fixes: 
-
 [Bugs 0000062]: eol  in long nodes are saved/copied
 [Bugs 0000063] bug fixes when empty mode is selected
 [Bugs 0000064]: F1 keyboard shortcut to open Freeplane documentation
@@ -665,7 +656,7 @@ Bug fixes:
 
 
 ===============================
-1.0.9 alpha
+1.0.9 alpha, 2009-05-24
 ===============================
 hierarchical icon tool bar
 find dialog uses filter conditions
@@ -674,7 +665,7 @@ bug fix: reading of attribute information, bug fixes for encrypted nodes and map
 translations unified
 
 ===============================
-1.0.8 alpha
+1.0.8 alpha, 2009-05-19
 ===============================
 update check
 open bug/feature trackers from help menu
@@ -683,7 +674,7 @@ big fix for changing left/right map sides
 simplyhtml loaded only if should be displayed
 
 ===============================
-1.0.7 alpha
+1.0.7 alpha, 2009-05-09
 ===============================
 bug fix in xml parser
 auto clean up
@@ -699,7 +690,6 @@ bug fix: show filter tool bar button
 ===============================
 1.0.6 alpha
 ===============================
-
 Priority filters based on priority icons
 filter conditions for numeric values return false for non numeric values
 links optionally painted behind nodes
@@ -709,7 +699,6 @@ different bug fixes
 ===============================
 1.0.5 alpha
 ===============================
-
 Tool tips for nodes can be switched off in preferences 
 https://sourceforge.net/forum/message.php?msg_id=7224634
 
@@ -758,9 +747,9 @@ Spell checker
 Personal modification color
 text labels can be added to any end and in the middle of any link by link pop-up menu
 
-===============================
-Changes made in FreeMind 0.9.0 Beta20
-===============================
+=================================
+FreeMind 0.9.0 Beta20, 2008-08-29
+=================================
 * Fixed some documentation bugs reported by Edmund Laugasson. Thanks.
 * Bug fix: Untranslatable strings and places * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=2020259&group_id=7118
 * Documentation fixes.
@@ -780,9 +769,9 @@ Changes made in FreeMind 0.9.0 Beta20
 * Integrated [ 2025876 ] MS Project export with dependencies + example
 * Integrated [ 2027826 ] Word export with notes - Thanks to Eric.
 
-===============================
-Changes made in FreeMind 0.9.0 Beta19
-===============================
+=================================
+FreeMind 0.9.0 Beta19, 2008-07-21
+=================================
 * Fixed: in key based navigation in filtered maps.
 * Fixed: displaying of fork node in filtered maps.
 * Fixed: branch selection in filtered maps.
@@ -820,9 +809,9 @@ Changes made in FreeMind 0.9.0 Beta19
 * New key mappings in russian. Thanks to ksd - sergeykotkin.
 * Updated groovy to version 1.5.6.
 
-===============================
-Changes made in FreeMind 0.9.0 Beta18
-===============================
+=================================
+FreeMind 0.9.0 Beta18, 2008-06-03
+=================================
 * Fixed: bubble / fork style not correctly cascading * http://sf.net/tracker/index.php?func=detail&aid=1822099&group_id=7118&atid=107118
 * Fixed: java.lang.OutOfMemoryError: Java heap space * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1965270&group_id=7118
 * new translations. Thanks to the authors.
@@ -840,9 +829,9 @@ Changes made in FreeMind 0.9.0 Beta18
 * Splash updated by Predrag via mail from 28.05.2008 (GPLv2+). Many thanks.
 * Icon taken form Predrag. FreeMind started recompiled. Thank you.
 
-===============================
-Changes made in FreeMind 0.9.0 Beta17
-===============================
+=================================
+FreeMind 0.9.0 Beta17, 2008-05-06
+=================================
 * Scripts can be installed as menu functions (look into ScriptingEngine.xml).
 * Security Enhancements for Scripting Engine.
 * Fixed "Cannot follow links if new/unsaved map is open" https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1900401&group_id=7118
@@ -892,11 +881,9 @@ Changes made in FreeMind 0.9.0 Beta17
 * New icons from Predrag (put under GPLV2+ via private mail from 2.5.2008). Thanks to the author.
 * Fixed: "null incompatible with text-specific antialiasing enable key" error under Mac OS X.
 
-
-
-===============================
-Changes made in FreeMind 0.9.0 Beta16
-===============================
+=================================
+FreeMind 0.9.0 Beta16, 2008-03-02
+=================================
 * Bug fix: do not add new <p> for HTML nodes copied as HTML
 * Bug fix: remove HTML tags by generating RTF
 * Bug fix: Overlapping edges of the root node
@@ -932,9 +919,9 @@ Changes made in FreeMind 0.9.0 Beta16
 * New installer variant "Java embedded" started, but this 
   variant will not be released soon due to open license questions
 
-===============================
-Changes made in FreeMind 0.9.0 Beta15
-===============================
+=================================
+FreeMind 0.9.0 Beta15, 2007-11-30
+=================================
 * Option added that map conversions are confirmed
 * Bug fix: Browser applet can be started twice
 * Bug fix: alt+i in English
@@ -952,10 +939,9 @@ Changes made in FreeMind 0.9.0 Beta15
 * Bug fix: background color of edited nodes.
 * Bug fix: node selected after cut&paste if attributes are shown.
 
-
-===============================
-Changes made in FreeMind 0.9.0 Beta 14
-===============================
+==================================
+FreeMind 0.9.0 Beta 14, 2007-11-21
+==================================
 * Open Office Export now for the ODT format.
 * Nicer automatic format with sharp bezier curves.
 * Security question for script execution.
@@ -981,9 +967,9 @@ Changes made in FreeMind 0.9.0 Beta 14
 * Bug fix: nodes cut when zoom not 100%.
 * Menu item "Split" moved to menu item "Join nodes"
  
-===============================
-Changes made in FreeMind 0.9.0 Beta 13
-===============================
+==================================
+FreeMind 0.9.0 Beta 13, 2007-09-02
+==================================
 * Menu Item to show SimplyHTML about box 
 * Use cloud or map backgroung color in WYSIWYG Editor if the node has no own background color.
 * Selection text color no more used for unselected text in Textfield / Textarea
@@ -1009,16 +995,16 @@ Changes made in FreeMind 0.9.0 Beta 13
 * Bug fix: edges scale now with zoom.
 * Enter on root gives new child, shift-enter on root causes root to get a child of a new root node.
 	 
-===============================
-Changes made in FreeMind 0.9.0 Beta 12
-===============================
+==================================
+FreeMind 0.9.0 Beta 12, 2007-07-21
+==================================
 * Map background color may be set via Format menu and saved with the map.
 * Bug fixes: problems if auto.properties does not exist 
 * FreeMind Accelerators work from Note Editor
 
-===============================
-Changes made in FreeMind 0.9.0 Beta 11
-===============================
+==================================
+FreeMind 0.9.0 Beta 11
+==================================
 * New menu option: Display Selection as Rectangle.
 * Standard colors are taken from Look&Feel settings.
 * Node is unfolded on paste or drop.
@@ -1027,7 +1013,7 @@ Changes made in FreeMind 0.9.0 Beta 11
 * Bug fix: tab closing fixed for java4+5
 
 ===============================
-Changes made in FreeMind 0.9.0 Beta 10
+FreeMind 0.9.0 Beta 10
 ===============================
 * New option: velocity of mouse wheel movements.
 * Bug fix: F6 and F8 can be used for formats again.
@@ -1073,9 +1059,9 @@ which can be obtained using NodeView.getContent().
  default selected node background and text colors.
 * Alternative displaying of selected nodes showing rounded rectangle around the node (may be set in preferences)
 
-===============================
-Changes made in FreeMind 0.9.0 Beta 9
-===============================
+=================================
+FreeMind 0.9.0 Beta 9, 2007-03-08
+=================================
 * Bug fix: nodes selection does not change if FreeMind is not focused
 * Select All is aplied to the filtered nodes only if filter is active
 * Bug fix: new nodes are directly closed.
@@ -1128,7 +1114,7 @@ Changes made in FreeMind 0.9.0 Beta 9
 * Copy limited to filtered nodes 
 
 ===============================
-Changes made in FreeMind 0.9.0 Beta 8
+FreeMind 0.9.0 Beta 8
 ===============================
 * bug fix: feedback.increase must not be called before auto properties with language setting has been loaded        
 * SimpleHTML: icons for bold and italic actions replaced
@@ -1161,14 +1147,14 @@ Changes made in FreeMind 0.9.0 Beta 8
 * Mac Changes: integration in system improved.
 
 ===============================
-Changes made in FreeMind 0.9.0 Beta 7
+FreeMind 0.9.0 Beta 7
 ===============================
 * Kafenio replaced by SimplyHTML
 * Bug fixes: two HTML exports adapted to new file format
 * Patch from Eric for XSLT export introduced. Thanks.
 
 ===============================
-Changes made in FreeMind 0.9.0 Beta 6
+FreeMind 0.9.0 Beta 6
 ===============================
 * Restrictions on node positions removed, 
 * the node motion view oval is filled red if node overlap is possible.
@@ -1195,7 +1181,8 @@ Changes made in FreeMind 0.9.0 Beta 6
 * Bug fix: layout of root with attributes
 * Enhancements of the scripting feature.
 
-Changes made in FreeMind 0.9.0 Beta 5
+===============================
+FreeMind 0.9.0 Beta 5
 ===============================
 * Search and Replace in History Dialog.
 * Load and Save Format of HTML nodes realized as discussed by the directors board.
@@ -1204,7 +1191,8 @@ Changes made in FreeMind 0.9.0 Beta 5
 * Safety extension for Html nodes: if they don't give well formed Xml, we replace the tags.
 * \0 characters are removed from HTML.
 
-Changes made in FreeMind 0.9.0 Beta 2
+===============================
+FreeMind 0.9.0 Beta 2
 ===============================
 * Kafenio for notes
 * Paste and Encrypted Node register new attributes in the attribtue registry correctly
@@ -1218,34 +1206,41 @@ Changes made in FreeMind 0.9.0 Beta 2
 * NodeView has got a new multi component capable layout manager
 * Export of local hyperlinks to XHTML/HTML with image corrected.
 
-Changes made in FreeMind 0.9.0 Beta 1
+===============================
+FreeMind 0.9.0 Beta 1
 ===============================
 * VariableSizeCardLayout implemented for Preference Dialog
 * Automatic layout preference design bugs fixed
 
-Changes made in FreeMind 0.9.0 Alpha 1.02
+===============================
+FreeMind 0.9.0 Alpha 1.02
 ===============================
 Merged with WYSIWYG Version
 
-Changes made in FreeMind 0.9.0 Alpha 1.01
+===============================
+FreeMind 0.9.0 Alpha 1.01
 ===============================
 Merged with Attribute Version
 
-Changes made in FreeMind 0.8.1 FA Alpha 10.02
+===============================
+FreeMind 0.8.1 FA Alpha 10.02
 ===============================
 Attributes can be leaved with alt+F9
 
-Changes made in FreeMind 0.8.1 FA Alpha 10.01
+===============================
+FreeMind 0.8.1 FA Alpha 10.01
 ===============================
 Print Preview
 
-Changes made in FreeMind 0.8.1 FA Alpha 9.04
+===============================
+FreeMind 0.8.1 FA Alpha 9.04
 ===============================
 * Key strokes for attributes can be set using the preferences Dialog
 * Save as HTML, RTF and Text consider filter settings
 * Size of buttons with empty key strokes in the Option Panel are set correctly
 
-Changes made in FreeMind 0.8.1 FA Alpha 9.03
+===============================
+FreeMind 0.8.1 FA Alpha 9.03
 ===============================
 *The export plugins using XSLT changed:
 	Only nodes passed the filter condition inclusive settings
@@ -1253,11 +1248,13 @@ Changes made in FreeMind 0.8.1 FA Alpha 9.03
 	are exported in OOWriter and generally by the XSLT exporter.
 *Bugfixes
 
-Changes made in FreeMind 0.8.1 FA Alpha 9.01
+===============================
+FreeMind 0.8.1 FA Alpha 9.01
 ===============================
 Merge with FreeMind 0.8.1 beta 3
 
-Changes made in FreeMind 0.8.FA Alpha 8
+===============================
+FreeMind 0.8.FA Alpha 8
 ===============================
 * Undo for all attribute operations
 
@@ -1280,7 +1277,8 @@ Other improvements:
 * Radio Button Items in Menus
 * other changes and refactorings
 
-Changes made in FreeMind 0.8.1:
+===============================
+FreeMind 0.8.1, 2008-02-27
 ===============================
 * Word wrap enabled for notes.
 * Refactoring: MindMap specific actions moved to mindmapmode.
@@ -1328,7 +1326,8 @@ Beta4:
 * Root node curves improved.
 * Automatic layout patterns can be specified in the preferences dialog
 
-Changes made in FreeMind 0.8.0-ALPHA-DAN-5:
+===============================
+FreeMind 0.8.0-ALPHA-DAN-5:
 ===============================
     * HTML selections are pasted directly as rich text, whether they
       were made in a web browser, Microsoft Word document, or any
@@ -1388,7 +1387,8 @@ Changes made in FreeMind 0.8.0-ALPHA-DAN-5:
       search is - word "two other"; node matches if it (a) contains
       substring "word", and (b) it contains substring "two other".
 
-Changes made in FreeMind 0.8.0:
+===============================
+FreeMind 0.8.0, 2005-09-06
 ===============================
 * From Koh (thanks): Standard Macintosh application use Command(meta) key based Keyboard shortcut. (ex. copy is Command(meta) + C). I think that mac version's freeplane should allow to assign meta key based shortcut.
 * Bug fix: AutomaticLayout.java
@@ -1708,7 +1708,8 @@ RC 6:
 * New lithuanian translation. Thanks to oxiris.
 * Update version XSLT is only applied if neccessary (for 0.7.1 it is not applied).
 
-Changes made in FreeMind 0.7.2:
+===============================
+FreeMind 0.7.2:
 ===============================
 * Pluginmechanism added
 * Messagebox if recent file not present
@@ -1725,7 +1726,8 @@ Changes made in FreeMind 0.7.2:
 * Jython is substituted by an attrappe
 * Fold and Unfold one stage is available now.
 
-Changes made in FreeMind 0.7.1:
+===============================
+FreeMind 0.7.1, 2004-02-15
 ===============================
 * Bug fix: automatic save occurs not so often (in fact, only if something has changed since the last automatic save), and uses a better filename.
 * Daniel changed the documentation.
@@ -1774,9 +1776,9 @@ RC1:
 * Bug fix: Zoom in/out uses step one again.
 * Bug fix: System default look and feel is set if so stated in the freeplane.properties or user.properties.
 
-Changes made in FreeMind 0.7.0:
 ===============================
-
+FreeMind 0.7.0:
+===============================
 * Bug fix: Open and Quit are working if no map is present
 * The last closed map can be reopend using a key stroke.
 * Bug fix: Context menu is back.
@@ -1825,3 +1827,52 @@ Changes made in FreeMind 0.7.0:
 * Two nice features: choose the default browser
 * Long node dialog remembers the enter-confirm-state
 * adapted the standard color of a cloud to a brighter value (f0f0f0)
+
+===============================
+Freemind 0.6.7, 2003-10-25
+===============================
+* Introduction of icons
+
+===============================
+FreeMind 0.6.5, 2003-09-04
+===============================
+
+===============================
+FreeMind 0.6.1, 2003-02-08
+===============================
+
+===============================
+FreeMind   0.6, 2003-02-01
+===============================
+
+===============================
+FreeMind   0.5, 2002-08-24
+===============================
+
+===============================
+FreeMind   0.4, 2001-07-07
+===============================
+
+===============================
+FreeMind 0.3.1, 2001-03-27
+===============================
+
+===============================
+FreeMind 0.3.0, 2001-03-25
+===============================
+
+===============================
+FreeMind 0.2.0, 2000-11-02
+===============================
+
+===============================
+FreeMind 0.1.0, 2000-08-05
+===============================
+
+===============================
+FreeMind 0.0.3, 2000-07-09
+===============================
+
+===============================
+FreeMind 0.0.2, 2000-06-27
+===============================
