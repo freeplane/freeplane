@@ -12,6 +12,7 @@ Action "note edit switch" moved to menu Edit
 Add Map.getFile() to scripting API
 Added question "remove file from last opened file list" if file is not found
 Added option "Environment->Files->Load last and new maps"
+Connector menu and arrows available in outline view
 
 
 Bug fixes:
