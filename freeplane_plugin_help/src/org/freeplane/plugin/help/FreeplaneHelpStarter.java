@@ -34,7 +34,7 @@ import org.freeplane.core.util.LogTool;
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/help/doc" }, accelerator = "shift F1")
+@ActionLocationDescriptor(locations = { "/menu_bar/help/doc" })
 class FreeplaneHelpStarter extends AFreeplaneAction {
 	/**
 	 * 
