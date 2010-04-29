@@ -25,7 +25,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
@@ -44,19 +43,14 @@ import org.freeplane.view.swing.map.NodeView;
 /**
  * This class represents a ArrowLink around a node.
  */
-public class ConnectorView implements ILinkView {
+public class ConnectorView extends AConnectorView{
 	static final Stroke DEF_STROKE = new BasicStroke(1);
 	private static final int LABEL_SHIFT = 4;
 	private static final double PRECISION = 2;
 	private CubicCurve2D arrowLinkCurve;
-	private final ConnectorModel connectorModel;
-	private final NodeView source, target;
-
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target) {
-		this.connectorModel = connectorModel;
-		this.source = source;
-		this.target = target;
+		super(connectorModel, source, target);
 	}
 
 	/**
@@ -190,10 +184,6 @@ public class ConnectorView implements ILinkView {
 		return LinkController.getController(getModeController()).getColor(model);
 	}
 
-	protected MapView getMap() {
-		return (source == null) ? target.getMap() : source.getMap();
-	}
-
 	private ModeController getModeController() {
 		NodeView nodeView = source;
 		if (source == null) {
@@ -218,10 +208,6 @@ public class ConnectorView implements ILinkView {
 		return (width < 1) ? 1 : width;
 	}
 
-	NodeView getSource() {
-		return source;
-	}
-
 	Stroke getStroke() {
 		final int width = getWidth();
 		if (width < 1) {
@@ -230,18 +216,11 @@ public class ConnectorView implements ILinkView {
 		return new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 	}
 
-	NodeView getTarget() {
-		return target;
-	}
-
 	int getWidth() {
 		final NodeLinkModel model = getModel();
 		return LinkController.getController(getModeController()).getWidth(model);
 	}
 
-	protected double getZoom() {
-		return getMap().getZoom();
-	}
 
 	/**
 	 * Computes the intersection between two lines. The calculated point is approximate, 
@@ -271,18 +250,6 @@ public class ConnectorView implements ILinkView {
 			return null;
 		}
 		return new Point(xi, yi);
-	}
-
-	/**
-	 */
-	private boolean isSourceVisible() {
-		return (source != null && source.isContentVisible());
-	}
-
-	/**
-	 */
-	private boolean isTargetVisible() {
-		return (target != null && target.isContentVisible());
 	}
 
 	/**
@@ -369,10 +336,10 @@ public class ConnectorView implements ILinkView {
 			g.draw(arrowLinkCurve);
 		}
 		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
-			paintArrow(p1, p3, g);
+			paintArrow(p1, p3, g, getZoom() * 10);
 		}
 		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
-			paintArrow(p2, p4, g);
+			paintArrow(p2, p4, g, getZoom() * 10);
 		}
 		if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
 			g.setStroke(new BasicStroke(getWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 0,
@@ -402,28 +369,6 @@ public class ConnectorView implements ILinkView {
 		if (p1 != null && p2 != null) {
 			drawMiddleLabel(g, middleLabel);
 		}
-	}
-
-	/**
-	 * @param p1
-	 *            is the start point
-	 * @param p3
-	 *            is the another point indicating the direction of the arrow.
-	 */
-	private void paintArrow(final Point p1, final Point p3, final Graphics2D g) {
-		double dx, dy, dxn, dyn;
-		dx = p3.x - p1.x; /* direction of p1 -> p3 */
-		dy = p3.y - p1.y;
-		final double length = Math.sqrt(dx * dx + dy * dy) / (getZoom() * 10/*=zoom factor for arrows*/);
-		dxn = dx / length; /* normalized direction of p1 -> p3 */
-		dyn = dy / length;
-		final double width = .5f;
-		final Polygon p = new Polygon();
-		p.addPoint((p1.x), (p1.y));
-		p.addPoint((int) (p1.x + dxn + width * dyn), (int) (p1.y + dyn - width * dxn));
-		p.addPoint((int) (p1.x + dxn - width * dyn), (int) (p1.y + dyn + width * dxn));
-		p.addPoint((p1.x), (p1.y));
-		g.fillPolygon(p);
 	}
 
 	/* (non-Javadoc)

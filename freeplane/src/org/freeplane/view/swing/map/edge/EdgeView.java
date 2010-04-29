@@ -50,6 +50,14 @@ public abstract class EdgeView {
 
 	private final NodeView source;
 	protected Point start, end;
+	public Point getStart() {
+    	return start;
+    }
+
+	public Point getEnd() {
+    	return end;
+    }
+
 	private final NodeView target;
 	private Color color;
 	private Integer width;

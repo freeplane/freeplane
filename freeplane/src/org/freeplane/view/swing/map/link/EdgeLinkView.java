@@ -26,6 +26,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.features.common.addins.mapstyle.MapViewLayout;
+import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.view.swing.map.NodeView;
@@ -36,15 +38,18 @@ import org.freeplane.view.swing.map.edge.EdgeViewFactory;
  * @author Dimitry Polivaev
  * 09.08.2009
  */
-public class EdgeLinkView implements ILinkView {
-	private final ConnectorModel model;
+public class EdgeLinkView extends AConnectorView {
 	private final EdgeView edgeView;
 
 	public EdgeLinkView(final ConnectorModel model, final ModeController modeController, final NodeView source,
 	                    final NodeView target) {
-		super();
-		this.model = model;
-		edgeView = EdgeViewFactory.getInstance().getEdge(source, target);
+		super(model, source, target);
+		if (source.getMap().getLayoutType() == MapViewLayout.OUTLINE) {
+			edgeView = new OutlineLinkView(source, target);
+		}
+		else{
+			edgeView = EdgeViewFactory.getInstance().getEdge(source, target);
+		}
 		Color color;
 		if (model.isEdgeLike()) {
 			color = edgeView.getColor().darker();
@@ -72,7 +77,7 @@ public class EdgeLinkView implements ILinkView {
 	}
 
 	public ConnectorModel getModel() {
-		return model;
+		return connectorModel;
 	}
 
 	public void increaseBounds(final Rectangle innerBounds) {
@@ -81,5 +86,21 @@ public class EdgeLinkView implements ILinkView {
 
 	public void paint(final Graphics graphics) {
 		edgeView.paint((Graphics2D) graphics);
+		if(connectorModel.isEdgeLike()){
+			return;
+		}
+		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
+			Point p1 = edgeView.getStart();
+			Point p2 = new Point(p1);
+			p2.translate(5, 0);
+			paintArrow(p1, p2, (Graphics2D)graphics, getZoom() * 7);
+		}
+		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
+			Point p1 = edgeView.getEnd();
+			Point p2 = new Point(p1);
+			p2.translate(5, 0);
+			paintArrow(p1, p2, (Graphics2D)graphics, getZoom() * 7);
+		}
+		
 	}
 }
