@@ -273,8 +273,11 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			final String message = FpStringUtils.format("remove_file_from_list_on_error", restoreable );
 			Frame frame = UITools.getFrame();
 			Window[] ownedWindows = frame.getOwnedWindows();
-			if(ownedWindows.length > 0 && ownedWindows[0].getClass().equals(FreeplaneSplashModern.class)){
-				ownedWindows[0].setVisible(false);
+			for(int i = 0; i < ownedWindows.length; i++){
+				Window window = ownedWindows[i];
+				if(window.getClass().equals(FreeplaneSplashModern.class) && window.isVisible()){
+					window.setVisible(false);
+				}
 			}
 			int remove = JOptionPane.showConfirmDialog(frame, message, "Freeplane", JOptionPane.YES_NO_OPTION);
 			if(remove == JOptionPane.YES_OPTION)
