@@ -177,12 +177,12 @@
 		<check-translation dir="${root}/viewer-resources/translations" includes="*.properties" />
 	</target>
 	<target name="format-translation">
-		<format-translation dir="${root}/resources/translations" includes="*.properties" eolstyle="win" />
-		<format-translation dir="${root}/viewer-resources/translations" includes="*.properties" eolstyle="win" />
-	</target>
-	<target name="format-translation-force">
 		<format-translation dir="${root}/resources/translations" writeifunchanged="true" includes="*.properties" eolstyle="win" />
 		<format-translation dir="${root}/viewer-resources/translations" writeifunchanged="true" includes="*.properties" eolstyle="win" />
+	</target>
+	<target name="format-translation-no-force">
+		<format-translation dir="${root}/resources/translations" writeifunchanged="false" includes="*.properties" eolstyle="win" />
+		<format-translation dir="${root}/viewer-resources/translations" writeifunchanged="false" includes="*.properties" eolstyle="win" />
 	</target>
 	<target name="translate">
 		<translator translationsdir="${root}/resources/translations"
