@@ -52,7 +52,6 @@ class AppletResourceController extends ResourceController {
 		catch (final Exception ex) {
 			System.err.println("Could not load properties.");
 		}
-		userProps.setProperty("browsemode_initial_map", "map.mm");
 		final Enumeration allKeys = userProps.propertyNames();
 		while (allKeys.hasMoreElements()) {
 			final String key = (String) allKeys.nextElement();

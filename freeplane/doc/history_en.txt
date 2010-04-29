@@ -10,7 +10,7 @@ Paint all links with line width = 2
 Preserve links colors and edge widths in Outline View
 Action "note edit switch" moved to menu Edit
 Added question "remove file from last opened file list" if file is not found
-Added option ""
+Added option "Environment->Files->Load last and new maps"
 
 
 Bug fixes:
