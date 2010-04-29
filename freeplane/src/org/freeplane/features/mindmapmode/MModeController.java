@@ -183,4 +183,7 @@ public class MModeController extends ModeController {
 		redo.reset();
 	}
 
+	public boolean canEdit() {
+		return true;
+	}
 }

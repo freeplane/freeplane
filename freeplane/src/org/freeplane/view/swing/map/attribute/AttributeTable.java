@@ -186,7 +186,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		super();
 		this.attributeView = attributeView;
 		addFocusListener(AttributeTable.focusListener);
-		if (attributeView.getMapView().getModeController() instanceof MModeController) {
+		if (attributeView.getMapView().getModeController().canEdit()) {
 			getTableHeader().addMouseListener(AttributeTable.componentListener);
 		}
 		else {
