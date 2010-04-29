@@ -14,7 +14,7 @@
 </html></richcontent>
 <font NAME="Dialog" SIZE="18" BOLD="true"/>
 <hook NAME="MapStyle" max_node_width="600"/>
-<node FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1272201627202" HGAP="-94" VSHIFT="-27">
+<node FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1272502789896" HGAP="-94" VSHIFT="-27">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -25,7 +25,7 @@
       Introduction
     </h2>
     <p>
-      Freeplane makes it possible to create so-called Mind Maps. Also, many people use the program as an alternative to a tabbed notebook or a personal information manager.
+      Freeplane makes it possible to create graphical, branching documents called Mind Maps. Also, many people use the program as an alternative to a tabbed notebook or a personal information manager.
     </p>
     <p>
       Information is stored in text boxes, called nodes. The nodes are connected together using curved lines called edges.
@@ -34,7 +34,8 @@
       <font color="#0033ff"><b>Press the right arrow key, or click the left mouse button on this node to unfold it</b></font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Press the left arrow key to unfold nodes located to the left of the central &quot;root&quot; node" ID="ID_1776790765" CREATED="1271002221874" MODIFIED="1271973207142"/>
 </node>
@@ -1150,10 +1151,10 @@
 <node TEXT="Macintosh Usage Notes" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1530607683" CREATED="1270892460643" MODIFIED="1272092559460" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Freeplane recently added full support for Apple&apos;s Mac OS X operating system. Some of the documentation is still oriented toward PC users running Windows or Linux. Mac users will be able to follow along by keeping some differences in mind, listed below." FOLDED="true" ID="ID_752234886" CREATED="1270892460643" MODIFIED="1272034409877">
-<node TEXT="Command key versus the Control key" FOLDED="true" ID="ID_274373799" CREATED="1272034412047" MODIFIED="1272034460891">
-<node TEXT="When Freeplane runs under Mac OS X, it normally let you use the Apple Command key in place of the Control key. The Command key is marked with a cloverleaf &#x2318; symbol, and may also be marked with &quot;command&quot; or &quot;cmd&quot; or an Apple logo." ID="ID_395674676" CREATED="1272029514331" MODIFIED="1272034612835"/>
-<node TEXT="When you see the Control key mentioned in Freeplane&apos;s documentation, in most cases you should use the Command key instead. " ID="ID_124270811" CREATED="1272034546855" MODIFIED="1272034546856"/>
-<node TEXT="In a very few cases, Freeplane actually requires using the Control key rather than the Command key, even though you&apos;re using a Mac. Where possible this will be corrected in the future. Meanwhile if the documentation says to use the Control key, yet the Command key fails to work as a substitute on your Mac, try the Control key instead." ID="ID_1031450682" CREATED="1272034546807" MODIFIED="1272034546808"/>
+<node TEXT="Command key versus the Ctrl (control) key" FOLDED="true" ID="ID_274373799" CREATED="1272034412047" MODIFIED="1272500980501">
+<node TEXT="When Freeplane runs under Mac OS X, you generally will use the Apple Command key rather than the &quot;control&quot; key, which is labeled Ctrl on a PC. The Command key is marked with a cloverleaf &#x2318; symbol, and may also be captioned as &quot;command&quot; or &quot;cmd&quot;, or be marked with an Apple logo." ID="ID_395674676" CREATED="1272029514331" MODIFIED="1272502497708"/>
+<node TEXT="When you see the Ctrl key mentioned in Freeplane&apos;s documentation, in most cases you should use the Command key instead." ID="ID_124270811" CREATED="1272034546855" MODIFIED="1272501133669"/>
+<node TEXT="In a very few cases, even on your Mac, Freeplane actually requires using the &quot;control&quot; key rather than the Command key. In these cases, this document refers to the key explicitly as Control, for emphasis. In other cases, if the documentation refers to the Ctrl key, yet the Command key fails to work as a substitute on your Mac, try the &quot;control&quot; key instead." ID="ID_1031450682" CREATED="1272034546807" MODIFIED="1272502562154"/>
 </node>
 <node TEXT="Mice, Right Clicks and Context Menus" FOLDED="true" ID="ID_1326732850" CREATED="1272034661406" MODIFIED="1272034719554">
 <node TEXT="Many Apple-branded mice and trackpads have only one clickable &quot;button.&quot; To bring up a context-sensitive menu (or &quot;context menu&quot;), Mac users can hold down the Control key while clicking the mouse (abbreviated as &quot;Control + click&quot;). Yes, use the Control key here, rather than the Command key, because this function is built into Mac OS X so Freeplane cannot change it. Apple makes Control + click equivalent to the &quot;right click&quot; which is available on mice with two buttons." ID="ID_1259415390" CREATED="1272030826942" MODIFIED="1272034317363"/>
