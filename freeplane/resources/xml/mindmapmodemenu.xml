@@ -307,7 +307,7 @@
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="doc">
                 <menu_action action="DocumentationAction" accelerator="F1" />
-                <menu_action action="MenuReferenceAction"/>
+                <menu_action action="MenuReferenceAction" accelerator="shift F1"/>
                 <menu_action action="HotKeyInfoAction"/>
 				<menu_action action="OpenFreeplaneSiteAction" />
 				<menu_action action="ReportBugAction" />
