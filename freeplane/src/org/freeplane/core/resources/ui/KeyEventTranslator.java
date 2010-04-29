@@ -24,9 +24,6 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
-
 /**
  * In conjunction with the <code>KeyEventWorkaround</code>, hides some warts in
  * the AWT key event API.
@@ -70,8 +67,8 @@ class KeyEventTranslator {
 	static int c, a, m, s;
 	private static Map<Key, Key> transMap = new HashMap<Key, Key>();
 	static {
-			KeyEventTranslator.setModifierMapping(InputEvent.CTRL_MASK, InputEvent.ALT_MASK, InputEvent.META_MASK,
-			    InputEvent.SHIFT_MASK);
+		KeyEventTranslator.setModifierMapping(InputEvent.CTRL_MASK, InputEvent.ALT_MASK, InputEvent.META_MASK,
+		    InputEvent.SHIFT_MASK);
 	}
 
 	/**
@@ -171,7 +168,6 @@ class KeyEventTranslator {
 		}
 	}
 
-
 	/**
 	 * Changes the mapping between symbolic modifier key names (<code>C</code>,
 	 * <code>A</code>, <code>M</code>, <code>S</code>) and Java modifier flags.
@@ -232,16 +228,18 @@ class KeyEventTranslator {
 				final int keyCode = evt.getKeyCode();
 				if ((keyCode >= KeyEvent.VK_0 && keyCode <= KeyEvent.VK_9)
 				        || (keyCode >= KeyEvent.VK_A && keyCode <= KeyEvent.VK_Z)) {
-						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), '\0', Character
-						    .toUpperCase((char) keyCode));
+					returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), '\0', Character
+					    .toUpperCase((char) keyCode));
 				}
 				else {
 					if (keyCode > 0 && keyCode <= KeyEvent.VK_SPACE) {
 						evt.consume();
-						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), keyCode, KeyEvent.CHAR_UNDEFINED);
+						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), keyCode,
+						    KeyEvent.CHAR_UNDEFINED);
 					}
 					else {
-						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), keyCode, evt.getKeyChar());
+						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), keyCode, evt
+						    .getKeyChar());
 					}
 				}
 				break;

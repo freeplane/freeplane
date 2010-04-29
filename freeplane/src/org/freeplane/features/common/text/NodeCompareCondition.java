@@ -25,7 +25,6 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.util.HtmlTools;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeCompareCondition extends CompareConditionAdapter {
@@ -52,7 +51,7 @@ public class NodeCompareCondition extends CompareConditionAdapter {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		String text = node.getPlainTextContent();
+		final String text = node.getPlainTextContent();
 		return checkText(text);
 	}
 

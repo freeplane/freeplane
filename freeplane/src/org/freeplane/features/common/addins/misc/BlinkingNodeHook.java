@@ -51,7 +51,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "accessories/plugins/BlinkingNodeHook.properties", onceForMap = false)
 @ActionLocationDescriptor(locations = { "/menu_bar/format/nodes" })
 public class BlinkingNodeHook extends PersistentNodeHook {
-	protected class TimerColorChanger extends TimerTask implements IExtension, IMapChangeListener, IMapLifeCycleListener {
+	protected class TimerColorChanger extends TimerTask implements IExtension, IMapChangeListener,
+	        IMapLifeCycleListener {
 		final private NodeModel node;
 		final private Timer timer;
 
@@ -100,59 +101,62 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 							if (index >= BlinkingNodeHook.colors.size()) {
 								index = 0;
 							}
-							container.setForeground((Color) BlinkingNodeHook.colors.get(index));
+							container.setForeground(BlinkingNodeHook.colors.get(index));
 						}
 					});
 				}
 			});
 		}
 
-		public void mapChanged(MapChangeEvent event) {
-        }
+		public void mapChanged(final MapChangeEvent event) {
+		}
 
-		public void onNodeDeleted(final NodeModel parent, NodeModel child, int index) {
-			if(getModeController().isUndoAction() 
-					||! (node.equals(child) || node.isDescendantOf(child))){
+		public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+			if (getModeController().isUndoAction() || !(node.equals(child) || node.isDescendantOf(child))) {
 				return;
 			}
-			IActor actor = new IActor(){
+			final IActor actor = new IActor() {
 				public void act() {
-					EventQueue.invokeLater(new Runnable(){
+					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							remove(node, node.getExtension(TimerColorChanger.class));
-		                }});
-                }
+						}
+					});
+				}
 
 				public String getDescription() {
-	                return "BlinkingNodeHook.timer";
-                }
+					return "BlinkingNodeHook.timer";
+				}
 
 				public void undo() {
 					node.addExtension(new TimerColorChanger(node));
-                }};
-                getModeController().execute(actor, node.getMap());
-        }
+				}
+			};
+			getModeController().execute(actor, node.getMap());
+		}
 
-		public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-        }
+		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
+		}
 
-		public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-        }
+		public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+		                        final NodeModel child, final int newIndex) {
+		}
 
-		public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
-        }
+		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
+		}
 
-		public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-        }
+		public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+		                           final NodeModel child, final int newIndex) {
+		}
 
-		public void onCreate(MapModel map) {
-        }
+		public void onCreate(final MapModel map) {
+		}
 
-		public void onRemove(MapModel map) {
-			if(node.getMap().equals(map)){
+		public void onRemove(final MapModel map) {
+			if (node.getMap().equals(map)) {
 				timer.cancel();
 			}
-        }
+		}
 	}
 
 	static Vector<Color> colors = new Vector<Color>();

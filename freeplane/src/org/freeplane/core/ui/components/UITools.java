@@ -29,7 +29,6 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -126,8 +125,8 @@ public class UITools {
 
 	static public Frame getFrame() {
 		final Frame[] frames = Frame.getFrames();
-		for(Frame frame : frames){
-			if(MAIN_FREEPLANE_FRAME.equals(frame.getName())){
+		for (final Frame frame : frames) {
+			if (MAIN_FREEPLANE_FRAME.equals(frame.getName())) {
 				return frame;
 			}
 		}
@@ -142,13 +141,14 @@ public class UITools {
 		if (keyStroke != null) {
 			return keyStroke;
 		}
-		int lastSpacePos = keyStrokeDescription.lastIndexOf(' ') + 1;
-		final String modifiedDescription = keyStrokeDescription.substring(0, lastSpacePos) + "typed " +  keyStrokeDescription.substring(lastSpacePos);
+		final int lastSpacePos = keyStrokeDescription.lastIndexOf(' ') + 1;
+		final String modifiedDescription = keyStrokeDescription.substring(0, lastSpacePos) + "typed "
+		        + keyStrokeDescription.substring(lastSpacePos);
 		return KeyStroke.getKeyStroke(modifiedDescription);
 	}
 
 	static public void informationMessage(final String message) {
-		UITools.informationMessage(getFrame(), message);
+		UITools.informationMessage(UITools.getFrame(), message);
 	}
 
 	static public void informationMessage(final Frame frame, final String message) {
@@ -173,17 +173,17 @@ public class UITools {
 		win_width = Math.min(win_width, screenWidth);
 		final int screenHeight = screenSize.height - screenInsets.top - screenInsets.bottom;
 		win_height = Math.min(win_height, screenHeight);
-		if(win_x < 0){
+		if (win_x < 0) {
 			win_x = screenInsets.left + (screenWidth - win_width) / 2;
 		}
-		else{
+		else {
 			win_x = Math.max(screenInsets.left, win_x);
 			win_x = Math.min(screenWidth + screenInsets.left - win_width, win_x);
 		}
-		if(win_y < 0){
+		if (win_y < 0) {
 			win_y = screenInsets.top + (screenHeight - win_height) / 2;
 		}
-		else{
+		else {
 			win_y = Math.max(screenInsets.top, win_y);
 			win_y = Math.min(screenHeight + screenInsets.top - win_height, win_y);
 		}
@@ -318,32 +318,31 @@ public class UITools {
 	}
 
 	private static final String SCROLLBAR_INCREMENT = "scrollbar_increment";
+
 	public static void setScrollbarIncrement(final JScrollPane scrollPane) {
-        final int scrollbarIncrement = ResourceController.getResourceController().getIntProperty(SCROLLBAR_INCREMENT, 1);
-        scrollPane.getHorizontalScrollBar().setUnitIncrement(scrollbarIncrement);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(scrollbarIncrement);
-    }
-
-	public static void addScrollbarIncrementPropertyListener(final JScrollPane scrollPane) {
-        ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
-    		
-    		public void propertyChanged(String propertyName, String newValue,
-    				String oldValue) {
-    			if(! propertyName.equals(SCROLLBAR_INCREMENT)){
-    				return;
-    			}
-    			final int scrollbarIncrement = Integer.valueOf(newValue);
-    			scrollPane.getHorizontalScrollBar().setUnitIncrement(scrollbarIncrement);
-    			scrollPane.getVerticalScrollBar().setUnitIncrement(scrollbarIncrement);
-    		}
-    	});
-    }
-
-	public static Color getTextColorForBackground(Color color) {
-		int red = color.getRed();
-		int blue = color.getBlue();
-		int green = color.getGreen();
-		return red > 0x80 && blue > 0x80 && green > 0x80 ? Color.BLACK : Color.WHITE;
+		final int scrollbarIncrement = ResourceController.getResourceController()
+		    .getIntProperty(SCROLLBAR_INCREMENT, 1);
+		scrollPane.getHorizontalScrollBar().setUnitIncrement(scrollbarIncrement);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(scrollbarIncrement);
 	}
 
+	public static void addScrollbarIncrementPropertyListener(final JScrollPane scrollPane) {
+		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+				if (!propertyName.equals(SCROLLBAR_INCREMENT)) {
+					return;
+				}
+				final int scrollbarIncrement = Integer.valueOf(newValue);
+				scrollPane.getHorizontalScrollBar().setUnitIncrement(scrollbarIncrement);
+				scrollPane.getVerticalScrollBar().setUnitIncrement(scrollbarIncrement);
+			}
+		});
+	}
+
+	public static Color getTextColorForBackground(final Color color) {
+		final int red = color.getRed();
+		final int blue = color.getBlue();
+		final int green = color.getGreen();
+		return red > 0x80 && blue > 0x80 && green > 0x80 ? Color.BLACK : Color.WHITE;
+	}
 }

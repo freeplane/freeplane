@@ -167,9 +167,9 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public boolean contains(final int x, final int y) {
-//		if (!isValid()) {
-//			return false;
-//		}
+		//		if (!isValid()) {
+		//			return false;
+		//		}
 		final int space = getMap().getZoomed(NodeView.SPACE_AROUND) - 2 * getZoomedFoldingSymbolHalfWidth();
 		return (x >= space) && (x < getWidth() - space) && (y >= space) && (y < getHeight() - space);
 	}
@@ -571,7 +571,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (getModel().isLeaf()) {
 			return null;
 		}
-		if(getUpper){
+		if (getUpper) {
 			preferredChild = null;
 		}
 		if (preferredChild != null && (left == preferredChild.isLeft()) && preferredChild.getParent() == this) {
@@ -612,7 +612,7 @@ public class NodeView extends JComponent implements INodeView {
 			}
 			final Point childPoint = new Point(0, childView.getMainView().getHeight() / 2);
 			UITools.convertPointToAncestor(childView.getMainView(), childPoint, baseComponent);
-			if (getUpper){
+			if (getUpper) {
 				return childView;
 			}
 			final int gapToChild = Math.abs(childPoint.y - ownY);
@@ -807,7 +807,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	/** Is the node left of root? */
 	public boolean isLeft() {
-		if(getMap().getLayoutType() == MapViewLayout.OUTLINE){
+		if (getMap().getLayoutType() == MapViewLayout.OUTLINE) {
 			return false;
 		}
 		return getModel().isLeft();
@@ -846,7 +846,7 @@ public class NodeView extends JComponent implements INodeView {
 	public void nodeChanged(final NodeChangeEvent event) {
 		final NodeModel node = event.getNode();
 		// is node is deleted, skip the rest.
-		if( ! node.isRoot() && node.getParent() == null){
+		if (!node.isRoot() && node.getParent() == null) {
 			return;
 		}
 		final Object property = event.getProperty();
@@ -854,7 +854,7 @@ public class NodeView extends JComponent implements INodeView {
 			treeStructureChanged();
 			return;
 		}
-		if(property.equals(NodeModel.NODE_ICON) || property.equals(HierarchicalIcons.ICONS)){
+		if (property.equals(NodeModel.NODE_ICON) || property.equals(HierarchicalIcons.ICONS)) {
 			mainView.updateIcons(this);
 			revalidate();
 			return;
@@ -937,7 +937,7 @@ public class NodeView extends JComponent implements INodeView {
 			final ModeController modeController = map.getModeController();
 			final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 			final boolean isRoot = isRoot();
-			switch(paintingMode){
+			switch (paintingMode) {
 				case CLOUDS:
 				case ALL:
 					modeController.getController().getViewController().setEdgesRenderingHint(g2);
@@ -948,7 +948,7 @@ public class NodeView extends JComponent implements INodeView {
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
 			super.paint(g);
-			switch(paintingMode){
+			switch (paintingMode) {
 				case NODES:
 				case ALL:
 					g2.setStroke(BubbleMainView.DEF_STROKE);
@@ -1181,11 +1181,11 @@ public class NodeView extends JComponent implements INodeView {
 		if (attributeView != null) {
 			attributeView.update();
 		}
-		if(contentPane != null){
-			int componentCount = contentPane.getComponentCount();
-			for(int i = 1; i < componentCount; i++){
-				Component component = contentPane.getComponent(i);
-				if(component instanceof JComponent){
+		if (contentPane != null) {
+			final int componentCount = contentPane.getComponentCount();
+			for (int i = 1; i < componentCount; i++) {
+				final Component component = contentPane.getComponent(i);
+				if (component instanceof JComponent) {
 					((JComponent) component).revalidate();
 				}
 			}
@@ -1255,13 +1255,12 @@ public class NodeView extends JComponent implements INodeView {
 		return isSelected() && !MapView.standardDrawRectangleForSelection && !map.isPrinting();
 	}
 
-	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-    }
+	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+	                           final NodeModel child, final int newIndex) {
+	}
 
 	@Override
-    protected void validateTree() {
-	    super.validateTree();
-    }
-	
-	
+	protected void validateTree() {
+		super.validateTree();
+	}
 }

@@ -33,13 +33,13 @@ public class FreeplaneMain {
 			System.exit(1);
 		}
 		final String osProperty = System.getProperty("os.name");
-		if(osProperty.startsWith("Mac OS")){
-			System.setProperty("apple.laf.useScreenMenuBar" , "true");
+		if (osProperty.startsWith("Mac OS")) {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
 		}
 	}
 
 	static public void main(final String[] args) {
-		checkJavaVersion();
+		FreeplaneMain.checkJavaVersion();
 		final FreeplaneStarter starter = new FreeplaneStarter();
 		starter.run(args);
 	}

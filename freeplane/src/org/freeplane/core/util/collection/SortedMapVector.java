@@ -43,10 +43,6 @@ public class SortedMapVector {
 		Object getValue() {
 			return value;
 		}
-
-		void setValue(final Object value) {
-			this.value = value;
-		}
 	}
 
 	private static final int CAPACITY_INCREMENT = 10;

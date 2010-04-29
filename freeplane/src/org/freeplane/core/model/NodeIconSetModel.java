@@ -33,14 +33,14 @@ import org.freeplane.core.icon.UIIcon;
  */
 class NodeIconSetModel {
 	/** stores the icons associated with this node. */
-	protected List<MindIcon>                icons;
-	private   TreeMap<String, UIIcon> stateIcons;
+	protected List<MindIcon> icons;
+	private TreeMap<String, UIIcon> stateIcons;
 
 	void addIcon(final MindIcon icon) {
 		createIcons();
 		icons.add(icon);
 	}
-	
+
 	void addIcon(final MindIcon icon, final int position) {
 		createIcons();
 		if (position > -1) {
@@ -88,12 +88,12 @@ class NodeIconSetModel {
 	 */
 	int removeIcon() {
 		createIcons();
-		if(!icons.isEmpty()) {
+		if (!icons.isEmpty()) {
 			icons.remove(icons.size() - 1);
 		}
 		return icons.size();
 	}
-	
+
 	/** 
 	 * @param position of icon to remove
 	 * 
@@ -122,8 +122,8 @@ class NodeIconSetModel {
 		}
 	}
 
-	public void removeStateIcons(String key) {
-		if(stateIcons != null) {
+	public void removeStateIcons(final String key) {
+		if (stateIcons != null) {
 			stateIcons.remove(key);
 		}
 	}

@@ -21,15 +21,10 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 public class MultipleImage implements Icon {
 	/**
@@ -40,14 +35,14 @@ public class MultipleImage implements Icon {
 
 	public MultipleImage() {
 	}
-	
+
 	public void addImage(final Icon icon) {
 		mIcons.add(icon);
 	};
 
 	public int getIconHeight() {
 		int myY = 0;
-		for (Icon icon:mIcons) {
+		for (final Icon icon : mIcons) {
 			final int otherHeight = icon.getIconHeight();
 			if (otherHeight > myY) {
 				myY = otherHeight;
@@ -58,12 +53,11 @@ public class MultipleImage implements Icon {
 
 	public int getIconWidth() {
 		int myX = 0;
-		for (Icon icon:mIcons) {
+		for (final Icon icon : mIcons) {
 			myX += icon.getIconWidth();
 		}
 		return myX;
 	}
-
 
 	public int getImageCount() {
 		return mIcons.size();
@@ -71,7 +65,7 @@ public class MultipleImage implements Icon {
 
 	public void paintIcon(final Component c, final Graphics g, final int x, final int y) {
 		int myX = x;
-		for (Icon icon:mIcons) {
+		for (final Icon icon : mIcons) {
 			icon.paintIcon(c, g, myX, y);
 			myX += icon.getIconWidth();
 		}

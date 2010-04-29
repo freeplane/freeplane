@@ -260,14 +260,14 @@ class ScriptingEngine {
 		this.reg = reg;
 	}
 
-	boolean executeScript(MModeController modeController, final NodeModel node, final String script) {
+	boolean executeScript(final MModeController modeController, final NodeModel node, final String script) {
 		return ScriptingEngine.executeScript(node, script, modeController, new IErrorHandler() {
 			public void gotoLine(final int pLineNumber) {
 			}
 		}, System.out, reg.getScriptCookies());
 	}
 
-	boolean executeScriptRecursive(MModeController modeController, NodeModel node, String script) {
+	boolean executeScriptRecursive(final MModeController modeController, final NodeModel node, final String script) {
 		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
 			if (!executeScriptRecursive(modeController, iter.next(), script)) {
 				return false;
@@ -276,7 +276,7 @@ class ScriptingEngine {
 		return executeScript(modeController, node, script);
 	}
 
-	boolean performScriptOperationRecursive(MModeController modeController, final NodeModel node) {
+	boolean performScriptOperationRecursive(final MModeController modeController, final NodeModel node) {
 		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
 			final NodeModel child = iter.next();
 			if (!performScriptOperationRecursive(modeController, child)) {
@@ -286,7 +286,7 @@ class ScriptingEngine {
 		return performScriptOperation(modeController, node);
 	}
 
-	boolean performScriptOperation(MModeController modeController, final NodeModel node) {
+	boolean performScriptOperation(final MModeController modeController, final NodeModel node) {
 		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		if (attributes == null) {
 			return true;
@@ -304,7 +304,7 @@ class ScriptingEngine {
 		return true;
 	}
 
-	static void setNoUserPermissionRequired(Boolean noUserPermissionRequired) {
+	static void setNoUserPermissionRequired(final Boolean noUserPermissionRequired) {
 		ScriptingEngine.noUserPermissionRequired = noUserPermissionRequired;
 	}
 

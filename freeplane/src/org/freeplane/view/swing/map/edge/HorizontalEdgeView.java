@@ -36,13 +36,13 @@ public class HorizontalEdgeView extends EdgeView {
 	private int xs[];
 	private int ys[];
 
-	public HorizontalEdgeView(NodeView source, NodeView target) {
-	    super(source, target);
-    }
+	public HorizontalEdgeView(final NodeView source, final NodeView target) {
+		super(source, target);
+	}
 
-	public HorizontalEdgeView(NodeView target) {
-	    super(target);
-    }
+	public HorizontalEdgeView(final NodeView target) {
+		super(target);
+	}
 
 	@Override
 	protected void draw(final Graphics2D g) {
@@ -50,7 +50,7 @@ public class HorizontalEdgeView extends EdgeView {
 		g.setColor(color);
 		final Stroke stroke = getStroke();
 		g.setStroke(stroke);
-		final int w = getWidth();
+		getWidth();
 		int xMiddle = getTarget().getMap().getZoomed(LocationModel.HGAP) / 2;
 		if (getTarget().isLeft()) {
 			xMiddle = -xMiddle;
@@ -81,13 +81,13 @@ public class HorizontalEdgeView extends EdgeView {
 	}
 
 	@Override
-    public boolean detectCollision(Point p) {
-	    CollisionDetector collisionDetector = new CollisionDetector();
-	    for(int i = 1; i < xs.length; i++){
-	    	if(collisionDetector.detectCollision(p, new Line2D.Float(xs[i-1], ys[i-1],xs[i], ys[i]))){
-	    		return true;
-	    	}
-	    }
-	    return false;
-    }
+	public boolean detectCollision(final Point p) {
+		final CollisionDetector collisionDetector = new CollisionDetector();
+		for (int i = 1; i < xs.length; i++) {
+			if (collisionDetector.detectCollision(p, new Line2D.Float(xs[i - 1], ys[i - 1], xs[i], ys[i]))) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

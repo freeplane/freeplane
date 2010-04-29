@@ -26,13 +26,12 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class IconBuilder implements IElementDOMHandler {
-	
 	private final IconStore store;
-	
+
 	public IconBuilder(final IconStore icons) {
-		this.store = icons;
+		store = icons;
 	}
-	
+
 	static class IconProperties {
 		String iconName;
 	}

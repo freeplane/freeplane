@@ -94,7 +94,7 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 			final Object object = mapView.detectCollision(new Point(originX, originY));
 			if (object instanceof ConnectorModel) {
 				final ConnectorModel arrowLinkModel = (ConnectorModel) object;
-				if(arrowLinkModel.isEdgeLike()){
+				if (arrowLinkModel.isEdgeLike()) {
 					return;
 				}
 				draggedLink = arrowLinkModel;

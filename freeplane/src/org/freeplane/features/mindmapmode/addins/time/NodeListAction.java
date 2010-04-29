@@ -30,7 +30,8 @@ import org.freeplane.core.ui.ActionLocationDescriptor;
  * 01.09.2009
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/edit/find" }, //
-accelerator = "control shift F") class NodeListAction extends AFreeplaneAction {
+accelerator = "control shift F")
+class NodeListAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */

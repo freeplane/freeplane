@@ -27,7 +27,6 @@ import java.net.URL;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -40,7 +39,7 @@ class DocumentationAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String document;
+	private final String document;
 
 	DocumentationAction(final Controller controller, final String actionName, final String document) {
 		super(actionName, controller);
@@ -52,42 +51,43 @@ class DocumentationAction extends AFreeplaneAction {
 		final File baseDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParentFile();
 		final File file;
 		final int extPosition = document.lastIndexOf('.');
-		if(extPosition != -1){
+		if (extPosition != -1) {
 			final String languageCode = ((ResourceBundles) resourceController.getResources()).getLanguageCode();
-			String map = document.substring(0, extPosition) + "_" + languageCode + document.substring(extPosition);
-			 File localFile = new File(baseDir, map);
-			 if(localFile.canRead()){
-				 file = localFile;
-			 }
-			 else{
-				 file = new File(baseDir, document);
-			 }
+			final String map = document.substring(0, extPosition) + "_" + languageCode
+			        + document.substring(extPosition);
+			final File localFile = new File(baseDir, map);
+			if (localFile.canRead()) {
+				file = localFile;
+			}
+			else {
+				file = new File(baseDir, document);
+			}
 		}
-		else{
-			 file = new File(baseDir, document);
+		else {
+			file = new File(baseDir, document);
 		}
 		try {
-	        final URL endUrl = file.toURL();
-	        SwingUtilities.invokeLater(new Runnable() {
-	        	public void run() {
-	        		try {
-	        			if (endUrl.getFile().endsWith(".mm") ) {
-	        				getController().selectMode(BModeController.MODENAME);
-	        				getModeController().getMapController().newMap(endUrl);
-	        			}
-	        			else{
-	        				getController().getViewController().openDocument(endUrl);
-	        			}
-	        		}
-	        		catch (final Exception e1) {
-	        			LogTool.severe(e1);
-	        		}
-	        	}
-	        });
-        }
-        catch (MalformedURLException e1) {
-        	LogTool.warn(e1);
-        }
+			final URL endUrl = file.toURL();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						if (endUrl.getFile().endsWith(".mm")) {
+							getController().selectMode(BModeController.MODENAME);
+							getModeController().getMapController().newMap(endUrl);
+						}
+						else {
+							getController().getViewController().openDocument(endUrl);
+						}
+					}
+					catch (final Exception e1) {
+						LogTool.severe(e1);
+					}
+				}
+			});
+		}
+		catch (final MalformedURLException e1) {
+			LogTool.warn(e1);
+		}
 	}
 
 	@Override

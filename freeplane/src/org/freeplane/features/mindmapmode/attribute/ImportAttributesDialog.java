@@ -57,9 +57,8 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
-	
 	private static final IconStore STORE = IconStoreFactory.create();
-	
+
 	static private class AttributeTreeNodeInfo extends TreeNodeInfo {
 		final private boolean restricted;
 
@@ -150,11 +149,9 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	final private JTree tree;
 	final private DefaultTreeModel treeModel;
 
-	public ImportAttributesDialog(final Controller controller,
-			final Component parentComponent) {
-		super(controller.getViewController().getFrame(), 
-				FpStringUtils.removeMnemonic(ResourceBundles.getText("attributes_import")),
-				true);
+	public ImportAttributesDialog(final Controller controller, final Component parentComponent) {
+		super(controller.getViewController().getFrame(), FpStringUtils.removeMnemonic(ResourceBundles
+		    .getText("attributes_import")), true);
 		this.controller = controller;
 		this.parentComponent = parentComponent;
 		final TreeNodeInfo nodeInfo = new TreeNodeInfo(ResourceBundles.getText("attribute_top"));
@@ -194,7 +191,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	}
 
 	private void createAttributeSubTrees(final DefaultMutableTreeNode mapInfo, final AttributeRegistry attributes) {
-		if(attributes == null){
+		if (attributes == null) {
 			return;
 		}
 		for (int i = 0; i < attributes.size(); i++) {

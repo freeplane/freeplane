@@ -14,9 +14,9 @@ import org.freeplane.core.resources.ResourceController;
 
 public class ResUtil {
 	public static void copyFromURL(final URL resource, final File destinationDirectory) {
-		String path = resource.getPath();
-		int index = path.lastIndexOf('/');
-		String fileName = index > -1 ? path.substring(index + 1) : path;
+		final String path = resource.getPath();
+		final int index = path.lastIndexOf('/');
+		final String fileName = index > -1 ? path.substring(index + 1) : path;
 		try {
 			final InputStream in = resource.openStream();
 			final OutputStream out = new FileOutputStream(new File(destinationDirectory, fileName));
@@ -31,13 +31,13 @@ public class ResUtil {
 	/**
 	 */
 	public static void copyFromResource(final String prefix, final String fileName, final File destinationDirectory) {
-		String pathToResource = prefix + fileName;
+		final String pathToResource = prefix + fileName;
 		try {
-			final URL resource; 
-			if(pathToResource.startsWith("file:")){
+			final URL resource;
+			if (pathToResource.startsWith("file:")) {
 				resource = new URL(pathToResource);
 			}
-			else{
+			else {
 				resource = ResourceController.getResourceController().getResource(pathToResource);
 			}
 			if (resource == null) {
@@ -49,7 +49,8 @@ public class ResUtil {
 			ResUtil.copyStream(in, out);
 		}
 		catch (final Exception e) {
-			LogTool.severe("File not found or could not be copied. " + "Was searching for " + pathToResource + " and should go to " + destinationDirectory.getAbsolutePath());
+			LogTool.severe("File not found or could not be copied. " + "Was searching for " + pathToResource
+			        + " and should go to " + destinationDirectory.getAbsolutePath());
 		}
 	}
 
@@ -84,26 +85,27 @@ public class ResUtil {
 		return props;
 	}
 
-	public static String slurpFile(File file) throws IOException {
+	public static String slurpFile(final File file) throws IOException {
 		FileReader in = null;
 		try {
 			in = new FileReader(file);
-			StringBuilder builder = new StringBuilder();
+			final StringBuilder builder = new StringBuilder();
 			final char[] buf = new char[1024];
 			int len;
 			while ((len = in.read(buf)) > 0) {
 				builder.append(buf, 0, len);
 			}
-			String result = builder.toString();
+			final String result = builder.toString();
 			return result;
 		}
 		finally {
-			if (in != null)
+			if (in != null) {
 				in.close();
+			}
 		}
 	}
 
-	public static String slurpFile(String fileName) throws IOException {
-		return slurpFile(new File(fileName));
+	public static String slurpFile(final String fileName) throws IOException {
+		return ResUtil.slurpFile(new File(fileName));
 	}
 }

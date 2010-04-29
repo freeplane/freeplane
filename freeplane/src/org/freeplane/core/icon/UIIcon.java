@@ -19,9 +19,6 @@
  */
 package org.freeplane.core.icon;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.Icon;
@@ -37,20 +34,14 @@ import org.freeplane.core.resources.ResourceController;
  *
  */
 public class UIIcon implements IIconInformation, Comparable<UIIcon> {
-
 	private static final String DEFAULT_IMAGE_PATH = "/images";
-
 	protected static final String SEPARATOR = "/";
-
 	protected static final String THEME_FOLDER_KEY = "icon.theme.folder";
-
 	protected static final ResourceController RESOURCE_CONTROLLER = ResourceController.getResourceController();
-	
 	private final String name;
 	private final String fileName;
 	private final String description;
 	private final String shortcutKey;
-
 	private URL resourceURL;
 
 	public UIIcon(final String name, final String fileName) {
@@ -61,8 +52,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		this(name, fileName, description, "?");
 	}
 
-	public UIIcon(final String name, final String fileName,
-			final String description, final String shortcutKey) {
+	public UIIcon(final String name, final String fileName, final String description, final String shortcutKey) {
 		this.name = name;
 		this.fileName = fileName;
 		this.description = description;
@@ -70,28 +60,28 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	}
 
 	public String getFileName() {
-		return this.fileName;
+		return fileName;
 	}
 
 	/**
 	 * @return key for the shortcut in the property file
 	 */
 	public String getShortcutKey() {
-		return this.shortcutKey;
+		return shortcutKey;
 	}
 
 	/**
 	 * @return description of icon
 	 */
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 
 	/**
 	 * @return name of icon
 	 */
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	/**
@@ -110,23 +100,20 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	}
 
 	public URL getUrl() {
-		if (resourceURL != null){
+		if (resourceURL != null) {
 			return resourceURL;
 		}
 		final String path = getPath();
 		resourceURL = RESOURCE_CONTROLLER.getResource(path);
-		
 		return resourceURL;
 	}
 
 	public String getPath() {
 		StringBuilder builder = new StringBuilder();
-
 		builder = new StringBuilder();
 		builder.append(this.getDefaultImagePath());
 		builder.append(SEPARATOR);
-		builder.append(this.fileName);
-
+		builder.append(fileName);
 		final String path = builder.toString();
 		return path;
 	}
@@ -135,53 +122,65 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((this.description == null) ? 0 : this.description.hashCode());
-		result = prime * result
-				+ ((this.fileName == null) ? 0 : this.fileName.hashCode());
-		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
-		result = prime * result
-				+ ((this.shortcutKey == null) ? 0 : this.shortcutKey.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((shortcutKey == null) ? 0 : shortcutKey.hashCode());
 		result = prime * result + this.getClass().hashCode();
 		return result;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (this.getClass() != obj.getClass())
+		}
+		if (this.getClass() != obj.getClass()) {
 			return false;
+		}
 		final UIIcon other = (UIIcon) obj;
-		if (this.description == null) {
-			if (other.description != null)
+		if (description == null) {
+			if (other.description != null) {
 				return false;
-		} else if (!this.description.equals(other.description))
+			}
+		}
+		else if (!description.equals(other.description)) {
 			return false;
-		if (this.fileName == null) {
-			if (other.fileName != null)
+		}
+		if (fileName == null) {
+			if (other.fileName != null) {
 				return false;
-		} else if (!this.fileName.equals(other.fileName))
+			}
+		}
+		else if (!fileName.equals(other.fileName)) {
 			return false;
-		if (this.name == null) {
-			if (other.name != null)
+		}
+		if (name == null) {
+			if (other.name != null) {
 				return false;
-		} else if (!this.name.equals(other.name))
+			}
+		}
+		else if (!name.equals(other.name)) {
 			return false;
-		if (this.shortcutKey == null) {
-			if (other.shortcutKey != null)
+		}
+		if (shortcutKey == null) {
+			if (other.shortcutKey != null) {
 				return false;
-		} else if (!this.shortcutKey.equals(other.shortcutKey))
+			}
+		}
+		else if (!shortcutKey.equals(other.shortcutKey)) {
 			return false;
+		}
 		return true;
 	}
 
 	public int compareTo(final UIIcon uiIcon) {
 		return this.getPath().compareTo(uiIcon.getPath());
 	}
-	
+
 	@Override
 	public String toString() {
 		return name;

@@ -166,7 +166,7 @@ public class ChangeNodeLevelController {
 		if (selectedParent.isRoot()) {
 			final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
 			final Component mapViewComponent = mapViewManager.getMapViewComponent();
-			if (! mapViewManager.isLeftTreeSupported(mapViewComponent)){
+			if (!mapViewManager.isLeftTreeSupported(mapViewComponent)) {
 				return;
 			}
 			position = selectedParent.getChildCount() - 1;

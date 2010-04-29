@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -55,38 +54,42 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 
 	final private ScriptingEngine engine;
 	private final String script;
-	private ExecutionMode mode;
+	private final ExecutionMode mode;
 	private final boolean cacheContent;
 	private String content;
 
-	public ExecuteScriptAction(final Controller controller, ScriptingEngine engine, String scriptName,
-	                           String menuItemName, String script, ExecutionMode mode, boolean cacheContent) {
-		super(makeMenuItemKey(scriptName, mode), controller, menuItemName, null);
+	public ExecuteScriptAction(final Controller controller, final ScriptingEngine engine, final String scriptName,
+	                           final String menuItemName, final String script, final ExecutionMode mode,
+	                           final boolean cacheContent) {
+		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), controller, menuItemName, null);
 		this.engine = engine;
 		this.script = script;
 		this.mode = mode;
 		this.cacheContent = cacheContent;
 	}
 
-	private static String makeMenuItemKey(String scriptName, ExecutionMode mode) {
+	private static String makeMenuItemKey(final String scriptName, final ExecutionMode mode) {
 		return scriptName + "_" + mode.toString().toLowerCase();
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		getController().getViewController().setWaitingCursor(true);
 		boolean result = true;
 		try {
 			String scriptContent = getContentIfCached();
-			if (scriptContent == null)
+			if (scriptContent == null) {
 				scriptContent = ResUtil.slurpFile(script);
-			List<NodeModel> nodes = new ArrayList<NodeModel>();
-			if (mode == ExecutionMode.ON_SINGLE_NODE)
+			}
+			final List<NodeModel> nodes = new ArrayList<NodeModel>();
+			if (mode == ExecutionMode.ON_SINGLE_NODE) {
 				nodes.add(getController().getSelection().getSelected());
-			else
+			}
+			else {
 				nodes.addAll(getController().getSelection().getSelection());
+			}
 			final MModeController modeController = (MModeController) getController().getModeController();
 			modeController.startTransaction();
-			for (NodeModel node : nodes) {
+			for (final NodeModel node : nodes) {
 				if (mode == ExecutionMode.ON_SELECTED_NODE_RECURSIVELY) {
 					// TODO: ensure that a script is invoked only once on every node?
 					// (might be a problem with recursive actions if parent and child
@@ -105,35 +108,36 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 			}
 			modeController.delayedCommit();
 		}
-		catch (IOException ex) {
+		catch (final IOException ex) {
 			LogTool.warn("error reading " + script, ex);
 			UITools.errorMessage(ResourceBundles.getText("ReadScriptError.text"));
 		}
-		finally{
+		finally {
 			getController().getViewController().setWaitingCursor(false);
 		}
-    }
+	}
 
 	private String getContentIfCached() throws IOException {
-	    if (cacheContent && content == null) {
-	    	content = ResUtil.slurpFile(script);
-	    	// oops, logtool seems to be inoperable right now
-	    	LogTool.info("cached " + String.format("%.1f", content.length()/1000.) + " KB for script " + script);
-	    	System.out.println("cached " + String.format("%.1f", content.length()/1000.) + " KB for script " + script);
-	    }
-	    return content;
-    }
+		if (cacheContent && content == null) {
+			content = ResUtil.slurpFile(script);
+			// oops, logtool seems to be inoperable right now
+			LogTool.info("cached " + String.format("%.1f", content.length() / 1000.) + " KB for script " + script);
+			System.out
+			    .println("cached " + String.format("%.1f", content.length() / 1000.) + " KB for script " + script);
+		}
+		return content;
+	}
 
 	static String getExecutionModeKey(final ExecutionMode executionMode) {
-    	switch (executionMode) {
-    		case ON_SINGLE_NODE:
-    			return "ExecuteScriptOnSingleNode.text";
-    		case ON_SELECTED_NODE:
-    			return "ExecuteScriptOnSelectedNode.text";
-    		case ON_SELECTED_NODE_RECURSIVELY:
-    			return "ExecuteScriptOnSelectedNodeRecursively.text";
-    		default:
-    			throw new AssertionError("unknown ExecutionMode " + executionMode);
-    	}
-    }
+		switch (executionMode) {
+			case ON_SINGLE_NODE:
+				return "ExecuteScriptOnSingleNode.text";
+			case ON_SELECTED_NODE:
+				return "ExecuteScriptOnSelectedNode.text";
+			case ON_SELECTED_NODE_RECURSIVELY:
+				return "ExecuteScriptOnSelectedNodeRecursively.text";
+			default:
+				throw new AssertionError("unknown ExecutionMode " + executionMode);
+		}
+	}
 }

@@ -52,6 +52,8 @@ public class HyperLinkExistsCondition extends HyperLinkCondition {
 	String getName() {
 		return NAME;
 	}
+
+	@Override
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(getName());

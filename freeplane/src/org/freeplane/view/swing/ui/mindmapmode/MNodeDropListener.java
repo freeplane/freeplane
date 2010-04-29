@@ -116,9 +116,9 @@ public class MNodeDropListener implements DropTargetListener {
 			}
 			final boolean dropAsSibling = mainView.dropAsSibling(dtde.getLocation().getX());
 			final MMapController mapController = (MMapController) modeController.getMapController();
-			if ((dropAction == DnDConstants.ACTION_MOVE || dropAction == DnDConstants.ACTION_COPY)){
+			if ((dropAction == DnDConstants.ACTION_MOVE || dropAction == DnDConstants.ACTION_COPY)) {
 				final NodeModel parent = dropAsSibling ? targetNode.getParentNode() : targetNode;
-				if( !mapController.isWriteable(parent)) {
+				if (!mapController.isWriteable(parent)) {
 					dtde.rejectDrop();
 					final String message = ResourceBundles.getText("node_is_write_protected");
 					UITools.errorMessage(message);

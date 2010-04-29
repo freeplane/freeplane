@@ -23,8 +23,6 @@ import java.util.Vector;
 
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
@@ -87,6 +85,7 @@ public class MModeController extends ModeController {
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.delayedRollback();
 	}
+
 	private void createActions() {
 		final Controller controller = getController();
 		undo = new UndoAction(controller);
@@ -119,7 +118,7 @@ public class MModeController extends ModeController {
 	}
 
 	@Override
-	public void execute(final IActor actor, MapModel map) {
+	public void execute(final IActor actor, final MapModel map) {
 		actor.act();
 		addUndoableActor(actor, (MMapModel) map);
 	}
@@ -133,6 +132,7 @@ public class MModeController extends ModeController {
 		return optionPanelBuilder;
 	}
 
+	@Override
 	public boolean isUndoAction() {
 		final MapModel model = getController().getMap();
 		if (!(model instanceof MMapModel)) {
@@ -183,6 +183,7 @@ public class MModeController extends ModeController {
 		redo.reset();
 	}
 
+	@Override
 	public boolean canEdit() {
 		return true;
 	}

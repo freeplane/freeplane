@@ -127,7 +127,7 @@ class AppletViewController extends ViewController {
 				initialMapName = documentBaseUrl.toString();
 			}
 			catch (final java.net.MalformedURLException e) {
-				UITools.errorMessage(ResourceBundles.getText("url_load_error") +  " " + initialMapName);
+				UITools.errorMessage(ResourceBundles.getText("url_load_error") + " " + initialMapName);
 				System.err.println(e);
 				return;
 			}
@@ -172,7 +172,7 @@ class AppletViewController extends ViewController {
 	}
 
 	@Override
-	public void openDocument(final URL doc){
+	public void openDocument(final URL doc) {
 		applet.getAppletContext().showDocument(doc, "_blank");
 	}
 

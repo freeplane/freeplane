@@ -50,7 +50,7 @@ class ExportBranchAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	public ExportBranchAction(final Controller controller) {
 		super("ExportBranchAction", controller);
 	}
@@ -107,17 +107,20 @@ class ExportBranchAction extends AFreeplaneAction {
 			 */
 			final NodeModel parent = existingNode.getParentNode();
 			final File oldFile = existingNode.getMap().getFile();
-			boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
+			final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
+			    "relative");
 			final URI newUri = useRelativeUri ? LinkController.toRelativeURI(oldFile, chosenFile) : chosenFile.toURI();
-			final URI oldUri = useRelativeUri ? LinkController.toRelativeURI(chosenFile, file):file.toURI();
-			((MLinkController) LinkController.getController(controller.getModeController())).setLink(existingNode, oldUri, false);
+			final URI oldUri = useRelativeUri ? LinkController.toRelativeURI(chosenFile, file) : file.toURI();
+			((MLinkController) LinkController.getController(controller.getModeController())).setLink(existingNode,
+			    oldUri, false);
 			final int nodePosition = parent.getChildPosition(existingNode);
 			final MMapController mMapController = (MMapController) getModeController().getMapController();
 			mMapController.deleteNode(existingNode);
 			final MapModel parentMap = parent.getMap();
 			{
-				IActor actor = new IActor() {
-					private boolean wasFolded = existingNode.isFolded();
+				final IActor actor = new IActor() {
+					private final boolean wasFolded = existingNode.isFolded();
+
 					public void undo() {
 						existingNode.setMap(parentMap);
 						existingNode.setFolded(wasFolded);
@@ -140,21 +143,22 @@ class ExportBranchAction extends AFreeplaneAction {
 			final NodeModel newNode = mMapController.addNewNode(parent, nodePosition, existingNode.isLeft());
 			((MTextController) TextController.getController(getModeController())).setNodeText(newNode, existingNode
 			    .getText());
-			final File newFile = map.getFile();
-			((MLinkController) LinkController.getController(controller.getModeController())).setLink(newNode, newUri, false);
+			map.getFile();
+			((MLinkController) LinkController.getController(controller.getModeController())).setLink(newNode, newUri,
+			    false);
 			map.destroy();
 		}
 	}
-	
-	private String createFileName(String shortText) {
-	    StringBuilder builder = new StringBuilder(50);
-	    String[] words = shortText.split("\\s");
-	    for(String word : words) {
-	        if("...".equals(word)) {
-	            continue;
-	        }
-	        builder.append(StringUtils.capitalize(word));
-	    }
-	    return builder.toString();
+
+	private String createFileName(final String shortText) {
+		final StringBuilder builder = new StringBuilder(50);
+		final String[] words = shortText.split("\\s");
+		for (final String word : words) {
+			if ("...".equals(word)) {
+				continue;
+			}
+			builder.append(StringUtils.capitalize(word));
+		}
+		return builder.toString();
 	}
 }

@@ -29,7 +29,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.features.mindmapmode.MModeController;
 
 /**
  * @author foltin To change the template for this generated type comment go to
@@ -57,21 +56,23 @@ public class ExportWithXSLTDialogAction extends ExportAction {
 	private void export(final File file) {
 		exp.export(getController().getViewController().getFrame(), getMapXml(Mode.EXPORT), file);
 	}
+
 	/**
 	 * @param mode 
 	 * @throws IOException
 	 */
-	private StreamSource getMapXml(final Mode mode){
+	private StreamSource getMapXml(final Mode mode) {
 		final StringWriter writer = new StringWriter();
 		final ModeController modeController = getModeController();
 		final Controller controller = modeController.getController();
 		final MapModel map = controller.getMap();
 		try {
 			modeController.getMapController().getFilteredXml(map, writer, mode);
-		} catch (IOException e) {
+		}
+		catch (final IOException e) {
 			e.printStackTrace();
 		}
-		StringReader stringReader = new StringReader(writer.getBuffer().toString());
+		final StringReader stringReader = new StringReader(writer.getBuffer().toString());
 		return new StreamSource(stringReader);
 	}
 }

@@ -24,7 +24,6 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Frame;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -34,7 +33,6 @@ import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -61,7 +59,6 @@ class ApplicationViewController extends ViewController {
 	private static final String TOOL_TIP_MANAGER_DISMISS_DELAY = "toolTipManager.dismissDelay";
 	private static final String TOOL_TIP_MANAGER_INITIAL_DELAY = "toolTipManager.initialDelay";
 	private static final String TOOL_TIP_MANAGER_RESHOW_DELAY = "toolTipManager.reshowDelay";
-
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
 	private static final String SPLIT_PANE_LAST_LEFT_POSITION = "split_pane_last_left_position";
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";
@@ -240,7 +237,7 @@ class ApplicationViewController extends ViewController {
 	public void openDocument(final URI uri) throws IOException {
 		String uriString = uri.toString();
 		final String UNC_PREFIX = "file:////";
-		if(uriString.startsWith(UNC_PREFIX)){
+		if (uriString.startsWith(UNC_PREFIX)) {
 			uriString = "file://" + uriString.substring(UNC_PREFIX.length());
 		}
 		final String osName = System.getProperty("os.name");
@@ -257,15 +254,15 @@ class ApplicationViewController extends ViewController {
 				final Object[] messageArguments = { uriString };
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty(propertyString));
-				String browserCommand = formatter.format(messageArguments);
+				final String browserCommand = formatter.format(messageArguments);
 				if (uri.getScheme().equals("file")) {
-					command = new String[]{"rundll32", "url.dll,FileProtocolHandler", uriString};
+					command = new String[] { "rundll32", "url.dll,FileProtocolHandler", uriString };
 					if (System.getProperty("os.name").startsWith("Windows 2000")) {
-						command = new String[]{"rundll32", "shell32.dll,ShellExec_RunDLL",  uriString};
+						command = new String[] { "rundll32", "shell32.dll,ShellExec_RunDLL", uriString };
 					}
 				}
 				else if (uriString.startsWith("mailto:")) {
-					command = new String[]{"rundll32", "url.dll,FileProtocolHandler", uriString};
+					command = new String[] { "rundll32", "url.dll,FileProtocolHandler", uriString };
 				}
 				else {
 					Controller.exec(browserCommand);
@@ -286,7 +283,7 @@ class ApplicationViewController extends ViewController {
 		else if (osName.startsWith("Mac OS")) {
 			String browserCommand = null;
 			try {
-				final Object[] messageArguments = { uriString, uriString};
+				final Object[] messageArguments = { uriString, uriString };
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty("default_browser_command_mac"));
 				browserCommand = formatter.format(messageArguments);
@@ -364,7 +361,7 @@ class ApplicationViewController extends ViewController {
 	public void saveProperties() {
 		saveSplitPanePosition();
 		resourceController.setProperty("map_view_zoom", Float.toString(getZoom()));
-		if(! isFullScreenEnabled()){
+		if (!isFullScreenEnabled()) {
 			final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
 			if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
 				resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
@@ -439,21 +436,21 @@ class ApplicationViewController extends ViewController {
 		navigationPreviousMap.setEnabled(number > 0);
 		navigationNextMap.setEnabled(number > 0);
 	}
+
 	public void initFrame(final JFrame frame) {
-    // Preserve the existing icon image under Mac OS X 
+		// Preserve the existing icon image under Mac OS X 
 		if (!Compat.isMacOsX()) {
 			final ImageIcon mWindowIcon;
 			if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
 				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-						"/images/Freeplane_frame_icon.png"));
+				    "/images/Freeplane_frame_icon.png"));
 			}
 			else {
 				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-						"/images/Freeplane_frame_icon_32x32.png"));
+				    "/images/Freeplane_frame_icon_32x32.png"));
 			}
 			frame.setIconImage(mWindowIcon.getImage());
 		}
-
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
@@ -502,5 +499,4 @@ class ApplicationViewController extends ViewController {
 		    "toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
 		LimitedWidthTooltipUI.setMaximumWidth(maxWidth);
 	}
-
 }

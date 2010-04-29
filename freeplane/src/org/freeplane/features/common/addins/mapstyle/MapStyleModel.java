@@ -71,33 +71,32 @@ public class MapStyleModel implements IExtension {
 		return mapViewLayout;
 	}
 
-	void setMapViewLayout(MapViewLayout mapViewLayout) {
+	void setMapViewLayout(final MapViewLayout mapViewLayout) {
 		this.mapViewLayout = mapViewLayout;
 	}
 
-	void setZoom(float zoom) {
+	void setZoom(final float zoom) {
 		this.zoom = zoom;
 	}
-	
+
 	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
-	
-	private int maxNodeWidth = getDefaultMaxNodeWidth();
+	private int maxNodeWidth = MapStyleModel.getDefaultMaxNodeWidth();
+
 	public int getMaxNodeWidth() {
 		return maxNodeWidth;
 	}
 
-	public void setMaxNodeWidth(int maxNodeWidth) {
+	public void setMaxNodeWidth(final int maxNodeWidth) {
 		this.maxNodeWidth = maxNodeWidth;
 	}
 
 	static int getDefaultMaxNodeWidth() {
 		try {
-			return Integer.parseInt(ResourceController.getResourceController()
-					.getProperty("max_node_width"));
+			return Integer.parseInt(ResourceController.getResourceController().getProperty("max_node_width"));
 		}
 		catch (final NumberFormatException e) {
 			return Integer.parseInt(ResourceController.getResourceController().getProperty(
-					"el__max_default_window_width")) * 2 / 3;
+			    "el__max_default_window_width")) * 2 / 3;
 		}
 	}
 }

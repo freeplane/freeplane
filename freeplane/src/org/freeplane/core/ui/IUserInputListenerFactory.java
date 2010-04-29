@@ -29,6 +29,7 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
+
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 public interface IUserInputListenerFactory {

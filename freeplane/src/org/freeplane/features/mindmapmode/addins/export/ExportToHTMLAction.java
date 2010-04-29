@@ -54,7 +54,8 @@ class ExportToHTMLAction extends AFreeplaneAction {
 			}
 			ClipboardController.getController(getModeController()).saveHTML(map.getRootNode(), file);
 			if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
-				ExportWithXSLT.copyIconsToDirectory(map, new File(file.getAbsoluteFile().getParentFile(), "icons").getAbsolutePath());
+				ExportWithXSLT.copyIconsToDirectory(map, new File(file.getAbsoluteFile().getParentFile(), "icons")
+				    .getAbsolutePath());
 			}
 			((UrlManager) getModeController().getMapController().getModeController().getExtension(UrlManager.class))
 			    .loadURL(file.toURI());

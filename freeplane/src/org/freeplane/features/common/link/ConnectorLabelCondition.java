@@ -41,49 +41,49 @@ public abstract class ConnectorLabelCondition implements ISelectableCondition {
 	final private boolean ignoreCase;
 
 	protected boolean ignoreCase() {
-    	return ignoreCase;
-    }
+		return ignoreCase;
+	}
 
-	public ConnectorLabelCondition(final String text, boolean ignoreCase) {
+	public ConnectorLabelCondition(final String text, final boolean ignoreCase) {
 		super();
 		this.ignoreCase = ignoreCase;
 		this.text = ignoreCase ? text.toLowerCase() : text;
 	}
 
 	public String getText() {
-    	return text;
-    }
+		return text;
+	}
 
 	abstract protected boolean checkLink(final ConnectorModel connector);
 
 	public boolean checkNode(final NodeModel node) {
 		final NodeLinks nodeLinks = NodeLinks.getModel(node);
-		if(nodeLinks != null){
-			for(LinkModel l:nodeLinks.getLinks()){
-				if(! (l instanceof ConnectorModel)){
+		if (nodeLinks != null) {
+			for (final LinkModel l : nodeLinks.getLinks()) {
+				if (!(l instanceof ConnectorModel)) {
 					continue;
 				}
-				if(checkLink((ConnectorModel) l)){
+				if (checkLink((ConnectorModel) l)) {
 					return true;
 				}
 			}
 		}
-		if(! node.hasID()){
+		if (!node.hasID()) {
 			return false;
 		}
 		final MapLinks mapLinks = MapLinks.getLinks(node.getMap());
-		if(mapLinks == null){
+		if (mapLinks == null) {
 			return false;
 		}
 		final Set<LinkModel> targetLinks = mapLinks.get(node.getID());
-		if(targetLinks == null){
+		if (targetLinks == null) {
 			return false;
 		}
-		for(LinkModel l:targetLinks){
-			if(! (l instanceof ConnectorModel)){
+		for (final LinkModel l : targetLinks) {
+			if (!(l instanceof ConnectorModel)) {
 				continue;
 			}
-			if(checkLink((ConnectorModel) l)){
+			if (checkLink((ConnectorModel) l)) {
 				return true;
 			}
 		}

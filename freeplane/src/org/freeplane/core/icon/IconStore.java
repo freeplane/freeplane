@@ -34,80 +34,79 @@ import java.util.Map;
  *
  */
 public class IconStore {
-
 	private final Map<String, IconGroup> groups;
 	private final Map<String, MindIcon> mindIcons;
 	private final Map<String, UIIcon> uiIcons;
-	
+
 	public IconStore() {
-		groups    = new LinkedHashMap<String, IconGroup>();
+		groups = new LinkedHashMap<String, IconGroup>();
 		mindIcons = new HashMap<String, MindIcon>();
-		uiIcons   = new HashMap<String, UIIcon>();
+		uiIcons = new HashMap<String, UIIcon>();
 	}
-	
+
 	/**
 	 * Adds a new MindIcon group to the store.
 	 * 
 	 * @param group
 	 */
-	public void addGroup(IconGroup group) {
+	public void addGroup(final IconGroup group) {
 		groups.put(group.getName(), group);
-		for(MindIcon icon : group.getIcons()) {
+		for (final MindIcon icon : group.getIcons()) {
 			mindIcons.put(icon.getName(), icon);
 		}
 	}
-	
+
 	/**
 	 * Adds a new MindIcon to the group with the given name.
 	 * 
 	 * @param groupName where to add the icon
 	 * @param icon to add
 	 */
-	public void addMindIcon(String groupName, MindIcon icon) {
-		if(!groups.containsKey(groupName)) {
-			IconGroup group = new IconGroup(groupName, icon);
+	public void addMindIcon(final String groupName, final MindIcon icon) {
+		if (!groups.containsKey(groupName)) {
+			final IconGroup group = new IconGroup(groupName, icon);
 			groups.put(groupName, group);
 		}
 		groups.get(groupName).addIcon(icon);
 		mindIcons.put(icon.getName(), icon);
 	}
-	
-	public void addUIIcon(UIIcon uiIcon) {
+
+	public void addUIIcon(final UIIcon uiIcon) {
 		uiIcons.put(uiIcon.getFileName(), uiIcon);
 	}
-	
+
 	/**
 	 * @return all groups in the store
 	 */
 	public Collection<IconGroup> getGroups() {
 		return groups.values();
 	}
-	
+
 	/**
 	 * @return all MindIcons from all groups in the store, including user icons
 	 */
 	public Collection<MindIcon> getMindIcons() {
-		List<MindIcon> icons = new ArrayList<MindIcon>();
-		for(IconGroup group : groups.values()) {
+		final List<MindIcon> icons = new ArrayList<MindIcon>();
+		for (final IconGroup group : groups.values()) {
 			icons.addAll(group.getIcons());
 		}
 		return icons;
 	}
-	
+
 	/**
 	 * @return all user icons in the store
 	 */
 	public Collection<MindIcon> getUserIcons() {
 		return groups.get("user").getIcons();
 	}
-	
+
 	/**
 	 * @param name of MindIcon to return
 	 * @return MindIcon with given name
 	 */
-	public MindIcon getMindIcon(String name) {
+	public MindIcon getMindIcon(final String name) {
 		MindIcon result;
-		if(mindIcons.containsKey(name)) {
+		if (mindIcons.containsKey(name)) {
 			result = mindIcons.get(name);
 		}
 		else {
@@ -115,7 +114,7 @@ public class IconStore {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Returns a UIIcon with a given name. If one is not found in the store,
 	 * it will be created and stored.
@@ -123,12 +122,12 @@ public class IconStore {
 	 * @param name of UIIcon to return
 	 * @return UIIcon with given name
 	 */
-	public UIIcon getUIIcon(String name) {
+	public UIIcon getUIIcon(final String name) {
 		UIIcon result;
-		if(mindIcons.containsKey(name)) {
+		if (mindIcons.containsKey(name)) {
 			result = mindIcons.get(name);
 		}
-		else if(uiIcons.containsKey(name)) {
+		else if (uiIcons.containsKey(name)) {
 			result = uiIcons.get(name);
 		}
 		else {

@@ -27,8 +27,7 @@ import java.util.Timer;
  * 22.07.2009
  */
 public class SysUtil {
-	
-	static public Timer createTimer(String name){
+	static public Timer createTimer(final String name) {
 		return new Timer(name + '(' + new Date().toString() + ')');
 	}
 }

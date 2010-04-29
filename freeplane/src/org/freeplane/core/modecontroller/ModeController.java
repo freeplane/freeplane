@@ -33,8 +33,6 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
@@ -152,12 +150,12 @@ public class ModeController extends AController {
 
 	public void commit() {
 	}
-	
+
 	public boolean isUndoAction() {
 		return false;
 	}
 
-	public void execute(final IActor actor, MapModel map) {
+	public void execute(final IActor actor, final MapModel map) {
 		actor.act();
 	}
 
@@ -211,13 +209,13 @@ public class ModeController extends AController {
 	}
 
 	public void onViewCreated(final Container node) {
-		for(INodeViewLifeCycleListener hook : nodeViewListeners) {
+		for (final INodeViewLifeCycleListener hook : nodeViewListeners) {
 			hook.onViewCreated(node);
 		}
 	}
 
 	public void onViewRemoved(final Container node) {
-		for(INodeViewLifeCycleListener hook : nodeViewListeners) {
+		for (final INodeViewLifeCycleListener hook : nodeViewListeners) {
 			hook.onViewRemoved(node);
 		}
 	}

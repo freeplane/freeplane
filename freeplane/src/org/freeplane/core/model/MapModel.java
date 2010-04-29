@@ -21,7 +21,6 @@ package org.freeplane.core.model;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -96,19 +95,17 @@ public class MapModel {
 	}
 
 	public String generateNodeID(final String proposedID) {
-		if (proposedID != null 
-				&& ! "".equals(proposedID)
-				&& getNodeForID(proposedID) == null) {
+		if (proposedID != null && !"".equals(proposedID) && getNodeForID(proposedID) == null) {
 			return proposedID;
 		}
 		String returnValue;
 		do {
-				final String prefix = "ID_";
-				/*
-				 * The prefix is to enable the id to be an ID in the sense of
-				 * XML/DTD.
-				 */
-				returnValue = prefix + Integer.toString(ran.nextInt(UNDEFINED_NODE_ID));
+			final String prefix = "ID_";
+			/*
+			 * The prefix is to enable the id to be an ID in the sense of
+			 * XML/DTD.
+			 */
+			returnValue = prefix + Integer.toString(ran.nextInt(UNDEFINED_NODE_ID));
 		} while (nodes.containsKey(returnValue));
 		return returnValue;
 	}
@@ -203,8 +200,9 @@ public class MapModel {
 	public void registryNodeRecursive(final NodeModel nodeModel) {
 		registryNodeRecursive(nodeModel, 0);
 	}
+
 	private void registryNodeRecursive(final NodeModel nodeModel, final int depth) {
-		if(depth > 400){
+		if (depth > 400) {
 			throw new StackOverflowError();
 		}
 		final String id = nodeModel.getID();
@@ -214,7 +212,7 @@ public class MapModel {
 		final Iterator<NodeModel> iterator = nodeModel.getChildren().iterator();
 		while (iterator.hasNext()) {
 			final NodeModel next = iterator.next();
-			registryNodeRecursive(next, depth+1);
+			registryNodeRecursive(next, depth + 1);
 		}
 	}
 
@@ -267,14 +265,14 @@ public class MapModel {
 		url = v;
 	}
 
-	public void unregistryNodes(NodeModel node) {
+	public void unregistryNodes(final NodeModel node) {
 		final List<NodeModel> children = node.getChildren();
-		for(NodeModel child:children){
+		for (final NodeModel child : children) {
 			unregistryNodes(child);
 		}
 		final String id = node.getID();
-		if(id != null){
+		if (id != null) {
 			nodes.put(id, null);
 		}
-    }
+	}
 }

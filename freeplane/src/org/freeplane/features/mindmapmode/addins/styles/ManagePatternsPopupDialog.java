@@ -402,10 +402,9 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 			mStylePatternFrame = new StylePatternPanel(mController, StylePatternPanelType.WITH_NAME_AND_CHILDS);
 			mStylePatternFrame.init();
 			mStylePatternFrame.addListeners();
-			JScrollPane scrollPane = new JScrollPane(mStylePatternFrame);
+			final JScrollPane scrollPane = new JScrollPane(mStylePatternFrame);
 			mRightStack.add(scrollPane, ManagePatternsPopupDialog.STACK_PATTERN_FRAME);
 			UITools.setScrollbarIncrement(scrollPane);
-
 			final JScrollPane leftPane = new JScrollPane(mList);
 			mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPane, mRightStack);
 			jContentPane.add(mSplitPane, new GridBagConstraints(0, 0, 2, 1, 1.0, 8.0, GridBagConstraints.WEST,
@@ -546,7 +545,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 	}
 
 	private void okPressed() {
-		if (writePatternBackToModel()){
+		if (writePatternBackToModel()) {
 			result = ManagePatternsPopupDialog.OK;
 			close();
 		}
@@ -604,7 +603,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 				}
 				if (otherPattern.getName().equals(newPatternName)) {
 					JOptionPane.showMessageDialog(this, ResourceBundles
-							.getText("ManagePatternsPopupDialog.DuplicateNameMessage"));
+					    .getText("ManagePatternsPopupDialog.DuplicateNameMessage"));
 					return false;
 				}
 			}
@@ -612,7 +611,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		for (final Iterator iter = mPatternListModel.getPatternList().iterator(); iter.hasNext();) {
 			final Pattern otherPattern = (Pattern) iter.next();
 			if (otherPattern.getPatternChild() != null
-					&& oldPatternName.equals(otherPattern.getPatternChild().getValue())) {
+			        && oldPatternName.equals(otherPattern.getPatternChild().getValue())) {
 				otherPattern.getPatternChild().setValue(newPatternName);
 			}
 		}
@@ -622,5 +621,4 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		}
 		return true;
 	}
-	
 }

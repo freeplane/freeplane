@@ -24,7 +24,6 @@ import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.NodeCondition;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.util.HtmlTools;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class IgnoreCaseNodeContainsCondition extends NodeCondition {
@@ -43,7 +42,7 @@ public class IgnoreCaseNodeContainsCondition extends NodeCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		String text = node.getPlainTextContent();
+		final String text = node.getPlainTextContent();
 		return checkText(text);
 	}
 

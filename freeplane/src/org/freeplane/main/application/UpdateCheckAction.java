@@ -131,7 +131,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		final Locale defaultLocale = Locale.getDefault();
 		final String language = defaultLocale.getLanguage();
 		final String DEFAULT_LANGUAGE = "en";
-		final String translatedWebUpdate  = getWebUpdateUrl(language);
+		final String translatedWebUpdate = getWebUpdateUrl(language);
 		final FreeplaneVersion localVersion = FreeplaneVersion.getVersion();
 		final HttpVersionClient translatedVersionClient = new HttpVersionClient(translatedWebUpdate, localVersion);
 		FreeplaneVersion lastTranslatedVersion = translatedVersionClient.getRemoteVersion();
@@ -167,15 +167,15 @@ class UpdateCheckAction extends AFreeplaneAction {
 
 	private String getWebUpdateUrl(final String language) {
 		{
-		final String webUpdateUrl = ResourceController.getResourceController().getProperty(WEB_UPDATE_LOCATION_KEY);
-		final FreeplaneVersion localVersion = FreeplaneVersion.getVersion();
-		StringBuilder sb = new StringBuilder(webUpdateUrl);
-		sb.append(localVersion.getType());
-		sb.append('/');
-		sb.append("history_"); 
-		sb.append(language );
-		sb.append(".txt");
-		return sb.toString();
+			final String webUpdateUrl = ResourceController.getResourceController().getProperty(WEB_UPDATE_LOCATION_KEY);
+			final FreeplaneVersion localVersion = FreeplaneVersion.getVersion();
+			final StringBuilder sb = new StringBuilder(webUpdateUrl);
+			sb.append(localVersion.getType());
+			sb.append('/');
+			sb.append("history_");
+			sb.append(language);
+			sb.append(".txt");
+			return sb.toString();
 		}
 	}
 

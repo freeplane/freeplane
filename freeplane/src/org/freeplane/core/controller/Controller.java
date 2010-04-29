@@ -27,7 +27,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewManager;
@@ -168,12 +167,12 @@ public class Controller extends AController {
 		return true;
 	}
 
-	public static Process exec(String string) throws IOException {
+	public static Process exec(final String string) throws IOException {
 		LogTool.info("execute " + string);
 		return Runtime.getRuntime().exec(string);
 	}
 
-	public static Process exec(String[] command) throws IOException {
+	public static Process exec(final String[] command) throws IOException {
 		LogTool.info("execute " + Arrays.toString(command));
 		return Runtime.getRuntime().exec(command);
 	}

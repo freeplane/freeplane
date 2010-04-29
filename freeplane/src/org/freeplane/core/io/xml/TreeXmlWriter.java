@@ -52,7 +52,7 @@ public class TreeXmlWriter implements ITreeWriter {
 
 	public static String listToString(final List<?> list) {
 		final ListIterator<?> it = list.listIterator(0);
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		while (it.hasNext()) {
 			sb.append(it.next().toString()).append(";");
 		}

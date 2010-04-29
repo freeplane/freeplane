@@ -18,6 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.freeplane.main.osgi;
+
 import org.freeplane.main.application.FreeplaneMain;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -28,13 +29,14 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator implements BundleActivator {
 	private BundleActivator activatorImpl;
-	public void start(BundleContext context) throws Exception {
+
+	public void start(final BundleContext context) throws Exception {
 		FreeplaneMain.checkJavaVersion();
 		activatorImpl = new ActivatorImpl();
 		activatorImpl.start(context);
 	}
 
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		activatorImpl.stop(context);
 	}
 }

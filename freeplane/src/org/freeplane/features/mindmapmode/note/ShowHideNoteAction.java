@@ -44,7 +44,8 @@ class ShowHideNoteAction extends AFreeplaneAction {
 	public ShowHideNoteAction(final MNoteController noteController, final ModeController modeController) {
 		super("ShowHideNoteAction", modeController.getController());
 		this.noteController = noteController;
-		setSelected(ResourceController.getResourceController().getBooleanProperty(MNoteController.RESOURCES_USE_SPLIT_PANE));
+		setSelected(ResourceController.getResourceController().getBooleanProperty(
+		    MNoteController.RESOURCES_USE_SPLIT_PANE));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -57,8 +58,8 @@ class ShowHideNoteAction extends AFreeplaneAction {
 			final NodeModel node = controller.getSelection().getSelected();
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					Component component = controller.getViewController().getComponent(node);
-					if(component != null){
+					final Component component = controller.getViewController().getComponent(node);
+					if (component != null) {
 						component.requestFocus();
 					}
 				}

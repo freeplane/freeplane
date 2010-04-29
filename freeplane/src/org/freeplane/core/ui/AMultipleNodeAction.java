@@ -35,7 +35,7 @@ public abstract class AMultipleNodeAction extends AFreeplaneAction {
 	}
 
 	public AMultipleNodeAction(final String key, final Controller controller, final String name,
-	                          final ImageIcon imageIcon) {
+	                           final ImageIcon imageIcon) {
 		super(key, controller, name, imageIcon);
 	}
 

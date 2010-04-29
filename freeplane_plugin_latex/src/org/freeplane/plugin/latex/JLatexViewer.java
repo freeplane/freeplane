@@ -21,7 +21,6 @@ import javax.swing.WindowConstants;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
-import org.scilab.forge.jlatexmath.ParseException;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 
@@ -35,11 +34,11 @@ class JLatexViewer extends JComponent {
 	private float zoom = 0f;
 	final private LatexNodeHook latexController;
 	private LatexExtension model;
-	private TeXFormula teXFormula; 
+	private TeXFormula teXFormula;
 
 	JLatexViewer(final LatexNodeHook latexController, final LatexExtension latexExtension) {
 		this.latexController = latexController;
-		setBorder( BorderFactory.createLineBorder(Color.BLACK));
+		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setModel(latexExtension);
 		if (JLatexViewer.editorTitle == null) {
 			JLatexViewer.editorTitle = ResourceBundles.getText("plugins/latex/LatexNodeHook.editorTitle");
@@ -64,34 +63,36 @@ class JLatexViewer extends JComponent {
 		final JScrollPane editorScrollPane = new JScrollPane(textArea);
 		editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		editorScrollPane.setPreferredSize(new Dimension(500, 160));
-		final JOptionPane editPane = new JOptionPane(editorScrollPane,JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+		final JOptionPane editPane = new JOptionPane(editorScrollPane, JOptionPane.PLAIN_MESSAGE,
+		    JOptionPane.OK_CANCEL_OPTION);
 		final JDialog edit = editPane.createDialog(JOptionPane.getFrameForComponent(this), JLatexViewer.editorTitle);
 		edit.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		edit.setLocationRelativeTo(this);
 		edit.setVisible(true);
-		if (editPane.getValue().equals(JOptionPane.OK_OPTION)){
+		if (editPane.getValue().equals(JOptionPane.OK_OPTION)) {
 			final String eq = textArea.getText();
 			latexController.setEquationUndoable(model, eq);
 		}
 	}
 
 	private void calculateSize() {
-		MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
 		final float mapZoom = mapView.getZoom();
-		if(mapZoom == zoom){
+		if (mapZoom == zoom) {
 			return;
 		}
-		this.zoom = mapZoom;
-		Icon latexIcon = teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE * zoom);
+		zoom = mapZoom;
+		final Icon latexIcon = teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE * zoom);
 		final Insets insets = getInsets();
-		final Dimension dimension = new Dimension (latexIcon.getIconWidth() + insets.left + insets.right, 
-			latexIcon.getIconHeight() + insets.top + insets.bottom);
+		final Dimension dimension = new Dimension(latexIcon.getIconWidth() + insets.left + insets.right, latexIcon
+		    .getIconHeight()
+		        + insets.top + insets.bottom);
 		setPreferredSize(dimension);
-    }
-	
+	}
+
 	@Override
 	public void paint(final Graphics g) {
-		Icon latexIcon = teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE * zoom);
+		final Icon latexIcon = teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE * zoom);
 		final Insets insets = getInsets();
 		latexIcon.paintIcon(this, g, insets.left, insets.top);
 		super.paint(g);
@@ -100,28 +101,26 @@ class JLatexViewer extends JComponent {
 	public void setModel(final LatexExtension latexExtension) {
 		model = latexExtension;
 		try {
-	        teXFormula = new TeXFormula(model.getEquation());
+			teXFormula = new TeXFormula(model.getEquation());
 			teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE);
-        }
-        catch (Exception e) {
+		}
+		catch (final Exception e) {
 			try {
-		        teXFormula = new TeXFormula("\\mbox{" +e.getMessage() +"}");
+				teXFormula = new TeXFormula("\\mbox{" + e.getMessage() + "}");
 				teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE);
-	        }
-	        catch (Exception e1) {
-		        teXFormula = new TeXFormula("\\mbox{Can not parse given equation}");
-	        }
-        }
-        zoom = 0;
+			}
+			catch (final Exception e1) {
+				teXFormula = new TeXFormula("\\mbox{Can not parse given equation}");
+			}
+		}
+		zoom = 0;
 		revalidate();
 		repaint();
 	}
 
 	@Override
-    public Dimension getPreferredSize() {
+	public Dimension getPreferredSize() {
 		calculateSize();
-	    return super.getPreferredSize();
-    }
-	
-	
+		return super.getPreferredSize();
+	}
 }

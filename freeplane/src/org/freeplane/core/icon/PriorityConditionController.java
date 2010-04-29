@@ -26,8 +26,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.icon.factory.IconStoreFactory;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
@@ -39,7 +39,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 class PriorityConditionController implements IElementaryConditionController {
 	static final String FILTER_PRIORITY = "filter_priority";
-	
 	private static final IconStore STORE = IconStoreFactory.create();
 
 	public PriorityConditionController() {
@@ -106,8 +105,8 @@ class PriorityConditionController implements IElementaryConditionController {
 
 	public ComboBoxModel getValuesForProperty(final Object property) {
 		final Object[] items = new Object[10];
-		for(int i = 1; i < 10; ++i) {
-			items[i-1] = STORE.getMindIcon("full-" + Integer.toString(i));
+		for (int i = 1; i < 10; ++i) {
+			items[i - 1] = STORE.getMindIcon("full-" + Integer.toString(i));
 		}
 		final ComboBoxModel box = new DefaultComboBoxModel(items);
 		return box;

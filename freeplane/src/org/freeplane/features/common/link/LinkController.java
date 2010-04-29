@@ -25,8 +25,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,7 +51,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 
 /**
@@ -90,8 +87,8 @@ public class LinkController extends SelectionController implements IExtension {
 
 			public void onSelect(final NodeModel node) {
 				final URI link = NodeLinks.getValidLink(node);
-				String linkString = (link != null ? link.toString() : null);
-				if(linkString != null){
+				final String linkString = (link != null ? link.toString() : null);
+				if (linkString != null) {
 					modeController.getController().getViewController().out(linkString);
 				}
 			}
@@ -165,11 +162,11 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		final String adaptedText = uri.toString();
 		if (adaptedText.startsWith("#")) {
-				final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
-				if(dest != null){
-					return dest.getShortText();
-				}
-				return ResourceBundles.getText("link_not_available_any_more");
+			final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
+			if (dest != null) {
+				return dest.getShortText();
+			}
+			return ResourceBundles.getText("link_not_available_any_more");
 		}
 		return adaptedText;
 	}
@@ -219,18 +216,18 @@ public class LinkController extends SelectionController implements IExtension {
 		if (link != null && link.startsWith("#")) {
 			links.setLocalHyperlink(node, link.substring(1));
 		}
-        try {
-        	if(link.startsWith("\"") && link.endsWith("\"")){
-        		link = link.substring(1, link.length()-1);
-        	}
-            URI hyperlink = LinkController.createURI(link);
-    		links.setHyperLink(hyperlink);
-        }
-		catch (URISyntaxException e1) {
+		try {
+			if (link.startsWith("\"") && link.endsWith("\"")) {
+				link = link.substring(1, link.length() - 1);
+			}
+			final URI hyperlink = LinkController.createURI(link);
+			links.setHyperLink(hyperlink);
+		}
+		catch (final URISyntaxException e1) {
 			LogTool.warn(e1);
 			UITools.errorMessage(FpStringUtils.formatText("link_error", link));
 			return;
-		} 
+		}
 	}
 
 	public void loadURL() {
@@ -265,74 +262,72 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public static URI toRelativeURI(final File map, final File input) {
-    	try {
-    		final URI fileUri = input.getAbsoluteFile().toURI();
-    		if(map == null){
-    			return fileUri;
-    		}
-    		final URI mapUri = map.getAbsoluteFile().toURI();
-    		final String filePathAsString = fileUri.getRawPath();
-    		final String mapPathAsString = mapUri.getRawPath();
-    		int differencePos;
-    		final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
-    		final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
-    		int lastCommonSeparatorPos = 0;
-    		for (differencePos = 1; differencePos <= lastIndexOfSeparatorInMapPath
-    		        && differencePos <= lastIndexOfSeparatorInFilePath
-    		        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
-    			if (filePathAsString.charAt(differencePos) == '/') {
-    				lastCommonSeparatorPos = differencePos;
-    			}
-    		}
-    		if (lastCommonSeparatorPos == 0) {
-    			return fileUri;
-    		}
-    		final StringBuilder relativePath = new StringBuilder();
-    		for (int i = lastCommonSeparatorPos + 1; i <= lastIndexOfSeparatorInMapPath; i++) {
-    			if (mapPathAsString.charAt(i) == '/') {
-    				relativePath.append("../");
-    			}
-    		}
-    		relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
-    		return new URI(relativePath.toString());
-    	}
-    	catch (final URISyntaxException e) {
-    		// TODO Auto-generated catch block
-    		e.printStackTrace();
-    	}
-    	return null;
-    }
+		try {
+			final URI fileUri = input.getAbsoluteFile().toURI();
+			if (map == null) {
+				return fileUri;
+			}
+			final URI mapUri = map.getAbsoluteFile().toURI();
+			final String filePathAsString = fileUri.getRawPath();
+			final String mapPathAsString = mapUri.getRawPath();
+			int differencePos;
+			final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
+			final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
+			int lastCommonSeparatorPos = 0;
+			for (differencePos = 1; differencePos <= lastIndexOfSeparatorInMapPath
+			        && differencePos <= lastIndexOfSeparatorInFilePath
+			        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
+				if (filePathAsString.charAt(differencePos) == '/') {
+					lastCommonSeparatorPos = differencePos;
+				}
+			}
+			if (lastCommonSeparatorPos == 0) {
+				return fileUri;
+			}
+			final StringBuilder relativePath = new StringBuilder();
+			for (int i = lastCommonSeparatorPos + 1; i <= lastIndexOfSeparatorInMapPath; i++) {
+				if (mapPathAsString.charAt(i) == '/') {
+					relativePath.append("../");
+				}
+			}
+			relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
+			return new URI(relativePath.toString());
+		}
+		catch (final URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	// patterns only need to be compiled once
 	static Pattern patSMB = Pattern.compile( // \\host\path[#fragement]
-		"(?:\\\\\\\\([^\\\\]+)\\\\)(.*?)(?:#([^#]*))?");
+	    "(?:\\\\\\\\([^\\\\]+)\\\\)(.*?)(?:#([^#]*))?");
 	static Pattern patFile = Pattern.compile( // [drive:]path[#fragment]
-	"((?:\\p{Alpha}:)?([/\\\\])?(?:[^:#?]*))?(?:#([^#]*))?");
+	    "((?:\\p{Alpha}:)?([/\\\\])?(?:[^:#?]*))?(?:#([^#]*))?");
 	static Pattern patURI = Pattern.compile( // [scheme:]scheme-specific-part[#fragment]
-	"(?:(\\p{Alpha}[\\p{Alnum}+.-]+):)?(.*?)(?:#([^#]*))?");
+	    "(?:(\\p{Alpha}[\\p{Alnum}+.-]+):)?(.*?)(?:#([^#]*))?");
+
 	/* Function that tries to transform a not necessarily well-formed
 	 * string into a valid URI. We use the fact that the single-argument
 	 * URI constructor doesn't escape invalid characters (especially
 	 * spaces), whereas the 3-argument constructors does do escape
 	 * them (e.g. space into %20).
 	 */
-	public static URI createURI(String inputValue) throws URISyntaxException
-	{
+	public static URI createURI(final String inputValue) throws URISyntaxException {
 		try { // first, we try if the string can be interpreted as URI
 			return new URI(inputValue);
 		}
 		catch (final URISyntaxException e) {
 			// [scheme:]scheme-specific-part[#fragment] 
-
 			// we check first if the string matches an SMB
 			// of the form \\host\path[#fragment]
 			{
 				final Matcher mat = patSMB.matcher(inputValue);
 				if (mat.matches()) {
-					String scheme = "smb";
-					String ssp = "//" + mat.group(1) + "/"
-					+ mat.group(2).replace('\\','/');
-					String fragment = mat.group(3);
+					final String scheme = "smb";
+					final String ssp = "//" + mat.group(1) + "/" + mat.group(2).replace('\\', '/');
+					final String fragment = mat.group(3);
 					return new URI(scheme, ssp, fragment);
 				}
 			}
@@ -340,20 +335,20 @@ public class LinkController extends SelectionController implements IExtension {
 				final Matcher mat = patFile.matcher(inputValue);
 				if (mat.matches()) {
 					String ssp = mat.group(1);
-					if(File.separatorChar != '/'){
+					if (File.separatorChar != '/') {
 						ssp = ssp.replace(File.separatorChar, '/');
 					}
-					String fragment = mat.group(3);
-					if(mat.group(2) == null){
+					final String fragment = mat.group(3);
+					if (mat.group(2) == null) {
 						return new URI(null, null, ssp, fragment);
 					}
-					String scheme = "file";
-				    if (ssp.startsWith("//")){
+					final String scheme = "file";
+					if (ssp.startsWith("//")) {
 						ssp = "//" + ssp;
-				    }
-				    else if (! ssp.startsWith("/")){
-				    	ssp = "/" + ssp;
-				    }
+					}
+					else if (!ssp.startsWith("/")) {
+						ssp = "/" + ssp;
+					}
 					return new URI(scheme, null, ssp, fragment);
 				}
 			}
@@ -363,15 +358,13 @@ public class LinkController extends SelectionController implements IExtension {
 			{
 				final Matcher mat = patURI.matcher(inputValue);
 				if (mat.matches()) {
-					String scheme = mat.group(1);
-					String ssp = mat.group(2).replace('\\','/');
-					String fragment = mat.group(3);
+					final String scheme = mat.group(1);
+					final String ssp = mat.group(2).replace('\\', '/');
+					final String fragment = mat.group(3);
 					return new URI(scheme, ssp, fragment);
 				}
 			}
-			throw new URISyntaxException(inputValue,
-			"This doesn't look like a valid link (URI, file, SMB or URL).");
-
+			throw new URISyntaxException(inputValue, "This doesn't look like a valid link (URI, file, SMB or URL).");
 		}
 	}
 }

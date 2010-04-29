@@ -119,9 +119,8 @@ public class NodeBuilder implements IElementDOMHandler {
 		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
 				    final NodeModel node = (NodeModel) userObject;
-					createEncryptedNode(node, value);
-					node.setFolded(true);
-				    
+				    createEncryptedNode(node, value);
+				    node.setFolded(true);
 			    }
 		    });
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeBuilder.XML_NODE_HISTORY_CREATED_AT,
@@ -163,7 +162,7 @@ public class NodeBuilder implements IElementDOMHandler {
 			}
 		});
 		reader.addReadCompletionListener(new IReadCompletionListener() {
-			private void foldAll(final NodeModel node, int startLevel) {
+			private void foldAll(final NodeModel node, final int startLevel) {
 				if (node.getChildCount() == 0) {
 					return;
 				}
@@ -186,7 +185,8 @@ public class NodeBuilder implements IElementDOMHandler {
 				final String loadFolding = resourceController.getProperty(NodeBuilder.RESOURCES_LOAD_FOLDING);
 				if (loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
 				        || loadFolding.equals(NodeBuilder.RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL)) {
-					int startLevel = resourceController.getIntProperty(NodeBuilder.RESOURCES_LOAD_FOLDING_START_LEVEL, 2);
+					final int startLevel = resourceController.getIntProperty(
+					    NodeBuilder.RESOURCES_LOAD_FOLDING_START_LEVEL, 2);
 					for (final NodeModel child : topNode.getChildren()) {
 						foldAll(child, startLevel - 1);
 					}

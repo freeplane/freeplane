@@ -102,7 +102,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private static final String CLOUD_COLOR = "cloudcolor";
 	private static final String EDGE_COLOR = "edgecolor";
 	private static final String EDGE_STYLE = "edgestyle";
-	private static final String[] EDGE_STYLES = initializeEdgeStyles();
+	private static final String[] EDGE_STYLES = StylePatternPanel.initializeEdgeStyles();
 	private static final String EDGE_WIDTH = "edgewidth";
 	private static final String[] EDGE_WIDTHS = new String[] { "EdgeWidth_parent", "EdgeWidth_thin", "EdgeWidth_1",
 	        "EdgeWidth_2", "EdgeWidth_4", "EdgeWidth_8" };
@@ -196,13 +196,13 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	}
 
 	private static String[] initializeEdgeStyles() {
-	    final EdgeStyle[] enumConstants = EdgeStyle.class.getEnumConstants();
-	    final String[] strings = new String[enumConstants.length];
-	    for(int i = 0; i < enumConstants.length; i++){
-	    	strings[i] = enumConstants[i].toString();
-	    }
-	    return strings;
-    }
+		final EdgeStyle[] enumConstants = EdgeStyle.class.getEnumConstants();
+		final String[] strings = new String[enumConstants.length];
+		for (int i = 0; i < enumConstants.length; i++) {
+			strings[i] = enumConstants[i].toString();
+		}
+		return strings;
+	}
 
 	public void addListeners() {
 		for (final IPropertyControl control : mControls) {
@@ -255,7 +255,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		controls.add(mNodeStyle);
 		mIconInformationVector = new ArrayList<MindIcon>();
 		final ModeController controller = mMindMapController;
-		final Collection<MindIcon> mindIcons = ((MIconController) IconController.getController(controller)).getMindIcons();
+		final Collection<MindIcon> mindIcons = ((MIconController) IconController.getController(controller))
+		    .getMindIcons();
 		mIconInformationVector.addAll(mindIcons);
 		mSetIcon = new ThreeCheckBoxProperty(StylePatternPanel.SET_ICON);
 		controls.add(mSetIcon);
@@ -269,10 +270,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		controls.add(mNodeFontName);
 		mSetNodeFontSize = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_SIZE);
 		controls.add(mSetNodeFontSize);
-
 		final List<String> sizesVector = new ArrayList<String>(Arrays.asList(sizes));
 		mNodeFontSize = new ComboProperty(StylePatternPanel.NODE_FONT_SIZE, sizesVector, sizesVector);
-		
 		controls.add(mNodeFontSize);
 		mSetNodeFontBold = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_BOLD);
 		controls.add(mSetNodeFontBold);
@@ -344,7 +343,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	}
 
 	private HashMap<String, Integer> getEdgeWidthTransformation() {
-		final HashMap<String, Integer> transformator = new HashMap<String, Integer>(StylePatternPanel.EDGE_WIDTHS.length);
+		final HashMap<String, Integer> transformator = new HashMap<String, Integer>(
+		    StylePatternPanel.EDGE_WIDTHS.length);
 		transformator.put(StylePatternPanel.EDGE_WIDTHS[0], EdgeModel.WIDTH_PARENT);
 		transformator.put(StylePatternPanel.EDGE_WIDTHS[1], EdgeModel.WIDTH_THIN);
 		transformator.put(StylePatternPanel.EDGE_WIDTHS[2], 1);
@@ -446,7 +446,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	public void propertyChange(final PropertyChangeEvent pEvt) {
 		if (mPropertyChangePropagation.containsKey(pEvt.getSource())) {
 			final ThreeCheckBoxProperty booleanProp = (ThreeCheckBoxProperty) pEvt.getSource();
-			final IPropertyControl bean = (IPropertyControl) mPropertyChangePropagation.get(booleanProp);
+			final IPropertyControl bean = mPropertyChangePropagation.get(booleanProp);
 			bean.setEnabled(ThreeCheckBoxProperty.TRUE_VALUE.equals(booleanProp.getValue()));
 			return;
 		}
@@ -479,7 +479,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		if (StylePatternPanelType.WITH_NAME_AND_CHILDS.equals(mType)) {
 			mName.setValue(pattern.getName());
 			setPatternControls(pattern.getPatternChild(), mSetChildPattern, mChildPattern,
-			    (mPatternList.size() > 0) ? ((Pattern) mPatternList.get(0)).getName() : null);
+			    (mPatternList.size() > 0) ? (mPatternList.get(0)).getName() : null);
 		}
 		for (final Iterator iter = mPropertyChangePropagation.keySet().iterator(); iter.hasNext();) {
 			final ThreeCheckBoxProperty prop = (ThreeCheckBoxProperty) iter.next();
@@ -510,7 +510,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		try {
 			property.setValue(transformer.transform(patternProperty.getValue()));
 			threeCheckBoxProperty.setValue(ThreeCheckBoxProperty.TRUE_VALUE);
-		} catch (NoSuchElementException e) {
+		}
+		catch (final NoSuchElementException e) {
 			property.setValue(defaultValue);
 			threeCheckBoxProperty.setValue(ThreeCheckBoxProperty.DON_T_TOUCH_VALUE);
 		}
@@ -531,7 +532,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		}
 		final int edgeWidth = ApplyPatternAction.edgeWidthStringToInt(pEdgeWidth);
 		final HashMap<String, Integer> transformator = getEdgeWidthTransformation();
-		for(Entry<String, Integer> transformatorEntry : transformator.entrySet()) {
+		for (final Entry<String, Integer> transformatorEntry : transformator.entrySet()) {
 			final Integer width = transformatorEntry.getValue();
 			if (edgeWidth == width.intValue()) {
 				return transformatorEntry.getKey();

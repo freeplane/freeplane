@@ -46,12 +46,13 @@ public class ConnectorExistsCondition extends ConnectorLabelCondition {
 		return ConditionFactory.createDescription(condition, simpleCondition, getText(), ignoreCase());
 	}
 
+	@Override
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(getName());
 		element.addChild(child);
 	}
-	
+
 	@Override
 	String getName() {
 		return NAME;

@@ -30,10 +30,8 @@ import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.CubicCurve2D;
-import java.awt.geom.FlatteningPathIterator;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.features.common.link.ArrowType;
@@ -73,10 +71,10 @@ public class ConnectorView implements ILinkView {
 	}
 
 	/* (non-Javadoc)
-     * @see org.freeplane.view.swing.map.link.ILinkView#detectCollision(java.awt.Point, boolean)
-     */
-	public boolean detectCollision(final Point p, boolean selectedOnly) {
-		if(selectedOnly && (source == null ||  !source.isSelected()) && (target == null || !target.isSelected())){
+	 * @see org.freeplane.view.swing.map.link.ILinkView#detectCollision(java.awt.Point, boolean)
+	 */
+	public boolean detectCollision(final Point p, final boolean selectedOnly) {
+		if (selectedOnly && (source == null || !source.isSelected()) && (target == null || !target.isSelected())) {
 			return false;
 		}
 		if (arrowLinkCurve == null) {
@@ -84,7 +82,7 @@ public class ConnectorView implements ILinkView {
 		}
 		return new CollisionDetector().detectCollision(p, arrowLinkCurve);
 	}
-	
+
 	private void drawEndPointText(final Graphics2D g, final String text, final Point endPoint, final Point controlPoint) {
 		if (text == null || text.equals("")) {
 			return;
@@ -138,54 +136,54 @@ public class ConnectorView implements ILinkView {
 		if (arrowLinkCurve == null) {
 			return null;
 		}
-		double halfLength = getHalfLength();
-	    final PathIterator pathIterator = arrowLinkCurve.getPathIterator(new AffineTransform(), PRECISION);
-	    double lastCoords[] = new double[6];
-	    pathIterator.currentSegment(lastCoords);
-	    double length = 0;
-	    for(;;){
-	    	pathIterator.next();
-	    	double nextCoords[] = new double[6];
-		    if(pathIterator.isDone() || PathIterator.SEG_CLOSE == pathIterator.currentSegment(nextCoords)){
-		    	break;
-		    }
-		    double dx = nextCoords[0] - lastCoords[0];
-			double dy = nextCoords[1] - lastCoords[1];
-			final double dr = Math.sqrt(dx*dx+dy*dy);
+		final double halfLength = getHalfLength();
+		final PathIterator pathIterator = arrowLinkCurve.getPathIterator(new AffineTransform(), PRECISION);
+		double lastCoords[] = new double[6];
+		pathIterator.currentSegment(lastCoords);
+		double length = 0;
+		for (;;) {
+			pathIterator.next();
+			final double nextCoords[] = new double[6];
+			if (pathIterator.isDone() || PathIterator.SEG_CLOSE == pathIterator.currentSegment(nextCoords)) {
+				break;
+			}
+			final double dx = nextCoords[0] - lastCoords[0];
+			final double dy = nextCoords[1] - lastCoords[1];
+			final double dr = Math.sqrt(dx * dx + dy * dy);
 			length += dr;
-			if(length >= halfLength){
+			if (length >= halfLength) {
 				final double k;
-				if(dr < 1 ){
+				if (dr < 1) {
 					k = 0.5;
 				}
-				else{
+				else {
 					k = (length - halfLength) / dr;
 				}
-				return new Point((int)Math.rint(nextCoords[0] - k*dx), (int)Math.rint(nextCoords[1] - k*dy));
+				return new Point((int) Math.rint(nextCoords[0] - k * dx), (int) Math.rint(nextCoords[1] - k * dy));
 			}
 			lastCoords = nextCoords;
-	    }
+		}
 		throw new RuntimeException("center point not found");
 	}
 
 	private double getHalfLength() {
-	    final PathIterator pathIterator = arrowLinkCurve.getPathIterator(new AffineTransform(), PRECISION);
-	    double lastCoords[] = new double[6];
-	    pathIterator.currentSegment(lastCoords);
-	    double length = 0;
-	    for(;;){
-	    	pathIterator.next();
-	    	double nextCoords[] = new double[6];
-		    if(pathIterator.isDone() || PathIterator.SEG_CLOSE == pathIterator.currentSegment(nextCoords)){
-		    	break;
-		    }
-		    double dx = nextCoords[0] - lastCoords[0];
-			double dy = nextCoords[1] - lastCoords[1];
-			length += Math.sqrt(dx*dx+dy*dy);
+		final PathIterator pathIterator = arrowLinkCurve.getPathIterator(new AffineTransform(), PRECISION);
+		double lastCoords[] = new double[6];
+		pathIterator.currentSegment(lastCoords);
+		double length = 0;
+		for (;;) {
+			pathIterator.next();
+			final double nextCoords[] = new double[6];
+			if (pathIterator.isDone() || PathIterator.SEG_CLOSE == pathIterator.currentSegment(nextCoords)) {
+				break;
+			}
+			final double dx = nextCoords[0] - lastCoords[0];
+			final double dy = nextCoords[1] - lastCoords[1];
+			length += Math.sqrt(dx * dx + dy * dy);
 			lastCoords = nextCoords;
-	    }
-	    return length/2;
-    }
+		}
+		return length / 2;
+	}
 
 	Color getColor() {
 		final ConnectorModel model = getModel();
@@ -206,8 +204,8 @@ public class ConnectorView implements ILinkView {
 	}
 
 	/* (non-Javadoc)
-     * @see org.freeplane.view.swing.map.link.ILinkView#getModel()
-     */
+	 * @see org.freeplane.view.swing.map.link.ILinkView#getModel()
+	 */
 	public ConnectorModel getModel() {
 		return connectorModel;
 	}
@@ -262,7 +260,7 @@ public class ConnectorView implements ILinkView {
 	 * @return Point where the segments intersect, or null if they don't
 	 */
 	Point intersection(final double x1, final double y1, final double x2, final double y2, final double x3,
-	                          final double y3, final double x4, final double y4) {
+	                   final double y3, final double x4, final double y4) {
 		final double d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 		if (d == 0) {
 			return null;
@@ -310,8 +308,8 @@ public class ConnectorView implements ILinkView {
 	}
 
 	/* (non-Javadoc)
-     * @see org.freeplane.view.swing.map.link.ILinkView#paint(java.awt.Graphics)
-     */
+	 * @see org.freeplane.view.swing.map.link.ILinkView#paint(java.awt.Graphics)
+	 */
 	public void paint(final Graphics graphics) {
 		if (!isSourceVisible() && !isTargetVisible()) {
 			return;
@@ -427,19 +425,19 @@ public class ConnectorView implements ILinkView {
 		p.addPoint((p1.x), (p1.y));
 		g.fillPolygon(p);
 	}
-	/* (non-Javadoc)
-     * @see org.freeplane.view.swing.map.link.ILinkView#increaseBounds(java.awt.Rectangle)
-     */
-	public void increaseBounds(final Rectangle innerBounds) {
-	    final CubicCurve2D arrowLinkCurve = getArrowLinkCurve();
-			if (arrowLinkCurve == null) {
-				return;
-			}
-	    final Rectangle arrowViewBigBounds = arrowLinkCurve.getBounds();
-	    if (!innerBounds.contains(arrowViewBigBounds)) {
-	    	final Rectangle arrowViewBounds = PathBBox.getBBox(arrowLinkCurve).getBounds();
-	    	innerBounds.add(arrowViewBounds);
-	    }
-    }
 
+	/* (non-Javadoc)
+	 * @see org.freeplane.view.swing.map.link.ILinkView#increaseBounds(java.awt.Rectangle)
+	 */
+	public void increaseBounds(final Rectangle innerBounds) {
+		final CubicCurve2D arrowLinkCurve = getArrowLinkCurve();
+		if (arrowLinkCurve == null) {
+			return;
+		}
+		final Rectangle arrowViewBigBounds = arrowLinkCurve.getBounds();
+		if (!innerBounds.contains(arrowViewBigBounds)) {
+			final Rectangle arrowViewBounds = PathBBox.getBBox(arrowLinkCurve).getBounds();
+			innerBounds.add(arrowViewBounds);
+		}
+	}
 }

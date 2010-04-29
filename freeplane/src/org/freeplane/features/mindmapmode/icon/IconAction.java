@@ -40,11 +40,11 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	final private MindIcon icon;
 
 	public IconAction(final Controller controller, final MindIcon _icon) {
-		super("IconAction." + _icon.getName(), controller, _icon.getDescription(), ImageIconFactory.getInstance().getImageIcon(_icon));
+		super("IconAction." + _icon.getName(), controller, _icon.getDescription(), ImageIconFactory.getInstance()
+		    .getImageIcon(_icon));
 		putValue(Action.SHORT_DESCRIPTION, _icon.getDescription());
 		icon = _icon;
 	}

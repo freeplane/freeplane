@@ -42,11 +42,11 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
  */
 public class ScriptingConfiguration {
 	static class ScriptMetaData {
-		private TreeSet<ExecutionMode> executionModes;
+		private final TreeSet<ExecutionMode> executionModes;
 		private boolean cacheContent = false;
 		private final String scriptName;
 
-		ScriptMetaData(String scriptName) {
+		ScriptMetaData(final String scriptName) {
 			this.scriptName = scriptName;
 			executionModes = new TreeSet<ExecutionMode>();
 			executionModes.add(ExecutionMode.ON_SINGLE_NODE);
@@ -58,16 +58,16 @@ public class ScriptingConfiguration {
 			return executionModes;
 		}
 
-		public void addExecutionMode(ExecutionMode executionMode) {
-			this.executionModes.add(executionMode);
+		public void addExecutionMode(final ExecutionMode executionMode) {
+			executionModes.add(executionMode);
 		}
 
-		public void removeExecutionMode(ExecutionMode executionMode) {
-			this.executionModes.remove(executionMode);
+		public void removeExecutionMode(final ExecutionMode executionMode) {
+			executionModes.remove(executionMode);
 		}
 
 		public void removeAllExecutionModes() {
-			this.executionModes.clear();
+			executionModes.clear();
 		}
 
 		public String getMenuLocation() {
@@ -78,7 +78,7 @@ public class ScriptingConfiguration {
 			return cacheContent;
 		}
 
-		public void setCacheContent(boolean cacheContent) {
+		public void setCacheContent(final boolean cacheContent) {
 			this.cacheContent = cacheContent;
 		}
 
@@ -92,8 +92,8 @@ public class ScriptingConfiguration {
 	// TODO: remove code duplication with LastOpenedList by extracting
 	// list property handling into a utility class, e.g. ConfigurationUtils
 	private static final String SEPARATOR = File.pathSeparator + File.pathSeparator;
-	private TreeMap<String, String> nameScriptMap = new TreeMap<String, String>();
-	private TreeMap<String, ScriptMetaData> nameScriptMetaDataMap = new TreeMap<String, ScriptMetaData>();
+	private final TreeMap<String, String> nameScriptMap = new TreeMap<String, String>();
+	private final TreeMap<String, ScriptMetaData> nameScriptMetaDataMap = new TreeMap<String, ScriptMetaData>();
 
 	ScriptingConfiguration() {
 		initNameScriptMap();
@@ -102,9 +102,9 @@ public class ScriptingConfiguration {
 	private void initNameScriptMap() {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		resourceController.setDefaultProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES, DEFAULT_SCRIPT_DIRECTORIES);
-		String dirsString = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES);
+		final String dirsString = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES);
 		if (dirsString != null) {
-			String[] dirs = dirsString.split(SEPARATOR);
+			final String[] dirs = dirsString.split(SEPARATOR);
 			for (int i = 0; i < dirs.length; i++) {
 				addScripts(getDirectory(dirs[i]));
 			}
@@ -115,7 +115,7 @@ public class ScriptingConfiguration {
 	 * if <code>dir</code> is not an absolute dir, prepends the freeplane user
 	 * directory to it.
 	 */
-	private File getDirectory(String dir) {
+	private File getDirectory(final String dir) {
 		File file = new File(dir);
 		if (!file.isAbsolute()) {
 			file = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), dir);
@@ -124,14 +124,14 @@ public class ScriptingConfiguration {
 	}
 
 	/** scans <code>dir</code> for script files matching a given rexgex. */
-	private void addScripts(File dir) {
+	private void addScripts(final File dir) {
 		if (dir.isDirectory()) {
-			FilenameFilter filter = new FilenameFilter() {
-				public boolean accept(File dir, String name) {
+			final FilenameFilter filter = new FilenameFilter() {
+				public boolean accept(final File dir, final String name) {
 					return name.matches(SCRIPT_REGEX);
 				}
 			};
-			for (File file : Arrays.asList(dir.listFiles(filter))) {
+			for (final File file : Arrays.asList(dir.listFiles(filter))) {
 				addScript(file);
 			}
 		}
@@ -140,7 +140,7 @@ public class ScriptingConfiguration {
 		}
 	}
 
-	private void addScript(File file) {
+	private void addScript(final File file) {
 		String name = getScriptName(file);
 		try {
 			// add suffix if the same script exists in multiple dirs
@@ -150,48 +150,54 @@ public class ScriptingConfiguration {
 			nameScriptMap.put(name, file.getAbsolutePath());
 			addMetaData(file, name);
 		}
-		catch (IOException e) {
+		catch (final IOException e) {
 			LogTool.warn("problems with script " + file.getAbsolutePath(), e);
 			nameScriptMap.remove(name);
 			nameScriptMetaDataMap.remove(name);
 		}
 	}
 
-	private void addMetaData(File file, String name) throws IOException {
-		ScriptMetaData metaData = new ScriptMetaData(name);
-		String content = ResUtil.slurpFile(file);
-		analyseScriptContent(content, metaData);
+	private void addMetaData(final File file, final String name) throws IOException {
+		final ScriptMetaData metaData = new ScriptMetaData(name);
+		final String content = ResUtil.slurpFile(file);
+		ScriptingConfiguration.analyseScriptContent(content, metaData);
 		nameScriptMetaDataMap.put(name, metaData);
 		// TODO: read optionpanel stuff
 	}
 
 	// static + not private to enable tests
-	static void analyseScriptContent(String content, ScriptMetaData metaData) {
-		if (firstCharIsEquals(content)) {
+	static void analyseScriptContent(final String content, final ScriptMetaData metaData) {
+		if (ScriptingConfiguration.firstCharIsEquals(content)) {
 			// would make no sense
 			metaData.removeExecutionMode(ExecutionMode.ON_SINGLE_NODE);
 		}
-		setExecutionModes(content, metaData);
-		setCacheMode(content, metaData);
+		ScriptingConfiguration.setExecutionModes(content, metaData);
+		ScriptingConfiguration.setCacheMode(content, metaData);
 	}
 
-	private static void setCacheMode(String content, ScriptMetaData metaData) {
-		Pattern cacheScriptPattern = makeCaseInsensitivePattern("@CacheScriptContent\\s*\\(\\s*(true|false)\\s*\\)");
-		Matcher matcher = cacheScriptPattern.matcher(content);
-		if (matcher.find())
+	private static void setCacheMode(final String content, final ScriptMetaData metaData) {
+		final Pattern cacheScriptPattern = ScriptingConfiguration
+		    .makeCaseInsensitivePattern("@CacheScriptContent\\s*\\(\\s*(true|false)\\s*\\)");
+		final Matcher matcher = cacheScriptPattern.matcher(content);
+		if (matcher.find()) {
 			metaData.setCacheContent(new Boolean(matcher.group(1)));
+		}
 	}
 
-	private static void setExecutionModes(String content, ScriptMetaData metaData) {
-		Pattern executionModePattern = makeCaseInsensitivePattern("@ExecutionModes\\s*\\(\\s*\\{([^}]+)\\}\\s*\\)");
-		Matcher matcher = executionModePattern.matcher(content);
+	private static void setExecutionModes(final String content, final ScriptMetaData metaData) {
+		final Pattern executionModePattern = ScriptingConfiguration
+		    .makeCaseInsensitivePattern("@ExecutionModes\\s*\\(\\s*\\{([^}]+)\\}\\s*\\)");
+		final Matcher matcher = executionModePattern.matcher(content);
 		if (matcher.find()) {
 			metaData.removeAllExecutionModes();
-			Pattern onSingleNodePattern = makeCaseInsensitivePattern("\\bON_SINGLE_NODE\\b");
-			Pattern onSelectedNodesPattern = makeCaseInsensitivePattern("\\bON_SELECTED_NODE\\b");
-			Pattern onSelectedNodesRecursivelyPattern = makeCaseInsensitivePattern("\\bON_SELECTED_NODE_RECURSIVELY\\b");
-			String[] split = matcher.group(1).split("\\s*,\\s*");
-			for (String mode : split) {
+			final Pattern onSingleNodePattern = ScriptingConfiguration
+			    .makeCaseInsensitivePattern("\\bON_SINGLE_NODE\\b");
+			final Pattern onSelectedNodesPattern = ScriptingConfiguration
+			    .makeCaseInsensitivePattern("\\bON_SELECTED_NODE\\b");
+			final Pattern onSelectedNodesRecursivelyPattern = ScriptingConfiguration
+			    .makeCaseInsensitivePattern("\\bON_SELECTED_NODE_RECURSIVELY\\b");
+			final String[] split = matcher.group(1).split("\\s*,\\s*");
+			for (final String mode : split) {
 				if (onSingleNodePattern.matcher(mode).find()) {
 					metaData.addExecutionMode(ExecutionMode.ON_SINGLE_NODE);
 				}
@@ -208,12 +214,12 @@ public class ScriptingConfiguration {
 		}
 	}
 
-	private static boolean firstCharIsEquals(String content) {
+	private static boolean firstCharIsEquals(final String content) {
 		return content.length() == 0 ? false : content.charAt(0) == '=';
 	}
 
 	/** some beautification: remove directory and suffix + make first letter uppercase. */
-	private String getScriptName(File file) {
+	private String getScriptName(final File file) {
 		// TODO: we could add mnemonics handling here! (e.g. by reading '_' as '&')
 		String string = file.getName().replaceFirst("\\.[^.]+", "");
 		// fixup characters that might cause problems in menus
@@ -221,7 +227,7 @@ public class ScriptingConfiguration {
 		return string.length() < 2 ? string : string.substring(0, 1).toUpperCase() + string.substring(1);
 	}
 
-	private static Pattern makeCaseInsensitivePattern(String regexp) {
+	private static Pattern makeCaseInsensitivePattern(final String regexp) {
 		return Pattern.compile(regexp, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 	}
 

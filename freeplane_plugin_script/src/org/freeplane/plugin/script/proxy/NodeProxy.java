@@ -30,7 +30,6 @@ import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeProxy extends AbstractProxy<NodeModel> implements Node {
-
 	public NodeProxy(final NodeModel node, final MModeController modeController) {
 		super(node, modeController);
 	}
@@ -40,32 +39,27 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	public Proxy.Connector addConnectorTo(final String targetNodeID) {
-		final MLinkController linkController = (MLinkController) LinkController
-				.getController(getModeController());
-		final ConnectorModel connectorModel = linkController.addConnector(
-				getDelegate(), targetNodeID);
+		final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+		final ConnectorModel connectorModel = linkController.addConnector(getDelegate(), targetNodeID);
 		return new ConnectorProxy(connectorModel, getModeController());
 	}
 
 	public Node createChild() {
-		final MMapController mapController = (MMapController) getModeController()
-				.getMapController();
+		final MMapController mapController = (MMapController) getModeController().getMapController();
 		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
 		mapController.insertNode(newNodeModel, getDelegate());
 		return new NodeProxy(newNodeModel, getModeController());
 	}
 
 	public Node createChild(final int position) {
-		final MMapController mapController = (MMapController) getModeController()
-				.getMapController();
+		final MMapController mapController = (MMapController) getModeController().getMapController();
 		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
 		mapController.insertNode(newNodeModel, getDelegate(), position);
 		return new NodeProxy(newNodeModel, getModeController());
 	}
 
 	public void delete() {
-		final MMapController mapController = (MMapController) getModeController()
-				.getMapController();
+		final MMapController mapController = (MMapController) getModeController().getMapController();
 		mapController.deleteNode(getDelegate());
 	}
 
@@ -79,8 +73,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	public List<Node> getChildren() {
-		return new ArrayList<Node>( new AbstractList<Node>() {
-
+		return new ArrayList<Node>(new AbstractList<Node>() {
 			@Override
 			public Node get(final int index) {
 				final NodeModel child = (NodeModel) getDelegate().getChildAt(index);
@@ -128,8 +121,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	public Node getParentNode() {
 		final NodeModel parentNode = getDelegate().getParentNode();
-		return parentNode != null ? new NodeProxy(parentNode,
-				getModeController()) : null;
+		return parentNode != null ? new NodeProxy(parentNode, getModeController()) : null;
 	}
 
 	public String getPlainTextContent() {
@@ -178,65 +170,55 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	public void moveTo(final Node parentNode) {
 		final NodeProxy parentNodeProxy = (NodeProxy) parentNode;
-		final MMapController mapController = (MMapController) getModeController()
-				.getMapController();
-		mapController.moveNodeAsChild(getDelegate(), parentNodeProxy.getDelegate(),
-				getDelegate().isLeft(), false);
+		final MMapController mapController = (MMapController) getModeController().getMapController();
+		mapController.moveNodeAsChild(getDelegate(), parentNodeProxy.getDelegate(), getDelegate().isLeft(), false);
 	}
 
 	public void moveTo(final Node parentNode, final int position) {
 		final NodeProxy parentNodeProxy = (NodeProxy) parentNode;
-		final MMapController mapController = (MMapController) getModeController()
-				.getMapController();
-		mapController.moveNode(getDelegate(), parentNodeProxy.getDelegate(), position,
-				getDelegate().isLeft(), false);
+		final MMapController mapController = (MMapController) getModeController().getMapController();
+		mapController.moveNode(getDelegate(), parentNodeProxy.getDelegate(), position, getDelegate().isLeft(), false);
 	}
 
 	public void removeConnector(final Proxy.Connector connectorToBeRemoved) {
 		final ConnectorProxy connectorProxy = (ConnectorProxy) connectorToBeRemoved;
 		final ConnectorModel link = connectorProxy.getConnector();
-		final MLinkController linkController = (MLinkController) LinkController
-				.getController(getModeController());
+		final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
 		linkController.removeArrowLink(link);
-
 	}
 
 	public void setFolded(final boolean folded) {
-		final MMapController mapController = (MMapController) getModeController()
-				.getMapController();
+		final MMapController mapController = (MMapController) getModeController().getMapController();
 		mapController.setFolded(getDelegate(), folded);
 	}
 
 	public void setNoteText(final String text) {
-		final MNoteController noteController = (MNoteController) NoteController
-				.getController(getModeController());
+		final MNoteController noteController = (MNoteController) NoteController.getController(getModeController());
 		noteController.setNoteText(getDelegate(), text);
 	}
 
 	public void setText(final String text) {
-		final MTextController textController = (MTextController) TextController
-				.getController(getModeController());
+		final MTextController textController = (MTextController) TextController.getController(getModeController());
 		textController.setNodeText(getDelegate(), text);
 	}
 
 	public Map getMap() {
 		final MapModel map = getDelegate().getMap();
-		return map != null ? new MapProxy(map,
-				getModeController()) : null;
-    }
+		return map != null ? new MapProxy(map, getModeController()) : null;
+	}
 
-	public List<Node> find(ICondition condition) {
+	public List<Node> find(final ICondition condition) {
 		return ProxyUtils.find(condition, getModeController(), getDelegate());
 	}
 
 	public List<Node> find(final Closure closure) {
 		return ProxyUtils.find(closure, getModeController(), getDelegate());
 	}
-	
+
 	public Date getLastModifiedAt() {
 		return getDelegate().getHistoryInformation().getLastModifiedAt();
 	}
-	
+
 	public void setLastModifiedAt(final Date date) {
 		final Date oldDate = getDelegate().getHistoryInformation().getLastModifiedAt();
 		final IActor actor = new IActor() {
@@ -254,11 +236,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		};
 		getModeController().execute(actor, getDelegate().getMap());
 	}
-	
+
 	public Date getCreatedAt() {
 		return getDelegate().getHistoryInformation().getCreatedAt();
 	}
-	
+
 	public void setCreatedAt(final Date date) {
 		final Date oldDate = getDelegate().getHistoryInformation().getCreatedAt();
 		final IActor actor = new IActor() {

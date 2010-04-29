@@ -40,7 +40,9 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		MODE
 	};
 
-	public enum Mode { CLIPBOARD, FILE, EXPORT };
+	public enum Mode {
+		CLIPBOARD, FILE, EXPORT
+	};
 
 	private NodeWriter currentNodeWriter;
 	final private MapController mapController;

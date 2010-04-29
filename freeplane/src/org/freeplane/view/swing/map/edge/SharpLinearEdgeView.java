@@ -31,13 +31,13 @@ import org.freeplane.view.swing.map.link.CollisionDetector;
  * This class represents a sharp Edge of a MindMap.
  */
 public class SharpLinearEdgeView extends EdgeView {
-	public SharpLinearEdgeView(NodeView source, NodeView target) {
-	    super(source, target);
-    }
+	public SharpLinearEdgeView(final NodeView source, final NodeView target) {
+		super(source, target);
+	}
 
-	public SharpLinearEdgeView(NodeView target) {
-	    super(target);
-    }
+	public SharpLinearEdgeView(final NodeView target) {
+		super(target);
+	}
 
 	@Override
 	public Stroke getStroke() {
@@ -56,11 +56,11 @@ public class SharpLinearEdgeView extends EdgeView {
 	}
 
 	@Override
-    public boolean detectCollision(Point p) {
+	public boolean detectCollision(final Point p) {
 		final int w = getMap().getZoomed(getWidth() / 2 + 1);
 		final int xs[] = { start.x, end.x, start.x };
 		final int ys[] = { start.y + w, end.y, start.y - w };
-	    Polygon polygon = new Polygon(xs, ys, 3);
-	    return new CollisionDetector().detectCollision(p, polygon);
-    }
+		final Polygon polygon = new Polygon(xs, ys, 3);
+		return new CollisionDetector().detectCollision(p, polygon);
+	}
 }

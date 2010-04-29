@@ -13,29 +13,26 @@ public class ExecuteScriptForSelectionAction extends AMultipleNodeAction {
 	private boolean success;
 	final private ScriptingEngine engine;
 
-
-	public ExecuteScriptForSelectionAction(final Controller controller, ScriptingEngine engine) {
-	    super("ExecuteScriptForSelectionAction", controller);
-	    this.engine = engine;
-    }
-	
+	public ExecuteScriptForSelectionAction(final Controller controller, final ScriptingEngine engine) {
+		super("ExecuteScriptForSelectionAction", controller);
+		this.engine = engine;
+	}
 
 	@Override
-    public void actionPerformed(ActionEvent e) {
-		success=true;
+	public void actionPerformed(final ActionEvent e) {
+		success = true;
 		getController().getViewController().setWaitingCursor(true);
-		try{
-		    super.actionPerformed(e);
+		try {
+			super.actionPerformed(e);
 		}
-		finally{
+		finally {
 			getController().getViewController().setWaitingCursor(false);
 		}
-    }
-
+	}
 
 	@Override
-	protected void actionPerformed(ActionEvent e, NodeModel node) {
-		if(! success){
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
+		if (!success) {
 			return;
 		}
 		success = engine.performScriptOperation((MModeController) getModeController(), node);

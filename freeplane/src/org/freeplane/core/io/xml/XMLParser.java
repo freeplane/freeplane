@@ -56,19 +56,19 @@ class XMLParser extends StdXMLParser implements IXMLParser {
 			for (;;) {
 				final IXMLReader reader = getReader();
 				char ch = reader.read();
-				if(inComment){
+				if (inComment) {
 					waitingBuf.append(ch);
-					if(ch != '-'){
+					if (ch != '-') {
 						continue;
 					}
 					ch = reader.read();
 					waitingBuf.append(ch);
-					if(ch != '-'){
+					if (ch != '-') {
 						continue;
 					}
 					ch = reader.read();
 					waitingBuf.append(ch);
-					if(ch != '>'){
+					if (ch != '>') {
 						continue;
 					}
 					inComment = false;
@@ -83,15 +83,16 @@ class XMLParser extends StdXMLParser implements IXMLParser {
 						}
 					}
 					else if (ch == '!') {
-						char read1 = reader.read();
-						char read2 = reader.read();
-						if( read1 != '-' || read2 != '-' ){
-							throw new XMLParseException(reader.getSystemID(), reader.getLineNr(), "Invalid input: <!" + read1 + read2);
+						final char read1 = reader.read();
+						final char read2 = reader.read();
+						if (read1 != '-' || read2 != '-') {
+							throw new XMLParseException(reader.getSystemID(), reader.getLineNr(), "Invalid input: <!"
+							        + read1 + read2);
 						}
 						inComment = true;
 						waitingBuf.append("<!--");
 					}
-					else{
+					else {
 						level++;
 					}
 					waitingBuf.append('<');

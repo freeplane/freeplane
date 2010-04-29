@@ -235,7 +235,7 @@ class XMLWriter {
 				writer.print(';');
 				continue;
 			}
-			if(xmlInclude){
+			if (xmlInclude) {
 				writer.print(c);
 				continue;
 			}

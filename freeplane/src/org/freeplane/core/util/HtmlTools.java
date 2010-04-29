@@ -282,17 +282,17 @@ public class HtmlTools {
 				if (myChar == ';') {
 					if (entity.charAt(0) == '#') {
 						try {
-							final char c ;
+							final char c;
 							if (entity.charAt(1) == 'x') {
 								c = (char) Integer.parseInt(entity.substring(2), 16);
 							}
 							else {
 								c = (char) Integer.parseInt(entity.substring(1), 10);
 							}
-							if(c >= ' ' || c == '\t' || c == '\r' || c == '\n'){
+							if (c >= ' ' || c == '\t' || c == '\r' || c == '\n') {
 								resultBuilder.append(c);
 							}
-							else{
+							else {
 								resultBuilder.append(' ');
 							}
 						}
@@ -498,7 +498,7 @@ public class HtmlTools {
 		try {
 			XHTMLWriter.html2xhtml(reader, writer);
 			final String resultXml = writer.toString();
-			if (!isWellformedXml(resultXml)) {
+			if (!HtmlTools.isWellformedXml(resultXml)) {
 				return HtmlTools.toXMLEscapedText(htmlText);
 			}
 			return resultXml;
@@ -515,32 +515,32 @@ public class HtmlTools {
 	}
 
 	public static int endOfText(final String html) {
-        int bodyEndPos = html.lastIndexOf("</body>");
-        if(bodyEndPos == -1){
-        	bodyEndPos = html.lastIndexOf("</BODY>");
-        }
-        if(bodyEndPos == -1){
-        	bodyEndPos = html.lastIndexOf("</html>");
-        }
-        if(bodyEndPos == -1){
-        	bodyEndPos = html.lastIndexOf("</HTML>");
-        }
-        if(bodyEndPos == -1){
-        	bodyEndPos = html.length();
-        }
-        return bodyEndPos;
-    }
+		int bodyEndPos = html.lastIndexOf("</body>");
+		if (bodyEndPos == -1) {
+			bodyEndPos = html.lastIndexOf("</BODY>");
+		}
+		if (bodyEndPos == -1) {
+			bodyEndPos = html.lastIndexOf("</html>");
+		}
+		if (bodyEndPos == -1) {
+			bodyEndPos = html.lastIndexOf("</HTML>");
+		}
+		if (bodyEndPos == -1) {
+			bodyEndPos = html.length();
+		}
+		return bodyEndPos;
+	}
 
-	static public String combineTextWithExceptionInfo(String text, Exception ex) {
-		String escaped = toXMLEscapedText(text).replaceAll("\n", "<br>\n");
-		StringBuilder sb = new StringBuilder();
+	static public String combineTextWithExceptionInfo(final String text, final Exception ex) {
+		final String escaped = HtmlTools.toXMLEscapedText(text).replaceAll("\n", "<br>\n");
+		final StringBuilder sb = new StringBuilder();
 		sb.append("<html><body>");
 		sb.append(ex.getClass().getSimpleName());
 		sb.append("<br>\n");
 		sb.append(ex.getMessage());
 		sb.append("<br>\n");
 		sb.append(escaped);
-		String string = sb.toString();
+		final String string = sb.toString();
 		return string;
 	}
 }

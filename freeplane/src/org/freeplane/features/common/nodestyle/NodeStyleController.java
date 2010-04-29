@@ -130,7 +130,7 @@ public class NodeStyleController implements IExtension {
 
 			private String getShape(final NodeModel node) {
 				String returnedString = NodeStyleModel.getShape(node);
-				NodeModel parentNode = node.getParentNode();
+				final NodeModel parentNode = node.getParentNode();
 				if (NodeStyleModel.getShape(node) == null) {
 					if (parentNode == null) {
 						returnedString = ResourceController.getResourceController().getProperty(

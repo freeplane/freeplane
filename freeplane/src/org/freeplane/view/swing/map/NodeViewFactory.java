@@ -42,17 +42,15 @@ class NodeViewFactory {
 		ContentPane() {
 			setLayout(ContentPane.layoutManager);
 		}
-		
-		
+
 		@Override
-	    public void paint(Graphics g) {
-			switch(((NodeView)getParent()).getMap().getPaintingMode())
-			{
+		public void paint(final Graphics g) {
+			switch (((NodeView) getParent()).getMap().getPaintingMode()) {
 				case CLOUDS:
 					return;
 			}
-		    super.paint(g);
-	    }
+			super.paint(g);
+		}
 	}
 
 	private static class ContentPaneLayout implements LayoutManager {

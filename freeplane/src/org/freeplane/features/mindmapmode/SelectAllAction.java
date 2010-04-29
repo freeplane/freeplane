@@ -44,8 +44,8 @@ class SelectAllAction extends AMultipleNodeAction {
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final ModeController modeController = getModeController();
-		NodeModel root = getController().getMap().getRootNode();
-		MapController mapController = modeController.getMapController();
-        mapController.getController().getSelection().selectBranch(root, true);
+		final NodeModel root = getController().getMap().getRootNode();
+		final MapController mapController = modeController.getMapController();
+		mapController.getController().getSelection().selectBranch(root, true);
 	}
 }

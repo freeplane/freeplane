@@ -29,9 +29,9 @@ public interface IUndoHandler {
 	boolean canRedo();
 
 	boolean canUndo();
-	
+
 	void addChangeListener(ChangeListener listener);
-	
+
 	void removeChangeListener(ChangeListener listener);
 
 	void commit();
@@ -53,10 +53,10 @@ public interface IUndoHandler {
 	void startTransaction();
 
 	void undo();
-	
+
 	void deactivate();
-	
+
 	public void delayedCommit();
-	
+
 	public void delayedRollback();
 }

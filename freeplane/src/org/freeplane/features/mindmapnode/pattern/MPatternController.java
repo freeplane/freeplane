@@ -59,12 +59,9 @@ public class MPatternController implements IExtension {
 	}
 
 	private static final IconStore STORE = IconStoreFactory.create();
-	
 	private final ModeController modeController;
 	private final File patternsFile;
-	
 	private List<Pattern> mPatternsList = new ArrayList<Pattern>();
-	
 	public ApplyPatternAction patterns[] = new ApplyPatternAction[0];
 
 	public MPatternController(final ModeController modeController) {
@@ -142,7 +139,7 @@ public class MPatternController implements IExtension {
 		mPatternsList = patternsList;
 		patterns = new ApplyPatternAction[patternsList.size()];
 		for (int i = 0; i < patterns.length; i++) {
-			final Pattern actualPattern = (Pattern) patternsList.get(i);
+			final Pattern actualPattern = patternsList.get(i);
 			patterns[i] = new ApplyPatternAction(modeController, actualPattern);
 			final PatternProperty patternIcon = actualPattern.getPatternIcon();
 			if (patternIcon != null && patternIcon.getValue() != null) {
@@ -160,18 +157,19 @@ public class MPatternController implements IExtension {
 		for (int i = 0; i < patterns.length; ++i) {
 			try {
 				builder.addAction(group, patterns[i], MenuBuilder.AS_CHILD);
-			} catch (KeyAlreadyUsedException e) {
-				if(! formatMenuString.startsWith("/menu_bar/")){
+			}
+			catch (final KeyAlreadyUsedException e) {
+				if (!formatMenuString.startsWith("/menu_bar/")) {
 					continue;
 				}
-				if(sb == null){
+				if (sb == null) {
 					sb = new StringBuilder(ResourceBundles.getText("doubled_patterns_ignored"));
 				}
 				sb.append('\n');
 				sb.append(patterns[i].getKey());
 			}
 		}
-		if(sb != null){
+		if (sb != null) {
 			UITools.errorMessage(sb.toString());
 		}
 	}
@@ -188,8 +186,8 @@ public class MPatternController implements IExtension {
 		}
 		else {
 			System.out.println("User patterns file " + patternsFile + " not found.");
-			reader = new BufferedReader(new InputStreamReader(ResourceController.getResourceController().getResource("/xml/patterns.xml")
-			    .openStream()));
+			reader = new BufferedReader(new InputStreamReader(ResourceController.getResourceController().getResource(
+			    "/xml/patterns.xml").openStream()));
 		}
 		return reader;
 	}

@@ -24,7 +24,6 @@ import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.NodeCondition;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.util.HtmlTools;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeContainsCondition extends NodeCondition {
@@ -43,7 +42,7 @@ public class NodeContainsCondition extends NodeCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		String text = node.getPlainTextContent();
+		final String text = node.getPlainTextContent();
 		return checkText(text);
 	}
 
@@ -56,10 +55,6 @@ public class NodeContainsCondition extends NodeCondition {
 		final String nodeCondition = ResourceBundles.getText(NodeConditionController.FILTER_NODE);
 		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false);
-	}
-
-	private String getText(final NodeModel node) {
-		return node.getText();
 	}
 
 	public void toXml(final XMLElement element) {

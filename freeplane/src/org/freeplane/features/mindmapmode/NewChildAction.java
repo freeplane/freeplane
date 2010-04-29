@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -55,10 +54,10 @@ class NewChildAction extends AFreeplaneAction {
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		final NodeModel target = mapController.getSelectedNode();
 		modeController.startTransaction();
-		try{
+		try {
 			((MTextController) TextController.getController(modeController)).stopEditing();
 		}
-		finally{
+		finally {
 			modeController.commit();
 		}
 		final NodeModel targetNode = target;
@@ -73,7 +72,7 @@ class NewChildAction extends AFreeplaneAction {
 						childPosition++;
 					}
 					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
-					if(newNode == null){
+					if (newNode == null) {
 						return null;
 					}
 					mapController.select(newNode);
@@ -104,7 +103,7 @@ class NewChildAction extends AFreeplaneAction {
 				final int position = ResourceController.getResourceController().getProperty("placenewbranches").equals(
 				    "last") ? targetNode.getChildCount() : 0;
 				newNode = addNewNode(targetNode, position, targetNode.isNewChildLeft());
-				if(newNode == null){
+				if (newNode == null) {
 					return null;
 				}
 				if (newNodeMode == MMapController.NEW_CHILD) {
@@ -126,7 +125,7 @@ class NewChildAction extends AFreeplaneAction {
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
 		final MMapController mapController = (MMapController) getModeController().getMapController();
-		if (! mapController.isWriteable(parent)) {
+		if (!mapController.isWriteable(parent)) {
 			final String message = ResourceBundles.getText("node_is_write_protected");
 			UITools.errorMessage(message);
 			return null;

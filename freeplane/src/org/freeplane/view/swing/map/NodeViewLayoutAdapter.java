@@ -37,7 +37,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 	private NodeModel model;
 	private int spaceAround;
 	private int vGap;
-
 	private NodeView view;
 
 	public void addLayoutComponent(final String arg0, final Component arg1) {
@@ -61,7 +60,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 				}
 			}
 		}
-		if(count <= 1){
+		if (count <= 1) {
 			return height;
 		}
 		final int contentHeight = height + getVGap() * (count - 1);
@@ -276,10 +275,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 		final int localChildCount = localView.getComponentCount() - 1;
 		for (int i = 0; i < localChildCount; i++) {
 			final Component component = localView.getComponent(i);
-			if(component instanceof NodeView){
-				((NodeView)component).validateTree();
+			if (component instanceof NodeView) {
+				((NodeView) component).validateTree();
 			}
-			else{
+			else {
 				component.validate();
 			}
 		}
@@ -305,7 +304,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 		spaceAround = 0;
 	}
 
-	public void setVGap(int vGap) {
-	    this.vGap = vGap;
-    }
+	public void setVGap(final int vGap) {
+		this.vGap = vGap;
+	}
 }

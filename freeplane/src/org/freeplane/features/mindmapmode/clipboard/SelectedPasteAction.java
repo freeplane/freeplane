@@ -39,68 +39,63 @@ import org.freeplane.features.mindmapmode.clipboard.MClipboardController.IDataFl
 
 class SelectedPasteAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public SelectedPasteAction(final Controller controller) {
 		super("SelectedPasteAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MClipboardController clipboardController = (MClipboardController) ClipboardController.getController(getModeController());
+		final MClipboardController clipboardController = (MClipboardController) ClipboardController
+		    .getController(getModeController());
 		final Collection<IDataFlavorHandler> flavorHandlers = clipboardController.getFlavorHandlers();
-		if(flavorHandlers.isEmpty()){
+		if (flavorHandlers.isEmpty()) {
 			return;
 		}
 		final JPanel options = createPane(flavorHandlers);
-		if(JOptionPane.CANCEL_OPTION == JOptionPane.showConfirmDialog((Component) e.getSource(), 
-			options, 
-			e.getActionCommand(),
-			JOptionPane.OK_CANCEL_OPTION)){
+		if (JOptionPane.CANCEL_OPTION == JOptionPane.showConfirmDialog((Component) e.getSource(), options, e
+		    .getActionCommand(), JOptionPane.OK_CANCEL_OPTION)) {
 			return;
 		}
-		
-		NodeModel parent = getController().getSelection().getSelected();
+		final NodeModel parent = getController().getSelection().getSelected();
 		clipboardController.paste(selectedHandler, parent, false, parent.isNewChildLeft());
-    	selectedHandler = null;
+		selectedHandler = null;
 	}
+
 	private IDataFlavorHandler selectedHandler;
-	
-    private JPanel createPane(final Collection<IDataFlavorHandler> flavorHandlers) {
-    	ButtonGroup group = new ButtonGroup();
-    	JRadioButton[] buttons = new JRadioButton[flavorHandlers.size()];
-    	int i = 0;
-    	selectedHandler = null;
-    	for(final IDataFlavorHandler handler : flavorHandlers){
-    		final JRadioButton radioButton = new JRadioButton(ResourceBundles.getText(handler.getClass().getSimpleName()));
-    		group.add(radioButton);
-    		if(selectedHandler == null){
-    			selectedHandler = handler;
-    			radioButton.setSelected(true);
-    		}
-    		radioButton.addActionListener(new ActionListener(){
 
-				public void actionPerformed(ActionEvent e) {
+	private JPanel createPane(final Collection<IDataFlavorHandler> flavorHandlers) {
+		final ButtonGroup group = new ButtonGroup();
+		final JRadioButton[] buttons = new JRadioButton[flavorHandlers.size()];
+		int i = 0;
+		selectedHandler = null;
+		for (final IDataFlavorHandler handler : flavorHandlers) {
+			final JRadioButton radioButton = new JRadioButton(ResourceBundles.getText(handler.getClass()
+			    .getSimpleName()));
+			group.add(radioButton);
+			if (selectedHandler == null) {
+				selectedHandler = handler;
+				radioButton.setSelected(true);
+			}
+			radioButton.addActionListener(new ActionListener() {
+				public void actionPerformed(final ActionEvent e) {
 					selectedHandler = handler;
-                }});
-			buttons[i++] = radioButton; 
-    	}
-    	return createPane(buttons);
-    }
-    
-    private JPanel createPane(JRadioButton[] radioButtons) {
+				}
+			});
+			buttons[i++] = radioButton;
+		}
+		return createPane(buttons);
+	}
 
-        int numChoices = radioButtons.length;
-        JPanel box = new JPanel();
-
-        box.setLayout(new BoxLayout(box, BoxLayout.PAGE_AXIS));
-
-        for (int i = 0; i < numChoices; i++) {
-            box.add(radioButtons[i]);
-        }
-        return box;
-    }
-
-
+	private JPanel createPane(final JRadioButton[] radioButtons) {
+		final int numChoices = radioButtons.length;
+		final JPanel box = new JPanel();
+		box.setLayout(new BoxLayout(box, BoxLayout.PAGE_AXIS));
+		for (int i = 0; i < numChoices; i++) {
+			box.add(radioButtons[i]);
+		}
+		return box;
+	}
 }

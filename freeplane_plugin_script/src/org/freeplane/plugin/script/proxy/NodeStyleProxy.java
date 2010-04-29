@@ -12,8 +12,7 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 
 class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle {
-	NodeStyleProxy(final NodeModel delegate,
-			final MModeController modeController) {
+	NodeStyleProxy(final NodeModel delegate, final MModeController modeController) {
 		super(delegate, modeController);
 	}
 
@@ -42,8 +41,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	}
 
 	private MNodeStyleController getStyleController() {
-		return (MNodeStyleController) NodeStyleController
-				.getController(getModeController());
+		return (MNodeStyleController) NodeStyleController.getController(getModeController());
 	}
 
 	public void setBackgroundColor(final Color color) {

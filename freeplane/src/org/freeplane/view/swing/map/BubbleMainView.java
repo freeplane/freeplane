@@ -21,7 +21,6 @@ package org.freeplane.view.swing.map;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -82,7 +81,6 @@ class BubbleMainView extends MainView {
 		return width + dW;
 	}
 
-
 	@Override
 	Point getRightPoint() {
 		final Point in = getLeftPoint();
@@ -98,7 +96,6 @@ class BubbleMainView extends MainView {
 	String getStyle() {
 		return NodeStyleModel.STYLE_BUBBLE;
 	}
-
 
 	@Override
 	public void paint(final Graphics graphics) {
@@ -127,32 +124,30 @@ class BubbleMainView extends MainView {
 	}
 
 	@Override
-    public Insets getInsets() {
-	    final Insets insets = super.getInsets();
-	    fitInsets(insets);
+	public Insets getInsets() {
+		final Insets insets = super.getInsets();
+		fitInsets(insets);
 		return insets;
-    }
+	}
 
 	private void fitInsets(final Insets insets) {
-	    final NodeView nodeView = getNodeView();
-	    final int zoomedFoldingSymbolHalfWidth = nodeView.getZoomedFoldingSymbolHalfWidth();
-	    final int extraSpace = nodeView.getMap().getZoomed(1);
-		if(nodeView.isLeft()){
-	    	insets.left += zoomedFoldingSymbolHalfWidth;
-	    }
-	    else{
-	    	insets.right += zoomedFoldingSymbolHalfWidth;
-	    }
-	    insets.left += extraSpace;
-	    insets.right += extraSpace;
-    }
+		final NodeView nodeView = getNodeView();
+		final int zoomedFoldingSymbolHalfWidth = nodeView.getZoomedFoldingSymbolHalfWidth();
+		final int extraSpace = nodeView.getMap().getZoomed(1);
+		if (nodeView.isLeft()) {
+			insets.left += zoomedFoldingSymbolHalfWidth;
+		}
+		else {
+			insets.right += zoomedFoldingSymbolHalfWidth;
+		}
+		insets.left += extraSpace;
+		insets.right += extraSpace;
+	}
 
 	@Override
-    public Insets getInsets(Insets insets) {
+	public Insets getInsets(Insets insets) {
 		insets = super.getInsets(insets);
-	    fitInsets(insets);
+		fitInsets(insets);
 		return insets;
-    }
-	
-	
+	}
 }

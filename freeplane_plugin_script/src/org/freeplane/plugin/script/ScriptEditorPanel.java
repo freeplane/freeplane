@@ -30,8 +30,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -150,30 +148,30 @@ class ScriptEditorPanel extends JDialog {
 	}
 
 	final private class ResultFieldStream extends OutputStream {
-		private byte[] buf = new byte[2];
+		private final byte[] buf = new byte[2];
 		private int i = 0;
-		
+
 		@Override
 		public void write(final int pByte) throws IOException {
 			buf[i++] = (byte) pByte;
-			if(i == 2){
+			if (i == 2) {
 				mScriptResultField.append(new String(buf, internalCharset));
 				i = 0;
 			}
 		}
-		
+
 		@Override
-		public void write(byte b[], int off, int len) throws IOException{
-			if(i == 1){
+		public void write(final byte b[], int off, int len) throws IOException {
+			if (i == 1) {
 				write(b[off++]);
 				len--;
 			}
-			if(len <=0){
+			if (len <= 0) {
 				return;
 			}
-			int len2 = len & ~1;
+			final int len2 = len & ~1;
 			mScriptResultField.append(new String(b, off, len2, internalCharset));
-			if(len2 != len){
+			if (len2 != len) {
 				write(b[len2]);
 			}
 		}
@@ -421,7 +419,8 @@ class ScriptEditorPanel extends JDialog {
 	PrintStream getPrintStream() {
 		try {
 			return new PrintStream(new ResultFieldStream(), false, internalCharset);
-		} catch (UnsupportedEncodingException e) {
+		}
+		catch (final UnsupportedEncodingException e) {
 			return null;
 		}
 	}

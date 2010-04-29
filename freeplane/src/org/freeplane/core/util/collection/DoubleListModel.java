@@ -75,8 +75,8 @@ class DoubleListModel extends AbstractListModel implements ListModel {
 		final int firstSize = first.getSize();
 		return index < firstSize ? first.getElementAt(index) : second.getElementAt(index - firstSize);
 	}
+
 	public int getSize() {
 		return first.getSize() + second.getSize();
 	}
-
 }

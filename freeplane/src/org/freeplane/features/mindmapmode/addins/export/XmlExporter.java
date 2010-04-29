@@ -28,7 +28,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.util.LogTool;
 
@@ -42,8 +41,8 @@ class XmlExporter {
 	public XmlExporter() {
 	}
 
-	void transform(final Source xmlSource, final Source xsltSource,
-			final File resultFile) throws TransformerFactoryConfigurationError {
+	void transform(final Source xmlSource, final Source xsltSource, final File resultFile)
+	        throws TransformerFactoryConfigurationError {
 		FileOutputStream outputStream = null;
 		try {
 			outputStream = new FileOutputStream(resultFile);

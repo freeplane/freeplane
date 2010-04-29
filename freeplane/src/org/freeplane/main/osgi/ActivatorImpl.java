@@ -30,12 +30,10 @@ import java.util.jar.Manifest;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.util.Compat;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
@@ -49,7 +47,7 @@ class ActivatorImpl implements BundleActivator {
 	private String[] getCallParameters() {
 		String param;
 		final LinkedList<String> parameters = new LinkedList<String>();
-		for (int i = 1;;i++) {
+		for (int i = 1;; i++) {
 			param = System.getProperty("org.freeplane.param" + i, null);
 			if (param == null) {
 				break;
@@ -64,76 +62,75 @@ class ActivatorImpl implements BundleActivator {
 	}
 
 	public void start(final BundleContext context) throws Exception {
-		try{
+		try {
 			startFramework(context);
 		}
-		catch(Exception e){
+		catch (final Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
-		catch(Error e){
+		catch (final Error e) {
 			e.printStackTrace();
 			throw e;
 		}
 	}
 
-	private void loadPlugins(BundleContext context) {
+	private void loadPlugins(final BundleContext context) {
 		final String resourceBaseDir = FreeplaneStarter.getResourceBaseDir();
 		final File baseDir = new File(resourceBaseDir).getAbsoluteFile().getParentFile();
-		loadPlugins(context, new File (baseDir, "plugins"));
+		loadPlugins(context, new File(baseDir, "plugins"));
 		final String freeplaneUserDirectory = FreeplaneStarter.getFreeplaneUserDirectory();
 		loadPlugins(context, new File(freeplaneUserDirectory));
-	    
-    }
+	}
 
-	private void loadPlugins(BundleContext context, File file) {
-		if(! file.exists() || ! file.isDirectory()){
+	private void loadPlugins(final BundleContext context, final File file) {
+		if (!file.exists() || !file.isDirectory()) {
 			return;
 		}
-		File manifest = new File(file, "META-INF/MANIFEST.MF");
-		if(manifest.exists()){
+		final File manifest = new File(file, "META-INF/MANIFEST.MF");
+		if (manifest.exists()) {
 			try {
-				InputStream manifestContent = new FileInputStream(manifest);
-				Manifest bundleManifest = new Manifest(manifestContent);
+				final InputStream manifestContent = new FileInputStream(manifest);
+				final Manifest bundleManifest = new Manifest(manifestContent);
 				final String name = bundleManifest.getMainAttributes().getValue("Bundle-SymbolicName");
-				if(name == null){
+				if (name == null) {
 					return;
 				}
-	            final Bundle[] bundles = context.getBundles();
-	            for(int i = 0; i < bundles.length; i++){
-	            	Bundle installedBundle = bundles[i];
-	            	if(installedBundle.getSymbolicName().equals(name)){
-	            		System.out.println("Bundle " + name + " already installed");
-	            		return;
-	            	}
-	            }
-	            final Bundle bundle = context.installBundle("reference:file:" + file.getAbsolutePath());
-	            bundle.start();
-            }
-            catch (Exception e) {
-	            e.printStackTrace();
-            }
-            return;
+				final Bundle[] bundles = context.getBundles();
+				for (int i = 0; i < bundles.length; i++) {
+					final Bundle installedBundle = bundles[i];
+					if (installedBundle.getSymbolicName().equals(name)) {
+						System.out.println("Bundle " + name + " already installed");
+						return;
+					}
+				}
+				final Bundle bundle = context.installBundle("reference:file:" + file.getAbsolutePath());
+				bundle.start();
+			}
+			catch (final Exception e) {
+				e.printStackTrace();
+			}
+			return;
 		}
 		final File[] childFiles = file.listFiles();
-        for(int i = 0; i < childFiles.length; i++){
-        	File child = childFiles[i];
+		for (int i = 0; i < childFiles.length; i++) {
+			final File child = childFiles[i];
 			loadPlugins(context, child);
 		}
-		
-    }
+	}
 
 	private void startFramework(final BundleContext context) {
-		if(null == System.getProperty("org.freeplane.core.dir.lib", null)){
-			File root = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+		if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
+			final File root = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
 			try {
 				String rootUrl = root.toURI().toURL().toString();
-				if(! rootUrl.endsWith("/")){
+				if (!rootUrl.endsWith("/")) {
 					rootUrl = rootUrl + "/";
 				}
-				String libUrl = rootUrl + "core/org.freeplane.core/lib/";
+				final String libUrl = rootUrl + "core/org.freeplane.core/lib/";
 				System.setProperty("org.freeplane.core.dir.lib", libUrl);
-			} catch (MalformedURLException e) {
+			}
+			catch (final MalformedURLException e) {
 			}
 		}
 		starter = new FreeplaneStarter();
@@ -175,16 +172,17 @@ class ActivatorImpl implements BundleActivator {
 		catch (final InvalidSyntaxException e) {
 			e.printStackTrace();
 		}
-		if("true".equals(System.getProperty("org.freeplane.exit_on_start", null))){
-			EventQueue.invokeLater(new Runnable(){
+		if ("true".equals(System.getProperty("org.freeplane.exit_on_start", null))) {
+			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-	                    Thread.sleep(1000);
-                    }
-                    catch (InterruptedException e) {
-                    }
+						Thread.sleep(1000);
+					}
+					catch (final InterruptedException e) {
+					}
 					System.exit(0);
-                }});
+				}
+			});
 			return;
 		}
 		EventQueue.invokeLater(new Runnable() {

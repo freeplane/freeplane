@@ -36,18 +36,17 @@ public class BezierEdgeView extends EdgeView {
 	private static final int CHILD_XCTRL = 20;
 	private static final int XCTRL = 12;
 
+	public BezierEdgeView(final NodeView source, final NodeView target) {
+		super(source, target);
+	}
 
-	public BezierEdgeView(NodeView source, NodeView target) {
-	    super(source, target);
-    }
-
-	public BezierEdgeView(NodeView target) {
-	    super(target);
-    }
+	public BezierEdgeView(final NodeView target) {
+		super(target);
+	}
 
 	@Override
 	protected void draw(final Graphics2D g) {
-		CubicCurve2D.Float graph = update();
+		final CubicCurve2D.Float graph = update();
 		final Color color = getColor();
 		g.setColor(color);
 		final Stroke stroke = getStroke();
@@ -70,14 +69,14 @@ public class BezierEdgeView extends EdgeView {
 		}
 		final int xctrl = getMap().getZoomed(sourceSign * sign * BezierEdgeView.XCTRL);
 		final int childXctrl = getMap().getZoomed(-1 * sign * BezierEdgeView.CHILD_XCTRL);
-		CubicCurve2D.Float graph = new CubicCurve2D.Float();
+		final CubicCurve2D.Float graph = new CubicCurve2D.Float();
 		graph.setCurve(start.x, start.y, start.x + xctrl, start.y, end.x + childXctrl, end.y, end.x, end.y);
 		return graph;
 	}
 
 	@Override
-    public boolean detectCollision(Point p) {
-		CubicCurve2D.Float graph = update();
-	    return new CollisionDetector().detectCollision(p, graph);
-    }
+	public boolean detectCollision(final Point p) {
+		final CubicCurve2D.Float graph = update();
+		return new CollisionDetector().detectCollision(p, graph);
+	}
 }

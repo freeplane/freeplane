@@ -57,11 +57,6 @@ class AttributeRegistryTable extends JTable {
 			editButton.setFocusable(false);
 		}
 
-		public ButtonEditor(final Icon image) {
-			editButton = new JButton(image);
-			editButton.setFocusable(false);
-		}
-
 		/*
 		 * (non-Javadoc)
 		 * @see javax.swing.CellEditor#getCellEditorValue()
@@ -80,10 +75,6 @@ class AttributeRegistryTable extends JTable {
 		                                             final int row, final int column) {
 			this.value = value;
 			return editButton;
-		}
-
-		public void setAction(final Action a) {
-			editButton.setAction(a);
 		}
 	}
 
@@ -106,10 +97,6 @@ class AttributeRegistryTable extends JTable {
 		                                               final boolean isSelected, final boolean hasFocus, final int row,
 		                                               final int column) {
 			return renderingEditButton;
-		}
-
-		public void setEnabled(final boolean b) {
-			renderingEditButton.setEnabled(b);
 		}
 	}
 

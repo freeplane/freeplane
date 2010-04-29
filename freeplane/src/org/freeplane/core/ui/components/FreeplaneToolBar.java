@@ -29,7 +29,6 @@ import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
 
 /**
  * @author Stefan Zechmeister
@@ -48,16 +47,15 @@ public class FreeplaneToolBar extends JToolBar {
 		this.setMargin(FreeplaneToolBar.nullInsets);
 		setFloatable(false);
 		setRollover(true);
-		if(orientation == HORIZONTAL){
+		if (orientation == HORIZONTAL) {
 			setLayout(ToolbarLayout.getInstance());
 			addHierarchyBoundsListener(new HierarchyBoundsListener() {
-
-				public void ancestorResized(HierarchyEvent e) {
+				public void ancestorResized(final HierarchyEvent e) {
 					revalidate();
 					repaint();
 				}
 
-				public void ancestorMoved(HierarchyEvent e) {
+				public void ancestorMoved(final HierarchyEvent e) {
 				}
 			});
 		}
@@ -128,13 +126,11 @@ public class FreeplaneToolBar extends JToolBar {
 		if (System.getProperty("os.name").equals("Mac OS X")) {
 			abstractButton.putClientProperty("JButton.buttonType", "segmented");
 			abstractButton.putClientProperty("JButton.segmentPosition", "middle");
-		    Dimension buttonSize = new Dimension(22, 22);
-		    abstractButton.setPreferredSize(buttonSize);
-		    abstractButton.setFocusPainted(false);
+			final Dimension buttonSize = new Dimension(22, 22);
+			abstractButton.setPreferredSize(buttonSize);
+			abstractButton.setFocusPainted(false);
 		}
 		abstractButton.setFocusable(false);
 		abstractButton.setMargin(FreeplaneToolBar.nullInsets);
 	}
-	
-	
 }

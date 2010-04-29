@@ -28,17 +28,16 @@ import org.freeplane.core.model.NodeModel;
 public class NodeLinkModel extends LinkModel {
 	final private NodeModel source;
 
-	public NodeLinkModel(NodeModel source, String targetID) {
+	public NodeLinkModel(final NodeModel source, final String targetID) {
 		super(targetID);
 		this.source = source;
 	}
 
 	public NodeModel getSource() {
-    	return source;
-    }
+		return source;
+	}
 
 	public NodeModel getTarget() {
 		return getSource().getMap().getNodeForID(getTargetID());
 	}
-
 }

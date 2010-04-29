@@ -100,9 +100,9 @@ public class LockManager extends TimerTask {
 		catch (final FileNotFoundException e) {
 		}
 		finally {
-		    if(semaphoreReader != null) {
-		        semaphoreReader.close();
-		    }
+			if (semaphoreReader != null) {
+				semaphoreReader.close();
+			}
 		}
 		writeSemaphoreFile(semaphoreFile);
 		if (lockTimer == null) {
@@ -116,15 +116,15 @@ public class LockManager extends TimerTask {
 
 	private void writeSemaphoreFile(final File inSemaphoreFile) throws Exception {
 		FileOutputStream semaphoreOutputStream;
-        try {
-	        semaphoreOutputStream = new FileOutputStream(inSemaphoreFile);
-        }
-        catch (FileNotFoundException e) {
-        	if(lockTimer != null){
-        		lockTimer.cancel();
-        	}
-        	return;
-        }
+		try {
+			semaphoreOutputStream = new FileOutputStream(inSemaphoreFile);
+		}
+		catch (final FileNotFoundException e) {
+			if (lockTimer != null) {
+				lockTimer.cancel();
+			}
+			return;
+		}
 		FileLock lock = null;
 		try {
 			lock = semaphoreOutputStream.getChannel().tryLock();

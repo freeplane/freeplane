@@ -57,24 +57,23 @@ public class ModelessAttributeController implements IExtension {
 		controller.addAction(hideAllAttributes);
 	}
 
-	protected void setAttributeViewType(MapModel map, final String type) {
-        final String attributeViewType = getAttributeViewType(map);
-    	if (attributeViewType !=  null && attributeViewType != type) {
-    		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
-    		attributes.setAttributeViewType(type);
-    	}
-    }
+	protected void setAttributeViewType(final MapModel map, final String type) {
+		final String attributeViewType = getAttributeViewType(map);
+		if (attributeViewType != null && attributeViewType != type) {
+			final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
+			attributes.setAttributeViewType(type);
+		}
+	}
 
 	protected String getAttributeViewType(final MapModel map) {
-    	if (map == null) {
-    		return null;
-    	}
-    	final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
-    	if (attributes == null) {
-    		return null;
-    	}
-    	final String attributeViewType = attributes.getAttributeViewType();
-    	return attributeViewType;
-    }
-	
+		if (map == null) {
+			return null;
+		}
+		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
+		if (attributes == null) {
+			return null;
+		}
+		final String attributeViewType = attributes.getAttributeViewType();
+		return attributeViewType;
+	}
 }

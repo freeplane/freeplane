@@ -39,29 +39,29 @@ import org.freeplane.view.swing.map.edge.EdgeViewFactory;
 public class EdgeLinkView implements ILinkView {
 	private final ConnectorModel model;
 	private final EdgeView edgeView;
-	
-	
-	public EdgeLinkView(ConnectorModel model, ModeController modeController,  NodeView source, NodeView target) {
-	    super();
-	    this.model = model;
-	    edgeView = EdgeViewFactory.getInstance().getEdge(source, target);
+
+	public EdgeLinkView(final ConnectorModel model, final ModeController modeController, final NodeView source,
+	                    final NodeView target) {
+		super();
+		this.model = model;
+		edgeView = EdgeViewFactory.getInstance().getEdge(source, target);
 		Color color;
-		if (model.isEdgeLike()){
+		if (model.isEdgeLike()) {
 			color = edgeView.getColor().darker();
 		}
-		else{
-			LinkController controller = LinkController.getController(modeController);
+		else {
+			final LinkController controller = LinkController.getController(modeController);
 			color = controller.getColor(model);
-			int width = controller.getWidth(model);
+			final int width = controller.getWidth(model);
 			edgeView.setWidth(width);
 		}
-	    edgeView.setColor(color);
-    }
+		edgeView.setColor(color);
+	}
 
-	public boolean detectCollision(Point p, boolean selectedOnly) {
+	public boolean detectCollision(final Point p, final boolean selectedOnly) {
 		if (selectedOnly) {
 			final NodeView source = edgeView.getSource();
-			if ((source == null || !source.isSelected())){
+			if ((source == null || !source.isSelected())) {
 				final NodeView target = edgeView.getTarget();
 				if ((target == null || !target.isSelected())) {
 					return false;
@@ -75,11 +75,11 @@ public class EdgeLinkView implements ILinkView {
 		return model;
 	}
 
-	public void increaseBounds(Rectangle innerBounds) {
+	public void increaseBounds(final Rectangle innerBounds) {
 		//edge link does not increase inner bounds 
 	}
 
-	public void paint(Graphics graphics) {
+	public void paint(final Graphics graphics) {
 		edgeView.paint((Graphics2D) graphics);
 	}
 }

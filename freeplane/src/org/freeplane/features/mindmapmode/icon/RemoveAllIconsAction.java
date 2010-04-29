@@ -51,7 +51,7 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		MIconController iconController = (MIconController) IconController.getController(getModeController());
+		final MIconController iconController = (MIconController) IconController.getController(getModeController());
 		iconController.removeAllIcons(node);
 	}
 

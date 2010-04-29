@@ -22,7 +22,6 @@ package org.freeplane.core.ui.components;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
@@ -37,7 +36,7 @@ public class PersistentEditableComboBox extends JComboBox {
 	final private String pStorageKey;
 	private boolean sendExternalEvents = true;
 
-	public PersistentEditableComboBox(final String storageKey, int maximumRowCount) {
+	public PersistentEditableComboBox(final String storageKey, final int maximumRowCount) {
 		pStorageKey = storageKey;
 		setEditable(true);
 		setMaximumRowCount(maximumRowCount);
@@ -45,7 +44,7 @@ public class PersistentEditableComboBox extends JComboBox {
 		if (storedUrls != null) {
 			final String[] array = storedUrls.split("\t");
 			for (int i = 0; i < array.length; i++) {
-				if(i == maximumRowCount){
+				if (i == maximumRowCount) {
 					break;
 				}
 				final String string = array[i];
@@ -56,7 +55,7 @@ public class PersistentEditableComboBox extends JComboBox {
 		super.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				final String text = getText();
-				if(text == null){
+				if (text == null) {
 					return;
 				}
 				addUrl(text);
@@ -73,7 +72,7 @@ public class PersistentEditableComboBox extends JComboBox {
 	}
 
 	private void addUrl(final String selectedItem) {
-		DefaultComboBoxModel model = (DefaultComboBoxModel) getModel();
+		final DefaultComboBoxModel model = (DefaultComboBoxModel) getModel();
 		for (int i = 0; i < model.getSize(); i++) {
 			final String element = (String) model.getElementAt(i);
 			if (element.equals(selectedItem)) {

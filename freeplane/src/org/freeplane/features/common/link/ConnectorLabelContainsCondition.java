@@ -29,34 +29,36 @@ import org.freeplane.core.resources.ResourceBundles;
 public class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 	public static final String NAME = "connector_label_contains";
 
-	public ConnectorLabelContainsCondition(final String text, boolean ignoreCase) {
+	public ConnectorLabelContainsCondition(final String text, final boolean ignoreCase) {
 		super(text, ignoreCase);
 	}
 
 	@Override
 	protected boolean checkLink(final ConnectorModel connector) {
 		final String middleLabel = connector.getMiddleLabel();
-		if(contains(middleLabel)){
+		if (contains(middleLabel)) {
 			return true;
 		}
 		final String sourceLabel = connector.getSourceLabel();
-		if(contains(sourceLabel)){
+		if (contains(sourceLabel)) {
 			return true;
 		}
 		final String targetLabel = connector.getTargetLabel();
-		if(contains(targetLabel)){
+		if (contains(targetLabel)) {
 			return true;
 		}
 		return false;
 	}
 
 	private boolean contains(final String middleLabel) {
-		if (middleLabel == null)
+		if (middleLabel == null) {
 			return false;
-		if (ignoreCase())
+		}
+		if (ignoreCase()) {
 			return middleLabel.toLowerCase().contains(getText());
+		}
 		return middleLabel.contains(getText());
-    }
+	}
 
 	@Override
 	protected String createDesctiption() {

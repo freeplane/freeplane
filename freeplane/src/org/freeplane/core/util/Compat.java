@@ -1,7 +1,6 @@
 package org.freeplane.core.util;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -11,7 +10,6 @@ import java.util.Set;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 
-
 /**
  * Provides methods and constants which are dependend on the underlying java version
  * 
@@ -19,11 +17,13 @@ import org.freeplane.core.ui.MenuBuilder;
  */
 public class Compat {
 	public static final String JAVA_VERSION = System.getProperty("java.version");
-	
 	public static final String VERSION_1_6_0 = "1.6.0";
-	private static enum OS {MAC, WINDOWS, OTHER};
-	private static OS os = null;
 
+	private static enum OS {
+		MAC, WINDOWS, OTHER
+	};
+
+	private static OS os = null;
 
 	public static URL fileToUrl(final File pFile) throws MalformedURLException {
 		return pFile.toURL();
@@ -34,40 +34,42 @@ public class Compat {
 	}
 
 	public static boolean isMacOsX() {
-		initOS();
+		Compat.initOS();
 		return os.equals(OS.MAC);
 	}
 
-
 	private static void initOS() {
-	    if(os == null){
+		if (os == null) {
 			String osProperty;
 			try {
 				osProperty = System.getProperty("os.name");
-			} catch (SecurityException e) {
+			}
+			catch (final SecurityException e) {
 				osProperty = "";
 			}
 			String debugOsName;
 			try {
 				debugOsName = System.getProperty("freeplane.debug.os.name", "");
-			} catch (SecurityException e) {
+			}
+			catch (final SecurityException e) {
 				debugOsName = "";
 			}
-			if (osProperty.startsWith("Mac OS") || debugOsName.startsWith("Mac")){ 
+			if (osProperty.startsWith("Mac OS") || debugOsName.startsWith("Mac")) {
 				os = OS.MAC;
 				return;
 			}
-			if (osProperty.startsWith("Windows") || debugOsName.startsWith("Windows")){ 
+			if (osProperty.startsWith("Windows") || debugOsName.startsWith("Windows")) {
 				os = OS.WINDOWS;
 				return;
 			}
 			os = OS.OTHER;
 		}
-    }
+	}
+
 	public static boolean isWindowsOS() {
-		initOS();
+		Compat.initOS();
 		return os.equals(OS.WINDOWS);
-    }
+	}
 
 	/**
 	 * This is a correction of a method getFile of a class URL. Namely, on
@@ -91,34 +93,33 @@ public class Compat {
 		return new File(Compat.urlGetFile(pUrl));
 	}
 
-	public static void macAppChanges(Controller controller) {
-		if(! isMacOsX()){
+	public static void macAppChanges(final Controller controller) {
+		if (!Compat.isMacOsX()) {
 			return;
 		}
 		try {
-			Class<?> macChanges = controller.getClass().getClassLoader().loadClass("org.freeplane.plugin.macos.MacChanges");
-			Method method = macChanges.getMethod("apply", Controller.class);
+			final Class<?> macChanges = controller.getClass().getClassLoader().loadClass(
+			    "org.freeplane.plugin.macos.MacChanges");
+			final Method method = macChanges.getMethod("apply", Controller.class);
 			method.invoke(null, controller);
-		} catch (Exception e) {
+		}
+		catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void macMenuChanges(Controller controller) {
-		if(! isMacOsX()){
+
+	public static void macMenuChanges(final Controller controller) {
+		if (!Compat.isMacOsX()) {
 			return;
 		}
-		Set<String> modes = controller.getModes();
-		for(String mode:modes){
-			MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory().getMenuBuilder();
-			String[] keys = {
-					"/map_popup/toolbars/ToggleMenubarAction",
-					"/menu_bar/file/quit",
-					"/menu_bar/extras/first/options/PropertyAction",
-					"/menu_bar/help/doc/AboutAction"
-			};
-			for(String key:keys){
-				if(builder.contains(key)){
+		final Set<String> modes = controller.getModes();
+		for (final String mode : modes) {
+			final MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory()
+			    .getMenuBuilder();
+			final String[] keys = { "/map_popup/toolbars/ToggleMenubarAction", "/menu_bar/file/quit",
+			        "/menu_bar/extras/first/options/PropertyAction", "/menu_bar/help/doc/AboutAction" };
+			for (final String key : keys) {
+				if (builder.contains(key)) {
 					builder.removeElement(key);
 				}
 			}

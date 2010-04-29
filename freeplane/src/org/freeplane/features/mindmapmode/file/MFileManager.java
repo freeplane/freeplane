@@ -33,12 +33,10 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.SequenceInputStream;
-import java.io.StringBufferInputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
@@ -80,7 +78,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 /**
  * @author Dimitry Polivaev
  */
-public class MFileManager extends UrlManager implements IMapViewChangeListener{
+public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	static private class BackupFlag implements IExtension {
 	}
 
@@ -177,23 +175,22 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	public MFileManager(final ModeController modeController) {
 		super(modeController);
 		createActions(modeController);
-		 createPreferences();
+		createPreferences();
 	}
+
 	private void createPreferences() {
 		final MModeController modeController = (MModeController) getModeController();
 		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
 		optionPanelBuilder.addCreator("Environment/load", new IPropertyControlCreator() {
-			
 			public IPropertyControl createControl() {
-				Set<String> charsets = Charset.availableCharsets().keySet();
-				LinkedList<String> charsetList = new LinkedList<String>(charsets);
+				final Set<String> charsets = Charset.availableCharsets().keySet();
+				final LinkedList<String> charsetList = new LinkedList<String>(charsets);
 				charsetList.addFirst("JVMdefault");
-				LinkedList<String> charsetTranslationList = new LinkedList<String>(charsets);
+				final LinkedList<String> charsetTranslationList = new LinkedList<String>(charsets);
 				charsetTranslationList.addFirst(ResourceBundles.getText("OptionPanel.default"));
 				return new ComboProperty("default_charset", charsetList, charsetTranslationList);
 			}
-		},
-		IndexedTree.AS_CHILD);
+		}, IndexedTree.AS_CHILD);
 	}
 
 	private void backup(final File file) {
@@ -256,8 +253,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 
 	public URI getLinkByFileChooser(final MapModel map, final FileFilter fileFilter) {
 		JFileChooser chooser = null;
-		File file = map.getFile();
-		boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
+		final File file = map.getFile();
+		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
+		    "relative");
 		if (file == null && useRelativeUri) {
 			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ResourceBundles
 			    .getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
@@ -323,8 +321,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	}
 
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
-		try{
-			if (file.length() == 0){
+		try {
+			if (file.length() == 0) {
 				return map.getRootNode();
 			}
 			final NodeModel rootNode = loadTreeImpl(map, file);
@@ -338,18 +336,18 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 			result.setText(errorMessage);
 			return result;
 		}
-		finally{
+		finally {
 			setFile(map, file);
 		}
 	}
 
-	private NodeModel loadTreeImpl(final MapModel map, final File f) throws FileNotFoundException,
-	        IOException, XMLException {
-		BufferedInputStream file = new BufferedInputStream(new FileInputStream(f));
+	private NodeModel loadTreeImpl(final MapModel map, final File f) throws FileNotFoundException, IOException,
+	        XMLException {
+		final BufferedInputStream file = new BufferedInputStream(new FileInputStream(f));
 		int versionInfoLength = 1000;
 		final byte[] buffer = new byte[versionInfoLength];
 		final int readCount = file.read(buffer);
-		final String mapStart = new String(buffer, defaultCharset().name());
+		final String mapStart = new String(buffer, UrlManager.defaultCharset().name());
 		final ByteArrayInputStream readBytes = new ByteArrayInputStream(buffer, 0, readCount);
 		final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
 		Reader reader = null;
@@ -387,7 +385,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	public void loadURL(final URI relative) {
 		final MapModel map = getController().getMap();
 		if (map.getFile() == null) {
-			if (! relative.toString().startsWith("#") &&  !relative.isAbsolute() || relative.isOpaque()) {
+			if (!relative.toString().startsWith("#") && !relative.isAbsolute() || relative.isOpaque()) {
 				getController().getViewController().out("You must save the current map first!");
 				final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
 				if (!result) {
@@ -589,20 +587,20 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener{
 		return lockingUser;
 	}
 
-	public void afterViewChange(Component oldView, Component newView) {
-    }
+	public void afterViewChange(final Component oldView, final Component newView) {
+	}
 
-	public void afterViewClose(Component oldView) {
-    }
+	public void afterViewClose(final Component oldView) {
+	}
 
-	public void afterViewCreated(Component mapView) {
+	public void afterViewCreated(final Component mapView) {
 		final ModeController modeController = getModeController();
 		if (mapView != null) {
 			final FileOpener fileOpener = new FileOpener(modeController);
 			new DropTarget(mapView, fileOpener);
 		}
-    }
+	}
 
-	public void beforeViewChange(Component oldView, Component newView) {
-    }
+	public void beforeViewChange(final Component oldView, final Component newView) {
+	}
 }

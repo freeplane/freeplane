@@ -29,7 +29,7 @@ import org.freeplane.core.ui.ActionLocationDescriptor;
  * @author Dimitry Polivaev
  * 01.09.2009
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/edit/find" }) 
+@ActionLocationDescriptor(locations = { "/menu_bar/edit/find" })
 class AllMapsNodeListAction extends AFreeplaneAction {
 	/**
 	 * 

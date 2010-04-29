@@ -39,9 +39,9 @@ class AssignAttributesAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = getController();
-		if(assignAttributeDialog == null){
-			assignAttributeDialog = new AssignAttributeDialog(AttributeController
-				.getController(getModeController()), controller.getViewController().getFrame());
+		if (assignAttributeDialog == null) {
+			assignAttributeDialog = new AssignAttributeDialog(AttributeController.getController(getModeController()),
+			    controller.getViewController().getFrame());
 		}
 		assignAttributeDialog.setVisible(true);
 	}

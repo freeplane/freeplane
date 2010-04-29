@@ -40,9 +40,8 @@ public class EncryptionModel implements IExtension {
 	private static UIIcon decryptedIcon;
 	private static UIIcon encryptedIcon;
 	private static Logger logger;
-
 	private static final IconStore STORE = IconStoreFactory.create();
-	
+
 	public static EncryptionModel getModel(final NodeModel node) {
 		return (EncryptionModel) node.getExtension(EncryptionModel.class);
 	}
@@ -105,7 +104,7 @@ public class EncryptionModel implements IExtension {
 			try {
 				final String childXml = decryptXml(encryptedContent, encrypter);
 				final String[] childs = childXml.split(ClipboardController.NODESEPARATOR);
-				for (int i = 0; i < childs.length ; i++) {
+				for (int i = 0; i < childs.length; i++) {
 					final String string = childs[i];
 					if (string.length() == 0) {
 						continue;

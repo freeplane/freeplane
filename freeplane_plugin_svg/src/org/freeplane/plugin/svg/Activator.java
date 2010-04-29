@@ -3,7 +3,6 @@ package org.freeplane.plugin.svg;
 import java.util.Hashtable;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.browsemode.BModeController;
@@ -24,7 +23,7 @@ public class Activator implements BundleActivator {
 	}
 
 	private void registerMindMapModeExtension(final BundleContext context) {
-	    final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
+		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("mode", new String[] { MModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
@@ -33,23 +32,25 @@ public class Activator implements BundleActivator {
 				    final Controller controller = modeController.getController();
 				    menuBuilder.addAnnotatedAction(new ExportPdf(controller));
 				    menuBuilder.addAnnotatedAction(new ExportSvg(controller));
-				    ViewerController extension = (ViewerController) modeController.getExtension(ViewerController.class);
+				    final ViewerController extension = (ViewerController) modeController
+				        .getExtension(ViewerController.class);
 				    extension.addFactory(new SvgViewerFactory());
 			    }
 		    }, props);
-    }
+	}
 
 	private void registerBrowseModeExtension(final BundleContext context) {
-	    final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
+		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("mode", new String[] { BModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(final ModeController modeController) {
-				    ViewerController extension = (ViewerController) modeController.getExtension(ViewerController.class);
+				    final ViewerController extension = (ViewerController) modeController
+				        .getExtension(ViewerController.class);
 				    extension.addFactory(new SvgViewerFactory());
 			    }
 		    }, props);
-    }
+	}
 
 	/*
 	 * (non-Javadoc)

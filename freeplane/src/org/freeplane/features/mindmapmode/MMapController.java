@@ -72,14 +72,14 @@ public class MMapController extends MapController {
 		}
 		createActions(modeController);
 		addNodeSelectionListener(new INodeSelectionListener() {
-			public void onSelect(NodeModel node) {
-				if(ResourceController.getResourceController().getBooleanProperty("display_node_id")){
+			public void onSelect(final NodeModel node) {
+				if (ResourceController.getResourceController().getBooleanProperty("display_node_id")) {
 					getController().getViewController().addStatusInfo("display_node_id", "ID=" + node.createID());
 				}
 			}
-			
-			public void onDeselect(NodeModel node) {
-					getController().getViewController().addStatusInfo("display_node_id", null);
+
+			public void onDeselect(final NodeModel node) {
+				getController().getViewController().addStatusInfo("display_node_id", null);
 			}
 		});
 	}
@@ -292,7 +292,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public MapModel newModel(final NodeModel root) {
-		final MMapModel mindMapMapModel = new MMapModel(root, (MModeController) getModeController());
+		final MMapModel mindMapMapModel = new MMapModel(root, getModeController());
 		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}
@@ -301,7 +301,7 @@ public class MMapController extends MapController {
 	 */
 	@Override
 	public void setFolded(final NodeModel node, final boolean folded) {
-		if(node.getChildCount() == 0){
+		if (node.getChildCount() == 0) {
 			return;
 		}
 		if (node.isFolded() == folded) {

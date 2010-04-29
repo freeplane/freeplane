@@ -168,7 +168,7 @@ public class MapController extends SelectionController {
 
 	public ListIterator<NodeModel> childrenFolded(final NodeModel node) {
 		if (node.isFolded()) {
-			List<NodeModel> empty = Collections.emptyList();
+			final List<NodeModel> empty = Collections.emptyList();
 			return empty.listIterator();
 		}
 		return childrenUnfolded(node);
@@ -177,7 +177,7 @@ public class MapController extends SelectionController {
 	public ListIterator<NodeModel> childrenUnfolded(final NodeModel node) {
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null && !encryptionModel.isAccessible()) {
-			List<NodeModel> empty = Collections.emptyList();
+			final List<NodeModel> empty = Collections.emptyList();
 			return empty.listIterator();
 		}
 		return node.getChildren().listIterator();
@@ -284,7 +284,7 @@ public class MapController extends SelectionController {
 	}
 
 	protected void firePreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-	                             final NodeModel child, final int newIndex) {
+	                                final NodeModel child, final int newIndex) {
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().onPreNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
@@ -322,7 +322,7 @@ public class MapController extends SelectionController {
 		 */
 		Boolean state = null;
 		boolean allNodeHaveSameFoldedStatus = true;
-		while(iterator.hasNext()) {
+		while (iterator.hasNext()) {
 			final NodeModel node = iterator.next();
 			if (node.getChildCount() == 0) {
 				continue;
@@ -516,29 +516,29 @@ public class MapController extends SelectionController {
 		if (mapReader.isMapLoadingInProcess()) {
 			return;
 		}
-		if (isUpdate && ! getModeController().isUndoAction()) {
+		if (isUpdate && !getModeController().isUndoAction()) {
 			final HistoryInformationModel historyInformation = node.getHistoryInformation();
 			if (historyInformation != null) {
-				IActor historyActor = new IActor() {
-					private Date lastModifiedAt = historyInformation.getLastModifiedAt();
-					private Date now = new Date();
+				final IActor historyActor = new IActor() {
+					private final Date lastModifiedAt = historyInformation.getLastModifiedAt();
+					private final Date now = new Date();
+
 					public void undo() {
 						setDate(historyInformation, lastModifiedAt);
 					}
 
-					private void setDate(
-							final HistoryInformationModel historyInformation,
-							Date lastModifiedAt) {
-						Date oldLastModifiedAt = historyInformation.getLastModifiedAt();
+					private void setDate(final HistoryInformationModel historyInformation, final Date lastModifiedAt) {
+						final Date oldLastModifiedAt = historyInformation.getLastModifiedAt();
 						historyInformation.setLastModifiedAt(lastModifiedAt);
-						final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, HistoryInformationModel.class, oldLastModifiedAt, lastModifiedAt);
+						final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node,
+						    HistoryInformationModel.class, oldLastModifiedAt, lastModifiedAt);
 						fireNodeChanged(node, nodeChangeEvent);
 					}
-					
+
 					public String getDescription() {
 						return null;
 					}
-					
+
 					public void act() {
 						setDate(historyInformation, now);
 					}
@@ -551,7 +551,9 @@ public class MapController extends SelectionController {
 	}
 
 	private HashSet<NodeModel> nodeSet;
-	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue, final Object newValue) {
+
+	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
+	                               final Object newValue) {
 		if (nodeSet == null) {
 			nodeSet = new HashSet<NodeModel>();
 			EventQueue.invokeLater(new Runnable() {
@@ -566,6 +568,7 @@ public class MapController extends SelectionController {
 		}
 		nodeSet.add(node);
 	}
+
 	public void refreshMap() {
 		final MapModel map = getController().getMap();
 		final NodeModel root = map.getRootNode();
@@ -638,18 +641,18 @@ public class MapController extends SelectionController {
 	}
 
 	public void selectMultipleNodes(final NodeModel focussed, final Collection<NodeModel> selecteds) {
-		for(NodeModel node : selecteds) {
+		for (final NodeModel node : selecteds) {
 			displayNode(node);
 		}
 		select(focussed);
-		for(NodeModel node : selecteds) {
+		for (final NodeModel node : selecteds) {
 			getController().getSelection().makeTheSelected(node);
 		}
 		getController().getViewController().obtainFocusForSelected();
 	}
 
 	public void setFolded(final NodeModel node, final boolean folded) {
-		if(node.getChildCount() == 0){
+		if (node.getChildCount() == 0) {
 			return;
 		}
 		_setFolded(node, folded);

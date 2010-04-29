@@ -28,8 +28,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.LogTool;

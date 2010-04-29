@@ -39,7 +39,7 @@ class HttpVersionClient {
 		try {
 			in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
 			String line = in.readLine();
-			while (line != null && ! line.startsWith("=====")) {
+			while (line != null && !line.startsWith("=====")) {
 				line = in.readLine();
 			}
 			while (line != null && line.startsWith("=====")) {

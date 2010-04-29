@@ -27,47 +27,47 @@ import java.awt.Point;
 
 import org.freeplane.features.common.addins.mapstyle.MapViewLayout;
 
-
 /**
  * @author Dimitry Polivaev
  * 29.08.2009
  */
 public class SelectableLayout implements INodeViewLayout {
 	static final SelectableLayout selectableLayoutInstance = new SelectableLayout();
-	public Point getMainViewInPoint(NodeView view) {
+
+	public Point getMainViewInPoint(final NodeView view) {
 		return getLayout(view).getMainViewInPoint(view);
 	}
 
-	public Point getMainViewOutPoint(NodeView view, NodeView targetView, Point destinationPoint) {
+	public Point getMainViewOutPoint(final NodeView view, final NodeView targetView, final Point destinationPoint) {
 		return getLayout(view).getMainViewOutPoint(view, targetView, destinationPoint);
 	}
 
-	public void layoutNodeMotionListenerView(NodeMotionListenerView view) {
+	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
 		getLayout(view.getMovedView()).layoutNodeMotionListenerView(view);
 	}
 
-	public void addLayoutComponent(String name, Component comp) {
+	public void addLayoutComponent(final String name, final Component comp) {
 	}
 
-	public void layoutContainer(Container parent) {
+	public void layoutContainer(final Container parent) {
 		getLayout(parent).layoutContainer(parent);
 	}
 
-	public Dimension minimumLayoutSize(Container parent) {
+	public Dimension minimumLayoutSize(final Container parent) {
 		return getLayout(parent).minimumLayoutSize(parent);
 	}
 
-	public Dimension preferredLayoutSize(Container parent) {
+	public Dimension preferredLayoutSize(final Container parent) {
 		return getLayout(parent).preferredLayoutSize(parent);
 	}
 
-	public void removeLayoutComponent(Component comp) {
+	public void removeLayoutComponent(final Component comp) {
 	}
-	
-	private INodeViewLayout getLayout(Container parent){
-		NodeView view = (NodeView) parent;
+
+	private INodeViewLayout getLayout(final Container parent) {
+		final NodeView view = (NodeView) parent;
 		final MapViewLayout layout = view.getMap().getLayoutType();
-		if(layout == MapViewLayout.OUTLINE){
+		if (layout == MapViewLayout.OUTLINE) {
 			return OutlineLayout.getInstance();
 		}
 		if (view.isRoot()) {
@@ -84,6 +84,6 @@ public class SelectableLayout implements INodeViewLayout {
 	}
 
 	static LayoutManager getInstance() {
-	    return selectableLayoutInstance;
-    }
+		return selectableLayoutInstance;
+	}
 }

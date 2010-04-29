@@ -22,11 +22,9 @@ package org.freeplane.features.common.attribute;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
-@SelectableAction(checkOnPopup=true)
+@SelectableAction(checkOnPopup = true)
 class ShowAllAttributesAction extends AttributeViewTypeAction {
 	/**
 	 * 

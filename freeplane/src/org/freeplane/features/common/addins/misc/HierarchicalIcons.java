@@ -20,22 +20,16 @@
  */
 package org.freeplane.features.common.addins.misc;
 
-import java.awt.EventQueue;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.icon.IconController;
 import org.freeplane.core.icon.MindIcon;
 import org.freeplane.core.icon.UIIcon;
 import org.freeplane.core.icon.UIIconSet;
-import org.freeplane.core.icon.ZoomedIcon;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.INodeChangeListener;
@@ -53,8 +47,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @ActionLocationDescriptor(locations = { "/menu_bar/format/nodes/automaticLayout2" })
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener, IExtension {
-
-
 	public static final String ICONS = "hierarchical_icons";
 
 	public HierarchicalIcons(final ModeController modeController) {
@@ -101,7 +93,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			return;
 		}
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
-		while(childrenUnfolded.hasNext()) {
+		while (childrenUnfolded.hasNext()) {
 			final NodeModel child = childrenUnfolded.next();
 			gatherLeavesAndSetParentsStyle(child);
 		}
@@ -115,7 +107,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			return;
 		}
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
-		while(childrenUnfolded.hasNext()) {
+		while (childrenUnfolded.hasNext()) {
 			final NodeModel child = childrenUnfolded.next();
 			gatherLeavesAndSetStyle(child);
 		}
@@ -193,7 +185,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		node.removeStateIcons(getHookName());
 		getModeController().getMapController().nodeRefresh(node);
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
-		while(childrenUnfolded.hasNext()) {
+		while (childrenUnfolded.hasNext()) {
 			final NodeModel child = childrenUnfolded.next();
 			removeIcons(child);
 		}
@@ -202,11 +194,11 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	private void setStyle(final NodeModel node) {
 		final TreeSet<UIIcon> iconSet = new TreeSet<UIIcon>();
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
-		while(childrenUnfolded.hasNext()) {
+		while (childrenUnfolded.hasNext()) {
 			final NodeModel child = childrenUnfolded.next();
 			addAccumulatedIconsToTreeSet(child, iconSet);
 		}
-		for(MindIcon icon : node.getIcons()) {
+		for (final MindIcon icon : node.getIcons()) {
 			iconSet.remove(icon);
 		}
 		if (iconSet.size() > 0) {
@@ -218,7 +210,6 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		getModeController().getMapController().delayedNodeRefresh(node, HierarchicalIcons.ICONS, null, null);
 	}
 
-
 	/**
 	 */
 	private void setStyleRecursive(final NodeModel node) {
@@ -228,8 +219,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		}
 	}
 
-	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-	    // TODO Auto-generated method stub
-	    
-    }
+	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+	                           final NodeModel child, final int newIndex) {
+		// TODO Auto-generated method stub
+	}
 }

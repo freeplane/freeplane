@@ -33,17 +33,11 @@ import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -74,7 +68,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	});
 	private final ModeController modeController;
 
-	public FButtonBar(ModeController modeController) {
+	public FButtonBar(final ModeController modeController) {
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 		buttons = new HashMap<Integer, JButton[]>();
 		onModifierChange();
@@ -161,7 +155,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		if (windowAncestor == ownWindowAncestor) {
 			processDispatchedKeyEvent(e);
 		}
-		else{
+		else {
 			resetModifiers();
 		}
 		return false;
@@ -272,45 +266,44 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	}
 
 	@Override
-    public void layout() {
-		int w = getParent().getWidth();
-		int border = 5;
-		int h = getComponent(1).getPreferredSize().height;
+	public void layout() {
+		final int w = getParent().getWidth();
+		final int border = 5;
+		final int h = getComponent(1).getPreferredSize().height;
 		final int componentCount = getComponentCount();
-		float availableWidth = w - 2 * border + 0f;
-		final float dw = availableWidth/componentCount;
+		final float availableWidth = w - 2 * border + 0f;
+		final float dw = availableWidth / componentCount;
 		int preferredWidth = 0;
 		int narrowComponentPreferredWidth = 0;
 		int narrowComponentCount = 0;
-		for(int i = 0; i < componentCount; i++){
+		for (int i = 0; i < componentCount; i++) {
 			final int cw = getComponent(i).getPreferredSize().width;
 			preferredWidth += cw;
-			if(cw <= dw){
+			if (cw <= dw) {
 				narrowComponentPreferredWidth += cw;
 				narrowComponentCount++;
 			}
 		}
 		final float k;
-		if(availableWidth < preferredWidth){
+		if (availableWidth < preferredWidth) {
 			k = (availableWidth - narrowComponentPreferredWidth) / (preferredWidth - narrowComponentPreferredWidth);
 		}
-		else{
-			k = availableWidth  / preferredWidth ;
+		else {
+			k = availableWidth / preferredWidth;
 		}
-		
 		float x = border;
-		for(int i = 0; i < componentCount; i++){
+		for (int i = 0; i < componentCount; i++) {
 			float cw = getComponent(i).getPreferredSize().width;
-			if(k>1f || cw > dw){
+			if (k > 1f || cw > dw) {
 				cw *= k;
 			}
-			getComponent(i).setBounds((int)x, 0, (int)cw, h);
-			x+= cw;
+			getComponent(i).setBounds((int) x, 0, (int) cw, h);
+			x += cw;
 		}
-    }
+	}
 
 	@Override
-    public Dimension getPreferredSize() {
-	    return new Dimension(getParent().getWidth(), getComponent(1).getPreferredSize().height);
-    }
+	public Dimension getPreferredSize() {
+		return new Dimension(getParent().getWidth(), getComponent(1).getPreferredSize().height);
+	}
 }

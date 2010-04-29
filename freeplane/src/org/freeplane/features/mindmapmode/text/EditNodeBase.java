@@ -324,11 +324,11 @@ public class EditNodeBase {
 			switch (firstKeyEvent.getKeyCode()) {
 				case KeyEvent.VK_HOME:
 					textComponent.setCaretPosition(0);
-//					firstKeyEvent.consume();
+					//					firstKeyEvent.consume();
 					break;
 				case KeyEvent.VK_END:
 					textComponent.setCaretPosition(textComponent.getDocument().getLength());
-//					firstKeyEvent.consume();
+					//					firstKeyEvent.consume();
 					break;
 			}
 		}

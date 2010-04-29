@@ -34,7 +34,8 @@ import org.freeplane.core.ui.SelectableAction;
  * @author Dimitry Polivaev
  * Feb 23, 2009
  */
-public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements PropertyChangeListener , IKeyBindingManager{
+public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements PropertyChangeListener,
+        IKeyBindingManager {
 	/**
 	 * 
 	 */
@@ -43,7 +44,7 @@ public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements Pr
 
 	public JAutoRadioButtonMenuItem(final IFreeplaneAction a) {
 		super(a);
-		if(a.isSelected()){
+		if (a.isSelected()) {
 			setSelected(true);
 		}
 	}
@@ -65,15 +66,14 @@ public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements Pr
 	}
 
 	private boolean isKeyBindingProcessed = false;
-	
+
 	@Override
-	protected boolean processKeyBinding(KeyStroke ks, KeyEvent e,
-			int condition, boolean pressed) {
-		try{
+	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
+		try {
 			isKeyBindingProcessed = true;
 			return super.processKeyBinding(ks, e, condition, pressed);
 		}
-		finally{
+		finally {
 			isKeyBindingProcessed = false;
 		}
 	}

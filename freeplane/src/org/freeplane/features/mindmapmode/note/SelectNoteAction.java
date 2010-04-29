@@ -54,7 +54,7 @@ class SelectNoteAction extends AFreeplaneAction {
 	 * )
 	 */
 	public void actionPerformed(final ActionEvent e) {
-		if(noteController.isEditing()){
+		if (noteController.isEditing()) {
 			noteController.setFocusToMap();
 			return;
 		}
@@ -66,11 +66,10 @@ class SelectNoteAction extends AFreeplaneAction {
 			public void run() {
 				final SHTMLPanel htmlEditorPanel = noteController.getHtmlEditorPanel();
 				htmlEditorPanel.getMostRecentFocusOwner().requestFocus();
-				if(ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")){
+				if (ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")) {
 					final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
 					editorPane.setCaretPosition(editorPane.getDocument().getLength());
 				}
-
 			}
 		});
 	}

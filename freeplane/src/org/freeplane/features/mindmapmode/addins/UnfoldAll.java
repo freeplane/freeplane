@@ -26,10 +26,10 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.AMultipleNodeAction;
 
 /**
  * @author foltin
@@ -47,7 +47,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			super("FoldAllAction", controller);
 		}
 
-		public void actionPerformed(final ActionEvent e, NodeModel node) {
+		@Override
+		public void actionPerformed(final ActionEvent e, final NodeModel node) {
 			foldAll(node);
 		}
 	}
@@ -64,7 +65,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			super("FoldOneLevelAction", controller);
 		}
 
-		public void actionPerformed(final ActionEvent e, NodeModel node) {
+		@Override
+		public void actionPerformed(final ActionEvent e, final NodeModel node) {
 			foldOneStage(node);
 		}
 	}
@@ -81,7 +83,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			super("UnfoldAllAction", controller);
 		}
 
-		public void actionPerformed(final ActionEvent e, NodeModel node) {
+		@Override
+		public void actionPerformed(final ActionEvent e, final NodeModel node) {
 			unfoldAll(node);
 		}
 	}
@@ -98,7 +101,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			super("UnfoldOneLevelAction", controller);
 		}
 
-		public void actionPerformed(final ActionEvent e, NodeModel node) {
+		@Override
+		public void actionPerformed(final ActionEvent e, final NodeModel node) {
 			unfoldOneStage(node);
 		}
 	}

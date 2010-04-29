@@ -39,7 +39,6 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 	static final String NAME = "priority_compare_condition";
 	static final String SUCCEED = "SUCCEED";
 	static final String VALUE = "VALUE";
-	
 	private static final IconStore STORE = IconStoreFactory.create();
 
 	static ISelectableCondition load(final XMLElement element) {

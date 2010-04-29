@@ -14,25 +14,25 @@ import org.freeplane.core.ui.SelectableAction;
  * @author robert.ladstaetter
  */
 public class AController {
-	private static class ActionSelectorOnPropertyChange implements IFreeplanePropertyListener, IActionOnChange{
+	private static class ActionSelectorOnPropertyChange implements IFreeplanePropertyListener, IActionOnChange {
 		final String propertyName;
 		final AFreeplaneAction action;
 
 		public ActionSelectorOnPropertyChange(final AFreeplaneAction action) {
 			super();
 			this.action = action;
-			this.propertyName = action.getClass().getAnnotation(SelectableAction.class).checkOnPropertyChange();
+			propertyName = action.getClass().getAnnotation(SelectableAction.class).checkOnPropertyChange();
 		}
 
 		public AFreeplaneAction getAction() {
 			return action;
 		}
 
-		public void propertyChanged(String propertyName, String newValue, String oldValue) {
-			if(this.propertyName.equals(propertyName)){
+		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+			if (this.propertyName.equals(propertyName)) {
 				action.setSelected();
 			}
-        }
+		}
 	}
 
 	public interface IActionOnChange {
@@ -70,7 +70,8 @@ public class AController {
 	public AFreeplaneAction removeAction(final String key) {
 		final AFreeplaneAction action = getActions().remove(key);
 		if (AFreeplaneAction.checkSelectionOnPropertyChange(action)) {
-			ResourceController.getResourceController().removePropertyChangeListener(ActionSelectorOnPropertyChange.class, action);
+			ResourceController.getResourceController().removePropertyChangeListener(
+			    ActionSelectorOnPropertyChange.class, action);
 		}
 		return action;
 	}

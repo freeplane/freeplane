@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.ui.components;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JMenuBar;
@@ -49,54 +48,59 @@ public class FreeplaneMenuBar extends JMenuBar {
 	public static final String VIEW_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/view";
 
 	public FreeplaneMenuBar() {
-		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(
-	              KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10,0), "none");
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0), "none");
 	}
 
-	static final int KEY_MODIFIERS = KeyEvent.SHIFT_DOWN_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_GRAPH_DOWN_MASK | KeyEvent.ALT_GRAPH_MASK;
-	public static KeyStroke derive(final KeyStroke ks, final Character keyChar){
-		if(ks == null){
+	static final int KEY_MODIFIERS = KeyEvent.SHIFT_DOWN_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_GRAPH_DOWN_MASK
+	        | KeyEvent.ALT_GRAPH_MASK;
+
+	public static KeyStroke derive(final KeyStroke ks, final Character keyChar) {
+		if (ks == null) {
 			return ks;
 		}
-    	int modifiers = ks.getModifiers();
-    	if(ks.getKeyChar() == KeyEvent.CHAR_UNDEFINED){
-    		if(0 != (modifiers  & KEY_MODIFIERS))
-    		{
-    			switch(keyChar){
-    			case '<':
-    				return KeyStroke.getKeyStroke(KeyEvent.VK_LESS, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
-    			case '>':
-    				return KeyStroke.getKeyStroke(KeyEvent.VK_GREATER, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
-    			case '+':
-    				return KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
-    			case '-':
-    				return KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
-    			case '=':
-    				return KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
-    			case '.':
-    				return KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, modifiers & ~ KEY_MODIFIERS, ks.isOnKeyRelease());
-    			}
-    		}
-    		if(keyChar != '\0' && keyChar != KeyEvent.CHAR_UNDEFINED){
-    			return KeyStroke.getKeyStroke(keyChar, modifiers);
-    		}
-    	}
+		final int modifiers = ks.getModifiers();
+		if (ks.getKeyChar() == KeyEvent.CHAR_UNDEFINED) {
+			if (0 != (modifiers & KEY_MODIFIERS)) {
+				switch (keyChar) {
+					case '<':
+						return KeyStroke
+						    .getKeyStroke(KeyEvent.VK_LESS, modifiers & ~KEY_MODIFIERS, ks.isOnKeyRelease());
+					case '>':
+						return KeyStroke.getKeyStroke(KeyEvent.VK_GREATER, modifiers & ~KEY_MODIFIERS, ks
+						    .isOnKeyRelease());
+					case '+':
+						return KeyStroke
+						    .getKeyStroke(KeyEvent.VK_PLUS, modifiers & ~KEY_MODIFIERS, ks.isOnKeyRelease());
+					case '-':
+						return KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, modifiers & ~KEY_MODIFIERS, ks
+						    .isOnKeyRelease());
+					case '=':
+						return KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, modifiers & ~KEY_MODIFIERS, ks
+						    .isOnKeyRelease());
+					case '.':
+						return KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, modifiers & ~KEY_MODIFIERS, ks
+						    .isOnKeyRelease());
+				}
+			}
+			if (keyChar != '\0' && keyChar != KeyEvent.CHAR_UNDEFINED) {
+				return KeyStroke.getKeyStroke(keyChar, modifiers);
+			}
+		}
 		return ks;
-    }
-	
+	}
+
 	@Override
 	public boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
 		// ignore key events without modifiers if text component is a source
-		if(e.getKeyChar() != KeyEvent.CHAR_UNDEFINED  && e.getKeyChar() != '\0'
-				&& 0 == (e.getModifiers()  & ~KEY_MODIFIERS)
-				&& e.getSource() instanceof JTextComponent){
+		if (e.getKeyChar() != KeyEvent.CHAR_UNDEFINED && e.getKeyChar() != '\0'
+		        && 0 == (e.getModifiers() & ~KEY_MODIFIERS) && e.getSource() instanceof JTextComponent) {
 			return false;
 		}
-		if(super.processKeyBinding(ks, e, condition, pressed)){
+		if (super.processKeyBinding(ks, e, condition, pressed)) {
 			return true;
 		}
-		final KeyStroke derivedKS = derive(ks, e.getKeyChar());
-		if(derivedKS == ks){
+		final KeyStroke derivedKS = FreeplaneMenuBar.derive(ks, e.getKeyChar());
+		if (derivedKS == ks) {
 			return false;
 		}
 		return super.processKeyBinding(derivedKS, e, condition, pressed);

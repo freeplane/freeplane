@@ -31,7 +31,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.PropertyBean;
-import org.freeplane.core.util.HtmlTools;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -84,7 +83,7 @@ public class ScriptEditorProperty extends PropertyBean implements IPropertyContr
 
 	/**
 	 */
-	private void setScriptValue(String result) {
+	private void setScriptValue(final String result) {
 		if (result == null) {
 			script = "";
 		}

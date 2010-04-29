@@ -58,7 +58,7 @@ public class IconRegistry implements IExtension {
 	}
 
 	private void registryNodeIcons(final MapController mapController, final NodeModel node) {
-		for(MindIcon icon : node.getIcons()) {
+		for (final MindIcon icon : node.getIcons()) {
 			addIcon(icon);
 		}
 		final ListIterator<NodeModel> iterator = mapController.childrenUnfolded(node);

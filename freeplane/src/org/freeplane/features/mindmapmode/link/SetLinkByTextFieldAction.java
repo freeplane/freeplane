@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode.link;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
@@ -29,7 +30,6 @@ import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
@@ -51,20 +51,20 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		    getController().getSelection().getSelected(), ResourceBundles.getText("edit_link_manually"), NodeLinks
 		        .getLinkAsString(selectedNode));
 		if (inputValue != null) {
-			MLinkController linkController = (MLinkController) MLinkController.getController(modeController);
+			final MLinkController linkController = (MLinkController) MLinkController.getController(modeController);
 			if (inputValue.equals("")) {
 				linkController.setLink(selectedNode, (URI) null, false);
 				return;
 			}
 			try {
-				URI link = LinkController.createURI(inputValue.trim());
+				final URI link = LinkController.createURI(inputValue.trim());
 				linkController.setLink(selectedNode, link, false);
 			}
-			catch (URISyntaxException e1) {
+			catch (final URISyntaxException e1) {
 				LogTool.warn(e1);
 				UITools.errorMessage(FpStringUtils.format("invalid_uri", inputValue));
 				return;
-			} 
+			}
 		}
 	}
 }

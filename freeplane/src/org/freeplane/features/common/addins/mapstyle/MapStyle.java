@@ -55,7 +55,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		final MapStyleModel model = new MapStyleModel();
-
 		final String colorString = element.getAttribute("background", null);
 		final Color bgColor;
 		if (colorString != null) {
@@ -70,25 +69,23 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			final float zoom = Float.valueOf(zoomString);
 			model.setZoom(zoom);
 		}
-		
-		final String layoutString =  element.getAttribute("layout", null);
-		try{
+		final String layoutString = element.getAttribute("layout", null);
+		try {
 			if (layoutString != null) {
 				final MapViewLayout layout = MapViewLayout.valueOf(layoutString);
 				model.setMapViewLayout(layout);
 			}
 		}
-		catch (Exception e){
+		catch (final Exception e) {
 		}
-		
-		final String maxNodeWidthString =  element.getAttribute("max_node_width", null);
-		try{
+		final String maxNodeWidthString = element.getAttribute("max_node_width", null);
+		try {
 			if (maxNodeWidthString != null) {
 				final int maxNodeWidth = Integer.valueOf(maxNodeWidthString);
 				model.setMaxNodeWidth(maxNodeWidth);
 			}
 		}
-		catch (Exception e){
+		catch (final Exception e) {
 		}
 		return model;
 	}
@@ -124,52 +121,53 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	@Override
 	protected void saveExtension(final IExtension extension, final XMLElement element) {
 		super.saveExtension(extension, element);
-		MapStyleModel mapStyleModel = (MapStyleModel) extension;
+		final MapStyleModel mapStyleModel = (MapStyleModel) extension;
 		final Color backgroundColor = mapStyleModel.getBackgroundColor();
 		if (backgroundColor != null) {
 			element.setAttribute("background", ColorUtils.colorToString(backgroundColor));
 		}
-		float zoom = mapStyleModel.getZoom();
-		if(zoom != 1f){
+		final float zoom = mapStyleModel.getZoom();
+		if (zoom != 1f) {
 			element.setAttribute("zoom", Float.toString(zoom));
 		}
-		MapViewLayout layout = mapStyleModel.getMapViewLayout();
-		if(! layout.equals(MapViewLayout.MAP)){
+		final MapViewLayout layout = mapStyleModel.getMapViewLayout();
+		if (!layout.equals(MapViewLayout.MAP)) {
 			element.setAttribute("layout", layout.toString());
 		}
 		element.setAttribute("max_node_width", Integer.toString(mapStyleModel.getMaxNodeWidth()));
 	}
 
-	public void setZoom(MapModel map, final float zoom ) {
-		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map); 
-		if(zoom == mapStyleModel.getZoom()){
+	public void setZoom(final MapModel map, final float zoom) {
+		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
+		if (zoom == mapStyleModel.getZoom()) {
 			return;
 		}
 		mapStyleModel.setZoom(zoom);
 		getModeController().getMapController().setSaved(map, false);
 	}
-	
-	public void setMaxNodeWidth(MapModel map, final int width ) {
-		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map); 
-		int oldMaxNodeWidth = mapStyleModel.getMaxNodeWidth();
-		if(width == oldMaxNodeWidth){
+
+	public void setMaxNodeWidth(final MapModel map, final int width) {
+		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
+		final int oldMaxNodeWidth = mapStyleModel.getMaxNodeWidth();
+		if (width == oldMaxNodeWidth) {
 			return;
 		}
 		mapStyleModel.setMaxNodeWidth(width);
-		getModeController().getMapController().fireMapChanged(
-			    new MapChangeEvent(MapStyle.this, getController().getMap(), MapStyle.MAX_NODE_WIDTH,
-			    		oldMaxNodeWidth, width));
+		getModeController().getMapController()
+		    .fireMapChanged(
+		        new MapChangeEvent(MapStyle.this, getController().getMap(), MapStyle.MAX_NODE_WIDTH, oldMaxNodeWidth,
+		            width));
 	}
-	
-	public void setMapViewLayout(MapModel map, final MapViewLayout layout ) {
-		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map); 
-		if(layout.equals(mapStyleModel.getMapViewLayout())){
+
+	public void setMapViewLayout(final MapModel map, final MapViewLayout layout) {
+		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
+		if (layout.equals(mapStyleModel.getMapViewLayout())) {
 			return;
 		}
 		mapStyleModel.setMapViewLayout(layout);
 		getModeController().getMapController().setSaved(map, false);
 	}
-	
+
 	public void setBackgroundColor(final MapStyleModel model, final Color actionColor) {
 		final Color oldColor = model.getBackgroundColor();
 		if (actionColor == oldColor || actionColor != null && actionColor.equals(oldColor)) {

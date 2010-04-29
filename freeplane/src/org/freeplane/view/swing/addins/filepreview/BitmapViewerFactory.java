@@ -20,8 +20,6 @@
 package org.freeplane.view.swing.addins.filepreview;
 
 import java.awt.Dimension;
-import java.awt.LayoutManager;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -36,56 +34,58 @@ import javax.swing.JComponent;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.components.BitmapViewerComponent;
 
-
 /**
  * @author Dimitry Polivaev
  * 22.08.2009
  */
 public class BitmapViewerFactory implements IViewerFactory {
-	public boolean accept(URI uri) {
+	public boolean accept(final URI uri) {
 		final Iterator<ImageReader> readers = getImageReaders(uri);
 		return readers.hasNext();
 	}
 
-	private Iterator<ImageReader> getImageReaders(URI uri) {
-	    final String path = uri.getRawPath();
+	private Iterator<ImageReader> getImageReaders(final URI uri) {
+		final String path = uri.getRawPath();
 		final int suffixPos = path.lastIndexOf('.') + 1;
-		if(suffixPos == 0){
-			List<ImageReader> empty= Collections.emptyList();
+		if (suffixPos == 0) {
+			final List<ImageReader> empty = Collections.emptyList();
 			return empty.iterator();
 		}
 		final String suffix = path.substring(suffixPos);
 		final Iterator<ImageReader> readers = ImageIO.getImageReadersBySuffix(suffix);
-	    return readers;
-    }
-
-	public JComponent createViewer(ExternalResource resource, URI uri) throws MalformedURLException, IOException {
-	         final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
-	        final Dimension originalSize = bitmapViewerComponent.getOriginalSize();
-	        float zoom = resource.getZoom();
-			originalSize.width = (int)(originalSize.width * zoom);
-	        originalSize.height = (int)(originalSize.height * zoom);
-	        bitmapViewerComponent.setPreferredSize(originalSize);
-	        bitmapViewerComponent.setSize(originalSize);
-	        bitmapViewerComponent.setLayout(new ViewerLayoutManager(1f));
-			return bitmapViewerComponent;
+		return readers;
 	}
-	public JComponent createViewer(URI uri, final Dimension preferredSize) throws MalformedURLException, IOException {
-	        final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
-	        bitmapViewerComponent.setPreferredSize(preferredSize);
-	        bitmapViewerComponent.setSize(preferredSize);
-			return bitmapViewerComponent;
+
+	public JComponent createViewer(final ExternalResource resource, final URI uri) throws MalformedURLException,
+	        IOException {
+		final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
+		final Dimension originalSize = bitmapViewerComponent.getOriginalSize();
+		final float zoom = resource.getZoom();
+		originalSize.width = (int) (originalSize.width * zoom);
+		originalSize.height = (int) (originalSize.height * zoom);
+		bitmapViewerComponent.setPreferredSize(originalSize);
+		bitmapViewerComponent.setSize(originalSize);
+		bitmapViewerComponent.setLayout(new ViewerLayoutManager(1f));
+		return bitmapViewerComponent;
+	}
+
+	public JComponent createViewer(final URI uri, final Dimension preferredSize) throws MalformedURLException,
+	        IOException {
+		final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
+		bitmapViewerComponent.setPreferredSize(preferredSize);
+		bitmapViewerComponent.setSize(preferredSize);
+		return bitmapViewerComponent;
 	}
 
 	public String getDescription() {
 		return ResourceBundles.getText("bitmaps");
 	}
 
-	public Dimension getOriginalSize(JComponent viewer) {
+	public Dimension getOriginalSize(final JComponent viewer) {
 		return ((BitmapViewerComponent) viewer).getOriginalSize();
 	}
 
-	public void setViewerSize(JComponent viewer, Dimension size) {
+	public void setViewerSize(final JComponent viewer, final Dimension size) {
 		viewer.setPreferredSize(size);
 	}
 }

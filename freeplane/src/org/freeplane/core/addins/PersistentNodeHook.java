@@ -70,11 +70,11 @@ public abstract class PersistentNodeHook {
 		}
 
 		@Override
-        public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			setSelected(!isActiveForSelection());
-	        super.actionPerformed(e);
+			super.actionPerformed(e);
 			setSelected(isActiveForSelection());
-        }
+		}
 
 		@Override
 		public void setSelected() {
@@ -99,7 +99,7 @@ public abstract class PersistentNodeHook {
 				if (extension == null) {
 					extension = createExtension(node);
 				}
-				if(extension != null){
+				if (extension != null) {
 					add(node, extension);
 				}
 			}
@@ -137,7 +137,7 @@ public abstract class PersistentNodeHook {
 				selectableHookAction.setEnabled(true);
 			}
 			final NodeModel node = (NodeModel) userObject;
-			if(node.getExtension(getExtensionClass()) != null){
+			if (node.getExtension(getExtensionClass()) != null) {
 				return;
 			}
 			add(node, createExtension(node, lastBuiltElement));

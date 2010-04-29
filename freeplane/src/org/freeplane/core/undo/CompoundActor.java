@@ -32,13 +32,14 @@ import java.util.ListIterator;
 public class CompoundActor implements IActor {
 	final private LinkedList<IActor> actors;
 
-	public CompoundActor(){
+	public CompoundActor() {
 		this(new LinkedList<IActor>());
 	}
-	
-	public CompoundActor(LinkedList<IActor> actors){
+
+	public CompoundActor(final LinkedList<IActor> actors) {
 		this.actors = actors;
 	}
+
 	public void act() {
 		for (final IActor a : actors) {
 			a.act();
@@ -72,6 +73,6 @@ public class CompoundActor implements IActor {
 	}
 
 	public boolean isEmpty() {
-	    return actors.size() == 0;
-    }
+		return actors.size() == 0;
+	}
 }

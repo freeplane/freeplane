@@ -31,37 +31,35 @@ import java.awt.geom.Rectangle2D;
  * 09.08.2009
  */
 public class CollisionDetector {
-
 	/** MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION describes itself. */
 	static final private int MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION = 16;
-	
+
 	public boolean detectCollision(final Point p, final Shape shape) {
-	    final Rectangle2D rec = getControlRectangle(p);
-	    final PathIterator pathIterator = shape.getPathIterator(new AffineTransform(), MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION/4);
-	    double lastCoords[] = new double[6];
-	    pathIterator.currentSegment(lastCoords);
-	    for(;;){
-	    	pathIterator.next();
-	    	double nextCoords[] = new double[6];
-		    if(pathIterator.isDone() || PathIterator.SEG_CLOSE == pathIterator.currentSegment(nextCoords)){
-		    	break;
-		    }
-		    double x = Math.min(lastCoords[0], nextCoords[0])-1;
-			double y = Math.min(lastCoords[1], nextCoords[1])-1;
-			double w = Math.abs(lastCoords[0]- nextCoords[0])+2;
-			double h = Math.abs(lastCoords[1]- nextCoords[1])+2;
-			if(rec.intersects(x, y, w, h)) {
+		final Rectangle2D rec = getControlRectangle(p);
+		final PathIterator pathIterator = shape.getPathIterator(new AffineTransform(),
+		    MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION / 4);
+		double lastCoords[] = new double[6];
+		pathIterator.currentSegment(lastCoords);
+		for (;;) {
+			pathIterator.next();
+			final double nextCoords[] = new double[6];
+			if (pathIterator.isDone() || PathIterator.SEG_CLOSE == pathIterator.currentSegment(nextCoords)) {
+				break;
+			}
+			final double x = Math.min(lastCoords[0], nextCoords[0]) - 1;
+			final double y = Math.min(lastCoords[1], nextCoords[1]) - 1;
+			final double w = Math.abs(lastCoords[0] - nextCoords[0]) + 2;
+			final double h = Math.abs(lastCoords[1] - nextCoords[1]) + 2;
+			if (rec.intersects(x, y, w, h)) {
 				return true;
 			}
 			lastCoords = nextCoords;
-	    }
-	    return false;
-    }
+		}
+		return false;
+	}
 
 	private Rectangle2D getControlRectangle(final Point2D p) {
 		final int side = MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION;
 		return new Rectangle2D.Double(p.getX() - side / 2, p.getY() - side / 2, side, side);
 	}
-
-
 }

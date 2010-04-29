@@ -52,8 +52,7 @@ class MapViewTabs implements IMapViewChangeListener {
 	private boolean mTabbedPaneSelectionUpdate = true;
 	private TabbedPaneUI tabbedPaneUI;
 
-	public MapViewTabs(final Controller controller, final ViewController fm,
-	                   final JComponent contentComponent) {
+	public MapViewTabs(final Controller controller, final ViewController fm, final JComponent contentComponent) {
 		this.controller = controller;
 		mContentComponent = contentComponent;
 		InputMap map;
@@ -160,38 +159,41 @@ class MapViewTabs implements IMapViewChangeListener {
 			mTabbedPane.setComponentAt(selectedIndex, mContentComponent);
 		}
 	}
-    private void setTabsVisible() {
-    	boolean visible = mTabbedPane.getTabCount() > 1;
-    	if(visible == areTabsVisible()){
-    		return;
-    	}
-    	if(tabbedPaneUI == null){
-    		tabbedPaneUI = mTabbedPane.getUI();
-    	}
-    	if(visible){
-    		mTabbedPane.setUI(tabbedPaneUI);
-    	}
-    	else{
-    		mTabbedPane.setUI(new BasicTabbedPaneUI() {
-    			@Override
-    			protected int calculateTabAreaHeight(final int tabPlacement,
-    			                                     final int horizRunCount, final int maxTabHeight) {
-    				return 0;
-    			}
-    			@Override
-    			protected Insets getContentBorderInsets(final int tabPlacement) {
-    				return new Insets(0, 0, 0, 0);
-    			}
-    			@Override
-    			protected MouseListener createMouseListener() {
-    				return null;
-    			}
-    		});
-    	}
-    	mTabbedPane.revalidate();
-    }
-    private boolean areTabsVisible() {
-    	return tabbedPaneUI == null || tabbedPaneUI == mTabbedPane.getUI();
-    }
 
+	private void setTabsVisible() {
+		final boolean visible = mTabbedPane.getTabCount() > 1;
+		if (visible == areTabsVisible()) {
+			return;
+		}
+		if (tabbedPaneUI == null) {
+			tabbedPaneUI = mTabbedPane.getUI();
+		}
+		if (visible) {
+			mTabbedPane.setUI(tabbedPaneUI);
+		}
+		else {
+			mTabbedPane.setUI(new BasicTabbedPaneUI() {
+				@Override
+				protected int calculateTabAreaHeight(final int tabPlacement, final int horizRunCount,
+				                                     final int maxTabHeight) {
+					return 0;
+				}
+
+				@Override
+				protected Insets getContentBorderInsets(final int tabPlacement) {
+					return new Insets(0, 0, 0, 0);
+				}
+
+				@Override
+				protected MouseListener createMouseListener() {
+					return null;
+				}
+			});
+		}
+		mTabbedPane.revalidate();
+	}
+
+	private boolean areTabsVisible() {
+		return tabbedPaneUI == null || tabbedPaneUI == mTabbedPane.getUI();
+	}
 }

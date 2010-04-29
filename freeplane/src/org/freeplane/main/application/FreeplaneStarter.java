@@ -52,7 +52,6 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
-import org.freeplane.plugin.macos.MacChanges;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MMapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
@@ -61,13 +60,14 @@ public class FreeplaneStarter {
 	private static final String PROPERTIES_FOLDER = ".freeplane";
 
 	public static String getResourceBaseDir() {
-	    return System.getProperty(FreeplaneStarter.ORG_FREEPLANE_GLOBALRESOURCEDIR,
+		return System.getProperty(FreeplaneStarter.ORG_FREEPLANE_GLOBALRESOURCEDIR,
 		    FreeplaneStarter.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
-    }
+	}
 
 	public static String getFreeplaneUserDirectory() {
-	    return System.getProperty("user.home") + File.separator + PROPERTIES_FOLDER;
-    }
+		return System.getProperty("user.home") + File.separator + PROPERTIES_FOLDER;
+	}
+
 	public static void showSysInfo() {
 		final StringBuilder info = new StringBuilder();
 		info.append("freeplane_version = ");
@@ -107,7 +107,7 @@ public class FreeplaneStarter {
 			final JFrame frame = new JFrame("Freeplane");
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 			splash = new FreeplaneSplashModern(frame);
-			if(! System.getProperty("org.freeplane.nosplash", "false").equals("true")){
+			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {
 				splash.setVisible(true);
 			}
 			final MMapViewController mapViewController = new MMapViewController();
@@ -163,8 +163,9 @@ public class FreeplaneStarter {
 	}
 
 	private void loadMaps(final String[] args) {
-		boolean alwaysLoadLastMaps = ! ResourceController.getResourceController().getBooleanProperty("always_load_last_maps");
-		if(alwaysLoadLastMaps){
+		final boolean alwaysLoadLastMaps = !ResourceController.getResourceController().getBooleanProperty(
+		    "always_load_last_maps");
+		if (alwaysLoadLastMaps) {
 			applicationResourceController.getLastOpenedList().openMapsOnStart();
 		}
 		boolean fileLoaded = false;
@@ -199,7 +200,7 @@ public class FreeplaneStarter {
 	 */
 	public void run(final String[] args) {
 		try {
-			if(null == System.getProperty("org.freeplane.core.dir.lib", null)){
+			if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
 				System.setProperty("org.freeplane.core.dir.lib", "/lib/");
 			}
 			createController();

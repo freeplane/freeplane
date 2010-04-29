@@ -82,7 +82,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 			final ZipInputStream in = new ZipInputStream(new FileInputStream(file));
 			while (in.available() != 0) {
 				final ZipEntry entry = in.getNextEntry();
-				if(entry == null){
+				if (entry == null) {
 					break;
 				}
 				if (!entry.getName().equals("Document.xml")) {

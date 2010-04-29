@@ -35,29 +35,24 @@ import org.freeplane.core.resources.ResourceController;
  *
  */
 public final class ImageIconFactory {
-	
 	private static final ImageIconFactory FACTORY = new ImageIconFactory();
-	
 	private static final String DEFAULT_IMAGE_PATH = "/images/";
-	
-	private static final ImageIcon ICON_NOT_FOUND 
-		= new ImageIcon(ResourceController.getResourceController().getResource(DEFAULT_IMAGE_PATH + "IconNotFound.png"));
+	private static final ImageIcon ICON_NOT_FOUND = new ImageIcon(ResourceController.getResourceController()
+	    .getResource(DEFAULT_IMAGE_PATH + "IconNotFound.png"));
+	private final WeakHashMap<URL, ImageIcon> ICON_CACHE = new WeakHashMap<URL, ImageIcon>();
 
-	private final WeakHashMap<URL, ImageIcon> ICON_CACHE
-		= new WeakHashMap<URL, ImageIcon>();
-	
 	public static ImageIconFactory getInstance() {
 		return FACTORY;
 	}
-	
-	public ImageIcon getImageIcon(UIIcon uiIcon) {
+
+	public ImageIcon getImageIcon(final UIIcon uiIcon) {
 		return getImageIcon(uiIcon.getUrl());
 	}
-	
-	public ImageIcon getImageIcon(URL url) {
+
+	public ImageIcon getImageIcon(final URL url) {
 		ImageIcon result = ICON_NOT_FOUND;
-		if(url != null) {
-			if(ICON_CACHE.containsKey(url)) {
+		if (url != null) {
+			if (ICON_CACHE.containsKey(url)) {
 				result = ICON_CACHE.get(url);
 			}
 			else {

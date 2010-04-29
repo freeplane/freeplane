@@ -26,7 +26,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -54,10 +53,8 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
-import org.freeplane.view.swing.addins.filepreview.ImagePreview;
 
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.TextResources;
@@ -174,7 +171,7 @@ public class MTextController extends TextController {
 
 	public void setImageByFileChooser() {
 		boolean picturesAmongSelecteds = false;
-		ModeController modeController = getModeController();
+		final ModeController modeController = getModeController();
 		for (final NodeModel node : modeController.getMapController().getSelectedNodes()) {
 			final URI link = NodeLinks.getLink(node);
 			if (link != null) {
@@ -193,16 +190,16 @@ public class MTextController extends TextController {
 		if (picturesAmongSelecteds) {
 			return;
 		}
-		
-		Controller controller = modeController.getController();
-		ViewController viewController = controller.getViewController();
-		NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-		MapModel map = selectedNode.getMap();
-		File file = map.getFile();
-		boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
+		final Controller controller = modeController.getController();
+		final ViewController viewController = controller.getViewController();
+		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+		final MapModel map = selectedNode.getMap();
+		final File file = map.getFile();
+		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
+		    "relative");
 		if (file == null && useRelativeUri) {
 			JOptionPane.showMessageDialog(viewController.getContentPane(), ResourceBundles
-				.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 		final ExampleFileFilter filter = new ExampleFileFilter();
@@ -211,8 +208,8 @@ public class MTextController extends TextController {
 		filter.addExtension("png");
 		filter.addExtension("gif");
 		filter.setDescription(ResourceBundles.getText("bitmaps"));
-		UrlManager urlManager = (UrlManager) modeController.getExtension(UrlManager.class);
-		JFileChooser chooser = urlManager.getFileChooser(null);
+		final UrlManager urlManager = (UrlManager) modeController.getExtension(UrlManager.class);
+		final JFileChooser chooser = urlManager.getFileChooser(null);
 		chooser.setFileFilter(filter);
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.setAccessory(new BitmapImagePreview(chooser));

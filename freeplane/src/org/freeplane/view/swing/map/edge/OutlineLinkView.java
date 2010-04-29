@@ -25,10 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.common.edge.EdgeController;
-import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -38,24 +35,26 @@ import org.freeplane.view.swing.map.NodeView;
  */
 public class OutlineLinkView extends EdgeView {
 	public OutlineLinkView(final NodeView source, final NodeView target) {
-	    super(source, target);
-    }
+		super(source, target);
+	}
 
 	@Override
-	public boolean detectCollision(Point p) {
+	public boolean detectCollision(final Point p) {
 		return false;
 	}
 
+	@Override
 	protected void createStart() {
 		final MainView startMainView = getSource().getMainView();
-		start = new Point (startMainView.getWidth(), startMainView.getHeight()/2);
+		start = new Point(startMainView.getWidth(), startMainView.getHeight() / 2);
 		UITools.convertPointToAncestor(startMainView, start, getSource());
-        final MainView targetMainView = getTarget().getMainView();
-		end = new Point (targetMainView.getWidth(), targetMainView.getHeight()/2);
+		final MainView targetMainView = getTarget().getMainView();
+		end = new Point(targetMainView.getWidth(), targetMainView.getHeight() / 2);
 		UITools.convertPointToAncestor(targetMainView, end, getTarget().getMap());
 	}
+
 	@Override
-	protected void draw(Graphics2D g) {
+	protected void draw(final Graphics2D g) {
 		final Color color = getColor();
 		g.setColor(color);
 		final Stroke stroke = getStroke();
@@ -64,9 +63,8 @@ public class OutlineLinkView extends EdgeView {
 		g.drawLine(start.x, start.y, middleX, start.y);
 		g.drawLine(middleX, start.y, middleX, end.y);
 		g.drawLine(middleX, end.y, end.x, end.y);
-
 	}
-	
+
 	@Override
 	protected Stroke getStroke() {
 		return new BasicStroke(getWidth());

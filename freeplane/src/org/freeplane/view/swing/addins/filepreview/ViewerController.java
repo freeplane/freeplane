@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -41,281 +40,274 @@ import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 @NodeHookDescriptor(hookName = "ExternalObject", //
 onceForMap = false)
-@ActionLocationDescriptor(locations = {"/menu_bar/insert/other", "/node_popup/insert/image"})
-public class ViewerController extends PersistentNodeHook implements INodeViewLifeCycleListener, IExtension{
-	
+@ActionLocationDescriptor(locations = { "/menu_bar/insert/other", "/node_popup/insert/image" })
+public class ViewerController extends PersistentNodeHook implements INodeViewLifeCycleListener, IExtension {
 	private final class CombiFactory implements IViewerFactory {
-	    private IViewerFactory factory;
+		private IViewerFactory factory;
 
-	    public JComponent createViewer(URI uri, final Dimension preferredSize) throws MalformedURLException, IOException {
-	    	factory = getViewerFactory(uri);
-	        return factory == null ? null : factory.createViewer(uri, preferredSize);
-	    }
+		public JComponent createViewer(final URI uri, final Dimension preferredSize) throws MalformedURLException,
+		        IOException {
+			factory = getViewerFactory(uri);
+			return factory == null ? null : factory.createViewer(uri, preferredSize);
+		}
 
-	    public JComponent createViewer(ExternalResource resource, URI absoluteUri) throws MalformedURLException, IOException {
-	    	factory = getViewerFactory(absoluteUri);
-	        return factory.createViewer(resource, absoluteUri);
-	    }
+		public JComponent createViewer(final ExternalResource resource, final URI absoluteUri)
+		        throws MalformedURLException, IOException {
+			factory = getViewerFactory(absoluteUri);
+			return factory.createViewer(resource, absoluteUri);
+		}
 
-	    public String getDescription() {
-	    	StringBuilder sb = new StringBuilder();
-	    	for(IViewerFactory factory:factories){
-	    		if(sb.length() != 0){
-	    			sb.append(", ");
-	    		}
-	    		sb.append(factory.getDescription());
-	    	}
-	    	return sb.toString();
-	    }
+		public String getDescription() {
+			final StringBuilder sb = new StringBuilder();
+			for (final IViewerFactory factory : factories) {
+				if (sb.length() != 0) {
+					sb.append(", ");
+				}
+				sb.append(factory.getDescription());
+			}
+			return sb.toString();
+		}
 
-	    public Dimension getOriginalSize(JComponent viewer) {
-	        return factory.getOriginalSize(viewer);
-	    }
+		public Dimension getOriginalSize(final JComponent viewer) {
+			return factory.getOriginalSize(viewer);
+		}
 
-	    public void setViewerSize(JComponent viewer, Dimension size) {
-	        factory.setViewerSize(viewer, size);
-	    }
+		public void setViewerSize(final JComponent viewer, final Dimension size) {
+			factory.setViewerSize(viewer, size);
+		}
 
-	    public boolean accept(URI uri) {
-	        return getViewerFactory(uri) != null;
-	    }
-    }
+		public boolean accept(final URI uri) {
+			return getViewerFactory(uri) != null;
+		}
+	}
+
 	static final class FactoryFileFilter extends FileFilter {
-	    private final IViewerFactory factory;
+		private final IViewerFactory factory;
 
-	    protected IViewerFactory getFactory() {
-        	return factory;
-        }
+		protected IViewerFactory getFactory() {
+			return factory;
+		}
 
-		private FactoryFileFilter(IViewerFactory factory) {
-		    this.factory = factory;
-	    }
+		private FactoryFileFilter(final IViewerFactory factory) {
+			this.factory = factory;
+		}
 
-	    @Override
-	    public boolean accept(File f) {
-	        return f.isDirectory() || factory.accept(f.toURI());
-	    }
+		@Override
+		public boolean accept(final File f) {
+			return f.isDirectory() || factory.accept(f.toURI());
+		}
 
-	    @Override
-	    public String getDescription() {
-	        return factory.getDescription();
-	    }
-    }
-	private class MyMouseListener implements MouseListener, MouseMotionListener{
+		@Override
+		public String getDescription() {
+			return factory.getDescription();
+		}
+	}
+
+	private class MyMouseListener implements MouseListener, MouseMotionListener {
 		private boolean isActive = false;
 		private boolean sizeChanged = false;
-		
-		public void mouseClicked(MouseEvent e) {
-			if(resetSize(e)){
+
+		public void mouseClicked(final MouseEvent e) {
+			if (resetSize(e)) {
 				return;
 			}
-			if(showPopupMenu(e)){
+			if (showPopupMenu(e)) {
 				return;
 			}
-			if(openUri(e)){
+			if (openUri(e)) {
 				return;
 			}
 		}
 
-		private boolean openUri(MouseEvent e) {
-			if(e.getClickCount() != 2){
+		private boolean openUri(final MouseEvent e) {
+			if (e.getClickCount() != 2) {
 				return false;
 			}
 			final ExternalResource model = getModel(e);
-			if(model == null){
+			if (model == null) {
 				return true;
 			}
 			final UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
 			urlManager.loadURL(model.getUri());
-	        return true;
-        }
+			return true;
+		}
 
-		private boolean showPopupMenu(MouseEvent e) {
+		private boolean showPopupMenu(final MouseEvent e) {
 			return false;
 		}
 
-		private boolean resetSize(MouseEvent e) {
-			if(e.getClickCount() != 2 ){
+		private boolean resetSize(final MouseEvent e) {
+			if (e.getClickCount() != 2) {
 				return false;
 			}
-			JComponent viewer = (JComponent) e.getComponent();
+			final JComponent viewer = (JComponent) e.getComponent();
 			final int x = e.getX();
-			int width = viewer.getWidth();
+			final int width = viewer.getWidth();
 			final int y = e.getY();
-			int height = viewer.getHeight();
-			if(x < width- 4 * BORDER_SIZE || y < height- 4 * BORDER_SIZE){
+			final int height = viewer.getHeight();
+			if (x < width - 4 * BORDER_SIZE || y < height - 4 * BORDER_SIZE) {
 				return false;
 			}
-			IViewerFactory factory = (IViewerFactory) viewer.getClientProperty(IViewerFactory.class);
-			if(factory == null){
+			final IViewerFactory factory = (IViewerFactory) viewer.getClientProperty(IViewerFactory.class);
+			if (factory == null) {
 				return true;
 			}
-			MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, viewer);
-			setZoom(mapView.getModeController(), mapView.getModel(),
-					(ExternalResource) viewer
-							.getClientProperty(ExternalResource.class),
-					1f);
+			final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, viewer);
+			setZoom(mapView.getModeController(), mapView.getModel(), (ExternalResource) viewer
+			    .getClientProperty(ExternalResource.class), 1f);
 			sizeChanged = false;
 			return true;
 		}
 
-		public void mouseEntered(MouseEvent e) {
-			if(isActive){
+		public void mouseEntered(final MouseEvent e) {
+			if (isActive) {
 				return;
 			}
 			final ExternalResource model = getModel(e);
-			if(model == null){
+			if (model == null) {
 				return;
 			}
 			getController().getViewController().out(model.getUri().toString());
 			setCursor(e);
 		}
 
-		private ExternalResource getModel(MouseEvent e) {
-	        final JComponent component = (JComponent) e.getComponent();
+		private ExternalResource getModel(final MouseEvent e) {
+			final JComponent component = (JComponent) e.getComponent();
 			final ExternalResource model = (ExternalResource) component.getClientProperty(ExternalResource.class);
-	        return model;
-        }
+			return model;
+		}
 
-		public void mouseExited(MouseEvent e) {
-			if(isActive){
+		public void mouseExited(final MouseEvent e) {
+			if (isActive) {
 				return;
 			}
 			setCursor(e);
 		}
 
-		private void setCursor(MouseEvent e) {
-			Component component = e.getComponent();
+		private void setCursor(final MouseEvent e) {
+			final Component component = e.getComponent();
 			final int cursorType;
 			final int x = e.getX();
-			int width = component.getWidth();
+			final int width = component.getWidth();
 			final int y = e.getY();
-			int height = component.getHeight();
-			if(width- 2 * BORDER_SIZE <= x && x <= width && height- 2 * BORDER_SIZE <= y && y <= height){
+			final int height = component.getHeight();
+			if (width - 2 * BORDER_SIZE <= x && x <= width && height - 2 * BORDER_SIZE <= y && y <= height) {
 				cursorType = Cursor.SE_RESIZE_CURSOR;
 			}
-			else{
+			else {
 				cursorType = Cursor.DEFAULT_CURSOR;
 			}
-			Cursor cursor = component.getCursor();
-			if(cursor.getType() != cursorType){
-				Cursor predefinedCursor = cursorType == Cursor.DEFAULT_CURSOR ? null : Cursor.getPredefinedCursor(cursorType);
+			final Cursor cursor = component.getCursor();
+			if (cursor.getType() != cursorType) {
+				final Cursor predefinedCursor = cursorType == Cursor.DEFAULT_CURSOR ? null : Cursor
+				    .getPredefinedCursor(cursorType);
 				component.setCursor(predefinedCursor);
 			}
-			
-			
 		}
 
-		public void mousePressed(MouseEvent e) {
+		public void mousePressed(final MouseEvent e) {
 			final JComponent component = (JComponent) e.getComponent();
-			int cursorType = component.getCursor().getType();
-			if(cursorType != Cursor.SE_RESIZE_CURSOR){
+			final int cursorType = component.getCursor().getType();
+			if (cursorType != Cursor.SE_RESIZE_CURSOR) {
 				return;
 			}
 			final IViewerFactory factory = (IViewerFactory) component.getClientProperty(IViewerFactory.class);
-			if(factory == null){
+			if (factory == null) {
 				return;
 			}
 			isActive = true;
 		}
 
-		public void mouseReleased(MouseEvent e) {
-			if(sizeChanged){
-				JComponent component = (JComponent) e.getComponent();
-				int x = component.getWidth();
-				int y = component.getHeight();
+		public void mouseReleased(final MouseEvent e) {
+			if (sizeChanged) {
+				final JComponent component = (JComponent) e.getComponent();
+				final int x = component.getWidth();
+				final int y = component.getHeight();
 				final IViewerFactory factory = (IViewerFactory) component.getClientProperty(IViewerFactory.class);
-				double r = Math.sqrt(x*x+y*y);
+				final double r = Math.sqrt(x * x + y * y);
 				final Dimension originalSize = factory.getOriginalSize(component);
-				int w = originalSize.width;
-				int h = originalSize.height;
-				double r0 = Math.sqrt(w*w+h*h);
-				MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
-				float zoom = mapView.getZoom();
-				final float modelSize = (float)(r / r0 /zoom);
-				setZoom(mapView.getModeController(), mapView.getModel(),
-					(ExternalResource) component
-					.getClientProperty(ExternalResource.class),
-					modelSize);
+				final int w = originalSize.width;
+				final int h = originalSize.height;
+				final double r0 = Math.sqrt(w * w + h * h);
+				final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
+				final float zoom = mapView.getZoom();
+				final float modelSize = (float) (r / r0 / zoom);
+				setZoom(mapView.getModeController(), mapView.getModel(), (ExternalResource) component
+				    .getClientProperty(ExternalResource.class), modelSize);
 				sizeChanged = false;
 			}
 			isActive = false;
 			setCursor(e);
 		}
 
-		public void mouseDragged(MouseEvent e) {
-			if(! isActive){
+		public void mouseDragged(final MouseEvent e) {
+			if (!isActive) {
 				return;
 			}
 			setSize(e);
 		}
 
-		private boolean setSize(MouseEvent e) {
-			if(! isActive){
+		private boolean setSize(final MouseEvent e) {
+			if (!isActive) {
 				return false;
 			}
-			JComponent component = (JComponent) e.getComponent();
-			int cursorType = component.getCursor().getType();
-			IViewerFactory factory = (IViewerFactory) component.getClientProperty(IViewerFactory.class);
-			if(factory == null){
+			final JComponent component = (JComponent) e.getComponent();
+			final int cursorType = component.getCursor().getType();
+			final IViewerFactory factory = (IViewerFactory) component.getClientProperty(IViewerFactory.class);
+			if (factory == null) {
 				return true;
 			}
 			sizeChanged = true;
 			final Dimension size;
-			switch(cursorType){
-			case Cursor.SE_RESIZE_CURSOR:
-				Dimension minimumSize = new Dimension(10, 10);
-				int x = e.getX()-2*BORDER_SIZE;
-				int y = e.getY()-2*BORDER_SIZE;
-				if(x <= 0 || y <= 0){
-					return true;
-				}
-				double r = Math.sqrt(x*x+y*y);
-				Dimension preferredSize = factory.getOriginalSize(component);
-				int width = preferredSize.width;
-				int height = preferredSize.height;
-				double r0 = Math.sqrt(width*width+height*height);
-				x = (int)(width*r/r0);
-				y = (int)(height*r/r0);
-				MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
-				if(x < mapView.getZoomed(minimumSize.width) || y < mapView.getZoomed(minimumSize.height)){
-					return true;
-				}
-				size = new Dimension( x, y);
-				factory.setViewerSize(component, size );
-				component.revalidate();
-				break;
-			default:
+			switch (cursorType) {
+				case Cursor.SE_RESIZE_CURSOR:
+					final Dimension minimumSize = new Dimension(10, 10);
+					int x = e.getX() - 2 * BORDER_SIZE;
+					int y = e.getY() - 2 * BORDER_SIZE;
+					if (x <= 0 || y <= 0) {
+						return true;
+					}
+					final double r = Math.sqrt(x * x + y * y);
+					final Dimension preferredSize = factory.getOriginalSize(component);
+					final int width = preferredSize.width;
+					final int height = preferredSize.height;
+					final double r0 = Math.sqrt(width * width + height * height);
+					x = (int) (width * r / r0);
+					y = (int) (height * r / r0);
+					final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
+					if (x < mapView.getZoomed(minimumSize.width) || y < mapView.getZoomed(minimumSize.height)) {
+						return true;
+					}
+					size = new Dimension(x, y);
+					factory.setViewerSize(component, size);
+					component.revalidate();
+					break;
+				default:
 			}
 			return true;
 		}
 
-		public void mouseMoved(MouseEvent e) {
-			if(isActive){
+		public void mouseMoved(final MouseEvent e) {
+			if (isActive) {
 				return;
 			}
 			setCursor(e);
 		}
-		
 	}
 
 	private static final int BORDER_SIZE = 2;
-
 	private static final Color BORDER_COLOR = Color.GRAY;
-
 	private final MyMouseListener mouseListener = new MyMouseListener();
+	final private Set<IViewerFactory> factories;
 
-final private Set<IViewerFactory> factories;	
-	public ViewerController(ModeController modeController) {
+	public ViewerController(final ModeController modeController) {
 		super(modeController);
 		factories = new HashSet<IViewerFactory>();
 		modeController.addINodeViewLifeCycleListener(this);
@@ -323,13 +315,13 @@ final private Set<IViewerFactory> factories;
 		factories.add(new BitmapViewerFactory());
 	}
 
-	public void setZoom(final ModeController modeController, final MapModel map, final ExternalResource model, final float size) {
+	public void setZoom(final ModeController modeController, final MapModel map, final ExternalResource model,
+	                    final float size) {
 		final float oldSize = model.getZoom();
-		if(size == oldSize){
+		if (size == oldSize) {
 			return;
 		}
-		IActor actor = new IActor(){
-
+		final IActor actor = new IActor() {
 			public void act() {
 				model.setZoom(size);
 				modeController.getMapController().setSaved(map, false);
@@ -342,8 +334,9 @@ final private Set<IViewerFactory> factories;
 			public void undo() {
 				model.setZoom(oldSize);
 				modeController.getMapController().setSaved(map, false);
-			}};
-			modeController.execute(actor, map);
+			}
+		};
+		modeController.execute(actor, map);
 	}
 
 	@Override
@@ -357,29 +350,31 @@ final private Set<IViewerFactory> factories;
 		super.add(node, extension);
 	}
 
+	@Override
 	protected IExtension createExtension(final NodeModel node) {
-		Controller controller = getController();
-		ViewController viewController = controller.getViewController();
-		MapModel map = node.getMap();
-		File file = map.getFile();
-		boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
+		final Controller controller = getController();
+		final ViewController viewController = controller.getViewController();
+		final MapModel map = node.getMap();
+		final File file = map.getFile();
+		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
+		    "relative");
 		if (file == null && useRelativeUri) {
 			JOptionPane.showMessageDialog(viewController.getContentPane(), ResourceBundles
 			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
-		UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
-		JFileChooser chooser = urlManager.getFileChooser(null);
+		final UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
+		final JFileChooser chooser = urlManager.getFileChooser(null);
 		chooser.setAcceptAllFileFilterUsed(false);
-		if(factories.size() > 1){
+		if (factories.size() > 1) {
 			final FileFilter combiFileFilter = getCombiFileFilter();
 			chooser.addChoosableFileFilter(combiFileFilter);
-			for(IViewerFactory factory:factories){
+			for (final IViewerFactory factory : factories) {
 				chooser.addChoosableFileFilter(new FactoryFileFilter(factory));
 			}
 			chooser.setFileFilter(combiFileFilter);
 		}
-		else{
+		else {
 			chooser.setFileFilter(new FactoryFileFilter(factories.iterator().next()));
 		}
 		chooser.setAccessory(new ImagePreview(chooser));
@@ -398,14 +393,14 @@ final private Set<IViewerFactory> factories;
 		if (useRelativeUri) {
 			uri = LinkController.toRelativeURI(map.getFile(), input);
 		}
-		ExternalResource preview = new ExternalResource();
+		final ExternalResource preview = new ExternalResource();
 		preview.setUri(uri);
 		return preview;
 	}
 
-	private IViewerFactory getViewerFactory(URI uri) {
-		for(IViewerFactory factory:factories){
-			if(factory.accept(uri)){
+	private IViewerFactory getViewerFactory(final URI uri) {
+		for (final IViewerFactory factory : factories) {
+			if (factory.accept(uri)) {
 				return factory;
 			}
 		}
@@ -413,35 +408,36 @@ final private Set<IViewerFactory> factories;
 	}
 
 	@Override
-	protected IExtension createExtension(NodeModel node, XMLElement element) {
-		ExternalResource previewUrl = new ExternalResource();
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
+		final ExternalResource previewUrl = new ExternalResource();
 		try {
-			String attrUri = element.getAttribute("URI", null);
-			if(attrUri != null){
-				URI uri= new URI(attrUri);
+			final String attrUri = element.getAttribute("URI", null);
+			if (attrUri != null) {
+				final URI uri = new URI(attrUri);
 				previewUrl.setUri(uri);
 			}
-			String attrSize = element.getAttribute("SIZE", null);
-			if(attrSize != null){
-				float size = Float.parseFloat(attrSize);
+			final String attrSize = element.getAttribute("SIZE", null);
+			if (attrSize != null) {
+				final float size = Float.parseFloat(attrSize);
 				previewUrl.setZoom(size);
 			}
 			getModeController().getMapController().nodeChanged(node);
-		} catch (URISyntaxException e) {
+		}
+		catch (final URISyntaxException e) {
 		}
 		return previewUrl;
 	}
 
 	void createViewer(final ExternalResource model, final NodeView view) {
-			JComponent viewer = createViewer(view.getMap().getModel(), model);
-			viewer.setBorder(new MatteBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_COLOR));
-			final Set<JComponent> viewers = model.getViewers();
-			viewers.add(viewer);
-			view.getContentPane().add(viewer);
-			if(model.getZoom() != -1){
-			}
-			viewer.revalidate();
-			viewer.repaint();
+		final JComponent viewer = createViewer(view.getMap().getModel(), model);
+		viewer.setBorder(new MatteBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_COLOR));
+		final Set<JComponent> viewers = model.getViewers();
+		viewers.add(viewer);
+		view.getContentPane().add(viewer);
+		if (model.getZoom() != -1) {
+		}
+		viewer.revalidate();
+		viewer.repaint();
 	}
 
 	void deleteViewer(final ExternalResource model, final NodeView nodeView) {
@@ -494,12 +490,12 @@ final private Set<IViewerFactory> factories;
 	@Override
 	protected void saveExtension(final IExtension extension, final XMLElement element) {
 		final ExternalResource previewUri = (ExternalResource) extension;
-		URI uri = previewUri.getUri();
-		if(uri != null){
+		final URI uri = previewUri.getUri();
+		if (uri != null) {
 			element.setAttribute("URI", uri.toString());
 		}
-		float size = previewUri.getZoom();
-		if(size != -1){
+		final float size = previewUri.getZoom();
+		if (size != -1) {
 			element.setAttribute("SIZE", Float.toString(size));
 		}
 		super.saveExtension(extension, element);
@@ -507,27 +503,27 @@ final private Set<IViewerFactory> factories;
 
 	private JComponent createViewer(final MapModel map, final ExternalResource model) {
 		final URI uri = model.getUri();
-		if(uri == null ){
+		if (uri == null) {
 			return new JLabel("no file set");
 		}
 		final URI absoluteUri = model.getAbsoluteUri(map, getModeController());
-		IViewerFactory factory = getViewerFactory(absoluteUri);
-		if(factory == null){
+		final IViewerFactory factory = getViewerFactory(absoluteUri);
+		if (factory == null) {
 			return new JLabel(uri.toString());
 		}
 		JComponent viewer = null;
-        try {
-	        viewer = factory.createViewer(model, absoluteUri);
-        }
-        catch (Exception e) {
-        	String info = HtmlTools.combineTextWithExceptionInfo(uri.toString(), e);
+		try {
+			viewer = factory.createViewer(model, absoluteUri);
+		}
+		catch (final Exception e) {
+			final String info = HtmlTools.combineTextWithExceptionInfo(uri.toString(), e);
 			return new JLabel(info);
-       }
-		if(viewer == null){
+		}
+		if (viewer == null) {
 			return new JLabel(uri.toString());
 		}
-		viewer.putClientProperty(IViewerFactory.class,factory);
-		viewer.putClientProperty(ExternalResource.class,model);
+		viewer.putClientProperty(IViewerFactory.class, factory);
+		viewer.putClientProperty(ExternalResource.class, model);
 		viewer.addMouseListener(mouseListener);
 		viewer.addMouseMotionListener(mouseListener);
 		return viewer;
@@ -537,11 +533,11 @@ final private Set<IViewerFactory> factories;
 		return new FactoryFileFilter(new CombiFactory());
 	}
 
-
-	public void addFactory(IViewerFactory factory){
+	public void addFactory(final IViewerFactory factory) {
 		factories.add(factory);
 	}
-	public void removeFactory(IViewerFactory factory){
+
+	public void removeFactory(final IViewerFactory factory) {
 		factories.remove(factory);
 	}
 }

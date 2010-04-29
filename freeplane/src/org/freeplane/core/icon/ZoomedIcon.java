@@ -30,65 +30,61 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class ZoomedIcon extends UIIcon {
-	final static private Map<UIIcon, Map<Float, ImageIcon>> zoomedIcons = new HashMap<UIIcon, Map<Float,ImageIcon>>();
+	final static private Map<UIIcon, Map<Float, ImageIcon>> zoomedIcons = new HashMap<UIIcon, Map<Float, ImageIcon>>();
 	private final UIIcon uiIcon;
-	
 	private final float zoom;
-	
 	private ImageIcon zoomedIcon;
-	
-	public ZoomedIcon(UIIcon uiIcon, float zoom) {
+
+	public ZoomedIcon(final UIIcon uiIcon, final float zoom) {
 		super(uiIcon.getName(), uiIcon.getFileName(), uiIcon.getDescription(), uiIcon.getShortcutKey());
 		this.uiIcon = uiIcon;
-		this.zoom   = zoom;
+		this.zoom = zoom;
 	}
-	
+
 	@Override
 	public Icon getIcon() {
-		if(zoomedIcon == null) {
+		if (zoomedIcon == null) {
 			Map<Float, ImageIcon> icons = zoomedIcons.get(uiIcon);
-			if(icons == null){
+			if (icons == null) {
 				icons = new HashMap<Float, ImageIcon>();
 				zoomedIcons.put(uiIcon, icons);
 			}
 			zoomedIcon = icons.get(zoom);
-			if(zoomedIcon != null){
+			if (zoomedIcon != null) {
 				return zoomedIcon;
 			}
 			final Icon icon = uiIcon.getIcon();
-			final int width =icon.getIconWidth();
+			final int width = icon.getIconWidth();
 			final int height = icon.getIconHeight();
-			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 			final Graphics2D g = image.createGraphics();
 			icon.paintIcon(null, g, 0, 0);
-			final Image scaledImage = image.getScaledInstance((int)(width* zoom), 
-							  (int)(height* zoom),
-							  Image.SCALE_SMOOTH);
+			final Image scaledImage = image.getScaledInstance((int) (width * zoom), (int) (height * zoom),
+			    Image.SCALE_SMOOTH);
 			zoomedIcon = new ImageIcon(scaledImage);
 			icons.put(zoom, zoomedIcon);
 			g.dispose();
 		}
-		return zoomedIcon; 
+		return zoomedIcon;
 	}
-	
+
 	@Override
 	public String getPath() {
 		return uiIcon.getPath();
 	}
-	
+
 	@Override
 	public URL getUrl() {
 		return uiIcon.getUrl();
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return super.equals(obj) && zoom == ((ZoomedIcon)obj).zoom;
+	public boolean equals(final Object obj) {
+		return super.equals(obj) && zoom == ((ZoomedIcon) obj).zoom;
 	}
 
 	@Override
 	public int hashCode() {
 		return 31 * super.hashCode() + Float.valueOf(zoom).hashCode();
 	}
-	
 }

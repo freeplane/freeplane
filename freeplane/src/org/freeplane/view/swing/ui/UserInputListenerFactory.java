@@ -59,7 +59,6 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.core.util.Compat;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 
@@ -329,7 +328,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			newItem.setSelected(false);
 			group.add(newItem);
 			newItem.addActionListener(mapsMenuActionListener);
-			if(displayName.length() > 0){
+			if (displayName.length() > 0) {
 				newItem.setMnemonic(displayName.charAt(0));
 			}
 			final MapView currentMapView = (MapView) mapViewManager.getMapViewComponent();

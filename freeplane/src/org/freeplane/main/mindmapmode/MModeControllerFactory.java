@@ -52,7 +52,6 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
@@ -147,7 +146,6 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new SaveAll(controller));
 		menuBuilder.addAnnotatedAction(new SortNodes(controller));
 		menuBuilder.addAnnotatedAction(new SplitNode(controller));
-
 		new UnfoldAll(modeController);
 		new ChangeNodeLevelController(modeController.getController(), menuBuilder);
 		ExportWithXSLT.createXSLTExportActions(modeController, "/xml/ExportWithXSLT.xml");
@@ -192,8 +190,8 @@ public class MModeControllerFactory {
 						final NodeModel node = (component).getNodeView().getModel();
 						if (!mapController.hasChildren(node)) {
 							/* If the link exists, follow the link; toggle folded otherwise */
-							if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown() && !e.isPopupTrigger()
-							        && e.getButton() == MouseEvent.BUTTON1) {
+							if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown()
+							        && !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1) {
 								((MTextController) TextController.getController(modeController)).edit(null, false,
 								    false);
 							}
@@ -239,7 +237,8 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
 		userInputListenerFactory.addMainToolBar("/main_toolbar", toolbar);
-		userInputListenerFactory.addMainToolBar("/filter_toolbar", FilterController.getController(controller).getFilterToolbar());
+		userInputListenerFactory.addMainToolBar("/filter_toolbar", FilterController.getController(controller)
+		    .getFilterToolbar());
 		final FButtonBar fButtonToolBar = new FButtonBar(modeController);
 		fButtonToolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "fbarVisible");
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));

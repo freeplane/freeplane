@@ -29,7 +29,7 @@ import org.freeplane.core.resources.ResourceBundles;
 public class ConnectorLabelEqualsCondition extends ConnectorLabelCondition {
 	public static final String NAME = "connector_label_equals";
 
-	public ConnectorLabelEqualsCondition(final String text, boolean ignoreCase) {
+	public ConnectorLabelEqualsCondition(final String text, final boolean ignoreCase) {
 		super(text, ignoreCase);
 	}
 
@@ -50,11 +50,13 @@ public class ConnectorLabelEqualsCondition extends ConnectorLabelCondition {
 		return false;
 	}
 
-	private boolean equals(String middleLabel) {
-		if (middleLabel == null)
+	private boolean equals(final String middleLabel) {
+		if (middleLabel == null) {
 			return false;
-		if (ignoreCase())
+		}
+		if (ignoreCase()) {
 			return middleLabel.toLowerCase().equals(getText());
+		}
 		return middleLabel.equals(getText());
 	}
 

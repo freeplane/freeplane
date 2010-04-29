@@ -59,26 +59,26 @@ class DefaultNodeDragListener implements DragGestureListener {
 		final Transferable t = ClipboardController.getController(modeController).copy(controller.getSelection());
 		((MindMapNodesSelection) t).setDropAction(dragActionName);
 		try {
-	        e.startDrag(cursor, t, new DragSourceListener() {
-	        	public void dragDropEnd(final DragSourceDropEvent dsde) {
-	        	}
+			e.startDrag(cursor, t, new DragSourceListener() {
+				public void dragDropEnd(final DragSourceDropEvent dsde) {
+				}
 
-	        	public void dragEnter(final DragSourceDragEvent e) {
-	        	}
+				public void dragEnter(final DragSourceDragEvent e) {
+				}
 
-	        	public void dragExit(final DragSourceEvent dse) {
-	        	}
+				public void dragExit(final DragSourceEvent dse) {
+				}
 
-	        	public void dragOver(final DragSourceDragEvent dsde) {
-	        	}
+				public void dragOver(final DragSourceDragEvent dsde) {
+				}
 
-	        	public void dropActionChanged(final DragSourceDragEvent dsde) {
-	        		dsde.getDragSourceContext().setCursor(getCursorByAction(dsde.getUserAction()));
-	        	}
-	        });
-        }
-        catch (InvalidDnDOperationException ex) {
-        }
+				public void dropActionChanged(final DragSourceDragEvent dsde) {
+					dsde.getDragSourceContext().setCursor(getCursorByAction(dsde.getUserAction()));
+				}
+			});
+		}
+		catch (final InvalidDnDOperationException ex) {
+		}
 	}
 
 	public Cursor getCursorByAction(final int dragAction) {

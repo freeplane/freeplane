@@ -21,11 +21,9 @@ package org.freeplane.core.frame;
 
 import java.awt.Component;
 
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev

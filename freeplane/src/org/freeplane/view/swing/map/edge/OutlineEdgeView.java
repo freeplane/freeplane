@@ -28,9 +28,7 @@ import java.awt.Stroke;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.edge.EdgeController;
-import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
-import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -38,21 +36,23 @@ import org.freeplane.view.swing.map.NodeView;
  * 29.08.2009
  */
 public class OutlineEdgeView extends EdgeView {
-	public OutlineEdgeView(NodeView target) {
-	    super(target);
-    }
+	public OutlineEdgeView(final NodeView target) {
+		super(target);
+	}
 
 	@Override
-	public boolean detectCollision(Point p) {
+	public boolean detectCollision(final Point p) {
 		return false;
 	}
 
+	@Override
 	protected void createStart() {
 		start = getSource().getMainViewInPoint();
 		UITools.convertPointToAncestor(getSource().getMainView(), start, getSource());
 	}
+
 	@Override
-	protected void draw(Graphics2D g) {
+	protected void draw(final Graphics2D g) {
 		final Color color = getColor();
 		g.setColor(color);
 		final Stroke stroke = getStroke();
@@ -60,7 +60,7 @@ public class OutlineEdgeView extends EdgeView {
 		g.drawLine(start.x, start.y, start.x, end.y);
 		g.drawLine(start.x, end.y, end.x, end.y);
 	}
-	
+
 	@Override
 	protected Stroke getStroke() {
 		final EdgeController edgeController = EdgeController.getController(getSource().getMap().getModeController());

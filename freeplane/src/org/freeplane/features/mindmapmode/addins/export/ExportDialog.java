@@ -110,7 +110,7 @@ public class ExportDialog {
 	 * @param parentframe a parent component for the dialogs to appear (can be null).
 	 * @param streamSource 
 	 */
-	void export(final Component parentframe, StreamSource xmlSource, final File xmlSourceFile) {
+	void export(final Component parentframe, final StreamSource xmlSource, final File xmlSourceFile) {
 		gatherXsltScripts();
 		if (filtermap.isEmpty()) {
 			JOptionPane.showMessageDialog(parentframe, FpStringUtils.formatText("xslt_export_file_not_found_in_dirs",
@@ -125,18 +125,20 @@ public class ExportDialog {
 		// Finish to setup the File Chooser...
 		// And then use it
 		final String absolutePathWithoutExtension;
-		if(xmlSourceFile != null){
+		if (xmlSourceFile != null) {
 			absolutePathWithoutExtension = UrlManager.removeExtension(xmlSourceFile.getAbsolutePath());
 		}
-		else{
+		else {
 			absolutePathWithoutExtension = null;
 		}
 		final PropertyChangeListener filterChangeListener = new PropertyChangeListener() {
-			final private File selectedFile = absolutePathWithoutExtension == null ? null : new File(absolutePathWithoutExtension);
+			final private File selectedFile = absolutePathWithoutExtension == null ? null : new File(
+			    absolutePathWithoutExtension);
+
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)) {
 					final ExampleFileFilter filter = (ExampleFileFilter) evt.getNewValue();
-					if(filter == null){
+					if (filter == null) {
 						return;
 					}
 					final File acceptableFile = getAcceptableFile(selectedFile, filter);

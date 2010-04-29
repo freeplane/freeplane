@@ -74,17 +74,19 @@ public class Filter {
 	}
 
 	static private Icon filterIcon;
+
 	void displayFilterStatus() {
-	    if(filterIcon == null){
+		if (filterIcon == null) {
 			filterIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/filter.png"));
 		}
-		if(getCondition() != null){
+		if (getCondition() != null) {
 			controller.getViewController().addStatusImage("filter", filterIcon);
 		}
-		else{
+		else {
 			controller.getViewController().removeStatus("filter");
 		}
-    }
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -173,7 +175,8 @@ public class Filter {
 	 */
 	private boolean filterChildren(final NodeModel parent, final boolean isAncestorSelected,
 	                               final boolean isAncestorEclipsed) {
-		final ListIterator<NodeModel> iterator = controller.getModeController().getMapController().childrenUnfolded(parent);
+		final ListIterator<NodeModel> iterator = controller.getModeController().getMapController().childrenUnfolded(
+		    parent);
 		boolean isDescendantSelected = false;
 		while (iterator.hasNext()) {
 			final NodeModel node = iterator.next();

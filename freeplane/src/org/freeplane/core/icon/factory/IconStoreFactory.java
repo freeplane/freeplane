@@ -44,21 +44,14 @@ import org.freeplane.core.resources.ResourceController;
  *
  */
 public class IconStoreFactory {
-
 	private static final String SEPARATOR = ";";
-
 	private static final ResourceController RESOURCE_CONTROLLER = ResourceController.getResourceController();
-	
 	private static final String GROUP_NAMES_KEY = "icons.groups";
-	
 	private static final String GROUP_KEY = "icons.group.%s";
-	
 	private static final String GROUP_ICON_KEY = "IconGroupPopupAction.%s.icon";
-	
 	private static final String GROUP_DESC_KEY = "IconGroupPopupAction.%s.text";
-	
 	private static IconStore groups;
-		
+
 	/**
 	 * 
 	 * Creates an IconStore from the property file. If one was already
@@ -67,68 +60,59 @@ public class IconStoreFactory {
 	 * @return
 	 */
 	public static IconStore create() {
-		if(groups != null) {
+		if (groups != null) {
 			return groups;
 		}
-		
-		IconStore iconStore = new IconStore();
-		
-		setIconGroups(iconStore);
-		
+		final IconStore iconStore = new IconStore();
+		IconStoreFactory.setIconGroups(iconStore);
 		return iconStore;
 	}
-	
-	private static void setIconGroups(IconStore iconStore) {
-		String[] groupNames = RESOURCE_CONTROLLER.getProperty(GROUP_NAMES_KEY).split(SEPARATOR);
-		for(String groupName : groupNames) {
-			String description = ResourceBundles.getText(String.format(GROUP_DESC_KEY, groupName));
-			
+
+	private static void setIconGroups(final IconStore iconStore) {
+		final String[] groupNames = RESOURCE_CONTROLLER.getProperty(GROUP_NAMES_KEY).split(SEPARATOR);
+		for (final String groupName : groupNames) {
+			final String description = ResourceBundles.getText(String.format(GROUP_DESC_KEY, groupName));
 			List<MindIcon> icons;
 			UIIcon groupIcon = null;
-			if("user".equals(groupName)) {
-				icons = getUserIcons();
+			if ("user".equals(groupName)) {
+				icons = IconStoreFactory.getUserIcons();
 				groupIcon = MindIconFactory.create("user_icon");
 			}
 			else {
-				String groupIconName = RESOURCE_CONTROLLER.getProperty(String.format(GROUP_ICON_KEY, groupName));
-				Map<String, MindIcon> iconMap = getIcons(groupName);
+				final String groupIconName = RESOURCE_CONTROLLER.getProperty(String.format(GROUP_ICON_KEY, groupName));
+				final Map<String, MindIcon> iconMap = IconStoreFactory.getIcons(groupName);
 				groupIcon = iconMap.get(groupIconName);
 				icons = new ArrayList<MindIcon>(iconMap.values());
 			}
-
-			if(groupIcon == null) {
+			if (groupIcon == null) {
 				groupIcon = icons.size() > 0 ? icons.get(0) : IconNotFound.instance();
 			}
 			iconStore.addGroup(new IconGroup(groupName, groupIcon, description, icons));
-			
 		}
 	}
-	
-	private static Map<String, MindIcon> getIcons(String groupName) {
-		String[]       iconNames = RESOURCE_CONTROLLER.getProperty(String.format(GROUP_KEY, groupName)).split(SEPARATOR);
-		Map<String, MindIcon> icons = new LinkedHashMap<String, MindIcon>(iconNames.length);
-		
-		for(String iconName : iconNames) {
-			MindIcon icon = MindIconFactory.create(iconName);
+
+	private static Map<String, MindIcon> getIcons(final String groupName) {
+		final String[] iconNames = RESOURCE_CONTROLLER.getProperty(String.format(GROUP_KEY, groupName))
+		    .split(SEPARATOR);
+		final Map<String, MindIcon> icons = new LinkedHashMap<String, MindIcon>(iconNames.length);
+		for (final String iconName : iconNames) {
+			final MindIcon icon = MindIconFactory.create(iconName);
 			icons.put(iconName, icon);
 		}
-		
 		return icons;
 	}
-	
-	private static List<MindIcon> getUserIcons() {
-		
 
+	private static List<MindIcon> getUserIcons() {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		if (resourceController.isApplet()){
+		if (resourceController.isApplet()) {
 			return Collections.emptyList();
 		}
 		final File iconDir = new File(resourceController.getFreeplaneUserDirectory(), "icons");
-		return getUserIcons(iconDir, "");		
+		return IconStoreFactory.getUserIcons(iconDir, "");
 	}
 
-	private static List<MindIcon> getUserIcons(final File iconDir, String dir) {
-		if (! iconDir.exists()) {
+	private static List<MindIcon> getUserIcons(final File iconDir, final String dir) {
+		if (!iconDir.exists()) {
 			return Collections.emptyList();
 		}
 		final String[] userIconArray = iconDir.list(new FilenameFilter() {
@@ -139,28 +123,27 @@ public class IconStoreFactory {
 		if (userIconArray == null) {
 			return Collections.emptyList();
 		}
-		
 		final List<MindIcon> icons = new ArrayList<MindIcon>(userIconArray.length);
-		for (String fileName : userIconArray) {
-			File childDir = new File(iconDir, fileName);
+		for (final String fileName : userIconArray) {
+			final File childDir = new File(iconDir, fileName);
 			final String fullName = dir + fileName;
-			if(childDir.isDirectory()){
-				List<MindIcon> childUserIcons = getUserIcons(childDir, fullName + '/');
+			if (childDir.isDirectory()) {
+				final List<MindIcon> childUserIcons = IconStoreFactory.getUserIcons(childDir, fullName + '/');
 				icons.addAll(childUserIcons);
 			}
 		}
-		for (String fileName : userIconArray) {
-			File childDir = new File(iconDir, fileName);
+		for (final String fileName : userIconArray) {
+			final File childDir = new File(iconDir, fileName);
 			final String fullName = dir + fileName;
-			if(childDir.isDirectory()){
+			if (childDir.isDirectory()) {
 				continue;
 			}
-			String iconName = fullName.substring(0, fullName.length() - 4);
-			String iconDescription = fileName.substring(0, fileName.length() - 4);
+			final String iconName = fullName.substring(0, fullName.length() - 4);
+			final String iconDescription = fileName.substring(0, fileName.length() - 4);
 			if (iconName.equals("")) {
 				continue;
 			}
-			UserIcon icon = new UserIcon(iconName, fullName, iconDescription);
+			final UserIcon icon = new UserIcon(iconName, fullName, iconDescription);
 			icons.add(icon);
 		}
 		return icons;

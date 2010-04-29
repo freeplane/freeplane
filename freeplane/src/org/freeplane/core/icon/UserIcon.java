@@ -34,10 +34,10 @@ import org.freeplane.core.util.LogTool;
  *
  */
 public class UserIcon extends MindIcon {
-
 	public UserIcon(final String name, final String fileName, final String description) {
 		super(name, fileName, description);
 	}
+
 	@Override
 	public String getPath() {
 		final StringBuilder builder = new StringBuilder();
@@ -46,20 +46,20 @@ public class UserIcon extends MindIcon {
 		builder.append("icons");
 		builder.append(SEPARATOR);
 		builder.append(this.getFileName());
-		String path = builder.toString().replace(File.separatorChar, '/');
+		final String path = builder.toString().replace(File.separatorChar, '/');
 		return path;
 	}
+
 	@Override
 	public URL getUrl() {
-		
 		URL result = null;
-		String urlString = getPath();
+		final String urlString = getPath();
 		try {
 			result = new File(urlString).toURI().toURL();
-		} catch (MalformedURLException e) {
+		}
+		catch (final MalformedURLException e) {
 			LogTool.warn(String.format("could not create URL from [%s]", urlString));
 		}
-		
 		return result;
 	}
 }

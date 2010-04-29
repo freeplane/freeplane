@@ -138,7 +138,7 @@ public class EdgeController implements IExtension {
 	}
 
 	public IPropertyHandler<EdgeStyle, NodeModel> addStyleGetter(final Integer key,
-	                                                          final IPropertyHandler<EdgeStyle, NodeModel> getter) {
+	                                                             final IPropertyHandler<EdgeStyle, NodeModel> getter) {
 		return styleHandlers.addGetter(key, getter);
 	}
 

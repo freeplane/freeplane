@@ -83,20 +83,20 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 		if (noteText != null && !noteText.equals("")) {
 			controller.getViewController().insertComponentIntoSplitPane(getNoteViewerComponent());
 			noteViewer.setText(noteText);
-			try{
+			try {
 				noteViewer.setText(noteText);
 			}
-			catch (Exception ex){
+			catch (final Exception ex) {
 				setTextWithExceptionInfo(noteText, ex);
 			}
 		}
 	}
 
-	private void setTextWithExceptionInfo(String text, Exception ex) {
-		String string = HtmlTools.combineTextWithExceptionInfo(text, ex);
+	private void setTextWithExceptionInfo(final String text, final Exception ex) {
+		final String string = HtmlTools.combineTextWithExceptionInfo(text, ex);
 		noteViewer.setText(string);
 	}
-	
+
 	public void onUpdate(final NodeModel pNode) {
 		setStateIcon(pNode, true);
 	}

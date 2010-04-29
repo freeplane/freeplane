@@ -38,12 +38,12 @@ public class ConnectorModel extends NodeLinkModel {
 	private boolean edgeLike;
 
 	public boolean isEdgeLike() {
-    	return edgeLike;
-    }
+		return edgeLike;
+	}
 
-	public void setEdgeLike(boolean edgeLike) {
-    	this.edgeLike = edgeLike;
-    }
+	public void setEdgeLike(final boolean edgeLike) {
+		this.edgeLike = edgeLike;
+	}
 
 	public ConnectorModel(final NodeModel source, final String targetID) {
 		super(source, targetID);

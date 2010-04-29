@@ -27,7 +27,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class ModesMenuActionListener extends AFreeplaneAction {
-	private String mode;
+	private final String mode;
 
 	public ModesMenuActionListener(final String mode, final Controller controller) {
 		super("ModesMenuAction." + mode, controller);

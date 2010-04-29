@@ -21,12 +21,9 @@ package org.freeplane.features.mindmapmode.link;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinkModel;
-import org.freeplane.features.common.link.NodeLinks;
 
 class RemoveConnectorAction extends AFreeplaneAction {
 	/**
@@ -44,7 +41,7 @@ class RemoveConnectorAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+		final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
 		linkController.removeArrowLink(mArrowLink);
 	}
 

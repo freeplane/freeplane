@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Vector;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -251,12 +250,11 @@ class NodeList {
 
 		public IconsHolder(final NodeModel node) {
 			icons.addAll(node.getIcons());
-			if(icons.size() > 0) {
+			if (icons.size() > 0) {
 				final List<MindIcon> toSort = new ArrayList<MindIcon>(icons);
 				Collections.sort(toSort);
-				
-				StringBuilder builder = new StringBuilder();
-				for(MindIcon icon : toSort) {
+				final StringBuilder builder = new StringBuilder();
+				for (final MindIcon icon : toSort) {
 					builder.append(icon.getName()).append(" ");
 				}
 				iconNames = builder.toString();
@@ -296,7 +294,7 @@ class NodeList {
 			if (value instanceof IconsHolder) {
 				final IconsHolder iconsHolder = (IconsHolder) value;
 				final MultipleImage iconImages = new MultipleImage();
-				for (MindIcon icon : iconsHolder.getIcons()) {
+				for (final MindIcon icon : iconsHolder.getIcons()) {
 					iconImages.addImage(icon.getIcon());
 				}
 				if (iconImages.getImageCount() > 0) {
@@ -418,8 +416,7 @@ class NodeList {
 
 	private class ReplaceAllInfo implements IReplaceInputInformation {
 		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) TextController.getController(getModeController())).setNodeText(nodeHolder.node,
-			    newText);
+			((MTextController) TextController.getController(getModeController())).setNodeText(nodeHolder.node, newText);
 		}
 
 		public int getLength() {
@@ -433,8 +430,7 @@ class NodeList {
 
 	private class ReplaceSelectedInfo implements IReplaceInputInformation {
 		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) TextController.getController(getModeController())).setNodeText(nodeHolder.node,
-			    newText);
+			((MTextController) TextController.getController(getModeController())).setNodeText(nodeHolder.node, newText);
 		}
 
 		public int getLength() {
@@ -492,7 +488,8 @@ class NodeList {
 		Pattern p;
 		try {
 			p = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
-		} catch (PatternSyntaxException e) {
+		}
+		catch (final PatternSyntaxException e) {
 			UITools.errorMessage(FpStringUtils.format("wrong_regexp", searchString, e.getMessage()));
 			return;
 		}
@@ -501,11 +498,11 @@ class NodeList {
 		for (int i = 0; i < length; i++) {
 			final NodeHolder nodeHolder = info.getNodeHolderAt(i);
 			final String text = nodeHolder.node.getText();
-			final String replaceResult; 
-			if(HtmlTools.isHtmlNode(text)){
-				replaceResult = replace(p, replacement, text);
+			final String replaceResult;
+			if (HtmlTools.isHtmlNode(text)) {
+				replaceResult = NodeList.replace(p, replacement, text);
 			}
-			else{
+			else {
 				replaceResult = p.matcher(text).replaceAll(replacement);
 			}
 			if (!StringUtils.equals(text, replaceResult)) {
@@ -514,13 +511,11 @@ class NodeList {
 		}
 	}
 
-	private static String replace(final Pattern p, final String replacement,
-			String replaceResult) {
+	private static String replace(final Pattern p, final String replacement, String replaceResult) {
 		Object before;
 		do {
 			before = replaceResult;
-			replaceResult = HtmlTools.getInstance().getReplaceResult(p,
-					replacement, replaceResult);
+			replaceResult = HtmlTools.getInstance().getReplaceResult(p, replacement, replaceResult);
 		} while (!replaceResult.equals(before));
 		return replaceResult;
 	}
@@ -540,7 +535,7 @@ class NodeList {
 	private org.freeplane.features.mindmapmode.addins.time.TableSorter sorter;
 	private JTable timeTable;
 	private DefaultTableModel timeTableModel;
-	private boolean searchInAllMaps;
+	private final boolean searchInAllMaps;
 
 	public NodeList(final ModeController modeController, final boolean showAllNodes, final boolean searchInAllMaps) {
 		this.modeController = modeController;
@@ -627,9 +622,9 @@ class NodeList {
 			final NodeModel focussedNode = getMindMapNode(focussedRow);
 			final MapModel map = focussedNode.getMap();
 			final List<NodeModel> selectedNodes = new ArrayList<NodeModel>();
-			for (int row : selectedRows) {
+			for (final int row : selectedRows) {
 				final NodeModel node = getMindMapNode(row);
-				if(! node.getMap().equals(map)){
+				if (!node.getMap().equals(map)) {
 					continue;
 				}
 				selectedNodes.add(node);
@@ -639,19 +634,18 @@ class NodeList {
 		}
 	}
 
-	private void selectMap(MapModel map) {
-	    if(map.equals(controller.getMap())){
-	    	return;
-	    }
-	    final IMapViewManager mapViewManager = controller.getMapViewManager();
+	private void selectMap(final MapModel map) {
+		if (map.equals(controller.getMap())) {
+			return;
+		}
+		final IMapViewManager mapViewManager = controller.getMapViewManager();
 		final Map<String, MapModel> maps = mapViewManager.getMaps(MModeController.MODENAME);
-	    for(Map.Entry<String, MapModel> entry : maps.entrySet()){
-	    	if(map.equals(entry.getValue())){
-	    		mapViewManager.tryToChangeToMapView(entry.getKey());
-	    	}
-	    }
-	    
-    }
+		for (final Map.Entry<String, MapModel> entry : maps.entrySet()) {
+			if (map.equals(entry.getValue())) {
+				mapViewManager.tryToChangeToMapView(entry.getKey());
+			}
+		}
+	}
 
 	private void selectSelectedRows() {
 		selectNodes(timeTable.getSelectedRow(), timeTable.getSelectedRows());
@@ -883,7 +877,8 @@ class NodeList {
 		if (storage != null) {
 			timeTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			int column = 0;
-			for (final TimeWindowColumnSetting setting : ((TimeWindowConfigurationStorage) storage).getListTimeWindowColumnSettingList()) {
+			for (final TimeWindowColumnSetting setting : ((TimeWindowConfigurationStorage) storage)
+			    .getListTimeWindowColumnSettingList()) {
 				timeTable.getColumnModel().getColumn(column).setPreferredWidth(setting.getColumnWidth());
 				sorter.setSortingStatus(column, setting.getColumnSorting());
 				column++;
@@ -930,13 +925,13 @@ class NodeList {
 		model.addColumn(NodeList.COLUMN_CREATED);
 		model.addColumn(NodeList.COLUMN_MODIFIED);
 		model.addColumn(NodeList.COLUMN_NOTES);
-		if(searchInAllMaps == false){
+		if (searchInAllMaps == false) {
 			final NodeModel node = controller.getMap().getRootNode();
 			updateModel(model, node);
 		}
-		else{
+		else {
 			final Map<String, MapModel> maps = controller.getMapViewManager().getMaps(MModeController.MODENAME);
-			for(MapModel map : maps.values()){
+			for (final MapModel map : maps.values()) {
 				final NodeModel node = map.getRootNode();
 				updateModel(model, node);
 			}

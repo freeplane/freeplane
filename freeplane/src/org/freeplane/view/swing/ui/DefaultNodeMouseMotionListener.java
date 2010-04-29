@@ -81,7 +81,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		if (!JOptionPane.getFrameForComponent(e.getComponent()).isFocused()) {
 			return;
 		}
-		if(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner() instanceof JTextComponent){
+		if (KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner() instanceof JTextComponent) {
 			return;
 		}
 		/* Region to check for in the sequel. */
@@ -90,11 +90,12 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		if (selectionMethod.equals(SELECTION_METHOD_BY_CLICK)) {
 			return;
 		}
-		if(selectionMethod.equals(SELECTION_METHOD_DIRECT)) {
+		if (selectionMethod.equals(SELECTION_METHOD_DIRECT)) {
 			new TimeDelayedSelection(mc, e).run();
 			return;
 		}
-		final int timeForDelayedSelection  = ResourceController.getResourceController().getIntProperty(TIME_FOR_DELAYED_SELECTION, 0);
+		final int timeForDelayedSelection = ResourceController.getResourceController().getIntProperty(
+		    TIME_FOR_DELAYED_SELECTION, 0);
 		timerForDelayedSelection = SysUtil.createTimer(getClass().getSimpleName());
 		timerForDelayedSelection.schedule(new TimeDelayedSelection(mc, e), timeForDelayedSelection);
 	}
@@ -198,5 +199,4 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		timerForDelayedSelection = null;
 		controlRegionForDelayedSelection = null;
 	}
-
 }

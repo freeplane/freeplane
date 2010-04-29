@@ -109,7 +109,6 @@ class ApplicationResourceController extends ResourceController {
 		return FreeplaneStarter.getFreeplaneUserDirectory();
 	}
 
-
 	public LastOpenedList getLastOpenedList() {
 		return lastOpened;
 	}
@@ -164,7 +163,7 @@ class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
-	 public String getResourceBaseDir() {
+	public String getResourceBaseDir() {
 		return FreeplaneStarter.getResourceBaseDir();
 	}
 
@@ -198,7 +197,7 @@ class ApplicationResourceController extends ResourceController {
 	private Properties readDefaultPreferences() {
 		final Properties props = new Properties();
 		readDefaultPreferences(props, ResourceController.FREEPLANE_PROPERTIES);
-		if(Compat.isMacOsX()){
+		if (Compat.isMacOsX()) {
 			readDefaultPreferences(props, FREEPLANE_MAC_PROPERTIES);
 		}
 		final String propsLocs = props.getProperty("load_next_properties", "");
@@ -210,7 +209,7 @@ class ApplicationResourceController extends ResourceController {
 		for (final String loc : locArray) {
 			readDefaultPreferences(props, loc);
 		}
-    }
+	}
 
 	private void readDefaultPreferences(final Properties props, final String propsLoc) {
 		final URL defaultPropsURL = getResource(propsLoc);
@@ -245,7 +244,7 @@ class ApplicationResourceController extends ResourceController {
 	@Override
 	public void saveProperties(final Controller controller) {
 		lastOpened.saveProperties();
-		OutputStream out = null ;
+		OutputStream out = null;
 		try {
 			out = new FileOutputStream(autoPropertiesFile);
 			final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out, "8859_1");
@@ -257,13 +256,13 @@ class ApplicationResourceController extends ResourceController {
 		}
 		catch (final Exception ex) {
 		}
-		finally{
-			if(out != null){
+		finally {
+			if (out != null) {
 				try {
-	                out.close();
-                }
-                catch (IOException e) {
-                }
+					out.close();
+				}
+				catch (final IOException e) {
+				}
 			}
 		}
 		FilterController.getController(controller).saveConditions();

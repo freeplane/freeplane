@@ -45,7 +45,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "plugins/TimeManagementReminder.xml", onceForMap = false)
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" })
 public class ReminderHook extends PersistentNodeHook {
-	
 	private static final IconStore STORE = IconStoreFactory.create();
 
 	//******************************************	
@@ -161,7 +160,8 @@ public class ReminderHook extends PersistentNodeHook {
 		return new ReminderHookAction();
 	}
 
-	void displayState(final ReminderExtension model, final ClockState stateAdded, final NodeModel pNode, final boolean recurse) {
+	void displayState(final ReminderExtension model, final ClockState stateAdded, final NodeModel pNode,
+	                  final boolean recurse) {
 		UIIcon icon = null;
 		if (stateAdded == ClockState.CLOCK_VISIBLE) {
 			icon = getClockIcon();
@@ -174,11 +174,12 @@ public class ReminderHook extends PersistentNodeHook {
 				icon = getFlagIcon();
 			}
 		}
-		if(stateAdded != ClockState.REMOVE_CLOCK || pNode == model.getNode() || ReminderExtension.getExtension(pNode) == null){
+		if (stateAdded != ClockState.REMOVE_CLOCK || pNode == model.getNode()
+		        || ReminderExtension.getExtension(pNode) == null) {
 			pNode.setStateIcon(STATE_TOOLTIP, icon, true);
 		}
 		getModeController().getMapController().nodeRefresh(pNode);
-		if (! recurse) {
+		if (!recurse) {
 			return;
 		}
 		final NodeModel parentNode = pNode.getParentNode();
@@ -218,9 +219,9 @@ public class ReminderHook extends PersistentNodeHook {
 	protected void remove(final NodeModel node, final IExtension extension) {
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		setToolTip(reminderExtension.getNode(), null);
-        reminderExtension.deactivateTimer();
-        displayState(reminderExtension, ClockState.REMOVE_CLOCK, reminderExtension.getNode(), true);
-        getModeController().getMapController().removeMapChangeListener(reminderExtension);
+		reminderExtension.deactivateTimer();
+		displayState(reminderExtension, ClockState.REMOVE_CLOCK, reminderExtension.getNode(), true);
+		getModeController().getMapController().removeMapChangeListener(reminderExtension);
 		super.remove(node, extension);
 	}
 

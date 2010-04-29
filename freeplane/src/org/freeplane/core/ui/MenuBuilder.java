@@ -264,7 +264,7 @@ public class MenuBuilder extends UIBuilder {
 				menuPath.setName(action);
 				String accelerator = attributes.getAttribute("accelerator", null);
 				if (accelerator != null) {
-					if(Compat.isMacOsX()){
+					if (Compat.isMacOsX()) {
 						accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
 					}
 					setDefaultAccelerator(menuPath.path, accelerator);
@@ -491,7 +491,7 @@ public class MenuBuilder extends UIBuilder {
 			if (i == 0) {
 				String accelerator = actionAnnotation.accelerator();
 				if (!accelerator.equals("")) {
-					if(Compat.isMacOsX()){
+					if (Compat.isMacOsX()) {
 						accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
 					}
 					setDefaultAccelerator(itemKey, accelerator);
@@ -501,9 +501,9 @@ public class MenuBuilder extends UIBuilder {
 		}
 	}
 
-	private void setDefaultAccelerator(final String itemKey, String accelerator) {
+	private void setDefaultAccelerator(final String itemKey, final String accelerator) {
 		final String shortcutKey = getShortcutKey(itemKey);
-		if(null == ResourceController.getResourceController().getProperty(shortcutKey, null)){
+		if (null == ResourceController.getResourceController().getProperty(shortcutKey, null)) {
 			ResourceController.getResourceController().setDefaultProperty(shortcutKey, accelerator);
 		}
 	}
@@ -535,7 +535,7 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	private void addListeners(final String key, final AFreeplaneAction action) {
-	    if (action instanceof PopupMenuListener) {
+		if (action instanceof PopupMenuListener) {
 			addPopupMenuListener(key, (PopupMenuListener) action);
 		}
 		if (AFreeplaneAction.checkSelectionOnPopup(action)) {
@@ -564,7 +564,7 @@ public class MenuBuilder extends UIBuilder {
 				}
 			});
 		}
-    }
+	}
 
 	public void addAnnotatedAction(final AFreeplaneAction action) {
 		addAction(action, action.getClass().getAnnotation(ActionLocationDescriptor.class));
@@ -720,16 +720,16 @@ public class MenuBuilder extends UIBuilder {
 		}
 	}
 
-	 IFreeplaneAction decorateAction(final String category, final AFreeplaneAction action) {
+	IFreeplaneAction decorateAction(final String category, final AFreeplaneAction action) {
 		if (null == getMenubar(get(category)) || modeController.getController().getViewController().isApplet()) {
 			return action;
 		}
 		return decorateAction(action);
 	}
 
-	 public IFreeplaneAction decorateAction(final AFreeplaneAction action) {
-	    return new AccelerateableAction(this, action);
-    }
+	public IFreeplaneAction decorateAction(final AFreeplaneAction action) {
+		return new AccelerateableAction(this, action);
+	}
 
 	public IAcceleratorChangeListener getAcceleratorChangeListener() {
 		return acceleratorChangeListener;
@@ -836,21 +836,19 @@ public class MenuBuilder extends UIBuilder {
 		final Node oldAction = accelerators.put(keyStroke, node);
 		final JMenuItem item = (JMenuItem) node.getUserObject();
 		if (keyStroke != null && oldAction != null) {
-			UITools.errorMessage(FpStringUtils.format("action_keystroke_in_use_error", 
-					keyStroke, item.getActionCommand(), 
-					((JMenuItem) oldAction.getUserObject()).getActionCommand()));
+			UITools.errorMessage(FpStringUtils.format("action_keystroke_in_use_error", keyStroke, item
+			    .getActionCommand(), ((JMenuItem) oldAction.getUserObject()).getActionCommand()));
 			accelerators.put(keyStroke, oldAction);
 			final String shortcutKey = getShortcutKey(node.getKey().toString());
 			ResourceController.getResourceController().setProperty(shortcutKey, "");
 			return;
 		}
-		if(item instanceof JMenu){
-			UITools.errorMessage(FpStringUtils.format("submenu_keystroke_in_use_error", 
-					keyStroke, item.getText()));
-		accelerators.put(keyStroke, oldAction);
-		final String shortcutKey = getShortcutKey(node.getKey().toString());
-		ResourceController.getResourceController().setProperty(shortcutKey, "");
-		return;
+		if (item instanceof JMenu) {
+			UITools.errorMessage(FpStringUtils.format("submenu_keystroke_in_use_error", keyStroke, item.getText()));
+			accelerators.put(keyStroke, oldAction);
+			final String shortcutKey = getShortcutKey(node.getKey().toString());
+			ResourceController.getResourceController().setProperty(shortcutKey, "");
+			return;
 		}
 		final KeyStroke removedAccelerator = removeAccelerator(node);
 		item.setAccelerator(keyStroke);

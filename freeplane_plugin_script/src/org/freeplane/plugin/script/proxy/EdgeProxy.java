@@ -21,8 +21,7 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 	}
 
 	private MEdgeController getEdgeController() {
-		return (MEdgeController) EdgeController
-				.getController(getModeController());
+		return (MEdgeController) EdgeController.getController(getModeController());
 	}
 
 	public EdgeStyle getType() {
@@ -35,16 +34,13 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 
 	public void setColor(final Color color) {
 		getEdgeController().setColor(getDelegate(), color);
-
 	}
 
 	public void setType(final EdgeStyle type) {
 		getEdgeController().setStyle(getDelegate(), type);
-
 	}
 
 	public void setWidth(final int width) {
 		getEdgeController().setWidth(getDelegate(), width);
-
 	}
 }

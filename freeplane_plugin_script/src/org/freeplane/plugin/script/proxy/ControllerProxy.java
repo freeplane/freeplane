@@ -66,14 +66,14 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	public void deactivateUndo() {
-		MapModel map = modeController.getController().getMap();
+		final MapModel map = modeController.getController().getMap();
 		if (map instanceof MapModel) {
 			modeController.deactivateUndo((MMapModel) map);
 		}
 	}
 
-	public void setStatusInfo(String info){
-		ViewController viewController = getViewController();
+	public void setStatusInfo(final String info) {
+		final ViewController viewController = getViewController();
 		viewController.out(info);
 	}
 
@@ -81,17 +81,17 @@ class ControllerProxy implements Proxy.Controller {
 		return modeController.getController().getViewController();
 	}
 
-	public void setStatusInfo(String key, String info){
-		ViewController viewController = getViewController();
+	public void setStatusInfo(final String key, final String info) {
+		final ViewController viewController = getViewController();
 		viewController.addStatusInfo(key, info);
 	}
 
-	public void setStatusInfo(String key, Icon icon){
-		ViewController viewController = getViewController();
+	public void setStatusInfo(final String key, final Icon icon) {
+		final ViewController viewController = getViewController();
 		viewController.addStatusImage(key, icon);
 	}
 
-	public List<Node> find(ICondition condition) {
+	public List<Node> find(final ICondition condition) {
 		return ProxyUtils.find(condition, modeController, modeController.getController().getMap().getRootNode());
 	}
 

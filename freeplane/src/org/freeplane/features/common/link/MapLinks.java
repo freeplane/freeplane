@@ -54,7 +54,7 @@ public class MapLinks implements IExtension {
 	}
 
 	public Set<LinkModel> get(final String targetID) {
-		if(targetID == null) {
+		if (targetID == null) {
 			return null;
 		}
 		final Set<LinkModel> set = links.get(targetID);
@@ -81,6 +81,6 @@ public class MapLinks implements IExtension {
 	}
 
 	public static MapLinks getLinks(final MapModel map) {
-        return (MapLinks) map.getExtension(MapLinks.class);
-    }
+		return (MapLinks) map.getExtension(MapLinks.class);
+	}
 }

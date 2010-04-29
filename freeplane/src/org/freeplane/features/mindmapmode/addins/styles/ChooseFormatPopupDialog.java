@@ -124,10 +124,10 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 			 * int gridheight, double weightx, double weighty, int anchor, int
 			 * fill, Insets insets, int ipadx, int ipady)
 			 */
-			JScrollPane scrollPane = new JScrollPane(getStylePatternFrame());
+			final JScrollPane scrollPane = new JScrollPane(getStylePatternFrame());
 			UITools.setScrollbarIncrement(scrollPane);
-			jContentPane.add(scrollPane, new GridBagConstraints(0, 0, 2, 1, 2.0, 8.0,
-			    GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+			jContentPane.add(scrollPane, new GridBagConstraints(0, 0, 2, 1, 2.0, 8.0, GridBagConstraints.WEST,
+			    GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 			jContentPane.add(getJOKButton(), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.EAST,
 			    GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 			jContentPane.add(getJCancelButton(), new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.EAST,

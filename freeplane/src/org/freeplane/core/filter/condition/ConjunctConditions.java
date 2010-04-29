@@ -61,7 +61,7 @@ public class ConjunctConditions implements ISelectableCondition {
 	 * .MindMapNode)
 	 */
 	public boolean checkNode(final NodeModel node) {
-		for(ISelectableCondition condition : conditions) {
+		for (final ISelectableCondition condition : conditions) {
 			if (!condition.checkNode(node)) {
 				return false;
 			}
@@ -98,7 +98,7 @@ public class ConjunctConditions implements ISelectableCondition {
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(ConjunctConditions.NAME);
-		for(ISelectableCondition condition : conditions) {
+		for (final ISelectableCondition condition : conditions) {
 			condition.toXml(child);
 		}
 		element.addChild(child);

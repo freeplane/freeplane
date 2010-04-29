@@ -29,8 +29,8 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
+import org.freeplane.core.filter.condition.ISelectableCondition;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
@@ -79,7 +79,8 @@ class NodeConditionController implements IElementaryConditionController {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
 			try {
 				return new NodeMatchesRegexpCondition(value, ignoreCase);
-			} catch (PatternSyntaxException e) {
+			}
+			catch (final PatternSyntaxException e) {
 				UITools.errorMessage(FpStringUtils.format("wrong_regexp", value, e.getMessage()));
 				return null;
 			}

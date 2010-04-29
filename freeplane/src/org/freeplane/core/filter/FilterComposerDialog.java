@@ -198,11 +198,11 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			validate();
 		}
 	}
-	
+
 	private ISelectableCondition[] toConditionsArray(final Object[] objects) {
 		final ISelectableCondition[] conditions = new ISelectableCondition[objects.length];
 		for (int i = 0; i < objects.length; i++) {
-			conditions[i] = (ISelectableCondition)objects[i];
+			conditions[i] = (ISelectableCondition) objects[i];
 		}
 		return conditions;
 	}
@@ -225,7 +225,8 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			if (min >= 0) {
 				final int max = elementaryConditionList.getMinSelectionIndex();
 				if (min == max) {
-					final ISelectableCondition oldCond = (ISelectableCondition) elementaryConditionList.getSelectedValue();
+					final ISelectableCondition oldCond = (ISelectableCondition) elementaryConditionList
+					    .getSelectedValue();
 					final ISelectableCondition newCond = new ConditionNotSatisfiedDecorator(oldCond);
 					final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 					model.addElement(newCond);

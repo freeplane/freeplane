@@ -16,7 +16,6 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
-import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
@@ -109,7 +108,7 @@ class XHTMLWriter extends FixedHTMLWriter {
 			else if (c == '<') {
 				insideTag = true;
 			}
-			if (c > 126){
+			if (c > 126) {
 				super.write("&#x", 0, 3);
 				super.write(Integer.toString(c, 16));
 				super.write(';');
@@ -228,132 +227,126 @@ class XHTMLWriter extends FixedHTMLWriter {
 		write("</option>");
 		writeLineSeparator();
 	}
-	
-	   /* (non-Javadoc)
-     * @see javax.swing.text.html.HTMLWriter#writeAttributes(javax.swing.text.AttributeSet)
-     */
-    protected void writeAttributes(AttributeSet attributeSet) throws IOException {
-    	Object nameTag = (attributeSet != null) ? attributeSet.getAttribute(StyleConstants.NameAttribute) : null;
-		Object endTag = (attributeSet != null) ? attributeSet.getAttribute(HTML.Attribute.ENDTAG) : null;
+
+	/* (non-Javadoc)
+	* @see javax.swing.text.html.HTMLWriter#writeAttributes(javax.swing.text.AttributeSet)
+	*/
+	@Override
+	protected void writeAttributes(final AttributeSet attributeSet) throws IOException {
+		final Object nameTag = (attributeSet != null) ? attributeSet.getAttribute(StyleConstants.NameAttribute) : null;
+		final Object endTag = (attributeSet != null) ? attributeSet.getAttribute(HTML.Attribute.ENDTAG) : null;
 		// write no attributes for end tags
 		if (nameTag != null && endTag != null && (endTag instanceof String) && ((String) endTag).equals("true")) {
 			return;
 		}
 		super.writeAttributes(attributeSet);
-		if(insideEmptyTag){
+		if (insideEmptyTag) {
 			write('/');
 		}
-    }
-    
-    // remove invalid characters
+	}
+
+	// remove invalid characters
 	@Override
-    protected void output(char[] chars, int start, int length) throws IOException {
-		for(int i = start; i < start + length; i++){
+	protected void output(final char[] chars, final int start, final int length) throws IOException {
+		for (int i = start; i < start + length; i++) {
 			final char c = chars[i];
-			if(c < 32 && c != '\r' && c != '\n' && c != '\t'){
+			if (c < 32 && c != '\r' && c != '\n' && c != '\t') {
 				chars[i] = ' ';
 			}
 		}
-	    super.output(chars, start, length);
-    }
+		super.output(chars, start, length);
+	}
 
 	@Override
-	protected void emptyTag(Element elem) throws BadLocationException,
-			IOException {
-		try{
-			boolean isEndtag = isEndtag(elem);
-			int balance = balance(elem, isEndtag);
-			if(balance == 0 || balance > 0 && isEndtag || balance < 0  && ! isEndtag){
+	protected void emptyTag(final Element elem) throws BadLocationException, IOException {
+		try {
+			final boolean isEndtag = isEndtag(elem);
+			final int balance = balance(elem, isEndtag);
+			if (balance == 0 || balance > 0 && isEndtag || balance < 0 && !isEndtag) {
 				super.emptyTag(elem);
 				return;
 			}
-			if(isEndtag){
-			    write('<');
-			    write(elem.getName());
-			    write('/');
-			    write('>');
+			if (isEndtag) {
+				write('<');
+				write(elem.getName());
+				write('/');
+				write('>');
 				return;
 			}
 			insideEmptyTag = true;
 			super.emptyTag(elem);
 		}
-		finally{
+		finally {
 			insideEmptyTag = false;
 		}
 	}
 
-	private int balance(Element elem, boolean isEndtag) {
-		Element parentElement = elem.getParentElement();
-		int elementCount = parentElement.getElementCount();
+	private int balance(final Element elem, final boolean isEndtag) {
+		final Element parentElement = elem.getParentElement();
+		final int elementCount = parentElement.getElementCount();
 		int balance = 0;
-		String elemName = elem.getName();
-		for(int i = 0; i < elementCount; i++){
-			Element childElement = parentElement.getElement(i);
-			if(isEndtag){
-				if (childElement.equals(elem)){
+		final String elemName = elem.getName();
+		for (int i = 0; i < elementCount; i++) {
+			final Element childElement = parentElement.getElement(i);
+			if (isEndtag) {
+				if (childElement.equals(elem)) {
 					balance--;
 					break;
 				}
 			}
-			else{
-				if (childElement.equals(elem)){
+			else {
+				if (childElement.equals(elem)) {
 					balance = 1;
 					continue;
 				}
-				if(balance == 0){
+				if (balance == 0) {
 					continue;
 				}
 			}
-			if(! elemName.equals(childElement.getName())){
+			if (!elemName.equals(childElement.getName())) {
 				continue;
 			}
-			if(isEndtag(childElement)){
-				if(balance > 0){
+			if (isEndtag(childElement)) {
+				if (balance > 0) {
 					balance--;
 					continue;
 				}
 			}
-			else{
+			else {
 				balance++;
 			}
 		}
 		return balance;
 	}
 
-	private boolean isEndtag(Element elem) {
-		AttributeSet attributes = elem.getAttributes();
-		Object endTag = attributes.getAttribute(HTML.Attribute.ENDTAG);
-		boolean isEndtag = (endTag instanceof String) && ((String)endTag).equals("true");
+	private boolean isEndtag(final Element elem) {
+		final AttributeSet attributes = elem.getAttributes();
+		final Object endTag = attributes.getAttribute(HTML.Attribute.ENDTAG);
+		final boolean isEndtag = (endTag instanceof String) && ((String) endTag).equals("true");
 		return isEndtag;
 	}
 
 	@Override
-	protected void closeOutUnwantedEmbeddedTags(AttributeSet attr)
-			throws IOException {
-		boolean insideEmptyTag = this.insideEmptyTag;
+	protected void closeOutUnwantedEmbeddedTags(final AttributeSet attr) throws IOException {
+		final boolean insideEmptyTag = this.insideEmptyTag;
 		this.insideEmptyTag = false;
-		try{
+		try {
 			super.closeOutUnwantedEmbeddedTags(attr);
 		}
-		finally{
+		finally {
 			this.insideEmptyTag = insideEmptyTag;
 		}
 	}
 
 	@Override
-	protected void writeEmbeddedTags(AttributeSet attr) throws IOException {
-		boolean insideEmptyTag = this.insideEmptyTag;
+	protected void writeEmbeddedTags(final AttributeSet attr) throws IOException {
+		final boolean insideEmptyTag = this.insideEmptyTag;
 		this.insideEmptyTag = false;
-		try{
+		try {
 			super.writeEmbeddedTags(attr);
 		}
-		finally{
+		finally {
 			this.insideEmptyTag = insideEmptyTag;
 		}
 	}
-	
-	
-	
-	
-	
 }

@@ -13,9 +13,7 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Connector {
-
-	ConnectorProxy(final ConnectorModel connector,
-			final MModeController modeController) {
+	ConnectorProxy(final ConnectorModel connector, final MModeController modeController) {
 		super(connector, modeController);
 	}
 
@@ -24,7 +22,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public ConnectorModel getConnector() {
-		return (ConnectorModel) getDelegate();
+		return getDelegate();
 	}
 
 	public ArrowType getEndArrow() {
@@ -32,8 +30,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	private MLinkController getLinkController() {
-		return (MLinkController) LinkController
-				.getController(getModeController());
+		return (MLinkController) LinkController.getController(getModeController());
 	}
 
 	public String getMiddleLabel() {
@@ -66,8 +63,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 
 	public void setEndArrow(final ArrowType arrowType) {
 		final ConnectorModel connector = getConnector();
-		getLinkController().changeArrowsOfArrowLink(connector,
-				connector.getStartArrow(), arrowType);
+		getLinkController().changeArrowsOfArrowLink(connector, connector.getStartArrow(), arrowType);
 	}
 
 	public void setMiddleLabel(final String label) {
@@ -84,8 +80,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 
 	public void setStartArrow(final ArrowType arrowType) {
 		final ConnectorModel connector = getConnector();
-		getLinkController().changeArrowsOfArrowLink(connector, arrowType,
-				connector.getEndArrow());
+		getLinkController().changeArrowsOfArrowLink(connector, arrowType, connector.getEndArrow());
 	}
 
 	public void setTargetLabel(final String label) {

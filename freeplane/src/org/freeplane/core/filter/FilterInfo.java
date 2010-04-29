@@ -79,6 +79,6 @@ public class FilterInfo {
 	}
 
 	public boolean isUnset() {
-	    return info == FilterInfo.FILTER_INITIAL_VALUE;
-    }
+		return info == FilterInfo.FILTER_INITIAL_VALUE;
+	}
 }

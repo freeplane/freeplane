@@ -19,7 +19,6 @@
  */
 package org.freeplane.view.swing.map;
 
-
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -30,12 +29,14 @@ import org.freeplane.core.resources.ResourceController;
  * @author Dimitry Polivaev
  * 29.08.2009
  */
-public class OutlineLayout extends NodeViewLayoutAdapter{
+public class OutlineLayout extends NodeViewLayoutAdapter {
 	private int hGap;
+
 	protected int getHGap() {
-    	return hGap;
-    }
-	static private final OutlineLayout instance =  new OutlineLayout();
+		return hGap;
+	}
+
+	static private final OutlineLayout instance = new OutlineLayout();
 
 	static OutlineLayout getInstance() {
 		return OutlineLayout.instance;
@@ -67,47 +68,47 @@ public class OutlineLayout extends NodeViewLayoutAdapter{
 		placeRightChildren();
 	}
 
-    protected void placeRightChildren() {
-	    int baseX = getContent().getX();
-        int y = getContent().getY() + getContent().getHeight() - getSpaceAround();
-        if(getContent().isVisible()){
-        	baseX += getHGap();
-        	y += getVGap();
-        }
-        int right = baseX + getContent().getWidth() + getSpaceAround();
-        NodeView child = null;
-        for (int i = 0; i < getChildCount(); i++) {
-        	final NodeView component = (NodeView) getView().getComponent(i);
-        	child = component;
-        	final int additionalCloudHeigth = child.getAdditionalCloudHeigth() / 2;
-        	y += additionalCloudHeigth;
-        	final int childHGap = child.getContent().isVisible() ? getHGap() : 0;
-        	final int x = baseX + childHGap - child.getContent().getX();
-        	child.setLocation(x, y);
-        	final int childHeight = child.getHeight() - 2 * getSpaceAround();
-        	if (childHeight != 0) {
-        		y += childHeight + getVGap() + additionalCloudHeigth;
-        	}
-        	right = Math.max(right, x + child.getWidth() + additionalCloudHeigth);
-        }
-        final int bottom = getContent().getY() + getContent().getHeight() + getSpaceAround();
-        if (child != null) {
-        	getView().setSize(right,
-        	    Math.max(bottom, child.getY() + child.getHeight() + child.getAdditionalCloudHeigth() / 2));
-        }
-        else {
-        	getView().setSize(right, bottom);
-        }
-    }
+	protected void placeRightChildren() {
+		int baseX = getContent().getX();
+		int y = getContent().getY() + getContent().getHeight() - getSpaceAround();
+		if (getContent().isVisible()) {
+			baseX += getHGap();
+			y += getVGap();
+		}
+		int right = baseX + getContent().getWidth() + getSpaceAround();
+		NodeView child = null;
+		for (int i = 0; i < getChildCount(); i++) {
+			final NodeView component = (NodeView) getView().getComponent(i);
+			child = component;
+			final int additionalCloudHeigth = child.getAdditionalCloudHeigth() / 2;
+			y += additionalCloudHeigth;
+			final int childHGap = child.getContent().isVisible() ? getHGap() : 0;
+			final int x = baseX + childHGap - child.getContent().getX();
+			child.setLocation(x, y);
+			final int childHeight = child.getHeight() - 2 * getSpaceAround();
+			if (childHeight != 0) {
+				y += childHeight + getVGap() + additionalCloudHeigth;
+			}
+			right = Math.max(right, x + child.getWidth() + additionalCloudHeigth);
+		}
+		final int bottom = getContent().getY() + getContent().getHeight() + getSpaceAround();
+		if (child != null) {
+			getView().setSize(right,
+			    Math.max(bottom, child.getY() + child.getHeight() + child.getAdditionalCloudHeigth() / 2));
+		}
+		else {
+			getView().setSize(right, bottom);
+		}
+	}
 
 	@Override
-    protected void setUp(Container c) {
-	    super.setUp(c);
-	    final int vgap = ResourceController.getResourceController().getIntProperty("outline_vgap", 0);
-	    final int hgap = ResourceController.getResourceController().getIntProperty("outline_hgap", 0);
+	protected void setUp(final Container c) {
+		super.setUp(c);
+		final int vgap = ResourceController.getResourceController().getIntProperty("outline_vgap", 0);
+		final int hgap = ResourceController.getResourceController().getIntProperty("outline_hgap", 0);
 		setVGap(getView().getMap().getZoomed(vgap));
-		this.hGap=getView().getMap().getZoomed(hgap);
-    }
+		hGap = getView().getMap().getZoomed(hgap);
+	}
 
 	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
 		view.setBounds(0, 0, 0, 0);

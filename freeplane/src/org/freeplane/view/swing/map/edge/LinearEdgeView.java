@@ -32,13 +32,13 @@ import org.freeplane.view.swing.map.link.CollisionDetector;
  * This class represents a single Edge of a MindMap.
  */
 public class LinearEdgeView extends EdgeView {
-	public LinearEdgeView(NodeView source, NodeView target) {
-	    super(source, target);
-    }
+	public LinearEdgeView(final NodeView source, final NodeView target) {
+		super(source, target);
+	}
 
-	public LinearEdgeView(NodeView target) {
-	    super(target);
-    }
+	public LinearEdgeView(final NodeView target) {
+		super(target);
+	}
 
 	@Override
 	protected void draw(final Graphics2D g) {
@@ -76,8 +76,8 @@ public class LinearEdgeView extends EdgeView {
 	}
 
 	@Override
-    public boolean detectCollision(Point p) {
-	    Line2D line = new  Line2D.Float(start, end);
-	    return new CollisionDetector().detectCollision(p, line);
-    }
+	public boolean detectCollision(final Point p) {
+		final Line2D line = new Line2D.Float(start, end);
+		return new CollisionDetector().detectCollision(p, line);
+	}
 }

@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.frame;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JComponent;
@@ -40,8 +39,8 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 	 */
 	private final String toolbarName;
 
-	public ToggleToolbarAction(final Controller controller,
-	                           final String actionName, final String toolbarName, final String propertyName) {
+	public ToggleToolbarAction(final Controller controller, final String actionName, final String toolbarName,
+	                           final String propertyName) {
 		super(actionName, controller);
 		this.toolbarName = toolbarName;
 	}
@@ -57,9 +56,9 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 	}
 
 	private JComponent getToolbar() {
-	    final JComponent toolBar = getModeController().getUserInputListenerFactory().getToolBar(toolbarName);
-	    return toolBar;
-    }
+		final JComponent toolBar = getModeController().getUserInputListenerFactory().getToolBar(toolbarName);
+		return toolBar;
+	}
 
 	@Override
 	public void setSelected() {

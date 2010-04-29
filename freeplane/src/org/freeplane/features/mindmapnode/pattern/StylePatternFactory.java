@@ -106,7 +106,6 @@ public class StylePatternFactory {
 		pattern.setPatternNodeFontItalic(nodeFontItalic);
 		pattern.setPatternNodeFontSize(nodeFontSize);
 		pattern.setPatternNodeFontName(nodeFontName);
-		
 		final PatternProperty iconPattern = new PatternProperty();
 		if (node.getIcons().size() == 1) {
 			iconPattern.setValue((node.getIcons().get(0)).getName());
@@ -136,7 +135,6 @@ public class StylePatternFactory {
 		pattern.setPatternEdgeColor(edgeColorPattern);
 		pattern.setPatternEdgeStyle(edgeStylePattern);
 		pattern.setPatternEdgeWidth(edgeWidthPattern);
-		
 		final CloudModel cloud = CloudModel.getModel(node);
 		final PatternProperty cloudColorPattern = new PatternProperty();
 		final PatternProperty cloudPattern = new PatternProperty();
@@ -149,7 +147,7 @@ public class StylePatternFactory {
 				cloudPattern.setValue(TRUE_VALUE);
 			}
 		}
-		else{
+		else {
 			pattern.setPatternCloud(cloudPattern);
 		}
 		return pattern;

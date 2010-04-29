@@ -24,20 +24,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
@@ -46,13 +39,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
 
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.modecontroller.INodeChangeListener;
-import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
@@ -66,7 +55,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	private int extraWidth;
 
 	private final class MyDocumentListener implements DocumentListener {
-		public void changedUpdate(DocumentEvent e) {
+		public void changedUpdate(final DocumentEvent e) {
 			onUpdate();
 		}
 
@@ -78,11 +67,11 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			});
 		}
 
-		public void insertUpdate(DocumentEvent e) {
+		public void insertUpdate(final DocumentEvent e) {
 			onUpdate();
 		}
 
-		public void removeUpdate(DocumentEvent e) {
+		public void removeUpdate(final DocumentEvent e) {
 			onUpdate();
 		}
 	}
@@ -98,13 +87,13 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		if (!lineWrap) {
 			preferredSize = textfield.getPreferredSize();
 			preferredSize.width += 1;
-			if(preferredSize.width > maxWidth){
+			if (preferredSize.width > maxWidth) {
 				textfield.setSize(maxWidth, Integer.MAX_VALUE);
 				textfield.setLineWrap(true);
 				preferredSize.width = maxWidth;
 				preferredSize.height = Math.max(lastHeight, textfield.getPreferredSize().height);
 			}
-			else{
+			else {
 				if (preferredSize.width < lastWidth) {
 					preferredSize.width = lastWidth;
 				}
@@ -118,8 +107,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			}
 		}
 		else {
-			preferredSize = new Dimension(maxWidth,
-			 Math.max(lastHeight, textfield.getPreferredScrollableViewportSize().height));
+			preferredSize = new Dimension(maxWidth, Math.max(lastHeight,
+			    textfield.getPreferredScrollableViewportSize().height));
 		}
 		if (preferredSize.width == lastWidth && preferredSize.height == lastHeight) {
 			textfield.repaint();
@@ -127,14 +116,15 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 		textfield.setSize(preferredSize);
 		final JComponent mainView = (JComponent) textfield.getParent();
-		mainView.setPreferredSize(new Dimension(preferredSize.width + horizontalSpace + iconWidth, preferredSize.height + verticalSpace));
+		mainView.setPreferredSize(new Dimension(preferredSize.width + horizontalSpace + iconWidth, preferredSize.height
+		        + verticalSpace));
 		textfield.revalidate();
-		NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, mainView);
-		MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, nodeView);
+		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, mainView);
+		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, nodeView);
 		mapView.scrollNodeToVisible(nodeView);
 	}
 
-	class TextFieldListener implements KeyListener, FocusListener, MouseListener{
+	class TextFieldListener implements KeyListener, FocusListener, MouseListener {
 		final int CANCEL = 2;
 		final int EDIT = 1;
 		// TODO rladstaetter 18.02.2009 eventSource should be an enum
@@ -167,7 +157,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				eventSource = CANCEL;
 				return;
 			}
-			if(e.isTemporary() && e.getOppositeComponent() == null){
+			if (e.isTemporary() && e.getOppositeComponent() == null) {
 				return;
 			}
 			getEditControl().ok(textfield.getText());
@@ -186,26 +176,26 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 					nodeView.requestFocus();
 					e.consume();
 					break;
-				case KeyEvent.VK_ENTER:
-				{
-					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("il__enter_confirms_by_default");
-					if(enterConfirms == e.isAltDown() || e.isShiftDown()){
+				case KeyEvent.VK_ENTER: {
+					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty(
+					    "il__enter_confirms_by_default");
+					if (enterConfirms == e.isAltDown() || e.isShiftDown()) {
 						e.consume();
 						final Component component = e.getComponent();
-						final KeyEvent keyEvent = new KeyEvent(component, e.getID(),e.getWhen(), 0, e.getKeyCode(), e.getKeyChar(), e.getKeyLocation());
+						final KeyEvent keyEvent = new KeyEvent(component, e.getID(), e.getWhen(), 0, e.getKeyCode(), e
+						    .getKeyChar(), e.getKeyLocation());
 						SwingUtilities.processKeyBindings(keyEvent);
 						break;
-					} 
+					}
 				}
-				final String output;
-				output = textfield.getText();
-				e.consume();
-				eventSource = CANCEL;
-				hideMe();
-				getEditControl().ok(output);
-				nodeView.requestFocus();
-				break;
-
+					final String output;
+					output = textfield.getText();
+					e.consume();
+					eventSource = CANCEL;
+					hideMe();
+					getEditControl().ok(output);
+					nodeView.requestFocus();
+					break;
 				case KeyEvent.VK_TAB:
 					textfield.insert("    ", textfield.getCaretPosition());
 				case KeyEvent.VK_SPACE:
@@ -236,7 +226,6 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		public void mouseReleased(final MouseEvent e) {
 			conditionallyShowPopup(e);
 		}
-
 	}
 
 	final private KeyEvent firstEvent;
@@ -291,7 +280,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		font = nodeView.getTextFont();
 		zoom = viewController.getZoom();
 		if (zoom != 1F) {
-			final float fontSize = (int)(Math.rint(font.getSize() * zoom));
+			final float fontSize = (int) (Math.rint(font.getSize() * zoom));
 			font = font.deriveFont(fontSize);
 		}
 		textfield.setFont(font);
@@ -320,37 +309,36 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			textfield.setSize(textFieldSize.width, Integer.MAX_VALUE);
 			textfield.setLineWrap(true);
 			textFieldSize.height = textfield.getPreferredSize().height;
-			horizontalSpace = nodeWidth  - textFieldSize.width;
-			verticalSpace = nodeHeight  - textFieldSize.height;
+			horizontalSpace = nodeWidth - textFieldSize.width;
+			verticalSpace = nodeHeight - textFieldSize.height;
 		}
-		else{
-			horizontalSpace = nodeWidth  - textFieldSize.width;
-			verticalSpace = nodeHeight  - textFieldSize.height;
+		else {
+			horizontalSpace = nodeWidth - textFieldSize.width;
+			verticalSpace = nodeHeight - textFieldSize.height;
 		}
-		if(horizontalSpace < 0){
+		if (horizontalSpace < 0) {
 			horizontalSpace = 0;
 		}
-		if(verticalSpace < 0){
+		if (verticalSpace < 0) {
 			verticalSpace = 0;
 		}
-		
 		textfield.setSize(textFieldSize.width, textFieldSize.height);
-		mainView.setPreferredSize(new Dimension(textFieldSize.width + horizontalSpace, textFieldSize.height + verticalSpace));
-		
+		mainView.setPreferredSize(new Dimension(textFieldSize.width + horizontalSpace, textFieldSize.height
+		        + verticalSpace));
 		iconWidth = mainView.getIconWidth();
 		if (iconWidth != 0) {
 			iconWidth += mapView.getZoomed(mainView.getIconTextGap());
 			horizontalSpace -= iconWidth;
 		}
-		final int x = (horizontalSpace+ 1) / 2;
-		final int y = (verticalSpace+ 1) / 2;
+		final int x = (horizontalSpace + 1) / 2;
+		final int y = (verticalSpace + 1) / 2;
 		if (nodeView.isLeft() && !nodeView.isRoot()) {
 			textfield.setBounds(x, y, textFieldSize.width, textFieldSize.height);
 			mainView.setText("");
 			mainView.setHorizontalAlignment(JLabel.RIGHT);
 		}
 		else {
-			textfield.setBounds(x+ iconWidth, y, textFieldSize.width, textFieldSize.height);
+			textfield.setBounds(x + iconWidth, y, textFieldSize.width, textFieldSize.height);
 			mainView.setText("");
 			mainView.setHorizontalAlignment(JLabel.LEFT);
 		}
@@ -365,5 +353,4 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.repaint();
 		textfield.requestFocus();
 	}
-
 }

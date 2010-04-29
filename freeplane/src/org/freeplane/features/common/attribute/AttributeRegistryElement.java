@@ -53,10 +53,6 @@ public class AttributeRegistryElement {
 			return key;
 		}
 
-		public AttributeRegistry getRegistry() {
-			return registry;
-		}
-
 		@Override
 		public void remove(final Object element) {
 			registry.getAttributeController().performRemoveAttributeValue(getKey(), element.toString());

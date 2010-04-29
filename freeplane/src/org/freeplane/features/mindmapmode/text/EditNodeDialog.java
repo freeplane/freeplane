@@ -51,7 +51,6 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
-
 /**
  * @author foltin
  */
@@ -116,7 +115,7 @@ class EditNodeDialog extends EditNodeBase {
 			});
 			textArea.addKeyListener(new KeyListener() {
 				public void keyPressed(final KeyEvent e) {
-					switch(e.getKeyCode()){
+					switch (e.getKeyCode()) {
 						case KeyEvent.VK_ESCAPE:
 							e.consume();
 							confirmedCancel();
@@ -124,7 +123,7 @@ class EditNodeDialog extends EditNodeBase {
 						case KeyEvent.VK_ENTER:
 							e.consume();
 							if ((e.getModifiers() & InputEvent.SHIFT_MASK) != 0
-									|| enterConfirms.isSelected() == ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
+							        || enterConfirms.isSelected() == ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
 								textArea.insert("\n", textArea.getCaretPosition());
 								break;
 							}
@@ -195,7 +194,7 @@ class EditNodeDialog extends EditNodeBase {
 			}
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 			setContentPane(panel);
-			if (firstEvent != null ) {
+			if (firstEvent != null) {
 				redispatchKeyEvents(textArea, firstEvent);
 			}
 			else {
@@ -280,16 +279,16 @@ class EditNodeDialog extends EditNodeBase {
 		}
 		dialog.show();
 		dialog.addComponentListener(new ComponentListener() {
-			public void componentShown(ComponentEvent e) {
+			public void componentShown(final ComponentEvent e) {
 			}
-			
-			public void componentResized(ComponentEvent e) {
+
+			public void componentResized(final ComponentEvent e) {
 			}
-			
-			public void componentMoved(ComponentEvent e) {
+
+			public void componentMoved(final ComponentEvent e) {
 			}
-			
-			public void componentHidden(ComponentEvent e) {
+
+			public void componentHidden(final ComponentEvent e) {
 				dialog.dispose();
 			}
 		});
