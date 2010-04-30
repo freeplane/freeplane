@@ -163,7 +163,7 @@ public class FreeplaneStarter {
 	}
 
 	private void loadMaps(final String[] args) {
-		final boolean alwaysLoadLastMaps = !ResourceController.getResourceController().getBooleanProperty(
+		final boolean alwaysLoadLastMaps = ResourceController.getResourceController().getBooleanProperty(
 		    "always_load_last_maps");
 		if (alwaysLoadLastMaps) {
 			applicationResourceController.getLastOpenedList().openMapsOnStart();
@@ -188,6 +188,13 @@ public class FreeplaneStarter {
 				}
 			}
 		}
+		if (fileLoaded) {
+			return;
+		}
+		if (!alwaysLoadLastMaps) {
+			applicationResourceController.getLastOpenedList().openMapsOnStart();
+		}
+		
 		if (null != controller.getMap()) {
 			return;
 		}
