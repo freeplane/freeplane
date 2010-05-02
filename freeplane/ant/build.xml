@@ -30,7 +30,6 @@
 
 	<taskdef name="format-translation" classname="org.freeplane.ant.FormatTranslation" classpath="${freeplaneant.jar}"/>
 	<taskdef name="check-translation" classname="org.freeplane.ant.FormatTranslationCheck" classpath="${freeplaneant.jar}"/>
-	<taskdef name="translator" classname="org.freeplane.ant.Translator" classpath="${freeplaneant.jar}:${google.translator.jar}"/>
 
 	<target name="build">
 		<antcall target="check-translation" />
@@ -177,12 +176,12 @@
 		<check-translation dir="${root}/viewer-resources/translations" includes="*.properties" />
 	</target>
 	<target name="format-translation">
-		<format-translation dir="${root}/resources/translations" writeifunchanged="true" includes="*.properties" eolstyle="win" />
-		<format-translation dir="${root}/viewer-resources/translations" writeifunchanged="true" includes="*.properties" eolstyle="win" />
+		<format-translation dir="${root}/resources/translations" writeifunchanged="true" includes="*.properties" eolstyle="unix" />
+		<format-translation dir="${root}/viewer-resources/translations" writeifunchanged="true" includes="*.properties" eolstyle="unix" />
 	</target>
 	<target name="format-translation-no-force">
-		<format-translation dir="${root}/resources/translations" writeifunchanged="false" includes="*.properties" eolstyle="win" />
-		<format-translation dir="${root}/viewer-resources/translations" writeifunchanged="false" includes="*.properties" eolstyle="win" />
+		<format-translation dir="${root}/resources/translations" writeifunchanged="false" includes="*.properties" eolstyle="unix" />
+		<format-translation dir="${root}/viewer-resources/translations" writeifunchanged="false" includes="*.properties" eolstyle="unix" />
 	</target>
 	<target name="translate">
 		<translator translationsdir="${root}/resources/translations"
