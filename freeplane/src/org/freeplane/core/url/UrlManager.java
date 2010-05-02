@@ -141,8 +141,8 @@ public class UrlManager implements IExtension {
 						xsltInputStream = new BufferedInputStream(updaterUrl.openStream());
 						final Source xsltSource = new StreamSource(xsltInputStream);
 						input = new BufferedInputStream(new FileInputStream(file));
-						final InputStream cleanedInput = new CleaningInputStream(input);
-						final Reader reader = new InputStreamReader(cleanedInput, UrlManager.defaultCharset());
+						final CleaningInputStream cleanedInput = new CleaningInputStream(input);
+						final Reader reader = new InputStreamReader(cleanedInput, cleanedInput.isUtf8() ? Charset.forName("UTF-8") : UrlManager.defaultCharset());
 						final Transformer trans = transFact.newTransformer(xsltSource);
 						trans.transform(new StreamSource(reader), result);
 					}
