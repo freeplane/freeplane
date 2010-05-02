@@ -249,7 +249,7 @@ class ScriptingSecurityManager extends SecurityManager {
 	}
 
 	private SecurityException getException(final int pPermissionGroup, final int pPermission) {
-		return new SecurityException(FpStringUtils.format("plugins/ScriptEditor.FORBIDDEN_ACTION", new Integer[] {
-		        new Integer(pPermissionGroup), new Integer(pPermission) }));
+		return new SecurityException(FpStringUtils.format("plugins/ScriptEditor.FORBIDDEN_ACTION", new Integer(
+		    pPermissionGroup), new Integer(pPermission)));
 	}
 }
