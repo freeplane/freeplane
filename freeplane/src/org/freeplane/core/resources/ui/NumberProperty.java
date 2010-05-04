@@ -57,8 +57,7 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), spinner);
-		label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
+		layout(builder, spinner);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

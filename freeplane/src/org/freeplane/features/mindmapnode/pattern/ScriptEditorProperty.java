@@ -73,8 +73,7 @@ public class ScriptEditorProperty extends PropertyBean implements IPropertyContr
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(ResourceBundles.getText(getLabel()), mButton);
-		label.setToolTipText(ResourceBundles.getText(getDescription()));
+		layout(builder, mButton);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

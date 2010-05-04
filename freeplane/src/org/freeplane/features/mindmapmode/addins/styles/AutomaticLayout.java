@@ -212,8 +212,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		}
 
 		public void layout(final DefaultFormBuilder builder) {
-			final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), mButton);
-			label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
+			layout(builder, mButton);
 		}
 
 		public void setEnabled(final boolean pEnabled) {

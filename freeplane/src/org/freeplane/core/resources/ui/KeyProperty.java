@@ -73,7 +73,8 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 			labelText = FpStringUtils.getOptionalText(getLabel());
 		}
 		final JLabel label = new JLabel(labelText, icon, JLabel.RIGHT);
-		label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
+		String tooltip = FpStringUtils.getOptionalText(getDescription());
+		label.setToolTipText(tooltip);
 		if (KeyProperty.rowSpec == null) {
 			KeyProperty.rowSpec = new RowSpec("fill:20dlu");
 		}
@@ -88,6 +89,7 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 		builder.add(label);
 		builder.nextColumn(2);
 		builder.add(mButton);
+		mButton.setToolTipText(tooltip);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

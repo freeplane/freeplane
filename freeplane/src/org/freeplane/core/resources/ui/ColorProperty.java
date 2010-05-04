@@ -86,8 +86,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), mButton);
-		label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
+		layout(builder, mButton);
 		final JMenuItem item = new JFreeplaneMenuItem(FpStringUtils.getOptionalText("ColorProperty.ResetColor"));
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {

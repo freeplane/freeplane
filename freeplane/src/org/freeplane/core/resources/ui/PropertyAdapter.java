@@ -19,7 +19,13 @@
  */
 package org.freeplane.core.resources.ui;
 
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceController;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 /**
  * @author Dimitry Polivaev
@@ -55,5 +61,12 @@ public class PropertyAdapter {
 
 	public String getName() {
 		return name;
+	}
+	
+	protected void layout(DefaultFormBuilder builder, JComponent component){
+		final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), component);
+		String tooltip = FpStringUtils.getOptionalText(getDescription());
+		label.setToolTipText(tooltip);
+		component.setToolTipText(tooltip);
 	}
 }
