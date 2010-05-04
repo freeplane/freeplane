@@ -47,6 +47,8 @@ import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.text.TextController.Direction;
 
 class FindAction extends AFreeplaneAction {
+	static final String KEY = "FindAction";
+
 	static private class FindNodeList implements IExtension {
 		String rootID;
 		final LinkedList<String> nodesUnfoldedByDisplay = new LinkedList<String>();
@@ -77,7 +79,7 @@ class FindAction extends AFreeplaneAction {
 	private FilterConditionEditor editor;
 
 	public FindAction(final Controller controller) {
-		super("FindAction", controller);
+		super(KEY, controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

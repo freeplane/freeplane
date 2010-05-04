@@ -68,9 +68,13 @@ public class TextController implements IExtension {
 	 * @param modeController
 	 */
 	private void createActions(final ModeController modeController) {
-		final FindAction find = new FindAction(modeController.getController());
-		modeController.addAction(find);
-		modeController.addAction(new FindNextAction(modeController, find));
+		Controller controller = modeController.getController();
+		if(controller.getAction(FindAction.KEY) != null){
+			return;
+		}
+		final FindAction find = new FindAction(controller);
+		controller.addAction(find);
+		controller.addAction(new FindNextAction(modeController, find));
 	}
 
 	public ModeController getModeController() {
