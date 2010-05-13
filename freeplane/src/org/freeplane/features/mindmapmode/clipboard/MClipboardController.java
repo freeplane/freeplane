@@ -637,15 +637,20 @@ public class MClipboardController extends ClipboardController {
 		}
 	}
 
-	private NodeModel pasteStringWithoutRedisplay(final TextFragment[] textFragments, NodeModel parent,
+	private void pasteStringWithoutRedisplay(final TextFragment[] textFragments, NodeModel parent,
 	                                              final boolean asSibling, final boolean isLeft) {
-		NodeModel pastedNode = null;
 		final MapModel map = parent.getMap();
+		int insertionIndex;
 		if (asSibling) {
-			parent = new NodeModel(map);
+			NodeModel target = parent;
+			parent = parent.getParentNode();
+			insertionIndex = parent.getChildPosition(target);
 		}
-		final ArrayList parentNodes = new ArrayList();
-		final ArrayList parentNodesDepths = new ArrayList();
+		else{
+			insertionIndex = parent.getChildCount();
+		}
+		final ArrayList<NodeModel> parentNodes = new ArrayList<NodeModel>();
+		final ArrayList<Integer> parentNodesDepths = new ArrayList<Integer>();
 		parentNodes.add(parent);
 		parentNodesDepths.add(new Integer(-1));
 		final MMapController mapController = (MMapController) getModeController().getMapController();
@@ -655,9 +660,6 @@ public class MClipboardController extends ClipboardController {
 			final TextFragment textFragment = textFragments[i];
 			final String text = textFragment.text;
 			final NodeModel node = mapController.newNode(text, map);
-			if (textFragments.length == 1) {
-				pastedNode = node;
-			}
 			if (textFragment.link != null) {
 				((MLinkController) LinkController.getController(getModeController())).setLink(node, textFragment.link,
 				    useRelativeUri);
@@ -667,7 +669,7 @@ public class MClipboardController extends ClipboardController {
 					for (int k = j + 1; k < parentNodes.size(); ++k) {
 						final NodeModel n = (NodeModel) parentNodes.get(k);
 						if (n.getParentNode() == null) {
-							mapController.insertNode(n, parent, parent.getChildCount());
+							mapController.insertNode(n, parent, insertionIndex++);
 						}
 						parentNodes.remove(k);
 						parentNodesDepths.remove(k);
@@ -684,12 +686,13 @@ public class MClipboardController extends ClipboardController {
 				}
 			}
 		}
-		for (int k = 0; k < parentNodes.size(); ++k) {
-			final NodeModel n = (NodeModel) parentNodes.get(k);
-			if (map.getRootNode() != n && n.getParentNode() == null) {
-				mapController.insertNode(n, parent, parent.getChildCount());
+		{
+			for (int k = 0; k < parentNodes.size(); ++k) {
+				final NodeModel n = (NodeModel) parentNodes.get(k);
+				if (map.getRootNode() != n && n.getParentNode() == null) {
+					mapController.insertNode(n, parent, insertionIndex++);
+				}
 			}
 		}
-		return pastedNode;
 	}
 }
