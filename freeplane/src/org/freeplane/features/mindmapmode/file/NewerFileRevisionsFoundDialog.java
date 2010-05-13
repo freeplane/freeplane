@@ -40,7 +40,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
@@ -143,7 +142,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 	}
 
 	private static final long serialVersionUID = 1L;
-	private final static String KEY_BASE = "newer_revisions_found_dialog";
+	private final static String KEY_BASE = "NewerFileRevisionsFoundDialog";
 	private JButton btnOK;
 	private JButton btnCancel;
 	private JButton btnExit;
@@ -181,7 +180,6 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		add(createButtonBar());
 		getRootPane().setDefaultButton(btnCancel);
 		pack();
-		//		LogTool.severe("hi, NewerFileRevisionsFoundDialog, thread " + Thread.currentThread(), new Exception("dummy"));
 		setLocationRelativeTo(UITools.getFrame());
 		setVisible(true);
 	}
@@ -197,7 +195,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 	}
 
 	private static String key(final String appendix) {
-		return KEY_BASE + "_" + appendix;
+		return KEY_BASE + "." + appendix;
 	}
 
 	private JTable createTable(final File[] revisions) {
@@ -228,8 +226,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		controllerBox.setBorder(new EmptyBorder(5, 0, 5, 0));
 		final CloseAction closeAction = new CloseAction();
 		btnOK = createButton("ok", NewerFileRevisionsFoundDialog.key("ok.tooltip"), closeAction);
-		btnReplace = createButton(NewerFileRevisionsFoundDialog.key("replace"), NewerFileRevisionsFoundDialog
-		    .key("empty.tooltip"), closeAction);
+		btnReplace = createButton(NewerFileRevisionsFoundDialog.key("replace"), null, closeAction);
 		btnReplace.setEnabled(false);
 		btnCancel = createButton("cancel", NewerFileRevisionsFoundDialog.key("cancel.tooltip"), closeAction);
 		btnExit = createButton("QuitAction.text", NewerFileRevisionsFoundDialog.key("quit.tooltip"), new QuitAction(
@@ -253,7 +250,8 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		button.setMaximumSize(new Dimension(1000, 1000));
 		final String selectedFileName = getSelectedFile() == null ? null : getSelectedFile().getName();
 		// arguments are only used for one button but they don't hurt for the other
-		button.setToolTipText(TextUtils.format(tooltipKey, file.getName(), selectedFileName));
+		if (tooltipKey != null)
+			button.setToolTipText(TextUtils.format(tooltipKey, file.getName(), selectedFileName));
 		return button;
 	}
 

@@ -389,7 +389,6 @@ public class LinkController extends SelectionController implements IExtension {
 					final String scheme = mat.group(1);
 					final String ssp = mat.group(2).replace('\\', '/');
 					final String fragment = mat.group(3);
-					System.out.println("hi, new URI(" + scheme + ", " + ssp + ", " + fragment + ")");
 					return new URI(scheme, ssp, fragment);
 				}
 			}

@@ -24,14 +24,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Enumeration;
 
 import javax.swing.Box;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.WindowConstants;
@@ -43,13 +39,14 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.core.util.MenuUtils.MenuEntry;
+import org.freeplane.features.common.icon.MindIcon;
+import org.freeplane.features.common.icon.factory.MindIconFactory;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
@@ -75,7 +72,7 @@ class SelectMenuItemDialog extends JDialog {
 				    .getLastSelectedPathComponent();
 				// this condition actually has to be true due to the TreeSelectionListener
 				if (selectedNode != null && selectedNode.isLeaf()) {
-					menuItemKey = ((SelectMenuItemDialog.MenuEntry) selectedNode.getUserObject()).getKey();
+					menuItemKey = ((MenuEntry) selectedNode.getUserObject()).getKey();
 					dispose();
 				}
 			}
@@ -86,14 +83,14 @@ class SelectMenuItemDialog extends JDialog {
 	}
 
 	private class MenuIconRenderer extends DefaultTreeCellRenderer {
+		private static final String DEFAULT_ICON = "button";
 		private static final long serialVersionUID = 1L;
 
 		public MenuIconRenderer() {
 			setOpenIcon(null);
 			setClosedIcon(null);
 			// set default
-			setLeafIcon(new ImageIcon(ResourceController.getResourceController()
-			    .getResource("/images/icons/button.png")));
+			setLeafIcon(MindIconFactory.create(DEFAULT_ICON).getIcon());
 		}
 
 		@Override
@@ -103,37 +100,14 @@ class SelectMenuItemDialog extends JDialog {
 			super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 			if (leaf) {
 				final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-				final SelectMenuItemDialog.MenuEntry menuEntry = (SelectMenuItemDialog.MenuEntry) node.getUserObject();
-				if (menuEntry.getIcon() != null) {
-					setIcon(menuEntry.getIcon());
+				final MenuEntry menuEntry = (MenuEntry) node.getUserObject();
+				if (menuEntry.getIconKey() != null) {
+					final MindIcon mindIcon = menuEntry.createMindIcon();
+					if (mindIcon != null)
+						setIcon(mindIcon.getIcon());
 				}
 			}
 			return this;
-		}
-	}
-
-	private static class MenuEntry {
-		private final String key;
-		private final String label;
-		private final Icon icon;
-
-		public MenuEntry(final String key, final String label, final Icon icon) {
-			this.key = key;
-			this.label = label;
-			this.icon = icon;
-		}
-
-		public Icon getIcon() {
-			return icon;
-		}
-
-		public String getKey() {
-			return key;
-		}
-
-		@Override
-		public String toString() {
-			return label;
 		}
 	}
 
@@ -149,6 +123,10 @@ class SelectMenuItemDialog extends JDialog {
 		getContentPane().add(createButtonBar(), BorderLayout.SOUTH);
 		getRootPane().setDefaultButton(btnOK);
 		setVisible(true);
+	}
+
+	public String getMenuItemKey() {
+		return menuItemKey;
 	}
 
 	private Box createButtonBar() {
@@ -176,12 +154,10 @@ class SelectMenuItemDialog extends JDialog {
 	private JTree createTree(final Controller controller) {
 		final MModeController modeController = (MModeController) controller.getModeController();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		final DefaultMutableTreeNode menuRoot = menuBuilder.get(SELECTION_ROOT_KEY);
-		final Object rootLabel = (menuRoot.getUserObject() instanceof JMenuItem) ? SelectMenuItemDialog
-		    .convert(menuRoot) : TextUtils.getText("select_menu_item_root_node");
-		final DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(rootLabel);
-		SelectMenuItemDialog.addChildrenRecursive(treeRoot, menuRoot.children());
-		final JTree jTree = new JTree(treeRoot);
+		final DefaultMutableTreeNode treeRoot = MenuUtils.createMenuEntryTree(SELECTION_ROOT_KEY, menuBuilder);
+		if (treeRoot.getUserObject() == null)
+			treeRoot.setUserObject(new MenuEntry(null, TextUtils.getText("select_menu_item_root_node")));
+		JTree jTree = new JTree(treeRoot);
 		jTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		// replace the standard icons
 		jTree.setCellRenderer(new MenuIconRenderer());
@@ -192,38 +168,5 @@ class SelectMenuItemDialog extends JDialog {
 			}
 		});
 		return jTree;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static void addChildrenRecursive(final DefaultMutableTreeNode treeNode, final Enumeration menuChildren) {
-		while (menuChildren.hasMoreElements()) {
-			final DefaultMutableTreeNode childMenu = (DefaultMutableTreeNode) menuChildren.nextElement();
-			final DefaultMutableTreeNode treeChild = SelectMenuItemDialog.convert(childMenu);
-			if (treeChild != null) {
-				treeNode.add(treeChild);
-				SelectMenuItemDialog.addChildrenRecursive(treeChild, childMenu.children());
-			}
-			else {
-				SelectMenuItemDialog.addChildrenRecursive(treeNode, childMenu.children());
-			}
-		}
-	}
-
-	// in: node for JMenu, out: node for MenuEntry
-	private static DefaultMutableTreeNode convert(final DefaultMutableTreeNode menuNode) {
-		final IndexedTree.Node node = (Node) menuNode;
-		final Object userObject = menuNode.getUserObject();
-		if (userObject instanceof JMenuItem) {
-			final JMenuItem jMenuItem = (JMenuItem) userObject;
-			return new DefaultMutableTreeNode(new MenuEntry(String.valueOf(node.getKey()), jMenuItem.getText(),
-			    jMenuItem.getIcon()));
-		}
-		// the other expected types are String and javax.swing.JPopupMenu.Separator
-		// - just omit them
-		return null;
-	}
-
-	public String getMenuItemKey() {
-		return menuItemKey;
 	}
 }

@@ -125,7 +125,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			return backupDir.listFiles(new java.io.FileFilter() {
 				public boolean accept(final File f) {
 					return pattern.matcher(f.getName()).matches()
-					        && f.lastModified() > (file.lastModified() - DEBUG_OFFSET);
+					        && f.lastModified() > (file.lastModified() - DEBUG_OFFSET) //
+					        && f.isFile();
 				}
 			});
 		}
