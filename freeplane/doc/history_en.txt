@@ -1,4 +1,12 @@
 ===============================
+1.0.44 rc
+===============================
+Bug fixes:
+ignore gragging of connectors in outline view
+inserting text strings as siblings using drag and drop
+633]: tree_&_outline_views_differ_depending_on_edge_style,_color_and_position
+
+===============================
 1.0.43 rc
 ===============================
 New features:
