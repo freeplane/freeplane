@@ -91,6 +91,13 @@
 			<param name="pluginname" value="org.freeplane.plugin.bugreport"/>
 	    </antcall>
 
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_translate"/>
+			<param name="pluginname" value="org.freeplane.plugin.translate"/>
+	    </antcall>
+
        <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
             <fileset dir="${workspace}/freeplane/dist/resources" />
@@ -352,8 +359,8 @@
 	<target name="format-translation">
 		<ant antfile="ant/build.xml" target="format-translation" dir="${workspace}/freeplane" />
 	</target>
-	<target name="format-translation-no-force">
-		<ant antfile="ant/build.xml" target="format-translation-no-force" dir="${workspace}/freeplane" />
+	<target name="format-translation-force">
+		<ant antfile="ant/build.xml" target="format-translation-force" dir="${workspace}/freeplane" />
 	</target>
 
 	<target name="clean">

@@ -4,6 +4,7 @@
 	<property name="src" value="src" />
 	<property name="resources" value="resources" />
 	<property name="viewer-resources" value="viewer-resources" />
+	<property name="eolstyle" value="unix" />
 	<property name="root" value="." />
 	<property name="manifest" value="${root}/META-INF/OLD_MANIFEST.MF" />
 	<property name="osgimanifest" value="${root}/META-INF/MANIFEST.MF" />
@@ -172,16 +173,16 @@
 	</target>
 	
 	<target name="check-translation">
-		<check-translation dir="${root}/resources/translations" includes="*.properties" />
-		<check-translation dir="${root}/viewer-resources/translations" includes="*.properties" />
+		<check-translation dir="${root}/resources/translations" includes="*.properties" eolstyle="${eolstyle}" />
+		<check-translation dir="${root}/viewer-resources/translations" includes="*.properties" eolstyle="${eolstyle}" />
 	</target>
 	<target name="format-translation">
-		<format-translation dir="${root}/resources/translations" writeifunchanged="true" includes="*.properties" eolstyle="unix" />
-		<format-translation dir="${root}/viewer-resources/translations" writeifunchanged="true" includes="*.properties" eolstyle="unix" />
+		<format-translation dir="${root}/resources/translations" includes="*.properties" eolstyle="${eolstyle}" />
+		<format-translation dir="${root}/viewer-resources/translations" includes="*.properties" eolstyle="${eolstyle}" />
 	</target>
-	<target name="format-translation-no-force">
-		<format-translation dir="${root}/resources/translations" writeifunchanged="false" includes="*.properties" eolstyle="unix" />
-		<format-translation dir="${root}/viewer-resources/translations" writeifunchanged="false" includes="*.properties" eolstyle="unix" />
+	<target name="format-translation-force">
+		<format-translation dir="${root}/resources/translations" writeifunchanged="true" includes="*de.properties" eolstyle="${eolstyle}" />
+		<format-translation dir="${root}/viewer-resources/translations" writeifunchanged="true" includes="*xx.properties" eolstyle="${eolstyle}" />
 	</target>
 	<target name="translate">
 		<translator translationsdir="${root}/resources/translations"
