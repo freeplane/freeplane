@@ -972,7 +972,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	private void paintCloudsAndEdges(final Graphics2D g) {
-		for (int i = 0; i < getComponentCount(); i++) {
+		for (int i = getComponentCount()-1; i>=0; i--) {
 			final Component component = getComponent(i);
 			if (!(component instanceof NodeView)) {
 				continue;
