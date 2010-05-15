@@ -15,6 +15,7 @@
 package org.freeplane.features.controller.print;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,10 +56,11 @@ class PreviewDialog extends JDialog implements ActionListener {
 		getContentPane().add(scrollPane, "Center");
 		final JToolBar toolbar = new FreeplaneToolBar("preview_toolbar", SwingConstants.HORIZONTAL);
 		getContentPane().add(toolbar, "North");
-		pageNumber = new JLabel("- 1 -");
+		pageNumber = new JLabel("- 9999 -");
 		final JButton button = getButton("Back24.gif", new BrowseAction(preview, pageNumber, -1));
 		toolbar.add(button);
-		pageNumber.setPreferredSize(button.getPreferredSize());
+		pageNumber.setPreferredSize(new Dimension(pageNumber.getPreferredSize().width, button.getPreferredSize().height));
+		pageNumber.setText("- 1 -");
 		pageNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		toolbar.add(pageNumber);
 		toolbar.add(getButton("Forward24.gif", new BrowseAction(preview, pageNumber, 1)));
