@@ -69,11 +69,6 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 		int intValue = 100;
 		try {
 			intValue = Integer.parseInt(value);
-			final int stepModul = (intValue - min) % step;
-			if (intValue < min || intValue > max || (stepModul != 0)) {
-				LogTool.severe("Actual value of property " + getName() + " is not in the allowed range: " + value);
-				intValue = min;
-			}
 		}
 		catch (final NumberFormatException e) {
 			LogTool.severe(e);
