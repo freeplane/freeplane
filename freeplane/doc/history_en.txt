@@ -5,6 +5,12 @@ Bug fixes:
 ignore gragging of connectors in outline view
 inserting text strings as siblings using drag and drop
 633]: tree_&_outline_views_differ_depending_on_edge_style,_color_and_position
+635]: note cursor position seems to assume different font-width than displayed text
+make page number label in preview dialog wider
+627]: In OptionPanel : size of the extra width is displayed with value "0" after change
+NextNodeAction worked wrong if no next node was available
+getAbsoluteUrl worked wrong for unsaved maps
+attribute table worked wrong if Assign Attributes dialog was used when the table was edited
 
 ===============================
 1.0.43 rc
