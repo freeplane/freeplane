@@ -26,6 +26,8 @@ public class NextNodeAction extends AFreeplaneAction {
 		final TextController textController = TextController.getController(getModeController());
 		final NodeModel start = getController().getSelection().getSelected();
 		final NodeModel next = textController.findNext(start, null, direction, null);
-		getModeController().getMapController().select(next);
+		if(next != null){
+			getModeController().getMapController().select(next);
+		}
 	}
 }

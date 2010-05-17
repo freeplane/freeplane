@@ -429,12 +429,12 @@ public class UrlManager implements IExtension {
 			return uri;
 		}
 		final String path = uri.getPath();
-		final URL url = new URL(map.getURL(), path);
 		try {
+			final URL url = new URL(map.getURL(), path);
 			return new URI(url.getProtocol(), url.getHost(), url.getPath(), uri.getQuery(), uri.getFragment());
 		}
 		catch (final URISyntaxException e) {
-			e.printStackTrace();
+			LogTool.warn(e);
 			return null;
 		}
 	}
