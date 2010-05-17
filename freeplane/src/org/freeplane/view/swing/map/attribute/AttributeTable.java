@@ -41,6 +41,7 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
@@ -59,6 +60,8 @@ import org.freeplane.view.swing.map.NodeView;
  * @author Dimitry Polivaev
  */
 class AttributeTable extends JTable implements IColumnWidthChangeListener {
+	private static final String EDITING_STOPPED = AttributeTable.class.getName() + ".editingStopped";
+
 	static private class HeaderMouseListener extends MouseAdapter {
 		@Override
 		public void mouseReleased(final MouseEvent e) {
@@ -469,17 +472,42 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	@Override
 	public void tableChanged(final TableModelEvent e) {
+		if(isEditing() && null == getClientProperty(EDITING_STOPPED) ){
+			removeEditor();
+		}
+		int selectedRow = getSelectedRow();
 		super.tableChanged(e);
 		if (getParent() == null) {
 			return;
 		}
-		if (e.getType() == TableModelEvent.DELETE && e.getFirstRow() == highRowIndex
-		        && e.getFirstRow() == getRowCount() && e.getFirstRow() != 0) {
-			changeSelection(e.getFirstRow() - 1, 0, false, false);
-		}
-		else {
-			updateRowHeights();
-		}
+			switch(e.getType())
+			{
+				case TableModelEvent.DELETE:
+					if(selectedRow != -1 ){
+						if(e.getFirstRow() <= selectedRow){
+							if( e.getLastRow() >= selectedRow && e.getFirstRow() != 0) {
+								changeSelection(e.getFirstRow() - 1, 0, false, false);
+							}
+							else if(e.getLastRow() < selectedRow){
+								int rowIndex = selectedRow - (e.getLastRow() - e.getFirstRow() + 1);
+								if(rowIndex < 0){
+									rowIndex = 0;
+								}
+								if(rowIndex < getRowCount()){
+									changeSelection(rowIndex , getSelectedColumn(), false, false);
+								}
+							}
+						}
+					}
+					break;
+				case TableModelEvent.INSERT:
+					changeSelection(e.getFirstRow() , getSelectedColumn(), false, false);
+					break;
+				default:
+					if(selectedRow > getRowCount() && getRowCount() > 0){
+						changeSelection(getRowCount() - 1 , getSelectedColumn(), false, false);
+					}
+			}
 		getParent().getParent().invalidate();
 		final NodeModel node = attributeView.getNode();
 		attributeView.getMapView().getModeController().getMapController().nodeChanged(node);
@@ -539,4 +567,17 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	public void viewRemoved() {
 		getModel().removeTableModelListener(this);
 	}
+
+	@Override
+    public void editingStopped(ChangeEvent e) {
+		try{
+			putClientProperty(EDITING_STOPPED, Boolean.TRUE);
+			super.editingStopped(e);
+		}
+		finally{
+			putClientProperty(EDITING_STOPPED, null);
+		}
+    }
+	
+	
 }

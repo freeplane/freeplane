@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.map.attribute;
 
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.TableModelEvent;
 
 import org.freeplane.features.common.attribute.Attribute;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
@@ -131,5 +132,9 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 
 	public void stateChanged(final ChangeEvent e) {
 		fireTableDataChanged();
+	}
+	
+	public void tableChanged(final TableModelEvent e) {
+		fireTableChanged(new TableModelEvent(this, e.getFirstRow(), e.getLastRow(), e.getColumn(), e.getType()));
 	}
 }
