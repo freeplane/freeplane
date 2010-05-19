@@ -426,6 +426,15 @@ public abstract class MainView extends JLabel {
 		}
 	}
 
+	@Override
+	public FontMetrics getFontMetrics(final Font font) {
+		if (!useFractionalMetrics()) {
+			return super.getFontMetrics(font);
+		}
+		fmg.setFont(font);
+		final FontMetrics fontMetrics = fmg.getFontMetrics();
+		return fontMetrics;
+	}
 
 	boolean useFractionalMetrics() {
 		final MapView map = getMap();

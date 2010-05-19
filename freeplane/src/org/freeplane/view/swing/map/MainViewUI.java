@@ -8,11 +8,13 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.beans.PropertyChangeEvent;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicLabelUI;
 
 /*
@@ -96,12 +98,19 @@ class MainViewUI extends BasicLabelUI {
 		final AffineTransform transform = g2.getTransform();
 		final float zoom = mainView.getZoom();
 		g2.scale(zoom, zoom);
+		final boolean htmlViewSet = null != label.getClientProperty(BasicHTML.propertyKey);
 		try {
 			isPainting = true;
+			if(htmlViewSet){
+				GlyphPainterMetricResetter.resetPainter();
+			}
 			super.paint(g, label);
 		}
 		finally {
 			isPainting = false;
+			if(htmlViewSet){
+				GlyphPainterMetricResetter.resetPainter();
+			}
 		}
 		g2.setTransform(transform);
 		if (oldRenderingHintFM != newRenderingHintFM) {
@@ -109,4 +118,13 @@ class MainViewUI extends BasicLabelUI {
 			        : RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
 		}
 	}
+
+	@Override
+    public void propertyChange(PropertyChangeEvent e) {
+		GlyphPainterMetricResetter.resetPainter();
+	    super.propertyChange(e);
+		GlyphPainterMetricResetter.resetPainter();
+    }
+	
+	
 }
