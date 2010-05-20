@@ -144,11 +144,13 @@ public class MNoteController extends NoteController {
 		htmlEditorPanel = MTextController.createSHTMLPanel();
 		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
 		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
-		final InputMap inputMap = editorPane.getInputMap();
-		inputMap.remove(KeyStroke.getKeyStroke("ctrl pressed T"));
-		inputMap.remove(KeyStroke.getKeyStroke("shift ctrl pressed T"));
-		inputMap.remove(KeyStroke.getKeyStroke("ctrl pressed SPACE"));
 
+		for (InputMap inputMap = editorPane.getInputMap(); inputMap != null; inputMap = inputMap.getParent()){
+			inputMap.remove(KeyStroke.getKeyStroke("ctrl pressed T"));
+			inputMap.remove(KeyStroke.getKeyStroke("ctrl shift pressed T"));
+			inputMap.remove(KeyStroke.getKeyStroke("ctrl pressed SPACE"));
+		}
+		
 		editorPane.addFocusListener(new FocusListener() {
 			private SpellCheckerController spellCheckerController = null;
 
