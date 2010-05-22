@@ -73,7 +73,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	public List<Node> getChildren() {
-		return new ArrayList<Node>( new AbstractList<Node>() {
+		return new ArrayList<Node>(new AbstractList<Node>() {
 			@Override
 			public Node get(final int index) {
 				final NodeModel child = (NodeModel) getDelegate().getChildAt(index);
