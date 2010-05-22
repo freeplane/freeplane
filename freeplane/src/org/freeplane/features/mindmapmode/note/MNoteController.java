@@ -363,36 +363,34 @@ public class MNoteController extends NoteController {
 			final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
 			mapViewManager.addMapViewChangeListener(new IMapViewChangeListener() {
 				boolean called = false;
-				public void beforeViewChange(Component oldView, Component newView) {
+
+				public void beforeViewChange(final Component oldView, final Component newView) {
 				}
-				
-				public void afterViewCreated(Component mapView) {
+
+				public void afterViewCreated(final Component mapView) {
 				}
-				
-				public void afterViewClose(Component oldView) {
+
+				public void afterViewClose(final Component oldView) {
 				}
-				
-				public void afterViewChange(Component oldView, Component newView) {
-					if(called){
+
+				public void afterViewChange(final Component oldView, final Component newView) {
+					if (called) {
 						return;
 					}
-					if (newView != null 
-							&& modeController.equals(modeController.getController().getModeController())) {
+					if (newView != null && modeController.equals(modeController.getController().getModeController())) {
 						showNotesPanel(false);
 						called = true;
 						EventQueue.invokeLater(new Runnable() {
 							public void run() {
 								removeViewListener();
 							}
-
 						});
 					}
 				}
+
 				private void removeViewListener() {
 					mapViewManager.removeMapViewChangeListener(this);
 				}
-				
-				
 			});
 		}
 		modeController.getMapController().addNodeSelectionListener(noteManager);

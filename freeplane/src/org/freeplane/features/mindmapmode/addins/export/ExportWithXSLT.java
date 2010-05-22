@@ -183,13 +183,14 @@ public class ExportWithXSLT extends ExportAction {
 		return success;
 	}
 
-	private boolean copyMap(final MapModel map, final String pDirectoryName){
+	private boolean copyMap(final MapModel map, final String pDirectoryName) {
 		boolean success = true;
 		try {
-			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pDirectoryName
-				+ File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
+			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
+			    pDirectoryName + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
 			getModeController().getMapController().getFilteredXml(map, fileout, Mode.EXPORT, true);
-		} catch (IOException e) {
+		}
+		catch (final IOException e) {
 			success = false;
 		}
 		return success;

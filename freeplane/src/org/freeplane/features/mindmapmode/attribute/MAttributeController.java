@@ -207,7 +207,7 @@ public class MAttributeController extends AttributeController {
 		private final AttributeRegistry registry;
 		private final boolean visible;
 
-		private RegistryAttributeActor(final String name, final boolean manual, boolean visible,
+		private RegistryAttributeActor(final String name, final boolean manual, final boolean visible,
 		                               final AttributeRegistry registry, final MapModel map) {
 			this.name = name;
 			this.registry = registry;
@@ -465,7 +465,8 @@ public class MAttributeController extends AttributeController {
 		final private RegistryAttributeActor registryActor;
 
 		private UnregistryAttributeActor(final String name, final AttributeRegistry registry, final MapModel map) {
-			registryActor = new RegistryAttributeActor(name, registry.getElement(name).isManual(), registry.getElement(name).isVisible(), registry, map);
+			registryActor = new RegistryAttributeActor(name, registry.getElement(name).isManual(), registry.getElement(
+			    name).isVisible(), registry, map);
 		}
 
 		public void act() {
@@ -678,7 +679,8 @@ public class MAttributeController extends AttributeController {
 		final int iOld = registry.getElements().indexOf(oldName);
 		final AttributeRegistryElement oldElement = registry.getElement(iOld);
 		final SortedComboBoxModel values = oldElement.getValues();
-		final IActor registryActor = new RegistryAttributeActor(newName, oldElement.isManual(), oldElement.isVisible(), registry, map);
+		final IActor registryActor = new RegistryAttributeActor(newName, oldElement.isManual(), oldElement.isVisible(),
+		    registry, map);
 		getModeController().execute(registryActor, map);
 		final AttributeRegistryElement newElement = registry.getElement(newName);
 		for (int i = 0; i < values.getSize(); i++) {

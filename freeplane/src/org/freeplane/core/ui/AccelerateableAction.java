@@ -23,7 +23,6 @@ import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
@@ -97,13 +96,10 @@ class AccelerateableAction implements IFreeplaneAction {
 		if (newAcceleratorOnNextClickEnabled) {
 			setAcceleratorOnNextClickActionDialog.setVisible(false);
 		}
-		Object source = e.getSource();
-		if ((newAcceleratorOnNextClickEnabled 
-				|| 0 != (e.getModifiers() & ActionEvent.CTRL_MASK))  
-				&& source instanceof IKeyBindingManager
-				&& ! ((IKeyBindingManager)source).isKeyBindingProcessed()
-				&& source instanceof JMenuItem
-		) {
+		final Object source = e.getSource();
+		if ((newAcceleratorOnNextClickEnabled || 0 != (e.getModifiers() & ActionEvent.CTRL_MASK))
+		        && source instanceof IKeyBindingManager && !((IKeyBindingManager) source).isKeyBindingProcessed()
+		        && source instanceof JMenuItem) {
 			final JMenuItem item = (JMenuItem) source;
 			newAccelerator(item);
 			return;

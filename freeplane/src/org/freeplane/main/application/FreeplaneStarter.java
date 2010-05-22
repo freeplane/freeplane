@@ -104,7 +104,8 @@ public class FreeplaneStarter {
 			Compat.macAppChanges(controller);
 			applicationResourceController.init(controller);
 			LogUtils.createLogger();
-			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController.getProperty("lookandfeel"));
+			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController
+			    .getProperty("lookandfeel"));
 			ViewController.setLookAndFeel(lookandfeel);
 			final JFrame frame = new JFrame("Freeplane");
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);

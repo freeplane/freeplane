@@ -24,16 +24,17 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.features.common.filter.FilterController;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev
  */
 public class TextController implements IExtension {
-	public enum Direction{BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD}
+	public enum Direction {
+		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
+	}
+
 	public static TextController getController(final ModeController modeController) {
 		return (TextController) modeController.getExtension(TextController.class);
 	}
@@ -60,9 +61,7 @@ public class TextController implements IExtension {
 		textBuilder.registerBy(readManager, writeManager);
 	}
 
-
 	public ModeController getModeController() {
 		return modeController;
 	}
 }
-

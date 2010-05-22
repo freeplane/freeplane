@@ -20,13 +20,9 @@
 package org.freeplane.features.common.filter;
 
 import java.awt.event.ActionEvent;
-import java.util.regex.Matcher;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.ModeController;
 
 class FindNextAction extends AFreeplaneAction {
 	/**

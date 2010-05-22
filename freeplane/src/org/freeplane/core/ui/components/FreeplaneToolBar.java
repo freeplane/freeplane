@@ -27,7 +27,6 @@ import java.awt.event.HierarchyEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
-import javax.swing.JButton;
 import javax.swing.JToolBar;
 
 /**
@@ -60,7 +59,6 @@ public class FreeplaneToolBar extends JToolBar {
 			});
 		}
 	}
-
 
 	@Override
 	public Component add(final Component comp) {
@@ -102,7 +100,6 @@ public class FreeplaneToolBar extends JToolBar {
 		final AbstractButton abstractButton = (AbstractButton) comp;
 		final String actionName = (String) abstractButton.getAction().getValue(Action.NAME);
 		abstractButton.setName(actionName);
-		
 		if (null != abstractButton.getIcon()) {
 			final String text = abstractButton.getText();
 			final String toolTipText = abstractButton.getToolTipText();

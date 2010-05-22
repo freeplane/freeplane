@@ -39,7 +39,6 @@ import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
-import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
@@ -645,24 +644,23 @@ public class StyleEditorPanel extends JPanel {
 				}
 			}
 		});
-		IMapViewManager mapViewManager = controller.getMapViewManager();
+		final IMapViewManager mapViewManager = controller.getMapViewManager();
 		mapViewManager.addMapViewChangeListener(new IMapViewChangeListener() {
-			public void beforeViewChange(Component oldView, Component newView) {
+			public void beforeViewChange(final Component oldView, final Component newView) {
 			}
-			
-			public void afterViewCreated(Component mapView) {
+
+			public void afterViewCreated(final Component mapView) {
 			}
-			
-			public void afterViewClose(Component oldView) {
+
+			public void afterViewClose(final Component oldView) {
 			}
-			
-			public void afterViewChange(Component oldView, Component newView) {
-				Container panel = (Container) getComponent(0);
-				for(int i = 0; i < panel.getComponentCount(); i++){
+
+			public void afterViewChange(final Component oldView, final Component newView) {
+				final Container panel = (Container) getComponent(0);
+				for (int i = 0; i < panel.getComponentCount(); i++) {
 					panel.getComponent(i).setEnabled(newView != null);
 				}
 			}
 		});
-		
 	}
 }

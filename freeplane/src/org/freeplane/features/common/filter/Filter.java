@@ -145,7 +145,7 @@ public class Filter {
 		        || isAncestorEclipsed)) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_ANCESTOR);
 			isDescendantSelected = true;
-			if(true && unfold && ! isVisible(node)  && node.isFolded()){
+			if (true && unfold && !isVisible(node) && node.isFolded()) {
 				modeController.getMapController().setFolded(node, false);
 			}
 		}
@@ -253,6 +253,6 @@ public class Filter {
 	}
 
 	public boolean unfoldsInvisibleNodes() {
-	    return unfold;
-    }
+		return unfold;
+	}
 }

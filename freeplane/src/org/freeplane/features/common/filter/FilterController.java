@@ -132,8 +132,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private final ButtonModel showAncestors;
 	private final ButtonModel showDescendants;
 	private final ButtonModel unfold;
-
-
 	private JComboBox activeFilterConditionComboBox;
 
 	public FilterController(final Controller controller) {
@@ -179,7 +177,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final FindAction find = new FindAction(controller);
 		controller.addAction(find);
 		controller.addAction(new FindNextAction(controller, find));
-
 	}
 
 	private void addStandardConditions() {
@@ -263,7 +260,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.setFocusable(false);
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
 		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));
-		final JToggleButton btnUnfoldAncestors = new JAutoToggleButton(controller.getAction("UnfoldFilteredAncestorsAction"), unfold);
+		final JToggleButton btnUnfoldAncestors = new JAutoToggleButton(controller
+		    .getAction("UnfoldFilteredAncestorsAction"), unfold);
 		btnUnfoldAncestors.setSelected(unfold.isSelected());
 		final JToggleButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"),
 		    showAncestors);
@@ -449,7 +447,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		showAncestors.setSelected(filter.areAncestorsShown());
 		showDescendants.setSelected(filter.areDescendantsShown());
 		applyToVisibleNodeOnly.setSelected(filter.appliesToVisibleNodesOnly());
-		if(filter.getCondition() != null){
+		if (filter.getCondition() != null) {
 			unfold.setSelected(filter.unfoldsInvisibleNodes());
 		}
 		filterConditions.addListDataListener(filterChangeListener);
@@ -464,94 +462,95 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		applyToVisibleNodeOnly.setSelected(isActive);
 	}
 
-	
-	NodeModel findNext(final NodeModel from, final NodeModel end, Direction direction, ISelectableCondition condition) {
+	NodeModel findNext(final NodeModel from, final NodeModel end, final Direction direction,
+	                   final ISelectableCondition condition) {
 		NodeModel next = from;
-		for(;;) {
+		for (;;) {
 			do {
 				switch (direction) {
-				case FORWARD:
-				case FORWARD_N_FOLD:
-					next = getNext(direction, next, end);
-					break;
-				case BACK:
-				case BACK_N_FOLD:
-					next = getPrevious(direction, next, end);
-					break;
+					case FORWARD:
+					case FORWARD_N_FOLD:
+						next = getNext(direction, next, end);
+						break;
+					case BACK:
+					case BACK_N_FOLD:
+						next = getPrevious(direction, next, end);
+						break;
 				}
-				if(next == null){
+				if (next == null) {
 					return null;
 				}
 			} while (!next.isVisible());
-			if(next == from){
+			if (next == from) {
 				break;
 			}
-			if(condition == null || condition.checkNode(getModeController(), next))
-			{
+			if (condition == null || condition.checkNode(getModeController(), next)) {
 				return next;
 			}
-		} 
+		}
 		return null;
 	}
-	private NodeModel getNext(Direction direction, NodeModel current, NodeModel end) {
-			if(current.getChildCount() != 0){
-				NodeModel next = (NodeModel) current.getChildAt(0);
-				if(next.equals(end)){
+
+	private NodeModel getNext(final Direction direction, NodeModel current, final NodeModel end) {
+		if (current.getChildCount() != 0) {
+			final NodeModel next = (NodeModel) current.getChildAt(0);
+			if (next.equals(end)) {
+				return null;
+			}
+			return next;
+		}
+		for (;;) {
+			final NodeModel parentNode = current.getParentNode();
+			if (parentNode == null) {
+				return current;
+			}
+			final int index = parentNode.getIndex(current) + 1;
+			final int childCount = parentNode.getChildCount();
+			if (index < childCount) {
+				if (direction == Direction.FORWARD_N_FOLD) {
+					getModeController().getMapController().setFolded(current, true);
+				}
+				final NodeModel next = (NodeModel) parentNode.getChildAt(index);
+				if (next.equals(end)) {
 					return null;
 				}
 				return next;
 			}
-			for(;;){
-				NodeModel parentNode = current.getParentNode();
-				if(parentNode == null){
-					return current;
-				}
-				int index = parentNode.getIndex(current)+1;
-				int childCount = parentNode.getChildCount();
-				if(index < childCount){
-					if(direction == Direction.FORWARD_N_FOLD){
-						getModeController().getMapController().setFolded(current, true);
-					}
-					NodeModel next = (NodeModel) parentNode.getChildAt(index);
-					if(next.equals(end)){
-						return null;
-					}
-					return next;
-				}
-				current = parentNode;
-				if(current.equals(end)){
-					return null;
-				}
+			current = parentNode;
+			if (current.equals(end)) {
+				return null;
 			}
+		}
 	}
-	private NodeModel getPrevious(Direction direction, NodeModel current, NodeModel end) {
-		for(;;){
-			NodeModel parentNode = current.getParentNode();
-			if(parentNode == null){
+
+	private NodeModel getPrevious(final Direction direction, NodeModel current, final NodeModel end) {
+		for (;;) {
+			final NodeModel parentNode = current.getParentNode();
+			if (parentNode == null) {
 				break;
 			}
-			if(direction == Direction.BACK_N_FOLD){
+			if (direction == Direction.BACK_N_FOLD) {
 				getModeController().getMapController().setFolded(current, true);
 			}
-			int index = parentNode.getIndex(current)-1;
-			if(index < 0){
-				if(direction == Direction.BACK_N_FOLD){
+			final int index = parentNode.getIndex(current) - 1;
+			if (index < 0) {
+				if (direction == Direction.BACK_N_FOLD) {
 					getModeController().getMapController().setFolded(parentNode, true);
 				}
-				if(parentNode.equals(end)){
+				if (parentNode.equals(end)) {
 					return null;
 				}
 				return parentNode;
 			}
 			current = (NodeModel) parentNode.getChildAt(index);
-			if(current.equals(end)){
+			if (current.equals(end)) {
 				return null;
 			}
 			break;
 		}
-		for(;;){
-			if(current.getChildCount() == 0){
-				if(current.equals(end)){
+		for (;;) {
+			if (current.getChildCount() == 0) {
+				if (current.equals(end)) {
 					return null;
 				}
 				return current;
@@ -561,6 +560,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	private ModeController getModeController() {
-	    return controller.getModeController();
-    }
+		return controller.getModeController();
+	}
 }

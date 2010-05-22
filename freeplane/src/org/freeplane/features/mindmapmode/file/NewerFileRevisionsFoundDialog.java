@@ -40,7 +40,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
@@ -188,7 +187,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 
 	private Component createQuestion() {
 		final String text = TextUtils.format(NewerFileRevisionsFoundDialog.key("question"), file.getName());
-		String html = HtmlUtils.plainToHTML(text);
+		final String html = HtmlUtils.plainToHTML(text);
 		final JLabel textArea = new JLabel(html);
 		textArea.setAlignmentX(0.5f);
 		textArea.setFont(new Font("Dialog", Font.BOLD, 12));

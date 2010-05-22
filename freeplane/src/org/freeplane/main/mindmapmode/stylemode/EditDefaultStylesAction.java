@@ -89,7 +89,8 @@ public class EditDefaultStylesAction extends AFreeplaneAction {
 			final File freeplaneUserDirectory = new File(resourceController.getFreeplaneUserDirectory());
 			final File styles = new File(freeplaneUserDirectory, "default.stylemm");
 			if (!styles.exists()) {
-				FileUtils.copyFromURL(resourceController.getResource("/styles/default.stylemm"), freeplaneUserDirectory);
+				FileUtils
+				    .copyFromURL(resourceController.getResource("/styles/default.stylemm"), freeplaneUserDirectory);
 			}
 			modeController.getMapController().newMap(styles.toURL());
 		}

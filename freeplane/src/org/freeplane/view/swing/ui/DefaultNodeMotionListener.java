@@ -12,10 +12,11 @@ public class DefaultNodeMotionListener extends MouseAdapter implements IMouseLis
 	public DefaultNodeMotionListener() {
 	}
 
+	@Override
 	public void mouseDragged(final MouseEvent e) {
 	}
 
-	
+	@Override
 	public void mouseMoved(final MouseEvent e) {
 	}
 }

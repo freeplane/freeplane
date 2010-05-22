@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.NodeModel;
 
 class NewMapViewAction extends AFreeplaneAction {
 	/**
@@ -40,7 +39,7 @@ class NewMapViewAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		MapModel map = getController().getMap();
+		final MapModel map = getController().getMap();
 		getModeController().getMapController().newMapView(map);
 	}
 

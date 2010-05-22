@@ -28,7 +28,7 @@ import java.util.Vector;
 public class SortedMapVector {
 	private static class MapElement {
 		final private Comparable key;
-		private Object value;
+		private final Object value;
 
 		public MapElement(final Comparable key, final Object value) {
 			super();

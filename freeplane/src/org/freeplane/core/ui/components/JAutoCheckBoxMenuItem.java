@@ -30,7 +30,7 @@ import javax.swing.KeyStroke;
 import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
-public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements PropertyChangeListener , IKeyBindingManager{
+public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements PropertyChangeListener, IKeyBindingManager {
 	/**
 	 * 
 	 */
@@ -61,15 +61,14 @@ public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements Property
 	}
 
 	private boolean isKeyBindingProcessed = false;
-	
+
 	@Override
-	protected boolean processKeyBinding(KeyStroke ks, KeyEvent e,
-			int condition, boolean pressed) {
-		try{
+	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
+		try {
 			isKeyBindingProcessed = true;
 			return super.processKeyBinding(ks, e, condition, pressed);
 		}
-		finally{
+		finally {
 			isKeyBindingProcessed = false;
 		}
 	}

@@ -261,14 +261,15 @@ class UpdateCheckAction extends AFreeplaneAction {
 		historyPane.setPreferredSize(new Dimension(500, 300));
 		historyPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		messagePane.add(historyPane);
-		final JCheckBox updateAutomatically = new JCheckBox(
-		    TextUtils.getText("OptionPanel.check_updates_automatically"), ResourceController.getResourceController()
-		        .getBooleanProperty(CHECK_UPDATES_AUTOMATICALLY));
+		final JCheckBox updateAutomatically = new JCheckBox(TextUtils
+		    .getText("OptionPanel.check_updates_automatically"), ResourceController.getResourceController()
+		    .getBooleanProperty(CHECK_UPDATES_AUTOMATICALLY));
 		updateAutomatically.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		messagePane.add(updateAutomatically);
 		final Object[] options;
 		if (newVersion != null) {
-			options = new Object[] { TextUtils.getText("download"), TextUtils.removeMnemonic(TextUtils.getText("cancel")) };
+			options = new Object[] { TextUtils.getText("download"),
+			        TextUtils.removeMnemonic(TextUtils.getText("cancel")) };
 		}
 		else {
 			options = new Object[] { TextUtils.removeMnemonic(TextUtils.getText("CloseAction.text")) };

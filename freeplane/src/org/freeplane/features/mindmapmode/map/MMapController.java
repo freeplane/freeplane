@@ -100,16 +100,16 @@ public class MMapController extends MapController {
 	public boolean close(final boolean force) {
 		final MapModel map = getController().getMap();
 		if (!force && !map.isSaved()) {
-			List<Component> views = getController().getMapViewManager().getViews(map);
-			if(views.size() == 1)
-			{
+			final List<Component> views = getController().getMapViewManager().getViews(map);
+			if (views.size() == 1) {
 				final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
 				final String title = TextUtils.removeMnemonic(TextUtils.getText("SaveAction.text"));
-				final int returnVal = JOptionPane.showOptionDialog(getController().getViewController().getContentPane(),
-					text, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+				final int returnVal = JOptionPane.showOptionDialog(
+				    getController().getViewController().getContentPane(), text, title,
+				    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 				if (returnVal == JOptionPane.YES_OPTION) {
 					final boolean savingNotCancelled = ((MFileManager) UrlManager.getController(getModeController()))
-					.save(map);
+					    .save(map);
 					if (!savingNotCancelled) {
 						return false;
 					}

@@ -149,8 +149,8 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	final private DefaultTreeModel treeModel;
 
 	public ImportAttributesDialog(final Controller controller, final Component parentComponent) {
-		super(controller.getViewController().getFrame(),
-		    TextUtils.removeMnemonic(TextUtils.getText("attributes_import")), true);
+		super(controller.getViewController().getFrame(), TextUtils.removeMnemonic(TextUtils
+		    .getText("attributes_import")), true);
 		this.controller = controller;
 		this.parentComponent = parentComponent;
 		final TreeNodeInfo nodeInfo = new TreeNodeInfo(TextUtils.getText("attribute_top"));
@@ -190,7 +190,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	}
 
 	private void createAttributeSubTrees(final DefaultMutableTreeNode mapInfo, final AttributeRegistry attributes) {
-		if(attributes == null){
+		if (attributes == null) {
 			return;
 		}
 		for (int i = 0; i < attributes.size(); i++) {
