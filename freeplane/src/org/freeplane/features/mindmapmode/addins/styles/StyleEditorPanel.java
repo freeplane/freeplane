@@ -65,6 +65,7 @@ import org.freeplane.features.mindmapmode.edge.MEdgeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class StyleEditorPanel extends JPanel {
@@ -491,10 +492,10 @@ public class StyleEditorPanel extends JPanel {
 	 * @param modeController 
 	 */
 	public void init(final ModeController modeController) {
-		final String form = "right:max(40dlu;p), 4dlu, 20dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu";
+		final String form = "right:max(20dlu;p), 2dlu, p, 1dlu,right:max(20dlu;p), 4dlu, 80dlu, 7dlu";
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
-		rightBuilder.setDefaultDialogBorder();
+		rightBuilder.setBorder(Borders.DLU2_BORDER);
 		if (addStyleBox) {
 			final String label = TextUtils.getText("OptionPanel.separator.NodeStyle");
 			rightBuilder.appendSeparator(label);
@@ -510,7 +511,15 @@ public class StyleEditorPanel extends JPanel {
 		}
 		add(rightBuilder.getPanel(), BorderLayout.CENTER);
 		addListeners(modeController);
+		setFont(this, 10);
 	}
+
+	private void setFont(Container c, float size) {
+		c.setFont(c.getFont().deriveFont(size));
+		for(int i = 0; i < c.getComponentCount(); i++){
+			setFont((Container) c.getComponent(i), size);
+		}
+    }
 
 	public void setStyle(final ModeController modeController, final NodeModel node) {
 		if (internalChange) {
