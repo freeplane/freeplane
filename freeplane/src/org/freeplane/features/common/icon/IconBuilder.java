@@ -35,7 +35,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 class IconBuilder implements IElementDOMHandler, IElementWriter {
 	private final IconStore store;
 	private final IconController iconController;
-
 	public IconBuilder(final IconController iconController, final IconStore icons) {
 		store = icons;
 		this.iconController = iconController;

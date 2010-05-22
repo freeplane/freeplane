@@ -44,8 +44,8 @@
             <number name = "last_opened_list_length" min="1" max="50"/> 
             <boolean name = "load_last_map"/>
             <boolean name = "load_last_maps"/>
+            <boolean name = "always_load_last_maps"/>
             <boolean name = "experimental_file_locking_on"/>
-            <string name = "userproperties"/>
             <string name = "patternsfile"/>
         </separator>
         <separator name = "automatic_save">
@@ -116,7 +116,7 @@
         <separator name="default_fonts">
             <font name="defaultfont"/>
             <number name="defaultfontsize" min="4" max="272"/>
-            <string name="defaultfontstyle"/>
+            <number name="defaultfontstyle" min="0" max="3"/>
             <boolean name="resources_use_default_font_for_notes_too"/>
             <boolean name="resources_use_margin_top_zero_for_notes"/>
             <number name="max_node_width"/>

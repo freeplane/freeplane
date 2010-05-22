@@ -29,6 +29,7 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -64,6 +65,8 @@ import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 /**
  */
 class ScriptEditorPanel extends JDialog {
+	private static final String internalCharset = "UTF-16BE";
+
 	final private class CancelAction extends AbstractAction {
 		/**
 		 * 
@@ -145,14 +148,32 @@ class ScriptEditorPanel extends JDialog {
 	}
 
 	final private class ResultFieldStream extends OutputStream {
-		@Override
-		public void write(final byte[] pB) throws IOException {
-			mScriptResultField.append(new String(pB));
-		}
+		private final byte[] buf = new byte[2];
+		private int i = 0;
 
 		@Override
 		public void write(final int pByte) throws IOException {
-			mScriptResultField.append(new String(new byte[] { (byte) pByte }));
+			buf[i++] = (byte) pByte;
+			if (i == 2) {
+				mScriptResultField.append(new String(buf, internalCharset));
+				i = 0;
+			}
+		}
+
+		@Override
+		public void write(final byte b[], int off, int len) throws IOException {
+			if (i == 1) {
+				write(b[off++]);
+				len--;
+			}
+			if (len <= 0) {
+				return;
+			}
+			final int len2 = len & ~1;
+			mScriptResultField.append(new String(b, off, len2, internalCharset));
+			if (len2 != len) {
+				write(b[len2]);
+			}
 		}
 	}
 
@@ -396,7 +417,12 @@ class ScriptEditorPanel extends JDialog {
 	}
 
 	PrintStream getPrintStream() {
-		return new PrintStream(new ResultFieldStream());
+		try {
+			return new PrintStream(new ResultFieldStream(), false, internalCharset);
+		}
+		catch (final UnsupportedEncodingException e) {
+			return null;
+		}
 	}
 
 	private void select(final int pIndex) {

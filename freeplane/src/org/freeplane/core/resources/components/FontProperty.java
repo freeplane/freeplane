@@ -55,8 +55,7 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), mFontComboBox);
-		label.setToolTipText(TextUtils.getOptionalText(getDescription()));
+		layout(builder, mFontComboBox);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

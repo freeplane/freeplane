@@ -507,6 +507,9 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return new JLabel("no file set");
 		}
 		final URI absoluteUri = model.getAbsoluteUri(map, getModeController());
+		if (absoluteUri == null) {
+			return new JLabel(uri.toString());
+		}
 		final IViewerFactory factory = getViewerFactory(absoluteUri);
 		if (factory == null) {
 			return new JLabel(uri.toString());

@@ -20,6 +20,8 @@
 package org.freeplane.main.application;
 
 import java.awt.Component;
+import java.awt.Frame;
+import java.awt.Window;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,6 +36,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewChangeListener;
@@ -48,6 +51,7 @@ import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapModel;
@@ -208,13 +212,12 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			final StringTokenizer token = new StringTokenizer(restoreable, ":");
 			if (token.hasMoreTokens()) {
 				final String mode = token.nextToken();
-				if (controller.selectMode(mode)) {
-					String fileName = token.nextToken("").substring(1);
-					if (PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")) {
-						fileName = USER_DRIVE + fileName.substring(1);
-					}
-					controller.getModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
+				controller.selectMode(mode);
+				String fileName = token.nextToken("").substring(1);
+				if (PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")) {
+					fileName = USER_DRIVE + fileName.substring(1);
 				}
+				controller.getModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
 			}
 		}
 	}
@@ -266,8 +269,19 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			open(restoreable);
 		}
 		catch (final Exception ex) {
-			remove(restoreable);
-			UITools.errorMessage("An error occured on opening the file: " + restoreable + ".");
+			final String message = TextUtils.format("remove_file_from_list_on_error", restoreable);
+			final Frame frame = UITools.getFrame();
+			final Window[] ownedWindows = frame.getOwnedWindows();
+			for (int i = 0; i < ownedWindows.length; i++) {
+				final Window window = ownedWindows[i];
+				if (window.getClass().equals(FreeplaneSplashModern.class) && window.isVisible()) {
+					window.setVisible(false);
+				}
+			}
+			final int remove = JOptionPane.showConfirmDialog(frame, message, "Freeplane", JOptionPane.YES_NO_OPTION);
+			if (remove == JOptionPane.YES_OPTION) {
+				remove(restoreable);
+			}
 			LogUtils.warn(ex);
 		}
 	}

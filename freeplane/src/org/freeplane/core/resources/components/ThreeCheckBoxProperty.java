@@ -89,8 +89,7 @@ public class ThreeCheckBoxProperty extends PropertyBean implements IPropertyCont
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), mButton);
-		label.setToolTipText(TextUtils.getOptionalText(getDescription()));
+		layout(builder, mButton);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

@@ -152,8 +152,8 @@ public class OptionPanel {
 		MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getText("ok"));
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
-				feedback.writeProperties(getOptionProperties());
 				closeWindow();
+				feedback.writeProperties(getOptionProperties());
 			}
 		});
 		topDialog.getRootPane().setDefaultButton(okButton);

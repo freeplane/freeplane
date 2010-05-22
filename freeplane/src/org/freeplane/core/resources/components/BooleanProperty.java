@@ -50,8 +50,7 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), mCheckBox);
-		label.setToolTipText(TextUtils.getOptionalText(getDescription()));
+		layout(builder, mCheckBox);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

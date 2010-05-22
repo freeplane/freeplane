@@ -73,8 +73,7 @@ class ScriptEditorProperty extends PropertyBean implements IPropertyControl, Act
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtils.getText(getLabel()), mButton);
-		label.setToolTipText(TextUtils.getText(getDescription()));
+		layout(builder, mButton);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

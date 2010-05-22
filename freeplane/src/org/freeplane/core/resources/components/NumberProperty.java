@@ -57,8 +57,7 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), spinner);
-		label.setToolTipText(TextUtils.getOptionalText(getDescription()));
+		layout(builder, spinner);
 	}
 
 	public void setEnabled(final boolean pEnabled) {
@@ -70,11 +69,6 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 		int intValue = 100;
 		try {
 			intValue = Integer.parseInt(value);
-			final int stepModul = (intValue - min) % step;
-			if (intValue < min || intValue > max || (stepModul != 0)) {
-				LogUtils.severe("Actual value of property " + getName() + " is not in the allowed range: " + value);
-				intValue = min;
-			}
 		}
 		catch (final NumberFormatException e) {
 			LogUtils.severe(e);

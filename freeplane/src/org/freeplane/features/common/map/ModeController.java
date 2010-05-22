@@ -325,4 +325,8 @@ public class ModeController extends AController {
 			iterator.next().updateMenus(menuBuilder);
 		}
 	}
+
+	public boolean canEdit() {
+		return false;
+	}
 }

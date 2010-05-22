@@ -194,6 +194,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	/**
 	 */
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+		if(filterToolbar == null){
+			return;
+		}
 		history.clear();
 		if (newMap != null) {
 			filterToolbar.setEnabled(true);
@@ -562,4 +565,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private ModeController getModeController() {
 		return controller.getModeController();
 	}
+
+
+
 }

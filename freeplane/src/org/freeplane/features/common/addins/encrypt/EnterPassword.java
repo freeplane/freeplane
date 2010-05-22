@@ -62,7 +62,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 		final MapController mapController = modeController.getMapController();
 		final NodeModel selectedNode = mapController.getSelectedNode();
 		if (selectedNode != null) {
-			if (modeController instanceof MModeController) {
+			if (modeController.canEdit()) {
 				return true;
 			}
 			final EncryptionModel enode = EncryptionModel.getModel(selectedNode);

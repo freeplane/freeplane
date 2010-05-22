@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 import org.freeplane.features.common.map.ModeController;
 
@@ -105,7 +106,7 @@ class FileOpener implements DropTargetListener {
 			}
 		}
 		catch (final Exception e) {
-			UITools.errorMessage("Couldn't open dropped file(s). Reason: " + e.getMessage());
+			UITools.errorMessage(TextUtils.format("dropped_file_error", e.getMessage()));
 			dtde.dropComplete(false);
 			return;
 		}

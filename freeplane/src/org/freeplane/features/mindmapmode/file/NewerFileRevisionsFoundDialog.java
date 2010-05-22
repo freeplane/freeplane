@@ -180,7 +180,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		add(createButtonBar());
 		getRootPane().setDefaultButton(btnCancel);
 		pack();
-		//		LogTool.severe("hi, NewerFileRevisionsFoundDialog, thread " + Thread.currentThread(), new Exception("dummy"));
+		//		LogUtils.severe("hi, NewerFileRevisionsFoundDialog, thread " + Thread.currentThread(), new Exception("dummy"));
 		setLocationRelativeTo(UITools.getFrame());
 		setVisible(true);
 	}

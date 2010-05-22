@@ -72,7 +72,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			((MLinkController) LinkController.getController(modeController)).setLink(node, (URI) null, false);
 		}
 		catch (final MalformedURLException ex) {
-			UITools.errorMessage("Couldn't create valid URL for:" + map.getFile());
+			UITools.errorMessage(TextUtils.format("invalid_url_msg", map.getFile()));
 			LogUtils.warn(ex);
 			return;
 		}

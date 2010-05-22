@@ -465,8 +465,7 @@ public class MLinkController extends LinkController {
 		arrowLinkPopup.add(itemtt);
 	}
 
-	static final private Pattern urlPattern = Pattern.compile("file://[^\\s" + File.pathSeparatorChar
-	        + "]+|(:?https?|ftp)://[^\\s()'\",;|<>{}]+");
+	static final private Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s()'\",;|<>{}]+");
 	static private Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
 
 	public String findLink(final String text) {
@@ -534,15 +533,20 @@ public class MLinkController extends LinkController {
 		setLink(node, (URI) null, false);
 	}
 
+	private URI relativeLink(final URI argUri, final NodeModel node, final boolean makeRelative) {
+	    if (makeRelative && "file".equals(argUri.getScheme())) {
+			try {
+				final File mapFile = node.getMap().getFile();
+	            return LinkController.toRelativeURI(mapFile, new File(argUri));
+            }
+            catch (Exception e) {
+            }
+		}
+	    return argUri;
+    }
+	
 	public void setLink(final NodeModel node, final URI argUri, final boolean makeRelative) {
-		final URI uri;
-		if (makeRelative && "file".equals(argUri.getScheme())) {
-			final File mapFile = node.getMap().getFile();
-			uri = LinkController.toRelativeURI(mapFile, new File(argUri));
-		}
-		else {
-			uri = argUri;
-		}
+		final URI uri = relativeLink(argUri, node, makeRelative);
 		final IActor actor = new IActor() {
 			private URI oldlink;
 			private String oldTargetID;

@@ -189,4 +189,9 @@ public class MModeController extends ModeController {
 		undo.actionPerformed(null);
 		redo.reset();
 	}
+
+	@Override
+	public boolean canEdit() {
+		return true;
+	}
 }

@@ -105,7 +105,7 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 					    loadAcceleratorPresetsAction, MenuBuilder.AS_CHILD);
 				}
 				catch (final Exception e) {
-					UITools.errorMessage("can not load accelerators from" + prop.getPath());
+					UITools.errorMessage(TextUtils.format("accelerators_loading_error", prop.getPath()));
 				}
 			}
 		}

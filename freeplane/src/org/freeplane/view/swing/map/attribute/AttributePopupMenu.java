@@ -270,4 +270,15 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		}
 		throw new AssertionError();
 	}
+
+	@Override
+    public void setVisible(boolean visible) {
+	    super.setVisible(visible);
+	    if(visible){
+	    	return;
+	    }
+	    table.requestFocus();
+    }
+	
+	
 }

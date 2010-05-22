@@ -73,8 +73,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), mComboBox);
-		label.setToolTipText(TextUtils.getOptionalText(getDescription()));
+		layout(builder, mComboBox);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

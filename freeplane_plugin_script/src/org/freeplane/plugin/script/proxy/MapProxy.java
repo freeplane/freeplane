@@ -1,5 +1,7 @@
 package org.freeplane.plugin.script.proxy;
 
+import java.io.File;
+
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -19,5 +21,9 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	public Node getRootNode() {
 		final NodeModel rootNode = getDelegate().getRootNode();
 		return new NodeProxy(rootNode, getModeController());
+	}
+
+	public File getFile() {
+		return getDelegate().getFile();
 	}
 }

@@ -3,6 +3,7 @@ package org.freeplane.plugin.script.proxy;
 import groovy.lang.Closure;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -269,6 +270,9 @@ public interface Proxy {
 
 		/** returns the node if the map contains it or null otherwise. */
 		Node node(String id);
+
+		/** returns the physical location of the map if available or null otherwise. */
+		File getFile();
 	}
 
 	interface Node {

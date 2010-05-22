@@ -130,7 +130,8 @@ public class MapViewController implements IMapViewManager {
 	public boolean changeToMapView(final String mapViewDisplayName) {
 		MapView mapViewCandidate = null;
 		for (final MapView mapView : mapViewVector) {
-			if (StringUtils.equals(mapViewDisplayName, mapView.getName())) {
+			final String mapViewName = mapView.getName();
+			if (mapViewDisplayName == mapViewName || mapViewDisplayName != null && mapViewDisplayName.equals(mapViewName)) {
 				mapViewCandidate = mapView;
 				break;
 			}

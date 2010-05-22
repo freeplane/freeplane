@@ -87,7 +87,8 @@ public class PropertyAction extends AFreeplaneAction {
 		}
 		options.buildPanel(controls);
 		options.setProperties();
-		dialog.setTitle("Freeplane Properties");
+		final String title = TextUtils.getText("PropertyAction.dialog");
+		dialog.setTitle(title);
 		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
 			@Override

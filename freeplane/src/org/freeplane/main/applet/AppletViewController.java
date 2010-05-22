@@ -44,6 +44,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.browsemode.BModeController;
 
 /**
@@ -125,7 +126,7 @@ class AppletViewController extends ViewController {
 				initialMapName = documentBaseUrl.toString();
 			}
 			catch (final java.net.MalformedURLException e) {
-				UITools.errorMessage("Could not open relative URL " + initialMapName + ". It is malformed.");
+				UITools.errorMessage(TextUtils.getText("url_load_error") + " " + initialMapName);
 				System.err.println(e);
 				return;
 			}

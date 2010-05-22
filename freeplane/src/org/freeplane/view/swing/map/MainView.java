@@ -476,43 +476,12 @@ public abstract class MainView extends JLabel {
 	}
 
 	FontMetrics getFontMetrics() {
-		return getFontMetrics(getFont());
-	}
-
-	@Override
-	public void setText(final String text) {
-		if (!(BasicHTML.isHTMLString(text) && useFractionalMetrics())) {
-			try {
-				super.setText(text);
-			}
-			catch (final Exception ex) {
-				setTextWithExceptionInfo(text, ex);
-			}
-			return;
+		if (!useFractionalMetrics()) {
+			return super.getFontMetrics(getFont());
 		}
-		setFractionalMetrics();
-		try {
-			super.setText(text);
-		}
-		catch (final Exception ex) {
-			setTextWithExceptionInfo(text, ex);
-		}
-		finally {
-			unsetFractionalMetrics();
-		}
-	}
-
-	private void setTextWithExceptionInfo(final String text, final Exception ex) {
-		final String string = HtmlUtils.combineTextWithExceptionInfo(text, ex);
-		super.setText(string);
-	}
-
-	private void unsetFractionalMetrics() {
-		BasicHTML.createHTMLView(standardLabel, "<html><b>1</b>2");
-	}
-
-	private void setFractionalMetrics() {
-		BasicHTML.createHTMLView(this, "<html><b>1</b>2");
+		fmg.setFont(getFont());
+		final FontMetrics fontMetrics = fmg.getFontMetrics();
+		return fontMetrics;
 	}
 
 	@Override

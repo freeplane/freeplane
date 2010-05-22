@@ -118,15 +118,6 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel im
 		this.nodeAttributeModel = nodeAttributeModel;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seejavax.swing.event.TableModelListener#tableChanged(javax.swing.event.
-	 * TableModelEvent)
-	 */
-	public void tableChanged(final TableModelEvent e) {
-		fireTableDataChanged();
-	}
-
 	public void viewRemoved() {
 		removeListeners();
 	}

@@ -213,7 +213,7 @@ public class MenuUtils {
 		final String iconKey = menuEntry.getIconKey();
 		final String resource = ResourceController.getResourceController().getProperty(iconKey, null);
 		if (resource == null) {
-			// LogTool.info("no icon for key '" + iconKey + "'");
+			// LogUtils.info("no icon for key '" + iconKey + "'");
 			return;
 		}
 		// icons are expected to live in the directory /images/icons/

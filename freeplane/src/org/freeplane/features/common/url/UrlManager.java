@@ -34,6 +34,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessControlException;
+import java.nio.charset.Charset;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -108,8 +109,8 @@ public class UrlManager implements IExtension {
 						xsltInputStream = new BufferedInputStream(updaterUrl.openStream());
 						final Source xsltSource = new StreamSource(xsltInputStream);
 						input = new BufferedInputStream(new FileInputStream(file));
-						final InputStream cleanedInput = new CleaningInputStream(input);
-						final Reader reader = new InputStreamReader(cleanedInput, FileUtils.defaultCharset());
+						final CleaningInputStream cleanedInput = new CleaningInputStream(input);
+						final Reader reader = new InputStreamReader(cleanedInput, cleanedInput.isUtf8() ? Charset.forName("UTF-8") : FileUtils.defaultCharset());
 						final Transformer trans = transFact.newTransformer(xsltSource);
 						trans.transform(new StreamSource(reader), result);
 					}
@@ -239,13 +240,8 @@ public class UrlManager implements IExtension {
 		try {
 			urlStreamReader = new InputStreamReader(url.openStream());
 		}
-		catch (final AccessControlException ex) {
-			UITools.errorMessage("Could not open URL " + url + ". Access Denied.");
-			LogUtils.warn(ex.getMessage());
-			return;
-		}
 		catch (final Exception ex) {
-			UITools.errorMessage("Could not open URL " + url + ".");
+			UITools.errorMessage(TextUtils.format("url_open_error", url.toString()));
 			LogUtils.warn(ex.getMessage());
 			return;
 		}
@@ -288,8 +284,7 @@ public class UrlManager implements IExtension {
 			uri = getAbsoluteUri(uri);
 			try {
 				if ((extension != null)
-				        && extension
-				            .equals(org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+				        && extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 					final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
 					modeController.getMapController().newMap(url);
 					final String ref = uri.getFragment();
@@ -327,12 +322,12 @@ public class UrlManager implements IExtension {
 			return uri;
 		}
 		final String path = uri.getPath();
-		final URL url = new URL(map.getURL(), path);
 		try {
+			final URL url = new URL(map.getURL(), path);
 			return new URI(url.getProtocol(), url.getHost(), url.getPath(), uri.getQuery(), uri.getFragment());
 		}
 		catch (final URISyntaxException e) {
-			e.printStackTrace();
+			LogUtils.warn(e);
 			return null;
 		}
 	}

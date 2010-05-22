@@ -61,7 +61,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 			}
 			catch (final URISyntaxException e1) {
 				LogUtils.warn(e1);
-				UITools.errorMessage("wrong URI " + inputValue);
+				UITools.errorMessage(TextUtils.format("invalid_uri", inputValue));
 				return;
 			}
 		}

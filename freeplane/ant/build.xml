@@ -4,6 +4,7 @@
 	<property name="src" value="src" />
 	<property name="resources" value="resources" />
 	<property name="viewer-resources" value="viewer-resources" />
+	<property name="eolstyle" value="unix" />
 	<property name="root" value="." />
 	<property name="manifest" value="${root}/META-INF/OLD_MANIFEST.MF" />
 	<property name="osgimanifest" value="${root}/META-INF/MANIFEST.MF" />
@@ -30,7 +31,6 @@
 
 	<taskdef name="format-translation" classname="org.freeplane.ant.FormatTranslation" classpath="${freeplaneant.jar}"/>
 	<taskdef name="check-translation" classname="org.freeplane.ant.FormatTranslationCheck" classpath="${freeplaneant.jar}"/>
-	<taskdef name="translator" classname="org.freeplane.ant.Translator" classpath="${freeplaneant.jar}:${google.translator.jar}"/>
 
 	<target name="build">
 		<antcall target="check-translation" />
@@ -173,16 +173,16 @@
 	</target>
 	
 	<target name="check-translation">
-		<check-translation dir="${root}/resources/translations" includes="*.properties" />
-		<check-translation dir="${root}/viewer-resources/translations" includes="*.properties" />
+		<check-translation dir="${root}/resources/translations" includes="*.properties" eolstyle="${eolstyle}" />
+		<check-translation dir="${root}/viewer-resources/translations" includes="*.properties" eolstyle="${eolstyle}" />
 	</target>
 	<target name="format-translation">
-		<format-translation dir="${root}/resources/translations" includes="*.properties" eolstyle="win" />
-		<format-translation dir="${root}/viewer-resources/translations" includes="*.properties" eolstyle="win" />
+		<format-translation dir="${root}/resources/translations" includes="*.properties" eolstyle="${eolstyle}" />
+		<format-translation dir="${root}/viewer-resources/translations" includes="*.properties" eolstyle="${eolstyle}" />
 	</target>
 	<target name="format-translation-force">
-		<format-translation dir="${root}/resources/translations" writeifunchanged="true" includes="*.properties" eolstyle="win" />
-		<format-translation dir="${root}/viewer-resources/translations" writeifunchanged="true" includes="*.properties" eolstyle="win" />
+		<format-translation dir="${root}/resources/translations" writeifunchanged="true" includes="*de.properties" eolstyle="${eolstyle}" />
+		<format-translation dir="${root}/viewer-resources/translations" writeifunchanged="true" includes="*xx.properties" eolstyle="${eolstyle}" />
 	</target>
 	<target name="translate">
 		<translator translationsdir="${root}/resources/translations"

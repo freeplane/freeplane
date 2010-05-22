@@ -23,6 +23,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import org.freeplane.core.ui.IMapMouseReceiver;
+import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.ModeController;
@@ -51,7 +52,7 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 	public void mouseDragged(final MouseEvent e) {
 		final MapView mapView = (MapView) e.getComponent();
 		if (originX >= 0) {
-			if (draggedLink != null) {
+			if (draggedLink != null && mapView.getLayoutType().equals(MapViewLayout.MAP)) {
 				final int deltaX = (int) ((e.getX() - originX) / mapView.getZoom());
 				final int deltaY = (int) ((e.getY() - originY) / mapView.getZoom());
 				double distSqToTarget = 0;

@@ -31,11 +31,39 @@ public class CleaningInputStream extends InputStream {
 	private static final int MAX_PUSHED_BACK = 4;
 	private final PushbackInputStream in;
 	private int pushedBack = 0;
-
-	public CleaningInputStream(final InputStream in) {
+	private boolean isUtf8 = false;
+	public CleaningInputStream(final InputStream pIn) {
 		super();
-		this.in = new PushbackInputStream(in, MAX_PUSHED_BACK);
+		this.in = new PushbackInputStream(pIn, MAX_PUSHED_BACK);
+		try {
+			final byte[] bytes = new byte[3];
+			int i = 0;
+			int b;
+			b = in.read();
+			bytes[i++] = (byte)b;
+			if(b == 0xef){
+				b = in.read();
+				bytes[i++] = (byte)b;
+				if(b == 0xbb){
+					b = in.read();
+					bytes[i++] = (byte)b;
+					if(b == 0xbf){
+						isUtf8 = true;
+						return;
+					}
+				}
+			}
+			this.in.unread(bytes, 0, i);
+			pushedBack = i;
+	        
+        }
+        catch (IOException e) {
+        }
 	}
+
+	public boolean isUtf8() {
+    	return isUtf8;
+    }
 
 	@Override
 	public int read() throws IOException {
