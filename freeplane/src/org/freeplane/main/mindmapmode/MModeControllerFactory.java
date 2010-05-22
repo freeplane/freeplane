@@ -36,6 +36,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.addins.encrypt.EnterPassword;
 import org.freeplane.features.common.addins.misc.BlinkingNodeHook;
 import org.freeplane.features.common.addins.misc.CreationModificationPlugin;
@@ -139,6 +140,7 @@ public class MModeControllerFactory {
 		final JScrollPane styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		styleScrollPane.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "styleScrollPaneVisible");
+		UITools.setScrollbarIncrement(styleScrollPane);
 		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, styleScrollPane);
 		menuBuilder.addAnnotatedAction(new ShowFormatPanelAction(controller));
 		menuBuilder.addAnnotatedAction(new FitToPage(controller));

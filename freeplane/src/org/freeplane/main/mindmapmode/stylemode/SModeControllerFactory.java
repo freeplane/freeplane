@@ -34,6 +34,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
@@ -156,6 +157,7 @@ public class SModeControllerFactory {
 		});
 		final JScrollPane styleScrollPane = new JScrollPane(styleEditorPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		UITools.setScrollbarIncrement(styleScrollPane);
 		//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
 		this.modeController = null;
 		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, styleScrollPane);

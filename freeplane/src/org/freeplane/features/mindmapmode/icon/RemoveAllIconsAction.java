@@ -56,7 +56,7 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 	}
 
 	public String getDescription() {
-		return (String) getValue(Action.SHORT_DESCRIPTION);
+		return (String) getValue(Action.NAME);
 	}
 
 	public Icon getIcon() {
