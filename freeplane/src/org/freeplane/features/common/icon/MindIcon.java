@@ -28,11 +28,15 @@ package org.freeplane.features.common.icon;
 public class MindIcon extends UIIcon {
 	private static final String DEFAULT_IMAGE_PATH = "/images/icons";
 	private static final String SHORTCUT_KEY = "IconAction.%s.shortcut";
+	
+	public MindIcon(final String name) {
+		this(name, name + ".png", "");
+	}
 
 	public MindIcon(final String name, final String fileName) {
 		this(name, fileName, "");
 	}
-
+	
 	public MindIcon(final String name, final String fileName, final String description) {
 		super(name, fileName, description, String.format(SHORTCUT_KEY, name));
 	}

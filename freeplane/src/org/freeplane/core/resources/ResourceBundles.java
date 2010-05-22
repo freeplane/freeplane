@@ -78,6 +78,7 @@ public class ResourceBundles extends ResourceBundle {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration getKeys() {
 		final Iterator<String> iterator = defaultResources.keySet().iterator();
@@ -113,6 +114,7 @@ public class ResourceBundles extends ResourceBundle {
 		return resources;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Map<String, String> getLanguageResources(final URL systemResource) throws IOException {
 		final InputStream in = new BufferedInputStream(systemResource.openStream());
 		if (in == null) {

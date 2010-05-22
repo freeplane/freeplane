@@ -29,8 +29,6 @@ import java.util.Map;
  * @author Dimitry Polivaev
  * 06.01.2009
  */
-// TODO rladstaetter 15.02.2009 stick to interfaces and classes provided by standard collection package
-@Deprecated
 public class MultipleValueMap<K, V> {
 	final private Map<K, List<V>> map;
 
@@ -43,6 +41,7 @@ public class MultipleValueMap<K, V> {
 		return map.containsKey(key);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<V> get(final Object key) {
 		final List<V> list = map.get(key);
 		return list == null ? Collections.EMPTY_LIST : list;

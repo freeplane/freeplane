@@ -57,6 +57,10 @@ public class MenuUtils {
 			this.toolTipText = toolTipText;
 		}
 
+		public MenuEntry(String key, String label) {
+			this(key, label, null, null, null);
+		}
+
 		public String getKey() {
 			return key;
 		}
@@ -75,6 +79,17 @@ public class MenuUtils {
 
 		public String getToolTipText() {
 			return toolTipText;
+		}
+		
+		public MindIcon createMindIcon() {
+			String resource = ResourceController.getResourceController().getProperty(iconKey, null);
+			if (resource == null) {
+				// this is the regular case: most MenuEntries (i.e. actions) will have the iconKey set
+				// but only for a few of these Icons are available
+				return null;
+			}
+			// icons for action reside in /images but MindIcon expects them in /images/icons
+			return new MindIcon(resource.replaceAll("/images/(.*).png", "../$1"));
 		}
 
 		@Override
@@ -203,7 +218,7 @@ public class MenuUtils {
 			newNodeModel.setFolded(true);
 		}
 		if (menuEntry.getIconKey() != null) {
-			MenuUtils.addIcon(menuEntry, newNodeModel);
+			newNodeModel.addIcon(menuEntry.createMindIcon());
 		}
 		nodeModel.insert(newNodeModel);
 		return newNodeModel;
