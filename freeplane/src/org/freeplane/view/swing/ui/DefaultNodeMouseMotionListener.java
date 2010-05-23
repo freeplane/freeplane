@@ -54,9 +54,13 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 			 */
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					if (e.getModifiers() == 0 && !c.isBlocked() && c.getController().getSelection().size() <= 1) {
-						c.getUserInputListenerFactory().extendSelection(e);
-					}
+					try {
+	                    if (e.getModifiers() == 0 && !c.isBlocked() && c.getController().getSelection().size() <= 1) {
+	                    	c.getUserInputListenerFactory().extendSelection(e);
+	                    }
+                    }
+                    catch (NullPointerException e) {
+                    }
 				}
 			});
 		}
