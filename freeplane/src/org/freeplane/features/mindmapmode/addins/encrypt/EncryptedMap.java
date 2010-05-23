@@ -76,4 +76,8 @@ public class EncryptedMap extends AFreeplaneAction {
 		newModeController.getMapController().newMap(node);
 		encryptedMindMapNode.updateIcon();
 	}
+	
+	@Override
+	public void afterMapChange(final Object newMap) {
+	}
 }

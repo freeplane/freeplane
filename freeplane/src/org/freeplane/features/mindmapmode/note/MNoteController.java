@@ -33,6 +33,7 @@ import java.awt.event.KeyEvent;
 import java.net.URL;
 
 import javax.swing.BorderFactory;
+import javax.swing.InputMap;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -143,6 +144,13 @@ public class MNoteController extends NoteController {
 		htmlEditorPanel = MTextController.createSHTMLPanel();
 		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
 		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
+
+		for (InputMap inputMap = editorPane.getInputMap(); inputMap != null; inputMap = inputMap.getParent()){
+			inputMap.remove(KeyStroke.getKeyStroke("ctrl pressed T"));
+			inputMap.remove(KeyStroke.getKeyStroke("ctrl shift pressed T"));
+			inputMap.remove(KeyStroke.getKeyStroke("ctrl pressed SPACE"));
+		}
+		
 		editorPane.addFocusListener(new FocusListener() {
 			private SpellCheckerController spellCheckerController = null;
 
