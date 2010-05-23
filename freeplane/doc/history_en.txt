@@ -11,12 +11,14 @@ make page number label in preview dialog wider
 NextNodeAction worked wrong if no next node was available
 getAbsoluteUrl worked wrong for unsaved maps
 attribute table worked wrong if Assign Attributes dialog was used when the table was edited
+645]: Note-Edit-Switch becomes unusable when assigned certain key-combinations
+646]: Command "New encrypted map" should always be available in Freeplane
 
 ===============================
 1.0.43 rc
 ===============================
 New features:
-Documentation map reworked 
+Documentation map reworked
 Menu reference map added
 New number icons added to flash browser (0, 8 and 9)
 Display icon toolbar with the scroll pane as default
@@ -33,9 +35,9 @@ Bug fixes:
 Map background color properly displayed in flash browser
 551: deleting nodes via scripting interface using each iterator throws exception
 448: separators of pulldown menu Navigate
-453: Icon repeated twice   
+453: Icon repeated twice
 548: Assign new short cut only on real menu item mouse click
-Bug fix for removing attributes / values using AttributeManagerDialog 
+Bug fix for removing attributes / values using AttributeManagerDialog
 576]: PanelOption : the default Window size for SimplyHTML
 Translations
 
@@ -120,10 +122,10 @@ use clipboard mode on export
 fix comment handling in richcontent
 always substitute non ascii character in xhtml
 match plain text instead of html for notes too (like in bug 437)
-433: Same choices in Look and Feel selection 
-441: No Undo for changes of NodeModel.getHistoryInformation().lastModifiedAt 
-442: Freeplane is opened "in the background" 
-437: unexpected behaviour of function (find - Node text - Contains) 
+433: Same choices in Look and Feel selection
+441: No Undo for changes of NodeModel.getHistoryInformation().lastModifiedAt
+442: Freeplane is opened "in the background"
+437: unexpected behaviour of function (find - Node text - Contains)
 option enter_confirms_by_default moved to behavior tab
 439: Enter and Alt+Enter  for inline node editor and long node editor
 opening of map files by drag and drop under linux
@@ -151,7 +153,7 @@ Script API:
 new interface Proxy.Map introduced
 Method Proxy.Node.getRootNode removed
 
-Change default settings: 
+Change default settings:
 Move note cursor to the end by default
 freeplane2flash.xsl : fold from level 2
 standarddrawrectangleforselection = true
@@ -177,7 +179,7 @@ local links
 move focus to node view after editin latex
 380]: modification time not always shown
 384]: Filtering by icon
-layout bugs for filtered maps 
+layout bugs for filtered maps
 379]: Script run from pattern - doesn't run - Mishandling of Quote characters
 
 ===============================
@@ -236,7 +238,7 @@ better solution for inserting nodes into encrypted nodes
 185]: Menu radiobutton not updated on node selection for format edge style or width
 360]: Inserted graphics node doesn't give up input focus
 performance optimizations
-load all plug-ins from <install-dir>/plugins und <user-home>/.freeplane/plugins on start 
+load all plug-ins from <install-dir>/plugins und <user-home>/.freeplane/plugins on start
 355]: note tooltip appears truncated on the right side: always place tooltip under the node
 
 ===============================
@@ -319,7 +321,7 @@ bug 291: Priority filtering is broken
 1.0.33 alpha, 2009-10-30
 ===============================
 Bug fixes:
-Improved node selection using arrow keys for outline view 
+Improved node selection using arrow keys for outline view
 287:Format message for changed zoom in Italian and French
 Update check for localized versions
 285, 281, 229, 246, 248, 272: Use proper URI for open URL
@@ -341,10 +343,10 @@ Refactoring for icons (Tamas)
 Bug fixes:
 bug fix for full screen mode: properly display modal dialogs on top
 System dependent memory allocation for windows OS
-0000243: Find and replace doesn't replace all occurrence of a pattern within a node 
+0000243: Find and replace doesn't replace all occurrence of a pattern within a node
 0000245: Navigation in File Mode is (almost) not working
 0000253: can't edit name on exported branch as a new card
-0000252: Attribute assignation kinematic  
+0000252: Attribute assignation kinematic
 0000236: simulate edge feature is buggy when used with "horizontal" edge style
 0000273: File -> Open dialog shows by default all files instead of only showing map files.
 0000275: Freeplane 1.0.32 a does not open encrypted maps
@@ -370,7 +372,7 @@ remove timer for blinking node if the node is removed from map
 ===============================
 New features:
 Outline view available from menu View
-Distance between nodes in outline view can be configured in Preferences->Appearance 
+Distance between nodes in outline view can be configured in Preferences->Appearance
 Options "fit map to page width", "fit map to page height" in page setup dialog (useful for outline view)
 
 Bug fixes:
@@ -417,9 +419,9 @@ Batik version updated to 1.7
 
 Fwdir is not created any more, knopflerfish updated to 2.3.3 nightly build 2911
 
-Performance optimization: do not paint links which both source and target 
+Performance optimization: do not paint links which both source and target
 	are far away from the visible part of the screen
-       
+
 ===============================
 1.0.26 alpha, 2009-08-17
 ===============================
@@ -501,7 +503,7 @@ New features:
 New text input component
 Allow dragging of map if node is edited
 cleanup for french translation contributed by Pierre-Yves Baumann, thanx!
-always display f-bar in a new line 
+always display f-bar in a new line
 
 Bug fixes
 
@@ -516,19 +518,19 @@ bug fix if in "import folder structure"
 1.0.20 alpha, 2009-07-25
 ===============================
 Bug fixes
-[Bugs 0000146]: Freeplane hangs after being idle for longer time : 
+[Bugs 0000146]: Freeplane hangs after being idle for longer time :
 	- reminder could lead to out-of-memory and freeze the program
 Resize tool bar and properly display F-Bar on key events
 [Bugs 0000156]: Filter moved selected node out of window
-[Bugs 0000157]: Freeplane hangs at start when last opened map file names contained ';' character 
+[Bugs 0000157]: Freeplane hangs at start when last opened map file names contained ';' character
 
 ===============================
 1.0.19 alpha, 2009-07-22
 ===============================
 New features:
 Filter tool bar can be hidden like all other tool bars,
-active filter status is displayed in status line  
-test feature: stack traces can be obtained by command "stack" from the console 
+active filter status is displayed in status line
+test feature: stack traces can be obtained by command "stack" from the console
 
 Bug fixes:
 properly display button selection in tool bars
@@ -541,7 +543,7 @@ bug fix for loading maps with auto layout
 1.0.18 alpha, 2009-07-20
 ===============================
 New features:
-Hot key CONTROL+ALT+SHIFT+ 'B' for awakening frozen application up and sending a bug report  
+Hot key CONTROL+ALT+SHIFT+ 'B' for awakening frozen application up and sending a bug report
 use uri for links
 include styles made by Ryan
 use UITools.getFrame() for displayed modal dialogs
@@ -562,25 +564,25 @@ save note when note window is closed
 ===============================
 New features:
 Delayed F-bar switch if modifier key is pressed
-Disable the most actions if no map is shown  
+Disable the most actions if no map is shown
 icon actions moved in separate menu
 icon toolbar hidden by default
 move map tabs to the bottom
 "Save hot key set action" in Tools->Hot Key Presets
 
-Bug fixes: 
+Bug fixes:
 Handling of hot keys assigned twice
 Bug fix in DesEncrypter
 Bug fix in SimplyHTML
 [Bugs 0000139]: Tooltip shows only first attribute when multiple attributes for the node
 completely hide tool bar panel if all tool bars are disabled
-Bug fix in ReminderExtension 
+Bug fix in ReminderExtension
 [Bugs 0000140]:Sometimes most recent files menu is not updated with the last file opened.
 
 ===============================
 1.0.16 alpha, 2009-07-10
 ===============================
-Bug fixes: 
+Bug fixes:
 [Bugs 0000130]: Ambiguous filter options state in menu after switching to another tab
 [Bugs 0000133]: SEVERE BUG: specially formatted nodes within encrypted nodes corrupt the original file
 Bug fix for copying single nodes
@@ -589,7 +591,7 @@ Bug fix for loading maps with automatic layout
 ===============================
 1.0.15 alpha, 2009-07-07
 ===============================
-Bug fixes: 
+Bug fixes:
 Bug fixes for saving maps,
 Bug fix for loading preset hot keys,
 Bug fix for file locking
@@ -600,11 +602,11 @@ Bug fix for file locking
 New features:
 F-Toolbar
 
-Bug fixes: 
+Bug fixes:
 Bug fixes for saving maps,
 Bug fixes for exporting applet,
 Bug fixes for links to map files,
-Other important bug fixes 
+Other important bug fixes
 Bug fixes for automatically reported bugs
 
 ===============================
@@ -613,7 +615,7 @@ Bug fixes for automatically reported bugs
 New features:
 [Feature Requests 0000104]: protocol handler: FreeMind patch for linking to arbitrary URL integrated
 
-Bug fixes: 
+Bug fixes:
 [Bugs 0000076]: Notes window size not remembered between sessions
 [Bugs 0000094]: Error splitting (rich text) long node - with revsion tracking
 Bug fixes for automatically reported bugs
@@ -625,9 +627,9 @@ New features:
 Automatic backup for all loaded files on first save.
 Backup and autosave use directory ".backup" created in the map directory.
 All backup or autosave files are numbered from 1 to maximum number, the bigger number the latest file.
-Exception traces for internal errors are automatically sent to freeplane team for analysis.   
+Exception traces for internal errors are automatically sent to freeplane team for analysis.
 
-Bug fixes: 
+Bug fixes:
 [Bugs 0000076]: Notes window size not remembered between sessions
 [Bugs 0000094]: Error splitting (rich text) long node - with revsion tracking
 Bug fix in showing modification times
@@ -636,16 +638,16 @@ Bug fix in showing modification times
 1.0.11 alpha, 2009-06-09
 ===============================
 New features:
-use .freeplane as user folder 
+use .freeplane as user folder
 Search and filter on note content
 Icon toolbar menu improved
 Osgi does not use jar bundles but directories.
-Attributes are shown as tooltips if they are hidden 
+Attributes are shown as tooltips if they are hidden
 	or only selected attributes are displayed.
 
-Bug fixes: 
+Bug fixes:
 Internal representation of linked files should not use escape characters
-[Bugs 0000085] handling of empty notes in html  
+[Bugs 0000085] handling of empty notes in html
 [Bugs 0000067]: Display message if invalid hyperlink to an external map file is handled
 
 ===============================
@@ -656,7 +658,7 @@ Lock map files on load/save
 Patterns support clouds, "Floating node" pattern
 Load all previously loaded maps on start
 
-Bug fixes: 
+Bug fixes:
 [Bugs 0000062]: eol  in long nodes are saved/copied
 [Bugs 0000063] bug fixes when empty mode is selected
 [Bugs 0000064]: F1 keyboard shortcut to open Freeplane documentation
@@ -713,7 +715,7 @@ different bug fixes
 ===============================
 1.0.5 alpha
 ===============================
-Tool tips for nodes can be switched off in preferences 
+Tool tips for nodes can be switched off in preferences
 https://sourceforge.net/forum/message.php?msg_id=7224634
 
 Place editing dialog under the node
@@ -726,11 +728,11 @@ Use default font and paragraph spacing for notes too
 Center selected nodes as user setting and as action
 Selected node position is kept after filtering
 
-Performance optimization: repaint only small area around selected node 
+Performance optimization: repaint only small area around selected node
 if selection is changed
 
 Resources for map background color selection added
-Link Navigation History can be used if CTRL is hold when you press 
+Link Navigation History can be used if CTRL is hold when you press
 nNvigation buttons
 New XSLT export dialog translations from ewl
 
@@ -775,8 +777,8 @@ FreeMind 0.9.0 Beta20, 2008-08-29
 * Fixed: copying to clipboard for Linux.
 * Fixed: saving of xhtml - tag <option>.
 * Application type of freeplane.exe changed to Win32 GUI to prevent DOS box.
-* Fixed: images in notes. 
-* Added translations (thanks to all authors): 
+* Fixed: images in notes.
+* Added translations (thanks to all authors):
 - 2034191 	French - 0.9.0 Beta 19 - FM_Key_Mappings_Quick_Guide_fr.pdf by 	dberthereau
 - 2034187 	French - 0.9.0 Beta 19 - FM_Key_Mappings_Quick_Guide by 	dberthereau
 - 2031743 	Russian 0.9.0 - beta 19 - full
@@ -877,14 +879,14 @@ FreeMind 0.9.0 Beta17, 2008-05-06
 * Fixed: Key Events are not lost during node editor dialog is being created
 * Mnemonics for (some) Dialog Buttons configurable by "&" character in language properties
 * Fixed: placement of text field editor if attribute table is wider than the node text
-* Fixed: height of attribute table rows for zoom factor != 100 %  
+* Fixed: height of attribute table rows for zoom factor != 100 %
 * Fixed: Valid html output * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1063430&group_id=7118
 * Fixed: faulty undo for edge types after auto layouting * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1937927&group_id=7118
 * Fixed: Issues with action "Clear note" * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1842855&group_id=7118
 * A link to the FreeMind's webpage is available in Help Menu
 * Fixed: Folding not saved * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1938342&group_id=7118
 * Scripts can be signed by a FreeMind key or with a user key (specified in the options)
-  and have then full rights.  
+  and have then full rights.
 * FreeMind version is now a structure that can be used by scripts or plugins to guarantee compatibility.
 * New design of logo (thanks to mmeitzner) and splash (thanks to bernardlang) integrated
 * Fixed: Wrong language name for Norwegian * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1935818&group_id=7118
@@ -914,7 +916,7 @@ FreeMind 0.9.0 Beta16, 2008-03-02
 * Bug fix: repaint after text field is removed
 * Bug fix: Map hidden after switching from docs (JRE 6)
 * New version of SimplyHTML with some bug fixes
-* Bug fix: In browse mode and file mode, scroll wheel AKA mouse wheel 
+* Bug fix: In browse mode and file mode, scroll wheel AKA mouse wheel
 * Filter toolbar looks similar to the other toolbars.
 * Bug fix: italic and bold handling in patterns (eg. automatic layout)
 * Check marks for a lot of menu items added
@@ -922,7 +924,7 @@ FreeMind 0.9.0 Beta16, 2008-03-02
 * Cut gets a confirmation window, too. See https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1846766&group_id=7118
 * Bug fix: Hyperlink action renamed and it is only enabled, when there is actually a hyperlink. See https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1846702&group_id=7118
 * Updated to Batik 1.6 (for Eric, as this version is already integrated in Debian)
-* Script Editor now has "Add new Script" and is able to assign the script results 
+* Script Editor now has "Add new Script" and is able to assign the script results
   to an (new) attribute using "attr_name=<script>".
 * Updated groovy to version 1.5.1
 * RemoveNote is automatically disabled when no notes found
@@ -930,7 +932,7 @@ FreeMind 0.9.0 Beta16, 2008-03-02
 * Format node window has now scroll bars if needed.
 * Option to store ids only, when needed added.
 * Patch: [ 1897283 ] Multiple reminders added up in parent nodes
-* New installer variant "Java embedded" started, but this 
+* New installer variant "Java embedded" started, but this
   variant will not be released soon due to open license questions
 
 =================================
@@ -980,27 +982,27 @@ FreeMind 0.9.0 Beta 14, 2007-11-21
 * Display help message for node movement as tool tip.
 * Bug fix: nodes cut when zoom not 100%.
 * Menu item "Split" moved to menu item "Join nodes"
- 
+
 ==================================
 FreeMind 0.9.0 Beta 13, 2007-09-02
 ==================================
-* Menu Item to show SimplyHTML about box 
+* Menu Item to show SimplyHTML about box
 * Use cloud or map backgroung color in WYSIWYG Editor if the node has no own background color.
 * Selection text color no more used for unselected text in Textfield / Textarea
 * Latex plugin added
 * Persistent map filters added
 * Click on icon with control key hold removes the first matched icon, with alt key removes the last one
-* Icon hot keys available in "Select Icon" popup can be set in Preferences 
+* Icon hot keys available in "Select Icon" popup can be set in Preferences
 * Bug fixes.
 * Displaying Selection as Rectangle as default.
 * Optional "unfold on paste"
 * Confirmation on delete added.
-* Decision whether or not to take rich text edit added. 
+* Decision whether or not to take rich text edit added.
 * Icon selection popup, long node editor and WYSIWYG editor do not hide the edited node is possible
 * Bug fix: mind manager import: sides fixed.
 * bug fix: strings containing \n must be saved as XML elements, not as attributes
 * bug fixes and necessary refactorings for paste and cut - actions
-	 only UndoActionHandler uses the undo - action from the action pair, 
+	 only UndoActionHandler uses the undo - action from the action pair,
 	 the undo action is prepared during paste action is executed
 * Bug fix: patterns repaired
 * Bug fix: edge properties in patterns
@@ -1008,12 +1010,12 @@ FreeMind 0.9.0 Beta 13, 2007-09-02
 * Enter on root gives a new child
 * Bug fix: edges scale now with zoom.
 * Enter on root gives new child, shift-enter on root causes root to get a child of a new root node.
-	 
+
 ==================================
 FreeMind 0.9.0 Beta 12, 2007-07-21
 ==================================
 * Map background color may be set via Format menu and saved with the map.
-* Bug fixes: problems if auto.properties does not exist 
+* Bug fixes: problems if auto.properties does not exist
 * FreeMind Accelerators work from Note Editor
 
 ==================================
@@ -1032,7 +1034,7 @@ FreeMind 0.9.0 Beta 10
 * New option: velocity of mouse wheel movements.
 * Bug fix: F6 and F8 can be used for formats again.
 * Bug fix: sorting keeps graphical links now.
-* user_icons is no more required, 
+* user_icons is no more required,
 * all *.png files in .../.freeplane/icons are handled as user icons
 * Bug fix: moving of encrypted nodes is working again.
 * Bug fix: moving or removing a node with active reminder flags clears all parent flags.
@@ -1052,9 +1054,9 @@ which can be obtained using NodeView.getContent().
 * multiple map views for map are allowed by the new design, but only one NodeView for Node on each MapView
 * NodeView implements TreeModelListener
 * standard TreeModelEvents are used for communicating the map changes
-* If only MainView exists, getContent() returns the MainView. 
-* If some special node has its own content component, it can be added to Component given by 
-  NodeView.getContentPane(). Futher efforts are needed to make such contents like e.g. 
+* If only MainView exists, getContent() returns the MainView.
+* If some special node has its own content component, it can be added to Component given by
+  NodeView.getContentPane(). Futher efforts are needed to make such contents like e.g.
   math formulas possible
 
 * focus in the long node editor goes to the text area after the dialog is opened
@@ -1067,9 +1069,9 @@ which can be obtained using NodeView.getContent().
 * Plugin API improved, StatefulNodeHook with Undo-Support introduced
 * Window position, size and state are saved and restored correctly
 
-* Adjusting not only the background color of selected node but also its text color. 
-* System colors used instead of FreeMind default colors 
- for default window background color, default node text color, 
+* Adjusting not only the background color of selected node but also its text color.
+* System colors used instead of FreeMind default colors
+ for default window background color, default node text color,
  default selected node background and text colors.
 * Alternative displaying of selected nodes showing rounded rectangle around the node (may be set in preferences)
 
@@ -1107,7 +1109,7 @@ FreeMind 0.9.0 Beta 9, 2007-03-08
 * Using Shift+Click on icon bar substitutes the current icons by the new one. (Same with Shift+Enter in the icon selection dialog)
 * user friendly closing of the node edit dialogs
 * moved time management to internal plugins.
-* revised build process for external plugins. 
+* revised build process for external plugins.
 * New feature: Sort children nodes added.
 * Calendar scrolls with arrow keys through months and years now (JCalendar improvement).
 * Search&Replace: Title corrected
@@ -1125,12 +1127,12 @@ FreeMind 0.9.0 Beta 9, 2007-03-08
 * Copy creates HTML for multiple selection.
 * Light Bulb as icon integrated.
 * new spanish translation of documentation map. Thanks to Natxo.
-* Copy limited to filtered nodes 
+* Copy limited to filtered nodes
 
 ===============================
 FreeMind 0.9.0 Beta 8
 ===============================
-* bug fix: feedback.increase must not be called before auto properties with language setting has been loaded        
+* bug fix: feedback.increase must not be called before auto properties with language setting has been loaded
 * SimpleHTML: icons for bold and italic actions replaced
 * SimpleHTML: shift + enter inserts <br>
 * SimpleHTML: <END > -  Markierung removed
@@ -1170,7 +1172,7 @@ FreeMind 0.9.0 Beta 7
 ===============================
 FreeMind 0.9.0 Beta 6
 ===============================
-* Restrictions on node positions removed, 
+* Restrictions on node positions removed,
 * the node motion view oval is filled red if node overlap is possible.
 * Selected nodes are not indicated on printed / exported maps
 * Bug fixes
@@ -1191,7 +1193,7 @@ FreeMind 0.9.0 Beta 6
 * Patch revised and introduced: 1532279 link between nodes on different freeplane maps, thanks to the authors.
 * New feature: history of node is exportable now.
 * Fixed map dragging outside of the window.
-* New feature: Scripting via Groovy introduced. 
+* New feature: Scripting via Groovy introduced.
 * Bug fix: layout of root with attributes
 * Enhancements of the scripting feature.
 
