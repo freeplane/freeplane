@@ -530,14 +530,21 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			if (lock == null) {
 				throw new IOException("can not obtain file lock for " + file);
 			}
-			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
-			getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true);
-			if (!isInternal) {
-				setFile(map, file);
-				map.setSaved(true);
-			}
-			map.scheduleTimerForAutomaticSaving(getModeController());
-			return true;
+			try {
+	            final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
+	            getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true);
+	            if (!isInternal) {
+	            	setFile(map, file);
+	            	map.setSaved(true);
+	            }
+	            map.scheduleTimerForAutomaticSaving(getModeController());
+	            return true;
+            }
+            finally{
+            	 if (lock.isValid() ){
+            		 lock.release();
+            	 }
+            }
 		}
 		catch (final IOException e) {
 			final String message = FpStringUtils.formatText("save_failed", file.getName());
