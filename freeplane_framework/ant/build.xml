@@ -175,6 +175,8 @@
 		<tar destfile="${dist}/freeplane_srcpure${branch-nick}-${ver}.tar.gz" compression="gzip" longfile="gnu">
 			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="664">
 				<patternset refid="freeplane.sources" />
+				<exclude name="**/*.exe" />
+				<exclude name="**/*.res" />
 				<exclude name="**/*.jar" />
 				<exclude name="**/*JavaApplicationStub*" />
 			</tarfileset>

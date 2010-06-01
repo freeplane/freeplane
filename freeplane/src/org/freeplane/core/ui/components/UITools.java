@@ -191,7 +191,7 @@ public class UITools {
 	}
 
 	public static void setDialogLocationRelativeTo(final JDialog dialog, final Component c) {
-		if (c == null) {
+		if (c == null || ! c.isShowing()) {
 			return;
 		}
 		final Point compLocation = c.getLocationOnScreen();

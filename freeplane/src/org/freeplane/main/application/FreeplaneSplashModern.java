@@ -54,14 +54,27 @@ public class FreeplaneSplashModern extends JWindow {
 
 	public FreeplaneSplashModern(final JFrame frame) {
 		super(frame);
-		InputStream fontInputStream = null;
+		splashImage = new ImageIcon(ResourceController.getResourceController().getResource(
+		    "/images/Freeplane_splash.png"));
+		getRootPane().setOpaque(false);
+		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
+		setLocation(screenSize.width / 2 - (labelSize.width / 2), screenSize.height / 2 - (labelSize.height / 2));
+		setSize(labelSize);
+	}
+
+	private void createVersionTextFont(int size) {
+		if(versionTextFont != null){
+			return;
+		}
+	    InputStream fontInputStream = null;
 		try {
 			fontInputStream = ResourceController.getResourceController().getResource("/fonts/BPreplay.ttf")
 			    .openStream();
-			versionTextFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream).deriveFont(16f);
+			versionTextFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream).deriveFont((float)size);
 		}
 		catch (final Exception e) {
-			versionTextFont = new Font("Arial", Font.PLAIN, 16);
+			versionTextFont = new Font("Arial", Font.PLAIN, size);
 		}
 		finally {
 			if (fontInputStream != null) {
@@ -72,14 +85,7 @@ public class FreeplaneSplashModern extends JWindow {
 				}
 			}
 		}
-		splashImage = new ImageIcon(ResourceController.getResourceController().getResource(
-		    "/images/Freeplane_splash.png"));
-		getRootPane().setOpaque(false);
-		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
-		setLocation(screenSize.width / 2 - (labelSize.width / 2), screenSize.height / 2 - (labelSize.height / 2));
-		setSize(labelSize);
-	}
+    }
 
 	private Integer mWidth1;
 	private final ImageIcon splashImage;
@@ -91,23 +97,42 @@ public class FreeplaneSplashModern extends JWindow {
 		final Graphics2D g2 = (Graphics2D) g;
 		splashImage.paintIcon(this, g2, 0, 0);
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g2.setFont(versionTextFont);
-		g2.setColor(new Color(0x4a, 0x00, 0x65));
 		final FreeplaneVersion version = FreeplaneVersion.getVersion();
 		final String freeplaneNumber = version.numberToString();
 		final String status = version.getType().toUpperCase();
+		createVersionTextFont(status.isEmpty() ? 34 : 16);
+		g2.setFont(versionTextFont);
+		Color textColor = new Color(95, 0, 127);
 		if (mWidth1 == null) {
 			mWidth1 = new Integer(g2.getFontMetrics().stringWidth(freeplaneNumber));
 			mWidth2 = new Integer(g2.getFontMetrics().stringWidth(status));
 		}
-		int xCoordinate = getSize().width - mWidth1.intValue() - 28;
-		int yCoordinate = 32;
-		g2.drawString(freeplaneNumber, xCoordinate, yCoordinate);
-		g2.drawString(status, xCoordinate + (mWidth1 - mWidth2) / 2, yCoordinate + 16);
+		if(! status.isEmpty()){
+			int xCoordinate = getSize().width - mWidth1.intValue() - 28;
+			int yCoordinate = 32;
+			g2.setColor(Color.WHITE);
+			xCoordinate++;
+			yCoordinate++;
+			g2.drawString(freeplaneNumber, xCoordinate, yCoordinate);
+			g2.drawString(status, xCoordinate + (mWidth1 - mWidth2) / 2, yCoordinate + 16);
+			g2.setColor(textColor);
+			xCoordinate--;
+			yCoordinate--;
+			g2.drawString(freeplaneNumber, xCoordinate, yCoordinate);
+			g2.drawString(status, xCoordinate + (mWidth1 - mWidth2) / 2, yCoordinate + 16);
+		}
+		else{
+			final int xCoordinate = getSize().width - mWidth1.intValue() - 9;
+			final int yCoordinate = 47;
+			g2.setColor(Color.WHITE);
+			g2.drawString(freeplaneNumber, xCoordinate+2, yCoordinate+2);
+			g2.setColor(textColor);
+			g2.drawString(freeplaneNumber, xCoordinate, yCoordinate);
+		}
 		g2.setFont(versionTextFont.deriveFont(10f));
 		g2.setColor(Color.WHITE);
-		xCoordinate = 10;
-		yCoordinate = getSize().height - 10;
+		int xCoordinate = 10;
+		final int yCoordinate = getSize().height - 10;
 		g2.drawString(description, xCoordinate, yCoordinate);
 		if (mWidth3 == null) {
 			mWidth3 = new Integer(g2.getFontMetrics().stringWidth(copyright));
