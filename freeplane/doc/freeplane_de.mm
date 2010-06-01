@@ -1,6 +1,6 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node ID="Freeplane_Link_1694418332" COLOR="#993300">
+<node ID="ID_911274459" CREATED="1270892460624" MODIFIED="1274305304485" COLOR="#993300">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8,552 +8,1889 @@
   </head>
   <body width="">
     <p align="center">
-      Freeplane<br/><small>- Freie Mind Mapping Software -</small>
+      Freeplane<br/><small>- Eine freie Mind Mapping Software -</small>&#160;
     </p>
   </body>
 </html></richcontent>
 <font NAME="Dialog" SIZE="18" BOLD="true"/>
 <hook NAME="MapStyle" max_node_width="600"/>
-<node TEXT="Zur Homepage von Freeplane" POSITION="left" ID="Freeplane_Link_296874513" LINK="http://freeplane.sourceforge.net">
+<node FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1275342025939" HGAP="-94" VSHIFT="-27">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <h2>
+      Einf&#252;hrung
+    </h2>
+    <p>
+      Freeplane erm&#246;glicht das Erstellen von grafischen Dokumenten zur visuellen Darstellung von Zusammenh&#228;ngen - so genannte Mind Maps. Viele Leute verwenden das Programm aber auch als eine Alternative zum Notzibuch, oder als Pers&#246;nlichen Informationsmanager.
+    </p>
+    <p>
+      Die Information wird in Textboxen, so genannten Knoten, gespeichert. Die Knoten sind untereinander mit Linien verbunden.
+    </p>
+    <p>
+      <font color="#0033ff"><b>Dr&#252;cke die Taste Cursor nach rechts, oder klicke mit der linken Maustaste auf diesen Knoten, um ihn aufzuklappen.</b></font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Dr&#xfc;cke die Taste Cursor nach links, um Knoten, &#xa;die links vom Wurzelknoten sind, aufzuklappen." ID="ID_1776790765" CREATED="1271002221874" MODIFIED="1275342048072"/>
+</node>
+<node TEXT="Demonstration einiger Features" FOLDED="true" POSITION="right" ID="_Freeplane_Link_706084071" CREATED="1270892460656" MODIFIED="1274308820840" COLOR="#006666">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="Aussehen" FOLDED="true" ID="_Freeplane_Link_735193624" CREATED="1270892460656" MODIFIED="1274308893300" COLOR="#669900">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="Knoten k&#xf6;nnen unterschiedliche Farben haben" FOLDED="true" ID="ID_291185043" CREATED="1270892460656" MODIFIED="1274308914214">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="Rot" ID="ID_73698498" CREATED="1270892460656" MODIFIED="1274308922857" COLOR="#ff0000">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="Tabelle der Tastaturk&#xfc;rzel" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1091417446" COLOR="#006699">
-<node TEXT="Tastaturk&#xfc;rzel in Freeplane 0.8.0 (Voreinstellung)&#xa;&#xa;&#xa;Datei:&#xa;Neu                 - Strg-N&#xa;&#xd6;ffnen...           - Strg-O&#xa;Speichern           - Strg-S&#xa;Speichern unter...  - Strg+Umschalt-S&#xa;Schlie&#xdf;en           - Strg-W&#xa;Drucken             - Strg-P&#xa;Beenden             - Strg-Q&#xa;&#xa;Datei-&gt;Export:&#xa;Zweig...            - Alt-A    (Zweig ab aktuellem Knoten als neue MM-Datei) &#xa;Als HTML            - Strg-E   (komplette MindMap als neue HTML-Datei)&#xa;HTML des Zweiges    - Strg-H   (Zweig ab aktuellem Knoten als neue HTML-Datei)&#xa;&#xa;Datei-&gt;Zuletzt ge&#xf6;ffnete Dateien:&#xa;&lt;Pfadname_der_zuletzt_ge&#xf6;ffneten_Datei&gt;  - Strg+Umschalt-W &#x9;&#xa;&#xa;&#xa;Bearbeiten:&#xa;R&#xfc;ckg&#xe4;ngig                       - Strg-Z&#xa;Wiederherstellen                 - Strg-Y&#xa;Alles markieren                  - Strg-A&#xa;Zweig markieren                  - Strg+Umschalt-A&#xa;Ausschneiden                     - Strg-X&#xa;Kopieren                         - Strg-C&#xa;Einfach kopieren                 - Strg+Umschalt-C&#xa;Einf&#xfc;gen                         - Strg-V&#xa;Formatierung kopieren            - Alt-C&#xa;Formatierung einf&#xfc;gen            - Alt-V&#xa;Knoten bearbeiten                - F2&#xa;Knoten in einem separaten Editor bearbeiten...  - Alt-Eingabe&#xa;Knoten l&#xf6;schen                   - Entf&#xa;Suchen                           - Strg-F&#xa;Weitersuchen                     - Strg-G&#xa;Knoten bearbeiten                - F2&#xa;Knoten nach oben schieben        - Strg-Oben&#xa;Knoten nach unten schieben       - Strg-Unten&#xa;Knoten falten/entfalten          - Leertaste&#xa;&#xa;&#xa;Ansicht:&#xa;Zoom +              - Alt-Unten&#xa;Zoom -              - Alt-Oben&#xa;&#xa;&#xa;Einf&#xfc;gen:&#xa;Neuer Unterknoten                - Einfg&#xa;Neuer Geschwisterknoten danach   - Eingabe&#xa;Neuer Geschwisterknoten davor    - Umschalt-Eingabe&#xa;Einr&#xfc;ckung erh&#xf6;hen               - Umschalt-Einfg&#xa;Bild (Dateiauswahl)...           - Alt-K&#xa;Hyperlink (Dateiauswahl)...      - Strg+Umschalt-K&#xa;Hyperlink (Textfeld)...          - Strg-K&#xa;Graphische Verbindung erzeugen   - Strg-L&#xa;Lokalen Hyperlink hinzuf&#xfc;gen     - Alt-L&#xa;Wolke                            - Strg+Umschalt-B&#xa;&#xa;Einf&#xfc;gen-&gt;Icons:&#xa;Icon w&#xe4;hlen                      - Alt-I&#xa;&#xa;&#xa;Format:&#xa;Knotenschrift vergr&#xf6;&#xdf;ern         - Strg-+&#xa;Knotenschrift verkleinern        - Strg--&#xa;Kursiv                           - Strg-I&#xa;Fett                             - Strg-B&#xa;Knotenfarbe &#xe4;ndern...            - Alt-F&#xa;Knotenfarbe aufhellen            - Alt-B&#xa;Kantenfarbe...                   - Alt-E&#xa;&#xa;Format-&gt;Stile:&#xa;Default                 - F1               (Vorgabe)&#xa;Normal                  - Strg+Umschalt-N  (Normal)&#xa;OK                      - F3               (OK)&#xa;Needs action            - F4               (Braucht Bearbeitung)&#xa;Hot                     - F5               (Hei&#xdf;)&#xa;Detail                  - F6               (Einzelheit)&#xa;Folder                  - F7               (Ordner)&#xa;Topic                   - F8               (Thema)&#xa;Larger Topic            - F9               (Umfangreicheres Thema)&#xa;Waiting Topic           - Strg-F1          (Wartendes Thema)     &#xa;Object / Keyword        - Strg-F2          (Objekt / Stichwort)&#xa;Object of Code          - Strg-F3          (Codierungsobjekt)&#xa;Question                - Strg-F4          (Frage)&#xa;Open Question           - Strg-F5          (Offene Frage)&#xa;Bad                     - Strg-F6          (Schlecht)&#xa;Blue                    - Strg-F7          (Blau)&#xa;Pink                    - Strg-F8          (Rosa)&#xa;Cyan                    - Strg-F9          (Cyan, ein Blau)&#xa;&#xa;&#xa;Navigieren:&#xa;Wurzel zentrieren           - ESC&#xa;Knoten nach oben schieben   - Strg-Oben&#xa;Knoten nach unten schieben  - Strg-Unten&#xa;Knoten falten/entfalten     - Leertaste&#xa;Unterknoten (ent)falten     - Strg-Leertaste&#xa;Alles aufklappen            - Alt-Ende&#xa;Alles zuklappen             - Alt-Pos1&#xa;Eine Ebene aufklappen       - Alt-Bild ab&#xa;Eine Ebene zuklappen        - Alt-Bild auf&#xa;Hyperlink &#xf6;ffnen:           - Strg-Eingabe&#xa;&#xa;&#xa;Extras:&#xa;Knoten verbinden            - Strg-J&#xa;Kalender anzeigen...        - Strg-T        (Plugin)&#xa;Einstellungen...            - Strg-,&#xa;&#xa;&#xa;Maps:&#xa;Vorherige Map               - Strg-Links&#xa;N&#xe4;chste Map                 - Strg-Rechts&#xa;&#xa;&#xa;Modi:&#xa;MindMap                     - Alt-1   (Baum bearbeiten)&#xa;Browse                      - Alt-2   (Baum betrachten und durchst&#xf6;bern)&#xa;File                        - Alt-3   (Dateisystem betrachten/durchst&#xf6;bern)" ID="Freeplane_Link_814283472">
-<font NAME="Courier New" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Installation" FOLDED="true" POSITION="left" ID="_Freeplane_Link_904501221" COLOR="#006633">
-<node TEXT="Links (Verweise)" FOLDED="true" ID="_Freeplane_Link_1911559485" COLOR="#006699">
-<node TEXT="Laden Sie die Java Laufzeitumgebung herunter (mindestens J2RE1.4)." ID="Freeplane_Link_1001926961" LINK="http://java.sun.com/j2se">
-<edge WIDTH="thin"/>
+<node TEXT="Gr&#xfc;n" ID="ID_1386235766" CREATED="1270892460657" MODIFIED="1274308929820" COLOR="#009900">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="Laden Sie die Anwendung herunter." ID="_Freeplane_Link_1612101865" LINK="http://sourceforge.net/project/showfiles.php?group_id=211069">
-<edge WIDTH="thin"/>
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Um Freeplane unter Microsoft Windows zu installieren, installieren Sie zun&#xe4;chst Java von Sun und dann Freeplane mit dem Freeplane-Installer." ID="_Freeplane_Link_139664576"/>
-<node TEXT="Unter LINUX laden Sie zun&#xe4;chst die passende Java Laufzeitumgebung und dann die Freeplane-Anwendung selbst herunter (Archiv). Zuerst installieren Sie Java, dann entpacken Sie das Freeplane-Archiv. Um Freeplane zu starten, f&#xfc;hren Sie &apos;freeplane.sh&apos; aus.&#xa;" ID="_Freeplane_Link_1380352758"/>
-<node TEXT="Unter Microsoft Windows und Mac OS X k&#xf6;nnen Sie einfach auf die Datei &apos;freeplane.jar&apos; doppelklicken. Die Datei finden Sie im Ordner &apos;lib&apos; des Freeplane-Verzeichnisses." ID="_Freeplane_Link_1808511462"/>
-</node>
-<node TEXT="Durchst&#xf6;bern der Dateien auf Ihrem Computer" FOLDED="true" POSITION="left" ID="_Freeplane_Link_353522063" COLOR="#407000">
-<node TEXT="Um die Dateien auf Ihrem Computer zu durchst&#xf6;bern, wechseln Sie in den Datei-Modus, indem Sie im Hauptmen&#xfc; &apos;Modi&apos; den Untermen&#xfc;pukt &apos;File&apos; anklicken." ID="Freeplane_Link_629723508"/>
-<node TEXT="Sie durchst&#xf6;bern das Dateisystem, als w&#xe4;re es eine Mindmap." ID="Freeplane_Link_921633025"/>
-<node TEXT="Um einen Ordner zum zentralen Knoten des Baums zu machen, w&#xe4;hlen Sie im Kontextmen&#xfc; &apos;Zentrieren&apos;." ID="Freeplane_Link_1645919012"/>
-<node TEXT="Um eine Datei zu betrachten, zu bearbeiten oder auszuf&#xfc;hren, folgen Sie dem Verweis Ihres Knotens (klicken Sie auf den roten Pfeil)." ID="Freeplane_Link_1275316867"/>
-<node TEXT="Der Dateimodus ist zur Zeit nicht wirklich n&#xfc;tzlich. Er ist eine Demonstration daf&#xfc;r, da&#xdf; es nicht zu schwierig ist, den Baum mit Daten aus anderen Quellen als MindMaps zu beschicken. Es gibt keine Anzeichen daf&#xfc;r, da&#xdf; Leute diesen Modus gegenw&#xe4;rtig benutzen w&#xfc;rden." ID="_Freeplane_Link_279880616"/>
-</node>
-<node TEXT="Durchst&#xf6;bern von MindMaps" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1530607683" COLOR="#407000">
-<node TEXT="Um MindMaps eher zu durchst&#xf6;bern, als sie zu bearbeiten, schalten Sie in den Browse-Modus, indem Sie im Hauptmen&#xfc; &apos;Modi&apos; den Men&#xfc;punkt &apos;Browse&apos; w&#xe4;hlen. Ausgenommen davon, dass sie in Freeplanes Webbrowser-Erweiterung zum Einsatz kommt, ist diese Funktion nutzlos." ID="Freeplane_Link_1053534219"/>
-<node TEXT="Die Gr&#xfc;nde f&#xfc;r einen eigenen Browse-Modus sind technischer Art. Browsen (Durchst&#xf6;bern) ist die einzige Sache, die Sie in Freeplanes Webbrowser-Erweiterung tun k&#xf6;nnen, welche Sie auf Ihrer Website (Internet-Seite) verwenden k&#xf6;nnen. Normalerweise w&#xfc;rden Sie den Browse-Modus in Freeplane nicht verwenden." ID="Freeplane_Link_1762125143"/>
-</node>
-<node TEXT="&#xdc;ber Modi" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1136088046" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Obgleich Freeplane in erster Linie ein Werkzeug zum Bearbeiten von MindMaps darstellt, ist es bewu&#xdf;t dazu entworfen, aus verschiedenartigen Quellen kommende Daten zu veranschaulichen. Um eine bestimmte Datenquelle zur Veranschaulichung in Freeplane verf&#xfc;gbar zu machen, hat ein Programmierer einen sogenannten Modus f&#xfc;r diese Datenquelle zu schreiben. Der Datei-Modus ist ein Beispiel. Wir wissen nichts &#xfc;ber irgendwelche anderen verwirklichten Modi. Es ist nicht klar, ob jemand tats&#xe4;chlich Gebrauch von dieser Architektur machen m&#xf6;chte; sie ist dazu da ausgesch&#xf6;pft zu werden, falls jemand das m&#xf6;chte." ID="_Freeplane_Link_1713057526">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Es gibt fast fertigen Code (1) f&#xfc;r den Scheme-Modus, welcher es Ihnen erm&#xf6;glicht, Scheme-Programme zu bearbeiten (2). Und wieder gilt, die N&#xfc;tzlichkeit ist weit davon entfernt klar zu sein. Im Gegensatz zum MindMap-Modus sind andere Modi eher eine Demonstration dessen, was m&#xf6;glich ist, nicht dessen, was gegenw&#xe4;rtig in Gebrauch ist.&#xa;---------&#xa;Anm. d. &#xdc;.&#xa;(1) Quelltext f&#xfc;r Computerprogramme&#xa;(2) Scheme ist ein Lisp-Dialekt. Lisp ist eine Programmiersprache f&#xfc;r Computer." ID="_Freeplane_Link_700085988">
+<node TEXT="Blau" ID="ID_185145945" CREATED="1270892460657" MODIFIED="1274308935959" COLOR="#0000cc">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="Die Freeplane-Anwendung auf Ihrer Website installieren" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1525986009" COLOR="#407000">
-<node TEXT="Sie k&#xf6;nnen die Anwendung auf Ihrer Website (Internetseite) installieren, damit Besucher Ihre MindMaps durchst&#xf6;bern k&#xf6;nnen." ID="Freeplane_Link_413216341" COLOR="#000000">
-<font NAME="Dialog" SIZE="12"/>
+<node TEXT="Knoten k&#xf6;nnen unterschiedliche Hintergrundfarben haben" FOLDED="true" ID="_" CREATED="1270892460657" MODIFIED="1274308966543">
+<node TEXT="Pink" ID="_Freeplane_Link_1358611533" CREATED="1270892460657" MODIFIED="1271973346309" BACKGROUND_COLOR="#ffcccc"/>
+<node TEXT="Zyan" ID="_Freeplane_Link_1317973766" CREATED="1270892460657" MODIFIED="1274309037200" BACKGROUND_COLOR="#ccffff"/>
 </node>
-<node TEXT="Laden Sie die Freeplane-Browser Anwendung herunter." ID="Freeplane_Link_70391546" LINK="http://sourceforge.net/project/showfiles.php?group_id=211069"/>
-<node TEXT="Das heruntergeladene Archiv enthaelt die Dateien &apos;freeplanebrowser.jar&apos; und &apos;freeplanebrowser.html&apos;. Erzeugen Sie einen Link (Verweis) von Ihrer Seite zur Datei &apos;freeplanebrowser.html&apos;. &#xc4;ndern Sie in der Datei &apos;freeplanebrowser.html&apos; die verweisende Pfadangabe, so da&#xdf; sie auf Ihre MindMap zeigt." ID="Freeplane_Link_1182574839"/>
-<node TEXT="Aus Java(1)-Sicherheitsgr&#xfc;nden mu&#xdf; sich die &apos;.jar&apos;-Datei der Anwendung auf dem selben Server wie die MindMap selbst befinden. Sie m&#xfc;ssen die Freeplane-Anwendung und Ihre MindMap-Datei auf Ihre Website hochladen.&#xa;--------&#xa;anm.d.&#xdc;.&#xa;(1) Java ist eine Laufzeitumgebung, die das Ausf&#xfc;hren von daf&#xfc;r geschriebenen Programmen unabh&#xe4;ngig von der benutzten Computer-Hardware erm&#xf6;glicht." ID="Freeplane_Link_1992245682"/>
-</node>
-<node TEXT="Die Freeplane-Anwendung benutzen" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1083756111" COLOR="#407000">
+<node TEXT="Knoten k&#xf6;nnen unterschiedliche Schriftattribute haben" FOLDED="true" ID="ID_1923181646" CREATED="1270892460657" MODIFIED="1274309137563">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="In der Freeplane-Anwendung k&#xf6;nnen Sie nur den Browse-Modus benutzen; Sie k&#xf6;nnen keine (entfernt im Internet liegenden) MindMaps bearbeiten. Klicken Sie auf einen Knoten, um ihn auf oder zu zu klappen oder um einem Link (Verweis) zu folgen. Klicken Sie mauslinks in den Hintergrund und bewegen Sie Ihre Computermaus bei gedr&#xfc;ckt gehaltener Maustaste, um die MindMap zu bewegen. Um die MindMap zu durchsuchen, benutzen Sie das Knoten-Kontextmen&#xfc; (mausrechts auf einen Knoten klicken)." ID="_Freeplane_Link_514864900">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="&#xc4;nderungen der Benutzerschnittstelle in Version 0.6.5" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1976458022" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Einige der Tastaturk&#xfc;rzel wurden umdefiniert, soda&#xdf; sie mit dem, was wir als gemeinsamen Standard oder intuitive Benutzung betrachten, abgeglichen sind. Einige der neuen Tastaturk&#xfc;rzel haben Microsoft Werkzeuge zum Vorbild. Die neuen Tastaturk&#xfc;rzel schlie&#xdf;en &apos;Enter&apos; (bzw. Eingabetaste) zum Erzeugen von Geschwistern unterhalb eines Knotens, &apos;Einfg&apos; um neue Knotenkinder zu erzeugen und &apos;F2&apos; um Knoten zu bearbeiten ein. Bei &apos;F2&apos; wird der Microsoft-Einflu&#xdf; sichtbar, denn es gibt keinen intuitiven Grund, warum &apos;F2&apos; zum Bearbeiten von Knoten f&#xfc;hren sollte. Aber sobald Sie das in all den von Ihnen genutzten Programmen gewohnt sind, wollen Sie das auch in Freeplane haben." ID="_Freeplane_Link_717349033">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Die Tastaturk&#xfc;rzel k&#xf6;nnen in der Dialogbox &apos;Freeplane Properties&apos;, Abteilung &apos;Tasten&apos;, ge&#xe4;ndert werden. Diese Dialogbox rufen Sie &#xfc;ber den Hauptmen&#xfc;punkt &apos;Extras&apos;, Untermen&#xfc; &apos;Einstellungen...&apos;, auf." ID="_Freeplane_Link_1179893656">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Danksagungen" FOLDED="true" POSITION="left" ID="_Freeplane_Link_784043927" COLOR="#006699">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Autoren" FOLDED="true" ID="Freeplane_Link_415458128" COLOR="#006699">
-<node TEXT="Joerg Mueller" FOLDED="true" ID="_Freeplane_Link_1896457660" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="ponders@t-online.de" ID="ID_1858229894" COLOR="#558000" LINK="mailto:ponders@t-online.de">
-<font NAME="Dialog" SIZE="10"/>
-</node>
-<node TEXT="Universit&#xe4;t Freiburg, Deutschland" ID="Freeplane_Link_1506212831" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-</node>
-</node>
-<node TEXT="Daniel Polansky" ID="_Freeplane_Link_984984595" COLOR="#996600" LINK="http://mujweb.cz/www/danielpolansky">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-</node>
-<node TEXT="Petr Novak" ID="_Freeplane_Link_459203293" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-</node>
-<node TEXT="Christian Foltin" FOLDED="true" ID="_Freeplane_Link_875814410" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="christian.foltin@gmx.de" ID="ID_1159093324" COLOR="#558000" LINK="mailto:christian.foltin@gmx.de">
-<font NAME="Dialog" SIZE="10"/>
-</node>
-</node>
-<node TEXT="Dimitri Polivaev" ID="_Freeplane_Link_1415293905" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
-<node TEXT="Kleinere Beitr&#xe4;ge" FOLDED="true" ID="Freeplane_Link_816166020" COLOR="#006699">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Andrew Iggleden" FOLDED="true" ID="Freeplane_Link_550065345" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Installer Windows" ID="ID_1415447564" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
-<node TEXT="Bob Alexander" FOLDED="true" ID="Freeplane_Link_1096673251" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Eclipse howto" ID="ID_1255744341" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
-<node TEXT="David Butt" FOLDED="true" ID="Freeplane_Link_1024053399" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Tutorial flash" ID="ID_236241706" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
-<node TEXT="David Low" FOLDED="true" ID="Freeplane_Link_1026710206" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Helpful" ID="ID_664489121" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
-</node>
-<node TEXT="&#xdc;bersetzungen" FOLDED="true" ID="Freeplane_Link_360501151" COLOR="#006699">
-<node TEXT="Bob Alexander" FOLDED="true" ID="Freeplane_Link_807977431" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Italian translation" ID="ID_1727558771" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
-<node TEXT="Knud Riish&#xf8;jg&#xe5;rd" FOLDED="true" ID="Freeplane_Link_1853214917" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Danish translation" ID="ID_670114450" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
-<node TEXT="Takeshi Kakeda" FOLDED="true" ID="Freeplane_Link_1676529317" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Japanese translation" ID="ID_1479938671" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
-<node TEXT="Kohichi Aoki" FOLDED="true" ID="Freeplane_Link_1172193026" COLOR="#996600">
-<node TEXT="Japanese translation" ID="ID_664602358" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
-<node TEXT="Alex Dukal" FOLDED="true" ID="Freeplane_Link_1781005784" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Spanish translation" ID="ID_285504132" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
-<node TEXT="Hugo Gayosso" FOLDED="true" ID="Freeplane_Link_757563697" COLOR="#996600">
-<node TEXT="Spanish translation" ID="Freeplane_Link_1783275246" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
-<node TEXT="Sylvain Gamel" FOLDED="true" ID="Freeplane_Link_929540960" COLOR="#996600">
-<node TEXT="French translation" ID="ID_1342638967" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-</node>
-</node>
-<node TEXT="Koen Roggemans" FOLDED="true" ID="Freeplane_Link_946171164" COLOR="#996600">
-<node TEXT="Dutch translation" ID="Freeplane_Link_1819881845" COLOR="#999999">
-<font NAME="SansSerif" SIZE="10"/>
-</node>
-</node>
-<node TEXT="Rafal Kraik" FOLDED="true" ID="Freeplane_Link_235962981" COLOR="#996600">
-<node TEXT="Polish translation" ID="Freeplane_Link_459079511" COLOR="#999999">
-<font NAME="SansSerif" SIZE="10"/>
-</node>
-</node>
-<node TEXT="Goliath" FOLDED="true" ID="Freeplane_Link_653284985" COLOR="#996600">
-<node TEXT="Korean translation" ID="Freeplane_Link_1387213811" COLOR="#999999">
-<font NAME="SansSerif" SIZE="10"/>
-</node>
-</node>
-<node TEXT="Miles a.k.a. filmsi" FOLDED="true" ID="Freeplane_Link_35211963" COLOR="#996600">
-<node TEXT="Slovenian translation" ID="Freeplane_Link_835144271" COLOR="#999999">
-<font NAME="SansSerif" SIZE="10"/>
-</node>
-</node>
-<node TEXT="William Chen" FOLDED="true" ID="Freeplane_Link_1008886206" COLOR="#996600">
-<node TEXT="Chinese translation" ID="Freeplane_Link_1960552629" COLOR="#999999">
-<font NAME="SansSerif" SIZE="10"/>
-</node>
-</node>
-<node TEXT="Radek &#x160;varc" FOLDED="true" ID="Freeplane_Link_1650138043" COLOR="#996600">
-<node TEXT="Czech translation" ID="Freeplane_Link_768227373" COLOR="#999999">
-<font NAME="SansSerif" SIZE="10"/>
-</node>
-</node>
-<node TEXT="Bal&#xe1;zs M&#xe1;rton" FOLDED="true" ID="Freeplane_Link_901975324" COLOR="#996600">
-<node TEXT="Hungarian translation" ID="Freeplane_Link_557911120" COLOR="#999999">
-<font NAME="SansSerif" SIZE="10"/>
-</node>
-</node>
-<node TEXT="Luis Ferreira " FOLDED="true" ID="Freeplane_Link_290351026" COLOR="#996600">
-<node TEXT="Portuguese translation" ID="Freeplane_Link_6081004" COLOR="#999999">
-<font NAME="SansSerif" SIZE="10"/>
-</node>
-</node>
-<node TEXT="Christof Raber" FOLDED="true" ID="Freeplane_Link_1387051946" COLOR="#996600" LINK="mailto:christof.raber@raber.net">
-<edge COLOR="#808080" WIDTH="thin"/>
-<node TEXT="Deutsche &#xdc;bersetzung der Hilfedatei freeplane.mm  (V.0.8.0, zuletzt bearbeitet: 15.12.2005)" ID="Freeplane_Link_694499371" COLOR="#999999">
-<font NAME="SansSerif" SIZE="10"/>
-<edge COLOR="#808080" WIDTH="thin"/>
-</node>
-</node>
-<node TEXT="Die Danksagungen f&#xfc;r die &#xdc;bersetzungen sind wahrscheinlich unvollst&#xe4;ndig. Wenn wir Sie vergessen haben, lassen Sie es und wissen. Alle Leute , von denen wir wissen, da&#xdf; sie zumindest eine unvollst&#xe4;ndige &#xdc;bersetzung beigetragen haben, sind aufgef&#xfc;hrt. " ID="Freeplane_Link_23652566" COLOR="#999999">
-<font NAME="SansSerif" SIZE="10"/>
-</node>
-</node>
-</node>
-<node TEXT="Dr&#xfc;cken Sie &apos;Strg&apos; + &apos;F&apos; um vom aktuellen Knoten aus abw&#xe4;rts zu suchen. Dr&#xfc;cken Sie &apos;Strg&apos; + &apos;G&apos; um die Suche fortzusetzen. Um im ganzen MindMap-Baum zu suchen, dr&#xfc;cken Sie &apos;Esc&apos; bevor Sie mit Ihrer Suche beginnen." POSITION="right" ID="Freeplane_Link_397889068" COLOR="#0033ff"/>
-<node TEXT="Dr&#xfc;cken Sie die Pfeil-rechts-Taste um eine Textbox zu entfalten.&#xa;--------&#xa;Anm.d.&#xdc;.&#xa;Dies funktioniert so nicht in jedem Fall (Textboxen/Baumknoten links vom Hauptknoten), besser: Dr&#xfc;cken Sie die Leertaste, um Knoten zu entfalten / zu falten." POSITION="right" ID="Freeplane_Link_178218424" COLOR="#0033ff"/>
-<node TEXT="Einf&#xfc;hrung" FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" COLOR="#407000">
-<node TEXT="Freeplane macht es m&#xf6;glich, sogenannte MindMaps zu erzeugen. Viele Leute nutzen es auch als Alternative zu einem in Abteilungen unterteilten Notizbuch oder als pers&#xf6;nlichen Informationsmanager." ID="Freeplane_Link_1177570666"/>
-<node TEXT="Information wird in Textboxen gelagert, sogenannten Knoten. Knoten sind miteinander durch Kurvenlinien verbunden, sogenannten B&#xf6;gen(1).&#xa;--------&#xa;Anm.d.&#xdc;.&#xa;(1) In den Funktionsmen&#xfc;s von Freeplane auch als Kanten (Hauptbedeutung des englischen Begriffs &apos;edge&apos;) bezeichnet." ID="Freeplane_Link_1022362781"/>
-<node TEXT="Dies ist eine Dokumentation f&#xfc;r Freeplane 0.8.0. Tastaturk&#xfc;rzel und die Lage von Funktionen in Men&#xfc;s kann sich von Version zu Version ver&#xe4;ndern.&#xa;--------&#xa;Anm.d.&#xdc;.&#xa;Die Angaben zu Men&#xfc;funktionen und Tastaturk&#xfc;rzeln wurden von mir nicht 1:1 &#xfc;bersetzt, sondern mit der in Freeplane 0.8.0 vorgefundenen Funktionalit&#xe4;t abgeglichen.   " ID="Freeplane_Link_1207466374"/>
-</node>
-<node TEXT="Demonstration einiger F&#xe4;higkeiten" FOLDED="true" POSITION="right" ID="_Freeplane_Link_706084071" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Erscheinungsbild" FOLDED="true" ID="_Freeplane_Link_735193624" COLOR="#669900">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Es gibt Knoten in verschiedene Farben" FOLDED="true" ID="Freeplane_Link_1352457599">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="rot" ID="Freeplane_Link_719425520" COLOR="#ff0000">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="gr&#xfc;n" ID="Freeplane_Link_238761209" COLOR="#009900">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="blau" ID="Freeplane_Link_358373706" COLOR="#0000cc">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Es gibt Knoten in mancherlei Hintergrundfarben" FOLDED="true" ID="_">
-<node TEXT="diese" ID="_Freeplane_Link_1358611533" BACKGROUND_COLOR="#ff99cc"/>
-<node TEXT="jene" ID="_Freeplane_Link_1317973766" BACKGROUND_COLOR="#6699ff"/>
-</node>
-<node TEXT="Es gibt Knoten in verschiedenen Schriftstilen" FOLDED="true" ID="Freeplane_Link_177707040">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="fett" ID="Freeplane_Link_876078064">
+<node TEXT="Fett" ID="ID_1824894496" CREATED="1270892460657" MODIFIED="1274309144332">
 <font NAME="Dialog" SIZE="12" BOLD="true"/>
 </node>
-<node TEXT="kursiv" ID="Freeplane_Link_681299271">
+<node TEXT="Kursiv" ID="ID_871310557" CREATED="1270892460658" MODIFIED="1274309151650">
 <font NAME="Dialog" SIZE="12" ITALIC="true"/>
 </node>
-<node TEXT="fett und kursiv" ID="Freeplane_Link_1786244566">
+<node TEXT="Fett und Kursiv" ID="ID_735467355" CREATED="1270892460658" MODIFIED="1274309162135">
 <font NAME="Dialog" SIZE="12" BOLD="true" ITALIC="true"/>
 </node>
 </node>
-<node TEXT="Es gibt Knotenschrift in verschiedenen Gr&#xf6;&#xdf;en" FOLDED="true" ID="Freeplane_Link_13384967">
+<node TEXT="Die Knotenschrift kann unterschiedliche Gr&#xf6;&#xdf;e haben" FOLDED="true" ID="ID_1148481435" CREATED="1270892460658" MODIFIED="1274309266035">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="klein" ID="Freeplane_Link_1555487589">
+<node TEXT="Klein" ID="ID_409039647" CREATED="1270892460658" MODIFIED="1274309274188">
 <font NAME="SansSerif" SIZE="11"/>
 </node>
-<node TEXT="normal" ID="ID_1076933942">
+<node TEXT="Normal" ID="ID_1435919979" CREATED="1270892460658" MODIFIED="1274309279205">
 <font NAME="SansSerif" SIZE="13"/>
 </node>
-<node TEXT="gr&#xf6;&#xdf;er" ID="Freeplane_Link_185102650">
+<node TEXT="Gr&#xf6;&#xdf;er" ID="ID_285885166" CREATED="1270892460658" MODIFIED="1274309288308">
 <font NAME="SansSerif" SIZE="15"/>
 </node>
-<node TEXT="ganz gro&#xdf;" FOLDED="true" ID="Freeplane_Link_133607989">
+<node TEXT="Gro&#xdf;" FOLDED="true" ID="ID_925591695" CREATED="1270892460659" MODIFIED="1274309294462">
 <font NAME="SansSerif" SIZE="20"/>
-<node TEXT="OOh" ID="ID_1791126819">
+<node TEXT="OOh" ID="ID_612411777" CREATED="1270892460659" MODIFIED="1270892460659">
 <font NAME="SansSerif" SIZE="123"/>
 </node>
 </node>
 </node>
-<node TEXT="Verschiedene Schriftfamilien d&#xfc;rfen genutzt werden" FOLDED="true" ID="Freeplane_Link_781892119">
+<node TEXT="Es k&#xf6;nnen verschiedene Schriftarten verwendet werden" FOLDED="true" ID="ID_1844753395" CREATED="1270892460659" MODIFIED="1274309342117">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="dieser" ID="Freeplane_Link_173087886">
+<node TEXT="Times New Roman" ID="ID_471048226" CREATED="1270892460659" MODIFIED="1271973714732">
 <font NAME="Times New Roman" SIZE="16"/>
 </node>
-<node TEXT="oder jener" ID="_Freeplane_Link_1568731425">
+<node TEXT="Verdana" ID="_Freeplane_Link_1568731425" CREATED="1270892460659" MODIFIED="1271973720643">
 <font NAME="Verdana" SIZE="12"/>
 </node>
-<node TEXT="oder der da" ID="Freeplane_Link_1672236398">
+<node TEXT="Dialog font" ID="ID_1860252564" CREATED="1270892460659" MODIFIED="1271973770585">
 <font NAME="Dialog" SIZE="21"/>
 </node>
 </node>
-<node TEXT="Verschiedene Knotenstile k&#xf6;nnen genutzt werden." FOLDED="true" ID="_Freeplane_Link_1193071041">
-<node TEXT="Verzweigung" FOLDED="true" ID="_Freeplane_Link_1979277285">
-<node TEXT="Verzweigung" ID="_Freeplane_Link_89124429"/>
-<node TEXT="Verzweigung" ID="_Freeplane_Link_173850525"/>
+<node TEXT="Man kann verschiedene Knotentypen verwenden" FOLDED="true" ID="_Freeplane_Link_1193071041" CREATED="1270892460660" MODIFIED="1274309505512">
+<node TEXT="Linie" FOLDED="true" ID="_Freeplane_Link_1979277285" CREATED="1270892460660" MODIFIED="1274309511982" STYLE="fork">
+<node TEXT="Linie" ID="_Freeplane_Link_89124429" CREATED="1270892460660" MODIFIED="1274309519178" STYLE="fork"/>
+<node TEXT="Linie" ID="_Freeplane_Link_173850525" CREATED="1270892460660" MODIFIED="1274309524539"/>
 </node>
-<node TEXT="Blase" FOLDED="true" ID="_Freeplane_Link_1001811541" STYLE="bubble">
-<node TEXT="Blase" ID="_Freeplane_Link_1677737286" STYLE="bubble"/>
-<node TEXT="Blase" ID="_Freeplane_Link_978246353" STYLE="bubble"/>
+<node TEXT="Blase" FOLDED="true" ID="_Freeplane_Link_1001811541" CREATED="1270892460660" MODIFIED="1274309529922" STYLE="bubble">
+<node TEXT="Blase" ID="_Freeplane_Link_1677737286" CREATED="1270892460660" MODIFIED="1274309535666" STYLE="bubble"/>
+<node TEXT="Blase" ID="_Freeplane_Link_978246353" CREATED="1270892460660" MODIFIED="1274309541322" STYLE="bubble"/>
+</node>
+<node TEXT="Kombiniert" FOLDED="true" ID="ID_746506029" CREATED="1274309542928" MODIFIED="1274309712465" STYLE="combined">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Kombiniert" ID="ID_1073750917" CREATED="1274309718580" MODIFIED="1274309722192"/>
+<node TEXT="Kombiniert" ID="ID_1826613444" CREATED="1274309723425" MODIFIED="1274309730164"/>
 </node>
 </node>
 </node>
-<node TEXT="Knoten k&#xf6;nnen gefaltet sein" FOLDED="true" ID="Freeplane_Link_757728721" COLOR="#669900">
+<node TEXT="Knoten k&#xf6;nnen gefaltet sein" FOLDED="true" ID="ID_1623634168" CREATED="1270892460660" MODIFIED="1274311365868" COLOR="#669900">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="gefaltet" FOLDED="true" ID="_Freeplane_Link_307016912">
+<node TEXT="Gefaltet" FOLDED="true" ID="_Freeplane_Link_307016912" CREATED="1270892460660" MODIFIED="1274311374818">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="versteckt" ID="Freeplane_Link_748957810">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Baum" FOLDED="true" ID="_Freeplane_Link_1488567837">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Eiche" ID="Freeplane_Link_370913262">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Buche" ID="Freeplane_Link_355277376">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Ulme" ID="Freeplane_Link_1784692550">
+<node TEXT="Versteckt" ID="ID_710559854" CREATED="1270892460660" MODIFIED="1274311382274">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-</node>
-<node TEXT="Knoten k&#xf6;nnen verfolgbare Verweise enthalten. Zu ..." FOLDED="true" ID="Freeplane_Link_1885250534" COLOR="#669900">
+<node TEXT="Baum" FOLDED="true" ID="_Freeplane_Link_1488567837" CREATED="1270892460661" MODIFIED="1274311387394">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Internet-Seiten" FOLDED="true" ID="Freeplane_Link_796978285" COLOR="#006699">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="http://www.google.com/" ID="ID_1515893363" LINK="http://www.google.com/">
+<node TEXT="Eiche" ID="ID_117856753" CREATED="1270892460661" MODIFIED="1274311415329">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="www.google.com" FOLDED="true" ID="Freeplane_Link_1010545300" LINK="www.google.com">
+<node TEXT="Buche" ID="ID_39938798" CREATED="1270892460661" MODIFIED="1274311431811">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Freeplane denkt, dies ist ausf&#xfc;hrbar :)" ID="Freeplane_Link_1591226954" COLOR="#999999">
+</node>
+<node TEXT="Ulme" ID="ID_919566309" CREATED="1270892460661" MODIFIED="1274311451278">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
+</node>
+<node TEXT="Knoten k&#xf6;nnen Links enthalten zu..." FOLDED="true" ID="ID_1091027669" CREATED="1270892460661" MODIFIED="1274311503505" COLOR="#669900">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="Internet Seiten" FOLDED="true" ID="ID_1291101161" CREATED="1270892460661" MODIFIED="1274311521762" COLOR="#006699">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="http://www.google.com/" ID="ID_1272005179" CREATED="1270892460662" MODIFIED="1270892460662" LINK="http://www.google.com/">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="www.google.com" ID="ID_488333574" CREATED="1270892460662" MODIFIED="1270991928052" LINK="www.google.com">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
+<node TEXT="Lokalen Ordnern" FOLDED="true" ID="ID_819664033" CREATED="1270892460662" MODIFIED="1274311569470" COLOR="#006699">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="C:/Program Files/ (Windows)" ID="ID_33602690" CREATED="1270892460662" MODIFIED="1271973897739" LINK="file:/C:/Program%20Files/">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="/home/ (Linux)" ID="ID_1192223311" CREATED="1270892460662" MODIFIED="1271973908073" LINK="/home/">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="/Users (Mac OS X)" ID="ID_1305958070" CREATED="1271973910165" MODIFIED="1271973960770" LINK="/Users"/>
+</node>
+<node TEXT="Ausf&#xfc;hrbaren Programmen" FOLDED="true" ID="ID_1829360247" CREATED="1270892460663" MODIFIED="1274311581045" COLOR="#006699">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="C:\WINNT\regedit.exe" ID="ID_1773112429" CREATED="1270892460663" MODIFIED="1270991928052" LINK="file:/C:/WINNT/regedit.exe">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
+<node TEXT="Anderen Knoten in der selben MindMap (oder in anderen MindMaps)" ID="ID_148011650" CREATED="1271974056299" MODIFIED="1274311622670" LINK="#ID_709498088"/>
+<node TEXT="Jedem Dokument auf dem Computer, oder im Netzwerk." ID="ID_382832692" CREATED="1270892460663" MODIFIED="1274311684089">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="Je nach Plattform (Windows/Unix/...) zeigen verschiedene Icons den Typ des Hyperlinks an" ID="ID_1145751539" CREATED="1270991844130" MODIFIED="1274311748081"/>
+</node>
+<node TEXT="Um einem Hyperlink zu folgen, &#xa;klicke auf das Icon" FOLDED="true" ID="ID_709498088" CREATED="1271029724866" MODIFIED="1274486224131" COLOR="#669900">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Ein gr&#xfc;ner Pfeil symbolisiert einen lokal Link (Innerhalb der selben MindMap)" ID="ID_1382213647" CREATED="1271974215092" MODIFIED="1274311921459"/>
+<node TEXT="Ein roter Pfeil symbolisiert einen externen Link (au&#xdf;erhalb der aktuellen MindMap)" ID="ID_1268065166" CREATED="1271974306669" MODIFIED="1274311938151"/>
+</node>
+<node TEXT="Mehrzeilige Knoten" FOLDED="true" ID="_Freeplane_Link_839677176" CREATED="1270892460663" MODIFIED="1274486299830" COLOR="#669900">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="Mehrzeilige Knoten erscheinen als einer oder mehrere Punkte. Anstatt Deine Notizen in einer Textdatei zu speichern, kannst Du einen kurzen Knoten mit vielen mehrzeiligen Kindern verwenden." ID="_Freeplane_Link_1423568963" CREATED="1270892460664" MODIFIED="1275331696389"/>
+<node TEXT="Kurzer mehrzeiliger Knoten mit Zeilenumbruch" FOLDED="true" ID="ID_1324715896" CREATED="1270892460664" MODIFIED="1275331711251" COLOR="#669900">
+<node TEXT="Eine Zeile,&#xa;eine Zweite,&#xa;&#xa;und noch eine,&#xa;Was h&#xe4;lst Du davon?" ID="_Freeplane_Link_1957797574" CREATED="1270892460664" MODIFIED="1274486640378"/>
+</node>
+</node>
+<node TEXT="Man kann eine Beschriftung&#xa;von Knotenlinien simulieren" FOLDED="true" ID="ID_929122537" CREATED="1270892460664" MODIFIED="1275331976255" COLOR="#669900">
+<node TEXT="Baum" FOLDED="true" ID="ID_1430553317" CREATED="1270892460664" MODIFIED="1274486964590">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="ist eine" FOLDED="true" ID="ID_976763673" CREATED="1270892460664" MODIFIED="1274486975331" COLOR="#999999">
 <font NAME="Dialog" SIZE="10"/>
-</node>
-</node>
-</node>
-<node TEXT="lokalen Ordnern" FOLDED="true" ID="Freeplane_Link_1119935059" COLOR="#006699">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="C:/Programme/" ID="Freeplane_Link_1060370167" LINK="file:/C:/Program%20Files/">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="/home/" ID="ID_1594273972" LINK="/home/">
+<node TEXT="Eiche" ID="ID_848417183" CREATED="1270892460664" MODIFIED="1274486983903">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="ausf&#xfc;hrbaren Programmen" FOLDED="true" ID="Freeplane_Link_1008386972" COLOR="#006699">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="C:\WINNT\regedit.exe" FOLDED="true" ID="Freeplane_Link_661824400" LINK="file:/C:/WINNT/regedit.exe">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Sie sehen am Piktogramm, da&#xdf; der Knoten ausf&#xfc;hrbar ist." ID="Freeplane_Link_1441814137" COLOR="#006600">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-</node>
-<node TEXT="jedem Dokument auf Ihrem lokalen Computer oder dem Netzwerk Ihrer Firma" ID="Freeplane_Link_76567274">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Mehrzeilige Knoten" FOLDED="true" ID="_Freeplane_Link_839677176" COLOR="#669900">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Sie k&#xf6;nnen mehrzeilige Knoten als Abs&#xe4;tze oder als einzelne Abschnitte betrachten. Wenn Sie darangehen, Wissensdatenbanken mit Freeplane zu erstellen, f&#xfc;hrt kein Weg daran vorbei. Anstelle einer schlichten Testdatei f&#xfc;r Ihren Notizensatz k&#xf6;nnen Sie einen kurzen Knoten mit vielen mehrzeiligen Kinderknoten haben." ID="_Freeplane_Link_1423568963"/>
-<node TEXT="&quot;Science is facts; just as houses are made of stones, so is science made of facts; but a pile of stones is not a house and a collection of facts is not necessarily science.&quot; --Henri Poincar&#xe9;&#xa;(Wissenschaft sind Fakten. Genau wie H&#xe4;user aus Steinen gemacht sind, so ist Wissenschaft aus Fakten gemacht. Aber ein Haufen Steine ist kein Haus und eine Sammlung von Fakten ist nicht notwendigerweise Wissenschaft.)" ID="_Freeplane_Link_1686184172"/>
-</node>
-<node TEXT="Kurze, mehrzeilige Knoten mit Zeilenumbr&#xfc;chen" FOLDED="true" ID="Freeplane_Link_1255169413" COLOR="#669900">
-<node TEXT="Eine Zeile,&#xa;und eine zweite&#xa;&#xa;und noch eine andere werden es tun,&#xa;also was denken Sie dar&#xfc;ber?" ID="_Freeplane_Link_1957797574"/>
-</node>
-<node TEXT="Sie k&#xf6;nnen beschriftete B&#xf6;gen nachahmen" FOLDED="true" ID="Freeplane_Link_14045206" COLOR="#669900">
-<node TEXT="Baum" FOLDED="true" ID="Freeplane_Link_437606861">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="ist eine" FOLDED="true" ID="Freeplane_Link_1494572903" COLOR="#999999">
+<node TEXT="ist eine" FOLDED="true" ID="ID_54522784" CREATED="1270892460665" MODIFIED="1274486996369" COLOR="#999999">
 <font NAME="Dialog" SIZE="10"/>
-<node TEXT="Eiche" ID="Freeplane_Link_1780289562" VSHIFT="1">
+<node TEXT="Buche" ID="ID_625768370" CREATED="1270892460665" MODIFIED="1274487049077">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="ist eine" FOLDED="true" ID="Freeplane_Link_369010689" COLOR="#999999">
+<node TEXT="ist eine" FOLDED="true" ID="ID_20190770" CREATED="1270892460665" MODIFIED="1274487003119" COLOR="#999999">
 <font NAME="Dialog" SIZE="10"/>
-<node TEXT="Buche" ID="Freeplane_Link_1121488557" HGAP="22" VSHIFT="1">
+<node TEXT="Ulme" ID="ID_42771538" CREATED="1270892460665" MODIFIED="1274487068020">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="ist eine" FOLDED="true" ID="Freeplane_Link_570579933" COLOR="#999999">
+</node>
+<node TEXT="Baum" FOLDED="true" ID="ID_1249902286" CREATED="1270892460665" MODIFIED="1274487074494">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="&lt;&gt;" FOLDED="true" ID="ID_1994219362" CREATED="1270892460665" MODIFIED="1270991928052" COLOR="#999999">
 <font NAME="Dialog" SIZE="10"/>
-<node TEXT="Ulme" ID="Freeplane_Link_556181970" VSHIFT="1">
+<node TEXT="Blatt" ID="ID_1632637474" CREATED="1270892460666" MODIFIED="1274487082328">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-</node>
-<node TEXT="Baum" FOLDED="true" ID="Freeplane_Link_1013650868">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="&lt;&gt;" FOLDED="true" ID="Freeplane_Link_1167897167" COLOR="#999999">
+<node TEXT="&lt;&gt;" FOLDED="true" ID="ID_1583422438" CREATED="1270892460666" MODIFIED="1270991928052" COLOR="#999999">
 <font NAME="Dialog" SIZE="10"/>
-<node TEXT="Blatt" ID="Freeplane_Link_1554280421" HGAP="21" VSHIFT="1">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="&lt;&gt;" FOLDED="true" ID="Freeplane_Link_783431562" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<node TEXT="Stamm" ID="Freeplane_Link_1549850763" VSHIFT="1">
+<node TEXT="Stamm" ID="ID_1648811846" CREATED="1270892460666" MODIFIED="1274487091531">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
 </node>
 </node>
-<node TEXT="Es gibt Piktogramme in Knoten" ID="Freeplane_Link_242957031" COLOR="#669900">
+<node TEXT="Knoten k&#xf6;nnen Icons enthalten" FOLDED="true" ID="ID_492845108" CREATED="1270892460666" MODIFIED="1274487212516" COLOR="#669900">
 <icon BUILTIN="knotify"/>
 <icon BUILTIN="flag"/>
 <icon BUILTIN="button_cancel"/>
 <icon BUILTIN="button_ok"/>
 <icon BUILTIN="back"/>
 </node>
-<node TEXT="Es gibt Wolken" FOLDED="true" ID="_Freeplane_Link_318937820" COLOR="#407000">
+<node TEXT="Knoten k&#xf6;nnen mit Wolken &#xa;zusammengefasst werden" FOLDED="true" ID="_Freeplane_Link_318937820" CREATED="1270892460667" MODIFIED="1274905948870" COLOR="#407000">
 <cloud WIDTH="0"/>
-<node TEXT="in ma&#xdf;geschneiderten Farben" ID="Freeplane_Link_913111155">
-<cloud COLOR="#f1ede6" WIDTH="0"/>
+<node TEXT="...und die Wolken k&#xf6;nnen&#xa;verschiedene Farben haben" ID="ID_1714895943" CREATED="1270892460668" MODIFIED="1274487435773">
+<cloud COLOR="#c4388d" WIDTH="0"/>
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>
 </node>
-<node TEXT="Es gibt graphische Verweise" FOLDED="true" ID="_Freeplane_Link_1750585847" COLOR="#407000">
-<node TEXT="Verbindender Knoten" ID="_Freeplane_Link_1212380407">
-<arrowlink DESTINATION="_Freeplane_Link_1249400461" STARTINCLINATION="46;2;" ENDINCLINATION="44;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="Knoten k&#xf6;nnen mit Konnektoren verbunden werden" FOLDED="true" ID="_Freeplane_Link_1750585847" CREATED="1270892460668" MODIFIED="1274487530655" COLOR="#407000" HGAP="22" VSHIFT="-24">
+<node TEXT="Verbinde einen Knoten..." ID="_Freeplane_Link_1212380407" CREATED="1270892460668" MODIFIED="1274487563858">
+<arrowlink DESTINATION="_Freeplane_Link_1249400461" STARTINCLINATION="41;0;" ENDINCLINATION="41;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node TEXT="zu einem anderen" ID="_Freeplane_Link_1249400461">
+<node TEXT="mit einem anderen..." ID="_Freeplane_Link_1249400461" CREATED="1270892460669" MODIFIED="1274487631319">
 <arrowlink COLOR="#6600ff" DESTINATION="_Freeplane_Link_880551392" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node TEXT="in verschiedenen Farben" ID="_Freeplane_Link_880551392">
+<node TEXT="mit verschiedenen Farben" ID="_Freeplane_Link_880551392" CREATED="1270892460670" MODIFIED="1274487585470">
 <arrowlink DESTINATION="_Freeplane_Link_1789233193" STARTINCLINATION="82;44;" ENDINCLINATION="82;44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node TEXT="und unterschiedlicher Anlenkung" ID="_Freeplane_Link_1789233193"/>
+<node TEXT="und auf verschiedenen Wegen" ID="_Freeplane_Link_1789233193" CREATED="1270892460670" MODIFIED="1274487596684"/>
 </node>
-<node TEXT="Knoten k&#xf6;nnen frei positioniert werden" FOLDED="true" ID="_Freeplane_Link_127668276" COLOR="#407000">
-<node TEXT="Einer" ID="_Freeplane_Link_894936766"/>
-<node TEXT="Ein anderer" ID="_Freeplane_Link_1942481455" VSHIFT="1"/>
+<node TEXT="Konnektoren k&#xf6;nnen beschriftet werden" FOLDED="true" ID="ID_237593792" CREATED="1270893118534" MODIFIED="1275342253867" VGAP="89" HGAP="29" VSHIFT="1" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Quellknoten" ID="ID_1709139591" CREATED="1270893130918" MODIFIED="1274487779390">
+<arrowlink COLOR="#352bca" DESTINATION="ID_1741403088" SOURCE_LABEL="Beschriftung am Anfang" TARGET_LABEL="Beschriftung am Ende" MIDDLE_LABEL="Beschriftung in der Mitte" STARTINCLINATION="115;27;" ENDINCLINATION="202;36;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+<node TEXT="Zielknoten" ID="ID_1741403088" CREATED="1270893138577" MODIFIED="1274487689671"/>
+</node>
+<node TEXT="Konnektoren k&#xf6;nnen so formatiert werden,&#xa;dass sie wie Knotenlinien aussehen" FOLDED="true" ID="ID_589013013" CREATED="1270893418086" MODIFIED="1275342247966" COLOR="#407000" VGAP="20" HGAP="21" VSHIFT="12">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="1" ID="ID_822615789" CREATED="1270893450078" MODIFIED="1270893469956">
+<arrowlink EDGE_LIKE="true" DESTINATION="ID_659652940" STARTINCLINATION="46;0;" ENDINCLINATION="46;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+<node TEXT="2" FOLDED="true" ID="ID_1931813528" CREATED="1270893453278" MODIFIED="1270991928052">
+<node TEXT="22" ID="ID_659652940" CREATED="1270893459959" MODIFIED="1270893460779"/>
+</node>
+<node TEXT="3" ID="ID_961774571" CREATED="1270893454198" MODIFIED="1270893480379">
+<arrowlink EDGE_LIKE="true" DESTINATION="ID_659652940" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
-<node TEXT="Knoten erzeugen und l&#xf6;schen" FOLDED="true" POSITION="right" ID="_Freeplane_Link_1709752669" COLOR="#407000">
-<node TEXT="Um einen Kinderknoten zu erzeugen, dr&#xfc;cken Sie &apos;Einfg&apos;." ID="Freeplane_Link_168416055"/>
-<node TEXT="Um einen Kinderknoten zu erzeugen, w&#xe4;herend Sie einen Knoten bearbeiten, dr&#xfc;cken Sie &apos;Einfg&apos; w&#xe4;hrend der Bearbeitung." ID="Freeplane_Link_19900654"/>
-<node TEXT="Um einen nachfolgenden Geschwisterknoten zu erzeugen, dr&#xfc;cken Sie &apos;Enter&apos; oder die Eingabetaste." ID="Freeplane_Link_958397576"/>
-<node TEXT="Um einen vorausgehenden Geschwisterknoten zu erzeugen, dr&#xfc;cken Sie Umschalttaste + Eingabetaste oder Umschalttaste + &apos;Enter&apos;. " ID="Freeplane_Link_392769746"/>
-<node TEXT="Um einen Knoten zu entfernen, dr&#xfc;cken Sie &apos;Entf&apos;." ID="Freeplane_Link_642872701"/>
-<node TEXT="Um einen Knoten zum Wiedereinf&#xfc;gen an anderer Stelle zu entfernen, dr&#xfc;cken Sie &apos;Strg&apos; + &apos;X&apos;." ID="Freeplane_Link_1532941422"/>
-<node TEXT="Alternativ nutzen Sie das Knoten-Kontextmen&#xfc;, indem Sie mausrechts auf den Knoten klicken." ID="Freeplane_Link_1510813723"/>
+<node TEXT="Knotenlinien k&#xf6;nnen versteckt werden" FOLDED="true" ID="ID_1539062144" CREATED="1270893550070" MODIFIED="1274817607326" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Ein Knoten mit einer versteckten Linie" ID="ID_936535846" CREATED="1270893561062" MODIFIED="1274817722321" STYLE="bubble">
+<edge STYLE="hide_edge"/>
 </node>
-<node TEXT="Knotentext bearbeiten" FOLDED="true" POSITION="right" ID="Freeplane_Link_1700974092" COLOR="#407000">
-<node TEXT="Um einen Knoten zu bearbeiten, dr&#xfc;cken Sie die &apos;F2&apos;-, &apos;Pos1&apos;- oder &apos;Ende&apos;-Taste, oder Sie benutzen &apos;Knoten bearbeiten&apos; im Kontextmen&#xfc; des Knotens. Um das Bearbeiten eines Knotens abzuschlie&#xdf;en, dr&#xfc;cken Sie &apos;Enter&apos; bzw. die Eingabe-Taste." ID="_Freeplane_Link_519923426">
+</node>
+<node TEXT="Knoten k&#xf6;nnen Attribute haben" ID="ID_1044646484" CREATED="1270893318566" MODIFIED="1274817881371" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<attribute_layout NAME_WIDTH="40" VALUE_WIDTH="49"/>
+<attribute NAME="x" VALUE="10"/>
+<attribute NAME="y" VALUE="20"/>
+</node>
+<node TEXT="Knoten k&#xf6;nnen frei positioniert werden" FOLDED="true" ID="_Freeplane_Link_127668276" CREATED="1270892460670" MODIFIED="1274817938052" COLOR="#407000" HGAP="25" VSHIFT="36">
+<node TEXT="Einer" ID="_Freeplane_Link_894936766" CREATED="1270892460670" MODIFIED="1274817963942" HGAP="-1" VSHIFT="-27"/>
+<node TEXT="Ein Anderer" ID="_Freeplane_Link_1942481455" CREATED="1270892460670" MODIFIED="1275331926697" HGAP="123" VSHIFT="43"/>
+</node>
+</node>
+<node TEXT="Navigation" FOLDED="true" POSITION="right" ID="ID_1233270983" CREATED="1272091279810" MODIFIED="1272092212344" COLOR="#006666">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Navigation in der MindMap" FOLDED="true" ID="_Freeplane_Link_1540212684" CREATED="1270892460687" MODIFIED="1274818286956" COLOR="#407000">
+<node ID="ID_159922424" CREATED="1270892460687" MODIFIED="1274906075236">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um den <b>Cursor</b>&#160;nach <b>oben</b>, nach <b>unten</b>, nach <b>links</b><br/>oder nach <b>rechts</b>&#160;zu bewegen, verwende die Cursor-Tasten
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1583313144" CREATED="1270892460687" MODIFIED="1274906093709">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um an den <b>Anfang des aktiven Zweiges</b>&#160;zu kommen, dr&#252;cke BildAuf
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_144127434" CREATED="1270892460688" MODIFIED="1274906108315">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um ans <b>Ende des aktiven Zweiges</b>&#160;zu kommen, dr&#252;cke BildAb
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_158862259" CREATED="1270892460688" MODIFIED="1274915647666">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um zum <b>Wurzelknoten</b>&#160;zu <b>gelangen</b>&#160;<b>und</b>&#160;ihn zu <b>zentrieren </b>w&#228;hle&#160;
+    </p>
+    <p>
+      &quot;Navigieren -&gt; Wurzelknoten zentrieren&quot; (Escape)
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1985477320" CREATED="1271026015708" MODIFIED="1274915676581">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Navigation in der <b>Historie</b>&#160;der <b>zuletzt besuchten Knoten</b>:<br/>- &quot;Navigieren -&gt; Zur&#252;ck&quot; (Alt + Cursor links) navigiert zur&#252;ck in der Historie<br/>- &quot;Navigieren -&gt; Vorw&#228;rts&quot; (Alt + Cursor rechts) navigiert wieder nach vorne in der Historie
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_902784897" CREATED="1271176654062" MODIFIED="1274915710842">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Navigieren</b>&#160;durch <b>alle Knoten</b>&#160;einer MindMap:<br/>- &quot;Navigieren -&gt; Zum n&#228;chsten Knoten&quot; (Strg + Alt + Cursor rechts)
+    </p>
+    <p>
+      &#160;&#160;navigiert zum n&#228;chsten Knoten<br/>- &quot;Navigieren -&gt; Zum vorherigen Knoten&quot; (Strg + Alt + Cursor links)
+    </p>
+    <p>
+      &#160;&#160;navigiert zum vorherigen Knoten
+    </p>
+    <p>
+      <br/>
+      
+    </p>
+    <p>
+      Die Reihenfolge der Knoten wird anhand der Hierarchie ermittelt.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1501511305" CREATED="1271177016593" MODIFIED="1274915743605">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Navigieren</b>&#160;durch <b>alle Knoten</b>&#160;einer MindMap und dabei die
+    </p>
+    <p>
+      Zweige <b>beim Verlassen wieder falten</b>:<br/>- &quot;Navigieren -&gt; Zum n&#228;chsten Knoten (Kinder-Knoten falten)&quot; (Strg + Alt + Shift + Cursor rechts)
+    </p>
+    <p>
+      &#160;&#160;navigiert zum&#160;n&#228;chsten Knoten<br/>- &quot;Navigieren -&gt; Zum vorherigen Knoten (Kinder-Knoten falten)&quot; (Strg + Alt + Shift + Cursor links)
+    </p>
+    <p>
+      &#160;navigiert zum&#160;vorherigen Knoten
+    </p>
+    <p>
+      <br/>
+      Die Reihenfolge der Knoten wird anhand der HIerarchie ermittelt.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Standardm&#xe4;sig werden Knoten ausgew&#xe4;hlt, indem man den Cursor f&#xfc;r einen kurzen, konfigurierbaren, Zeitraum &#xfc;ber ihm platziert.&#xa;Dieses Verhalten kann ge&#xe4;ndert werden unter Extras -&gt; Einstellungen... -&gt; Verhalten in der Sektion &quot;Auswahlmodus&quot;.&#xa;Verf&#xfc;gbare Modi sind: &quot;Direkt&quot;, &quot;Verz&#xf6;gert&quot; (Standard) und &quot;Durch Mausklick&quot;." ID="ID_125952778" CREATED="1271003250866" MODIFIED="1274366224125"/>
+</node>
+<node TEXT="Auswahl von mehreren Knoten" FOLDED="true" ID="Freeplane_Link_653540280" CREATED="1270892460681" MODIFIED="1274818568721" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<node ID="ID_1732023097" CREATED="1270892460681" MODIFIED="1274906329680">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um <b>mehrere Knoten auszuw&#228;hlen</b>&#160;halte die Strg- oder die Shift-Taste gedr&#252;ckt,
+    </p>
+    <p>
+      w&#228;hrend Du auf die Knoten links klickst.
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_1775844952" CREATED="1270892460682" MODIFIED="1274906358844">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Einzelne Knoten</b>&#160;kannst Du einer bestehenden Auswahl <b>hinzuzuf&#252;gen</b>,
+    </p>
+    <p>
+      indem Du die Strg-Taste gedr&#252;ckt h&#228;lst, w&#228;hrend Du sie mit der Maus anklickst.
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_1843533091" CREATED="1270892460682" MODIFIED="1274906418413">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen <b>zusammenh&#228;ngenden Bereich von Knoten auszuw&#228;hlen</b>&#160;
+    </p>
+    <p>
+      halte die Shift-Taste gedr&#252;ckt, w&#228;hrend Du die Knoten anklickst, oder Du
+    </p>
+    <p>
+      Dich mit den Cursor-Tasten durch die MindMap bewegst.
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_1178451061" CREATED="1270892460682" MODIFIED="1275332271295">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Einen kompletten Zweig</b>&#160;kannst Du wie folgt <b>ausw&#228;hlen</b>:
+    </p>
+    <p>
+      - dr&#252;cke Strg + Shift + A,
+    </p>
+    <p>
+      - halte Shift gedr&#252;ckt w&#228;hrend Du von einem Knoten zu seinem Vater navigierst
+    </p>
+    <p>
+      - halte AltGr gedr&#252;ckt w&#228;hrend Du einen Knoten anklickst.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1029340509" CREATED="1270892460682" MODIFIED="1274906475113">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Die <b>Auswah</b>l kannst Du wieder <b>aufheben</b>, indem Du auf den
+    </p>
+    <p>
+      Hintergrund der MindMap, oder einen unselektierten Knoten klickst.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Falten und Entfalten" FOLDED="true" ID="Freeplane_Link_4727471" CREATED="1270892460688" MODIFIED="1274908801991" COLOR="#407000">
+<node ID="ID_1622399561" CREATED="1270892460688" MODIFIED="1274907536381">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Ein gefalteter Knoten wird durch einen kleinen Kreis an dem Ende, das am weitesten vom Wurzelknoten entfernt ist, angezeigt.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1439689412" CREATED="1270892460688" MODIFIED="1274914461698">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Falten</b>&#160;von <b>Knoten</b>:
+    </p>
+    <p>
+      - Dr&#252;cke die Leertaste
+    </p>
+    <p>
+      - Verwende &quot;Navigieren -&gt; Knoten falten/ entfalten&quot;
+    </p>
+    <p>
+      - Verwende das &quot;Knoten-Kontextmen&#252; -&gt; Knoten falten/ entfalten&quot;
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1089564473" CREATED="1270892460688" MODIFIED="1274914441890">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Entfalten</b>&#160;von <b>Knoten</b>:
+    </p>
+    <p>
+      - Dr&#252;cke die Leertaste
+    </p>
+    <p>
+      - Navigiere mit den Cursor-Tasten in die Richtung des Faltungssymbols
+    </p>
+    <p>
+      - Verwende &quot;Navigieren -&gt; Knoten falten/ entfalten&quot;
+    </p>
+    <p>
+      - Verwende das &quot;Knoten-Kontextmen&#252; -&gt; Knoten falten/ entfalten&quot;
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_926272054" CREATED="1270892460688" MODIFIED="1275332487191">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um eine <b>ganze Ebene</b>&#160;zu <b>falten</b>&#160;<b>bzw.</b>&#160;zu <b>entfalten</b>&#160; gibt es folgende M&#246;glichkeiten:
+    </p>
+    <p>
+      - Halte die Alt-Taste gedr&#252;ckt, w&#228;hrend Du das Mausrad bewegst
+    </p>
+    <p>
+      - Verwende die Tastenkombination Alt + Bild Auf bzw. Alt + Bild Ab
+    </p>
+    <p>
+      - Benutze die Symbole aus der Werkzeug-Symbolleiste
+    </p>
+    <p>
+      &#160;(die Symbole mit dem Plus bzw. Minus &#252;ber einer Knotenlinie)
+    </p>
+    <p>
+      - W&#228;hle &quot;Navigieren -&gt; Eine Ebene aufklappen&quot; bzw. &quot;Navigieren -&gt; Eine Ebene zuklappen&quot;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Diese Funktion beansprucht viel Arbeitsspeicher und kann bei gro&#223;en MindMaps
+    </p>
+    <p>
+      zu Problemen f&#252;hren.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1233324949" CREATED="1270892460688" MODIFIED="1275332565442">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Alle Knoten</b>&#160;ab der <b>ausgew&#228;hlten Ebene</b>&#160;kann man wie folgt <b>entfalten</b>:
+    </p>
+    <p>
+      - Verwende die Tastenkombination Alt + Ende
+    </p>
+    <p>
+      - Benutze das Symbol aus der Werkzeug-Symbolleiste
+    </p>
+    <p>
+      &#160;(das Icon mit dem Plus im Kreis)
+    </p>
+    <p>
+      - W&#228;hle &quot;Navigieren -&gt; Alles aufklappen&quot;
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1624228779" CREATED="1270892460688" MODIFIED="1275332591656">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Alle Knoten</b>&#160;ab der <b>ausgew&#228;hlten Ebene</b>&#160;kann man wie folgt <b>falten</b>:
+    </p>
+    <p>
+      - Verwende die Tastenkombination Alt + Pos1
+    </p>
+    <p>
+      - Benutze das Symbol aus der Werkzeug-Symbolleiste
+    </p>
+    <p>
+      &#160;&#160;(das Icon mit dem Minus im Kreis)
+    </p>
+    <p>
+      - W&#228;hle &quot;Navigieren -&gt; Alles zuklappen&quot;
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Die MindMap verschieben" FOLDED="true" ID="Freeplane_Link_467411537" CREATED="1270892460689" MODIFIED="1274909291302" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<node ID="ID_1291243282" CREATED="1270892460689" MODIFIED="1274910044033">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Es gibt mehrere M&#246;glichkeiten die <b>MindMap</b>&#160;zu <b>verschieben</b>:
+    </p>
+    <p>
+      - Bewege die Maus auf den Hintergrund und dr&#252;cke die linke Maustaste (der Cursor
+    </p>
+    <p>
+      &#160;&#160;&#228;ndert sich).&#160;Wenn Du die Taste jetzt gedr&#252;ckt h&#228;lst folgt die MindMap den Mausbewegungen.
+    </p>
+    <p>
+      - Drehen am Mausrad verschiebt die MindMap vertikal.
+    </p>
+    <p>
+      - Drehen am Mausrad bei gedr&#252;ckter Shift-Taste oder gedr&#252;ckter linker Maustaste (nicht bei
+    </p>
+    <p>
+      &#160;&#160;allen Betriebssystemen)&#160;&#160;verschiebt die MindMap horizontal
+    </p>
+  </body>
+</html></richcontent>
+<edge WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
+<node TEXT="Die MindMap zoomen" FOLDED="true" ID="Freeplane_Link_913137192" CREATED="1270892460689" MODIFIED="1274909809443" COLOR="#407000">
+<node ID="ID_1270232158" CREATED="1272007214049" MODIFIED="1274910230674">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Im <b>Men&#252; Ansicht </b>gibt es Befehle um den Zoom zu vergr&#246;&#223;ern (Alt + oben),
+    </p>
+    <p>
+      &#160;ihn zu verkleinern (Alt + unten) und die MindMap auf die Seite einzupassen.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1692671423" CREATED="1272007458262" MODIFIED="1274910485869">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In der <b>Werkzeug-Symbolleiste</b>&#160;gibt es ein <b>Drop-Down Feld</b>,
+    </p>
+    <p>
+      &#252;ber das man den Zoom-Level direkt auw&#228;hlen kann.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_961139916" CREATED="1270892460689" MODIFIED="1274910640872">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bei einigen Betriebssystemen kannst Du auch <b>zoomen</b>, indem Du&#160;am
+    </p>
+    <p>
+      Mausrad dreht, w&#228;hrend Du die Strg-Taste gedr&#252;ckt h&#228;lst.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Suchen und Filtern" FOLDED="true" ID="Freeplane_Link_423038022" CREATED="1270892460681" MODIFIED="1275332779466" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<node ID="ID_1565729150" CREATED="1270896350974" MODIFIED="1274912375212">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst nach Knoten <b>suchen</b>&#160;und sie <b>filtern</b>. Als <b>Kriterien</b>&#160; kannst Du dabei den Knotentext, Icons, Erzeugungs-/&#196;nderungszeit des Knotens, Priorit&#228;t, Konnektoren, Beschriftung von Konnektoren, Hyperlinks, Notizen und Attribute verwenden.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_966700848" CREATED="1270892460681" MODIFIED="1274914344453">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen Text, oder andere Kriterien, in einem <b>Knoten und</b>&#160;allen seinen <b>Nachfolgern</b>&#160;zu <b>suchen</b>, verwende &quot;Bearbeiten -&gt; Suchen...&quot; (Strg + F).
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_1646223708" CREATED="1270892460681" MODIFIED="1274914332698">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Den <b>n&#228;chsten Knoten</b>, der die vorher erstellten <b>Suchkriterien erf&#252;llt</b>,
+    </p>
+    <p>
+      findest Du mit &quot;Bearbeiten -&gt; Weitersuchen&quot; (Strg + G).
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_829330412" CREATED="1270892460681" MODIFIED="1275332872246">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Die <b>Suche</b>&#160;ist <b>breitenorientiert</b>. Das bedeutet, je tiefer ein Knoten verschachtelt ist, desto sp&#228;ter wird er gefunden.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_779591913" CREATED="1270892460681" MODIFIED="1274913238008">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Die <b>Suche</b>&#160;<b>ber&#252;cksichtigt</b>&#160;im Moment nur den <b>akiven Knoten </b>und<b>&#160;seine Nachfahren</b>.
+    </p>
+    <p>
+      In zuk&#252;nftigen Versionen wird es eine Option geben, um die Suche auf die ganze MindMap auszudehnen.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1761633870" CREATED="1271096970387" MODIFIED="1274914012341">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um die <b>gesammte MindMap</b>&#160;<b>nach</b>&#160;einem <b>Text</b>&#160;zu <b>durchsuchen</b>&#160; <b>und</b>&#160;ihn evtl. zu <b>&#228;ndern</b>, verwende &quot;Bearbeiten -&gt; Suchen und ersetzen...&quot; . Mit &quot;Bearbeiten -&gt; Suchen und ersetzen in allen MindMaps&quot; kannst Du alle ge&#246;ffneten MindMaps durchsuchen.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1773253238" CREATED="1270897010863" MODIFIED="1274914308250">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Mit der <b>Filter-Toolbar</b>&#160;und dem <b>Filter-Men&#252;</b>&#160;kannst Du <b>Filter definieren</b>&#160;und damit nur den Teil der Knoten anzeigen lassen, die den Kriterien entsprechen.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Wechseln zu einer&#xa;anderen MindMap" FOLDED="true" ID="Freeplane_Link_516331171" CREATED="1270892460688" MODIFIED="1274914587683" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<node ID="ID_213892338" CREATED="1270892460689" MODIFIED="1274915092105">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um zu einer <b>anderen</b>, bereits <b>ge&#246;ffneten</b>, <b>MindMap</b>&#160;zu <b>gelangen </b>, gibt es folgende M&#246;glichkeiten:
+    </p>
+    <p>
+      - Strg + Tab aktiviert die n&#228;chste MindMap.
+    </p>
+    <p>
+      - Verwende das MindMaps-Men&#252; und w&#228;hle dort den Dateinamen.
+    </p>
+    <p>
+      - Klicke rechts auf den Hintergrund und w&#228;hle die MindMap aus dem erscheinenden Kontext-Men&#252; aus.
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_233995891" CREATED="1271000255265" MODIFIED="1275333030090">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Zum <b>Rotieren</b>&#160;durch die <b>ge&#246;ffneten MindMaps</b>&#160;gibt es auch die Befehle
+    </p>
+    <p>
+      &quot;Navigieren -&gt; Vorherige MindMap&quot; (Alt + Shift + links) bzw.
+    </p>
+    <p>
+      &quot;Navigieren -&gt; N&#228;chste MindMap&quot; (Alt + Shift + rechts).
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_771867461" CREATED="1272092801195" MODIFIED="1274915572850">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Zwischen den <b>zwei zuletzt bearbeiteten MindMaps</b>&#160;
+    </p>
+    <p>
+      kannst Du mit Strg + 1 wechseln.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="MindMaps bearbeiten" FOLDED="true" POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1274394610676" COLOR="#006666">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Knoten erzeugen &#xa;und bearbeiten" FOLDED="true" ID="_Freeplane_Link_1709752669" CREATED="1270892460670" MODIFIED="1274917859485" COLOR="#407000">
+<node ID="ID_847485935" CREATED="1270892460670" MODIFIED="1274918872232">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen neuen <b>Kind-Knoten</b>&#160;zu <b>erzeugen</b>&#160;w&#228;hle &quot;Einf&#252;gen -&gt; Neuer Kind-Knoten&quot;, oder dr&#252;cke die Taste Einfg (bei Mac OS X TAB).
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_719677235" CREATED="1270892460671" MODIFIED="1275333322975">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Einfg erzeugt auch einen neuen Knoten, wenn man einen Anderen gerade im Inline-Editor bearbeitet.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1715555696" CREATED="1270892460671" MODIFIED="1274918902756">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Einen <b>neuen Geschwister Knoten unterhalb</b>&#160;des aktiven Knotens <b>erzeugt</b>&#160; man mit &quot;Einf&#252;gen -&gt; Neuer Geschwister-Knoten danach&quot; oder durch dr&#252;cken der Taste Enter.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1942197982" CREATED="1270892460671" MODIFIED="1274918913635">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Einen <b>neuen Geschwister Knoten oberhalb</b>&#160;des aktiven Knotens <b>erzeugt</b>&#160; man mit &quot;Einf&#252;gen -&gt; Neuer Geschwister-Knoten davor&quot; oder durch dr&#252;cken der Tasten Shift + Enter.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1638437345" CREATED="1270892460671" MODIFIED="1275333364835">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Zum <b>L&#246;schen</b>&#160;eines <b>Knotens</b>&#160;w&#228;hle &quot;Bearbeiten -&gt; Knoten l&#246;schen&quot;,
+    </p>
+    <p>
+      oder dr&#252;cke die Taste Entf.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1718916776" CREATED="1270892460671" MODIFIED="1275333428549">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &quot;Bearbeiten -&gt; Ausschneiden&quot; (Strg + X) <b>l&#246;scht</b>&#160; den <b>Knoten</b>, beh&#228;lt aber eine <b>Kopie</b>&#160;in der <b>Zwischenablage</b>, die man mit &quot;Bearbeiten -&gt; Einf&#252;gen&quot; (Strg + V) wieder in die MindMap einf&#252;gen kann.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_86882063" CREATED="1270892460671" MODIFIED="1274918826327">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Alle</b>&#160;beschriebenen <b>Befehle</b>&#160;kannst Du auch &#252;ber das <b>Kontextmen&#252; des Knotens</b>&#160;erreichen (Rechtsklick auf einen Knoten; bei Mac OS X Strg + Klick).
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Knotentext bearbeiten" FOLDED="true" ID="Freeplane_Link_1700974092" CREATED="1270892460671" MODIFIED="1274990022759" COLOR="#407000">
+<node ID="_Freeplane_Link_519923426" CREATED="1270892460671" MODIFIED="1274990262387">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen <b>Knoten</b>&#160;zu <b>bearbeiten</b>, dr&#252;cke F2, POS1 oder ENDE, oder w&#228;hle im &quot;Knoten Kontextmen&#252; -&gt;Knoten&#160;&#160;bearbeiten&quot;. Der Bearbeitungsmodus wird durch die Taste ENTER beendet.
+    </p>
+  </body>
+</html></richcontent>
 <arrowlink DESTINATION="_Freeplane_Link_519923426" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node TEXT="Um den Text in einem Knoten mit einem neuen zu ersetzen, fangen Sie an zu Tippen." ID="Freeplane_Link_1825283901"/>
-<node TEXT="Um das Fenster zum Bearbeiten von umfangreichen Knoten (Langtexteditor)) aufzurufen, wenn Sie einen kleinen Knoten bearbeiten, dr&#xfc;cken Sie &apos;Alt&apos; + &apos;Enter&apos; (bzw. &apos;Alt&apos; + Eingabetaste)." ID="Freeplane_Link_363486573"/>
-<node TEXT="Um einen langen Knoten aufzuteilen, benutzen Sie den Knopf &apos;Teilen&apos; oben im Langtexteditor, oder dr&#xfc;cken Sie &apos;Alt&apos; + &apos;S&apos; im Langtexteditor.&#xa;--------&#xa;Anm.d.&#xdc;.&#xa;Der Knoten wird an der Stelle geteilt, an der sich der Schreibzeiger (Cursor) befindet." ID="Freeplane_Link_1828895192"/>
-<node TEXT="Um einen Zeilenumbruch im Langtexteditor einzuf&#xfc;gen, dr&#xfc;cken Sie &apos;Strg&apos; + &apos;Enter&apos; (bzw. &apos;Alt&apos; + Eingabetaste). Sie k&#xf6;nnen keine Zeilenumbr&#xfc;che beim direkten Bearbeiten des Knotens (Kurztexteditor) einf&#xfc;gen." ID="Freeplane_Link_1578669295">
-<arrowlink DESTINATION="_Freeplane_Link_1445647544" STARTINCLINATION="118;0;" ENDINCLINATION="118;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node ID="ID_673531040" CREATED="1270892460671" MODIFIED="1275333593738">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Indem man einfach zu schreiben beginnt wird der <b>Text</b>&#160;des <b>aktiven Knotens</b>&#160;durch das Geschriebene <b>ersetzt</b>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Hinweis: Dieses Verhalten kann man unter &quot;Extras -&gt; Einstellungen -&gt; Verhalten -&gt; Kein Editieren der Knoten bei Eingabe&quot; deaktivieren.
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
-<node TEXT="Um w&#xe4;hrend der Bearbeitung im Langtexteditor eine ausgew&#xe4;hlte Textpassage in die Zwischenablage zu kopieren, klicken Sie mit dem rechten Mausknopf und w&#xe4;hlen &apos;Kopieren&apos; im Kontextmen&#xfc;." ID="Freeplane_Link_1491144775"/>
-<node TEXT="Um ein Sonderzeichen wie &#xa9; einzuf&#xfc;gen, f&#xfc;gen Sie es zun&#xe4;chst (mit der dort daf&#xfc;r vorgesehenen Funktion) in Ihre Lieblingstextverarbeitung wie etwa Microsoft Word (oder OpenOffice.org Writer, Anm.d.&#xdc;.) ein und kopieren es dann &#xfc;ber die Zwischenablage in Freeplane." ID="Freeplane_Link_269218148"/>
-<node TEXT="Nach Vorgabe beendet &apos;Enter&apos; (bzw. die Eingabetaste) die Bearbeitung im Langtexteditor und &apos;Strg&apos; + &apos;Enter&apos; (bzw. &apos;Strg&apos; + Eingabetaste) f&#xfc;gt einen Zeilenumbruch ein. Durch Umschalten des Schalters &apos;Eingabetaste schlie&#xdf;t das Fenster&apos; k&#xf6;nnen Sie die Funktion der betreffenden Tasten(kombinationen) umkehren, das hei&#xdf;t &apos;Enter&apos; (bzw. die Eingabetaste) f&#xfc;gt einen Zeilenumbruch ein und &apos;Strg&apos; + &apos;Enter&apos; (bzw. &apos;Strg&apos; + Eingabetaste) beendet die Bearbeitung. Sie k&#xf6;nnen den Vorgabewert dieses Schalters in den Programmeinstellungen setzen. Dar&#xfc;ber hinaus merkt sich Freeplane die Schalterstellung w&#xe4;hrend der aktuellen Sitzung. " ID="_Freeplane_Link_1445647544"/>
-<node TEXT="Freeplane unterst&#xfc;tzt Unicode vollst&#xe4;ndig. Dadurch k&#xf6;nnen Sie den Zeichensatz Ihrer Wahl benutzen." ID="Freeplane_Link_879243196"/>
+<node ID="ID_1386037184" CREATED="1270892460672" MODIFIED="1275333643385">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen reinen <b>Text-Knoten</b>&#160;im <b>externen Editor</b>&#160;zu <b>bearbeiten.</b>&#160;w&#228;hle &quot;Bearbeiten -&gt; Knoten im Editor bearbeiten...&quot;, oder dr&#252;cke Alt + ENTER.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Hinweis: Dadurch wird der Knoten in einen HTML-Knoten umgewandelt und zuk&#252;nftig immer im Editor ge&#246;ffnet. Mit &quot;Format -&gt; Benutze reinen Text&quot; kann man Ihn wieder in einen reinen Text-Knoten umwandeln, verliert dabei aber u.U. Formatierungen.
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
-<node TEXT="Einen Knoten formatieren" FOLDED="true" POSITION="right" ID="Freeplane_Link_1660149394" COLOR="#407000">
-<node TEXT="Um einen Knoten fett darzustellen, dr&#xfc;cken Sie &apos;Strg&apos; + &apos;B&apos;." ID="Freeplane_Link_1344799304">
+<node ID="ID_328110224" CREATED="1270892460672" MODIFIED="1274994117607">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen <b>HTML-Knoten</b>&#160;an der Cursor-Position auf <b>zwei Knoten aufzuteilen</b>, gibt es im Editor den Button &quot;Teilen&quot; (Alt + S).
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node FOLDED="true" ID="ID_785582356" CREATED="1270892460672" MODIFIED="1274992054979">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um im reinen <b>Text-Knoten</b>&#160;einen <b>Zeilenumbruch</b>&#160;
+    </p>
+    <p>
+      einzuf&#252;gen verwende Shift + Enter oder Alt + Enter.
+    </p>
+  </body>
+</html></richcontent>
+<node ID="_Freeplane_Link_1445647544" CREATED="1270892460672" MODIFIED="1274992184660">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Standardm&#228;sig beendet Enter den Bearbeitungsmodus eines reinen Text-Knotens und Alt + Enter f&#252;gt einen Zeilenumbruch ein. Unter &quot;Extras -&gt; Einstellungen... -&gt; Verhalten -&gt; &lt;Eingabe&gt; beendet die Texteingabe im Knoten&quot; kann man dieses Verhalten &#228;ndern.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node ID="ID_471748709" CREATED="1270892460672" MODIFIED="1275333745300">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Selektierter Text kann, w&#228;hrend man einen Knoten editiert, &#252;ber das &quot;Knoten Kontext-Men&#252; -&gt; Kopieren in die Zwischenablage&quot; kopiert werden.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_128741512" CREATED="1270892460672" MODIFIED="1275333802048">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um <b>spezielle Zeichen</b>&#160;wie z.B. &#169; <b>einzuf&#252;gen</b>&#160; empfiehlt sich der Weg &#252;ber eine Textverarbeitung wie z.B. OpenOffice Writer oder Microsoft Word. F&#252;ge zuerst die Zeichen in dem Programm ein. Kopiere sie dann in die Zwischenablage und f&#252;ge sie in Freeplane wieder ein.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1608665009" CREATED="1270996862392" MODIFIED="1274995379887" LINK="#Freeplane_Link_1318678369">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst in Freeplane alle Bearbeitungsschritte <b>R&#252;ckg&#228;ngig</b>&#160; machen.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Rechtschreibpr&#xfc;fung" ID="ID_1122067470" CREATED="1271096284570" MODIFIED="1274995403818" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node ID="ID_784188803" CREATED="1271096294667" MODIFIED="1275333891527">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      W&#228;hrend Du einen Knoten oder ein Notiz bearbeitest, kannst Du im &quot;Kontext-Men&#252; unter Sprachen&quot; die <b>Rechtschreibpr&#252;fung aktivieren</b>&#160;&#160;und <b>deaktivieren</b>.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Auf der Freeplane Homepage sind W&#xf6;rterb&#xfc;cher f&#xfc;r viele Sprachen verf&#xfc;gbar." ID="ID_1341966636" CREATED="1271096394315" MODIFIED="1275333942453" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries"/>
+</node>
+</node>
+<node TEXT="Drag and drop - Ziehen&#xa; und fallenlassen" FOLDED="true" ID="Freeplane_Link_1024903226" CREATED="1270892460682" MODIFIED="1274996619646" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<edge WIDTH="thin"/>
+<node TEXT="Drag and Drop bedeutet: Mit gedr&#xfc;ckter Maustaste - in der Regel die Linke - etwas aufzunehmen, zum gew&#xfc;nschten Ziel zu ziehen, und es dort durch Loslassen der Maustaste fallen zu lassen." ID="Freeplane_Link_159607929" CREATED="1274995662437" MODIFIED="1275333999719"/>
+<node ID="Freeplane_Link_1497093408" CREATED="1274995662437" MODIFIED="1275334032871">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Durch Ziehen und Fallenlassen (drag and drop) kannst Du <b>Knoten</b>&#160;im Baum <b>neu positionieren</b>.
+    </p>
+  </body>
+</html>
+</richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_1633776428" CREATED="1271027579490" MODIFIED="1274996157015">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Alternativ kannst Du <b>Knoten</b>&#160;auch mit der <b>Tastatur verschieben</b>. So lange Du die Strg-Taste gedr&#252;ckt h&#228;lst, kannst kannst Du die Knoten mit den Cursor-Tasten verschieben.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="Freeplane_Link_374323949" CREATED="1274995662437" MODIFIED="1275334201923">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen aufgenommenen Knoten als<b>&#160;Kind-Knoten</b>&#160;wieder <b>einzuf&#252;gen</b>, positioniere den Mauszeiger im seitlichen Randbereich des k&#252;nftigen Elternknotens und lasse die Maustaste los.<br/>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Hinweis: Achte beim Positionieren auf die Farbverlaufs&#228;nderungen. Zum Einf&#252;gen als Kind-Knoten mu&#223; der in entgegengesetzter Richtung zum Wurzelknoten befindliche seitliche Bereich des k&#252;nftigen Elternknotens durch den Farbverlauf unterlegt sein.&#160;
+    </p>
+  </body>
+</html>
+</richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="Freeplane_Link_1069770199" CREATED="1274995662438" MODIFIED="1274996470465">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen aufgenommenen Knoten als <b>Geschwisterknoten einzuf&#252;gen</b>, positioniere den Mauszeiger im oberen Bereich des Zielknotens und lasse die Maustaste los.
+    </p>
+    <p>
+      <br/>
+      Hinweis: Achte beim Positionieren auch hier auf die Farbverlaufs&#228;nderungen. Zum Einf&#252;gen als Geschwisterknoten mu&#223; der obere Bereich des angesteuerten Zielknotens durch Farbverlauf unterlegt sein.&#160;
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="_Freeplane_Link_1994214827" CREATED="1270892460683" MODIFIED="1275334362194">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst <b>Knoten kopieren</b>, indem Du beim Fallenlassen die Strg-Taste, oder die mittlere Maustaste gedr&#252;ckt h&#228;lst. Am Cursor erscheint dann ein kleines Plus.
+    </p>
+  </body>
+</html>
+</richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_694691711" CREATED="1270892460683" MODIFIED="1274996963304">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Vorhandene MindMaps</b>&#160;kannst Du <b>bearbeiten</b>, indem Du die entsprechende Datei &#252;ber dem Hintergrund fallen l&#228;sst.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="Freeplane_Link_1940236238" CREATED="1274995662438" MODIFIED="1275334415207">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen <b>Konnektor</b>&#160;zwischen zwei Knoten zu <b>erzeugen</b>, ziehe den einen Knoten mit gedr&#252;ckter rechter Maustaste auf den Anderen und lasse ihn dort fallen.
+    </p>
+    <p>
+      Unter Mac OS X ziehe den Knoten normal ins Freeplane-Fenster und dr&#252;cke Strg bevor Du ihn auf einen anderen Knoten fallen l&#228;sst.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_356858969" CREATED="1270892460683" MODIFIED="1274997299326">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wenn Du <b>mehrere Knoten ausgew&#228;hlt</b>&#160;hast, dann werden alle verschoben bzw. kopiert.
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="Freeplane_Link_873938281" CREATED="1274995662438" MODIFIED="1274997408469">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Freeplane unterst&#252;tzt allgemein (je nach genutzter Betriebssystemplattform) die <b>Daten&#252;bernahme</b>&#160;aus <b>externen Programmen</b>&#160;durch den drag-and-drop Mechanismus wie z. B. Dateien unter Microsoft Windows oder markierten Text von einer besuchten Internetseite.&#160;
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Knoten frei positionieren" FOLDED="true" ID="ID_1293447241" CREATED="1270997738611" MODIFIED="1274997499009" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node ID="_Freeplane_Link_97763226" CREATED="1270892460688" MODIFIED="1275334976852" HGAP="21" VSHIFT="16">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen <b>Knoten</b>&#160;<b>anders</b>&#160;zu <b>positionieren</b>, mu&#223;t Du ihn an seiner <b>Positionsmarkierung</b>&#160;an die neue Position ziehen. Diese ist an der senkrechten Seite des Knotens, die n&#228;her zum Wurzelknoten liegt und wird als kleine senkrechte Elipse sichtbar, wenn Du mit dem Cursor dar&#252;ber f&#228;hrst.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_505978546" CREATED="1270997770751" MODIFIED="1275335010525">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Durch das Verschieben eines Knotens auf diese Weise, wird nur das Aussehen der MindMap ge&#228;ndert nicht aber ihre Struktur. Die logische Anordnung der Knoten bleibt also erhalten.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1457898208" CREATED="1270997857923" MODIFIED="1275335088294">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Dies gilt auch, wenn Du einen Knoten, der rechts vom Wurzelknoten ist, auf die linke Seite ziehst. Logisch ist er immer noch rechts und seine Positionsmarkierung ist auch noch auf der linken Seite.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_846513064" CREATED="1270998153408" MODIFIED="1275335118169">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen Knoten auch logisch auf die andere Seite des Wurzelknotens zu platzieren, musst Du drag and drop anstelle des freien Positionierens verwenden.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Kopieren und einf&#xfc;gen" FOLDED="true" ID="Freeplane_Link_958781924" CREATED="1270892460683" MODIFIED="1274998189283" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<node ID="ID_1088879884" CREATED="1274998221355" MODIFIED="1275335223713">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst Knoten(gruppen) zwischen MindMaps <b>kopieren</b>&#160;und <b>einf&#252;gen</b>. Au&#223;erdem ist es m&#246;glich, normalen Text oder HTML-Code aus anderen Programmen einzuf&#252;gen.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1563176838" CREATED="1274998221355" MODIFIED="1275335286889">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wenn Du <b>einfachen Text einf&#252;gst</b>, werden mehrere Zeilen als mehrere Knoten eingef&#252;gt. Die resultierende Schachteltiefe wird durch die Anzahl f&#252;hrender Leerzeichen der einzuf&#252;genden Textzeilen bestimmt. Ein Beispiel folgt:
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Baum&#xa; Laubbaum&#xa;  Eiche&#xa; Nadelbaum&#xa;  Tanne" ID="ID_794791780" CREATED="1270892460684" MODIFIED="1275335725894" COLOR="#996600">
+<node TEXT="wird eingef&#xfc;gt als" ID="ID_1133286475" CREATED="1270892460684" MODIFIED="1274998476128">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="Baum" ID="ID_855525853" CREATED="1275335769745" MODIFIED="1275335819914" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Laubbaum" ID="ID_36623645" CREATED="1275335769745" MODIFIED="1275335819928" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Eiche" ID="ID_799006245" CREATED="1275335769745" MODIFIED="1275335819921" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+</node>
+</node>
+<node TEXT="Nadelbaum" ID="ID_207286102" CREATED="1275335769745" MODIFIED="1275335819919" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Tanne" ID="ID_1021867927" CREATED="1275335769745" MODIFIED="1275335819917" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node ID="ID_780592545" CREATED="1270892460685" MODIFIED="1274998705693">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wenn Du <b>HTML einf&#252;gst</b>&#160;kann es entweder als einzelner Knoten, oder als ganze Knotenhierarchie eingef&#252;gt werden. Verwende daf&#252;r &quot;Bearbeiten -&gt; Einf&#252;gen als...&quot;.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Ein Beispiel f&#xfc;r &quot;Einf&#xfc;gen als...&quot;" FOLDED="true" ID="ID_637512189" CREATED="1270892460685" MODIFIED="1274999518092">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="HTML als einzelnen Knoten" ID="ID_1806025194" CREATED="1270894542238" MODIFIED="1274999064619">
+<node ID="ID_669110345" CREATED="1270894698475" MODIFIED="1270894698475">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p align="center">
+      <i><b><font size="4">Boost your brain with Freeplane</font></b></i><font size="4"> </font>
+    </p>
+    <p>
+      <br/>
+      <br/>
+      
+    </p>
+    <p align="center">
+      <a href="http://sourceforge.net/projects/freeplane/"><b><font size="4">Download Freeplane now!</font></b></a><font size="4"> </font>
+    </p>
+    <h1 class="western">
+      What is Freeplane?
+    </h1>
+    <p>
+      Freeplane is a powerful and free mind mapping application. It is a redesigned version of the well known <a href="http://freemind.sourceforge.net/">FreeMind</a>, and is created by one of FreeMind's key developers. The software is written in Java, and supports any platform capable of running current versions of Java, including:
+    </p>
+    <ul>
+      <li>
+        <p style="margin-bottom: 0in">
+          Microsoft Windows
+        </p>
+      </li>
+      <li>
+        <p style="margin-bottom: 0in">
+          Mac OS X
+        </p>
+      </li>
+      <li>
+        <p style="margin-bottom: 0in">
+          Linux / BSD / Solaris
+        </p>
+      </li>
+      <li>
+        <p>
+          <a href="http://freeplane.sourceforge.net/wiki/index.php/Portable_Freeplane">Portable Freeplane</a> for Windows (runs from a USB drive)
+        </p>
+      </li>
+    </ul>
+    <p>
+      <br/>
+      <br/>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Knotenhierarchie als HTML" ID="ID_541043985" CREATED="1270894548254" MODIFIED="1274999480943">
+<node ID="ID_232672532" CREATED="1270894712253" MODIFIED="1270894712253">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p align="center">
+      <i><b><font size="4">Boost your brain with Freeplane</font></b></i><font size="4"> </font>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_149083422" CREATED="1270894712256" MODIFIED="1270894712257" LINK="http://sourceforge.net/projects/freeplane/">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p align="center">
+      <a href="http://sourceforge.net/projects/freeplane/"><b><font size="4">Download Freeplane now!</font></b></a><font size="4"> </font>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node FOLDED="true" ID="ID_1571069768" CREATED="1270894712263" MODIFIED="1270894712263">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <h1 class="western">
+      What is Freeplane?
+    </h1>
+  </body>
+</html></richcontent>
+<node FOLDED="true" ID="ID_1003296305" CREATED="1270894712271" MODIFIED="1270894712271" LINK="http://freemind.sourceforge.net/">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Freeplane is a powerful and free mind mapping application. It is a redesigned version of the well known <a href="http://freemind.sourceforge.net/">FreeMind</a>, and is created by one of FreeMind's key developers. The software is written in Java, and supports any platform capable of running current versions of Java, including:
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_1528122430" CREATED="1270894712274" MODIFIED="1270894712274">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        <p style="margin-bottom: 0in">
+          Microsoft Windows
+        </p>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_624982390" CREATED="1270894712277" MODIFIED="1270894712277">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        <p style="margin-bottom: 0in">
+          Mac OS X
+        </p>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_767338979" CREATED="1270894712280" MODIFIED="1270894712280">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        <p style="margin-bottom: 0in">
+          Linux / BSD / Solaris
+        </p>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_972361679" CREATED="1270894712283" MODIFIED="1270894712283" LINK="http://freeplane.sourceforge.net/wiki/index.php/Portable_Freeplane">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        <p>
+          <a href="http://freeplane.sourceforge.net/wiki/index.php/Portable_Freeplane">Portable Freeplane</a> for Windows (runs from a USB drive)
+        </p>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node ID="ID_734855520" CREATED="1274998221364" MODIFIED="1274999786391">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wenn Du eine im Explorer markierte <b>Dateiliste einf&#252;gst</b>, wird f&#252;r jede Datei ein Knoten mit dem Pfad und dem Namen der Datei und einem Link auf die Datei eingef&#252;gt.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1790983208" CREATED="1274998221364" MODIFIED="1275336289379">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wenn Du einen <b>Zweig&#160;kopierst</b>&#160;und ihn in einen einfachen <b>Texteditor einf&#252;gst</b>, wird die Baumstruktur durch Einr&#252;cken angezeigt. Querverweise werden in spitzen Klammern ('&lt;' und '&gt;') eingef&#252;gt. Auch hier ein Beispiel:
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Baum" ID="ID_1805360637" CREATED="1274998221366" MODIFIED="1274998221366">
+<node TEXT="Eiche" ID="ID_1101741069" CREATED="1274998221366" MODIFIED="1274998221366"/>
+<node TEXT="Buche" ID="ID_462975987" CREATED="1274998221366" MODIFIED="1274998221366">
+<node TEXT="wird eingef&#xfc;gt als" ID="ID_1432366250" CREATED="1274998221366" MODIFIED="1274998221366">
+<node TEXT="Baum&#xa;     Eiche&#xa;     Buche&#xa;     Google &lt;http://www.google.com/&gt;" ID="ID_1775330013" CREATED="1270892460687" MODIFIED="1274999964182" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
+</node>
+<node TEXT="Google &lt;http://www.google.com/&gt;" ID="ID_423317930" CREATED="1274998221367" MODIFIED="1274998221367" LINK="http://www.google.com/"/>
+</node>
+<node ID="ID_1140366916" CREATED="1274998221367" MODIFIED="1275000203494">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wenn Du einen <b>Zweig</b>&#160;aus Freeplane <b>kopierst</b>&#160;und ihn in eine Textverarbeitung einf&#252;gst, die das Rich-Text-Format (RTF) beherrscht, wird die Formatierung enschlie&#223;lich Farbe und Schrift mit &#252;bernommen. Querverweise werden in spitzen Klammern ('&lt;' und '&gt;') eingef&#252;gt, genau wie beim Einf&#252;gen in einen einfachen Texteditor.
+    </p>
+    <p>
+      Editoren die das Rich-Text-Format (RTF) beherrschen sind zum Beispiel Microsoft Word, OpenOffice.org, Microsoft Outlook, einige Texteditoren unter Linux und TextEdit unter Mac OS X.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1036066408" CREATED="1274998221369" MODIFIED="1275000296467">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen <b>Knoten</b>&#160;<b>ohne Kinder</b>&#160;und Nachfahren zu <b>kopieren</b>, dr&#252;cke die Tastenkombination 'Strg' + Umschalt + 'C' oder benutze &quot;Einfach kopieren&quot; im Kontextmen&#252; des Knotens.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Hyperlinks" FOLDED="true" ID="Freeplane_Link_203858515" CREATED="1270892460675" MODIFIED="1275001896255" COLOR="#407000">
+<node ID="ID_959010942" CREATED="1270892460676" MODIFIED="1275057777549">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Hyperlinks</b>&#160;k&#246;nnen auf folgende <b>Objekte verweisen</b>:
+    </p>
+    <p>
+      &#160;- Internetseiten
+    </p>
+    <p>
+      &#160;- E-Mail Adressen
+    </p>
+    <p>
+      &#160;- Dateien auf dem Computer
+    </p>
+    <p>
+      &#160;- Andere Knoten in einer MindMap
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_745700749" CREATED="1270892460675" MODIFIED="1275000970889">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen <b>Hyperlink hinzuzuf&#252;gen</b>&#160;verwende &quot;Einf&#252;gen -&gt; Hyperlink (Textfeld)...&quot;, oder dr&#252;cke die Tasten Strg + K.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1001948679" CREATED="1270892460675" MODIFIED="1275336382806">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Einen <b>Hyperlink</b>&#160;kannst Du <b>l&#246;schen</b>, indem Du in dem Dialog, den Du nach &quot;Einf&#252;gen -&gt; Hyperlink (Textfeld)...&quot; siehst den Inhalt des Textfeldes l&#246;schst.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_9407796" CREATED="1270892460675" MODIFIED="1275336418086">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um auf eine <b>E-Mail Adresse</b>&#160;zu <b>verlinken,</b>&#160;muss der Hyperlink folgendes Format haben: mailto:Name@provider.irgendwas (z.B. mailto:don.bonton@supermail.com).
+    </p>
+    <p>
+      Wichtig ist das Wort &quot;mailto:&quot; danach mu&#223; eine g&#252;ltige E-Mail Adresse folgen.
+    </p>
+  </body>
+</html>
+</richcontent>
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="Um einen Knoten kursiv darzustzellen, dr&#xfc;cken Sie &apos;Strg&apos;  + &apos;I&apos;." ID="Freeplane_Link_603057469">
-<edge WIDTH="thin"/>
+<node ID="ID_1116507628" CREATED="1270892460676" MODIFIED="1275336454432">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bei einer <b>E-Mail Adresse mit Betreff</b>&#160;muss nach dem Empf&#228;nger der String &quot;?subject=&quot; und dann der Betreff folgen wie z.B. mailto:don.bonton@supermail.com?subject=Last phone call.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1159570525" CREATED="1270894120878" MODIFIED="1275336526220">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um eine <b>Datei</b>&#160;zu <b>verlinken,</b>&#160;verwende &quot;Einf&#252;gen -&gt; Hyperlink (Dateiauswahl)...&quot;
+    </p>
+    <p>
+      oder dr&#252;cke die Tasten Strg + Shift + K.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1153372393" CREATED="1271979133506" MODIFIED="1275336579998">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Einen <b>Knoten</b>&#160;kannst du wie folgt <b>verlinken</b>:
+    </p>
+    <p>
+      - Aktiviere zuerst den Knoten, von dem Du verlinken willst.
+    </p>
+    <p>
+      - Dr&#252;cke dann Shift und w&#228;hle den Knoten auf den Du den Link setzen willst.
+    </p>
+    <p>
+      - Danach w&#228;hle &quot;Einf&#252;gen -&gt; Lokalen Hyperlink hinzuf&#252;gen&quot;.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Icons" FOLDED="true" ID="Freeplane_Link_1044397139" CREATED="1270892460676" MODIFIED="1275001888216" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Um die Textfarbe eines Knotens zu &#xe4;ndern, dr&#xfc;cken Sie &apos;Alt&apos; + &apos;C&apos;." ID="Freeplane_Link_1078339400">
 <edge WIDTH="thin"/>
-<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="Ein Knoten kann mehrere Icons haben." ID="ID_1983709741" CREATED="1270892460676" MODIFIED="1275001921496"/>
+<node ID="ID_1126175660" CREATED="1270892460676" MODIFIED="1275336633204">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um <b>Icons</b>&#160;zu einem <b>Knoten hinzuzuf&#252;gen</b>, w&#228;hle den Knoten aus und klicke auf ein Icon in der Icon-Symbolleiste auf der linken Seite.
+    </p>
+    <p>
+      W&#228;hrend Du die Maus zur Toolbar bewegst ist es ratsam, die Alt oder die Strg-Taste gedr&#252;ckt zu halten, um den Fokus auf den Knoten nicht zu verlieren.
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
-<node TEXT="Um die Hintergrundfarbe eines Knotens zu &#xe4;ndern, gehen Sie im Kontextmen&#xfc; &#xfc;ber &apos;Format&apos; und benutzen im erscheinenden Untermen&#xfc; &apos;Knotenhintergrundfarbe...&apos;." ID="Freeplane_Link_1354097122"/>
-<node TEXT="Um Knotenschrift zu vergr&#xf6;&#xdf;ern, dr&#xfc;cken Sie &apos;Strg&apos; + &apos;+&apos; (nicht &apos;+&apos; auf dem Ziffernblock)." ID="Freeplane_Link_1451037982">
-<edge WIDTH="thin"/>
-<font NAME="SansSerif" SIZE="12"/>
+<node ID="ID_1703076068" CREATED="1270892460676" MODIFIED="1275002288608">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Das <b>erste Icon entfernst</b>&#160;Du, indem Du auf den Button ganz oben in der Icon-Symbolleiste klickst (mit dem roten Kreuz).
+    </p>
+  </body>
+</html></richcontent>
 </node>
-<node TEXT="Um Knotenschrift zu verkleinern, dr&#xfc;cken Sie &apos;Strg&apos; + &apos;-&apos; (nicht &apos;-&apos; auf dem Ziffernblock)." ID="Freeplane_Link_495010614">
-<edge WIDTH="thin"/>
-<font NAME="SansSerif" SIZE="12"/>
+<node ID="ID_1240276527" CREATED="1270892460676" MODIFIED="1275002420456">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um <b>alle Icons</b>&#160;eines Knotens zu <b>l&#246;schen</b>, klicke auf den dritten Button von oben in der Icon-Symbolleiste (Abfalleimer).
+    </p>
+  </body>
+</html></richcontent>
 </node>
-<node TEXT="Um die Schrift zu wechseln, benutzen Sie das Auswahlfeld in der Hauptfunktionsleiste." ID="Freeplane_Link_1919677998"/>
-<node TEXT="Zum Kopieren der Formatierungen eines Knotens dr&#xfc;cken Sie &apos;Alt&apos; + &apos;C&apos;." ID="Freeplane_Link_1270201498"/>
-<node TEXT="Um Formatierungen auf einen Knoten zu kopieren, dr&#xfc;cken Sie &apos;Alt&apos; + &apos;V&apos;." ID="Freeplane_Link_757233589"/>
+<node ID="ID_911756077" CREATED="1270892460676" MODIFIED="1275002517867">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst <b>neue Icons</b>&#160;auch &#252;ber das Icons-Men&#252; oder mit Strg + F2 <b>einf&#252;gen</b>, anstatt die Icon-Symbolleiste zu verwenden.
+    </p>
+  </body>
+</html></richcontent>
 </node>
-<node TEXT="Stile benutzen" FOLDED="true" POSITION="right" ID="Freeplane_Link_526328879" COLOR="#407000">
-<node TEXT="Um einen Stil auf einen Knoten anzuwenden, w&#xe4;hlen Sie ihn im Kontextmen&#xfc; &#xfc;ber den Eintrag &apos;Stile&apos; aus. Um die Anwendung von Stilen zu beschleunigen, verwenden Sie die im Knoten-Kontextmen&#xfc; gezeigten Tastaturk&#xfc;rzel." ID="Freeplane_Link_1212727626"/>
-<node TEXT="Als technisch versierter Anwender bearbeiten Sie die Datei &apos;patterns.xml&apos; im Ordner &apos;.freeplane&apos; Ihres Heimatverzeichnisses, um Ihren eigenen Stil hinzuzuf&#xfc;gen." ID="Freeplane_Link_32969878"/>
-<node TEXT="[Diese Hilfe ist veraltet.] Eine Anmerkung zur Datei &apos;patterns.xml&apos; folgt: Ein Stil ist auf einen Knoten anwendbar, wenn er eine &lt;node&gt;-Auszeichnung enth&#xe4;lt. Er ist auf einen Bogen (eine Kante) anwendbar, wenn er eine &lt;edge&gt;-Auszeichnung enth&#xe4;lt. &lt;node&gt;-Auszeichnungen k&#xf6;nnen -Auszeichnungen enthalten. Studieren Sie die mit Freeplane gelieferte Datei &apos;patterns.xml&apos;." ID="Freeplane_Link_159180814"/>
+<node ID="ID_537134358" CREATED="1270892460676" MODIFIED="1275002684010">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wenn Du <b>eigene Icons</b>&#160;verwenden willst musst Du die Dateien im Freeplane-Verzeichnis im Unterverzeichnis &quot;Icons&quot; ablegen wie z.B. (Linux)&#160;&#160;~/.freeplane/icons/myicon.png
+    </p>
+  </body>
+</html></richcontent>
 </node>
-<node TEXT="Knoten durch Wolken hervorheben" FOLDED="true" POSITION="right" ID="Freeplane_Link_1697687428" COLOR="#407000">
-<node TEXT="Wolken sind gut geeignet, um einen Bereich hervorzuheben. Der Knoten und alle seine Unterknoten werden hervorgehoben." ID="Freeplane_Link_243451486"/>
-<node TEXT="Um eine Wolke hinzuzuf&#xfc;gen, dr&#xfc;cken Sie &apos;Strg&apos; + Umschalttaste + &apos;B&apos;. Oder w&#xe4;hlen Sie &apos;Wolke&apos; &#xfc;ber den Kontextmen&#xfc;punkt &apos;Einf&#xfc;gen&apos;." ID="Freeplane_Link_1187374691"/>
-<node TEXT="Um die Wolkenfarbe zu &#xe4;ndern, w&#xe4;hlen Sie &apos;Wolkenfarbe...&apos; &#xfc;ber das Knoten-Kontextmen&#xfc; &apos;Format&apos;." ID="Freeplane_Link_1484701485"/>
-<node TEXT="Wolken k&#xf6;nnen &#xfc;ber verschiedene Hintergrundfarben verf&#xfc;gen: gr&#xfc;n ... " FOLDED="true" ID="Freeplane_Link_1602094025">
-<cloud COLOR="#e1f2e1" WIDTH="0"/>
-<node TEXT="... oder braun." ID="Freeplane_Link_362994334">
-<cloud COLOR="#ede5d5" WIDTH="0"/>
+<node ID="ID_250751508" CREATED="1270892460677" MODIFIED="1275002761054">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Die <b>Icon-Symbolleiste</b>&#160;kannst Du &#252;ber &quot;Ansicht -&gt; Icon-Symbolleiste&quot; <b>ein- und ausblenden</b>.
+    </p>
+  </body>
+</html></richcontent>
 </node>
-</node>
-</node>
-<node TEXT="Querverweis hinzuf&#xfc;gen" FOLDED="true" POSITION="right" ID="Freeplane_Link_203858515" COLOR="#407000">
-<node TEXT="Um zu einem Knoten einen Querverweis (Hyperlink) hinzu zu f&#xfc;gen, dr&#xfc;cken Sie &apos;Strg&apos; + &apos;K&apos; oder w&#xe4;hlen Sie &apos;Querverweis&apos; &#xfc;ber den Knoten-Kontextmen&#xfc;punkt &apos;Einf&#xfc;gen&apos;." ID="Freeplane_Link_1867388527"/>
-<node TEXT="Um einen Querverweis zu entfernen, l&#xf6;schen Sie ihn, nachdem Sie mit &apos;Strg&apos; + &apos;K&apos; seine Bearbeitung aufgerufen haben." ID="Freeplane_Link_743396731"/>
-<node TEXT="Um auf eine eMail-Adresse zu verweisen, setzen Sie den Querverweis als mailto:don.bonton@supermail.com.&#xa;--------&#xa;Wobei Sie anstatt don.bonton@supermail.com nat&#xfc;rlich die von Ihnen gew&#xfc;nschte eMail-Adresse eintragen." ID="Freeplane_Link_1897919343">
-<edge WIDTH="thin"/>
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Um auf eine eMail-Adresse zu verweisen und gleich einen Betreff f&#xfc;r die eMail mitzugeben,&#xa;setzen Sie den Querverweis in folgender Form: mailto:don.bonton@supermail.com?subject=Last phone call.&#xa;--------&#xa;Wobei Sie anstatt don.bonton@supermail.com ebenfalls die von Ihnen gew&#xfc;nschte eMail-Adresse und&#xa;anstatt Last phone call den von Ihnen gew&#xfc;nschten Betreff eintragen." ID="Freeplane_Link_1054419207"/>
-<node TEXT="Querverweise k&#xf6;nnen Knoten mit Seiten im Internet, lokalen (oder Netzwerk-) Dateien oder eMail-Adressen verbinden.&#xa;--------&#xa;Anm.d.&#xdc;.&#xa;Dar&#xfc;berhinaus k&#xf6;nnen Sie ausf&#xfc;hrbare Programme verkn&#xfc;pfen und dann durch klicken auf den Verweis starten." ID="Freeplane_Link_1753886221"/>
-</node>
-<node TEXT="Piktogramme hinzuf&#xfc;gen." FOLDED="true" POSITION="right" ID="Freeplane_Link_1044397139" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Ein Knoten kann &#xfc;ber mehrere Piktogramme (Icons) verf&#xfc;gen." ID="Freeplane_Link_1013069736"/>
-<node TEXT="Um einen Knoten um Piktogramme zu erg&#xe4;nzen, w&#xe4;hlen Sie einen Knoten und klicken dann auf eines der Piktogramme, die Sie auf der Werkzeugleiste am linken Fensterrand sehen. W&#xe4;hrend Sie den Mauszeiger zur linken Werkzeugleiste bewegen, halten Sie die &apos;Alt&apos;-Taste oder die &apos;Strg&apos;-Taste gedr&#xfc;ckt, damit der gew&#xe4;hlte Knoten nicht den Focus verliert." ID="Freeplane_Link_1095906947"/>
-<node TEXT="Um ein Piktogramm wieder zu entfernen, klicken Sie auf das rote Kreuz oben auf der Piktogrammleiste.&#xa;--------&#xa;Anm.d.&#xdc;.&#xa;Es wird jeweils das zuletzt dem Knoten hinzugef&#xfc;gte Piktogramm gel&#xf6;scht." ID="Freeplane_Link_1330122246"/>
-<node TEXT="Um alle Piktogramme zu entfernen, klicken Sie auf das M&#xfc;lleimersymbol oben auf der Piktogrammleiste." ID="Freeplane_Link_368603077"/>
-<node TEXT="Um den gew&#xe4;hlten Knoten um ein Piktogramm zu erg&#xe4;nzen, ohne die Piktogrammleiste am linken Fensterrand zu benutzen, dr&#xfc;cken Sie &apos;Alt&apos; + &apos;I&apos;." ID="Freeplane_Link_1783760244"/>
-<node TEXT="Es gibt keine Option zum Einbinden eigener Piktogramme. Sie k&#xf6;nnen nur aus dem Piktogrammangebot von Freeplane w&#xe4;hlen." ID="Freeplane_Link_77776944"/>
-<node TEXT="Um die Piktogrammleiste zu verstecken oder anzuzeigen, w&#xe4;hlen Sie im Kontextmen&#xfc; des Hauptfensterhintergrunds &apos;Werkzeugmen&#xfc; links ein/aus&apos;." ID="Freeplane_Link_141235885"/>
-<node TEXT="Freeplane stellt Ihnen unter anderen die Piktogramme&#xa; dieses Knotens zur Verf&#xfc;gung." ID="Freeplane_Link_291398994">
+<node TEXT="Dieser Knoten zeigt ein paar Icons, die in Freeplane bereits enthalten sind" ID="ID_1664464562" CREATED="1270892460677" MODIFIED="1275002814023">
 <icon BUILTIN="help"/>
 <icon BUILTIN="messagebox_warning"/>
 <icon BUILTIN="idea"/>
@@ -569,7 +1906,6 @@
 <icon BUILTIN="gohome"/>
 <icon BUILTIN="kaddressbook"/>
 <icon BUILTIN="knotify"/>
-<icon BUILTIN="icon_not_found"/>
 <icon BUILTIN="Mail"/>
 <icon BUILTIN="password"/>
 <icon BUILTIN="pencil"/>
@@ -580,279 +1916,312 @@
 <icon BUILTIN="bookmark"/>
 <icon BUILTIN="penguin"/>
 <icon BUILTIN="licq"/>
+<icon BUILTIN="full-1"/>
+<icon BUILTIN="full-2"/>
+<icon BUILTIN="0%"/>
+<icon BUILTIN="25%"/>
+<icon BUILTIN="50%"/>
+<icon BUILTIN="75%"/>
+<icon BUILTIN="100%"/>
+</node>
+<node ID="ID_26845444" CREATED="1271096826323" MODIFIED="1275336861376">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &quot;Format -&gt; Hierarchische Icons&quot; zeigt in jedem Knoten auch alle Icons an, die seine Nachfahren haben.
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="Graphische Verweise hinzuf&#xfc;gen" FOLDED="true" POSITION="right" ID="_Freeplane_Link_1996597932" COLOR="#407000">
-<node TEXT="Um einen graphischen Verweis zwischen zwei Knoten zu erzeugen, ziehen Sie mit gedr&#xfc;ckter, linker Maustaste einen Knoten auf einen anderen, w&#xe4;hrend Sie die Umschalt-Taste und die &apos;Strg&apos;-Taste gleichzeitig gedr&#xfc;ckt halten. Beachten Sie, da&#xdf; Sie am Ziel die Maustaste vor den Tasten Umschalt und &apos;Strg&apos; loslassen." ID="Freeplane_Link_1579462759">
+<node TEXT="Notizen" FOLDED="true" ID="ID_774913271" CREATED="1271096054547" MODIFIED="1275003022058" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node ID="ID_1515176011" CREATED="1271096065323" MODIFIED="1275003189553">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst an einen Knoten eine Notiz anh&#228;ngen,
+    </p>
+    <p>
+      die Du wie im externen Editor bearbeiten kannst.
+    </p>
+  </body>
+</html></richcontent>
+<richcontent TYPE="NOTE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b><font color="#fc0b0b"><u>Dieser Knoten hat eine Notiz.</u></font></b>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1163876330" CREATED="1271096088819" MODIFIED="1275336894289">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Den Text kannst Du im Notizeditor anschauen und bearbeiten.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_510313925" CREATED="1271096117483" MODIFIED="1275003430688">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst mit &quot;Bearbeiten -&gt; Wechsel Notiz &lt;-&gt; Knoten&quot; oder mit der Tastenkombination
+    </p>
+    <p>
+      Strg + &lt; zwischen dem <b>Notiz-Editor</b>&#160;und der <b>MindMap wechseln</b>.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1710319301" CREATED="1271096150723" MODIFIED="1275003679320">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Der Notiz-Editor kann mit &quot;Ansicht -&gt; Position des Notiz- Editors&quot;
+    </p>
+    <p>
+      auf jede <b>Seite des Fensters verschoben</b>&#160;werden.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Konnektoren" FOLDED="true" ID="_Freeplane_Link_1996597932" CREATED="1270892460679" MODIFIED="1275057825521" COLOR="#407000">
+<node TEXT="Als Konnektor bezeichnet man graphische Verweise zwischen Knoten. Man kann sie verwenden, um Zusammenh&#xe4;nge zu visualisieren, die sich nicht durch die Hierarchie darstellen lassen." ID="ID_1288965487" CREATED="1275057915312" MODIFIED="1275336996023"/>
+<node ID="ID_985897417" CREATED="1270892460679" MODIFIED="1275336995821">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst einen <b>Konnektor</b>&#160;zwischen zwei Knoten <b>mit drag and drop erzeugen</b>, indem Du
+    </p>
+    <p>
+      einen Knoten &#252;ber den anderen ziehst und beim Loslassen die Tasten Strg + Shift gedr&#252;ckt h&#228;lst.
+    </p>
+  </body>
+</html></richcontent>
 <arrowlink DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="255;0;" ENDINCLINATION="255;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node TEXT="Altenativ ziehen Sie den einen Knoten mit gedr&#xfc;ckter, rechter Maustaste auf den anderen." ID="Freeplane_Link_1041595722"/>
-<node TEXT="Um die Farbe des Verweises zu &#xe4;ndern, benutzen Sie das Kontextmen&#xfc; indem Sie mausrechts auf den graphischen Verweis klicken." ID="_Freeplane_Link_208378337"/>
-<node TEXT="Benutzen Sie ebenfalls das Kontextmen&#xfc;, um die Richtungspfeile des Verweises zu &#xe4;ndern" ID="_Freeplane_Link_1484370636"/>
-<node TEXT="oder um den Verweis zu l&#xf6;schen." ID="Freeplane_Link_239549374"/>
-<node TEXT="Auch um zu einem der Endknoten des graphischen Verweises zu steuern, benutzen Sie das Kontextmen&#xfc;." ID="_Freeplane_Link_266716332"/>
-<node TEXT="Um Anlenkpunkt und Verlauf eines graphischen Verweises zu &#xe4;ndern, fassen Sie ihn mit der Maus (mauslinks gedr&#xfc;ckt halten) und bewegen ihn." ID="_Freeplane_Link_1015289745">
+<node ID="ID_1564001222" CREATED="1270892460679" MODIFIED="1275058502752">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Alternativ kannst Du einen <b>Konnektor erzeugen</b>, indem du zwei Knoten mit der Strg-Taste
+    </p>
+    <p>
+      &#160;markierst und dann &quot;Einf&#252;gen -&gt; Konnektor hinzuf&#252;gen&quot; aus dem Men&#252; w&#228;hlst, oder die
+    </p>
+    <p>
+      Tastenkombination Strg + L dr&#252;ckst.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="_Freeplane_Link_208378337" CREATED="1270892460679" MODIFIED="1275058746447">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Die <b>Farbe</b>&#160;eines <b>Konnektors</b>&#160;kannst Du im Kontextmen&#252; des Konnektors <b>&#228;ndern</b>. Mache dazu
+    </p>
+    <p>
+      &#160;einen Rechtsklick auf den Konnektor (Mac OS X: Strg + klick) und w&#228;hle &quot;Farbe des Konnektors&quot; .
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="_Freeplane_Link_1484370636" CREATED="1270892460679" MODIFIED="1275061916843">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Im Kontextmen&#252; des Konnektors (Rechtsklick auf Konnektor) kannst
+    </p>
+    <p>
+      Du auch die <b>Pfeile</b>&#160;des <b>Konnektors</b>&#160;&#228;ndern.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_469749659" CREATED="1270894208830" MODIFIED="1275062032926">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Die <b>Beschriftung</b>&#160;des <b>Konnektors</b>&#160;kannst Du im Kontextmen&#252; des
+    </p>
+    <p>
+      Konnektors (Rechtsklick auf Konnektor) &#228;ndern.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1970882825" CREATED="1270892460679" MODIFIED="1275062182297">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wenn Du einen <b>Konnektor l&#246;schen</b>&#160;willst kannst Du das in dessen
+    </p>
+    <p>
+      Kontextmen&#252; (Rechtsklick auf den Konnektor) tun.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="_Freeplane_Link_266716332" CREATED="1270892460679" MODIFIED="1275062350499">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Im Kontextmen&#252; des Konnektors (Rechtsklick auf den Konnektor)
+    </p>
+    <p>
+      kannst Du an den <b>Anfangs-</b>&#160;bzw. <b>Endknoten</b>&#160;des <b>Konnektors navigieren</b>.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="_Freeplane_Link_1015289745" CREATED="1270892460679" MODIFIED="1275062530830">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Die <b>Richtung des Pfeiles</b>&#160;kannst Du <b>&#228;ndern</b>, indem Du auf&#160;den Konnektor
+    </p>
+    <p>
+      klickst und dann bei gedr&#252;ckter linker Maustaste den Cursor bewegst.
+    </p>
+  </body>
+</html></richcontent>
 <arrowlink DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="244;32;" ENDINCLINATION="256;22;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node TEXT="Ein Beispiel f&#xfc;r einen graphischen Verweis folgt:" ID="Freeplane_Link_770378678"/>
-<node TEXT="Beispiel" FOLDED="true" ID="Freeplane_Link_933788911" COLOR="#996600">
-<node TEXT="Verweis zu einem anderen Teil" ID="_Freeplane_Link_1170112929" COLOR="#996600">
-<arrowlink COLOR="#9999ff" DESTINATION="_Freeplane_Link_1492563156" STARTINCLINATION="30;0;" ENDINCLINATION="115;0;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
-</node>
-<node TEXT="Knoten mit eingefaltetem Unterknoten" FOLDED="true" ID="Freeplane_Link_313185549" COLOR="#996600">
-<node TEXT="Unterknoten" ID="_Freeplane_Link_1492563156"/>
-</node>
-<node TEXT="Ein anderer Verweis" ID="_Freeplane_Link_1370577235" COLOR="#996600">
-<arrowlink DESTINATION="_Freeplane_Link_1170112929" STARTINCLINATION="61;0;" ENDINCLINATION="61;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-</node>
-</node>
-<node TEXT="Suchen" FOLDED="true" POSITION="right" ID="Freeplane_Link_423038022" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Um Text in einem Knoten und all seinen Unterknoten (Kinderknoten) zu finden, dr&#xfc;cken Sie &apos;Strg&apos; + &apos;F&apos;." ID="Freeplane_Link_58565005">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Um den n&#xe4;chster Treffer zum letzten Suchauftrag zu finden (Weitersuchen), dr&#xfc;cken Sie &apos;Strg&apos; + &apos;G&apos;." ID="Freeplane_Link_1818129679">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Um den kompletten Baum zu durchsuchen, w&#xe4;hlen Sie vor Ihrer Suche den zentralen Knoten des Baums indem Sie &apos;Esc&apos; dr&#xfc;cken." ID="Freeplane_Link_205223436"/>
-<node TEXT="Die Suche l&#xe4;uft nach einem breitenorientierten Suchverfahren ab. Dies entspricht der Idee, da&#xdf;, je tiefer ein Knoten liegt, umso Detaillierteres dort beschrieben ist." ID="Freeplane_Link_599030968"/>
-<node TEXT="Bedenken Sie, da&#xdf; stets nur der aktuell gew&#xe4;hlte Knoten und seine Unterknoten durchsucht werden." ID="Freeplane_Link_484869271"/>
-</node>
-<node TEXT="Mehrere Knoten markieren" FOLDED="true" POSITION="right" ID="Freeplane_Link_653540280" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Um mehrere Knoten gleichzeitig zu markieren, halten Sie die &apos;Strg&apos;-Taste oder die Umschalt-Taste gedr&#xfc;ckt, w&#xe4;hrend Sie auf einen Knoten klicken. " ID="Freeplane_Link_122913446">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Um den bereits markierten Knoten weitere hinzuzuf&#xfc;gen, halten Sie die &apos;Strg&apos;-Taste gedr&#xfc;ckt, w&#xe4;hrend Sie auf die zus&#xe4;tzlich zu markierenden Knoten klicken." ID="Freeplane_Link_1602740822">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Um eine fortlaufende Reihe Knoten zu markieren, halten Sie beim Klicken die Umschalt-Taste gedr&#xfc;ckt, oder Sie halten die Umschalt-Taste gedr&#xfc;ckt und bewegen sich mit den Pfeil-Tasten (Cursor-Tasten) im Baum." ID="Freeplane_Link_42219870">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Um einen kompletten Unterbaum zu markieren, halten Sie die &apos;Alt&apos;-Taste gedr&#xfc;ckt, w&#xe4;hrend Sie Klicken. Oder Sie halten die Umschalt-Taste gedr&#xfc;ckt, w&#xe4;hrend Sie sich mit den Pfeil-Tasten von einem Knoten zu seinem Elternknoten bewegen." ID="Freeplane_Link_1517301568"/>
-<node TEXT="Um die Markierung mehrerer Knoten aufzuheben, klicken Sie in den Fensterhintergrund oder auf einen nicht markierten Knoten." ID="Freeplane_Link_1762513974"/>
-<node TEXT="Um alle sichtbaren Knoten zu markieren, w&#xe4;hlen Sie im Hauptmen&#xfc; &apos;Bearbeiten&apos; den Punkt &apos;Alles markieren&apos;, oder Sie dr&#xfc;cken die Tastenkombination &apos;Strg&apos; + &apos;A&apos;." ID="Freeplane_Link_1915988288"/>
-<node TEXT="Um alle sichtbaren Knoten eines Zweiges zu markieren, w&#xe4;hlen Sie im Hauptmen&#xfc; &apos;Bearbeiten&apos; den Punkt &apos;Zweig markieren&apos;, oder Sie dr&#xfc;cken die Tastenkombination &apos;Strg&apos; + Umschalt + &apos;A&apos;." ID="Freeplane_Link_476976996"/>
-</node>
-<node TEXT="Drag and drop - Ziehen und Fallenlassen" FOLDED="true" POSITION="right" ID="Freeplane_Link_1024903226" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="--------&#xa;Anm.d.&#xdc;.&#xa;Drag and Drop bedeutet: Mit gedr&#xfc;ckter Maustaste - in der Regel die linke - etwas aufzunehmen, zum gew&#xfc;nschten Ziel zu ziehen und es dort durch Loslassen der Maustaste fallen zu lassen." ID="Freeplane_Link_159607929"/>
-<node TEXT="Durch Ziehen und Fallenlassen (drag and drop) k&#xf6;nnen Sie Knoten im Baum neu positionieren." ID="Freeplane_Link_1497093408">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Um einen aufgenommenen Knoten als Unterknoten wieder einzuf&#xfc;gen, positionieren Sie den Mauszeiger im seitlichen Randbereich des k&#xfc;nftigen Elternknotens und lassen die Maustaste los.&#xa;--------&#xa;Anm.d.&#xdc;.&#xa;Achten Sie beim Positionieren auf die Farbverlaufs&#xe4;nderungen. Zum Einf&#xfc;gen als Unterknoten mu&#xdf; der in entgegengesetzter Richtung zur Baumwurzel befindliche seitliche Bereich des k&#xfc;nftigen Elternknotens durch Farbverlauf unterlegt sein. " ID="Freeplane_Link_374323949">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Um einen aufgenommenen Knoten als Geschwisterknoten einzuf&#xfc;gen, positionieren Sie den Mauszeiger im oberen Bereich des Zielknotens und lassen die Maustaste los.&#xa;--------&#xa;Anm.d.&#xdc;.&#xa;Achten Sie beim Positionieren auch hier auf die Farbverlaufs&#xe4;nderungen. Zum Einf&#xfc;gen als Geschwisterknoten mu&#xdf; der obere Bereich des angesteuerten Zielknotens durch Farbverlauf unterlegt sein. " ID="Freeplane_Link_1069770199">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Um eine vorhandene MindMap zu bearbeiten, nehmen Sie die MaindMap-Datei mit der Maus auf, ziehen die Datei in das Freeplane-Hauptfenster und lassen die Maustaste los. Dies funktioniert in Microsoft Windows und anderen Betriebssystemen mit daf&#xfc;r eingerichteten Benutzerschnittstellen." ID="Freeplane_Link_1628702212"/>
-<node TEXT="Um einen graphischen Verweis zwischen zwei Knoten zu erzeugen, ziehen Sie den einen Knoten mit gedr&#xfc;ckter rechter Maustaste auf den anderen und lassen ihn dort fallen." ID="Freeplane_Link_1940236238"/>
-<node TEXT="Wenn Sie mehrere Knoten markiert haben, werden alle bewegt bzw. kopiert." ID="Freeplane_Link_849732842">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Freeplane unterst&#xfc;tzt allgemein (je nach genutzter Betriebssystemplattform) die Daten&#xfc;bernahme aus externen Programmen durch den drag-and-drop Machanismus, z. B. Dateien unter Microsoft Windows oder markierten Text von einer besuchten Internetseite. " ID="Freeplane_Link_873938281"/>
-</node>
-<node TEXT="Kopieren und Einf&#xfc;gen" FOLDED="true" POSITION="right" ID="Freeplane_Link_958781924" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Wie erwartet, k&#xf6;nnen Sie Knoten(gruppen) zwischen MindMaps kopieren und einf&#xfc;gen. Dar&#xfc;berhinaus ist es m&#xf6;glich, normalen Text oder HTML-Code aus anderen Programmen einzuf&#xfc;gen." ID="Freeplane_Link_1005190166">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Wenn Sie einfachen Text einf&#xfc;gen, werden mehrere Zeilen als mehrere Knoten eingef&#xfc;gt, wobei die resultierende Schachteltiefe durch die Anzahl f&#xfc;hrender Leerzeichen der einzuf&#xfc;genden Textzeilen bestimmt wird. Ein Beispiel folgt: " ID="Freeplane_Link_969081683"/>
-<node TEXT="Baum&#xa;     Eiche&#xa;     Buche&#xa;     " FOLDED="true" ID="Freeplane_Link_1681138405" COLOR="#996600">
-<node TEXT="wird eingef&#xfc;gt als" FOLDED="true" ID="Freeplane_Link_1554374196">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Baum" FOLDED="true" ID="Freeplane_Link_655988402" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Eiche" ID="Freeplane_Link_397183524" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Buche" ID="Freeplane_Link_443099731" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-</node>
-</node>
-<node TEXT="Wenn Sie HTML-Code einf&#xfc;gen, wird er als reiner Text eingef&#xfc;gt. Au&#xdf;erdem werden die im HTML-Code eingebetteten Verweise als Unterknoten eines zus&#xe4;tzlich erstellten Geschwisterknotens mit dem Text &quot;Links&apos; eingef&#xfc;gt und korrekt verschaltet. Wieder folgt ein Beispiel:" ID="Freeplane_Link_1398775173"/>
-<node TEXT="Beispielresultat nach dem Einf&#xfc;gen:" FOLDED="true" ID="Freeplane_Link_1302692231">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Shopping (120236)" ID="ID_1996851838">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Urban Living (19)" ID="ID_1262526333">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Links" FOLDED="true" ID="Freeplane_Link_1087432743">
-<font NAME="Dialog" SIZE="12" BOLD="true"/>
-<node TEXT="Shopping" ID="ID_815413499" LINK="http://directory.google.com/Top/Shopping/">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Urban Living" ID="ID_1050827770" LINK="http://directory.google.com/Top/Home/Urban_Living/">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-</node>
-<node TEXT="Wenn Sie eine im Explorer von Microsoft Windows markierte Dateiliste einf&#xfc;gen, wird diese als ein Satz von Verweisen auf die Dateien eingef&#xfc;gt." ID="Freeplane_Link_1647505590"/>
-<node TEXT="Wenn Sie in Freeplane einen Ast kopieren und ihn in einen einfachen Texteditor einf&#xfc;gen, wird die Baumstruktur durch Einr&#xfc;cken angezeigt. Querverweise werden in spitzen Klammern (&apos;&lt;&apos; und &apos;&gt;&apos;) eingef&#xfc;gt. Auch hier ein Beispiel:" ID="Freeplane_Link_1162068016"/>
-<node TEXT="Baum" FOLDED="true" ID="Freeplane_Link_468964192" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Eiche" ID="Freeplane_Link_290281774" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Buche" FOLDED="true" ID="Freeplane_Link_783362010" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="wird eingef&#xfc;gt als" FOLDED="true" ID="Freeplane_Link_1836799409">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Baum&#xa;     Eiche&#xa;     Buche&#xa;     Google &lt;http://www.google.com/&gt;&#xa;" ID="Freeplane_Link_1113784744" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-</node>
-<node TEXT="Google" ID="ID_1010335804" COLOR="#996600" LINK="http://www.google.com/">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Wenn Sie einen Zweig aus Freeplane kopieren und f&#xfc;gen ihn in eine Textverarbeitung ein, die das Rich-Text-Format (RTF) beherrscht, wird die Formatierung enschlie&#xdf;lich Farbe und Schrift mit &#xfc;bernommen. Querverweise werden in spitzen Klammern (&apos;&lt;&apos; und &apos;&gt;&apos;) eingef&#xfc;gt, genau wie beim Einf&#xfc;gen in einen einfachen Texteditor. Editoren die das Rich-Text-Format (RTF) beherrschen sind zum Beispiel Microsoft Word, OpenOffice.org, Microsoft Outlook und vergleichbare Programme unter LINUX. " ID="Freeplane_Link_1886459567"/>
-<node TEXT="Um einen Knoten ohne Unterknoten zu kopieren, dr&#xfc;cken Sie die Tastenkombination &apos;Strg&apos; + Umschalt + &apos;C&apos; oder benutzen Sie &apos;Einfach kopieren&apos; im Kontextmen&#xfc; des Knotens." ID="Freeplane_Link_533970740"/>
-</node>
-<node TEXT="Sich im Baum bewegen" FOLDED="true" POSITION="right" ID="_Freeplane_Link_1540212684" COLOR="#407000">
-<node TEXT="Um den Focus nach oben, unten, links oder rechts zu bewegen, benutzen Sie die Pfeil-Tasten (Cursor-Tasten)." ID="Freeplane_Link_1039715110"/>
-<node TEXT="Um zum Anfang des aktuellen Teilbaums zu gelangen, dr&#xfc;cken Sie die Bild-aufw&#xe4;rts-Taste." ID="Freeplane_Link_629214166"/>
-<node TEXT="Um zum Ende des aktuellen Teilbaums zu gelangen, dr&#xfc;cken Sie die Bild-abw&#xe4;rts-Taste." ID="Freeplane_Link_940904871"/>
-<node TEXT="Um zum Wuzelknoten des gesamten Baums zu gelangen, dr&#xfc;cken Sie &apos;Esc&apos;." ID="Freeplane_Link_261166838"/>
-<node TEXT="Um einen Knoten frei zu positionieren, packen Sie ihn an seinem unsichtbaren, seitlich in Richtung Baumwurzel gelegenen Griff und bewegen ihn." ID="_Freeplane_Link_97763226"/>
-</node>
-<node TEXT="Falten und Entfalten" FOLDED="true" POSITION="right" ID="Freeplane_Link_4727471" COLOR="#407000">
-<node TEXT="Um einen Knoten zu falten, dr&#xfc;cken Sie die Leer-Taste, oder w&#xe4;hlen Sie &apos;Knoten falten/entfalten&apos; in seinem Kontextmen&#xfc;." ID="Freeplane_Link_1498138240"/>
-<node TEXT="Um einen Knoten zu entfalten, dr&#xfc;cken Sie die Leer-Taste, w&#xe4;hlen Sie &apos;Konten falten/entfalten&apos; in seinem Kontextmen&#xfc; oder dr&#xfc;cken Sie die in Richtung des Entfaltens weisende Pfeil-Taste." ID="Freeplane_Link_1235309171"/>
-<node TEXT="Um Knoten in Ebenen zu falten und zu entfalten, halten Sie die &apos;Alt&apos;-Taste gedr&#xfc;ckt, w&#xe4;hrend Sie am Mausrad drehen oder Sie benutzen die Tastenkombinationen &apos;Alt&apos; + Bild-aufw&#xe4;rts und &apos;Alt&apos; + Bild-abw&#xe4;rts. Benutzen Sie diese Funktion mit gro&#xdf;en MindMaps vorsichtig, sie kann zu Problemen wegen zu geringem Arbeitsspeicher f&#xfc;hren." ID="Freeplane_Link_1372375256"/>
-<node TEXT="Um alles zu entfalten, klicken Sie auf den grauen Plus-Knopf in der Hauptwerkzeugleiste, w&#xe4;hlen Sie im Hauptmen&#xfc; &apos;Navigieren&apos; den Eintrag  &apos;Alles aufklappen&apos; oder nutzen Sie die Tastenkombination &apos;Alt&apos; + &apos;Ende&apos;." ID="Freeplane_Link_1585400042"/>
-<node TEXT="Um alles zu falten, klicken Sie auf den grauen Minus-Knopf in der Hauptwerkzeugleiste, w&#xe4;hlen Sie im Hauptmen&#xfc; &apos;Navigieren&apos; den Eintrag &apos;Alles zuklappen&apos; oder nutzen Sie die Tastenkombination &apos;Alt&apos; + &apos;Pos1&apos;." ID="Freeplane_Link_473478105"/>
-<node TEXT="Ein gefalteter (zugeklappter) Knoten ist durch einen kleinen Kreis am nach au&#xdf;en weisenden Ende gekennzeichnet." ID="Freeplane_Link_1346748802"/>
-</node>
-<node TEXT="Zu einer anderen MindMap wechseln" FOLDED="true" POSITION="right" ID="Freeplane_Link_516331171" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Um zu einer anderen, bereits ge&#xf6;ffneten MindMap zu wechseln, klicken Sie mausrechts in den Fensterhintergrund und w&#xe4;hlen die gew&#xfc;nschte MindMap aus dem Kontextmen&#xfc;. " ID="Freeplane_Link_518659766">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Die MindMap verschieben" FOLDED="true" POSITION="right" ID="Freeplane_Link_467411537" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Um die Mindmap im Fenster zu verschieben, klicken Sie mauslinks in den Fensterhintergrund und bewegen Sie die Maus bei gedr&#xfc;ckter Taste. Um die Mindmap vertikal im Fenster zu rollen, benutzen Sie das Mausrad; zum horizontalen Rollen halten Sie dazu noch eine Maustaste oder die Umschalt-Taste gedr&#xfc;ckt." ID="Freeplane_Link_1566079453">
-<edge WIDTH="thin"/>
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Ma&#xdf;stab &#xe4;ndern" FOLDED="true" POSITION="right" ID="Freeplane_Link_913137192" COLOR="#407000">
-<node TEXT="Zum Vergr&#xf6;&#xdf;ern bzw. Verkleinern der Baumansicht drehen Sie das Mausrad bei gedr&#xfc;ckter &apos;Strg&apos;-Taste oder benutzen die Tastenkombinationen &apos;Alt&apos; + Pfeil-aufw&#xe4;rts und &apos;Alt&apos; + Pfeil-abw&#xe4;rts. Alternativ k&#xf6;nnen Sie auch vom Ma&#xdf;stab-Aufklappmen&#xfc; in der Hauptwerkzeugleiste Gebrauch machen." ID="Freeplane_Link_199998612"/>
-</node>
-<node TEXT="R&#xfc;ckg&#xe4;ngig machen" FOLDED="true" POSITION="right" ID="Freeplane_Link_1318678369" COLOR="#407000">
-<node TEXT="Um Ihre letzte Bearbeitung r&#xfc;ckg&#xe4;ngig zu machen, dr&#xfc;cken Sie &apos;Strg&apos; + &apos;Z&apos; oder w&#xe4;hlen Sie &apos;R&#xfc;ckg&#xe4;ngig&apos; im Hauptmen&#xfc; &apos;Bearbeiten&apos;." ID="Freeplane_Link_494136549"/>
-<node TEXT="Um r&#xfc;ckg&#xe4;ngig Gemachtes wiederherzustellen, dr&#xfc;cken Sie &apos;Strg&apos; + &apos;Y&apos; oder w&#xe4;hlen Sie &apos;Wiederherstellen&apos; im Hauptmen&#xfc; &apos;Bearbeiten&apos;." ID="Freeplane_Link_1593613130"/>
-<node TEXT="Um die Anzahl der m&#xf6;glichen Schritte des R&#xfc;ckg&#xe4;ngigmachens festzulegen, rufen Sie &#xfc;ber das Hauptmen&#xfc; &apos;Extras&apos; die Dialogbox &apos;Einstellungen...&apos; auf und tragen dort in der Abteilung &apos;Verhalten&apos; bei &apos;Anzahl widerrufbarer Schritte&apos; den gew&#xfc;nschten Wert ein." ID="Freeplane_Link_1397680495"/>
-</node>
-<node TEXT="Export nach HTML" FOLDED="true" POSITION="right" ID="Freeplane_Link_22510332" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Um einen Zweig ins HTML-Format zu exportieren, benutzen Sie die Tastenkombination &apos;Strg&apos; + &apos;H&apos;. Exportierte HTML-Seiten k&#xf6;nnen abh&#xe4;ngig von den getroffenen Einstellungen in der &apos;Einstellungen...&apos;-Dialogbox Faltung unterst&#xfc;tzen. " ID="Freeplane_Link_1166599938"/>
-<node TEXT="Um eine andere Export-Funktion zu nutzen, w&#xe4;hlen Sie im Hauptmen&#xfc; &apos;Datei&apos; &#xfc;ber den Punkt &apos;Export&apos; die gew&#xfc;nschte Funktion, z. B. &apos;Als XHTML (JavaScript Version)...&apos;." ID="Freeplane_Link_515245049"/>
-<node TEXT="Um eine MindMap mit einem klickbaren &#xdc;bersichtsbild nach HTML zu exportieren, w&#xe4;hlen Sie &#xfc;ber &apos;Export&apos; im Hauptmen&#xfc; &apos;Datei&apos; den Eintrag &apos;Als XHTML (mit verlinktem Bild der MindMap)...&apos;." ID="Freeplane_Link_319123418"/>
-</node>
-<node TEXT="Exportieren als Pixel- oder Vektorgraphik" FOLDED="true" POSITION="right" ID="Freeplane_Link_1908686168" COLOR="#407000">
-<node TEXT="Um die MindMap als PNG-Bild zu exportieren, w&#xe4;hlen Sie vom Hauptmen&#xfc; ausgehend &apos;Datei&apos; -&gt; &apos;Export&apos; -&gt; &apos;Als PNG...&apos;." ID="Freeplane_Link_171602439"/>
-<node TEXT="Um die MindMap als JPEG-Bild zu exportieren, w&#xe4;hlen Sie vom Hauptmen&#xfc; ausgehend &apos;Datei&apos; -&gt; &apos;Export&apos; -&gt; &apos;Als JPEG...&apos;." ID="Freeplane_Link_551123456"/>
-<node TEXT="Um die MindMap als SVG zu exportieren, w&#xe4;hlen Sie vom Hauptmen&#xfc; ausgehend &apos;Datei&apos; -&gt; &apos;Export&apos; -&gt; &apos;Als SVG...&apos;. Diese Funktion ist nur verf&#xfc;gbar, wenn Sie die SVG-Erweiterung installiert haben." ID="Freeplane_Link_575443583"/>
-</node>
-<node TEXT="Exportieren in andere XML-Formate" FOLDED="true" POSITION="right" ID="Freeplane_Link_329770204" COLOR="#407000">
-<node TEXT="Um die MindMap in ein anderes XML-Format zu exportieren, f&#xfc;r das Sie &#xfc;ber eine XSL-Datei verf&#xfc;gen, w&#xe4;hlen Sie vom Hauptmen&#xfc; ausgehend &apos;Datei&apos; -&gt; &apos;Export&apos; -&gt; &apos;Mittels XSLT...&apos;." ID="Freeplane_Link_641809362"/>
-<node TEXT="Um die MindMap in eine OpenOffice1.4Writer-Datei (SXW-Format) zu exportieren, w&#xe4;hlen Sie vom Hauptmen&#xfc; ausgehend &apos;Datei&apos; -&gt; &apos;Export&apos; -&gt; &apos;Als OpenOffice Writer Dokument...&apos;." ID="Freeplane_Link_958818637"/>
-</node>
-<node TEXT="Verzeichnisstruktur importieren" FOLDED="true" POSITION="right" ID="Freeplane_Link_1841136119" COLOR="#407000">
-<font NAME="Dialog" SIZE="12"/>
-<node TEXT="Um eine Verzeichnisstruktur zu importieren, w&#xe4;hlen Sie vom Hauptmen&#xfc; ausgehend &apos;Datei&apos; -&gt; &apos;Import&apos; -&gt; &apos;Ordnerstruktur...&apos;. Sie werden nach dem Verzeichnis gefragt, dessen Struktur Sie importieren wollen. Mit Struktur meinen wir den Baum aller (nicht notwendigerweise direkter) Unterverzeichnisse mit den Verweisen auf die Dateien in diesen Unterverzeichnissen. Ein Beispiel f&#xfc;r so eine eingef&#xfc;gte Struktur folgt:&#xa;" ID="Freeplane_Link_561962043"/>
-<node TEXT="Beispiel" FOLDED="true" ID="Freeplane_Link_1517632416" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Gew&#xe4;hlter Ordner" FOLDED="true" ID="Freeplane_Link_1374652558" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="C:\Programme\Microsoft Office\Office\Bitmaps" ID="Freeplane_Link_1320387320" LINK="file:/C:/Programme/Microsoft%20Office/Office/Bitmaps">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Dbwiz" FOLDED="true" ID="Freeplane_Link_1242662698" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/">
-<node TEXT="ASSETS.GIF" ID="ID_1866143553" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/ASSETS.GIF"/>
-<node TEXT="CONTACTS.GIF" ID="ID_1226050342" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/CONTACTS.GIF"/>
-<node TEXT="EVTMGMT.GIF" ID="ID_1007537181" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/EVTMGMT.GIF"/>
-<node TEXT="EXPENSES.GIF" ID="ID_1324389601" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/EXPENSES.GIF"/>
-<node TEXT="INVENTRY.GIF" ID="ID_1634793870" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/INVENTRY.GIF"/>
-<node TEXT="LEDGER.GIF" ID="ID_1853928182" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/LEDGER.GIF"/>
-<node TEXT="ORDPROC.GIF" ID="ID_1753822249" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/ORDPROC.GIF"/>
-<node TEXT="RESOURCE.GIF" ID="ID_1669477979" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/RESOURCE.GIF"/>
-<node TEXT="SERVICE.GIF" ID="ID_398688275" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/SERVICE.GIF"/>
-<node TEXT="TIMEBILL.GIF" ID="ID_1397004844" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/TIMEBILL.GIF"/>
-</node>
-<node TEXT="Styles" FOLDED="true" ID="Freeplane_Link_1127993679" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/">
-<node TEXT="ACBLENDS.GIF" ID="ID_1084137537" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACBLENDS.GIF"/>
-<node TEXT="ACBLUPRT.GIF" ID="ID_621189117" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACBLUPRT.GIF"/>
-<node TEXT="ACEXPDTN.GIF" ID="ID_740919067" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACEXPDTN.GIF"/>
-<node TEXT="ACINDSTR.GIF" ID="ID_803618087" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACINDSTR.GIF"/>
-<node TEXT="ACRICEPR.GIF" ID="ID_1498204743" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACRICEPR.GIF"/>
-<node TEXT="ACSNDSTN.GIF" ID="ID_1119011402" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACSNDSTN.GIF"/>
-<node TEXT="ACSUMIPT.GIF" ID="ID_1365730503" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACSUMIPT.GIF"/>
-<node TEXT="GLOBE.WMF" ID="ID_261575540" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/GLOBE.WMF"/>
-<node TEXT="STONE.BMP" ID="ID_399635855" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/STONE.BMP"/>
-</node>
-</node>
-</node>
-<node TEXT="Internet Explorer Favoriten importieren" FOLDED="true" POSITION="right" ID="Freeplane_Link_269203785" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Um Internet Explorer Favoriten (Lesezeichen) in Freeplane zu importieren, w&#xe4;hlen Sie vom Hauptmen&#xfc; ausgehend &apos;Datei&apos; -&gt; &apos;Import&apos; -&gt; &apos;Explorer-Favoriten...&apos;. Sie werden nach dem Pfad zu dem Verzeichnis gefragt, in dem die Favoriten abgelegt sind. Der Name des Verzeichnisses ist &quot;Favoriten&quot; und Sie finden es auf Ihrer Festplatte. F&#xfc;r ein unmodifiziertes, deutsches Windows 2000 lautet der vollst&#xe4;ndige Pfadname &quot;C:\Dokumente und Einstellungen\&lt;Benutzername&gt;\Favoriten&quot;, wobei Sie &apos;&lt;Benutzername&gt;&apos; durch den tats&#xe4;chlich verwendeten Benutzernamen ersetzen." ID="Freeplane_Link_1567658129"/>
-<node TEXT="Key words: Microsoft Internet Explorer, MSIE, MS IE." ID="ID_1602988315" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-</node>
-</node>
-<node TEXT="MindManager X5 MindMap importieren" FOLDED="true" POSITION="right" ID="Freeplane_Link_1709974530" COLOR="#407000">
-<node TEXT="Um eine MindManager X5 MindMap zu importieren, w&#xe4;hlen Sie vom Hauptmen&#xfc;ausgehend &apos;Datei&apos; -&gt; &apos;Import&apos; -&gt; &apos;MindManager X5 Map...&apos;." ID="Freeplane_Link_1166749224"/>
-</node>
-<node TEXT="Integration mit Word oder Outlook" FOLDED="true" POSITION="right" ID="Freeplane_Link_913645795" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Sie k&#xf6;nnen MindMaps oder Zweige von MindMaps in Microsoft Word, Wordpad oder in Outlook Nachrichten einf&#xfc;gen. Generell kann in jedes Anwendungsprogramm, das Rich-Text-Format (RTF) beherrscht, eingef&#xfc;gt werden. Die Textformatierung und die Verweise werden mit eingef&#xfc;gt." ID="Freeplane_Link_855025503">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Klicken auf einen Verweis zu einer eMail-Adresse (z. B.: &apos;mailto:don.bonton@supermail.com&apos;)  &#xf6;ffnet Outlook um eine neue Nachricht zu verfassen, falls in Windows nicht anders eingestellt.&#xa;--------&#xa;Anm.d.&#xdc;.&#xa;Genauer: Falls das genutzte Betriebssystem diesen Mechanismus unterst&#xfc;tzt, wird das registrierte Programm zum Verfassen von eMails aufgerufen." ID="Freeplane_Link_851316277" LINK="mailto:don.bonton@supermail.com">
-<arrowlink DESTINATION="Freeplane_Link_1897919343" STARTINCLINATION="740;0;" ENDINCLINATION="740;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Man kann beim Verweis auf eine eMail-Adresse gleich einen Betreff mit hinterlegen." ID="Freeplane_Link_13384265" LINK="mailto:don.bonton@supermail.com?subject=Last%20phone%20call">
-<arrowlink DESTINATION="Freeplane_Link_1054419207" STARTINCLINATION="722;0;" ENDINCLINATION="722;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-<node TEXT="Eine andere M&#xf6;glichkeit um MindMaps in Microsoft Word einzuf&#xfc;gen ist, sie unterteilt nach &#xdc;berschriften nach HTML zu exportieren, das HTML zu kopieren und es dann in Word einzuf&#xfc;gen." ID="Freeplane_Link_1307576694">
-<arrowlink DESTINATION="Freeplane_Link_1166599938" STARTINCLINATION="439;0;" ENDINCLINATION="439;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-</node>
-<node TEXT="Voreinstellungen setzen" FOLDED="true" POSITION="right" ID="Freeplane_Link_1822195277" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Um die Voreinstellungen zu bearbeiten, w&#xe4;hlen Sie vom Hauptmen&#xfc; ausgehend &apos;Extras&apos; -&gt; &apos;Einstellungen...&apos;. Die meisten &#xc4;nderungen greifen erst nach einem Neustart von Freeplane." ID="Freeplane_Link_1365597534"/>
-<node TEXT="Die Voreinstellungen schlie&#xdf;en die Tastaturk&#xfc;rzel, das Verhalten beim Exportieren nach HTML, die Art, wie die Anwahl von Knoten mit der Maus vorgenommen wird, die Schriftengl&#xe4;ttung und mehr ein." ID="Freeplane_Link_1271954958"/>
-<node TEXT="Key words: customizing, anpassen." ID="Freeplane_Link_1035609976" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-</node>
-</node>
-<node TEXT="Drucken" FOLDED="true" POSITION="right" ID="Freeplane_Link_1528828442" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Sie k&#xf6;nnen entweder drucken, indem Sie die gesamte MindMap in eine Druckseite einpassen lassen oder indem Sie die MindMap auf mehrere Bl&#xe4;tter Papier verteilen lassen. Ihre Wahl nehmen Sie vom Hauptmen&#xfc; ausgehend unter &apos;Datei&apos; -&gt; &apos;Seiteneinrichtung...&apos; ff. vor." ID="Freeplane_Link_209487266"/>
-<node TEXT="Um den verf&#xfc;gbaren Platz wirtschaftlicher zu verwenden, w&#xe4;hlen Sie &apos;Querformat&apos; als Seiteneinstellung." ID="Freeplane_Link_911024183">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Eine Druckvorschau der MindMap zu realisieren ist nicht ganz unkompliziert. Falls Sie &#xfc;ber einen Postscript-Drucker oder einen generischen Postscript-Druckertreiber verf&#xfc;gen, drucken Sie die Mindmap dar&#xfc;ber in eine Datei und betrachten Sie sie dann mit Ghostview oder einem &#xe4;hnlichen Programm. Wenn Sie versuchen, die MindMap mit einem nicht postscript-f&#xe4;higen Druckertreiber in eine Datei zu drucken, wird die resultierende Datei keinen Postscript-Code enthalten sondern vermutlich PCL-Code, welcher f&#xfc;r Sie unbrauchbar ist." ID="Freeplane_Link_1573962506"/>
-<node TEXT="Sie k&#xf6;nnen auch von Ihrem Web-Browser aus drucken, nachdem Sie die MindMap nach HTML exportiert haben oder von Word oder Wordpad nachdem Sie die MindMap kopiert und dort wieder eingef&#xfc;gt haben. Au&#xdf;erdem k&#xf6;nnen Sie die MindMap nach HTML mit &#xdc;berschriften exportieren, sie dann kopieren, sie anschlie&#xdf;end in Microsoft Word einf&#xfc;gen und sie von dort aus drucken. Auf diese Art k&#xf6;nnen Sie Formatierungen &#xe4;ndern, wie Sie wollen." ID="Freeplane_Link_814459761">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Textattribute mittels HTML in Knoten verwenden" FOLDED="true" POSITION="right" ID="Freeplane_Link_841140408" COLOR="#407000">
-<node TEXT="Knoten, die mit &apos;&lt;html&gt;&apos; beginnen, werden mit Hilfe des darin enthaltenen HTML-Codes erzeugt. Diese F&#xe4;higkeit ist f&#xfc;r technisch versierte Leute n&#xfc;tzlich. Ein Beispiel folgt:" ID="Freeplane_Link_1661237735"/>
-<node ID="Freeplane_Link_843632799">
+<node ID="ID_1276534365" CREATED="1271981886951" MODIFIED="1275062596475">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Im <b>n&#228;chsten Knoten</b>&#160;sind ein paar <b>Beispiele</b>&#160;f&#252;r den
+    </p>
+    <p>
+      &#160;Gebrauch von Konnektoren.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Beispiel f&#xfc;r den Gebrauch&#xa;von Konnektoren" ID="ID_46167995" CREATED="1270892460680" MODIFIED="1275062645702" COLOR="#996600">
+<node TEXT="Verbindung zu einem andern Teil" ID="_Freeplane_Link_1170112929" CREATED="1270892460680" MODIFIED="1275063477665" COLOR="#996600">
+<arrowlink COLOR="#1010f1" DESTINATION="_Freeplane_Link_1492563156" MIDDLE_LABEL="Konnektor-Beschriftung" STARTINCLINATION="158;-8;" ENDINCLINATION="857;-165;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+</node>
+<node TEXT="Knoten mit eingefaltetem&#xa;Kind-Knoten" ID="ID_521887084" CREATED="1270892460680" MODIFIED="1275062819098" COLOR="#996600" HGAP="15" VSHIFT="52">
+<node TEXT="Kind-Knoten" ID="_Freeplane_Link_1492563156" CREATED="1270892460680" MODIFIED="1275062700868" HGAP="25" VSHIFT="7"/>
+</node>
+<node TEXT="Eine andere Verbindung" ID="_Freeplane_Link_1370577235" CREATED="1270892460680" MODIFIED="1275062797108" COLOR="#996600">
+<arrowlink DESTINATION="_Freeplane_Link_1170112929" SOURCE_LABEL="Beschriftung" STARTINCLINATION="56;22;" ENDINCLINATION="61;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+</node>
+</node>
+<node TEXT="Attribute" FOLDED="true" ID="ID_540307688" CREATED="1270896851973" MODIFIED="1275062880937" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Ein Knoten kann Attribute haben" ID="ID_1293545211" CREATED="1270893318566" MODIFIED="1275062896518">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<attribute_layout NAME_WIDTH="40" VALUE_WIDTH="49"/>
+<attribute NAME="x" VALUE="10"/>
+<attribute NAME="y" VALUE="20"/>
+</node>
+<node ID="ID_541565942" CREATED="1270896865255" MODIFIED="1275063050254">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um die <b>Attribute</b>&#160;eines einzelnen <b>Knotens</b>&#160;zu <b>bearbeiten</b>&#160;&#160;w&#228;hle
+    </p>
+    <p>
+      &quot;Bearbeiten -&gt; Attribute editieren&quot;&#160;oder verwende die Tastenkombination Alt + F9.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1213222306" CREATED="1270896956119" MODIFIED="1275063440506">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst mit &quot;Extras -&gt; Attribute zuweisen...&quot; die
+    </p>
+    <p>
+      <b>Attribute</b>&#160;zu <b>mehreren Knoten zuweisen</b>, <b>oder</b>&#160;sie <b>&#228;ndern</b>.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Verwenden von &#xa;HTML in Knoten" FOLDED="true" ID="Freeplane_Link_841140408" CREATED="1270892460698" MODIFIED="1275064177972" COLOR="#407000">
+<node TEXT="Du kannst HTML in Knoten verwenden" ID="ID_1253480988" CREATED="1270892460698" MODIFIED="1275063589349"/>
+<node ID="ID_159304805" CREATED="1270892460698" MODIFIED="1275063919930">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -863,39 +2232,53 @@
       HTML Beispiel
     </h3>
     <p class="msonormal">
-      Da sind verschiedene Punkte:
+      Es gibt Aufz&#228;hlungen:
     </p>
     <ul type="disc">
       <li class="msonormal">
-        Punkt eins
+        Grund eins
       </li>
       <li class="msonormal">
-        Punkt zwei
+        Grund zwei
       </li>
     </ul>
-    <p class="msonormal">
-      Und wir haben <b>Fettschrift</b> oder <i>Kursives</i>. <u>Unterstrichen</u>, ein <strike>Durchgestrichen</strike> auch.<br/><br/>Es gibt Tabellen:
+    <p>
+      Nummerierte Aufz&#228;hlungen:
     </p>
-    <table style="border: none" border="1" class="msonormaltable" cellspacing="0" cellpadding="0">
+    <ol>
+      <li>
+        Punkt eins
+      </li>
+      <li>
+        Punkt zwei
+      </li>
+    </ol>
+    <p class="msonormal">
+      Die Schrift kann <b>fett</b>&#160;oder <i>kursiv,</i>&#160;<u>unterstrichen</u>&#160;und <strike>durchgestrichen</strike>&#160;&#160;sein.
+    </p>
+    <p class="msonormal">
+      Es gibt auch Tabellen:
+    </p>
+    <table cellpadding="0" cellspacing="0" border="1" style="border: none" class="msonormaltable">
       <tr>
-        <td style="padding-bottom: .75pt; padding-right: .75pt; border: solid windowtext 1.0pt; padding-left: .75pt; padding-top: .75pt">
+        <td style="padding-top: .75pt; padding-left: .75pt; border: solid windowtext 1.0pt; padding-bottom: .75pt; padding-right: .75pt">
           <p class="msonormal">
             Zelle 1
           </p>
         </td>
-        <td style="padding-bottom: .75pt; padding-right: .75pt; border: solid windowtext 1.0pt; border-left: none; padding-left: .75pt; padding-top: .75pt">
+        <td style="border-left: none; padding-top: .75pt; padding-left: .75pt; border: solid windowtext 1.0pt; padding-bottom: .75pt; padding-right: .75pt">
           <p class="msonormal">
             Zelle 2
           </p>
         </td>
       </tr>
       <tr>
-        <td style="padding-bottom: .75pt; padding-right: .75pt; border-top: none; border: solid windowtext 1.0pt; padding-left: .75pt; padding-top: .75pt">
+        <td style="padding-top: .75pt; border-top: none; padding-left: .75pt; border: solid windowtext 1.0pt; padding-bottom: .75pt; padding-right: .75pt">
           <p class="msonormal">
             Zelle 3
           </p>
         </td>
-        <td style="padding-bottom: .75pt; padding-right: .75pt; border-bottom: solid windowtext 1.0pt; border-top: none; border-left: none; border-right: solid windowtext 1.0pt; padding-left: .75pt; padding-top: .75pt">
+        <td style="border-left: none; padding-top: .75pt; border-top: none; padding-left: .75pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding-bottom: .75pt; padding-right: .75pt">
           <p class="msonormal">
             Zelle 4
           </p>
@@ -903,45 +2286,165 @@
       </tr>
     </table>
     <p class="msonormal">
-      <br/>
-      Es gibt vielerlei <font color="#999900">Schrift</font><font color="#336600">farben</font>.
+      &#160;Auperdem kann Schrift verschiedene <font color="#999900">Vordergrundfarben</font>&#160;<font color="#336600">haben</font>.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Beim Export nach reinem Text oder RTF (f&#xfc;r Word, OpenOffice usw.) werden HTML-Knoten und Bilder nicht unterst&#xfc;tzt. Immerhin ist es praktisch, HTML zu benutzen, um mit Hilfe der Freeplane-Web-Anwendung im Internet zu publizieren." ID="Freeplane_Link_233295626">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Bilder in Knoten verwenden" FOLDED="true" POSITION="right" ID="Freeplane_Link_115696817" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Um ein Bild in Freeplane einzuf&#xfc;gen, dr&#xfc;cken Sie ALT + SHIFT + K oder benutzen Sie &apos;Einf&#xfc;gen&apos; -&gt; &apos;Bild (Dateiauswahl)...&apos; im Kontextmen&#xfc; des Knotens. Durch das Einf&#xfc;gen eines Bildes verlieren Sie den gesamten Knotentext, falls Sie vorher schon welchen eingegeben hatten. Auf diese Weise eingef&#xfc;gte Bilder werden au&#xdf;erhalb von Freeplane nicht korrekt eingebunden und vielleicht auch nicht korrekt nach HTML exportiert. Die Funktion, Bilder in Freeplane einzubinden, ist noch nicht ausgereift.  " ID="Freeplane_Link_1821762263"/>
-<node TEXT="Unterst&#xfc;tzte Bilderformate sind PNG, JPEG und GIF." ID="Freeplane_Link_979830818"/>
-<node TEXT="Um Verweise auf Bilder in sichtbare Bilder zu verwandeln, dr&#xfc;cken Sie ALT + SHIFT + K. Man kann mehrere Bilddateien in Freeplane ziehen (drag and drop), Sie wie mehrere Knoten markieren und Sie dann in sichtbare Bilder verwandeln, indem man ALT + SHIFT + K dr&#xfc;ckt." ID="Freeplane_Link_1195889160"/>
-<node TEXT="Eine mehr technische und nicht so benutzerfreundliche Art Bilder einzuf&#xfc;gen folgt hier: Es ist m&#xf6;glich, HTML in Knoten einzusetzen. Der Knoteninhalt mu&#xdf; mit der Kennzeichnung &apos;&lt;html&gt;&apos; beginnen. Auf diese Art kann man (dann mit HTML-Mitteln) Bilder in Knoten einbinden. " ID="Freeplane_Link_787833164" COLOR="#000000">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Zum Beispiel&#xa;  &lt;html&gt;&lt;img src=&quot;linked/Apple.png&quot;&gt;&#xa;  &lt;html&gt;&lt;img src=&quot;file://C:/Users/My Documents/Mind Maps/Linked/Apple.png&quot;&gt;&#xa;" ID="Freeplane_Link_1068638398">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Man kann relative Verweise zur Bilderadressierung verwenden." ID="Freeplane_Link_1842376660">
-<edge WIDTH="thin"/>
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Beispiele f&#xfc;r Bilder, die auf einigen Windows-Distributionen funktionieren" FOLDED="true" ID="Freeplane_Link_489201373" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12" BOLD="true"/>
-<node ID="ID_1261771820">
+<node ID="ID_203319288" CREATED="1270895866070" MODIFIED="1275064320380">
 <richcontent TYPE="NODE">
 <html>
   <head>
     
   </head>
   <body>
-    <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACBLENDS.GIF"/>
+    <p>
+      Du kannst die <b>Verwendung von HTML</b>&#160;in Knoten &#252;ber
+    </p>
+    <p>
+      &quot;Format -&gt; Verwende HTML Formatierung&quot;&#160;(Alt + Shift + R) <b>aktivieren</b>.
+    </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_902572775">
+<node ID="ID_1308797932" CREATED="1275064183463" MODIFIED="1275064272902">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Das <b>Verwenden von HTML</b>&#160;in Knoten kannst Du mit
+    </p>
+    <p>
+      &quot;Format -&gt; Benutze reinen Text&quot; (Alt + Shift&#160;&#160;+ P) <b>deaktivieren.</b>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Die HTML-Formatierung geht, genauso wie eingebettete Bilder, beim Export als Text oder RTF (Word, Wordpad) verloren. Sie bleibt aber beim Export als Java-Applet erhalten, so dass Du dieses Format zum Ver&#xf6;ffentlichen im Web nutzen kannst." ID="ID_248995867" CREATED="1270892460699" MODIFIED="1275337250378">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
+<node TEXT="Verwenden von &#xa;Bildern in Knoten" FOLDED="true" ID="Freeplane_Link_271176250" CREATED="1270892460699" MODIFIED="1275184084223" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<node ID="ID_1487662482" CREATED="1275064589975" MODIFIED="1275337589928">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Eine Methode, um ein <b>Bild</b>&#160;in Freeplane <b>einzuf&#252;gen </b>ist, das Dr&#252;cken von ALT + SHIFT + K oder
+    </p>
+    <p>
+      das Verwenden von &quot;Einf&#252;gen -&gt; Bild (Dateiauswahl)...&quot; im Kontextmen&#252; des Knotens,
+    </p>
+    <p>
+      oder im normalen Men&#252;.
+    </p>
+    <p>
+      Durch das Einf&#252;gen eines Bildes verlierst Du den gesamten Knotentext, falls schon
+    </p>
+    <p>
+      einer eingegeben war. Auf diese Weise eingef&#252;gte Bilder werden auch beim Export nicht ber&#252;cksichtigt.
+    </p>
+    <p>
+      Unterst&#252;tzte Bildformate sind PNG, JPG und GIF.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_692449557" CREATED="1271527733841" MODIFIED="1275337561235">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Eine <b>weitere&#160;Methode </b>zum<b>&#160;Einf&#252;gen </b>von<b>&#160;Bildern</b>, bei der Du den Text nicht verlierst und die auch SVG (Scalable Vector Graphics; ein offnes Vektor-Format) unterst&#252;tzt ist: &quot;Einf&#252;gen -&gt; Externes Objekt...&quot;. Du kannst die Gr&#246;&#223;e des Bildes mit der Markierung an der unteren rechten Ecke des Rahmens &#228;ndern. Das Bild wird aber immer noch nicht mit exportiert.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_890405454" CREATED="1270892460700" MODIFIED="1275130951803">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wenn Du eine <b>Bilddatei</b>&#160;mit <b>Drag and Drop</b>&#160;&#252;ber einem Knoten fallen l&#228;sst, dann erzeugt Freeplane einen Hyperlink, der auf die Datei verweist.
+    </p>
+    <p>
+      Diesen Link kannst Du in ein Bild verwandeln indem Du &quot;Einf&#252;gen -&gt; Bild (Dateiauswahl)...&quot; w&#228;hlst, oder die Tastenkombination Alt + Shift + K dr&#252;ckst.
+    </p>
+    <p>
+      Diese Methode funktioniert auch, wenn Du mehrere Knoten ausgew&#228;hlt hast.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1512479346" CREATED="1270892460700" MODIFIED="1275133214045" COLOR="#000000">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Eine <b>weitere</b>, mehr technische und <b>nicht</b>&#160;so <b>benutzerfreundliche Art Bilder einzuf&#252;gen</b>&#160;ist folgende:
+    </p>
+    <p>
+      Da es m&#246;glich ist in Knoten HTML formatierten Inhalt zu haben, kann man z.B. mit dem IMG-Tag Bilder in Knoten einbetten. Dazu muss der Knotentext mit dem Tag &lt;html&gt; beginnen.
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="Hier einige Beispiele:&#xa;  &lt;html&gt;&lt;img src=&quot;linked/Apple.png&quot;&gt;&#xa;  &lt;html&gt;&lt;img src=&quot;file://C:/Users/My Documents/Mind Maps/Linked/Apple.png&quot;&gt;&#xa;Der relative Link im ersten Beispiel zeigt auf ein Bild in einem Verzeichnis unter dem Verzeichnis, in dem das MindMap-file liegt." ID="ID_258073366" CREATED="1270892460700" MODIFIED="1275133132438">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="Beispielbilder" ID="Freeplane_Link_1825247742" CREATED="1270892460700" MODIFIED="1275131381309" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12" BOLD="true"/>
+<node TEXT="Linux" ID="ID_1089845997" CREATED="1275131389011" MODIFIED="1275131395617">
+<node ID="ID_1186180877" CREATED="1275131321555" MODIFIED="1275131330241">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="file:/usr/share/app-install/icons/treb.png"/>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Ein Knoten mit eingebettem &#xa;externen Objekt" ID="ID_614702580" CREATED="1275133603088" MODIFIED="1275134581194">
+<hook URI="file:/../../usr/share/hplip/data/images/other/aio_align.png" SIZE="1.6508051" NAME="ExternalObject"/>
+</node>
+<node TEXT="file:///usr/share/app-install/icons/tsclient.png" ID="ID_965334611" CREATED="1275131506194" MODIFIED="1275131506195" LINK="file:/usr/share/app-install/icons/tsclient.png"/>
+</node>
+<node TEXT="Windows" ID="ID_51996041" CREATED="1275131401442" MODIFIED="1275131405202">
+<node ID="ID_305515055" CREATED="1124560950732" MODIFIED="1275184124329">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <img src="../freeplane.png"/>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_432603647" CREATED="1124560950732" MODIFIED="1124560950732">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -952,7 +2455,7 @@
   </body>
 </html></richcontent>
 </node>
-<node FOLDED="true" ID="Freeplane_Link_1024263145">
+<node ID="ID_1475913288" CREATED="1124560950732" MODIFIED="1124560950732">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -962,7 +2465,7 @@
     <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACEXPDTN.GIF"/>
   </body>
 </html></richcontent>
-<node ID="ID_676635780">
+<node ID="ID_605964107" CREATED="1124560950732" MODIFIED="1124560950732">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -974,7 +2477,7 @@
 </html></richcontent>
 </node>
 </node>
-<node FOLDED="true" ID="Freeplane_Link_880988159">
+<node ID="ID_769058522" CREATED="1124560950732" MODIFIED="1124560950732">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -984,7 +2487,7 @@
     <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACRICEPR.GIF"/>
   </body>
 </html></richcontent>
-<node FOLDED="true" ID="Freeplane_Link_85163528">
+<node ID="ID_1291538035" CREATED="1124560950732" MODIFIED="1124560950732">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -994,7 +2497,7 @@
     <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACSNDSTN.GIF"/>
   </body>
 </html></richcontent>
-<node ID="ID_1469969974">
+<node ID="ID_51328681" CREATED="1124560950732" MODIFIED="1124560950732">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -1007,14 +2510,951 @@
 </node>
 </node>
 </node>
-<node TEXT="GLOBE.WMF" ID="ID_1741473459" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/GLOBE.WMF"/>
-<node TEXT="STONE.BMP" ID="ID_552496023" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/STONE.BMP"/>
+<node TEXT="GLOBE.WMF" ID="ID_1245966084" CREATED="1270892460703" MODIFIED="1270892460703" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/GLOBE.WMF"/>
+<node TEXT="STONE.BMP" ID="ID_1510093809" CREATED="1270892460703" MODIFIED="1270892460703" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/STONE.BMP"/>
 </node>
 </node>
-<node TEXT="Experimentelle Dateisperrung verwenden" FOLDED="true" POSITION="right" ID="Freeplane_Link_1804947546" COLOR="#407000">
-<node TEXT="Die vorliegende Version von Freeplane verf&#xfc;gt &#xfc;ber einen experimentellen Mechanismus zum Sperren von Dateien, der in der Standardeinstellung ausgeschaltet ist. Die aktuelle Umsetzung beugt Verklemmungen nicht wirklich sicher vor, sollte aber f&#xfc;r die meisten praktischen Vorhaben ausreichen." ID="Freeplane_Link_1387969527"/>
-<node TEXT="Dateisperrung stellt sicher, da&#xdf; mehrere Anwender nicht zur selben Zeit die selbe MindMap bearbeiten. Dadurch wird gew&#xe4;hrleistet, da&#xdf; nicht der eine zuf&#xe4;llig die Bearbeitungen des anderen &#xfc;berschreibt (und damit l&#xf6;scht)." ID="Freeplane_Link_1350042783"/>
-<node TEXT="Um die experimentelle Dateisperrung einzuschalten, gehen Sie in der vom Hauptmen&#xfc; aus &#xfc;ber &apos;Extras&apos; -&gt;  &apos;Einstellungen...&apos; erreichbaren Dialogbox in die Abteilung &apos;Umgebung&apos; und setzen dort den Schalter &apos;Experimentelles Sperren der ge&#xf6;ffneten Dateien&apos;." ID="Freeplane_Link_151684674"/>
+</node>
+<node TEXT="Verwenden von &#xa;LaTeX in Knoten" FOLDED="true" ID="ID_1060978136" CREATED="1271097112611" MODIFIED="1275211672184" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Beispiel: mehrzeiliger LaTeX-Text,&#xa;der zu einem Knoten zugewiesen ist." ID="ID_651820837" CREATED="1271097206186" MODIFIED="1275134857754">
+<hook EQUATION="\begin{array}{l}&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\end{array}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node ID="ID_1042304226" CREATED="1271097123195" MODIFIED="1275135248783">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um zu einem Knoten einen <b>LaTeX-Text hinzuzuf&#252;gen </b>
+    </p>
+    <p>
+      &#160;verwende &quot;Einf&#252;gen -&gt; LaTeX&quot;.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_21055085" CREATED="1271097312474" MODIFIED="1275337800751">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Zum <b>Bearbeiten</b>&#160;des <b>LaTeX-Quellcodes</b>&#160;klicke auf das
+    </p>
+    <p>
+      gerenderte Bild, das unter dem Knoten angezeigt wird.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1638605492" CREATED="1271097172667" MODIFIED="1275135388880">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst das angef&#252;gten <b>LaTeX</b>&#160;wieder <b>l&#246;schen</b>,
+    </p>
+    <p>
+      &#160;indem Du erneut auf &quot;Einf&#252;gen -&gt; LaTeX&quot; klickst.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Verwenden der &#xa;R&#xfc;ckg&#xe4;ngig- Funktion" FOLDED="true" ID="Freeplane_Link_1318678369" CREATED="1270892460689" MODIFIED="1275135447443" COLOR="#407000">
+<node ID="ID_1877729417" CREATED="1270892460690" MODIFIED="1275135565132">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen <b>Bearbeitungsschritt</b>&#160;wieder <b>R&#252;ckg&#228;ngig</b>&#160;zu <b>machen</b>,
+    </p>
+    <p>
+      &#160;w&#228;hle &quot;Bearbeiten -&gt; R&#252;ckg&#228;ngig&quot;, oder verwende die Tastenkombination Strg + Z.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1501637074" CREATED="1270892460690" MODIFIED="1275135724282">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst r&#252;ckg&#228;ngig gemachte <b>Bearbeitungsschritte</b>&#160;<b>wiederherstellen</b>, indem Du
+    </p>
+    <p>
+      &#160;&quot;Bearbeiten -&gt; Wiederherstellen&quot; w&#228;hlst, oder die Tastenkombination Strg + Y verwendest.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_139456632" CREATED="1270892460690" MODIFIED="1275136034685">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Die <b>Anzahl</b>&#160;der <b>Bearbeitungsschritte</b>, die Du <b>r&#252;ckg&#228;ngig machen kannst </b>
+    </p>
+    <p>
+      sind unter &quot;Extras -&gt; Einstellungen -&gt; Verhalten -&gt; Anzahl wiederrufbarer Aktionen&quot; einstellbar.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="MindMaps formatieren" FOLDED="true" POSITION="right" ID="ID_326068339" CREATED="1272091260034" MODIFIED="1275136099330" COLOR="#006666">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Layout der MindMap" FOLDED="true" ID="ID_710714991" CREATED="1271095870732" MODIFIED="1275136508268" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Die MindMap kann in zwei verschiedenen Layouts angezeigt werden:&#xa;Als MindMap und in der Gliederungsansicht." ID="ID_1920188221" CREATED="1271095880163" MODIFIED="1275136564936"/>
+<node ID="ID_353099197" CREATED="1271095880163" MODIFIED="1275136667643">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst <b>zwischen</b>&#160;diesen beiden <b>Layouts</b>&#160;<b>umschalten</b>,
+    </p>
+    <p>
+      &#160;indem Du &quot;Ansicht -&gt; Gliederungsansicht&quot; w&#228;hlst.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Die Gliederungsansicht eignet sich beser zum Drucken gro&#xdf;er MindMaps." ID="ID_823999289" CREATED="1271095978107" MODIFIED="1275136721495"/>
+</node>
+<node TEXT="Formatieren von Knoten" FOLDED="true" ID="Freeplane_Link_1660149394" CREATED="1270892460672" MODIFIED="1275136763038" COLOR="#407000">
+<node ID="ID_896067797" CREATED="1270892460672" MODIFIED="1275337941452">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um die <b>Schrift</b>&#160;eines <b>Knotens fett</b>&#160;darzustellen,&#160;w&#228;hle
+    </p>
+    <p>
+      &quot;Format -&gt; Fett&quot;, oder verwende die Tastenkombination Strg + B.
+    </p>
+  </body>
+</html>
+</richcontent>
+<edge WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="12" BOLD="false"/>
+</node>
+<node ID="ID_1435353677" CREATED="1270892460673" MODIFIED="1275136965314">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Die <b>Knotenschrift</b>&#160;kannst Du <b>kursiv</b>&#160;machen, indem Du &quot;Format -&gt; Kursiv&quot;
+    </p>
+    <p>
+      w&#228;hlst, oder die Tastenkombination Strg + I dr&#252;ckst.
+    </p>
+  </body>
+</html></richcontent>
+<edge WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_786808182" CREATED="1270892460673" MODIFIED="1275137210440">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst die <b>Textfarbe</b>&#160;&#252;ber &quot;Format -&gt; Knotenfarbe &#228;ndern...&quot;,
+    </p>
+    <p>
+      &#160;oder die Tastenkombination Alt + Shift + F <b>&#228;ndern</b>.
+    </p>
+  </body>
+</html></richcontent>
+<edge WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_256179041" CREATED="1270892460673" MODIFIED="1275142879900">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um die <b>Hintergrundfarbe</b>&#160;eines Knotens zu <b>&#228;ndern</b>,
+    </p>
+    <p>
+      w&#228;hle &quot;Format -&gt; Knotenhintergrundfarbe...&quot;.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1900176546" CREATED="1270892460673" MODIFIED="1275147550010">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um die <b>Knotenschrift</b>&#160;zu <b>vergr&#246;&#223;ern</b>, verwende &quot;Format -&gt; Schrift des Knotens vergr&#246;&#223;ern&quot;,
+    </p>
+    <p>
+      &#160;oder benutze das Tastaturk&#252;rzel Strg + Plus (nimm das plus auf dem Keyboard und nicht das im Nummenrfeld).
+    </p>
+  </body>
+</html></richcontent>
+<edge WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_1031774745" CREATED="1270892460673" MODIFIED="1275147541076">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um die <b>Knotenschrift</b>&#160;zu <b>verkleinern</b>, verwende &quot;Format -&gt; Schrift des Knotens verkleinern&quot;,
+    </p>
+    <p>
+      &#160;oder benutze das Tastaturk&#252;rzel Strg + Minus (nimm das minus auf dem Keyboard und nicht das im Nummenrfeld).
+    </p>
+  </body>
+</html></richcontent>
+<edge WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="Alle oben beschriebenen Funktionen sind auch im Kontextmen&#xfc; des Knotens unter Format verf&#xfc;gbar." ID="ID_817931500" CREATED="1271977602378" MODIFIED="1275146781865"/>
+<node ID="ID_975697332" CREATED="1270892460674" MODIFIED="1275146918510">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Die <b>Schriftart</b>&#160;kannst Du im Schriftarten-Auswahlfeld in der Werkzeug-Symbolleiste <b>&#228;ndern</b>.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_880893737" CREATED="1270892460674" MODIFIED="1275147029777">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um die <b>Formatierung</b>&#160;eines Knotens zu <b>kopieren</b>, verwende
+    </p>
+    <p>
+      &quot;Bearbeiten -&gt; Formatierung kopieren&quot;, oder dr&#252;cke Alt + Shift + C.
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_52099291" CREATED="1270892460674" MODIFIED="1275147131412">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um die <b>kopierte Formatierung</b>&#160;auf einen Knoten <b>anzuwenden</b>&#160;verwende,
+    </p>
+    <p>
+      &#160;&quot;Bearbeiten -&gt; Formatierung einf&#252;gen&quot;, oder nutze die Tastenkombination Alt + Shift +C.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Formatieren der Knotenlinien" FOLDED="true" ID="ID_1797063061" CREATED="1270896049950" MODIFIED="1275147569423" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Knotenlinien sind die Linien, die Knoten verbinden." ID="ID_1387990787" CREATED="1275147618866" MODIFIED="1275338289933"/>
+<node TEXT="Es gibt verschiedene Arten von Knotenlinien." ID="ID_171466211" CREATED="1270896067862" MODIFIED="1275147612199"/>
+<node TEXT="Du kannst auch die Farbe und die Dicke der Knotenlinien &#xe4;ndern, oder sie sogar unsichtbar machen." ID="ID_147950395" CREATED="1270896109110" MODIFIED="1275147744284"/>
+<node TEXT="Du kannst diese Eigenschaften unter &quot;Format -&gt; Linienfarbe&quot;, &quot;Format -&gt; Linienbreite&quot; und &quot;Format -&gt; Linienformen&quot; &#xe4;ndern (die Punkte sind auch &#xfc;ber das Kontextmen&#xfc; des Knotens unter Format erreichbar)." ID="ID_835600675" CREATED="1270896191326" MODIFIED="1275184323955"/>
+<node TEXT="Beispiel 1" FOLDED="true" ID="ID_563742809" CREATED="1270896156486" MODIFIED="1275147909975">
+<edge STYLE="sharp_bezier" WIDTH="4"/>
+<node TEXT="Es gibt verschiedene Arten von Linientypen," ID="ID_1621067344" CREATED="1270896067862" MODIFIED="1275147950331"/>
+<node TEXT="Du kannst auch die Farbe und die Linienbreite &#xe4;ndern." ID="ID_22717831" CREATED="1270896096758" MODIFIED="1275147981675"/>
+<node TEXT="oder die Linien ausblenden." ID="ID_1737604780" CREATED="1270896109110" MODIFIED="1275147994413">
+<edge STYLE="hide_edge" WIDTH="thin"/>
+</node>
+</node>
+<node TEXT="Beispiel 2" FOLDED="true" ID="ID_1959289213" CREATED="1270896156486" MODIFIED="1275148001831">
+<edge STYLE="horizontal" COLOR="#ff0033"/>
+<node TEXT="Es gibt verschiedene Arten von Linientypen," ID="ID_213610345" CREATED="1270896067862" MODIFIED="1275148063736"/>
+<node TEXT="Du kannst auch die Farbe und die Linienbreite &#xe4;ndern." ID="ID_525537821" CREATED="1270896096758" MODIFIED="1275148077741"/>
+<node TEXT="oder die Linien ausblenden." ID="ID_994729391" CREATED="1270896109110" MODIFIED="1275148102721"/>
+</node>
+</node>
+<node TEXT="Arbeiten mit Stilen" FOLDED="true" ID="Freeplane_Link_526328879" CREATED="1270892460674" MODIFIED="1275148241685" COLOR="#407000">
+<node TEXT="Stile erm&#xf6;glichen es, eine ganze Reihe von Formatierungen gemeinsam abzuspeichern, und auf Knoten anzuwenden. Ein Stil kann z.B. eine bestimmte Schriftfarbe, Schriftgr&#xf6;&#xdf;e, ein bestimmtes Knotenlinienformat, oder ein Icon enthalten." ID="ID_7935308" CREATED="1275184379901" MODIFIED="1275338406925"/>
+<node ID="ID_284671582" CREATED="1270892460674" MODIFIED="1275184824627">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst einen <b>Stil</b>&#160;einem <b>Knoten</b>&#160;<b>zuweisen</b>, indem Du den Knoten markierst und unter &quot;Format -&gt; Stile&quot; den Stil ausw&#228;hlst. Diese Option ist auch &#252;ber das Kontextmen&#252;s des Knotens erreichbar. Au&#223;erdem hat jeder Stil eine Tastenkombination, die Du im Men&#252; sehen kannst.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_58326768" CREATED="1270892460674" MODIFIED="1275185027184">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um einen eigenen <b>Stil</b>&#160;zu <b>definieren</b>, <b>oder</b>&#160;einen bestehenden zu <b>&#228;ndern</b>,
+    </p>
+    <p>
+      w&#228;hle &quot;Format -&gt; Stile -&gt; Stile verwalten...&quot;
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Automatisches Layout" FOLDED="true" ID="ID_1561765534" CREATED="1271096555907" MODIFIED="1275185089706" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Knoten k&#xf6;nnen abh&#xe4;ngig von ihrer Entfernung zum Wurzelknoten automatisch Formatierungen &#xe4;hnlich den Stilen zugewiesen werden." ID="ID_287999249" CREATED="1271096587963" MODIFIED="1275185306333"/>
+<node ID="ID_495596648" CREATED="1271096619675" MODIFIED="1275185466097">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um dieses Feature, das &quot;<b>Automatisches Layout</b>&quot; hei&#223;t zu <b>aktivieren</b>&#160; und zu <b>deaktivieren, </b>
+    </p>
+    <p>
+      &#160;w&#228;hle &quot;Format -&gt; Automatisches Layout&quot;.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1678162067" CREATED="1275185485875" MODIFIED="1275185599244">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Das <b>Automatische Layout</b>&#160;kannst du in den Einstellungen unter &quot;Extras -&gt; Einstellungen... -&gt; Automatisches Layout&quot; <b>konfigurieren</b>.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Knoten mit Wolken hervorheben" FOLDED="true" ID="Freeplane_Link_1697687428" CREATED="1270892460674" MODIFIED="1275185625052" COLOR="#407000">
+<node TEXT="Wolken sind gut geeignet, um einen ganzen Zweig hervorzuheben. Dieses Formatierungselement bezieht sich n&#xe4;mlich auf den Knoten und alle seine Nachfolger." ID="ID_1689467777" CREATED="1270892460675" MODIFIED="1275338506115"/>
+<node ID="ID_1388258473" CREATED="1270892460675" MODIFIED="1275185837991">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um eine <b>Wolke einzuf&#252;gen</b>, w&#228;hle &quot;Einf&#252;gen -&gt; Wolke&quot;
+    </p>
+    <p>
+      oder verwende die Tastenkombination Strg + Shift +B.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_238365883" CREATED="1270892460675" MODIFIED="1275185900358">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um die <b>Farbe</b>&#160;einer <b>Wolke</b>&#160;zu <b>ver&#228;ndern</b>, w&#228;hle Format -&gt; Wolkenfarbe...&quot;.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Wolken k&#xf6;nnen verschiedene Hintergrundfarben haben, wie gr&#xfc;n..." ID="ID_703286001" CREATED="1270892460675" MODIFIED="1275186034129">
+<cloud COLOR="#32d632" WIDTH="0"/>
+<node TEXT="... oder rot" ID="ID_1207851558" CREATED="1270892460675" MODIFIED="1275186015216">
+<cloud COLOR="#e81d1f" WIDTH="0"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Weitere Funktionen" FOLDED="true" POSITION="right" ID="ID_827349258" CREATED="1271021855439" MODIFIED="1275186150871" COLOR="#006666" HGAP="29" VSHIFT="-63">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Einstellungen vornehmen" FOLDED="true" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1275186199211" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<node ID="ID_425668379" CREATED="1270892460697" MODIFIED="1275338776557">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um <b>Einstellungen vorzunehmen</b>, &#246;ffne das Einstellungen-Fenster mit &quot;Extras -&gt; Einstellungen...&quot;. Unter Mac OS X befinden sich die Einstellungen im Applikations-Men&#252;. Manche Einstellungen werden erst nach einem Neustart von Freeplane aktiv.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1823288862" CREATED="1270895079510" MODIFIED="1275338836138">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst jedem <b>Men&#252;punkt</b>&#160;eine <b>Tastenkombination zuweisen</b>, indem Du &quot;Extras -&gt; ShortCut zuweisen...&quot; w&#228;hlst. Klicke danach auf den Men&#252;punkt, dem Du einen ShortCut zuweisen willst und gib die neue Tastenkombination ein. Wenn die Tastenkombination bereits vergeben ist, dann erscheint ein PopUp, in welchem&#160;Du die Zuweisung &#228;ndern kannst.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Dateisperrung" FOLDED="true" ID="ID_1594926210" CREATED="1270892460703" MODIFIED="1275232363559" COLOR="#407000">
+<node TEXT="Das Sperren der ge&#xf6;ffneten MindMap-Datei stellt sicher, dass andere Benutzer nicht zur selben Zeit die von Dir ge&#xf6;ffnete Datei bearbeiten, so dass Informationen nicht &#xfc;berschrieben werden k&#xf6;nnen." ID="ID_1859037836" CREATED="1270892460703" MODIFIED="1275232425727"/>
+<node TEXT="Die in Freeplane im Augenblick implementierte Dateisperrung hat einen experimentellen Status und ist daher standardm&#xe4;sig deaktiviert. In seltenen F&#xe4;llen kann es zu Problemen kommen. F&#xfc;r den allt&#xe4;glichen Gebrauch ist die Dateisperrung aber geeignet." ID="ID_60090824" CREATED="1270892460703" MODIFIED="1275338918192"/>
+<node ID="ID_1792715924" CREATED="1270892460703" MODIFIED="1275338964089">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um die experimentelle <b>Dateisperrung</b>&#160;zu <b>aktivieren</b>&#160;w&#228;hle
+    </p>
+    <p>
+      &quot;Extras -&gt; Einstellungen -&gt; Allgemein -&gt; Experimentelles sperren der ge&#246;ffneten Dateien&quot;.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Drucken" FOLDED="true" ID="Freeplane_Link_1528828442" CREATED="1270892460697" MODIFIED="1275232589985" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<node ID="ID_1681186639" CREATED="1270892460697" MODIFIED="1275233008481">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst die <b>Skalierung</b>&#160;beim <b>Drucken</b>&#160;einer MindMap <b>w&#228;hlen</b>. Verwende dazu das Men&#252;
+    </p>
+    <p>
+      &quot;Datei -&gt; Seite einrichten...&quot;.
+    </p>
+    <p>
+      M&#246;gliche Optionen sind:
+    </p>
+    <p>
+      - MindMap auf Seite einpassen
+    </p>
+    <p>
+      - MindMap auf Seitenbreite einpassen
+    </p>
+    <p>
+      - MindMap auf Seitenh&#246;he einpassen
+    </p>
+    <p>
+      - Benutzerdefinierte Gr&#246;&#223;e
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Es ist empfehlenswert die MindMap im Querformat zu drucken, da so der Platz auf dem Papier besser ausgenutz wird." ID="ID_741420393" CREATED="1270892460698" MODIFIED="1275233170897">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_209381010" CREATED="1270892460698" MODIFIED="1275339012245">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Eine <b>weiter M&#246;glichkeit MindMaps zu drucken</b>&#160;besteht darin, sie zuerst als HTML zu exportieren und dann vom Browser aus zu drucken, oder sie in OpenOffice oder Microsoft Office mit Copy und Paste einzuf&#252;gen und dann zu drucken.
+    </p>
+  </body>
+</html>
+</richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
+<node TEXT="Scripting" FOLDED="true" ID="ID_1046070222" CREATED="1271021863642" MODIFIED="1271022630845" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Die in Freeplane eingebauten Funktionen k&#xf6;nnen mit Groovy-Skripten erweitert werden." ID="ID_871333484" CREATED="1271022419501" MODIFIED="1275233492434">
+<node TEXT="Groovy Skripte greifen auf die MindMap &#xfc;ber das Scripting API (Application Programming Interface; Schnittstelle zum Programmieren von Anwendungen)  zu." ID="ID_893034881" CREATED="1271022419501" MODIFIED="1275233577970"/>
+<node TEXT="In Skripten kannst Du einige Freeplane utility-Klassen verwenden, wie z.B. UITools, LogTool or HtmlTools." ID="ID_670788358" CREATED="1271022419501" MODIFIED="1275233647155"/>
+<node TEXT="Skripte k&#xf6;nnen einige der in Freeplane integrierten Bibliotheken verwenden." ID="ID_21879568" CREATED="1271022419501" MODIFIED="1275233696746"/>
+</node>
+<node TEXT="Es gibt drei verschieden Wege, um&#xa;Skripte in Freeplane zu integrieren." ID="ID_1916933814" CREATED="1271022419501" MODIFIED="1275233818814">
+<node TEXT="Externe Skripte kannst Du einfach integrieren, indem Du Freeplane mitteilst, wo sie sind. Solche Skripte kannst du wie jede andere Freeplane-Funktion verwenden." ID="ID_905639720" CREATED="1271022419501" MODIFIED="1275233897596"/>
+<node TEXT="Stile k&#xf6;nnen Skripte enthalten. Sobald Du solche einen Stil einem Knoten zuweist, werden die enthaltenen Skripte ausgef&#xfc;hrt." ID="ID_1457942941" CREATED="1271022419501" MODIFIED="1275234009184"/>
+<node TEXT="Du kannst auch Skripte innerhalb einer MindMap als Attribute von Knoten definieren. Da sie praktisch Teil der MindMap sind, k&#xf6;nnen sie einfach verteilt werden. Zum Bearbeiten der Skripte gibt es in Freeplane einen eigenen Editor." ID="ID_1545994363" CREATED="1271022419501" MODIFIED="1275234224335"/>
+</node>
+<node TEXT="Im Freeplane Wiki gibt es detailliertere Informationen zum Thema Skripting." ID="ID_476511397" CREATED="1271022540079" MODIFIED="1275234354761" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting"/>
+</node>
+<node TEXT="Import, Export und Integration" FOLDED="true" ID="ID_1155373089" CREATED="1271022654767" MODIFIED="1275234505456" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Als HTML exportieren" FOLDED="true" ID="Freeplane_Link_22510332" CREATED="1270892460690" MODIFIED="1275234526622" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<node ID="ID_1502864159" CREATED="1270892460690" MODIFIED="1275236003357">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst die aktive <b>MindMap als HTML exportieren</b>. Dazu stehen Dir im Men&#252;
+    </p>
+    <p>
+      &quot;Datei -&gt; Export&quot; verschiedene Export-Methoden zur Verf&#252;gung. Abh&#228;ngig von den Einstellungen unter &quot;Extras -&gt; Einstellungen -&gt; HTML -&gt; HTML Export&quot; werden die Faltung und die Icons mit exportiert.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Exportieren als Bitmap, PDF&#xa;oder SVG" FOLDED="true" ID="Freeplane_Link_1908686168" CREATED="1270892460690" MODIFIED="1275236061727" COLOR="#407000">
+<node ID="ID_216678851" CREATED="1270892460690" MODIFIED="1275236187096">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Im Men&#252; &quot;Datei -&gt; Export&quot; stehen Dir noch <b>weitere Export-Formate</b>&#160;wie *.png, *.jpg, *.pdf oder *.svg zur Verf&#252;gung.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Konvertieren in andere XML-Formate" FOLDED="true" ID="Freeplane_Link_329770204" CREATED="1270892460691" MODIFIED="1275236262989" COLOR="#407000">
+<node ID="ID_1483460074" CREATED="1270892460691" MODIFIED="1275236483091" COLOR="#996600">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um die MindMap mit Hilfe einer <b>XSLT-Transformation</b>&#160;in ein anderes <b>XML-format</b>&#160;zu <b>exportieren</b>,
+    </p>
+    <p>
+      &#160;w&#228;hle &quot;Datei -&gt; Export -&gt; Verschiedene Formate (z.B. *.doc *.xls) mit XSLT...
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Diese Export-Option wendet eine XSLT Transformation auf die Freeplane MindMap an, um die Exportdatei zu erzeugen." ID="ID_1796935486" CREATED="1270897200986" MODIFIED="1275236578454"/>
+<node TEXT="Im Drop-Down Feld Filter des Popup-Fensters von &quot;Datei -&gt; Export -&gt; Verschiedene Formate (z.B. *.doc *.xls) mit XSLT...&quot; kannst Du unter verschiedenen Transformations-Dateien ausw&#xe4;hlen." ID="ID_1457131583" CREATED="1270897200986" MODIFIED="1275236811147"/>
+<node TEXT="XSL-Dateien m&#xfc;ssen in einem XSLT-Unterverzeichnis gespeichert sein. Dies kann entweder im Freeplane Installationsverzeichnis (z.B. C:\Program Files\Freeplane\xslt\), oder im Freeplane Benutzerverzeichnis (z.B. ~/.freeplane/xslt/) sein." ID="ID_968478102" CREATED="1270897200992" MODIFIED="1275236985351"/>
+<node TEXT="XSL-Dateien m&#xfc;ssen die Endung .xsl haben." ID="ID_870607100" CREATED="1270897200996" MODIFIED="1275237007940"/>
+<node TEXT="XSL-Dateien m&#xfc;ssen innerhalb der ersten 5 Zeilen eine Beschreibung Ihrer Funktion in der folgenden Form haben:&#xa;&#xa;MINDMAPEXPORT endung beschreibung" ID="ID_1304075824" CREATED="1270897201015" MODIFIED="1275237107572"/>
+</node>
+<node ID="ID_1185345026" CREATED="1270892460691" MODIFIED="1275237243019">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst die <b>MindMap</b>&#160;als ein <b>OpenOffice 1.4 Writer Dokument exportieren</b>.
+    </p>
+    <p>
+      &#160;W&#228;hle dazu &quot;Datei -&gt; Export -&gt; Als OpenOffice Writer Dokument&quot;
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Importieren von &#xa;Verzeichnisstrukturen" FOLDED="true" ID="Freeplane_Link_1841136119" CREATED="1270892460691" MODIFIED="1275237276267" COLOR="#407000">
+<font NAME="Dialog" SIZE="12"/>
+<node ID="ID_141591900" CREATED="1270892460691" MODIFIED="1275339301636">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst <b>Ordner-Strukturen</b>&#160;in Freeplane <b>importieren</b>. Verwende dazu
+    </p>
+    <p>
+      &quot;Datei -&gt; Import -&gt; Ordnerstruktur...&quot;. Das Ergebnis ist eine Baumstruktur,
+    </p>
+    <p>
+      &#160;die alle Ordner als verlinkten Knoten und alle Dateien als Dateinamen mit
+    </p>
+    <p>
+      Links auf die Dateien enth&#228;lt.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Beispiel" ID="ID_1229069993" CREATED="1270892460691" MODIFIED="1275238428298" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="Ausgew&#xe4;hlter Ordner" ID="ID_1900948226" CREATED="1270892460692" MODIFIED="1275238467491" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps" ID="ID_1047051948" CREATED="1270892460692" MODIFIED="1270892460692" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
+<node TEXT="Dbwiz" ID="ID_498299897" CREATED="1270892460692" MODIFIED="1270892460692" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/">
+<node TEXT="ASSETS.GIF" ID="ID_1996138069" CREATED="1270892460692" MODIFIED="1270892460692" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/ASSETS.GIF"/>
+<node TEXT="CONTACTS.GIF" ID="ID_798262045" CREATED="1270892460692" MODIFIED="1270892460692" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/CONTACTS.GIF"/>
+<node TEXT="EVTMGMT.GIF" ID="ID_709145536" CREATED="1270892460692" MODIFIED="1270892460692" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/EVTMGMT.GIF"/>
+<node TEXT="EXPENSES.GIF" ID="ID_1377975498" CREATED="1270892460692" MODIFIED="1270892460692" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/EXPENSES.GIF"/>
+<node TEXT="INVENTRY.GIF" ID="ID_136918014" CREATED="1270892460693" MODIFIED="1270892460693" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/INVENTRY.GIF"/>
+<node TEXT="LEDGER.GIF" ID="ID_534009523" CREATED="1270892460693" MODIFIED="1270892460693" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/LEDGER.GIF"/>
+<node TEXT="ORDPROC.GIF" ID="ID_1754727740" CREATED="1270892460693" MODIFIED="1270892460693" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/ORDPROC.GIF"/>
+<node TEXT="RESOURCE.GIF" ID="ID_716803393" CREATED="1270892460693" MODIFIED="1270892460693" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/RESOURCE.GIF"/>
+<node TEXT="SERVICE.GIF" ID="ID_573955224" CREATED="1270892460693" MODIFIED="1270892460693" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/SERVICE.GIF"/>
+<node TEXT="TIMEBILL.GIF" ID="ID_1318950239" CREATED="1270892460693" MODIFIED="1270892460693" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/TIMEBILL.GIF"/>
+</node>
+<node TEXT="Styles" ID="ID_1361256480" CREATED="1270892460693" MODIFIED="1270892460693" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/">
+<node TEXT="ACBLENDS.GIF" ID="ID_1744076397" CREATED="1270892460694" MODIFIED="1270892460694" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACBLENDS.GIF"/>
+<node TEXT="ACBLUPRT.GIF" ID="ID_212838780" CREATED="1270892460694" MODIFIED="1270892460694" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACBLUPRT.GIF"/>
+<node TEXT="ACEXPDTN.GIF" ID="ID_1366106507" CREATED="1270892460694" MODIFIED="1270892460694" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACEXPDTN.GIF"/>
+<node TEXT="ACINDSTR.GIF" ID="ID_769876930" CREATED="1270892460694" MODIFIED="1270892460694" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACINDSTR.GIF"/>
+<node TEXT="ACRICEPR.GIF" ID="ID_1712090657" CREATED="1270892460694" MODIFIED="1270892460694" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACRICEPR.GIF"/>
+<node TEXT="ACSNDSTN.GIF" ID="ID_813891347" CREATED="1270892460695" MODIFIED="1270892460695" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACSNDSTN.GIF"/>
+<node TEXT="ACSUMIPT.GIF" ID="ID_1114271187" CREATED="1270892460695" MODIFIED="1270892460695" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACSUMIPT.GIF"/>
+<node TEXT="GLOBE.WMF" ID="ID_1639010435" CREATED="1270892460695" MODIFIED="1270892460695" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/GLOBE.WMF"/>
+<node TEXT="STONE.BMP" ID="ID_1135916708" CREATED="1270892460695" MODIFIED="1270892460695" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/STONE.BMP"/>
+</node>
+</node>
+</node>
+<node TEXT="Importieren von &#xa;Internet-Explorer Favoriten" FOLDED="true" ID="Freeplane_Link_269203785" CREATED="1270892460695" MODIFIED="1275241757795" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<edge WIDTH="thin"/>
+<node ID="Freeplane_Link_260446736" CREATED="1270892460695" MODIFIED="1275241990848">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um <b>Internet-Explorer Favoriten</b>&#160;zu <b>importieren</b>, w&#228;hle &quot;Datei -&gt; Import -&gt; Explorer Favoriten&quot;. Du musst danach den Pfad zum Ordner, der die Favoriten enth&#228;lt eingeben. Bei vielen Windows Versionen ist dies C:\Documents and Settings\&lt;user&gt;\Favorites.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Importieren von MindManager X5 MindMaps" FOLDED="true" ID="Freeplane_Link_1709974530" CREATED="1270892460696" MODIFIED="1275242022246" COLOR="#407000">
+<node ID="ID_75598516" CREATED="1270892460696" MODIFIED="1275242105186">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Zum <b>Importieren</b>&#160;von <b>MindManager X5 MindMaps</b>&#160;w&#228;hle
+    </p>
+    <p>
+      &#160;&quot;Datei -&gt; Import -&gt; MinndManager X5 Map...&quot;
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Integration mit Textverarbeitungs- und E-Mail-Programmen" FOLDED="true" ID="Freeplane_Link_913645795" CREATED="1270892460696" MODIFIED="1275242162498" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<node TEXT="Du kannst ganze MindMaps oder Zweige von MindMaps in Textverarbeitungen wie Microsoft Office, OpenOffice oder Wordpad und den meisten E-Mail Programmen mit Copy und Paste einf&#xfc;gen. Dabei werden auch Text-Formatierungen und Links ber&#xfc;cksichtigt. Allgemein gilt dies f&#xfc;r alle Programme, die das Rich-Text-Format (rtf) unterst&#xfc;tzen." ID="ID_30933864" CREATED="1270892460696" MODIFIED="1275242362496">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="Ein Klick auf das E-Mail Symbol &#xf6;ffnet das Standard E-Mail Programm und erzeugt eine neue E-Mail  (hier der Link: mailto:don.bonton@supermail.com)." ID="ID_1813926938" CREATED="1270892460696" MODIFIED="1275242555737" LINK="mailto:don.bonton@supermail.com">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="Du kannst auch einen Betreff mit angeben (hier der Link: mailto:don.bonton@supermail.com?subject=Last%20phone%20call)" ID="ID_1902881426" CREATED="1270892460696" MODIFIED="1275242716622" LINK="mailto:don.bonton@supermail.com?subject=Last%20phone%20call"/>
+</node>
+</node>
+<node TEXT="Browsen der Dateien auf &#xa;Deinem Computer" FOLDED="true" ID="_Freeplane_Link_353522063" CREATED="1270892460641" MODIFIED="1275247084182" COLOR="#407000">
+<node ID="ID_580394018" CREATED="1270892460642" MODIFIED="1275247209778">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um durch die <b>Dateien</b>&#160;Deines Computers zu <b>navigieren</b>,
+    </p>
+    <p>
+      &#160;musst Du &#252;ber &quot;MindMaps -&gt; Datei Explorer&quot; in den browse-Modus schalten.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Der Datei-Baum wird dabei wie eine MindMap dargestellt." ID="ID_752002115" CREATED="1270892460642" MODIFIED="1275247251598"/>
+<node ID="ID_9876074" CREATED="1270892460642" MODIFIED="1275247590773">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst eine <b>weiteres Explorer-Tab &#246;ffnen</b>, indem Du im Kontext-Men&#252; eines Knotens Zentrieren w&#228;hlst. Dieser Knoten wird dann zum Wurzelknoten einer neuen Dateiansicht.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Um einen Eintrag zu &#xf6;ffnen, ihn auszuf&#xfc;hren oder zu betrachten, folge dem Link des Knotens." ID="ID_355560243" CREATED="1270892460643" MODIFIED="1275247667345"/>
+<node TEXT="Dieser Datei-Modus ist haupts&#xe4;chlich als eine Demonstration der M&#xf6;glichkeit gedacht, Daten aus externen Quellen mit Freeplane zu visualisieren. Software Entwickler k&#xf6;nnen auf diese Art und Weise weitere &quot;Modis&quot; f&#xfc;r ihre Daten programmieren." ID="_Freeplane_Link_279880616" CREATED="1270892460643" MODIFIED="1275247816238"/>
+</node>
+<node TEXT="Automatisches Speichern" FOLDED="true" ID="ID_1283343603" CREATED="1271096741387" MODIFIED="1275247830551" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Freeplane erzeugt in jedem Ordner, der eine editierte MindMap einth&#xe4;lt, einen Unterordner mit dem Namen &quot;.backup&quot;. Hier speichert Freeplane &#xe4;ltere Versionen der aktiven MindMap, sowie automatisch erzeugte backups. Die automatischen Sicherungen haben die Endung &quot;.autosave&quot;." ID="ID_1590067344" CREATED="1271096749626" MODIFIED="1275248093530"/>
+<node TEXT="Standardm&#xe4;sig wird jede Minute eine Sicherung gemacht und es wird eine Historie der letzten 10 Backups als Datensicherung gehalten" ID="ID_1073721425" CREATED="1271177847312" MODIFIED="1275248213218"/>
+<node ID="ID_206842943" CREATED="1271178201859" MODIFIED="1275248553129">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Um die <b>Sicherung wieder herzustellen</b>, musst Du sie h&#228;ndisch umbenennen. Das bedeutet Du musst die Endung &quot;.autosave&quot; und die Nummer entfernen. Standardm&#228;sig reichen die Nummern von 1 bis 10, wobei 10 die letzte Sicherung ist. Nehmen wir an, Du willst eine Datei mit dem Namen freeplane.mm wieder herstellen, dann musst Du aus dem Ordner &quot;./.backup&quot; die Datei &quot;freeplane.mm.10.autosave&quot; in &quot;freeplane.mm&quot; umbenennen.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node FOLDED="true" ID="ID_3064437" CREATED="1271178347062" MODIFIED="1275248780969">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Du kannst diese <b>Funktionen</b>&#160;unter &quot;Extras -&gt; Einstellungen -&gt; Allgemein -&gt; Automatisches Speichern&quot; <b>konfigurieren.</b>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Homepage von Freeplane" POSITION="left" ID="ID_916980386" CREATED="1270892460631" MODIFIED="1274306454209" LINK="http://freeplane.sourceforge.net">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="Tabelle der vordefinierten Tastaturk&#xfc;rzel (separates Dokument)" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1091417446" CREATED="1270892460634" MODIFIED="1275251282200" COLOR="#006699" LINK="FP_Key_Mappings_Quick_Guide_de.pdf"/>
+<node TEXT="Men&#xfc;-Referenz von Freeplane (separates Dokument)" POSITION="left" ID="ID_640122712" CREATED="1272090985328" MODIFIED="1275251471956" LINK="FP_MenuReference_de.mm" COLOR="#006699">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+</node>
+<node TEXT="Installation" FOLDED="true" POSITION="left" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1270892460638" COLOR="#006633">
+<node TEXT="Links" ID="_Freeplane_Link_1911559485" CREATED="1270892460638" MODIFIED="1270892460638" COLOR="#006699">
+<node TEXT="Download der Java Runtime Environment (Mindestvorraussetzung J2RE1.5)" ID="ID_1620747952" CREATED="1270892460639" MODIFIED="1274306664615" LINK="http://java.sun.com/javase/downloads/index.jsp">
+<edge WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="Download des Programmes" ID="_Freeplane_Link_1612101865" CREATED="1270892460640" MODIFIED="1274306680807" LINK="http://freeplane.sourceforge.net">
+<edge WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
+<node ID="_Freeplane_Link_139664576" CREATED="1270892460640" MODIFIED="1274392860879">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Microsoft Windows:</b>&#160;Installiere Java und dann Freeplane mit dem Freeplane Installationsprogramm.
+    </p>
+    <p>
+      Freeplane kann dann wie alle anderen Programme &#252;ber das Start-Men&#252; gestartet werden.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="_Freeplane_Link_1380352758" CREATED="1270892460641" MODIFIED="1274392884173">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Linux:</b>&#160;Lade das Java Runtime Enviroment und Freeplane herunter. Installiere zuerst Java und entpacke dann das Freeplane-Archiv. Zum starten von Freeplane mu&#223;t Du freeplane.sh ausf&#252;hren.
+    </p>
+  </body>
+</html></richcontent>
+<font BOLD="false" ITALIC="false"/>
+</node>
+<node ID="_Freeplane_Link_1808511462" CREATED="1270892460641" MODIFIED="1274393920819">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Mac OS X: </b>Um Freeplane auf dem Mac zu installieren, musst Du zuerst sicher stellen, dass alle Software updates (insbesonders Java) eingespielt sind. Das eingebaute Software-Update-Feature befindet sich unter dem Appel-Logo Men&#252; in der oberen linken Ecke.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Danach musst Du die Mac-Version von Freeplane herunterladen. Es gibt ein .dmg-Version (die bevorzugt werden sollte, da sie sich einfach installieren l&#228;sst) und eine .zip-Version. Nachdem der Download abgeschlossen ist, sollte die Datei (abh&#228;ngig von den Browser-Voreinstellungen) automatisch eingebunden, oder entzippt werden. Wenn dies nicht geschieht, hilft ein Doppelklick auf die heruntergeladene Datei, um sie einzubinden, oder zu entzippen.
+    </p>
+    <p>
+      <br/>
+      
+    </p>
+    <p>
+      Jetzt solltest Du ein Freeplane-Icon sehen, das Du in den Applikations-Ordner ziehen kannst. Optional kannst Du auch einen Shortcut auf dem Desktop und/ oder im dock anlegen. Zum Starten von Freeplane reicht jetzt ein Doppelklick auf die Anwendung (im Applikations-Ordner), den Desktop Shortcut, oder ein einfacher Klick auf das Icon im Dock.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Im Freeplane-Wiki gibt es eine Mac-Seite mit weiteren Informationen.<br/>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Hinweise f&#xfc;r Mac-Nutzer" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1530607683" CREATED="1270892460643" MODIFIED="1274393981644" COLOR="#006666">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Freeplane unterst&#xfc;tzt das Betriebssystem Mac OS X noch nicht sehr lange. Die Dokumentation richtet sich noch stark an PC-Nutzer, die Windows, oder Linux verwenden. Trotzdem k&#xf6;nnen Mac-Nutzer mit dieser Doku klar kommen, wenn sie die im Folgenden aufgelisteten Unterschiede im Hinterkopf behalten." ID="ID_752234886" CREATED="1270892460643" MODIFIED="1274394361160">
+<node TEXT="Kommando-Taste im Vergleich zur Strg-Taste" FOLDED="true" ID="ID_274373799" CREATED="1272034412047" MODIFIED="1275248868519">
+<node TEXT="Wenn Du Freeplane unter Mac OS X verwendest, wirst Du im Allgmeinen eher die Apple-Kommando Taste verwenden, als die Strg-Taste. Die Kommando-Taste ist mit einem Kleepblatt-Symbol (&#x2318;) gekennzeichnet, kann aber auch mit &quot;command&quot;, &quot;cmd&quot;, oder dem Apple-Loge beschriftet sein." ID="ID_395674676" CREATED="1272029514331" MODIFIED="1275249080490"/>
+<node TEXT="Wenn in dieser Dokumentation von der Strg-Taste die Rede ist, sollten Mac-Benutzer in den meisten f&#xe4;llen die Kommando-Taste verwenden" ID="ID_124270811" CREATED="1272034546855" MODIFIED="1275249146943"/>
+<node TEXT="In einigen wenigen F&#xe4;llen m&#xfc;ssen aber auch Mac-Benutzer die Strg-Taste verwenden. Diese sind in der Dokumentation aber explizit genannt. Falls die Kommando-Taste einmal nicht funktioniert, kann es aber dennoch eine gute Idee sein die Strg-Taste zu probieren." ID="ID_1031450682" CREATED="1272034546807" MODIFIED="1275249266475"/>
+</node>
+<node TEXT="Maus, Rechtsklick und Context-Men&#xfc;s" FOLDED="true" ID="ID_1326732850" CREATED="1272034661406" MODIFIED="1275249293642">
+<node TEXT="Viele Apple M&#xe4;use und Trackpads haben nur einen klickbaren Button. Das Kontextmen&#xfc; kann man in diesen F&#xe4;llen erreichen, indem man die Strg-Taste gedr&#xfc;ckt h&#xe4;lt, w&#xe4;hrend man den Klick durchf&#xfc;hrt (in diesem Fall ist die Strg-Taste gemeint)." ID="ID_1259415390" CREATED="1272030826942" MODIFIED="1275249538274"/>
+</node>
+<node TEXT="Unterschiede der Men&#xfc;s" FOLDED="true" ID="ID_1110596300" CREATED="1272475775170" MODIFIED="1275339928834">
+<node TEXT="Einige Men&#xfc;punkte sind entsprechend dem Mac OS X Standard an anderen Stellen, als in anderen Betriebssystemen. Diese F&#xe4;lle sind unten aufgelistet." ID="ID_1853446063" CREATED="1272475795702" MODIFIED="1275339995577"/>
+<node TEXT="&quot;Hilfe -&gt; &#xdc;ber Freeplane...&quot; ist im Applikations-Men&#xfc; unter &#xdc;ber Freeplane..." ID="ID_1154800735" CREATED="1272475988527" MODIFIED="1275249713869"/>
+<node TEXT="&quot;Exras -&gt; Einstellungen...&quot; ist im Applikations-Men&#xfc; unter Einstellungen." ID="ID_1860427078" CREATED="1272490956135" MODIFIED="1275249757568"/>
+<node TEXT="&quot;Datei -&gt; Beenden&quot; ist im Applikations-Men&#xfc; unter Beenden." ID="ID_1745832189" CREATED="1272491194401" MODIFIED="1275249802027"/>
+</node>
+<node TEXT="Zoomen" FOLDED="true" ID="ID_590901264" CREATED="1272034779740" MODIFIED="1275249813416">
+<node TEXT="Da Freeplane seinen Zoom-Level selbst verwaltet, funktioniert die in Mac OS X eingebaute Zoom-Funktion  (Strg gedr&#xfc;ckt halten und am Mausrad drehen) nicht. Mac-Beutzer m&#xfc;ssen die von Freeplane zur Verf&#xfc;gung gestellten Mittel zum Einstellen des Zooms verwenden." ID="ID_1955741602" CREATED="1272031370038" MODIFIED="1275250078105"/>
+<node TEXT="Wenn Du aber trotzdem die Mac-Variante zum Verg&#xf6;&#xdf;ern verwendet hast, kann es vorkommen, dass einige Mausfunktionen in Freeplane nicht mehr richtig, oder gar nicht mehr funktionieren. In diesem Fall musst Du den Mac-Zoom wieder r&#xfc;ckg&#xe4;ngig machen." ID="ID_842528755" CREATED="1272034875909" MODIFIED="1275250252847"/>
+</node>
+<node TEXT="Freeplane Wiki" FOLDED="true" ID="ID_1142057644" CREATED="1272034993198" MODIFIED="1272035003988">
+<node TEXT="Um mehr &#xfc;ber den Betrieb von Freeplane unter Mac OS X zu erfahren, besuche das Freeplane Wiki." ID="ID_275313424" CREATED="1272035005736" MODIFIED="1275250305269" LINK="http://freeplane.sourceforge.net/wiki/index.php/Macintosh"/>
+</node>
+</node>
+</node>
+<node TEXT="Verwenden des Freeplane-Applets auf Deiner Web- Seite" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1525986009" CREATED="1270892460644" MODIFIED="1275250344010" COLOR="#006666">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Mit &quot;Datei -&gt; Export -&gt; Als Java Applet...&quot; erzeugst Du die Dateien f&#xfc;r Deine Web-Site." ID="ID_885091125" CREATED="1270892460644" MODIFIED="1275250555545" COLOR="#000000">
+<font NAME="Dialog" SIZE="12"/>
+</node>
+<node TEXT="Im Freeplane Applet kannst Du MindMaps nur betrachten und nicht bearbeiten. Durch klicken auf einen Knoten kannst Du den Zweig aber ein- und ausfalten. Auch das Umherschieben mit gedr&#xfc;ckter linker Maustaste und das Durchsuchen (mit Kontext-Men&#xfc;) funktioniert" ID="_Freeplane_Link_514864900" CREATED="1270892460645" MODIFIED="1275340105130">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="Kleinere Maps kannst Du auch als Flash-Applet exportieren, was aber weniger Navigationsm&#xf6;glichkeiten bietet." ID="ID_814739863" CREATED="1270895588942" MODIFIED="1275340135154"/>
+<node TEXT="LaTeX und SVG Bilder werden in den Applets nicht dargestellt." ID="ID_1798905971" CREATED="1271097701298" MODIFIED="1275340146193"/>
+</node>
+<node TEXT="Das Team" POSITION="left" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1275340221218" COLOR="#006666">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Urspr&#xfc;nglichel Autoren" FOLDED="true" ID="Freeplane_Link_415458128" CREATED="1270892460646" MODIFIED="1275250920051" COLOR="#006699">
+<node TEXT="Joerg Mueller" ID="_Freeplane_Link_1896457660" CREATED="1270892460646" MODIFIED="1270896496444" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12"/>
+<edge WIDTH="thin"/>
+</node>
+<node TEXT="Daniel Polansky" ID="_Freeplane_Link_984984595" CREATED="1270892460647" MODIFIED="1270892460647" COLOR="#996600" LINK="http://danpolansky.blogspot.com/">
+<font NAME="SansSerif" SIZE="12"/>
+<edge WIDTH="thin"/>
+</node>
+<node TEXT="Petr Novak" ID="_Freeplane_Link_459203293" CREATED="1270892460647" MODIFIED="1270892460647" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12"/>
+<edge WIDTH="thin"/>
+</node>
+<node TEXT="Christian Foltin" ID="_Freeplane_Link_875814410" CREATED="1270892460647" MODIFIED="1270896519401" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12"/>
+<edge WIDTH="thin"/>
+<node TEXT="christian.foltin@gmx.de" ID="ID_923137164" CREATED="1270892460648" MODIFIED="1270892460648" COLOR="#558000" LINK="mailto:christian.foltin@gmx.de">
+<font NAME="Dialog" SIZE="10"/>
+</node>
+</node>
+<node TEXT="Dimitry Polivaev" ID="_Freeplane_Link_1415293905" CREATED="1270892460648" MODIFIED="1270895653419" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12"/>
+<edge WIDTH="thin"/>
+</node>
+<node TEXT="Graphical Design by Predrag Cuklin" ID="ID_1094825033" CREATED="1270892460648" MODIFIED="1270902561031" COLOR="#996600">
+<font NAME="SansSerif" SIZE="12"/>
+<edge WIDTH="thin"/>
+</node>
+</node>
+<node TEXT="Augenblickliches Team" FOLDED="true" ID="ID_1090487344" CREATED="1271097427203" MODIFIED="1275250950142" COLOR="#006699">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<edge WIDTH="thin"/>
+<node TEXT="Release 1.1.x" ID="ID_1795869028" CREATED="1271097443907" MODIFIED="1271097685189" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Dimitry Polivaev" ID="ID_809494025" CREATED="1271097633119" MODIFIED="1271097633119"/>
+<node TEXT="Volker Boerchers" ID="ID_548414191" CREATED="1271097633119" MODIFIED="1271097633119"/>
+<node TEXT="Eric L." ID="ID_306583030" CREATED="1271097633122" MODIFIED="1271097633122"/>
+<node TEXT="jayseye" ID="ID_502187025" CREATED="1271097633123" MODIFIED="1271097633123"/>
+<node TEXT="Predrag" ID="ID_320430724" CREATED="1271097633123" MODIFIED="1271097633123"/>
+<node TEXT="Ryan Wesley" ID="ID_288819242" CREATED="1271097633123" MODIFIED="1271097633123"/>
+</node>
+</node>
 </node>
 </node>
 </map>
+
+ 	  	 
