@@ -170,8 +170,11 @@ class UpdateCheckAction extends AFreeplaneAction {
 			final String webUpdateUrl = ResourceController.getResourceController().getProperty(WEB_UPDATE_LOCATION_KEY);
 			final FreeplaneVersion localVersion = FreeplaneVersion.getVersion();
 			final StringBuilder sb = new StringBuilder(webUpdateUrl);
-			sb.append(localVersion.getType());
-			sb.append('/');
+			final String type = localVersion.getType();
+			if(! type.equals("")){
+				sb.append(type);
+				sb.append('/');
+			}
 			sb.append("history_");
 			sb.append(language);
 			sb.append(".txt");
