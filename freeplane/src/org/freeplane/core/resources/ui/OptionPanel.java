@@ -95,7 +95,7 @@ public class OptionPanel {
 	}
 
 	public void buildPanel(final DefaultMutableTreeNode controlsTree) {
-		final FormLayout leftLayout = new FormLayout("80dlu", "");
+		final FormLayout leftLayout = new FormLayout("max(80dlu;p):grow", "");
 		final DefaultFormBuilder leftBuilder = new DefaultFormBuilder(leftLayout);
 		final CardLayout cardLayout = new VariableSizeCardLayout();
 		final JPanel rightStack = new JPanel(cardLayout);
