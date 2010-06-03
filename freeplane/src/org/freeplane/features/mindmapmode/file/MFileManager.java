@@ -317,8 +317,14 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final File[] revisions = findNewerFileRevisions(file, MFileManager.backupDir(file));
 			if (revisions.length > 0) {
 				final NewerFileRevisionsFoundDialog newerFileRevisionsFoundDialog = new NewerFileRevisionsFoundDialog(
-				    file, revisions, getController());
-				if (!newerFileRevisionsFoundDialog.confirmContinue()) {
+				    file, revisions);
+				if (newerFileRevisionsFoundDialog.confirmContinue()) {
+					// "touch" the file to avoid questions about the same auto safe files again
+					boolean success = file.setLastModified(System.currentTimeMillis());
+					if (!success)
+						LogUtils.warn("Unable to set the last modification time for " + file);
+				}
+				else {
 					return;
 				}
 				if (newerFileRevisionsFoundDialog.getSelectedFile() != null) {

@@ -47,8 +47,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.QuitAction;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
@@ -143,12 +141,10 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final static String KEY_BASE = "NewerFileRevisionsFoundDialog";
-	private JButton btnOK;
-	private JButton btnCancel;
-	private JButton btnExit;
+	private JButton btnOpen;
+	private JButton btnSkip;
 	private JButton btnReplace;
 	private boolean canContinue = false;
-	private final Controller controller;
 	private final File file;
 	private File selectedFile;
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -157,16 +153,15 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 	private class CloseAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final Object source = e.getSource();
-			canContinue = (source == btnOK //
+			canContinue = (source == btnOpen //
 			|| (source == btnReplace && selectedFile != null));
 			dispose();
 		}
 	}
 
-	public NewerFileRevisionsFoundDialog(final File file, final File[] revisions, final Controller controller) {
+	public NewerFileRevisionsFoundDialog(final File file, final File[] revisions) {
 		super(UITools.getFrame(), TextUtils.getText(NewerFileRevisionsFoundDialog.key("title")), true);
 		this.file = file;
-		this.controller = controller;
 		setBackground(Color.white);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		UITools.addEscapeActionToDialog(this);
@@ -178,7 +173,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		add(scrollPane);
 		add(createQuestion());
 		add(createButtonBar());
-		getRootPane().setDefaultButton(btnCancel);
+		getRootPane().setDefaultButton(btnSkip);
 		pack();
 		setLocationRelativeTo(UITools.getFrame());
 		setVisible(true);
@@ -225,20 +220,18 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		final Box controllerBox = Box.createHorizontalBox();
 		controllerBox.setBorder(new EmptyBorder(5, 0, 5, 0));
 		final CloseAction closeAction = new CloseAction();
-		btnOK = createButton("ok", NewerFileRevisionsFoundDialog.key("ok.tooltip"), closeAction);
+		btnOpen = createButton(NewerFileRevisionsFoundDialog.key("open"), NewerFileRevisionsFoundDialog
+		    .key("open.tooltip"), closeAction);
 		btnReplace = createButton(NewerFileRevisionsFoundDialog.key("replace"), null, closeAction);
 		btnReplace.setEnabled(false);
-		btnCancel = createButton("cancel", NewerFileRevisionsFoundDialog.key("cancel.tooltip"), closeAction);
-		btnExit = createButton("QuitAction.text", NewerFileRevisionsFoundDialog.key("quit.tooltip"), new QuitAction(
-		    controller));
+		btnSkip = createButton(NewerFileRevisionsFoundDialog.key("skip"), NewerFileRevisionsFoundDialog
+		    .key("skip.tooltip"), closeAction);
 		controllerBox.add(Box.createHorizontalGlue());
-		controllerBox.add(btnOK);
+		controllerBox.add(btnOpen);
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnReplace);
 		controllerBox.add(Box.createHorizontalGlue());
-		controllerBox.add(btnCancel);
-		controllerBox.add(Box.createHorizontalGlue());
-		controllerBox.add(btnExit);
+		controllerBox.add(btnSkip);
 		controllerBox.add(Box.createHorizontalGlue());
 		return controllerBox;
 	}
@@ -269,10 +262,8 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 
 	public static void main(final String[] args) {
 		ResourceController.setResourceController(new ApplicationResourceController());
-		// null Controller will lead to a NPE in QuitAction if "Exit" button is chosen
-		final Controller controller = null;
 		final NewerFileRevisionsFoundDialog newerFileRevisionsFoundDialog = new NewerFileRevisionsFoundDialog(new File(
-		    "someMap.mm"), new File(".").listFiles(), controller);
+		    "someMap.mm"), new File(".").listFiles());
 		System.out.println("confirmContinue=" + newerFileRevisionsFoundDialog.confirmContinue());
 		System.out.println("selectedFile=" + newerFileRevisionsFoundDialog.getSelectedFile());
 	}
