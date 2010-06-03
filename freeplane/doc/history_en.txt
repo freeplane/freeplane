@@ -1,4 +1,10 @@
 ===============================
+1.0.45 rc
+===============================
+New features:
+Display filled folding mark if there are some descendant folded nodes  with visible descendants are hidden by a filter 
+
+===============================
 1.0.44 rc
 ===============================
 Bug fixes:
