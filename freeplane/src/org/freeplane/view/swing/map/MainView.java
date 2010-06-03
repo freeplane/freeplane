@@ -251,11 +251,11 @@ public abstract class MainView extends JLabel {
 		}
 	}
 
-	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p) {
+	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, boolean itself) {
 		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
 		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
 		final Color color = g.getColor();
-		g.setColor(Color.WHITE);
+		g.setColor(itself ? Color.WHITE : Color.GRAY);
 		g.fillOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		final NodeModel model = nodeView.getModel();
 		final Color edgeColor = EdgeController.getController(nodeView.getMap().getModeController()).getColor(model);
