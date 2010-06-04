@@ -1005,7 +1005,7 @@ public class NodeView extends JComponent implements INodeView {
 	static private FoldingMarkType foldingMarkType(MapController mapController, NodeModel model) {
 		if (mapController.isFolded(model) 
 				&& (model.isVisible() 
-						|| hasVisibleChildren(mapController, model))){
+						|| model.getFilterInfo().isAncestor())){
 				return FoldingMarkType.ITSELF_FOLDED;
 		}
 		ListIterator<NodeModel> children = mapController.childrenUnfolded(model);
@@ -1017,17 +1017,6 @@ public class NodeView extends JComponent implements INodeView {
 	    	}
 	    }
 	    return FoldingMarkType.UNFOLDED;
-    }
-
-	private static boolean hasVisibleChildren(MapController mapController, NodeModel nodeModel) {
-	    ListIterator<NodeModel> children = mapController.childrenUnfolded(nodeModel);
-	    while(children.hasNext()){
-	    	NodeModel child = children.next();
-	    	if(child.isVisible() || hasVisibleChildren(mapController, child)){
-	    		return true;
-	    	}
-	    }
-	    return false;
     }
 
 	/**
