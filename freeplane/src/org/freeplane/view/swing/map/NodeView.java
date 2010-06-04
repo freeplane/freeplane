@@ -52,6 +52,7 @@ import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapChangeEvent;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
@@ -939,11 +940,9 @@ public class NodeView extends JComponent implements INodeView {
 				case NODES:
 				case ALL:
 					g2.setStroke(BubbleMainView.DEF_STROKE);
-					if (!isRoot) {
-						modeController.getController().getViewController().setEdgesRenderingHint(g2);
-						paintFoldingMark(g2);
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-					}
+					modeController.getController().getViewController().setEdgesRenderingHint(g2);
+					paintFoldingMark(g2);
+					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
 		}
 		else {
@@ -985,13 +984,32 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
-	public void paintFoldingMark(final Graphics2D g) {
-		if (getMap().getModeController().getMapController().isFolded(model)) {
+	void paintFoldingMark(final Graphics2D g) {
+		FoldingMarkType markType = foldingMarkType(getMap().getModeController().getMapController(), getModel());
+		if (! markType.equals(FoldingMarkType.UNFOLDED)) {
 			final Point out = getMainViewOutPoint(null, null);
 			UITools.convertPointToAncestor(getMainView(), out, this);
-			mainView.paintFoldingMark(this, g, out);
+			mainView.paintFoldingMark(this, g, out, markType.equals(FoldingMarkType.ITSELF_FOLDED));
 		}
 	}
+	
+	private enum FoldingMarkType  {UNFOLDED, ITSELF_FOLDED, UNVISIBLE_CHILDREN_FOLDED };
+	static private FoldingMarkType foldingMarkType(MapController mapController, NodeModel model) {
+		if (mapController.isFolded(model) 
+				&& (model.isVisible() 
+						|| model.getFilterInfo().isAncestor())){
+				return FoldingMarkType.ITSELF_FOLDED;
+		}
+		ListIterator<NodeModel> children = mapController.childrenUnfolded(model);
+	    while(children.hasNext()){
+	    	NodeModel child = children.next();
+	    	if(! child.isVisible() 
+	    			&& ! FoldingMarkType.UNFOLDED.equals(foldingMarkType(mapController, child))){
+	    		return FoldingMarkType.UNVISIBLE_CHILDREN_FOLDED;
+	    	}
+	    }
+	    return FoldingMarkType.UNFOLDED;
+    }
 
 	/**
 	 * This is a bit problematic, because getChildrenViews() only works if model

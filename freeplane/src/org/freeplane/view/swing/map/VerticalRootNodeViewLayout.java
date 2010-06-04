@@ -50,6 +50,9 @@ public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 
 	public Point getMainViewOutPoint(final NodeView view, final NodeView targetView, final Point destinationPoint) {
 		final MainView mainView = view.getMainView();
+		if(destinationPoint == null){
+			return mainView.getRightPoint();
+		}
 		if (VerticalRootNodeViewLayout.USE_COMMON_OUT_POINT_FOR_ROOT_NODE) {
 			if (targetView.isLeft()) {
 				return mainView.getLeftPoint();
