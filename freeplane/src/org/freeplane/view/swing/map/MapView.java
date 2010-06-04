@@ -319,7 +319,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private FitMap fitMap = FitMap.USER_DEFINED;
 	private boolean isPreparedForPrinting = false;
 	private boolean isPrinting = false;
-	private final int maxNodeWidth = 0;
 	private final ModeController modeController;
 	final private MapModel model;
 	private NodeView nodeToBeVisible = null;
@@ -407,35 +406,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void centerNode(final NodeView node) {
 		nodeToBeCentered = node;
 		if (SwingUtilities.getRoot(this) == null) {
-			addAncestorListener(new AncestorListener() {
-				public void ancestorAdded(final AncestorEvent event) {
-					removeAncestorListener(this);
-					if (nodeToBeCentered != null) {
-						centerNode(nodeToBeCentered);
-					}
-				}
-
-				public void ancestorMoved(final AncestorEvent event) {
-				}
-
-				public void ancestorRemoved(final AncestorEvent event) {
-				}
-			});
 			return;
 		}
 		nodeToBeVisible = null;
 		if (!(isValid() && isShowing())) {
-			centerNodeCounter = 5;
-		}
-		if (centerNodeCounter != 0) {
-			centerNodeCounter--;
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					if (nodeToBeCentered != null) {
-						centerNode(nodeToBeCentered);
-					}
-				}
-			});
 			return;
 		}
 		final JViewport viewPort = (JViewport) getParent();
@@ -1445,6 +1419,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void setViewPositionAfterValidate() {
+		if(nodeToBeCentered != null){
+			centerNodeCounter = 5;;
+			centerNodeLater();
+		}
 		if (anchorContentLocation.getX() == 0 && anchorContentLocation.getY() == 0) {
 			return;
 		}
@@ -1480,6 +1458,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			nodeToBeVisible = null;
 		}
 	}
+
+	private void centerNodeLater() {
+	    EventQueue.invokeLater(new Runnable() {
+	    	public void run() {
+	    		if(centerNodeCounter == 0 && nodeToBeCentered != null){
+	    			centerNode(nodeToBeCentered);
+	    			return;
+	    		}
+	    		if(centerNodeCounter > 0){
+	    			centerNodeCounter--;
+	    			centerNodeLater();
+	    		}
+	    	}
+	    });
+    }
 
 	//	@Override
 	//    public void repaint(int x, int y, int width, int height) {
