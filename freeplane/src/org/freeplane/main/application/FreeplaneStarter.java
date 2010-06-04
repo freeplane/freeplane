@@ -151,6 +151,7 @@ public class FreeplaneStarter {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				viewController.init();
+				splash.toBack();
 				loadMaps(args);
 				final Frame frame = viewController.getFrame();
 				final int extendedState = frame.getExtendedState();
