@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -358,9 +357,9 @@ public class HtmlUtils {
 	 * @return the maximal index i such that pI is mapped to i by removing all
 	 *         tags from the original input.
 	 */
-	public static int getMaximalOriginalPosition(final int pI, final ArrayList pListOfIndices) {
+	public static int getMaximalOriginalPosition(final int pI, final ArrayList<IndexPair> pListOfIndices) {
 		for (int i = pListOfIndices.size() - 1; i >= 0; --i) {
-			final IndexPair pair = (IndexPair) pListOfIndices.get(i);
+			final IndexPair pair = pListOfIndices.get(i);
 			if (pI >= pair.replacedStart) {
 				if (!pair.mIsTag) {
 					return pair.originalStart + pI - pair.replacedStart;
@@ -373,9 +372,8 @@ public class HtmlUtils {
 		throw new IllegalArgumentException("Position " + pI + " not found.");
 	}
 
-	public static int getMinimalOriginalPosition(final int pI, final ArrayList pListOfIndices) {
-		for (final Iterator iter = pListOfIndices.iterator(); iter.hasNext();) {
-			final IndexPair pair = (IndexPair) iter.next();
+	public static int getMinimalOriginalPosition(final int pI, final ArrayList<IndexPair> pListOfIndices) {
+		for (final IndexPair pair : pListOfIndices) {
 			if (pI >= pair.replacedStart && pI <= pair.replacedEnd) {
 				return pair.originalStart + pI - pair.replacedStart;
 			}
@@ -389,7 +387,7 @@ public class HtmlUtils {
 	 * it. But look that it complies with FindTextTests!!!
 	 */
 	public static String getReplaceResult(final Pattern pattern, final String replacement, final String text) {
-		final ArrayList splittedStringList = new ArrayList();
+		final ArrayList<IndexPair> splittedStringList = new ArrayList<IndexPair>();
 		String stringWithoutTags = null;
 		{
 			final StringBuffer sb = new StringBuffer();
@@ -429,8 +427,7 @@ public class HtmlUtils {
 			final int mStart = matcher.start();
 			final int mEnd = matcher.end();
 			int state = 0;
-			for (final Iterator iter = splittedStringList.iterator(); iter.hasNext();) {
-				final IndexPair pair = (IndexPair) iter.next();
+			for (final IndexPair pair : splittedStringList) {
 				switch (state) {
 					case 0:
 						if (!pair.mIsTag && pair.replacedStart <= mStart && pair.replacedEnd > mStart) {

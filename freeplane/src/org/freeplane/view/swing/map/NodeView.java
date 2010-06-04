@@ -221,8 +221,8 @@ public class NodeView extends JComponent implements INodeView {
 	/**
 	 * This method returns the NodeViews that are children of this node.
 	 */
-	public LinkedList getChildrenViews() {
-		final LinkedList childrenViews = new LinkedList();
+	public LinkedList<NodeView> getChildrenViews() {
+		final LinkedList<NodeView> childrenViews = new LinkedList<NodeView>();
 		final Component[] components = getComponents();
 		for (int i = 0; i < components.length; i++) {
 			if (!(components[i] instanceof NodeView)) {
@@ -257,12 +257,12 @@ public class NodeView extends JComponent implements INodeView {
 	 * Returns the coordinates occupied by the node and its children as a vector
 	 * of four point per node.
 	 */
-	public void getCoordinates(final LinkedList inList) {
+	public void getCoordinates(final LinkedList<Point> inList) {
 		getCoordinates(inList, 0, false, 0, 0);
 	}
 
-	private void getCoordinates(final LinkedList inList, int additionalDistanceForConvexHull, final boolean byChildren,
-	                            final int transX, final int transY) {
+	private void getCoordinates(final LinkedList<Point> inList, int additionalDistanceForConvexHull,
+	                            final boolean byChildren, final int transX, final int transY) {
 		if (!isVisible()) {
 			return;
 		}
@@ -287,10 +287,7 @@ public class NodeView extends JComponent implements INodeView {
 			inList
 			    .addLast(new Point(additionalDistanceForConvexHull + x + width, -additionalDistanceForConvexHull + y));
 		}
-		final LinkedList childrenViews = getChildrenViews();
-		final ListIterator children_it = childrenViews.listIterator();
-		while (children_it.hasNext()) {
-			final NodeView child = (NodeView) children_it.next();
+		for (final NodeView child : getChildrenViews()) {
 			child.getCoordinates(inList, additionalDistanceForConvexHull, true, transX + child.getX(), transY
 			        + child.getY());
 		}
@@ -372,11 +369,9 @@ public class NodeView extends JComponent implements INodeView {
 		return null;
 	}
 
-	LinkedList getLeft(final boolean onlyVisible) {
-		final LinkedList all = getChildrenViews();
-		final LinkedList left = new LinkedList();
-		for (final ListIterator e = all.listIterator(); e.hasNext();) {
-			final NodeView node = (NodeView) e.next();
+	LinkedList<NodeView> getLeft(final boolean onlyVisible) {
+		final LinkedList<NodeView> left = new LinkedList<NodeView>();
+		for (final NodeView node : getChildrenViews()) {
 			if (node == null) {
 				continue;
 			}
@@ -495,7 +490,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	protected NodeView getNextSiblingSingle() {
-		LinkedList v = null;
+		LinkedList<NodeView> v = null;
 		if (getParentView().getModel().isRoot()) {
 			if (this.isLeft()) {
 				v = (getParentView()).getLeft(true);
@@ -633,7 +628,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	protected NodeView getPreviousSiblingSingle() {
-		LinkedList v = null;
+		LinkedList<NodeView> v = null;
 		if (getParentView().getModel().isRoot()) {
 			if (this.isLeft()) {
 				v = (getParentView()).getLeft(true);
@@ -685,11 +680,9 @@ public class NodeView extends JComponent implements INodeView {
 		return sibling;
 	}
 
-	LinkedList getRight(final boolean onlyVisible) {
-		final LinkedList all = getChildrenViews();
-		final LinkedList right = new LinkedList();
-		for (final ListIterator e = all.listIterator(); e.hasNext();) {
-			final NodeView node = (NodeView) e.next();
+	LinkedList<NodeView> getRight(final boolean onlyVisible) {
+		final LinkedList<NodeView> right = new LinkedList<NodeView>();
+		for (final NodeView node : getChildrenViews()) {
 			if (node == null) {
 				continue;
 			}
@@ -715,7 +708,7 @@ public class NodeView extends JComponent implements INodeView {
 		return map.getZoomed(calcShiftY(locationModel));
 	}
 
-	protected LinkedList getSiblingViews() {
+	protected LinkedList<NodeView> getSiblingViews() {
 		return getParentView().getChildrenViews();
 	}
 
@@ -766,9 +759,9 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void insert() {
-		final ListIterator it = getMap().getModeController().getMapController().childrenFolded(getModel());
+		final ListIterator<NodeModel> it = getMap().getModeController().getMapController().childrenFolded(getModel());
 		while (it.hasNext()) {
-			insert((NodeModel) it.next(), 0);
+			insert(it.next(), 0);
 		}
 	}
 
@@ -1017,8 +1010,8 @@ public class NodeView extends JComponent implements INodeView {
 	 * removed (it needs to stay in memory)
 	 */
 	void remove() {
-		for (final ListIterator e = getChildrenViews().listIterator(); e.hasNext();) {
-			((NodeView) e.next()).remove();
+		for (final ListIterator<NodeView> e = getChildrenViews().listIterator(); e.hasNext();) {
+			e.next().remove();
 		}
 		if (isSelected()) {
 			getMap().deselect(this);
@@ -1166,8 +1159,8 @@ public class NodeView extends JComponent implements INodeView {
 	 */
 	private void treeStructureChanged() {
 		getMap().resetShiftSelectionOrigin();
-		for (final ListIterator i = getChildrenViews().listIterator(); i.hasNext();) {
-			((NodeView) i.next()).remove();
+		for (final ListIterator<NodeView> i = getChildrenViews().listIterator(); i.hasNext();) {
+			i.next().remove();
 		}
 		insert();
 		if (map.getSelected() == null) {
@@ -1208,8 +1201,7 @@ public class NodeView extends JComponent implements INodeView {
 	void updateAll() {
 		update();
 		invalidate();
-		for (final ListIterator e = getChildrenViews().listIterator(); e.hasNext();) {
-			final NodeView child = (NodeView) e.next();
+		for (final NodeView child : getChildrenViews()) {
 			child.updateAll();
 		}
 	}
@@ -1255,8 +1247,7 @@ public class NodeView extends JComponent implements INodeView {
 	private void updateToolTipsRecursive(final boolean areTooltipsDisplayed) {
 		updateToolTip(areTooltipsDisplayed);
 		invalidate();
-		for (final ListIterator e = getChildrenViews().listIterator(); e.hasNext();) {
-			final NodeView child = (NodeView) e.next();
+		for (final NodeView child : getChildrenViews()) {
 			child.updateToolTipsRecursive(areTooltipsDisplayed);
 		}
 	}

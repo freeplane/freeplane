@@ -27,9 +27,6 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.common.edge.EdgeController;
-import org.freeplane.features.common.edge.EdgeStyle;
-import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.edge.EdgeView;

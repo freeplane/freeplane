@@ -30,6 +30,8 @@ import org.freeplane.features.common.map.NodeModel;
  * @author Dimitry Polivaev
  */
 public abstract class AMultipleNodeAction extends AFreeplaneAction {
+	private static final long serialVersionUID = 1L;
+
 	public AMultipleNodeAction(final String key, final Controller controller) {
 		super(key, controller);
 	}

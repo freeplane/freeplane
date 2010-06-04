@@ -28,7 +28,6 @@ import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;

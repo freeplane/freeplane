@@ -27,11 +27,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.icon.MindIcon;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;

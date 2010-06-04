@@ -141,7 +141,7 @@ class XMLWriter {
 			writer.print('<');
 			final String fullName = xml.getFullName();
 			writer.print(fullName);
-			final Vector nsprefixes = new Vector();
+			final Vector<String> nsprefixes = new Vector<String>();
 			if (xml.getNamespace() != null) {
 				if (xml.getName().equals(fullName)) {
 					writer.print(" xmlns=\"" + xml.getNamespace() + '"');
@@ -154,9 +154,9 @@ class XMLWriter {
 					writer.print("=\"" + xml.getNamespace() + "\"");
 				}
 			}
-			Enumeration enumeration = xml.enumerateAttributeNames();
-			while (enumeration.hasMoreElements()) {
-				final String key = (String) enumeration.nextElement();
+			Enumeration<String> enumAttributeNames = xml.enumerateAttributeNames();
+			while (enumAttributeNames.hasMoreElements()) {
+				final String key = (String) enumAttributeNames.nextElement();
 				final int index = key.indexOf(':');
 				if (index >= 0) {
 					final String namespace = xml.getAttributeNamespace(key);
@@ -170,9 +170,9 @@ class XMLWriter {
 					}
 				}
 			}
-			enumeration = xml.enumerateAttributeNames();
-			while (enumeration.hasMoreElements()) {
-				final String key = (String) enumeration.nextElement();
+			enumAttributeNames = xml.enumerateAttributeNames();
+			while (enumAttributeNames.hasMoreElements()) {
+				final String key = (String) enumAttributeNames.nextElement();
 				final String value = xml.getAttribute(key, null);
 				writer.print(" " + key + "=\"");
 				this.writeEncoded(value, true, false);
@@ -190,9 +190,9 @@ class XMLWriter {
 				if (prettyPrint) {
 					writer.println();
 				}
-				enumeration = xml.enumerateChildren();
+				Enumeration<XMLElement> enumeration = xml.enumerateChildren();
 				while (enumeration.hasMoreElements()) {
-					final XMLElement child = (XMLElement) enumeration.nextElement();
+					final XMLElement child = enumeration.nextElement();
 					this.write(child, prettyPrint, indent + 4, collapseEmptyElements, true);
 				}
 				if (prettyPrint) {

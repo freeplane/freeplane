@@ -38,12 +38,12 @@ public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExte
 		if (collection == null) {
 			return false;
 		}
-		if (!(key instanceof Class)) {
+		if (!(key instanceof Class<?>)) {
 			return false;
 		}
 		for (int i = 0; i < collection.size(); i++) {
 			final Object extension = collection.get(i);
-			if (((Class) key).isAssignableFrom(extension.getClass())) {
+			if (((Class<?>) key).isAssignableFrom(extension.getClass())) {
 				return true;
 			}
 		}
@@ -88,11 +88,12 @@ public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExte
 		return -1;
 	}
 
-	public IExtension get(final Object key) {
-		if (!(key instanceof Class)) {
+	@SuppressWarnings("unchecked")
+    public IExtension get(final Object key) {
+		if (!(key instanceof Class<?>)) {
 			return null;
 		}
-		final int index = find(((Class) key));
+		final int index = find((Class<? extends IExtension>) key);
 		if (index >= 0) {
 			return collection.get(index);
 		}
@@ -131,11 +132,12 @@ public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExte
 		}
 	}
 
-	public IExtension remove(final Object key) {
-		if (collection == null || !(key instanceof Class)) {
+	@SuppressWarnings("unchecked")
+    public IExtension remove(final Object key) {
+		if (collection == null || !(key instanceof Class<?>)) {
 			return null;
 		}
-		final int index = find((Class) key);
+		final int index = find((Class<? extends IExtension>) key);
 		if (index == -1) {
 			return null;
 		}

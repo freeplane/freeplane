@@ -40,15 +40,12 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 		}
 	}
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String mFilterRegexp;
 	/**
 	 * Contains indices or rows matching the filter criteria.
 	 */
-	private ArrayList mIndexArray;
+	private ArrayList<Integer> mIndexArray;
 	/**
 	 * The column that contains the NodeHolder items
 	 */
@@ -68,7 +65,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	}
 
 	@Override
-	public Class getColumnClass(final int arg0) {
+	public Class<?> getColumnClass(final int arg0) {
 		return mTableModel.getColumnClass(arg0);
 	}
 
@@ -101,7 +98,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 		if (row < 0 || row >= getRowCount()) {
 			throw new IllegalArgumentException("Illegal Row specified: " + row);
 		}
-		final int origRow = ((Integer) mIndexArray.get(row)).intValue();
+		final int origRow = mIndexArray.get(row).intValue();
 		return mTableModel.getValueAt(origRow, column);
 	}
 
@@ -122,7 +119,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	}
 
 	private void updateIndexArray() {
-		final ArrayList newIndexArray = new ArrayList();
+		final ArrayList<Integer> newIndexArray = new ArrayList<Integer>();
 		for (int i = 0; i < mTableModel.getRowCount(); i++) {
 			final NodeHolder nodeContent = (NodeHolder) mTableModel.getValueAt(i, mNodeTextColumn);
 			if (mPattern.matcher(nodeContent.toString()).matches()) {

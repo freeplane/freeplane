@@ -33,7 +33,6 @@ import org.freeplane.features.common.map.EncryptionModel;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/crypto" })
 public class EnterPassword extends AFreeplaneAction implements INodeSelectionListener {

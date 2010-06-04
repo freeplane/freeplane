@@ -141,8 +141,8 @@ public class StdXMLParser implements IXMLParser {
 	 * @throws java.lang.Exception
 	 *             if something went wrong
 	 */
-	protected void processAttribute(final Vector attrNames, final Vector attrValues, final Vector attrTypes)
-	        throws Exception {
+	protected void processAttribute(final Vector<String> attrNames, final Vector<String> attrValues,
+	                                final Vector<String> attrTypes) throws Exception {
 		final String key = XMLUtil.scanIdentifier(reader);
 		XMLUtil.skipWhitespace(reader, null);
 		if (!XMLUtil.read(reader, '&').equals("=")) {
@@ -236,9 +236,9 @@ public class StdXMLParser implements IXMLParser {
 			prefix = name.substring(0, colonIndex);
 			name = name.substring(colonIndex + 1);
 		}
-		final Vector attrNames = new Vector();
-		final Vector attrValues = new Vector();
-		final Vector attrTypes = new Vector();
+		final Vector<String> attrNames = new Vector<String>();
+		final Vector<String> attrValues = new Vector<String>();
+		final Vector<String> attrTypes = new Vector<String>();
 		validator.elementStarted(fullName, reader.getSystemID(), reader.getLineNr());
 		char ch;
 		for (;;) {
@@ -252,7 +252,7 @@ public class StdXMLParser implements IXMLParser {
 		}
 		final Properties extraAttributes = new Properties();
 		validator.elementAttributesProcessed(fullName, extraAttributes, reader.getSystemID(), reader.getLineNr());
-		final Enumeration enumeration = extraAttributes.keys();
+		final Enumeration<Object> enumeration = extraAttributes.keys();
 		while (enumeration.hasMoreElements()) {
 			final String key = (String) enumeration.nextElement();
 			final String value = extraAttributes.getProperty(key);
@@ -261,8 +261,8 @@ public class StdXMLParser implements IXMLParser {
 			attrTypes.addElement("CDATA");
 		}
 		for (int i = 0; i < attrNames.size(); i++) {
-			final String key = (String) attrNames.elementAt(i);
-			final String value = (String) attrValues.elementAt(i);
+			final String key = attrNames.elementAt(i);
+			final String value = attrValues.elementAt(i);
 			if (key.equals("xmlns")) {
 				defaultNamespace = value;
 			}
@@ -278,12 +278,12 @@ public class StdXMLParser implements IXMLParser {
 			    .startElement(name, prefix, namespaces.getProperty(prefix), reader.getSystemID(), reader.getLineNr());
 		}
 		for (int i = 0; i < attrNames.size(); i++) {
-			String key = (String) attrNames.elementAt(i);
+			String key = attrNames.elementAt(i);
 			if (key.startsWith("xmlns")) {
 				continue;
 			}
-			final String value = (String) attrValues.elementAt(i);
-			final String type = (String) attrTypes.elementAt(i);
+			final String value = attrValues.elementAt(i);
+			final String type = attrTypes.elementAt(i);
 			colonIndex = key.indexOf(':');
 			if (colonIndex > 0) {
 				final String attPrefix = key.substring(0, colonIndex);

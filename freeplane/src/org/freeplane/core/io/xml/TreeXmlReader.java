@@ -84,9 +84,9 @@ public class TreeXmlReader implements IXMLBuilder {
 	private Hashtable<String, IAttributeHandler> attributeHandlersForTag;
 	private Object currentElement;
 	private String elementContentAsString;
-	final private LinkedList elementStack = new LinkedList();
+	final private LinkedList<Object> elementStack = new LinkedList<Object>();
 	private IElementHandler nodeCreator;
-	final private LinkedList nodeCreatorStack = new LinkedList();
+	final private LinkedList<IElementHandler> nodeCreatorStack = new LinkedList<IElementHandler>();
 	private Object parentElement;
 	final private ReadManager parseManager;
 	private XMLParser parser;
@@ -146,10 +146,10 @@ public class TreeXmlReader implements IXMLBuilder {
 		if (saveAsXmlUntil != null || nodeCreator != null) {
 			return;
 		}
-		final Iterator iterator = getElementHandlers().iterator(tag);
+		final Iterator<IElementHandler> iterator = getElementHandlers().iterator(tag);
 		final XMLElement lastBuiltElement = xmlBuilder.getLastBuiltElement();
 		while (iterator.hasNext() && currentElement == null) {
-			nodeCreator = (IElementHandler) iterator.next();
+			nodeCreator = iterator.next();
 			currentElement = nodeCreator.createElement(parentElement, name, lastBuiltElement);
 		}
 		if (currentElement != null) {
@@ -160,7 +160,7 @@ public class TreeXmlReader implements IXMLBuilder {
 			if (attributeHandlersForTag == null) {
 				return;
 			}
-			final Enumeration attributeNames = lastBuiltElement.enumerateAttributeNames();
+			final Enumeration<String> attributeNames = lastBuiltElement.enumerateAttributeNames();
 			while (attributeNames.hasMoreElements()) {
 				final String atName = (String) attributeNames.nextElement();
 				if (addAttribute(atName, lastBuiltElement.getAttribute(atName, null))) {
@@ -216,7 +216,7 @@ public class TreeXmlReader implements IXMLBuilder {
 		return parseManager.getAttributeHandlers();
 	}
 
-	private ListHashTable getElementHandlers() {
+	private ListHashTable<String, IElementHandler> getElementHandlers() {
 		return parseManager.getElementHandlers();
 	}
 

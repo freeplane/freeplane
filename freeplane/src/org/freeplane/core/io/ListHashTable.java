@@ -27,7 +27,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 // TODO rladstaetter 15.02.2009 replace with Map<K,List<V>>
-@Deprecated
+// - Why? This class is a special purpose map
+// @Deprecated
 public class ListHashTable<K, V> {
 	/**
 	 * @author Dimitry Polivaev

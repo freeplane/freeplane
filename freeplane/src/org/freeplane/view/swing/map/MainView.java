@@ -46,7 +46,6 @@ import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
@@ -89,7 +88,6 @@ public abstract class MainView extends JLabel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final JComponent standardLabel = new JLabel();
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
 	private static final IconStore STORE = IconStoreFactory.create();
 

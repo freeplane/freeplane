@@ -89,7 +89,7 @@ public class StdXMLReader implements IXMLReader {
 	/**
 	 * The stack of readers.
 	 */
-	final private Stack readers;
+	final private Stack<StackedReader> readers;
 
 	/**
 	 * Initializes the XML reader.
@@ -104,7 +104,7 @@ public class StdXMLReader implements IXMLReader {
 		final StringBuilder charsRead = new StringBuilder();
 		final Reader reader = this.stream2reader(stream, charsRead);
 		currentReader = new StackedReader();
-		readers = new Stack();
+		readers = new Stack<StackedReader>();
 		currentReader.lineReader = new LineNumberReader(reader);
 		currentReader.pbReader = currentReader.lineReader;
 		currentReader.publicId = "";
@@ -125,7 +125,7 @@ public class StdXMLReader implements IXMLReader {
 	 */
 	public StdXMLReader(final Reader reader) {
 		currentReader = new StackedReader();
-		readers = new Stack();
+		readers = new Stack<StackedReader>();
 		currentReader.lineReader = new LineNumberReader(reader);
 		currentReader.pbReader = currentReader.lineReader;
 		currentReader.publicId = "";
@@ -168,7 +168,7 @@ public class StdXMLReader implements IXMLReader {
 			}
 		}
 		currentReader = new StackedReader();
-		readers = new Stack();
+		readers = new Stack<StackedReader>();
 		final Reader reader = this.openStream(publicID, systemIDasURL.toString());
 		currentReader.lineReader = new LineNumberReader(reader);
 		currentReader.pbReader = currentReader.lineReader;

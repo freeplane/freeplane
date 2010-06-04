@@ -188,9 +188,9 @@ public class MAttributeController extends AttributeController {
 		 */
 		void iterate(final NodeModel node) {
 			visitor.visit(NodeAttributeTableModel.getModel(node));
-			final ListIterator iterator = getModeController().getMapController().childrenUnfolded(node);
+			final ListIterator<NodeModel> iterator = getModeController().getMapController().childrenUnfolded(node);
 			while (iterator.hasNext()) {
-				final NodeModel child = (NodeModel) iterator.next();
+				final NodeModel child = iterator.next();
 				iterate(child);
 			}
 		}
@@ -630,8 +630,8 @@ public class MAttributeController extends AttributeController {
 			final String value = NodeAttributeTableModel.getModel(node).getValueAt(i, 1).toString();
 			performRegistryAttributeValue(name, value);
 		}
-		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(node); e.hasNext();) {
-			final NodeModel child = (NodeModel) e.next();
+		for (final ListIterator<NodeModel> e = getModeController().getMapController().childrenUnfolded(node); e.hasNext();) {
+			final NodeModel child = e.next();
 			performRegistrySubtreeAttributes(child);
 		}
 	}

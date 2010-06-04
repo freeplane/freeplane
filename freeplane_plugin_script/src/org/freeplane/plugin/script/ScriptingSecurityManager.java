@@ -120,7 +120,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		/*
 		 * This should permit system libraries to be loaded.
 		 */
-		final HashSet set = new HashSet();
+		final HashSet<String> set = new HashSet<String>();
 		set.add("awt");
 		set.add("net");
 		set.add("jpeg");
@@ -140,7 +140,7 @@ class ScriptingSecurityManager extends SecurityManager {
 	}
 
 	@Override
-	public void checkMemberAccess(final Class arg0, final int arg1) {
+	public void checkMemberAccess(final Class<?> arg0, final int arg1) {
 	}
 
 	@Override

@@ -30,13 +30,13 @@ class XMLEntityResolver implements IXMLEntityResolver {
 	/**
 	 * The entities.
 	 */
-	private Hashtable entities;
+	private Hashtable<String, Object> entities;
 
 	/**
 	 * Initializes the resolver.
 	 */
 	public XMLEntityResolver() {
-		entities = new Hashtable();
+		entities = new Hashtable<String, Object>();
 		entities.put("amp", "&#38;");
 		entities.put("quot", "&#34;");
 		entities.put("apos", "&#39;");

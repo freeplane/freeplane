@@ -99,7 +99,7 @@ public class XMLParserFactory {
 	 */
 	public static IXMLParser createXMLParser(final String className, final IXMLBuilder builder)
 	        throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-		final Class cls = Class.forName(className);
+		final Class<?> cls = Class.forName(className);
 		final IXMLParser parser = (IXMLParser) cls.newInstance();
 		parser.setBuilder(builder);
 		parser.setValidator(new NonValidator());

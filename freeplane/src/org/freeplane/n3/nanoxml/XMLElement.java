@@ -64,11 +64,11 @@ public class XMLElement implements Serializable {
 	/**
 	 * The attributes of the element.
 	 */
-	private Vector attributes;
+	private Vector<XMLAttribute> attributes;
 	/**
 	 * The child elements.
 	 */
-	private Vector children;
+	private Vector<XMLElement> children;
 	/**
 	 * The content of the element.
 	 */
@@ -154,8 +154,8 @@ public class XMLElement implements Serializable {
 	 *            the line in the XML data where the element starts.
 	 */
 	public XMLElement(final String fullName, final String namespace, final String systemID, final int lineNr) {
-		attributes = new Vector();
-		children = new Vector(8);
+		attributes = new Vector<XMLAttribute>();
+		children = new Vector<XMLElement>(8);
 		this.fullName = fullName;
 		if (namespace == null) {
 			name = fullName;
@@ -187,7 +187,7 @@ public class XMLElement implements Serializable {
 			throw new IllegalArgumentException("child must not be null");
 		}
 		if ((child.getName() == null) && (!children.isEmpty())) {
-			final XMLElement lastChild = (XMLElement) children.lastElement();
+			final XMLElement lastChild = children.lastElement();
 			if (lastChild.getName() == null) {
 				lastChild.setContent(lastChild.getContent() + child.getContent());
 				return;
@@ -245,12 +245,11 @@ public class XMLElement implements Serializable {
 	 * 
 	 * @return the non-null enumeration.
 	 */
-	public Enumeration enumerateAttributeNames() {
-		final Vector result = new Vector();
-		final Enumeration enumeration = attributes.elements();
+	public Enumeration<String> enumerateAttributeNames() {
+		final Vector<String> result = new Vector<String>();
+		final Enumeration<XMLAttribute> enumeration = attributes.elements();
 		while (enumeration.hasMoreElements()) {
-			final XMLAttribute attr = (XMLAttribute) enumeration.nextElement();
-			result.addElement(attr.getFullName());
+			result.addElement(enumeration.nextElement().getFullName());
 		}
 		return result.elements();
 	}
@@ -260,7 +259,7 @@ public class XMLElement implements Serializable {
 	 * 
 	 * @return the non-null enumeration
 	 */
-	public Enumeration enumerateChildren() {
+	public Enumeration<XMLElement> enumerateChildren() {
 		return children.elements();
 	}
 
@@ -293,9 +292,9 @@ public class XMLElement implements Serializable {
 		if (attributes.size() != elt.getAttributeCount()) {
 			return false;
 		}
-		final Enumeration enumeration = attributes.elements();
+		final Enumeration<XMLAttribute> enumeration = attributes.elements();
 		while (enumeration.hasMoreElements()) {
-			final XMLAttribute attr = (XMLAttribute) enumeration.nextElement();
+			final XMLAttribute attr = enumeration.nextElement();
 			if (!elt.hasAttribute(attr.getName(), attr.getNamespace())) {
 				return false;
 			}
@@ -346,9 +345,9 @@ public class XMLElement implements Serializable {
 	 * @return the attribute, or null if the attribute does not exist.
 	 */
 	private XMLAttribute findAttribute(final String fullName) {
-		final Enumeration enumeration = attributes.elements();
+		final Enumeration<XMLAttribute> enumeration = attributes.elements();
 		while (enumeration.hasMoreElements()) {
-			final XMLAttribute attr = (XMLAttribute) enumeration.nextElement();
+			final XMLAttribute attr = enumeration.nextElement();
 			if (attr.getFullName().equals(fullName)) {
 				return attr;
 			}
@@ -366,9 +365,9 @@ public class XMLElement implements Serializable {
 	 * @return the attribute, or null if the attribute does not exist.
 	 */
 	private XMLAttribute findAttribute(final String name, final String namespace) {
-		final Enumeration enumeration = attributes.elements();
+		final Enumeration<XMLAttribute> enumeration = attributes.elements();
 		while (enumeration.hasMoreElements()) {
-			final XMLAttribute attr = (XMLAttribute) enumeration.nextElement();
+			final XMLAttribute attr = enumeration.nextElement();
 			boolean found = attr.getName().equals(name);
 			if (namespace == null) {
 				found &= (attr.getNamespace() == null);
@@ -497,9 +496,9 @@ public class XMLElement implements Serializable {
 	 */
 	public Properties getAttributes() {
 		final Properties result = new Properties();
-		final Enumeration enumeration = attributes.elements();
+		final Enumeration<XMLAttribute> enumeration = attributes.elements();
 		while (enumeration.hasMoreElements()) {
-			final XMLAttribute attr = (XMLAttribute) enumeration.nextElement();
+			final XMLAttribute attr = enumeration.nextElement();
 			result.put(attr.getFullName(), attr.getValue());
 		}
 		return result;
@@ -514,9 +513,9 @@ public class XMLElement implements Serializable {
 	 */
 	public Properties getAttributesInNamespace(final String namespace) {
 		final Properties result = new Properties();
-		final Enumeration enumeration = attributes.elements();
+		final Enumeration<XMLAttribute> enumeration = attributes.elements();
 		while (enumeration.hasMoreElements()) {
-			final XMLAttribute attr = (XMLAttribute) enumeration.nextElement();
+			final XMLAttribute attr = enumeration.nextElement();
 			if (namespace == null) {
 				if (attr.getNamespace() == null) {
 					result.put(attr.getName(), attr.getValue());
@@ -585,7 +584,7 @@ public class XMLElement implements Serializable {
 	 * 
 	 * @return the vector.
 	 */
-	public Vector getChildren() {
+	public Vector<XMLElement> getChildren() {
 		return children;
 	}
 
@@ -605,11 +604,11 @@ public class XMLElement implements Serializable {
 	 *            the full name of the children to search for.
 	 * @return the non-null vector of child elements.
 	 */
-	public Vector getChildrenNamed(final String name) {
-		final Vector result = new Vector(children.size());
-		final Enumeration enumeration = children.elements();
+	public Vector<XMLElement> getChildrenNamed(final String name) {
+		final Vector<XMLElement> result = new Vector<XMLElement>(children.size());
+		final Enumeration<XMLElement> enumeration = children.elements();
 		while (enumeration.hasMoreElements()) {
-			final XMLElement child = (XMLElement) enumeration.nextElement();
+			final XMLElement child = enumeration.nextElement();
 			final String childName = child.getFullName();
 			if ((childName != null) && childName.equals(name)) {
 				result.addElement(child);
@@ -627,9 +626,9 @@ public class XMLElement implements Serializable {
 	 *            the namespace, which may be null.
 	 * @return the non-null vector of child elements.
 	 */
-	public Vector getChildrenNamed(final String name, final String namespace) {
-		final Vector result = new Vector(children.size());
-		final Enumeration enumeration = children.elements();
+	public Vector<XMLElement> getChildrenNamed(final String name, final String namespace) {
+		final Vector<XMLElement> result = new Vector<XMLElement>(children.size());
+		final Enumeration<XMLElement> enumeration = children.elements();
 		while (enumeration.hasMoreElements()) {
 			final XMLElement child = (XMLElement) enumeration.nextElement();
 			String str = child.getName();
@@ -668,9 +667,9 @@ public class XMLElement implements Serializable {
 	 * @return the child element, or null if no such child was found.
 	 */
 	public XMLElement getFirstChildNamed(final String name) {
-		final Enumeration enumeration = children.elements();
+		final Enumeration<XMLElement> enumeration = children.elements();
 		while (enumeration.hasMoreElements()) {
-			final XMLElement child = (XMLElement) enumeration.nextElement();
+			final XMLElement child = enumeration.nextElement();
 			final String childName = child.getFullName();
 			if ((childName != null) && childName.equals(name)) {
 				return child;
@@ -689,9 +688,9 @@ public class XMLElement implements Serializable {
 	 * @return the child element, or null if no such child was found.
 	 */
 	public XMLElement getFirstChildNamed(final String name, final String namespace) {
-		final Enumeration enumeration = children.elements();
+		final Enumeration<XMLElement> enumeration = children.elements();
 		while (enumeration.hasMoreElements()) {
-			final XMLElement child = (XMLElement) enumeration.nextElement();
+			final XMLElement child = enumeration.nextElement();
 			String str = child.getName();
 			boolean found = (str != null) && (str.equals(name));
 			str = child.getNamespace();
@@ -833,7 +832,7 @@ public class XMLElement implements Serializable {
 	 */
 	public void removeAttribute(final String name) {
 		for (int i = 0; i < attributes.size(); i++) {
-			final XMLAttribute attr = (XMLAttribute) attributes.elementAt(i);
+			final XMLAttribute attr = attributes.elementAt(i);
 			if (attr.getFullName().equals(name)) {
 				attributes.removeElementAt(i);
 				return;
@@ -851,7 +850,7 @@ public class XMLElement implements Serializable {
 	 */
 	public void removeAttribute(final String name, final String namespace) {
 		for (int i = 0; i < attributes.size(); i++) {
-			final XMLAttribute attr = (XMLAttribute) attributes.elementAt(i);
+			final XMLAttribute attr = attributes.elementAt(i);
 			boolean found = attr.getName().equals(name);
 			if (namespace == null) {
 				found &= (attr.getNamespace() == null);

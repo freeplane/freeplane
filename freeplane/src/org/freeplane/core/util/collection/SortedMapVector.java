@@ -25,9 +25,10 @@ import java.util.Vector;
 /**
  * @author Dimitry Polivaev
  */
+@SuppressWarnings("unchecked")
 public class SortedMapVector {
 	private static class MapElement {
-		final private Comparable key;
+        final private Comparable key;
 		private final Object value;
 
 		public MapElement(final Comparable key, final Object value) {
@@ -47,10 +48,10 @@ public class SortedMapVector {
 
 	private static final int CAPACITY_INCREMENT = 10;
 	private static final int ELEMENT_NOT_FOUND_FLAG = 1 << 31;
-	final private Vector elements;
+	final private Vector<MapElement> elements;
 
 	public SortedMapVector() {
-		elements = new Vector(0, SortedMapVector.CAPACITY_INCREMENT);
+		elements = new Vector<MapElement>(0, SortedMapVector.CAPACITY_INCREMENT);
 	}
 
 	public int add(final Comparable key, final Object value) {
@@ -85,13 +86,13 @@ public class SortedMapVector {
 		}
 		final int halfSize = size / 2;
 		final int middle = first + halfSize;
-		final MapElement middleElement = (MapElement) elements.get(middle);
+		final MapElement middleElement = elements.get(middle);
 		int comparationResult = key.compareTo(middleElement.getKey());
 		final int last = first + size - 1;
 		if (comparationResult < 0) {
 			if (halfSize <= 1) {
 				if (middle != first) {
-					comparationResult = key.compareTo(((MapElement) elements.get(first)).getKey());
+					comparationResult = key.compareTo(elements.get(first).getKey());
 				}
 				if (comparationResult < 0) {
 					return first | SortedMapVector.ELEMENT_NOT_FOUND_FLAG;
@@ -109,7 +110,7 @@ public class SortedMapVector {
 		else {
 			if (halfSize <= 1) {
 				if (middle != last) {
-					comparationResult = key.compareTo(((MapElement) elements.get(last)).getKey());
+					comparationResult = key.compareTo(elements.get(last).getKey());
 				}
 				if (comparationResult < 0) {
 					return last | SortedMapVector.ELEMENT_NOT_FOUND_FLAG;
@@ -124,19 +125,19 @@ public class SortedMapVector {
 	}
 
 	public Comparable getKey(final int index) {
-		return ((MapElement) elements.get(index)).getKey();
+		return elements.get(index).getKey();
 	}
 
 	public Object getValue(final Comparable key) {
 		final int index = findElement(key);
 		if ((index & SortedMapVector.ELEMENT_NOT_FOUND_FLAG) == 0) {
-			return ((MapElement) elements.get(index)).getValue();
+			return elements.get(index).getValue();
 		}
 		throw new NoSuchElementException();
 	}
 
 	public Object getValue(final int index) {
-		return ((MapElement) elements.get(index)).getValue();
+		return elements.get(index).getValue();
 	}
 
 	public int indexOf(final Comparable key) {

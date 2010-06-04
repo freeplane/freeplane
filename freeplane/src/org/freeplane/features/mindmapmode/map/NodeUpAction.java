@@ -44,8 +44,8 @@ class NodeUpAction extends AFreeplaneAction {
 		super("NodeUpAction", controller);
 	}
 
-	public void _moveNodes(final NodeModel selected, final List selecteds, final int direction) {
-		final Comparator comparator = (direction == -1) ? null : new Comparator() {
+	public void _moveNodes(final NodeModel selected, final List<NodeModel> selecteds, final int direction) {
+		final Comparator<Object> comparator = (direction == -1) ? null : new Comparator<Object>() {
 			public int compare(final Object o1, final Object o2) {
 				final int i1 = ((Integer) o1).intValue();
 				final int i2 = ((Integer) o2).intValue();
@@ -54,35 +54,31 @@ class NodeUpAction extends AFreeplaneAction {
 		};
 		if (!selected.isRoot()) {
 			final NodeModel parent = selected.getParentNode();
-			final Vector sortedChildren = getSortedSiblings(parent);
-			final TreeSet range = new TreeSet(comparator);
-			for (final Iterator i = selecteds.iterator(); i.hasNext();) {
-				final NodeModel node = (NodeModel) i.next();
+			final Vector<NodeModel> sortedChildren = getSortedSiblings(parent);
+			final TreeSet<Integer> range = new TreeSet<Integer>(comparator);
+			for (final NodeModel node : selecteds) {
 				if (node.getParent() != parent) {
 					Logger.global.warning("Not all selected nodes have the same parent.");
 					return;
 				}
 				range.add(new Integer(sortedChildren.indexOf(node)));
 			}
-			Integer last = (Integer) range.iterator().next();
-			for (final Iterator i = range.iterator(); i.hasNext();) {
-				final Integer newInt = (Integer) i.next();
+			Integer last = range.iterator().next();
+			for (final Integer newInt : range) {
 				if (Math.abs(newInt.intValue() - last.intValue()) > 1) {
 					Logger.global.warning("Not adjacent nodes. Skipped. ");
 					return;
 				}
 				last = newInt;
 			}
-			for (final Iterator i = range.iterator(); i.hasNext();) {
-				final Integer position = (Integer) i.next();
-				final NodeModel node = (NodeModel) sortedChildren.get(position.intValue());
+			for (final Integer position : range) {
+				final NodeModel node = sortedChildren.get(position.intValue());
 				moveNodeTo(node, direction);
 			}
 			final IMapSelection selection = getController().getSelection();
 			selection.selectAsTheOnlyOneSelected(selected);
-			for (final Iterator i = range.iterator(); i.hasNext();) {
-				final Integer position = (Integer) i.next();
-				final NodeModel node = (NodeModel) sortedChildren.get(position.intValue());
+			for (final Integer position : range) {
+				final NodeModel node = sortedChildren.get(position.intValue());
 				selection.makeTheSelected(node);
 			}
 			getController().getViewController().obtainFocusForSelected();
@@ -97,12 +93,12 @@ class NodeUpAction extends AFreeplaneAction {
 	/**
 	 * Sorts nodes by their left/right status. The left are first.
 	 */
-	private Vector getSortedSiblings(final NodeModel node) {
-		final Vector nodes = new Vector();
-		for (final Iterator i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+	private Vector<NodeModel> getSortedSiblings(final NodeModel node) {
+		final Vector<NodeModel> nodes = new Vector<NodeModel>();
+		for (final Iterator<NodeModel> i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			nodes.add(i.next());
 		}
-		Collections.sort(nodes, new Comparator() {
+		Collections.sort(nodes, new Comparator<Object>() {
 			public int compare(final Object o1, final Object o2) {
 				if (o1 instanceof NodeModel) {
 					final NodeModel n1 = (NodeModel) o1;
@@ -121,7 +117,7 @@ class NodeUpAction extends AFreeplaneAction {
 
 	/**
 	 */
-	public void moveNodes(final NodeModel selected, final List selecteds, final int direction) {
+	public void moveNodes(final NodeModel selected, final List<NodeModel> selecteds, final int direction) {
 		final IActor actor = new IActor() {
 			public void act() {
 				_moveNodes(selected, selecteds, direction);
@@ -143,7 +139,7 @@ class NodeUpAction extends AFreeplaneAction {
 		final int index = parent.getIndex(child);
 		int newIndex = index;
 		final int maxIndex = parent.getChildCount();
-		final Vector sortedNodesIndices = getSortedSiblings(parent);
+		final Vector<NodeModel> sortedNodesIndices = getSortedSiblings(parent);
 		int newPositionInVector = sortedNodesIndices.indexOf(child) + direction;
 		if (newPositionInVector < 0) {
 			newPositionInVector = maxIndex - 1;

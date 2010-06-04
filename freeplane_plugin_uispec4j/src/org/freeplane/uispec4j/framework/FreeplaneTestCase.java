@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.TextUtils;
 import org.uispec4j.MenuItem;
 import org.uispec4j.UISpec4J;

@@ -22,10 +22,10 @@ package org.freeplane.core.io;
 import org.freeplane.core.extension.IExtension;
 
 public class WriteManager {
-	final private ListHashTable<String, IAttributeWriter> attributeWriters = new ListHashTable();
-	final private ListHashTable<String, IElementWriter> elementWriters = new ListHashTable();
-	final private ListHashTable<Class<? extends IExtension>, IExtensionAttributeWriter> extensionAttributeWriters = new ListHashTable();;
-	final private ListHashTable<Class<? extends IExtension>, IExtensionElementWriter> extensionElementWriters = new ListHashTable();
+	final private ListHashTable<String, IAttributeWriter> attributeWriters = new ListHashTable<String, IAttributeWriter>();
+	final private ListHashTable<String, IElementWriter> elementWriters = new ListHashTable<String, IElementWriter>();
+	final private ListHashTable<Class<? extends IExtension>, IExtensionAttributeWriter> extensionAttributeWriters = new ListHashTable<Class<? extends IExtension>, IExtensionAttributeWriter>();;
+	final private ListHashTable<Class<? extends IExtension>, IExtensionElementWriter> extensionElementWriters = new ListHashTable<Class<? extends IExtension>, IExtensionElementWriter>();
 
 	/*
 	 * (non-Javadoc)

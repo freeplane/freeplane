@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -159,7 +158,7 @@ class TableSorter extends AbstractTableModel {
 		}
 	}
 
-	private class Row implements Comparable {
+	private class Row implements Comparable<Object> {
 		final private int modelIndex;
 
 		public Row(final int index) {
@@ -169,8 +168,7 @@ class TableSorter extends AbstractTableModel {
 		public int compareTo(final Object o) {
 			final int row1 = modelIndex;
 			final int row2 = ((Row) o).modelIndex;
-			for (final Iterator it = sortingColumns.iterator(); it.hasNext();) {
-				final Directive directive = (Directive) it.next();
+			for (final Directive directive : sortingColumns) {
 				final int column = directive.column;
 				final Object o1 = tableModel.getValueAt(row1, column);
 				final Object o2 = tableModel.getValueAt(row2, column);
@@ -243,27 +241,25 @@ class TableSorter extends AbstractTableModel {
 	}
 
 	public static final int ASCENDING = 1;
-	public static final Comparator COMPARABLE_COMAPRATOR = new Comparator() {
-		public int compare(final Object o1, final Object o2) {
-			return ((Comparable) o1).compareTo(o2);
+	public static final Comparator<Object> COMPARABLE_COMPARATOR = new Comparator<Object>() {
+		@SuppressWarnings("unchecked")
+        public int compare(final Object o1, final Object o2) {
+			return ((Comparable<Object>) o1).compareTo(o2);
 		}
 	};
 	public static final int DESCENDING = -1;
 	private static Directive EMPTY_DIRECTIVE = new Directive(-1, TableSorter.NOT_SORTED);
-	public static final Comparator LEXICAL_COMPARATOR = new Comparator() {
+	public static final Comparator<Object> LEXICAL_COMPARATOR = new Comparator<Object>() {
 		public int compare(final Object o1, final Object o2) {
 			return o1.toString().compareTo(o2.toString());
 		}
 	};
 	public static final int NOT_SORTED = 0;
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	final private Map columnComparators = new HashMap();
+	final private Map<Class<?>, Comparator<Object>> columnComparators = new HashMap<Class<?>, Comparator<Object>>();
 	private int[] modelToView;
 	final private MouseListener mouseListener;
-	final private List sortingColumns = new ArrayList();
+	final private List<Directive> sortingColumns = new ArrayList<Directive>();
 	private JTableHeader tableHeader;
 	protected TableModel tableModel;
 	final private TableModelListener tableModelListener;
@@ -296,7 +292,7 @@ class TableSorter extends AbstractTableModel {
 	}
 
 	@Override
-	public Class getColumnClass(final int column) {
+	public Class<?> getColumnClass(final int column) {
 		return tableModel.getColumnClass(column);
 	}
 
@@ -309,21 +305,20 @@ class TableSorter extends AbstractTableModel {
 		return tableModel.getColumnName(column);
 	}
 
-	protected Comparator getComparator(final int column) {
-		final Class columnType = tableModel.getColumnClass(column);
-		final Comparator comparator = (Comparator) columnComparators.get(columnType);
+	protected Comparator<Object> getComparator(final int column) {
+		final Class<?> columnType = tableModel.getColumnClass(column);
+		final Comparator<Object> comparator = columnComparators.get(columnType);
 		if (comparator != null) {
 			return comparator;
 		}
 		if (Comparable.class.isAssignableFrom(columnType)) {
-			return TableSorter.COMPARABLE_COMAPRATOR;
+			return TableSorter.COMPARABLE_COMPARATOR;
 		}
 		return TableSorter.LEXICAL_COMPARATOR;
 	}
 
 	private Directive getDirective(final int column) {
-		for (int i = 0; i < sortingColumns.size(); i++) {
-			final Directive directive = (Directive) sortingColumns.get(i);
+		for (final Directive directive : sortingColumns) {
 			if (directive.column == column) {
 				return directive;
 			}
@@ -397,7 +392,7 @@ class TableSorter extends AbstractTableModel {
 		return getViewToModel()[viewIndex].modelIndex;
 	}
 
-	public void setColumnComparator(final Class type, final Comparator comparator) {
+	public void setColumnComparator(final Class<?> type, final Comparator<Object> comparator) {
 		if (comparator == null) {
 			columnComparators.remove(type);
 		}

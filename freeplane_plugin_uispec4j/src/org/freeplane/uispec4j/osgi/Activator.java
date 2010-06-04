@@ -18,7 +18,7 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext context) throws Exception {
 	      UISpec4J.init();
-	      this.bundleContext = context;
+	      Activator.bundleContext = context;
 	}
 
 	/*

@@ -37,6 +37,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -342,9 +343,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
 		final ExternalResource preview = (ExternalResource) extension;
-		final Iterator iterator = node.getViewers().iterator();
-		while (iterator.hasNext()) {
-			final NodeView view = (NodeView) iterator.next();
+		for (INodeView iNodeView : node.getViewers()) {
+			final NodeView view = (NodeView) iNodeView;
 			createViewer(preview, view);
 		}
 		super.add(node, extension);

@@ -34,7 +34,6 @@ import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -78,9 +77,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			for (final Iterator i = timeManagement.getMindMapController().getMapController().getSelectedNodes()
-			    .iterator(); i.hasNext();) {
-				final NodeModel node = (NodeModel) i.next();
+			for (final NodeModel node : timeManagement.getMindMapController().getMapController().getSelectedNodes()) {
 				final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
 				if (alreadyPresentHook != null) {
 					reminderHook.undoableToggleHook(node);
@@ -111,8 +108,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 
 	public void actionPerformed(final ActionEvent arg0) {
 		final Date date = getCalendarDate();
-		for (final Iterator i = mController.getMapController().getSelectedNodes().iterator(); i.hasNext();) {
-			final NodeModel node = (NodeModel) i.next();
+		for (final NodeModel node : mController.getMapController().getSelectedNodes()) {
 			final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
 			if (alreadyPresentHook != null) {
 				final Object[] messageArguments = { new Date(alreadyPresentHook.getRemindUserAt()), date };
@@ -296,8 +292,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 						text.replaceSelection(dateAsString);
 						return;
 					}
-					for (final Iterator i = mController.getMapController().getSelectedNodes().iterator(); i.hasNext();) {
-						final NodeModel element = (NodeModel) i.next();
+					for (final NodeModel element : mController.getMapController().getSelectedNodes()) {
 						final String text = element.getText();
 						final StringBuilder newText = new StringBuilder();
 						if (HtmlUtils.isHtmlNode(text)) {

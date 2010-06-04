@@ -11,7 +11,8 @@ public abstract class AbstractProxy<T> {
 		this.modeController = modeController;
 	}
 
-	@Override
+	@SuppressWarnings("unchecked")
+    @Override
 	public boolean equals(final Object obj) {
 		if (!getClass().equals(obj.getClass())) {
 			return false;

@@ -91,7 +91,7 @@ public class UITools {
 		};
 	}
 
-	public static void convertPointToAncestor(final Component source, final Point point, final Class ancestorClass) {
+	public static void convertPointToAncestor(final Component source, final Point point, final Class<?> ancestorClass) {
 		final Component destination = SwingUtilities.getAncestorOfClass(ancestorClass, source);
 		UITools.convertPointToAncestor(source, point, destination);
 	}

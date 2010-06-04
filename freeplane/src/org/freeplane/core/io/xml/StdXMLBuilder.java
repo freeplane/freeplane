@@ -49,7 +49,7 @@ class StdXMLBuilder implements IXMLBuilder {
 	/**
 	 * This stack contains the current element and its parents.
 	 */
-	private Stack stack;
+	private Stack<XMLElement> stack;
 
 	/**
 	 * Creates the builder.
@@ -98,7 +98,7 @@ class StdXMLBuilder implements IXMLBuilder {
 		if (nsPrefix != null) {
 			fullName = nsPrefix + ':' + key;
 		}
-		final XMLElement top = (XMLElement) stack.peek();
+		final XMLElement top = stack.peek();
 		if (top.hasAttribute(fullName)) {
 			throw new XMLParseException(top.getSystemID(), top.getLineNr(), "Duplicate attribute: " + key);
 		}
@@ -252,7 +252,7 @@ class StdXMLBuilder implements IXMLBuilder {
 	 *            the line on which the parsing starts.
 	 */
 	public void startBuilding(final String systemID, final int lineNr) {
-		stack = new Stack();
+		stack = new Stack<XMLElement>();
 		root = null;
 		last = null;
 	}

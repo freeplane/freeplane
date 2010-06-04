@@ -40,7 +40,7 @@ class StdXMLBuilder implements IXMLBuilder {
 	/**
 	 * This stack contains the current element and its parents.
 	 */
-	private Stack stack;
+	private Stack<XMLElement> stack;
 
 	/**
 	 * Creates the builder.
@@ -233,7 +233,7 @@ class StdXMLBuilder implements IXMLBuilder {
 	 *            the line on which the parsing starts.
 	 */
 	public void startBuilding(final String systemID, final int lineNr) {
-		stack = new Stack();
+		stack = new Stack<XMLElement>();
 		root = null;
 	}
 

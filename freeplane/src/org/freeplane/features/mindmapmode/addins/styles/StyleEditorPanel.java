@@ -259,7 +259,7 @@ public class StyleEditorPanel extends JPanel {
 	private static final String EDGE_WIDTH = "edgewidth";
 	private static final String[] EDGE_WIDTHS = new String[] { "EdgeWidth_thin", "EdgeWidth_1", "EdgeWidth_2",
 	        "EdgeWidth_4", "EdgeWidth_8" };
-	private static final String ICON = "icon";
+//	private static final String ICON = "icon";
 	private static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
 	private static final String NODE_COLOR = "nodecolor";
 	private static final String NODE_FONT_BOLD = "nodefontbold";
@@ -276,7 +276,7 @@ public class StyleEditorPanel extends JPanel {
 	private static final String SET_EDGE_COLOR = StyleEditorPanel.SET_RESOURCE;
 	private static final String SET_EDGE_STYLE = StyleEditorPanel.SET_RESOURCE;
 	private static final String SET_EDGE_WIDTH = StyleEditorPanel.SET_RESOURCE;
-	private static final String SET_ICON = StyleEditorPanel.SET_RESOURCE;
+//	private static final String SET_ICON = StyleEditorPanel.SET_RESOURCE;
 	private static final String SET_NODE_BACKGROUND_COLOR = StyleEditorPanel.SET_RESOURCE;
 	private static final String SET_NODE_COLOR = StyleEditorPanel.SET_RESOURCE;
 	private static final String SET_NODE_FONT_BOLD = StyleEditorPanel.SET_RESOURCE;

@@ -45,7 +45,7 @@ class AddConnectorAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final List selecteds = getModeController().getMapController().getSelectedNodes();
+		final List<NodeModel> selecteds = getModeController().getMapController().getSelectedNodes();
 		if (selecteds.size() < 2) {
 			getController();
 			UITools.errorMessage(TextUtils.getText("less_than_two_selected_nodes"));
@@ -53,7 +53,7 @@ class AddConnectorAction extends AFreeplaneAction {
 		}
 		final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
 		for (int i = 1; i < selecteds.size(); i++) {
-			linkController.addConnector((NodeModel) selecteds.get(i), (NodeModel) selecteds.get(0));
+			linkController.addConnector(selecteds.get(i), selecteds.get(0));
 		}
 	}
 }

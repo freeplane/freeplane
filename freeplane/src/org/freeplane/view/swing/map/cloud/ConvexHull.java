@@ -23,11 +23,10 @@ import java.awt.Point;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Vector;
 
 class ConvexHull {
-	protected class thetaComparator implements Comparator {
+	protected class thetaComparator implements Comparator<Object> {
 		Point p0;
 
 		public thetaComparator(final Point p0) {
@@ -86,14 +85,9 @@ class ConvexHull {
 		}
 	}
 
-	public Vector/* <newPoint> */calculateHull(final LinkedList coordinates) {
-		final Vector q = new Vector();
-		final ListIterator coordinates_it = coordinates.listIterator();
-		while (coordinates_it.hasNext()) {
-			q.add(coordinates_it.next());
-		}
-		final Vector res = doGraham(q);
-		return res;
+	public Vector<Point>/* <newPoint> */calculateHull(final LinkedList<Point> coordinates) {
+		// use a copy of coordinates since it will get modified in doGraham()
+		return doGraham(new Vector<Point>(coordinates));
 	}
 
 	protected int ccw(final Point p0, final Point p1, final Point p2) {
@@ -118,7 +112,7 @@ class ConvexHull {
 		return 1;
 	}
 
-	Vector doGraham(final Vector p) {
+	Vector<Point> doGraham(final Vector<Point> p) {
 		int i;
 		int min, M;
 		Point t;
@@ -133,7 +127,7 @@ class ConvexHull {
 				min = i;
 			}
 		}
-		t = (Point) p.get(0);
+		t = p.get(0);
 		p.set(0, p.get(min));
 		p.set(min, t);
 		final thetaComparator comp = new thetaComparator((Point) p.get(0));

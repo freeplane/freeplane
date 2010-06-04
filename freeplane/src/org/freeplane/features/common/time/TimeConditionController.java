@@ -41,13 +41,13 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 class TimeConditionController implements IElementaryConditionController {
 	static final String FILTER_TIME = "filter_time";
-	final private Controller controller;
+//	final private Controller controller;
 	private final ComboBoxEditor editor = new TimeComboBoxEditor();
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
 	public TimeConditionController(final Controller controller) {
 		super();
-		this.controller = controller;
+//		this.controller = controller;
 	}
 
 	public boolean canEditValues(final Object property, final NamedObject simpleCond) {

@@ -23,13 +23,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.PropertyBean;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;

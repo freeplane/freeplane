@@ -31,11 +31,8 @@ import org.freeplane.features.mindmapmode.attribute.MAttributeController;
  * @author Dimitry Polivaev
  */
 class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAdapter {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private Vector index = null;
+	private Vector<Integer> index = null;
 	private int visibleRowCount;
 
 	ReducedAttributeTableModelDecorator(final AttributeView attrView) {
@@ -64,12 +61,12 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 	}
 
 	private int calcRow(final int row) {
-		return ((Integer) index.get(row)).intValue();
+		return index.get(row).intValue();
 	}
 
-	private Vector getIndex() {
+	private Vector<Integer> getIndex() {
 		if (index == null && getAttributeRegistry().getVisibleElementsNumber() > 0) {
-			index = new Vector(getNodeAttributeModel().getRowCount(), 10);
+			index = new Vector<Integer>(getNodeAttributeModel().getRowCount(), 10);
 		}
 		return index;
 	}

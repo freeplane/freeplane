@@ -139,10 +139,10 @@ public class CloudView {
 		}
 		final double distanceToConvexHull = getDistanceToConvexHull();
 		/** get coordinates */
-		final LinkedList coordinates = new LinkedList();
+		final LinkedList<Point> coordinates = new LinkedList<Point>();
 		final ConvexHull hull = new ConvexHull();
 		source.getCoordinates(coordinates);
-		final Vector/* <Point> */res = hull.calculateHull(coordinates);
+		final Vector<Point> res = hull.calculateHull(coordinates);
 		final Polygon p = new Polygon();
 		for (int i = 0; i < res.size(); ++i) {
 			final Point pt = (Point) res.get(i);

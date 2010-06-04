@@ -19,7 +19,6 @@
  */
 package org.freeplane.view.swing.ui;
 
-import java.awt.Component;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionListener;
@@ -31,7 +30,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -62,7 +60,6 @@ import org.freeplane.view.swing.map.MapView;
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
 	final private Controller controller;
-	private Component leftToolBar;
 	private IMouseListener mapMouseListener;
 	private MouseWheelListener mapMouseWheelListener;
 	final private ActionListener mapsMenuActionListener;
@@ -70,7 +67,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private FreeplaneMenuBar menuBar;
 	private final MenuBuilder menuBuilder;
 	private URL menuStructure;
-	final private HashSet mRegisteredMouseWheelEventHandler = new HashSet();
+	final private HashSet<IMouseWheelEventHandler> mRegisteredMouseWheelEventHandler = new HashSet<IMouseWheelEventHandler>();
 	private DragGestureListener nodeDragListener;
 	private DropTargetListener nodeDropTargetListener;
 	private KeyListener nodeKeyListener;
@@ -96,10 +93,16 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			}
 		});
 		toolBars = new LinkedHashMap<String, JComponent>();
-		toolbarLists = new List[4];
+		toolbarLists = newListArray();
 		for (int j = 0; j < 4; j++) {
 			toolbarLists[j] = new LinkedList<JComponent>();
 		}
+	}
+
+	// isolate unchecked stuff in this method
+	@SuppressWarnings("unchecked")
+	private List<JComponent>[] newListArray() {
+		return new List[4];
 	}
 
 	public void addToolBar(final String name, final int position, final JComponent toolBar) {
@@ -144,7 +147,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return menuStructure;
 	}
 
-	public Set getMouseWheelEventHandlers() {
+	public Set<IMouseWheelEventHandler> getMouseWheelEventHandlers() {
 		return Collections.unmodifiableSet(mRegisteredMouseWheelEventHandler);
 	}
 
@@ -318,9 +321,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	private void updateModeMenu() {
 		menuBuilder.removeChildElements(FreeplaneMenuBar.MODES_MENU);
-		final List keys = new LinkedList(controller.getModes());
-		for (final ListIterator i = keys.listIterator(); i.hasNext();) {
-			final String key = (String) i.next();
+		// TODO: why a copy of the list - isn't it highly static?
+		for (final String key : new LinkedList<String>(controller.getModes())) {
 			final AFreeplaneAction modesMenuActionListener = new ModesMenuActionListener(key, controller);
 			final ModeController modeController = controller.getModeController();
 			final boolean isSelected;

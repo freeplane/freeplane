@@ -31,16 +31,13 @@ import javax.swing.ComboBoxModel;
 /**
  * @author Dimitry Polivaev
  */
-public class SortedComboBoxModel extends AbstractListModel implements ComboBoxModel, IListModel, Iterable {
-	/**
-	 * 
-	 */
+public class SortedComboBoxModel extends AbstractListModel implements ComboBoxModel, IListModel, Iterable<Object> {
 	private static final long serialVersionUID = 1L;
 	private Object selectedItem;
-	private final SortedSet model;
+	private final SortedSet<Object> model;
 
 	public SortedComboBoxModel() {
-		model = new TreeSet();
+		model = new TreeSet<Object>();
 	}
 
 	public void add(final Object element) {
@@ -50,7 +47,7 @@ public class SortedComboBoxModel extends AbstractListModel implements ComboBoxMo
 	}
 
 	public void addAll(final Object elements[]) {
-		final Collection c = Arrays.asList(elements);
+		final Collection<Object> c = Arrays.asList(elements);
 		model.addAll(c);
 		fireContentsChanged(this, 0, getSize());
 	}
@@ -92,7 +89,7 @@ public class SortedComboBoxModel extends AbstractListModel implements ComboBoxMo
 		return model.size();
 	}
 
-	public Iterator iterator() {
+	public Iterator<Object> iterator() {
 		return model.iterator();
 	}
 

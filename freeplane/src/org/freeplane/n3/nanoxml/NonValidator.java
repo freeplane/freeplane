@@ -35,11 +35,11 @@ public class NonValidator implements IXMLValidator {
 	 * Contains the default values for attributes for the different element
 	 * types.
 	 */
-	protected Hashtable attributeDefaultValues;
+	protected Hashtable<String, Properties> attributeDefaultValues;
 	/**
 	 * The stack of elements to be processed.
 	 */
-	protected Stack currentElements;
+	protected Stack<Properties> currentElements;
 	/**
 	 * The parameter entity resolver.
 	 */
@@ -49,8 +49,8 @@ public class NonValidator implements IXMLValidator {
 	 * Creates the &quot;validator&quot;.
 	 */
 	public NonValidator() {
-		attributeDefaultValues = new Hashtable();
-		currentElements = new Stack();
+		attributeDefaultValues = new Hashtable<String, Properties>();
+		currentElements = new Stack<Properties>();
 		parameterEntityResolver = new XMLEntityResolver();
 	}
 
@@ -67,7 +67,7 @@ public class NonValidator implements IXMLValidator {
 	 *            the line number in the XML data of the element.
 	 */
 	public void attributeAdded(final String key, final String value, final String systemId, final int lineNr) {
-		final Properties props = (Properties) currentElements.peek();
+		final Properties props = currentElements.peek();
 		if (props.containsKey(key)) {
 			props.remove(key);
 		}
@@ -90,7 +90,7 @@ public class NonValidator implements IXMLValidator {
 	public void elementAttributesProcessed(final String name, final Properties extraAttributes, final String systemId,
 	                                       final int lineNr) {
 		final Properties props = (Properties) currentElements.pop();
-		final Enumeration enumeration = props.keys();
+		final Enumeration<Object> enumeration = props.keys();
 		while (enumeration.hasMoreElements()) {
 			final String key = (String) enumeration.nextElement();
 			extraAttributes.put(key, props.get(key));

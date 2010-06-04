@@ -20,7 +20,6 @@
 package org.freeplane.view.swing.map.attribute;
 
 import javax.swing.event.ChangeListener;
-import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
@@ -76,7 +75,7 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel im
 	}
 
 	@Override
-	public Class getColumnClass(final int columnIndex) {
+	public Class<?> getColumnClass(final int columnIndex) {
 		return getNodeAttributeModel().getColumnClass(columnIndex);
 	}
 

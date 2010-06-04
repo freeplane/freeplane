@@ -72,7 +72,7 @@ public class ReadManager {
 		return attributeHandlers;
 	}
 
-	public ListHashTable getElementHandlers() {
+	public ListHashTable<String, IElementHandler> getElementHandlers() {
 		return elementHandlers;
 	}
 

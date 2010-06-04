@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.AWTKeyStroke;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
@@ -52,6 +53,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
 
@@ -79,6 +81,7 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.IMapChangeListener;
+import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
@@ -213,7 +216,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private class Selection {
-		final private Vector mySelected = new Vector();
+		final private Vector<NodeView> mySelected = new Vector<NodeView>();
 
 		public Selection() {
 		};
@@ -366,11 +369,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		addMouseListener(userInputListenerFactory.getMapMouseListener());
 		addMouseMotionListener(userInputListenerFactory.getMapMouseListener());
 		addMouseWheelListener(userInputListenerFactory.getMapMouseWheelListener());
-		setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
-		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
-		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, Collections.EMPTY_SET);
+		setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptyNodeViewSet());
+		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptyNodeViewSet());
+		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, emptyNodeViewSet());
 		disableMoveCursor = ResourceController.getResourceController().getBooleanProperty("disable_cursor_move_paper");
 	}
+
+	// generics trickery
+	private Set<AWTKeyStroke> emptyNodeViewSet() {
+	    return Collections.emptySet();
+    }
 
 	private void anchorToSelected(final NodeModel node, final float horizontalPoint, final float verticalPoint) {
 		final NodeView view = getNodeView(node);
@@ -667,10 +675,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (node == null) {
 			return null;
 		}
-		final Collection viewers = node.getViewers();
-		final Iterator iterator = viewers.iterator();
-		while (iterator.hasNext()) {
-			final NodeView candidateView = (NodeView) iterator.next();
+		for (INodeView iNodeView : node.getViewers()) {
+			final NodeView candidateView = (NodeView) iNodeView;
 			if (candidateView.getMap() == this) {
 				return candidateView;
 			}
@@ -728,11 +734,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 *         descandant node are selected, only the ancestor ist returned
 	 */
 	ArrayList<NodeModel> getSelectedNodesSortedByY(final boolean differentSubtrees) {
-		final HashSet selectedNodesSet = new HashSet();
+		final HashSet<NodeModel> selectedNodesSet = new HashSet<NodeModel>();
 		for (int i = 0; i < selection.size(); i++) {
 			selectedNodesSet.add(getSelected(i).getModel());
 		}
-		final TreeMap<Integer, LinkedList<NodeModel>> sortedNodes = new TreeMap();
+		final TreeMap<Integer, LinkedList<NodeModel>> sortedNodes = new TreeMap<Integer, LinkedList<NodeModel>>();
 		final Point point = new Point();
 		iteration: for (int i = 0; i < selection.size(); i++) {
 			final NodeView view = getSelected(i);
@@ -754,11 +760,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 			nodeList.add(node);
 		}
-		final ArrayList<NodeModel> selectedNodes = new ArrayList();
-		for (final Iterator<LinkedList<NodeModel>> it = sortedNodes.values().iterator(); it.hasNext();) {
-			final LinkedList<NodeModel> nodeList = it.next();
-			for (final Iterator<NodeModel> itn = nodeList.iterator(); itn.hasNext();) {
-				selectedNodes.add(itn.next());
+		final ArrayList<NodeModel> selectedNodes = new ArrayList<NodeModel>();
+		for (final LinkedList<NodeModel> nodeList : sortedNodes.values()) {
+			for (final NodeModel nodeModel : nodeList) {
+				selectedNodes.add(nodeModel);
 			}
 		}
 		return selectedNodes;
@@ -986,7 +991,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void paintLinks(final Collection<LinkModel> links, final Graphics2D graphics,
-	                        final HashSet alreadyPaintedLinks) {
+	                        final HashSet<ConnectorModel> alreadyPaintedLinks) {
 		final Font font = graphics.getFont();
 		try {
 			final String fontFamily = ResourceController.getResourceController().getProperty("label_font_family");
@@ -1031,11 +1036,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		arrowLinkViews = new Vector<ILinkView>();
 		final Object renderingHint = getModeController().getController().getViewController().setEdgesRenderingHint(
 		    graphics);
-		paintLinks(rootView, graphics, new HashSet());
+		paintLinks(rootView, graphics, new HashSet<ConnectorModel>());
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
 
-	private void paintLinks(final NodeView source, final Graphics2D graphics, final HashSet alreadyPaintedLinks) {
+	private void paintLinks(final NodeView source, final Graphics2D graphics,
+	                        final HashSet<ConnectorModel> alreadyPaintedLinks) {
 		final NodeModel node = source.getModel();
 		final Collection<LinkModel> outLinks = NodeLinks.getLinks(node);
 		paintLinks(outLinks, graphics, alreadyPaintedLinks);
@@ -1088,9 +1094,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		g.setStroke(MapView.standardSelectionStroke);
 		final Object renderingHint = getModeController().getController().getViewController().setEdgesRenderingHint(g);
-		final Iterator i = getSelection().iterator();
-		while (i.hasNext()) {
-			final NodeView selected = (NodeView) i.next();
+		for (final NodeView selected : getSelection()) {
 			paintSelected(g, selected);
 		}
 		g.setColor(c);
@@ -1180,10 +1184,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void repaintSelecteds() {
-		final Iterator iterator = getSelection().iterator();
-		while (iterator.hasNext()) {
-			final NodeView next = (NodeView) iterator.next();
-			next.repaintSelected();
+		for (final NodeView selected : getSelection()) {
+			selected.repaintSelected();
 		}
 	}
 
@@ -1279,7 +1281,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public void selectAsTheOnlyOneSelected(final NodeView node, final boolean requestFocus) {
 		final NodeView newSelected = node;
-		final Collection oldSelecteds = cloneSelection();
+		final Collection<NodeView> oldSelecteds = cloneSelection();
 		selection.clear();
 		selection.add(newSelected);
 		if (requestFocus) {
@@ -1290,8 +1292,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		scrollNodeToVisible(newSelected);
 		newSelected.repaintSelected();
-		for (final Iterator e = oldSelecteds.iterator(); e.hasNext();) {
-			final NodeView oldSelected = (NodeView) e.next();
+		for (final NodeView oldSelected : oldSelecteds) {
 			if (oldSelected != null) {
 				oldSelected.repaintSelected();
 			}
@@ -1310,8 +1311,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		else if (!isSelected(newlySelectedNodeView) && newlySelectedNodeView.isContentVisible()) {
 			toggleSelected(newlySelectedNodeView, false);
 		}
-		for (final ListIterator e = newlySelectedNodeView.getChildrenViews().listIterator(); e.hasNext();) {
-			final NodeView target = (NodeView) e.next();
+		for (final NodeView target : newlySelectedNodeView.getChildrenViews()) {
 			selectBranch(target, true);
 		}
 	}
@@ -1320,10 +1320,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		/* fc, 25.1.2004: corrected due to completely inconsistent behaviour. */
 		NodeView oldSelected = null;
 		final NodeView newSelected = nodeView;
-		final Collection selList = cloneSelection();
-		final Iterator j = selList.iterator(/* selList.size() */);
-		while (j.hasNext()) {
-			final NodeView selectedNode = (NodeView) j.next();
+		for (final NodeView selectedNode : cloneSelection()) {
 			if (selectedNode != newSelected && newSelected.isSiblingOf(selectedNode)) {
 				oldSelected = selectedNode;
 				break;
@@ -1339,7 +1336,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final boolean oldPositionLeft = oldSelected.isLeft();
 		final boolean newPositionLeft = newSelected.isLeft();
 		/* find old starting point. */
-		ListIterator i = newSelected.getSiblingViews().listIterator();
+		ListIterator<NodeView> i = newSelected.getSiblingViews().listIterator();
 		while (i.hasNext()) {
 			final NodeView next = (NodeView) i.next();
 			if (next == oldSelected) {
@@ -1350,7 +1347,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		 * Remove all selections for the siblings in the connected component
 		 * between old and new.
 		 */
-		final ListIterator i_backup = i;
+		final ListIterator<NodeView> i_backup = i;
 		while (i.hasNext()) {
 			final NodeView next = (NodeView) i.next();
 			if ((next.isLeft() == oldPositionLeft || next.isLeft() == newPositionLeft)) {
@@ -1519,16 +1516,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		selectedsValid = true;
-		final ArrayList selectedNodes = new ArrayList();
-		for (final Iterator it = getSelection().iterator(); it.hasNext();) {
-			final NodeView nodeView = (NodeView) it.next();
+		final ArrayList<NodeView> selectedNodes = new ArrayList<NodeView>();
+		for (final NodeView nodeView : getSelection()) {
 			if (nodeView != null) {
 				selectedNodes.add(nodeView);
 			}
 		}
 		selection.clear();
-		for (final ListIterator it = selectedNodes.listIterator(); it.hasNext();) {
-			final NodeView oldNodeView = ((NodeView) it.next());
+		for (final NodeView oldNodeView : selectedNodes) {
 			if (oldNodeView.isContentVisible()) {
 				final NodeView newNodeView = getNodeView(oldNodeView.getModel());
 				if (newNodeView != null) {

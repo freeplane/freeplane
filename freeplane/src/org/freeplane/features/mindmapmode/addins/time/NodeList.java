@@ -732,9 +732,9 @@ class NodeList {
 		sorter = new TableSorter(mFlatNodeTableFilterModel);
 		timeTable.setModel(sorter);
 		sorter.setTableHeader(timeTable.getTableHeader());
-		sorter.setColumnComparator(Date.class, TableSorter.COMPARABLE_COMAPRATOR);
+		sorter.setColumnComparator(Date.class, TableSorter.COMPARABLE_COMPARATOR);
 		sorter.setColumnComparator(NodeModel.class, TableSorter.LEXICAL_COMPARATOR);
-		sorter.setColumnComparator(IconsHolder.class, TableSorter.COMPARABLE_COMAPRATOR);
+		sorter.setColumnComparator(IconsHolder.class, TableSorter.COMPARABLE_COMPARATOR);
 		sorter.setSortingStatus(NodeList.DATE_COLUMN, TableSorter.ASCENDING);
 		final JScrollPane pane = new JScrollPane(timeTable);
 		UITools.setScrollbarIncrement(pane);

@@ -19,30 +19,28 @@
  */
 package org.freeplane.core.resources.components;
 
-import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class NumberProperty extends PropertyBean implements IPropertyControl {
-	final private int max;
-	final private int min;
+//	final private int max;
+//	final private int min;
+//	final private int step;
 	final private JSpinner spinner;
-	final private int step;
 
 	/**
 	 */
 	public NumberProperty(final String name, final int min, final int max, final int step) {
 		super(name);
-		this.min = min;
-		this.max = max;
-		this.step = step;
+//		this.min = min;
+//		this.max = max;
+//		this.step = step;
 		spinner = new JSpinner(new SpinnerNumberModel(min, min, max, step));
 		spinner.addChangeListener(new ChangeListener() {
 			public void stateChanged(final ChangeEvent pE) {
