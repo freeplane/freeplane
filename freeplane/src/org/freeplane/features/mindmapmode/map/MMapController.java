@@ -54,7 +54,8 @@ public class MMapController extends MapController {
 	public static final int NEW_CHILD_WITHOUT_FOCUS = 1;
 	public static final int NEW_SIBLING_BEFORE = 4;
 	public static final int NEW_SIBLING_BEHIND = 3;
-	static private NewChildAction newChild;
+	@Deprecated //remove the action field, move its methods to this class.
+	private NewChildAction newChild;
 	public static final String RESOURCES_CONVERT_TO_CURRENT_VERSION = "convert_to_current_version";
 	private static IFreeplanePropertyListener sSaveIdPropertyChangeListener;
 
