@@ -100,14 +100,14 @@ public class FreeplaneSplashModern extends JWindow {
 		final FreeplaneVersion version = FreeplaneVersion.getVersion();
 		final String freeplaneNumber = version.numberToString();
 		final String status = version.getType().toUpperCase();
-		createVersionTextFont(status.isEmpty() ? 34 : 16);
+		createVersionTextFont(status.equals("") ? 34 : 16);
 		g2.setFont(versionTextFont);
 		Color textColor = new Color(95, 0, 127);
 		if (mWidth1 == null) {
 			mWidth1 = new Integer(g2.getFontMetrics().stringWidth(freeplaneNumber));
 			mWidth2 = new Integer(g2.getFontMetrics().stringWidth(status));
 		}
-		if(! status.isEmpty()){
+		if(! status.equals("")){
 			int xCoordinate = getSize().width - mWidth1.intValue() - 28;
 			int yCoordinate = 32;
 			g2.setColor(Color.WHITE);
