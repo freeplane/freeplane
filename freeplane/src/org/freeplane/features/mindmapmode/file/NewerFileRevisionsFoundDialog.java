@@ -91,27 +91,25 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 			setFocusable(false);
 			setDefaultRenderer(Object.class, renderer);
 			setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			setRowSelectionInterval(0, 0);
 			getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				public void valueChanged(final ListSelectionEvent event) {
 					// Update the word field if a suggestion is click
 					if (!event.getValueIsAdjusting()) {
 						final ListSelectionModel lsm = (ListSelectionModel) event.getSource();
 						final boolean enable = !(lsm.isSelectionEmpty());
-						btnReplace.setEnabled(enable);
 						if (enable) {
 							final FileWrapper fileWrapper = (FileWrapper) getModel().getValueAt(getSelectedRow(), 0);
 							if (file.equals(fileWrapper.getFile())) {
-								lsm.clearSelection();
-								btnReplace.setToolTipText(null);
+								setButtonOpenDefault();
 							}
 							else {
-								setSelectedFile(fileWrapper.getFile());
-								btnReplace.setToolTipText(TextUtils.format(NewerFileRevisionsFoundDialog
-								    .key("replace.tooltip"), file.getName(), fileWrapper.toString()));
+								setButtonOpenRestore(fileWrapper);
 							}
+							setSelectedFile(fileWrapper.getFile());
 						}
 						else {
-							btnReplace.setToolTipText(null);
+							setButtonOpenDefault();
 						}
 					}
 				}
@@ -127,8 +125,9 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 			                                               final int row, final int column) {
 				final Component c = super
 				    .getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				// disable the first line that contains the original file
-				c.setEnabled(row != 0);
+				// change the font of the first line which contains the original file
+				if (row == 0)
+					c.setFont(getFont().deriveFont(Font.BOLD));
 				return c;
 			}
 		};
@@ -137,13 +136,23 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		public boolean isCellEditable(final int row, final int column) {
 			return false;
 		}
+
+		private void setButtonOpenDefault() {
+			MenuBuilder.setLabelAndMnemonic(btnOpen, TextUtils.getText(NewerFileRevisionsFoundDialog.key("open")));
+			btnOpen.setToolTipText(TextUtils.format(NewerFileRevisionsFoundDialog.key("open.tooltip")));
+		}
+
+		private void setButtonOpenRestore(final FileWrapper fileWrapper) {
+			MenuBuilder.setLabelAndMnemonic(btnOpen, TextUtils.getText(NewerFileRevisionsFoundDialog.key("restore")));
+			btnOpen.setToolTipText(TextUtils.format(NewerFileRevisionsFoundDialog.key("restore.tooltip"), file
+			    .getName(), fileWrapper.toString()));
+		}
 	}
 
 	private static final long serialVersionUID = 1L;
 	private final static String KEY_BASE = "NewerFileRevisionsFoundDialog";
 	private JButton btnOpen;
 	private JButton btnSkip;
-	private JButton btnReplace;
 	private boolean canContinue = false;
 	private final File file;
 	private File selectedFile;
@@ -153,8 +162,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 	private class CloseAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final Object source = e.getSource();
-			canContinue = (source == btnOpen //
-			|| (source == btnReplace && selectedFile != null));
+			canContinue = (source == btnOpen);
 			dispose();
 		}
 	}
@@ -197,6 +205,8 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		final TreeSet<File> sortedRevisions = new TreeSet<File>(new Comparator<File>() {
 			public int compare(final File f1, final File f2) {
 				final long diff = f1.lastModified() - f2.lastModified();
+				if (diff == 0)
+					return f1.getName().compareTo(f2.getName());
 				return diff > 0 ? -1 : (diff > 0 ? 1 : 0);
 			}
 		});
@@ -222,14 +232,10 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		final CloseAction closeAction = new CloseAction();
 		btnOpen = createButton(NewerFileRevisionsFoundDialog.key("open"), NewerFileRevisionsFoundDialog
 		    .key("open.tooltip"), closeAction);
-		btnReplace = createButton(NewerFileRevisionsFoundDialog.key("replace"), null, closeAction);
-		btnReplace.setEnabled(false);
 		btnSkip = createButton(NewerFileRevisionsFoundDialog.key("skip"), NewerFileRevisionsFoundDialog
 		    .key("skip.tooltip"), closeAction);
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnOpen);
-		controllerBox.add(Box.createHorizontalGlue());
-		controllerBox.add(btnReplace);
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnSkip);
 		controllerBox.add(Box.createHorizontalGlue());

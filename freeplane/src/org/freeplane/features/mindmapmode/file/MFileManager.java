@@ -327,7 +327,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				else {
 					return;
 				}
-				if (newerFileRevisionsFoundDialog.getSelectedFile() != null) {
+				if (!file.equals(newerFileRevisionsFoundDialog.getSelectedFile())) {
 					LogUtils.info("opening " + newerFileRevisionsFoundDialog.getSelectedFile() + " instead of " + file);
 					System.out.println("opening " + newerFileRevisionsFoundDialog.getSelectedFile() + " instead of "
 					        + file);
