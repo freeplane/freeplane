@@ -224,20 +224,6 @@ public class MenuUtils {
 		return newNodeModel;
 	}
 
-	private static void addIcon(final MenuEntry menuEntry, final NodeModel newNodeModel) {
-		final String iconKey = menuEntry.getIconKey();
-		final String resource = ResourceController.getResourceController().getProperty(iconKey, null);
-		if (resource == null) {
-			// LogUtils.info("no icon for key '" + iconKey + "'");
-			return;
-		}
-		// icons are expected to live in the directory /images/icons/
-		// but the menu icons live in /images - set a relative path to navigate one level up
-		final String name = resource.replaceAll("/images/(.*).png", "../$1");
-		final MindIcon mindIcon = new MindIcon(name, name + ".png", "");
-		newNodeModel.addIcon(mindIcon);
-	}
-
 	public static String formatKeyStroke(final KeyStroke keyStroke) {
 		final String keyModifiersText = KeyEvent.getKeyModifiersText(keyStroke.getModifiers());
 		final String keyText = KeyEvent.getKeyText(keyStroke.getKeyCode());

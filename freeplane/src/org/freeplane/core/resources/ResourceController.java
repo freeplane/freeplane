@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.AController.IActionOnChange;
@@ -77,10 +78,9 @@ public abstract class ResourceController {
 	 */
 	public void addPropertyChangeListenerAndPropagate(final IFreeplanePropertyListener listener) {
 		addPropertyChangeListener(listener);
-		final Properties properties = getProperties();
-		for (final Iterator it = properties.keySet().iterator(); it.hasNext();) {
-			final String key = (String) it.next();
-			listener.propertyChanged(key, properties.getProperty(key), null);
+		for (final Entry<Object, Object> entry : getProperties().entrySet()) {
+			final String key = (String) entry.getKey();
+			listener.propertyChanged(key, (String) entry.getValue(), null);
 		}
 	}
 
@@ -155,9 +155,6 @@ public abstract class ResourceController {
 		}
 	}
 
-	/**
-	 * @return
-	 */
 	abstract public Properties getProperties();
 
 	abstract public String getProperty(final String key);

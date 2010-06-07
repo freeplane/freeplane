@@ -217,7 +217,7 @@ public class IndexedTree {
 
 	public void removeChildElements(final Object key) {
 		final DefaultMutableTreeNode node = getNode(key);
-		final Enumeration children = node.children();
+		final Enumeration<?> children = node.children();
 		while (children.hasMoreElements()) {
 			final Node child = (Node) children.nextElement();
 			final Object childKey = child.getKey();
@@ -232,7 +232,7 @@ public class IndexedTree {
 	/**
 	 */
 	protected void removeChildKeys(final Node node) {
-		final Enumeration children = node.children();
+		final Enumeration<?> children = node.children();
 		while (children.hasMoreElements()) {
 			final Node child = (Node) children.nextElement();
 			string2Element.remove(child.getKey());
