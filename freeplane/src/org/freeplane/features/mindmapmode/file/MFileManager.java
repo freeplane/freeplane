@@ -325,7 +325,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 						LogUtils.warn("Unable to set the last modification time for " + file);
 				}
 				else {
-					return;
+					throw new IOException("skip " + file.toString());
 				}
 				if (!file.equals(newerFileRevisionsFoundDialog.getSelectedFile())) {
 					LogUtils.info("opening " + newerFileRevisionsFoundDialog.getSelectedFile() + " instead of " + file);
