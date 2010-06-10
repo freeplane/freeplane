@@ -27,7 +27,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.print.PageFormat;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -165,15 +164,6 @@ class PageAction extends AbstractPrintAction {
 			return;
 		}
 		final PrintController printController = getPrintController();
-		printController.setPageFormat(printController.getPrinterJob().pageDialog(printController.getPageFormat()));
-		if (printController.getPageFormat().getOrientation() == PageFormat.LANDSCAPE) {
-			ResourceController.getResourceController().setProperty("page_orientation", "landscape");
-		}
-		else if (printController.getPageFormat().getOrientation() == PageFormat.PORTRAIT) {
-			ResourceController.getResourceController().setProperty("page_orientation", "portrait");
-		}
-		else if (printController.getPageFormat().getOrientation() == PageFormat.REVERSE_LANDSCAPE) {
-			ResourceController.getResourceController().setProperty("page_orientation", "reverse_landscape");
-		}
+		printController.pageDialog();
 	}
 }
