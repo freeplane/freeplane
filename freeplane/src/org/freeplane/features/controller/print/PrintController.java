@@ -63,8 +63,8 @@ public class PrintController implements IExtension {
 		printingAllowed = true;
 	}
 
-	boolean acquirePrinterJobAndPageFormat() {
-		if (printerJob == null || Compat.isWindowsOS()) {
+	boolean acquirePrinterJobAndPageFormat(boolean showDlg) {
+		if (printerJob == null || showDlg && Compat.isWindowsOS()) {
 			try {
 				printerJob = PrinterJob.getPrinterJob();
 			}
@@ -108,7 +108,7 @@ public class PrintController implements IExtension {
 	}
 
 	public void print(Printable mapView, boolean showDlg) throws PrinterException {
-		if (!acquirePrinterJobAndPageFormat()) {
+		if (!acquirePrinterJobAndPageFormat(showDlg)) {
 			return;
 		}
 		getPrinterJob().setPrintable(mapView, getPageFormat());

@@ -70,7 +70,7 @@ class PageAction extends AbstractPrintAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if (!getPrintController().acquirePrinterJobAndPageFormat()) {
+		if (!getPrintController().acquirePrinterJobAndPageFormat(false)) {
 			return;
 		}
 		final Frame frame = getPrintController().getController().getViewController().getFrame();
