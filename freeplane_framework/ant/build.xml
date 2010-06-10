@@ -2,7 +2,7 @@
 	<property name="workspace" location=".." />
 	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
 	<property file="ant/ant.properties" />
-	<property name="freeplaneant.jar" value="ant/lib/freeplaneant.jar" />
+	<property name="freeplaneant.jar" value="${workspace}/freeplane_framework/ant/lib/freeplaneant.jar" />
 	<property name="root" value="." />
 	<property name="build" value="${root}/build" />
 	<property name="build4mac" value="${root}/build4mac" />
@@ -353,10 +353,10 @@
 	</target>
 
 	<target name="check-translation">
-		<ant antfile="ant/build.xml" target="check-translation" dir="${workspace}/freeplane" inheritall="no"/>
+		<ant antfile="ant/build.xml" target="check-translation" dir="${workspace}/freeplane" />
 	</target>
 	<target name="format-translation">
-		<ant antfile="ant/build.xml" target="format-translation" dir="${workspace}/freeplane" inheritall="no"/>
+		<ant antfile="ant/build.xml" target="format-translation" dir="${workspace}/freeplane" />
 	</target>
 	<target name="format-translation-force">
 		<ant antfile="ant/build.xml" target="format-translation-force" dir="${workspace}/freeplane" />
