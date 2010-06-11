@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Compat;
 
 /**
  * @author Dimitry Polivaev
@@ -63,7 +64,7 @@ public class PrintController implements IExtension {
 	}
 
 	boolean acquirePrinterJobAndPageFormat() {
-		if (printerJob == null) {
+		if (printerJob == null || Compat.isWindowsOS()) {
 			try {
 				printerJob = PrinterJob.getPrinterJob();
 			}
