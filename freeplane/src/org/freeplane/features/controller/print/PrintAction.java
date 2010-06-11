@@ -47,11 +47,18 @@ class PrintAction extends AbstractPrintAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final PrintController printController = getPrintController();
-		try {
-			printController.print((Printable) controller.getViewController().getMapView(), isDlg);
+		if (!printController.acquirePrinterJobAndPageFormat()) {
+			return;
 		}
-		catch (final Exception ex) {
-			LogTool.severe(ex);
+		printController.getPrinterJob().setPrintable((Printable) controller.getViewController().getMapView(),
+		    printController.getPageFormat());
+		if (!isDlg || printController.getPrinterJob().printDialog()) {
+			try {
+				printController.getPrinterJob().print();
+			}
+			catch (final Exception ex) {
+				LogTool.severe(ex);
+			}
 		}
 	}
 }

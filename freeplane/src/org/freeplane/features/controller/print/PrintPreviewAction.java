@@ -41,7 +41,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if (!getPrintController().acquirePrinterJobAndPageFormat(false)) {
+		if (!getPrintController().acquirePrinterJobAndPageFormat()) {
 			return;
 		}
 		final Component mapView = controller.getViewController().getMapView();
