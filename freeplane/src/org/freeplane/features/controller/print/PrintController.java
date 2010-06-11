@@ -20,12 +20,12 @@
 package org.freeplane.features.controller.print;
 
 import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 
-import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 
 /**
@@ -63,8 +63,8 @@ public class PrintController implements IExtension {
 		printingAllowed = true;
 	}
 
-	boolean acquirePrinterJobAndPageFormat() {
-		if (printerJob == null || Compat.isWindowsOS()) {
+	boolean acquirePrinterJobAndPageFormat(boolean showDlg) {
+		if (printerJob == null || showDlg && Compat.isWindowsOS()) {
 			try {
 				printerJob = PrinterJob.getPrinterJob();
 			}
@@ -77,21 +77,6 @@ public class PrintController implements IExtension {
 				return false;
 			}
 		}
-		if (pageFormat == null) {
-			pageFormat = printerJob.defaultPage();
-			if (StringUtils.equals(ResourceController.getResourceController().getProperty("page_orientation"),
-			    "landscape")) {
-				pageFormat.setOrientation(PageFormat.LANDSCAPE);
-			}
-			else if (StringUtils.equals(ResourceController.getResourceController().getProperty("page_orientation"),
-			    "portrait")) {
-				pageFormat.setOrientation(PageFormat.PORTRAIT);
-			}
-			else if (StringUtils.equals(ResourceController.getResourceController().getProperty("page_orientation"),
-			    "reverse_landscape")) {
-				pageFormat.setOrientation(PageFormat.REVERSE_LANDSCAPE);
-			}
-		}
 		return true;
 	}
 
@@ -99,11 +84,14 @@ public class PrintController implements IExtension {
 		return controller;
 	}
 
-	public PageFormat getPageFormat() {
+	PageFormat getPageFormat() {
+		if (pageFormat == null) {
+			pageFormat = printerJob.defaultPage();
+		}
 		return pageFormat;
 	}
 
-	PrinterJob getPrinterJob() {
+	private PrinterJob getPrinterJob() {
 		return printerJob;
 	}
 
@@ -111,11 +99,21 @@ public class PrintController implements IExtension {
 		return printingAllowed;
 	}
 
-	void setPageFormat(final PageFormat pageFormat) {
-		this.pageFormat = pageFormat;
+	public void pageDialog() {
+		this.pageFormat = getPrinterJob().pageDialog(getPageFormat());	    
+    }
+
+	public boolean printDialog() {
+	    return getPrinterJob().printDialog();
 	}
 
-	void setPrinterJob(final PrinterJob printerJob) {
-		this.printerJob = printerJob;
+	public void print(Printable mapView, boolean showDlg) throws PrinterException {
+		if (!acquirePrinterJobAndPageFormat(showDlg)) {
+			return;
+		}
+		getPrinterJob().setPrintable(mapView, getPageFormat());
+		if(! showDlg || printDialog()){
+			getPrinterJob().print();
+		}
 	}
 }
