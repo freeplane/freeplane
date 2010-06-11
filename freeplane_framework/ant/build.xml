@@ -2,6 +2,7 @@
 	<property name="workspace" location=".." />
 	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
 	<property file="ant/ant.properties" />
+	<property name="freeplaneant.jar" value="${workspace}/freeplane_framework/ant/lib/freeplaneant.jar" />
 	<property name="root" value="." />
 	<property name="build" value="${root}/build" />
 	<property name="build4mac" value="${root}/build4mac" />
@@ -20,8 +21,11 @@
     <property name="mac-jarbundler" value = "${root}/mac-jarbundler"/>
 	<property name="jarbundler.jar" value = "jarbundler-2.1.0.jar"/>
 	<taskdef name="jarbundler"
-               classpath="${mac-jarbundler}/${jarbundler.jar}"
-               classname="net.sourceforge.jarbundler.JarBundler" />
+			 classpath="${mac-jarbundler}/${jarbundler.jar}"
+			 classname="net.sourceforge.jarbundler.JarBundler" />
+	<taskdef name="create-plugin"
+			 classpath="${freeplaneant.jar}"
+			 classname="org.freeplane.ant.CreatePlugin"/>
 
 	<target name="makePlugin">
 		<ant antfile="ant/build.xml" target="${anttarget}" dir="${workspace}/${plugindir}" inheritall="false" />
@@ -356,6 +360,9 @@
 	</target>
 	<target name="format-translation-force">
 		<ant antfile="ant/build.xml" target="format-translation-force" dir="${workspace}/freeplane" />
+	</target>
+	<target name="create-plugin">
+	  <create-plugin />
 	</target>
 
 	<target name="clean">
