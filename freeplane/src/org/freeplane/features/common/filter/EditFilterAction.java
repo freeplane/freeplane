@@ -21,6 +21,10 @@ package org.freeplane.features.common.filter;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 /**
@@ -36,7 +40,7 @@ class EditFilterAction extends AFreeplaneAction {
 	 * 
 	 */
 	private final FilterController filterController;
-	private FilterComposerDialog filterDialog = null;
+	private AFilterComposerDialog filterDialog = null;
 
 	EditFilterAction(final FilterController filterController) {
 		super("EditFilterAction", filterController.getController());
@@ -50,6 +54,41 @@ class EditFilterAction extends AFreeplaneAction {
 		}
 		getFilterDialog().show();
 	}
+	
+	private class FilterComposerDialog extends AFilterComposerDialog{
+
+		public FilterComposerDialog() {
+	        super(getController());
+        }
+
+		protected DefaultComboBoxModel createModel() {
+			DefaultComboBoxModel model = new DefaultComboBoxModel();
+			ComboBoxModel externalConditionsModel = filterController.getFilterConditions();
+			for (int i = 2; i < externalConditionsModel.getSize(); i++) {
+				final Object element = externalConditionsModel.getElementAt(i);
+				model.addElement(element);
+			}
+			Object selectedItem = externalConditionsModel.getSelectedItem(); 
+			if(model.getIndexOf(selectedItem) != -1){
+				model.setSelectedItem(selectedItem);
+			}
+			else{
+				model.setSelectedItem(null);
+			}
+			return model;
+	    }
+		
+		protected boolean applyModel(DefaultComboBoxModel model) {
+		    filterController.setFilterConditions(model);
+		    return true;
+	    }
+		
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+		
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -57,9 +96,9 @@ class EditFilterAction extends AFreeplaneAction {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
 	 * )
 	 */
-	private FilterComposerDialog getFilterDialog() {
+	private AFilterComposerDialog getFilterDialog() {
 		if (filterDialog == null) {
-			filterDialog = new FilterComposerDialog(getController());
+			filterDialog = new FilterComposerDialog();
 			getFilterDialog().setLocationRelativeTo(filterController.getFilterToolbar());
 			getController().getMapViewManager().addMapSelectionListener(filterDialog);
 		}

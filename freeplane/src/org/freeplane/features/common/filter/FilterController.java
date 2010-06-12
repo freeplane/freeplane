@@ -381,7 +381,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterConditions.addListDataListener(filterChangeListener);
 	}
 
-	@SuppressWarnings("unchecked")
 	void loadConditions(final DefaultComboBoxModel filterConditionModel, final String pathToFilterFile)
 	        throws IOException {
 		filterConditionModel.removeAllElements();
@@ -430,7 +429,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		writer.close();
 	}
 
-	public void setFilterConditions(final DefaultComboBoxModel newConditionModel) {
+	void setFilterConditions(final DefaultComboBoxModel newConditionModel) {
 		filterConditions.removeListDataListener(filterChangeListener);
 		filterConditions.removeAllElements();
 		for (int i = 0; i < newConditionModel.getSize(); i++) {

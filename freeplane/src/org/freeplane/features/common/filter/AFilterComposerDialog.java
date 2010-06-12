@@ -66,7 +66,7 @@ import org.freeplane.features.common.url.UrlManager;
 /**
  * @author Dimitry Polivaev
  */
-class FilterComposerDialog extends JDialog implements IMapSelectionListener {
+abstract class AFilterComposerDialog extends JDialog implements IMapSelectionListener {
 	/**
 	 * @author Dimitry Polivaev
 	 */
@@ -94,9 +94,17 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	private class CloseAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final Object source = e.getSource();
+			final boolean success;
 			if (source == btnOK || source == btnApply) {
-				applyChanges();
+				success = applyChanges();
 			}
+			else{
+				success = true;
+			}
+			if(! success){
+				return;
+			}
+			internalConditionsModel = null;
 			if (source == btnOK || source == btnCancel) {
 				dispose();
 			}
@@ -265,7 +273,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	private class LoadAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final JFileChooser chooser = getFileChooser();
-			final int returnVal = chooser.showOpenDialog(FilterComposerDialog.this);
+			final int returnVal = chooser.showOpenDialog(AFilterComposerDialog.this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				try {
 					final File theFile = chooser.getSelectedFile();
@@ -308,7 +316,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final JFileChooser chooser = getFileChooser();
 			chooser.setDialogTitle(TextUtils.getText("SaveAsAction.text"));
-			final int returnVal = chooser.showSaveDialog(FilterComposerDialog.this);
+			final int returnVal = chooser.showSaveDialog(AFilterComposerDialog.this);
 			if (returnVal != JFileChooser.APPROVE_OPTION) {
 				return;
 			}
@@ -346,11 +354,10 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	final private Controller controller;
 	final private FilterConditionEditor editor;
 	final private JList elementaryConditionList;
-	private ComboBoxModel externalConditionsModel;
 	final private FilterController filterController;
 	private DefaultComboBoxModel internalConditionsModel;
 
-	public FilterComposerDialog(final Controller controller) {
+	public AFilterComposerDialog(final Controller controller) {
 		super(controller.getViewController().getFrame(), TextUtils.getText("filter_dialog"));
 		filterController = FilterController.getController(controller);
 		editor = new FilterConditionEditor(filterController);
@@ -360,28 +367,28 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		conditionButtonBox.setBorder(new EmptyBorder(0, 10, 0, 10));
 		getContentPane().add(conditionButtonBox, BorderLayout.EAST);
 		btnAdd = new JButton(new AddElementaryConditionAction(controller));
-		btnAdd.setMaximumSize(FilterComposerDialog.maxButtonDimension);
+		btnAdd.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
 		conditionButtonBox.add(Box.createVerticalGlue());
 		conditionButtonBox.add(btnAdd);
 		btnNot = new JButton(new CreateNotSatisfiedConditionAction());
 		conditionButtonBox.add(Box.createVerticalGlue());
-		btnNot.setMaximumSize(FilterComposerDialog.maxButtonDimension);
+		btnNot.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
 		conditionButtonBox.add(btnNot);
 		btnNot.setEnabled(false);
 		btnAnd = new JButton(new CreateConjunctConditionAction());
 		conditionButtonBox.add(Box.createVerticalGlue());
-		btnAnd.setMaximumSize(FilterComposerDialog.maxButtonDimension);
+		btnAnd.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
 		conditionButtonBox.add(btnAnd);
 		btnAnd.setEnabled(false);
 		btnOr = new JButton(new CreateDisjunctConditionAction());
 		conditionButtonBox.add(Box.createVerticalGlue());
-		btnOr.setMaximumSize(FilterComposerDialog.maxButtonDimension);
+		btnOr.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
 		conditionButtonBox.add(btnOr);
 		btnOr.setEnabled(false);
 		btnDelete = new JButton(new DeleteConditionAction());
 		btnDelete.setEnabled(false);
 		conditionButtonBox.add(Box.createVerticalGlue());
-		btnDelete.setMaximumSize(FilterComposerDialog.maxButtonDimension);
+		btnDelete.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
 		conditionButtonBox.add(btnDelete);
 		conditionButtonBox.add(Box.createVerticalGlue());
 		final Box controllerBox = Box.createHorizontalBox();
@@ -391,15 +398,15 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		btnOK = new JButton();
 		MenuBuilder.setLabelAndMnemonic(btnOK, TextUtils.getText("ok"));
 		btnOK.addActionListener(closeAction);
-		btnOK.setMaximumSize(FilterComposerDialog.maxButtonDimension);
+		btnOK.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
 		btnApply = new JButton();
 		MenuBuilder.setLabelAndMnemonic(btnApply, TextUtils.getText("apply"));
 		btnApply.addActionListener(closeAction);
-		btnApply.setMaximumSize(FilterComposerDialog.maxButtonDimension);
+		btnApply.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
 		btnCancel = new JButton();
 		MenuBuilder.setLabelAndMnemonic(btnCancel, TextUtils.getText("cancel"));
 		btnCancel.addActionListener(closeAction);
-		btnCancel.setMaximumSize(FilterComposerDialog.maxButtonDimension);
+		btnCancel.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnOK);
 		controllerBox.add(Box.createHorizontalGlue());
@@ -412,12 +419,12 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			btnSave = new JButton();
 			MenuBuilder.setLabelAndMnemonic(btnSave, TextUtils.getText("SaveAction.text"));
 			btnSave.addActionListener(saveAction);
-			btnSave.setMaximumSize(FilterComposerDialog.maxButtonDimension);
+			btnSave.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
 			final ActionListener loadAction = new LoadAction();
 			btnLoad = new JButton();
 			MenuBuilder.setLabelAndMnemonic(btnLoad, TextUtils.getText("load"));
 			btnLoad.addActionListener(loadAction);
-			btnLoad.setMaximumSize(FilterComposerDialog.maxButtonDimension);
+			btnLoad.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
 			controllerBox.add(btnSave);
 			controllerBox.add(Box.createHorizontalGlue());
 			controllerBox.add(btnLoad);
@@ -450,12 +457,20 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	public void afterMapClose(final MapModel oldMap) {
 	}
 
-	private void applyChanges() {
+	private boolean applyChanges() {
 		internalConditionsModel.setSelectedItem(elementaryConditionList.getSelectedValue());
 		internalConditionsModel.removeListDataListener(conditionListListener);
-		filterController.setFilterConditions(internalConditionsModel);
-		internalConditionsModel = null;
+		if (applyModel(internalConditionsModel)){
+			internalConditionsModel = null;
+			return true;
+		}
+		else{
+			internalConditionsModel.addListDataListener(conditionListListener);
+			return false;
+		}
 	}
+
+	abstract protected boolean applyModel(DefaultComboBoxModel model);
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
@@ -468,38 +483,28 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	}
 
 	private void initInternalConditionModel() {
-		externalConditionsModel = filterController.getFilterConditions();
-		if (internalConditionsModel == null) {
-			internalConditionsModel = new DefaultComboBoxModel();
-			internalConditionsModel.addListDataListener(conditionListListener);
-			elementaryConditionList.setModel(internalConditionsModel);
-		}
-		else {
-			internalConditionsModel.removeAllElements();
-		}
-		int index = -1;
-		for (int i = 2; i < externalConditionsModel.getSize(); i++) {
-			final Object element = externalConditionsModel.getElementAt(i);
-			internalConditionsModel.addElement(element);
-			if (element == externalConditionsModel.getSelectedItem()) {
-				index = i - 2;
+		internalConditionsModel = createModel();
+		internalConditionsModel.addListDataListener(conditionListListener);
+		elementaryConditionList.setModel(internalConditionsModel);
+		Object selectedItem = internalConditionsModel.getSelectedItem();
+		if(selectedItem != null){
+			int selectedIndex = internalConditionsModel.getIndexOf(selectedItem);
+			if(selectedIndex >= 0){
+				elementaryConditionList.setSelectedIndex(selectedIndex);
+				return;
 			}
 		}
-		if (index >= 0) {
-			elementaryConditionList.setSelectedIndex(index);
-		}
-		else {
-			elementaryConditionList.clearSelection();
-		}
 	}
+
+	abstract protected DefaultComboBoxModel createModel();
 
 	private boolean selectCondition() {
 		final int min = elementaryConditionList.getMinSelectionIndex();
 		if (min >= 0) {
 			final int max = elementaryConditionList.getMinSelectionIndex();
 			if (min == max) {
-				applyChanges();
-				return true;
+				
+				return applyChanges();
 			}
 		}
 		return false;
