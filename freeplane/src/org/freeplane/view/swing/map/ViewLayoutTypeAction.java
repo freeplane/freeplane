@@ -24,8 +24,8 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.features.common.addins.styles.MapStyle;
-import org.freeplane.features.common.addins.styles.MapViewLayout;
+import org.freeplane.features.common.styles.MapStyle;
+import org.freeplane.features.common.styles.MapViewLayout;
 
 /**
  * @author Dimitry Polivaev

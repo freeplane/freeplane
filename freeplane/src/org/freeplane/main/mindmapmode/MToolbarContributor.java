@@ -23,7 +23,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.mindmapmode.addins.styles.MUIFactory;
+import org.freeplane.features.mindmapmode.styles.MUIFactory;
 
 class MToolbarContributor implements IMenuContributor {
 	private final MUIFactory uiFactory;

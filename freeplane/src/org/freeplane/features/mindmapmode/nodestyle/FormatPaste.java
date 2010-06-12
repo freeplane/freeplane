@@ -26,8 +26,8 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.LogicalStyleKeys;
 
 /**
  * @author foltin

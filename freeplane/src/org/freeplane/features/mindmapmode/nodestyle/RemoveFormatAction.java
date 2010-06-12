@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.LogicalStyleKeys;
 
 class RemoveFormatAction extends AMultipleNodeAction {
 	public RemoveFormatAction(final Controller controller) {

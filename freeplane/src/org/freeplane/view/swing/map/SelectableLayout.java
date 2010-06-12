@@ -25,7 +25,7 @@ import java.awt.Dimension;
 import java.awt.LayoutManager;
 import java.awt.Point;
 
-import org.freeplane.features.common.addins.styles.MapViewLayout;
+import org.freeplane.features.common.styles.MapViewLayout;
 
 /**
  * @author Dimitry Polivaev

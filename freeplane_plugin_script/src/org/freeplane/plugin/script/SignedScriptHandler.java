@@ -40,7 +40,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.addins.encrypt.DesEncrypter;
+import org.freeplane.features.common.encrypt.DesEncrypter;
 
 /**
  * @author foltin

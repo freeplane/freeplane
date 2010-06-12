@@ -24,12 +24,12 @@ import java.awt.Color;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.LogicalStyleKeys;
 
 /**
  * @author Dimitry Polivaev

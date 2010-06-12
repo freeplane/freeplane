@@ -42,7 +42,7 @@ import org.apache.batik.util.SVGConstants;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mindmapmode.addins.export.ExportAction;
+import org.freeplane.features.mindmapmode.export.ExportAction;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;

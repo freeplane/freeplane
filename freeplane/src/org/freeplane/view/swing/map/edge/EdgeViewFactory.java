@@ -19,10 +19,10 @@
  */
 package org.freeplane.view.swing.map.edge;
 
-import org.freeplane.features.common.addins.styles.MapViewLayout;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.view.swing.map.NodeView;
 
 /**

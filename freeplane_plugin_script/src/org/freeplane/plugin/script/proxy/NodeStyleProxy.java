@@ -5,14 +5,14 @@ package org.freeplane.plugin.script.proxy;
 
 import java.awt.Color;
 
-import org.freeplane.features.common.addins.styles.LogicalStyleController;
-import org.freeplane.features.common.addins.styles.LogicalStyleModel;
-import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.styles.LogicalStyleController;
+import org.freeplane.features.common.styles.LogicalStyleModel;
+import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.addins.styles.MLogicalStyleController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
+import org.freeplane.features.mindmapmode.styles.MLogicalStyleController;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle {

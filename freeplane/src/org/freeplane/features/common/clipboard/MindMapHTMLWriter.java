@@ -29,7 +29,6 @@ import java.util.ListIterator;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.features.common.addins.styles.MapStyleModel;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.link.NodeLinks;
@@ -37,6 +36,7 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.url.UrlManager;
 
 class MindMapHTMLWriter {

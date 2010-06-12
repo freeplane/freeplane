@@ -52,9 +52,9 @@ import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.addins.styles.MapStyle;
 import org.freeplane.features.common.map.MapWriter.Mode;
 import org.freeplane.features.common.map.NodeModel.NodeChangeType;
+import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 

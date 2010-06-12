@@ -29,11 +29,11 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.addins.styles.LogicalStyleKeys;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.styles.LogicalStyleKeys;
 
 /**
  * @author Dimitry Polivaev
