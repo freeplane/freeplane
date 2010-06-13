@@ -46,6 +46,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
 /**
@@ -67,7 +68,7 @@ public class EditNodeBase {
 		public void actionPerformed(final ActionEvent e) {
 			final String selection = textComponent.getSelectedText();
 			if (selection != null) {
-				getClipboard().setContents(new StringSelection(selection), null);
+				ClipboardController.getController(modeController).setClipboardContents(new StringSelection(selection));
 			}
 		}
 	}
@@ -238,12 +239,6 @@ public class EditNodeBase {
 		if (textFieldListener != null) {
 			textFieldListener.focusLost(null);
 		}
-	}
-
-	/**
-	 */
-	public Clipboard getClipboard() {
-		return Toolkit.getDefaultToolkit().getSystemClipboard();
 	}
 
 	/**
