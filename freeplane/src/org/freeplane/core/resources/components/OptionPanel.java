@@ -101,15 +101,7 @@ public class OptionPanel {
 		FormLayout rightLayout = null;
 		DefaultFormBuilder rightBuilder = null;
 		String lastTabName = null;
-		controls = new Vector<IPropertyControl>();
-		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.preorderEnumeration(); i.hasMoreElements();) {
-			final IPropertyControlCreator creator = (IPropertyControlCreator) i.nextElement().getUserObject();
-			if (creator == null) {
-				continue;
-			}
-			final IPropertyControl control = creator.createControl();
-			controls.add(control);
-		}
+		initControls(controlsTree);
 		final Iterator<IPropertyControl> iterator = controls.iterator();
 		while (iterator.hasNext()) {
 			final IPropertyControl control = iterator.next();
@@ -159,6 +151,19 @@ public class OptionPanel {
 		topDialog.getRootPane().setDefaultButton(okButton);
 		topDialog.getContentPane().add(ButtonBarFactory.buildOKCancelBar(cancelButton, okButton), BorderLayout.SOUTH);
 	}
+
+	@SuppressWarnings("unchecked")
+    private void initControls(final DefaultMutableTreeNode controlsTree) {
+	    controls = new Vector<IPropertyControl>();
+		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.preorderEnumeration(); i.hasMoreElements();) {
+			final IPropertyControlCreator creator = (IPropertyControlCreator) i.nextElement().getUserObject();
+			if (creator == null) {
+				continue;
+			}
+			final IPropertyControl control = creator.createControl();
+			controls.add(control);
+		}
+    }
 
 	public void closeWindow() {
 		final OptionPanelWindowConfigurationStorage storage = new OptionPanelWindowConfigurationStorage();

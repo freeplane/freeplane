@@ -270,7 +270,7 @@ public class MMapController extends MapController {
 		moveNode(node, parent, parent.getChildPosition(target), isLeft, changeSide);
 	}
 
-	public void moveNodes(final NodeModel selected, final List selecteds, final int direction) {
+	public void moveNodes(final NodeModel selected, final List<NodeModel> selecteds, final int direction) {
 		((NodeUpAction) getModeController().getAction("NodeUpAction")).moveNodes(selected, selecteds, direction);
 	}
 
@@ -323,9 +323,9 @@ public class MMapController extends MapController {
 	}
 
 	@Override
-	public void toggleFolded(final ListIterator listIterator) {
+	public void toggleFolded(final ListIterator<NodeModel> listIterator) {
 		while (listIterator.hasNext()) {
-			toggleFolded((NodeModel) listIterator.next());
+			toggleFolded(listIterator.next());
 		}
 	}
 

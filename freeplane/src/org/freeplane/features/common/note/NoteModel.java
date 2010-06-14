@@ -83,6 +83,6 @@ public class NoteModel implements IExtension {
 			return;
 		}
 		xmlNoteText = XmlUtils.makeValidXml(pXmlNoteText);
-		noteText = HtmlUtils.getInstance().toHtml(xmlNoteText);
+		noteText = HtmlUtils.toHtml(xmlNoteText);
 	}
 }

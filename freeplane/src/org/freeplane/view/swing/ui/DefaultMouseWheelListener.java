@@ -3,7 +3,6 @@ package org.freeplane.view.swing.ui;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.freeplane.core.controller.Controller;
@@ -53,10 +52,9 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 		if (mController.isBlocked()) {
 			return;
 		}
-		final Set registeredMouseWheelEventHandler = mController.getUserInputListenerFactory()
+		final Set<IMouseWheelEventHandler> registeredMouseWheelEventHandler = mController.getUserInputListenerFactory()
 		    .getMouseWheelEventHandlers();
-		for (final Iterator i = registeredMouseWheelEventHandler.iterator(); i.hasNext();) {
-			final IMouseWheelEventHandler handler = (IMouseWheelEventHandler) i.next();
+		for (final IMouseWheelEventHandler handler : registeredMouseWheelEventHandler) {
 			final boolean result = handler.handleMouseWheelEvent(e);
 			if (result) {
 				return;

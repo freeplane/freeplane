@@ -31,8 +31,8 @@ import org.freeplane.features.common.map.MapModel;
  * Mar 19, 2009
  */
 class MapViewChangeObserverCompound {
-	final private HashSet<IMapSelectionListener> mapListeners = new HashSet();
-	final private HashSet<IMapViewChangeListener> viewListeners = new HashSet();
+	final private HashSet<IMapSelectionListener> mapListeners = new HashSet<IMapSelectionListener>();
+	final private HashSet<IMapViewChangeListener> viewListeners = new HashSet<IMapViewChangeListener>();
 
 	void addListener(final IMapSelectionListener listener) {
 		mapListeners.add(listener);

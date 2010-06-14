@@ -32,7 +32,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
@@ -293,7 +292,7 @@ public class EditNodeBase {
 		}
 		final KeyboardFocusManager currentKeyboardFocusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		class KeyEventQueue implements KeyEventDispatcher, FocusListener {
-			LinkedList events = new LinkedList();
+			LinkedList<KeyEvent> events = new LinkedList<KeyEvent>();
 
 			public boolean dispatchKeyEvent(final KeyEvent e) {
 				events.add(e);
@@ -303,9 +302,7 @@ public class EditNodeBase {
 			public void focusGained(final FocusEvent e) {
 				e.getComponent().removeFocusListener(this);
 				currentKeyboardFocusManager.removeKeyEventDispatcher(this);
-				final Iterator iterator = events.iterator();
-				while (iterator.hasNext()) {
-					final KeyEvent ke = (KeyEvent) iterator.next();
+				for (final KeyEvent ke : events) {
 					ke.setSource(textComponent);
 					textComponent.dispatchEvent(ke);
 				}

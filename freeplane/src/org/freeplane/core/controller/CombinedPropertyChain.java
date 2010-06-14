@@ -23,23 +23,23 @@ import java.util.Iterator;
 import java.util.TreeMap;
 
 public class CombinedPropertyChain<V, T> {
-	final private TreeMap<Integer, IPropertyHandler<?, ?>> handlers = new TreeMap<Integer, IPropertyHandler<?, ?>>();
+	final private TreeMap<Integer, IPropertyHandler<V, T>> handlers = new TreeMap<Integer, IPropertyHandler<V, T>>();
 
-	public IPropertyHandler addGetter(final Integer key, final IPropertyHandler getter) {
+	public IPropertyHandler<V, T> addGetter(final Integer key, final IPropertyHandler<V, T> getter) {
 		return handlers.put(-key, getter);
 	}
 
 	public V getProperty(final T node) {
-		final Iterator iterator = handlers.values().iterator();
 		V property = null;
+		final Iterator<IPropertyHandler<V, T>> iterator = handlers.values().iterator();
 		while (iterator.hasNext()) {
-			final IPropertyHandler<V, T> getter = (IPropertyHandler) iterator.next();
+			final IPropertyHandler<V, T> getter = iterator.next();
 			property = getter.getProperty(node, property);
 		}
 		return property;
 	}
 
-	public IPropertyHandler removeGetter(final Integer key) {
+	public IPropertyHandler<V, T> removeGetter(final Integer key) {
 		return handlers.remove(-key);
 	}
 }

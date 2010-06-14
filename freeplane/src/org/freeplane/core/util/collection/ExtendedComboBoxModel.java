@@ -80,7 +80,7 @@ public class ExtendedComboBoxModel extends DefaultComboBoxModel {
 		super(o);
 	}
 
-	public ExtendedComboBoxModel(final Vector v) {
+	public ExtendedComboBoxModel(final Vector<?> v) {
 		super(v);
 	}
 

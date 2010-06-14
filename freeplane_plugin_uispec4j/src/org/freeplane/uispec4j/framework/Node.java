@@ -25,7 +25,7 @@ import org.uispec4j.finder.ComponentFinder;
 
 public class Node extends TextBox {
 	public static final String TYPE_NAME = "node";
-	public static final Class[] SWING_CLASSES = { MainView.class };
+//	public static final Class[] SWING_CLASSES = { MainView.class };
 
 	private final static AttributeTableMatcher attributeTableMatcher = new AttributeTableMatcher();
 	private ComponentFinder finder;

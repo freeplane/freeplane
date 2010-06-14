@@ -146,7 +146,7 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeStyleRefresh(final NodeModel node) {
-				final ListIterator childrenFolded = modeController.getMapController().childrenFolded(node);
+				final ListIterator<NodeModel> childrenFolded = modeController.getMapController().childrenFolded(node);
 				while (childrenFolded.hasNext()) {
 					final NodeModel child = (NodeModel) childrenFolded.next();
 					final EdgeModel edge = EdgeModel.getModel(child);
@@ -184,7 +184,7 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeWidthRefresh(final NodeModel node) {
-				final ListIterator childrenFolded = modeController.getMapController().childrenFolded(node);
+				final ListIterator<NodeModel> childrenFolded = modeController.getMapController().childrenFolded(node);
 				while (childrenFolded.hasNext()) {
 					final NodeModel child = (NodeModel) childrenFolded.next();
 					final EdgeModel edge = EdgeModel.getModel(child);

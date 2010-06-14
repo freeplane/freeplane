@@ -16,6 +16,8 @@ import org.freeplane.view.swing.addins.filepreview.ViewerController.FactoryFileF
 
 /* ImagePreview.java by FileChooserDemo2.java. */
 public class ImagePreview extends BitmapImagePreview {
+	private static final long serialVersionUID = 1L;
+
 	public ImagePreview(final JFileChooser fc) {
 		super(fc);
 	}

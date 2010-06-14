@@ -18,7 +18,6 @@
 package org.freeplane.features.mindmapmode.misc;
 
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
@@ -65,9 +64,8 @@ public class NewParentNode extends AFreeplaneAction {
 	 */
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel focussed = getModeController().getMapController().getSelectedNode();
-		final List selecteds = getModeController().getMapController().getSelectedNodes();
 		final NodeModel selectedNode = focussed;
-		final List selectedNodes = selecteds;
+		final List<NodeModel> selectedNodes = getModeController().getMapController().getSelectedNodes();
 		getModeController().getMapController().sortNodesByDepth(selectedNodes);
 		if (focussed.isRoot()) {
 			UITools.errorMessage(TextUtils.getText("cannot_add_parent_to_root"));
@@ -90,8 +88,7 @@ public class NewParentNode extends AFreeplaneAction {
 
 	private NodeModel moveToOtherNode(final List<NodeModel> selectedNodes, final NodeModel oldParent,
 	                                  final NodeModel newParent) {
-		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
-			final NodeModel node = (NodeModel) it.next();
+		for (final NodeModel node: selectedNodes) {
 			if (node.getParentNode() != oldParent) {
 				UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));
 				return null;

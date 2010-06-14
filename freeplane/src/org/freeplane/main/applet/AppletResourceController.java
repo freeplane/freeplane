@@ -52,7 +52,7 @@ class AppletResourceController extends ResourceController {
 		catch (final Exception ex) {
 			System.err.println("Could not load properties.");
 		}
-		final Enumeration allKeys = userProps.propertyNames();
+		final Enumeration<?> allKeys = userProps.propertyNames();
 		while (allKeys.hasMoreElements()) {
 			final String key = (String) allKeys.nextElement();
 			setPropertyByParameter(key);

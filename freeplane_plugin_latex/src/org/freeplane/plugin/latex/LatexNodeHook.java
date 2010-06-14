@@ -21,7 +21,6 @@ package org.freeplane.plugin.latex;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
@@ -30,6 +29,7 @@ import org.freeplane.core.controller.INodeViewLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -55,9 +55,8 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
 		final LatexExtension latexExtension = (LatexExtension) extension;
-		final Iterator iterator = node.getViewers().iterator();
-		while (iterator.hasNext()) {
-			final NodeView view = (NodeView) iterator.next();
+		for (INodeView iNodeView : node.getViewers()) {
+			final NodeView view = (NodeView) iNodeView;
 			createViewer(latexExtension, view);
 		}
 		super.add(node, extension);
@@ -98,7 +97,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 	}
 
 	@Override
-	protected Class getExtensionClass() {
+	protected Class<LatexExtension> getExtensionClass() {
 		return LatexExtension.class;
 	}
 

@@ -7,6 +7,8 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.map.MapModel;
 
 public abstract class AttributeViewTypeAction extends AFreeplaneAction {
+	private static final long serialVersionUID = 1L;
+
 	public AttributeViewTypeAction(final String key, final Controller controller) {
 		super(key, controller);
 	}

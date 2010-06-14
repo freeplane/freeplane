@@ -27,6 +27,8 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.map.NodeModel;
 
 class PasteAction extends AFreeplaneAction {
+	private static final long serialVersionUID = 1L;
+
 	public PasteAction(final Controller controller) {
 		super("PasteAction", controller);
 	}

@@ -19,7 +19,6 @@
  */
 package org.freeplane.plugin.latex;
 
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -47,9 +46,7 @@ class LatexExtension implements IExtension {
 	}
 
 	void removeViewers() {
-		final Iterator iterator = getViewers().iterator();
-		while (iterator.hasNext()) {
-			final JLatexViewer comp = (JLatexViewer) iterator.next();
+		for (JLatexViewer comp : viewers) {
 			comp.getParent().remove(comp);
 		}
 		viewers.clear();
@@ -57,9 +54,7 @@ class LatexExtension implements IExtension {
 
 	public void setEquation(final String equation) {
 		this.equation = equation;
-		final Iterator iterator = viewers.iterator();
-		while (iterator.hasNext()) {
-			final JLatexViewer comp = (JLatexViewer) iterator.next();
+		for (JLatexViewer comp : viewers) {
 			comp.setModel(this);
 		}
 	}

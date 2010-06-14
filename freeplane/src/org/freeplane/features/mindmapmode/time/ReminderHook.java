@@ -204,7 +204,7 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	@Override
-	protected Class<?> getExtensionClass() {
+	protected Class<? extends IExtension> getExtensionClass() {
 		return ReminderExtension.class;
 	}
 

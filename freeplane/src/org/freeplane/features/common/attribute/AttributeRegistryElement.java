@@ -90,7 +90,7 @@ public class AttributeRegistryElement {
 		registry.fireAttributesChanged();
 	}
 
-	public Comparable getKey() {
+	public Comparable<?> getKey() {
 		return key;
 	}
 

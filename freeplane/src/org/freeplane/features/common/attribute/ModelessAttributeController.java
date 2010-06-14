@@ -39,11 +39,11 @@ public class ModelessAttributeController implements IExtension {
 		    new AttributeConditionController(controller));
 	}
 
-	final private Controller controller;
+//	final private Controller controller;
 
 	public ModelessAttributeController(final Controller controller) {
 		super();
-		this.controller = controller;
+//		this.controller = controller;
 		final AFreeplaneAction showAllAttributes = new ShowAllAttributesAction(controller);
 		final AFreeplaneAction showSelectedAttributes = new ShowSelectedAttributesAction(controller);
 		final AFreeplaneAction hideAllAttributes = new HideAllAttributesAction(controller);

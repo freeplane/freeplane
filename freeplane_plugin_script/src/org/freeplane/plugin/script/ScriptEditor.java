@@ -22,8 +22,7 @@ package org.freeplane.plugin.script;
 
 import java.awt.event.ActionEvent;
 import java.io.PrintStream;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
@@ -63,9 +62,10 @@ class ScriptEditor extends AFreeplaneAction {
 		/**
 		 * Of AttributeHolder
 		 */
-		final private Vector mScripts;
+		final private ArrayList<AttributeHolder> mScripts;
 
-		private NodeScriptModel(final Vector pScripts, final NodeModel node, final MModeController pMindMapController) {
+		private NodeScriptModel(final ArrayList<AttributeHolder> pScripts, final NodeModel node,
+		                        final MModeController pMindMapController) {
 			mScripts = pScripts;
 			mNode = node;
 			mMindMapController = pMindMapController;
@@ -83,8 +83,7 @@ class ScriptEditor extends AFreeplaneAction {
 			boolean found;
 			do {
 				found = false;
-				for (final Iterator iterator = mScripts.iterator(); iterator.hasNext();) {
-					final AttributeHolder holder = (AttributeHolder) iterator.next();
+				for (final AttributeHolder holder : mScripts) {
 					if ((scriptName + scriptNameSuffix).equals(holder.mAttribute.getName())) {
 						found = true;
 						scriptNameSuffix++;
@@ -107,8 +106,7 @@ class ScriptEditor extends AFreeplaneAction {
 		public void endDialog(final boolean pIsCanceled) {
 			if (!pIsCanceled) {
 				final int attributeTableLength = NodeAttributeTableModel.getModel(mNode).getAttributeTableLength();
-				for (final Iterator iter = mScripts.iterator(); iter.hasNext();) {
-					final AttributeHolder holder = (AttributeHolder) iter.next();
+				for (final AttributeHolder holder : mScripts) {
 					final Attribute attribute = holder.mAttribute;
 					final int position = holder.mPosition;
 					final MAttributeController attributeController = (MAttributeController) AttributeController
@@ -177,7 +175,7 @@ class ScriptEditor extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		final NodeModel node = modeController.getMapController().getSelectedNode();
-		final Vector scripts = new Vector();
+		final ArrayList<AttributeHolder> scripts = new ArrayList<AttributeHolder>();
 		for (int position = 0; position < NodeAttributeTableModel.getModel(node).getAttributeTableLength(); position++) {
 			final Attribute attribute = NodeAttributeTableModel.getModel(node).getAttribute(position);
 			if (attribute.getName().startsWith(ScriptingEngine.SCRIPT_PREFIX)) {

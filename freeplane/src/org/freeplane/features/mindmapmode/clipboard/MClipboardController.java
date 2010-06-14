@@ -30,10 +30,8 @@ import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -411,7 +409,7 @@ public class MClipboardController extends ClipboardController {
 		return text.substring(0, 1).toUpperCase() + text.substring(1, text.length());
 	}
 
-	private List newNodes;
+	private List<NodeModel> newNodes;
 
 	/**
 	 * @param modeController
@@ -448,8 +446,7 @@ public class MClipboardController extends ClipboardController {
 		getModeController().getMapController().sortNodesByDepth(collection);
 		final Transferable totalCopy = ((ClipboardController) getModeController().getExtension(
 		    ClipboardController.class)).copy(collection, true);
-		for (final Iterator i = collection.iterator(); i.hasNext();) {
-			final NodeModel node = (NodeModel) i.next();
+		for (final NodeModel node : collection) {
 			if (node.getParentNode() != null) {
 				((MMapController) getModeController().getMapController()).deleteNode(node);
 			}
@@ -462,9 +459,6 @@ public class MClipboardController extends ClipboardController {
 		return getModeController().getController();
 	}
 
-	/**
-	 * @param t 
-	 */
 	private IDataFlavorHandler getFlavorHandler(final Transferable t) {
 		if (t.isDataFlavorSupported(MindMapNodesSelection.mindMapNodesFlavor)) {
 			try {
@@ -478,7 +472,7 @@ public class MClipboardController extends ClipboardController {
 		}
 		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
 			try {
-				final List<File> fileList = (List<File>) t.getTransferData(MindMapNodesSelection.fileListFlavor);
+				final List<File> fileList = castToFileList(t.getTransferData(MindMapNodesSelection.fileListFlavor));
 				return new FileListFlavorHandler(fileList);
 			}
 			catch (final UnsupportedFlavorException e) {
@@ -528,6 +522,11 @@ public class MClipboardController extends ClipboardController {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+    private List<File> castToFileList(Object transferData) {
+	    return (List<File>) transferData;
+    }
+
 	Collection<IDataFlavorHandler> getFlavorHandlers() {
 		final Transferable t = getClipboardContents();
 		final Collection<IDataFlavorHandler> handlerList = new LinkedList<IDataFlavorHandler>();
@@ -568,7 +567,7 @@ public class MClipboardController extends ClipboardController {
 		}
 		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
 			try {
-				final List<File> fileList = (List<File>) t.getTransferData(MindMapNodesSelection.fileListFlavor);
+				final List<File> fileList = castToFileList(t.getTransferData(MindMapNodesSelection.fileListFlavor));
 				handlerList.add(new FileListFlavorHandler(fileList));
 			}
 			catch (final UnsupportedFlavorException e) {
@@ -618,7 +617,7 @@ public class MClipboardController extends ClipboardController {
 		try {
 			getController().getViewController().setWaitingCursor(true);
 			if (newNodes == null) {
-				newNodes = new LinkedList();
+				newNodes = new LinkedList<NodeModel>();
 			}
 			newNodes.clear();
 			handler.paste(target, asSibling, isLeft);
@@ -627,8 +626,7 @@ public class MClipboardController extends ClipboardController {
 			        && ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
 				modeController.getMapController().setFolded(target, false);
 			}
-			for (final ListIterator e = newNodes.listIterator(); e.hasNext();) {
-				final NodeModel child = (NodeModel) e.next();
+			for (final NodeModel child : newNodes) {
 				AttributeController.getController(getModeController()).performRegistrySubtreeAttributes(child);
 			}
 		}

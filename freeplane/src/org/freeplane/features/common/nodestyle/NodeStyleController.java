@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.freeplane.core.controller.CombinedPropertyChain;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.ExclusivePropertyChain;
 import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.extension.IExtension;
@@ -58,7 +57,7 @@ public class NodeStyleController implements IExtension {
 	}
 
 	final private ExclusivePropertyChain<Color, NodeModel> backgroundColorHandlers;
-	final private Controller controller;
+//	final private Controller controller;
 	final private CombinedPropertyChain<Font, NodeModel> fontHandlers;
 	final private ModeController modeController;
 	final private ExclusivePropertyChain<String, NodeModel> shapeHandlers;
@@ -66,7 +65,7 @@ public class NodeStyleController implements IExtension {
 
 	public NodeStyleController(final ModeController modeController) {
 		this.modeController = modeController;
-		controller = modeController.getController();
+//		controller = modeController.getController();
 		fontHandlers = new CombinedPropertyChain<Font, NodeModel>();
 		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();

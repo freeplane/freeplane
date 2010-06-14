@@ -165,7 +165,7 @@ public class MTextController extends TextController {
 		return strings;
 	}
 
-	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
+	public void joinNodes(final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
 		((JoinNodesAction) getModeController().getAction("JoinNodesAction")).joinNodes(selectedNode, selectedNodes);
 	}
 

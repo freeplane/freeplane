@@ -13,14 +13,11 @@ import org.freeplane.features.common.styles.MapStyleModel;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/styles/manage" })
 public class RedefineStyleAction extends AFreeplaneAction {
+	private static final long serialVersionUID = 1L;
+	
 	public RedefineStyleAction(final Controller controller) {
 		super("RedefineStyleAction", controller);
 	}
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = getController().getSelection().getSelected();

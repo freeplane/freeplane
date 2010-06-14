@@ -66,25 +66,18 @@ class ScriptingEngine {
 	public static final String RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED = "signed_script_are_trusted";
 	public static final String RESOURCES_SCRIPT_DIRECTORIES = "script_directories";
 	public static final String SCRIPT_PREFIX = "script";
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private static final HashMap sScriptCookies = new HashMap();
+	// FIXME: why static?
+	private static final HashMap<String, Object> sScriptCookies = new HashMap<String, Object>();
 	private static Boolean noUserPermissionRequired = false;
 
 	/**
-	 * @param node
-	 * @param noUserPermissionRequired
-	 * @param script
-	 * @param pMindMapController
-	 * @param pScriptCookies
 	 * @return true, if further scripts can be executed, false, if the user
 	 *         canceled or an error occurred.
 	 */
 	static boolean executeScript(final NodeModel node, String script, final MModeController pMindMapController,
 	                             final IErrorHandler pErrorHandler, final PrintStream pOutStream,
-	                             final HashMap pScriptCookies) {
+	                             final HashMap<String, Object> pScriptCookies) {
 		if (!noUserPermissionRequired) {
 			final int showResult = OptionalDontShowMeAgainDialog.show(pMindMapController.getController(),
 			    "really_execute_script", "confirmation", RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
@@ -170,7 +163,7 @@ class ScriptingEngine {
 					finally {
 						if (script != null) {
 							InvokerHelper.removeClass(script.getClass());
-							securityManager.setFinalSecurityManager(scriptingSecurityManager);
+							securityManager.removeFinalSecurityManager(scriptingSecurityManager);
 						}
 					}
 				}

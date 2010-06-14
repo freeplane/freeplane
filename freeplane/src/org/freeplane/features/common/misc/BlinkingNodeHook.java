@@ -161,8 +161,6 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 
 	static Vector<Color> colors = new Vector<Color>();
 
-	/**
-	 */
 	public BlinkingNodeHook(final ModeController modeController) {
 		super(modeController);
 	}
@@ -173,7 +171,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 	}
 
 	@Override
-	protected Class getExtensionClass() {
+	protected Class<TimerColorChanger> getExtensionClass() {
 		return TimerColorChanger.class;
 	}
 

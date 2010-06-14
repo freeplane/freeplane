@@ -40,7 +40,7 @@ class FNodeModel extends NodeModel {
 	}
 
 	@Override
-	public List getChildren() {
+	public List<NodeModel> getChildren() {
 		if (!children.isEmpty()) {
 			return super.getChildren();
 		}

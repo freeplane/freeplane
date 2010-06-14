@@ -14,7 +14,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.JComponent;
@@ -458,7 +457,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	}
 
 	@Override
-	protected Class getExtensionClass() {
+	protected Class<ExternalResource> getExtensionClass() {
 		return ExternalResource.class;
 	}
 

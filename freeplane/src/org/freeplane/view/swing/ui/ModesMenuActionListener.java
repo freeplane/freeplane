@@ -27,6 +27,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class ModesMenuActionListener extends AFreeplaneAction {
+	private static final long serialVersionUID = 1L;
 	private final String mode;
 
 	public ModesMenuActionListener(final String mode, final Controller controller) {

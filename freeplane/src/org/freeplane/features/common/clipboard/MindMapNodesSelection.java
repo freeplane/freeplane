@@ -52,14 +52,15 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 		}
 	}
 	private String dropActionContent;
-	final private List fileList;
+	final private List<?> fileList;
 	final private String htmlContent;
 	final private String nodesContent;
 	final private String rtfContent;
 	final private String stringContent;
 
+	// FIXME: dropActionContent, fileList are never set to something else than null
 	public MindMapNodesSelection(final String nodesContent, final String stringContent, final String rtfContent,
-	                             final String htmlContent, final String dropActionContent, final List fileList) {
+	                             final String htmlContent, final String dropActionContent, final List<?> fileList) {
 		this.nodesContent = nodesContent;
 		this.rtfContent = rtfContent;
 		this.stringContent = stringContent;
