@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.beans.PropertyChangeEvent;
+import java.security.AccessControlException;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -122,7 +123,12 @@ class MainViewUI extends BasicLabelUI {
 	@Override
     public void propertyChange(PropertyChangeEvent e) {
 		GlyphPainterMetricResetter.resetPainter();
-	    super.propertyChange(e);
+	    try {
+	        super.propertyChange(e);
+        }
+        catch (AccessControlException e1) {
+	        e1.printStackTrace();
+        }
 		GlyphPainterMetricResetter.resetPainter();
     }
 	
