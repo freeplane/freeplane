@@ -44,6 +44,7 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.TextController;
@@ -54,6 +55,7 @@ import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
+import org.freeplane.features.mindmapmode.styles.MLogicalStyleController;
 import org.freeplane.features.mindmapmode.styles.StyleEditorPanel;
 import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
@@ -103,6 +105,7 @@ public class SModeControllerFactory {
 		CloudController.install(modeController, new MCloudController(modeController));
 		LinkController.install(modeController, new LinkController(modeController));
 		MFileManager.install(modeController, new MFileManager(modeController));
+		LogicalStyleController.install(modeController, new LogicalStyleController(modeController));
 		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(controller, new MMouseMotionListener(
 		    modeController)));
 		final JPopupMenu popupmenu = new JPopupMenu();
