@@ -41,6 +41,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
+import javax.swing.RootPaneContainer;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 
@@ -91,7 +92,6 @@ class ApplicationViewController extends ViewController {
 		controller.addAction(navigationNextMap);
 		resourceController = ResourceController.getResourceController();
 		this.frame = frame;
-		((JComponent) getContentPane()).putClientProperty(Controller.class, controller);
 		getContentPane().setLayout(new BorderLayout());
 		// --- Set Note Window Location ---
 		mLocationPreferenceValue = resourceController.getProperty("note_location", "bottom");
@@ -143,8 +143,8 @@ class ApplicationViewController extends ViewController {
 	 * @see freeplane.main.FreeplaneMain#getContentPane()
 	 */
 	@Override
-	public Container getContentPane() {
-		return frame.getContentPane();
+	public RootPaneContainer getRootPaneContainer() {
+		return frame;
 	}
 
 	@Override

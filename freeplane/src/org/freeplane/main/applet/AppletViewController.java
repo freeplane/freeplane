@@ -33,6 +33,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
@@ -66,8 +67,8 @@ class AppletViewController extends ViewController {
 	 * @see freeplane.controller.views.ViewController#getContentPane()
 	 */
 	@Override
-	public Container getContentPane() {
-		return applet.getContentPane();
+	public RootPaneContainer getRootPaneContainer() {
+		return applet;
 	}
 
 	@Override

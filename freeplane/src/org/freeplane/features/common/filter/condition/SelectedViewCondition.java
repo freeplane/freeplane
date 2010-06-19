@@ -22,6 +22,7 @@ package org.freeplane.features.common.filter.condition;
 import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -43,7 +44,8 @@ public class SelectedViewCondition implements ISelectableCondition {
 	}
 
 	public boolean checkNode(final ModeController modeController, final NodeModel node) {
-		return controller.getSelection().isSelected(node);
+		final IMapSelection selection = controller.getSelection();
+		return selection != null && selection.isSelected(node);
 	}
 
 	public JComponent getListCellRendererComponent() {

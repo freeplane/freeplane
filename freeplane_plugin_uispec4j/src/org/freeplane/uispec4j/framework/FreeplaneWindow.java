@@ -24,7 +24,7 @@ public class FreeplaneWindow extends Window {
 	}
 	
 	public Controller getController(){
-		return (Controller) ((JComponent)getFreeMindFrame().getContentPane()).getClientProperty(Controller.class);
+		return (Controller) (getFreeMindFrame().getRootPane()).getClientProperty(Controller.class);
 	}
 	public Panel getToolbar(final String name){
 		return new Panel(getController().getModeController().getUserInputListenerFactory().getToolBar(name));

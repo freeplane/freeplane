@@ -34,6 +34,7 @@ import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.common.styles.MapStyleModel;
 
@@ -87,7 +88,7 @@ public class IconController implements IExtension {
 		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<List<MindIcon>, NodeModel>() {
 			public List<MindIcon> getProperty(final NodeModel node, final List<MindIcon> currentValue) {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-				final NodeModel styleNode = model.getStyleNode(LogicalStyleModel.getStyle(node));
+				final NodeModel styleNode = model.getStyleNode(LogicalStyleController.getController(modeController).getStyle(node));
 				final List<MindIcon> styleIcons;
 				if (styleNode == null || styleNode.equals(node)) {
 					styleIcons = Collections.emptyList();

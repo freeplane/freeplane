@@ -66,7 +66,7 @@ import org.freeplane.features.common.url.UrlManager;
 /**
  * @author Dimitry Polivaev
  */
-abstract class AFilterComposerDialog extends JDialog implements IMapSelectionListener {
+public abstract class AFilterComposerDialog extends JDialog implements IMapSelectionListener {
 	/**
 	 * @author Dimitry Polivaev
 	 */
@@ -335,7 +335,6 @@ abstract class AFilterComposerDialog extends JDialog implements IMapSelectionLis
 		}
 	}
 
-	private static final Dimension maxButtonDimension = new Dimension(1000, 1000);
 	/**
 	 * 
 	 */
@@ -357,8 +356,8 @@ abstract class AFilterComposerDialog extends JDialog implements IMapSelectionLis
 	final private FilterController filterController;
 	private DefaultComboBoxModel internalConditionsModel;
 
-	public AFilterComposerDialog(final Controller controller) {
-		super(controller.getViewController().getFrame(), TextUtils.getText("filter_dialog"));
+	public AFilterComposerDialog(final Controller controller, String title, boolean modal) {
+		super(controller.getViewController().getFrame(), title, modal);
 		filterController = FilterController.getController(controller);
 		editor = new FilterConditionEditor(filterController);
 		this.controller = controller;
@@ -367,28 +366,28 @@ abstract class AFilterComposerDialog extends JDialog implements IMapSelectionLis
 		conditionButtonBox.setBorder(new EmptyBorder(0, 10, 0, 10));
 		getContentPane().add(conditionButtonBox, BorderLayout.EAST);
 		btnAdd = new JButton(new AddElementaryConditionAction(controller));
-		btnAdd.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
+		btnAdd.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(Box.createVerticalGlue());
 		conditionButtonBox.add(btnAdd);
 		btnNot = new JButton(new CreateNotSatisfiedConditionAction());
 		conditionButtonBox.add(Box.createVerticalGlue());
-		btnNot.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
+		btnNot.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(btnNot);
 		btnNot.setEnabled(false);
 		btnAnd = new JButton(new CreateConjunctConditionAction());
 		conditionButtonBox.add(Box.createVerticalGlue());
-		btnAnd.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
+		btnAnd.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(btnAnd);
 		btnAnd.setEnabled(false);
 		btnOr = new JButton(new CreateDisjunctConditionAction());
 		conditionButtonBox.add(Box.createVerticalGlue());
-		btnOr.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
+		btnOr.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(btnOr);
 		btnOr.setEnabled(false);
 		btnDelete = new JButton(new DeleteConditionAction());
 		btnDelete.setEnabled(false);
 		conditionButtonBox.add(Box.createVerticalGlue());
-		btnDelete.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
+		btnDelete.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(btnDelete);
 		conditionButtonBox.add(Box.createVerticalGlue());
 		final Box controllerBox = Box.createHorizontalBox();
@@ -398,15 +397,15 @@ abstract class AFilterComposerDialog extends JDialog implements IMapSelectionLis
 		btnOK = new JButton();
 		MenuBuilder.setLabelAndMnemonic(btnOK, TextUtils.getText("ok"));
 		btnOK.addActionListener(closeAction);
-		btnOK.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
+		btnOK.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		btnApply = new JButton();
 		MenuBuilder.setLabelAndMnemonic(btnApply, TextUtils.getText("apply"));
 		btnApply.addActionListener(closeAction);
-		btnApply.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
+		btnApply.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		btnCancel = new JButton();
 		MenuBuilder.setLabelAndMnemonic(btnCancel, TextUtils.getText("cancel"));
 		btnCancel.addActionListener(closeAction);
-		btnCancel.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
+		btnCancel.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnOK);
 		controllerBox.add(Box.createHorizontalGlue());
@@ -419,12 +418,12 @@ abstract class AFilterComposerDialog extends JDialog implements IMapSelectionLis
 			btnSave = new JButton();
 			MenuBuilder.setLabelAndMnemonic(btnSave, TextUtils.getText("SaveAction.text"));
 			btnSave.addActionListener(saveAction);
-			btnSave.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
+			btnSave.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 			final ActionListener loadAction = new LoadAction();
 			btnLoad = new JButton();
 			MenuBuilder.setLabelAndMnemonic(btnLoad, TextUtils.getText("load"));
 			btnLoad.addActionListener(loadAction);
-			btnLoad.setMaximumSize(AFilterComposerDialog.maxButtonDimension);
+			btnLoad.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 			controllerBox.add(btnSave);
 			controllerBox.add(Box.createHorizontalGlue());
 			controllerBox.add(btnLoad);

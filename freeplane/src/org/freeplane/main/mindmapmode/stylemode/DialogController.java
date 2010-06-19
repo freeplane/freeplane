@@ -32,6 +32,7 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.RootPaneContainer;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
@@ -62,8 +63,8 @@ class DialogController extends ViewController {
 	 * @see freeplane.main.FreeplaneMain#getContentPane()
 	 */
 	@Override
-	public Container getContentPane() {
-		return dialog.getContentPane();
+	public RootPaneContainer getRootPaneContainer() {
+		return dialog;
 	}
 
 	@Override

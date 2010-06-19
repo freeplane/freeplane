@@ -26,6 +26,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.TextUtils;
 
 /**
  * @author Dimitry Polivaev
@@ -58,7 +59,7 @@ class EditFilterAction extends AFreeplaneAction {
 	private class FilterComposerDialog extends AFilterComposerDialog{
 
 		public FilterComposerDialog() {
-	        super(getController());
+	        super(getController(), TextUtils.getText("filter_dialog"), false);
         }
 
 		protected DefaultComboBoxModel createModel() {

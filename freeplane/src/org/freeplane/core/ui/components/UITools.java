@@ -35,9 +35,13 @@ import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
@@ -46,6 +50,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.mindmapmode.styles.ConditionalStyleTable;
 
 /**
  * @author Dimitry Polivaev
@@ -345,4 +350,40 @@ public class UITools {
 		final int green = color.getGreen();
 		return red > 0x80 && blue > 0x80 && green > 0x80 ? Color.BLACK : Color.WHITE;
 	}
+
+	public static final Dimension MAX_BUTTON_DIMENSION = new Dimension(1000, 1000);
+
+	public static Controller getController(Component c) {
+		if(c == null){
+			return null;
+		}
+	    final JRootPane rootPane = SwingUtilities.getRootPane(c);
+		if(rootPane == null){
+			return null;
+		}
+	    Controller controller = (Controller) rootPane.getClientProperty(Controller.class);
+	    if(controller != null){
+	    	return controller;
+	    }
+	    return getController(JOptionPane.getFrameForComponent(rootPane));
+    }
+
+	public static void focusOn(JComponent component) {
+		component.addAncestorListener(new AncestorListener() {
+			public void ancestorRemoved(AncestorEvent event) {
+			}
+			
+			public void ancestorMoved(AncestorEvent event) {
+			}
+			
+			public void ancestorAdded(AncestorEvent event) {
+				final JComponent component = event.getComponent();
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						component.requestFocus();					}
+				});
+				component.removeAncestorListener(this);
+			}
+		});
+    }
 }

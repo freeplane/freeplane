@@ -25,7 +25,9 @@ import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JTable;
 import javax.swing.ListCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.icon.UIIcon;
@@ -33,7 +35,7 @@ import org.freeplane.features.common.icon.UIIcon;
 /**
  * @author Dimitry Polivaev
  */
-public class DefaultConditionRenderer implements ListCellRenderer {
+public class DefaultConditionRenderer implements ListCellRenderer, TableCellRenderer {
 	final public static Color SELECTED_BACKGROUND = new Color(207, 247, 202);
 
 	/*
@@ -44,6 +46,10 @@ public class DefaultConditionRenderer implements ListCellRenderer {
 	 */
 	public Component getListCellRendererComponent(final JList list, final Object value, final int index,
 	                                              final boolean isSelected, final boolean cellHasFocus) {
+		return getCellRendererComponent(value, isSelected);
+	}
+	
+	public Component getCellRendererComponent(final Object value, final boolean isSelected) {
 		if (value == null) {
 			return new JLabel(TextUtils.getText("filter_no_filtering"));
 		}
@@ -66,7 +72,11 @@ public class DefaultConditionRenderer implements ListCellRenderer {
 			component.setBackground(Color.WHITE);
 		}
 		component.setAlignmentX(Component.LEFT_ALIGNMENT);
-		//		return new JLabel(value.toString());
 		return component;
 	}
+
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+                                                   int row, int column) {
+		return getCellRendererComponent(value, isSelected);
+    }
 }

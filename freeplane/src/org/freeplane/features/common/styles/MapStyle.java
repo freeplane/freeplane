@@ -34,6 +34,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.filter.condition.SelectedViewCondition;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
@@ -157,8 +158,15 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		catch (final Exception e) {
 		}
+		final XMLElement conditionalStylesRoot = element.getFirstChildNamed("conditional_styles");
+		loadConditionalStyles(model.getConditionalStyleModel(), conditionalStylesRoot);
 		return model;
 	}
+
+	private void loadConditionalStyles(ConditionalStyleModel conditionalStyleModel, XMLElement conditionalStylesRoot) {
+		conditionalStyleModel.addCondition(true, new SelectedViewCondition(getController()), MapStyleModel.DEFAULT_STYLE);
+		conditionalStyleModel.addCondition(false, new SelectedViewCondition(getController()), MapStyleModel.DEFAULT_STYLE);
+    }
 
 	public Color getBackground(final MapModel map) {
 		final IExtension extension = map.getRootNode().getExtension(MapStyleModel.class);

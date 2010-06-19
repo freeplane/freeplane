@@ -35,6 +35,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.filter.condition.SelectedViewCondition;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.ModeController;
@@ -51,6 +52,7 @@ public class MapStyleModel implements IExtension {
 	private Map<Object, NodeModel> styleNodes;
 	private static boolean loadingStyleMap = false;
 	private MapModel styleMap;
+	final private ConditionalStyleModel conditionalStyleModel;
 
 	public static MapStyleModel getExtension(final MapModel map) {
 		return MapStyleModel.getExtension(map.getRootNode());
@@ -67,7 +69,12 @@ public class MapStyleModel implements IExtension {
 	private Color backgroundColor;
 
 	public MapStyleModel() {
+		conditionalStyleModel = new ConditionalStyleModel();
 	}
+
+	public ConditionalStyleModel getConditionalStyleModel() {
+    	return conditionalStyleModel;
+    }
 
 	void createStyleMap(final MapModel parentMap, final ModeController modeController, final String styleMapStr) {
 		if (loadingStyleMap) {

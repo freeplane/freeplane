@@ -35,6 +35,7 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.common.styles.MapStyleModel;
 
@@ -88,7 +89,7 @@ public class CloudController implements IExtension {
 		});
 		addCloudGetter(IPropertyHandler.STYLE, new IPropertyHandler<CloudModel, NodeModel>() {
 			public CloudModel getProperty(final NodeModel node, final CloudModel currentValue) {
-				return getStyleCloud(node.getMap(), LogicalStyleModel.getStyle(node));
+				return getStyleCloud(node.getMap(), LogicalStyleController.getController(modeController).getStyle(node));
 			}
 		});
 		addCloudGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<CloudModel, NodeModel>() {

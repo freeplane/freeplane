@@ -33,6 +33,7 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.common.styles.MapStyleModel;
 
@@ -88,7 +89,7 @@ public class EdgeController implements IExtension {
 		});
 		addColorGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
-				return getStyleEdgeColor(node.getMap(), LogicalStyleModel.getStyle(node));
+				return getStyleEdgeColor(node.getMap(), LogicalStyleController.getController(modeController).getStyle(node));
 			}
 		});
 		addColorGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<Color, NodeModel>() {
@@ -112,7 +113,7 @@ public class EdgeController implements IExtension {
 		});
 		addStyleGetter(IPropertyHandler.STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {
 			public EdgeStyle getProperty(final NodeModel node, final EdgeStyle currentValu) {
-				return getStyleStyle(node.getMap(), LogicalStyleModel.getStyle(node));
+				return getStyleStyle(node.getMap(), LogicalStyleController.getController(modeController).getStyle(node));
 			}
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {
@@ -138,7 +139,7 @@ public class EdgeController implements IExtension {
 		});
 		addWidthGetter(IPropertyHandler.STYLE, new IPropertyHandler<Integer, NodeModel>() {
 			public Integer getProperty(final NodeModel node, final Integer currentValue) {
-				return getStyleWidth(node.getMap(), LogicalStyleModel.getStyle(node));
+				return getStyleWidth(node.getMap(), LogicalStyleController.getController(modeController).getStyle(node));
 			}
 		});
 		addWidthGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<Integer, NodeModel>() {

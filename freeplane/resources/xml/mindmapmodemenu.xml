@@ -219,6 +219,7 @@
                 <menu_action action="EditStylesAction" />
                 <menu_action action="EditDefaultStylesAction" />
                 <menu_action action="RedefineStyleAction" />
+                <menu_action action="ManageConditionalStylesAction" />
             </menu_category>
             <menu_separator />
             <menu_category name="assign">

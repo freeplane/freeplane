@@ -33,12 +33,14 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**
@@ -141,5 +143,33 @@ public class LogicalStyleController implements IExtension {
 				    new MapChangeEvent(this, map, MapStyle.MAP_STYLES, null, null));
 			}
 		});
+	}
+	public Object getStyle(final NodeModel node) {
+		final Object style = LogicalStyleModel.getStyle(node);
+		if(! MapStyleModel.DEFAULT_STYLE.equals(style))
+			return style;
+		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
+		return styleModel.getConditionalStyleModel().getStyle(modeController, node);
+	}
+	
+	public void moveConditionalStyleDown(final MapModel map, int index){
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		styleModel.getConditionalStyleModel().moveDown(index);
+	}
+	public void moveConditionalStyleUp(final MapModel map, int index){
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		styleModel.getConditionalStyleModel().moveUp(index);
+	}
+	public void addConditionalStyle(final MapModel map, boolean isActive, ISelectableCondition condition, Object style){
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		styleModel.getConditionalStyleModel().addCondition(isActive, condition, style);
+	}
+	public void insertConditionalStyle(final MapModel map, int index, boolean isActive, ISelectableCondition condition, Object style){
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		styleModel.getConditionalStyleModel().insertCondition(index, isActive, condition, style);
+	}
+	public Item removeConditionalStyle(final MapModel map, int index){
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		return styleModel.getConditionalStyleModel().removeCondition(index);
 	}
 }

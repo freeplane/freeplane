@@ -23,6 +23,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JMenu;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.extension.IExtensionCopier;
@@ -30,6 +32,7 @@ import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.cloud.CloudModel;
+import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
@@ -38,17 +41,72 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.ConditionalStyleModel;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.styles.ConditionalStyleModel.Item;
+
+import sun.rmi.log.LogOutputStream;
 
 /**
  * @author Dimitry Polivaev
  * 28.09.2009
  */
 public class MLogicalStyleController extends LogicalStyleController {
+	private final class RemoveConditionalStyleActor implements IActor {
+		private final int index;
+		private final MapModel map;
+		Item item = null;
+
+		private RemoveConditionalStyleActor(MapModel map, int index) {
+			this.index = index;
+			this.map = map;
+		}
+
+		public void undo() {
+			MLogicalStyleController.super.insertConditionalStyle(map, index, item.isActive(), item.getCondition(), item
+			    .getStyle());
+		}
+
+		public String getDescription() {
+			return "RemoveConditionalStyle";
+		}
+
+		public void act() {
+			item = MLogicalStyleController.super.removeConditionalStyle(map, index);
+		}
+	}
+
+	private final class AddConditionalStyleActor implements IActor {
+		private final MapModel map;
+		private final boolean isActive;
+		private final ISelectableCondition condition;
+		private final Object style;
+
+		public AddConditionalStyleActor(MapModel map, boolean isActive, ISelectableCondition condition, Object style) {
+			this.map = map;
+			this.isActive = isActive;
+			this.condition = condition;
+			this.style = style;
+		}
+
+		public void undo() {
+			int index = MapStyleModel.getExtension(map).getConditionalStyleModel().getStyleCount() - 1;
+			MLogicalStyleController.super.removeConditionalStyle(map, index);
+		}
+
+		public String getDescription() {
+			return "AddConditionalStyle";
+		}
+
+		public void act() {
+			MLogicalStyleController.super.addConditionalStyle(map, isActive, condition, style);
+		}
+	}
+
 	private static class StyleRemover implements INodeChangeListener {
 		public StyleRemover() {
 		}
@@ -122,6 +180,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		modeController.getMapController().addNodeChangeListener(new StyleRemover());
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		modeController.addAction(new RedefineStyleAction(modeController.getController()));
+		modeController.addAction(new ManageConditionalStylesAction(modeController.getController()));
 		actions = new LinkedList<AssignStyleAction>();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		modeController.getController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
@@ -249,5 +308,124 @@ public class MLogicalStyleController extends LogicalStyleController {
 		for (final NodeModel selected : selectedNodes) {
 			setStyle(selected, style);
 		}
+	}
+
+	@Override
+	public void moveConditionalStyleDown(final MapModel map, final int index) {
+		int maxIndex = MapStyleModel.getExtension(map).getConditionalStyleModel().getStyleCount() - 1;
+		if (index < 0 || index >= maxIndex) {
+			return;
+		}
+		IActor actor = new IActor() {
+			public String getDescription() {
+				return "moveConditionalStyleDown";
+			}
+
+			public void act() {
+				MLogicalStyleController.super.moveConditionalStyleDown(map, index);
+			}
+
+			public void undo() {
+				MLogicalStyleController.super.moveConditionalStyleUp(map, index + 1);
+			}
+		};
+		getModeController().execute(actor, map);
+	}
+
+	@Override
+	public void moveConditionalStyleUp(final MapModel map, final int index) {
+		int maxIndex = MapStyleModel.getExtension(map).getConditionalStyleModel().getStyleCount() - 1;
+		if (index <= 0 || index > maxIndex) {
+			return;
+		}
+		IActor actor = new IActor() {
+			public String getDescription() {
+				return "moveConditionalStyleUp";
+			}
+
+			public void act() {
+				MLogicalStyleController.super.moveConditionalStyleUp(map, index);
+			}
+
+			public void undo() {
+				MLogicalStyleController.super.moveConditionalStyleDown(map, index - 1);
+			}
+		};
+		getModeController().execute(actor, map);
+	}
+
+	public static MLogicalStyleController getController(ModeController modeController) {
+		return (MLogicalStyleController) LogicalStyleController.getController(modeController);
+	}
+
+	@Override
+	public void addConditionalStyle(MapModel map, boolean isActive, ISelectableCondition condition, Object style) {
+		AddConditionalStyleActor actor = new AddConditionalStyleActor(map, isActive, condition, style);
+		getModeController().execute(actor, map);
+	}
+
+	@Override
+	public Item removeConditionalStyle(final MapModel map, final int index) {
+		RemoveConditionalStyleActor actor = new RemoveConditionalStyleActor(map, index);
+		getModeController().execute(actor, map);
+		return actor.item;
+	}
+
+	public TableModel getConditionalStyleModelAsTableModel(final MapModel map) {
+		return new TableModel() {
+			private final TableModel tableModel = MapStyleModel.getExtension(map)
+				.getConditionalStyleModel().asTableModel();
+
+			public void addTableModelListener(TableModelListener l) {
+				tableModel.addTableModelListener(l);
+			}
+
+			public Class<?> getColumnClass(int columnIndex) {
+				return tableModel.getColumnClass(columnIndex);
+			}
+
+			public int getColumnCount() {
+				return tableModel.getColumnCount();
+			}
+
+			public String getColumnName(int columnIndex) {
+				return tableModel.getColumnName(columnIndex);
+			}
+
+			public int getRowCount() {
+				return tableModel.getRowCount();
+			}
+
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				return tableModel.getValueAt(rowIndex, columnIndex);
+			}
+
+			public boolean isCellEditable(int rowIndex, int columnIndex) {
+				return tableModel.isCellEditable(rowIndex, columnIndex);
+			}
+
+			public void removeTableModelListener(TableModelListener l) {
+				tableModel.removeTableModelListener(l);
+			}
+
+			public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+				IActor actor = new IActor() {
+					final Object oldValue = tableModel.getValueAt(rowIndex, columnIndex);
+
+					public String getDescription() {
+						return "set conditional style table cell value";
+					}
+
+					public void act() {
+						tableModel.setValueAt(aValue, rowIndex, columnIndex);
+					}
+
+					public void undo() {
+						tableModel.setValueAt(oldValue, rowIndex, columnIndex);
+					}
+				};
+				getModeController().execute(actor, map);
+			}
+		};
 	}
 }

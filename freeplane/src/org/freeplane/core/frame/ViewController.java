@@ -57,6 +57,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -295,7 +296,11 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	/**
 	 * @return
 	 */
-	abstract public Container getContentPane();
+	abstract public RootPaneContainer getRootPaneContainer();
+	
+	public Container getContentPane(){
+		return getRootPaneContainer().getContentPane();
+	}
 
 	protected Controller getController() {
 		return controller;
@@ -395,6 +400,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		getContentPane().add(toolbarPanel[BOTTOM], BorderLayout.SOUTH);
 		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
+		getRootPaneContainer().getRootPane().putClientProperty(Controller.class, controller);
 		final Frame frame = getFrame();
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
