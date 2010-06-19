@@ -88,11 +88,8 @@ public class LogicalStyleController implements IExtension {
 		});
 	}
 
-	public static void install(final MModeController modeController, final LogicalStyleController logicalStyleController) {
+	public static void install(final ModeController modeController, final LogicalStyleController logicalStyleController) {
 		modeController.addExtension(LogicalStyleController.class, logicalStyleController);
-		final Controller controller = modeController.getController();
-		FilterController.getController(controller).getConditionFactory().addConditionController(7,
-		    new LogicalStyleFilterController(controller));
 	}
 
 	public static LogicalStyleController getController(final ModeController modeController) {

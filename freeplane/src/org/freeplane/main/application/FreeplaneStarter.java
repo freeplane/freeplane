@@ -43,6 +43,7 @@ import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.note.NoteController;
+import org.freeplane.features.common.styles.LogicalStyleFilterController;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.text.TextController.Direction;
@@ -132,6 +133,9 @@ public class FreeplaneStarter {
 			controller.addAction(new NextNodeAction(controller, Direction.BACK_N_FOLD));
 			controller.addAction(new ShowSelectionAsRectangleAction(controller));
 			controller.addAction(new ViewLayoutTypeAction(controller, MapViewLayout.OUTLINE));
+			FilterController.getController(controller).getConditionFactory().addConditionController(7,
+			    new LogicalStyleFilterController(controller));
+
 			NodeHistory.install(controller);
 			MModeControllerFactory.createModeController(controller);
 			controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(

@@ -43,6 +43,7 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
+import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
@@ -72,6 +73,7 @@ public class BModeControllerFactory {
 		CloudController.install(modeController, new CloudController(modeController));
 		NoteController.install(modeController, new NoteController(modeController));
 		TextController.install(modeController, new TextController(modeController));
+		LogicalStyleController.install(modeController, new LogicalStyleController(modeController));
 		try {
 			ClipboardController.install(modeController, new ClipboardController(modeController));
 		}

@@ -35,6 +35,7 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
@@ -66,6 +67,7 @@ public class FModeControllerFactory {
 		CloudController.install(modeController, new CloudController(modeController));
 		ClipboardController.install(modeController, new ClipboardController(modeController));
 		LocationController.install(modeController, new LocationController(modeController));
+		LogicalStyleController.install(modeController, new LogicalStyleController(modeController));
 		new MapStyle(modeController, true);
 		NodeStyleController.getController(modeController).addShapeGetter(new Integer(0),
 		    new IPropertyHandler<String, NodeModel>() {
