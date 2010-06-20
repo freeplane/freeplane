@@ -35,7 +35,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class DisjunctConditions implements ISelectableCondition {
 	static final String NAME = "disjunct_condition";
 
-	@SuppressWarnings("unchecked")
 	static ISelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
 		final Vector<XMLElement> children = element.getChildren();
 		final ISelectableCondition[] conditions = new ISelectableCondition[children.size()];

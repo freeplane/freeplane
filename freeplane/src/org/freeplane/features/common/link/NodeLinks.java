@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.common.map.MapModel;
@@ -67,7 +68,8 @@ public class NodeLinks implements IExtension {
 
 	public static Collection<LinkModel> getLinks(final NodeModel node) {
 		final NodeLinks links = NodeLinks.getLinkExtension(node);
-		return links != null ? links.getLinks() : Collections.EMPTY_LIST;
+		final List<LinkModel> emptyList = Collections.emptyList();
+		return links != null ? links.getLinks() : emptyList;
 	}
 
 	public static NodeLinks getModel(final NodeModel node) {

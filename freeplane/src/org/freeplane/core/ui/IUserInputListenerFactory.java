@@ -45,7 +45,7 @@ public interface IUserInputListenerFactory {
 
 	MenuBuilder getMenuBuilder();
 
-	public Set getMouseWheelEventHandlers();
+	public Set<IMouseWheelEventHandler> getMouseWheelEventHandlers();
 
 	DragGestureListener getNodeDragListener();
 

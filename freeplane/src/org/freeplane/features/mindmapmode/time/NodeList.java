@@ -515,7 +515,7 @@ class NodeList {
 		Object before;
 		do {
 			before = replaceResult;
-			replaceResult = HtmlUtils.getInstance().getReplaceResult(p, replacement, replaceResult);
+			replaceResult = HtmlUtils.getReplaceResult(p, replacement, replaceResult);
 		} while (!replaceResult.equals(before));
 		return replaceResult;
 	}

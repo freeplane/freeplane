@@ -281,7 +281,7 @@ class StdXMLBuilder implements IXMLBuilder {
 		if (nsPrefix != null) {
 			fullName = nsPrefix + ':' + name;
 		}
-		final XMLElement elt = prototype.createElement(fullName, nsURI, systemID, lineNr);
+		final XMLElement elt = XMLElement.createElement(fullName, nsURI, systemID, lineNr);
 		last = elt;
 		if (stack.empty()) {
 			root = elt;

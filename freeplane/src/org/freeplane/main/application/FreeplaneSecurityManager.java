@@ -136,11 +136,11 @@ public final class FreeplaneSecurityManager extends SecurityManager {
 	}
 
 	@Override
-	public void checkMemberAccess(final Class arg0, final int arg1) {
+	public void checkMemberAccess(final Class<?> clazz, final int which) {
 		if (mFinalSecurityManager == null) {
 			return;
 		}
-		mFinalSecurityManager.checkMemberAccess(arg0, arg1);
+		mFinalSecurityManager.checkMemberAccess(clazz, which);
 	}
 
 	@Override
@@ -151,7 +151,8 @@ public final class FreeplaneSecurityManager extends SecurityManager {
 		mFinalSecurityManager.checkMulticast(pMaddr);
 	}
 
-	@Override
+	@SuppressWarnings("deprecation")// we have to override it in case it's used by anyone
+    @Override
 	public void checkMulticast(final InetAddress pMaddr, final byte pTtl) {
 		if (mFinalSecurityManager == null) {
 			return;
@@ -295,18 +296,20 @@ public final class FreeplaneSecurityManager extends SecurityManager {
 		return mFinalSecurityManager.getSecurityContext();
 	}
 
-	/**
-	 * @param pFinalSecurityManager
-	 *            set twice the same to remove it.
-	 */
-	public void setFinalSecurityManager(final SecurityManager pFinalSecurityManager) {
-		if (pFinalSecurityManager == mFinalSecurityManager) {
-			mFinalSecurityManager = null;
-			return;
-		}
+	public void setFinalSecurityManager(final SecurityManager finalSecurityManager) {
 		if (mFinalSecurityManager != null) {
 			throw new SecurityException("There is a SecurityManager installed already.");
 		}
-		mFinalSecurityManager = pFinalSecurityManager;
+		mFinalSecurityManager = finalSecurityManager;
+	}
+	
+	public void removeFinalSecurityManager(final SecurityManager finalSecurityManager) {
+		if (finalSecurityManager == mFinalSecurityManager) {
+			mFinalSecurityManager = null;
+			return;
+		}
+		else {
+			throw new SecurityException("Wrong SecurityManager to remove.");
+		}
 	}
 }

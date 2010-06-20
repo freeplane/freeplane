@@ -216,9 +216,6 @@ public class ModeController extends AController {
 		return extensionContainer.getExtension(clazz);
 	}
 
-	/**
-	 * @return
-	 */
 	public MapController getMapController() {
 		return mapController;
 	}

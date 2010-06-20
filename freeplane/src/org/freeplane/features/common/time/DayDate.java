@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.time;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -26,17 +27,20 @@ import java.util.Date;
  * 09.08.2009
  */
 class DayDate extends Date {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	DayDate(final Date date) {
-		super(date.getTime());
-		setHours(0);
-		setMinutes(0);
-		setSeconds(0);
+		super(getTruncatedDate(date));
 	}
+
+	private static long getTruncatedDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+	    return calendar.getTimeInMillis();
+    }
 
 	DayDate() {
 		this(new Date());

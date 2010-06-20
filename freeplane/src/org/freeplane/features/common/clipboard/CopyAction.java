@@ -28,10 +28,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.map.ModeController;
 
 class CopyAction extends AFreeplaneAction {
-	private static final String NAME = "copy";
-	/**
-	 * 
-	 */
+//	private static final String NAME = "copy";
 	private static final long serialVersionUID = 1L;
 
 	public CopyAction(final Controller controller) {

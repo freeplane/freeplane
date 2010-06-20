@@ -2,6 +2,10 @@
 <preferences_structure>
 <tabbed_pane>
     <tab name="Environment">
+        <separator name="single_instance_mode">
+            <boolean name = "single_instance"/>
+            <boolean name = "single_instance_force"/>
+        </separator>
         <separator name="language">
        	    <combo name = "language">
                 <choice value="automatic"/>

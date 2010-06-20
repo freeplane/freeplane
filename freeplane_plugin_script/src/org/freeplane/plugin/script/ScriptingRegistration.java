@@ -44,7 +44,6 @@ import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
 class ScriptingRegistration {
 	/** create scripts submenu if there are more scripts than this number. */
-	private static final int MINIMAL_SCRIPT_COUNT_FOR_SUBMENU = 1;
 	private static final String MENU_BAR_SCRIPTING_PARENT_LOCATION = "/menu_bar/extras/first";
 	static final String MENU_BAR_SCRIPTING_LOCATION = MENU_BAR_SCRIPTING_PARENT_LOCATION + "/scripting";
 
@@ -110,7 +109,7 @@ class ScriptingRegistration {
 	private static final String SEPARATOR = "OptionPanel.separator.plugins/scripting/separatorPropertyName";
 	private static final String OPTION_PANEL_SCRIPTING_TAB = "OptionPanel.plugins/scripting/tab_name";
 	final private MModeController modeController;
-	final private HashMap mScriptCookies = new HashMap();
+	final private HashMap<String, Object> mScriptCookies = new HashMap<String, Object>();
 	private IScriptEditorStarter mScriptEditorStarter;
 
 	public ScriptingRegistration(final ModeController controller) {
@@ -137,7 +136,7 @@ class ScriptingRegistration {
 		controls.addStringProperty(GROUP, ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES, IndexedTree.AS_CHILD);
 	}
 
-	public HashMap getScriptCookies() {
+	public HashMap<String, Object> getScriptCookies() {
 		return mScriptCookies;
 	}
 

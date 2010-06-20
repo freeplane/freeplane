@@ -151,7 +151,7 @@ public class MNodeDropListener implements DropTargetListener {
 			}
 			else {
 				Transferable trans = null;
-				final List selecteds = mapController.getSelectedNodes();
+				final List<NodeModel> selecteds = mapController.getSelectedNodes();
 				if (DnDConstants.ACTION_MOVE == dropAction) {
 					NodeModel actualNode = targetNode;
 					do {

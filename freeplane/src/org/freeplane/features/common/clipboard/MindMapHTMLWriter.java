@@ -322,7 +322,7 @@ class MindMapHTMLWriter {
 				if (treatChildrenAsParagraph) {
 					fileout.write("<li>");
 				}
-				for (final ListIterator e = mapController.childrenUnfolded(model); e.hasNext();) {
+				for (final ListIterator<NodeModel> e = mapController.childrenUnfolded(model); e.hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
 					/* isRoot= */false, treatChildrenAsParagraph, depth + 1);

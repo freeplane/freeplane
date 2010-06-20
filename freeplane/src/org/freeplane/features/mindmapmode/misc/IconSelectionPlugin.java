@@ -18,8 +18,7 @@
 package org.freeplane.features.mindmapmode.misc;
 
 import java.awt.event.ActionEvent;
-import java.util.Collection;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.Action;
 
@@ -29,6 +28,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.common.icon.IIconInformation;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -40,26 +40,21 @@ import org.freeplane.features.mindmapmode.icon.MIconController;
 @ActionLocationDescriptor(locations = { "/menu_bar/icons/actions" }, //
 accelerator = "control F2")
 public class IconSelectionPlugin extends AFreeplaneAction {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 */
 	public IconSelectionPlugin(final Controller controller) {
 		super("IconSelectionPlugin", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
-		final Vector actions = new Vector();
-		final Collection<AFreeplaneAction> iconActions = ((MIconController) IconController
-		    .getController(modeController)).getIconActions();
-		actions.addAll(iconActions);
-		actions.add(modeController.getAction("RemoveIcon_0_Action"));
-		actions.add(modeController.getAction("RemoveIconAction"));
-		actions.add(modeController.getAction("RemoveAllIconsAction"));
+		ArrayList<IIconInformation> actions = new ArrayList<IIconInformation>();
+		final MIconController mIconController = (MIconController) IconController.getController(modeController);
+		for (AFreeplaneAction aFreeplaneAction : mIconController.getIconActions())
+			actions.add((IIconInformation) aFreeplaneAction);
+		actions.add((IIconInformation) modeController.getAction("RemoveIcon_0_Action"));
+		actions.add((IIconInformation) modeController.getAction("RemoveIconAction"));
+		actions.add((IIconInformation) modeController.getAction("RemoveAllIconsAction"));
 		final ViewController viewController = getController().getViewController();
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(viewController.getJFrame(),
 		    actions);

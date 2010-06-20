@@ -302,9 +302,7 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setFontFamily(final String fontFamily) {
-		for (final ListIterator it = getModeController().getMapController().getSelectedNodes().listIterator(); it
-		    .hasNext();) {
-			final NodeModel selected = (NodeModel) it.next();
+		for (final NodeModel selected : getModeController().getMapController().getSelectedNodes()) {
 			setFontFamily(selected, fontFamily);
 		}
 	}
@@ -391,9 +389,9 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			private void nodeShapeRefresh(final NodeModel node) {
-				final ListIterator childrenFolded = modeController.getMapController().childrenFolded(node);
+				final ListIterator<NodeModel> childrenFolded = modeController.getMapController().childrenFolded(node);
 				while (childrenFolded.hasNext()) {
-					final NodeModel child = (NodeModel) childrenFolded.next();
+					final NodeModel child = childrenFolded.next();
 					if (NodeStyleModel.getShape(child) == null) {
 						modeController.getMapController().nodeRefresh(child);
 						nodeShapeRefresh(child);

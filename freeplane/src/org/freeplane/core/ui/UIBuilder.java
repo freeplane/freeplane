@@ -87,7 +87,7 @@ public abstract class UIBuilder extends IndexedTree {
 		return parentComponent.getComponent(index);
 	}
 
-	protected Container getContainer(final DefaultMutableTreeNode node, final Class clazz) {
+	protected Container getContainer(final DefaultMutableTreeNode node, final Class<?> clazz) {
 		if (node == null) {
 			return null;
 		}
@@ -101,7 +101,7 @@ public abstract class UIBuilder extends IndexedTree {
 	/**
 	 * @param clazz
 	 */
-	Container getParentComponent(final DefaultMutableTreeNode child, final Class clazz) {
+	Container getParentComponent(final DefaultMutableTreeNode child, final Class<?> clazz) {
 		final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) child.getParent();
 		return getContainer(parent, clazz);
 	}
@@ -152,7 +152,7 @@ public abstract class UIBuilder extends IndexedTree {
 				return;
 			}
 		}
-		final Enumeration children = node.children();
+		final Enumeration<?> children = node.children();
 		while (children.hasMoreElements()) {
 			final DefaultMutableTreeNode child = (DefaultMutableTreeNode) children.nextElement();
 			final Object userObject = child.getUserObject();
@@ -169,7 +169,7 @@ public abstract class UIBuilder extends IndexedTree {
 	public void removeChildElements(final Object key) {
 		final DefaultMutableTreeNode node = getNode(key);
 		final Container parentComponent = getContainer(node, Container.class);
-		final Enumeration children = node.children();
+		final Enumeration<?> children = node.children();
 		while (children.hasMoreElements()) {
 			final Node child = (Node) children.nextElement();
 			removeChildComponents(parentComponent, child);

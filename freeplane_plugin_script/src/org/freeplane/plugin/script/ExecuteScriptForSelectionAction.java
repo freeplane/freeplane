@@ -10,6 +10,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/scripting" })
 public class ExecuteScriptForSelectionAction extends AMultipleNodeAction {
+	private static final long serialVersionUID = 1L;
 	private boolean success;
 	final private ScriptingEngine engine;
 

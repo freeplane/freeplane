@@ -103,8 +103,8 @@ public class MModeController extends ModeController {
 		optionPanelBuilder = new OptionPanelBuilder();
 		optionPanelBuilder.load(ResourceController.getResourceController().getResource("/xml/preferences.xml"));
 		final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
-		final Vector<String> lafNames = new Vector(lafInfo.length + 1);
-		final Vector<String> translatedLafNames = new Vector(lafInfo.length + 1);
+		final Vector<String> lafNames = new Vector<String>(lafInfo.length + 1);
+		final Vector<String> translatedLafNames = new Vector<String>(lafInfo.length + 1);
 		lafNames.add("default");
 		translatedLafNames.add(TextUtils.getOptionalText("OptionPanel.default"));
 		for (int i = 0; i < lafInfo.length; i++) {

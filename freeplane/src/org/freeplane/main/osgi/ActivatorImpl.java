@@ -29,8 +29,10 @@ import java.util.Set;
 import java.util.jar.Manifest;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.main.application.FreeplaneStarter;
+import org.freeplane.main.application.SingleInstanceManager;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -133,9 +135,16 @@ class ActivatorImpl implements BundleActivator {
 			catch (final MalformedURLException e) {
 			}
 		}
+		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager();
+		singleInstanceManager.start(getCallParameters());
+		if (singleInstanceManager.isSlave()) {
+			LogUtils.info("opened files in master - exiting now");
+			System.exit(0);
+		}
 		starter = new FreeplaneStarter();
 		loadPlugins(context);
 		final Controller controller = starter.createController();
+		singleInstanceManager.setController(controller);
 		try {
 			final ServiceReference[] controllerProviders = context.getServiceReferences(
 			    IControllerExtensionProvider.class.getName(), null);

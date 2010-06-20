@@ -54,8 +54,8 @@ class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		for (final Iterator iterator = (getModeController()).getMapController().getSelectedNodes().iterator(); iterator
-		    .hasNext();) {
+		for (final Iterator<NodeModel> iterator = (getModeController()).getMapController().getSelectedNodes()
+		    .iterator(); iterator.hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
 			if (NoteModel.getNoteText(node) != null) {
 				removeNote(node);
@@ -103,9 +103,7 @@ class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 			setEnabled(false);
 			return;
 		}
-		for (final Iterator iterator = modeController.getMapController().getSelectedNodes().iterator(); iterator
-		    .hasNext();) {
-			final NodeModel node = (NodeModel) iterator.next();
+		for (final NodeModel node :  modeController.getMapController().getSelectedNodes()) {
 			if (NoteModel.getNoteText(node) != null) {
 				foundNote = true;
 				break;

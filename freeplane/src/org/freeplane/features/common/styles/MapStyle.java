@@ -234,7 +234,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	@Override
-	protected Class getExtensionClass() {
+	protected Class<MapStyleModel> getExtensionClass() {
 		return MapStyleModel.class;
 	}
 

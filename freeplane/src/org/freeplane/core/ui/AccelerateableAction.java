@@ -134,7 +134,7 @@ class AccelerateableAction implements IFreeplaneAction {
 		    shortcutKey));
 		grabKeyDialog.setValidator(new IKeystrokeValidator() {
 			private boolean isValid(final DefaultMutableTreeNode menubarNode, final KeyStroke keystroke) {
-				final Enumeration menuElements = menubarNode.children();
+				final Enumeration<?> menuElements = menubarNode.children();
 				while (menuElements.hasMoreElements()) {
 					final Node menuItemNode = (Node) menuElements.nextElement();
 					final Object userObject = menuItemNode.getUserObject();

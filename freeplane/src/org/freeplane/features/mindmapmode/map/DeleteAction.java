@@ -44,9 +44,7 @@ class DeleteAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
-		for (final Iterator iterator = modeController.getMapController().getSelectedNodes().iterator(); iterator
-		    .hasNext();) {
-			final NodeModel node = (NodeModel) iterator.next();
+		for (final NodeModel node : modeController.getMapController().getSelectedNodes()) {
 			if (node.isRoot()) {
 				return;
 			}

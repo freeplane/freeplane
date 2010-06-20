@@ -31,7 +31,6 @@ import java.security.Signature;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -159,14 +158,12 @@ class SignedScriptHandler {
 					        + "Pnhu6Y6b1uAwCwYHKoZIzjgEAwUAAzAAMC0CFQCFHGwe+HHOvY0MmKYHbiq7fRxMGwIUC0voAGYU"
 					        + "u6vgVFqdLI5F96JLTqk=" + "\n-----END CERTIFICATE-----\n";
 					final CertificateFactory cf = CertificateFactory.getInstance("X.509");
-					final Collection c = cf.generateCertificates(new ByteArrayInputStream(cer.getBytes()));
-					final Iterator i = c.iterator();
-					if (i.hasNext()) {
-						final Certificate cert = (Certificate) i.next();
-						instanceVerify.initVerify(cert);
-					}
-					else {
+					final Collection<? extends Certificate> c = cf.generateCertificates(new ByteArrayInputStream(cer
+					    .getBytes()));
+					if (c.isEmpty())
 						throw new IllegalArgumentException("Internal certificate wrong.");
+					for (Certificate cert : c) {
+						instanceVerify.initVerify(cert);
 					}
 				}
 				else {

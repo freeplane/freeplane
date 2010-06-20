@@ -82,7 +82,7 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 	}
 
 	@Override
-	public Class getColumnClass(final int c) {
+	public Class<?> getColumnClass(final int c) {
 		switch (c) {
 			case 0:
 				return String.class;

@@ -187,9 +187,7 @@ public class AttributeRegistry implements IExtension {
 		return getCombinedModel();
 	}
 
-	/**
-	 */
-	public ComboBoxModel getDefaultComboBoxModel(final Comparable attrName) {
+	public ComboBoxModel getDefaultComboBoxModel(final Comparable<?> attrName) {
 		try {
 			final AttributeRegistryElement elem = getElement(attrName);
 			return elem.getValues();
@@ -199,7 +197,7 @@ public class AttributeRegistry implements IExtension {
 		}
 	}
 
-	public AttributeRegistryElement getElement(final Comparable attrName) {
+	public AttributeRegistryElement getElement(final Comparable<?> attrName) {
 		final AttributeRegistryElement elem = (AttributeRegistryElement) elements.getValue(attrName);
 		return elem;
 	}
@@ -219,7 +217,7 @@ public class AttributeRegistry implements IExtension {
 		return fontSize;
 	}
 
-	public Comparable getKey(final int index) {
+	public Comparable<?> getKey(final int index) {
 		return elements.getKey(index);
 	}
 

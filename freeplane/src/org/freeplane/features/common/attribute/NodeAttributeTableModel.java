@@ -172,7 +172,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		return getRowCount();
 	}
 
-	public Class getColumnClass(final int col) {
+	public Class<Object> getColumnClass(final int col) {
 		return Object.class;
 	}
 

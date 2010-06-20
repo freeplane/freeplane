@@ -19,7 +19,7 @@ public class LimitedWidthTooltipUI extends BasicToolTipUI {
 	public static void initialize() {
 		// don't hardcode class name
 		final String key = "ToolTipUI";
-		final Class cls = singleton.getClass();
+		final Class<?> cls = singleton.getClass();
 		final String name = cls.getName();
 		UIManager.put(key, name);
 		UIManager.put(name, cls);

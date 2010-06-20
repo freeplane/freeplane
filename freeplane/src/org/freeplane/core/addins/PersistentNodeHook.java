@@ -41,9 +41,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class PersistentNodeHook {
 	public abstract class HookAction extends AFreeplaneAction {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		public HookAction(final String key) {
@@ -57,14 +54,8 @@ public abstract class PersistentNodeHook {
 
 	@SelectableAction(checkOnNodeChange = true)
 	protected class SelectableHookAction extends HookAction {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
-		/**
-		 * 
-		 */
 		protected SelectableHookAction(final String key) {
 			super(key);
 			//			System.out.println("SelectableHookAction " + key);
@@ -184,6 +175,8 @@ public abstract class PersistentNodeHook {
 			mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(), xmlWriter);
 		}
 		if (this instanceof IExtension) {
+			// do not use getExtensionClass() here since in several subclasses getExtensionClass() returns a
+			// different class than getClass()
 			modeController.addExtension((Class<? extends IExtension>) getClass(), (IExtension) this);
 		}
 	}
@@ -221,8 +214,9 @@ public abstract class PersistentNodeHook {
 		return controller;
 	}
 
-	protected Class getExtensionClass() {
-		return getClass();
+	@SuppressWarnings("unchecked")
+    protected Class<? extends IExtension> getExtensionClass() {
+		return (Class<? extends IExtension>) getClass();
 	}
 
 	private NodeHookDescriptor getHookAnnotation() {

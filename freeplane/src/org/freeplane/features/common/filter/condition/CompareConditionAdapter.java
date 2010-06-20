@@ -26,7 +26,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 abstract public class CompareConditionAdapter extends NodeCondition {
 	public static final String IGNORE_CASE = "IGNORE_CASE";
 	public static final String VALUE = "VALUE";
-	private Comparable conditionValue;
+	private Comparable<?> conditionValue;
 	final private boolean ignoreCase;
 
 	protected CompareConditionAdapter(final String value, final boolean ignoreCase) {
@@ -89,7 +89,7 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 		return ConditionFactory.createDescription(attribute, simpleCondition, conditionValue.toString(), ignoreCase);
 	}
 
-	public Comparable getConditionValue() {
+	public Comparable<?> getConditionValue() {
 		return conditionValue;
 	}
 }

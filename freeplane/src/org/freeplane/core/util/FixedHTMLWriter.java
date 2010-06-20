@@ -39,7 +39,7 @@ public class FixedHTMLWriter extends HTMLWriter {
 		if (from == null) {
 			return;
 		}
-		final Enumeration keys = from.getAttributeNames();
+		final Enumeration<?> keys = from.getAttributeNames();
 		String value = "";
 		while (keys.hasMoreElements()) {
 			final Object key = keys.nextElement();
@@ -104,7 +104,7 @@ public class FixedHTMLWriter extends HTMLWriter {
 		}
 		convAttr.removeAttributes(convAttr);
 		FixedHTMLWriter.convertToHTML(attr, convAttr);
-		final Enumeration names = convAttr.getAttributeNames();
+		final Enumeration<?> names = convAttr.getAttributeNames();
 		while (names.hasMoreElements()) {
 			final Object name = names.nextElement();
 			if (name instanceof HTML.Tag || name instanceof StyleConstants || name == HTML.Attribute.ENDTAG) {

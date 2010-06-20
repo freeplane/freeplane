@@ -59,8 +59,8 @@ public class OptionPanelBuilder {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final int childrenCount = data.getChildrenCount();
-			final Vector<String> choices = new Vector(childrenCount);
-			final Vector<String> translations = new Vector(childrenCount);
+			final Vector<String> choices = new Vector<String>(childrenCount);
+			final Vector<String> translations = new Vector<String>(childrenCount);
 			for (int i = 0; i < childrenCount; i++) {
 				final String choice = data.getChildAtIndex(i).getAttribute("value", null);
 				choices.add(choice);

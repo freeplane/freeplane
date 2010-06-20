@@ -37,11 +37,11 @@ import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElementWriter {
-	private final MapController mapController;
+//	private final MapController mapController;
 	private final CloudController cc;
 
 	public CloudBuilder(final MapController mapController, final CloudController cc) {
-		this.mapController = mapController;
+//		this.mapController = mapController;
 		this.cc = cc;
 	}
 

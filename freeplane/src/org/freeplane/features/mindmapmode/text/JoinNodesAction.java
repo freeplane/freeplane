@@ -53,7 +53,7 @@ class JoinNodesAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel selectedNode = getController().getSelection().getSelected();
-		final List selectedNodes = getController().getSelection().getSortedSelection(true);
+		final List<NodeModel> selectedNodes = getController().getSelection().getSortedSelection(true);
 		joinNodes(selectedNode, selectedNodes);
 	}
 
@@ -96,11 +96,10 @@ class JoinNodesAction extends AFreeplaneAction {
 		return joinedContent;
 	}
 
-	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
+	public void joinNodes(final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
 		String joinedContent = "";
 		final Controller controller = getController();
-		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
-			final NodeModel node = (NodeModel) it.next();
+		for (final NodeModel node : selectedNodes) {
 			if (getModeController().getMapController().hasChildren(node)) {
 				UITools.informationMessage(controller.getViewController().getFrame(), TextUtils
 				    .getText("cannot_join_nodes_with_children"), "Freeplane", JOptionPane.WARNING_MESSAGE);
@@ -109,7 +108,7 @@ class JoinNodesAction extends AFreeplaneAction {
 		}
 		boolean isHtml = false;
 		final LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
-		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
+		for (final Iterator<NodeModel> it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			final String nodeContent = node.toString();
 			icons.addAll(node.getIcons());

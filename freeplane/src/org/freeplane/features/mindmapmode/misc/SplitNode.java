@@ -65,10 +65,10 @@ public class SplitNode extends AFreeplaneAction {
 	 * java.util.List)
 	 */
 	public void actionPerformed(final ActionEvent e) {
-		final List list = getModeController().getMapController().getSelectedNodes();
-		final ListIterator listIterator = list.listIterator();
+		final List<NodeModel> list = getModeController().getMapController().getSelectedNodes();
+		final ListIterator<NodeModel> listIterator = list.listIterator();
 		while (listIterator.hasNext()) {
-			final NodeModel next = (NodeModel) listIterator.next();
+			final NodeModel next = listIterator.next();
 			splitNode(next);
 		}
 	}

@@ -52,9 +52,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.icon.IconStore;
 import org.freeplane.features.common.icon.UIIcon;
-import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.MapWriter.Mode;
@@ -70,7 +68,7 @@ import org.freeplane.n3.nanoxml.XMLParserFactory;
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class ExportWithXSLT extends ExportAction {
-	private static final IconStore STORE = IconStoreFactory.create();
+//	private static final IconStore STORE = IconStoreFactory.create();
 	private static final String NAME_EXTENSION_PROPERTY = "name_extension";
 	/**
 	 * 
