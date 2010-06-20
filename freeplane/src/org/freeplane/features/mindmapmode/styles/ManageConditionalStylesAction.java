@@ -18,8 +18,10 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.styles.ConditionalStyleModel;
 import org.freeplane.features.common.styles.LogicalStyleController;
@@ -69,16 +71,26 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 	    scrollPane.setPreferredSize(new Dimension(600, 400));
 	    pane.add(scrollPane, BorderLayout.CENTER);
 	    final Box buttons = Box.createVerticalBox();
-	    JButton create = new JButton(TextUtils.getText("new"));
+	    
+	    JButton create = new JButton();
+	    MenuBuilder.setLabelAndMnemonic(create, TextUtils.getText("new"));
 	    create.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				LogicalStyleController.getController(getModeController()).addConditionalStyle(map, true, null, MapStyleModel.DEFAULT_STYLE);
+				final MLogicalStyleController styleController = MLogicalStyleController.getController(getModeController());
+				final FilterComposerDialog filterComposerDialog = styleController.getFilterComposerDialog();
+				filterComposerDialog.show();
+				final ISelectableCondition condition = filterComposerDialog.getCondition();
+				if(condition == null){
+					return;
+				}
+				LogicalStyleController.getController(getModeController()).addConditionalStyle(map, true, condition, MapStyleModel.DEFAULT_STYLE);
 				int row = conditionalStyleTable.getRowCount() - 1;
 				conditionalStyleTable.setRowSelectionInterval(row, row);
 			} 
 		});
-	    JButton delete = new JButton(TextUtils.getText("delete"));
+	    JButton delete = new JButton();
+	    MenuBuilder.setLabelAndMnemonic(delete, TextUtils.getText("delete"));
 	    delete.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    delete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -90,10 +102,14 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 				if(conditionalStyleTable.getRowCount() == selectedRow){
 					selectedRow--;
 				}
+				if(selectedRow == -1){
+					return;
+				}
 				conditionalStyleTable.setRowSelectionInterval(selectedRow, selectedRow);
 			}
 		});
-	    JButton up = new JButton(TextUtils.getText("up"));
+	    JButton up = new JButton();
+	    MenuBuilder.setLabelAndMnemonic(up, TextUtils.getText("up"));
 	    up.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    up.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -106,7 +122,8 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 				conditionalStyleTable.setRowSelectionInterval(selectedRow, selectedRow);
 			}
 		});
-	    JButton down = new JButton(TextUtils.getText("down"));
+	    JButton down = new JButton();
+	    MenuBuilder.setLabelAndMnemonic(down, TextUtils.getText("down"));
 	    down.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    down.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

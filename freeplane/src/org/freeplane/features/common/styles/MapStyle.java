@@ -22,18 +22,24 @@ package org.freeplane.features.common.styles;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Vector;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.IMapLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementContentHandler;
+import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.filter.condition.ConditionFactory;
+import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.filter.condition.SelectedViewCondition;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
@@ -42,6 +48,7 @@ import org.freeplane.features.common.map.MapWriter;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.map.MapWriter.Mode;
+import org.freeplane.features.common.styles.ConditionalStyleModel.Item;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -58,12 +65,24 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	};
 
 	public static final String MAX_NODE_WIDTH = "max_node_width";
-
+	
 	public MapStyle(final ModeController modeController, final boolean persistent) {
 		super(modeController);
 		if (persistent) {
-			getModeController().getMapController().getWriteManager().addExtensionElementWriter(getExtensionClass(),
+			final MapController mapController = getModeController().getMapController();
+			mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(),
 			    new XmlWriter());
+			mapController.getReadManager().addElementHandler("conditional_styles", new IElementDOMHandler() {
+				public Object createElement(Object parent, String tag, XMLElement attributes) {
+					return parent;
+				}
+				
+				public void endElement(Object parent, String tag, Object element, XMLElement dom) {
+					MapModel map = (MapModel) parent;
+					final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) map.getExtension(ConditionalStyleModel.class);
+					loadConditionalStyles(conditionalStyleModel, dom);
+				}
+			});
 		}
 		modeController.getMapController().addMapLifeCycleListener(this);
 		if (modeController.getModeName().equals("MindMap")) {
@@ -113,7 +132,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				return;
 			}
 			final MapModel map = node.getMap();
-			mapStyleModel.createStyleMap(map, getModeController(), content);
+			mapStyleModel.createStyleMap(map, mapStyleModel, getModeController(), content);
 			map.getIconRegistry().addIcons(mapStyleModel.getStyleMap());
 		}
 	}
@@ -158,14 +177,48 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		catch (final Exception e) {
 		}
-		final XMLElement conditionalStylesRoot = element.getFirstChildNamed("conditional_styles");
-		loadConditionalStyles(model.getConditionalStyleModel(), conditionalStylesRoot);
 		return model;
 	}
 
 	private void loadConditionalStyles(ConditionalStyleModel conditionalStyleModel, XMLElement conditionalStylesRoot) {
-		conditionalStyleModel.addCondition(true, new SelectedViewCondition(getController()), MapStyleModel.DEFAULT_STYLE);
-		conditionalStyleModel.addCondition(false, new SelectedViewCondition(getController()), MapStyleModel.DEFAULT_STYLE);
+		final ConditionFactory conditionFactory = FilterController.getController(getController()).getConditionFactory();
+		final Vector<XMLElement> styleElements = conditionalStylesRoot.getChildrenNamed("conditional_style");
+		for(XMLElement styleElement : styleElements){
+			final boolean isActive = Boolean.valueOf(styleElement.getAttribute("ACTIVE", "false"));
+			Object style = styleElement.getAttribute("LOCALIZED_STYLE_REF", null);
+			if(style != null){
+				style = NamedObject.formatText((String) style);
+			}
+			else {
+				style = styleElement.getAttribute("STYLE_REF", null);
+			}
+			final XMLElement conditionElement = styleElement.getChildAtIndex(0);
+			final ISelectableCondition condition = conditionFactory.loadCondition(conditionElement);
+			conditionalStyleModel.addCondition(isActive, condition, style);
+		}
+    }
+	private void saveConditinalStyles(ConditionalStyleModel conditionalStyleModel, XMLElement parent) {
+		final int styleCount = conditionalStyleModel.getStyleCount();
+		if(styleCount == 0){
+			return;
+		}
+		final XMLElement conditionalStylesRoot = parent.createElement("conditional_styles");
+		parent.addChild(conditionalStylesRoot);
+		for(final Item item : conditionalStyleModel){
+			final XMLElement itemElement = conditionalStylesRoot.createElement("conditional_style");
+			conditionalStylesRoot.addChild(itemElement);
+			itemElement.setAttribute("ACTIVE", Boolean.toString(item.isActive()));
+			final Object style = item.getStyle();
+			final String referencedStyle = NamedObject.toKeyString(style);
+			if (style instanceof NamedObject) {
+				itemElement.setAttribute("LOCALIZED_STYLE_REF", referencedStyle);
+			}
+			else {
+				itemElement.setAttribute("STYLE_REF", referencedStyle);
+			}
+			item.getCondition().toXml(itemElement);
+		}
+	    
     }
 
 	public Color getBackground(final MapModel map) {
@@ -192,7 +245,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		final MapStyleModel extension = new MapStyleModel();
 		rootNode.addExtension(extension);
-		extension.createStyleMap(map, getModeController(), null);
+		extension.createStyleMap(map, null, getModeController(), null);
 	}
 
 	public void onRemove(final MapModel map) {
@@ -215,8 +268,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			element.setAttribute("layout", layout.toString());
 		}
 		element.setAttribute("max_node_width", Integer.toString(mapStyleModel.getMaxNodeWidth()));
+		saveConditinalStyles(mapStyleModel.getConditionalStyleModel(), element);
 	}
-
+	
 	public void setZoom(final MapModel map, final float zoom) {
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
 		if (zoom == mapStyleModel.getZoom()) {

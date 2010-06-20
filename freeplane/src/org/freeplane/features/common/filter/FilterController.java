@@ -327,7 +327,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	DefaultConditionRenderer getConditionRenderer() {
 		if (conditionRenderer == null) {
-			conditionRenderer = new DefaultConditionRenderer();
+			conditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"));
 		}
 		return conditionRenderer;
 	}

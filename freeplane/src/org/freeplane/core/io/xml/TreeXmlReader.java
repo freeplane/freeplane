@@ -35,6 +35,7 @@ import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.io.ReadManager;
+import org.freeplane.features.common.map.MapModel;
 import org.freeplane.n3.nanoxml.IXMLBuilder;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.NonValidator;
@@ -100,7 +101,7 @@ public class TreeXmlReader implements IXMLBuilder {
 	}
 
 	private boolean addAttribute(final String key, final String value) {
-		if (attributeHandlersForTag != null) {
+		if (saveAsXmlUntil == null && attributeHandlersForTag != null) {
 			final IAttributeHandler attributeHandler = attributeHandlersForTag.get(key);
 			if (attributeHandler != null) {
 				attributeHandler.setAttribute(currentElement, value);
@@ -119,7 +120,7 @@ public class TreeXmlReader implements IXMLBuilder {
 	 */
 	public void addAttribute(final String key, final String nsPrefix, final String nsURI, final String value,
 	                         final String type) throws Exception {
-		if (saveAsXmlUntil == null && !addAttribute(key, value)) {
+		if (!addAttribute(key, value)) {
 			xmlBuilder.addAttribute(key, nsPrefix, nsURI, value, type);
 		}
 	}
@@ -308,4 +309,9 @@ public class TreeXmlReader implements IXMLBuilder {
 			nodeCreator = null;
 		}
 	}
+
+	public void load(Object currentElement, Reader pReader) throws XMLException {
+	    this.currentElement = currentElement;
+	    load(pReader);
+    }
 }

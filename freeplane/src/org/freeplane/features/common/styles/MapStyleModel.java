@@ -76,7 +76,7 @@ public class MapStyleModel implements IExtension {
     	return conditionalStyleModel;
     }
 
-	void createStyleMap(final MapModel parentMap, final ModeController modeController, final String styleMapStr) {
+	void createStyleMap(final MapModel parentMap, MapStyleModel mapStyleModel, final ModeController modeController, final String styleMapStr) {
 		if (loadingStyleMap) {
 			styleMap = null;
 			styleNodes = null;
@@ -89,6 +89,9 @@ public class MapStyleModel implements IExtension {
 				return TextUtils.getText(STYLES);
 			}
 		};
+		if(mapStyleModel != null){
+			styleMap.addExtension(mapStyleModel.getConditionalStyleModel());
+		}
 		styleMap.addExtension(IUndoHandler.class, parentMap.getExtension(IUndoHandler.class));
 		final MapReader mapReader = modeController.getMapController().getMapReader();
 		NodeModel root;
@@ -115,6 +118,9 @@ public class MapStyleModel implements IExtension {
 				finally {
 					loadingStyleMap = false;
 				}
+			}
+			if(mapStyleModel != null){
+				styleMap.removeExtension(mapStyleModel.getConditionalStyleModel());
 			}
 			styleMap.setRoot(root);
 			MapStyleModel extension = MapStyleModel.getExtension(styleMap);

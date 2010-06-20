@@ -173,6 +173,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 	private final ModeController modeController;
 	final private List<AssignStyleAction> actions;
+	private FilterComposerDialog filterComposerDialog;
 
 	public MLogicalStyleController(final ModeController modeController) {
 		super(modeController);
@@ -428,4 +429,11 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 		};
 	}
+
+	public FilterComposerDialog getFilterComposerDialog() {
+		if(filterComposerDialog == null){
+			filterComposerDialog = new FilterComposerDialog(getModeController().getController());
+		}
+		return filterComposerDialog;
+    }
 }

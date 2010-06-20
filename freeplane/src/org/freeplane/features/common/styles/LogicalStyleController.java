@@ -20,6 +20,7 @@
 package org.freeplane.features.common.styles;
 
 import java.awt.EventQueue;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,11 +35,15 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.map.AModelChangeListenerAdapter;
+import org.freeplane.features.common.map.IMapChangeListener;
+import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeBuilder;
+import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -49,9 +54,52 @@ import org.freeplane.features.mindmapmode.MModeController;
  */
 public class LogicalStyleController implements IExtension {
 	final private ModeController modeController;
+	
+	private WeakReference<NodeModel> cachedNode;
+	private WeakReference<Object> cachedStyle;
 
 	public LogicalStyleController(final ModeController modeController) {
-		this.modeController = modeController;
+	    this.modeController = modeController;
+		createBuilder();
+		registerChangeListener();
+	}
+
+	private void registerChangeListener() {
+		final MapController mapController = modeController.getMapController();
+		mapController.addMapChangeListener(new IMapChangeListener() {
+			public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+				clearCache();
+			}
+			
+			public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
+				clearCache();
+			}
+			
+			public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+				clearCache();
+			}
+			
+			public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+				clearCache();
+			}
+			
+			public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+				clearCache();
+			}
+			
+			public void mapChanged(MapChangeEvent event) {
+				clearCache();
+			}
+		});
+		mapController.addNodeChangeListener(new INodeChangeListener() {
+			public void nodeChanged(NodeChangeEvent event) {
+				clearCache();
+			}
+		});
+	    
+    }
+
+	private void createBuilder() {
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE_REF", new IAttributeHandler() {
@@ -86,7 +134,7 @@ public class LogicalStyleController implements IExtension {
 				}
 			}
 		});
-	}
+    }
 
 	public static void install(final ModeController modeController, final LogicalStyleController logicalStyleController) {
 		modeController.addExtension(LogicalStyleController.class, logicalStyleController);
@@ -142,11 +190,20 @@ public class LogicalStyleController implements IExtension {
 		});
 	}
 	public Object getStyle(final NodeModel node) {
-		final Object style = LogicalStyleModel.getStyle(node);
-		if(! MapStyleModel.DEFAULT_STYLE.equals(style))
+		if(cachedNode != null && node.equals(cachedNode.get())){
+			return cachedStyle.get();
+		}
+		Object style = LogicalStyleModel.getStyle(node);
+		if(! MapStyleModel.DEFAULT_STYLE.equals(style)){
+			cachedNode = new WeakReference<NodeModel>(node);
+			cachedStyle = new WeakReference<Object>(style);
 			return style;
+		}
 		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
-		return styleModel.getConditionalStyleModel().getStyle(modeController, node);
+		style = styleModel.getConditionalStyleModel().getStyle(modeController, node);
+		cachedNode = new WeakReference<NodeModel>(node);
+		cachedStyle = new WeakReference<Object>(style);
+		return style;
 	}
 	
 	public void moveConditionalStyleDown(final MapModel map, int index){
@@ -169,4 +226,9 @@ public class LogicalStyleController implements IExtension {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		return styleModel.getConditionalStyleModel().removeCondition(index);
 	}
+
+	private void clearCache() {
+	    cachedStyle = null;
+	    cachedNode = null;
+    }
 }

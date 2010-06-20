@@ -37,6 +37,11 @@ import org.freeplane.features.common.icon.UIIcon;
  */
 public class DefaultConditionRenderer implements ListCellRenderer, TableCellRenderer {
 	final public static Color SELECTED_BACKGROUND = new Color(207, 247, 202);
+	private final String noValueText;
+
+	public DefaultConditionRenderer(String noValueText) {
+	    this.noValueText = noValueText;
+    }
 
 	/*
 	 * (non-Javadoc)
@@ -51,7 +56,7 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 	
 	public Component getCellRendererComponent(final Object value, final boolean isSelected) {
 		if (value == null) {
-			return new JLabel(TextUtils.getText("filter_no_filtering"));
+			return new JLabel(noValueText);
 		}
 		JComponent component;
 		if (value instanceof UIIcon) {

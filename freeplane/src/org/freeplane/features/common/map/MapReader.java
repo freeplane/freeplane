@@ -54,7 +54,7 @@ public class MapReader implements IElementDOMHandler {
 			final TreeXmlReader reader = new TreeXmlReader(readManager);
 			try {
 				nodeTreeCreator = this;
-				reader.load(pReader);
+				reader.load(createdMap, pReader);
 				final NodeModel node = nodeBuilder.getMapChild();
 				return node;
 			}
