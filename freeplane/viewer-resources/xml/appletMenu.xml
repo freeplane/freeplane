@@ -32,10 +32,10 @@
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="view" name_ref="menu_view">
-			<menu_category name="toolbars"></menu_category>
-			<menu_action action="ToggleMenubarAction" />
-			<menu_action action="ToggleToolbarAction" />
-			<menu_action action="ShowFilterToolbarAction" />
+			<menu_category name="toolbars">
+				<menu_action action="ToggleToolbarAction" />
+				<menu_action action="ShowFilterToolbarAction" />
+			</menu_category>
 			<menu_separator />
 			<menu_category name="general">
 				<menu_action action="ShowSelectionAsRectangleAction" />
