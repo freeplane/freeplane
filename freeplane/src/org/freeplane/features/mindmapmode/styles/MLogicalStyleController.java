@@ -410,8 +410,11 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 
 			public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+				final Object oldValue = tableModel.getValueAt(rowIndex, columnIndex);
+				if(aValue == oldValue || aValue != null && aValue.equals(oldValue)){
+					return;
+				}
 				IActor actor = new IActor() {
-					final Object oldValue = tableModel.getValueAt(rowIndex, columnIndex);
 
 					public String getDescription() {
 						return "set conditional style table cell value";

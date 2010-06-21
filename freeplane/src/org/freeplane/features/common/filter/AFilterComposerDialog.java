@@ -398,18 +398,23 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		MenuBuilder.setLabelAndMnemonic(btnOK, TextUtils.getText("ok"));
 		btnOK.addActionListener(closeAction);
 		btnOK.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-		btnApply = new JButton();
-		MenuBuilder.setLabelAndMnemonic(btnApply, TextUtils.getText("apply"));
-		btnApply.addActionListener(closeAction);
-		btnApply.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
+		controllerBox.add(Box.createHorizontalGlue());
+		controllerBox.add(btnOK);
+		if(! isModal()){
+			btnApply = new JButton();
+			MenuBuilder.setLabelAndMnemonic(btnApply, TextUtils.getText("apply"));
+			btnApply.addActionListener(closeAction);
+			btnApply.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
+			controllerBox.add(Box.createHorizontalGlue());
+			controllerBox.add(btnApply);
+		}
+		else{
+			btnApply = null;
+		}
 		btnCancel = new JButton();
 		MenuBuilder.setLabelAndMnemonic(btnCancel, TextUtils.getText("cancel"));
 		btnCancel.addActionListener(closeAction);
 		btnCancel.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-		controllerBox.add(Box.createHorizontalGlue());
-		controllerBox.add(btnOK);
-		controllerBox.add(Box.createHorizontalGlue());
-		controllerBox.add(btnApply);
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnCancel);
 		controllerBox.add(Box.createHorizontalGlue());

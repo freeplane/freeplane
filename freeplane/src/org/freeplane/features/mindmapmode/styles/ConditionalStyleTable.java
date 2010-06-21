@@ -3,7 +3,9 @@ package org.freeplane.features.mindmapmode.styles;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.Collection;
+import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
@@ -36,16 +38,19 @@ public class ConditionalStyleTable extends JTable {
 		
 		JButton btn = new JButton();
 		private Object cellEditorValue;
-		public Component getTableCellEditorComponent(final JTable table, Object value, boolean isSelected, int row, int column) {
+		public Component getTableCellEditorComponent(final JTable table, final Object value, boolean isSelected, int row, int column) {
 			btn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					final ModeController modeController = UITools.getController(table).getModeController();
 					final MLogicalStyleController styleController = MLogicalStyleController.getController(modeController);
 					final FilterComposerDialog filterComposerDialog = styleController.getFilterComposerDialog();
 					filterComposerDialog.show();
-					fireEditingStopped();
 					cellEditorValue = filterComposerDialog.getCondition();
+					if(cellEditorValue == null){
+						cellEditorValue = value;
+					}
 					btn.removeActionListener(this);
+					fireEditingStopped();
 				}
 			});
 	        return btn;
@@ -55,6 +60,13 @@ public class ConditionalStyleTable extends JTable {
 	        return cellEditorValue;
         }
 		
+		@Override
+		public boolean isCellEditable(EventObject anEvent) {
+			if (anEvent instanceof MouseEvent) {
+				return ((MouseEvent) anEvent).getClickCount() >= 2;
+			}
+			return true;
+		}
 	}
 
 	public ConditionalStyleTable(MapStyleModel styleModel, TableModel tableModel) {
@@ -77,6 +89,9 @@ public class ConditionalStyleTable extends JTable {
              * 
              */
             private static final long serialVersionUID = 1L;
+            {
+            	setClickCountToStart(2);
+            }
 
 			@Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,

@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -169,6 +170,18 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 					case 1: return ISelectableCondition.class;
 				}
 				return super.getColumnClass(columnIndex);
+            }
+			
+			
+
+			@Override
+            public String getColumnName(int column) {
+				switch(column){
+					case 0: return TextUtils.getText("active");
+					case 1: return TextUtils.getText("condition");
+					case 2: return TextUtils.getText("style");
+				}
+				return super.getColumnName(column);
             }
 
 			@Override
