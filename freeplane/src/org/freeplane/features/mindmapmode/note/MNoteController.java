@@ -255,7 +255,7 @@ public class MNoteController extends NoteController {
 					}
 				}
 				setStateIcon(node, enabled);
-				getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node, NodeModel.NOTE_TEXT, oldText, text);
 				noteManager.updateEditor();
 			}
 
