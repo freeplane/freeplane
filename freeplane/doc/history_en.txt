@@ -5,7 +5,7 @@ New features:
 Keyboard shortcut documentation: Map and HTML table generation added for the documentation map
 Hyperlinks for menu items
 Check for newer auto save files on opening of a map
-
+343] Single instance mode: open files in existing program instance instead of opening a new one.
 
 Bug fixes:
 

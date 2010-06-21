@@ -135,13 +135,17 @@ class ActivatorImpl implements BundleActivator {
 			catch (final MalformedURLException e) {
 			}
 		}
+		// initialize ApplicationController - SingleInstanceManager needs the configuration
+		starter = new FreeplaneStarter();
 		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager();
 		singleInstanceManager.start(getCallParameters());
 		if (singleInstanceManager.isSlave()) {
 			LogUtils.info("opened files in master - exiting now");
 			System.exit(0);
 		}
-		starter = new FreeplaneStarter();
+		else if (singleInstanceManager.isMasterPresent()) {
+			starter.setDontLoadLastMaps();
+		}
 		loadPlugins(context);
 		final Controller controller = starter.createController();
 		singleInstanceManager.setController(controller);

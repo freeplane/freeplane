@@ -26,11 +26,10 @@ public class SingleInstanceManager {
 	private boolean isSingleInstanceForceMode;
 	private Integer port;
 	private boolean isSlave;
+	private boolean isMasterPresent;
 	private Controller controller;
 
 	public SingleInstanceManager() {
-		// FIXME: temporary!
-		ResourceController.setResourceController(new ApplicationResourceController());
 		isSingleInstanceMode = ResourceController.getResourceController().getBooleanProperty("single_instance");
 		isSingleInstanceForceMode = ResourceController.getResourceController().getBooleanProperty(
 		    "single_instance_force");
@@ -38,7 +37,12 @@ public class SingleInstanceManager {
 
 	public void start(String[] filesToLoad) {
 		if (isSingleInstanceMode) {
-			if (!startAsSlave(filesToLoad)) {
+			initLockFile();
+			if (filesToLoad.length == 0 && !isSingleInstanceForceMode && checkIsMasterPresent()) {
+				isMasterPresent = true;
+				startStandAlone(filesToLoad);
+			}
+			else if (!startAsSlave(filesToLoad)) {
 				if (!startAsMaster(filesToLoad)) {
 					startStandAlone(filesToLoad);
 				}
@@ -49,18 +53,38 @@ public class SingleInstanceManager {
 		}
 	}
 
+	private boolean checkIsMasterPresent() {
+		if (port == null)
+			return false;
+		try {
+			Socket clientSocket = new Socket(InetAddress.getLocalHost(), port);
+			clientSocket.close();
+			LogUtils.info("master is present.");
+			return true;
+		}
+		catch (UnknownHostException e) {
+			LogUtils.severe(e.getMessage(), e);
+			return false;
+		}
+		catch (IOException e) {
+			LogUtils.warn("Error connecting to existing instance (stale lockfiles may cause this).", e);
+			return false;
+		}
+	}
+
 	public boolean isSlave() {
 		return isSlave;
 	}
 
+	public boolean isMasterPresent() {
+		return isSlave || isMasterPresent;
+	}
+
 	public void setController(Controller controller) {
 		this.controller = controller;
-    }
+	}
 
 	private boolean startAsSlave(String[] filesToLoad) {
-		initLockFile();
-		if (filesToLoad.length == 0 && !isSingleInstanceForceMode)
-			return false;
 		if (port != null) {
 			isSlave = openFilesInMaster(filesToLoad);
 			return isSlave;
@@ -86,7 +110,7 @@ public class SingleInstanceManager {
 			return false;
 		}
 		catch (IOException e) {
-			LogUtils.severe("Error connecting to local port for single instance notification", e);
+			LogUtils.warn("Error connecting to existing instance (stale lockfiles may cause this).", e);
 			return false;
 		}
 	}
@@ -113,8 +137,9 @@ public class SingleInstanceManager {
 								LogUtils.info("opening '" + StringUtils.join(filesToLoadForClient, "', '")
 								        + "' for client");
 								for (String file : filesToLoadForClient) {
-									controller.getModeController().getMapController().newMap(Compat.fileToUrl(new File(file)));
-                                }
+									controller.getModeController().getMapController().newMap(
+									    Compat.fileToUrl(new File(file)));
+								}
 								UITools.getFrame().toFront();
 								in.close();
 								client.close();
@@ -126,12 +151,12 @@ public class SingleInstanceManager {
 								// this should never happen
 								throw new RuntimeException("implementation error", e);
 							}
-                            catch (XMLParseException e) {
-                            	LogUtils.severe("cannot open input file: " + e.getMessage(), e);
-                            }
-                            catch (URISyntaxException e) {
-                            	LogUtils.severe("invalid file: " + e.getMessage(), e);
-                            }
+							catch (XMLParseException e) {
+								LogUtils.severe("cannot open input file: " + e.getMessage(), e);
+							}
+							catch (URISyntaxException e) {
+								LogUtils.severe("invalid file: " + e.getMessage(), e);
+							}
 						}
 					}
 				}
