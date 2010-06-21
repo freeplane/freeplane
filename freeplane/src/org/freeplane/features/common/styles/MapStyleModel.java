@@ -86,7 +86,7 @@ public class MapStyleModel implements IExtension {
 		styleMap = new MapModel(modeController, null) {
 			@Override
 			public String getTitle() {
-				return TextUtils.getText(STYLES);
+				return TextUtils.removeMnemonic(TextUtils.getText(STYLES));
 			}
 		};
 		if(mapStyleModel != null){
