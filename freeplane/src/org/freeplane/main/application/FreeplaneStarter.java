@@ -89,17 +89,23 @@ public class FreeplaneStarter {
 	private Controller controller;
 	private FreeplaneSplashModern splash;
 	private ApplicationViewController viewController;
+	/** allows to disable loadLastMap(s) if there already is a second instance running. */
+	private boolean dontLoadLastMaps;
 	public static final String DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR = "resources";
 	public static final String ORG_FREEPLANE_GLOBALRESOURCEDIR = "org.freeplane.globalresourcedir";
 
 	public FreeplaneStarter() {
 		super();
+		applicationResourceController = new ApplicationResourceController();
+		ResourceController.setResourceController(applicationResourceController);
 	}
+
+	public void setDontLoadLastMaps() {
+		dontLoadLastMaps = true;
+    }
 
 	public Controller createController() {
 		try {
-			applicationResourceController = new ApplicationResourceController();
-			ResourceController.setResourceController(applicationResourceController);
 			controller = new Controller();
 			Compat.macAppChanges(controller);
 			applicationResourceController.init(controller);
@@ -173,7 +179,7 @@ public class FreeplaneStarter {
 	private void loadMaps(final String[] args) {
 		final boolean alwaysLoadLastMaps = ResourceController.getResourceController().getBooleanProperty(
 		    "always_load_last_maps");
-		if (alwaysLoadLastMaps) {
+		if (alwaysLoadLastMaps && !dontLoadLastMaps) {
 			applicationResourceController.getLastOpenedList().openMapsOnStart();
 		}
 		boolean fileLoaded = false;
@@ -200,7 +206,7 @@ public class FreeplaneStarter {
 		if (fileLoaded) {
 			return;
 		}
-		if (!alwaysLoadLastMaps) {
+		if (!alwaysLoadLastMaps && !dontLoadLastMaps) {
 			applicationResourceController.getLastOpenedList().openMapsOnStart();
 		}
 		
