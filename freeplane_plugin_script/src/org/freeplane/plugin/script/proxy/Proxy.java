@@ -321,15 +321,22 @@ public interface Proxy {
 		/** if countHidden is false then only nodes that are matched by the
 		 * current filter are counted. */
 		int getNodeLevel(boolean countHidden);
+		
+		/** get the note text with all HTML tags removed. */
+		String getNotePlainText();
 
 		String getNoteText();
 
 		Node getParentNode();
 
-		/** use this method to remove all tags from an HTML node. */
-		String getPlainTextContent();
-
 		NodeStyle getStyle();
+
+		/** use this method to remove all tags from an HTML node. */
+		String getPlainText();
+
+		/** use this method to remove all tags from an HTML node.
+		 * @deprecated use getPlainText() instead. */
+		String getPlainTextContent();
 
 		String getText();
 
@@ -355,9 +362,12 @@ public interface Proxy {
 		void removeConnector(Connector connectorToBeRemoved);
 
 		void setFolded(boolean folded);
+		
+		/** set the note text. Required HTML tags will be automatically added. */
+		void setNotePlainText(String text);
 
 		void setNoteText(String text);
-
+		
 		void setText(String text);
 
 		/** Starting from this node, recursively searches for nodes for which

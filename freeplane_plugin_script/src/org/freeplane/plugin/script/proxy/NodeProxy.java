@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
@@ -115,15 +116,24 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return getDelegate().getNodeLevel(countHidden);
 	}
 
+	public String getNotePlainText() {
+		return HtmlUtils.htmlToPlain(NoteModel.getNoteText(getDelegate()));
+	}
+
 	public String getNoteText() {
 		return NoteModel.getNoteText(getDelegate());
 	}
-
+	
 	public Node getParentNode() {
 		final NodeModel parentNode = getDelegate().getParentNode();
 		return parentNode != null ? new NodeProxy(parentNode, getModeController()) : null;
 	}
+	
+	public String getPlainText() {
+		return getDelegate().getPlainTextContent();
+	}
 
+	@Deprecated // use getPlainText() instead
 	public String getPlainTextContent() {
 		return getDelegate().getPlainTextContent();
 	}
@@ -191,6 +201,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		mapController.setFolded(getDelegate(), folded);
 	}
+
+	public void setNotePlainText(String text) {
+		final MNoteController noteController = (MNoteController) NoteController.getController(getModeController());
+		noteController.setNoteText(getDelegate(), HtmlUtils.plainToHTML(text));
+    }
 
 	public void setNoteText(final String text) {
 		final MNoteController noteController = (MNoteController) NoteController.getController(getModeController());
