@@ -10,6 +10,13 @@ Check for newer auto save files on opening of a map
 Bug fixes:
 
 ===============================
+1.1.0
+===============================
+Bug fixes:
+662]: Printing all works wrongly after printing defined page(s) (workaround for windows java bug)
+665]: After a contextual "Copy" the "Paste" command creates a new node
+
+===============================
 1.0.45 rc
 ===============================
 New features:
