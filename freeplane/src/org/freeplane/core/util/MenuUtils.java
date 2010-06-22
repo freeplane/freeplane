@@ -35,6 +35,7 @@ import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.IndexedTree.Node;
+import org.freeplane.features.common.icon.IconNotFound;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
@@ -80,7 +81,7 @@ public class MenuUtils {
 		public String getToolTipText() {
 			return toolTipText;
 		}
-		
+
 		public MindIcon createMindIcon() {
 			String resource = ResourceController.getResourceController().getProperty(iconKey, null);
 			if (resource == null) {
@@ -218,7 +219,8 @@ public class MenuUtils {
 			newNodeModel.setFolded(true);
 		}
 		if (menuEntry.getIconKey() != null) {
-			newNodeModel.addIcon(menuEntry.createMindIcon());
+			final MindIcon mindIcon = menuEntry.createMindIcon();
+			newNodeModel.addIcon(mindIcon != null ? mindIcon : IconNotFound.instance());
 		}
 		nodeModel.insert(newNodeModel);
 		return newNodeModel;
