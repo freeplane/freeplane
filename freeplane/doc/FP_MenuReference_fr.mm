@@ -1,6 +1,6 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node TEXT="Les menus Freeplane" ID="ID_1768565753" CREATED="1271097953627" MODIFIED="1276553573187" COLOR="#006699">
+<node TEXT="Les menus Freeplane" ID="ID_1768565753" CREATED="1271097953627" MODIFIED="1277150564234" COLOR="#006699" LINK="freeplane_fr.mm">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <hook NAME="MapStyle" zoom="1.128" max_node_width="600"/>
 <node TEXT="Barre de menus" FOLDED="true" POSITION="right" ID="ID_1695865256" CREATED="1272093120291" MODIFIED="1274246737828" COLOR="#006666">
@@ -206,8 +206,15 @@
 <node TEXT="Affichage" FOLDED="true" ID="ID_389115947" CREATED="1266240584812" MODIFIED="1275084557625" COLOR="#00cc00">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <icon BUILTIN="button_ok"/>
+<node TEXT="Barre de menus" FOLDED="true" ID="ID_1727646857" CREATED="1277150274531" MODIFIED="1277150296843" COLOR="#663300">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Affiche ou masque la barre des menus.&#xa;Pour rafficher la barre des menus, faites un clic droit sur l&apos;&#xe9;cran principal contenant la carte." ID="ID_1852076178" CREATED="1277150447796" MODIFIED="1277150523515"/>
+</node>
 <node TEXT="Barre d&apos;outils" FOLDED="true" ID="ID_926021846" CREATED="1266247097703" MODIFIED="1273963860796" COLOR="#663300">
 <node TEXT="Affiche ou masque la barre d&apos;outils principale." ID="ID_835856283" CREATED="1274993698250" MODIFIED="1274993720390"/>
+</node>
+<node TEXT="Barre de filtres" FOLDED="true" ID="ID_497402431" CREATED="1266591829913" MODIFIED="1277150368750" COLOR="#663300">
+<node TEXT="Affiche ou masque la barre de filtres." ID="ID_978904042" CREATED="1276444894875" MODIFIED="1276444901546"/>
 </node>
 <node TEXT="Barre des touches de fonction" FOLDED="true" ID="ID_664958295" CREATED="1266247102156" MODIFIED="1273963881359" COLOR="#663300">
 <node TEXT="Affiche ou masque la barre des touches de fonction (touches F1 &#xe0; F12 du clavier)." ID="ID_66563068" CREATED="1274993785062" MODIFIED="1274993868812"/>
@@ -385,17 +392,17 @@
 <node TEXT="Carte suivante" FOLDED="true" ID="ID_1601137374" CREATED="1266254852921" MODIFIED="1274247799656" COLOR="#663300">
 <node TEXT="Affiche la carte suivante lorsque plusieurs cartes sont ouvertes." ID="ID_701271917" CREATED="1276463799171" MODIFIED="1276463817671"/>
 </node>
-<node TEXT="N&#x153;ud pr&#xe9;c&#xe9;dent" FOLDED="true" ID="ID_1475108136" CREATED="1266254856656" MODIFIED="1276461955890" COLOR="#663300">
+<node TEXT="N&#x153;ud pr&#xe9;c&#xe9;dent de la carte" FOLDED="true" ID="ID_1475108136" CREATED="1266254856656" MODIFIED="1277152527015" COLOR="#663300">
 <node TEXT="Va au n&#x153;ud pr&#xe9;c&#xe9;dent dans la hi&#xe9;rarchie de la carte, si le noeud pr&#xe9;c&#xe9;dent est pli&#xe9; il sera automatiquement d&#xe9;pli&#xe9;." ID="ID_1224230499" CREATED="1276463848015" MODIFIED="1276464395843"/>
 </node>
-<node TEXT="N&#x153;ud suivant" FOLDED="true" ID="ID_1750156469" CREATED="1266254860000" MODIFIED="1276463727937" COLOR="#663300">
+<node TEXT="N&#x153;ud suivant de la carte" FOLDED="true" ID="ID_1750156469" CREATED="1266254860000" MODIFIED="1277152539718" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Va au n&#x153;ud suivant dans la hi&#xe9;rarchie de la carte, si le noeud suivant est pli&#xe9; il sera automatiquement d&#xe9;pli&#xe9;." ID="ID_1090241083" CREATED="1276463998359" MODIFIED="1276464403390"/>
 </node>
-<node TEXT="N&#x153;ud pr&#xe9;c&#xe9;dent (avec pliage automatique)" FOLDED="true" ID="ID_867615111" CREATED="1266254870125" MODIFIED="1276464211125" COLOR="#663300">
+<node TEXT="N&#x153;ud pr&#xe9;c&#xe9;dent de la carte (avec pliage automatique)" FOLDED="true" ID="ID_867615111" CREATED="1266254870125" MODIFIED="1277152546453" COLOR="#663300">
 <node TEXT="Va au n&#x153;ud pr&#xe9;c&#xe9;dent dans la hi&#xe9;rarchie de la carte et, si possible, plie le noeud quitt&#xe9;." ID="ID_1879442432" CREATED="1276464053234" MODIFIED="1276464440546"/>
 </node>
-<node TEXT="N&#x153;ud suivant (avec pliage automatique)" FOLDED="true" ID="ID_1966136057" CREATED="1266254879203" MODIFIED="1276464343359" COLOR="#663300">
+<node TEXT="N&#x153;ud suivant de la carte (avec pliage automatique)" FOLDED="true" ID="ID_1966136057" CREATED="1266254879203" MODIFIED="1277152551562" COLOR="#663300">
 <node TEXT="Va au n&#x153;ud suivant dans la hi&#xe9;rarchie de la carte et, si possible, plie le noeud quitt&#xe9;." ID="ID_254564933" CREATED="1276464053234" MODIFIED="1276464456234"/>
 </node>
 <node TEXT="Aller &#xe0; la racine" FOLDED="true" ID="ID_676908603" CREATED="1266254974890" MODIFIED="1274247854343" COLOR="#663300">
@@ -437,10 +444,10 @@
 <node TEXT="Plier un niveau" FOLDED="true" ID="ID_1989510421" CREATED="1266255658609" MODIFIED="1274247979531" COLOR="#663300">
 <node TEXT="Masque un niveau de fils suppl&#xe9;mentaire en partant du niveau le plus bas." ID="ID_1478593944" CREATED="1276549839453" MODIFIED="1276549910484"/>
 </node>
-<node TEXT="Aller au noeud pr&#xe9;c&#xe9;dent" FOLDED="true" ID="ID_901980899" CREATED="1266255672875" MODIFIED="1276549972781" COLOR="#663300">
+<node TEXT="Noeud pr&#xe9;c&#xe9;dent de l&apos;historique" FOLDED="true" ID="ID_901980899" CREATED="1266255672875" MODIFIED="1277152585703" COLOR="#663300">
 <node TEXT="Va au noeud pr&#xe9;c&#xe9;dent dans l&apos;historique de navigation des noeuds." ID="ID_442224845" CREATED="1276549912671" MODIFIED="1276550002125"/>
 </node>
-<node TEXT="Aller au noeud suivant" FOLDED="true" ID="ID_450587391" CREATED="1266255675078" MODIFIED="1276549983406" COLOR="#663300">
+<node TEXT="Noeud suivant de l&apos;historique" FOLDED="true" ID="ID_450587391" CREATED="1266255675078" MODIFIED="1277152591578" COLOR="#663300">
 <node TEXT="Va au noeud suivant dans l&apos;historique de navigation des noeuds." ID="ID_1390692833" CREATED="1276549912671" MODIFIED="1276550013296"/>
 </node>
 <node TEXT="Suivre le lien" FOLDED="true" ID="ID_1990490856" CREATED="1266255678906" MODIFIED="1276550324765" COLOR="#663300">
@@ -661,8 +668,8 @@
 <node TEXT="Barre d&apos;outils" FOLDED="true" ID="ID_404773811" CREATED="1266591823898" MODIFIED="1274249186718" COLOR="#663300">
 <node TEXT="Voir" ID="ID_1297846116" CREATED="1266591921320" MODIFIED="1276444869468" LINK="#ID_835856283"/>
 </node>
-<node TEXT="Afficher la barre de filtres" FOLDED="true" ID="ID_1413384586" CREATED="1266591829913" MODIFIED="1274249175890" COLOR="#663300">
-<node TEXT="Affiche ou masque la barre de filtres." ID="ID_934343684" CREATED="1276444894875" MODIFIED="1276444901546"/>
+<node TEXT="Barre de filtres" FOLDED="true" ID="ID_1413384586" CREATED="1266591829913" MODIFIED="1277150376203" COLOR="#663300">
+<node TEXT="Voir" ID="ID_934343684" CREATED="1276444894875" MODIFIED="1277150404703" LINK="#ID_978904042"/>
 </node>
 <node TEXT="Barre des touches de fonction" FOLDED="true" ID="ID_844953531" CREATED="1266591837617" MODIFIED="1274249150078" COLOR="#663300">
 <node TEXT="Voir" ID="ID_352410677" CREATED="1266592043585" MODIFIED="1276444935406" LINK="#ID_66563068"/>
@@ -768,3 +775,5 @@
 </node>
 </node>
 </map>
+
+ 	  	 
