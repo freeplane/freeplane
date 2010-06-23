@@ -42,6 +42,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	private String mFilterRegexp;
+	private Pattern mPattern;
 	/**
 	 * Contains indices or rows matching the filter criteria.
 	 */
@@ -50,8 +51,8 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	 * The column that contains the NodeHolder items
 	 */
 	final private int mNodeTextColumn;
-	private Pattern mPattern;
 	final private TableModel mTableModel;
+	private boolean ignoreCase;
 
 	/**
 	 * @param node_text_column
@@ -103,14 +104,25 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	}
 
 	public void resetFilter() {
-		setFilter(".*");
+		setFilter(null, false, false);
 	}
 
-	public void setFilter(final String filterRegexp) {
-		mFilterRegexp = filterRegexp;
+	public void setFilter(final String filterRegexp, boolean ignoreCase, boolean useRegex) {
+		if("".equals(filterRegexp)){
+			mFilterRegexp = null;
+		}
+		else{
+			mFilterRegexp = ignoreCase ? filterRegexp.toLowerCase() : filterRegexp;
+		}
+		this.ignoreCase = ignoreCase;
 		//		System.out.println("Setting filter to '" + mFilterRegexp + "'");
 		try {
-			mPattern = Pattern.compile(mFilterRegexp, Pattern.CASE_INSENSITIVE);
+			if(! useRegex || mFilterRegexp == null){
+				mPattern = null;
+			}
+			else{
+				mPattern = Pattern.compile(mFilterRegexp, ignoreCase ? Pattern.CASE_INSENSITIVE : 0);
+			}
 			updateIndexArray();
 			fireTableDataChanged();
 		}
@@ -122,8 +134,26 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 		final ArrayList<Integer> newIndexArray = new ArrayList<Integer>();
 		for (int i = 0; i < mTableModel.getRowCount(); i++) {
 			final NodeHolder nodeContent = (NodeHolder) mTableModel.getValueAt(i, mNodeTextColumn);
-			if (mPattern.matcher(nodeContent.toString()).matches()) {
+			if(mFilterRegexp == null){
 				newIndexArray.add(new Integer(i));
+				continue;
+			}
+			if(mPattern == null){
+				if(ignoreCase){
+					if(nodeContent.toString().toLowerCase().contains(mFilterRegexp)){
+						newIndexArray.add(new Integer(i));
+					}
+				}
+				else{
+					if(nodeContent.toString().contains(mFilterRegexp)){
+						newIndexArray.add(new Integer(i));
+					}
+				}
+				continue;
+			}
+			if (mPattern.matcher(nodeContent.toString()).find()) {
+				newIndexArray.add(new Integer(i));
+				continue;
 			}
 		}
 		mIndexArray = newIndexArray;

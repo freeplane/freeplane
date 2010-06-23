@@ -386,7 +386,7 @@ public class HtmlUtils {
 	 * method is very difficult. If you have a simplier method, please supply
 	 * it. But look that it complies with FindTextTests!!!
 	 */
-	public static String getReplaceResult(final Pattern pattern, final String replacement, final String text) {
+	public static String getReplaceResult(final Pattern pattern, final String text, final String replacement) {
 		final ArrayList<IndexPair> splittedStringList = new ArrayList<IndexPair>();
 		String stringWithoutTags = null;
 		{
@@ -434,7 +434,7 @@ public class HtmlUtils {
 							state = 1;
 							sbResult.append(text.substring(pair.originalStart, pair.originalStart + mStart
 							        - pair.replacedStart));
-							sbResult.append(replacement);
+							appendReplacement(sbResult, matcher, replacement);
 						}
 						else {
 							sbResult.append(text.substring(pair.originalStart, pair.originalEnd));
@@ -463,6 +463,54 @@ public class HtmlUtils {
 		}
 		return sbResult.toString();
 	}
+
+	private static void appendReplacement(final StringBuilder sbResult, final Matcher matcher, final String replacement) {
+	    int cursor = 0;
+	    while (cursor < replacement.length()) {
+	    	char nextChar = replacement.charAt(cursor);
+	    	if (nextChar == '\\') {
+	    		cursor++;
+	    		nextChar = replacement.charAt(cursor);
+	    		sbResult.append(nextChar);
+	    		cursor++;
+	    	}
+	    	else if (nextChar == '$') {
+	    		// Skip past $
+	    		cursor++;
+	    		// The first number is always a group
+	    		int refNum = (int) replacement.charAt(cursor) - '0';
+	    		if ((refNum < 0) || (refNum > 9))
+	    			throw new IllegalArgumentException("Illegal group reference");
+	    		cursor++;
+	    		// Capture the largest legal group string
+	    		boolean done = false;
+	    		while (!done) {
+	    			if (cursor >= replacement.length()) {
+	    				break;
+	    			}
+	    			int nextDigit = replacement.charAt(cursor) - '0';
+	    			if ((nextDigit < 0) || (nextDigit > 9)) { // not a number
+	    				break;
+	    			}
+	    			int newRefNum = (refNum * 10) + nextDigit;
+	    			if (matcher.groupCount() < newRefNum) {
+	    				done = true;
+	    			}
+	    			else {
+	    				refNum = newRefNum;
+	    				cursor++;
+	    			}
+	    		}
+	    		// Append group
+	    		if (matcher.group(refNum) != null)
+	    			sbResult.append(matcher.group(refNum));
+	    	}
+	    	else {
+	    		sbResult.append(nextChar);
+	    		cursor++;
+	    	}
+	    }
+    }
 
 	/**
 	 * @return true, if well formed XML.

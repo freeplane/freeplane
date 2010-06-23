@@ -19,12 +19,14 @@
  */
 package org.freeplane.features.mindmapmode.time;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -42,11 +44,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.AbstractAction;
+import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -59,6 +65,8 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -68,6 +76,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
@@ -119,54 +128,20 @@ class NodeList {
 		}
 	}
 
-	final private class FilterTextDocumentListener implements DocumentListener {
-		protected class DelayedTextEntry extends TimerTask {
-			final private DocumentEvent event;
+	final private class FilterTextDocumentListener implements ChangeListener, ActionListener {
 
-			DelayedTextEntry(final DocumentEvent event) {
-				this.event = event;
-			}
-
-			@Override
-			public void run() {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							final Document document = event.getDocument();
-							final String text = NodeList.getRegularExpression(getText(document));
-							mFlatNodeTableFilterModel.setFilter(text);
-						}
-						catch (final BadLocationException e) {
-							LogUtils.severe(e);
-							mFlatNodeTableFilterModel.resetFilter();
-						}
-					}
-				});
-			}
+		private synchronized void change() {
+			mFlatNodeTableFilterModel.setFilter((String) mFilterTextSearchField.getSelectedItem(), ignoreCase.isSelected(),
+			    useRegexInFind.isSelected());
 		}
 
-		private Timer mTypeDelayTimer = null;
-
-		private synchronized void change(final DocumentEvent event) {
-			if (mTypeDelayTimer != null) {
-				mTypeDelayTimer.cancel();
-				mTypeDelayTimer = null;
-			}
-			mTypeDelayTimer = SysUtils.createTimer(getClass().getSimpleName());
-			mTypeDelayTimer.schedule(new DelayedTextEntry(event), NodeList.TYPE_DELAY_TIME);
+		public void stateChanged(ChangeEvent e) {
+			change();
 		}
 
-		public void changedUpdate(final DocumentEvent event) {
-			change(event);
-		}
-
-		public void insertUpdate(final DocumentEvent event) {
-			change(event);
-		}
-
-		public void removeUpdate(final DocumentEvent event) {
-			change(event);
-		}
+		public void actionPerformed(ActionEvent e) {
+			change();
+        }
 	}
 
 	final private class FlatNodeTable extends JTable {
@@ -460,7 +435,7 @@ class NodeList {
 	private static final String PLUGINS_TIME_LIST_XML_MODIFIED = "plugins/TimeList.xml_Modified";
 	private static final String PLUGINS_TIME_LIST_XML_NOTES = "plugins/TimeList.xml_Notes";
 	private static final String PLUGINS_TIME_LIST_XML_TEXT = "plugins/TimeList.xml_Text";
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_CANCEL = "plugins/TimeManagement.xml_Cancel";
+	private static final String PLUGINS_TIME_MANAGEMENT_XML_CLOSE = "plugins/TimeManagement.xml_closeButton";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_FIND = "plugins/TimeManagement.xml_Find";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_REPLACE = "plugins/TimeManagement.xml_Replace";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_SELECT = "plugins/TimeManagement.xml_Select";
@@ -469,63 +444,25 @@ class NodeList {
 	private static final int TYPE_DELAY_TIME = 500;
 	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = NodeList.class.getName() + "_properties";
 
-	/**
-	 */
-	public static String getPureRegularExpression(final String text) {
-		//		text=text.replaceAll("([().\\[\\]^$|])", "\\\\$1");
-		//		text = text.replaceAll("\\*", ".*");
-		return text;
-	}
-
-	public static String getRegularExpression(String text) throws BadLocationException {
-		text = ".*(" + text + ").*";
-		return text;
-	}
-
-	public static void replace(final IReplaceInputInformation info, final String searchString,
-	                           final String replaceString) {
-		final String regExp = "(" + NodeList.getPureRegularExpression(searchString) + ")";
-		Pattern p;
+	private static String replace(final Pattern p, String text, final String replacement) {
 		try {
-			p = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
-		}
-		catch (final PatternSyntaxException e) {
-			UITools.errorMessage(TextUtils.format("wrong_regexp", searchString, e.getMessage()));
-			return;
-		}
-		final String replacement = NodeList.getPureRegularExpression(replaceString);
-		final int length = info.getLength();
-		for (int i = 0; i < length; i++) {
-			final NodeHolder nodeHolder = info.getNodeHolderAt(i);
-			final String text = nodeHolder.node.getText();
-			final String replaceResult;
-			if (HtmlUtils.isHtmlNode(text)) {
-				replaceResult = NodeList.replace(p, replacement, text);
-			}
-			else {
-				replaceResult = p.matcher(text).replaceAll(replacement);
-			}
-			if (!StringUtils.equals(text, replaceResult)) {
-				info.changeString(nodeHolder, replaceResult);
-			}
-		}
-	}
-
-	private static String replace(final Pattern p, final String replacement, String replaceResult) {
-		Object before;
-		do {
-			before = replaceResult;
-			replaceResult = HtmlUtils.getReplaceResult(p, replacement, replaceResult);
-		} while (!replaceResult.equals(before));
-		return replaceResult;
+	        Object before;
+	        do {
+		        before = text;
+		        text = HtmlUtils.getReplaceResult(p, text, replacement);
+	        } while (!text.equals(before));
+        }
+        catch (IndexOutOfBoundsException e) {
+        }
+		return text;
 	}
 
 	final private Controller controller;
 	private DateRenderer dateRenderer;
 	private JDialog dialog;
 	private IconsRenderer iconsRenderer;
-	private JTextField mFilterTextReplaceField;
-	private JTextField mFilterTextSearchField;
+	final private JComboBox mFilterTextReplaceField;
+	final private JComboBox mFilterTextSearchField;
 	private FlatNodeTableFilterModel mFlatNodeTableFilterModel;
 	final private ModeController modeController;
 	private JLabel mTreeLabel;
@@ -536,12 +473,45 @@ class NodeList {
 	private JTable timeTable;
 	private DefaultTableModel timeTableModel;
 	private final boolean searchInAllMaps;
+	private final JCheckBox useRegexInReplace;
+	private final JCheckBox useRegexInFind;
+	private final JCheckBox ignoreCase;
 
 	public NodeList(final ModeController modeController, final boolean showAllNodes, final boolean searchInAllMaps) {
 		this.modeController = modeController;
 		controller = modeController.getController();
 		this.showAllNodes = showAllNodes;
 		this.searchInAllMaps = searchInAllMaps;
+		mFilterTextSearchField = new JComboBox();
+		mFilterTextSearchField.setEditable(true);
+		final FilterTextDocumentListener listener = new FilterTextDocumentListener();
+		mFilterTextSearchField.addActionListener(listener);
+		mFilterTextSearchField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(final KeyEvent pEvent) {
+				if (pEvent.getKeyCode() == KeyEvent.VK_DOWN) {
+					mFilterTextReplaceField.requestFocusInWindow();
+				}
+			}
+		});
+		mFilterTextReplaceField = new JComboBox();
+		mFilterTextReplaceField.setEditable(true);
+		mFilterTextReplaceField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(final KeyEvent pEvent) {
+				if (pEvent.getKeyCode() == KeyEvent.VK_DOWN) {
+					timeTable.requestFocusInWindow();
+				}
+				else if (pEvent.getKeyCode() == KeyEvent.VK_UP) {
+					mFilterTextSearchField.requestFocusInWindow();
+				}
+			}
+		});
+		useRegexInReplace = new JCheckBox();
+		useRegexInFind = new JCheckBox();
+		useRegexInFind.addChangeListener(listener);
+		ignoreCase = new JCheckBox();
+		ignoreCase.addChangeListener(listener);
 	}
 
 	/**
@@ -558,6 +528,7 @@ class NodeList {
 		storage.storeDialogPositions(dialog, NodeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
 		dialog.setVisible(false);
 		dialog.dispose();
+		dialog = null;
 	}
 
 	protected void exportSelectedRowsAndClose() {
@@ -590,31 +561,45 @@ class NodeList {
 		return selectedNode;
 	}
 
-	/**
-	 * @throws BadLocationException
-	 */
-	private String getText(final Document document) throws BadLocationException {
-		final String text = document.getText(0, document.getLength());
-		return text;
-	}
-
 	private void gotoNodesAndClose(final int focussedRow, final int[] selectedRows) {
 		selectNodes(focussedRow, selectedRows);
 		disposeDialog();
 	}
 
 	private void replace(final IReplaceInputInformation info) {
+		final String searchString = (String) mFilterTextSearchField.getSelectedItem();
+		final String replaceString = (String) mFilterTextReplaceField.getSelectedItem();
+		Pattern p;
 		try {
-			final String searchString = getText(mFilterTextSearchField.getDocument());
-			final String replaceString = getText(mFilterTextReplaceField.getDocument());
-			NodeList.replace(info, searchString, replaceString);
-			timeTableModel.fireTableDataChanged();
-			mFlatNodeTableFilterModel.resetFilter();
-			mFilterTextSearchField.setText("");
+			p = Pattern.compile(useRegexInFind.isSelected() ? searchString : Pattern.quote(searchString),
+					Pattern.CASE_INSENSITIVE);
 		}
-		catch (final BadLocationException e) {
-			LogUtils.severe(e);
+		catch (final PatternSyntaxException e) {
+			UITools.errorMessage(TextUtils.format("wrong_regexp", searchString, e.getMessage()));
+			return;
 		}
+		final String replacement = replaceString;
+		final int length = info.getLength();
+		for (int i = 0; i < length; i++) {
+			final NodeHolder nodeHolder = info.getNodeHolderAt(i);
+			final String text = nodeHolder.node.getText();
+			final String replaceResult;
+			if (HtmlUtils.isHtmlNode(text)) {
+				replaceResult = NodeList.replace(p, text, 
+					useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement));
+			}
+			else {
+				replaceResult = p.matcher(text).replaceAll(replacement);
+			}
+			if (!StringUtils.equals(text, replaceResult)) {
+				info.changeString(nodeHolder, replaceResult);
+			}
+		}
+		timeTableModel.fireTableDataChanged();
+		mFlatNodeTableFilterModel.resetFilter();
+		mFilterTextSearchField.addItem(mFilterTextSearchField.getSelectedItem());
+		mFilterTextReplaceField.addItem(mFilterTextReplaceField.getSelectedItem());
+		mFilterTextSearchField.setSelectedItem("");
 	}
 
 	private void selectNodes(final int focussedRow, final int[] selectedRows) {
@@ -686,39 +671,48 @@ class NodeList {
 		});
 		final Container contentPane = dialog.getContentPane();
 		final GridBagLayout gbl = new GridBagLayout();
-		gbl.columnWeights = new double[] { 1.0f };
-		gbl.rowWeights = new double[] { 1.0f };
 		contentPane.setLayout(gbl);
-		contentPane.add(new JLabel(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)), new GridBagConstraints(0, 0,
-		    1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		mFilterTextSearchField = new JTextField();
-		mFilterTextSearchField.getDocument().addDocumentListener(new FilterTextDocumentListener());
-		mFilterTextSearchField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent pEvent) {
-				if (pEvent.getKeyCode() == KeyEvent.VK_DOWN) {
-					mFilterTextReplaceField.requestFocusInWindow();
-				}
-			}
-		});
-		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0,
-		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		contentPane.add(new JLabel(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)), new GridBagConstraints(0,
-		    2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		mFilterTextReplaceField = new JTextField();
-		contentPane.add(/* new JScrollPane */(mFilterTextReplaceField), new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0,
-		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		mFilterTextReplaceField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent pEvent) {
-				if (pEvent.getKeyCode() == KeyEvent.VK_DOWN) {
-					timeTable.requestFocusInWindow();
-				}
-				else if (pEvent.getKeyCode() == KeyEvent.VK_UP) {
-					mFilterTextSearchField.requestFocusInWindow();
-				}
-			}
-		});
+		final GridBagConstraints layoutConstraints = new GridBagConstraints();
+		layoutConstraints.gridx = 0;
+		layoutConstraints.gridy = 0;
+		layoutConstraints.gridwidth = 1;
+		layoutConstraints.gridheight = 1;
+		layoutConstraints.weightx = 0.0;
+		layoutConstraints.weighty = 0.0;
+		layoutConstraints.anchor = GridBagConstraints.WEST;
+		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
+		contentPane.add(new JLabel(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)), layoutConstraints);
+		layoutConstraints.gridwidth = 1;
+		layoutConstraints.gridx++;
+		contentPane.add(Box.createHorizontalStrut(40), layoutConstraints);
+		layoutConstraints.gridx++;
+		contentPane.add(new JLabel(TextUtils.getText("filter_ignore_case")), layoutConstraints);
+		layoutConstraints.gridx++;
+		contentPane.add(ignoreCase, layoutConstraints);
+		layoutConstraints.gridx++;
+		contentPane.add(Box.createHorizontalStrut(40), layoutConstraints);
+		layoutConstraints.gridx++;
+		contentPane.add(new JLabel(TextUtils.getText("regular_expressions")), layoutConstraints);
+		layoutConstraints.gridx++;
+		contentPane.add(useRegexInFind, layoutConstraints);
+		layoutConstraints.gridx = 0;
+		layoutConstraints.weightx = 1.0;
+		layoutConstraints.gridwidth = GridBagConstraints.REMAINDER;
+		layoutConstraints.gridy++;
+		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), layoutConstraints);
+		layoutConstraints.gridy++;
+		layoutConstraints.weightx = 0.0;
+		layoutConstraints.gridwidth = 1;
+		contentPane.add(new JLabel(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)), layoutConstraints);
+		layoutConstraints.gridx = 5;
+		contentPane.add(new JLabel(TextUtils.getText("regular_expressions")), layoutConstraints);
+		layoutConstraints.gridx++;
+		contentPane.add(useRegexInReplace, layoutConstraints);
+		layoutConstraints.gridx = 0;
+		layoutConstraints.weightx = 1.0;
+		layoutConstraints.gridwidth = GridBagConstraints.REMAINDER;
+		layoutConstraints.gridy++;
+		contentPane.add(/* new JScrollPane */(mFilterTextReplaceField), layoutConstraints);
 		dateRenderer = new DateRenderer();
 		nodeRenderer = new NodeRenderer();
 		notesRenderer = new NotesRenderer();
@@ -738,11 +732,16 @@ class NodeList {
 		sorter.setSortingStatus(NodeList.DATE_COLUMN, TableSorter.ASCENDING);
 		final JScrollPane pane = new JScrollPane(timeTable);
 		UITools.setScrollbarIncrement(pane);
-		contentPane.add(pane, new GridBagConstraints(0, 4, 1, 1, 1.0, 10.0, GridBagConstraints.WEST,
-		    GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+		layoutConstraints.gridy++;
+		GridBagConstraints tableConstraints = (GridBagConstraints) layoutConstraints.clone();
+		tableConstraints.weighty = 10;
+		tableConstraints.fill = GridBagConstraints.BOTH;
+		contentPane.add(pane, tableConstraints);
 		mTreeLabel = new JLabel();
-		contentPane.add(new JScrollPane(mTreeLabel), new GridBagConstraints(0, 5, 1, 1, 1.0, 1.0,
-		    GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+		layoutConstraints.gridy++;
+		GridBagConstraints treeConstraints = (GridBagConstraints) layoutConstraints.clone();
+		treeConstraints.fill = GridBagConstraints.BOTH;
+		contentPane.add(new JScrollPane(mTreeLabel), treeConstraints);
 		final AbstractAction selectAction = new AbstractAction(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
 			/**
 			     * 
@@ -801,7 +800,7 @@ class NodeList {
 			}
 		};
 		final JButton gotoButton = new JButton(gotoAction);
-		final AbstractAction disposeAction = new AbstractAction(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
+		final AbstractAction disposeAction = new AbstractAction(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_CLOSE)) {
 			/**
 			     * 
 			     */
@@ -819,8 +818,8 @@ class NodeList {
 		replaceSelectedAction.setEnabled(false);
 		final JPanel bar = ButtonBarFactory.buildGrowingBar(new JButton[] { cancelButton, exportButton,
 		        replaceAllButton, replaceSelectedButton, gotoButton, selectButton, });
-		contentPane.add(/* new JScrollPane */(bar), new GridBagConstraints(0, 6, 1, 1, 1.0, 1.0,
-		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		layoutConstraints.gridy++;
+		contentPane.add(/* new JScrollPane */(bar), layoutConstraints);
 		final JMenuBar menuBar = new JMenuBar();
 		final JMenu menu = new JMenu(TextUtils.getText("plugins/TimeManagement.xml_menu_actions"));
 		final AbstractAction[] actionList = new AbstractAction[] { selectAction, gotoAction, replaceSelectedAction,
@@ -879,6 +878,8 @@ class NodeList {
 				column++;
 			}
 		}
+		mFlatNodeTableFilterModel.setFilter((String)mFilterTextSearchField.getSelectedItem(), ignoreCase.isSelected(), useRegexInFind
+		    .isSelected());
 		dialog.setVisible(true);
 	}
 
