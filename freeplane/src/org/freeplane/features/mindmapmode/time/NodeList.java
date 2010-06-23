@@ -597,8 +597,8 @@ class NodeList {
 		}
 		timeTableModel.fireTableDataChanged();
 		mFlatNodeTableFilterModel.resetFilter();
-		mFilterTextSearchField.addItem(mFilterTextSearchField.getSelectedItem());
-		mFilterTextReplaceField.addItem(mFilterTextReplaceField.getSelectedItem());
+		mFilterTextSearchField.insertItemAt(mFilterTextSearchField.getSelectedItem(), 0);
+		mFilterTextReplaceField.insertItemAt(mFilterTextReplaceField.getSelectedItem(), 0);
 		mFilterTextSearchField.setSelectedItem("");
 	}
 
