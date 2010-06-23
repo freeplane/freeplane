@@ -56,6 +56,7 @@ public class NodeModel implements MutableTreeNode {
 	private static final boolean ALLOWSCHILDREN = true;
 	public final static int LEFT_POSITION = -1;
 	public static final String NODE_TEXT = "node_text";
+	public static final String NOTE_TEXT = "note_text";
 	public final static int RIGHT_POSITION = 1;
 	public final static int UNKNOWN_POSITION = 0;
 	static public final Object UNKNOWN_PROPERTY = new Object();
