@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences_structure>
+	<tabbed_pane>
+		<tab name="plugins">
+			<separator name="scripting">
+				<boolean name="execute_scripts_without_asking" />
+				<boolean name="execute_scripts_without_file_restriction" />
+				<boolean name="execute_scripts_without_network_restriction" />
+				<boolean name="execute_scripts_without_exec_restriction" />
+				<boolean name="signed_script_are_trusted" />
+				<string name="script_user_key_name_for_signing" />
+				<string name="script_directories" />
+			</separator>
+		</tab>
+	</tabbed_pane>
+</preferences_structure>

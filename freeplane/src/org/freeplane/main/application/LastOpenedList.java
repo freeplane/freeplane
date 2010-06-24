@@ -50,6 +50,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.IMapChangeListener;
@@ -73,7 +74,6 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	private static final String LAST_OPENED = "lastOpened_1.0.20";
 	public static final String LOAD_LAST_MAP = "load_last_map";
 	public static final String LOAD_LAST_MAPS = "load_last_maps";
-	private static final String SEPARATOR = File.pathSeparator + File.pathSeparator;
 	private final Controller controller;
 	private static boolean PORTABLE_APP = System.getProperty("portableapp", "false").equals("true");
 	private static String USER_DRIVE = System.getProperty("user.home", "").substring(0, 2);
@@ -161,14 +161,6 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		return getRestorable(file);
 	}
 
-	private String getStringRep(final List<String> list) {
-		final StringBuilder strBldr = new StringBuilder();
-		for (final String s : list) {
-			strBldr.append(s + SEPARATOR);
-		}
-		return strBldr.toString();
-	}
-
 	public void mapChanged(final MapChangeEvent event) {
 		if (!event.getProperty().equals(UrlManager.MAP_URL)) {
 			return;
@@ -254,7 +246,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	private void restoreList(final String key, final List<String> list) {
 		final String restored = ResourceController.getResourceController().getProperty(key, null);
 		if (restored != null && !restored.equals("")) {
-			list.addAll(Arrays.asList(restored.split(SEPARATOR)));
+			list.addAll(ConfigurationUtils.decodeListValue(restored));
 		}
 	}
 
@@ -287,8 +279,10 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	}
 
 	public void saveProperties() {
-		ResourceController.getResourceController().setProperty(LAST_OPENED, getStringRep(lastOpenedList));
-		ResourceController.getResourceController().setProperty(OPENED_NOW, getStringRep(currenlyOpenedList));
+		ResourceController.getResourceController().setProperty(LAST_OPENED,
+		    ConfigurationUtils.encodeListValue(lastOpenedList));
+		ResourceController.getResourceController().setProperty(OPENED_NOW,
+		    ConfigurationUtils.encodeListValue(currenlyOpenedList));
 	}
 
 	private boolean tryToChangeToMapView(final String restoreable) {

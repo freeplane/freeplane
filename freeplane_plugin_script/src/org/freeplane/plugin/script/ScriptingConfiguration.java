@@ -24,6 +24,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -31,6 +32,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
@@ -89,9 +91,6 @@ public class ScriptingConfiguration {
 
 	private static final String DEFAULT_SCRIPT_DIRECTORIES = "scripts";
 	private static final String SCRIPT_REGEX = ".*\\.groovy$";
-	// TODO: remove code duplication with LastOpenedList by extracting
-	// list property handling into a utility class, e.g. ConfigurationUtils
-	private static final String SEPARATOR = File.pathSeparator + File.pathSeparator;
 	private final TreeMap<String, String> nameScriptMap = new TreeMap<String, String>();
 	private final TreeMap<String, ScriptMetaData> nameScriptMetaDataMap = new TreeMap<String, ScriptMetaData>();
 
@@ -104,10 +103,10 @@ public class ScriptingConfiguration {
 		resourceController.setDefaultProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES, DEFAULT_SCRIPT_DIRECTORIES);
 		final String dirsString = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES);
 		if (dirsString != null) {
-			final String[] dirs = dirsString.split(SEPARATOR);
-			for (int i = 0; i < dirs.length; i++) {
-				addScripts(getDirectory(dirs[i]));
-			}
+			final List<String> dirs = ConfigurationUtils.decodeListValue(dirsString);
+			for (String dir : dirs) {
+				addScripts(getDirectory(dir));
+            }
 		}
 	}
 

@@ -276,5 +276,6 @@
         	<boolean name="structured_html_import"/>
         </separator>
     </tab>
+    <tab name="plugins"/>
 </tabbed_pane>
 </preferences_structure>

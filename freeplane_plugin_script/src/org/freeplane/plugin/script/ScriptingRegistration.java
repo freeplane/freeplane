@@ -21,6 +21,7 @@
 package org.freeplane.plugin.script;
 
 import java.io.PrintStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -29,8 +30,6 @@ import javax.swing.JMenu;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.OptionPanelBuilder;
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
@@ -106,8 +105,6 @@ class ScriptingRegistration {
 		}
 	}
 
-	private static final String SEPARATOR = "OptionPanel.separator.plugins/scripting/separatorPropertyName";
-	private static final String OPTION_PANEL_SCRIPTING_TAB = "OptionPanel.plugins/scripting/tab_name";
 	final private MModeController modeController;
 	final private HashMap<String, Object> mScriptCookies = new HashMap<String, Object>();
 	private IScriptEditorStarter mScriptEditorStarter;
@@ -118,22 +115,10 @@ class ScriptingRegistration {
 	}
 
 	private void addPropertiesToOptionPanel() {
-		final OptionPanelBuilder controls = modeController.getOptionPanelBuilder();
-		controls.addTab(OPTION_PANEL_SCRIPTING_TAB);
-		controls.addSeparator(OPTION_PANEL_SCRIPTING_TAB, SEPARATOR, IndexedTree.AS_CHILD);
-		final String GROUP = OPTION_PANEL_SCRIPTING_TAB + "/" + SEPARATOR;
-		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
-		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
-		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
-		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED, IndexedTree.AS_CHILD);
-		controls.addStringProperty(GROUP, ScriptingEngine.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING,
-		    IndexedTree.AS_CHILD);
-		controls.addStringProperty(GROUP, ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES, IndexedTree.AS_CHILD);
+		final URL preferences = this.getClass().getResource("preferences.xml");
+		if (preferences == null)
+			throw new RuntimeException("cannot open preferences");
+		modeController.getOptionPanelBuilder().load(preferences);
 	}
 
 	public HashMap<String, Object> getScriptCookies() {
