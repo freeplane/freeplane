@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences_structure>
+	<tabbed_pane>
+		<tab name="plugins">
+			<separator name="spreadsheet">
+				<boolean name="spreadsheet_enable_plugin" />
+			</separator>
+		</tab>
+	</tabbed_pane>
+</preferences_structure>
