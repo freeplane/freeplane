@@ -46,6 +46,8 @@ import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
@@ -62,6 +64,7 @@ import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.map.ITextTransformer;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 
@@ -89,6 +92,8 @@ public abstract class MainView extends JLabel {
 	 */
 	private static final long serialVersionUID = 1L;
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
+	private List<ITextTransformer> textTransformers;
+	private Border errorBorder = new LineBorder(Color.RED, 2);
 	private static final IconStore STORE = IconStoreFactory.create();
 
 	MainView() {
@@ -371,7 +376,18 @@ public abstract class MainView extends JLabel {
 		        && executableExtensions.contains(FileUtils.getExtension(linkText.toLowerCase()));
 	}
 
-	void updateText(String nodeText) {
+	void updateText(NodeModel nodeModel) {
+		String nodeText = nodeModel.getText();
+		try {
+			for (ITextTransformer textTransformer : getTextTransformers()) {
+				nodeText = textTransformer.transform(nodeText, nodeModel);
+			}
+        }
+        catch (Exception e) {
+        	nodeText = nodeModel.getText();
+        	setBorder(errorBorder );
+        	setToolTipText(e.getLocalizedMessage());
+        }
 		final MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
 		if (map == null) {
 			return;
@@ -486,4 +502,12 @@ public abstract class MainView extends JLabel {
 	public Point getToolTipLocation(final MouseEvent event) {
 		return new Point(0, getHeight());
 	}
+
+	private List<ITextTransformer> getTextTransformers() {
+		if (textTransformers == null) {
+			final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+			textTransformers = mapView.getModeController().getTextTransformers();
+		}
+	    return textTransformers;
+    }
 }
