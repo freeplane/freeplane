@@ -18,9 +18,11 @@ public class Activator implements BundleActivator {
 	private final class SpreadsheetRegistration implements IModeControllerExtensionProvider {
 		private MModeController modeController;
 
+		// implements IModeControllerExtensionProvider.installExtension()
 		public void installExtension(final ModeController modeController) {
 			this.modeController = (MModeController) modeController;
 			addMenuItems(modeController);
+			modeController.addTextTransformer(new SpreadsheetTextTransformer(this.modeController));
 		}
 
 		private void addMenuItems(final ModeController modeController) {
