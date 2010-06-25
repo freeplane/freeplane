@@ -42,7 +42,7 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
  * 
  * @author Volker Boerchers
  */
-public class ScriptingConfiguration {
+class ScriptingConfiguration {
 	static class ScriptMetaData {
 		private final TreeSet<ExecutionMode> executionModes;
 		private boolean cacheContent = false;

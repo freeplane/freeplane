@@ -1193,7 +1193,7 @@ public class NodeView extends JComponent implements INodeView {
 				}
 			}
 		}
-		mainView.updateText(getModel().toString());
+		mainView.updateText(getModel());
 		updateToolTip();
 		revalidate();
 	}

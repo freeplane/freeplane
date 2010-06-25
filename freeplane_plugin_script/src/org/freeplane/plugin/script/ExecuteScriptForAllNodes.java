@@ -10,22 +10,17 @@ import org.freeplane.features.mindmapmode.MModeController;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/scripting" })
 public class ExecuteScriptForAllNodes extends AFreeplaneAction {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	final private ScriptingEngine engine;
 
-	public ExecuteScriptForAllNodes(final Controller controller, final ScriptingEngine engine) {
+	public ExecuteScriptForAllNodes(final Controller controller) {
 		super("ExecuteScriptForAllNodes", controller);
-		this.engine = engine;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = getController().getMap().getRootNode();
 		getController().getViewController().setWaitingCursor(true);
 		try {
-			engine.performScriptOperationRecursive((MModeController) getModeController(), node);
+			ScriptingEngine.performScriptOperationRecursive((MModeController) getModeController(), node);
 		}
 		finally {
 			getController().getViewController().setWaitingCursor(false);

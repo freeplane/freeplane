@@ -122,11 +122,11 @@ class ScriptEditor extends AFreeplaneAction {
 			}
 		}
 
-		public boolean executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
+		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			final String script = getScript(pIndex).getScript();
 			ScriptingEngine.setNoUserPermissionRequired(true);
 			return ScriptingEngine.executeScript(mMindMapController.getMapController().getSelectedNode(), script,
-			    mMindMapController, pErrorHandler, pOutStream, reg.getScriptCookies());
+			    mMindMapController, pErrorHandler, pOutStream);
 		}
 
 		public int getAmountOfScripts() {
@@ -161,15 +161,10 @@ class ScriptEditor extends AFreeplaneAction {
 		}
 	}
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	final private ScriptingRegistration reg;
 
-	public ScriptEditor(final Controller controller, final ScriptingRegistration reg) {
+	public ScriptEditor(final Controller controller) {
 		super("ScriptEditor", controller);
-		this.reg = reg;
 	}
 
 	public void actionPerformed(final ActionEvent e) {

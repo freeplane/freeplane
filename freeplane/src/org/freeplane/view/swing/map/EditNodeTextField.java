@@ -248,7 +248,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final MainView mainView = (MainView) textfield.getParent();
 		textfield = null;
 		mainView.setPreferredSize(null);
-		mainView.updateText(getNode().getText());
+		mainView.updateText(getNode());
 		mainView.setHorizontalAlignment(JLabel.CENTER);
 		mainView.remove(0);
 		mainView.revalidate();

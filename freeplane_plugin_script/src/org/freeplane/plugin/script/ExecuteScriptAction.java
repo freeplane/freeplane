@@ -52,17 +52,14 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		ON_SELECTED_NODE_RECURSIVELY
 	}
 
-	final private ScriptingEngine engine;
 	private final String script;
 	private final ExecutionMode mode;
 	private final boolean cacheContent;
 	private String content;
 
-	public ExecuteScriptAction(final Controller controller, final ScriptingEngine engine, final String scriptName,
-	                           final String menuItemName, final String script, final ExecutionMode mode,
-	                           final boolean cacheContent) {
+	public ExecuteScriptAction(final Controller controller, final String scriptName, final String menuItemName,
+	                           final String script, final ExecutionMode mode, final boolean cacheContent) {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), controller, menuItemName, null);
-		this.engine = engine;
 		this.script = script;
 		this.mode = mode;
 		this.cacheContent = cacheContent;
@@ -74,7 +71,6 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		getController().getViewController().setWaitingCursor(true);
-		boolean result = true;
 		try {
 			String scriptContent = getContentIfCached();
 			if (scriptContent == null) {
@@ -90,21 +86,23 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 			final MModeController modeController = (MModeController) getController().getModeController();
 			modeController.startTransaction();
 			for (final NodeModel node : nodes) {
-				if (mode == ExecutionMode.ON_SELECTED_NODE_RECURSIVELY) {
-					// TODO: ensure that a script is invoked only once on every node?
-					// (might be a problem with recursive actions if parent and child
-					// are selected.)
-					result = engine.executeScriptRecursive(modeController, node, scriptContent);
-				}
-				else {
-					result = engine.executeScript(modeController, node, scriptContent);
-				}
-				if (!result) {
-					LogUtils.warn("error executing script " + script + " - giving up");
-					modeController.delayedRollback();
-					UITools.errorMessage(TextUtils.getText("ExecuteScriptError.text"));
-					return;
-				}
+				try {
+					if (mode == ExecutionMode.ON_SELECTED_NODE_RECURSIVELY) {
+						// TODO: ensure that a script is invoked only once on every node?
+						// (might be a problem with recursive actions if parent and child
+						// are selected.)
+						ScriptingEngine.executeScriptRecursive(modeController, node, scriptContent);
+					}
+					else {
+						ScriptingEngine.executeScript(modeController, node, scriptContent);
+					}
+                }
+                catch (ExecuteScriptException ex) {
+                	LogUtils.warn("error executing script " + script + " - giving up");
+                	modeController.delayedRollback();
+                	UITools.errorMessage(TextUtils.getText("ExecuteScriptError.text"));
+                	return;
+                }
 			}
 			modeController.delayedCommit();
 		}

@@ -12,11 +12,9 @@ import org.freeplane.features.mindmapmode.MModeController;
 public class ExecuteScriptForSelectionAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 	private boolean success;
-	final private ScriptingEngine engine;
 
-	public ExecuteScriptForSelectionAction(final Controller controller, final ScriptingEngine engine) {
+	public ExecuteScriptForSelectionAction(final Controller controller) {
 		super("ExecuteScriptForSelectionAction", controller);
-		this.engine = engine;
 	}
 
 	@Override
@@ -36,6 +34,6 @@ public class ExecuteScriptForSelectionAction extends AMultipleNodeAction {
 		if (!success) {
 			return;
 		}
-		success = engine.performScriptOperation((MModeController) getModeController(), node);
+		success = ScriptingEngine.performScriptOperation((MModeController) getModeController(), node);
 	}
 }

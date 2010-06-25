@@ -28,6 +28,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -39,7 +40,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.NodeModel;
@@ -53,7 +53,7 @@ import org.freeplane.plugin.script.proxy.ProxyFactory;
 /**
  * @author foltin
  */
-class ScriptingEngine {
+public class ScriptingEngine {
 	public interface IErrorHandler {
 		void gotoLine(int pLineNumber);
 	}
@@ -67,23 +67,23 @@ class ScriptingEngine {
 	public static final String RESOURCES_SCRIPT_DIRECTORIES = "script_directories";
 	public static final String SCRIPT_PREFIX = "script";
 	private static final long serialVersionUID = 1L;
-	// FIXME: why static?
 	private static final HashMap<String, Object> sScriptCookies = new HashMap<String, Object>();
 	private static Boolean noUserPermissionRequired = false;
+	private static Pattern attributeNamePattern = Pattern.compile("^([a-zA-Z0-9_]*)=");
 
 	/**
-	 * @return true, if further scripts can be executed, false, if the user
-	 *         canceled or an error occurred.
+	 * @return the result of the script, or null, if the user has cancelled.
+	 * @throws ExecuteScriptException on errors
 	 */
-	static boolean executeScript(final NodeModel node, String script, final MModeController pMindMapController,
-	                             final IErrorHandler pErrorHandler, final PrintStream pOutStream,
-	                             final HashMap<String, Object> pScriptCookies) {
+	static Object executeScript(final NodeModel node, String script, final MModeController pMindMapController,
+	                            final IErrorHandler pErrorHandler, final PrintStream pOutStream)
+	        throws ExecuteScriptException {
 		if (!noUserPermissionRequired) {
 			final int showResult = OptionalDontShowMeAgainDialog.show(pMindMapController.getController(),
 			    "really_execute_script", "confirmation", RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 			if (showResult != JOptionPane.OK_OPTION) {
-				return false;
+				return null;
 			}
 		}
 		noUserPermissionRequired = Boolean.TRUE;
@@ -93,19 +93,16 @@ class ScriptingEngine {
 		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
 		boolean assignResult = false;
 		String assignTo = null;
-		if (script.startsWith("=")) {
-			script = script.substring(1);
+		final Matcher matcher = attributeNamePattern.matcher(script);
+		if (matcher.matches()) {
 			assignResult = true;
-		}
-		else {
-			final int indexOfEquals = script.indexOf('=');
-			if (indexOfEquals > 0) {
-				final String start = script.substring(0, indexOfEquals);
-				if (start.matches("[a-zA-Z0-9_]+")) {
-					assignTo = start;
-					script = script.substring(indexOfEquals + 1);
-					assignResult = true;
-				}
+			String attributeName = matcher.group(1);
+			if (attributeName.length() == 0) {
+				script = script.substring(1);
+			}
+			else {
+				assignTo = attributeName;
+				script = script.substring(matcher.end());
 			}
 		}
 		/*
@@ -126,9 +123,6 @@ class ScriptingEngine {
 		/* Signature */
 		/* *************** */
 		final PrintStream oldOut = System.out;
-		Object value = null;
-		GroovyRuntimeException e1 = null;
-		Throwable e2 = null;
 		boolean filePerm = Boolean.parseBoolean(executeWithoutFileRestriction);
 		boolean networkPerm = Boolean.parseBoolean(executeWithoutNetworkRestriction);
 		boolean execPerm = Boolean.parseBoolean(executeWithoutExecRestriction);
@@ -168,33 +162,24 @@ class ScriptingEngine {
 					}
 				}
 			};
-			value = shell.evaluate(script);
+			Object result = shell.evaluate(script);
+			if (assignResult && result != null) {
+				if (assignTo == null) {
+					((MTextController) TextController.getController(pMindMapController)).setNodeText(node, result
+					    .toString());
+				}
+				else {
+					((MAttributeController) AttributeController.getController(pMindMapController)).editAttribute(node,
+					    assignTo, result.toString());
+				}
+			}
+			return result;
 		}
-		catch (final GroovyRuntimeException e) {
-			e1 = e;
-		}
-		catch (final Throwable e) {
-			e2 = e;
-		}
-		finally {
-			System.setOut(oldOut);
-			/* restore preferences (and assure that the values are unchanged!). */
-			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-			    executeWithoutAsking);
-			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
-			    executeWithoutFileRestriction);
-			ResourceController.getResourceController().setProperty(
-			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION, executeWithoutNetworkRestriction);
-			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
-			    executeWithoutExecRestriction);
-			ResourceController.getResourceController().setProperty(RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
-			    signedScriptsWithoutRestriction);
-		}
-		/*
-		 * Cover exceptions in normal security context (ie. no problem with
-		 * (log) file writing etc.)
-		 */
-		if (e1 != null) {
+		catch (final GroovyRuntimeException e1) {
+			/*
+			 * Cover exceptions in normal security context (ie. no problem with
+			 * (log) file writing etc.)
+			 */
 			final String resultString = e1.getMessage();
 			pOutStream.print("message: " + resultString);
 			final ModuleNode module = e1.getModule();
@@ -211,9 +196,9 @@ class ScriptingEngine {
 			}
 			pOutStream.print("Line number: " + lineNumber);
 			pErrorHandler.gotoLine(lineNumber);
-			return false;
+			throw new ExecuteScriptException(e1.getMessage(), e1);
 		}
-		if (e2 != null) {
+		catch (final Throwable e2) {
 			pMindMapController.getMapController().select(node);
 			LogUtils.warn(e2);
 			pOutStream.print(e2.getMessage());
@@ -221,20 +206,22 @@ class ScriptingEngine {
 			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");
 			UITools.errorMessage(e2.getClass().getName() + ": " + cause
 			        + ((cause.length() != 0 && message.length() != 0) ? ", " : "") + message);
-			return false;
+			throw new ExecuteScriptException(e2.getMessage(), e2);
 		}
-		pOutStream.print(TextUtils.getText("plugins/ScriptEditor/window.Result") + value);
-		if (assignResult && value != null) {
-			if (assignTo == null) {
-				((MTextController) TextController.getController(pMindMapController))
-				    .setNodeText(node, value.toString());
-			}
-			else {
-				((MAttributeController) AttributeController.getController(pMindMapController)).editAttribute(node,
-				    assignTo, value.toString());
-			}
+		finally {
+			System.setOut(oldOut);
+			/* restore preferences (and assure that the values are unchanged!). */
+			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+			    executeWithoutAsking);
+			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
+			    executeWithoutFileRestriction);
+			ResourceController.getResourceController().setProperty(
+			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION, executeWithoutNetworkRestriction);
+			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
+			    executeWithoutExecRestriction);
+			ResourceController.getResourceController().setProperty(RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
+			    signedScriptsWithoutRestriction);
 		}
-		return true;
 	}
 
 	public static int findLineNumberInString(final String resultString, int lineNumber) {
@@ -247,29 +234,21 @@ class ScriptingEngine {
 		return lineNumber;
 	}
 
-	final private ScriptingRegistration reg;
-
-	public ScriptingEngine(final ScriptingRegistration reg) {
-		this.reg = reg;
-	}
-
-	boolean executeScript(final MModeController modeController, final NodeModel node, final String script) {
+	public static Object executeScript(final MModeController modeController, final NodeModel node, final String script) {
 		return ScriptingEngine.executeScript(node, script, modeController, new IErrorHandler() {
 			public void gotoLine(final int pLineNumber) {
 			}
-		}, System.out, reg.getScriptCookies());
+		}, System.out);
 	}
 
-	boolean executeScriptRecursive(final MModeController modeController, final NodeModel node, final String script) {
+	static Object executeScriptRecursive(final MModeController modeController, final NodeModel node, final String script) {
 		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
-			if (!executeScriptRecursive(modeController, iter.next(), script)) {
-				return false;
-			}
+			executeScriptRecursive(modeController, iter.next(), script);
 		}
 		return executeScript(modeController, node, script);
 	}
 
-	boolean performScriptOperationRecursive(final MModeController modeController, final NodeModel node) {
+	static boolean performScriptOperationRecursive(final MModeController modeController, final NodeModel node) {
 		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
 			final NodeModel child = iter.next();
 			if (!performScriptOperationRecursive(modeController, child)) {
@@ -279,7 +258,7 @@ class ScriptingEngine {
 		return performScriptOperation(modeController, node);
 	}
 
-	boolean performScriptOperation(final MModeController modeController, final NodeModel node) {
+	static boolean performScriptOperation(final MModeController modeController, final NodeModel node) {
 		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		if (attributes == null) {
 			return true;
@@ -288,10 +267,7 @@ class ScriptingEngine {
 			final String attrKey = (String) attributes.getName(row);
 			final String script = (String) attributes.getValue(row);
 			if (attrKey.startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
-				final boolean result = executeScript(modeController, node, script);
-				if (!result) {
-					return false;
-				}
+				executeScript(modeController, node, script);
 			}
 		}
 		return true;

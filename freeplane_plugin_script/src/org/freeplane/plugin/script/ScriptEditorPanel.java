@@ -109,7 +109,8 @@ class ScriptEditorPanel extends JDialog {
 
 		void endDialog(boolean pIsCanceled);
 
-		boolean executeScript(int pIndex, PrintStream outStream, IErrorHandler pErrorHandler);
+		Object executeScript(int pIndex, PrintStream outStream, IErrorHandler pErrorHandler)
+		        throws ExecuteScriptException;
 
 		int getAmountOfScripts();
 
@@ -191,7 +192,9 @@ class ScriptEditorPanel extends JDialog {
 			storeCurrent();
 			if (!mScriptList.isSelectionEmpty()) {
 				mScriptResultField.setText("");
-				mScriptModel.executeScript(mScriptList.getSelectedIndex(), getPrintStream(), getErrorHandler());
+				final Object result = mScriptModel.executeScript(mScriptList.getSelectedIndex(), getPrintStream(),
+				    getErrorHandler());
+				getPrintStream().print(TextUtils.getText("plugins/ScriptEditor/window.Result") + result);
 			}
 		}
 	}

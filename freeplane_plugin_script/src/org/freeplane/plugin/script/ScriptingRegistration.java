@@ -72,10 +72,9 @@ class ScriptingRegistration {
 			}
 		}
 
-		public boolean executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
-			ScriptingEngine.setNoUserPermissionRequired(true);
+		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
-			    modeController, pErrorHandler, pOutStream, getScriptCookies());
+			    modeController, pErrorHandler, pOutStream);
 		}
 
 		public int getAmountOfScripts() {
@@ -138,15 +137,13 @@ class ScriptingRegistration {
 		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
 		addPropertiesToOptionPanel();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		menuBuilder.addAnnotatedAction(new ScriptEditor(controller, this));
-		final ScriptingEngine scriptingEngine = new ScriptingEngine(this);
-		menuBuilder.addAnnotatedAction(new ExecuteScriptForAllNodes(controller, scriptingEngine));
-		menuBuilder.addAnnotatedAction(new ExecuteScriptForSelectionAction(controller, scriptingEngine));
-		registerScripts(controller, menuBuilder, scriptingEngine);
+		menuBuilder.addAnnotatedAction(new ScriptEditor(controller));
+		menuBuilder.addAnnotatedAction(new ExecuteScriptForAllNodes(controller));
+		menuBuilder.addAnnotatedAction(new ExecuteScriptForSelectionAction(controller));
+		registerScripts(controller, menuBuilder);
 	}
 
-	private void registerScripts(final Controller controller, final MenuBuilder menuBuilder,
-	                             final ScriptingEngine scriptingEngine) {
+	private void registerScripts(final Controller controller, final MenuBuilder menuBuilder) {
 		final ScriptingConfiguration configuration = new ScriptingConfiguration();
 		final String scriptsParentLocation = MENU_BAR_SCRIPTING_LOCATION;
 		final String scriptsLocation = scriptsParentLocation + "/scripts";
@@ -159,7 +156,7 @@ class ScriptingRegistration {
 			// in the worst case three actions will cache a script - should not matter that much since it's unlikely
 			// that one script is used in multiple modes by the same user
 			for (final ExecutionMode executionMode : scriptMetaData.getExecutionModes()) {
-				addMenuItem(controller, menuBuilder, scriptingEngine, location, entry, executionMode, scriptMetaData
+				addMenuItem(controller, menuBuilder, location, entry, executionMode, scriptMetaData
 				    .cacheContent());
 			}
 		}
@@ -173,13 +170,12 @@ class ScriptingRegistration {
 	}
 
 	private void addMenuItem(final Controller controller, final MenuBuilder menuBuilder,
-	                         final ScriptingEngine scriptingEngine, final String location,
-	                         final Entry<String, String> entry, final ExecutionMode executionMode,
-	                         final boolean cacheContent) {
+	                         final String location, final Entry<String, String> entry,
+	                         final ExecutionMode executionMode, final boolean cacheContent) {
 		final String scriptName = entry.getKey();
 		final String key = ExecuteScriptAction.getExecutionModeKey(executionMode);
 		final String menuName = TextUtils.format(key, new Object[] { scriptName });
-		menuBuilder.addAction(location, new ExecuteScriptAction(controller, scriptingEngine, scriptName, menuName,
-		    entry.getValue(), executionMode, cacheContent), MenuBuilder.AS_CHILD);
+		menuBuilder.addAction(location, new ExecuteScriptAction(controller, scriptName, menuName, entry.getValue(),
+		    executionMode, cacheContent), MenuBuilder.AS_CHILD);
 	}
 }
