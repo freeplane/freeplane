@@ -323,7 +323,7 @@ public interface Proxy {
 		int getNodeLevel(boolean countHidden);
 		
 		/** get the note text with all HTML tags removed. */
-		String getNotePlainText();
+		String getPlainNoteText();
 
 		String getNoteText();
 
@@ -364,7 +364,7 @@ public interface Proxy {
 		void setFolded(boolean folded);
 		
 		/** set the note text. Required HTML tags will be automatically added. */
-		void setNotePlainText(String text);
+		void setPlainNoteText(String text);
 
 		void setNoteText(String text);
 		

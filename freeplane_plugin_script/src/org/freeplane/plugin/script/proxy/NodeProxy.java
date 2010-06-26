@@ -116,7 +116,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return getDelegate().getNodeLevel(countHidden);
 	}
 
-	public String getNotePlainText() {
+	public String getPlainNoteText() {
 		final String noteText = NoteModel.getNoteText(getDelegate());
 		return noteText == null ? null : HtmlUtils.htmlToPlain(noteText);
 	}
@@ -203,7 +203,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		mapController.setFolded(getDelegate(), folded);
 	}
 
-	public void setNotePlainText(String text) {
+	public void setPlainNoteText(String text) {
 		final MNoteController noteController = (MNoteController) NoteController.getController(getModeController());
 		noteController.setNoteText(getDelegate(), (text == null ? null : HtmlUtils.plainToHTML(text)));
     }
