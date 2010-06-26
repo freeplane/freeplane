@@ -360,7 +360,7 @@
 		</exec>
 	</target>
 	
-	<target name="dist" depends="clean, bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac">
+	<target name="dist" depends="clean, bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac">
         <copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
         <copy file="${build}/bzrinfo.txt" tofile="${dist}/bzrinfo${branch-nick}-${ver}.txt" failonerror="false"/>
 	</target>
