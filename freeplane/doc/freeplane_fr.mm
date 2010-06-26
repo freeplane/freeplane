@@ -13,7 +13,7 @@
   </body>
 </html></richcontent>
 <font NAME="Dialog" SIZE="18" BOLD="true"/>
-<hook NAME="MapStyle" zoom="1.5" max_node_width="600"/>
+<hook NAME="MapStyle" max_node_width="600"/>
 <node FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1277183184328" HGAP="24" VSHIFT="-45">
 <richcontent TYPE="NODE">
 <html>
@@ -242,8 +242,8 @@
 </node>
 <node TEXT="Vous pouvez ajouter des connecteurs entre noeuds de la m&#xea;me carte" FOLDED="true" ID="_Freeplane_Link_1750585847" CREATED="1270892460668" MODIFIED="1277184731656" COLOR="#407000" HGAP="22" VSHIFT="-24">
 <node TEXT="connecter un noeud" ID="_Freeplane_Link_1212380407" CREATED="1270892460668" MODIFIED="1277185157250">
-<arrowlink COLOR="#99ff66" DESTINATION="_Freeplane_Link_880551392" STARTINCLINATION="64;0;" ENDINCLINATION="64;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <arrowlink DESTINATION="_Freeplane_Link_1249400461" STARTINCLINATION="52;0;" ENDINCLINATION="52;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink COLOR="#99ff66" DESTINATION="_Freeplane_Link_880551392" STARTINCLINATION="64;0;" ENDINCLINATION="64;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="&#xe0; un autre" ID="_Freeplane_Link_1249400461" CREATED="1270892460669" MODIFIED="1277185157250"/>
 <node TEXT="avec des couleurs diff&#xe9;rentes" ID="_Freeplane_Link_880551392" CREATED="1270892460670" MODIFIED="1277185217937">
@@ -723,7 +723,7 @@
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!
+      <!--<!<!<!<!<!<!<!<!<!<!<!<!
         body { background-color: #ffffff; font-size: 12pt; font-family: SansSerif }
         p { margin-top: 0 }
       -->
@@ -742,7 +742,7 @@
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!
+      <!--<!<!<!<!<!<!<!<!<!<!<!<!
         p { margin-top: 0 }
       -->
     </style>
@@ -760,7 +760,7 @@
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!
+      <!--<!<!<!<!<!<!<!<!<!<!<!<!
         p { margin-top: 0 }
       -->
     </style>
@@ -777,7 +777,7 @@
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!
+      <!--<!<!<!<!<!<!<!<!<!<!<!<!
         p { margin-top: 0 }
       -->
     </style>
@@ -796,7 +796,7 @@
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!
+      <!--<!<!<!<!<!<!<!<!<!<!<!<!
         p { margin-top: 0 }
       -->
     </style>
@@ -813,7 +813,7 @@
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!
+      <!--<!<!<!<!<!<!<!<!<!<!<!<!
         p { margin-top: 0 }
       -->
     </style>
@@ -830,7 +830,7 @@
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!
+      <!--<!<!<!<!<!<!<!<!<!<!<!<!
         p { margin-top: 0 }
       -->
     </style>
@@ -1085,30 +1085,29 @@
 <node TEXT="Pour installer Freeplane sur Linux, t&#xe9;l&#xe9;charger le Java Runtime Environment et l&apos;application Freeplane. Installez Java en premier lieu, puis d&#xe9;compressez Freeplane. Pour d&#xe9;marrer Freeplane, ex&#xe9;cutez freeplane.sh" ID="ID_1405968395" CREATED="1275400917568" MODIFIED="1275400917568"/>
 <node TEXT="Pour installer Freeplane sur MacOS X s&apos;assurer que votre syst&#xe8;me est enti&#xe8;rement &#xe0; jour et particuli&#xe8;rement Java. La mise &#xe0; jour Logicielle est localis&#xe9;e sous le logo Apple dans le coin sup&#xe9;rieur gauche de l&apos;&#xe9;cran. &#xa;&#xa;T&#xe9;l&#xe9;charger alors la version Sp&#xe9;cifique de Mac de Freeplane. La version .dmg est la plus simple &#xe0; installer, mais une version .zip est &#xe9;galement disponible. A la fin du t&#xe9;l&#xe9;chargement, le fichier peut &#xea;tre automatiquement &quot;mont&#xe9;&quot; (ou d&#xe9;-zipp&#xe9;) selon le param&#xe9;trage de votre logiciel de navigation, sinon double-cliquez sur le fichier .dmg ou .zip. &#xa;&#xa;Une ic&#xf4;ne Freeplane devrait &#xea;tre visible &#xe0; l&apos;&#xe9;cran. Cette ic&#xf4;ne peut &#xea;tre plac&#xe9;e dans le r&#xe9;pertoire des applications." ID="ID_223074114" CREATED="1275400917568" MODIFIED="1277391973843"/>
 </node>
-<node TEXT="Macintosh Usage Notes&#xa;[TO TRANSLATE]" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1530607683" CREATED="1270892460643" MODIFIED="1277391991375" COLOR="#006666">
+<node TEXT="Informations &#xe0; l&apos;attention des utilisateurs Mac OS X" FOLDED="true" POSITION="left" ID="ID_640737748" CREATED="1270892460643" MODIFIED="1276003275984" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<cloud COLOR="#ffffcc" WIDTH="0"/>
-<node TEXT="Freeplane recently added full support for Apple&apos;s Mac OS X operating system. Some of the documentation is still oriented toward PC users running Windows or Linux. Mac users will be able to follow along by keeping some differences in mind, listed below." FOLDED="true" ID="ID_752234886" CREATED="1270892460643" MODIFIED="1272034409877">
-<node TEXT="Command key versus the Ctrl (control) key" FOLDED="true" ID="ID_274373799" CREATED="1272034412047" MODIFIED="1272500980501">
-<node TEXT="When Freeplane runs under Mac OS X, you generally will use the Apple Command key rather than the &quot;control&quot; key, which is labeled Ctrl on a PC. The Command key is marked with a cloverleaf &#x2318; symbol, and may also be captioned as &quot;command&quot; or &quot;cmd&quot;, or be marked with an Apple logo." ID="ID_395674676" CREATED="1272029514331" MODIFIED="1272502497708"/>
-<node TEXT="When you see the Ctrl key mentioned in Freeplane&apos;s documentation, in most cases you should use the Command key instead." ID="ID_124270811" CREATED="1272034546855" MODIFIED="1272501133669"/>
-<node TEXT="In a very few cases, even on your Mac, Freeplane actually requires using the &quot;control&quot; key rather than the Command key. In these cases, this document refers to the key explicitly as Control, for emphasis. In other cases, if the documentation refers to the Ctrl key, yet the Command key fails to work as a substitute on your Mac, try the &quot;control&quot; key instead." ID="ID_1031450682" CREATED="1272034546807" MODIFIED="1272502562154"/>
+<node TEXT="Mac OS X est enti&#xe8;rement support&#xe9; par Freeplane. &#xa;Une partie de la documentation est toujours tr&#xe8;s &#xa;orient&#xe9;e Windows ou Linux.  Les utilisateurs Mac &#xa;peuvent toutefois se r&#xe9;f&#xe9;rer aux &#xe9;l&#xe9;ments suivants &#xa;pour les sp&#xe9;cificit&#xe9;s li&#xe9;es &#xe0; Mac OS." FOLDED="true" ID="ID_111622212" CREATED="1270892460643" MODIFIED="1275977156015">
+<node TEXT="Ctrl ou &quot;control&quot; ?" FOLDED="true" ID="ID_60186889" CREATED="1272034412047" MODIFIED="1275976574281">
+<node TEXT="Les touche &quot;pomme&quot; ou &quot;command&quot; ou &quot;cmd&quot; des Mac est le pendant de la touche Ctrl (Control) des PC." ID="ID_83315164" CREATED="1272029514331" MODIFIED="1275976291109"/>
+<node TEXT="Dans la plupart des cas, la touche Ctrl des PC doit &#xea;tre remplac&#xe9;e par cette touche Command." ID="ID_174530999" CREATED="1272034546855" MODIFIED="1275976344281"/>
+<node TEXT="Toutefois, dans quelques rares cas, c&apos;est bien la touche &quot;Control&quot; qui doit &#xea;tre utilis&#xe9;e. Si la touche &quot;Command&quot; ne fonctionne pas, il convient d&apos;utiliser la touche &quot;Control&quot;." ID="ID_51393310" CREATED="1272034546807" MODIFIED="1275976526078"/>
 </node>
-<node TEXT="Mice, Right Clicks and Context Menus" FOLDED="true" ID="ID_1326732850" CREATED="1272034661406" MODIFIED="1272034719554">
-<node TEXT="Many Apple-branded mice and trackpads have only one clickable &quot;button.&quot; To bring up a context-sensitive menu (or &quot;context menu&quot;), Mac users can hold down the Control key while clicking the mouse (abbreviated as &quot;Control + click&quot;). Yes, use the Control key here, rather than the Command key, because this function is built into Mac OS X so Freeplane cannot change it. Apple makes Control + click equivalent to the &quot;right click&quot; which is available on mice with two buttons." ID="ID_1259415390" CREATED="1272030826942" MODIFIED="1272034317363"/>
+<node TEXT="Souris, clic droit et menu contextuel" FOLDED="true" ID="ID_1823608872" CREATED="1272034661406" MODIFIED="1275976617312">
+<node TEXT="La plupart des souris Apple ne poss&#xe8;dent qu&apos;un bouton. Pour obtenir l&apos;&#xe9;quivalent du clic sur bouton droit d&apos;une souris PC, il faut maintenir la touche Control enfonc&#xe9;e et cliquer simultan&#xe9;ment sur la souris. Cette action permet de faire apparaitre notamment le menu contextuel sur la carte." ID="ID_328601071" CREATED="1272030826942" MODIFIED="1275976822609"/>
 </node>
-<node TEXT="Menu Differences" FOLDED="true" ID="ID_1110596300" CREATED="1272475775170" MODIFIED="1272475793114">
-<node TEXT="A few menu items are relocated in accordance with Mac OS X standards. These are listed below." ID="ID_1853446063" CREATED="1272475795702" MODIFIED="1272475981316"/>
-<node TEXT="Help &gt; About is moved to the Freeplane application menu &gt; About Freeplane." ID="ID_1154800735" CREATED="1272475988527" MODIFIED="1272490731402"/>
-<node TEXT="Tools &gt; Preferences is moved to the Freeplane application menu &gt; Preferences." ID="ID_1860427078" CREATED="1272490956135" MODIFIED="1272491068596"/>
-<node TEXT="File &gt; Quit is moved to the Freeplane application menu &gt; Quit Freeplane." ID="ID_1745832189" CREATED="1272491194401" MODIFIED="1272491228343"/>
+<node TEXT="Diff&#xe9;rences de menu" FOLDED="true" ID="ID_1474889224" CREATED="1272475775170" MODIFIED="1275976846171">
+<node TEXT="Quelques &#xe9;l&#xe9;ments du menu&#xa;sont conformes au standard Mac OS X" FOLDED="true" ID="ID_1689040279" CREATED="1272475795702" MODIFIED="1276002230062">
+<node TEXT="Aide &gt; A propos est d&#xe9;plac&#xe9; dans Menu &gt; A propos de Freeplane" ID="ID_1829822845" CREATED="1272475988527" MODIFIED="1275976968359"/>
+<node TEXT="Outils &gt; Pr&#xe9;f&#xe9;rences vers Menu &gt; Pr&#xe9;f&#xe9;rences" ID="ID_218289116" CREATED="1272490956135" MODIFIED="1275977010484"/>
+<node TEXT="Fichier &gt; Quitter vers Menu &gt; Quitter Freeplane" ID="ID_173525555" CREATED="1272491194401" MODIFIED="1275977053625"/>
 </node>
-<node TEXT="Zooming" FOLDED="true" ID="ID_590901264" CREATED="1272034779740" MODIFIED="1272034791305">
-<node TEXT="Mac OS X provides a means to zoom in on (magnify) part of the screen, by holding down the Control key while turning the mouse wheel forward. This facility is built into the Mac operating system, so the function is unavailable for Freeplane to use for control of its own Zoom function. So Mac users must use one of the alternate means which Freeplane provides to adjust its zoom level. " ID="ID_1955741602" CREATED="1272031370038" MODIFIED="1272034875880"/>
-<node TEXT="If you are unfamiliar with OS X&apos;s Control + mouse wheel function, be aware that some mouse functions become awkward to use, or even unusable, while zoomed in. To return the screen to normal, hold down the Conrol key and turn the mouse wheel backward to zoom back out all the way." ID="ID_842528755" CREATED="1272034875909" MODIFIED="1272034875910"/>
 </node>
-<node TEXT="Freeplane Wiki" FOLDED="true" ID="ID_1142057644" CREATED="1272034993198" MODIFIED="1272035003988">
-<node TEXT="Visit the Macintosh page on Freeplane&apos;s online Wiki to learn more about running Freeplane on a Mac." ID="ID_275313424" CREATED="1272035005736" MODIFIED="1272035180163" LINK="http://freeplane.sourceforge.net/wiki/index.php/Macintosh"/>
+<node TEXT="Zooming" FOLDED="true" ID="ID_1822134483" CREATED="1272034779740" MODIFIED="1272034791305">
+<node TEXT="Mac OS X permet d&apos;effectuer un zoom d&apos;un partie de l&apos;&#xe9;cran en tournant la molette de la souris vers le haut tout en maintenant la touche Control enfonc&#xe9;e. Cette fonction est propre &#xe0; Mac OS. Pour zoomer, la solution doit passer par l&apos;utilisation de la fonction zoom de Freeplane." ID="ID_1431313195" CREATED="1272031370038" MODIFIED="1276003100375"/>
+</node>
+<node TEXT="Wiki Freeplane" FOLDED="true" ID="ID_307465918" CREATED="1272034993198" MODIFIED="1276003149656">
+<node TEXT="Rendez-vous sur le wiki Freeplane pour en savoir plus sur l&apos;utilisation de Freeplane sous MacOS X." ID="ID_1888636845" CREATED="1272035005736" MODIFIED="1276003215093" LINK="http://freeplane.sourceforge.net/wiki/index.php/Macintosh"/>
 </node>
 </node>
 </node>
@@ -1167,5 +1166,3 @@
 </node>
 </node>
 </map>
-
- 	  	 
