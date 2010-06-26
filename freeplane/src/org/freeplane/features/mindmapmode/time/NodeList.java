@@ -80,6 +80,8 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.IMapSelectionListener;
+import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
@@ -94,8 +96,13 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.MindIcon;
+import org.freeplane.features.common.map.IMapChangeListener;
+import org.freeplane.features.common.map.INodeChangeListener;
+import org.freeplane.features.common.map.MapChangeEvent;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.TextController;
@@ -108,6 +115,48 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
  * @author foltin
  */
 class NodeList {
+	private final class MapChangeListener implements IMapChangeListener, INodeChangeListener, IMapSelectionListener {
+	    public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	    	disposeDialog();
+	    }
+
+		public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
+	    	disposeDialog();
+	    }
+
+	    public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	    	disposeDialog();
+	    }
+
+	    public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+	    	disposeDialog();
+	    }
+
+	    public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+	    	disposeDialog();
+	    }
+
+	    public void mapChanged(MapChangeEvent event) {
+	    	disposeDialog();
+	    }
+
+		public void nodeChanged(NodeChangeEvent event) {
+			if(event.getProperty().equals(NodeModel.NODE_TEXT)){
+				disposeDialog();
+			}
+        }
+
+		public void afterMapChange(MapModel oldMap, MapModel newMap) {
+       }
+
+		public void afterMapClose(MapModel oldMap) {
+        }
+
+		public void beforeMapChange(MapModel oldMap, MapModel newMap) {
+			disposeDialog();
+        }
+    }
+
 	static class DateRenderer extends DefaultTableCellRenderer {
 		/**
 		 * 
@@ -441,7 +490,6 @@ class NodeList {
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_SELECT = "plugins/TimeManagement.xml_Select";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
-	private static final int TYPE_DELAY_TIME = 500;
 	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = NodeList.class.getName() + "_properties";
 
 	private static String replace(final Pattern p, String text, final String replacement) {
@@ -476,10 +524,16 @@ class NodeList {
 	private final JCheckBox useRegexInReplace;
 	private final JCheckBox useRegexInFind;
 	private final JCheckBox ignoreCase;
+	final private boolean modal;
 
-	public NodeList(final ModeController modeController, final boolean showAllNodes, final boolean searchInAllMaps) {
+	public NodeList(final ModeController modeController,  final boolean showAllNodes, final boolean searchInAllMaps) {
+	    this(modeController, false, showAllNodes, searchInAllMaps);
+    }
+
+	public NodeList(final ModeController modeController, final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps) {		
 		this.modeController = modeController;
 		controller = modeController.getController();
+		this.modal = modal;
 		this.showAllNodes = showAllNodes;
 		this.searchInAllMaps = searchInAllMaps;
 		mFilterTextSearchField = new JComboBox();
@@ -512,12 +566,21 @@ class NodeList {
 		useRegexInFind.addChangeListener(listener);
 		ignoreCase = new JCheckBox();
 		ignoreCase.addChangeListener(listener);
+		final MapChangeListener mapChangeListener = new MapChangeListener();
+		final MapController mapController = modeController.getMapController();
+		mapController.addMapChangeListener(mapChangeListener);
+		mapController.addNodeChangeListener(mapChangeListener);
+		controller.getMapViewManager().addMapSelectionListener(mapChangeListener);
+
 	}
 
 	/**
 	 *
 	 */
 	private void disposeDialog() {
+    	if(dialog == null || !dialog.isVisible()){
+    		return;
+    	}
 		final TimeWindowConfigurationStorage storage = new TimeWindowConfigurationStorage();
 		for (int i = 0; i < timeTable.getColumnCount(); i++) {
 			final TimeWindowColumnSetting setting = new TimeWindowColumnSetting();
@@ -637,13 +700,17 @@ class NodeList {
 	}
 
 	public void startup() {
+		if(dialog != null){
+			dialog.toFront();
+			return;
+		}
 		NodeList.COLUMN_MODIFIED = TextUtils.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
 		NodeList.COLUMN_CREATED = TextUtils.getText(PLUGINS_TIME_LIST_XML_CREATED);
 		NodeList.COLUMN_ICONS = TextUtils.getText(PLUGINS_TIME_LIST_XML_ICONS);
 		NodeList.COLUMN_TEXT = TextUtils.getText(PLUGINS_TIME_LIST_XML_TEXT);
 		NodeList.COLUMN_DATE = TextUtils.getText(PLUGINS_TIME_LIST_XML_DATE);
 		NodeList.COLUMN_NOTES = TextUtils.getText(PLUGINS_TIME_LIST_XML_NOTES);
-		dialog = new JDialog(modeController.getController().getViewController().getFrame(), true /* modal */);
+		dialog = new JDialog(modeController.getController().getViewController().getFrame(), modal /* modal */);
 		String windowTitle;
 		if (showAllNodes) {
 			windowTitle = PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES;
@@ -734,6 +801,7 @@ class NodeList {
 		UITools.setScrollbarIncrement(pane);
 		layoutConstraints.gridy++;
 		GridBagConstraints tableConstraints = (GridBagConstraints) layoutConstraints.clone();
+		tableConstraints.weightx = 1;
 		tableConstraints.weighty = 10;
 		tableConstraints.fill = GridBagConstraints.BOTH;
 		contentPane.add(pane, tableConstraints);
@@ -742,17 +810,6 @@ class NodeList {
 		GridBagConstraints treeConstraints = (GridBagConstraints) layoutConstraints.clone();
 		treeConstraints.fill = GridBagConstraints.BOTH;
 		contentPane.add(new JScrollPane(mTreeLabel), treeConstraints);
-		final AbstractAction selectAction = new AbstractAction(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
-			/**
-			     * 
-			     */
-			private static final long serialVersionUID = 1L;
-
-			public void actionPerformed(final ActionEvent arg0) {
-				selectSelectedRows();
-			}
-		};
-		final JButton selectButton = new JButton(selectAction);
 		final AbstractAction exportAction = new AbstractAction(TextUtils.getText("plugins/TimeManagement.xml_Export")) {
 			/**
 			     * 
@@ -796,7 +853,6 @@ class NodeList {
 
 			public void actionPerformed(final ActionEvent arg0) {
 				selectSelectedRows();
-				disposeDialog();
 			}
 		};
 		final JButton gotoButton = new JButton(gotoAction);
@@ -812,17 +868,22 @@ class NodeList {
 		};
 		final JButton cancelButton = new JButton(disposeAction);
 		/* Initial State */
-		selectAction.setEnabled(false);
 		gotoAction.setEnabled(false);
 		exportAction.setEnabled(false);
 		replaceSelectedAction.setEnabled(false);
-		final JPanel bar = ButtonBarFactory.buildGrowingBar(new JButton[] { cancelButton, exportButton,
-		        replaceAllButton, replaceSelectedButton, gotoButton, selectButton, });
+		final Box bar = Box.createHorizontalBox();
+		bar.add(Box.createHorizontalGlue());
+		bar.add(cancelButton);
+		bar.add(exportButton);
+		bar.add(replaceAllButton);
+		bar.add(replaceSelectedButton);
+		bar.add(gotoButton);
+		bar.add(Box.createHorizontalGlue());
 		layoutConstraints.gridy++;
 		contentPane.add(/* new JScrollPane */(bar), layoutConstraints);
 		final JMenuBar menuBar = new JMenuBar();
 		final JMenu menu = new JMenu(TextUtils.getText("plugins/TimeManagement.xml_menu_actions"));
-		final AbstractAction[] actionList = new AbstractAction[] { selectAction, gotoAction, replaceSelectedAction,
+		final AbstractAction[] actionList = new AbstractAction[] { gotoAction,  replaceSelectedAction,
 		        replaceAllAction, exportAction, disposeAction };
 		for (int i = 0; i < actionList.length; i++) {
 			final AbstractAction action = actionList[i];
@@ -840,7 +901,6 @@ class NodeList {
 				final ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				final boolean enable = !(lsm.isSelectionEmpty());
 				replaceSelectedAction.setEnabled(enable);
-				selectAction.setEnabled(enable);
 				gotoAction.setEnabled(enable);
 				exportAction.setEnabled(enable);
 			}
