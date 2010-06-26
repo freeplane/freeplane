@@ -117,7 +117,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	public String getNotePlainText() {
-		return HtmlUtils.htmlToPlain(NoteModel.getNoteText(getDelegate()));
+		final String noteText = NoteModel.getNoteText(getDelegate());
+		return noteText == null ? null : HtmlUtils.htmlToPlain(noteText);
 	}
 
 	public String getNoteText() {
@@ -204,7 +205,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	public void setNotePlainText(String text) {
 		final MNoteController noteController = (MNoteController) NoteController.getController(getModeController());
-		noteController.setNoteText(getDelegate(), HtmlUtils.plainToHTML(text));
+		noteController.setNoteText(getDelegate(), (text == null ? null : HtmlUtils.plainToHTML(text)));
     }
 
 	public void setNoteText(final String text) {
