@@ -174,8 +174,8 @@
 						accelerator="control PLUS" />
 					<menu_action action="DecreaseNodeFontAction"
 						accelerator="control MINUS" />
-					<menu_action action="ItalicAction" accelerator="control I" />
 					<menu_action action="BoldAction" accelerator="control B" />
+					<menu_action action="ItalicAction" accelerator="control I" />
 					<!--
 						Underlined is not implemented in the view yet. <menu_action
 						action="underlined" />
@@ -413,8 +413,8 @@
 				<menu_category name="font">
 					<menu_action action="IncreaseNodeFontAction" />
 					<menu_action action="DecreaseNodeFontAction" />
-					<menu_action action="ItalicAction" />
 					<menu_action action="BoldAction" />
+					<menu_action action="ItalicAction" />
 					<!--
 						Underlined is not implemented in the view yet. <menu_action
 						action="underlined" />
@@ -499,8 +499,8 @@
 		</menu_category>
 		<menu_separator />
 		<menu_category name="font">
-			<menu_action action="ItalicAction" />
 			<menu_action action="BoldAction" />
+			<menu_action action="ItalicAction" />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="clouds">
