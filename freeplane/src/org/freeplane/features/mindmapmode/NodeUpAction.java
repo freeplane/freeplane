@@ -33,6 +33,8 @@ import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
+import org.freeplane.features.common.addins.mapstyle.MapViewLayout;
 
 class NodeUpAction extends AFreeplaneAction {
 	/**
@@ -102,6 +104,15 @@ class NodeUpAction extends AFreeplaneAction {
 		for (final Iterator i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			nodes.add(i.next());
 		}
+		if(! node.isRoot()){
+			return nodes;
+		}
+		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node.getMap());
+		MapViewLayout layoutType = mapStyleModel.getMapViewLayout();
+		if(layoutType.equals(MapViewLayout.OUTLINE)){
+			return nodes;
+		}
+
 		Collections.sort(nodes, new Comparator() {
 			public int compare(final Object o1, final Object o2) {
 				if (o1 instanceof NodeModel) {
