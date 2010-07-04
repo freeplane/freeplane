@@ -64,6 +64,8 @@
     <delete dir="sorted" quiet="true" />
     <delete dir="${bin}" quiet="true" />
     <delete dir="${test.log}" quiet="true" />
+    <delete dir="freeplane_plugin_latex" quiet="true" />
+    <delete dir="freeplane_plugin_helloworld" quiet="true" />
   </target>
 
   <target name="test" depends="run-junit">

@@ -35,6 +35,8 @@
     <delete dir="test/sorted" quiet="true" />
     <delete dir="test/bin" quiet="true" />
     <delete dir="test/log" quiet="true" />
+    <delete dir="test/freeplane_plugin_latex" quiet="true" />
+    <delete dir="test/freeplane_plugin_helloworld" quiet="true" />
     <delete dir="${bin}" quiet="true" />
     <delete dir="${dist}" quiet="true" />
   </target>
