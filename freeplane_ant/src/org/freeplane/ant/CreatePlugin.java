@@ -187,7 +187,7 @@ public class CreatePlugin extends Task {
 		return content //
 		    .replaceAll("<classpathentry kind=\"lib\"[^>]*>\\s*", "") // .classpath special
 		    .replaceAll("(jlatexmath.jar = )", "# $1") // ant.properties special
-		    .replaceAll("lib/jlatexmath-0.8.5.jar,\\s*(lib/plugin.jar)", "$1") // MANIFEST.MF special
+		    .replaceAll("lib/jlatexmath.jar,\\s*(lib/plugin.jar)", "$1") // MANIFEST.MF special
 		    .replace("${commons-lang.jar}:${forms.jar}:${SimplyHTML.jar}:${jlatexmath.jar}", "") // build.xml special
 		    .replaceAll("latex", pluginName) //
 		    .replaceAll("Latex", TaskUtils.firstToUpper(pluginName)) //

@@ -1,12 +1,12 @@
 <project name="freeplane_ant" default="test" basedir=".">
   <property name="root" location=".." />
+  <property name="freeplane.dir" location="../.." />
   <property name="src" location="src" />
   <property name="bin" location="bin" />
   <property name="test.logdir" location="log" />
   <property name="jar" value="${root}/dist/freeplaneant.jar" />
-  <property name="google.translator.jar" value="${root}/lib/google-api-translate-java-0.92.jar" />
   <property name="junit.jar" value="${root}/lib/junit.jar" />
-  <property name="classpath" value="${google.translator.jar}:${junit.jar}:${jar}" />
+  <property name="classpath" value="${junit.jar}:${jar}" />
 
   <taskdef name="format-translation" classname="org.freeplane.ant.FormatTranslation" classpath="${jar}"/>
   <taskdef name="check-translation" classname="org.freeplane.ant.FormatTranslationCheck" classpath="${jar}"/>
@@ -34,7 +34,6 @@
   </target>
   
   <target name="check">
-    <!--check-translation dir="unsorted" includes="*.properties" failonerror="false" /-->
     <check-translation dir="unsorted" includes="*.properties" />
   </target>
 
@@ -51,7 +50,14 @@
   </target>
 
   <target name="create-plugin-batch">
-    <create-plugin baseDir="." pluginname="helloworld" hasAction="true" extensionName="world" />
+    <copy todir="./freeplane_plugin_latex">
+      <fileset dir="${freeplane.dir}/freeplane_plugin_latex">
+	<exclude name="**/dist/**" />
+	<exclude name="**/build/**" />
+	<exclude name="**/lib/**" />
+      </fileset>
+    </copy>
+    <create-plugin baseDir="." pluginname="helloworld" hasAction="true" />
   </target>
 
   <target name="clean">
@@ -63,5 +69,6 @@
   <target name="test" depends="run-junit">
     <antcall target="format" />
     <antcall target="check-sorted" />
+    <antcall target="create-plugin-batch" />
   </target>
 </project>

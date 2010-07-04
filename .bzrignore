@@ -13,4 +13,4 @@ backups
 ./freeplane_framework/build4mac
 ./freeplane_ant/test/log
 ./freeplane_ant/test/sorted
-
+./freeplane_ant/test/freeplane_plugin_*
