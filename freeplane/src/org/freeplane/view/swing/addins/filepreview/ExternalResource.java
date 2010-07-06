@@ -55,7 +55,7 @@ public class ExternalResource implements IExtension {
 	}
 
 	private URI uri;
-	private float zoom = 1f;
+	private float zoom = -1f;
 
 	public float getZoom() {
 		return zoom;
@@ -75,6 +75,22 @@ public class ExternalResource implements IExtension {
 			viewer.revalidate();
 		}
 	}
+	
+	public float setZoom(final int originalWidth, final int maximumWidth) {
+        float zoom;
+        final float zoomedWidth;
+        if(originalWidth <= maximumWidth){
+        	zoomedWidth = originalWidth;
+        	zoom = 1;
+        }
+        else{
+        	zoomedWidth = maximumWidth;
+        	zoom = zoomedWidth /originalWidth;
+        }
+        setZoom(zoom);
+        return zoom;
+    }
+
 
 	static ExternalResource getPreviewUrl(final NodeModel model) {
 		return (ExternalResource) model.getExtension(ExternalResource.class);

@@ -10,7 +10,7 @@ import javax.swing.JComponent;
 public interface IViewerFactory {
 	boolean accept(URI uri);
 
-	JComponent createViewer(ExternalResource resource, URI absoluteUri) throws MalformedURLException, IOException;
+	JComponent createViewer(ExternalResource resource, URI absoluteUri, int maximumWidth) throws MalformedURLException, IOException;
 
 	Dimension getOriginalSize(JComponent viewer);
 

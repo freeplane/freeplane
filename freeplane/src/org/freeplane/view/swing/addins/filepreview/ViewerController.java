@@ -40,6 +40,7 @@ import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.MapView;
@@ -58,10 +59,10 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return factory == null ? null : factory.createViewer(uri, preferredSize);
 		}
 
-		public JComponent createViewer(final ExternalResource resource, final URI absoluteUri)
+		public JComponent createViewer(final ExternalResource resource, final URI absoluteUri, int maximumWidth)
 		        throws MalformedURLException, IOException {
 			factory = getViewerFactory(absoluteUri);
-			return factory.createViewer(resource, absoluteUri);
+			return factory.createViewer(resource, absoluteUri, maximumWidth);
 		}
 
 		public String getDescription() {
@@ -433,8 +434,6 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		final Set<JComponent> viewers = model.getViewers();
 		viewers.add(viewer);
 		view.getContentPane().add(viewer);
-		if (model.getZoom() != -1) {
-		}
 		viewer.revalidate();
 		viewer.repaint();
 	}
@@ -515,7 +514,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		JComponent viewer = null;
 		try {
-			viewer = factory.createViewer(model, absoluteUri);
+			viewer = factory.createViewer(model, absoluteUri, MapStyleModel.getExtension(map).getMaxNodeWidth());
 		}
 		catch (final Exception e) {
 			final String info = HtmlUtils.combineTextWithExceptionInfo(uri.toString(), e);
