@@ -79,20 +79,25 @@ public class SvgViewerFactory implements IViewerFactory {
 		return TextUtils.getText("svg");
 	};
 
-	public JComponent createViewer(final ExternalResource resource, final URI uri) {
+	public JComponent createViewer(final ExternalResource resource, final URI uri, final int maximumWidth) {
 		final ViewerComponent canvas = new ViewerComponent(uri);
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 			@Override
 			public void gvtRenderingCompleted(final GVTTreeRendererEvent e) {
-				final float r = resource.getZoom();
 				final Dimension preferredSize = canvas.getOriginalSize();
-				preferredSize.width = (int) (Math.rint(preferredSize.width * r));
+				float r = resource.getZoom();
+				final int originalWidth = preferredSize.width;
+				if(r == -1){
+					r = resource.setZoom(originalWidth, maximumWidth);
+				}
+				preferredSize.width = (int) (Math.rint(originalWidth * r));
 				preferredSize.height = (int) (Math.rint(preferredSize.height * r));
 				canvas.setPreferredSize(preferredSize);
 				canvas.setLayout(new ViewerLayoutManager(1f));
 				canvas.revalidate();
 				canvas.removeGVTTreeRendererListener(this);
 			}
+
 		});
 		return canvas;
 	}
