@@ -1,0 +1,25 @@
+<project name="freeplane_toplevel" default="dist" basedir=".">
+
+	<target name="prepare">
+<!-- 		<ant dir="JOrtho_0.4_freeplane" target="dist" inheritall="false" /> -->
+		<ant dir="freeplane_ant" target="jar" inheritall="false" />
+	</target>
+
+	<target name="build" depends="prepare">
+		<ant antfile="ant/build.xml" dir="freeplane_framework" target="build" inheritall="false" />
+	</target>
+
+	<target name="dist" depends="prepare">
+		<ant antfile="ant/build.xml" dir="freeplane_framework" target="dist" inheritall="false"/>
+	</target>
+
+	<target name="clean">
+		<ant antfile="ant/build.xml" dir="freeplane_framework" target="clean" inheritall="false" />
+		<ant dir="freeplane_ant" target="clean" inheritall="false" />
+<!-- 		<ant dir="JOrtho_0.4_freeplane" target="clean" inheritall="false" /> -->
+	</target>
+
+	<target name="cleandist" depends="clean, dist">
+	</target>
+
+</project>
