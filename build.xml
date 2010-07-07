@@ -3,6 +3,7 @@
 	<target name="prepare">
 <!-- 		<ant dir="JOrtho_0.4_freeplane" target="dist" inheritall="false" /> -->
 		<ant dir="freeplane_ant" target="jar" inheritall="false" />
+		<copy file="freeplane_ant/dist/freeplaneant.jar" todir="freeplane_framework/ant/lib" />
 	</target>
 
 	<target name="build" depends="prepare">
