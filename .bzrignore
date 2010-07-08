@@ -11,6 +11,7 @@ backups
 ./freeplane_framework/windows-launcher/Freeplane.o
 ./freeplane_framework/windows-launcher/Makefile.win
 ./freeplane_framework/build4mac
+./freeplane_framework/ant/lib/freeplaneant.jar
 ./freeplane_ant/test/log
 ./freeplane_ant/test/sorted
 ./freeplane_ant/test/freeplane_plugin_*
