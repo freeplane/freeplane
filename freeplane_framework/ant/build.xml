@@ -26,10 +26,10 @@
 
     <property name="mac-jarbundler" value = "${root}/mac-jarbundler"/>
 	<property name="jarbundler.jar" value = "jarbundler-2.1.0.jar"/>
-	<taskdef name="jarbundler"
+	<taskdef name="jarbundler" onerror="report"
 			 classpath="${mac-jarbundler}/${jarbundler.jar}"
 			 classname="net.sourceforge.jarbundler.JarBundler" />
-	<taskdef name="create-plugin"
+	<taskdef name="create-plugin" onerror="report"
 			 classpath="${freeplaneant.jar}"
 			 classname="org.freeplane.ant.CreatePlugin"/>
 
@@ -172,8 +172,9 @@
 					<include name="freeplane_plugin*/**" />
 					<include name="freeplane_framework/**" />
 					<include name="JOrtho_0.4_freeplane/**" />
-                    <exclude name=".*/**" />
-                    <exclude name="**/backups/**" />
+					<include name="build.xml" />
+					<exclude name=".*/**" />
+					<exclude name="**/backups/**" />
 					<exclude name="bin/**" />
 					<exclude name="build/**" />
 					<exclude name="dist/**" />
@@ -361,10 +362,16 @@
 		<arg line="create -srcfolder ${macappfullpath} ${dist}/freeplane_app${branch-nick}-${ver}.dmg"/>
 		</exec>
 	</target>
-	
-	<target name="dist" depends="clean, bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac">
-        <copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
-        <copy file="${build}/bzrinfo.txt" tofile="${dist}/bzrinfo${branch-nick}-${ver}.txt" failonerror="false"/>
+
+	<target name="dist" depends="bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac">
+		<copy file="${workspace}/freeplane/doc/history_en.txt"
+			todir="${dist}" />
+		<copy file="${build}/bzrinfo.txt"
+			tofile="${dist}/bzrinfo${branch-nick}-${ver}.txt"
+			failonerror="false"/>
+	</target>
+
+	<target name="cleandist" depends="clean,dist">
 	</target>
 
 	<target name="check-translation">

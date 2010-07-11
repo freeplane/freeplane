@@ -1,23 +1,42 @@
-<project name="freeplane_toplevel" default="dist" basedir=".">
+<project name="GlobalFreeplane" default="dist" basedir=".">
 
 	<target name="prepare">
-<!-- 		<ant dir="JOrtho_0.4_freeplane" target="dist" inheritall="false" /> -->
-		<ant dir="freeplane_ant" target="jar" inheritall="false" />
-		<copy file="freeplane_ant/dist/freeplaneant.jar" todir="freeplane_framework/ant/lib" />
+		<ant antfile="JOrtho_0.4_freeplane/build.xml" target="dist"
+			inheritAll="false" />
+		<copy
+			file="JOrtho_0.4_freeplane/dist/lib/jortho-0.4+fp1.1.1.jar"
+			tofile="freeplane/lib/jortho.jar"
+			/>
+
+		<ant antfile="freeplane_ant/build.xml"        target="jar"
+			inheritAll="false" />
+		<copy
+			file="freeplane_ant/dist/freeplaneant.jar"
+			tofile="freeplane_framework/ant/lib/freeplaneant.jar"
+			/>
 	</target>
 
 	<target name="build" depends="prepare">
-		<ant antfile="ant/build.xml" dir="freeplane_framework" target="build" inheritall="false" />
+		<ant antfile="freeplane_framework/ant/build.xml"  target="build"
+			inheritAll="false" />
 	</target>
 
 	<target name="dist" depends="prepare">
-		<ant antfile="ant/build.xml" dir="freeplane_framework" target="dist" inheritall="false"/>
+		<ant antfile="freeplane_framework/ant/build.xml"  target="dist"
+			inheritAll="false" />
 	</target>
 
 	<target name="clean">
-		<ant antfile="ant/build.xml" dir="freeplane_framework" target="clean" inheritall="false" />
-		<ant dir="freeplane_ant" target="clean" inheritall="false" />
-<!-- 		<ant dir="JOrtho_0.4_freeplane" target="clean" inheritall="false" /> -->
+		<ant antfile="freeplane_framework/ant/build.xml"  target="clean"
+			inheritAll="false" />
+
+		<delete file="freeplane_framework/ant/lib/freeplaneant.jar" />
+		<ant antfile="freeplane_ant/build.xml"        target="clean"
+			inheritAll="false" />
+
+		<delete file="freeplane/lib/jortho.jar" />
+		<ant antfile="JOrtho_0.4_freeplane/build.xml" target="clean"
+			inheritAll="false" />
 	</target>
 
 	<target name="cleandist" depends="clean, dist">
