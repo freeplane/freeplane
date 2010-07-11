@@ -1,27 +1,11 @@
 <project name="GlobalFreeplane" default="dist" basedir=".">
 
-	<target name="prepare">
-		<ant antfile="JOrtho_0.4_freeplane/build.xml" target="dist"
-			inheritAll="false" />
-		<copy
-			file="JOrtho_0.4_freeplane/dist/lib/jortho-0.4+fp1.1.1.jar"
-			tofile="freeplane/lib/jortho.jar"
-			/>
-
-		<ant antfile="freeplane_ant/build.xml"        target="jar"
-			inheritAll="false" />
-		<copy
-			file="freeplane_ant/dist/freeplaneant.jar"
-			tofile="freeplane_framework/ant/lib/freeplaneant.jar"
-			/>
-	</target>
-
-	<target name="build" depends="prepare">
+	<target name="build">
 		<ant antfile="freeplane_framework/ant/build.xml"  target="build"
 			inheritAll="false" />
 	</target>
 
-	<target name="dist" depends="prepare">
+	<target name="dist">
 		<ant antfile="freeplane_framework/ant/build.xml"  target="dist"
 			inheritAll="false" />
 	</target>
@@ -30,13 +14,11 @@
 		<ant antfile="freeplane_framework/ant/build.xml"  target="clean"
 			inheritAll="false" />
 
-		<delete file="freeplane_framework/ant/lib/freeplaneant.jar" />
-		<ant antfile="freeplane_ant/build.xml"        target="clean"
+	<ant antfile="freeplane_ant/build.xml" target="clean"
 			inheritAll="false" />
 
-		<delete file="freeplane/lib/jortho.jar" />
-		<ant antfile="JOrtho_0.4_freeplane/build.xml" target="clean"
-			inheritAll="false" />
+	<ant antfile="JOrtho_0.4_freeplane/build.xml" target="clean"
+		inheritAll="false" />
 	</target>
 
 	<target name="cleandist" depends="clean, dist">

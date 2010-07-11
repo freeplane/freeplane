@@ -10,8 +10,8 @@
 	<classpathentry kind="lib" path="lib/forms-1.0.5.jar" sourcepath="lib/forms-1.0.5-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.0.jar" sourcepath="FreePlane_integrationsrc.zip"/>
 	<classpathentry kind="lib" path="lib/gnu-regexp-1.1.4.jar"/>
-	<classpathentry kind="lib" path="lib/jortho.jar" sourcepath="/JOrtho_0.4_freeplane/src"/>
 	<classpathentry kind="lib" path="lib/SimplyHTML.jar" sourcepath="/simplyHtml/src"/>
 	<classpathentry kind="lib" path="lib/freeplanemac.jar" sourcepath="/freeplane_mac/src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/JOrtho_0.4_freeplane"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

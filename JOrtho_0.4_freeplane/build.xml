@@ -25,15 +25,23 @@
     </copy>
   </target>
 
-  <target name="dist" depends="compile"
-        description="generate the distribution" >
-    <!-- Create the distribution directory -->
-    <mkdir dir="${dist}/lib"/>
+	  <target name="jar" depends="compile"
+	        description="generate the distribution" >
+	    <!-- Create the distribution directory -->
+	    <mkdir dir="${dist}/lib"/>
 
-    <!-- Put everything in ${build} into the JOrtho-${jarver}.jar file -->
-    <jar jarfile="${dist}/lib/jortho-${jarver}.jar" basedir="${build}" includes="${classdirs}/**" />
-    <javadoc sourcepath="${src}" destdir="${dist}/api" />
-  </target>
+	    <!-- Put everything in ${build} into the JOrtho-${jarver}.jar file -->
+	    <jar jarfile="${dist}/lib/jortho-${jarver}.jar" basedir="${build}" includes="${classdirs}/**" />
+	  </target>
+
+	  <target name="dist" depends="jar"
+	        description="generate the distribution" >
+	    <!-- Create the distribution directory -->
+	    <mkdir dir="${dist}/lib"/>
+
+	    <!-- Put everything in ${build} into the JOrtho-${jarver}.jar file -->
+	    <jar jarfile="${dist}/lib/jortho-${jarver}.jar" basedir="${build}" includes="${classdirs}/**" />
+	  </target>
 
   <target name="clean"
         description="clean up" >

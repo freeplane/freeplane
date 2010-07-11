@@ -5,6 +5,7 @@ backups
 .DS_Store
 .backup
 ./.metadata
+./freeplane/lib/jortho.jar
 ./freeplane_framework/windows-launcher/Freeplane_private.h
 ./freeplane_framework/windows-launcher/Freeplane_private.rc
 ./freeplane_framework/windows-launcher/Freeplane_private.res
