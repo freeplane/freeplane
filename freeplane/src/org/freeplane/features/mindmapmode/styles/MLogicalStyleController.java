@@ -41,15 +41,12 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.styles.ConditionalStyleModel;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.styles.ConditionalStyleModel.Item;
-
-import sun.rmi.log.LogOutputStream;
 
 /**
  * @author Dimitry Polivaev

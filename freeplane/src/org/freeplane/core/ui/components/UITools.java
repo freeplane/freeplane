@@ -37,7 +37,6 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
@@ -50,7 +49,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.styles.ConditionalStyleTable;
 
 /**
  * @author Dimitry Polivaev

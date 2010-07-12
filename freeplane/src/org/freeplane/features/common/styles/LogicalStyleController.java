@@ -24,7 +24,6 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
@@ -33,9 +32,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.map.AModelChangeListenerAdapter;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
@@ -46,7 +43,6 @@ import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.ConditionalStyleModel.Item;
-import org.freeplane.features.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev

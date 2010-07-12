@@ -17,7 +17,6 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.common.map.ModeController;

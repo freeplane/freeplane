@@ -35,7 +35,6 @@ import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.io.ReadManager;
-import org.freeplane.features.common.map.MapModel;
 import org.freeplane.n3.nanoxml.IXMLBuilder;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.NonValidator;

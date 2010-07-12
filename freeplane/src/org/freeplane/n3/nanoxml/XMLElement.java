@@ -54,8 +54,6 @@ public class XMLElement implements Serializable {
 	 * @param lineNr
 	 *            the line in the XML data where the element starts.
 	 */
-	// TODO ARCH rladstaetter 21.03.2009 use constructor directly
-	@Deprecated
 	public static XMLElement createElement(final String fullName, final String namespace, final String systemID,
 	                                       final int lineNr) {
 		return new XMLElement(fullName, namespace, systemID, lineNr);

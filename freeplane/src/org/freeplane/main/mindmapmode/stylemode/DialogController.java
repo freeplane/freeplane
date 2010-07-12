@@ -20,7 +20,6 @@
 package org.freeplane.main.mindmapmode.stylemode;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.io.IOException;
 import java.net.URI;

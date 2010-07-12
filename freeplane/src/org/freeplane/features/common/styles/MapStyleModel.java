@@ -35,7 +35,6 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.filter.condition.SelectedViewCondition;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.ModeController;

@@ -29,7 +29,6 @@ import javax.swing.JTable;
 import javax.swing.ListCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.icon.UIIcon;
 
 /**

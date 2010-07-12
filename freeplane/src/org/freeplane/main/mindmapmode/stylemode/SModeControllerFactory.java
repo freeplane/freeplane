@@ -55,7 +55,6 @@ import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
-import org.freeplane.features.mindmapmode.styles.MLogicalStyleController;
 import org.freeplane.features.mindmapmode.styles.StyleEditorPanel;
 import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;

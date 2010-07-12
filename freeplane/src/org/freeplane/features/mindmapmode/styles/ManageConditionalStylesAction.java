@@ -8,12 +8,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.controller.Controller;
@@ -23,7 +20,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.styles.ConditionalStyleModel;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyleModel;
 

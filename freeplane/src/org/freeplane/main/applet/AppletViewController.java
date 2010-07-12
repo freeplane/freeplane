@@ -20,7 +20,6 @@
 package org.freeplane.main.applet;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;

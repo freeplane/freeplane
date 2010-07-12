@@ -1,5 +1,4 @@
 package org.freeplane.uispec4j.framework;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import junit.framework.Assert;
