@@ -10,6 +10,7 @@ import org.freeplane.core.resources.ResourceController;
 public class TextUtils {
 	/**
 	 * Example: expandPlaceholders("Hello $1.","Dolly"); => "Hello Dolly."
+	 * @deprecated use {} style with {@link #format(String, Object...)} instead!
 	 */
 	static String expandPlaceholders(final String message, final String s1) {
 		String result = message;
@@ -19,6 +20,7 @@ public class TextUtils {
 		return result;
 	}
 
+	/** @deprecated use {} style with {@link #format(String, Object...)} instead! */
 	static String expandPlaceholders(final String message, final String s1, final String s2) {
 		String result = message;
 		if (s1 != null) {
@@ -36,6 +38,7 @@ public class TextUtils {
 		return stringResult;
 	}
 
+	/** @deprecated use {} style with {@link #format(String, Object...)} instead! */
 	public static String formatText(final String key, final String s1) {
 		final String format = TextUtils.getText(key);
 		if (format == null) {
@@ -44,6 +47,7 @@ public class TextUtils {
 		return TextUtils.expandPlaceholders(format, s1);
 	}
 
+	/** @deprecated use {} style with {@link #format(String, Object...)} instead! */
 	public static String formatText(final String key, final String s1, final String s2) {
 		final String format = TextUtils.getText(key);
 		if (format == null) {
@@ -60,10 +64,7 @@ public class TextUtils {
 		return rawLabel.replaceFirst("&([^ ])", "$1");
 	}
 
-	/**
-	 * Removes the "TranslateMe" sign from the end of not translated texts.
-	 */
-	// TODO ARCH rladstaetter 15.02.2009 method should have no need for existance! the build process should filter out resources not fit for production.
+	/** Removes the "TranslateMe" sign from the end of not translated texts. */
 	public static String removeTranslateComment(String inputString) {
 		if (inputString != null && inputString.endsWith(ResourceBundles.POSTFIX_TRANSLATE_ME)) {
 			inputString = inputString
