@@ -37,7 +37,7 @@ public class NodeContainsCondition extends NodeCondition {
 
 	final private String value;
 
-	NodeContainsCondition(final String value) {
+	public NodeContainsCondition(final String value) {
 		super();
 		this.value = value;
 	}
