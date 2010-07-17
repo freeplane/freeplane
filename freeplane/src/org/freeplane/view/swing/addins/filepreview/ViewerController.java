@@ -305,6 +305,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	private static final int BORDER_SIZE = 2;
 	private static final Color BORDER_COLOR = Color.GRAY;
+	static final int VIEWER_POSITION = 3;
 	private final MyMouseListener mouseListener = new MyMouseListener();
 	final private Set<IViewerFactory> factories;
 
@@ -431,28 +432,20 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	void createViewer(final ExternalResource model, final NodeView view) {
 		final JComponent viewer = createViewer(view.getMap().getModel(), model);
 		viewer.setBorder(new MatteBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_COLOR));
-		final Set<JComponent> viewers = model.getViewers();
-		viewers.add(viewer);
-		view.getContentPane().add(viewer);
+		final Set<NodeView> viewers = model.getViewers();
+		viewers.add(view);
+		view.addContent(viewer, VIEWER_POSITION);
 		viewer.revalidate();
 		viewer.repaint();
 	}
 
 	void deleteViewer(final ExternalResource model, final NodeView nodeView) {
-		final Set<JComponent> viewers = model.getViewers();
-		if (viewers.isEmpty()) {
+		final Set<NodeView> viewers = model.getViewers();
+		if(! viewers.contains(nodeView)){
 			return;
 		}
-		final Container contentPane = nodeView.getContentPane();
-		final int componentCount = contentPane.getComponentCount();
-		for (int i = 0; i < componentCount; i++) {
-			final Component component = contentPane.getComponent(i);
-			if (viewers.contains(component)) {
-				viewers.remove(component);
-				contentPane.remove(i);
-				return;
-			}
-		}
+		nodeView.removeContent(VIEWER_POSITION);
+		viewers.remove(nodeView);
 	}
 
 	@Override

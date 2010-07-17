@@ -23,6 +23,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -30,31 +31,32 @@ import org.freeplane.core.extension.IExtension;
  */
 class LatexExtension implements IExtension {
 	private String equation;
-	final private Set<JLatexViewer> viewers;
+	final private Set<NodeView> viewers;
 
 	public LatexExtension() {
 		equation = "\\mbox{I}^\\fgcolor{ff0000}{\\heartsuit}\\mbox{\\JLaTeXMath}";
-		viewers = new LinkedHashSet<JLatexViewer>();
+		viewers = new LinkedHashSet<NodeView>();
 	}
 
 	public String getEquation() {
 		return equation;
 	}
 
-	Set<JLatexViewer> getViewers() {
+	Set<NodeView> getViewers() {
 		return viewers;
 	}
 
 	void removeViewers() {
-		for (JLatexViewer comp : viewers) {
-			comp.getParent().remove(comp);
+		for (NodeView nodeView : viewers) {
+			nodeView.removeContent(LatexNodeHook.VIEWER_POSITION);
 		}
 		viewers.clear();
 	}
 
 	public void setEquation(final String equation) {
 		this.equation = equation;
-		for (JLatexViewer comp : viewers) {
+		for (NodeView nodeView : viewers) {
+			JLatexViewer comp = (JLatexViewer) nodeView.getContent(LatexNodeHook.VIEWER_POSITION);
 			comp.setModel(this);
 		}
 	}

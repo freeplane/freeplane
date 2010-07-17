@@ -15,22 +15,23 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 public class ExternalResource implements IExtension {
-	final private Set<JComponent> viewers;
+	final private Set<NodeView> viewers;
 
 	public ExternalResource() {
-		viewers = new HashSet<JComponent>();
+		viewers = new HashSet<NodeView>();
 	}
 
 	void removeViewers() {
-		for (final JComponent comp : viewers) {
-			comp.getParent().remove(comp);
+		for (final NodeView nodeView : viewers) {
+			nodeView.removeContent(ViewerController.VIEWER_POSITION);
 		}
 		viewers.clear();
 	}
 
-	public Set<JComponent> getViewers() {
+	public Set<NodeView> getViewers() {
 		return viewers;
 	}
 

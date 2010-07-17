@@ -151,6 +151,8 @@ public class AttributeView implements ChangeListener, TableModelListener {
 		return attributeTable != null && AttributeView.tablePopupMenu != null
 		        && (AttributeView.tablePopupMenu.getTable() == attributeTable);
 	}
+	
+	static private int VIEWER_POSITION = 1; 
 
 	private void provideAttributeTable() {
 		if (attributeTable == null) {
@@ -159,7 +161,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			tableHeader.setBackground(AttributeView.HEADER_BACKGROUND);
 			addTableModelListeners();
 			attributeViewScrollPane = new AttributeViewScrollPane(attributeTable);
-			getNodeView().getContentPane().add(attributeViewScrollPane);
+			getNodeView().addContent(attributeViewScrollPane, VIEWER_POSITION);
 			getAttributes().removeTableModelListener(this);
 			setViewType(getAttributeRegistry().getAttributeViewType());
 		}

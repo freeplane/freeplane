@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.resources.ResourceController;
@@ -87,6 +88,7 @@ public class NodeView extends JComponent implements INodeView {
 	private static final long serialVersionUID = 1L;
 	public final static int SHIFT = -2;
 	static final int SPACE_AROUND = 50;
+	private static final int VIEWER_POSITION = 0;
 
 	/**
 	 * Determines to a given color a color, that is the best contrary color. It
@@ -242,12 +244,13 @@ public class NodeView extends JComponent implements INodeView {
 		return contentPane == null ? mainView : contentPane;
 	}
 
-	public Container getContentPane() {
+	private Container getContentPane() {
 		if (contentPane == null) {
 			contentPane = NodeViewFactory.getInstance().newContentPane(this);
 			final int index = getComponentCount() - 1;
 			remove(index);
 			contentPane.add(mainView);
+			mainView.putClientProperty("NODE_VIEW_CONTENT_POSITION", VIEWER_POSITION);
 			add(contentPane, index);
 		}
 		return contentPane;
@@ -1263,5 +1266,45 @@ public class NodeView extends JComponent implements INodeView {
 	@Override
 	protected void validateTree() {
 		super.validateTree();
+	}
+
+	public void addContent(JComponent component, int pos) {
+		component.putClientProperty("NODE_VIEW_CONTENT_POSITION", pos);
+		final Container contentPane = getContentPane();
+		for(int i = 0; i < contentPane.getComponentCount(); i++){
+			JComponent content = (JComponent) contentPane.getComponent(i);
+			if(pos < (Integer)content.getClientProperty("NODE_VIEW_CONTENT_POSITION")){
+				contentPane.add(component, i);
+				return;
+			}
+		}
+		contentPane.add(component);
+	}
+
+	public JComponent removeContent(int pos) {
+		return removeContent(pos, true);
+	}
+		private JComponent removeContent(int pos, boolean remove) {
+		if(contentPane == null)
+			return null;
+		for(int i = 0; i < contentPane.getComponentCount(); i++){
+			JComponent component = (JComponent) contentPane.getComponent(i);
+			int contentPos = (Integer)component.getClientProperty("NODE_VIEW_CONTENT_POSITION");
+			if(contentPos == pos){
+				if(remove){
+					component.putClientProperty("NODE_VIEW_CONTENT_POSITION", null);
+					contentPane.remove(i);
+				}
+				return component;
+			}
+			if(contentPos > pos){
+				return null;
+			}
+		}
+		return null;
+	}
+
+	public JComponent getContent(int pos) {
+		return removeContent(pos, false);
 	}
 }

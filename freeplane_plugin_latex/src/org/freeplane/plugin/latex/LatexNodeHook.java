@@ -45,6 +45,8 @@ import org.freeplane.view.swing.map.NodeView;
 onceForMap = false)
 @ActionLocationDescriptor(locations = "/menu_bar/insert/other")
 class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleListener {
+	static final int VIEWER_POSITION = 2;
+
 	/**
 	 */
 	public LatexNodeHook(final ModeController modeController) {
@@ -74,26 +76,18 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 
 	void createViewer(final LatexExtension model, final NodeView view) {
 		final JLatexViewer comp = new JLatexViewer(this, model);
-		final Set<JLatexViewer> viewers = model.getViewers();
-		viewers.add(comp);
-		view.getContentPane().add(comp);
+		final Set<NodeView> viewers = model.getViewers();
+		viewers.add(view);
+		view.addContent(comp, VIEWER_POSITION);
 	}
 
 	void deleteViewer(final LatexExtension model, final NodeView nodeView) {
-		final Set<JLatexViewer> viewers = model.getViewers();
-		if (viewers.isEmpty()) {
+		final Set<NodeView> viewers = model.getViewers();
+		if(! viewers.contains(nodeView)){
 			return;
 		}
-		final Container contentPane = nodeView.getContentPane();
-		final int componentCount = contentPane.getComponentCount();
-		for (int i = 0; i < componentCount; i++) {
-			final Component component = contentPane.getComponent(i);
-			if (viewers.contains(component)) {
-				viewers.remove(component);
-				contentPane.remove(i);
-				return;
-			}
-		}
+		nodeView.removeContent(VIEWER_POSITION);
+		viewers.remove(nodeView);
 	}
 
 	@Override
