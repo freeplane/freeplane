@@ -29,9 +29,11 @@ import java.awt.LayoutManager;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
+import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 
 class NodeViewFactory {
@@ -164,6 +166,7 @@ class NodeViewFactory {
 
 	public ZoomableLabel createNoteViewer() {
 		ZoomableLabel label = new ZoomableLabel();
+		label.setIcon(IconStoreFactory.create().getUIIcon("knotes.png").getIcon());
 		label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		return label;
 	}
