@@ -18,6 +18,7 @@
 package org.freeplane.features.mindmapmode.misc;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
@@ -65,7 +66,9 @@ public class NewParentNode extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel focussed = getModeController().getMapController().getSelectedNode();
 		final NodeModel selectedNode = focussed;
-		final List<NodeModel> selectedNodes = getModeController().getMapController().getSelectedNodes();
+		List<NodeModel> unmodifyable = getModeController().getMapController().getSelectedNodes();
+		final List<NodeModel> selectedNodes = new ArrayList<NodeModel>(unmodifyable.size());
+		selectedNodes.addAll(unmodifyable);
 		getModeController().getMapController().sortNodesByDepth(selectedNodes);
 		if (focussed.isRoot()) {
 			UITools.errorMessage(TextUtils.getText("cannot_add_parent_to_root"));
