@@ -38,7 +38,7 @@ class ItalicAction extends AMultipleNodeAction {
 	/**
 	 */
 	public ItalicAction(final Controller controller) {
-		super("ItalicAction", controller);
+		super("ItalicAction");
 	}
 
 	@Override

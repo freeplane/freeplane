@@ -40,7 +40,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public SetLinkByTextFieldAction(final Controller controller) {
-		super("SetLinkByTextFieldAction", controller);
+		super("SetLinkByTextFieldAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

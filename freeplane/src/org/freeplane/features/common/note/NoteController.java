@@ -63,11 +63,11 @@ public class NoteController implements IExtension {
 		}
 	}
 
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 
 	public NoteController(final ModeController modeController) {
 		super();
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		modeController.getMapController().getReadManager().addElementHandler("richcontent", new NoteBuilder(this));
 		final NoteWriter noteWriter = new NoteWriter(this);
 		final WriteManager writeManager = modeController.getMapController().getWriteManager();

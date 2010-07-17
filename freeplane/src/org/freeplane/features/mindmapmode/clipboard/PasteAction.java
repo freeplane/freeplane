@@ -30,7 +30,7 @@ class PasteAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public PasteAction(final Controller controller) {
-		super("PasteAction", controller);
+		super("PasteAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

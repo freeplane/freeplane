@@ -39,7 +39,7 @@ import org.freeplane.features.mindmapmode.map.MMapController;
  */
 public class DeleteUserStyleAction extends AFreeplaneAction {
 	public DeleteUserStyleAction(final Controller controller) {
-		super("DeleteUserStyleAction", controller);
+		super("DeleteUserStyleAction");
 	}
 
 	/**

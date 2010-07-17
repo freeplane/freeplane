@@ -42,7 +42,7 @@ class FreeplaneHelpStarter extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public FreeplaneHelpStarter(final Controller controller) {
-		super("FreeplaneHelpStarter", controller);
+		super("FreeplaneHelpStarter");
 	}
 
 	/**

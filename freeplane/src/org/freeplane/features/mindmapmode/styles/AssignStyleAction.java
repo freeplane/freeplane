@@ -40,7 +40,7 @@ public class AssignStyleAction extends AMultipleNodeAction {
 	final private Object style;
 
 	public AssignStyleAction(final Object style, final Controller controller, final String title, final ImageIcon icon) {
-		super("AssignStyleAction." + NamedObject.toKeyString(style), controller, title, icon);
+		super("AssignStyleAction." + NamedObject.toKeyString(style), title, icon);
 		this.style = style;
 	}
 

@@ -42,7 +42,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 	private static final long serialVersionUID = 1L;
 
 	public EnterPassword(final ModeController modeController) {
-		super("EnterPassword", modeController.getController());
+		super("EnterPassword");
 		modeController.getMapController().addNodeSelectionListener(this);
 	}
 

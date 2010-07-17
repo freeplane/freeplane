@@ -211,7 +211,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 					}
 					return;
 				}
-				final NodeModel nodeView = controller.getMap().getRootNode();
+				final NodeModel nodeView = Controller.getCurrentController().getMap().getRootNode();
 				iterate(nodeView);
 			}
 			catch (final NullPointerException ex) {
@@ -296,7 +296,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	final private AttributeController attributeController;
 	final private JComboBox attributeNames;
 	final private JComboBox attributeValues;
-	final private Controller controller;
+// 	final private Controller Controller.getCurrentController();
 	private IMapSelection mapSelection;
 	final private JComboBox replacingAttributeNames;
 	final private JComboBox replacingAttributeValues;
@@ -307,8 +307,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	public AssignAttributeDialog(final AttributeController attributeController, final Frame frame) {
 		super(frame, TextUtils.removeMnemonic(TextUtils.getText("attributes_assign_dialog")), false);
 		this.attributeController = attributeController;
-		controller = attributeController.getModeController().getController();
-		mapSelection = controller.getSelection();
+		mapSelection = Controller.getCurrentController().getSelection();
 		final Border actionBorder = new MatteBorder(2, 2, 2, 2, Color.BLACK);
 		final Border emptyBorder = new EmptyBorder(5, 5, 5, 5);
 		final Border btnBorder = new EmptyBorder(2, 2, 2, 2);
@@ -433,8 +432,8 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		attributeValues.setMaximumSize(comboBoxMaximumSize);
 		replacingAttributeNames.setMaximumSize(comboBoxMaximumSize);
 		replacingAttributeValues.setMaximumSize(comboBoxMaximumSize);
-		afterMapChange(null, controller.getMap());
-		controller.getMapViewManager().addMapSelectionListener(this);
+		afterMapChange(null, Controller.getCurrentController().getMap());
+		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(this);
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
@@ -448,7 +447,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 			setVisible(false);
 			return;
 		}
-		mapSelection = controller.getSelection();
+		mapSelection = Controller.getCurrentController().getSelection();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(newMap);
 		if (attributes == null) {
 			setVisible(false);
@@ -462,7 +461,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	}
 
 	private void attributesChanged() {
-		final MapModel map = controller.getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		final ComboBoxModel names = attributes.getComboBoxModel();
 		attributeNames.setModel(new ClonedComboBoxModel(names));
@@ -492,7 +491,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	}
 
 	private void selectedAttributeChanged(final Object selectedAttributeName, final JComboBox values) {
-		final MapModel map = controller.getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		try {
 			final AttributeRegistryElement element = attributes.getElement(selectedAttributeName.toString());

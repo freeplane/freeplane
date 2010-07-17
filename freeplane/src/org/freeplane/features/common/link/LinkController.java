@@ -104,10 +104,10 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	final private ExclusivePropertyChain<Color, ConnectorModel> colorHandlers;
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 
 	public LinkController(final ModeController modeController) {
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		updateStandards(modeController);
 		colorHandlers = new ExclusivePropertyChain<Color, ConnectorModel>();
 		if (listener == null) {

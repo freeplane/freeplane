@@ -47,7 +47,7 @@ class MapBackgroundColorAction extends AFreeplaneAction {
 	 * @param mapStyle
 	 */
 	MapBackgroundColorAction(final MapStyle mapStyle) {
-		super("MapBackgroundColorAction", mapStyle.getController());
+		super("MapBackgroundColorAction");
 		this.mapStyle = mapStyle;
 	}
 

@@ -37,11 +37,9 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	private static final String SELECTION_METHOD = "selection_method";
 
 	protected class TimeDelayedSelection extends TimerTask {
-		final private ModeController c;
 		final private MouseEvent e;
 
-		TimeDelayedSelection(final ModeController c, final MouseEvent e) {
-			this.c = c;
+		TimeDelayedSelection(final MouseEvent e) {
 			this.e = e;
 		}
 
@@ -55,8 +53,12 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 			 */
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
+					if (e.getModifiers() != 0){
+						return;
+					}
 					try {
-	                    if (e.getModifiers() == 0 && !c.isBlocked() && c.getController().getSelection().size() <= 1) {
+	                    Controller currentController = Controller.getCurrentController();
+						if (!currentController.getModeController().isBlocked() && currentController.getSelection().size() <= 1) {
 							extendSelection(e);
 	                    }
                     }
@@ -72,12 +74,12 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	 * given time.
 	 */
 	private Rectangle controlRegionForDelayedSelection;
-	final private ModeController mc;
+// 	final private ModeController mc;
 	final private ControllerPopupMenuListener popupListener;
 	private Timer timerForDelayedSelection;
 
 	public DefaultNodeMouseMotionListener(final ModeController modeController) {
-		mc = modeController;
+//		mc = modeController;
 		popupListener = new ControllerPopupMenuListener(modeController);
 	}
 
@@ -96,13 +98,13 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 			return;
 		}
 		if (selectionMethod.equals(SELECTION_METHOD_DIRECT)) {
-			new TimeDelayedSelection(mc, e).run();
+			new TimeDelayedSelection(e).run();
 			return;
 		}
 		final int timeForDelayedSelection = ResourceController.getResourceController().getIntProperty(
 		    TIME_FOR_DELAYED_SELECTION, 0);
 		timerForDelayedSelection = SysUtils.createTimer(getClass().getSimpleName());
-		timerForDelayedSelection.schedule(new TimeDelayedSelection(mc, e), timeForDelayedSelection);
+		timerForDelayedSelection.schedule(new TimeDelayedSelection(e), timeForDelayedSelection);
 	}
 
 	protected Rectangle getControlRegion(final Point2D p) {
@@ -120,7 +122,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	public void mouseDragged(final MouseEvent e) {
 		stopTimerForDelayedSelection();
 		final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
-		if (!((MapView) mc.getController().getViewController().getMapView()).isSelected(nodeV)) {
+		if (!((MapView) Controller.getCurrentController().getViewController().getMapView()).isSelected(nodeV)) {
 			extendSelection(e);
 		}
 	}
@@ -137,8 +139,9 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		final MainView node = ((MainView) e.getComponent());
 		final boolean isLink = (node).updateCursor(e.getX());
 		if (isLink) {
-			mc.getController().getViewController().out(
-			    LinkController.getController(mc).getLinkShortText(node.getNodeView().getModel()));
+			Controller currentController = Controller.getCurrentController();
+			currentController.getViewController().out(
+			    LinkController.getController(currentController.getModeController()).getLinkShortText(node.getNodeView().getModel()));
 		}
 		if (controlRegionForDelayedSelection != null) {
 			if (!controlRegionForDelayedSelection.contains(e.getPoint())) {
@@ -159,6 +162,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 			return;
 		}
 		if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
+			ModeController mc = Controller.getCurrentController().getModeController();
 			/* perform action only if one selected node. */
 			final MapController mapController = mc.getMapController();
 			if (mapController.getSelectedNodes().size() != 1) {
@@ -188,6 +192,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 
 	public void showPopupMenu(final MouseEvent e) {
 		if (e.isPopupTrigger()) {
+			ModeController mc = Controller.getCurrentController().getModeController();
 			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
 			if (popupmenu != null) {
 				popupmenu.addPopupMenuListener(popupListener);
@@ -206,7 +211,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	}
 
 	public boolean extendSelection(final MouseEvent e) {
-		final Controller controller = mc.getController();
+		final Controller controller = Controller.getCurrentController();
 		final NodeModel newlySelectedNodeView = ((MainView) e.getComponent()).getNodeView().getModel();
 		final boolean extend = e.isControlDown();
 		final boolean range = e.isShiftDown();

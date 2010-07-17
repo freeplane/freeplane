@@ -39,7 +39,7 @@ class FontFamilyAction extends AMultipleNodeAction {
 	/**
 	 */
 	public FontFamilyAction(final Controller controller) {
-		super("FontFamilyAction", controller);
+		super("FontFamilyAction");
 	}
 
 	@Override

@@ -39,7 +39,7 @@ class NodeListAction extends AFreeplaneAction {
 	private final NodeList nodeList;
 
 	public NodeListAction(final ModeController modeController) {
-		super("NodeListAction", modeController.getController());
+		super("NodeListAction");
 		nodeList = new NodeList(modeController, true, false);
 	}
 

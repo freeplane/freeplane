@@ -31,7 +31,7 @@ class NavigationNextMapAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	NavigationNextMapAction(final Controller controller) {
-		super("NavigationNextMapAction", controller);
+		super("NavigationNextMapAction");
 		setEnabled(false);
 	}
 

@@ -37,7 +37,7 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 	ConnectorModel draggedLink = null;
 	private Point draggedLinkOldEndPoint;
 	private Point draggedLinkOldStartPoint;
-	final private ModeController mController;
+// 	final private ModeController mController;
 	int originX = -1;
 	int originY = -1;
 

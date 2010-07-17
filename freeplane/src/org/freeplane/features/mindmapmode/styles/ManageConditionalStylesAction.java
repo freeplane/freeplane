@@ -31,7 +31,7 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
     private static final long serialVersionUID = 1L;
 
 	public ManageConditionalStylesAction(Controller controller) {
-	    super("ManageConditionalStylesAction", controller);
+	    super("ManageConditionalStylesAction");
     }
 
 	public void actionPerformed(ActionEvent e) {

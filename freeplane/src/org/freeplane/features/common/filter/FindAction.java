@@ -76,7 +76,7 @@ class FindAction extends AFreeplaneAction {
 	private FilterConditionEditor editor;
 
 	public FindAction(final Controller controller) {
-		super(KEY, controller);
+		super(KEY);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

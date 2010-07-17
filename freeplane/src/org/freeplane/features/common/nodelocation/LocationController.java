@@ -37,11 +37,11 @@ public class LocationController implements IExtension {
 		modeController.addExtension(LocationController.class, locationController);
 	}
 
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 
 	public LocationController(final ModeController modeController) {
 		super();
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();

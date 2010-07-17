@@ -44,7 +44,7 @@ public abstract class PersistentNodeHook {
 		private static final long serialVersionUID = 1L;
 
 		public HookAction(final String key) {
-			super(key, controller);
+			super(key);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -145,14 +145,14 @@ public abstract class PersistentNodeHook {
 		}
 	}
 
-	final private Controller controller;
-	private final ModeController modeController;
+// 	final private Controller controller;
+// 	private final ModeController modeController;
 	private final HookAction selectableHookAction;
 
 	public PersistentNodeHook(final ModeController modeController) {
 		super();
-		this.modeController = modeController;
-		controller = modeController.getController();
+//		this.modeController = modeController;
+//		controller = modeController.getController();
 		if (modeController.getModeName().equals("MindMap")) {
 			final ActionLocationDescriptor actionAnnotation = getActionAnnotation();
 			if (actionAnnotation != null) {

@@ -90,18 +90,18 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	public final static String REMINDER_HOOK_NAME = "plugins/TimeManagementReminder.xml";
 	private static TimeManagement sCurrentlyOpenTimeManagement = null;
 	private JTripleCalendar calendar;
-	final private Controller controller;
+// 	final private Controller controller;
 	private JDialog dialog;
 	private JTextField hourField;
-	private ModeController mController;
+// 	private ModeController mController;
 	private JTextField minuteField;
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 	private final ReminderHook reminderHook;
 	private JPanel timePanel;
 
 	public TimeManagement(final ModeController modeController, final ReminderHook reminderHook) {
-		this.modeController = modeController;
-		controller = modeController.getController();
+//		this.modeController = modeController;
+//		controller = modeController.getController();
 		this.reminderHook = reminderHook;
 		controller.getMapViewManager().addMapSelectionListener(this);
 	}

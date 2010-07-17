@@ -114,7 +114,7 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new FormatCopy(controller));
 		modeController.addAction(new FormatPaste(controller));
 		modeController.addAction(new RemoveFormatAction(controller));
-		final AMultipleNodeAction increaseNodeFont = new AMultipleNodeAction("IncreaseNodeFontAction", controller) {
+		final AMultipleNodeAction increaseNodeFont = new AMultipleNodeAction("IncreaseNodeFontAction") {
 			/**
 			 * 
 			 */
@@ -126,7 +126,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 		};
 		modeController.addAction(increaseNodeFont);
-		final AMultipleNodeAction decreaseNodeFont = new AMultipleNodeAction("DecreaseNodeFontAction", controller) {
+		final AMultipleNodeAction decreaseNodeFont = new AMultipleNodeAction("DecreaseNodeFontAction") {
 			/**
 			 * 
 			 */

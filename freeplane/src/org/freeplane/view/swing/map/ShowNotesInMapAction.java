@@ -11,7 +11,7 @@ import org.freeplane.core.ui.SelectableAction;
 public class ShowNotesInMapAction extends AFreeplaneAction {
 
 	public ShowNotesInMapAction(Controller controller) {
-		super("ShowNotesInMapAction", controller);
+		super("ShowNotesInMapAction");
 	}
 
 	public void actionPerformed(ActionEvent e) {

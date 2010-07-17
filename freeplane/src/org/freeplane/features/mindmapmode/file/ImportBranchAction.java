@@ -38,7 +38,7 @@ class ImportBranchAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public ImportBranchAction(final Controller controller) {
-		super("ImportBranchAction", controller);
+		super("ImportBranchAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

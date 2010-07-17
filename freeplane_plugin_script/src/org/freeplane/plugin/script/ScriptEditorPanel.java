@@ -240,11 +240,11 @@ class ScriptEditorPanel extends JDialog {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		final private Controller controller;
+// 		final private Controller controller;
 
 		private SignAction(final Controller controller, final String pArg0) {
 			super(pArg0);
-			this.controller = controller;
+//			this.controller = controller;
 		}
 
 		public void actionPerformed(final ActionEvent arg0) {

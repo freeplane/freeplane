@@ -36,7 +36,7 @@ public class ShowSelectionAsRectangleAction extends AFreeplaneAction {
 	 *
 	 */
 	public ShowSelectionAsRectangleAction(final Controller controller) {
-		super("ShowSelectionAsRectangleAction", controller);
+		super("ShowSelectionAsRectangleAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

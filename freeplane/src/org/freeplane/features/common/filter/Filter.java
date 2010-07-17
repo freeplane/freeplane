@@ -43,7 +43,7 @@ public class Filter {
 
 	final private boolean appliesToVisibleNodesOnly;
 	final private ISelectableCondition condition;
-	final private Controller controller;
+// 	final private Controller controller;
 	final private int options;
 	final private boolean unfold;
 
@@ -53,7 +53,7 @@ public class Filter {
 	public Filter(final Controller controller, final ISelectableCondition condition, final boolean areAnchestorsShown,
 	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly, final boolean unfold) {
 		super();
-		this.controller = controller;
+//		this.controller = controller;
 		this.condition = condition;
 		int options = FilterInfo.FILTER_INITIAL_VALUE | FilterInfo.FILTER_SHOW_MATCHED;
 		if (areAnchestorsShown) {

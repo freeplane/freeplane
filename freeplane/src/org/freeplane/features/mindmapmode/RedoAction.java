@@ -37,7 +37,7 @@ class RedoAction extends AFreeplaneAction {
 	private Action undo;
 
 	public RedoAction(final Controller controller) {
-		super("RedoAction", controller);
+		super("RedoAction");
 		setEnabled(false);
 	}
 

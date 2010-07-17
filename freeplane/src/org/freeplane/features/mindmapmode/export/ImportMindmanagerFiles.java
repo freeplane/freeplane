@@ -57,7 +57,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public ImportMindmanagerFiles(final Controller controller) {
-		super("ImportMindmanagerFiles", controller);
+		super("ImportMindmanagerFiles");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

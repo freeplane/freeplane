@@ -34,7 +34,7 @@ class NodeShapeAction extends AMultipleNodeAction {
 	final private String actionShape;
 
 	public NodeShapeAction(final ModeController controller, final String shape) {
-		super("NodeShapeAction." + shape, controller.getController());
+		super("NodeShapeAction." + shape);
 		actionShape = shape;
 	}
 

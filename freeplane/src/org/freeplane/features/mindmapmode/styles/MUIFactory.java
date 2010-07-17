@@ -49,7 +49,7 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 public class MUIFactory implements INodeSelectionListener, INodeChangeListener, IMapChangeListener,
         IMapSelectionListener {
 	private static final String[] sizes = { "8", "10", "12", "14", "16", "18", "20", "24", "28" };
-	final private Controller controller;
+// 	final private Controller controller;
 	private boolean ignoreChangeEvent = false;
 	final private DefaultComboBoxModel fonts, size, styles;
 	private final MModeController modeController;

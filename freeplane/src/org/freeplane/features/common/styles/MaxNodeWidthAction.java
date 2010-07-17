@@ -19,7 +19,7 @@ public class MaxNodeWidthAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public MaxNodeWidthAction(final Controller controller) {
-		super("MaxNodeWidthAction", controller);
+		super("MaxNodeWidthAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

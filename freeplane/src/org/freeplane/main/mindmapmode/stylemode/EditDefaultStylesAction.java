@@ -43,7 +43,7 @@ import org.freeplane.features.mindmapmode.file.MFileManager;
  */
 public class EditDefaultStylesAction extends AFreeplaneAction {
 	public EditDefaultStylesAction(final MModeController mainModeController) {
-		super("EditDefaultStylesAction", mainModeController.getController());
+		super("EditDefaultStylesAction");
 	}
 
 	private void init() {

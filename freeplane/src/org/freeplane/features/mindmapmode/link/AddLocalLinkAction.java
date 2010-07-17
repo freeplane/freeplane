@@ -42,7 +42,7 @@ class AddLocalLinkAction extends AFreeplaneAction {
 	/**
 	 */
 	public AddLocalLinkAction(final Controller controller) {
-		super("AddLocalLinkAction", controller);
+		super("AddLocalLinkAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -41,7 +41,7 @@ final class UndoFilterAction extends AFreeplaneAction {
 	 * @param filterController
 	 */
 	UndoFilterAction(final FilterController filterController) {
-		super("UndoFilterAction", filterController.getController());
+		super("UndoFilterAction");
 		this.filterController = filterController;
 	}
 

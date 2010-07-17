@@ -34,7 +34,7 @@ class LicenseAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	LicenseAction(final Controller controller) {
-		super("LicenseAction", controller);
+		super("LicenseAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

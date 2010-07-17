@@ -42,13 +42,13 @@ public class DoAutomaticSave extends TimerTask {
 	 */
 	private int changeState;
 	final private boolean filesShouldBeDeletedAfterShutdown;
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 	final private MapModel model;
 	final private int numberOfFiles;
 
 	public DoAutomaticSave(final ModeController modeController, final MapModel model, final int numberOfTempFiles,
 	                       final boolean filesShouldBeDeletedAfterShutdown) {
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		this.model = model;
 		numberOfFiles = ((numberOfTempFiles > 0) ? numberOfTempFiles : 1);
 		this.filesShouldBeDeletedAfterShutdown = filesShouldBeDeletedAfterShutdown;

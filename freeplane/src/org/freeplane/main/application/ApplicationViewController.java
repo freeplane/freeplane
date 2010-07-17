@@ -68,7 +68,7 @@ class ApplicationViewController extends ViewController {
 	private static final String SPLIT_PANE_POSITION = "split_pane_position";
 	private static final String SPLIT_PANE_RIGHT_POSITION = "split_pane_right_position";
 	private static final String SPLIT_PANE_TOP_POSITION = "split_pane_top_position";
-	final private Controller controller;
+// 	final private Controller controller;
 	final private JFrame frame;
 	private MapViewTabs mapViewManager;
 	private JComponent mContentComponent = null;
@@ -84,7 +84,7 @@ class ApplicationViewController extends ViewController {
 	public ApplicationViewController(final Controller controller, final IMapViewManager mapViewController,
 	                                 final JFrame frame) {
 		super(controller, mapViewController, "");
-		this.controller = controller;
+//		this.controller = controller;
 		navigationPreviousMap = new NavigationPreviousMapAction(controller);
 		controller.addAction(navigationPreviousMap);
 		navigationNextMap = new NavigationNextMapAction(controller);
@@ -454,7 +454,7 @@ class ApplicationViewController extends ViewController {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
-				controller.quit(new ActionEvent(this, 0, "quit"));
+				Controller.getCurrentController().quit(new ActionEvent(this, 0, "quit"));
 			}
 			/*
 			 * fc, 14.3.2008: Completely removed, as it damaged the focus if for

@@ -43,7 +43,7 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public IconSelectionPlugin(final Controller controller) {
-		super("IconSelectionPlugin", controller);
+		super("IconSelectionPlugin");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

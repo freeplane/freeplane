@@ -38,7 +38,7 @@ class ResetNodeLocationAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 
 	public ResetNodeLocationAction(final Controller controller) {
-		super("ResetNodeLocationAction", controller);
+		super("ResetNodeLocationAction");
 	}
 
 	@Override

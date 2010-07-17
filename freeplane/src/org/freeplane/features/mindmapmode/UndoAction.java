@@ -41,7 +41,7 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
 	private final ChangeListener changeListener;
 
 	public UndoAction(final Controller controller) {
-		super("UndoAction", controller);
+		super("UndoAction");
 		getController().getMapViewManager().addMapSelectionListener(this);
 		setEnabled(false);
 		changeListener = new ChangeListener() {

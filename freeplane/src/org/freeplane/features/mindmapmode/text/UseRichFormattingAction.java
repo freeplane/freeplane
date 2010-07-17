@@ -34,7 +34,7 @@ class UseRichFormattingAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 
 	public UseRichFormattingAction(final Controller controller) {
-		super("UseRichFormattingAction", controller);
+		super("UseRichFormattingAction");
 	}
 
 	@Override

@@ -43,7 +43,7 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 	final private MindIcon icon;
 
 	public IconAction(final Controller controller, final MindIcon _icon) {
-		super("IconAction." + _icon.getName(), controller, _icon.getDescription(), ImageIconFactory.getInstance()
+		super("IconAction." + _icon.getName(), _icon.getDescription(), ImageIconFactory.getInstance()
 		    .getImageIcon(_icon));
 		putValue(Action.SHORT_DESCRIPTION, _icon.getDescription());
 		icon = _icon;

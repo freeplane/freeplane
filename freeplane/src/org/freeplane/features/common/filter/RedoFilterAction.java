@@ -41,7 +41,7 @@ final class RedoFilterAction extends AFreeplaneAction {
 	 * @param filterController
 	 */
 	RedoFilterAction(final FilterController filterController) {
-		super("RedoFilterAction", filterController.getController());
+		super("RedoFilterAction");
 		this.filterController = filterController;
 	}
 

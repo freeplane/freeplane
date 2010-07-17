@@ -73,7 +73,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	private static final String LAST_OPENED = "lastOpened_1.0.20";
 	public static final String LOAD_LAST_MAP = "load_last_map";
 	public static final String LOAD_LAST_MAPS = "load_last_maps";
-	private final Controller controller;
+// 	private final Controller controller;
 	private static boolean PORTABLE_APP = System.getProperty("portableapp", "false").equals("true");
 	private static String USER_DRIVE = System.getProperty("user.home", "").substring(0, 2);
 	final private List<String> currenlyOpenedList = new LinkedList<String>();
@@ -87,7 +87,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	final private Map<String, String> mRestorableToMapName = new HashMap<String, String>();
 
 	LastOpenedList(final Controller controller) {
-		this.controller = controller;
+//		this.controller = controller;
 		restoreList(LAST_OPENED, lastOpenedList);
 	}
 

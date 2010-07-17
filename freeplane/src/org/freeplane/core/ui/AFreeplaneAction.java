@@ -81,13 +81,13 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	}
 
 	// TODO ARCH rladstaetter 18.02.2009 actions should not have a dependency on the controller
-	final private Controller controller;
+// 	final private Controller controller;
 	final private String key;
 	private boolean selected = false;
 
-	public AFreeplaneAction(final String key, final Controller controller) {
+	public AFreeplaneAction(final String key) {
 		super();
-		this.controller = controller;
+//		this.controller = controller;
 		this.key = key;
 		MenuBuilder.setLabelAndMnemonic(this, TextUtils.getText(getTextKey()));
 		final String iconResource = ResourceController.getResourceController().getProperty(getIconKey(), null);
@@ -117,8 +117,8 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	//		this(controller);
 	//	}
 	//
-	public AFreeplaneAction(final String key, final Controller controller, final String title, final ImageIcon icon) {
-		this.controller = controller;
+	public AFreeplaneAction(final String key, final String title, final ImageIcon icon) {
+//		this.controller = controller;
 		putValue(SMALL_ICON, icon);
 		if (title != null && !title.equals("")) {
 			MenuBuilder.setLabelAndMnemonic(this, title);
@@ -140,7 +140,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	}
 
 	public Controller getController() {
-		return controller;
+		return Controller.getCurrentController();
 	}
 
 	public final String getIconKey() {
@@ -152,7 +152,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	}
 
 	public ModeController getModeController() {
-		return controller.getModeController();
+		return Controller.getCurrentController().getModeController();
 	}
 
 	final String getTextKey() {

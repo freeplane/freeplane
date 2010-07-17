@@ -38,7 +38,7 @@ class SelectAllAction extends AMultipleNodeAction {
 	 *
 	 */
 	public SelectAllAction(final Controller controller) {
-		super("SelectAllAction", controller);
+		super("SelectAllAction");
 	}
 
 	@Override

@@ -58,7 +58,7 @@ public class SortNodes extends AMultipleNodeAction {
 	 *
 	 */
 	public SortNodes(final Controller controller) {
-		super("SortNodes", controller);
+		super("SortNodes");
 	}
 
 	@Override

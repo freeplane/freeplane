@@ -38,7 +38,7 @@ class EdgeColorAction extends AMultipleNodeAction {
 	private Color actionColor;
 
 	public EdgeColorAction(final Controller controller) {
-		super("EdgeColorAction", controller);
+		super("EdgeColorAction");
 	}
 
 	@Override

@@ -32,7 +32,7 @@ class OpenAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public OpenAction(final Controller controller) {
-		super("OpenAction", controller);
+		super("OpenAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -46,7 +46,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public ImportExplorerFavoritesAction(final Controller controller) {
-		super("ImportExplorerFavoritesAction", controller);
+		super("ImportExplorerFavoritesAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

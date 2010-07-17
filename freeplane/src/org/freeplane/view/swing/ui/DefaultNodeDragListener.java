@@ -25,10 +25,10 @@ import org.freeplane.view.swing.map.MainView;
  * The NodeDragListener which belongs to every NodeView
  */
 class DefaultNodeDragListener implements DragGestureListener {
-	final private Controller controller;
+// 	final private Controller controller;
 
 	public DefaultNodeDragListener(final Controller controller) {
-		this.controller = controller;
+//		this.controller = controller;
 	}
 
 	public void dragGestureRecognized(final DragGestureEvent e) {

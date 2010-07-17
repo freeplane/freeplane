@@ -168,13 +168,13 @@ public class MLogicalStyleController extends LogicalStyleController {
 		}
 	}
 
-	private final ModeController modeController;
+// 	private final ModeController modeController;
 	final private List<AssignStyleAction> actions;
 	private FilterComposerDialog filterComposerDialog;
 
 	public MLogicalStyleController(final ModeController modeController) {
 		super(modeController);
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		modeController.getMapController().addNodeChangeListener(new StyleRemover());
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		modeController.addAction(new RedefineStyleAction(modeController.getController()));

@@ -53,7 +53,7 @@ class ExportBranchAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public ExportBranchAction(final Controller controller) {
-		super("ExportBranchAction", controller);
+		super("ExportBranchAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

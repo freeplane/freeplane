@@ -44,7 +44,7 @@ class ApplyToVisibleAction extends AFreeplaneAction {
 	private final FilterController filterController;
 
 	ApplyToVisibleAction(final FilterController filterController) {
-		super("ApplyToVisibleAction", filterController.getController());
+		super("ApplyToVisibleAction");
 		this.filterController = filterController;
 		filterController.getApplyToVisibleNodeOnly().addChangeListener(new ChangeListener() {
 			public void stateChanged(final ChangeEvent e) {

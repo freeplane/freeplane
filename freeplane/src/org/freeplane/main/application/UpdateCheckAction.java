@@ -59,7 +59,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 	 * the client which asks a remote repository for the current version of the program.
 	 */
 	public UpdateCheckAction(final Controller controller) {
-		super("UpdateCheckAction", controller);
+		super("UpdateCheckAction");
 		controller.getMapViewManager().addMapViewChangeListener(new IMapViewChangeListener() {
 			public void afterViewChange(final Component oldView, final Component newView) {
 				if (newView == null) {

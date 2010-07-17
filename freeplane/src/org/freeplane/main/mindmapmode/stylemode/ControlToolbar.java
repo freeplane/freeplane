@@ -45,7 +45,7 @@ public class ControlToolbar {
 			public void componentHidden(final ComponentEvent e) {
 			}
 		});
-		okAction = new AFreeplaneAction(key + ".ok", controller) {
+		okAction = new AFreeplaneAction(key + ".ok") {
 			/**
 			 * 
 			 */
@@ -56,7 +56,7 @@ public class ControlToolbar {
 				closeDialog((Component) e.getSource());
 			}
 		};
-		cancelAction = new AFreeplaneAction(key + ".cancel", controller) {
+		cancelAction = new AFreeplaneAction(key + ".cancel") {
 			/**
 			 * 
 			 */

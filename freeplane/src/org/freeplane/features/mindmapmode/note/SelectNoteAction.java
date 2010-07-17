@@ -43,7 +43,7 @@ class SelectNoteAction extends AFreeplaneAction {
 	final private MNoteController noteController;
 
 	public SelectNoteAction(final MNoteController noteController, final ModeController modeController) {
-		super("SelectNoteAction", modeController.getController());
+		super("SelectNoteAction");
 		this.noteController = noteController;
 	}
 

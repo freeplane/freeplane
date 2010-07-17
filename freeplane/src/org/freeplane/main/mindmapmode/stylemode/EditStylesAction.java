@@ -42,7 +42,7 @@ import org.freeplane.features.mindmapmode.MModeController;
  */
 public class EditStylesAction extends AFreeplaneAction {
 	public EditStylesAction(final MModeController mainModeController) {
-		super("EditStylesAction", mainModeController.getController());
+		super("EditStylesAction");
 	}
 
 	private void init() {

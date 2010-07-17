@@ -40,7 +40,7 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 	private final String toolbarName;
 
 	public ToggleToolbarAction(final Controller controller, final String actionName, final String toolbarName) {
-		super(actionName, controller);
+		super(actionName);
 		this.toolbarName = toolbarName;
 	}
 

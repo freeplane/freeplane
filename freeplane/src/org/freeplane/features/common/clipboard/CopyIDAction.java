@@ -10,7 +10,7 @@ import org.freeplane.features.common.map.NodeModel;
 
 public class CopyIDAction extends AFreeplaneAction {
 	public CopyIDAction(final Controller controller) {
-		super("CopyIDAction", controller);
+		super("CopyIDAction");
 	}
 
 	/**

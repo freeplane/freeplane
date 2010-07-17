@@ -46,7 +46,7 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 	/**
 	 */
 	public RemoveAllIconsAction(final Controller controller) {
-		super("RemoveAllIconsAction", controller);
+		super("RemoveAllIconsAction");
 	}
 
 	@Override

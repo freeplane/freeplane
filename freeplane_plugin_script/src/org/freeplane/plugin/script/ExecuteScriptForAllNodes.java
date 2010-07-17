@@ -13,7 +13,7 @@ public class ExecuteScriptForAllNodes extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public ExecuteScriptForAllNodes(final Controller controller) {
-		super("ExecuteScriptForAllNodes", controller);
+		super("ExecuteScriptForAllNodes");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

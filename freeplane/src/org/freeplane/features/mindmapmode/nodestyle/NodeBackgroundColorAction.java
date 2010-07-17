@@ -38,7 +38,7 @@ class NodeBackgroundColorAction extends AMultipleNodeAction {
 	private Color actionBackgroundColor;
 
 	public NodeBackgroundColorAction(final Controller controller) {
-		super("NodeBackgroundColorAction", controller);
+		super("NodeBackgroundColorAction");
 	}
 
 	@Override

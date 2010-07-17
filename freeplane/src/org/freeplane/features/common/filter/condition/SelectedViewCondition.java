@@ -36,11 +36,11 @@ public class SelectedViewCondition implements ISelectableCondition {
 		return new SelectedViewCondition(controller);
 	}
 
-	private final Controller controller;
+// 	private final Controller controller;
 
 	public SelectedViewCondition(final Controller controller) {
 		super();
-		this.controller = controller;
+//		this.controller = controller;
 	}
 
 	public boolean checkNode(final ModeController modeController, final NodeModel node) {

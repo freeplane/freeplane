@@ -52,7 +52,7 @@ public class FreeplaneApplet extends JApplet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private AppletViewController appletViewController;
-	private Controller controller;
+// 	private Controller controller;
 
 	@Override
 	public void destroy() {

@@ -39,7 +39,7 @@ class CloudAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 
 	public CloudAction(final Controller controller) {
-		super("CloudAction", controller);
+		super("CloudAction");
 	}
 
 	/*

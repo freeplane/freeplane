@@ -44,12 +44,12 @@ import org.freeplane.features.common.note.NoteModel;
  */
 public class BNodeNoteViewer implements INodeSelectionListener {
 	private static UIIcon noteIcon = null;
-	final private Controller controller;
+// 	final private Controller controller;
 	private JComponent noteScrollPane;
 	private JLabel noteViewer;
 
 	public BNodeNoteViewer(final Controller controller) {
-		this.controller = controller;
+//		this.controller = controller;
 	}
 
 	protected JComponent getNoteViewerComponent() {

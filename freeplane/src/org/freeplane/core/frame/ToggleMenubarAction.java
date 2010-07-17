@@ -35,7 +35,7 @@ class ToggleMenubarAction extends AFreeplaneAction {
 	final private ViewController controller;
 
 	ToggleMenubarAction(final Controller controller, final ViewController viewController) {
-		super("ToggleMenubarAction", controller);
+		super("ToggleMenubarAction");
 		this.controller = viewController;
 	}
 

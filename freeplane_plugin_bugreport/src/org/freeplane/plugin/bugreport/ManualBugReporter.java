@@ -15,11 +15,11 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
 class ManualBugReporter implements IBugReportListener {
-	final private Controller controller;
+// 	final private Controller controller;
 
 	public ManualBugReporter(final Controller controller) {
 		super();
-		this.controller = controller;
+//		this.controller = controller;
 	}
 
 	public void onReportSent(final Map<String, String> report, final String status) {

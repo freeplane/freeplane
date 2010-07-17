@@ -121,7 +121,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private final ButtonModel applyToVisibleNodeOnly;
 	private ConditionFactory conditionFactory;
 	private DefaultConditionRenderer conditionRenderer = null;
-	private final Controller controller;
+// 	private final Controller controller;
 	final private FilterChangeListener filterChangeListener;
 	private DefaultComboBoxModel filterConditions;
 	private JToolBar filterToolbar;
@@ -135,7 +135,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private JComboBox activeFilterConditionComboBox;
 
 	public FilterController(final Controller controller) {
-		this.controller = controller;
+//		this.controller = controller;
 		history = new FilterHistory(controller);
 		filterChangeListener = new FilterChangeListener();
 		showAncestors = new JToggleButton.ToggleButtonModel();

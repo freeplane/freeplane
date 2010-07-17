@@ -124,7 +124,7 @@ public class MModeControllerFactory {
 		return instance;
 	}
 
-	private Controller controller;
+// 	private Controller controller;
 	private MModeController modeController;
 	private MUIFactory uiFactory;
 
@@ -163,7 +163,7 @@ public class MModeControllerFactory {
 	}
 
 	private MModeController createModeControllerImpl(final Controller controller) {
-		this.controller = controller;
+//		this.controller = controller;
 		createStandardControllers();
 		createAddIns();
 		return modeController;

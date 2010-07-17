@@ -39,7 +39,7 @@ class CutAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public CutAction(final Controller controller) {
-		super("CutAction", controller);
+		super("CutAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -15,7 +15,7 @@ public class NextNodeAction extends AFreeplaneAction {
 	private final Direction direction;
 
 	public NextNodeAction(final Controller controller, final Direction direction) {
-		super("NextNodeAction." + direction.toString(), controller);
+		super("NextNodeAction." + direction.toString());
 		this.direction = direction;
 	}
 

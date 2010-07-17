@@ -43,7 +43,7 @@ class NodeUpAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public NodeUpAction(final Controller controller) {
-		super("NodeUpAction", controller);
+		super("NodeUpAction");
 	}
 
 	public void _moveNodes(final NodeModel selected, final List<NodeModel> selecteds, final int direction) {

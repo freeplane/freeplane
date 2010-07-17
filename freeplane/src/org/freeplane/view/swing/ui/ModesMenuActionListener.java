@@ -31,7 +31,7 @@ class ModesMenuActionListener extends AFreeplaneAction {
 	private final String mode;
 
 	public ModesMenuActionListener(final String mode, final Controller controller) {
-		super("ModesMenuAction." + mode, controller);
+		super("ModesMenuAction." + mode);
 		this.mode = mode;
 	}
 

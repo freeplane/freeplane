@@ -41,7 +41,7 @@ class AddConnectorAction extends AFreeplaneAction {
 	/**
 	 */
 	public AddConnectorAction(final Controller controller) {
-		super("AddConnectorAction", controller);
+		super("AddConnectorAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

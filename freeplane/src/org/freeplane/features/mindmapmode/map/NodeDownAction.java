@@ -32,7 +32,7 @@ class NodeDownAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public NodeDownAction(final Controller controller) {
-		super("NodeDownAction", controller);
+		super("NodeDownAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

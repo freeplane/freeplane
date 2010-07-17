@@ -45,7 +45,7 @@ public class FitToPage extends AFreeplaneAction {
 	 *
 	 */
 	public FitToPage(final Controller controller) {
-		super("FitToPage", controller);
+		super("FitToPage");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

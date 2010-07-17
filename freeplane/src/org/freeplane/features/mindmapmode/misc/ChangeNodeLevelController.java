@@ -45,7 +45,7 @@ public class ChangeNodeLevelController {
 		private static final long serialVersionUID = 1L;
 
 		public ChangeNodeLevelLeftsAction() {
-			super("ChangeNodeLevelLeftsAction", controller);
+			super("ChangeNodeLevelLeftsAction");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -71,7 +71,7 @@ public class ChangeNodeLevelController {
 		private static final long serialVersionUID = 1L;
 
 		public ChangeNodeLevelRightsAction() {
-			super("ChangeNodeLevelRightsAction", controller);
+			super("ChangeNodeLevelRightsAction");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -88,10 +88,10 @@ public class ChangeNodeLevelController {
 		}
 	};
 
-	final private Controller controller;;
+// 	final private Controller controller;;
 
 	public ChangeNodeLevelController(final Controller controller) {
-		this.controller = controller;
+//		this.controller = controller;
 	}
 
 	public void addActionsAtMenuBuilder(final MenuBuilder menuBuilder) {

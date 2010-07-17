@@ -43,13 +43,13 @@ class FileOpener implements DropTargetListener {
 	/**
 	 *
 	 */
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 
 	/**
 	 * @param modeController
 	 */
 	FileOpener(final ModeController modeController) {
-		this.modeController = modeController;
+//		this.modeController = modeController;
 	}
 
 	public void dragEnter(final DropTargetDragEvent dtde) {

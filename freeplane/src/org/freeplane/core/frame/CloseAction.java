@@ -31,14 +31,14 @@ class CloseAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private Controller controller;
+// 	final private Controller controller;
 
 	CloseAction(final Controller controller) {
-		super("CloseAction", controller);
-		this.controller = controller;
+		super("CloseAction");
+//		this.controller = controller;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		controller.close(false);
+		Controller.getCurrentController().close(false);
 	}
 }

@@ -37,7 +37,7 @@ class OpenURLAction extends AFreeplaneAction {
 	final private String url;
 
 	OpenURLAction(final String key, final Controller controller, final String url) {
-		super(key, controller);
+		super(key);
 		this.url = url;
 	}
 

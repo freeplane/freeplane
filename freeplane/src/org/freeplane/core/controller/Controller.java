@@ -46,7 +46,7 @@ public class Controller extends AController {
 	 * Converts from a local link to the real file URL of the documentation map.
 	 * (Used to change this behavior under MacOSX).
 	 */
-	private ModeController modeController;
+ 	private ModeController modeController;
 	final private Map<String, ModeController> modeControllers = new LinkedHashMap<String, ModeController>();
 	private ViewController viewController;
 
@@ -176,5 +176,10 @@ public class Controller extends AController {
 	public static Process exec(final String[] command) throws IOException {
 		LogUtils.info("execute " + Arrays.toString(command));
 		return Runtime.getRuntime().exec(command);
+	}
+
+	public static Controller getCurrentController() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -66,12 +66,12 @@ public class EdgeController implements IExtension {
 	}
 
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
-	private final ModeController modeController;
+// 	private final ModeController modeController;
 	final private ExclusivePropertyChain<EdgeStyle, NodeModel> styleHandlers;
 	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
 
 	public EdgeController(final ModeController modeController) {
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		colorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		styleHandlers = new ExclusivePropertyChain<EdgeStyle, NodeModel>();
 		widthHandlers = new ExclusivePropertyChain<Integer, NodeModel>();

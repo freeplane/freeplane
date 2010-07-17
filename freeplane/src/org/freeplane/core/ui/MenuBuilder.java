@@ -474,12 +474,12 @@ public class MenuBuilder extends UIBuilder {
 
 	private IAcceleratorChangeListener acceleratorChangeListener;
 	private final Map<KeyStroke, Node> accelerators = new HashMap<KeyStroke, Node>();
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 	final MenuStructureReader reader;
 
 	public MenuBuilder(final ModeController modeController) {
 		super(null);
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		reader = new MenuStructureReader();
 	}
 

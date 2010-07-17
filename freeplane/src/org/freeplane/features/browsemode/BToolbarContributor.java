@@ -37,7 +37,7 @@ import org.freeplane.features.common.map.ModeController;
 
 public class BToolbarContributor implements IMenuContributor, IMapViewChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 	private PersistentEditableComboBox urlfield = null;
 
 	public BToolbarContributor(final ModeController controller) {

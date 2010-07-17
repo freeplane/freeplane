@@ -38,7 +38,7 @@ class CenterSelectedNodeAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public CenterSelectedNodeAction(final Controller controller) {
-		super("CenterSelectedNodeAction", controller);
+		super("CenterSelectedNodeAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

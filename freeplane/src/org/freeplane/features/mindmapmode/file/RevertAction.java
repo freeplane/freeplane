@@ -49,14 +49,14 @@ import org.freeplane.features.common.map.MapWriter.Mode;
  */
 class RevertAction extends AFreeplaneAction {
 	private static class RevertActionInstance {
-		final private Controller controller;
+// 		final private Controller controller;
 		private String filePrefix;
 		private String localFileName;
 		private String map;
 
 		public RevertActionInstance(final Controller controller) {
 			super();
-			this.controller = controller;
+//			this.controller = controller;
 		}
 
 		public void act() {
@@ -118,7 +118,7 @@ class RevertAction extends AFreeplaneAction {
 	/**
 	 */
 	public RevertAction(final Controller controller) {
-		super("RevertAction", controller);
+		super("RevertAction");
 	}
 
 	/*

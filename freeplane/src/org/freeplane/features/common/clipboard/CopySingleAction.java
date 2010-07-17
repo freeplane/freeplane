@@ -35,7 +35,7 @@ class CopySingleAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public CopySingleAction(final Controller controller) {
-		super("CopySingleAction", controller);
+		super("CopySingleAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

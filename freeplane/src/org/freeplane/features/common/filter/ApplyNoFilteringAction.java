@@ -41,7 +41,7 @@ final class ApplyNoFilteringAction extends AFreeplaneAction {
 	 * @param filterController
 	 */
 	ApplyNoFilteringAction(final FilterController filterController) {
-		super("ApplyNoFilteringAction", filterController.getController());
+		super("ApplyNoFilteringAction");
 		this.filterController = filterController;
 	}
 

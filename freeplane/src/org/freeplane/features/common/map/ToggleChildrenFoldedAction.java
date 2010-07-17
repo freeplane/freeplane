@@ -37,7 +37,7 @@ class ToggleChildrenFoldedAction extends AFreeplaneAction {
 	final private MapController mapController;
 
 	public ToggleChildrenFoldedAction(final MapController mapController) {
-		super("ToggleChildrenFoldedAction", mapController.getModeController().getController());
+		super("ToggleChildrenFoldedAction");
 		this.mapController = mapController;
 	}
 

@@ -32,7 +32,7 @@ class CopyAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public CopyAction(final Controller controller) {
-		super("CopyAction", controller);
+		super("CopyAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

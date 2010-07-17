@@ -219,14 +219,14 @@ public class EditNodeBase {
 	protected static final int BUTTON_OK = 0;
 	protected static final int BUTTON_SPLIT = 2;
 	final private IEditControl editControl;
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 	protected NodeModel node;
 	protected String text;
 	protected FocusListener textFieldListener = null;
 
 	protected EditNodeBase(final NodeModel node, final String text, final ModeController modeController,
 	                       final IEditControl editControl) {
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		this.editControl = editControl;
 		this.node = node;
 		this.text = text;

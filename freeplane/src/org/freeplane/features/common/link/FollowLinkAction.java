@@ -35,7 +35,7 @@ class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
 	private static final long serialVersionUID = 1L;
 
 	public FollowLinkAction(final Controller controller) {
-		super("FollowLinkAction", controller);
+		super("FollowLinkAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

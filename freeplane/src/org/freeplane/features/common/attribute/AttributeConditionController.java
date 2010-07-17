@@ -40,12 +40,12 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * 21.12.2008
  */
 class AttributeConditionController implements IElementaryConditionController {
-	final private Controller controller;
+// 	final private Controller controller;
 	private final ExtendedComboBoxModel values = new ExtendedComboBoxModel();
 
 	public AttributeConditionController(final Controller controller) {
 		super();
-		this.controller = controller;
+//		this.controller = controller;
 	}
 
 	public boolean canEditValues(final Object selectedItem, final NamedObject simpleCond) {

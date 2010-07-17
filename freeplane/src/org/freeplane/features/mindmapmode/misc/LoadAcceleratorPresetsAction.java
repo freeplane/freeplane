@@ -115,7 +115,7 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 
 	LoadAcceleratorPresetsAction(final URL resource, final String propFileName, final String title,
 	                             final Controller controller) {
-		super("LoadAcceleratorPresetsAction." + propFileName, controller, title, null);
+		super("LoadAcceleratorPresetsAction." + propFileName, title, null);
 		this.resource = resource;
 	}
 
@@ -137,7 +137,7 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public SaveAcceleratorPresetsAction(final Controller controller) {
-		super("SaveAcceleratorPresetsAction", controller);
+		super("SaveAcceleratorPresetsAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

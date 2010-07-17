@@ -38,7 +38,7 @@ class EdgeStyleAction extends AMultipleNodeAction {
 	final private EdgeStyle mStyle;
 
 	public EdgeStyleAction(final ModeController controller, final EdgeStyle style) {
-		super("EdgeStyleAction." + style, controller.getController());
+		super("EdgeStyleAction." + style);
 		mStyle = style;
 	}
 

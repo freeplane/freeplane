@@ -86,7 +86,7 @@ public class FreeplaneStarter {
 	}
 
 	private ApplicationResourceController applicationResourceController;
-	private Controller controller;
+// 	private Controller controller;
 	private FreeplaneSplashModern splash;
 	private ApplicationViewController viewController;
 	/** allows to disable loadLastMap(s) if there already is a second instance running. */

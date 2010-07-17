@@ -80,7 +80,7 @@ public class ReminderHook extends PersistentNodeHook {
 		private final NodeList timeList;
 
 		public TimeListAction(final ModeController modeController) {
-			super("TimeListAction", modeController.getController());
+			super("TimeListAction");
 			timeList = new NodeList(modeController, false, false);
 		}
 
@@ -102,7 +102,7 @@ public class ReminderHook extends PersistentNodeHook {
 		private final TimeManagement timeManagement;
 
 		public TimeManagementAction(final ModeController modeController, final ReminderHook reminderHook) {
-			super("TimeManagementAction", modeController.getController());
+			super("TimeManagementAction");
 			timeManagement = new TimeManagement(modeController, reminderHook);
 		}
 

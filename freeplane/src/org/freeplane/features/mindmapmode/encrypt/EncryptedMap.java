@@ -36,7 +36,7 @@ public class EncryptedMap extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public EncryptedMap(final ModeController modeController) {
-		super("EncryptedMap", modeController.getController());
+		super("EncryptedMap");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

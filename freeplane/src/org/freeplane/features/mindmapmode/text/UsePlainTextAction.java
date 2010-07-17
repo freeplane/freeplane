@@ -34,7 +34,7 @@ class UsePlainTextAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 
 	public UsePlainTextAction(final Controller controller) {
-		super("UsePlainTextAction", controller);
+		super("UsePlainTextAction");
 	}
 
 	@Override

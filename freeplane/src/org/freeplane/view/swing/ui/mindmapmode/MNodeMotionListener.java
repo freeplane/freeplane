@@ -45,14 +45,12 @@ import org.freeplane.view.swing.ui.DefaultNodeMotionListener;
  * The MouseMotionListener which belongs to every NodeView
  */
 public class MNodeMotionListener extends DefaultNodeMotionListener {
-	final private ModeController c;
 	private Point dragStartingPoint = null;
 	private int originalHGap;
 	private int originalParentVGap;
 	private int originalShiftY;
 
-	public MNodeMotionListener(final ModeController controller) {
-		c = controller;
+	public MNodeMotionListener() {
 	}
 
 	Point getDragStartingPoint() {
@@ -63,7 +61,7 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 	 */
 	private int getHGap(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
 		int oldHGap = LocationModel.getModel(node).getHGap();
-		final Controller controller = c.getController();
+		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / mapView.getZoom());
 		if (node.isLeft()) {
@@ -77,7 +75,7 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 	 */
 	private int getNodeShiftY(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
 		int shiftY = LocationModel.getModel(node).getShiftY();
-		final Controller controller = c.getController();
+		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
 		shiftY += shiftYChange;
@@ -94,7 +92,7 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 	 */
 	private int getVGap(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
 		int oldVGap = LocationModel.getModel(node).getVGap();
-		final Controller controller = c.getController();
+		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		final int vGapChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
 		oldVGap = Math.max(0, oldVGap - vGapChange);
@@ -108,17 +106,19 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 	@Override
 	public void mouseClicked(final MouseEvent e) {
 		if (e.getButton() == 1 && e.getClickCount() == 2) {
+			final Controller controller = Controller.getCurrentController();
+			MLocationController locationController = (MLocationController) LocationController.getController(controller.getModeController());
 			if (e.getModifiersEx() == 0) {
 				final NodeView nodeV = getNodeView(e);
 				final NodeModel node = nodeV.getModel();
-				((MLocationController) LocationController.getController(c)).moveNodePosition(node, LocationModel
+				locationController.moveNodePosition(node, LocationModel
 				    .getModel(node).getVGap(), LocationModel.HGAP, 0);
 				return;
 			}
 			if (e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
 				final NodeView nodeV = getNodeView(e);
 				final NodeModel node = nodeV.getModel();
-				((MLocationController) LocationController.getController(c)).moveNodePosition(node, LocationModel.VGAP,
+				locationController.moveNodePosition(node, LocationModel.VGAP,
 				    LocationModel.getModel(node).getHGap(), LocationModel.getModel(node).getShiftY());
 				return;
 			}
@@ -138,6 +138,7 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 				setDragStartingPoint(point, nodeV.getModel());
 			}
 			else {
+				ModeController c = Controller.getCurrentController().getModeController();
 				final Point dragNextPoint = point;
 				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
 					final NodeModel node = nodeV.getModel();
@@ -209,7 +210,9 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 		final int hgap = LocationModel.getModel(node).getHGap();
 		final int shiftY = LocationModel.getModel(node).getShiftY();
 		resetPositions(node);
-		((MLocationController) LocationController.getController(c)).moveNodePosition(node, parentVGap, hgap, shiftY);
+		final Controller controller = Controller.getCurrentController();
+		MLocationController locationController = (MLocationController) LocationController.getController(controller.getModeController());
+		locationController.moveNodePosition(node, parentVGap, hgap, shiftY);
 		stopDrag();
 	}
 

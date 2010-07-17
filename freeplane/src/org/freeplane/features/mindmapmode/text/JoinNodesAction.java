@@ -48,7 +48,7 @@ class JoinNodesAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public JoinNodesAction(final Controller controller) {
-		super("JoinNodesAction", controller);
+		super("JoinNodesAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

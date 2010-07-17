@@ -40,7 +40,7 @@ public class PrintController implements IExtension {
 		controller.addExtension(PrintController.class, new PrintController(controller));
 	}
 
-	final private Controller controller;
+// 	final private Controller controller;
 	final private PageAction pageAction;
 	private PageFormat pageFormat = null;
 	final private PrintAction printAction;
@@ -51,7 +51,7 @@ public class PrintController implements IExtension {
 
 	public PrintController(final Controller controller) {
 		super();
-		this.controller = controller;
+//		this.controller = controller;
 		printAction = new PrintAction(controller, this, true);
 		printDirectAction = new PrintDirectAction(controller, this);
 		printPreviewAction = new PrintPreviewAction(controller, this);

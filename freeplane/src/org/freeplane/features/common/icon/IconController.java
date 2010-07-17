@@ -58,12 +58,12 @@ public class IconController implements IExtension {
 		modeController.addExtension(IconController.class, iconController);
 	}
 
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 
 	public IconController(final ModeController modeController) {
 		super();
 		iconHandlers = new CombinedPropertyChain<List<MindIcon>, NodeModel>();
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();

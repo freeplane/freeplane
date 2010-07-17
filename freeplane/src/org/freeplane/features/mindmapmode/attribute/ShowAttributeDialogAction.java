@@ -37,7 +37,7 @@ class ShowAttributeDialogAction extends AFreeplaneAction {
 	 *
 	 */
 	ShowAttributeDialogAction(final Controller controller) {
-		super("ShowAttributeDialogAction", controller);
+		super("ShowAttributeDialogAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -32,7 +32,7 @@ class ZoomOutAction extends AFreeplaneAction {
 	final private ViewController viewController;
 
 	public ZoomOutAction(final ViewController viewController) {
-		super("ZoomOutAction", viewController.getController());
+		super("ZoomOutAction");
 		this.viewController = viewController;
 	}
 

@@ -36,7 +36,7 @@ class RemoveConnectorAction extends AFreeplaneAction {
 	 * can be null can be null.
 	 */
 	public RemoveConnectorAction(final MLinkController linkController, final NodeLinkModel arrowLink) {
-		super("RemoveConnectorAction", linkController.getModeController().getController());
+		super("RemoveConnectorAction");
 		setArrowLink(arrowLink);
 	}
 

@@ -49,11 +49,11 @@ public class TextController implements IExtension {
 		modeController.getController();
 	}
 
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 
 	public TextController(final ModeController modeController) {
 		super();
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();

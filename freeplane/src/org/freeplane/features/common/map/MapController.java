@@ -207,19 +207,19 @@ public class MapController extends SelectionController {
 		MapController.saveOnlyIntrinsicallyNeededIds = saveOnlyIntrinsicallyNeededIds;
 	}
 
-	final private Controller controller;
+// 	final private Controller controller;
 	protected final Collection<IMapChangeListener> mapChangeListeners;
 	final private Collection<IMapLifeCycleListener> mapLifeCycleListeners;
 	final private MapReader mapReader;
 	final private MapWriter mapWriter;
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 	final private LinkedList<INodeChangeListener> nodeChangeListeners;
 	final private ReadManager readManager;
 	private final WriteManager writeManager;
 
 	public MapController(final ModeController modeController) {
 		super();
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		controller = modeController.getController();
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
 		writeManager = new WriteManager();

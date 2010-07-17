@@ -21,14 +21,14 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 	public static final String RESOURCES_WHEEL_VELOCITY = "wheel_velocity";
 	private static int SCROLL_SKIPS = 8;
 	private static final int ZOOM_MASK = InputEvent.CTRL_MASK;
-	final private Controller controller;
+// 	final private Controller controller;
 
 	/**
 	 *
 	 */
 	public DefaultMouseWheelListener(final Controller controller) {
 		super();
-		this.controller = controller;
+//		this.controller = controller;
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.equals(DefaultMouseWheelListener.RESOURCES_WHEEL_VELOCITY)) {

@@ -159,13 +159,13 @@ public class UrlManager implements IExtension {
 		modeController.addExtension(UrlManager.class, urlManager);
 	}
 
-	final private Controller controller;
-	final private ModeController modeController;
+// 	final private Controller controller;
+// 	final private ModeController modeController;
 
 	public UrlManager(final ModeController modeController) {
 		super();
-		this.modeController = modeController;
-		controller = modeController.getController();
+//		this.modeController = modeController;
+//		controller = modeController.getController();
 		createActions();
 	}
 

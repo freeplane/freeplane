@@ -35,7 +35,7 @@ class ToggleFoldedAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public ToggleFoldedAction(final Controller controller) {
-		super("ToggleFoldedAction", controller);
+		super("ToggleFoldedAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

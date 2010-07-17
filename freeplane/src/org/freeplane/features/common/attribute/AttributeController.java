@@ -41,10 +41,10 @@ public class AttributeController implements IExtension {
 		modeController.addExtension(AttributeController.class, attributeController);
 	}
 
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 
 	public AttributeController(final ModeController modeController) {
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();

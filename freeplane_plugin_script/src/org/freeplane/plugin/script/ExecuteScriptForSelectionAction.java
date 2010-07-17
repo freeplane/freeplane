@@ -14,7 +14,7 @@ public class ExecuteScriptForSelectionAction extends AMultipleNodeAction {
 	private boolean success;
 
 	public ExecuteScriptForSelectionAction(final Controller controller) {
-		super("ExecuteScriptForSelectionAction", controller);
+		super("ExecuteScriptForSelectionAction");
 	}
 
 	@Override

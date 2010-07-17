@@ -35,7 +35,7 @@ class SetLinkByFileChooserAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public SetLinkByFileChooserAction(final Controller controller) {
-		super("SetLinkByFileChooserAction", controller);
+		super("SetLinkByFileChooserAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

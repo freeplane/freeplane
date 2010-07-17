@@ -40,7 +40,7 @@ class ExportBranchToHTMLAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public ExportBranchToHTMLAction(final Controller controller) {
-		super("ExportBranchToHTMLAction", controller);
+		super("ExportBranchToHTMLAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

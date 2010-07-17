@@ -38,7 +38,7 @@ class BoldAction extends AMultipleNodeAction {
 	/**
 	 */
 	public BoldAction(final Controller controller) {
-		super("BoldAction", controller);
+		super("BoldAction");
 	}
 
 	@Override

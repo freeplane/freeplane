@@ -35,7 +35,7 @@ class NewMapAction extends AFreeplaneAction {
 	 * 
 	 */
 	public NewMapAction(final Controller controller) {
-		super("NewMapAction", controller);
+		super("NewMapAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -44,7 +44,7 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public ImportFolderStructureAction(final Controller controller) {
-		super("ImportFolderStructureAction", controller);
+		super("ImportFolderStructureAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

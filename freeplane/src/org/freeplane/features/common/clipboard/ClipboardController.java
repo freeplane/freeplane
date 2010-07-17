@@ -65,12 +65,12 @@ public class ClipboardController implements IExtension {
 	}
 
 	final private Clipboard clipboard;
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 	final private Clipboard selection;
 
 	public ClipboardController(final ModeController modeController) {
 		super();
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		final Toolkit toolkit = Toolkit.getDefaultToolkit();
 		selection = toolkit.getSystemSelection();
 		clipboard = toolkit.getSystemClipboard();

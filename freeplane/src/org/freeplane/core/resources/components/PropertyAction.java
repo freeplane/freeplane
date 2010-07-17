@@ -53,7 +53,7 @@ public class PropertyAction extends AFreeplaneAction {
 	 *
 	 */
 	public PropertyAction(final Controller controller, final DefaultMutableTreeNode controls) {
-		super("PropertyAction", controller);
+		super("PropertyAction");
 		this.controls = controls;
 	}
 

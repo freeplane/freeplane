@@ -51,7 +51,7 @@ class DocumentationAction extends AFreeplaneAction {
 	private final String document;
 
 	DocumentationAction(final Controller controller, final String actionName, final String document) {
-		super(actionName, controller);
+		super(actionName);
 		this.document = document;
 	}
 

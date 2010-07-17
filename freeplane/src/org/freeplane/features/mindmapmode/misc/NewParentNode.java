@@ -55,7 +55,7 @@ public class NewParentNode extends AFreeplaneAction {
 	 *
 	 */
 	public NewParentNode(final Controller controller) {
-		super("NewParentNode", controller);
+		super("NewParentNode");
 	}
 
 	/*

@@ -38,7 +38,7 @@ class AllMapsNodeListAction extends AFreeplaneAction {
 	private final NodeList nodeList;
 
 	public AllMapsNodeListAction(final ModeController modeController) {
-		super("AllMapsNodeListAction", modeController.getController());
+		super("AllMapsNodeListAction");
 		nodeList = new NodeList(modeController, true, true);
 	}
 

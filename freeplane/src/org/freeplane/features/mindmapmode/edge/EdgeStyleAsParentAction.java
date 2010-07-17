@@ -36,7 +36,7 @@ class EdgeStyleAsParentAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 
 	public EdgeStyleAsParentAction(final ModeController controller) {
-		super("EdgeStyleAsParentAction", controller.getController());
+		super("EdgeStyleAsParentAction");
 	}
 
 	/*

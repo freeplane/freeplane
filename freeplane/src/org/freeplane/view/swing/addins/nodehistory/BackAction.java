@@ -45,7 +45,7 @@ class BackAction extends AFreeplaneAction {
 	final private NodeHistory nodeHistory;
 
 	public BackAction(final Controller controller, final NodeHistory nodeHistory) {
-		super("BackAction", controller);
+		super("BackAction");
 		this.nodeHistory = nodeHistory;
 		setEnabled(false);
 	}

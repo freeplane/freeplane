@@ -49,13 +49,13 @@ import org.freeplane.features.common.styles.ConditionalStyleModel.Item;
  * 28.09.2009
  */
 public class LogicalStyleController implements IExtension {
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 	
 	private WeakReference<NodeModel> cachedNode;
 	private WeakReference<Object> cachedStyle;
 
 	public LogicalStyleController(final ModeController modeController) {
-	    this.modeController = modeController;
+//	    this.modeController = modeController;
 		createBuilder();
 		registerChangeListener();
 	}

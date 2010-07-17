@@ -38,7 +38,7 @@ class ChangeConnectorArrowsAction extends AFreeplaneAction {
 	public ChangeConnectorArrowsAction(final MLinkController linkController, final String key,
 	                                   final ConnectorModel arrowLink, final ArrowType startArrow,
 	                                   final ArrowType endArrow) {
-		super("ChangeConnectorArrowsAction." + key, linkController.getModeController().getController());
+		super("ChangeConnectorArrowsAction." + key);
 		this.arrowLink = arrowLink;
 		this.startArrow = startArrow;
 		this.endArrow = endArrow;

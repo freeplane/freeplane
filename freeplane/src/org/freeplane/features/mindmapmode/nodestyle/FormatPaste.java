@@ -44,7 +44,7 @@ class FormatCopy extends AFreeplaneAction {
 	}
 
 	public FormatCopy(final Controller controller) {
-		super("FormatCopy", controller);
+		super("FormatCopy");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -72,7 +72,7 @@ class FormatPaste extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 
 	public FormatPaste(final Controller controller) {
-		super("FormatPaste", controller);
+		super("FormatPaste");
 	}
 
 	@Override

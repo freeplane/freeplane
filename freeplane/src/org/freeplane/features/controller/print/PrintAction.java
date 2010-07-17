@@ -31,7 +31,7 @@ class PrintAction extends AbstractPrintAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private Controller controller;
+// 	final private Controller controller;
 	final private boolean isDlg;
 
 	PrintAction(final Controller controller, final PrintController printController, final boolean isDlg) {
@@ -41,7 +41,7 @@ class PrintAction extends AbstractPrintAction {
 	public PrintAction(final String key, final Controller controller, final PrintController printController,
 	                   final boolean isDlg) {
 		super(key, printController);
-		this.controller = controller;
+//		this.controller = controller;
 		this.isDlg = isDlg;
 	}
 

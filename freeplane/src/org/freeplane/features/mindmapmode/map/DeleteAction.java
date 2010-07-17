@@ -39,7 +39,7 @@ class DeleteAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public DeleteAction(final Controller controller) {
-		super("DeleteAction", controller);
+		super("DeleteAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -16,7 +16,7 @@ public class RedefineStyleAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	
 	public RedefineStyleAction(final Controller controller) {
-		super("RedefineStyleAction", controller);
+		super("RedefineStyleAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

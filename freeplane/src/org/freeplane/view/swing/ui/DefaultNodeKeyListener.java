@@ -13,13 +13,13 @@ import org.freeplane.view.swing.map.MapView;
  * (Delete Node). It forwards the requests to NodeController.
  */
 public class DefaultNodeKeyListener implements KeyListener {
-	final private Controller controller;
+// 	final private Controller controller;
 	private boolean disabledKeyType = true;
 	final private IEditHandler editHandler;
 	private boolean keyTypeAddsNew = false;
 
 	public DefaultNodeKeyListener(final Controller controller, final IEditHandler editHandler) {
-		this.controller = controller;
+//		this.controller = controller;
 		this.editHandler = editHandler;
 		disabledKeyType = ResourceController.getResourceController().getBooleanProperty("disable_key_type");
 		keyTypeAddsNew = ResourceController.getResourceController().getBooleanProperty("key_type_adds_new");

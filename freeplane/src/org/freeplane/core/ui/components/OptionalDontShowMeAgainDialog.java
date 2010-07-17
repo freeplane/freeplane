@@ -57,7 +57,7 @@ public class OptionalDontShowMeAgainDialog {
 		    .getResult();
 	}
 
-	private final Controller controller;
+// 	private final Controller controller;
 	private JDialog mDialog;
 	private JCheckBox mDontShowAgainBox;
 	final private String mMessageId;
@@ -70,7 +70,7 @@ public class OptionalDontShowMeAgainDialog {
 
 	private OptionalDontShowMeAgainDialog(final Controller controller, final String pMessageId, final String pTitleId,
 	                                      final String pPropertyName, final int pMessageType) {
-		this.controller = controller;
+//		this.controller = controller;
 		mParent = controller.getViewController().getFrame();
 		final IMapSelection selection = controller.getSelection();
 		if (selection != null) {

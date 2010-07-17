@@ -32,7 +32,7 @@ public class CenterAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public CenterAction(final Controller controller) {
-		super("CenterAction", controller);
+		super("CenterAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

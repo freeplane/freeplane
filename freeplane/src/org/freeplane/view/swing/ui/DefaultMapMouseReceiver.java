@@ -31,7 +31,7 @@ import org.freeplane.view.swing.map.MapView;
  * 06.01.2009
  */
 public class DefaultMapMouseReceiver implements IMapMouseReceiver {
-	final private Controller controller;
+// 	final private Controller controller;
 	int originX = -1;
 	int originY = -1;
 
@@ -40,7 +40,7 @@ public class DefaultMapMouseReceiver implements IMapMouseReceiver {
 	 */
 	public DefaultMapMouseReceiver(final Controller controller) {
 		super();
-		this.controller = controller;
+//		this.controller = controller;
 	}
 
 	public void mouseDragged(final MouseEvent e) {

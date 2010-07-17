@@ -32,7 +32,7 @@ class OpenLastOpenedAction extends AFreeplaneAction {
 	final private LastOpenedList list;
 
 	public OpenLastOpenedAction(final int i, final Controller controller, final LastOpenedList list) {
-		super("OpenLastOpenedAction_" + i, controller, null, null);
+		super("OpenLastOpenedAction_" + i, null, null);
 		this.list = list;
 	}
 

@@ -131,7 +131,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	private static final String[] zooms = { "25%", "50%", "75%", "100%", "150%", "200%", "300%", "400%" };
 	private boolean antialiasAll = false;
 	private boolean antialiasEdges = false;
-	final private Controller controller;
+// 	final private Controller controller;
 	private final IMapViewManager mapViewManager;
 	final private JScrollPane scrollPane;
 	final private JLabel status;
@@ -163,7 +163,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
 		status = new JLabel();
 		statusPanel.add(status);
-		this.controller = controller;
+//		this.controller = controller;
 		controller.setViewController(this);
 		this.mapViewManager = mapViewManager;
 		mapViewManager.addMapViewChangeListener(this);

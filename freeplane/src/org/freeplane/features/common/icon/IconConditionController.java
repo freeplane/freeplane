@@ -40,11 +40,11 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 class IconConditionController implements IElementaryConditionController {
 	static final String FILTER_ICON = "filter_icon";
-	final private Controller controller;
+// 	final private Controller controller;
 
 	public IconConditionController(final Controller controller) {
 		super();
-		this.controller = controller;
+//		this.controller = controller;
 	}
 
 	public boolean canEditValues(final Object property, final NamedObject simpleCond) {

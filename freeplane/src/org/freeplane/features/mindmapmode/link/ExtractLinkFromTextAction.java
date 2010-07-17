@@ -40,7 +40,7 @@ public class ExtractLinkFromTextAction extends AMultipleNodeAction {
 	 * 
 	 */
 	public ExtractLinkFromTextAction(final Controller controller) {
-		super("ExtractLinkFromTextAction", controller);
+		super("ExtractLinkFromTextAction");
 	}
 
 	@Override

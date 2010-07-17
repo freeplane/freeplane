@@ -34,7 +34,7 @@ class AssignAttributesAction extends AFreeplaneAction {
 	private AssignAttributeDialog assignAttributeDialog;
 
 	public AssignAttributesAction(final ModeController modeController) {
-		super("AssignAttributesAction", modeController.getController());
+		super("AssignAttributesAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

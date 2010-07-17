@@ -39,7 +39,7 @@ import org.freeplane.features.mindmapmode.map.MMapController;
  */
 public class NewUserStyleAction extends AFreeplaneAction {
 	public NewUserStyleAction(final Controller controller) {
-		super("NewUserStyleAction", controller);
+		super("NewUserStyleAction");
 	}
 
 	/**

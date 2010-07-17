@@ -10,12 +10,12 @@ public abstract class AttributeViewTypeAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public AttributeViewTypeAction(final String key, final Controller controller) {
-		super(key, controller);
+		super(key);
 	}
 
 	public AttributeViewTypeAction(final String key, final Controller controller, final String title,
 	                               final ImageIcon icon) {
-		super(key, controller, title, icon);
+		super(key, title, icon);
 	}
 
 	protected void setAttributeViewType(final String type) {

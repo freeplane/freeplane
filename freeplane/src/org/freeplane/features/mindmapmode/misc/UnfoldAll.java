@@ -43,7 +43,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		private static final long serialVersionUID = 1L;
 
 		public FoldAllAction() {
-			super("FoldAllAction", controller);
+			super("FoldAllAction");
 		}
 
 		@Override
@@ -58,7 +58,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		private static final long serialVersionUID = 1L;
 
 		public FoldOneLevelAction() {
-			super("FoldOneLevelAction", controller);
+			super("FoldOneLevelAction");
 		}
 
 		@Override
@@ -73,7 +73,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		private static final long serialVersionUID = 1L;
 
 		public UnfoldAllAction() {
-			super("UnfoldAllAction", controller);
+			super("UnfoldAllAction");
 		}
 
 		@Override
@@ -88,7 +88,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		private static final long serialVersionUID = 1L;
 
 		public UnfoldOneLevelAction() {
-			super("UnfoldOneLevelAction", controller);
+			super("UnfoldOneLevelAction");
 		}
 
 		@Override
@@ -97,7 +97,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
-	final private Controller controller;
+// 	final private Controller controller;
 
 	public UnfoldAll(final ModeController modeController) {
 		super();

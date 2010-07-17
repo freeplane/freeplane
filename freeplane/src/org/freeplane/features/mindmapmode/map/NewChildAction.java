@@ -42,7 +42,7 @@ class NewChildAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public NewChildAction(final Controller controller) {
-		super("NewChildAction", controller);
+		super("NewChildAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

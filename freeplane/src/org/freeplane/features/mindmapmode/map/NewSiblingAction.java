@@ -31,7 +31,7 @@ class NewSiblingAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public NewSiblingAction(final Controller controller) {
-		super("NewSiblingAction", controller);
+		super("NewSiblingAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

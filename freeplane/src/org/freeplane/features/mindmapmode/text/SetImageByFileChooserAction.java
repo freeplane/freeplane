@@ -32,7 +32,7 @@ class SetImageByFileChooserAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public SetImageByFileChooserAction(final Controller controller) {
-		super("SetImageByFileChooserAction", controller);
+		super("SetImageByFileChooserAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

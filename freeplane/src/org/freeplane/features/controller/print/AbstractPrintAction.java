@@ -29,7 +29,7 @@ abstract class AbstractPrintAction extends AFreeplaneAction {
 	final private PrintController printController;
 
 	public AbstractPrintAction(final String key, final PrintController controller) {
-		super(key, controller.getController());
+		super(key);
 		printController = controller;
 	}
 

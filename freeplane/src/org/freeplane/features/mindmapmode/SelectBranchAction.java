@@ -36,7 +36,7 @@ class SelectBranchAction extends AFreeplaneAction {
 	 *
 	 */
 	public SelectBranchAction(final Controller controller) {
-		super("SelectBranchAction", controller);
+		super("SelectBranchAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -40,7 +40,7 @@ class FontSizeAction extends AMultipleNodeAction {
 	/**
 	 */
 	public FontSizeAction(final Controller controller) {
-		super("FontSizeAction", controller);
+		super("FontSizeAction");
 	}
 
 	/*

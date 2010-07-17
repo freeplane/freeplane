@@ -27,7 +27,7 @@ public class SingleInstanceManager {
 	private Integer port;
 	private boolean isSlave;
 	private boolean isMasterPresent;
-	private Controller controller;
+// 	private Controller controller;
 
 	public SingleInstanceManager() {
 		isSingleInstanceMode = ResourceController.getResourceController().getBooleanProperty("single_instance");
@@ -81,7 +81,7 @@ public class SingleInstanceManager {
 	}
 
 	public void setController(Controller controller) {
-		this.controller = controller;
+//		this.controller = controller;
 	}
 
 	private boolean startAsSlave(String[] filesToLoad) {

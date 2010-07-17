@@ -47,7 +47,7 @@ public class SaveAll extends AFreeplaneAction {
 	 *
 	 */
 	public SaveAll(final Controller controller) {
-		super("SaveAll", controller);
+		super("SaveAll");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -37,7 +37,7 @@ class GotoLinkNodeAction extends AFreeplaneAction {
 	private final NodeModel target;
 
 	public GotoLinkNodeAction(final LinkController linkController, final NodeModel target) {
-		super("GotoLinkNodeAction", linkController.getModeController().getController());
+		super("GotoLinkNodeAction");
 		this.target = target;
 		this.linkController = linkController;
 		if (target != null) {

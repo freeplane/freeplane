@@ -38,7 +38,7 @@ public class QuitAction extends AFreeplaneAction {
 	 * @param resourceController
 	 */
 	public QuitAction(final Controller controller) {
-		super("QuitAction", controller);
+		super("QuitAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

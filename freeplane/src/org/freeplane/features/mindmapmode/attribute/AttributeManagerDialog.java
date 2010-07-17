@@ -65,7 +65,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		private static final long serialVersionUID = 1L;
 
 		ApplyAction() {
-			super("ApplyAction", controller);
+			super("ApplyAction");
 		}
 
 		/*
@@ -87,7 +87,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		private static final long serialVersionUID = 1L;
 
 		CancelAction() {
-			super("CancelAction", controller);
+			super("CancelAction");
 		}
 
 		/*
@@ -152,7 +152,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		private static final long serialVersionUID = 1L;
 
 		ImportAction() {
-			super("ImportAction", controller);
+			super("ImportAction");
 		}
 
 		/*
@@ -176,7 +176,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		private static final long serialVersionUID = 1L;
 
 		OKAction() {
-			super("OKAction", controller);
+			super("OKAction");
 		}
 
 		/*
@@ -198,7 +198,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private Controller controller;
+// 	final private Controller controller;
 	private ImportAttributesDialog importDialog = null;
 	private AttributeRegistry model;
 	final private JComboBox size;
@@ -206,7 +206,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	public AttributeManagerDialog(final Controller controller, final Frame frame) {
 		super(frame, TextUtils.getText("attributes_dialog_title"), true);
-		this.controller = controller;
+//		this.controller = controller;
 		view = new AttributeRegistryTable(new EditListAction());
 		model = AttributeRegistry.getRegistry(controller.getMap());
 		view.setModel(model.getTableModel());

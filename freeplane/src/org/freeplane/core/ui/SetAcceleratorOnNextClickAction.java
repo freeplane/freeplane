@@ -11,7 +11,7 @@ public class SetAcceleratorOnNextClickAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public SetAcceleratorOnNextClickAction(final Controller controller) {
-		super("SetAcceleratorOnNextClickAction", controller);
+		super("SetAcceleratorOnNextClickAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

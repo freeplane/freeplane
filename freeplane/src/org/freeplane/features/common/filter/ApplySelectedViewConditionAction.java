@@ -41,7 +41,7 @@ final class ApplySelectedViewConditionAction extends AFreeplaneAction {
 	 * @param filterController
 	 */
 	ApplySelectedViewConditionAction(final FilterController filterController) {
-		super("ApplySelectedViewConditionAction", filterController.getController());
+		super("ApplySelectedViewConditionAction");
 		this.filterController = filterController;
 	}
 

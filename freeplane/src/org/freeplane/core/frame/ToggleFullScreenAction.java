@@ -36,7 +36,7 @@ public class ToggleFullScreenAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public ToggleFullScreenAction(final ViewController viewController) {
-		super("ToggleFullScreenAction", viewController.getController());
+		super("ToggleFullScreenAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

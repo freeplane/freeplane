@@ -488,14 +488,14 @@ class NodeList {
 		return text;
 	}
 
-	final private Controller controller;
+// 	final private Controller controller;
 	private DateRenderer dateRenderer;
 	private JDialog dialog;
 	private IconsRenderer iconsRenderer;
 	final private JComboBox mFilterTextReplaceField;
 	final private JComboBox mFilterTextSearchField;
 	private FlatNodeTableFilterModel mFlatNodeTableFilterModel;
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 	private JLabel mTreeLabel;
 	private NodeRenderer nodeRenderer;
 	private NotesRenderer notesRenderer;
@@ -514,8 +514,8 @@ class NodeList {
     }
 
 	public NodeList(final ModeController modeController, final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps) {		
-		this.modeController = modeController;
-		controller = modeController.getController();
+//		this.modeController = modeController;
+//		controller = modeController.getController();
 		this.modal = modal;
 		this.showAllNodes = showAllNodes;
 		this.searchInAllMaps = searchInAllMaps;

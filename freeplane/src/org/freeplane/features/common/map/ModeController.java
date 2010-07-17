@@ -48,7 +48,7 @@ import org.freeplane.core.undo.IUndoHandler;
  * MindMapController as a sample.
  */
 public class ModeController extends AController {
-	final private Controller controller;
+// 	final private Controller controller;
 	private final ExtensionContainer extensionContainer;
 	private final Collection<IExtensionCopier> copiers;
 	private boolean isBlocked = false;
@@ -70,7 +70,7 @@ public class ModeController extends AController {
 	 * Instantiation order: first me and then the model.
 	 */
 	public ModeController(final Controller controller) {
-		this.controller = controller;
+//		this.controller = controller;
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		copiers = new LinkedList<IExtensionCopier>();
 	}

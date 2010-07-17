@@ -59,7 +59,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 
 	public ExecuteScriptAction(final Controller controller, final String scriptName, final String menuItemName,
 	                           final String script, final ExecutionMode mode, final boolean cacheContent) {
-		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), controller, menuItemName, null);
+		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
 		this.script = script;
 		this.mode = mode;
 		this.cacheContent = cacheContent;

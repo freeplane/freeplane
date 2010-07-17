@@ -43,7 +43,7 @@ public class ViewLayoutTypeAction extends AFreeplaneAction {
 	private final MapViewLayout layoutType;
 
 	public ViewLayoutTypeAction(final Controller controller, final MapViewLayout layoutType) {
-		super("ViewLayoutTypeAction." + layoutType.toString(), controller);
+		super("ViewLayoutTypeAction." + layoutType.toString());
 		this.layoutType = layoutType;
 	}
 

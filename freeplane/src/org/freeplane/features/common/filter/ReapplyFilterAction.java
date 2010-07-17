@@ -41,7 +41,7 @@ final class ReapplyFilterAction extends AFreeplaneAction {
 	 * @param filterController
 	 */
 	ReapplyFilterAction(final FilterController filterController) {
-		super("ReapplyFilterAction", filterController.getController());
+		super("ReapplyFilterAction");
 		this.filterController = filterController;
 	}
 

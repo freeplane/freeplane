@@ -11,7 +11,7 @@ public class EvaluateAllAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public EvaluateAllAction(final Controller controller) {
-		super("EvaluateAll", controller, "EvaluateAll", null);
+		super("EvaluateAll", "EvaluateAll", null);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

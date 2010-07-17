@@ -43,7 +43,7 @@ class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 	final private MNoteController noteController;
 
 	public RemoveNoteAction(final MNoteController noteController, final ModeController modeController) {
-		super("RemoveNoteAction", modeController.getController());
+		super("RemoveNoteAction");
 		this.noteController = noteController;
 	}
 

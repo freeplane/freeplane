@@ -47,7 +47,7 @@ class EditAction extends AFreeplaneAction {
 	private EditNodeBase mCurrentEditDialog = null;
 
 	public EditAction(final Controller controller) {
-		super("EditAction", controller);
+		super("EditAction");
 	}
 
 	/*

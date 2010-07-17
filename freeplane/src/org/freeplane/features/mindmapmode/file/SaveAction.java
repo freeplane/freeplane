@@ -33,7 +33,7 @@ class SaveAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public SaveAction(final Controller controller) {
-		super("SaveAction", controller);
+		super("SaveAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -41,7 +41,6 @@ class ClickableImageCreator {
 	Vector<AreaHolder> area = new Vector<AreaHolder>();
 	private Rectangle innerBounds;
 	final private MapView mapView;
-//	final private ModeController modeController;
 	final private String regExpLinkReplacement;
 	final private NodeModel root;
 

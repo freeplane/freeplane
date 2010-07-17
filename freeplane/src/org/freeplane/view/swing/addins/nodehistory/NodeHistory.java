@@ -54,14 +54,14 @@ public class NodeHistory implements IExtension {
 	}
 
 	private BackAction backAction;
-	final private Controller controller;
+// 	final private Controller controller;
 	private NodeHolder currentNodeHolder;
 	private ForwardAction forwardAction;
 	private ListIterator<NodeHolder> nodeIterator;
 	private final LinkedList<NodeHolder> nodes;
 
 	private NodeHistory(final Controller controller) {
-		this.controller = controller;
+//		this.controller = controller;
 		nodes = new LinkedList<NodeHolder>();
 		nodeIterator = nodes.listIterator();
 	}

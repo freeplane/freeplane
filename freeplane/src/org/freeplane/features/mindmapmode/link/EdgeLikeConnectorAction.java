@@ -33,7 +33,7 @@ class EdgeLikeConnectorAction extends AFreeplaneAction {
 	ConnectorModel arrowLink;
 
 	public EdgeLikeConnectorAction(final MLinkController linkController, final ConnectorModel arrowLink) {
-		super("EdgeLikeLinkAction", linkController.getModeController().getController());
+		super("EdgeLikeLinkAction");
 		this.arrowLink = arrowLink;
 	}
 

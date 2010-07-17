@@ -60,7 +60,7 @@ class EdgeWidthAction extends AMultipleNodeAction {
 	final private int mWidth;
 
 	public EdgeWidthAction(final ModeController controller, final int width) {
-		super(EdgeWidthAction.width2String(width), controller.getController(), EdgeWidthAction.getWidthTitle(
+		super(EdgeWidthAction.width2String(width), EdgeWidthAction.getWidthTitle(
 		    controller, width), null);
 		mWidth = width;
 	}

@@ -54,12 +54,11 @@ class AttributeBuilder implements IElementDOMHandler {
 	public static final String XML_NODE_REGISTERED_ATTRIBUTE_NAME = "attribute_name";
 	public static final String XML_NODE_REGISTERED_ATTRIBUTE_VALUE = "attribute_value";
 	final private AttributeController attributeController;
-	final private Controller controller;
+// 	final private Controller controller;
 	final private MapReader mapReader;
 
 	public AttributeBuilder(final AttributeController attributeController, final MapReader mapReader) {
 		this.attributeController = attributeController;
-		controller = attributeController.getModeController().getController();
 		this.mapReader = mapReader;
 	}
 
@@ -189,7 +188,7 @@ class AttributeBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "SHOW_ATTRIBUTES",
 		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
-				    ModelessAttributeController.getController(controller).setAttributeViewType(getMap(),
+				    ModelessAttributeController.getController(Controller.getCurrentController()).setAttributeViewType(getMap(),
 				        value.toString());
 			    }
 		    });

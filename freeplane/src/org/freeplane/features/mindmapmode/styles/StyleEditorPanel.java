@@ -301,7 +301,7 @@ public class StyleEditorPanel extends JPanel {
 	private ColorProperty mEdgeColor;
 	private ComboProperty mEdgeStyle;
 	private ComboProperty mEdgeWidth;
-	private final ModeController mMindMapController;
+// 	private final ModeController mMindMapController;
 	private ColorProperty mNodeBackgroundColor;
 	private ColorProperty mNodeColor;
 	private BooleanProperty mNodeFontBold;

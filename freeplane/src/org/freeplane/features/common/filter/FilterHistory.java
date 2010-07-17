@@ -32,11 +32,11 @@ import org.freeplane.features.common.map.ModeController;
  * Mar 30, 2009
  */
 public class FilterHistory {
-	private final Controller controller;
+// 	private final Controller controller;
 	private ListIterator<Filter> filters;
 
 	FilterHistory(final Controller controller) {
-		this.controller = controller;
+//		this.controller = controller;
 		init();
 	}
 

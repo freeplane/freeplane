@@ -56,7 +56,7 @@ public class SplitNode extends AFreeplaneAction {
 	 *
 	 */
 	public SplitNode(final Controller controller) {
-		super("SplitNode", controller);
+		super("SplitNode");
 	}
 
 	/*

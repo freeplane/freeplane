@@ -36,7 +36,7 @@ public class OpenPathAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public OpenPathAction(final Controller controller) {
-		super("OpenPathAction", controller);
+		super("OpenPathAction");
 		putValue(Action.NAME, TextUtils.getText("OpenAction.text"));
 	}
 

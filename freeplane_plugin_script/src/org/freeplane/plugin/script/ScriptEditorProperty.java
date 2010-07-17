@@ -39,7 +39,7 @@ class ScriptEditorProperty extends PropertyBean implements IPropertyControl, Act
 
 	JButton mButton;
 	final JPopupMenu menu = new JPopupMenu();
-	final private ModeController mMindMapController;
+// 	final private ModeController mMindMapController;
 	String script;
 
 	/**

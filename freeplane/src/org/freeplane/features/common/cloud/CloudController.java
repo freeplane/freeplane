@@ -70,10 +70,10 @@ public class CloudController implements IExtension {
 	}
 
 	final private ExclusivePropertyChain<CloudModel, NodeModel> cloudHandlers;
-	private final ModeController modeController;
+// 	private final ModeController modeController;
 
 	public CloudController(final ModeController modeController) {
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		cloudHandlers = new ExclusivePropertyChain<CloudModel, NodeModel>();
 		if (listener == null) {
 			listener = new CloudAdapterListener();

@@ -43,7 +43,7 @@ class NodeColorBlendAction extends AMultipleNodeAction {
 	 *
 	 */
 	public NodeColorBlendAction(final Controller controller) {
-		super("NodeColorBlendAction", controller);
+		super("NodeColorBlendAction");
 	}
 
 	/*

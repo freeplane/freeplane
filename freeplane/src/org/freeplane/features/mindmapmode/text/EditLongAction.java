@@ -35,7 +35,7 @@ class EditLongAction extends AFreeplaneAction {
 	 *
 	 */
 	public EditLongAction(final Controller controller) {
-		super("EditLongAction", controller);
+		super("EditLongAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

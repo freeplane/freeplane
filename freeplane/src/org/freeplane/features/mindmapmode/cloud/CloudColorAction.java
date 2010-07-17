@@ -38,7 +38,7 @@ class CloudColorAction extends AMultipleNodeAction {
 	private Color actionColor;
 
 	public CloudColorAction(final Controller controller) {
-		super("CloudColorAction", controller);
+		super("CloudColorAction");
 	}
 
 	@Override

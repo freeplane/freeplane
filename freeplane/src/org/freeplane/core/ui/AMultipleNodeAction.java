@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
@@ -32,13 +31,12 @@ import org.freeplane.features.common.map.NodeModel;
 public abstract class AMultipleNodeAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
-	public AMultipleNodeAction(final String key, final Controller controller) {
-		super(key, controller);
+	public AMultipleNodeAction(final String key) {
+		super(key);
 	}
 
-	public AMultipleNodeAction(final String key, final Controller controller, final String name,
-	                           final ImageIcon imageIcon) {
-		super(key, controller, name, imageIcon);
+	public AMultipleNodeAction(final String key, final String name, final ImageIcon imageIcon) {
+		super(key, name, imageIcon);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

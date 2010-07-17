@@ -48,7 +48,7 @@ import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
 public class MNodeDropListener implements DropTargetListener {
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 
 	public MNodeDropListener(final ModeController controller) {
 		modeController = controller;

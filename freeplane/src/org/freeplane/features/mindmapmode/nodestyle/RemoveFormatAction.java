@@ -9,7 +9,7 @@ import org.freeplane.features.common.styles.LogicalStyleKeys;
 
 class RemoveFormatAction extends AMultipleNodeAction {
 	public RemoveFormatAction(final Controller controller) {
-		super("RemoveFormatAction", controller);
+		super("RemoveFormatAction");
 	}
 
 	/**

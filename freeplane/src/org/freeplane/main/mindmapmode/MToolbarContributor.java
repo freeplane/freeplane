@@ -30,11 +30,11 @@ class MToolbarContributor implements IMenuContributor {
 
 	public MToolbarContributor(final ModeController modeController, final MUIFactory uiFactory) {
 		super();
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		this.uiFactory = uiFactory;
 	}
 
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 
 	public void updateMenus(final MenuBuilder builder) {
 		final AFreeplaneAction action = modeController.getAction("IncreaseNodeFontAction");

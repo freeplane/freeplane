@@ -40,7 +40,7 @@ class AboutAction extends AFreeplaneAction {
 	 *
 	 */
 	AboutAction(final Controller controller) {
-		super("AboutAction", controller);
+		super("AboutAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

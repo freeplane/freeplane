@@ -503,11 +503,11 @@ public class MAttributeController extends AttributeController {
 	}
 
 	InsertAttributeActor insertAttributeActor;
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 
 	public MAttributeController(final ModeController modeController) {
 		super(modeController);
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		createActions();
 	}
 

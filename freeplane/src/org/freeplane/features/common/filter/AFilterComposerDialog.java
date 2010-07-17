@@ -76,7 +76,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		private static final long serialVersionUID = 1L;
 
 		AddElementaryConditionAction(final Controller controller) {
-			super("AddElementaryConditionAction", controller);
+			super("AddElementaryConditionAction");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -170,7 +170,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		private static final long serialVersionUID = 1L;
 
 		CreateConjunctConditionAction() {
-			super("CreateConjunctConditionAction", controller);
+			super("CreateConjunctConditionAction");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -192,7 +192,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		private static final long serialVersionUID = 1L;
 
 		CreateDisjunctConditionAction() {
-			super("CreateDisjunctConditionAction", controller);
+			super("CreateDisjunctConditionAction");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -225,7 +225,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		 * 
 		 */
 		CreateNotSatisfiedConditionAction() {
-			super("CreateNotSatisfiedConditionAction", controller);
+			super("CreateNotSatisfiedConditionAction");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -251,7 +251,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		private static final long serialVersionUID = 1L;
 
 		DeleteConditionAction() {
-			super("DeleteConditionAction", controller);
+			super("DeleteConditionAction");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -349,7 +349,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	final private JButton btnOr;
 	private JButton btnSave;
 	final private ConditionListSelectionListener conditionListListener;
-	final private Controller controller;
+// 	final private Controller controller;
 	final private FilterConditionEditor editor;
 	final private JList elementaryConditionList;
 	final private FilterController filterController;
@@ -359,7 +359,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		super(controller.getViewController().getFrame(), title, modal);
 		filterController = FilterController.getController(controller);
 		editor = new FilterConditionEditor(filterController);
-		this.controller = controller;
+//		this.controller = controller;
 		getContentPane().add(editor, BorderLayout.NORTH);
 		final Box conditionButtonBox = Box.createVerticalBox();
 		conditionButtonBox.setBorder(new EmptyBorder(0, 10, 0, 10));
@@ -479,7 +479,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	}
 
 	protected JFileChooser getFileChooser() {
-		final ModeController modeController = controller.getModeController();
+		final ModeController modeController = Controller.getCurrentController().getModeController();
 		final JFileChooser chooser = UrlManager.getController(modeController).getFileChooser(
 		    MindMapFilterFileFilter.filter);
 		return chooser;

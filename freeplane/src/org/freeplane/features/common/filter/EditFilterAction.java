@@ -43,7 +43,7 @@ class EditFilterAction extends AFreeplaneAction {
 	private AFilterComposerDialog filterDialog = null;
 
 	EditFilterAction(final FilterController filterController) {
-		super("EditFilterAction", filterController.getController());
+		super("EditFilterAction");
 		this.filterController = filterController;
 	}
 

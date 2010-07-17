@@ -44,7 +44,7 @@ class UnfoldFilteredAncestorsAction extends AFreeplaneAction {
 	private final FilterController filterController;
 
 	UnfoldFilteredAncestorsAction(final FilterController filterController) {
-		super("UnfoldFilteredAncestorsAction", filterController.getController());
+		super("UnfoldFilteredAncestorsAction");
 		this.filterController = filterController;
 		filterController.getUnfoldInvisibleAncestors().addChangeListener(new ChangeListener() {
 			public void stateChanged(final ChangeEvent e) {

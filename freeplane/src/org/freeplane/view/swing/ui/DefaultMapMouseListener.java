@@ -40,11 +40,11 @@ import org.freeplane.view.swing.map.MapView;
  * The MouseListener which belongs to MapView
  */
 public class DefaultMapMouseListener implements IMouseListener {
-	final private Controller controller;
+// 	final private Controller controller;
 	private final IMapMouseReceiver mReceiver;
 
 	public DefaultMapMouseListener(final Controller controller, final IMapMouseReceiver mReceiver) {
-		this.controller = controller;
+//		this.controller = controller;
 		this.mReceiver = mReceiver;
 	}
 

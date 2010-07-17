@@ -66,13 +66,11 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			onModifierChangeImpl();
 		}
 	});
-//	private final ModeController modeController;
 
 	public FButtonBar(final ModeController modeController) {
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 		buttons = new HashMap<Integer, JButton[]>();
 		onModifierChange();
-//		this.modeController = modeController;
 	}
 
 	public void acceleratorChanged(final JMenuItem action, final KeyStroke oldStroke, final KeyStroke newStroke) {

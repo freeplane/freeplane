@@ -11,7 +11,7 @@ public class SelectNodeReferenceAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public SelectNodeReferenceAction(final Controller controller) {
-		super("SelectNodeReference", controller, "SelectNodeReference", null);
+		super("SelectNodeReference", "SelectNodeReference", null);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

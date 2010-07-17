@@ -164,7 +164,7 @@ class ScriptEditor extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public ScriptEditor(final Controller controller) {
-		super("ScriptEditor", controller);
+		super("ScriptEditor");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

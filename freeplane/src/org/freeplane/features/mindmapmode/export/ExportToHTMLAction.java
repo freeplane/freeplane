@@ -42,7 +42,7 @@ class ExportToHTMLAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public ExportToHTMLAction(final Controller controller) {
-		super("ExportToHTMLAction", controller);
+		super("ExportToHTMLAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

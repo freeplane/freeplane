@@ -84,7 +84,7 @@ abstract public class ExportAction extends AFreeplaneAction {
 	}
 
 	public ExportAction(final String key, final Controller controller) {
-		super(key, controller);
+		super(key);
 	}
 
 	/**

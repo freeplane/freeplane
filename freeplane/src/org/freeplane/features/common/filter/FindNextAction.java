@@ -32,7 +32,7 @@ class FindNextAction extends AFreeplaneAction {
 	final private FindAction find;
 
 	public FindNextAction(final Controller controller, final FindAction find) {
-		super("FindNextAction", controller);
+		super("FindNextAction");
 		this.find = find;
 	}
 

@@ -31,7 +31,7 @@ class MoveToRootAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	MoveToRootAction(final Controller controller) {
-		super("MoveToRootAction", controller);
+		super("MoveToRootAction");
 	}
 
 	public void actionPerformed(final ActionEvent event) {

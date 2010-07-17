@@ -30,7 +30,7 @@ class AddMenuItemLinkAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public AddMenuItemLinkAction(final Controller controller) {
-		super(AddMenuItemLinkAction.class.getSimpleName(), controller);
+		super(AddMenuItemLinkAction.class.getSimpleName());
 	}
 
 	public void actionPerformed(final ActionEvent e) {

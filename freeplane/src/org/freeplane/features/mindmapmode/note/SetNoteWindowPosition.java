@@ -18,7 +18,7 @@ class SetNoteWindowPosition extends AFreeplaneAction {
 	private final String position;
 
 	public SetNoteWindowPosition(final Controller controller, final String position) {
-		super("SetNoteWindowPosition." + position, controller);
+		super("SetNoteWindowPosition." + position);
 		this.position = position;
 	};
 

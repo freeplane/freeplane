@@ -32,7 +32,7 @@ public class NodeChangeEvent extends AWTEvent {
 	final private Object newValue;
 	final private Object oldValue;
 	final private Object property;
-	final private ModeController modeController;
+// 	final private ModeController modeController;
 
 	public ModeController getModeController() {
 		return modeController;
@@ -41,7 +41,7 @@ public class NodeChangeEvent extends AWTEvent {
 	public NodeChangeEvent(final ModeController modeController, final NodeModel node, final Object property,
 	                       final Object oldValue, final Object newValue) {
 		super(node, 0);
-		this.modeController = modeController;
+//		this.modeController = modeController;
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.property = property;

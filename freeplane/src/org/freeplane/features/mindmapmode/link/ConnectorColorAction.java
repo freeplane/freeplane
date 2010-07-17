@@ -41,7 +41,7 @@ class ConnectorColorAction extends AFreeplaneAction {
 	ConnectorModel arrowLink;
 
 	public ConnectorColorAction(final MLinkController linkController, final ConnectorModel arrowLink) {
-		super("ConnectorColorAction", linkController.getModeController().getController());
+		super("ConnectorColorAction");
 		this.arrowLink = arrowLink;
 	}
 

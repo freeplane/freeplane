@@ -45,7 +45,7 @@ import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.ViewController;
 
 class MapViewTabs implements IMapViewChangeListener {
-	final private Controller controller;
+// 	final private Controller controller;
 	private Component mContentComponent;
 	private JTabbedPane mTabbedPane = null;
 	final private Vector<Component> mTabbedPaneMapViews;
@@ -53,7 +53,7 @@ class MapViewTabs implements IMapViewChangeListener {
 	private TabbedPaneUI tabbedPaneUI;
 
 	public MapViewTabs(final Controller controller, final ViewController fm, final JComponent contentComponent) {
-		this.controller = controller;
+//		this.controller = controller;
 		mContentComponent = contentComponent;
 		InputMap map;
 		map = (InputMap) UIManager.get("TabbedPane.ancestorInputMap");
