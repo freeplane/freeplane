@@ -97,6 +97,7 @@ import org.freeplane.view.swing.addins.FitToPage;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.ShowNotesInMapAction;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DefaultNodeKeyListener;
@@ -262,6 +263,7 @@ public class MModeControllerFactory {
 		controller.addAction(new ToggleToolbarAction(controller, "ToggleFBarAction", "/fbuttons"));
 		SModeControllerFactory.createModeController(modeController);
 		modeController.addAction(new SetAcceleratorOnNextClickAction(controller));
+		modeController.addAction(new ShowNotesInMapAction(controller));
 		userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);
 		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT, ((MIconController) IconController
 		    .getController(modeController)).getIconToolBarScrollPane());

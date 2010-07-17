@@ -135,6 +135,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	protected void setLayoutType(final MapViewLayout layoutType) {
 		this.layoutType = layoutType;
 	}
+	
+	private boolean showNotes = false;
+
+	boolean showNotes() {
+		return showNotes;
+	}
+
+	void setShowNotes(boolean showNotes) {
+		if(this.showNotes == showNotes){
+			return;
+		}
+		this.showNotes = showNotes;
+		getRoot().updateAll();
+	}
 
 	private PaintingMode paintingMode = PaintingMode.ALL;
 

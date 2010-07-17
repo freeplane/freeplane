@@ -19,17 +19,20 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.note.NoteModel;
 
 class NodeViewFactory {
 	private static class ContentPane extends JComponent {
@@ -153,8 +156,15 @@ class NodeViewFactory {
 			newView.setMainView(newMainView(newView));
 		}
 		model.addViewer(newView);
+		newView.updateNoteViewer();
 		newView.update();
 		fireNodeViewCreated(newView);
 		return newView;
+	}
+
+	public ZoomableLabel createNoteViewer() {
+		ZoomableLabel label = new ZoomableLabel();
+		label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+		return label;
 	}
 }

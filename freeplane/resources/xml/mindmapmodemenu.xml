@@ -110,6 +110,7 @@
 					<menu_radio_action action="SetNoteWindowPosition.right" />
 					<menu_radio_action action="SetNoteWindowPosition.bottom" />
 				</menu_submenu>
+                <menu_action action="ShowNotesInMapAction"/>
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="attributes" name_ref="menu_attributes">

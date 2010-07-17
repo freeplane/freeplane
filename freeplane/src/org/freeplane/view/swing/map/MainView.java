@@ -24,9 +24,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.GradientPaint;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -40,9 +38,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -55,7 +51,6 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
-import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.IconStore;
@@ -71,7 +66,7 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 /**
  * Base class for all node views.
  */
-public abstract class MainView extends JLabel {
+public abstract class MainView extends ZoomableLabel {
 	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty(
 	    "executable_icon");
 	private static final String MAIL_ICON = ResourceController.getResourceController().getProperty("mail_icon");
@@ -82,22 +77,15 @@ public abstract class MainView extends JLabel {
 	        "com", "vbs", "bat", "lnk" }));
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	static Dimension minimumSize = new Dimension(0, 0);
-	final static private Graphics2D fmg;
-	static {
-		fmg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics();
-		fmg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-	}
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
-	private List<ITextTransformer> textTransformers;
-	private Border errorBorder = new LineBorder(Color.RED, 2);
 	private static final IconStore STORE = IconStoreFactory.create();
+	private Border errorBorder = new LineBorder(Color.RED, 2);
 
 	MainView() {
-		setUI(MainViewUI.createUI(this));
 		setAlignmentX(Component.CENTER_ALIGNMENT);
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setVerticalAlignment(SwingConstants.CENTER);
@@ -139,14 +127,6 @@ public abstract class MainView extends JLabel {
 		return isDraggedOver;
 	}
 
-	protected int getIconWidth() {
-		final Icon icon = getIcon();
-		if (icon == null) {
-			return 0;
-		}
-		return getMap().getZoomed(icon.getIconWidth());
-	}
-
 	abstract Point getLeftPoint();
 
 	/** get height including folding symbol */
@@ -169,39 +149,9 @@ public abstract class MainView extends JLabel {
 		return MainView.minimumSize;
 	}
 
-	public NodeView getNodeView() {
-		return (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.JComponent#getPreferredSize()
-	 */
-	@Override
-	public Dimension getPreferredSize() {
-		final Dimension preferredSize = super.getPreferredSize();
-		if (isPreferredSizeSet()) {
-			return preferredSize;
-		}
-		final float zoom = getZoom();
-		final int d = 2 * (int) (Math.floor(zoom));
-		preferredSize.width += d;
-		preferredSize.height += d;
-		return preferredSize;
-	}
-
 	abstract Point getRightPoint();
 
 	abstract String getStyle();
-
-	float getZoom() {
-		final float zoom = getMap().getZoom();
-		return zoom;
-	}
-
-	private MapView getMap() {
-		return getNodeView().getMap();
-	}
 
 	int getZoomedFoldingSymbolHalfWidth() {
 		return getNodeView().getZoomedFoldingSymbolHalfWidth();
@@ -222,15 +172,6 @@ public abstract class MainView extends JLabel {
 		final NodeView nodeView = getNodeView();
 		return nodeView.isLeft() && !nodeView.isRoot() ? xCoord > getSize().width * (1.0 - p)
 		        : xCoord < getSize().width * p;
-	}
-
-	@Override
-	public void paint(final Graphics g) {
-		switch (getMap().getPaintingMode()) {
-			case CLOUDS:
-				return;
-		}
-		super.paint(g);
 	}
 
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
@@ -376,109 +317,6 @@ public abstract class MainView extends JLabel {
 		        && executableExtensions.contains(FileUtils.getExtension(linkText.toLowerCase()));
 	}
 
-	void updateText(NodeModel nodeModel) {
-		String nodeText = nodeModel.getText();
-		try {
-			for (ITextTransformer textTransformer : getTextTransformers()) {
-				nodeText = textTransformer.transform(nodeText, nodeModel);
-			}
-        }
-        catch (Exception e) {
-        	nodeText = nodeModel.getText();
-        	setBorder(errorBorder );
-        	setToolTipText(e.getLocalizedMessage());
-        }
-		final MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
-		if (map == null) {
-			return;
-		}
-		final boolean isHtml = nodeText.startsWith("<html>");
-		boolean widthMustBeRestricted = false;
-		boolean isLong = false;
-		int iconWidth = getIconWidth();
-		if (iconWidth != 0) {
-			iconWidth += map.getZoomed(getIconTextGap());
-		}
-		if (!isHtml) {
-			final String[] lines = nodeText.split("\n");
-			for (int line = 0; line < lines.length; line++) {
-				setText(lines[line]);
-				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map.getMaxNodeWidth()) + iconWidth;
-				if (widthMustBeRestricted) {
-					break;
-				}
-			}
-			isLong = widthMustBeRestricted || lines.length > 1;
-		}
-		if (isHtml) {
-			if (nodeText.indexOf("<img") >= 0 && nodeText.indexOf("<base ") < 0) {
-				nodeText = "<html><base href=\"" + map.getModel().getURL() + "\">" + nodeText.substring(6);
-			}
-			final String htmlLongNodeHead = ResourceController.getResourceController().getProperty(
-			    "html_long_node_head");
-			if (htmlLongNodeHead != null && !htmlLongNodeHead.equals("")) {
-				if (nodeText.matches("(?ims).*<head>.*")) {
-					nodeText = nodeText.replaceFirst("(?ims).*<head>.*", "<head>" + htmlLongNodeHead);
-				}
-				else {
-					nodeText = nodeText.replaceFirst("(?ims)<html>", "<html><head>" + htmlLongNodeHead + "</head>");
-				}
-			}
-			if (nodeText.length() < 30000) {
-				setText(nodeText);
-				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map.getMaxNodeWidth()) + iconWidth;
-			}
-			else {
-				widthMustBeRestricted = true;
-			}
-			if (widthMustBeRestricted) {
-				nodeText = nodeText.replaceFirst("(?i)<body>", "<body width=\"" + map.getMaxNodeWidth() + "\">");
-			}
-			setText(nodeText);
-		}
-		else if (nodeText.startsWith("<table>")) {
-			final String[] lines = nodeText.split("\n");
-			lines[0] = lines[0].substring(7);
-			final int startingLine = lines[0].matches("\\s*") ? 1 : 0;
-			String text = "<html><table border=1 style=\"border-color: white\">";
-			for (int line = startingLine; line < lines.length; line++) {
-				text += "<tr><td style=\"border-color: white;\">"
-				        + HtmlUtils.toXMLEscapedText(lines[line])
-				            .replaceAll("\t", "<td style=\"border-color: white\">");
-			}
-			setText(text);
-		}
-		else if (isLong) {
-			String text = HtmlUtils.plainToHTML(nodeText);
-			if (widthMustBeRestricted) {
-				text = text.replaceFirst("(?i)<p>", "<p width=\"" + map.getMaxNodeWidth() + "\">");
-			}
-			setText(text);
-		}
-		else {
-			setText(nodeText);
-		}
-	}
-
-	@Override
-	public FontMetrics getFontMetrics(final Font font) {
-		if (!useFractionalMetrics()) {
-			return super.getFontMetrics(font);
-		}
-		fmg.setFont(font);
-		final FontMetrics fontMetrics = fmg.getFontMetrics();
-		return fontMetrics;
-	}
-
-	boolean useFractionalMetrics() {
-		final MapView map = getMap();
-		if (map.isPrinting()) {
-			return true;
-		}
-		final float zoom = map.getZoom();
-		return 1f != zoom;
-	}
-
 	void updateTextColor(final NodeView node) {
 		final Color color = NodeStyleController.getController(node.getMap().getModeController()).getColor(
 		    node.getModel());
@@ -487,15 +325,6 @@ public abstract class MainView extends JLabel {
 
 	public boolean isEdited() {
 		return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
-	}
-
-	FontMetrics getFontMetrics() {
-		if (!useFractionalMetrics()) {
-			return super.getFontMetrics(getFont());
-		}
-		fmg.setFont(getFont());
-		final FontMetrics fontMetrics = fmg.getFontMetrics();
-		return fontMetrics;
 	}
 
 	@Override
@@ -509,5 +338,22 @@ public abstract class MainView extends JLabel {
 			textTransformers = mapView.getModeController().getTextTransformers();
 		}
 	    return textTransformers;
-    }
+	}
+
+	private List<ITextTransformer> textTransformers;
+	protected void updateText(NodeModel nodeModel){
+		String nodeText = nodeModel.getText();
+		try {
+			for (ITextTransformer textTransformer : getTextTransformers()) {
+				nodeText = textTransformer.transform(nodeText, nodeModel);
+			}
+	    }
+	    catch (Exception e) {
+	    	nodeText = nodeModel.getText();
+	    	setBorder(errorBorder );
+	    	setToolTipText(e.getLocalizedMessage());
+	    }
+		updateText(nodeText);
+	}
+
 }

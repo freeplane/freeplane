@@ -41,21 +41,21 @@ import javax.swing.plaf.basic.BasicLabelUI;
  * @author Dimitry Polivaev
  * 23.08.2009
  */
-class MainViewUI extends BasicLabelUI {
+class ZoomableLabelUI extends BasicLabelUI {
 	private boolean isPainting = false;
-	static MainViewUI labelUI = new MainViewUI();
+	static ZoomableLabelUI labelUI = new ZoomableLabelUI();
 
 	@Override
 	public Dimension getPreferredSize(final JComponent c) {
 		final Dimension preferredSize = super.getPreferredSize(c);
 		if (preferredSize.height == 0) {
-			preferredSize.height = ((MainView) c).getFontMetrics().getHeight();
+			preferredSize.height = ((ZoomableLabel) c).getFontMetrics().getHeight();
 		}
 		if (preferredSize.width <= 4) {
 			preferredSize.width = 4;
 		}
 		preferredSize.width += 4;
-		final float zoom = ((MainView) c).getZoom();
+		final float zoom = ((ZoomableLabel) c).getZoom();
 		if (zoom != 1f) {
 			preferredSize.width = (int) (Math.ceil(zoom * preferredSize.width));
 			preferredSize.height = (int) (Math.ceil(zoom * preferredSize.height));
@@ -70,7 +70,7 @@ class MainViewUI extends BasicLabelUI {
 	@Override
 	protected String layoutCL(final JLabel label, final FontMetrics fontMetrics, final String text, final Icon icon,
 	                          final Rectangle viewR, final Rectangle iconR, final Rectangle textR) {
-		final MainView mainView = (MainView) label;
+		final ZoomableLabel mainView = (ZoomableLabel) label;
 		final float zoom = mainView.getZoom();
 		if (isPainting) {
 			final Insets insets = mainView.getInsets();
@@ -85,7 +85,7 @@ class MainViewUI extends BasicLabelUI {
 
 	@Override
 	public void paint(final Graphics g, final JComponent label) {
-		final MainView mainView = (MainView) label;
+		final ZoomableLabel mainView = (ZoomableLabel) label;
 		if (!mainView.useFractionalMetrics()) {
 			super.paint(g, label);
 			return;

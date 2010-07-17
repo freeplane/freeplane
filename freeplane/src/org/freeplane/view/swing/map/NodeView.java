@@ -59,6 +59,7 @@ import org.freeplane.features.common.map.NodeModel.NodeChangeType;
 import org.freeplane.features.common.misc.HierarchicalIcons;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -88,7 +89,8 @@ public class NodeView extends JComponent implements INodeView {
 	private static final long serialVersionUID = 1L;
 	public final static int SHIFT = -2;
 	static final int SPACE_AROUND = 50;
-	private static final int VIEWER_POSITION = 0;
+	private static final int MAIN_VIEWER_POSITION = 0;
+	private static final int NOTE_VIEWER_POSITION = 10;
 
 	/**
 	 * Determines to a given color a color, that is the best contrary color. It
@@ -250,7 +252,7 @@ public class NodeView extends JComponent implements INodeView {
 			final int index = getComponentCount() - 1;
 			remove(index);
 			contentPane.add(mainView);
-			mainView.putClientProperty("NODE_VIEW_CONTENT_POSITION", VIEWER_POSITION);
+			mainView.putClientProperty("NODE_VIEW_CONTENT_POSITION", MAIN_VIEWER_POSITION);
 			add(contentPane, index);
 		}
 		return contentPane;
@@ -843,6 +845,10 @@ public class NodeView extends JComponent implements INodeView {
 			revalidate();
 			return;
 		}
+		if(property.equals(NodeModel.NOTE_TEXT)){
+			updateNoteViewer();
+			return;
+		}
 		update();
 	}
 
@@ -1202,6 +1208,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void updateAll() {
+		updateNoteViewer();
 		update();
 		invalidate();
 		for (final NodeView child : getChildrenViews()) {
@@ -1284,7 +1291,7 @@ public class NodeView extends JComponent implements INodeView {
 	public JComponent removeContent(int pos) {
 		return removeContent(pos, true);
 	}
-		private JComponent removeContent(int pos, boolean remove) {
+	private JComponent removeContent(int pos, boolean remove) {
 		if(contentPane == null)
 			return null;
 		for(int i = 0; i < contentPane.getComponentCount(); i++){
@@ -1304,7 +1311,38 @@ public class NodeView extends JComponent implements INodeView {
 		return null;
 	}
 
+	
 	public JComponent getContent(int pos) {
 		return removeContent(pos, false);
+	}
+
+	void updateNoteViewer() {
+		ZoomableLabel note = (ZoomableLabel) getContent(NOTE_VIEWER_POSITION);
+		String oldText = note != null ? note.getText() : null;
+		final String newText; 
+		if(getMap().showNotes()){
+			newText = NoteModel.getNoteText(model);
+		}
+		else{
+			newText = null;
+		}
+		if(oldText == null && newText == null){
+			return;
+		}
+		if(oldText != null && newText != null){
+			ZoomableLabel view = (ZoomableLabel) getContent(NOTE_VIEWER_POSITION);
+			view.updateText(newText);
+			return;
+		}
+		if(oldText == null && newText != null){
+			ZoomableLabel view = NodeViewFactory.getInstance().createNoteViewer();
+			addContent(view, NOTE_VIEWER_POSITION);
+			view.updateText(newText);
+			return;
+		}
+		if(oldText != null && newText == null){
+			removeContent(NOTE_VIEWER_POSITION);
+			return;
+		}
 	}
 }
