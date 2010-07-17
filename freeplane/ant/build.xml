@@ -11,7 +11,7 @@
 	<property file="${workspace}/freeplane_framework/ant/ant.properties" />
 	<property file="${workspace}/freeplane/ant/ant.properties" />
 	<property file="ant/ant.properties" />
-	<property name="freeplaneant.jar" value="${workspace}/freeplane_framework/ant/lib/freeplaneant.jar" />
+	<property name="freeplaneant.jar" value="${workspace}/freeplane_ant/dist/freeplaneant.jar" />
 	<property name="google.translator.jar" value="${workspace}/freeplane_framework/ant/lib/google-api-translate-java-0.92.jar" />
 	<property name="external.jars" value="${commons-lang.jar}:${forms.jar}:${SimplyHTML.jar}:${jortho.jar}" />
 	<property name="build" value="${root}/build" />
@@ -29,10 +29,24 @@
 	      <os family="mac"/>
 	</condition>
 
-	<taskdef name="format-translation" classname="org.freeplane.ant.FormatTranslation" classpath="${freeplaneant.jar}"/>
-	<taskdef name="check-translation" classname="org.freeplane.ant.FormatTranslationCheck" classpath="${freeplaneant.jar}"/>
+	<taskdef name="format-translation" classname="org.freeplane.ant.FormatTranslation" classpath="${freeplaneant.jar}" onerror="report" />
+	<taskdef name="check-translation" classname="org.freeplane.ant.FormatTranslationCheck" classpath="${freeplaneant.jar}" onerror="report" />
 
-	<target name="build">
+	<target name="prepare_jortho">
+		<ant antfile="${workspace}/JOrtho_0.4_freeplane/build.xml" target="jar"
+			 dir="${workspace}/JOrtho_0.4_freeplane" inheritAll="false"/>
+		<copy
+			file="${workspace}/JOrtho_0.4_freeplane/dist/lib/jortho-0.4+fp1.1.1.jar"
+			tofile="lib/jortho.jar"
+			/>
+	</target>
+	
+	<target name="prepare_freeplaneant">
+		<ant antfile="${workspace}/freeplane_ant/build.xml" target="jar"
+			dir="${workspace}/freeplane_ant"  inheritAll="false" />
+	</target>
+	
+	<target name="build" depends="prepare_jortho, prepare_freeplaneant">
 		<antcall target="check-translation" />
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
@@ -193,6 +207,7 @@
 	<target name="clean">
 		<delete dir="${build}" quiet="true" />
 		<delete dir="${dist}" quiet="true" />
+		<delete file="lib/jortho.jar" />
 		<delete>
 			<fileset defaultexcludes="no" dir="${src}" includes="**/*~" />
 		</delete>

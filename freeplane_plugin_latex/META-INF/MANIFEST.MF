@@ -7,5 +7,5 @@ Bundle-Activator: org.freeplane.plugin.latex.Activator
 Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1"
-Bundle-ClassPath: lib/jlatexmath-0.8.5.jar,
+Bundle-ClassPath: lib/jlatexmath.jar,
  lib/plugin.jar

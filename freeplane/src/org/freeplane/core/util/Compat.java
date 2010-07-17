@@ -116,8 +116,13 @@ public class Compat {
 		for (final String mode : modes) {
 			final MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory()
 			    .getMenuBuilder();
-			final String[] keys = { "/map_popup/toolbars/ToggleMenubarAction", "/menu_bar/file/quit",
-			        "/menu_bar/extras/first/options/PropertyAction", "/menu_bar/help/doc/AboutAction" };
+			final String[] keys = { 
+					"/menu_bar/view/toolbars/ToggleMenubarAction", 
+					"/map_popup/toolbars/ToggleMenubarAction", 
+					"/menu_bar/file/quit",
+			        "/menu_bar/extras/first/options/PropertyAction", 
+			        "/menu_bar/help/doc/AboutAction" 
+			};
 			for (final String key : keys) {
 				if (builder.contains(key)) {
 					builder.removeElement(key);

@@ -1,0 +1,76 @@
+<project name="freeplane_ant" default="test" basedir=".">
+  <property name="root" location=".." />
+  <property name="freeplane.dir" location="../.." />
+  <property name="src" location="src" />
+  <property name="bin" location="bin" />
+  <property name="test.logdir" location="log" />
+  <property name="jar" value="${root}/dist/freeplaneant.jar" />
+  <property name="junit.jar" value="${root}/lib/junit.jar" />
+  <property name="classpath" value="${junit.jar}:${jar}" />
+
+  <taskdef name="format-translation" classname="org.freeplane.ant.FormatTranslation" classpath="${jar}"/>
+  <taskdef name="check-translation" classname="org.freeplane.ant.FormatTranslationCheck" classpath="${jar}"/>
+  <taskdef name="create-plugin" classname="org.freeplane.ant.CreatePlugin" classpath="${jar}"/>
+
+  <target name="compile-junit">
+    <mkdir dir="${bin}" />
+    <javac srcdir="${src}" destdir="${bin}" debug="${debug}" classpath="${classpath}" />
+  </target>
+
+  <target name="run-junit" depends="compile-junit">
+    <delete dir="${test.logdir}"/>
+    <mkdir dir="${test.logdir}" />
+    <junit printsummary="yes" haltonfailure="off">
+      <classpath>
+	<pathelement path="${classpath}:bin"/>
+      </classpath>
+      <formatter type="xml"/>
+      <batchtest todir="${test.logdir}">
+	<fileset dir="${bin}">
+	  <include name="**/*Test.class"/>
+	</fileset>
+      </batchtest>
+    </junit>
+  </target>
+  
+  <target name="check">
+    <check-translation dir="unsorted" includes="*.properties" />
+  </target>
+
+   <target name="format">
+    <format-translation dir="unsorted" includes="*.properties" outputDir="sorted" />
+  </target>
+
+  <target name="check-sorted">
+    <check-translation dir="sorted" includes="*.properties" />
+  </target>
+
+  <target name="create-plugin">
+    <create-plugin />
+  </target>
+
+  <target name="create-plugin-batch">
+    <copy todir="./freeplane_plugin_latex">
+      <fileset dir="${freeplane.dir}/freeplane_plugin_latex">
+	<exclude name="**/dist/**" />
+	<exclude name="**/build/**" />
+	<exclude name="**/lib/**" />
+      </fileset>
+    </copy>
+    <create-plugin baseDir="." pluginname="helloworld" hasAction="true" />
+  </target>
+
+  <target name="clean">
+    <delete dir="sorted" quiet="true" />
+    <delete dir="${bin}" quiet="true" />
+    <delete dir="${test.log}" quiet="true" />
+    <delete dir="freeplane_plugin_latex" quiet="true" />
+    <delete dir="freeplane_plugin_helloworld" quiet="true" />
+  </target>
+
+  <target name="test" depends="run-junit">
+    <antcall target="format" />
+    <antcall target="check-sorted" />
+    <antcall target="create-plugin-batch" />
+  </target>
+</project>

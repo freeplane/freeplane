@@ -8,6 +8,7 @@ backups
 .DS_Store
 .backup
 ./.metadata
+./freeplane/lib/jortho.jar
 ./freeplane_framework/windows-launcher/Freeplane_private.h
 ./freeplane_framework/windows-launcher/Freeplane_private.rc
 ./freeplane_framework/windows-launcher/Freeplane_private.res
@@ -15,4 +16,7 @@ backups
 ./freeplane_framework/windows-launcher/Makefile.win
 ./freeplane/lib/forms-1_2_1.zip
 ./freeplane_framework/build4mac
-
+./freeplane_framework/ant/lib/freeplaneant.jar
+./freeplane_ant/test/log
+./freeplane_ant/test/sorted
+./freeplane_ant/test/freeplane_plugin_*

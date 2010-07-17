@@ -2,7 +2,7 @@
 	<property name="workspace" location=".." />
 	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
 	<property file="ant/ant.properties" />
-	<property name="freeplaneant.jar" value="${workspace}/freeplane_framework/ant/lib/freeplaneant.jar" />
+	<property name="freeplaneant.jar" value="${workspace}/freeplane_ant/dist/freeplaneant.jar" />
 	<property name="root" value="." />
 	<property name="build" value="${root}/build" />
 	<property name="build4mac" value="${root}/build4mac" />
@@ -26,10 +26,10 @@
 
     <property name="mac-jarbundler" value = "${root}/mac-jarbundler"/>
 	<property name="jarbundler.jar" value = "jarbundler-2.1.0.jar"/>
-	<taskdef name="jarbundler"
+	<taskdef name="jarbundler" onerror="report"
 			 classpath="${mac-jarbundler}/${jarbundler.jar}"
 			 classname="net.sourceforge.jarbundler.JarBundler" />
-	<taskdef name="create-plugin"
+	<taskdef name="create-plugin" onerror="report"
 			 classpath="${freeplaneant.jar}"
 			 classname="org.freeplane.ant.CreatePlugin"/>
 
@@ -164,21 +164,25 @@
 		</zip>
 	</target>
 
-	<target name="srczip" depends="mkdistdir">
+	<target name="srczip" depends="mkdistdir, bzr_version_info">
 		<tar destfile="${dist}/freeplane_src${branch-nick}-${ver}.tar.gz" compression="gzip" longfile="gnu">
 			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="664">
 				<patternset id="freeplane.sources">
+					<include name="build.xml" />
 					<include name="freeplane/**" />
 					<include name="freeplane_plugin*/**" />
+					<include name="freeplane_ant/**" />
 					<include name="freeplane_framework/**" />
 					<include name="JOrtho_0.4_freeplane/**" />
-                    <exclude name=".*/**" />
-                    <exclude name="**/backups/**" />
+					<include name="build.xml" />
+					<exclude name=".*/**" />
+					<exclude name="**/backups/**" />
 					<exclude name="bin/**" />
 					<exclude name="build/**" />
 					<exclude name="dist/**" />
 					<exclude name="*/bin/**" />
 					<exclude name="*/build/**" />
+					<exclude name="*/build4mac/**" />
 					<exclude name="*/dist/**" />
 					<exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho" />
 				</patternset>
@@ -359,10 +363,16 @@
 		<arg line="create -srcfolder ${macappfullpath} ${dist}/freeplane_app${branch-nick}-${ver}.dmg"/>
 		</exec>
 	</target>
-	
-	<target name="dist" depends="clean, bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac">
-        <copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
-        <copy file="${build}/bzrinfo.txt" tofile="${dist}/bzrinfo${branch-nick}-${ver}.txt" failonerror="false"/>
+
+	<target name="dist" depends="bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac">
+		<copy file="${workspace}/freeplane/doc/history_en.txt"
+			todir="${dist}" />
+		<copy file="${build}/bzrinfo.txt"
+			tofile="${dist}/bzrinfo${branch-nick}-${ver}.txt"
+			failonerror="false"/>
+	</target>
+
+	<target name="cleandist" depends="clean,dist">
 	</target>
 
 	<target name="check-translation">
