@@ -25,9 +25,9 @@ import org.freeplane.view.swing.map.MainView;
  * The NodeDragListener which belongs to every NodeView
  */
 class DefaultNodeDragListener implements DragGestureListener {
-// 	final private Controller controller;
+// // 	final private Controller controller;
 
-	public DefaultNodeDragListener(final Controller controller) {
+	public DefaultNodeDragListener() {
 //		this.controller = controller;
 	}
 
@@ -55,8 +55,8 @@ class DefaultNodeDragListener implements DragGestureListener {
 		else {
 			dragActionName = "MOVE";
 		}
-		final ModeController modeController = controller.getModeController();
-		final Transferable t = ClipboardController.getController(modeController).copy(controller.getSelection());
+		final ModeController modeController = Controller.getCurrentController().getModeController();
+		final Transferable t = ClipboardController.getController(modeController).copy(Controller.getCurrentController().getSelection());
 		((MindMapNodesSelection) t).setDropAction(dragActionName);
 		try {
 			e.startDrag(cursor, t, new DragSourceListener() {

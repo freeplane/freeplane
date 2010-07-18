@@ -61,7 +61,7 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 		final NodeModel selected = getController().getSelection().getSelected();
 		viewController.scrollNodeToVisible(selected);
 		selectionDialog.pack();
-		UITools.setDialogLocationRelativeTo(selectionDialog, getController(), selected);
+		UITools.setDialogLocationRelativeTo(selectionDialog, selected);
 		selectionDialog.setModal(true);
 		selectionDialog.show();
 		final int result = selectionDialog.getResult();

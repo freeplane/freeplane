@@ -10,8 +10,8 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
 class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
-	FontProxy(final NodeModel delegate, final MModeController modeController) {
-		super(delegate, modeController);
+	FontProxy(final NodeModel delegate) {
+		super(delegate);
 	}
 
 	public String getName() {

@@ -14,8 +14,8 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 
 class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
-	LinkProxy(final NodeModel delegate, final MModeController modeController) {
-		super(delegate, modeController);
+	LinkProxy(final NodeModel delegate) {
+		super(delegate);
 	}
 
 	public String get() {

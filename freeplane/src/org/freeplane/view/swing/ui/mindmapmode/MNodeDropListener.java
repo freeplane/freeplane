@@ -50,8 +50,7 @@ import org.freeplane.view.swing.map.NodeView;
 public class MNodeDropListener implements DropTargetListener {
 // 	final private ModeController modeController;
 
-	public MNodeDropListener(final ModeController controller) {
-		modeController = controller;
+	public MNodeDropListener() {
 	}
 
 	/**
@@ -98,7 +97,7 @@ public class MNodeDropListener implements DropTargetListener {
 			final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
 			final NodeView targetNodeView = mainView.getNodeView();
 			final NodeModel targetNode = targetNodeView.getModel();
-			final Controller controller = modeController.getController();
+			final Controller controller = Controller.getCurrentController();
 			if (dtde.isLocalTransfer() && t.isDataFlavorSupported(MindMapNodesSelection.dropActionFlavor)) {
 				final String sourceAction = (String) t.getTransferData(MindMapNodesSelection.dropActionFlavor);
 				if (sourceAction.equals("LINK")) {
@@ -115,6 +114,7 @@ public class MNodeDropListener implements DropTargetListener {
 				return;
 			}
 			final boolean dropAsSibling = mainView.dropAsSibling(dtde.getLocation().getX());
+			ModeController modeController = controller.getModeController();
 			final MMapController mapController = (MMapController) modeController.getMapController();
 			if ((dropAction == DnDConstants.ACTION_MOVE || dropAction == DnDConstants.ACTION_COPY)) {
 				final NodeModel parent = dropAsSibling ? targetNode.getParentNode() : targetNode;
@@ -200,6 +200,7 @@ public class MNodeDropListener implements DropTargetListener {
 
 	private boolean isDropAcceptable(final DropTargetDropEvent event) {
 		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
+		final ModeController modeController = Controller.getCurrentController().getModeController();
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		return ((node != selected) && !node.isDescendantOf(selected));
 	}

@@ -33,8 +33,6 @@ import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
-import org.freeplane.features.common.note.NoteController;
-import org.freeplane.features.common.note.NoteModel;
 
 class NodeViewFactory {
 	private static class ContentPane extends JComponent {

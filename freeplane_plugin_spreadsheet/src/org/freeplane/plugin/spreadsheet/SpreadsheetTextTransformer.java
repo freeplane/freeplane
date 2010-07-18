@@ -7,10 +7,9 @@ import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.ScriptingEngine;
 
 class SpreadsheetTextTransformer implements ITextTransformer {
-	private MModeController modeController;
+// 	private MModeController modeController;
 
 	SpreadsheetTextTransformer(MModeController modeController) {
-		this.modeController = modeController;
 	}
 
 	public String transform(String text, NodeModel nodeModel) {
@@ -22,7 +21,7 @@ class SpreadsheetTextTransformer implements ITextTransformer {
 	}
 
 	private String eval(String script, NodeModel nodeModel) {
-		final Object result = ScriptingEngine.executeScript(modeController, nodeModel, script);
+		final Object result = ScriptingEngine.executeScript(nodeModel, script);
 		if (result == null) {
 			throw new ExecuteScriptException("got null result from evaluating " + nodeModel.getID() + ", text='"
 			        + script + "'");

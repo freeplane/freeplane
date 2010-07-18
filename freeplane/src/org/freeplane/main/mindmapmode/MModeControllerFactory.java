@@ -124,11 +124,11 @@ public class MModeControllerFactory {
 		return instance;
 	}
 
-// 	private Controller controller;
-	private MModeController modeController;
+// // 	private Controller controller;
+ 	private MModeController modeController;
 	private MUIFactory uiFactory;
 
-	private void createAddIns() {
+	private void createAddIns(Controller controller) {
 		new HierarchicalIcons(modeController);
 		new AutomaticLayout(modeController);
 		new BlinkingNodeHook(modeController);
@@ -136,7 +136,7 @@ public class MModeControllerFactory {
 		new ReminderHook(modeController);
 		new ViewerController(modeController);
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		final StyleEditorPanel panel = new StyleEditorPanel(modeController, uiFactory, true);
+		final StyleEditorPanel panel = new StyleEditorPanel(uiFactory, true);
 		panel.init(modeController);
 		final JScrollPane styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -164,15 +164,15 @@ public class MModeControllerFactory {
 
 	private MModeController createModeControllerImpl(final Controller controller) {
 //		this.controller = controller;
-		createStandardControllers();
-		createAddIns();
+		createStandardControllers(controller);
+		createAddIns(controller);
 		return modeController;
 	}
 
-	private void createStandardControllers() {
+	private void createStandardControllers(final Controller controller) {
 		modeController = new MModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
-		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener(modeController) {
+		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener() {
 			@Override
 			public void mouseReleased(final MouseEvent e) {
 				stopTimerForDelayedSelection();
@@ -229,20 +229,19 @@ public class MModeControllerFactory {
 		CloudController.install(modeController, new MCloudController(modeController));
 		NoteController.install(modeController, new MNoteController(modeController));
 		LinkController.install(modeController, new MLinkController(modeController));
-		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(controller, new MMouseMotionListener(
-		    modeController)));
+		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(new MMouseMotionListener()));
 		final MTextController textController = new MTextController(modeController);
 		TextController.install(modeController, textController);
-		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(controller, new IEditHandler() {
+		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
 			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
 				textController.edit(e, addNew, editLong);
 			}
 		}));
 		ClipboardController.install(modeController, new MClipboardController(modeController));
-		userInputListenerFactory.setNodeDropTargetListener(new MNodeDropListener(modeController));
+		userInputListenerFactory.setNodeDropTargetListener(new MNodeDropListener());
 		LocationController.install(modeController, new MLocationController(modeController));
 		LogicalStyleController.install(modeController, new MLogicalStyleController(modeController));
-		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener(modeController));
+		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener());
 		AttributeController.install(modeController, new MAttributeController(modeController));
 		modeController.addAction(new EditAttributesAction(controller));
 		SpellCheckerController.install(modeController);

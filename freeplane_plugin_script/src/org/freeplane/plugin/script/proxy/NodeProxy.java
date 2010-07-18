@@ -31,8 +31,8 @@ import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeProxy extends AbstractProxy<NodeModel> implements Node {
-	public NodeProxy(final NodeModel node, final MModeController modeController) {
-		super(node, modeController);
+	public NodeProxy(final NodeModel node) {
+		super(node);
 	}
 
 	public Proxy.Connector addConnectorTo(final Node target) {
@@ -42,21 +42,21 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public Proxy.Connector addConnectorTo(final String targetNodeID) {
 		final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
 		final ConnectorModel connectorModel = linkController.addConnector(getDelegate(), targetNodeID);
-		return new ConnectorProxy(connectorModel, getModeController());
+		return new ConnectorProxy(connectorModel);
 	}
 
 	public Node createChild() {
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
 		mapController.insertNode(newNodeModel, getDelegate());
-		return new NodeProxy(newNodeModel, getModeController());
+		return new NodeProxy(newNodeModel);
 	}
 
 	public Node createChild(final int position) {
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
 		mapController.insertNode(newNodeModel, getDelegate(), position);
-		return new NodeProxy(newNodeModel, getModeController());
+		return new NodeProxy(newNodeModel);
 	}
 
 	public void delete() {
@@ -78,7 +78,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 			@Override
 			public Node get(final int index) {
 				final NodeModel child = (NodeModel) getDelegate().getChildAt(index);
-				return new NodeProxy(child, getModeController());
+				return new NodeProxy(child);
 			}
 
 			@Override
@@ -89,7 +89,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	public Collection<Connector> getConnectorsIn() {
-		return new ConnectorInListProxy(getDelegate(), getModeController());
+		return new ConnectorInListProxy(getDelegate());
 	}
 
 	public Collection<Proxy.Connector> getConnectorsOut() {
@@ -97,15 +97,15 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	public Proxy.ExternalObject getExternalObject() {
-		return new ExternalObjectProxy(getDelegate(), getModeController());
+		return new ExternalObjectProxy(getDelegate());
 	}
 
 	public Proxy.Icons getIcons() {
-		return new IconsProxy(getDelegate(), getModeController());
+		return new IconsProxy(getDelegate());
 	}
 
 	public Proxy.Link getLink() {
-		return new LinkProxy(getDelegate(), getModeController());
+		return new LinkProxy(getDelegate());
 	}
 
 	public String getNodeID() {
@@ -127,7 +127,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	
 	public Node getParentNode() {
 		final NodeModel parentNode = getDelegate().getParentNode();
-		return parentNode != null ? new NodeProxy(parentNode, getModeController()) : null;
+		return parentNode != null ? new NodeProxy(parentNode) : null;
 	}
 	
 	public String getPlainText() {
@@ -140,7 +140,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	public Proxy.NodeStyle getStyle() {
-		return new NodeStyleProxy(getDelegate(), getModeController());
+		return new NodeStyleProxy(getDelegate());
 	}
 
 	public String getText() {
@@ -220,15 +220,15 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	public Map getMap() {
 		final MapModel map = getDelegate().getMap();
-		return map != null ? new MapProxy(map, getModeController()) : null;
+		return map != null ? new MapProxy(map) : null;
 	}
 
 	public List<Node> find(final ICondition condition) {
-		return ProxyUtils.find(condition, getModeController(), getDelegate());
+		return ProxyUtils.find(condition, getDelegate());
 	}
 
 	public List<Node> find(final Closure closure) {
-		return ProxyUtils.find(closure, getModeController(), getDelegate());
+		return ProxyUtils.find(closure, getDelegate());
 	}
 
 	public Date getLastModifiedAt() {

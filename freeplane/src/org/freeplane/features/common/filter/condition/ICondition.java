@@ -19,9 +19,8 @@
  */
 package org.freeplane.features.common.filter.condition;
 
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
 public interface ICondition {
-	boolean checkNode(ModeController modeController, NodeModel node);
+	boolean checkNode(NodeModel node);
 }

@@ -33,7 +33,7 @@ class KeyDocumentationAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 
 	public KeyDocumentationAction(final Controller controller) {
 		super("KeyDocumentationAction");
@@ -47,7 +47,7 @@ class KeyDocumentationAction extends AFreeplaneAction {
 			if (urlText != null && urlText != "") {
 				URL url = null;
 				url = ResourceController.getResourceController().getResource(urlText);
-				controller.getViewController().openDocument(url);
+				Controller.getCurrentController().getViewController().openDocument(url);
 			}
 		}
 		catch (final Exception e2) {

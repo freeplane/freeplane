@@ -44,7 +44,7 @@ import org.freeplane.features.common.note.NoteModel;
  */
 public class BNodeNoteViewer implements INodeSelectionListener {
 	private static UIIcon noteIcon = null;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	private JComponent noteScrollPane;
 	private JLabel noteViewer;
 
@@ -75,13 +75,13 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 	}
 
 	public void onDeselect(final NodeModel pNode) {
-		controller.getViewController().removeSplitPane();
+		Controller.getCurrentController().getViewController().removeSplitPane();
 	}
 
 	public void onSelect(final NodeModel pNode) {
 		final String noteText = NoteModel.getNoteText(pNode);
 		if (noteText != null && !noteText.equals("")) {
-			controller.getViewController().insertComponentIntoSplitPane(getNoteViewerComponent());
+			Controller.getCurrentController().getViewController().insertComponentIntoSplitPane(getNoteViewerComponent());
 			noteViewer.setText(noteText);
 			try {
 				noteViewer.setText(noteText);

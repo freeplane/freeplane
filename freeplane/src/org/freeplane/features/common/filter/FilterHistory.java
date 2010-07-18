@@ -32,7 +32,7 @@ import org.freeplane.features.common.map.ModeController;
  * Mar 30, 2009
  */
 public class FilterHistory {
-// 	private final Controller controller;
+// // 	private final Controller controller;
 	private ListIterator<Filter> filters;
 
 	FilterHistory(final Controller controller) {
@@ -65,7 +65,7 @@ public class FilterHistory {
 	private void init() {
 		final List<Filter> list = new LinkedList<Filter>();
 		filters = list.listIterator();
-		filters.add(Filter.createTransparentFilter(controller));
+		filters.add(Filter.createTransparentFilter());
 	}
 
 	private boolean isConditionStronger(final Filter oldFilter, final Filter newFilter) {
@@ -76,6 +76,7 @@ public class FilterHistory {
 		if (!filters.hasNext()) {
 			return;
 		}
+		Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 		final ModeController modeController = controller.getModeController();
 		final Filter next = filters.next();
@@ -83,6 +84,7 @@ public class FilterHistory {
 	}
 
 	void undo() {
+		Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 		final ModeController modeController = controller.getModeController();
 		final Filter previous = filters.previous();

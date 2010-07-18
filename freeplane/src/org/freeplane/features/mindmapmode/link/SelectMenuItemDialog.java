@@ -111,14 +111,14 @@ class SelectMenuItemDialog extends JDialog {
 		}
 	}
 
-	public SelectMenuItemDialog(final Controller controller, final NodeModel node) {
+	public SelectMenuItemDialog(final NodeModel node) {
 		super(UITools.getFrame(), TextUtils.getText("select_menu_item_dialog"), true);
-		controller.getViewController().scrollNodeToVisible(node);
-		UITools.setDialogLocationRelativeTo(this, controller, node);
+		Controller.getCurrentController().getViewController().scrollNodeToVisible(node);
+		UITools.setDialogLocationRelativeTo(this, node);
 		setSize(DIALOG_DIMENSION);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		UITools.addEscapeActionToDialog(this);
-		tree = createTree(controller);
+		tree = createTree();
 		getContentPane().add(new JScrollPane(tree));
 		getContentPane().add(createButtonBar(), BorderLayout.SOUTH);
 		getRootPane().setDefaultButton(btnOK);
@@ -151,8 +151,8 @@ class SelectMenuItemDialog extends JDialog {
 		return button;
 	}
 
-	private JTree createTree(final Controller controller) {
-		final MModeController modeController = (MModeController) controller.getModeController();
+	private JTree createTree() {
+		final MModeController modeController = (MModeController) Controller.getCurrentController().getModeController();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		final DefaultMutableTreeNode treeRoot = MenuUtils.createMenuEntryTree(SELECTION_ROOT_KEY, menuBuilder);
 		if (treeRoot.getUserObject() == null)

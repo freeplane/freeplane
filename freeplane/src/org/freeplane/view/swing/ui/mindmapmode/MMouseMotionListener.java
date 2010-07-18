@@ -22,10 +22,10 @@ package org.freeplane.view.swing.ui.mindmapmode;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.mindmapmode.link.MLinkController;
@@ -44,9 +44,8 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 	/**
 	 *
 	 */
-	public MMouseMotionListener(final ModeController controller) {
+	public MMouseMotionListener() {
 		super();
-		mController = controller;
 	}
 
 	public void mouseDragged(final MouseEvent e) {
@@ -117,7 +116,7 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 			final Point draggedLinkNewEndPoint = draggedLink.getEndInclination();
 			draggedLink.setStartInclination(draggedLinkOldStartPoint);
 			draggedLink.setEndInclination(draggedLinkOldEndPoint);
-			((MLinkController) LinkController.getController(mController)).setArrowLinkEndPoints(draggedLink,
+			((MLinkController) LinkController.getController(Controller.getCurrentController().getModeController())).setArrowLinkEndPoints(draggedLink,
 			    draggedLinkNewStartPoint, draggedLinkNewEndPoint);
 			mapView.repaintVisible();
 			draggedLink = null;

@@ -270,6 +270,7 @@ public class MenuBuilder extends UIBuilder {
 					setDefaultAccelerator(menuPath.path, accelerator);
 				}
 				try {
+					final ModeController modeController = Controller.getCurrentController().getModeController();
 					final AFreeplaneAction theAction = modeController.getAction(action);
 					if (theAction == null) {
 						LogUtils.severe("action " + action + " not found");
@@ -721,7 +722,7 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	IFreeplaneAction decorateAction(final String category, final AFreeplaneAction action) {
-		if (null == getMenubar(get(category)) || modeController.getController().getViewController().isApplet()) {
+		if (null == getMenubar(get(category)) || Controller.getCurrentController().getViewController().isApplet()) {
 			return action;
 		}
 		return decorateAction(action);
@@ -773,6 +774,7 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	String getShortcutKey(final String key) {
+		final ModeController modeController = Controller.getCurrentController().getModeController();
 		return SHORTCUT_PROPERTY_PREFIX + modeController.getModeName() + "/" + key;
 	}
 

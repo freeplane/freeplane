@@ -296,7 +296,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	final private AttributeController attributeController;
 	final private JComboBox attributeNames;
 	final private JComboBox attributeValues;
-// 	final private Controller Controller.getCurrentController();
+// // 	final private Controller Controller.getCurrentController();
 	private IMapSelection mapSelection;
 	final private JComboBox replacingAttributeNames;
 	final private JComboBox replacingAttributeValues;

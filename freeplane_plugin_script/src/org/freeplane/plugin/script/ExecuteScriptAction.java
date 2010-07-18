@@ -91,10 +91,10 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 						// TODO: ensure that a script is invoked only once on every node?
 						// (might be a problem with recursive actions if parent and child
 						// are selected.)
-						ScriptingEngine.executeScriptRecursive(modeController, node, scriptContent);
+						ScriptingEngine.executeScriptRecursive(node, scriptContent);
 					}
 					else {
-						ScriptingEngine.executeScript(modeController, node, scriptContent);
+						ScriptingEngine.executeScript(node, scriptContent);
 					}
                 }
                 catch (ExecuteScriptException ex) {

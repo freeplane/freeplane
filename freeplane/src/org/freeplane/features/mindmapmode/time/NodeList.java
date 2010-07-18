@@ -255,8 +255,8 @@ class NodeList {
 		final private String iconNames;
 		List<MindIcon> icons = new ArrayList<MindIcon>();
 
-		public IconsHolder(final ModeController modeController, final NodeModel node) {
-			icons.addAll(IconController.getIcons(modeController, node));
+		public IconsHolder(final NodeModel node) {
+			icons.addAll(IconController.getIcons(node));
 			if (icons.size() > 0) {
 				final List<MindIcon> toSort = new ArrayList<MindIcon>(icons);
 				Collections.sort(toSort);
@@ -488,7 +488,7 @@ class NodeList {
 		return text;
 	}
 
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	private DateRenderer dateRenderer;
 	private JDialog dialog;
 	private IconsRenderer iconsRenderer;
@@ -553,7 +553,7 @@ class NodeList {
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapChangeListener(mapChangeListener);
 		mapController.addNodeChangeListener(mapChangeListener);
-		controller.getMapViewManager().addMapSelectionListener(mapChangeListener);
+		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(mapChangeListener);
 
 	}
 
@@ -596,7 +596,7 @@ class NodeList {
 	}
 
 	private ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	/**
@@ -666,10 +666,10 @@ class NodeList {
 	}
 
 	private void selectMap(final MapModel map) {
-		if (map.equals(controller.getMap())) {
+		if (map.equals(Controller.getCurrentController().getMap())) {
 			return;
 		}
-		final IMapViewManager mapViewManager = controller.getMapViewManager();
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		final Map<String, MapModel> maps = mapViewManager.getMaps(MModeController.MODENAME);
 		for (final Map.Entry<String, MapModel> entry : maps.entrySet()) {
 			if (map.equals(entry.getValue())) {
@@ -693,7 +693,7 @@ class NodeList {
 		NodeList.COLUMN_TEXT = TextUtils.getText(PLUGINS_TIME_LIST_XML_TEXT);
 		NodeList.COLUMN_DATE = TextUtils.getText(PLUGINS_TIME_LIST_XML_DATE);
 		NodeList.COLUMN_NOTES = TextUtils.getText(PLUGINS_TIME_LIST_XML_NOTES);
-		dialog = new JDialog(modeController.getController().getViewController().getFrame(), modal /* modal */);
+		dialog = new JDialog(Controller.getCurrentController().getViewController().getFrame(), modal /* modal */);
 		String windowTitle;
 		if (showAllNodes) {
 			windowTitle = PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES;
@@ -965,11 +965,11 @@ class NodeList {
 		model.addColumn(NodeList.COLUMN_MODIFIED);
 		model.addColumn(NodeList.COLUMN_NOTES);
 		if (searchInAllMaps == false) {
-			final NodeModel node = controller.getMap().getRootNode();
+			final NodeModel node = Controller.getCurrentController().getMap().getRootNode();
 			updateModel(model, node);
 		}
 		else {
-			final Map<String, MapModel> maps = controller.getMapViewManager().getMaps(MModeController.MODENAME);
+			final Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps(MModeController.MODENAME);
 			for (final MapModel map : maps.values()) {
 				final NodeModel node = map.getRootNode();
 				updateModel(model, node);
@@ -985,7 +985,7 @@ class NodeList {
 			date = new Date(hook.getRemindUserAt());
 		}
 		if (showAllNodes && node.isVisible() || hook != null) {
-			model.addRow(new Object[] { date, new NodeHolder(node), new IconsHolder(modeController, node),
+			model.addRow(new Object[] { date, new NodeHolder(node), new IconsHolder(node),
 			        node.getHistoryInformation().getCreatedAt(), node.getHistoryInformation().getLastModifiedAt(),
 			        new NotesHolder(node) });
 		}

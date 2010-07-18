@@ -207,7 +207,7 @@ public class MapController extends SelectionController {
 		MapController.saveOnlyIntrinsicallyNeededIds = saveOnlyIntrinsicallyNeededIds;
 	}
 
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	protected final Collection<IMapChangeListener> mapChangeListeners;
 	final private Collection<IMapLifeCycleListener> mapLifeCycleListeners;
 	final private MapReader mapReader;
@@ -220,7 +220,6 @@ public class MapController extends SelectionController {
 	public MapController(final ModeController modeController) {
 		super();
 //		this.modeController = modeController;
-		controller = modeController.getController();
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
 		writeManager = new WriteManager();
 		mapWriter = new MapWriter(this);
@@ -300,11 +299,12 @@ public class MapController extends SelectionController {
 	}
 
 	/**
+	 * @param modeController 
 	 *
 	 */
-	private void createActions(final ModeController modeController) {
-		modeController.addAction(new ToggleFoldedAction(controller));
-		modeController.addAction(new ToggleChildrenFoldedAction(this));
+	private void createActions(ModeController modeController) {
+		modeController.addAction(new ToggleFoldedAction());
+		modeController.addAction(new ToggleChildrenFoldedAction());
 	}
 
 	public void displayNode(final NodeModel node) {
@@ -404,7 +404,7 @@ public class MapController extends SelectionController {
 	}
 
 	public Controller getController() {
-		return controller;
+		return Controller.getCurrentController();
 	}
 
 	public void getFilteredXml(final MapModel map, final Writer fileout, final Mode mode, final boolean forceFormat)
@@ -460,7 +460,7 @@ public class MapController extends SelectionController {
 	}
 
 	public ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	/*
@@ -642,7 +642,7 @@ public class MapController extends SelectionController {
 					private void setDate(final HistoryInformationModel historyInformation, final Date lastModifiedAt) {
 						final Date oldLastModifiedAt = historyInformation.getLastModifiedAt();
 						historyInformation.setLastModifiedAt(lastModifiedAt);
-						final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(getModeController(), node,
+						final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node,
 						    HistoryInformationModel.class, oldLastModifiedAt, lastModifiedAt);
 						fireNodeChanged(node, nodeChangeEvent);
 					}
@@ -658,7 +658,7 @@ public class MapController extends SelectionController {
 				getModeController().execute(historyActor, node.getMap());
 			}
 		}
-		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(modeController, node, property, oldValue, newValue);
+		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue);
 		fireNodeChanged(node, nodeChangeEvent);
 	}
 
@@ -697,7 +697,7 @@ public class MapController extends SelectionController {
 	}
 
 	public void refreshMapFrom(final NodeModel node) {
-		final NodeChangeEvent event = new NodeChangeEvent(modeController, node, NodeChangeType.REFRESH, null, null);
+		final NodeChangeEvent event = new NodeChangeEvent(node, NodeChangeType.REFRESH, null, null);
 		refreshMap(node, event);
 	}
 

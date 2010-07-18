@@ -139,7 +139,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	private AttributeRegistry currentAttributes;
 	final private Component parentComponent;
 	MyRenderer renderer = null;
@@ -209,6 +209,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		top.removeAllChildren();
 		final TreeNodeInfo topInfo = (TreeNodeInfo) top.getUserObject();
 		topInfo.setSelected(TreeNodeInfo.NOT_SELECTED);
+		Controller controller = Controller.getCurrentController();
 		final IMapViewManager mapViewManager = controller.getMapViewManager();
 		final MapModel currentMap = controller.getMap();
 		currentAttributes = AttributeRegistry.getRegistry(currentMap);

@@ -52,15 +52,13 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 // 	final private Controller controller;
 	private boolean ignoreChangeEvent = false;
 	final private DefaultComboBoxModel fonts, size, styles;
-	private final MModeController modeController;
+//  private final MModeController modeController;
 
 	public MUIFactory(final MModeController modeController) {
-		this.modeController = modeController;
 		size = new DefaultComboBoxModel(MUIFactory.sizes);
 		styles = new DefaultComboBoxModel();
 		final MNodeStyleController styleController = (MNodeStyleController) modeController
 		    .getExtension(NodeStyleController.class);
-		controller = modeController.getController();
 		final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		final String[] envFonts = gEnv.getAvailableFontFamilyNames();
 		fonts = new DefaultComboBoxModel(envFonts);
@@ -134,7 +132,8 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	}
 
 	private void changeToolbar(final NodeModel node) {
-		final MNodeStyleController styleController = (MNodeStyleController) modeController
+		final Controller controller = Controller.getCurrentController();
+		final MNodeStyleController styleController = (MNodeStyleController) controller.getModeController()
 		    .getExtension(NodeStyleController.class);
 		selectFontSize(Integer.toString(styleController.getFontSize(node)));
 		selectFontName(styleController.getFontFamilyName(node));
@@ -142,7 +141,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
-		if (event.getNode() != controller.getSelection().getSelected()) {
+		if (event.getNode() != Controller.getCurrentController().getSelection().getSelected()) {
 			return;
 		}
 		changeToolbar(event.getNode());
@@ -198,6 +197,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		final Object property = event.getProperty();
 		if (property.equals(MapStyle.MAP_STYLES)) {
 			updateMapStyles(event.getMap());
+			final Controller controller = Controller.getCurrentController();
 			changeToolbar(controller.getSelection().getSelected());
 			return;
 		}

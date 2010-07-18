@@ -200,7 +200,7 @@ class ActivatorImpl implements BundleActivator {
 		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				starter.createFrame(getCallParameters());
+				starter.createFrame(controller, getCallParameters());
 			}
 		});
 	}

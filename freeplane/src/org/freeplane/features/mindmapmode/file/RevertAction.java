@@ -49,7 +49,7 @@ import org.freeplane.features.common.map.MapWriter.Mode;
  */
 class RevertAction extends AFreeplaneAction {
 	private static class RevertActionInstance {
-// 		final private Controller controller;
+// // 		final private Controller controller;
 		private String filePrefix;
 		private String localFileName;
 		private String map;
@@ -60,6 +60,7 @@ class RevertAction extends AFreeplaneAction {
 		}
 
 		public void act() {
+			Controller controller =Controller.getCurrentController();
 			final MapController mapController = controller.getModeController().getMapController();
 			try {
 				controller.close(true);

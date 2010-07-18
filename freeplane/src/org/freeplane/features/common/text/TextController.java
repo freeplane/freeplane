@@ -62,7 +62,7 @@ public class TextController implements IExtension {
 	}
 
 	public ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 }

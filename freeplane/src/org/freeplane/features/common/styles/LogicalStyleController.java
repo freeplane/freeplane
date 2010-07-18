@@ -24,6 +24,7 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
@@ -61,6 +62,7 @@ public class LogicalStyleController implements IExtension {
 	}
 
 	private void registerChangeListener() {
+		ModeController modeController = Controller.getCurrentController().getModeController();
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapChangeListener(new IMapChangeListener() {
 			public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
@@ -96,6 +98,7 @@ public class LogicalStyleController implements IExtension {
     }
 
 	private void createBuilder() {
+		ModeController modeController = Controller.getCurrentController().getModeController();
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE_REF", new IAttributeHandler() {
@@ -158,7 +161,7 @@ public class LogicalStyleController implements IExtension {
 	}
 
 	protected ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	private static Map<MapModel, Integer> mapsToRefresh = new HashMap<MapModel, Integer>();
@@ -196,7 +199,7 @@ public class LogicalStyleController implements IExtension {
 			return style;
 		}
 		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
-		style = styleModel.getConditionalStyleModel().getStyle(modeController, node);
+		style = styleModel.getConditionalStyleModel().getStyle(node);
 		cachedNode = new WeakReference<NodeModel>(node);
 		cachedStyle = new WeakReference<Object>(style);
 		return style;

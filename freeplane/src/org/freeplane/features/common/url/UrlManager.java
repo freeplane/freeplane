@@ -159,7 +159,7 @@ public class UrlManager implements IExtension {
 		modeController.addExtension(UrlManager.class, urlManager);
 	}
 
-// 	final private Controller controller;
+// // 	final private Controller controller;
 // 	final private ModeController modeController;
 
 	public UrlManager(final ModeController modeController) {
@@ -176,7 +176,7 @@ public class UrlManager implements IExtension {
 	}
 
 	public Controller getController() {
-		return controller;
+		return Controller.getCurrentController();
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class UrlManager implements IExtension {
 	}
 
 	public ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	public void handleLoadingException(final Exception ex) {
@@ -245,6 +245,7 @@ public class UrlManager implements IExtension {
 			return;
 		}
 		try {
+			final ModeController modeController = Controller.getCurrentController().getModeController();
 			final NodeModel root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map,
 			    urlStreamReader, Mode.FILE);
 			urlStreamReader.close();
@@ -266,6 +267,7 @@ public class UrlManager implements IExtension {
 		if (uriString.startsWith("#")) {
 			final String target = uri.getFragment();
 			try {
+				final ModeController modeController = Controller.getCurrentController().getModeController();
 				final MapController mapController = modeController.getMapController();
 				final NodeModel node = mapController.getNodeFromID(target);
 				if (node != null) {
@@ -285,6 +287,7 @@ public class UrlManager implements IExtension {
 				if ((extension != null)
 				        && extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 					final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+					final ModeController modeController = Controller.getCurrentController().getModeController();
 					modeController.getMapController().newMap(url);
 					final String ref = uri.getFragment();
 					if (ref != null) {

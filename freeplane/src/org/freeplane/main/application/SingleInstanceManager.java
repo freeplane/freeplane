@@ -27,7 +27,7 @@ public class SingleInstanceManager {
 	private Integer port;
 	private boolean isSlave;
 	private boolean isMasterPresent;
-// 	private Controller controller;
+// // 	private Controller controller;
 
 	public SingleInstanceManager() {
 		isSingleInstanceMode = ResourceController.getResourceController().getBooleanProperty("single_instance");
@@ -137,7 +137,7 @@ public class SingleInstanceManager {
 								LogUtils.info("opening '" + StringUtils.join(filesToLoadForClient, "', '")
 								        + "' for client");
 								for (String file : filesToLoadForClient) {
-									controller.getModeController().getMapController().newMap(
+									Controller.getCurrentController().getModeController().getMapController().newMap(
 									    Compat.fileToUrl(new File(file)));
 								}
 								UITools.getFrame().toFront();

@@ -15,7 +15,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
 class ManualBugReporter implements IBugReportListener {
-// 	final private Controller controller;
+// // 	final private Controller controller;
 
 	public ManualBugReporter(final Controller controller) {
 		super();
@@ -45,6 +45,7 @@ class ManualBugReporter implements IBugReportListener {
 		try {
 			final ResourceController resourceController = ResourceController.getResourceController();
 			final String location = resourceController.getProperty("bugTrackerLocation");
+			final Controller controller = Controller.getCurrentController();
 			controller.getViewController().openDocument(new URL(location));
 		}
 		catch (final MalformedURLException ex) {

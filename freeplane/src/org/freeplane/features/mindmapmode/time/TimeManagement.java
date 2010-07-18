@@ -90,7 +90,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	public final static String REMINDER_HOOK_NAME = "plugins/TimeManagementReminder.xml";
 	private static TimeManagement sCurrentlyOpenTimeManagement = null;
 	private JTripleCalendar calendar;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	private JDialog dialog;
 	private JTextField hourField;
 // 	private ModeController mController;
@@ -103,12 +103,13 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 //		this.modeController = modeController;
 //		controller = modeController.getController();
 		this.reminderHook = reminderHook;
-		controller.getMapViewManager().addMapSelectionListener(this);
+		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(this);
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
 		final Date date = getCalendarDate();
-		for (final NodeModel node : mController.getMapController().getSelectedNodes()) {
+		Controller controller = Controller.getCurrentController();
+		for (final NodeModel node : controller.getModeController().getMapController().getSelectedNodes()) {
 			final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
 			if (alreadyPresentHook != null) {
 				final Object[] messageArguments = { new Date(alreadyPresentHook.getRemindUserAt()), date };
@@ -171,7 +172,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	}
 
 	private ModeController getMindMapController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	private String getResourceString(final String string) {
@@ -235,8 +236,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			return;
 		}
 		TimeManagement.sCurrentlyOpenTimeManagement = this;
-		mController = getMindMapController();
-		dialog = new JDialog(controller.getViewController().getFrame(), false /*not modal*/);
+		dialog = new JDialog(Controller.getCurrentController().getViewController().getFrame(), false /*not modal*/);
 		dialog.setTitle(getResourceString("plugins/TimeManagement.xml_WindowTitle"));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
@@ -292,7 +292,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 						text.replaceSelection(dateAsString);
 						return;
 					}
-					for (final NodeModel element : mController.getMapController().getSelectedNodes()) {
+					ModeController mController  = Controller.getCurrentController().getModeController();
+					for (final NodeModel element : mController .getMapController().getSelectedNodes()) {
 						final String text = element.getText();
 						final StringBuilder newText = new StringBuilder();
 						if (HtmlUtils.isHtmlNode(text)) {

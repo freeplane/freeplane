@@ -121,7 +121,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private final ButtonModel applyToVisibleNodeOnly;
 	private ConditionFactory conditionFactory;
 	private DefaultConditionRenderer conditionRenderer = null;
-// 	private final Controller controller;
+// // 	private final Controller controller;
 	final private FilterChangeListener filterChangeListener;
 	private DefaultComboBoxModel filterConditions;
 	private JToolBar filterToolbar;
@@ -183,7 +183,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final ISelectableCondition noFiltering = NO_FILTERING;
 		filterConditions.insertElementAt(noFiltering, 0);
 		if (selectedViewCondition == null) {
-			selectedViewCondition = SelectedViewCondition.CreateCondition(controller);
+			selectedViewCondition = SelectedViewCondition.CreateCondition();
 		}
 		filterConditions.insertElementAt(selectedViewCondition, 1);
 		if (filterConditions.getSelectedItem() == null) {
@@ -245,12 +245,12 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			filterCondition = null;
 		}
 		else if (selectedCondition.equals(selectedViewCondition)) {
-			filterCondition = new SelectedViewSnapshotCondition(controller);
+			filterCondition = new SelectedViewSnapshotCondition();
 		}
 		else {
 			filterCondition = selectedCondition;
 		}
-		final Filter filter = new Filter(controller, filterCondition, showAncestors.isSelected(), showDescendants
+		final Filter filter = new Filter(filterCondition, showAncestors.isSelected(), showDescendants
 		    .isSelected(), applyToVisibleNodeOnly.isSelected(), unfold.isSelected());
 		return filter;
 	}
@@ -261,6 +261,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		    .getBooleanProperty("filter_toolbar_visible"));
 		filterToolbar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "filter_toolbar_visible");
 		filterToolbar.setFocusable(false);
+		Controller controller = Controller.getCurrentController();
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
 		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));
 		final JToggleButton btnUnfoldAncestors = new JAutoToggleButton(controller
@@ -305,7 +306,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	public Filter createTransparentFilter() {
 		if (inactiveFilter == null) {
-			inactiveFilter = Filter.createTransparentFilter(controller);
+			inactiveFilter = Filter.createTransparentFilter();
 		}
 		return inactiveFilter;
 	}
@@ -333,7 +334,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	public Controller getController() {
-		return controller;
+		return Controller.getCurrentController();
 	}
 
 	public DefaultComboBoxModel getFilterConditions() {
@@ -486,7 +487,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			if (next == from) {
 				break;
 			}
-			if (condition == null || condition.checkNode(getModeController(), next)) {
+			if (condition == null || condition.checkNode(next)) {
 				return next;
 			}
 		}
@@ -562,7 +563,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	private ModeController getModeController() {
-		return controller.getModeController();
+		return getController().getModeController();
 	}
 
 

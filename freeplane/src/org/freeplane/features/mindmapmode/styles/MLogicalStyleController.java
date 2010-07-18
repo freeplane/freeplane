@@ -26,6 +26,7 @@ import javax.swing.JMenu;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.frame.IMapSelectionListener;
@@ -260,8 +261,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 				addStyleMenu(menuBuilder, newCategory, child);
 			}
 			else {
-				final AssignStyleAction action = new AssignStyleAction(style, modeController.getController(), style
-				    .toString(), null);
+				final AssignStyleAction action = new AssignStyleAction(style, style.toString(), null);
 				actions.add(action);
 				menuBuilder.addAction(category, action, MenuBuilder.AS_CHILD);
 			}
@@ -271,6 +271,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	public void setStyle(final NodeModel node, final Object style) {
 		final LogicalStyleModel model = LogicalStyleModel.createExtension(node);
 		final Object oldStyle = model.getStyle();
+		final ModeController modeController = Controller.getCurrentController().getModeController();
 		if (oldStyle != null && oldStyle.equals(style) || oldStyle == style) {
 			modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
 			return;
@@ -302,6 +303,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	public void setStyle(final Object style) {
+		final ModeController modeController = Controller.getCurrentController().getModeController();
 		final List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
 		for (final NodeModel selected : selectedNodes) {
 			setStyle(selected, style);

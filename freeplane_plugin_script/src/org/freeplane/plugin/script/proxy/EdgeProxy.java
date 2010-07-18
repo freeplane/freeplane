@@ -13,7 +13,7 @@ import org.freeplane.features.mindmapmode.edge.MEdgeController;
 
 class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 	EdgeProxy(final NodeModel delegate, final MModeController modeController) {
-		super(delegate, modeController);
+		super(delegate);
 	}
 
 	public Color getColor() {

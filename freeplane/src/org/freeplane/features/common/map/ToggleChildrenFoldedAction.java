@@ -34,18 +34,16 @@ class ToggleChildrenFoldedAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private MapController mapController;
-
-	public ToggleChildrenFoldedAction(final MapController mapController) {
+	public ToggleChildrenFoldedAction() {
 		super("ToggleChildrenFoldedAction");
-		this.mapController = mapController;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = getController();
 		final IMapSelection mapSelection = controller.getSelection();
 		final NodeModel model = mapSelection.getSelected();
-		mapController.toggleFolded(getModeController().getMapController().childrenUnfolded(model));
+		MapController mapController = getModeController().getMapController();
+		mapController.toggleFolded(mapController.childrenUnfolded(model));
 		mapSelection.selectAsTheOnlyOneSelected(model);
 		controller.getViewController().obtainFocusForSelected();
 	}

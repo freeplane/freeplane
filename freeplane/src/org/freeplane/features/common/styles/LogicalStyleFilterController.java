@@ -16,7 +16,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 public class LogicalStyleFilterController implements IElementaryConditionController {
 	static final String FILTER_STYLE = "filter_style";
-// 	private final Controller controller;
+// // 	private final Controller controller;
 
 	public LogicalStyleFilterController(final Controller controller) {
 		super();
@@ -63,7 +63,7 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property) {
-		final MapStyleModel mapStyles = MapStyleModel.getExtension(controller.getMap());
+		final MapStyleModel mapStyles = MapStyleModel.getExtension(Controller.getCurrentController().getMap());
 		final Object[] styles = mapStyles.getStyles().toArray();
 		return new DefaultComboBoxModel(styles);
 	}

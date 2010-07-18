@@ -16,8 +16,8 @@ import org.freeplane.features.mindmapmode.styles.MLogicalStyleController;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle {
-	NodeStyleProxy(final NodeModel delegate, final MModeController modeController) {
-		super(delegate, modeController);
+	NodeStyleProxy(final NodeModel delegate) {
+		super(delegate);
 	}
 
 	public void setStyle(final Object key) {
@@ -33,7 +33,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	}
 
 	public Proxy.Font getFont() {
-		return new FontProxy(getDelegate(), getModeController());
+		return new FontProxy(getDelegate());
 	}
 
 	public Color getNodeTextColor() {
@@ -62,6 +62,6 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 
 	public Node getStyleNode() {
 		final NodeModel styleNode = MapStyleModel.getExtension(getDelegate().getMap()).getStyleNode(getStyle());
-		return new NodeProxy(styleNode, getModeController());
+		return new NodeProxy(styleNode);
 	}
 }

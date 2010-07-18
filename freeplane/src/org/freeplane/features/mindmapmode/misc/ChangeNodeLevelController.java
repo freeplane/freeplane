@@ -88,7 +88,7 @@ public class ChangeNodeLevelController {
 		}
 	};
 
-// 	final private Controller controller;;
+// // 	final private Controller controller;;
 
 	public ChangeNodeLevelController(final Controller controller) {
 //		this.controller = controller;

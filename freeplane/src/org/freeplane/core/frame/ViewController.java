@@ -131,7 +131,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	private static final String[] zooms = { "25%", "50%", "75%", "100%", "150%", "200%", "300%", "400%" };
 	private boolean antialiasAll = false;
 	private boolean antialiasEdges = false;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	private final IMapViewManager mapViewManager;
 	final private JScrollPane scrollPane;
 	final private JLabel status;
@@ -202,6 +202,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	public void afterViewChange(final Component oldMap, final Component pNewMap) {
+		Controller controller = Controller.getCurrentController();
 		final ModeController oldModeController = controller.getModeController();
 		ModeController newModeController = oldModeController;
 		if (pNewMap != null) {
@@ -239,6 +240,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	public void beforeViewChange(final Component oldMap, final Component newMap) {
+		Controller controller = Controller.getCurrentController();
 		final ModeController modeController = controller.getModeController();
 		if (oldMap != null) {
 			modeController.setVisible(false);
@@ -303,7 +305,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	protected Controller getController() {
-		return controller;
+		return Controller.getCurrentController();
 	}
 
 	private float getCurrentZoomIndex() {
@@ -393,7 +395,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		return zoomValue;
 	}
 
-	public void init() {
+	public void init(Controller controller) {
 		getContentPane().add(toolbarPanel[TOP], BorderLayout.NORTH);
 		getContentPane().add(toolbarPanel[LEFT], BorderLayout.WEST);
 		getContentPane().add(toolbarPanel[RIGHT], BorderLayout.EAST);
@@ -612,7 +614,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	 * Set the Frame title with mode and file if exist
 	 */
 	public void setTitle() {
-		final ModeController modeController = controller.getModeController();
+		final ModeController modeController = Controller.getCurrentController().getModeController();
 		if (modeController == null) {
 			setTitle("");
 			return;

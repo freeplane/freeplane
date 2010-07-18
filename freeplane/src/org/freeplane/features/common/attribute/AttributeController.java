@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.attribute;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
@@ -77,7 +78,7 @@ public class AttributeController implements IExtension {
 	}
 
 	public ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	public void performInsertRow(final NodeAttributeTableModel model, final int row, final String name,

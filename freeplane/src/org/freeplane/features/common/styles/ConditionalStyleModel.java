@@ -9,7 +9,6 @@ import javax.swing.table.TableModel;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
 public class ConditionalStyleModel implements IExtension, Iterable<ConditionalStyleModel.Item>{
@@ -50,7 +49,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
     }
 	private boolean recursiveCall;
 	
-	public Object getStyle(ModeController modeController, NodeModel node){
+	public Object getStyle(NodeModel node){
 		if(recursiveCall){
 			return null;
 		}
@@ -58,7 +57,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 			recursiveCall = true;
 		for(Item item : styles){
 			final ISelectableCondition condition = item.getCondition();
-			if(condition != null && item.isActive() && condition.checkNode(modeController, node)){
+			if(condition != null && item.isActive() && condition.checkNode(node)){
 				return item.style;
 			}
 		}

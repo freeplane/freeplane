@@ -76,7 +76,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		 */
 		public void actionPerformed(final ActionEvent e) {
 			applyChanges();
-			controller.getModeController().startTransaction();
+			Controller.getCurrentController().getModeController().startTransaction();
 		}
 	}
 
@@ -163,7 +163,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		 */
 		public void actionPerformed(final ActionEvent e) {
 			if (importDialog == null) {
-				importDialog = new ImportAttributesDialog(controller, AttributeManagerDialog.this);
+				importDialog = new ImportAttributesDialog(Controller.getCurrentController(), AttributeManagerDialog.this);
 			}
 			importDialog.show();
 		}
@@ -198,7 +198,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	private ImportAttributesDialog importDialog = null;
 	private AttributeRegistry model;
 	final private JComboBox size;
@@ -272,7 +272,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		final int iSize = Integer.parseInt(size.toString());
 		model.getAttributeController().performSetFontSize(model, iSize);
 		model.applyChanges();
-		((MModeController) controller.getModeController()).delayedCommit();
+		((MModeController) Controller.getCurrentController().getModeController()).delayedCommit();
 	}
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
@@ -282,12 +282,12 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		final int iSize = model.getFontSize();
 		size.setSelectedItem(Integer.toString(iSize));
 		model.resetChanges();
-		controller.getModeController().rollback();
+		Controller.getCurrentController().getModeController().rollback();
 	}
 
 	@Override
 	public void show() {
-		controller.getModeController().startTransaction();
+		Controller.getCurrentController().getModeController().startTransaction();
 		super.show();
 	}
 }

@@ -269,12 +269,12 @@ public class UITools {
 		dialog.setLocation(dx, dy);
 	}
 
-	public static void setDialogLocationRelativeTo(final JDialog dialog, final Controller controller,
+	public static void setDialogLocationRelativeTo(final JDialog dialog,
 	                                               final NodeModel node) {
 		if (node == null) {
 			return;
 		}
-		final ViewController viewController = controller.getViewController();
+		final ViewController viewController = Controller.getCurrentController().getViewController();
 		viewController.scrollNodeToVisible(node);
 		final Component c = viewController.getComponent(node);
 		UITools.setDialogLocationRelativeTo(dialog, c);

@@ -25,12 +25,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.TimerTask;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.map.MMapModel;
 
 public class DoAutomaticSave extends TimerTask {
@@ -95,6 +97,7 @@ public class DoAutomaticSave extends TimerTask {
 						if (filesShouldBeDeletedAfterShutdown) {
 							tempFile.deleteOnExit();
 						}
+						MModeController modeController = ((MModeController)Controller.getCurrentController().getModeController());
 						((MFileManager) UrlManager.getController(modeController)).saveInternal((MMapModel) model,
 						    tempFile, true /*=internal call*/);
 						modeController.getController().getViewController().out(

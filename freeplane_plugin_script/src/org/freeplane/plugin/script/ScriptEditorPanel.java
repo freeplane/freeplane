@@ -240,7 +240,7 @@ class ScriptEditorPanel extends JDialog {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-// 		final private Controller controller;
+// // 		final private Controller controller;
 
 		private SignAction(final Controller controller, final String pArg0) {
 			super(pArg0);
@@ -252,7 +252,7 @@ class ScriptEditorPanel extends JDialog {
 			if (!mScriptList.isSelectionEmpty()) {
 				final int selectedIndex = mScriptList.getSelectedIndex();
 				final ScriptHolder script = mScriptModel.getScript(selectedIndex);
-				final String signedScript = new SignedScriptHandler().signScript(controller, script.mScript);
+				final String signedScript = new SignedScriptHandler().signScript(script.mScript);
 				script.setScript(signedScript);
 				mScriptModel.setScript(selectedIndex, script);
 				mScriptTextField.setText(signedScript);

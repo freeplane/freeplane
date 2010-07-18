@@ -23,7 +23,6 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -64,7 +63,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
-	public boolean checkNode(final ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final NodeModel node) {
 		final IAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		for (int i = 0; i < attributes.getRowCount(); i++) {
 			try {

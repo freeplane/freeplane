@@ -59,7 +59,7 @@ import org.freeplane.view.swing.map.MapView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	private IMouseListener mapMouseListener;
 	private MouseWheelListener mapMouseWheelListener;
 	final private ActionListener mapsMenuActionListener;
@@ -78,7 +78,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private final List<JComponent>[] toolbarLists;
 
 	public UserInputListenerFactory(final ModeController modeController) {
-		controller = modeController.getController();
+		Controller controller = Controller.getCurrentController();
 		mapsMenuActionListener = new MapsMenuActionListener(controller);
 		menuBuilder = new MenuBuilder(modeController);
 		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
@@ -116,14 +116,14 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public IMouseListener getMapMouseListener() {
 		if (mapMouseListener == null) {
-			mapMouseListener = new DefaultMapMouseListener(controller, new DefaultMapMouseReceiver(controller));
+			mapMouseListener = new DefaultMapMouseListener(new DefaultMapMouseReceiver());
 		}
 		return mapMouseListener;
 	}
 
 	public MouseWheelListener getMapMouseWheelListener() {
 		if (mapMouseWheelListener == null) {
-			mapMouseWheelListener = new DefaultMouseWheelListener(controller);
+			mapMouseWheelListener = new DefaultMouseWheelListener();
 		}
 		return mapMouseWheelListener;
 	}
@@ -153,7 +153,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public DragGestureListener getNodeDragListener() {
 		if (nodeDragListener == null) {
-			nodeDragListener = new DefaultNodeDragListener(controller);
+			nodeDragListener = new DefaultNodeDragListener();
 		}
 		return nodeDragListener;
 	}
@@ -167,7 +167,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public KeyListener getNodeKeyListener() {
 		if (nodeKeyListener == null) {
-			nodeKeyListener = new DefaultNodeKeyListener(controller, null);
+			nodeKeyListener = new DefaultNodeKeyListener(null);
 		}
 		return nodeKeyListener;
 	}
@@ -181,7 +181,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public INodeMouseMotionListener getNodeMouseMotionListener() {
 		if (nodeMouseMotionListener == null) {
-			nodeMouseMotionListener = new DefaultNodeMouseMotionListener(controller.getModeController());
+			nodeMouseMotionListener = new DefaultNodeMouseMotionListener();
 		}
 		return nodeMouseMotionListener;
 	}
@@ -278,7 +278,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	private void updateMapList(final String mapsMenuPosition) {
 		menuBuilder.removeChildElements(mapsMenuPosition);
-		final IMapViewManager mapViewManager = controller.getMapViewManager();
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		final List<MapView> mapViewVector = mapViewManager.getMapViewVector();
 		if (mapViewVector == null) {
 			return;
@@ -315,13 +315,14 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		if (menuStructure != null) {
 			menuBuilder.processMenuCategory(menuStructure);
 		}
-		final ViewController viewController = controller.getViewController();
+		final ViewController viewController = Controller.getCurrentController().getViewController();
 		viewController.updateMenus(menuBuilder);
 	}
 
 	private void updateModeMenu() {
 		menuBuilder.removeChildElements(FreeplaneMenuBar.MODES_MENU);
 		// TODO: why a copy of the list - isn't it highly static?
+		Controller controller = Controller.getCurrentController();
 		for (final String key : new LinkedList<String>(controller.getModes())) {
 			final AFreeplaneAction modesMenuActionListener = new ModesMenuActionListener(key, controller);
 			final ModeController modeController = controller.getModeController();

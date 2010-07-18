@@ -25,7 +25,6 @@ import javax.swing.JComponent;
 
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -57,7 +56,7 @@ public abstract class ConnectorLabelCondition implements ISelectableCondition {
 
 	abstract protected boolean checkLink(final ConnectorModel connector);
 
-	public boolean checkNode(final ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final NodeModel node) {
 		final NodeLinks nodeLinks = NodeLinks.getModel(node);
 		if (nodeLinks != null) {
 			for (final LinkModel l : nodeLinks.getLinks()) {

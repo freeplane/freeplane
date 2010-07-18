@@ -97,11 +97,11 @@ class AppletViewController extends ViewController {
 	}
 
 	@Override
-	public void init() {
+	public void init(Controller controller) {
 		getContentPane().add(getScrollPane(), BorderLayout.CENTER);
 		southPanel = new JPanel(new BorderLayout());
 		getContentPane().add(southPanel, BorderLayout.SOUTH);
-		super.init();
+		super.init(controller);
 		SwingUtilities.updateComponentTreeUI(applet);
 		if (!EventQueue.isDispatchThread()) {
 			try {

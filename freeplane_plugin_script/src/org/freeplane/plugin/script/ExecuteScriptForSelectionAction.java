@@ -34,6 +34,6 @@ public class ExecuteScriptForSelectionAction extends AMultipleNodeAction {
 		if (!success) {
 			return;
 		}
-		success = ScriptingEngine.performScriptOperation((MModeController) getModeController(), node);
+		success = ScriptingEngine.performScriptOperation(node);
 	}
 }

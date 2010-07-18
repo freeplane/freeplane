@@ -45,7 +45,7 @@ import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.ViewController;
 
 class MapViewTabs implements IMapViewChangeListener {
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	private Component mContentComponent;
 	private JTabbedPane mTabbedPane = null;
 	final private Vector<Component> mTabbedPaneMapViews;
@@ -151,6 +151,7 @@ class MapViewTabs implements IMapViewChangeListener {
 			return;
 		}
 		final Component mapView = mTabbedPaneMapViews.get(selectedIndex);
+		Controller controller = Controller.getCurrentController();
 		if (mapView != controller.getViewController().getMapView()) {
 			controller.getMapViewManager().changeToMapView(mapView.getName());
 		}

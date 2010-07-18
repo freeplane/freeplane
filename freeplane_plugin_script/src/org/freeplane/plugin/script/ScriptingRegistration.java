@@ -73,8 +73,9 @@ class ScriptingRegistration {
 		}
 
 		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
-			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
-			    modeController, pErrorHandler, pOutStream);
+			ModeController modeController = Controller.getCurrentController().getModeController();
+			 return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
+					pErrorHandler, pOutStream);
 		}
 
 		public int getAmountOfScripts() {
@@ -104,12 +105,11 @@ class ScriptingRegistration {
 		}
 	}
 
-	final private MModeController modeController;
+// 	final private MModeController modeController;
 	final private HashMap<String, Object> mScriptCookies = new HashMap<String, Object>();
 	private IScriptEditorStarter mScriptEditorStarter;
 
 	public ScriptingRegistration(final ModeController controller) {
-		modeController = (MModeController) controller;
 		register();
 	}
 
@@ -117,6 +117,7 @@ class ScriptingRegistration {
 		final URL preferences = this.getClass().getResource("preferences.xml");
 		if (preferences == null)
 			throw new RuntimeException("cannot open preferences");
+		MModeController modeController = (MModeController) Controller.getCurrentController().getModeController();
 		modeController.getOptionPanelBuilder().load(preferences);
 	}
 
@@ -125,7 +126,7 @@ class ScriptingRegistration {
 	}
 
 	private void register() {
-		final Controller controller = modeController.getController();
+		final Controller controller = Controller.getCurrentController();
 		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
 				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
@@ -134,6 +135,7 @@ class ScriptingRegistration {
 				return patternScriptModel.getScript();
 			}
 		};
+		ModeController modeController = Controller.getCurrentController().getModeController();
 		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
 		addPropertiesToOptionPanel();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();

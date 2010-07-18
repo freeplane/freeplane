@@ -23,6 +23,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.common.attribute.Attribute;
@@ -523,6 +524,7 @@ public class MAttributeController extends AttributeController {
 	 *
 	 */
 	private void createActions() {
+		ModeController modeController = Controller.getCurrentController().getModeController();
 		modeController.addAction(new AssignAttributesAction(getModeController()));
 		modeController.addAction(new ShowAttributeDialogAction(getModeController().getController()));
 	}
@@ -640,6 +642,7 @@ public class MAttributeController extends AttributeController {
 	public void performRemoveAttribute(final String name) {
 		final IVisitor remover = new AttributeRemover(name);
 		final Iterator iterator = new Iterator(remover);
+		ModeController modeController = Controller.getCurrentController().getModeController();
 		final NodeModel root = modeController.getMapController().getRootNode();
 		iterator.iterate(root);
 		final MapModel map = getModeController().getController().getMap();
@@ -652,6 +655,7 @@ public class MAttributeController extends AttributeController {
 	public void performRemoveAttributeValue(final String name, final String value) {
 		final IVisitor remover = new AttributeValueRemover(name, value);
 		final Iterator iterator = new Iterator(remover);
+		ModeController modeController = Controller.getCurrentController().getModeController();
 		final NodeModel root = modeController.getMapController().getRootNode();
 		iterator.iterate(root);
 		final MapModel map = getModeController().getController().getMap();
@@ -690,6 +694,7 @@ public class MAttributeController extends AttributeController {
 		}
 		final IVisitor replacer = new AttributeRenamer(oldName, newName);
 		final Iterator iterator = new Iterator(replacer);
+		ModeController modeController = Controller.getCurrentController().getModeController();
 		final NodeModel root = modeController.getMapController().getRootNode();
 		iterator.iterate(root);
 		final IActor unregistryActor = new UnregistryAttributeActor(oldName, registry, map);
@@ -698,7 +703,9 @@ public class MAttributeController extends AttributeController {
 
 	@Override
 	public void performReplaceAttributeValue(final String name, final String oldValue, final String newValue) {
-		final MapModel map = getModeController().getController().getMap();
+		Controller controller = Controller.getCurrentController();
+		final MapModel map = controller.getMap();
+		ModeController modeController = controller.getModeController();
 		final AttributeRegistry registry = AttributeRegistry.getRegistry(map);
 		final IActor actor = new ReplaceAttributeValueActor(registry, name, oldValue, newValue);
 		getModeController().execute(actor, map);

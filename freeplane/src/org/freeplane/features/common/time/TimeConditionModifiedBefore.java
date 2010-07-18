@@ -23,7 +23,6 @@ import java.util.Date;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
@@ -37,7 +36,7 @@ public class TimeConditionModifiedBefore extends TimeCondition {
 		super(date);
 	}
 
-	public boolean checkNode(final ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final NodeModel node) {
 		final Date lastModifiedAt = node.getHistoryInformation().getLastModifiedAt();
 		final Date filterDate = getDate();
 		final boolean before = lastModifiedAt.getTime() < filterDate.getTime();

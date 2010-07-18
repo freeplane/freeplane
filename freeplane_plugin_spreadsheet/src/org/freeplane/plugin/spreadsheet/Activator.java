@@ -5,6 +5,7 @@ import java.util.Hashtable;
 
 import javax.swing.JMenu;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -16,13 +17,12 @@ public class Activator implements BundleActivator {
 	static final String MENU_BAR_LOCATION = "/menu_bar/extras/first/spreadsheet";
 
 	private final class SpreadsheetRegistration implements IModeControllerExtensionProvider {
-		private MModeController modeController;
+// 		private MModeController modeController;
 
 		// implements IModeControllerExtensionProvider.installExtension()
 		public void installExtension(final ModeController modeController) {
-			this.modeController = (MModeController) modeController;
 			addMenuItems(modeController);
-			modeController.addTextTransformer(new SpreadsheetTextTransformer(this.modeController));
+			modeController.addTextTransformer(new SpreadsheetTextTransformer((MModeController) modeController));
 		}
 
 		private void addMenuItems(final ModeController modeController) {
@@ -45,6 +45,8 @@ public class Activator implements BundleActivator {
 			final URL preferences = this.getClass().getResource("preferences.xml");
 			if (preferences == null)
 				throw new RuntimeException("cannot open preferences");
+			final Controller controller = Controller.getCurrentController();
+			MModeController modeController = (MModeController) controller.getModeController();
 			modeController.getOptionPanelBuilder().load(preferences);
 		}
 	}

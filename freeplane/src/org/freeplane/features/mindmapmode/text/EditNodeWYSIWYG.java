@@ -249,7 +249,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 				UITools.setDialogLocationUnder(EditNodeWYSIWYG.htmlEditorWindow, getController(), node);
 			}
 			else {
-				UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, getController(), node);
+				UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, node);
 			}
 			String content = node.toString();
 			if (!HtmlUtils.isHtmlNode(content)) {

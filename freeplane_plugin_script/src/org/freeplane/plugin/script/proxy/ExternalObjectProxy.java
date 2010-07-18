@@ -13,8 +13,8 @@ import org.freeplane.view.swing.addins.filepreview.ExternalResource;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
 
 class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.ExternalObject {
-	ExternalObjectProxy(final NodeModel delegate, final MModeController modeController) {
-		super(delegate, modeController);
+	ExternalObjectProxy(final NodeModel delegate) {
+		super(delegate);
 	}
 
 	private ExternalResource getExternalObjectModel() {

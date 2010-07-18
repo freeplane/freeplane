@@ -31,7 +31,6 @@ import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.filter.condition.JCondition;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -64,8 +63,8 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 		setListCellRendererComponent(renderer);
 	}
 
-	public boolean checkNode(final ModeController modeController, final NodeModel node) {
-		final List<MindIcon> icons = IconController.getIcons(modeController, node);
+	public boolean checkNode(final NodeModel node) {
+		final List<MindIcon> icons = IconController.getIcons(node);
 		for (final MindIcon icon : icons) {
 			final String iconName = icon.getFileName();
 			if (iconName.length() != 10) {

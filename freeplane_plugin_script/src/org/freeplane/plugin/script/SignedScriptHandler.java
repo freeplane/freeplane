@@ -188,9 +188,9 @@ class SignedScriptHandler {
 		return false;
 	}
 
-	public String signScript(final Controller controller, final String pScript) {
+	public String signScript(final String pScript) {
 		final ScriptContents content = new ScriptContents(pScript);
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(controller.getViewController().getJFrame(), false);
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getCurrentController().getViewController().getJFrame(), false);
 		pwdDialog.setModal(true);
 		pwdDialog.setVisible(true);
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {

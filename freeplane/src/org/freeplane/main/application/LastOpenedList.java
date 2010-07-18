@@ -73,7 +73,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	private static final String LAST_OPENED = "lastOpened_1.0.20";
 	public static final String LOAD_LAST_MAP = "load_last_map";
 	public static final String LOAD_LAST_MAPS = "load_last_maps";
-// 	private final Controller controller;
+// // 	private final Controller controller;
 	private static boolean PORTABLE_APP = System.getProperty("portableapp", "false").equals("true");
 	private static String USER_DRIVE = System.getProperty("user.home", "").substring(0, 2);
 	final private List<String> currenlyOpenedList = new LinkedList<String>();
@@ -96,7 +96,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			updateMenus();
 			return;
 		}
-		final IMapViewManager mapViewManager = controller.getMapViewManager();
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		final ModeController modeController = mapViewManager.getModeController(newView);
 		final MapModel map = mapViewManager.getModel(newView);
 		final String restoreString = getRestoreable(modeController, map);
@@ -142,7 +142,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	}
 
 	private String getRestoreable(final Component mapView) {
-		final IMapViewManager mapViewManager = controller.getMapViewManager();
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		final ModeController modeController = mapViewManager.getModeController(mapView);
 		final MapModel map = mapViewManager.getModel(mapView);
 		final String restoreString = getRestoreable(modeController, map);
@@ -203,12 +203,12 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			final StringTokenizer token = new StringTokenizer(restoreable, ":");
 			if (token.hasMoreTokens()) {
 				final String mode = token.nextToken();
-				controller.selectMode(mode);
+				Controller.getCurrentController().selectMode(mode);
 				String fileName = token.nextToken("").substring(1);
 				if (PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")) {
 					fileName = USER_DRIVE + fileName.substring(1);
 				}
-				controller.getModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
+				Controller.getCurrentController().getModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
 			}
 		}
 	}
@@ -285,7 +285,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	}
 
 	private boolean tryToChangeToMapView(final String restoreable) {
-		return controller.getMapViewManager().tryToChangeToMapView(mRestorableToMapName.get(restoreable));
+		return Controller.getCurrentController().getMapViewManager().tryToChangeToMapView(mRestorableToMapName.get(restoreable));
 	}
 
 	private void updateList(final MapModel map, final String restoreString) {
@@ -300,6 +300,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	}
 
 	private void updateMenus() {
+		Controller controller = Controller.getCurrentController();
 		final ModeController modeController = controller.getModeController();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.removeChildElements(MENU_CATEGORY);

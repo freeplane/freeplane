@@ -23,6 +23,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.ExclusivePropertyChain;
 import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.extension.IExtension;
@@ -128,7 +129,7 @@ public class CloudController implements IExtension {
 	}
 
 	protected ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	public int getWidth(final NodeModel node) {

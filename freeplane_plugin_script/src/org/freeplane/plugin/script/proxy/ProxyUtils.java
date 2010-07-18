@@ -15,14 +15,14 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 public class ProxyUtils {
-	static List<Node> createNodeList(final List<NodeModel> list, final MModeController modeController) {
+	static List<Node> createNodeList(final List<NodeModel> list) {
 		return new AbstractList<Node>() {
 			final private List<NodeModel> nodeModels = list;
 
 			@Override
 			public Node get(final int index) {
 				final NodeModel nodeModel = nodeModels.get(index);
-				return new NodeProxy(nodeModel, modeController);
+				return new NodeProxy(nodeModel);
 			}
 
 			@Override
@@ -32,15 +32,15 @@ public class ProxyUtils {
 		};
 	}
 
-	static List<Node> find(final ICondition condition, final MModeController modeController, final NodeModel nodeModel) {
-		return ProxyUtils.createNodeList(ProxyUtils.findImpl(modeController, condition, nodeModel), modeController);
+	static List<Node> find(final ICondition condition, final NodeModel nodeModel) {
+		return ProxyUtils.createNodeList(ProxyUtils.findImpl(condition, nodeModel));
 	}
 
-	static List<Node> find(final Closure closure, final MModeController modeController, final NodeModel nodeModel) {
+	static List<Node> find(final Closure closure, final NodeModel nodeModel) {
 		final ICondition condition = new ICondition() {
-			public boolean checkNode(final ModeController mc, final NodeModel node) {
+			public boolean checkNode(final NodeModel node) {
 				try {
-					final Object result = closure.call(new Object[] { new NodeProxy(node, modeController) });
+					final Object result = closure.call(new Object[] { new NodeProxy(node) });
 					if (result == null) {
 						throw new RuntimeException("find(): closure returned null instead of boolean/Boolean");
 					}
@@ -52,26 +52,25 @@ public class ProxyUtils {
 				}
 			}
 		};
-		return ProxyUtils.find(condition, modeController, nodeModel);
+		return ProxyUtils.find(condition, nodeModel);
 	}
 
-	/** finds from any node downwards. 
-	 * @param modeController */
+	/** finds from any node downwards. */
 	@SuppressWarnings("unchecked")
-	private static List<NodeModel> findImpl(final MModeController modeController, final ICondition condition,
+	private static List<NodeModel> findImpl(final ICondition condition,
 	                                        final NodeModel node) {
 		// a shortcut for non-matching leaves
-		if (node.isLeaf() && !condition.checkNode(modeController, node)) {
+		if (node.isLeaf() && !condition.checkNode(node)) {
 			return Collections.EMPTY_LIST;
 		}
 		final List<NodeModel> matches = new ArrayList<NodeModel>();
-		if (condition.checkNode(modeController, node)) {
+		if (condition.checkNode(node)) {
 			matches.add(node);
 		}
 		final Enumeration<NodeModel> children = node.children();
 		while (children.hasMoreElements()) {
 			final NodeModel child = children.nextElement();
-			matches.addAll(ProxyUtils.findImpl(modeController, condition, child));
+			matches.addAll(ProxyUtils.findImpl(condition, child));
 		}
 		return matches;
 	}

@@ -275,7 +275,7 @@ public class EditNodeDialog extends EditNodeBase {
 			UITools.setDialogLocationUnder(dialog, getController(), getNode());
 		}
 		else {
-			UITools.setDialogLocationRelativeTo(dialog, getController(), getNode());
+			UITools.setDialogLocationRelativeTo(dialog, getNode());
 		}
 		dialog.show();
 		dialog.addComponentListener(new ComponentListener() {

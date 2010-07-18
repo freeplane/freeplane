@@ -30,7 +30,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.filter.condition.JCondition;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -39,8 +38,8 @@ public class IconContainedCondition implements ISelectableCondition {
 	static final String ICON = "ICON";
 	static final String NAME = "icon_contained_condition";
 
-	static private int iconFirstIndex(final ModeController modeController, final NodeModel node, final String iconName) {
-		final List<MindIcon> icons = IconController.getIcons(modeController, node);
+	static private int iconFirstIndex(final NodeModel node, final String iconName) {
+		final List<MindIcon> icons = IconController.getIcons(node);
 		for (final ListIterator<MindIcon> i = icons.listIterator(); i.hasNext();) {
 			final MindIcon nextIcon = i.next();
 			if (iconName.equals(nextIcon.getName())) {
@@ -70,8 +69,8 @@ public class IconContainedCondition implements ISelectableCondition {
 		this.iconName = iconName;
 	}
 
-	public boolean checkNode(final ModeController modeController, final NodeModel node) {
-		return IconContainedCondition.iconFirstIndex(modeController, node, iconName) != -1
+	public boolean checkNode(final NodeModel node) {
+		return IconContainedCondition.iconFirstIndex(node, iconName) != -1
 		        || IconContainedCondition.isStateIconContained(node, iconName);
 	}
 

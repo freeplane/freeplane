@@ -57,7 +57,7 @@ public class OptionalDontShowMeAgainDialog {
 		    .getResult();
 	}
 
-// 	private final Controller controller;
+// // 	private final Controller controller;
 	private JDialog mDialog;
 	private JCheckBox mDontShowAgainBox;
 	final private String mMessageId;
@@ -201,7 +201,7 @@ public class OptionalDontShowMeAgainDialog {
 		mDialog.getRootPane().setDefaultButton(okButton);
 		mDialog.pack();
 		if (mNode != null) {
-			UITools.setDialogLocationRelativeTo(mDialog, controller, mNode);
+			UITools.setDialogLocationRelativeTo(mDialog, mNode);
 		}
 		else {
 			mDialog.setLocationRelativeTo(null);

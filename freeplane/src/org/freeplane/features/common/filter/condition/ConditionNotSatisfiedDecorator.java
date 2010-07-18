@@ -25,7 +25,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -58,8 +57,8 @@ public class ConditionNotSatisfiedDecorator implements ISelectableCondition {
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
-	public boolean checkNode(final ModeController modeController, final NodeModel node) {
-		return !originalCondition.checkNode(modeController, node);
+	public boolean checkNode(final NodeModel node) {
+		return !originalCondition.checkNode(node);
 	}
 
 	/*

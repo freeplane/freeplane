@@ -21,12 +21,12 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 	public static final String RESOURCES_WHEEL_VELOCITY = "wheel_velocity";
 	private static int SCROLL_SKIPS = 8;
 	private static final int ZOOM_MASK = InputEvent.CTRL_MASK;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 
 	/**
 	 *
 	 */
-	public DefaultMouseWheelListener(final Controller controller) {
+	public DefaultMouseWheelListener() {
 		super();
 //		this.controller = controller;
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
@@ -71,7 +71,7 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 			newZoom = Math.max(1f / 32f, newZoom);
 			newZoom = Math.min(32f, newZoom);
 			if (newZoom != oldZoom) {
-				controller.getViewController().setZoom(newZoom);
+				Controller.getCurrentController().getViewController().setZoom(newZoom);
 			}
 		}
 		else if ((e.getModifiers() & DefaultMouseWheelListener.HORIZONTAL_SCROLL_MASK) != 0) {

@@ -1,6 +1,5 @@
 package org.freeplane.view.swing.map;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -8,18 +7,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.util.List;
-
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.features.common.map.ITextTransformer;
-import org.freeplane.features.common.map.NodeModel;
 
 @SuppressWarnings("serial")
 public class ZoomableLabel extends JLabel {

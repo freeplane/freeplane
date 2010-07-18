@@ -76,7 +76,7 @@ public class NoteController implements IExtension {
 	}
 
 	public ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	public final String getNoteText(final NodeModel node) {

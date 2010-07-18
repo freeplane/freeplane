@@ -349,7 +349,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	final private JButton btnOr;
 	private JButton btnSave;
 	final private ConditionListSelectionListener conditionListListener;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	final private FilterConditionEditor editor;
 	final private JList elementaryConditionList;
 	final private FilterController filterController;

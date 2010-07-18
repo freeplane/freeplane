@@ -15,8 +15,8 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 
 class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
-	IconsProxy(final NodeModel delegate, final MModeController modeController) {
-		super(delegate, modeController);
+	IconsProxy(final NodeModel delegate) {
+		super(delegate);
 	}
 
 	public void addIcon(final String name) {

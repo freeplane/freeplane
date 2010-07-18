@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.PropertyBean;
@@ -44,17 +45,17 @@ class ScriptEditorProperty extends PropertyBean implements IPropertyControl, Act
 
 	/**
 	 */
-	public ScriptEditorProperty(final String name, final ModeController pMindMapController) {
+	public ScriptEditorProperty(final String name) {
 		super(name);
-		mMindMapController = pMindMapController;
 		mButton = new JButton();
 		mButton.addActionListener(this);
 		script = "";
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final IScriptEditorStarter plugin = (IScriptEditorStarter) mMindMapController
-		    .getExtension(IScriptEditorStarter.class);
+		final IScriptEditorStarter plugin = (IScriptEditorStarter) Controller
+				.getCurrentController().getModeController().getExtension(
+						IScriptEditorStarter.class);
 		if (plugin != null) {
 			final IScriptEditorStarter starter = plugin;
 			final String resultScript = starter.startEditor(script);

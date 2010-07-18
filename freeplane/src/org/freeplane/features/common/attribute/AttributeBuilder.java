@@ -54,7 +54,7 @@ class AttributeBuilder implements IElementDOMHandler {
 	public static final String XML_NODE_REGISTERED_ATTRIBUTE_NAME = "attribute_name";
 	public static final String XML_NODE_REGISTERED_ATTRIBUTE_VALUE = "attribute_value";
 	final private AttributeController attributeController;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	final private MapReader mapReader;
 
 	public AttributeBuilder(final AttributeController attributeController, final MapReader mapReader) {

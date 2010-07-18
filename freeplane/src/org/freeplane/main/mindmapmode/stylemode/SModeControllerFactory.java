@@ -78,7 +78,7 @@ public class SModeControllerFactory {
 
 	private SModeController modeController;
 
-	SModeController createModeController(final JDialog dialog) {
+	Controller createController(final JDialog dialog) {
 		final Controller controller = new Controller();
 		final MapViewController mapViewController = new MapViewController();
 		final DialogController viewController = new DialogController(controller, mapViewController, dialog);
@@ -93,7 +93,7 @@ public class SModeControllerFactory {
 		modeController.addAction(new NewLevelStyleAction(controller));
 		modeController.addAction(new DeleteLevelStyleAction(controller));
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
-		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener(modeController));
+		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener());
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController(controller));
 		modeController.setMapController(new MMapController(modeController));
@@ -105,8 +105,7 @@ public class SModeControllerFactory {
 		LinkController.install(modeController, new LinkController(modeController));
 		MFileManager.install(modeController, new MFileManager(modeController));
 		LogicalStyleController.install(modeController, new LogicalStyleController(modeController));
-		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(controller, new MMouseMotionListener(
-		    modeController)));
+		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(new MMouseMotionListener()));
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
@@ -126,7 +125,7 @@ public class SModeControllerFactory {
 		new MapStyle(modeController, false);
 		controller.addModeController(modeController);
 		final SModeController modeController = this.modeController;
-		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController, null, false);
+		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(null, false);
 		styleEditorPanel.init(modeController);
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
@@ -163,7 +162,7 @@ public class SModeControllerFactory {
 		//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
 		this.modeController = null;
 		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, styleScrollPane);
-		return modeController;
+		return controller;
 	}
 
 	public static void createModeController(final MModeController modeController) {

@@ -6,7 +6,6 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -20,7 +19,7 @@ public class StyleCondition implements ISelectableCondition {
 		this.value = value;
 	}
 
-	public boolean checkNode(final ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final NodeModel node) {
 		return LogicalStyleModel.getStyle(node).equals(value);
 	}
 

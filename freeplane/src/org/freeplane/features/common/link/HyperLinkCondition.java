@@ -25,7 +25,6 @@ import javax.swing.JComponent;
 
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -46,7 +45,7 @@ public abstract class HyperLinkCondition implements ISelectableCondition {
 
 	abstract protected boolean checkLink(final URI nodeLink);
 
-	public boolean checkNode(final ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final NodeModel node) {
 		final URI nodeLink = NodeLinks.getValidLink(node);
 		if (nodeLink == null) {
 			return false;

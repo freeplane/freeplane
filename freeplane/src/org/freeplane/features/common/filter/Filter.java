@@ -37,20 +37,20 @@ import org.freeplane.features.common.map.NodeModel;
  * @author Dimitry Polivaev
  */
 public class Filter {
-	static Filter createTransparentFilter(final Controller controller) {
-		return new Filter(controller, null, true, false, false, false);
+	static Filter createTransparentFilter() {
+		return new Filter(null, true, false, false, false);
 	}
 
 	final private boolean appliesToVisibleNodesOnly;
 	final private ISelectableCondition condition;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	final private int options;
 	final private boolean unfold;
 
 	/**
 	 * @param b 
 	 */
-	public Filter(final Controller controller, final ISelectableCondition condition, final boolean areAnchestorsShown,
+	public Filter(final ISelectableCondition condition, final boolean areAnchestorsShown,
 	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly, final boolean unfold) {
 		super();
 //		this.controller = controller;
@@ -83,10 +83,10 @@ public class Filter {
 			filterIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/filter.png"));
 		}
 		if (getCondition() != null) {
-			controller.getViewController().addStatusImage("filter", filterIcon);
+			Controller.getCurrentController().getViewController().addStatusImage("filter", filterIcon);
 		}
 		else {
-			controller.getViewController().removeStatus("filter");
+			Controller.getCurrentController().getViewController().removeStatus("filter");
 		}
 	}
 
@@ -101,17 +101,17 @@ public class Filter {
 		}
 		try {
 			displayFilterStatus();
-			controller.getViewController().setWaitingCursor(true);
+			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final Filter oldFilter = map.getFilter();
 			map.setFilter(this);
 			if (force || !isConditionStronger(oldFilter)) {
 				final NodeModel root = map.getRootNode();
 				resetFilter(root);
-				if (filterChildren(modeController, root, checkNode(controller.getModeController(), root), false)) {
+				if (filterChildren(root, checkNode(root), false)) {
 					addFilterResult(root, FilterInfo.FILTER_SHOW_ANCESTOR);
 				}
 			}
-			final IMapSelection selection = controller.getSelection();
+			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			final NodeModel selected = selection.getSelected();
 			final NodeModel selectedVisible = getNearestVisibleParent(selected);
 			selection.keepNodePosition(selectedVisible, 0.5f, 0.5f);
@@ -119,14 +119,14 @@ public class Filter {
 			selectVisibleNode();
 		}
 		finally {
-			controller.getViewController().setWaitingCursor(false);
+			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
 
-	private boolean applyFilter(final ModeController modeController, final NodeModel node,
+	private boolean applyFilter(final NodeModel node,
 	                            final boolean isAncestorSelected, final boolean isAncestorEclipsed,
 	                            boolean isDescendantSelected) {
-		final boolean conditionSatisfied = checkNode(modeController, node);
+		final boolean conditionSatisfied = checkNode(node);
 		resetFilter(node);
 		if (isAncestorSelected) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_DESCENDANT);
@@ -141,11 +141,12 @@ public class Filter {
 		if (isAncestorEclipsed) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_ECLIPSED);
 		}
-		if (filterChildren(modeController, node, conditionSatisfied || isAncestorSelected, !conditionSatisfied
+		if (filterChildren(node, conditionSatisfied || isAncestorSelected, !conditionSatisfied
 		        || isAncestorEclipsed)) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_ANCESTOR);
 			isDescendantSelected = true;
 			if (true && unfold && !isVisible(node) && node.isFolded()) {
+				final ModeController modeController = Controller.getCurrentController().getModeController();
 				modeController.getMapController().setFolded(node, false);
 			}
 		}
@@ -168,24 +169,24 @@ public class Filter {
 		return 0 != (options & FilterInfo.FILTER_SHOW_DESCENDANT);
 	}
 
-	private boolean checkNode(final ModeController modeController, final NodeModel node) {
+	private boolean checkNode(final NodeModel node) {
 		if (condition == null) {
 			return true;
 		}
 		if (appliesToVisibleNodesOnly && !node.isVisible()) {
 			return false;
 		}
-		return condition.checkNode(modeController, node);
+		return condition.checkNode(node);
 	}
 
-	private boolean filterChildren(final ModeController modeController, final NodeModel parent,
+	private boolean filterChildren(final NodeModel parent,
 	                               final boolean isAncestorSelected, final boolean isAncestorEclipsed) {
-		final ListIterator<NodeModel> iterator = controller.getModeController().getMapController().childrenUnfolded(
+		final ListIterator<NodeModel> iterator = Controller.getCurrentController().getModeController().getMapController().childrenUnfolded(
 		    parent);
 		boolean isDescendantSelected = false;
 		while (iterator.hasNext()) {
 			final NodeModel node = iterator.next();
-			isDescendantSelected = applyFilter(modeController, node, isAncestorSelected, isAncestorEclipsed,
+			isDescendantSelected = applyFilter(node, isAncestorSelected, isAncestorEclipsed,
 			    isDescendantSelected);
 		}
 		return isDescendantSelected;
@@ -223,7 +224,7 @@ public class Filter {
 	}
 
 	private void refreshMap() {
-		controller.getModeController().getMapController().refreshMap();
+		Controller.getCurrentController().getModeController().getMapController().refreshMap();
 	}
 
 	private void resetFilter(final NodeModel node) {
@@ -231,7 +232,7 @@ public class Filter {
 	}
 
 	private void selectVisibleNode() {
-		final IMapSelection mapSelection = controller.getSelection();
+		final IMapSelection mapSelection = Controller.getCurrentController().getSelection();
 		final List<NodeModel> selectedNodes = mapSelection.getSelection();
 		final int lastSelectedIndex = selectedNodes.size() - 1;
 		if (lastSelectedIndex == -1) {

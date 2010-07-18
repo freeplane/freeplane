@@ -48,7 +48,7 @@ import org.freeplane.core.undo.IUndoHandler;
  * MindMapController as a sample.
  */
 public class ModeController extends AController {
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	private final ExtensionContainer extensionContainer;
 	private final Collection<IExtensionCopier> copiers;
 	private boolean isBlocked = false;
@@ -207,11 +207,11 @@ public class ModeController extends AController {
 		if (action != null) {
 			return action;
 		}
-		return controller.getAction(key);
+		return getController().getAction(key);
 	}
 
 	public Controller getController() {
-		return controller;
+		return Controller.getCurrentController();
 	}
 
 	public IExtension getExtension(final Class<? extends IExtension> clazz) {
@@ -292,7 +292,7 @@ public class ModeController extends AController {
 	 * @see freeplane.modes.ModeController#setVisible(boolean)
 	 */
 	public void setVisible(final boolean visible) {
-		final NodeModel node = controller.getSelection().getSelected();
+		final NodeModel node = getController().getSelection().getSelected();
 		if (visible) {
 			mapController.onSelect(node);
 		}

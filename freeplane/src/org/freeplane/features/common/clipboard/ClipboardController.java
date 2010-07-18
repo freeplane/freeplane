@@ -134,7 +134,8 @@ public class ClipboardController implements IExtension {
 	 *
 	 */
 	private void createActions() {
-		final Controller controller = modeController.getController();
+		final Controller controller = Controller.getCurrentController();
+		ModeController modeController = controller.getModeController();
 		modeController.addAction(new CopyAction(controller));
 		modeController.addAction(new CopySingleAction(controller));
 		modeController.addAction(new CopyIDAction(controller));
@@ -207,7 +208,7 @@ public class ClipboardController implements IExtension {
 	}
 
 	public ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	private String rtfEscapeUnicodeAndSpecialCharacters(final String text) {
@@ -275,6 +276,7 @@ public class ClipboardController implements IExtension {
 	public NodeModel shallowCopy(final NodeModel source) {
 		try {
 			final StringWriter writer = new StringWriter();
+			ModeController modeController = getModeController();
 			modeController.getMapController().getMapWriter()
 			    .writeNodeAsXml(writer, source, Mode.CLIPBOARD, true, false);
 			final String result = writer.toString();

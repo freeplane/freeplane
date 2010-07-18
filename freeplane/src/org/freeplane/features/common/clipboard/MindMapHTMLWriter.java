@@ -341,7 +341,7 @@ class MindMapHTMLWriter {
 	}
 
 	private void writeIcons(final NodeModel model) throws IOException {
-		final List<MindIcon> icons = IconController.getIcons(mapController.getModeController(), model);
+		final List<MindIcon> icons = IconController.getIcons(model);
 		for (int i = 0; i < icons.size(); ++i) {
 			final String iconFileName = ((MindIcon) icons.get(i)).getFileName();
 			fileout.write("<img src=\"" + iconFileName + "\" alt=\"" + ((MindIcon) icons.get(i)).getDescription()

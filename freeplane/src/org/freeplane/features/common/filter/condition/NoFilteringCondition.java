@@ -23,7 +23,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -43,7 +42,7 @@ public class NoFilteringCondition implements ISelectableCondition {
 		super();
 	}
 
-	public boolean checkNode(final ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final NodeModel node) {
 		return true;
 	}
 

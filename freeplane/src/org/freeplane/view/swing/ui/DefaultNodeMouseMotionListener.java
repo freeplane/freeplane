@@ -78,9 +78,9 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	final private ControllerPopupMenuListener popupListener;
 	private Timer timerForDelayedSelection;
 
-	public DefaultNodeMouseMotionListener(final ModeController modeController) {
+	public DefaultNodeMouseMotionListener() {
 //		mc = modeController;
-		popupListener = new ControllerPopupMenuListener(modeController);
+		popupListener = new ControllerPopupMenuListener();
 	}
 
 	private void createTimer(final MouseEvent e) {

@@ -52,11 +52,11 @@ public class FreeplaneApplet extends JApplet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private AppletViewController appletViewController;
-// 	private Controller controller;
+// // 	private Controller controller;
 
 	@Override
 	public void destroy() {
-		controller.shutdown();
+		Controller.getCurrentController().shutdown();
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class FreeplaneApplet extends JApplet {
 		}
 		updateLookAndFeel();
 		createRootPane();
-		controller = new Controller();
+		Controller controller = new Controller();
 		appletResourceController.init(controller);
 		final Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
@@ -88,7 +88,7 @@ public class FreeplaneApplet extends JApplet {
 		controller.addAction(new NextNodeAction(controller, Direction.FORWARD));
 		controller.addAction(new NextNodeAction(controller, Direction.BACK));
 		controller.selectMode(browseController);
-		appletViewController.init();
+		appletViewController.init(controller);
 		controller.getViewController().setMenubarVisible(false);
 	}
 

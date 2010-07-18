@@ -145,7 +145,7 @@ public abstract class PersistentNodeHook {
 		}
 	}
 
-// 	final private Controller controller;
+// // 	final private Controller controller;
 // 	private final ModeController modeController;
 	private final HookAction selectableHookAction;
 
@@ -211,7 +211,7 @@ public abstract class PersistentNodeHook {
 	}
 
 	public Controller getController() {
-		return controller;
+		return Controller.getCurrentController();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -229,12 +229,12 @@ public abstract class PersistentNodeHook {
 	}
 
 	public IExtension getMapHook() {
-		final NodeModel rootNode = controller.getMap().getRootNode();
+		final NodeModel rootNode = Controller.getCurrentController().getMap().getRootNode();
 		return rootNode.getExtension(getExtensionClass());
 	}
 
 	public ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	protected NodeModel[] getNodes() {
@@ -246,12 +246,12 @@ public abstract class PersistentNodeHook {
 
 	protected NodeModel[] getRootNode() {
 		final NodeModel[] nodes = new NodeModel[1];
-		nodes[0] = controller.getMap().getRootNode();
+		nodes[0] = Controller.getCurrentController().getMap().getRootNode();
 		return nodes;
 	}
 
 	protected NodeModel[] getSelectedNodes() {
-		final List<NodeModel> selection = controller.getSelection().getSelection();
+		final List<NodeModel> selection = Controller.getCurrentController().getSelection().getSelection();
 		final int size = selection.size();
 		final NodeModel[] nodes = new NodeModel[size];
 		final Iterator<NodeModel> iterator = selection.iterator();
@@ -285,7 +285,7 @@ public abstract class PersistentNodeHook {
 	}
 
 	protected void registerAction(final AFreeplaneAction action, final ActionLocationDescriptor actionAnnotation) {
-		modeController.addAction(action);
+		getModeController().addAction(action);
 		getModeController().getUserInputListenerFactory().getMenuBuilder().addAction(action, actionAnnotation);
 	}
 

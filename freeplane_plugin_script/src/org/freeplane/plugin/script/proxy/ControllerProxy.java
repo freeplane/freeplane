@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.features.common.filter.condition.ICondition;
@@ -19,13 +20,12 @@ import org.freeplane.features.mindmapmode.map.MMapModel;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class ControllerProxy implements Proxy.Controller {
-	final private MModeController modeController;
+// 	final private MModeController modeController;
 	final private IMapSelection selection;
 
-	public ControllerProxy(final MModeController modeController) {
+	public ControllerProxy() {
 		super();
-		selection = modeController.getController().getSelection();
-		this.modeController = modeController;
+		selection = Controller.getCurrentController().getSelection();
 	}
 
 	public void centerOnNode(final Node center) {
@@ -34,15 +34,15 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	public Node getSelected() {
-		return new NodeProxy(selection.getSelected(), modeController);
+		return new NodeProxy(selection.getSelected());
 	}
 
 	public List<Node> getSelecteds() {
-		return ProxyUtils.createNodeList(selection.getSelection(), modeController);
+		return ProxyUtils.createNodeList(selection.getSelection());
 	}
 
 	public List<Node> getSortedSelection(final boolean differentSubtrees) {
-		return ProxyUtils.createNodeList(selection.getSortedSelection(differentSubtrees), modeController);
+		return ProxyUtils.createNodeList(selection.getSortedSelection(differentSubtrees));
 	}
 
 	public void select(final Node toSelect) {
@@ -52,7 +52,7 @@ class ControllerProxy implements Proxy.Controller {
 
 	public void selectBranch(final Node branchRoot) {
 		final NodeModel nodeModel = ((NodeProxy) branchRoot).getDelegate();
-		modeController.getMapController().displayNode(nodeModel);
+		Controller.getCurrentController().getModeController().getMapController().displayNode(nodeModel);
 		selection.selectBranch(nodeModel, false);
 	}
 
@@ -66,6 +66,7 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	public void deactivateUndo() {
+		MModeController modeController = ((MModeController)Controller.getCurrentController().getModeController());
 		final MapModel map = modeController.getController().getMap();
 		if (map instanceof MapModel) {
 			modeController.deactivateUndo((MMapModel) map);
@@ -78,7 +79,7 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	private ViewController getViewController() {
-		return modeController.getController().getViewController();
+		return Controller.getCurrentController().getViewController();
 	}
 
 	public void setStatusInfo(final String key, final String info) {
@@ -92,10 +93,12 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	public List<Node> find(final ICondition condition) {
-		return ProxyUtils.find(condition, modeController, modeController.getController().getMap().getRootNode());
+		MModeController modeController = ((MModeController)Controller.getCurrentController().getModeController());
+		return ProxyUtils.find(condition, modeController.getController().getMap().getRootNode());
 	}
 
 	public List<Node> find(final Closure closure) {
-		return ProxyUtils.find(closure, modeController, modeController.getController().getMap().getRootNode());
+		MModeController modeController = ((MModeController)Controller.getCurrentController().getModeController());
+		return ProxyUtils.find(closure, modeController.getController().getMap().getRootNode());
 	}
 }

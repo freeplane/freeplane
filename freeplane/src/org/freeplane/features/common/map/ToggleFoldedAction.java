@@ -21,7 +21,6 @@ package org.freeplane.features.common.map;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 /**
@@ -34,7 +33,7 @@ class ToggleFoldedAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ToggleFoldedAction(final Controller controller) {
+	public ToggleFoldedAction() {
 		super("ToggleFoldedAction");
 	}
 

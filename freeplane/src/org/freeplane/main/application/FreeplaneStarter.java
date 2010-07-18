@@ -86,7 +86,7 @@ public class FreeplaneStarter {
 	}
 
 	private ApplicationResourceController applicationResourceController;
-// 	private Controller controller;
+// // 	private Controller controller;
 	private FreeplaneSplashModern splash;
 	private ApplicationViewController viewController;
 	/** allows to disable loadLastMap(s) if there already is a second instance running. */
@@ -106,7 +106,7 @@ public class FreeplaneStarter {
 
 	public Controller createController() {
 		try {
-			controller = new Controller();
+			Controller controller = new Controller();
 			Compat.macAppChanges(controller);
 			applicationResourceController.init(controller);
 			LogUtils.createLogger();
@@ -156,13 +156,13 @@ public class FreeplaneStarter {
 		}
 	}
 
-	public void createFrame(final String[] args) {
+	public void createFrame(final Controller controller, final String[] args) {
 		Compat.macMenuChanges(controller);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				viewController.init();
+				viewController.init(controller);
 				splash.toBack();
-				loadMaps(args);
+				loadMaps(controller, args);
 				final Frame frame = viewController.getFrame();
 				final int extendedState = frame.getExtendedState();
 				frame.setVisible(true);
@@ -176,7 +176,7 @@ public class FreeplaneStarter {
 		});
 	}
 
-	private void loadMaps(final String[] args) {
+	private void loadMaps(Controller controller, final String[] args) {
 		final boolean alwaysLoadLastMaps = ResourceController.getResourceController().getBooleanProperty(
 		    "always_load_last_maps");
 		if (alwaysLoadLastMaps && !dontLoadLastMaps) {
@@ -225,8 +225,8 @@ public class FreeplaneStarter {
 			if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
 				System.setProperty("org.freeplane.core.dir.lib", "/lib/");
 			}
-			createController();
-			createFrame(args);
+			Controller controller = createController();
+			createFrame(controller, args);
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);
@@ -239,12 +239,12 @@ public class FreeplaneStarter {
 	public void stop() {
 		try {
 			if (EventQueue.isDispatchThread()) {
-				controller.shutdown();
+				Controller.getCurrentController().shutdown();
 				return;
 			}
 			EventQueue.invokeAndWait(new Runnable() {
 				public void run() {
-					controller.shutdown();
+					Controller.getCurrentController().shutdown();
 				}
 			});
 		}

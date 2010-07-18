@@ -24,7 +24,6 @@ import javax.swing.JComponent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -32,19 +31,19 @@ public class SelectedViewCondition implements ISelectableCondition {
 	private static String description;
 	private static JComponent renderer;
 
-	public static ISelectableCondition CreateCondition(final Controller controller) {
-		return new SelectedViewCondition(controller);
+	public static ISelectableCondition CreateCondition() {
+		return new SelectedViewCondition();
 	}
 
-// 	private final Controller controller;
+// // 	private final Controller controller;
 
-	public SelectedViewCondition(final Controller controller) {
+	public SelectedViewCondition() {
 		super();
 //		this.controller = controller;
 	}
 
-	public boolean checkNode(final ModeController modeController, final NodeModel node) {
-		final IMapSelection selection = controller.getSelection();
+	public boolean checkNode(final NodeModel node) {
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		return selection != null && selection.isSelected(node);
 	}
 

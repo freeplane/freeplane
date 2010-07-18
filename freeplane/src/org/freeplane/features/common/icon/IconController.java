@@ -101,7 +101,7 @@ public class IconController implements IExtension {
 	}
 
 	public ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	public IPropertyHandler<List<MindIcon>, NodeModel> addIconGetter(
@@ -116,13 +116,11 @@ public class IconController implements IExtension {
 		return iconHandlers.addGetter(key, getter);
 	}
 
-	public List<MindIcon> getIcons(final NodeModel node) {
-		return iconHandlers.getProperty(node);
-	}
 
-	public static List<MindIcon> getIcons(final ModeController modeController, final NodeModel node) {
+	public static List<MindIcon> getIcons(final NodeModel node) {
+		ModeController modeController = Controller.getCurrentController().getModeController();
 		final IconController iconController = IconController.getController(modeController);
-		final List<MindIcon> icons = iconController.getIcons(node);
+		final List<MindIcon> icons = iconController.iconHandlers.getProperty(node);
 		return icons;
 	}
 }

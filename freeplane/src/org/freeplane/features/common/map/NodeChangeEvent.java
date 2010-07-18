@@ -21,6 +21,8 @@ package org.freeplane.features.common.map;
 
 import java.awt.AWTEvent;
 
+import org.freeplane.core.controller.Controller;
+
 /**
  * @author Dimitry Polivaev 27.11.2008
  */
@@ -35,10 +37,10 @@ public class NodeChangeEvent extends AWTEvent {
 // 	final private ModeController modeController;
 
 	public ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
-	public NodeChangeEvent(final ModeController modeController, final NodeModel node, final Object property,
+	public NodeChangeEvent(final NodeModel node, final Object property,
 	                       final Object oldValue, final Object newValue) {
 		super(node, 0);
 //		this.modeController = modeController;

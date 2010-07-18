@@ -21,6 +21,7 @@ package org.freeplane.features.common.edge;
 
 import java.awt.Color;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.ExclusivePropertyChain;
 import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.extension.IExtension;
@@ -181,6 +182,7 @@ public class EdgeController implements IExtension {
 	}
 
 	protected ModeController getModeController() {
+		ModeController modeController = (Controller.getCurrentController().getModeController());
 		return modeController;
 	}
 

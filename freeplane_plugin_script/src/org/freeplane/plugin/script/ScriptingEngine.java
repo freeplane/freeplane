@@ -36,12 +36,14 @@ import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -75,11 +77,12 @@ public class ScriptingEngine {
 	 * @return the result of the script, or null, if the user has cancelled.
 	 * @throws ExecuteScriptException on errors
 	 */
-	static Object executeScript(final NodeModel node, String script, final MModeController pMindMapController,
+	static Object executeScript(final NodeModel node, String script,
 	                            final IErrorHandler pErrorHandler, final PrintStream pOutStream)
 	        throws ExecuteScriptException {
+		MModeController modeController = (MModeController) Controller.getCurrentController().getModeController();
 		if (!noUserPermissionRequired) {
-			final int showResult = OptionalDontShowMeAgainDialog.show(pMindMapController.getController(),
+			final int showResult = OptionalDontShowMeAgainDialog.show(modeController.getController(),
 			    "really_execute_script", "confirmation", RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 			if (showResult != JOptionPane.OK_OPTION) {
@@ -88,8 +91,8 @@ public class ScriptingEngine {
 		}
 		noUserPermissionRequired = Boolean.TRUE;
 		final Binding binding = new Binding();
-		binding.setVariable("c", ProxyFactory.createController(pMindMapController));
-		binding.setVariable("node", ProxyFactory.createNode(node, pMindMapController));
+		binding.setVariable("c", ProxyFactory.createController());
+		binding.setVariable("node", ProxyFactory.createNode(node));
 		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
 		boolean assignResult = false;
 		String assignTo = null;
@@ -165,11 +168,11 @@ public class ScriptingEngine {
 			Object result = shell.evaluate(script);
 			if (assignResult && result != null) {
 				if (assignTo == null) {
-					((MTextController) TextController.getController(pMindMapController)).setNodeText(node, result
+					((MTextController) TextController.getController(modeController)).setNodeText(node, result
 					    .toString());
 				}
 				else {
-					((MAttributeController) AttributeController.getController(pMindMapController)).editAttribute(node,
+					((MAttributeController) AttributeController.getController(modeController)).editAttribute(node,
 					    assignTo, result.toString());
 				}
 			}
@@ -199,7 +202,7 @@ public class ScriptingEngine {
 			throw new ExecuteScriptException(e1.getMessage(), e1);
 		}
 		catch (final Throwable e2) {
-			pMindMapController.getMapController().select(node);
+			modeController.getMapController().select(node);
 			LogUtils.warn(e2);
 			pOutStream.print(e2.getMessage());
 			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
@@ -234,31 +237,33 @@ public class ScriptingEngine {
 		return lineNumber;
 	}
 
-	public static Object executeScript(final MModeController modeController, final NodeModel node, final String script) {
-		return ScriptingEngine.executeScript(node, script, modeController, new IErrorHandler() {
+	public static Object executeScript(final NodeModel node, final String script) {
+		return ScriptingEngine.executeScript(node, script, new IErrorHandler() {
 			public void gotoLine(final int pLineNumber) {
 			}
 		}, System.out);
 	}
 
-	static Object executeScriptRecursive(final MModeController modeController, final NodeModel node, final String script) {
+	static Object executeScriptRecursive(final NodeModel node, final String script) {
+		ModeController modeController = Controller.getCurrentController().getModeController();
 		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
-			executeScriptRecursive(modeController, iter.next(), script);
+			executeScriptRecursive(iter.next(), script);
 		}
-		return executeScript(modeController, node, script);
+		return executeScript(node, script);
 	}
 
-	static boolean performScriptOperationRecursive(final MModeController modeController, final NodeModel node) {
+	static boolean performScriptOperationRecursive(final NodeModel node) {
+		ModeController modeController = Controller.getCurrentController().getModeController();
 		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
 			final NodeModel child = iter.next();
-			if (!performScriptOperationRecursive(modeController, child)) {
+			if (!performScriptOperationRecursive(child)) {
 				return false;
 			}
 		}
-		return performScriptOperation(modeController, node);
+		return performScriptOperation(node);
 	}
 
-	static boolean performScriptOperation(final MModeController modeController, final NodeModel node) {
+	static boolean performScriptOperation(final NodeModel node) {
 		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		if (attributes == null) {
 			return true;
@@ -267,7 +272,7 @@ public class ScriptingEngine {
 			final String attrKey = (String) attributes.getName(row);
 			final String script = (String) attributes.getValue(row);
 			if (attrKey.startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
-				executeScript(modeController, node, script);
+				executeScript(node, script);
 			}
 		}
 		return true;

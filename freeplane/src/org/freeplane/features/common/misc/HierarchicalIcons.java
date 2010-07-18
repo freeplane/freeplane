@@ -199,7 +199,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			final NodeModel child = childrenUnfolded.next();
 			addAccumulatedIconsToTreeSet(child, iconSet);
 		}
-		for (final MindIcon icon : IconController.getIcons(getModeController(), node)) {
+		for (final MindIcon icon : IconController.getIcons(node)) {
 			iconSet.remove(icon);
 		}
 		if (iconSet.size() > 0) {

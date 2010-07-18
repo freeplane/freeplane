@@ -26,6 +26,7 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -53,9 +54,10 @@ public class EditStylesAction extends AFreeplaneAction {
 		dialog.setSize(800, 300);
 		dialog.setModal(true);
 		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		modeController = SModeControllerFactory.getInstance().createModeController(dialog);
-		final ViewController viewController = modeController.getController().getViewController();
-		viewController.init();
+		Controller controller = SModeControllerFactory.getInstance().createController(dialog);
+		modeController = (SModeController) controller.getModeController();
+		final ViewController viewController = controller.getViewController();
+		viewController.init(controller);
 		dialog.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentHidden(final ComponentEvent e) {

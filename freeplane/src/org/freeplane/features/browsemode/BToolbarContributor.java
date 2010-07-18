@@ -26,6 +26,7 @@ import java.net.URL;
 
 import javax.swing.JLabel;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.ui.IMenuContributor;
@@ -41,7 +42,6 @@ public class BToolbarContributor implements IMenuContributor, IMapViewChangeList
 	private PersistentEditableComboBox urlfield = null;
 
 	public BToolbarContributor(final ModeController controller) {
-		modeController = controller;
 		urlfield = new PersistentEditableComboBox(BROWSE_URL_STORAGE_KEY, 20);
 		urlfield.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
@@ -50,7 +50,7 @@ public class BToolbarContributor implements IMenuContributor, IMapViewChangeList
 					return;
 				}
 				try {
-					modeController.getMapController().newMap(new URL(urlText));
+					Controller.getCurrentController().getModeController().getMapController().newMap(new URL(urlText));
 				}
 				catch (final Exception e1) {
 					LogUtils.warn(e1);
@@ -63,7 +63,7 @@ public class BToolbarContributor implements IMenuContributor, IMapViewChangeList
 		if (newView == null) {
 			return;
 		}
-		final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		mapViewManager.getModeController(newView);
 		final MapModel map = mapViewManager.getModel(newView);
 		final URL url = map.getURL();

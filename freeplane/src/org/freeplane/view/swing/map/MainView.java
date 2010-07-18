@@ -27,10 +27,8 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -271,7 +269,7 @@ public abstract class MainView extends ZoomableLabel {
 		for (final Entry<String, UIIcon> iconEntry : model.getStateIcons().entrySet()) {
 			iconImages.addImage(iconEntry.getValue().getIcon());
 		}
-		final List<MindIcon> icons = IconController.getIcons(getMap().getModeController(), model);
+		final List<MindIcon> icons = IconController.getIcons(model);
 		for (final MindIcon myIcon : icons) {
 			iconImages.addImage(myIcon.getIcon());
 		}

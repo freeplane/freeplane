@@ -31,7 +31,7 @@ class PrintAction extends AbstractPrintAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	final private boolean isDlg;
 
 	PrintAction(final Controller controller, final PrintController printController, final boolean isDlg) {
@@ -48,7 +48,7 @@ class PrintAction extends AbstractPrintAction {
 	public void actionPerformed(final ActionEvent e) {
 		final PrintController printController = getPrintController();
 		try {
-			printController.print((Printable) controller.getViewController().getMapView(), isDlg);
+			printController.print((Printable) Controller.getCurrentController().getViewController().getMapView(), isDlg);
 		}
 		catch (final Exception ex) {
 			LogUtils.severe(ex);

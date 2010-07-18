@@ -65,6 +65,7 @@ public class EditNodeBase {
 		public void actionPerformed(final ActionEvent e) {
 			final String selection = textComponent.getSelectedText();
 			if (selection != null) {
+				ModeController modeController = (Controller.getCurrentController().getModeController());
 				ClipboardController.getController(modeController).setClipboardContents(new StringSelection(selection));
 			}
 		}
@@ -203,6 +204,7 @@ public class EditNodeBase {
 
 		public EditPopupMenu(final JTextComponent textComponent) {
 			this.add(new EditCopyAction(textComponent));
+			ModeController modeController = (Controller.getCurrentController().getModeController());
 			SpellCheckerController.getController(modeController).addSpellCheckerMenu(this);
 		}
 	}
@@ -242,7 +244,7 @@ public class EditNodeBase {
 		 *
 		 */
 	protected Controller getController() {
-		return modeController.getController();
+		return Controller.getCurrentController();
 	}
 
 	/**
@@ -252,7 +254,7 @@ public class EditNodeBase {
 	}
 
 	protected ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	/**

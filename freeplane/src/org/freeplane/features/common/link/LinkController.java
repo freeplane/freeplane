@@ -168,6 +168,7 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		final String adaptedText = uri.toString();
 		if (adaptedText.startsWith("#")) {
+			ModeController modeController = Controller.getCurrentController().getModeController();
 			final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
 			if (dest != null) {
 				return dest.getShortText();
@@ -193,7 +194,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public ModeController getModeController() {
-		return modeController;
+		return 	Controller.getCurrentController().getModeController();
 	}
 
 	/**
@@ -237,6 +238,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public void loadURL(final MouseEvent e) {
+		ModeController modeController = Controller.getCurrentController().getModeController();
 		loadURL(modeController.getMapController().getSelectedNode(), new ActionEvent(e.getSource(), e.getID(), null));
 	}
 
@@ -245,6 +247,7 @@ public class LinkController extends SelectionController implements IExtension {
 		final URI link = NodeLinks.getValidLink(selectedNode);
 		if (link != null) {
 			onDeselect(selectedNode);
+			ModeController modeController = Controller.getCurrentController().getModeController();
 			if (LinkController.isMenuItemLink(link)) {
 				if (e == null) {
 					throw new IllegalArgumentException("ActionEvent is needed for menu item links");
@@ -266,7 +269,8 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	private UrlManager getURLManager() {
-		return (UrlManager) modeController.getMapController().getModeController().getExtension(UrlManager.class);
+		ModeController modeController = Controller.getCurrentController().getModeController();
+		return (UrlManager) modeController.getExtension(UrlManager.class);
 	}
 
 	public IPropertyHandler<Color, ConnectorModel> removeColorGetter(final Integer key) {

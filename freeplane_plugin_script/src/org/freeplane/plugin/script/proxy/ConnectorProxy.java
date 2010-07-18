@@ -13,8 +13,8 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Connector {
-	ConnectorProxy(final ConnectorModel connector, final MModeController modeController) {
-		super(connector, modeController);
+	ConnectorProxy(final ConnectorModel connector) {
+		super(connector);
 	}
 
 	public Color getColor() {
@@ -38,7 +38,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public Node getSource() {
-		return new NodeProxy(getConnector().getSource(), getModeController());
+		return new NodeProxy(getConnector().getSource());
 	}
 
 	public String getSourceLabel() {
@@ -50,7 +50,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public Node getTarget() {
-		return new NodeProxy(getConnector().getTarget(), getModeController());
+		return new NodeProxy(getConnector().getTarget());
 	}
 
 	public String getTargetLabel() {

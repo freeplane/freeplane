@@ -20,7 +20,7 @@ public class ExecuteScriptForAllNodes extends AFreeplaneAction {
 		final NodeModel node = getController().getMap().getRootNode();
 		getController().getViewController().setWaitingCursor(true);
 		try {
-			ScriptingEngine.performScriptOperationRecursive((MModeController) getModeController(), node);
+			ScriptingEngine.performScriptOperationRecursive(node);
 		}
 		finally {
 			getController().getViewController().setWaitingCursor(false);

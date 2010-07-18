@@ -328,7 +328,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private Color background = null;
 	private Rectangle boundingRectangle = null;
 	private int centerNodeCounter;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	private boolean disableMoveCursor = true;
 	private int extraWidth;
 	private FitMap fitMap = FitMap.USER_DEFINED;
@@ -460,7 +460,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void createPropertyChangeListener() {
 		MapView.propertyChangeListener = new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-				final Component mapView = controller.getViewController().getMapView();
+				final Component mapView = Controller.getCurrentController().getViewController().getMapView();
 				if (!(mapView instanceof MapView)) {
 					return;
 				}
@@ -670,7 +670,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public ModeController getModeController() {
-		return modeController;
+		return Controller.getCurrentController().getModeController();
 	}
 
 	public MapModel getModel() {
@@ -971,7 +971,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Graphics2D g2 = (Graphics2D) g.create();
 		try {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-			controller.getViewController().setTextRenderingHint(g2);
+			Controller.getCurrentController().getViewController().setTextRenderingHint(g2);
 			super.paint(g2);
 		}
 		finally {

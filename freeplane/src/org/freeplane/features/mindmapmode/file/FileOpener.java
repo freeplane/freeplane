@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
@@ -79,6 +80,7 @@ class FileOpener implements DropTargetListener {
 		dtde.acceptDrop(DnDConstants.ACTION_COPY);
 		try {
 			final Transferable transferable = dtde.getTransferable();
+			ModeController modeController = Controller.getCurrentController().getModeController();
 			if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 				final List<File> list = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 				for (final File file : list) {

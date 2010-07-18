@@ -81,7 +81,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	}
 
 	// TODO ARCH rladstaetter 18.02.2009 actions should not have a dependency on the controller
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	final private String key;
 	private boolean selected = false;
 

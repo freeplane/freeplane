@@ -57,18 +57,16 @@ class ScriptEditor extends AFreeplaneAction {
 
 	final private class NodeScriptModel implements IScriptModel {
 		private boolean isDirty = false;
-		final private MModeController mMindMapController;
+// 		final private MModeController mMindMapController;
 		final private NodeModel mNode;
 		/**
 		 * Of AttributeHolder
 		 */
 		final private ArrayList<AttributeHolder> mScripts;
 
-		private NodeScriptModel(final ArrayList<AttributeHolder> pScripts, final NodeModel node,
-		                        final MModeController pMindMapController) {
+		private NodeScriptModel(final ArrayList<AttributeHolder> pScripts, final NodeModel node) {
 			mScripts = pScripts;
 			mNode = node;
-			mMindMapController = pMindMapController;
 		}
 
 		public int addNewScript() {
@@ -109,6 +107,7 @@ class ScriptEditor extends AFreeplaneAction {
 				for (final AttributeHolder holder : mScripts) {
 					final Attribute attribute = holder.mAttribute;
 					final int position = holder.mPosition;
+					ModeController mMindMapController = Controller.getCurrentController().getModeController();
 					final MAttributeController attributeController = (MAttributeController) AttributeController
 					    .getController(mMindMapController);
 					if (attributeTableLength <= position) {
@@ -125,8 +124,9 @@ class ScriptEditor extends AFreeplaneAction {
 		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			final String script = getScript(pIndex).getScript();
 			ScriptingEngine.setNoUserPermissionRequired(true);
+			ModeController mMindMapController = Controller.getCurrentController().getModeController();
 			return ScriptingEngine.executeScript(mMindMapController.getMapController().getSelectedNode(), script,
-			    mMindMapController, pErrorHandler, pOutStream);
+			    pErrorHandler, pOutStream);
 		}
 
 		public int getAmountOfScripts() {
@@ -177,7 +177,7 @@ class ScriptEditor extends AFreeplaneAction {
 				scripts.add(new AttributeHolder(attribute, position));
 			}
 		}
-		final NodeScriptModel nodeScriptModel = new NodeScriptModel(scripts, node, (MModeController) modeController);
+		final NodeScriptModel nodeScriptModel = new NodeScriptModel(scripts, node);
 		final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(modeController.getController(),
 		    nodeScriptModel, true);
 		scriptEditorPanel.setVisible(true);

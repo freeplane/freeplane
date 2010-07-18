@@ -24,7 +24,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.filter.condition.NodeCondition;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -43,7 +42,7 @@ public class NoteContainsCondition extends NodeCondition {
 		this.value = value;
 	}
 
-	public boolean checkNode(final ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final NodeModel node) {
 		final String text = getText(node);
 		if (text == null) {
 			return false;

@@ -25,7 +25,6 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -33,19 +32,19 @@ public class SelectedViewSnapshotCondition implements ISelectableCondition {
 	private static String description;
 	private static JComponent renderer;
 
-	public static ISelectableCondition CreateCondition(final Controller controller) {
-		return new SelectedViewSnapshotCondition(controller);
+	public static ISelectableCondition CreateCondition() {
+		return new SelectedViewSnapshotCondition();
 	}
 
 	HashSet<NodeModel> selectedNodes;
 
-	public SelectedViewSnapshotCondition(final Controller controller) {
+	public SelectedViewSnapshotCondition() {
 		super();
 		selectedNodes = new HashSet<NodeModel>();
-		selectedNodes.addAll(controller.getSelection().getSelection());
+		selectedNodes.addAll(Controller.getCurrentController().getSelection().getSelection());
 	}
 
-	public boolean checkNode(final ModeController modeController, final NodeModel node) {
+	public boolean checkNode(final NodeModel node) {
 		return selectedNodes.contains(node);
 	}
 

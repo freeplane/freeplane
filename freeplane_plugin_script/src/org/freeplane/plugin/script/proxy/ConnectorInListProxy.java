@@ -13,12 +13,11 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
 class ConnectorInListProxy extends AbstractCollection<Proxy.Connector> {
-	private final MModeController modeController;
+// 	private final MModeController modeController;
 	private final NodeModel node;
 
-	public ConnectorInListProxy(final NodeModel node, final MModeController modeController) {
+	public ConnectorInListProxy(final NodeModel node) {
 		this.node = node;
-		this.modeController = modeController;
 	}
 
 	Set<LinkModel> getConnectorSet() {
@@ -27,7 +26,7 @@ class ConnectorInListProxy extends AbstractCollection<Proxy.Connector> {
 
 	@Override
 	public Iterator<Proxy.Connector> iterator() {
-		return new ConnectorIterator(getConnectorSet().iterator(), modeController);
+		return new ConnectorIterator(getConnectorSet().iterator());
 	}
 
 	@Override

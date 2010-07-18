@@ -40,10 +40,10 @@ import org.freeplane.view.swing.map.MapView;
  * The MouseListener which belongs to MapView
  */
 public class DefaultMapMouseListener implements IMouseListener {
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	private final IMapMouseReceiver mReceiver;
 
-	public DefaultMapMouseListener(final Controller controller, final IMapMouseReceiver mReceiver) {
+	public DefaultMapMouseListener(final IMapMouseReceiver mReceiver) {
 //		this.controller = controller;
 		this.mReceiver = mReceiver;
 	}
@@ -51,12 +51,12 @@ public class DefaultMapMouseListener implements IMouseListener {
 	private void handlePopup(final MouseEvent e) {
 		if (e.isPopupTrigger()) {
 			JPopupMenu popup = null;
-			final MapView mapView = (MapView) controller.getViewController().getMapView();
+			final MapView mapView = (MapView) Controller.getCurrentController().getViewController().getMapView();
 			final java.lang.Object obj = mapView.detectCollision(e.getPoint());
-			final ModeController modeController = controller.getModeController();
+			final ModeController modeController = Controller.getCurrentController().getModeController();
 			final JPopupMenu popupForModel = LinkController.getController(modeController).getPopupForModel(obj);
 			if (popupForModel != null) {
-				final ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener(modeController);
+				final ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener();
 				popupForModel.addPopupMenuListener(popupListener);
 				popup = popupForModel;
 			}
@@ -69,7 +69,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 	}
 
 	public void mouseClicked(final MouseEvent e) {
-		final IMapSelection selection = controller.getSelection();
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		selection.selectAsTheOnlyOneSelected(selection.getSelected());
 	}
 
@@ -104,6 +104,6 @@ public class DefaultMapMouseListener implements IMouseListener {
 		}
 		handlePopup(e);
 		e.consume();
-		((MapView) controller.getViewController().getMapView()).setMoveCursor(false);
+		((MapView) Controller.getCurrentController().getViewController().getMapView()).setMoveCursor(false);
 	}
 }

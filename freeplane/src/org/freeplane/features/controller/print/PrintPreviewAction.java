@@ -33,7 +33,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-// 	final private Controller controller;
+// // 	final private Controller controller;
 
 	PrintPreviewAction(final Controller controller, final PrintController printController) {
 		super("PrintPreviewAction", printController);
@@ -44,7 +44,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 		if (!getPrintController().acquirePrinterJobAndPageFormat(false)) {
 			return;
 		}
-		final Component mapView = controller.getViewController().getMapView();
+		final Component mapView = Controller.getCurrentController().getViewController().getMapView();
 		final PreviewDialog previewDialog = new PreviewDialog(getPrintController(), TextUtils
 		    .getText("print_preview_title"), mapView);
 		previewDialog.pack();

@@ -40,7 +40,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * 21.12.2008
  */
 class AttributeConditionController implements IElementaryConditionController {
-// 	final private Controller controller;
+// // 	final private Controller controller;
 	private final ExtendedComboBoxModel values = new ExtendedComboBoxModel();
 
 	public AttributeConditionController(final Controller controller) {
@@ -125,7 +125,7 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public ListModel getFilteredProperties() {
-		final AttributeRegistry registry = AttributeRegistry.getRegistry(controller.getMap());
+		final AttributeRegistry registry = AttributeRegistry.getRegistry(Controller.getCurrentController().getMap());
 		if (registry != null) {
 			return registry.getListBoxModel();
 		}
@@ -137,7 +137,7 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem) {
-		values.setExtensionList(AttributeRegistry.getRegistry(controller.getMap()).getElement(selectedItem.toString())
+		values.setExtensionList(AttributeRegistry.getRegistry(Controller.getCurrentController().getMap()).getElement(selectedItem.toString())
 		    .getValues());
 		return values;
 	}

@@ -17,7 +17,7 @@ import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 
 class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attributes {
 	AttributesProxy(final NodeModel delegate, final MModeController modeController) {
-		super(delegate, modeController);
+		super(delegate);
 	}
 
 	public String get(final String name) {
