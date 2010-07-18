@@ -59,12 +59,12 @@ public class FreeplaneApplet extends JApplet {
     }
 
 	@Override
-	public void destroy() {
+	synchronized public void destroy() {
 		controller.shutdown();
 	}
 
 	@Override
-	public void init() {
+	synchronized public void init() {
 		if (appletResourceController == null) {
 			appletResourceController = new AppletResourceController(this);
 		}
@@ -97,12 +97,12 @@ public class FreeplaneApplet extends JApplet {
 	}
 
 	@Override
-	public void start() {
+	synchronized public void start() {
 		appletViewController.start();
 	}
 
 	@Override
-	public void stop() {
+	synchronized public void stop() {
 		super.stop();
 	}
 
