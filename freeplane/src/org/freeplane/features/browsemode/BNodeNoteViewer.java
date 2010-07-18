@@ -52,7 +52,7 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 		this.controller = controller;
 	}
 
-	protected JComponent getNoteViewerComponent() {
+	private JComponent createNoteViewerComponent() {
 		if (noteViewer == null) {
 			noteViewer = new JLabel();
 			noteViewer.setBackground(Color.WHITE);
@@ -75,26 +75,19 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 	}
 
 	public void onDeselect(final NodeModel pNode) {
-		controller.getViewController().removeSplitPane();
+		if(noteViewer != null){
+			noteViewer.setText("");
+		}
 	}
 
 	public void onSelect(final NodeModel pNode) {
 		final String noteText = NoteModel.getNoteText(pNode);
 		if (noteText != null && !noteText.equals("")) {
-			controller.getViewController().insertComponentIntoSplitPane(getNoteViewerComponent());
+			if(noteViewer == null){
+				controller.getViewController().insertComponentIntoSplitPane(createNoteViewerComponent());
+			}
 			noteViewer.setText(noteText);
-			try {
-				noteViewer.setText(noteText);
-			}
-			catch (final Exception ex) {
-				setTextWithExceptionInfo(noteText, ex);
-			}
 		}
-	}
-
-	private void setTextWithExceptionInfo(final String text, final Exception ex) {
-		final String string = HtmlTools.combineTextWithExceptionInfo(text, ex);
-		noteViewer.setText(string);
 	}
 
 	public void onUpdate(final NodeModel pNode) {
