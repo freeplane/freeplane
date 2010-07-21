@@ -34,8 +34,7 @@
       <font color="#0033ff"><b>Press the right arrow key, or click the left mouse button on this node to unfold it</b></font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Press the left arrow key to unfold nodes located to the left of the central &quot;root&quot; node" ID="ID_1776790765" CREATED="1271002221874" MODIFIED="1271973207142"/>
 </node>
@@ -997,12 +996,13 @@
 </node>
 </node>
 </node>
-<node TEXT="Advanced features" FOLDED="true" POSITION="right" ID="ID_827349258" CREATED="1271021855439" MODIFIED="1272201622114" COLOR="#006666" HGAP="29" VSHIFT="-63">
+<node TEXT="Advanced features" POSITION="right" ID="ID_827349258" CREATED="1271021855439" MODIFIED="1272201622114" COLOR="#006666" HGAP="29" VSHIFT="-63">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Setting preferences" FOLDED="true" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1270892460697" COLOR="#407000">
+<node TEXT="Setting preferences" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1270892460697" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="To edit preferences, open the Freeplane Properties window using Tools &gt; Preferences. On Mac OS X, Preferences is located on the Freeplane application menu. Some changes take effect only after you restart Freeplane." ID="ID_425668379" CREATED="1270892460697" MODIFIED="1272008315835"/>
 <node TEXT="To assign a hot key to a menu item, use &quot;Tools &gt; Assign short cut.&quot; Then click on the desired menu item, and enter a new hot key combination for the short cut. Prompts will allow you to override an existing assignment if your new short cut is already in use." ID="ID_1823288862" CREATED="1270895079510" MODIFIED="1272008653739"/>
+<node TEXT="The F-Bar is just a visual representation of hot key assignments for the function keys. These assignments are changed via &quot;Tools &gt; Assign short cut&quot; too. If you assign a function key to a menu item, then the F-Bar will be updated immediately afterwards." ID="ID_1116899046" CREATED="1279645009156" MODIFIED="1279645964609"/>
 </node>
 <node TEXT="Using file locking" FOLDED="true" ID="ID_1594926210" CREATED="1270892460703" MODIFIED="1272092384758" COLOR="#407000">
 <node TEXT="File locking makes sure that other users do not edit the same map at the same time, preventing them from accidentally overwriting each others&apos; information." ID="ID_1859037836" CREATED="1270892460703" MODIFIED="1271530808349"/>
