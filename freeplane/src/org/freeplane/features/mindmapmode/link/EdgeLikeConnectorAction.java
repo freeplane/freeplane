@@ -38,7 +38,7 @@ class EdgeLikeConnectorAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+		final MLinkController linkController = (MLinkController) LinkController.getController();
 		linkController.setEdgeLike(arrowLink, !arrowLink.isEdgeLike());
 	}
 }

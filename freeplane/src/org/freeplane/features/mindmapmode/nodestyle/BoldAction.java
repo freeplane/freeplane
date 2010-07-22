@@ -37,7 +37,7 @@ class BoldAction extends AMultipleNodeAction {
 
 	/**
 	 */
-	public BoldAction(final Controller controller) {
+	public BoldAction() {
 		super("BoldAction");
 	}
 
@@ -49,12 +49,12 @@ class BoldAction extends AMultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel selected) {
-		((MNodeStyleController) NodeStyleController.getController(getModeController())).setBold(selected, bold);
+		((MNodeStyleController) NodeStyleController.getController()).setBold(selected, bold);
 	}
 
 	boolean isBold() {
-		final NodeModel node = getModeController().getMapController().getSelectedNode();
-		return NodeStyleController.getController(getModeController()).isBold(node);
+		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+		return NodeStyleController.getController().isBold(node);
 	}
 
 	@Override

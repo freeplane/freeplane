@@ -106,7 +106,7 @@ public interface IMapViewManager {
 
 	public float getZoom();
 
-	public void newMapView(final MapModel map, final ModeController modeController);
+	public void newMapView(final MapModel map, ModeController modeController);
 
 	public void nextMapView();
 

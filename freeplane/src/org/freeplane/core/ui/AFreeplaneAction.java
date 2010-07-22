@@ -25,11 +25,9 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.ModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -113,8 +111,8 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	//	 * @param controller
 	//	 * @param string
 	//	 */
-	//	private AFreeplaneAction(final Controller controller, final String titleKey) {
-	//		this(controller);
+	//	private AFreeplaneAction( final String titleKey) {
+	//		this();
 	//	}
 	//
 	public AFreeplaneAction(final String key, final String title, final ImageIcon icon) {
@@ -139,20 +137,12 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		}
 	}
 
-	public Controller getController() {
-		return Controller.getCurrentController();
-	}
-
 	public final String getIconKey() {
 		return key + ".icon";
 	}
 
 	public String getKey() {
 		return key;
-	}
-
-	public ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
 	}
 
 	final String getTextKey() {

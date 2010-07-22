@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtils;
@@ -73,7 +74,7 @@ class PageAction extends AbstractPrintAction {
 		if (!getPrintController().acquirePrinterJobAndPageFormat(false)) {
 			return;
 		}
-		final Frame frame = getPrintController().getController().getViewController().getFrame();
+		final Frame frame = Controller.getCurrentController().getViewController().getFrame();
 		final JDialog dialog = new JDialog(frame, TextUtils.getText("printing_settings"), /* modal=*/
 		true);
 		final ButtonGroup fitButtons = new ButtonGroup();

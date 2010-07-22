@@ -31,13 +31,13 @@ class CopyAction extends AFreeplaneAction {
 //	private static final String NAME = "copy";
 	private static final long serialVersionUID = 1L;
 
-	public CopyAction(final Controller controller) {
+	public CopyAction() {
 		super("CopyAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Controller controller = getController();
-		final ModeController modeController = getModeController();
+		final Controller controller = Controller.getCurrentController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final IMapSelection selection = controller.getSelection();
 		if (selection != null) {
 			final ClipboardController clipboardController = (ClipboardController) modeController

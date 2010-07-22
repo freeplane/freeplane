@@ -149,10 +149,12 @@ public abstract class PersistentNodeHook {
 // 	private final ModeController modeController;
 	private final HookAction selectableHookAction;
 
-	public PersistentNodeHook(final ModeController modeController) {
+	@SuppressWarnings("unchecked")
+	public PersistentNodeHook() {
 		super();
 //		this.modeController = modeController;
 //		controller = modeController.getController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		if (modeController.getModeName().equals("MindMap")) {
 			final ActionLocationDescriptor actionAnnotation = getActionAnnotation();
 			if (actionAnnotation != null) {
@@ -184,7 +186,7 @@ public abstract class PersistentNodeHook {
 	protected void add(final NodeModel node, final IExtension extension) {
 		assert (getExtensionClass().equals(extension.getClass()));
 		node.addExtension(extension);
-		getModeController().getMapController().nodeChanged(node);
+		Controller.getCurrentModeController().getMapController().nodeChanged(node);
 	}
 
 	protected IExtension createExtension(final NodeModel node) {
@@ -210,10 +212,6 @@ public abstract class PersistentNodeHook {
 		return annotation;
 	}
 
-	public Controller getController() {
-		return Controller.getCurrentController();
-	}
-
 	@SuppressWarnings("unchecked")
     protected Class<? extends IExtension> getExtensionClass() {
 		return (Class<? extends IExtension>) getClass();
@@ -231,10 +229,6 @@ public abstract class PersistentNodeHook {
 	public IExtension getMapHook() {
 		final NodeModel rootNode = Controller.getCurrentController().getMap().getRootNode();
 		return rootNode.getExtension(getExtensionClass());
-	}
-
-	public ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
 	}
 
 	protected NodeModel[] getNodes() {
@@ -285,13 +279,13 @@ public abstract class PersistentNodeHook {
 	}
 
 	protected void registerAction(final AFreeplaneAction action, final ActionLocationDescriptor actionAnnotation) {
-		getModeController().addAction(action);
-		getModeController().getUserInputListenerFactory().getMenuBuilder().addAction(action, actionAnnotation);
+		Controller.getCurrentModeController().addAction(action);
+		Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder().addAction(action, actionAnnotation);
 	}
 
 	protected void remove(final NodeModel node, final IExtension extension) {
 		node.removeExtension(extension);
-		getModeController().getMapController().nodeChanged(node);
+		Controller.getCurrentModeController().getMapController().nodeChanged(node);
 	}
 
 	protected void saveExtension(final IExtension extension, final XMLElement element) {
@@ -334,6 +328,6 @@ public abstract class PersistentNodeHook {
 
 	public void undoableToggleHook(final NodeModel node, final IExtension extension) {
 		final IActor actor = new ToggleHookActor(node, extension);
-		getModeController().execute(actor, node.getMap());
+		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 }

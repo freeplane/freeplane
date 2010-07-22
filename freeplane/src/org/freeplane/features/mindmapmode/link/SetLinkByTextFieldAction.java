@@ -39,18 +39,18 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public SetLinkByTextFieldAction(final Controller controller) {
+	public SetLinkByTextFieldAction() {
 		super("SetLinkByTextFieldAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-		final String inputValue = UITools.showInputDialog(getController(),
-		    getController().getSelection().getSelected(), TextUtils.getText("edit_link_manually"), NodeLinks
+		final String inputValue = UITools.showInputDialog(
+		    Controller.getCurrentController().getSelection().getSelected(), TextUtils.getText("edit_link_manually"), NodeLinks
 		        .getLinkAsString(selectedNode));
 		if (inputValue != null) {
-			final MLinkController linkController = (MLinkController) MLinkController.getController(modeController);
+			final MLinkController linkController = (MLinkController) MLinkController.getController();
 			if (inputValue.equals("")) {
 				linkController.setLink(selectedNode, (URI) null, false);
 				return;

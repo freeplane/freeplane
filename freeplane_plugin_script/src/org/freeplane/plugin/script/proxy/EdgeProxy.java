@@ -8,11 +8,10 @@ import java.awt.Color;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 
 class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
-	EdgeProxy(final NodeModel delegate, final MModeController modeController) {
+	EdgeProxy(final NodeModel delegate) {
 		super(delegate);
 	}
 
@@ -21,7 +20,7 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 	}
 
 	private MEdgeController getEdgeController() {
-		return (MEdgeController) EdgeController.getController(getModeController());
+		return (MEdgeController) EdgeController.getController();
 	}
 
 	public EdgeStyle getType() {

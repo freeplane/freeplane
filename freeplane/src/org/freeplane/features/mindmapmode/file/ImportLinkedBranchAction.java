@@ -48,15 +48,15 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ImportLinkedBranchAction(final Controller controller) {
+	public ImportLinkedBranchAction() {
 		super("ImportLinkedBranchAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = getController().getMap();
-		final ModeController modeController = getModeController();
+		final MapModel map = Controller.getCurrentController().getMap();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
-		final ViewController viewController = getController().getViewController();
+		final ViewController viewController = Controller.getCurrentController().getViewController();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
 			JOptionPane.showMessageDialog((viewController.getMapView()), TextUtils
 			    .getText("import_linked_branch_no_link"));
@@ -68,8 +68,8 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			    .getPath()).getFile());
 			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, file);
 			((MMapController) modeController.getMapController()).insertNode(node, selected);
-			((MLinkController) LinkController.getController(modeController)).setLink(selected, (URI) null, false);
-			((MLinkController) LinkController.getController(modeController)).setLink(node, (URI) null, false);
+			((MLinkController) LinkController.getController()).setLink(selected, (URI) null, false);
+			((MLinkController) LinkController.getController()).setLink(node, (URI) null, false);
 		}
 		catch (final MalformedURLException ex) {
 			UITools.errorMessage(TextUtils.format("invalid_url_msg", map.getFile()));
@@ -77,7 +77,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			return;
 		}
 		catch (final Exception ex) {
-			UrlManager.getController(modeController).handleLoadingException(ex);
+			UrlManager.getController().handleLoadingException(ex);
 		}
 	}
 }

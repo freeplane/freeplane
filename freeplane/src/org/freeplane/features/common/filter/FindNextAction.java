@@ -21,7 +21,6 @@ package org.freeplane.features.common.filter;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class FindNextAction extends AFreeplaneAction {
@@ -31,7 +30,7 @@ class FindNextAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	final private FindAction find;
 
-	public FindNextAction(final Controller controller, final FindAction find) {
+	public FindNextAction( final FindAction find) {
 		super("FindNextAction");
 		this.find = find;
 	}

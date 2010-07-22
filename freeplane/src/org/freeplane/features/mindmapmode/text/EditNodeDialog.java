@@ -43,11 +43,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
@@ -64,7 +64,7 @@ public class EditNodeDialog extends EditNodeBase {
 
 		public LongNodeDialog(final Frame frame) {
 			super(EditNodeDialog.this, frame);
-			final ViewController viewController = getModeController().getController().getViewController();
+			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
 			textArea = new JTextArea(getText());
 			textArea.setLineWrap(true);
 			textArea.setWrapStyleWord(true);
@@ -175,8 +175,7 @@ public class EditNodeDialog extends EditNodeBase {
 			final Color nodeTextBackground = viewController.getBackgroundColor(getNode());
 			textArea.setBackground(nodeTextBackground);
 			textArea.setCaretColor(nodeTextColor);
-			final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getBase()
-			    .getModeController());
+			final SpellCheckerController spellCheckerController = SpellCheckerController.getController();
 			spellCheckerController.enableAutoSpell(textArea, true);
 			final JPanel buttonPane = new JPanel();
 			buttonPane.add(enterConfirms);
@@ -261,18 +260,17 @@ public class EditNodeDialog extends EditNodeBase {
 	/** Private variable to hold the last value of the "Enter confirms" state. */
 	final private KeyEvent firstEvent;
 
-	public EditNodeDialog(final NodeModel node, final String text, final KeyEvent firstEvent,
-	                      final ModeController controller, final IEditControl editControl) {
-		super(node, text, controller, editControl);
+	public EditNodeDialog(final NodeModel node, final String text, final KeyEvent firstEvent, final IEditControl editControl) {
+		super(node, text, editControl);
 		this.firstEvent = firstEvent;
 	}
 
 	public void show(final Frame frame) {
 		final EditDialog dialog = new LongNodeDialog(frame);
 		dialog.pack();
-		getModeController().getController().getViewController().scrollNodeToVisible(node);
+		Controller.getCurrentModeController().getController().getViewController().scrollNodeToVisible(node);
 		if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
-			UITools.setDialogLocationUnder(dialog, getController(), getNode());
+			UITools.setDialogLocationUnder(dialog, getNode());
 		}
 		else {
 			UITools.setDialogLocationRelativeTo(dialog, getNode());

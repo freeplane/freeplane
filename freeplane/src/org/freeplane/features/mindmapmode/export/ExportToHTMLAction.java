@@ -31,6 +31,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.ClipboardController;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.url.UrlManager;
 
@@ -41,23 +42,23 @@ class ExportToHTMLAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ExportToHTMLAction(final Controller controller) {
+	public ExportToHTMLAction() {
 		super("ExportToHTMLAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		try {
-			final File file = ExportAction.chooseFile(getController(), "html", "html", null);
+			final File file = ExportAction.chooseFile("html", "html", null);
 			if (file == null) {
 				return;
 			}
-			ClipboardController.getController(getModeController()).saveHTML(map.getRootNode(), file);
+			ClipboardController.getController().saveHTML(map.getRootNode(), file);
 			if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
 				ExportWithXSLT.copyIconsToDirectory(map, new File(file.getAbsoluteFile().getParentFile(), "icons")
 				    .getAbsolutePath());
 			}
-			((UrlManager) getModeController().getMapController().getModeController().getExtension(UrlManager.class))
+			((UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class))
 			    .loadURL(file.toURI());
 		}
 		catch (final IOException ex) {

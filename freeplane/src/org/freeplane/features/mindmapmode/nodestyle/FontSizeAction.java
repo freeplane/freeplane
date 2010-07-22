@@ -21,7 +21,6 @@ package org.freeplane.features.mindmapmode.nodestyle;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -39,7 +38,7 @@ class FontSizeAction extends AMultipleNodeAction {
 
 	/**
 	 */
-	public FontSizeAction(final Controller controller) {
+	public FontSizeAction() {
 		super("FontSizeAction");
 	}
 
@@ -51,7 +50,7 @@ class FontSizeAction extends AMultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) NodeStyleController.getController(getModeController())).setFontSize(node, actionSize);
+		((MNodeStyleController) NodeStyleController.getController()).setFontSize(node, actionSize);
 	}
 
 	public void actionPerformed(final String size) {

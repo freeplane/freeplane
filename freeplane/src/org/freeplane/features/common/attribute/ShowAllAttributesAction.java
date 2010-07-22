@@ -21,7 +21,6 @@ package org.freeplane.features.common.attribute;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
@@ -34,8 +33,8 @@ class ShowAllAttributesAction extends AttributeViewTypeAction {
 	/**
 	 *
 	 */
-	public ShowAllAttributesAction(final Controller controller) {
-		super("ShowAllAttributesAction", controller);
+	public ShowAllAttributesAction() {
+		super("ShowAllAttributesAction");
 	};
 
 	public void actionPerformed(final ActionEvent e) {

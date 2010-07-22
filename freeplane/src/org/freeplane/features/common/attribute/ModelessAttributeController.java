@@ -29,24 +29,27 @@ import org.freeplane.features.common.map.MapModel;
  * @author Dimitry Polivaev
  */
 public class ModelessAttributeController implements IExtension {
-	public static ModelessAttributeController getController(final Controller controller) {
+	public static ModelessAttributeController getController() {
+		Controller controller = Controller.getCurrentController();
 		return (ModelessAttributeController) controller.getExtension(ModelessAttributeController.class);
 	}
 
-	public static void install(final Controller controller) {
-		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController(controller));
-		FilterController.getController(controller).getConditionFactory().addConditionController(2,
-		    new AttributeConditionController(controller));
+	public static void install() {
+		Controller controller = Controller.getCurrentController();
+		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(2,
+		    new AttributeConditionController());
 	}
 
 // // //	final private Controller controller;
 
-	public ModelessAttributeController(final Controller controller) {
+	public ModelessAttributeController() {
 		super();
 //		this.controller = controller;
-		final AFreeplaneAction showAllAttributes = new ShowAllAttributesAction(controller);
-		final AFreeplaneAction showSelectedAttributes = new ShowSelectedAttributesAction(controller);
-		final AFreeplaneAction hideAllAttributes = new HideAllAttributesAction(controller);
+		Controller controller = Controller.getCurrentController();
+		final AFreeplaneAction showAllAttributes = new ShowAllAttributesAction();
+		final AFreeplaneAction showSelectedAttributes = new ShowSelectedAttributesAction();
+		final AFreeplaneAction hideAllAttributes = new HideAllAttributesAction();
 		controller.addAction(showAllAttributes);
 		controller.addAction(showSelectedAttributes);
 		controller.addAction(hideAllAttributes);

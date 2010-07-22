@@ -18,19 +18,19 @@ public class MaxNodeWidthAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public MaxNodeWidthAction(final Controller controller) {
+	public MaxNodeWidthAction() {
 		super("MaxNodeWidthAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		final int maxNodeWidth = MapStyleModel.getExtension(map).getMaxNodeWidth();
 		final JSpinner spinner = new JSpinner(new SpinnerNumberModel(maxNodeWidth, 1, Integer.MAX_VALUE, 1));
 		if (JOptionPane.CANCEL_OPTION == JOptionPane.showConfirmDialog(UITools.getFrame(), spinner,
 		    (String) getValue(Action.NAME), JOptionPane.OK_CANCEL_OPTION)) {
 			return;
 		}
-		final MapStyle mapStyle = (MapStyle) getModeController().getExtension(MapStyle.class);
+		final MapStyle mapStyle = (MapStyle) Controller.getCurrentModeController().getExtension(MapStyle.class);
 		final Integer newWidth = (Integer) spinner.getValue();
 		mapStyle.setMaxNodeWidth(map, newWidth);
 	}

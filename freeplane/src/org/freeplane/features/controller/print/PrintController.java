@@ -32,12 +32,14 @@ import org.freeplane.core.util.Compat;
  * @author Dimitry Polivaev
  */
 public class PrintController implements IExtension {
-	public static PrintController getController(final Controller controller) {
+	public static PrintController getController() {
+		Controller controller = Controller.getCurrentController();
 		return (PrintController) controller.getExtension(PrintController.class);
 	}
 
-	public static void install(final Controller controller) {
-		controller.addExtension(PrintController.class, new PrintController(controller));
+	public static void install() {
+		Controller controller = Controller.getCurrentController();
+		controller.addExtension(PrintController.class, new PrintController());
 	}
 
 // // 	final private Controller controller;
@@ -49,12 +51,13 @@ public class PrintController implements IExtension {
 	private boolean printingAllowed;
 	final private PrintPreviewAction printPreviewAction;
 
-	public PrintController(final Controller controller) {
+	public PrintController() {
 		super();
+		Controller controller = Controller.getCurrentController();
 //		this.controller = controller;
-		printAction = new PrintAction(controller, this, true);
-		printDirectAction = new PrintDirectAction(controller, this);
-		printPreviewAction = new PrintPreviewAction(controller, this);
+		printAction = new PrintAction(this, true);
+		printDirectAction = new PrintDirectAction(this);
+		printPreviewAction = new PrintPreviewAction(this);
 		pageAction = new PageAction(this);
 		controller.addAction(printAction);
 		controller.addAction(printDirectAction);
@@ -78,10 +81,6 @@ public class PrintController implements IExtension {
 			}
 		}
 		return true;
-	}
-
-	public Controller getController() {
-		return Controller.getCurrentController();
 	}
 
 	PageFormat getPageFormat() {

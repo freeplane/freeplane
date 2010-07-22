@@ -26,6 +26,7 @@ import java.util.TimerTask;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
@@ -35,7 +36,6 @@ import org.freeplane.features.common.icon.IconStore;
 import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.ITooltipProvider;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -79,9 +79,9 @@ public class ReminderHook extends PersistentNodeHook {
 		 */
 		private final NodeList timeList;
 
-		public TimeListAction(final ModeController modeController) {
+		public TimeListAction() {
 			super("TimeListAction");
-			timeList = new NodeList(modeController, false, false);
+			timeList = new NodeList(false, false);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -101,9 +101,9 @@ public class ReminderHook extends PersistentNodeHook {
 		 */
 		private final TimeManagement timeManagement;
 
-		public TimeManagementAction(final ModeController modeController, final ReminderHook reminderHook) {
+		public TimeManagementAction( final ReminderHook reminderHook) {
 			super("TimeManagementAction");
-			timeManagement = new TimeManagement(modeController, reminderHook);
+			timeManagement = new TimeManagement(reminderHook);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -122,26 +122,26 @@ public class ReminderHook extends PersistentNodeHook {
 	/**
 	 *
 	 */
-	public ReminderHook(final ModeController modeController) {
-		super(modeController);
-		registerAction(new TimeManagementAction(modeController, this));
-		registerAction(new TimeListAction(modeController));
-		registerAction(new NodeListAction(modeController));
-		registerAction(new AllMapsNodeListAction(modeController));
+	public ReminderHook() {
+		super();
+		registerAction(new TimeManagementAction(this));
+		registerAction(new TimeListAction());
+		registerAction(new NodeListAction());
+		registerAction(new AllMapsNodeListAction());
 	}
 
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		scheduleTimer(reminderExtension);
-		getModeController().getMapController().addMapChangeListener(reminderExtension);
+		Controller.getCurrentModeController().getMapController().addMapChangeListener(reminderExtension);
 		super.add(node, extension);
 	}
 
 	void blink(final ReminderExtension model, final boolean stateAdded) {
 		model.setRemindUserAt(System.currentTimeMillis() + 3000);
 		scheduleTimer(model, new TimerBlinkTask(this, model, stateAdded));
-		if (model.getNode().getMap() != getController().getMap()) {
+		if (model.getNode().getMap() != Controller.getCurrentController().getMap()) {
 			return;
 		}
 		displayState(model, (stateAdded) ? ClockState.CLOCK_VISIBLE : ClockState.CLOCK_INVISIBLE, model.getNode(), true);
@@ -178,7 +178,7 @@ public class ReminderHook extends PersistentNodeHook {
 		        || ReminderExtension.getExtension(pNode) == null) {
 			pNode.setStateIcon(STATE_TOOLTIP, icon, true);
 		}
-		getModeController().getMapController().nodeRefresh(pNode);
+		Controller.getCurrentModeController().getMapController().nodeRefresh(pNode);
 		if (!recurse) {
 			return;
 		}
@@ -221,7 +221,7 @@ public class ReminderHook extends PersistentNodeHook {
 		setToolTip(reminderExtension.getNode(), null);
 		reminderExtension.deactivateTimer();
 		displayState(reminderExtension, ClockState.REMOVE_CLOCK, reminderExtension.getNode(), true);
-		getModeController().getMapController().removeMapChangeListener(reminderExtension);
+		Controller.getCurrentModeController().getMapController().removeMapChangeListener(reminderExtension);
 		super.remove(node, extension);
 	}
 
@@ -251,7 +251,7 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	private void setToolTip(final NodeModel node, final String value) {
-		(getModeController().getMapController()).setToolTip(node, getClass().getName(), new ITooltipProvider() {
+		(Controller.getCurrentModeController().getMapController()).setToolTip(node, getClass().getName(), new ITooltipProvider() {
 			public String getTooltip() {
 				return value;
 			}

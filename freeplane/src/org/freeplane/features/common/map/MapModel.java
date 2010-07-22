@@ -53,13 +53,12 @@ public class MapModel {
 	private NodeModel root;
 	private URL url;
 
-	public MapModel(final ModeController modeController, NodeModel root) {
+	public MapModel( NodeModel root) {
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = root;
 		listeners = new LinkedList<IMapChangeListener>();
-		final Controller controller = modeController.getController();
 		nodes = new HashMap<String, NodeModel>();
-		final FilterController filterController = FilterController.getController(controller);
+		final FilterController filterController = FilterController.getCurrentFilterController();
 		if (filterController != null) {
 			filter = filterController.createTransparentFilter();
 		}
@@ -70,6 +69,7 @@ public class MapModel {
 		else {
 			root.setMap(this);
 		}
+		final ModeController modeController = Controller.getCurrentModeController();
 		iconRegistry = new IconRegistry(modeController.getMapController(), this);
 	}
 

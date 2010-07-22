@@ -39,7 +39,7 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 	 */
 	private final String toolbarName;
 
-	public ToggleToolbarAction(final Controller controller, final String actionName, final String toolbarName) {
+	public ToggleToolbarAction( final String actionName, final String toolbarName) {
 		super(actionName);
 		this.toolbarName = toolbarName;
 	}
@@ -47,7 +47,7 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent event) {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		final JComponent toolBar = getToolbar();
-		final String propertyName = getController().getViewController().completeVisiblePropertyKey(toolBar);
+		final String propertyName = Controller.getCurrentController().getViewController().completeVisiblePropertyKey(toolBar);
 		final boolean visible = !resourceController.getBooleanProperty(propertyName);
 		resourceController.setProperty(propertyName, visible);
 		toolBar.setVisible(visible);
@@ -55,14 +55,14 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 	}
 
 	private JComponent getToolbar() {
-		final JComponent toolBar = getModeController().getUserInputListenerFactory().getToolBar(toolbarName);
+		final JComponent toolBar = Controller.getCurrentModeController().getUserInputListenerFactory().getToolBar(toolbarName);
 		return toolBar;
 	}
 
 	@Override
 	public void setSelected() {
 		final JComponent toolBar = getToolbar();
-		final boolean isVisible = getController().getViewController().isToolbarVisible(toolBar);
+		final boolean isVisible = Controller.getCurrentController().getViewController().isToolbarVisible(toolBar);
 		setSelected(isVisible);
 	}
 }

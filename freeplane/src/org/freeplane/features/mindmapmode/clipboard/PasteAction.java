@@ -29,14 +29,14 @@ import org.freeplane.features.common.map.NodeModel;
 class PasteAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
-	public PasteAction(final Controller controller) {
+	public PasteAction() {
 		super("PasteAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MClipboardController clipboardController = (MClipboardController) ClipboardController
-		    .getController(getModeController());
-		final NodeModel parent = getController().getSelection().getSelected();
+		    .getController();
+		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();
 		clipboardController.paste(clipboardController.getClipboardContents(), parent, false, parent.isNewChildLeft());
 	}
 }

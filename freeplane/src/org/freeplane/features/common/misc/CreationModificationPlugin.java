@@ -26,13 +26,13 @@ import java.util.Iterator;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.HistoryInformationModel;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.ITooltipProvider;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -49,9 +49,9 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	/**
 	 *
 	 */
-	public CreationModificationPlugin(final ModeController modeControler) {
-		super(modeControler);
-		modeControler.getMapController().addNodeChangeListener(this);
+	public CreationModificationPlugin() {
+		super();
+		Controller.getCurrentModeController().getMapController().addNodeChangeListener(this);
 	}
 
 	/*
@@ -63,12 +63,12 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 		super.add(node, extension);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				getModeController().getMapController().removeNodeChangeListener(CreationModificationPlugin.this);
+				Controller.getCurrentModeController().getMapController().removeNodeChangeListener(CreationModificationPlugin.this);
 				try {
 					setStyleRecursive(node);
 				}
 				finally {
-					getModeController().getMapController().addNodeChangeListener(CreationModificationPlugin.this);
+					Controller.getCurrentModeController().getMapController().addNodeChangeListener(CreationModificationPlugin.this);
 				}
 			}
 		});
@@ -110,7 +110,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	 */
 	private void removeToolTipRecursively(final NodeModel node) {
 		setToolTip(node, getHookName(), null);
-		for (final Iterator<NodeModel> i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator<NodeModel> i = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = i.next();
 			removeToolTipRecursively(child);
 		}
@@ -137,7 +137,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	 */
 	private void setStyleRecursive(final NodeModel node) {
 		setStyle(node);
-		for (final Iterator<NodeModel> i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator<NodeModel> i = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = i.next();
 			setStyleRecursive(child);
 		}
@@ -158,7 +158,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 		final boolean nodeChangeListenerDisabled = this.nodeChangeListenerDisabled;
 		this.nodeChangeListenerDisabled = true;
 		try {
-			(getModeController().getMapController()).setToolTip(node, key, tooltipProvider);
+			(Controller.getCurrentModeController().getMapController()).setToolTip(node, key, tooltipProvider);
 		}
 		finally {
 			this.nodeChangeListenerDisabled = nodeChangeListenerDisabled;

@@ -93,26 +93,27 @@ public class Compat {
 		return new File(Compat.urlGetFile(pUrl));
 	}
 
-	public static void macAppChanges(final Controller controller) {
+	public static void macAppChanges() {
 		if (!Compat.isMacOsX()) {
 			return;
 		}
 		try {
-			final Class<?> macChanges = controller.getClass().getClassLoader().loadClass(
+			final Class<?> macChanges = Controller.class.getClassLoader().loadClass(
 			    "org.freeplane.plugin.macos.MacChanges");
 			final Method method = macChanges.getMethod("apply", Controller.class);
-			method.invoke(null, controller);
+			method.invoke(null);
 		}
 		catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void macMenuChanges(final Controller controller) {
+	public static void macMenuChanges() {
 		if (!Compat.isMacOsX()) {
 			return;
 		}
-		final Set<String> modes = controller.getModes();
+		final Controller controller = Controller.getCurrentController();
+		final Set<String> modes = controller .getModes();
 		for (final String mode : modes) {
 			final MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory()
 			    .getMenuBuilder();

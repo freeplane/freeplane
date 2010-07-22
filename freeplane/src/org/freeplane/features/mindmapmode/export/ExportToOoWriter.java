@@ -57,8 +57,8 @@ public class ExportToOoWriter extends ExportAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ExportToOoWriter(final Controller controller) {
-		super("ExportToOoWriter", controller);
+	public ExportToOoWriter() {
+		super("ExportToOoWriter");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -66,7 +66,7 @@ public class ExportToOoWriter extends ExportAction {
 		if (chosenFile == null) {
 			return;
 		}
-		getController().getViewController().setWaitingCursor(true);
+		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
 			exportToOoWriter(chosenFile);
 		}
@@ -74,7 +74,7 @@ public class ExportToOoWriter extends ExportAction {
 			LogUtils.warn(ex);
 			UITools.errorMessage(TextUtils.getText("export_failed"));
 		}
-		getController().getViewController().setWaitingCursor(false);
+		Controller.getCurrentController().getViewController().setWaitingCursor(false);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class ExportToOoWriter extends ExportAction {
 		final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(file));
 		try {
 			final StringWriter writer = new StringWriter();
-			final ModeController controller = getModeController();
+			final ModeController controller = Controller.getCurrentModeController();
 			final MapModel map = controller.getController().getMap();
 			controller.getMapController().getFilteredXml(map, writer, Mode.EXPORT, true);
 			final Result result = new StreamResult(zipout);

@@ -20,16 +20,16 @@ public class Activator implements BundleActivator {
 // 		private MModeController modeController;
 
 		// implements IModeControllerExtensionProvider.installExtension()
-		public void installExtension(final ModeController modeController) {
+		public void installExtension(ModeController modeController) {
 			addMenuItems(modeController);
-			modeController.addTextTransformer(new SpreadsheetTextTransformer((MModeController) modeController));
+			modeController.addTextTransformer(new SpreadsheetTextTransformer());
 		}
 
-		private void addMenuItems(final ModeController modeController) {
+		private void addMenuItems(ModeController modeController) {
 			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 			addSubMenu(menuBuilder, "/menu_bar/extras/first", MENU_BAR_LOCATION, SpreadSheetUtils
 			    .getSpreadSheetKey("ExecuteScripts"));
-			menuBuilder.addAnnotatedAction(new EvaluateAllAction(modeController.getController()));
+			menuBuilder.addAnnotatedAction(new EvaluateAllAction());
 			addPropertiesToOptionPanel();
 		}
 

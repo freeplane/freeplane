@@ -21,7 +21,6 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
@@ -40,7 +39,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	public Proxy.Connector addConnectorTo(final String targetNodeID) {
-		final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+		final MLinkController linkController = (MLinkController) LinkController.getController();
 		final ConnectorModel connectorModel = linkController.addConnector(getDelegate(), targetNodeID);
 		return new ConnectorProxy(connectorModel);
 	}
@@ -65,7 +64,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	public Proxy.Attributes getAttributes() {
-		return new AttributesProxy(getDelegate(), getModeController());
+		return new AttributesProxy(getDelegate());
 	}
 
 	public int getChildPosition(final Node childNode) {
@@ -93,7 +92,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	public Collection<Proxy.Connector> getConnectorsOut() {
-		return new ConnectorOutListProxy(getDelegate(), getModeController());
+		return new ConnectorOutListProxy(getDelegate());
 	}
 
 	public Proxy.ExternalObject getExternalObject() {
@@ -194,7 +193,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public void removeConnector(final Proxy.Connector connectorToBeRemoved) {
 		final ConnectorProxy connectorProxy = (ConnectorProxy) connectorToBeRemoved;
 		final ConnectorModel link = connectorProxy.getConnector();
-		final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+		final MLinkController linkController = (MLinkController) LinkController.getController();
 		linkController.removeArrowLink(link);
 	}
 
@@ -204,17 +203,17 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	public void setPlainNoteText(String text) {
-		final MNoteController noteController = (MNoteController) NoteController.getController(getModeController());
+		final MNoteController noteController = (MNoteController) NoteController.getController();
 		noteController.setNoteText(getDelegate(), (text == null ? null : HtmlUtils.plainToHTML(text)));
     }
 
 	public void setNoteText(final String text) {
-		final MNoteController noteController = (MNoteController) NoteController.getController(getModeController());
+		final MNoteController noteController = (MNoteController) NoteController.getController();
 		noteController.setNoteText(getDelegate(), text);
 	}
 
 	public void setText(final String text) {
-		final MTextController textController = (MTextController) TextController.getController(getModeController());
+		final MTextController textController = (MTextController) TextController.getController();
 		textController.setNodeText(getDelegate(), text);
 	}
 

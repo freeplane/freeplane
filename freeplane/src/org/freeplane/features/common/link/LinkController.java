@@ -76,16 +76,21 @@ public class LinkController extends SelectionController implements IExtension {
 	public static final String MENUITEM_SCHEME = "menuitem";
 	static Color standardColor = null;
 
-	public static LinkController getController(final ModeController modeController) {
-		return (LinkController) modeController.getExtension(LinkController.class);
+	public static LinkController getController() {
+		final ModeController modeController = Controller.getCurrentModeController();
+		return getController(modeController);
 	}
 
-	public static void install(final Controller controller) {
-		FilterController.getController(controller).getConditionFactory().addConditionController(3,
+	public static LinkController getController(ModeController modeController) {
+		return (LinkController) modeController.getExtension(LinkController.class);
+	}
+	public static void install() {
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(3,
 		    new LinkConditionController());
 	}
 
-	public static void install(final ModeController modeController, final LinkController linkController) {
+	public static void install( final LinkController linkController) {
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(LinkController.class, linkController);
 		final INodeSelectionListener listener = new INodeSelectionListener() {
 			public void onDeselect(final NodeModel node) {
@@ -95,20 +100,19 @@ public class LinkController extends SelectionController implements IExtension {
 				final URI link = NodeLinks.getValidLink(node);
 				final String linkString = (link != null ? link.toString() : null);
 				if (linkString != null) {
-					modeController.getController().getViewController().out(linkString);
+					Controller.getCurrentController().getViewController().out(linkString);
 				}
 			}
 		};
-		modeController.getMapController().addNodeSelectionListener(listener);
-		modeController.getController();
+		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(listener);
 	}
 
 	final private ExclusivePropertyChain<Color, ConnectorModel> colorHandlers;
 // 	final private ModeController modeController;
 
-	public LinkController(final ModeController modeController) {
+	public LinkController() {
 //		this.modeController = modeController;
-		updateStandards(modeController);
+		updateStandards();
 		colorHandlers = new ExclusivePropertyChain<Color, ConnectorModel>();
 		if (listener == null) {
 			listener = new ArrowLinkListener();
@@ -124,7 +128,8 @@ public class LinkController extends SelectionController implements IExtension {
 				return standardColor;
 			}
 		});
-		createActions(modeController);
+		createActions();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -137,7 +142,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	private void addLinks(final JPopupMenu arrowLinkPopup, final NodeModel source) {
-		final IMapSelection selection = getModeController().getController().getSelection();
+		final IMapSelection selection = Controller.getCurrentModeController().getController().getSelection();
 		if (!selection.isSelected(source)) {
 			arrowLinkPopup.add(new GotoLinkNodeAction(this, source));
 		}
@@ -146,8 +151,9 @@ public class LinkController extends SelectionController implements IExtension {
 	/**
 	 *
 	 */
-	private void createActions(final ModeController modeController) {
-		modeController.addAction(new FollowLinkAction(modeController.getController()));
+	private void createActions() {
+		final ModeController modeController = Controller.getCurrentModeController();
+		modeController.addAction(new FollowLinkAction());
 	}
 
 	protected void createArrowLinkPopup(final ConnectorModel link, final JPopupMenu arrowLinkPopup) {
@@ -168,7 +174,7 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		final String adaptedText = uri.toString();
 		if (adaptedText.startsWith("#")) {
-			ModeController modeController = Controller.getCurrentController().getModeController();
+			ModeController modeController = Controller.getCurrentModeController();
 			final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
 			if (dest != null) {
 				return dest.getShortText();
@@ -191,10 +197,6 @@ public class LinkController extends SelectionController implements IExtension {
 			return Collections.emptySet();
 		}
 		return set;
-	}
-
-	public ModeController getModeController() {
-		return 	Controller.getCurrentController().getModeController();
 	}
 
 	/**
@@ -238,7 +240,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public void loadURL(final MouseEvent e) {
-		ModeController modeController = Controller.getCurrentController().getModeController();
+		ModeController modeController = Controller.getCurrentModeController();
 		loadURL(modeController.getMapController().getSelectedNode(), new ActionEvent(e.getSource(), e.getID(), null));
 	}
 
@@ -247,7 +249,7 @@ public class LinkController extends SelectionController implements IExtension {
 		final URI link = NodeLinks.getValidLink(selectedNode);
 		if (link != null) {
 			onDeselect(selectedNode);
-			ModeController modeController = Controller.getCurrentController().getModeController();
+			ModeController modeController = Controller.getCurrentModeController();
 			if (LinkController.isMenuItemLink(link)) {
 				if (e == null) {
 					throw new IllegalArgumentException("ActionEvent is needed for menu item links");
@@ -269,7 +271,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	private UrlManager getURLManager() {
-		ModeController modeController = Controller.getCurrentController().getModeController();
+		ModeController modeController = Controller.getCurrentModeController();
 		return (UrlManager) modeController.getExtension(UrlManager.class);
 	}
 
@@ -280,7 +282,7 @@ public class LinkController extends SelectionController implements IExtension {
 	/**
 	 * @param modeController
 	 */
-	private void updateStandards(final ModeController modeController) {
+	private void updateStandards() {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
 			    LinkController.RESOURCES_LINK_COLOR);
@@ -426,4 +428,5 @@ public class LinkController extends SelectionController implements IExtension {
 	public static String parseMenuItemLink(final URI uri) {
 		return LinkController.parseMenuItemLink(uri.toString());
 	}
+
 }

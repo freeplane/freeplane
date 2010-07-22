@@ -14,7 +14,7 @@ public class NextNodeAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final Direction direction;
 
-	public NextNodeAction(final Controller controller, final Direction direction) {
+	public NextNodeAction( final Direction direction) {
 		super("NextNodeAction." + direction.toString());
 		this.direction = direction;
 	}
@@ -23,11 +23,11 @@ public class NextNodeAction extends AFreeplaneAction {
 	 * 
 	 */
 	public void actionPerformed(final ActionEvent e) {
-		final FilterController filterController = FilterController.getController(getController());
-		final NodeModel start = getController().getSelection().getSelected();
+		final FilterController filterController = FilterController.getCurrentFilterController();
+		final NodeModel start = Controller.getCurrentController().getSelection().getSelected();
 		final NodeModel next = filterController.findNext(start, null, direction, null);
 		if(next != null){
-			getModeController().getMapController().select(next);
+			Controller.getCurrentModeController().getMapController().select(next);
 		}
 	}
 }

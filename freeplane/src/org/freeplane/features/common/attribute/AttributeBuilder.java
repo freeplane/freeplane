@@ -21,7 +21,6 @@ package org.freeplane.features.common.attribute;
 
 import java.io.IOException;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -188,7 +187,7 @@ class AttributeBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "SHOW_ATTRIBUTES",
 		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
-				    ModelessAttributeController.getController(Controller.getCurrentController()).setAttributeViewType(getMap(),
+				    ModelessAttributeController.getController().setAttributeViewType(getMap(),
 				        value.toString());
 			    }
 		    });

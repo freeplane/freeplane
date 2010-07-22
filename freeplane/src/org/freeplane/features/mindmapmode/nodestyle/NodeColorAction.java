@@ -37,20 +37,20 @@ class NodeColorAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 	private Color actionColor;
 
-	public NodeColorAction(final Controller controller) {
+	public NodeColorAction() {
 		super("NodeColorAction");
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		actionColor = ColorTracker.showCommonJColorChooserDialog(getController(), getController().getSelection()
-		    .getSelected(), TextUtils.getText("choose_node_color"), NodeStyleModel.getColor(getModeController()
+		actionColor = ColorTracker.showCommonJColorChooserDialog(Controller.getCurrentController().getSelection()
+		    .getSelected(), TextUtils.getText("choose_node_color"), NodeStyleModel.getColor(Controller.getCurrentModeController()
 		    .getMapController().getSelectedNode()));
 		super.actionPerformed(e);
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) NodeStyleController.getController(getModeController())).setColor(node, actionColor);
+		((MNodeStyleController) NodeStyleController.getController()).setColor(node, actionColor);
 	}
 }

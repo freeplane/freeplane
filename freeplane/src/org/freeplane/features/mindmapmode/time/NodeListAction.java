@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
-import org.freeplane.features.common.map.ModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -38,9 +37,9 @@ class NodeListAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final NodeList nodeList;
 
-	public NodeListAction(final ModeController modeController) {
+	public NodeListAction() {
 		super("NodeListAction");
-		nodeList = new NodeList(modeController, true, false);
+		nodeList = new NodeList(true, false);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

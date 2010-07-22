@@ -57,7 +57,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 	private final boolean cacheContent;
 	private String content;
 
-	public ExecuteScriptAction(final Controller controller, final String scriptName, final String menuItemName,
+	public ExecuteScriptAction( final String scriptName, final String menuItemName,
 	                           final String script, final ExecutionMode mode, final boolean cacheContent) {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
 		this.script = script;
@@ -70,7 +70,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		getController().getViewController().setWaitingCursor(true);
+		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
 			String scriptContent = getContentIfCached();
 			if (scriptContent == null) {
@@ -78,12 +78,12 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 			}
 			final List<NodeModel> nodes = new ArrayList<NodeModel>();
 			if (mode == ExecutionMode.ON_SINGLE_NODE) {
-				nodes.add(getController().getSelection().getSelected());
+				nodes.add(Controller.getCurrentController().getSelection().getSelected());
 			}
 			else {
-				nodes.addAll(getController().getSelection().getSelection());
+				nodes.addAll(Controller.getCurrentController().getSelection().getSelection());
 			}
-			final MModeController modeController = (MModeController) getController().getModeController();
+			final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 			modeController.startTransaction();
 			for (final NodeModel node : nodes) {
 				try {
@@ -111,7 +111,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 			UITools.errorMessage(TextUtils.getText("ReadScriptError.text"));
 		}
 		finally {
-			getController().getViewController().setWaitingCursor(false);
+			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
 

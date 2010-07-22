@@ -30,7 +30,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
 class ConnectorColorAction extends AFreeplaneAction {
@@ -46,10 +45,9 @@ class ConnectorColorAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Controller controller = getController();
-		final ModeController modeController = getModeController();
-		final Color selectedColor = LinkController.getController(modeController).getColor(arrowLink);
-		final Color color = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection()
+		final Controller controller = Controller.getCurrentController();
+		final Color selectedColor = LinkController.getController().getColor(arrowLink);
+		final Color color = ColorTracker.showCommonJColorChooserDialog(controller.getSelection()
 		    .getSelected(), (String) this.getValue(Action.NAME), selectedColor);
 		setArrowLinkColor(arrowLink, color);
 	}
@@ -63,7 +61,7 @@ class ConnectorColorAction extends AFreeplaneAction {
 			public void act() {
 				arrowLink.setColor(color);
 				final NodeModel node = arrowLink.getSource();
-				getModeController().getMapController().nodeChanged(node);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
@@ -73,9 +71,9 @@ class ConnectorColorAction extends AFreeplaneAction {
 			public void undo() {
 				arrowLink.setColor(oldColor);
 				final NodeModel node = arrowLink.getSource();
-				getModeController().getMapController().nodeChanged(node);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 		};
-		getModeController().execute(actor, arrowLink.getSource().getMap());
+		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
 	}
 }

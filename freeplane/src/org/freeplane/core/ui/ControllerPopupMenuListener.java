@@ -36,14 +36,14 @@ public class ControllerPopupMenuListener implements PopupMenuListener {
 	}
 
 	public void popupMenuCanceled(final PopupMenuEvent e) {
-		Controller.getCurrentController().getModeController().setBlocked(false);
+		Controller.getCurrentModeController().setBlocked(false);
 	}
 
 	public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-		Controller.getCurrentController().getModeController().setBlocked(false);
+		Controller.getCurrentModeController().setBlocked(false);
 	}
 
 	public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-		Controller.getCurrentController().getModeController().setBlocked(true);
+		Controller.getCurrentModeController().setBlocked(true);
 	}
 }

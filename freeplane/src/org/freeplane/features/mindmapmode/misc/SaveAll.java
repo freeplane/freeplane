@@ -46,12 +46,12 @@ public class SaveAll extends AFreeplaneAction {
 	/**
 	 *
 	 */
-	public SaveAll(final Controller controller) {
+	public SaveAll() {
 		super("SaveAll");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Controller controller = getController();
+		final Controller controller = Controller.getCurrentController();
 		final Component initialMapView = controller.getViewController().getMapView();
 		final Map<String, MapModel> mapViews = getMapViews();
 		final Iterator<Entry<String, MapModel>> iterator = mapViews.entrySet().iterator();
@@ -73,6 +73,6 @@ public class SaveAll extends AFreeplaneAction {
 	/**
 	 */
 	private Map<String, MapModel> getMapViews() {
-		return getController().getMapViewManager().getMaps();
+		return Controller.getCurrentController().getMapViewManager().getMaps();
 	}
 }

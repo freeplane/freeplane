@@ -87,7 +87,7 @@ public class MLinkController extends LinkController {
 			}
 			arrowLink = new ConnectorModel(source, targetID);
 			nodeLinks.addArrowlink(arrowLink);
-			getModeController().getMapController().nodeChanged(source);
+			Controller.getCurrentModeController().getMapController().nodeChanged(source);
 		}
 
 		public String getDescription() {
@@ -97,7 +97,7 @@ public class MLinkController extends LinkController {
 		public void undo() {
 			final NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
 			nodeLinks.removeArrowlink(arrowLink);
-			getModeController().getMapController().nodeChanged(source);
+			Controller.getCurrentModeController().getMapController().nodeChanged(source);
 		}
 	}
 
@@ -114,7 +114,7 @@ public class MLinkController extends LinkController {
 
 		public void act() {
 			model.setTargetLabel(label);
-			getModeController().getMapController().nodeChanged(model.getSource());
+			Controller.getCurrentModeController().getMapController().nodeChanged(model.getSource());
 		}
 
 		public String getDescription() {
@@ -123,7 +123,7 @@ public class MLinkController extends LinkController {
 
 		public void undo() {
 			model.setTargetLabel(oldLabel);
-			getModeController().getMapController().nodeChanged(model.getSource());
+			Controller.getCurrentModeController().getMapController().nodeChanged(model.getSource());
 		}
 	}
 
@@ -140,7 +140,7 @@ public class MLinkController extends LinkController {
 
 		public void act() {
 			model.setSourceLabel(label);
-			getModeController().getMapController().nodeChanged(model.getSource());
+			Controller.getCurrentModeController().getMapController().nodeChanged(model.getSource());
 		}
 
 		public String getDescription() {
@@ -149,7 +149,7 @@ public class MLinkController extends LinkController {
 
 		public void undo() {
 			model.setSourceLabel(oldLabel);
-			getModeController().getMapController().nodeChanged(model.getSource());
+			Controller.getCurrentModeController().getMapController().nodeChanged(model.getSource());
 		}
 	}
 
@@ -166,7 +166,7 @@ public class MLinkController extends LinkController {
 
 		public void act() {
 			model.setMiddleLabel(label);
-			getModeController().getMapController().nodeChanged(model.getSource());
+			Controller.getCurrentModeController().getMapController().nodeChanged(model.getSource());
 		}
 
 		public String getDescription() {
@@ -175,7 +175,7 @@ public class MLinkController extends LinkController {
 
 		public void undo() {
 			model.setMiddleLabel(oldLabel);
-			getModeController().getMapController().nodeChanged(model.getSource());
+			Controller.getCurrentModeController().getMapController().nodeChanged(model.getSource());
 		}
 	}
 
@@ -219,7 +219,7 @@ public class MLinkController extends LinkController {
 		}
 
 		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
-			if (((MModeController) getModeController()).isUndoAction()) {
+			if (((MModeController) Controller.getCurrentModeController()).isUndoAction()) {
 				return;
 			}
 			EventQueue.invokeLater(new Runnable() {
@@ -238,7 +238,7 @@ public class MLinkController extends LinkController {
 		}
 
 		private void onChange(final NodeModel model, final boolean delete) {
-			if (((MModeController) getModeController()).isUndoAction()) {
+			if (((MModeController) Controller.getCurrentModeController()).isUndoAction()) {
 				return;
 			}
 			final MapModel map = model.getMap();
@@ -295,7 +295,7 @@ public class MLinkController extends LinkController {
 					}
 				};
 				final MapModel map = model.getMap();
-				getModeController().execute(actor, map);
+				Controller.getCurrentModeController().execute(actor, map);
 			}
 		}
 
@@ -325,7 +325,7 @@ public class MLinkController extends LinkController {
 					for (final LinkModel link : linkModels) {
 						if (link instanceof HyperTextLinkModel) {
 							final NodeModel source = ((HyperTextLinkModel) link).getSource();
-							getModeController().getMapController().delayedNodeRefresh(source, NodeModel.NODE_ICON,
+							Controller.getCurrentModeController().getMapController().delayedNodeRefresh(source, NodeModel.NODE_ICON,
 							    null, null);
 						}
 					}
@@ -336,7 +336,7 @@ public class MLinkController extends LinkController {
 				}
 			};
 			final MapModel map = model.getMap();
-			getModeController().execute(actor, map);
+			Controller.getCurrentModeController().execute(actor, map);
 		}
 
 		public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
@@ -349,9 +349,10 @@ public class MLinkController extends LinkController {
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
 
-	public MLinkController(final MModeController modeController) {
-		super(modeController);
-		createActions(modeController);
+	public MLinkController() {
+		super();
+		createActions();
+		final ModeController modeController = Controller.getCurrentModeController();
 		(modeController.getMapController()).addMapChangeListener(new NodeDeletionListener());
 	}
 
@@ -367,7 +368,7 @@ public class MLinkController extends LinkController {
 			public void act() {
 				link.setStartArrow(startArrow);
 				link.setEndArrow(endArrow);
-				getModeController().getMapController().nodeChanged(link.getSource());
+				Controller.getCurrentModeController().getMapController().nodeChanged(link.getSource());
 			}
 
 			public String getDescription() {
@@ -377,37 +378,37 @@ public class MLinkController extends LinkController {
 			public void undo() {
 				link.setStartArrow(oldStartArrow);
 				link.setEndArrow(oldEndArrow);
-				getModeController().getMapController().nodeChanged(link.getSource());
+				Controller.getCurrentModeController().getMapController().nodeChanged(link.getSource());
 			}
 		};
-		getModeController().execute(actor, link.getSource().getMap());
+		Controller.getCurrentModeController().execute(actor, link.getSource().getMap());
 	}
 
 	/**
 	 *
 	 */
-	private void createActions(final ModeController modeController) {
-		final Controller controller = modeController.getController();
-		setLinkByFileChooser = new SetLinkByFileChooserAction(controller);
+	private void createActions() {
+		final ModeController modeController = Controller.getCurrentModeController();
+		setLinkByFileChooser = new SetLinkByFileChooserAction();
 		modeController.addAction(setLinkByFileChooser);
-		final AddConnectorAction addArrowLinkAction = new AddConnectorAction(controller);
+		final AddConnectorAction addArrowLinkAction = new AddConnectorAction();
 		modeController.addAction(addArrowLinkAction);
 		modeController.addAction(new RemoveConnectorAction(this, null));
 		colorArrowLinkAction = new ConnectorColorAction(this, null);
 		modeController.addAction(colorArrowLinkAction);
 		edgeLikeLinkAction = new EdgeLikeConnectorAction(this, null);
 		modeController.addAction(edgeLikeLinkAction);
-		setLinkByTextField = new SetLinkByTextFieldAction(controller);
+		setLinkByTextField = new SetLinkByTextFieldAction();
 		modeController.addAction(setLinkByTextField);
-		modeController.addAction(new AddLocalLinkAction(controller));
-		modeController.addAction(new AddMenuItemLinkAction(controller));
-		modeController.addAction(new ExtractLinkFromTextAction(controller));
+		modeController.addAction(new AddLocalLinkAction());
+		modeController.addAction(new AddMenuItemLinkAction());
+		modeController.addAction(new ExtractLinkFromTextAction());
 	}
 
 	@Override
 	protected void createArrowLinkPopup(final ConnectorModel link, final JPopupMenu arrowLinkPopup) {
 		super.createArrowLinkPopup(link, arrowLinkPopup);
-		((RemoveConnectorAction) getModeController().getAction("RemoveConnectorAction")).setArrowLink(link);
+		((RemoveConnectorAction) Controller.getCurrentModeController().getAction("RemoveConnectorAction")).setArrowLink(link);
 		arrowLinkPopup.add(new RemoveConnectorAction(this, link));
 		arrowLinkPopup.add(new ConnectorColorAction(this, link));
 		final EdgeLikeConnectorAction action = new EdgeLikeConnectorAction(this, link);
@@ -503,7 +504,7 @@ public class MLinkController extends LinkController {
 			public void act() {
 				link.setStartInclination(startPoint);
 				link.setEndInclination(endPoint);
-				getModeController().getMapController().nodeChanged(link.getSource());
+				Controller.getCurrentModeController().getMapController().nodeChanged(link.getSource());
 			}
 
 			public String getDescription() {
@@ -513,10 +514,10 @@ public class MLinkController extends LinkController {
 			public void undo() {
 				link.setStartInclination(oldStartPoint);
 				link.setEndInclination(oldEndPoint);
-				getModeController().getMapController().nodeChanged(link.getSource());
+				Controller.getCurrentModeController().getMapController().nodeChanged(link.getSource());
 			}
 		};
-		getModeController().execute(actor, link.getSource().getMap());
+		Controller.getCurrentModeController().execute(actor, link.getSource().getMap());
 	}
 
 	public void setLink(final NodeModel node, final String link, final boolean makeRelative) {
@@ -564,7 +565,7 @@ public class MLinkController extends LinkController {
 					links.setLocalHyperlink(node, uri.toString().substring(1));
 				}
 				links.setHyperLink(uri);
-				getModeController().getMapController().nodeChanged(node);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
@@ -575,10 +576,10 @@ public class MLinkController extends LinkController {
 				final NodeLinks links = NodeLinks.getLinkExtension(node);
 				links.setLocalHyperlink(node, oldTargetID);
 				links.setHyperLink(oldlink);
-				getModeController().getMapController().nodeChanged(node);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 		};
-		setLinkByTextField.getModeController().execute(actor, node.getMap());
+		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
 	public void setLinkByFileChooser() {
@@ -597,7 +598,7 @@ public class MLinkController extends LinkController {
 			return;
 		}
 		final IActor actor = new MiddleLabelSetter(model, oldLabel, label);
-		getModeController().execute(actor, model.getSource().getMap());
+		Controller.getCurrentModeController().execute(actor, model.getSource().getMap());
 	}
 
 	public void setSourceLabel(final ConnectorModel model, String label) {
@@ -612,7 +613,7 @@ public class MLinkController extends LinkController {
 			return;
 		}
 		final IActor actor = new SourceLabelSetter(model, label, oldLabel);
-		getModeController().execute(actor, model.getSource().getMap());
+		Controller.getCurrentModeController().execute(actor, model.getSource().getMap());
 	}
 
 	public void setTargetLabel(final ConnectorModel model, String label) {
@@ -627,12 +628,12 @@ public class MLinkController extends LinkController {
 			return;
 		}
 		final IActor actor = new TargetLabelSetter(oldLabel, label, model);
-		getModeController().execute(actor, model.getSource().getMap());
+		Controller.getCurrentModeController().execute(actor, model.getSource().getMap());
 	}
 
 	public ConnectorModel addConnector(final NodeModel source, final String targetID) {
 		final CreateArrowLinkActor actor = new CreateArrowLinkActor(targetID, source);
-		getModeController().execute(actor, source.getMap());
+		Controller.getCurrentModeController().execute(actor, source.getMap());
 		return actor.getArrowLink();
 	}
 
@@ -642,7 +643,7 @@ public class MLinkController extends LinkController {
 				final NodeModel source = arrowLink.getSource();
 				final NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
 				nodeLinks.removeArrowlink(arrowLink);
-				getModeController().getMapController().nodeChanged(source);
+				Controller.getCurrentModeController().getMapController().nodeChanged(source);
 			}
 
 			public String getDescription() {
@@ -657,10 +658,10 @@ public class MLinkController extends LinkController {
 					source.addExtension(nodeLinks);
 				}
 				nodeLinks.addArrowlink(arrowLink);
-				getModeController().getMapController().nodeChanged(source);
+				Controller.getCurrentModeController().getMapController().nodeChanged(source);
 			}
 		};
-		getModeController().execute(actor, arrowLink.getSource().getMap());
+		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
 	}
 
 	public void setEdgeLike(final ConnectorModel connector, final boolean edgeLike) {
@@ -672,7 +673,7 @@ public class MLinkController extends LinkController {
 			public void act() {
 				connector.setEdgeLike(edgeLike);
 				final NodeModel node = connector.getSource();
-				getModeController().getMapController().nodeChanged(node);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
@@ -682,9 +683,9 @@ public class MLinkController extends LinkController {
 			public void undo() {
 				connector.setEdgeLike(alreadyEdgeLike);
 				final NodeModel node = connector.getSource();
-				getModeController().getMapController().nodeChanged(node);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 		};
-		getModeController().execute(actor, connector.getSource().getMap());
+		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
 	}
 }

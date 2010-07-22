@@ -25,7 +25,7 @@ public abstract class AbstractProxy<T> {
 	}
 
 	public MModeController getModeController() {
-		return (MModeController) Controller.getCurrentController().getModeController();
+		return (MModeController) Controller.getCurrentModeController();
 	}
 
 	@Override

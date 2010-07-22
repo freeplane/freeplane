@@ -155,7 +155,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	private int winState;
 	final private String propertyKeyPrefix;
 
-	public ViewController(final Controller controller, final IMapViewManager mapViewManager,
+	public ViewController(Controller controller,  final IMapViewManager mapViewManager,
 	                      final String propertyKeyPrefix) {
 		super();
 		this.propertyKeyPrefix = propertyKeyPrefix;
@@ -167,7 +167,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		controller.setViewController(this);
 		this.mapViewManager = mapViewManager;
 		mapViewManager.addMapViewChangeListener(this);
-		controller.addAction(new CloseAction(controller));
+		controller.addAction(new CloseAction());
 		zoomIn = new ZoomInAction(this);
 		controller.addAction(zoomIn);
 		zoomOut = new ZoomOutAction(this);
@@ -185,8 +185,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			zoomModel.setSelectedItem("100%");
 			LogUtils.severe(e);
 		}
-		controller.addAction(new ToggleMenubarAction(controller, this));
-		controller.addAction(new ToggleToolbarAction(controller, "ToggleToolbarAction", "/main_toolbar"));
+		controller.addAction(new ToggleMenubarAction(this));
+		controller.addAction(new ToggleToolbarAction("ToggleToolbarAction", "/main_toolbar"));
 		toolbarPanel = new JComponent[4];
 		toolbarPanel[TOP] = new HorizontalToolbarPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		toolbarPanel[BOTTOM] = Box.createHorizontalBox();
@@ -535,7 +535,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		mapViewManager.scrollNodeToVisible(node);
 	}
 
-	public void selectMode(final ModeController oldModeController, final ModeController newModeController) {
+	public void selectMode( final ModeController oldModeController,  final ModeController newModeController) {
 		if (oldModeController == newModeController) {
 			return;
 		}
@@ -614,7 +614,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	 * Set the Frame title with mode and file if exist
 	 */
 	public void setTitle() {
-		final ModeController modeController = Controller.getCurrentController().getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		if (modeController == null) {
 			setTitle("");
 			return;

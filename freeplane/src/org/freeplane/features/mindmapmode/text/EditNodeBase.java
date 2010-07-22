@@ -39,10 +39,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.WindowConstants;
 import javax.swing.text.JTextComponent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.ClipboardController;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
@@ -65,8 +63,7 @@ public class EditNodeBase {
 		public void actionPerformed(final ActionEvent e) {
 			final String selection = textComponent.getSelectedText();
 			if (selection != null) {
-				ModeController modeController = (Controller.getCurrentController().getModeController());
-				ClipboardController.getController(modeController).setClipboardContents(new StringSelection(selection));
+				ClipboardController.getController().setClipboardContents(new StringSelection(selection));
 			}
 		}
 	}
@@ -204,8 +201,7 @@ public class EditNodeBase {
 
 		public EditPopupMenu(final JTextComponent textComponent) {
 			this.add(new EditCopyAction(textComponent));
-			ModeController modeController = (Controller.getCurrentController().getModeController());
-			SpellCheckerController.getController(modeController).addSpellCheckerMenu(this);
+			SpellCheckerController.getController().addSpellCheckerMenu(this);
 		}
 	}
 
@@ -226,7 +222,7 @@ public class EditNodeBase {
 	protected String text;
 	protected FocusListener textFieldListener = null;
 
-	protected EditNodeBase(final NodeModel node, final String text, final ModeController modeController,
+	protected EditNodeBase(final NodeModel node, final String text,
 	                       final IEditControl editControl) {
 //		this.modeController = modeController;
 		this.editControl = editControl;
@@ -241,20 +237,9 @@ public class EditNodeBase {
 	}
 
 	/**
-		 *
-		 */
-	protected Controller getController() {
-		return Controller.getCurrentController();
-	}
-
-	/**
 	 */
 	public IEditControl getEditControl() {
 		return editControl;
-	}
-
-	protected ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
 	}
 
 	/**

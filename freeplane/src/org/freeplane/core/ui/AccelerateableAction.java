@@ -65,7 +65,7 @@ class AccelerateableAction implements IFreeplaneAction {
 
 	private static final String SET_ACCELERATOR_ON_NEXT_CLICK_ACTION = "set_accelerator_on_next_click_action";
 
-	static void setNewAcceleratorOnNextClick(final Controller controller) {
+	static void setNewAcceleratorOnNextClick() {
 		if (AccelerateableAction.isNewAcceleratorOnNextClickEnabled()) {
 			return;
 		}
@@ -74,6 +74,7 @@ class AccelerateableAction implements IFreeplaneAction {
 		final String[] options = { TextUtils.removeMnemonic(TextUtils.getText("cancel")) };
 		final JOptionPane infoPane = new JOptionPane(text, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null,
 		    options);
+		final Controller controller = Controller.getCurrentController();
 		setAcceleratorOnNextClickActionDialog = infoPane.createDialog(controller.getViewController().getFrame(), titel);
 		setAcceleratorOnNextClickActionDialog.setModal(false);
 		setAcceleratorOnNextClickActionDialog.addComponentListener(new ComponentAdapter() {

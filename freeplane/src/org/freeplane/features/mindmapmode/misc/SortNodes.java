@@ -57,7 +57,7 @@ public class SortNodes extends AMultipleNodeAction {
 	 * @param controller 
 	 *
 	 */
-	public SortNodes(final Controller controller) {
+	public SortNodes() {
 		super("SortNodes");
 	}
 
@@ -66,7 +66,7 @@ public class SortNodes extends AMultipleNodeAction {
 		final Vector<NodeModel> sortVector = new Vector<NodeModel>();
 		sortVector.addAll(node.getChildren());
 		Collections.sort(sortVector, new NodeTextComparator());
-		final MMapController mapController = (MMapController) getModeController().getMapController();
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		int i = 0;
 		for (final NodeModel child : sortVector) {
 			mapController.moveNode(child, node, i++);

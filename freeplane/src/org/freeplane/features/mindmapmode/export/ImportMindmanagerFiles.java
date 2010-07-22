@@ -56,16 +56,16 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ImportMindmanagerFiles(final Controller controller) {
+	public ImportMindmanagerFiles() {
 		super("ImportMindmanagerFiles");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final String type = "mmap";
-		final Container component = getController().getViewController().getContentPane();
+		final Container component = Controller.getCurrentController().getViewController().getContentPane();
 		final JFileChooser chooser = new JFileChooser();
 		chooser.addChoosableFileFilter(new ExportFilter(type, null));
-		final File mmFile = getController().getMap().getFile();
+		final File mmFile = Controller.getCurrentController().getMap().getFile();
 		if (mmFile != null && mmFile.getParentFile() != null) {
 			chooser.setSelectedFile(mmFile.getParentFile());
 		}
@@ -102,7 +102,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(xml);
 					fw.close();
-					getModeController().getMapController().newMap(Compat.fileToUrl(tempFile));
+					Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(tempFile));
 				}
 				break;
 			}

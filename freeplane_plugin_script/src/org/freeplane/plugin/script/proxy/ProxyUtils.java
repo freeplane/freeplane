@@ -9,9 +9,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import org.freeplane.features.common.filter.condition.ICondition;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 public class ProxyUtils {

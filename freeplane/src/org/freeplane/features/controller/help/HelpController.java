@@ -29,38 +29,40 @@ import org.freeplane.core.resources.ResourceController;
  * @author Dimitry Polivaev
  */
 public class HelpController implements IExtension {
-	public static HelpController getController(final Controller controller) {
-		return (HelpController) controller.getExtension(HelpController.class);
+	public static HelpController getController() {
+		return (HelpController) Controller.getCurrentController().getExtension(HelpController.class);
 	}
 
-	public static void install(final Controller controller) {
-		controller.addExtension(HelpController.class, new HelpController(controller));
+	public static void install() {
+		Controller controller = Controller.getCurrentController();
+		controller.addExtension(HelpController.class, new HelpController());
 	}
 
 	final private OpenURLAction webDocu;
 
-	public HelpController(final Controller controller) {
+	public HelpController() {
 		super();
-		controller.addAction(new AboutAction(controller));
+		Controller controller = Controller.getCurrentController();
+		controller.addAction(new AboutAction());
 		final ResourceController resourceController = ResourceController.getResourceController();
-		controller.addAction(new OpenURLAction("OpenFreeplaneSiteAction", controller, resourceController
+		controller.addAction(new OpenURLAction("OpenFreeplaneSiteAction",  resourceController
 		    .getProperty("webFreeplaneLocation")));
-		controller.addAction(new OpenSourceForgeURLAction("ReportBugAction", controller, resourceController
+		controller.addAction(new OpenSourceForgeURLAction("ReportBugAction",  resourceController
 		    .getProperty("bugTrackerLocation")));
-		controller.addAction(new OpenSourceForgeURLAction("RequestFeatureAction", controller, resourceController
+		controller.addAction(new OpenSourceForgeURLAction("RequestFeatureAction",  resourceController
 		    .getProperty("featureTrackerLocation")));
-		controller.addAction(new OpenSourceForgeURLAction("AskForHelp", controller, resourceController
+		controller.addAction(new OpenSourceForgeURLAction("AskForHelp",  resourceController
 		    .getProperty("helpForumLocation")));
-		controller.addAction(new KeyDocumentationAction(controller));
-		webDocu = new OpenURLAction("WebDocuAction", controller, resourceController.getProperty("webDocuLocation"));
+		controller.addAction(new KeyDocumentationAction());
+		webDocu = new OpenURLAction("WebDocuAction",  resourceController.getProperty("webDocuLocation"));
 		controller.addAction(webDocu);
 		final String defaultMap = resourceController.getProperty("docu_map");
-		controller.addAction(new DocumentationAction(controller, "DocumentationAction", defaultMap));
+		controller.addAction(new DocumentationAction("DocumentationAction", defaultMap));
 		final String referenceMap = resourceController.getProperty("menuref_map");
-		controller.addAction(new DocumentationAction(controller, "MenuReferenceAction", referenceMap));
+		controller.addAction(new DocumentationAction("MenuReferenceAction", referenceMap));
 		final String hotKeyInfo = resourceController.getProperty("hot_key_info");
-		controller.addAction(new DocumentationAction(controller, "HotKeyInfoAction", hotKeyInfo));
-		controller.addAction(new LicenseAction(controller));
+		controller.addAction(new DocumentationAction("HotKeyInfoAction", hotKeyInfo));
+		controller.addAction(new LicenseAction());
 	}
 
 	/**

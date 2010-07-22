@@ -8,7 +8,6 @@ import java.awt.event.ComponentListener;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 public class ControlToolbar {
@@ -29,7 +28,7 @@ public class ControlToolbar {
 		return status;
 	}
 
-	public ControlToolbar(final Controller controller, final String key, final Window window) {
+	public ControlToolbar( final String key, final Window window) {
 		this.window = window;
 		window.addComponentListener(new ComponentListener() {
 			public void componentShown(final ComponentEvent e) {

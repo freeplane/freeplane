@@ -19,9 +19,9 @@ public class Activator implements BundleActivator {
 		props.put("mode", new String[] { MModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
-			    public void installExtension(final ModeController modeController) {
+			    public void installExtension(ModeController modeController) {
 				    final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-				    menuBuilder.addAnnotatedAction(new FreeplaneHelpStarter(modeController.getController()));
+				    menuBuilder.addAnnotatedAction(new FreeplaneHelpStarter());
 			    }
 		    }, props);
 	}

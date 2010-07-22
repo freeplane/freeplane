@@ -21,7 +21,6 @@ package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeModel;
@@ -33,7 +32,7 @@ class UseRichFormattingAction extends AMultipleNodeAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public UseRichFormattingAction(final Controller controller) {
+	public UseRichFormattingAction() {
 		super("UseRichFormattingAction");
 	}
 
@@ -41,7 +40,7 @@ class UseRichFormattingAction extends AMultipleNodeAction {
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final String nodeText = node.getText();
 		if (!HtmlUtils.isHtmlNode(nodeText)) {
-			((MTextController) TextController.getController(getModeController())).setNodeText(node, HtmlUtils
+			((MTextController) TextController.getController()).setNodeText(node, HtmlUtils
 			    .plainToHTML(nodeText));
 		}
 	}

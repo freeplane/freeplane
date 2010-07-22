@@ -18,7 +18,7 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 	static final String FILTER_STYLE = "filter_style";
 // // 	private final Controller controller;
 
-	public LogicalStyleFilterController(final Controller controller) {
+	public LogicalStyleFilterController() {
 		super();
 //		this.controller = controller;
 	}

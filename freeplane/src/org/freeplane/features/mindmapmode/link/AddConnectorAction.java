@@ -40,18 +40,18 @@ class AddConnectorAction extends AFreeplaneAction {
 
 	/**
 	 */
-	public AddConnectorAction(final Controller controller) {
+	public AddConnectorAction() {
 		super("AddConnectorAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final List<NodeModel> selecteds = getModeController().getMapController().getSelectedNodes();
+		final List<NodeModel> selecteds = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		if (selecteds.size() < 2) {
-			getController();
+			Controller.getCurrentController();
 			UITools.errorMessage(TextUtils.getText("less_than_two_selected_nodes"));
 			return;
 		}
-		final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+		final MLinkController linkController = (MLinkController) LinkController.getController();
 		for (int i = 1; i < selecteds.size(); i++) {
 			linkController.addConnector(selecteds.get(i), selecteds.get(0));
 		}

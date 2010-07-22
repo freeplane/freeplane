@@ -30,7 +30,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.map.MMapModel;
@@ -48,7 +47,7 @@ public class DoAutomaticSave extends TimerTask {
 	final private MapModel model;
 	final private int numberOfFiles;
 
-	public DoAutomaticSave(final ModeController modeController, final MapModel model, final int numberOfTempFiles,
+	public DoAutomaticSave( final MapModel model, final int numberOfTempFiles,
 	                       final boolean filesShouldBeDeletedAfterShutdown) {
 //		this.modeController = modeController;
 		this.model = model;
@@ -97,8 +96,8 @@ public class DoAutomaticSave extends TimerTask {
 						if (filesShouldBeDeletedAfterShutdown) {
 							tempFile.deleteOnExit();
 						}
-						MModeController modeController = ((MModeController)Controller.getCurrentController().getModeController());
-						((MFileManager) UrlManager.getController(modeController)).saveInternal((MMapModel) model,
+						MModeController modeController = ((MModeController)Controller.getCurrentModeController());
+						((MFileManager) UrlManager.getController()).saveInternal((MMapModel) model,
 						    tempFile, true /*=internal call*/);
 						modeController.getController().getViewController().out(
 						    TextUtils.format("automatically_save_message", new Object[] { tempFile.toString() }));

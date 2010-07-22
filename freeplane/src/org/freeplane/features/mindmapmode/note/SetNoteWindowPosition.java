@@ -17,7 +17,7 @@ class SetNoteWindowPosition extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final String position;
 
-	public SetNoteWindowPosition(final Controller controller, final String position) {
+	public SetNoteWindowPosition( final String position) {
 		super("SetNoteWindowPosition." + position);
 		this.position = position;
 	};
@@ -25,7 +25,7 @@ class SetNoteWindowPosition extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		resourceController.setProperty("note_location", position);
-		final ViewController viewController = getModeController().getController().getViewController();
+		final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
 		final String useSplitPaneProp = resourceController.getProperty(MNoteController.RESOURCES_USE_SPLIT_PANE);
 		final boolean useSplitPane = useSplitPaneProp == null ? false : Boolean.parseBoolean(useSplitPaneProp);
 		viewController.changeNoteWindowLocation(useSplitPane);

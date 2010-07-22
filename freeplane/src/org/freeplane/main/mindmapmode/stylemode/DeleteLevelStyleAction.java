@@ -38,7 +38,7 @@ import org.freeplane.features.mindmapmode.map.MMapController;
  * 02.10.2009
  */
 public class DeleteLevelStyleAction extends AFreeplaneAction {
-	public DeleteLevelStyleAction(final Controller controller) {
+	public DeleteLevelStyleAction() {
 		super("DeleteLevelStyleAction");
 	}
 
@@ -48,8 +48,8 @@ public class DeleteLevelStyleAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = getModeController();
-		final MapModel map = getController().getMap();
+		final ModeController modeController = Controller.getCurrentModeController();
+		final MapModel map = Controller.getCurrentController().getMap();
 		final NodeModel levelStyleParentNode = getLevelStyleParentNode(map);
 		final int childNumber = levelStyleParentNode.getChildCount() - 1;
 		if (childNumber < 1) {
@@ -75,7 +75,7 @@ public class DeleteLevelStyleAction extends AFreeplaneAction {
 				styleModel.removeStyleNode(node);
 			}
 		};
-		getModeController().execute(actor, map);
+		Controller.getCurrentModeController().execute(actor, map);
 	}
 
 	private NodeModel getLevelStyleParentNode(final MapModel map) {

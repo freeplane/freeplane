@@ -19,6 +19,7 @@ package org.freeplane.features.mindmapmode.encrypt;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
@@ -35,7 +36,7 @@ public class EncryptedMap extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public EncryptedMap(final ModeController modeController) {
+	public EncryptedMap() {
 		super("EncryptedMap");
 	}
 
@@ -47,7 +48,7 @@ public class EncryptedMap extends AFreeplaneAction {
 	 * @param e 
 	 */
 	private StringBuilder getUsersPassword() {
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController().getFrame(),
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getCurrentController().getViewController().getFrame(),
 		    true);
 		pwdDialog.setModal(true);
 		pwdDialog.show();
@@ -67,7 +68,7 @@ public class EncryptedMap extends AFreeplaneAction {
 		if (password == null) {
 			return;
 		}
-		final ModeController newModeController = getModeController();
+		final ModeController newModeController = Controller.getCurrentModeController();
 		final NodeModel node = new NodeModel(TextUtils.getText("accessories/plugins/EncryptNode.properties_select_me"),
 		    null);
 		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);

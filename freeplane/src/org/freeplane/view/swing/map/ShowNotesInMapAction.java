@@ -10,19 +10,19 @@ import org.freeplane.core.ui.SelectableAction;
 @SelectableAction(checkOnPopup=true)
 public class ShowNotesInMapAction extends AFreeplaneAction {
 
-	public ShowNotesInMapAction(Controller controller) {
+	public ShowNotesInMapAction() {
 		super("ShowNotesInMapAction");
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		MapView map = (MapView)getController().getMapViewManager().getMapViewComponent();
+		MapView map = (MapView)Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 		map.setShowNotes(!map.showNotes());
 		setSelected();
 	}
 
 	@Override
 	public void setSelected() {
-		MapView map = (MapView)getController().getMapViewManager().getMapViewComponent();
+		MapView map = (MapView)Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 		setSelected(map.showNotes());
 	}
 

@@ -8,7 +8,6 @@ import java.net.URISyntaxException;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.view.swing.addins.filepreview.ExternalResource;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
 

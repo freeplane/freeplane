@@ -33,7 +33,6 @@ import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.styles.MapStyleModel;
@@ -127,8 +126,7 @@ class MindMapHTMLWriter {
 
 	MindMapHTMLWriter(final MapController mapController, final Writer fileout) {
 		this.mapController = mapController;
-		final ModeController modeController = mapController.getModeController();
-		nodeStyleController = NodeStyleController.getController(modeController);
+		nodeStyleController = NodeStyleController.getController();
 		this.fileout = fileout;
 		writeFoldingCode = false;
 		basedOnHeadings = (getProperty("html_export_folding").equals("html_export_based_on_headings"));

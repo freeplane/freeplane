@@ -2,7 +2,6 @@ package org.freeplane.plugin.svg;
 
 import java.util.Hashtable;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.common.map.ModeController;
@@ -27,11 +26,10 @@ public class Activator implements BundleActivator {
 		props.put("mode", new String[] { MModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
-			    public void installExtension(final ModeController modeController) {
+			    public void installExtension(ModeController modeController) {
 				    final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-				    final Controller controller = modeController.getController();
-				    menuBuilder.addAnnotatedAction(new ExportPdf(controller));
-				    menuBuilder.addAnnotatedAction(new ExportSvg(controller));
+				    menuBuilder.addAnnotatedAction(new ExportPdf());
+				    menuBuilder.addAnnotatedAction(new ExportSvg());
 				    final ViewerController extension = (ViewerController) modeController
 				        .getExtension(ViewerController.class);
 				    extension.addFactory(new SvgViewerFactory());
@@ -44,7 +42,7 @@ public class Activator implements BundleActivator {
 		props.put("mode", new String[] { BModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
-			    public void installExtension(final ModeController modeController) {
+			    public void installExtension(ModeController modeController) {
 				    final ViewerController extension = (ViewerController) modeController
 				        .getExtension(ViewerController.class);
 				    extension.addFactory(new SvgViewerFactory());

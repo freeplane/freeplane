@@ -34,27 +34,31 @@ import org.freeplane.features.common.map.NodeModel;
  * @author Dimitry Polivaev 22.11.2008
  */
 public class AttributeController implements IExtension {
-	public static AttributeController getController(final ModeController modeController) {
-		return (AttributeController) modeController.getExtension(AttributeController.class);
+	public static AttributeController getController() {
+		return getController(Controller.getCurrentModeController());
 	}
 
-	public static void install(final ModeController modeController, final AttributeController attributeController) {
-		modeController.addExtension(AttributeController.class, attributeController);
+	public static AttributeController getController(ModeController modeController) {
+		return (AttributeController) modeController.getExtension(AttributeController.class);
+	}
+	
+	public static void install( final AttributeController attributeController) {
+		Controller.getCurrentModeController().addExtension(AttributeController.class, attributeController);
 	}
 
 // 	final private ModeController modeController;
 
-	public AttributeController(final ModeController modeController) {
+	public AttributeController() {
 //		this.modeController = modeController;
-		final MapController mapController = modeController.getMapController();
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		final MapReader mapReader = mapController.getMapReader();
 		final AttributeBuilder attributeBuilder = new AttributeBuilder(this, mapReader);
 		attributeBuilder.registerBy(readManager, writeManager);
-		modeController.getMapController().addMapLifeCycleListener(new IMapLifeCycleListener() {
+		mapController.addMapLifeCycleListener(new IMapLifeCycleListener() {
 			public void onCreate(final MapModel map) {
-				AttributeRegistry.createRegistry(getModeController(), map);
+				AttributeRegistry.createRegistry(map);
 			}
 
 			public void onRemove(final MapModel map) {
@@ -73,12 +77,8 @@ public class AttributeController implements IExtension {
 		if (node.areViewsEmpty()) {
 			return attributeModel;
 		}
-		getModeController().getMapController().nodeRefresh(node);
+		Controller.getCurrentModeController().getMapController().nodeRefresh(node);
 		return attributeModel;
-	}
-
-	public ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
 	}
 
 	public void performInsertRow(final NodeAttributeTableModel model, final int row, final String name,

@@ -26,7 +26,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
@@ -45,13 +44,13 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 
 	/**
 	 */
-	public RemoveAllIconsAction(final Controller controller) {
+	public RemoveAllIconsAction() {
 		super("RemoveAllIconsAction");
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MIconController iconController = (MIconController) IconController.getController(getModeController());
+		final MIconController iconController = (MIconController) IconController.getController();
 		iconController.removeAllIcons(node);
 	}
 

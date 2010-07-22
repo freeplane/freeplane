@@ -29,8 +29,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.PropertyBean;
-import org.freeplane.features.common.map.ModeController;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 class ScriptEditorProperty extends PropertyBean implements IPropertyControl, ActionListener {
@@ -54,7 +52,7 @@ class ScriptEditorProperty extends PropertyBean implements IPropertyControl, Act
 
 	public void actionPerformed(final ActionEvent arg0) {
 		final IScriptEditorStarter plugin = (IScriptEditorStarter) Controller
-				.getCurrentController().getModeController().getExtension(
+				.getCurrentModeController().getExtension(
 						IScriptEditorStarter.class);
 		if (plugin != null) {
 			final IScriptEditorStarter starter = plugin;

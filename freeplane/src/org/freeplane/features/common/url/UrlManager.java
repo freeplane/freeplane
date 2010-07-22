@@ -78,7 +78,8 @@ public class UrlManager implements IExtension {
 		return new InputStreamReader(file, FileUtils.defaultCharset());
 	}
 
-	public static UrlManager getController(final ModeController modeController) {
+	public static UrlManager getController() {
+		final ModeController modeController = Controller.getCurrentModeController();
 		return (UrlManager) modeController.getExtension(UrlManager.class);
 	}
 
@@ -155,14 +156,15 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	public static void install(final ModeController modeController, final UrlManager urlManager) {
+	public static void install( final UrlManager urlManager) {
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(UrlManager.class, urlManager);
 	}
 
 // // 	final private Controller controller;
 // 	final private ModeController modeController;
 
-	public UrlManager(final ModeController modeController) {
+	public UrlManager() {
 		super();
 //		this.modeController = modeController;
 //		controller = modeController.getController();
@@ -173,10 +175,6 @@ public class UrlManager implements IExtension {
 	 *
 	 */
 	private void createActions() {
-	}
-
-	public Controller getController() {
-		return Controller.getCurrentController();
 	}
 
 	/**
@@ -203,21 +201,17 @@ public class UrlManager implements IExtension {
 	}
 
 	protected File getMapsParentFile() {
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		if ((map != null) && (map.getFile() != null) && (map.getFile().getParentFile() != null)) {
 			return map.getFile().getParentFile();
 		}
 		return null;
 	}
 
-	public ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
-	}
-
 	public void handleLoadingException(final Exception ex) {
 		final String exceptionType = ex.getClass().getName();
 		if (exceptionType.equals("freeplane.main.XMLParseException")) {
-			final int showDetail = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
+			final int showDetail = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getMapView(),
 			    TextUtils.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
 				UITools.errorMessage(ex);
@@ -245,7 +239,7 @@ public class UrlManager implements IExtension {
 			return;
 		}
 		try {
-			final ModeController modeController = Controller.getCurrentController().getModeController();
+			final ModeController modeController = Controller.getCurrentModeController();
 			final NodeModel root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map,
 			    urlStreamReader, Mode.FILE);
 			urlStreamReader.close();
@@ -267,7 +261,7 @@ public class UrlManager implements IExtension {
 		if (uriString.startsWith("#")) {
 			final String target = uri.getFragment();
 			try {
-				final ModeController modeController = Controller.getCurrentController().getModeController();
+				final ModeController modeController = Controller.getCurrentModeController();
 				final MapController mapController = modeController.getMapController();
 				final NodeModel node = mapController.getNodeFromID(target);
 				if (node != null) {
@@ -287,17 +281,17 @@ public class UrlManager implements IExtension {
 				if ((extension != null)
 				        && extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 					final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
-					final ModeController modeController = Controller.getCurrentController().getModeController();
+					final ModeController modeController = Controller.getCurrentModeController();
 					modeController.getMapController().newMap(url);
 					final String ref = uri.getFragment();
 					if (ref != null) {
-						final ModeController newModeController = getController().getModeController();
+						final ModeController newModeController = Controller.getCurrentModeController();
 						final MapController newMapController = newModeController.getMapController();
 						newMapController.select(newMapController.getNodeFromID(ref));
 					}
 					return;
 				}
-				getController().getViewController().openDocument(uri);
+				Controller.getCurrentController().getViewController().openDocument(uri);
 			}
 			catch (final Exception e) {
 				LogUtils.warn("link " + uri + " not found", e);
@@ -315,7 +309,7 @@ public class UrlManager implements IExtension {
 		if (uri.isAbsolute()) {
 			return uri;
 		}
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		return getAbsoluteUri(map, uri);
 	}
 

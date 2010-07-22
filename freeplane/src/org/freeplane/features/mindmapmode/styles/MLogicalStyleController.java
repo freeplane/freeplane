@@ -110,7 +110,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		}
 
 		public void nodeChanged(final NodeChangeEvent event) {
-			final ModeController modeController = event.getModeController();
+			final ModeController modeController = Controller.getCurrentModeController();
 			if (modeController == null || modeController.isUndoAction()) {
 				return;
 			}
@@ -173,16 +173,17 @@ public class MLogicalStyleController extends LogicalStyleController {
 	final private List<AssignStyleAction> actions;
 	private FilterComposerDialog filterComposerDialog;
 
-	public MLogicalStyleController(final ModeController modeController) {
-		super(modeController);
+	public MLogicalStyleController() {
+		super();
 //		this.modeController = modeController;
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getMapController().addNodeChangeListener(new StyleRemover());
 		modeController.registerExtensionCopier(new ExtensionCopier());
-		modeController.addAction(new RedefineStyleAction(modeController.getController()));
-		modeController.addAction(new ManageConditionalStylesAction(modeController.getController()));
+		modeController.addAction(new RedefineStyleAction());
+		modeController.addAction(new ManageConditionalStylesAction());
 		actions = new LinkedList<AssignStyleAction>();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		modeController.getController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
+		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 				removeStyleMenu(menuBuilder, "/menu_bar");
 				removeStyleMenu(menuBuilder, "/node_popup");
@@ -271,7 +272,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	public void setStyle(final NodeModel node, final Object style) {
 		final LogicalStyleModel model = LogicalStyleModel.createExtension(node);
 		final Object oldStyle = model.getStyle();
-		final ModeController modeController = Controller.getCurrentController().getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		if (oldStyle != null && oldStyle.equals(style) || oldStyle == style) {
 			modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
 			return;
@@ -303,7 +304,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	public void setStyle(final Object style) {
-		final ModeController modeController = Controller.getCurrentController().getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
 		for (final NodeModel selected : selectedNodes) {
 			setStyle(selected, style);
@@ -329,7 +330,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 				MLogicalStyleController.super.moveConditionalStyleUp(map, index + 1);
 			}
 		};
-		getModeController().execute(actor, map);
+		Controller.getCurrentModeController().execute(actor, map);
 	}
 
 	@Override
@@ -351,23 +352,23 @@ public class MLogicalStyleController extends LogicalStyleController {
 				MLogicalStyleController.super.moveConditionalStyleDown(map, index - 1);
 			}
 		};
-		getModeController().execute(actor, map);
+		Controller.getCurrentModeController().execute(actor, map);
 	}
 
-	public static MLogicalStyleController getController(ModeController modeController) {
-		return (MLogicalStyleController) LogicalStyleController.getController(modeController);
+	public static MLogicalStyleController getController() {
+		return (MLogicalStyleController) LogicalStyleController.getController();
 	}
 
 	@Override
 	public void addConditionalStyle(MapModel map, boolean isActive, ISelectableCondition condition, Object style) {
 		AddConditionalStyleActor actor = new AddConditionalStyleActor(map, isActive, condition, style);
-		getModeController().execute(actor, map);
+		Controller.getCurrentModeController().execute(actor, map);
 	}
 
 	@Override
 	public Item removeConditionalStyle(final MapModel map, final int index) {
 		RemoveConditionalStyleActor actor = new RemoveConditionalStyleActor(map, index);
-		getModeController().execute(actor, map);
+		Controller.getCurrentModeController().execute(actor, map);
 		return actor.item;
 	}
 
@@ -427,14 +428,14 @@ public class MLogicalStyleController extends LogicalStyleController {
 						tableModel.setValueAt(oldValue, rowIndex, columnIndex);
 					}
 				};
-				getModeController().execute(actor, map);
+				Controller.getCurrentModeController().execute(actor, map);
 			}
 		};
 	}
 
 	public FilterComposerDialog getFilterComposerDialog() {
 		if(filterComposerDialog == null){
-			filterComposerDialog = new FilterComposerDialog(getModeController().getController());
+			filterComposerDialog = new FilterComposerDialog();
 		}
 		return filterComposerDialog;
     }

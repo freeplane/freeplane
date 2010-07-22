@@ -35,7 +35,7 @@ import org.freeplane.features.mindmapmode.map.MMapController;
  * 02.10.2009
  */
 public class NewLevelStyleAction extends AFreeplaneAction {
-	public NewLevelStyleAction(final Controller controller) {
+	public NewLevelStyleAction() {
 		super("NewLevelStyleAction");
 	}
 
@@ -45,12 +45,12 @@ public class NewLevelStyleAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		final NodeModel levelStyleParentNode = getLevelStyleParentNode(map);
 		final String styleName = "AutomaticLayout.level," + levelStyleParentNode.getChildCount();
 		final NamedObject styleObject = NamedObject.formatText(styleName);
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		final MMapController mapController = (MMapController) getModeController().getMapController();
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node = new NodeModel(map);
 		node.setUserObject(styleObject);
 		mapController.insertNode(node, levelStyleParentNode, false, false, true);
@@ -68,7 +68,7 @@ public class NewLevelStyleAction extends AFreeplaneAction {
 				styleModel.addStyleNode(node);
 			}
 		};
-		getModeController().execute(actor, map);
+		Controller.getCurrentModeController().execute(actor, map);
 	}
 
 	private NodeModel getLevelStyleParentNode(final MapModel map) {

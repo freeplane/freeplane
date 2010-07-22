@@ -22,11 +22,10 @@ package org.freeplane.features.filemode;
 import java.io.File;
 
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 
 class FMapModel extends MapModel {
-	public FMapModel(final File root, final ModeController modeController) {
-		super(modeController, null);
+	public FMapModel(final File root) {
+		super(null);
 		setRoot(new FNodeModel(root, this));
 		getRootNode().setFolded(false);
 	}

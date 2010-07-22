@@ -77,7 +77,7 @@ public class MNoteController extends NoteController {
 			if (focusOwner == null || !SwingUtilities.isDescendingFrom(focusOwner, htmlEditorPanel)) {
 				return;
 			}
-			final ModeController modeController = getModeController();
+			final ModeController modeController = Controller.getCurrentModeController();
 			final MapController mapController = modeController.getMapController();
 			final MapModel map = modeController.getController().getMap();
 			mapController.setSaved(map, false);
@@ -129,15 +129,15 @@ public class MNoteController extends NoteController {
 	/**
 	 * @param modeController
 	 */
-	public MNoteController(final ModeController modeController) {
-		super(modeController);
-		modeController.addAction(new SelectNoteAction(this, getModeController()));
-		modeController.addAction(new ShowHideNoteAction(this, getModeController()));
-		modeController.addAction(new SetNoteWindowPosition(modeController.getController(), "top"));
-		modeController.addAction(new SetNoteWindowPosition(modeController.getController(), "left"));
-		modeController.addAction(new SetNoteWindowPosition(modeController.getController(), "right"));
-		modeController.addAction(new SetNoteWindowPosition(modeController.getController(), "bottom"));
-		modeController.addAction(new RemoveNoteAction(this, getModeController()));
+	public MNoteController(ModeController modeController) {
+		super();
+		modeController.addAction(new SelectNoteAction(this));
+		modeController.addAction(new ShowHideNoteAction(this));
+		modeController.addAction(new SetNoteWindowPosition("top"));
+		modeController.addAction(new SetNoteWindowPosition( "left"));
+		modeController.addAction(new SetNoteWindowPosition("right"));
+		modeController.addAction(new SetNoteWindowPosition("bottom"));
+		modeController.addAction(new RemoveNoteAction(this));
 	}
 
 	SHTMLPanel getHtmlEditorPanel() {
@@ -170,7 +170,7 @@ public class MNoteController extends NoteController {
 				if (spellCheckerController != null) {
 					return;
 				}
-				spellCheckerController = SpellCheckerController.getController(getModeController());
+				spellCheckerController = SpellCheckerController.getController();
 				spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
 				spellCheckerController.enableShortKey(editorPane, true);
 			}
@@ -204,7 +204,7 @@ public class MNoteController extends NoteController {
 	void hideNotesPanel() {
 		noteManager.saveNote();
 		noteViewerComponent.setVisible(false);
-		getModeController().getController().getViewController().removeSplitPane();
+		Controller.getCurrentModeController().getController().getViewController().removeSplitPane();
 		mSplitPane = null;
 	}
 
@@ -214,7 +214,7 @@ public class MNoteController extends NoteController {
 
 	@Override
 	protected void onWrite(final MapModel map) {
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final Controller controller = modeController.getController();
 		final IMapSelection selection = controller.getSelection();
 		if (selection == null) {
@@ -255,7 +255,7 @@ public class MNoteController extends NoteController {
 					}
 				}
 				setStateIcon(node, enabled);
-				getModeController().getMapController().nodeChanged(node, NodeModel.NOTE_TEXT, oldText, text);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NOTE_TEXT, oldText, text);
 				noteManager.updateEditor();
 			}
 
@@ -263,7 +263,7 @@ public class MNoteController extends NoteController {
 				setText(oldText);
 			}
 		};
-		(getModeController()).execute(actor, node.getMap());
+		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
 	void setPositionToRecover(final Integer sPositionToRecover) {
@@ -285,9 +285,9 @@ public class MNoteController extends NoteController {
 		if (ResourceController.getResourceController().getBooleanProperty(
 		    MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
 			// set default font for notes:
-			final NodeStyleController style = (NodeStyleController) getModeController().getExtension(
+			final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
 			    NodeStyleController.class);
-			final Font defaultFont = style.getDefaultFont(getModeController().getController().getMap());
+			final Font defaultFont = style.getDefaultFont(Controller.getCurrentModeController().getController().getMap());
 			String rule = "body {";
 			rule += "font-family: " + defaultFont.getFamily() + ";";
 			rule += "font-size: " + defaultFont.getSize() + "pt;";
@@ -311,7 +311,7 @@ public class MNoteController extends NoteController {
 		noteViewerComponent.setOpenHyperlinkHandler(new ActionListener() {
 			public void actionPerformed(final ActionEvent pE) {
 				try {
-					getModeController().getController().getViewController()
+					Controller.getCurrentModeController().getController().getViewController()
 					    .openDocument(new URL(pE.getActionCommand()));
 				}
 				catch (final Exception e) {
@@ -320,7 +320,7 @@ public class MNoteController extends NoteController {
 			}
 		});
 		noteViewerComponent.setVisible(true);
-		mSplitPane = getModeController().getController().getViewController().insertComponentIntoSplitPane(southPanel);
+		mSplitPane = Controller.getCurrentModeController().getController().getViewController().insertComponentIntoSplitPane(southPanel);
 		if (requestFocus) {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
 			EventQueue.invokeLater(new Runnable() {
@@ -347,13 +347,13 @@ public class MNoteController extends NoteController {
 			mSplitPane.setDividerLocation(getPositionToRecover().intValue());
 			setPositionToRecover(null);
 		}
-		final Controller controller = getModeController().getController();
+		final Controller controller = Controller.getCurrentModeController().getController();
 		final NodeModel node = controller.getSelection().getSelected();
 		controller.getViewController().getComponent(node).requestFocus();
 	}
 
 	public void shutdownController() {
-		getModeController().getMapController().removeNodeSelectionListener(noteManager);
+		Controller.getCurrentModeController().getMapController().removeNodeSelectionListener(noteManager);
 		if (noteViewerComponent == null) {
 			return;
 		}
@@ -365,7 +365,7 @@ public class MNoteController extends NoteController {
 	}
 
 	public void startupController() {
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		noteManager = new NoteManager(this);
 		if (shouldUseSplitPane()) {
 			final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();

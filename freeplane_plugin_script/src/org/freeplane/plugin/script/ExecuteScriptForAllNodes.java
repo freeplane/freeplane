@@ -6,24 +6,23 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/scripting" })
 public class ExecuteScriptForAllNodes extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
-	public ExecuteScriptForAllNodes(final Controller controller) {
+	public ExecuteScriptForAllNodes() {
 		super("ExecuteScriptForAllNodes");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel node = getController().getMap().getRootNode();
-		getController().getViewController().setWaitingCursor(true);
+		final NodeModel node = Controller.getCurrentController().getMap().getRootNode();
+		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
 			ScriptingEngine.performScriptOperationRecursive(node);
 		}
 		finally {
-			getController().getViewController().setWaitingCursor(false);
+			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
 }

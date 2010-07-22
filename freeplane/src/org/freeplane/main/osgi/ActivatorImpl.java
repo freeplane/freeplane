@@ -148,7 +148,7 @@ class ActivatorImpl implements BundleActivator {
 		}
 		loadPlugins(context);
 		final Controller controller = starter.createController();
-		singleInstanceManager.setController(controller);
+		singleInstanceManager.setController();
 		try {
 			final ServiceReference[] controllerProviders = context.getServiceReferences(
 			    IControllerExtensionProvider.class.getName(), null);

@@ -41,7 +41,7 @@ class NewChildAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public NewChildAction(final Controller controller) {
+	public NewChildAction() {
 		super("NewChildAction");
 	}
 
@@ -50,8 +50,8 @@ class NewChildAction extends AFreeplaneAction {
 	}
 
 	public NodeModel addNewNode(int newNodeMode, final KeyEvent e) {
-		final ModeController modeController = getModeController();
-		final TextController textController = TextController.getController(modeController);
+		final ModeController modeController = Controller.getCurrentModeController();
+		final TextController textController = TextController.getController();
 		if (textController instanceof MTextController) {
 			((MTextController) textController).stopEditing();
 		}
@@ -60,7 +60,7 @@ class NewChildAction extends AFreeplaneAction {
 		if (textController instanceof MTextController) {
 			modeController.startTransaction();
 			try {
-				((MTextController) TextController.getController(modeController)).stopEditing();
+				((MTextController) TextController.getController()).stopEditing();
 			}
 			finally {
 				modeController.commit();
@@ -127,18 +127,18 @@ class NewChildAction extends AFreeplaneAction {
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
-		final MMapController mapController = (MMapController) getModeController().getMapController();
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		if (!mapController.isWriteable(parent)) {
 			final String message = TextUtils.getText("node_is_write_protected");
 			UITools.errorMessage(message);
 			return null;
 		}
 		final MapModel map = parent.getMap();
-		final NodeModel newNode = getModeController().getMapController().newNode("", map);
+		final NodeModel newNode = Controller.getCurrentModeController().getMapController().newNode("", map);
 		newNode.setLeft(newNodeIsLeft);
 		final IActor actor = new IActor() {
 			public void act() {
-				(getModeController().getMapController()).insertNodeIntoWithoutUndo(newNode, parent, index);
+				(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(newNode, parent, index);
 			}
 
 			public String getDescription() {
@@ -149,7 +149,7 @@ class NewChildAction extends AFreeplaneAction {
 				mapController.deleteWithoutUndo(newNode);
 			}
 		};
-		getModeController().execute(actor, map);
+		Controller.getCurrentModeController().execute(actor, map);
 		return newNode;
 	}
 }

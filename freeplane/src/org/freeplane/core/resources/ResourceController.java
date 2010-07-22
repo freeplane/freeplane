@@ -31,7 +31,6 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 import java.util.Map.Entry;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.AController.IActionOnChange;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogUtils;
@@ -187,7 +186,7 @@ public abstract class ResourceController {
 		return ((ResourceBundles) getResources()).getResourceString(key, resource);
 	}
 
-	protected void init(final Controller controller) {
+	protected void init() {
 	}
 
 	abstract public void loadProperties(InputStream inStream) throws IOException;
@@ -198,7 +197,7 @@ public abstract class ResourceController {
 		propertyChangeListeners.remove(listener);
 	}
 
-	abstract public void saveProperties(Controller controller);
+	abstract public void saveProperties();
 
 	abstract public void setDefaultProperty(final String key, final String value);
 

@@ -10,7 +10,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 
 class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
@@ -24,7 +23,7 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 	}
 
 	private MLinkController getLinkController() {
-		return (MLinkController) LinkController.getController(getModeController());
+		return (MLinkController) LinkController.getController();
 	}
 
 	public boolean set(final String target) {

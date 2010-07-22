@@ -9,7 +9,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.map.NodeModel;
 
 public class CopyIDAction extends AFreeplaneAction {
-	public CopyIDAction(final Controller controller) {
+	public CopyIDAction() {
 		super("CopyIDAction");
 	}
 
@@ -19,7 +19,7 @@ public class CopyIDAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public void actionPerformed(final ActionEvent e) {
-		final Controller controller = getController();
+		final Controller controller = Controller.getCurrentController();
 		final List<NodeModel> selectedNodes = controller.getSelection().getSelection();
 		StringBuilder sb = null;
 		for (final NodeModel node : selectedNodes) {
@@ -32,7 +32,7 @@ public class CopyIDAction extends AFreeplaneAction {
 			sb.append(node.createID());
 		}
 		final String idString = sb.toString();
-		final ClipboardController clipboardController = (ClipboardController) getModeController().getExtension(
+		final ClipboardController clipboardController = (ClipboardController) Controller.getCurrentModeController().getExtension(
 		    ClipboardController.class);
 		clipboardController.setClipboardContents(new StringSelection(idString));
 		controller.getViewController().out(idString);

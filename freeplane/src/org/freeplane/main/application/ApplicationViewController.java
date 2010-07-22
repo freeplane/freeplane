@@ -81,13 +81,13 @@ class ApplicationViewController extends ViewController {
 	final private NavigationPreviousMapAction navigationPreviousMap;
 	final private ResourceController resourceController;
 
-	public ApplicationViewController(final Controller controller, final IMapViewManager mapViewController,
+	public ApplicationViewController( Controller controller, final IMapViewManager mapViewController,
 	                                 final JFrame frame) {
 		super(controller, mapViewController, "");
 //		this.controller = controller;
-		navigationPreviousMap = new NavigationPreviousMapAction(controller);
+		navigationPreviousMap = new NavigationPreviousMapAction();
 		controller.addAction(navigationPreviousMap);
-		navigationNextMap = new NavigationNextMapAction(controller);
+		navigationNextMap = new NavigationNextMapAction();
 		controller.addAction(navigationNextMap);
 		resourceController = ResourceController.getResourceController();
 		this.frame = frame;
@@ -106,7 +106,7 @@ class ApplicationViewController extends ViewController {
 		final boolean shouldUseTabbedPane = ResourceController.getResourceController().getBooleanProperty(
 		    ApplicationViewController.RESOURCES_USE_TABBED_PANE);
 		if (shouldUseTabbedPane) {
-			mapViewManager = new MapViewTabs(controller, this, mContentComponent);
+			mapViewManager = new MapViewTabs(this, mContentComponent);
 		}
 		else {
 			getContentPane().add(mContentComponent, BorderLayout.CENTER);

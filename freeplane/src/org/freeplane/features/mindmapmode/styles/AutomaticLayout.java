@@ -26,14 +26,15 @@ import java.util.Iterator;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyleModel;
@@ -49,10 +50,11 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	/**
 	 *
 	 */
-	public AutomaticLayout(final ModeController modeController) {
-		super(modeController);
-		modeController.getMapController().getReadManager().addReadCompletionListener(this);
-		getModeController().getMapController().addMapChangeListener(this);
+	public AutomaticLayout() {
+		super();
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
+		mapController.getReadManager().addReadCompletionListener(this);
+		mapController.addMapChangeListener(this);
 	}
 
 	/*
@@ -115,7 +117,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	}
 
 	private void setStyleImpl(final NodeModel node) {
-		final MLogicalStyleController styleController = (MLogicalStyleController) getModeController().getExtension(
+		final MLogicalStyleController styleController = (MLogicalStyleController) Controller.getCurrentModeController().getExtension(
 		    LogicalStyleController.class);
 		final Object style = getStyle(node);
 		styleController.setStyle(node, style);
@@ -142,11 +144,11 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	}
 
 	private void setStyleRecursiveImpl(final NodeModel node) {
-		if (((MModeController) getModeController()).isUndoAction()) {
+		if (((MModeController) Controller.getCurrentModeController()).isUndoAction()) {
 			return;
 		}
 		setStyleImpl(node);
-		for (final Iterator<NodeModel> i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator<NodeModel> i = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = i.next();
 			setStyleRecursiveImpl(child);
 		}

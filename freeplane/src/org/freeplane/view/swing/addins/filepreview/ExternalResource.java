@@ -9,9 +9,9 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
@@ -39,9 +39,9 @@ public class ExternalResource implements IExtension {
 		return uri;
 	}
 
-	public URI getAbsoluteUri(final MapModel map, final ModeController modeController) {
+	public URI getAbsoluteUri(final MapModel map) {
 		try {
-			final UrlManager urlManager = (UrlManager) modeController.getExtension(UrlManager.class);
+			final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);
 			final URI absoluteUri = urlManager.getAbsoluteUri(map, uri);
 			return absoluteUri;
 		}

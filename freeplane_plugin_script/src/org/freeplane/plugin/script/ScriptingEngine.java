@@ -80,9 +80,9 @@ public class ScriptingEngine {
 	static Object executeScript(final NodeModel node, String script,
 	                            final IErrorHandler pErrorHandler, final PrintStream pOutStream)
 	        throws ExecuteScriptException {
-		MModeController modeController = (MModeController) Controller.getCurrentController().getModeController();
+		MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		if (!noUserPermissionRequired) {
-			final int showResult = OptionalDontShowMeAgainDialog.show(modeController.getController(),
+			final int showResult = OptionalDontShowMeAgainDialog.show(
 			    "really_execute_script", "confirmation", RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 			if (showResult != JOptionPane.OK_OPTION) {
@@ -168,11 +168,11 @@ public class ScriptingEngine {
 			Object result = shell.evaluate(script);
 			if (assignResult && result != null) {
 				if (assignTo == null) {
-					((MTextController) TextController.getController(modeController)).setNodeText(node, result
+					((MTextController) TextController.getController()).setNodeText(node, result
 					    .toString());
 				}
 				else {
-					((MAttributeController) AttributeController.getController(modeController)).editAttribute(node,
+					((MAttributeController) AttributeController.getController()).editAttribute(node,
 					    assignTo, result.toString());
 				}
 			}
@@ -245,7 +245,7 @@ public class ScriptingEngine {
 	}
 
 	static Object executeScriptRecursive(final NodeModel node, final String script) {
-		ModeController modeController = Controller.getCurrentController().getModeController();
+		ModeController modeController = Controller.getCurrentModeController();
 		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
 			executeScriptRecursive(iter.next(), script);
 		}
@@ -253,7 +253,7 @@ public class ScriptingEngine {
 	}
 
 	static boolean performScriptOperationRecursive(final NodeModel node) {
-		ModeController modeController = Controller.getCurrentController().getModeController();
+		ModeController modeController = Controller.getCurrentModeController();
 		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
 			final NodeModel child = iter.next();
 			if (!performScriptOperationRecursive(child)) {

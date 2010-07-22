@@ -17,7 +17,6 @@
  */
 package org.freeplane.features.mindmapmode.styles;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ToggleToolbarAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.SelectableAction;
@@ -32,7 +31,7 @@ public class ShowFormatPanelAction extends ToggleToolbarAction {
 
 	/**
 	 */
-	public ShowFormatPanelAction(final Controller controller) {
-		super(controller, "ShowFormatPanel", "/format");
+	public ShowFormatPanelAction() {
+		super("ShowFormatPanel", "/format");
 	}
 }

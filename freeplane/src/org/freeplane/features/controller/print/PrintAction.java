@@ -34,11 +34,11 @@ class PrintAction extends AbstractPrintAction {
 // // 	final private Controller controller;
 	final private boolean isDlg;
 
-	PrintAction(final Controller controller, final PrintController printController, final boolean isDlg) {
-		this("PrintAction", controller, printController, isDlg);
+	PrintAction( final PrintController printController, final boolean isDlg) {
+		this("PrintAction", printController, isDlg);
 	}
 
-	public PrintAction(final String key, final Controller controller, final PrintController printController,
+	public PrintAction(final String key, final PrintController printController,
 	                   final boolean isDlg) {
 		super(key, printController);
 //		this.controller = controller;

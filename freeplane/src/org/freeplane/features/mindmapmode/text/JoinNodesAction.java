@@ -47,13 +47,13 @@ class JoinNodesAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public JoinNodesAction(final Controller controller) {
+	public JoinNodesAction() {
 		super("JoinNodesAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel selectedNode = getController().getSelection().getSelected();
-		final List<NodeModel> selectedNodes = getController().getSelection().getSortedSelection(true);
+		final NodeModel selectedNode = Controller.getCurrentController().getSelection().getSelected();
+		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(true);
 		joinNodes(selectedNode, selectedNodes);
 	}
 
@@ -98,9 +98,9 @@ class JoinNodesAction extends AFreeplaneAction {
 
 	public void joinNodes(final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
 		String joinedContent = "";
-		final Controller controller = getController();
+		final Controller controller = Controller.getCurrentController();
 		for (final NodeModel node : selectedNodes) {
-			if (getModeController().getMapController().hasChildren(node)) {
+			if (Controller.getCurrentModeController().getMapController().hasChildren(node)) {
 				UITools.informationMessage(controller.getViewController().getFrame(), TextUtils
 				    .getText("cannot_join_nodes_with_children"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 				return;
@@ -115,13 +115,13 @@ class JoinNodesAction extends AFreeplaneAction {
 			final boolean isHtmlNode = HtmlUtils.isHtmlNode(nodeContent);
 			joinedContent = addContent(joinedContent, isHtml, nodeContent, isHtmlNode);
 			if (node != selectedNode) {
-				((MMapController) getModeController().getMapController()).deleteNode(node);
+				((MMapController) Controller.getCurrentModeController().getMapController()).deleteNode(node);
 			}
 			isHtml = isHtml || isHtmlNode;
 		}
 		controller.getSelection().selectAsTheOnlyOneSelected(selectedNode);
-		((MTextController) TextController.getController(getModeController())).setNodeText(selectedNode, joinedContent);
-		final MIconController iconController = (MIconController) IconController.getController(getModeController());
+		((MTextController) TextController.getController()).setNodeText(selectedNode, joinedContent);
+		final MIconController iconController = (MIconController) IconController.getController();
 		iconController.removeAllIcons(selectedNode);
 		for (final MindIcon icon : icons) {
 			iconController.addIcon(selectedNode, icon);

@@ -242,7 +242,7 @@ class ScriptEditorPanel extends JDialog {
 		private static final long serialVersionUID = 1L;
 // // 		final private Controller controller;
 
-		private SignAction(final Controller controller, final String pArg0) {
+		private SignAction( final String pArg0) {
 			super(pArg0);
 //			this.controller = controller;
 		}
@@ -280,9 +280,9 @@ class ScriptEditorPanel extends JDialog {
 	final private SignAction mSignAction;
 	final private JLabel mStatus;
 
-	public ScriptEditorPanel(final Controller controller, final IScriptModel pScriptModel,
+	public ScriptEditorPanel( final IScriptModel pScriptModel,
 	                         final boolean pHasNewScriptFunctionality) {
-		super(controller.getViewController().getJFrame(), true /* modal */);
+		super(Controller.getCurrentController().getViewController().getJFrame(), true /* modal */);
 		mScriptModel = pScriptModel;
 		this.setTitle(TextUtils.getText("plugins/ScriptEditor/window.title"));
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -355,7 +355,7 @@ class ScriptEditorPanel extends JDialog {
 		mRunAction = new RunAction(TextUtils.getText("plugins/ScriptEditor.run"));
 		mRunAction.setEnabled(false);
 		addAction(menu, mRunAction);
-		mSignAction = new SignAction(controller, TextUtils.getText("plugins/ScriptEditor.sign"));
+		mSignAction = new SignAction(TextUtils.getText("plugins/ScriptEditor.sign"));
 		mSignAction.setEnabled(false);
 		addAction(menu, mSignAction);
 		final AbstractAction cancelAction = new CancelAction(TextUtils.getText("plugins/ScriptEditor.cancel"));

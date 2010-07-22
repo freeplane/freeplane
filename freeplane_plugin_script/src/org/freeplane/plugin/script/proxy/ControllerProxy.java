@@ -52,7 +52,7 @@ class ControllerProxy implements Proxy.Controller {
 
 	public void selectBranch(final Node branchRoot) {
 		final NodeModel nodeModel = ((NodeProxy) branchRoot).getDelegate();
-		Controller.getCurrentController().getModeController().getMapController().displayNode(nodeModel);
+		Controller.getCurrentModeController().getMapController().displayNode(nodeModel);
 		selection.selectBranch(nodeModel, false);
 	}
 
@@ -66,7 +66,7 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	public void deactivateUndo() {
-		MModeController modeController = ((MModeController)Controller.getCurrentController().getModeController());
+		MModeController modeController = ((MModeController)Controller.getCurrentModeController());
 		final MapModel map = modeController.getController().getMap();
 		if (map instanceof MapModel) {
 			modeController.deactivateUndo((MMapModel) map);
@@ -93,12 +93,12 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	public List<Node> find(final ICondition condition) {
-		MModeController modeController = ((MModeController)Controller.getCurrentController().getModeController());
+		MModeController modeController = ((MModeController)Controller.getCurrentModeController());
 		return ProxyUtils.find(condition, modeController.getController().getMap().getRootNode());
 	}
 
 	public List<Node> find(final Closure closure) {
-		MModeController modeController = ((MModeController)Controller.getCurrentController().getModeController());
+		MModeController modeController = ((MModeController)Controller.getCurrentModeController());
 		return ProxyUtils.find(closure, modeController.getController().getMap().getRootNode());
 	}
 }

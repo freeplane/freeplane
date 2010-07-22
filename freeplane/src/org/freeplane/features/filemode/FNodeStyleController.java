@@ -22,7 +22,6 @@ package org.freeplane.features.filemode;
 import java.awt.Color;
 
 import org.freeplane.core.controller.IPropertyHandler;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 
@@ -31,8 +30,8 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
  * 02.01.2009
  */
 class FNodeStyleController extends NodeStyleController {
-	public FNodeStyleController(final ModeController modeController) {
-		super(modeController);
+	public FNodeStyleController() {
+		super();
 		addColorGetter(IPropertyHandler.DEFAULT - 1, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return node.isLeaf() ? Color.BLACK : Color.GRAY;

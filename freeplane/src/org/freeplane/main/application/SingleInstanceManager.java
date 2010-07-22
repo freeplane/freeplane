@@ -80,7 +80,7 @@ public class SingleInstanceManager {
 		return isSlave || isMasterPresent;
 	}
 
-	public void setController(Controller controller) {
+	public void setController() {
 //		this.controller = controller;
 	}
 
@@ -137,7 +137,7 @@ public class SingleInstanceManager {
 								LogUtils.info("opening '" + StringUtils.join(filesToLoadForClient, "', '")
 								        + "' for client");
 								for (String file : filesToLoadForClient) {
-									Controller.getCurrentController().getModeController().getMapController().newMap(
+									Controller.getCurrentModeController().getMapController().newMap(
 									    Compat.fileToUrl(new File(file)));
 								}
 								UITools.getFrame().toFront();

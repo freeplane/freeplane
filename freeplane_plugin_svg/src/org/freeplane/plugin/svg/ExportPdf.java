@@ -48,8 +48,8 @@ class ExportPdf extends ExportVectorGraphic {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ExportPdf(final Controller controller) {
-		super("ExportPdf", controller);
+	public ExportPdf() {
+		super("ExportPdf");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -58,11 +58,11 @@ class ExportPdf extends ExportVectorGraphic {
 			return;
 		}
 		try {
-			final MapView view = (MapView) getController().getViewController().getMapView();
+			final MapView view = (MapView) Controller.getCurrentController().getViewController().getMapView();
 			if (view == null) {
 				return;
 			}
-			getController().getViewController().setWaitingCursor(true);
+			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final SVGGraphics2D g2d = fillSVGGraphics2D(view);
 			final PDFTranscoder pdfTranscoder = new PDFTranscoder();
 			/*
@@ -88,6 +88,6 @@ class ExportPdf extends ExportVectorGraphic {
 			org.freeplane.core.util.LogUtils.warn(ex);
 			UITools.errorMessage(ex.getLocalizedMessage());
 		}
-		getController().getViewController().setWaitingCursor(false);
+		Controller.getCurrentController().getViewController().setWaitingCursor(false);
 	}
 }

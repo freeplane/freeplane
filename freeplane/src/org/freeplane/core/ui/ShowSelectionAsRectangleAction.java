@@ -21,7 +21,6 @@ package org.freeplane.core.ui;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 
 @SelectableAction(checkOnPopup = true)
@@ -35,7 +34,7 @@ public class ShowSelectionAsRectangleAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
-	public ShowSelectionAsRectangleAction(final Controller controller) {
+	public ShowSelectionAsRectangleAction() {
 		super("ShowSelectionAsRectangleAction");
 	}
 

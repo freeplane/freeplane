@@ -8,7 +8,6 @@ import java.util.NoSuchElementException;
 
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkModel;
-import org.freeplane.features.mindmapmode.MModeController;
 
 class ConnectorIterator implements Iterator<Proxy.Connector> {
 	private final Iterator<LinkModel> iterator;

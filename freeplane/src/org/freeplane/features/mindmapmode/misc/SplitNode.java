@@ -55,7 +55,7 @@ public class SplitNode extends AFreeplaneAction {
 	/**
 	 *
 	 */
-	public SplitNode(final Controller controller) {
+	public SplitNode() {
 		super("SplitNode");
 	}
 
@@ -65,7 +65,7 @@ public class SplitNode extends AFreeplaneAction {
 	 * java.util.List)
 	 */
 	public void actionPerformed(final ActionEvent e) {
-		final List<NodeModel> list = getModeController().getMapController().getSelectedNodes();
+		final List<NodeModel> list = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		final ListIterator<NodeModel> listIterator = list.listIterator();
 		while (listIterator.hasNext()) {
 			final NodeModel next = listIterator.next();
@@ -94,12 +94,12 @@ public class SplitNode extends AFreeplaneAction {
 		if (parts == null || parts.length == 1) {
 			return;
 		}
-		final ModeController c = getModeController();
+		final ModeController c = Controller.getCurrentModeController();
 		int firstPartNumber = 0;
 		while (parts[firstPartNumber] == null) {
 			firstPartNumber++;
 		}
-		((MTextController) TextController.getController(c)).setNodeText(node, parts[firstPartNumber]);
+		((MTextController) TextController.getController()).setNodeText(node, parts[firstPartNumber]);
 		final NodeModel parent = node.getParentNode();
 		final int nodePosition = parent.getChildPosition(node) + 1;
 		for (int i = parts.length - 1; i > firstPartNumber; i--) {
@@ -109,9 +109,9 @@ public class SplitNode extends AFreeplaneAction {
 			if (part == null) {
 				continue;
 			}
-			((MTextController) TextController.getController(c)).setNodeText(lowerNode, part);
+			((MTextController) TextController.getController()).setNodeText(lowerNode, part);
 			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
-			    .getController(c);
+			    .getController();
 			nodeStyleController.copyStyle(node, lowerNode);
 			mapController.setFolded(lowerNode, !lowerNode.isFolded());
 		}

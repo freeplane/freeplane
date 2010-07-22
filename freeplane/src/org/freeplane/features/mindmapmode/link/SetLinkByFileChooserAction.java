@@ -34,7 +34,7 @@ class SetLinkByFileChooserAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public SetLinkByFileChooserAction(final Controller controller) {
+	public SetLinkByFileChooserAction() {
 		super("SetLinkByFileChooserAction");
 	}
 
@@ -43,10 +43,10 @@ class SetLinkByFileChooserAction extends AFreeplaneAction {
 	}
 
 	public void setLinkByFileChooser() {
-		final URI relative = ((MFileManager) UrlManager.getController(getModeController()))
-		    .getLinkByFileChooser(getController().getMap());
+		final URI relative = ((MFileManager) UrlManager.getController())
+		    .getLinkByFileChooser(Controller.getCurrentController().getMap());
 		if (relative != null) {
-			((MLinkController) LinkController.getController(getModeController())).setLink(getModeController()
+			((MLinkController) LinkController.getController()).setLink(Controller.getCurrentModeController()
 			    .getMapController().getSelectedNode(), relative, false);
 		}
 	}

@@ -58,8 +58,9 @@ class UpdateCheckAction extends AFreeplaneAction {
 	/**
 	 * the client which asks a remote repository for the current version of the program.
 	 */
-	public UpdateCheckAction(final Controller controller) {
+	public UpdateCheckAction() {
 		super("UpdateCheckAction");
+		final Controller controller = Controller.getCurrentController();
 		controller.getMapViewManager().addMapViewChangeListener(new IMapViewChangeListener() {
 			public void afterViewChange(final Component oldView, final Component newView) {
 				if (newView == null) {
@@ -67,7 +68,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 				}
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						removeMe(controller);
+						removeMe();
 					}
 				});
 				setTimer();
@@ -82,7 +83,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 			public void beforeViewChange(final Component oldView, final Component newView) {
 			}
 
-			private void removeMe(final Controller controller) {
+			private void removeMe() {
 				controller.getMapViewManager().removeMapViewChangeListener(this);
 			}
 		});
@@ -102,9 +103,9 @@ class UpdateCheckAction extends AFreeplaneAction {
 	}
 
 	private void addUpdateButton(final FreeplaneVersion lastVersion) {
-		final Set<String> modes = getController().getModes();
+		final Set<String> modes = Controller.getCurrentController().getModes();
 		for (final String mode : modes) {
-			final MenuBuilder menuBuilder = getController().getModeController(mode).getUserInputListenerFactory()
+			final MenuBuilder menuBuilder = Controller.getCurrentController().getModeController(mode).getUserInputListenerFactory()
 			    .getMenuBuilder();
 			if (lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion()) <= 0) {
 				ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
@@ -236,7 +237,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		}
 		// go to download page
 		try {
-			getController().getViewController().openDocument(
+			Controller.getCurrentController().getViewController().openDocument(
 			    new URL(ResourceController.getResourceController().getProperty(WEB_DOWNLOAD_LOCATION_KEY)));
 		}
 		catch (final MalformedURLException ex) {
@@ -277,7 +278,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		else {
 			options = new Object[] { TextUtils.removeMnemonic(TextUtils.getText("CloseAction.text")) };
 		}
-		final int choice = JOptionPane.showOptionDialog(getController().getViewController().getFrame(), messagePane,
+		final int choice = JOptionPane.showOptionDialog(Controller.getCurrentController().getViewController().getFrame(), messagePane,
 		    TextUtils.getText("updatecheckdialog"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
 		    options, options[0]);
 		ResourceController.getResourceController().setProperty(CHECK_UPDATES_AUTOMATICALLY,

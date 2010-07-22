@@ -103,7 +103,7 @@ public class MapController extends SelectionController {
 			if (NodeChangeType.REFRESH.equals(event.getProperty())) {
 				return;
 			}
-			final IMapSelection selection = action.getController().getSelection();
+			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			if (selection == null || selection.getSelected() == null) {
 				return;
 			}
@@ -217,7 +217,7 @@ public class MapController extends SelectionController {
 	final private ReadManager readManager;
 	private final WriteManager writeManager;
 
-	public MapController(final ModeController modeController) {
+	public MapController() {
 		super();
 //		this.modeController = modeController;
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
@@ -235,7 +235,7 @@ public class MapController extends SelectionController {
 		final UnknownElementWriter unknownElementWriter = new UnknownElementWriter();
 		writeManager.addExtensionAttributeWriter(UnknownElements.class, unknownElementWriter);
 		writeManager.addExtensionElementWriter(UnknownElements.class, unknownElementWriter);
-		createActions(modeController);
+		createActions();
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
 		nodeChangeListeners = new LinkedList<INodeChangeListener>();
 	}
@@ -268,7 +268,7 @@ public class MapController extends SelectionController {
 	}
 
 	public void centerNode(final NodeModel node) {
-		getController().getSelection().centerNode(node);
+		Controller.getCurrentController().getSelection().centerNode(node);
 	}
 
 	public ListIterator<NodeModel> childrenFolded(final NodeModel node) {
@@ -292,7 +292,7 @@ public class MapController extends SelectionController {
 	 * Return false if user has canceled.
 	 */
 	public boolean close(final boolean force) {
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		fireMapRemoved(map);
 		map.destroy();
 		return true;
@@ -302,7 +302,8 @@ public class MapController extends SelectionController {
 	 * @param modeController 
 	 *
 	 */
-	private void createActions(ModeController modeController) {
+	private void createActions() {
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new ToggleFoldedAction());
 		modeController.addAction(new ToggleChildrenFoldedAction());
 	}
@@ -403,10 +404,6 @@ public class MapController extends SelectionController {
 		}
 	}
 
-	public Controller getController() {
-		return Controller.getCurrentController();
-	}
-
 	public void getFilteredXml(final MapModel map, final Writer fileout, final Mode mode, final boolean forceFormat)
 	        throws IOException {
 		getMapWriter().writeMapAsXml(map, fileout, mode, false, forceFormat);
@@ -459,15 +456,11 @@ public class MapController extends SelectionController {
 		return mapWriter;
 	}
 
-	public ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
-	}
-
 	/*
 	 * Helper methods
 	 */
 	public NodeModel getNodeFromID(final String nodeID) {
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		final NodeModel node = map.getNodeForID(nodeID);
 		return node;
 	}
@@ -481,12 +474,12 @@ public class MapController extends SelectionController {
 	}
 
 	public NodeModel getRootNode() {
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		return map.getRootNode();
 	}
 
 	public NodeModel getSelectedNode() {
-		return getController().getSelection().getSelected();
+		return Controller.getCurrentController().getSelection().getSelected();
 	}
 
 	/**
@@ -497,7 +490,7 @@ public class MapController extends SelectionController {
 	 * @return returns a list of MindMapNode s.
 	 */
 	public List<NodeModel> getSelectedNodes() {
-		final IMapSelection selection = getController().getSelection();
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		if (selection == null) {
 			final List<NodeModel> list = Collections.emptyList();
 			return list;
@@ -555,7 +548,7 @@ public class MapController extends SelectionController {
 	 * @returns false if the map was already opened and true if it is newly created. */
 	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException, IOException,
 	        URISyntaxException {
-		final IMapViewManager mapViewManager = getController().getMapViewManager();
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		/*
 		 * this can lead to confusion if the user handles multiple maps
 		 * with the same name. Obviously, this is wrong. Get a better
@@ -568,9 +561,9 @@ public class MapController extends SelectionController {
 			return false;
 		}
 		try {
-			getController().getViewController().setWaitingCursor(true);
+			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final MapModel newModel = newModel(null);
-			((UrlManager) getModeController().getExtension(UrlManager.class)).load(url, newModel);
+			((UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class)).load(url, newModel);
 			fireMapCreated(newModel);
 			newMapView(newModel);
 			// FIXME: removed to be able to set state in MFileManager
@@ -578,12 +571,12 @@ public class MapController extends SelectionController {
 			return true;
 		}
 		finally {
-			getController().getViewController().setWaitingCursor(false);
+			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
 
 	public void newMapView(final MapModel mapModel) {
-		getController().getMapViewManager().newMapView(mapModel, getModeController());
+		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, Controller.getCurrentModeController());
 		// FIXME: removed to be able to set state in MFileManager
 		//		setSaved(mapModel, true);
 	}
@@ -595,7 +588,7 @@ public class MapController extends SelectionController {
 	}
 
 	public MapModel newModel(final NodeModel root) {
-		final MapModel mindMapMapModel = new MapModel(getModeController(), root);
+		final MapModel mindMapMapModel = new MapModel(root);
 		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}
@@ -628,7 +621,7 @@ public class MapController extends SelectionController {
 		if (mapReader.isMapLoadingInProcess()) {
 			return;
 		}
-		if (isUpdate && !getModeController().isUndoAction()) {
+		if (isUpdate && !Controller.getCurrentModeController().isUndoAction()) {
 			final HistoryInformationModel historyInformation = node.getHistoryInformation();
 			if (historyInformation != null) {
 				final IActor historyActor = new IActor() {
@@ -655,7 +648,7 @@ public class MapController extends SelectionController {
 						setDate(historyInformation, now);
 					}
 				};
-				getModeController().execute(historyActor, node.getMap());
+				Controller.getCurrentModeController().execute(historyActor, node.getMap());
 			}
 		}
 		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue);
@@ -673,7 +666,7 @@ public class MapController extends SelectionController {
 					final Collection<NodeModel> set = nodeSet;
 					nodeSet = null;
 					for (final NodeModel node : set) {
-						getModeController().getMapController().nodeRefresh(node, property, oldValue, newValue);
+						Controller.getCurrentModeController().getMapController().nodeRefresh(node, property, oldValue, newValue);
 					}
 				}
 			});
@@ -682,7 +675,7 @@ public class MapController extends SelectionController {
 	}
 
 	public void refreshMap() {
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		final NodeModel root = map.getRootNode();
 		refreshMapFrom(root);
 	}
@@ -755,12 +748,12 @@ public class MapController extends SelectionController {
 
 	public void select(final NodeModel node) {
 		displayNode(node);
-		getController().getSelection().selectAsTheOnlyOneSelected(node);
+		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
 	}
 
 	public void selectBranch(final NodeModel selected, final boolean extend) {
 		displayNode(selected);
-		getController().getSelection().selectBranch(selected, extend);
+		Controller.getCurrentController().getSelection().selectBranch(selected, extend);
 	}
 
 	public void selectMultipleNodes(final NodeModel focussed, final Collection<NodeModel> selecteds) {
@@ -769,9 +762,9 @@ public class MapController extends SelectionController {
 		}
 		select(focussed);
 		for (final NodeModel node : selecteds) {
-			getController().getSelection().makeTheSelected(node);
+			Controller.getCurrentController().getSelection().makeTheSelected(node);
 		}
-		getController().getViewController().obtainFocusForSelected();
+		Controller.getCurrentController().getViewController().obtainFocusForSelected();
 	}
 
 	public void setFolded(final NodeModel node, final boolean folded) {
@@ -785,7 +778,7 @@ public class MapController extends SelectionController {
 		final boolean setTitle = saved != mapModel.isSaved();
 		mapModel.setSaved(saved);
 		if (setTitle) {
-			getModeController().getController().getViewController().setTitle();
+			Controller.getCurrentModeController().getController().getViewController().setTitle();
 		}
 	}
 

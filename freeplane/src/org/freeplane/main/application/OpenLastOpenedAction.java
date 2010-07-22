@@ -21,7 +21,6 @@ package org.freeplane.main.application;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class OpenLastOpenedAction extends AFreeplaneAction {
@@ -31,7 +30,7 @@ class OpenLastOpenedAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	final private LastOpenedList list;
 
-	public OpenLastOpenedAction(final int i, final Controller controller, final LastOpenedList list) {
+	public OpenLastOpenedAction(final int i, final LastOpenedList list) {
 		super("OpenLastOpenedAction_" + i, null, null);
 		this.list = list;
 	}

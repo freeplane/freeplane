@@ -135,7 +135,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			if (model == null) {
 				return true;
 			}
-			final UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
+			final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);
 			urlManager.loadURL(model.getUri());
 			return true;
 		}
@@ -175,7 +175,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			if (model == null) {
 				return;
 			}
-			getController().getViewController().out(model.getUri().toString());
+			Controller.getCurrentController().getViewController().out(model.getUri().toString());
 			setCursor(e);
 		}
 
@@ -309,9 +309,10 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	private final MyMouseListener mouseListener = new MyMouseListener();
 	final private Set<IViewerFactory> factories;
 
-	public ViewerController(final ModeController modeController) {
-		super(modeController);
+	public ViewerController() {
+		super();
 		factories = new HashSet<IViewerFactory>();
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addINodeViewLifeCycleListener(this);
 		modeController.addExtension(this.getClass(), this);
 		factories.add(new BitmapViewerFactory());
@@ -353,7 +354,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	@Override
 	protected IExtension createExtension(final NodeModel node) {
-		final Controller controller = getController();
+		final Controller controller = Controller.getCurrentController();
 		final ViewController viewController = controller.getViewController();
 		final MapModel map = node.getMap();
 		final File file = map.getFile();
@@ -364,7 +365,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
-		final UrlManager urlManager = (UrlManager) getModeController().getExtension(UrlManager.class);
+		final UrlManager urlManager = (UrlManager) controller.getModeController().getExtension(UrlManager.class);
 		final JFileChooser chooser = urlManager.getFileChooser(null);
 		chooser.setAcceptAllFileFilterUsed(false);
 		if (factories.size() > 1) {
@@ -379,7 +380,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			chooser.setFileFilter(new FactoryFileFilter(factories.iterator().next()));
 		}
 		chooser.setAccessory(new ImagePreview(chooser));
-		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
+		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getContentPane());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return null;
 		}
@@ -422,7 +423,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				final float size = Float.parseFloat(attrSize);
 				previewUrl.setZoom(size);
 			}
-			getModeController().getMapController().nodeChanged(node);
+			Controller.getCurrentModeController().getMapController().nodeChanged(node);
 		}
 		catch (final URISyntaxException e) {
 		}
@@ -497,7 +498,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		if (uri == null) {
 			return new JLabel("no file set");
 		}
-		final URI absoluteUri = model.getAbsoluteUri(map, getModeController());
+		final URI absoluteUri = model.getAbsoluteUri(map);
 		if (absoluteUri == null) {
 			return new JLabel(uri.toString());
 		}

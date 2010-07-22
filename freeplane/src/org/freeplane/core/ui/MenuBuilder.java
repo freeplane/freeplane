@@ -270,7 +270,7 @@ public class MenuBuilder extends UIBuilder {
 					setDefaultAccelerator(menuPath.path, accelerator);
 				}
 				try {
-					final ModeController modeController = Controller.getCurrentController().getModeController();
+					final ModeController modeController = Controller.getCurrentModeController();
 					final AFreeplaneAction theAction = modeController.getAction(action);
 					if (theAction == null) {
 						LogUtils.severe("action " + action + " not found");
@@ -377,7 +377,7 @@ public class MenuBuilder extends UIBuilder {
 		return menu;
 	}
 
-	public static void loadAcceleratorPresets(final InputStream in, final Controller controller) {
+	public static void loadAcceleratorPresets(final InputStream in) {
 		final Properties prop = new Properties();
 		try {
 			prop.load(in);
@@ -395,6 +395,7 @@ public class MenuBuilder extends UIBuilder {
 				}
 				final String modeName = shortcutKey.substring(SHORTCUT_PROPERTY_PREFIX.length(), pos);
 				final String itemKey = shortcutKey.substring(pos + 1);
+				Controller controller = Controller.getCurrentController();
 				final ModeController modeController = controller.getModeController(modeName);
 				if (modeController == null) {
 					LogUtils.warn("unknown mode name in " + shortcutKey);
@@ -478,7 +479,7 @@ public class MenuBuilder extends UIBuilder {
 // 	final private ModeController modeController;
 	final MenuStructureReader reader;
 
-	public MenuBuilder(final ModeController modeController) {
+	public MenuBuilder() {
 		super(null);
 //		this.modeController = modeController;
 		reader = new MenuStructureReader();
@@ -774,7 +775,7 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	String getShortcutKey(final String key) {
-		final ModeController modeController = Controller.getCurrentController().getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		return SHORTCUT_PROPERTY_PREFIX + modeController.getModeName() + "/" + key;
 	}
 

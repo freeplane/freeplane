@@ -34,14 +34,13 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 
 public class BToolbarContributor implements IMenuContributor, IMapViewChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";
 // 	final private ModeController modeController;
 	private PersistentEditableComboBox urlfield = null;
 
-	public BToolbarContributor(final ModeController controller) {
+	public BToolbarContributor() {
 		urlfield = new PersistentEditableComboBox(BROWSE_URL_STORAGE_KEY, 20);
 		urlfield.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
@@ -50,7 +49,7 @@ public class BToolbarContributor implements IMenuContributor, IMapViewChangeList
 					return;
 				}
 				try {
-					Controller.getCurrentController().getModeController().getMapController().newMap(new URL(urlText));
+					Controller.getCurrentModeController().getMapController().newMap(new URL(urlText));
 				}
 				catch (final Exception e1) {
 					LogUtils.warn(e1);

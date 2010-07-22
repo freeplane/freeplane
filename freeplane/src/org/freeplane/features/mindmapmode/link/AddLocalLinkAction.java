@@ -41,15 +41,15 @@ class AddLocalLinkAction extends AFreeplaneAction {
 
 	/**
 	 */
-	public AddLocalLinkAction(final Controller controller) {
+	public AddLocalLinkAction() {
 		super("AddLocalLinkAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final List<NodeModel> selecteds = modeController.getMapController().getSelectedNodes();
 		if (selecteds.size() < 2) {
-			getController();
+			Controller.getCurrentController();
 			UITools.errorMessage(TextUtils.getText("less_than_two_selected_nodes"));
 			return;
 		}
@@ -57,7 +57,7 @@ class AddLocalLinkAction extends AFreeplaneAction {
 		final String targetId = (target).createID();
 		for (int i = 1; i < selecteds.size(); i++) {
 			final NodeModel source = selecteds.get(i);
-			((MLinkController) LinkController.getController(modeController)).setLink(source, ("#" + targetId), false);
+			((MLinkController) LinkController.getController()).setLink(source, ("#" + targetId), false);
 		}
 	}
 }

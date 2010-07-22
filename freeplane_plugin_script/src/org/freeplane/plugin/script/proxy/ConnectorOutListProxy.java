@@ -8,13 +8,12 @@ import java.util.Iterator;
 
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 
 class ConnectorOutListProxy extends AbstractCollection<Proxy.Connector> {
 // 	private final MModeController modeController;
 	private final NodeModel node;
 
-	public ConnectorOutListProxy(final NodeModel node, final MModeController modeController) {
+	public ConnectorOutListProxy(final NodeModel node) {
 		this.node = node;
 	}
 

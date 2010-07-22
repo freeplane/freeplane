@@ -30,19 +30,26 @@ import org.freeplane.features.common.map.ModeController;
  * @author Dimitry Polivaev
  */
 public class LocationController implements IExtension {
-	public static LocationController getController(final ModeController modeController) {
-		return (LocationController) modeController.getExtension(LocationController.class);
+	public static LocationController getController() {
+		final ModeController modeController = Controller.getCurrentModeController();
+		return getController(modeController);
 	}
 
-	public static void install(final ModeController modeController, final LocationController locationController) {
+	public static LocationController getController(ModeController modeController) {
+		return (LocationController) modeController.getExtension(LocationController.class);
+	}
+	
+	public static void install( final LocationController locationController) {
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(LocationController.class, locationController);
 	}
 
 // 	final private ModeController modeController;
 
-	public LocationController(final ModeController modeController) {
+	public LocationController() {
 		super();
 //		this.modeController = modeController;
+		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -50,7 +57,4 @@ public class LocationController implements IExtension {
 		locationBuilder.registerBy(readManager, writeManager);
 	}
 
-	public ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
-	}
 }

@@ -42,7 +42,7 @@ class NodeColorBlendAction extends AMultipleNodeAction {
 	/**
 	 *
 	 */
-	public NodeColorBlendAction(final Controller controller) {
+	public NodeColorBlendAction() {
 		super("NodeColorBlendAction");
 	}
 
@@ -54,12 +54,12 @@ class NodeColorBlendAction extends AMultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final ViewController viewController = getController().getViewController();
+		final ViewController viewController = Controller.getCurrentController().getViewController();
 		final Component mapView = viewController.getMapView();
 		final Color mapColor = mapView.getBackground();
 		Color nodeColor = NodeStyleModel.getColor(node);
 		final MNodeStyleController mNodeStyleController = (MNodeStyleController) NodeStyleController
-		    .getController(getController().getModeController());
+		    .getController();
 		if (nodeColor == null) {
 			nodeColor = viewController.getBackgroundColor(node);
 		}

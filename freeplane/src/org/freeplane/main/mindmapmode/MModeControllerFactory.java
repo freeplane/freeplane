@@ -113,8 +113,8 @@ import org.freeplane.view.swing.ui.mindmapmode.MNodeMotionListener;
 public class MModeControllerFactory {
 	private static MModeControllerFactory instance;
 
-	public static MModeController createModeController(final Controller controller) {
-		return MModeControllerFactory.getInstance().createModeControllerImpl(controller);
+	public static MModeController createModeController() {
+		return MModeControllerFactory.getInstance().createModeControllerImpl();
 	}
 
 	private static MModeControllerFactory getInstance() {
@@ -128,54 +128,55 @@ public class MModeControllerFactory {
  	private MModeController modeController;
 	private MUIFactory uiFactory;
 
-	private void createAddIns(Controller controller) {
-		new HierarchicalIcons(modeController);
-		new AutomaticLayout(modeController);
-		new BlinkingNodeHook(modeController);
-		new CreationModificationPlugin(modeController);
-		new ReminderHook(modeController);
-		new ViewerController(modeController);
+	private void createAddIns() {
+		new HierarchicalIcons();
+		new AutomaticLayout();
+		new BlinkingNodeHook();
+		new CreationModificationPlugin();
+		new ReminderHook();
+		new ViewerController();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		final StyleEditorPanel panel = new StyleEditorPanel(uiFactory, true);
-		panel.init(modeController);
+		panel.init();
 		final JScrollPane styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		styleScrollPane.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "styleScrollPaneVisible");
 		UITools.setScrollbarIncrement(styleScrollPane);
 		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, styleScrollPane);
-		menuBuilder.addAnnotatedAction(new ShowFormatPanelAction(controller));
-		menuBuilder.addAnnotatedAction(new FitToPage(controller));
-		menuBuilder.addAnnotatedAction(new EncryptedMap(modeController));
-		menuBuilder.addAnnotatedAction(new EnterPassword(modeController));
-		menuBuilder.addAnnotatedAction(new IconSelectionPlugin(controller));
-		menuBuilder.addAnnotatedAction(new NewParentNode(controller));
-		menuBuilder.addAnnotatedAction(new SaveAll(controller));
-		menuBuilder.addAnnotatedAction(new SortNodes(controller));
-		menuBuilder.addAnnotatedAction(new SplitNode(controller));
-		new UnfoldAll(modeController).addActionsAtMenuBuilder(menuBuilder);
-		new ChangeNodeLevelController(modeController.getController()).addActionsAtMenuBuilder(menuBuilder);
-		ExportWithXSLT.createXSLTExportActions(modeController, "/xml/ExportWithXSLT.xml");
-		ExportToImage.createActions(modeController);
+		menuBuilder.addAnnotatedAction(new ShowFormatPanelAction());
+		menuBuilder.addAnnotatedAction(new FitToPage());
+		menuBuilder.addAnnotatedAction(new EncryptedMap());
+		menuBuilder.addAnnotatedAction(new EnterPassword());
+		menuBuilder.addAnnotatedAction(new IconSelectionPlugin());
+		menuBuilder.addAnnotatedAction(new NewParentNode());
+		menuBuilder.addAnnotatedAction(new SaveAll());
+		menuBuilder.addAnnotatedAction(new SortNodes());
+		menuBuilder.addAnnotatedAction(new SplitNode());
+		new UnfoldAll().addActionsAtMenuBuilder(menuBuilder);
+		new ChangeNodeLevelController().addActionsAtMenuBuilder(menuBuilder);
+		ExportWithXSLT.createXSLTExportActions("/xml/ExportWithXSLT.xml");
+		ExportToImage.createActions();
 		NodeHistory.install(modeController);
-		menuBuilder.addAnnotatedAction(new ExportToOoWriter(controller));
-		menuBuilder.addAnnotatedAction(new ImportMindmanagerFiles(controller));
-		LoadAcceleratorPresetsAction.install(modeController);
+		menuBuilder.addAnnotatedAction(new ExportToOoWriter());
+		menuBuilder.addAnnotatedAction(new ImportMindmanagerFiles());
+		LoadAcceleratorPresetsAction.install();
 	}
 
-	private MModeController createModeControllerImpl(final Controller controller) {
+	private MModeController createModeControllerImpl() {
 //		this.controller = controller;
-		createStandardControllers(controller);
-		createAddIns(controller);
+		createStandardControllers();
+		createAddIns();
 		return modeController;
 	}
 
-	private void createStandardControllers(final Controller controller) {
-		modeController = new MModeController(controller);
+	private void createStandardControllers() {
+		modeController = new MModeController();
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener() {
 			@Override
 			public void mouseReleased(final MouseEvent e) {
 				stopTimerForDelayedSelection();
+				final Controller controller = Controller.getCurrentController();
 				final ModeController modeController = controller.getModeController();
 				extendSelection(e);
 				showPopupMenu(e);
@@ -190,7 +191,7 @@ public class MModeControllerFactory {
 					}
 					final MainView component = (MainView) e.getComponent();
 					if (component.isInFollowLinkRegion(e.getX())) {
-						LinkController.getController(modeController).loadURL(e);
+						LinkController.getController().loadURL(e);
 					}
 					else {
 						final NodeModel node = (component).getNodeView().getModel();
@@ -198,7 +199,7 @@ public class MModeControllerFactory {
 							/* If the link exists, follow the link; toggle folded otherwise */
 							if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown()
 							        && !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1) {
-								((MTextController) TextController.getController(modeController)).edit(null, false,
+								((MTextController) TextController.getController()).edit(null, false,
 								    false);
 							}
 							return;
@@ -210,42 +211,43 @@ public class MModeControllerFactory {
 			}
 		});
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
-		controller.addModeController(modeController);
-		modeController.setMapController(new MMapController(modeController));
-		final MFileManager fileManager = new MFileManager(modeController);
-		UrlManager.install(modeController, fileManager);
+		final Controller controller = Controller.getCurrentController();
+		controller.addModeController();
+		modeController.setMapController(new MMapController());
+		final MFileManager fileManager = new MFileManager();
+		UrlManager.install(fileManager);
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
-		IconController.install(modeController, new MIconController(modeController));
-		NodeStyleController.install(modeController, new MNodeStyleController(modeController));
+		IconController.install(new MIconController());
+		NodeStyleController.install(new MNodeStyleController());
 		final MapController mapController = modeController.getMapController();
-		uiFactory = new MUIFactory(modeController);
+		uiFactory = new MUIFactory();
 		mapController.addNodeChangeListener(uiFactory);
 		mapController.addNodeSelectionListener(uiFactory);
 		mapController.addMapChangeListener(uiFactory);
 		controller.getMapViewManager().addMapSelectionListener(uiFactory);
-		final MToolbarContributor menuContributor = new MToolbarContributor(modeController, uiFactory);
+		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
 		modeController.addMenuContributor(menuContributor);
-		EdgeController.install(modeController, new MEdgeController(modeController));
-		CloudController.install(modeController, new MCloudController(modeController));
-		NoteController.install(modeController, new MNoteController(modeController));
-		LinkController.install(modeController, new MLinkController(modeController));
+		EdgeController.install(new MEdgeController());
+		CloudController.install(new MCloudController());
+		NoteController.install(new MNoteController(modeController));
+		LinkController.install(new MLinkController());
 		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(new MMouseMotionListener()));
-		final MTextController textController = new MTextController(modeController);
-		TextController.install(modeController, textController);
+		final MTextController textController = new MTextController();
+		TextController.install(textController);
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
 			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
 				textController.edit(e, addNew, editLong);
 			}
 		}));
-		ClipboardController.install(modeController, new MClipboardController(modeController));
+		ClipboardController.install(new MClipboardController());
 		userInputListenerFactory.setNodeDropTargetListener(new MNodeDropListener());
-		LocationController.install(modeController, new MLocationController(modeController));
-		LogicalStyleController.install(modeController, new MLogicalStyleController(modeController));
+		LocationController.install(new MLocationController());
+		LogicalStyleController.install(new MLogicalStyleController());
 		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener());
-		AttributeController.install(modeController, new MAttributeController(modeController));
-		modeController.addAction(new EditAttributesAction(controller));
-		SpellCheckerController.install(modeController);
-		new MapStyle(modeController, true);
+		AttributeController.install(new MAttributeController());
+		modeController.addAction(new EditAttributesAction());
+		SpellCheckerController.install();
+		new MapStyle(true);
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
@@ -255,24 +257,24 @@ public class MModeControllerFactory {
 		    controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
-		final FButtonBar fButtonToolBar = new FButtonBar(modeController);
+		final FButtonBar fButtonToolBar = new FButtonBar();
 		fButtonToolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "fbarVisible");
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
 		userInputListenerFactory.addToolBar("/fbuttons", ViewController.TOP, fButtonToolBar);
-		controller.addAction(new ToggleToolbarAction(controller, "ToggleFBarAction", "/fbuttons"));
-		SModeControllerFactory.createModeController(modeController);
-		modeController.addAction(new SetAcceleratorOnNextClickAction(controller));
-		modeController.addAction(new ShowNotesInMapAction(controller));
+		controller.addAction(new ToggleToolbarAction("ToggleFBarAction", "/fbuttons"));
+		SModeControllerFactory.install();
+		modeController.addAction(new SetAcceleratorOnNextClickAction());
+		modeController.addAction(new ShowNotesInMapAction());
 		userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);
 		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT, ((MIconController) IconController
-		    .getController(modeController)).getIconToolBarScrollPane());
-		modeController.addAction(new ToggleToolbarAction(controller, "ToggleLeftToolbarAction", "/icon_toolbar"));
-		new RevisionPlugin(modeController);
+		    .getController()).getIconToolBarScrollPane());
+		modeController.addAction(new ToggleToolbarAction("ToggleLeftToolbarAction", "/icon_toolbar"));
+		new RevisionPlugin();
 		userInputListenerFactory.setMenuStructure("/xml/mindmapmodemenu.xml");
 		userInputListenerFactory.updateMenus(modeController);
 		final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		((MIconController) IconController.getController(modeController)).updateIconToolbar();
-		((MIconController) IconController.getController(modeController)).updateMenus(builder);
+		((MIconController) IconController.getController()).updateIconToolbar();
+		((MIconController) IconController.getController()).updateMenus(builder);
 		modeController.updateMenus();
 	}
 }

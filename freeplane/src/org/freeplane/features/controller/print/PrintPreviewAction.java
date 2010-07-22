@@ -35,7 +35,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 	private static final long serialVersionUID = 1L;
 // // 	final private Controller controller;
 
-	PrintPreviewAction(final Controller controller, final PrintController printController) {
+	PrintPreviewAction( final PrintController printController) {
 		super("PrintPreviewAction", printController);
 //		this.controller = controller;
 	}

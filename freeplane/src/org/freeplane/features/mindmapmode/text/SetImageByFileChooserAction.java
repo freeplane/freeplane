@@ -31,12 +31,12 @@ class SetImageByFileChooserAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public SetImageByFileChooserAction(final Controller controller) {
+	public SetImageByFileChooserAction() {
 		super("SetImageByFileChooserAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MTextController) TextController.getController(getModeController())).setImageByFileChooser();
-		getController().getViewController().obtainFocusForSelected();
+		((MTextController) TextController.getController()).setImageByFileChooser();
+		Controller.getCurrentController().getViewController().obtainFocusForSelected();
 	}
 }

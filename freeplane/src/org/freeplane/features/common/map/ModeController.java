@@ -69,7 +69,7 @@ public class ModeController extends AController {
 	/**
 	 * Instantiation order: first me and then the model.
 	 */
-	public ModeController(final Controller controller) {
+	public ModeController() {
 //		this.controller = controller;
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		copiers = new LinkedList<IExtensionCopier>();

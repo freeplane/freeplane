@@ -28,7 +28,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
@@ -37,9 +36,8 @@ import org.freeplane.features.common.map.NodeModel;
 class EditNodeExternalApplication extends EditNodeBase {
 	final private KeyEvent firstEvent;
 
-	public EditNodeExternalApplication(final NodeModel node, final String text, final KeyEvent firstEvent,
-	                                   final ModeController controller, final IEditControl editControl) {
-		super(node, text, controller, editControl);
+	public EditNodeExternalApplication(final NodeModel node, final String text, final KeyEvent firstEvent, final IEditControl editControl) {
+		super(node, text, editControl);
 		this.firstEvent = firstEvent;
 	}
 

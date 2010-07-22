@@ -30,11 +30,11 @@ class NewPreviousSiblingAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public NewPreviousSiblingAction(final Controller controller) {
+	public NewPreviousSiblingAction() {
 		super("NewPreviousSiblingAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MMapController) getModeController().getMapController()).addNewNode(MMapController.NEW_SIBLING_BEFORE, null);
+		((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(MMapController.NEW_SIBLING_BEFORE, null);
 	}
 }

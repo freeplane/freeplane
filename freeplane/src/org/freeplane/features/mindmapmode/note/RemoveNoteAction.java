@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.features.common.map.ModeController;
@@ -42,19 +43,20 @@ class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 	 */
 	final private MNoteController noteController;
 
-	public RemoveNoteAction(final MNoteController noteController, final ModeController modeController) {
+	public RemoveNoteAction(final MNoteController noteController) {
 		super("RemoveNoteAction");
 		this.noteController = noteController;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final int showResult = OptionalDontShowMeAgainDialog.show(getController(), "really_remove_notes",
+		final int showResult = OptionalDontShowMeAgainDialog.show("really_remove_notes",
 		    "confirmation", MNoteController.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION,
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		for (final Iterator<NodeModel> iterator = (getModeController()).getMapController().getSelectedNodes()
+		ModeController modeController = Controller.getCurrentModeController();
+		for (final Iterator<NodeModel> iterator = modeController.getMapController().getSelectedNodes()
 		    .iterator(); iterator.hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
 			if (NoteModel.getNoteText(node) != null) {
@@ -98,7 +100,7 @@ class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 	@Override
 	public void setEnabled() {
 		boolean foundNote = false;
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		if (modeController == null) {
 			setEnabled(false);
 			return;

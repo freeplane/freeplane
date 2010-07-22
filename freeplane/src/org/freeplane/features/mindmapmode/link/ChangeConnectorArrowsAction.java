@@ -48,7 +48,7 @@ class ChangeConnectorArrowsAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+		final MLinkController linkController = (MLinkController) LinkController.getController();
 		linkController.changeArrowsOfArrowLink(arrowLink, startArrow, endArrow);
 	}
 }

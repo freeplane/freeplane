@@ -37,7 +37,7 @@ class CloudColorAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 	private Color actionColor;
 
-	public CloudColorAction(final Controller controller) {
+	public CloudColorAction() {
 		super("CloudColorAction");
 	}
 
@@ -46,14 +46,14 @@ class CloudColorAction extends AMultipleNodeAction {
 		Color selectedColor = null;
 		ModeController controller;
 		{
-			controller = getModeController();
+			controller = Controller.getCurrentModeController();
 			final NodeModel selected = controller.getMapController().getSelectedNode();
 			final MCloudController cloudController = (MCloudController) CloudController
-			    .getController(getModeController());
+			    .getController();
 			cloudController.setCloud(selected, true);
 			selectedColor = cloudController.getColor(selected);
 		}
-		actionColor = ColorTracker.showCommonJColorChooserDialog(getController(), controller.getController()
+		actionColor = ColorTracker.showCommonJColorChooserDialog(controller.getController()
 		    .getSelection().getSelected(), TextUtils.getText("choose_cloud_color"), selectedColor);
 		super.actionPerformed(e);
 	}
@@ -66,7 +66,7 @@ class CloudColorAction extends AMultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MCloudController cloudController = (MCloudController) CloudController.getController(getModeController());
+		final MCloudController cloudController = (MCloudController) CloudController.getController();
 		cloudController.setColor(node, actionColor);
 	}
 }

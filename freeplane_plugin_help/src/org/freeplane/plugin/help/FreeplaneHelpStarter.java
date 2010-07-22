@@ -26,7 +26,6 @@ import java.net.URL;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.LogUtils;
@@ -41,7 +40,7 @@ class FreeplaneHelpStarter extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public FreeplaneHelpStarter(final Controller controller) {
+	public FreeplaneHelpStarter() {
 		super("FreeplaneHelpStarter");
 	}
 

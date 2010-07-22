@@ -50,7 +50,7 @@ class DocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final String document;
 
-	DocumentationAction(final Controller controller, final String actionName, final String document) {
+	DocumentationAction( final String actionName, final String document) {
 		super(actionName);
 		this.document = document;
 	}
@@ -81,13 +81,13 @@ class DocumentationAction extends AFreeplaneAction {
 				public void run() {
 					try {
 						if (endUrl.getFile().endsWith(".mm")) {
-							 getController().selectMode(BModeController.MODENAME);
-							if (getModeController().getMapController().newMap(endUrl)) {
+							 Controller.getCurrentController().selectMode(BModeController.MODENAME);
+							if (Controller.getCurrentModeController().getMapController().newMap(endUrl)) {
 								appendAcceleratableMenuEntries();
 							}
 						}
 						else {
-							getController().getViewController().openDocument(endUrl);
+							Controller.getCurrentController().getViewController().openDocument(endUrl);
 						}
 					}
 					catch (final Exception e1) {
@@ -107,11 +107,11 @@ class DocumentationAction extends AFreeplaneAction {
 
 	private void appendAcceleratableMenuEntries() {
 		// use the MModeController for the mindmap mode menu - the browse doesn't contain much entries!
-		final MenuBuilder menuBuilder = MModeController.getMModeController(getController())
+		final MenuBuilder menuBuilder = MModeController.getMModeController()
 		    .getUserInputListenerFactory().getMenuBuilder();
 		final DefaultMutableTreeNode menuEntryTree = MenuUtils.createAcceleratebleMenuEntryTree(
 		    FreeplaneMenuBar.MENU_BAR_PREFIX, menuBuilder);
-		final MapController mapController = getModeController().getMapController();
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final NodeModel rootNode = mapController.getRootNode();
 		final NodeModel newNode = mapController.newNode(TextUtils.getText("hot_keys"), rootNode.getMap());
 		newNode.setFolded(true);
@@ -125,7 +125,7 @@ class DocumentationAction extends AFreeplaneAction {
 
 	@SuppressWarnings("unchecked")
 	private void insertAcceleratorHtmlTable(final NodeModel newNode, final DefaultMutableTreeNode menuEntryTree) {
-		final MapController mapController = getModeController().getMapController();
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final String title = TextUtils.getText("hot_keys_table");
 		final MapModel map = mapController.getRootNode().getMap();
 		final NodeModel titleNode = mapController.newNode(title, map);

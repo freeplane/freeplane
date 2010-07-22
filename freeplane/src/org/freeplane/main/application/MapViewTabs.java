@@ -52,7 +52,7 @@ class MapViewTabs implements IMapViewChangeListener {
 	private boolean mTabbedPaneSelectionUpdate = true;
 	private TabbedPaneUI tabbedPaneUI;
 
-	public MapViewTabs(final Controller controller, final ViewController fm, final JComponent contentComponent) {
+	public MapViewTabs( final ViewController fm, final JComponent contentComponent) {
 //		this.controller = controller;
 		mContentComponent = contentComponent;
 		InputMap map;
@@ -68,6 +68,7 @@ class MapViewTabs implements IMapViewChangeListener {
 				tabSelectionChanged();
 			}
 		});
+		final Controller controller = Controller.getCurrentController();
 		controller.getMapViewManager().addMapViewChangeListener(this);
 		fm.getContentPane().add(mTabbedPane, BorderLayout.CENTER);
 	}

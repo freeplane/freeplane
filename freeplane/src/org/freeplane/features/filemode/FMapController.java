@@ -21,6 +21,7 @@ package org.freeplane.features.filemode;
 
 import java.io.File;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
@@ -29,16 +30,16 @@ import org.freeplane.features.common.map.NodeModel;
  * @author Dimitry Polivaev
  */
 public class FMapController extends MapController {
-	public FMapController(final FModeController modeController) {
-		super(modeController);
+	public FMapController() {
+		super();
 	}
 
 	public FModeController getFModeController() {
-		return (FModeController) getModeController();
+		return (FModeController) Controller.getCurrentModeController();
 	}
 
 	public MapModel newMap(final File file) {
-		final FMapModel fileMapModel = new FMapModel(file, getModeController());
+		final FMapModel fileMapModel = new FMapModel(file);
 		fireMapCreated(fileMapModel);
 		newMapView(fileMapModel);
 		// FIXME: setSaved(true) necessary? (it's removed from newMapView())

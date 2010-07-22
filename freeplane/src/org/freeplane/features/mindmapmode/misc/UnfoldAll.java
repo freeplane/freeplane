@@ -99,8 +99,9 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 
 // // 	final private Controller controller;
 
-	public UnfoldAll(final ModeController modeController) {
+	public UnfoldAll() {
 		super();
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getUserInputListenerFactory().addMouseWheelEventHandler(this);
 	}
 
@@ -120,7 +121,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	protected void foldAll(final NodeModel node) {
-		final MapController modeController = Controller.getCurrentController().getModeController().getMapController();
+		final MapController modeController = Controller.getCurrentModeController().getMapController();
 		for (final Iterator<NodeModel> i = modeController.childrenUnfolded(node); i.hasNext();) {
 			foldAll(i.next());
 		}
@@ -136,7 +137,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	 *            node to start from.
 	 */
 	public void foldLastBranches(final NodeModel node) {
-		final MapController mapController = Controller.getCurrentController().getModeController().getMapController();
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		boolean nodeHasChildWhichIsLeave = false;
 		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
 			if (i.next().getChildCount() == 0) {
@@ -157,7 +158,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		final int k = node.depth();
 		if (k < stage) {
 			setFolded(node, false);
-			final MapController mapController = Controller.getCurrentController().getModeController().getMapController();
+			final MapController mapController = Controller.getCurrentModeController().getMapController();
 			for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
 				foldStageN(i.next(), stage);
 			}
@@ -168,7 +169,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	protected int getMaxDepth(final NodeModel node) {
-		final MapController mapController = Controller.getCurrentController().getModeController().getMapController();
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		if (mapController.isFolded(node) || !mapController.hasChildren(node)) {
 			return node.depth();
 		}
@@ -183,7 +184,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	public int getMinDepth(final NodeModel node) {
-		final MapController mapController = Controller.getCurrentController().getModeController().getMapController();
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		if (mapController.isFolded(node)) {
 			return node.depth();
 		}
@@ -218,7 +219,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	protected void setFolded(final NodeModel node, final boolean state) {
-		final MapController mapController = Controller.getCurrentController().getModeController().getMapController();
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		if (mapController.hasChildren(node) && (mapController.isFolded(node) != state)) {
 			mapController.setFolded(node, state);
 		}
@@ -226,7 +227,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 
 	public void unfoldAll(final NodeModel node) {
 		setFolded(node, false);
-		final MapController mapController = Controller.getCurrentController().getModeController().getMapController();
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
 			unfoldAll(i.next());
 		}
@@ -244,7 +245,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		final int k = node.depth();
 		if (k < stage) {
 			setFolded(node, false);
-			final MapController mapController = Controller.getCurrentController().getModeController().getMapController();
+			final MapController mapController = Controller.getCurrentModeController().getMapController();
 			for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
 				unfoldStageN(i.next(), stage);
 			}

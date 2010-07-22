@@ -75,18 +75,18 @@ class FindAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private FilterConditionEditor editor;
 
-	public FindAction(final Controller controller) {
+	public FindAction() {
 		super(KEY);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final IMapSelection selection = getController().getSelection();
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		if (selection == null) {
 			return;
 		}
 		final NodeModel start = selection.getSelected();
 		if (editor == null) {
-			editor = new FilterConditionEditor(FilterController.getController(getController()));
+			editor = new FilterConditionEditor(FilterController.getCurrentFilterController());
 		}
 		else {
 			editor.mapChanged(start.getMap());
@@ -104,7 +104,7 @@ class FindAction extends AFreeplaneAction {
 			public void ancestorRemoved(final AncestorEvent event) {
 			}
 		});
-		final int run = UITools.showConfirmDialog(getController(), start, editor, TextUtils.getText("FindAction.text"),
+		final int run = UITools.showConfirmDialog(start, editor, TextUtils.getText("FindAction.text"),
 		    JOptionPane.OK_CANCEL_OPTION);
 		final Container parent = editor.getParent();
 		if (parent != null) {
@@ -113,24 +113,24 @@ class FindAction extends AFreeplaneAction {
 		if (run != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final FindNodeList info = FindNodeList.create(getController().getMap());
+		final FindNodeList info = FindNodeList.create(Controller.getCurrentController().getMap());
 		info.condition = editor.getCondition();
 		if (info.condition == null) {
 			return;
 		}
-		info.rootID = getController().getSelection().getSelected().createID();
+		info.rootID = Controller.getCurrentController().getSelection().getSelected().createID();
 		findNext();
 	}
 
 	void findNext() {
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		final FindNodeList info = FindNodeList.get(map);
 		if (info == null || info.condition == null) {
 			displayNoPreviousFindMessage();
 			return;
 		}
-		final FilterController filterController = FilterController.getController(getController());
-		final NodeModel start = getController().getSelection().getSelected();
+		final FilterController filterController = FilterController.getCurrentFilterController();
+		final NodeModel start = Controller.getCurrentController().getSelection().getSelected();
 		final NodeModel root = map.getNodeForID(info.rootID);
 		if (root == null) {
 			info.condition = null;
@@ -153,7 +153,7 @@ class FindAction extends AFreeplaneAction {
 	}
 
 	private void displayNoPreviousFindMessage() {
-		UITools.informationMessage(getController().getViewController().getFrame(), TextUtils
+		UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(), TextUtils
 		    .getText("no_previous_find"));
 	}
 
@@ -167,7 +167,7 @@ class FindAction extends AFreeplaneAction {
 		NodeModel nodeOnPath = null;
 		for (nodeOnPath = node; nodeOnPath != null && !info.nodesUnfoldedByDisplay.contains(nodeOnPath.createID()); nodeOnPath = nodeOnPath
 		    .getParentNode()) {
-			if (getModeController().getMapController().isFolded(nodeOnPath)) {
+			if (Controller.getCurrentModeController().getMapController().isFolded(nodeOnPath)) {
 				nodesUnfoldedByDisplay.add(nodeOnPath.createID());
 			}
 		}
@@ -181,16 +181,16 @@ class FindAction extends AFreeplaneAction {
 			}
 			oldPathIterator.remove();
 			if (oldPathNode != null) {
-				getModeController().getMapController().setFolded(oldPathNode, true);
+				Controller.getCurrentModeController().getMapController().setFolded(oldPathNode, true);
 			}
 		}
 		info.nodesUnfoldedByDisplay.addAll(nodesUnfoldedByDisplay);
-		getModeController().getMapController().select(node);
+		Controller.getCurrentModeController().getMapController().select(node);
 	}
 
 	private void displayNotFoundMessage(final NodeModel start, final ICondition condition) {
 		final String messageText = TextUtils.getText("no_more_found_from");
-		UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
+		UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(), messageText.replaceAll("\\$1",
 		    Matcher.quoteReplacement(condition.toString())).replaceAll("\\$2",
 		    Matcher.quoteReplacement(getFindFromText(start))));
 	}

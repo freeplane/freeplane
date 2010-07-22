@@ -61,7 +61,6 @@ import org.freeplane.features.common.map.MapReader.NodeTreeCreator;
 import org.freeplane.features.common.map.MapWriter.Hint;
 import org.freeplane.features.common.map.MapWriter.Mode;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.text.MTextController;
@@ -80,8 +79,8 @@ public class MClipboardController extends ClipboardController {
 
 		void paste(final NodeModel target) {
 			textFromClipboard = cleanHtml(textFromClipboard);
-			final NodeModel node = getModeController().getMapController().newNode(textFromClipboard,
-			    getController().getMap());
+			final NodeModel node = Controller.getCurrentModeController().getMapController().newNode(textFromClipboard,
+					Controller.getCurrentController().getMap());
 			final String text = textFromClipboard;
 			final Matcher m = HREF_PATTERN.matcher(text);
 			if (m.matches()) {
@@ -90,11 +89,11 @@ public class MClipboardController extends ClipboardController {
 					final String href = m.group(1);
 					final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links")
 					    .equals("relative");
-					((MLinkController) LinkController.getController(getModeController())).setLink(node, href,
+					((MLinkController) LinkController.getController()).setLink(node, href,
 					    useRelativeUri);
 				}
 			}
-			((MMapController) getModeController().getMapController()).insertNode(node, target);
+			((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, target);
 		}
 
 		public void paste(final NodeModel target, final boolean asSibling, final boolean isLeft) {
@@ -112,7 +111,7 @@ public class MClipboardController extends ClipboardController {
 
 		public void paste(final NodeModel target, final boolean asSibling, final boolean isLeft) {
 			for (final File file : fileList) {
-				final MMapController mapController = (MMapController) getModeController().getMapController();
+				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
 				final URI uri;
 				if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
@@ -121,7 +120,7 @@ public class MClipboardController extends ClipboardController {
 				else {
 					uri = file.getAbsoluteFile().toURI();
 				}
-				((MLinkController) LinkController.getController(getModeController())).setLink(node, uri, false);
+				((MLinkController) LinkController.getController()).setLink(node, uri, false);
 				mapController.insertNode(node, target, asSibling, isLeft, isLeft);
 			}
 		}
@@ -146,7 +145,7 @@ public class MClipboardController extends ClipboardController {
 
 		private void paste(final String text, final NodeModel target, final boolean asSibling, final boolean isLeft) {
 			final String[] textLines = text.split(ClipboardController.NODESEPARATOR);
-			final MMapController mapController = (MMapController) getModeController().getMapController();
+			final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 			final MapReader mapReader = mapController.getMapReader();
 			final NodeTreeCreator nodeTreeCreator = mapReader.nodeTreeCreator(target.getMap());
 			nodeTreeCreator.setHint(Hint.MODE, Mode.CLIPBOARD);
@@ -238,7 +237,7 @@ public class MClipboardController extends ClipboardController {
 				//					}
 				//				}
 				final MLinkController linkController = (MLinkController) LinkController
-				    .getController(getModeController());
+				    .getController();
 				final String link = linkController.findLink(text);
 				if (!visibleText.equals("")) {
 					textFragments.add(new TextFragment(visibleText, link, depth));
@@ -265,7 +264,7 @@ public class MClipboardController extends ClipboardController {
 				final String string = out.toString();
 				if (!string.equals("")) {
 					final MLinkController linkController = (MLinkController) LinkController
-					    .getController(getModeController());
+					    .getController();
 					final String link = linkController.findLink(string);
 					final TextFragment htmlFragment = new TextFragment(string, link, depth);
 					htmlFragments.add(htmlFragment);
@@ -414,9 +413,9 @@ public class MClipboardController extends ClipboardController {
 	/**
 	 * @param modeController
 	 */
-	public MClipboardController(final MModeController modeController) {
-		super(modeController);
-		createActions(modeController);
+	public MClipboardController() {
+		super();
+		createActions();
 	}
 
 	private String cleanHtml(String in) {
@@ -435,28 +434,24 @@ public class MClipboardController extends ClipboardController {
 	/**
 	 * @param modeController
 	 */
-	private void createActions(final ModeController modeController) {
-		final Controller controller = modeController.getController();
-		modeController.addAction(new CutAction(controller));
-		modeController.addAction(new PasteAction(controller));
-		modeController.addAction(new SelectedPasteAction(controller));
+	private void createActions() {
+		final ModeController modeController = Controller.getCurrentModeController();
+		modeController.addAction(new CutAction());
+		modeController.addAction(new PasteAction());
+		modeController.addAction(new SelectedPasteAction());
 	}
 
 	Transferable cut(final List<NodeModel> collection) {
-		getModeController().getMapController().sortNodesByDepth(collection);
-		final Transferable totalCopy = ((ClipboardController) getModeController().getExtension(
+		Controller.getCurrentModeController().getMapController().sortNodesByDepth(collection);
+		final Transferable totalCopy = ((ClipboardController) Controller.getCurrentModeController().getExtension(
 		    ClipboardController.class)).copy(collection, true);
 		for (final NodeModel node : collection) {
 			if (node.getParentNode() != null) {
-				((MMapController) getModeController().getMapController()).deleteNode(node);
+				((MMapController) Controller.getCurrentModeController().getMapController()).deleteNode(node);
 			}
 		}
 		setClipboardContents(totalCopy);
 		return totalCopy;
-	}
-
-	private Controller getController() {
-		return getModeController().getController();
 	}
 
 	private IDataFlavorHandler getFlavorHandler(final Transferable t) {
@@ -487,7 +482,7 @@ public class MClipboardController extends ClipboardController {
 				if (textFromClipboard.charAt(0) != 65533) {
 					if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 						final MTextController textController = (MTextController) TextController
-						    .getController(getModeController());
+						    .getController();
 						final boolean richText = textController.useRichTextInNewLongNodes();
 						if (richText) {
 							final boolean structuredHtmlImport = resourceController
@@ -607,7 +602,7 @@ public class MClipboardController extends ClipboardController {
 		if (handler == null) {
 			return;
 		}
-		final MMapController mapController = (MMapController) getModeController().getMapController();
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		if (asSibling && !mapController.isWriteable(target.getParentNode()) || !asSibling
 		        && !mapController.isWriteable(target)) {
 			final String message = TextUtils.getText("node_is_write_protected");
@@ -615,23 +610,23 @@ public class MClipboardController extends ClipboardController {
 			return;
 		}
 		try {
-			getController().getViewController().setWaitingCursor(true);
+			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			if (newNodes == null) {
 				newNodes = new LinkedList<NodeModel>();
 			}
 			newNodes.clear();
 			handler.paste(target, asSibling, isLeft);
-			final ModeController modeController = getModeController();
+			final ModeController modeController = Controller.getCurrentModeController();
 			if (!asSibling && modeController.getMapController().isFolded(target)
 			        && ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
 				modeController.getMapController().setFolded(target, false);
 			}
 			for (final NodeModel child : newNodes) {
-				AttributeController.getController(getModeController()).performRegistrySubtreeAttributes(child);
+				AttributeController.getController().performRegistrySubtreeAttributes(child);
 			}
 		}
 		finally {
-			getController().getViewController().setWaitingCursor(false);
+			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
 
@@ -651,7 +646,7 @@ public class MClipboardController extends ClipboardController {
 		final ArrayList<Integer> parentNodesDepths = new ArrayList<Integer>();
 		parentNodes.add(parent);
 		parentNodesDepths.add(new Integer(-1));
-		final MMapController mapController = (MMapController) getModeController().getMapController();
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
 		    "relative");
 		for (int i = 0; i < textFragments.length; ++i) {
@@ -659,7 +654,7 @@ public class MClipboardController extends ClipboardController {
 			final String text = textFragment.text;
 			final NodeModel node = mapController.newNode(text, map);
 			if (textFragment.link != null) {
-				((MLinkController) LinkController.getController(getModeController())).setLink(node, textFragment.link,
+				((MLinkController) LinkController.getController()).setLink(node, textFragment.link,
 				    useRelativeUri);
 			}
 			for (int j = parentNodes.size() - 1; j >= 0; --j) {

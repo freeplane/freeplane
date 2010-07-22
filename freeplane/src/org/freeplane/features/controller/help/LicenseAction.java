@@ -33,12 +33,12 @@ class LicenseAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	LicenseAction(final Controller controller) {
+	LicenseAction() {
 		super("LicenseAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		UITools.informationMessage(getController().getViewController().getFrame(), TextUtils.getText("license_text"),
+		UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(), TextUtils.getText("license_text"),
 		    TextUtils.getText(NAME));
 	}
 }

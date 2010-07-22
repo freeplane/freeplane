@@ -38,19 +38,19 @@ class DeleteAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public DeleteAction(final Controller controller) {
+	public DeleteAction() {
 		super("DeleteAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		for (final NodeModel node : modeController.getMapController().getSelectedNodes()) {
 			if (node.isRoot()) {
 				return;
 			}
 		}
-		final Controller controller = getController();
-		final int showResult = OptionalDontShowMeAgainDialog.show(controller, "really_remove_node", "confirmation",
+		final Controller controller = Controller.getCurrentController();
+		final int showResult = OptionalDontShowMeAgainDialog.show("really_remove_node", "confirmation",
 		    MModeController.RESOURCES_DELETE_NODES_WITHOUT_QUESTION,
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {
@@ -73,7 +73,7 @@ class DeleteAction extends AFreeplaneAction {
 			}
 
 			public void undo() {
-				(getModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
+				(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
 			}
 		};
 		return actor;
@@ -86,10 +86,10 @@ class DeleteAction extends AFreeplaneAction {
 		final NodeModel parentNode = node.getParentNode();
 		final int index = parentNode.getIndex(node);
 		final IActor actor = createActor(index, parentNode, node);
-		getModeController().execute(actor, node.getMap());
+		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
 	void deleteWithoutUndo(final NodeModel node) {
-		((MMapController) getModeController().getMapController()).deleteWithoutUndo(node);
+		((MMapController) Controller.getCurrentModeController().getMapController()).deleteWithoutUndo(node);
 	}
 }

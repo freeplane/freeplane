@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.mindmapmode.text;
 
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
@@ -27,9 +26,9 @@ import org.freeplane.features.common.map.NodeModel;
  * 13.01.2009
  */
 public abstract class AbstractEditNodeTextField extends EditNodeBase {
-	protected AbstractEditNodeTextField(final NodeModel node, final String text, final ModeController controller,
+	protected AbstractEditNodeTextField(final NodeModel node, final String text,
 	                                    final IEditControl editControl) {
-		super(node, text, controller, editControl);
+		super(node, text, editControl);
 	}
 
 	public abstract void show();

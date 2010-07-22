@@ -195,14 +195,14 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	FileFilter filefilter = new MindMapFilter();
 
-	public MFileManager(final ModeController modeController) {
-		super(modeController);
-		createActions(modeController);
+	public MFileManager() {
+		super();
+		createActions();
 		createPreferences();
 	}
 
 	private void createPreferences() {
-		final MModeController modeController = (MModeController) getModeController();
+		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
 		optionPanelBuilder.addCreator("Environment/load", new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
@@ -224,18 +224,18 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		MFileManager.backupFile(file, backupFileNumber, BACKUP_EXTENSION);
 	}
 
-	private void createActions(final ModeController modeController) {
-		final Controller controller = modeController.getController();
-		getController().addAction(new OpenAction(controller));
-		modeController.addAction(new SaveAction(controller));
-		modeController.addAction(new SaveAsAction(controller));
-		modeController.addAction(new ExportBranchAction(controller));
-		modeController.addAction(new ImportBranchAction(controller));
-		modeController.addAction(new ImportLinkedBranchAction(controller));
-		modeController.addAction(new ImportLinkedBranchWithoutRootAction(controller));
-		modeController.addAction(new ImportExplorerFavoritesAction(controller));
-		modeController.addAction(new ImportFolderStructureAction(controller));
-		modeController.addAction(new RevertAction(controller));
+	private void createActions() {
+		Controller.getCurrentController().addAction(new OpenAction());
+		final ModeController modeController = Controller.getCurrentModeController();
+		modeController.addAction(new SaveAction());
+		modeController.addAction(new SaveAsAction());
+		modeController.addAction(new ExportBranchAction());
+		modeController.addAction(new ImportBranchAction());
+		modeController.addAction(new ImportLinkedBranchAction());
+		modeController.addAction(new ImportLinkedBranchWithoutRootAction());
+		modeController.addAction(new ImportExplorerFavoritesAction());
+		modeController.addAction(new ImportFolderStructureAction());
+		modeController.addAction(new RevertAction());
 	}
 
 	protected JFileChooser getFileChooser() {
@@ -274,7 +274,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
 		    "relative");
 		if (file == null && useRelativeUri) {
-			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), TextUtils
+			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(), TextUtils
 			    .getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
@@ -290,7 +290,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		else {
 			chooser.setFileFilter(chooser.getAcceptAllFileFilter());
 		}
-		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
+		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getContentPane());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return null;
 		}
@@ -337,7 +337,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
-					UITools.informationMessage(getController().getViewController().getFrame(), TextUtils.formatText(
+					UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(), TextUtils.formatText(
 					    "map_locked_by_open", file.getName(), lockingUser));
 					((MMapModel) map).setReadOnly(true);
 				}
@@ -347,7 +347,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 			catch (final Exception e) {
 				LogUtils.severe(e);
-				UITools.informationMessage(getController().getViewController().getFrame(), TextUtils.formatText(
+				UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(), TextUtils.formatText(
 				    "locking_failed_by_open", file.getName()));
 				((MMapModel) map).setReadOnly(true);
 			}
@@ -407,8 +407,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 		}
 		if (reader == null) {
-			final Controller controller = getController();
-			final int showResult = OptionalDontShowMeAgainDialog.show(controller, "really_convert_to_current_version",
+			final int showResult = OptionalDontShowMeAgainDialog.show("really_convert_to_current_version",
 			    "confirmation", MMapController.RESOURCES_CONVERT_TO_CURRENT_VERSION,
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 			if (showResult != JOptionPane.OK_OPTION) {
@@ -420,7 +419,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 		}
 		try {
-			return getModeController().getMapController().getMapReader().createNodeTreeFromXml(map, reader, Mode.FILE);
+			return Controller.getCurrentModeController().getMapController().getMapReader().createNodeTreeFromXml(map, reader, Mode.FILE);
 		}
 		finally {
 			if (reader != null) {
@@ -431,11 +430,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	@Override
 	public void loadURL(final URI relative) {
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		if (map.getFile() == null) {
 			if (!relative.toString().startsWith("#") && !relative.isAbsolute() || relative.isOpaque()) {
-				getController().getViewController().out("You must save the current map first!");
-				final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
+				Controller.getCurrentController().getViewController().out("You must save the current map first!");
+				final boolean result = ((MFileManager) UrlManager.getController()).save(map);
 				if (!result) {
 					return;
 				}
@@ -446,7 +445,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public void open() {
 		final JFileChooser chooser = getFileChooser();
-		final int returnVal = chooser.showOpenDialog(getController().getViewController().getMapView());
+		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getMapView());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File[] selectedFiles;
 			if (chooser.isMultiSelectionEnabled()) {
@@ -459,7 +458,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				final File theFile = selectedFiles[i];
 				try {
 					setLastCurrentDir(theFile.getParentFile());
-					getModeController().getMapController().newMap(Compat.fileToUrl(theFile));
+					Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(theFile));
 				}
 				catch (final Exception ex) {
 					handleLoadingException(ex);
@@ -467,7 +466,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				}
 			}
 		}
-		getController().getViewController().setTitle();
+		Controller.getCurrentController().getViewController().setTitle();
 	}
 
 	public boolean save(final MapModel map) {
@@ -493,13 +492,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 			final String lockingUser = tryToLock(map, file);
 			if (lockingUser != null) {
-				UITools.informationMessage(getController().getViewController().getFrame(), TextUtils.formatText(
+				UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(), TextUtils.formatText(
 				    "map_locked_by_save_as", file.getName(), lockingUser));
 				return false;
 			}
 		}
 		catch (final Exception e) {
-			UITools.informationMessage(getController().getViewController().getFrame(), TextUtils.formatText(
+			UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(), TextUtils.formatText(
 			    "locking_failed_by_save_as", file.getName()));
 			return false;
 		}
@@ -509,7 +508,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			return false;
 		}
 		final URL urlAfter = map.getURL();
-		final MMapController mapController = (MMapController) getModeController().getMapController();
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		mapController.fireMapChanged(new MapChangeEvent(this, map, UrlManager.MAP_URL, urlBefore, urlAfter));
 		mapController.setSaved(map, true);
 		return true;
@@ -528,7 +527,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			chooser.setSelectedFile(map.getFile());
 		}
 		chooser.setDialogTitle(TextUtils.getText("SaveAsAction.text"));
-		final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
+		final int returnVal = chooser.showSaveDialog(Controller.getCurrentController().getViewController().getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return false;
 		}
@@ -540,7 +539,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			        + org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION);
 		}
 		if (f.exists()) {
-			final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
+			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getMapView(),
 			    TextUtils.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
@@ -555,7 +554,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			map.removeExtension(BackupFlag.class);
 		}
 		if (save(map, f)) {
-			getController().getMapViewManager().updateMapViewName();
+			Controller.getCurrentController().getMapViewManager().updateMapViewName();
 			return true;
 		}
 		return false;
@@ -581,12 +580,12 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 			try {
 	            final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
-				getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true, false);
+				Controller.getCurrentModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true, false);
 	            if (!isInternal) {
 	            	setFile(map, file);
 	            	map.setSaved(true);
 	            }
-	            map.scheduleTimerForAutomaticSaving(getModeController());
+	            map.scheduleTimerForAutomaticSaving();
 	            return true;
             }
             finally{
@@ -601,13 +600,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				UITools.errorMessage(message);
 			}
 			else {
-				getController().getViewController().out(message);
+				Controller.getCurrentController().getViewController().out(message);
 			}
 		}
 		catch (final Exception e) {
 			LogUtils.severe("Error in MapModel.save(): ", e);
 		}
-		map.scheduleTimerForAutomaticSaving(getModeController());
+		map.scheduleTimerForAutomaticSaving();
 		return false;
 	}
 
@@ -634,7 +633,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
 		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
-			UITools.informationMessage(getController().getViewController().getFrame(), TextUtils.formatText(
+			UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(), TextUtils.formatText(
 			    "locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
 		}
 		if (lockingUser == null) {
@@ -650,9 +649,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public void afterViewCreated(final Component mapView) {
-		final ModeController modeController = getModeController();
 		if (mapView != null) {
-			final FileOpener fileOpener = new FileOpener(modeController);
+			final FileOpener fileOpener = new FileOpener();
 			new DropTarget(mapView, fileOpener);
 		}
 	}

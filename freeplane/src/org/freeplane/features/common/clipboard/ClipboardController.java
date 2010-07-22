@@ -56,19 +56,19 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
 public class ClipboardController implements IExtension {
 	public static final String NODESEPARATOR = "<nodeseparator>";
 
-	public static ClipboardController getController(final ModeController modeController) {
-		return (ClipboardController) modeController.getExtension(ClipboardController.class);
+	public static ClipboardController getController() {
+		return (ClipboardController) Controller.getCurrentModeController().getExtension(ClipboardController.class);
 	}
 
-	public static void install(final ModeController modeController, final ClipboardController clipboardController) {
-		modeController.addExtension(ClipboardController.class, clipboardController);
+	public static void install( final ClipboardController clipboardController) {
+		Controller.getCurrentModeController().addExtension(ClipboardController.class, clipboardController);
 	}
 
 	final private Clipboard clipboard;
 // 	final private ModeController modeController;
 	final private Clipboard selection;
 
-	public ClipboardController(final ModeController modeController) {
+	public ClipboardController() {
 		super();
 //		this.modeController = modeController;
 		final Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -82,7 +82,7 @@ public class ClipboardController implements IExtension {
 		if (color != null) {
 			colors.add(color);
 		}
-		for (final ListIterator<NodeModel> e = getModeController().getMapController().childrenUnfolded(node); e
+		for (final ListIterator<NodeModel> e = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); e
 		    .hasNext();) {
 			collectColors(e.next(), colors);
 		}
@@ -111,7 +111,7 @@ public class ClipboardController implements IExtension {
 	public Transferable copy(final NodeModel node, final boolean saveInvisible) {
 		final StringWriter stringWriter = new StringWriter();
 		try {
-			getModeController().getMapController().getMapWriter().writeNodeAsXml(stringWriter, node, Mode.CLIPBOARD,
+			Controller.getCurrentModeController().getMapController().getMapWriter().writeNodeAsXml(stringWriter, node, Mode.CLIPBOARD,
 			    saveInvisible, true);
 		}
 		catch (final IOException e) {
@@ -136,9 +136,9 @@ public class ClipboardController implements IExtension {
 	private void createActions() {
 		final Controller controller = Controller.getCurrentController();
 		ModeController modeController = controller.getModeController();
-		modeController.addAction(new CopyAction(controller));
-		modeController.addAction(new CopySingleAction(controller));
-		modeController.addAction(new CopyIDAction(controller));
+		modeController.addAction(new CopyAction());
+		modeController.addAction(new CopySingleAction());
+		modeController.addAction(new CopyIDAction());
 	}
 
 	public String createForNodesFlavor(final Collection<NodeModel> selectedNodes, final boolean copyInvisible)
@@ -207,10 +207,6 @@ public class ClipboardController implements IExtension {
 		return clipboard.getContents(this);
 	}
 
-	public ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
-	}
-
 	private String rtfEscapeUnicodeAndSpecialCharacters(final String text) {
 		final int len = text.length();
 		final StringBuilder result = new StringBuilder(len);
@@ -246,7 +242,7 @@ public class ClipboardController implements IExtension {
 
 	public void saveHTML(final NodeModel rootNodeOfBranch, final File file) throws IOException {
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
-		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(getModeController().getMapController(), fileout);
+		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(Controller.getCurrentModeController().getMapController(), fileout);
 		htmlWriter.writeHTML(rootNodeOfBranch);
 	}
 
@@ -276,7 +272,7 @@ public class ClipboardController implements IExtension {
 	public NodeModel shallowCopy(final NodeModel source) {
 		try {
 			final StringWriter writer = new StringWriter();
-			ModeController modeController = getModeController();
+			ModeController modeController = Controller.getCurrentModeController();
 			modeController.getMapController().getMapWriter()
 			    .writeNodeAsXml(writer, source, Mode.CLIPBOARD, true, false);
 			final String result = writer.toString();
@@ -293,7 +289,7 @@ public class ClipboardController implements IExtension {
 
 	private void writeChildrenRTF(final NodeModel mindMapNodeModel, final Writer fileout, final int depth,
 	                              final HashMap<Color, Integer> colorTable) throws IOException {
-		for (final ListIterator<NodeModel> e = getModeController().getMapController()
+		for (final ListIterator<NodeModel> e = Controller.getCurrentModeController().getMapController()
 		    .childrenUnfolded(mindMapNodeModel); e.hasNext();) {
 			final NodeModel child = e.next();
 			if (child.isVisible()) {
@@ -307,7 +303,7 @@ public class ClipboardController implements IExtension {
 
 	private void writeChildrenText(final NodeModel mindMapNodeModel, final Writer fileout, final int depth)
 	        throws IOException {
-		for (final ListIterator<NodeModel> e = getModeController().getMapController()
+		for (final ListIterator<NodeModel> e = Controller.getCurrentModeController().getMapController()
 		    .childrenUnfolded(mindMapNodeModel); e.hasNext();) {
 			final NodeModel child = e.next();
 			if (child.isVisible()) {
@@ -320,7 +316,7 @@ public class ClipboardController implements IExtension {
 	}
 
 	public void writeHTML(final Collection<NodeModel> selectedNodes, final Writer fileout) throws IOException {
-		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(getModeController().getMapController(), fileout);
+		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(Controller.getCurrentModeController().getMapController(), fileout);
 		htmlWriter.writeHTML(selectedNodes);
 	}
 

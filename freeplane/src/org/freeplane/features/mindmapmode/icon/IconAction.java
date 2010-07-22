@@ -25,7 +25,6 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
@@ -42,7 +41,7 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 	private static final long serialVersionUID = 1L;
 	final private MindIcon icon;
 
-	public IconAction(final Controller controller, final MindIcon _icon) {
+	public IconAction( final MindIcon _icon) {
 		super("IconAction." + _icon.getName(), _icon.getDescription(), ImageIconFactory.getInstance()
 		    .getImageIcon(_icon));
 		putValue(Action.SHORT_DESCRIPTION, _icon.getDescription());
@@ -51,7 +50,7 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 
 	@Override
 	public void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MIconController) IconController.getController(getModeController())).addIcon(node, icon);
+		((MIconController) IconController.getController()).addIcon(node, icon);
 	}
 
 	public String getDescription() {

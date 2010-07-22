@@ -35,18 +35,19 @@ public class OpenPathAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public OpenPathAction(final Controller controller) {
+	public OpenPathAction() {
 		super("OpenPathAction");
 		putValue(Action.NAME, TextUtils.getText("OpenAction.text"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final String inputValue = UITools.showInputDialog(getController(),
-		    getController().getSelection().getSelected(), TextUtils.getText("open"), "");
+		final String inputValue = UITools.showInputDialog(Controller.getCurrentController()
+				.getSelection().getSelected(), TextUtils.getText("open"), "");
 		if (inputValue != null) {
 			final File newCenter = new File(inputValue);
 			if (newCenter.exists()) {
-				((FMapController) getModeController().getMapController()).newMap(newCenter);
+				((FMapController) Controller.getCurrentModeController().getMapController())
+						.newMap(newCenter);
 			}
 		}
 	}

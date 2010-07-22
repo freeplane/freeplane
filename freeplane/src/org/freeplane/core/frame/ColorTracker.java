@@ -99,9 +99,10 @@ public class ColorTracker implements ActionListener, Serializable {
 		return ok.getColor();
 	}
 
-	public static Color showCommonJColorChooserDialog(final Controller controller, final NodeModel nodeModel,
+	public static Color showCommonJColorChooserDialog( final NodeModel nodeModel,
 	                                                  final String title, final Color initialColor)
 	        throws HeadlessException {
+		Controller controller = Controller.getCurrentController();
 		final Component component = controller.getViewController().getComponent(nodeModel);
 		return ColorTracker.showCommonJColorChooserDialog(component, title, initialColor);
 	}

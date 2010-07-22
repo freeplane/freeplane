@@ -73,7 +73,7 @@ class ScriptingRegistration {
 		}
 
 		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
-			ModeController modeController = Controller.getCurrentController().getModeController();
+			ModeController modeController = Controller.getCurrentModeController();
 			 return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
 					pErrorHandler, pOutStream);
 		}
@@ -109,7 +109,7 @@ class ScriptingRegistration {
 	final private HashMap<String, Object> mScriptCookies = new HashMap<String, Object>();
 	private IScriptEditorStarter mScriptEditorStarter;
 
-	public ScriptingRegistration(final ModeController controller) {
+	public ScriptingRegistration() {
 		register();
 	}
 
@@ -117,7 +117,7 @@ class ScriptingRegistration {
 		final URL preferences = this.getClass().getResource("preferences.xml");
 		if (preferences == null)
 			throw new RuntimeException("cannot open preferences");
-		MModeController modeController = (MModeController) Controller.getCurrentController().getModeController();
+		MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		modeController.getOptionPanelBuilder().load(preferences);
 	}
 
@@ -126,26 +126,25 @@ class ScriptingRegistration {
 	}
 
 	private void register() {
-		final Controller controller = Controller.getCurrentController();
 		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
 				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
-				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(controller, patternScriptModel, false);
+				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(patternScriptModel, false);
 				scriptEditorPanel.setVisible(true);
 				return patternScriptModel.getScript();
 			}
 		};
-		ModeController modeController = Controller.getCurrentController().getModeController();
+		ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
 		addPropertiesToOptionPanel();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		menuBuilder.addAnnotatedAction(new ScriptEditor(controller));
-		menuBuilder.addAnnotatedAction(new ExecuteScriptForAllNodes(controller));
-		menuBuilder.addAnnotatedAction(new ExecuteScriptForSelectionAction(controller));
-		registerScripts(controller, menuBuilder);
+		menuBuilder.addAnnotatedAction(new ScriptEditor());
+		menuBuilder.addAnnotatedAction(new ExecuteScriptForAllNodes());
+		menuBuilder.addAnnotatedAction(new ExecuteScriptForSelectionAction());
+		registerScripts(menuBuilder);
 	}
 
-	private void registerScripts(final Controller controller, final MenuBuilder menuBuilder) {
+	private void registerScripts( final MenuBuilder menuBuilder) {
 		final ScriptingConfiguration configuration = new ScriptingConfiguration();
 		final String scriptsParentLocation = MENU_BAR_SCRIPTING_LOCATION;
 		final String scriptsLocation = scriptsParentLocation + "/scripts";
@@ -158,7 +157,7 @@ class ScriptingRegistration {
 			// in the worst case three actions will cache a script - should not matter that much since it's unlikely
 			// that one script is used in multiple modes by the same user
 			for (final ExecutionMode executionMode : scriptMetaData.getExecutionModes()) {
-				addMenuItem(controller, menuBuilder, location, entry, executionMode, scriptMetaData
+				addMenuItem(menuBuilder, location, entry, executionMode, scriptMetaData
 				    .cacheContent());
 			}
 		}
@@ -171,13 +170,13 @@ class ScriptingRegistration {
 		menuBuilder.addMenuItem(scriptsParentLocation, menuItem, scriptsLocation, MenuBuilder.AS_CHILD);
 	}
 
-	private void addMenuItem(final Controller controller, final MenuBuilder menuBuilder,
+	private void addMenuItem( final MenuBuilder menuBuilder,
 	                         final String location, final Entry<String, String> entry,
 	                         final ExecutionMode executionMode, final boolean cacheContent) {
 		final String scriptName = entry.getKey();
 		final String key = ExecuteScriptAction.getExecutionModeKey(executionMode);
 		final String menuName = TextUtils.format(key, new Object[] { scriptName });
-		menuBuilder.addAction(location, new ExecuteScriptAction(controller, scriptName, menuName, entry.getValue(),
+		menuBuilder.addAction(location, new ExecuteScriptAction(scriptName, menuName, entry.getValue(),
 		    executionMode, cacheContent), MenuBuilder.AS_CHILD);
 	}
 }

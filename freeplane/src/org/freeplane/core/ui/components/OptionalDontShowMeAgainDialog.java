@@ -51,9 +51,9 @@ public class OptionalDontShowMeAgainDialog {
 	public final static int BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED = 1;
 	public final static int ONLY_OK_SELECTION_IS_STORED = 0;
 
-	static public int show(final Controller controller, final String pMessageId, final String pTitleId,
+	static public int show( final String pMessageId, final String pTitleId,
 	                       final String pPropertyName, final int pMessageType) {
-		return new OptionalDontShowMeAgainDialog(controller, pMessageId, pTitleId, pPropertyName, pMessageType).show()
+		return new OptionalDontShowMeAgainDialog(pMessageId, pTitleId, pPropertyName, pMessageType).show()
 		    .getResult();
 	}
 
@@ -68,9 +68,10 @@ public class OptionalDontShowMeAgainDialog {
 	private int mResult = JOptionPane.CANCEL_OPTION;
 	final private String mTitleId;
 
-	private OptionalDontShowMeAgainDialog(final Controller controller, final String pMessageId, final String pTitleId,
+	private OptionalDontShowMeAgainDialog( final String pMessageId, final String pTitleId,
 	                                      final String pPropertyName, final int pMessageType) {
 //		this.controller = controller;
+		Controller controller = Controller.getCurrentController();
 		mParent = controller.getViewController().getFrame();
 		final IMapSelection selection = controller.getSelection();
 		if (selection != null) {

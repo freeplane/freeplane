@@ -48,16 +48,16 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ImportLinkedBranchWithoutRootAction(final Controller controller) {
+	public ImportLinkedBranchWithoutRootAction() {
 		super("ImportLinkedBranchWithoutRootAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = getController().getMap();
-		final ModeController modeController = getModeController();
+		final MapModel map = Controller.getCurrentController().getMap();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog(getController().getViewController().getMapView(), TextUtils
+			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getMapView(), TextUtils
 			    .getText("import_linked_branch_no_link"));
 			return;
 		}
@@ -71,10 +71,10 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 				final NodeModel importNode = i.next();
 				((MMapController) modeController.getMapController()).insertNode(importNode, selected);
 			}
-			((MLinkController) LinkController.getController(modeController)).setLink(selected, (URI) null, false);
+			((MLinkController) LinkController.getController()).setLink(selected, (URI) null, false);
 		}
 		catch (final Exception ex) {
-			UrlManager.getController(modeController).handleLoadingException(ex);
+			UrlManager.getController().handleLoadingException(ex);
 		}
 	}
 }

@@ -30,6 +30,7 @@ import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
@@ -75,14 +76,14 @@ public class MapStyleModel implements IExtension {
     	return conditionalStyleModel;
     }
 
-	void createStyleMap(final MapModel parentMap, MapStyleModel mapStyleModel, final ModeController modeController, final String styleMapStr) {
+	void createStyleMap(final MapModel parentMap, MapStyleModel mapStyleModel, final String styleMapStr) {
 		if (loadingStyleMap) {
 			styleMap = null;
 			styleNodes = null;
 			return;
 		}
 		styleNodes = new LinkedHashMap<Object, NodeModel>();
-		styleMap = new MapModel(modeController, null) {
+		styleMap = new MapModel(null) {
 			@Override
 			public String getTitle() {
 				return TextUtils.removeMnemonic(TextUtils.getText(STYLES));
@@ -92,6 +93,7 @@ public class MapStyleModel implements IExtension {
 			styleMap.addExtension(mapStyleModel.getConditionalStyleModel());
 		}
 		styleMap.addExtension(IUndoHandler.class, parentMap.getExtension(IUndoHandler.class));
+		final ModeController modeController = Controller.getCurrentModeController();
 		final MapReader mapReader = modeController.getMapController().getMapReader();
 		NodeModel root;
 		try {

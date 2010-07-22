@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
@@ -50,13 +51,13 @@ public class AssignStyleAction extends AMultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MLogicalStyleController controller = (MLogicalStyleController) getModeController().getExtension(
+		final MLogicalStyleController controller = (MLogicalStyleController) Controller.getCurrentModeController().getExtension(
 		    LogicalStyleController.class);
 		controller.setStyle(node, style);
 	}
 
 	@Override
 	public void setSelected() {
-		setSelected(style.equals(LogicalStyleModel.getStyle(getController().getSelection().getSelected())));
+		setSelected(style.equals(LogicalStyleModel.getStyle(Controller.getCurrentController().getSelection().getSelected())));
 	}
 }

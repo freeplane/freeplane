@@ -43,7 +43,7 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ImportFolderStructureAction(final Controller controller) {
+	public ImportFolderStructureAction() {
 		super("ImportFolderStructureAction");
 	}
 
@@ -51,13 +51,13 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(TextUtils.getText("select_folder_for_importing"));
-		final ViewController viewController = getController().getViewController();
+		final ViewController viewController = Controller.getCurrentController().getViewController();
 		final int returnVal = chooser.showOpenDialog(viewController.getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File folder = chooser.getSelectedFile();
 			viewController.out("Importing folder structure ...");
 			try {
-				importFolderStructure(folder, getModeController().getMapController().getSelectedNode(),
+				importFolderStructure(folder, Controller.getCurrentModeController().getMapController().getSelectedNode(),
 				/*redisplay=*/true);
 			}
 			catch (final Exception ex) {
@@ -70,10 +70,10 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 	/**
 	 */
 	private NodeModel addNode(final NodeModel target, final String nodeContent, final String link) {
-		final NodeModel node = ((MMapController) getModeController().getMapController()).addNewNode(target, target
+		final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(target, target
 		    .getChildCount(), target.isNewChildLeft());
-		((MTextController) TextController.getController(getModeController())).setNodeText(node, nodeContent);
-		((MLinkController) LinkController.getController(getModeController())).setLink(node, link, false);
+		((MTextController) TextController.getController()).setNodeText(node, nodeContent);
+		((MLinkController) LinkController.getController()).setLink(node, link, false);
 		return node;
 	}
 
@@ -94,6 +94,6 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 				addNode(target, list[i].getName(), list[i].toURI().toString());
 			}
 		}
-		getModeController().getMapController().setFolded(target, true);
+		Controller.getCurrentModeController().getMapController().setFolded(target, true);
 	}
 }

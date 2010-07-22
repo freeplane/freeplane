@@ -33,7 +33,6 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
@@ -179,9 +178,9 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
-	public void init(final Controller controller) {
-		lastOpened = new LastOpenedList(controller);
-		super.init(controller);
+	public void init() {
+		lastOpened = new LastOpenedList();
+		super.init();
 	}
 
 	@Override
@@ -242,7 +241,7 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
-	public void saveProperties(final Controller controller) {
+	public void saveProperties() {
 		lastOpened.saveProperties();
 		OutputStream out = null;
 		try {
@@ -265,7 +264,7 @@ public class ApplicationResourceController extends ResourceController {
 				}
 			}
 		}
-		FilterController.getController(controller).saveConditions();
+		FilterController.getCurrentFilterController().saveConditions();
 	}
 
 	/**

@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.attribute.AttributeController;
-import org.freeplane.features.common.map.ModeController;
 
 class AssignAttributesAction extends AFreeplaneAction {
 	/**
@@ -33,14 +32,14 @@ class AssignAttributesAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private AssignAttributeDialog assignAttributeDialog;
 
-	public AssignAttributesAction(final ModeController modeController) {
+	public AssignAttributesAction() {
 		super("AssignAttributesAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Controller controller = getController();
+		final Controller controller = Controller.getCurrentController();
 		if (assignAttributeDialog == null) {
-			assignAttributeDialog = new AssignAttributeDialog(AttributeController.getController(getModeController()),
+			assignAttributeDialog = new AssignAttributeDialog(AttributeController.getController(),
 			    controller.getViewController().getFrame());
 		}
 		assignAttributeDialog.setVisible(true);

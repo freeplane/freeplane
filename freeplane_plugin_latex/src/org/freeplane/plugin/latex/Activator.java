@@ -18,8 +18,8 @@ public class Activator implements BundleActivator {
 		props.put("mode", new String[] { MModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
-			    public void installExtension(final ModeController modeController) {
-				    new LatexNodeHook(modeController);
+			    public void installExtension(ModeController modeController) {
+				    new LatexNodeHook();
 			    }
 		    }, props);
 	}

@@ -95,7 +95,7 @@ public class Filter {
 	 * @see
 	 * freeplane.controller.filter.Filter#applyFilter(freeplane.modes.MindMap)
 	 */
-	public void applyFilter(final ModeController modeController, final MapModel map, final boolean force) {
+	public void applyFilter( final MapModel map, final boolean force) {
 		if (map == null) {
 			return;
 		}
@@ -146,7 +146,7 @@ public class Filter {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_ANCESTOR);
 			isDescendantSelected = true;
 			if (true && unfold && !isVisible(node) && node.isFolded()) {
-				final ModeController modeController = Controller.getCurrentController().getModeController();
+				final ModeController modeController = Controller.getCurrentModeController();
 				modeController.getMapController().setFolded(node, false);
 			}
 		}
@@ -181,7 +181,7 @@ public class Filter {
 
 	private boolean filterChildren(final NodeModel parent,
 	                               final boolean isAncestorSelected, final boolean isAncestorEclipsed) {
-		final ListIterator<NodeModel> iterator = Controller.getCurrentController().getModeController().getMapController().childrenUnfolded(
+		final ListIterator<NodeModel> iterator = Controller.getCurrentModeController().getMapController().childrenUnfolded(
 		    parent);
 		boolean isDescendantSelected = false;
 		while (iterator.hasNext()) {
@@ -224,7 +224,7 @@ public class Filter {
 	}
 
 	private void refreshMap() {
-		Controller.getCurrentController().getModeController().getMapController().refreshMap();
+		Controller.getCurrentModeController().getMapController().refreshMap();
 	}
 
 	private void resetFilter(final NodeModel node) {

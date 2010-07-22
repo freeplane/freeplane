@@ -41,8 +41,8 @@ class ExportSvg extends ExportVectorGraphic {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ExportSvg(final Controller controller) {
-		super("ExportSvg", controller);
+	public ExportSvg() {
+		super("ExportSvg");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -51,11 +51,11 @@ class ExportSvg extends ExportVectorGraphic {
 			return;
 		}
 		try {
-			final MapView view = (MapView) getController().getViewController().getMapView();
+			final MapView view = (MapView) Controller.getCurrentController().getViewController().getMapView();
 			if (view == null) {
 				return;
 			}
-			getController().getViewController().setWaitingCursor(true);
+			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final SVGGraphics2D g2d = fillSVGGraphics2D(view);
 			final FileOutputStream bos = new FileOutputStream(chosenFile);
 			final BufferedOutputStream bufStream = new BufferedOutputStream(bos);
@@ -69,6 +69,6 @@ class ExportSvg extends ExportVectorGraphic {
 			org.freeplane.core.util.LogUtils.warn(ex);
 			UITools.errorMessage(ex.getLocalizedMessage());
 		}
-		getController().getViewController().setWaitingCursor(false);
+		Controller.getCurrentController().getViewController().setWaitingCursor(false);
 	}
 }

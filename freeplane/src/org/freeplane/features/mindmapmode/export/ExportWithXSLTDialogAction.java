@@ -41,12 +41,12 @@ public class ExportWithXSLTDialogAction extends ExportAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ExportWithXSLTDialogAction(final Controller controller) {
-		super("ExportWithXSLTDialog", controller);
+	public ExportWithXSLTDialogAction() {
+		super("ExportWithXSLTDialog");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel model = getController().getMap();
+		final MapModel model = Controller.getCurrentController().getMap();
 		if (model == null) {
 			return;
 		}
@@ -54,7 +54,7 @@ public class ExportWithXSLTDialogAction extends ExportAction {
 	}
 
 	private void export(final File file) {
-		exp.export(getController().getViewController().getFrame(), getMapXml(Mode.EXPORT), file);
+		exp.export(Controller.getCurrentController().getViewController().getFrame(), getMapXml(Mode.EXPORT), file);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class ExportWithXSLTDialogAction extends ExportAction {
 	 */
 	private StreamSource getMapXml(final Mode mode) {
 		final StringWriter writer = new StringWriter();
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final Controller controller = modeController.getController();
 		final MapModel map = controller.getMap();
 		try {

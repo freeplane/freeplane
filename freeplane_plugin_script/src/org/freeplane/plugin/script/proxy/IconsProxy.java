@@ -11,7 +11,6 @@ import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 
 class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
@@ -35,7 +34,7 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 	}
 
 	MIconController getIconController() {
-		return (MIconController) IconController.getController(getModeController());
+		return (MIconController) IconController.getController();
 	}
 
 	public List<String> getIcons() {

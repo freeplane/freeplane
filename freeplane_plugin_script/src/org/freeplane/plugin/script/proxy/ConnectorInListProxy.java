@@ -10,7 +10,6 @@ import java.util.Set;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.MapLinks;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 
 class ConnectorInListProxy extends AbstractCollection<Proxy.Connector> {
 // 	private final MModeController modeController;

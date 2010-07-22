@@ -37,12 +37,12 @@ public class QuitAction extends AFreeplaneAction {
 	/**
 	 * @param resourceController
 	 */
-	public QuitAction(final Controller controller) {
+	public QuitAction() {
 		super("QuitAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		getController().quit();
+		Controller.getCurrentController().quit();
 	}
 
 	@Override

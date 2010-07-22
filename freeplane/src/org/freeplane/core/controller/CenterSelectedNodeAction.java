@@ -37,13 +37,13 @@ class CenterSelectedNodeAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CenterSelectedNodeAction(final Controller controller) {
+	public CenterSelectedNodeAction() {
 		super("CenterSelectedNodeAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final IMapSelection selection = getController().getSelection();
-		final Component mapView = getController().getViewController().getMapView();
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		final Component mapView = Controller.getCurrentController().getViewController().getMapView();
 		final JRootPane rootPane = SwingUtilities.getRootPane(mapView);
 		if (!rootPane.isValid()) {
 			rootPane.revalidate();

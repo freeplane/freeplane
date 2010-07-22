@@ -33,7 +33,6 @@ import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
@@ -107,9 +106,8 @@ class ScriptEditor extends AFreeplaneAction {
 				for (final AttributeHolder holder : mScripts) {
 					final Attribute attribute = holder.mAttribute;
 					final int position = holder.mPosition;
-					ModeController mMindMapController = Controller.getCurrentController().getModeController();
 					final MAttributeController attributeController = (MAttributeController) AttributeController
-					    .getController(mMindMapController);
+					    .getController();
 					if (attributeTableLength <= position) {
 						attributeController.addAttribute(mNode, attribute);
 					}
@@ -124,7 +122,7 @@ class ScriptEditor extends AFreeplaneAction {
 		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			final String script = getScript(pIndex).getScript();
 			ScriptingEngine.setNoUserPermissionRequired(true);
-			ModeController mMindMapController = Controller.getCurrentController().getModeController();
+			ModeController mMindMapController = Controller.getCurrentModeController();
 			return ScriptingEngine.executeScript(mMindMapController.getMapController().getSelectedNode(), script,
 			    pErrorHandler, pOutStream);
 		}
@@ -163,12 +161,12 @@ class ScriptEditor extends AFreeplaneAction {
 
 	private static final long serialVersionUID = 1L;
 
-	public ScriptEditor(final Controller controller) {
+	public ScriptEditor() {
 		super("ScriptEditor");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel node = modeController.getMapController().getSelectedNode();
 		final ArrayList<AttributeHolder> scripts = new ArrayList<AttributeHolder>();
 		for (int position = 0; position < NodeAttributeTableModel.getModel(node).getAttributeTableLength(); position++) {
@@ -178,8 +176,7 @@ class ScriptEditor extends AFreeplaneAction {
 			}
 		}
 		final NodeScriptModel nodeScriptModel = new NodeScriptModel(scripts, node);
-		final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(modeController.getController(),
-		    nodeScriptModel, true);
+		final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(nodeScriptModel, true);
 		scriptEditorPanel.setVisible(true);
 	}
 }

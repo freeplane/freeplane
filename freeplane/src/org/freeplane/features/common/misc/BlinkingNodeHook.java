@@ -31,6 +31,7 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapLifeCycleListener;
 import org.freeplane.core.controller.INodeViewVisitor;
 import org.freeplane.core.extension.IExtension;
@@ -42,7 +43,6 @@ import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -58,7 +58,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 
 		TimerColorChanger(final NodeModel node) {
 			this.node = node;
-			final MapController mapController = getModeController().getMapController();
+			final MapController mapController = Controller.getCurrentModeController().getMapController();
 			mapController.addMapChangeListener(this);
 			mapController.addMapLifeCycleListener(this);
 			timer = SysUtils.createTimer(getClass().getSimpleName());
@@ -83,7 +83,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 		public void run() {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					if (getNode() == null || getModeController().isBlocked()) {
+					if (getNode() == null || Controller.getCurrentModeController().isBlocked()) {
 						return;
 					}
 					getNode().acceptViewVisitor(new INodeViewVisitor() {
@@ -112,7 +112,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 		}
 
 		public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
-			if (getModeController().isUndoAction() || !(node.equals(child) || node.isDescendantOf(child))) {
+			if (Controller.getCurrentModeController().isUndoAction() || !(node.equals(child) || node.isDescendantOf(child))) {
 				return;
 			}
 			final IActor actor = new IActor() {
@@ -132,7 +132,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 					node.addExtension(new TimerColorChanger(node));
 				}
 			};
-			getModeController().execute(actor, node.getMap());
+			Controller.getCurrentModeController().execute(actor, node.getMap());
 		}
 
 		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
@@ -161,8 +161,8 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 
 	static Vector<Color> colors = new Vector<Color>();
 
-	public BlinkingNodeHook(final ModeController modeController) {
-		super(modeController);
+	public BlinkingNodeHook() {
+		super();
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 	public void remove(final NodeModel node, final IExtension extension) {
 		final TimerColorChanger timer = ((TimerColorChanger) extension);
 		timer.getTimer().cancel();
-		final MapController mapController = getModeController().getMapController();
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		mapController.removeMapChangeListener(timer);
 		mapController.removeMapLifeCycleListener(timer);
 		super.remove(node, extension);

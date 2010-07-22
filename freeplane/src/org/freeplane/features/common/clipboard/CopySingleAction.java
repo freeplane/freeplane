@@ -34,14 +34,14 @@ class CopySingleAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CopySingleAction(final Controller controller) {
+	public CopySingleAction() {
 		super("CopySingleAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Controller controller = getController();
+		final Controller controller = Controller.getCurrentController();
 		final List<NodeModel> selection = controller.getSelection().getSelection();
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final Transferable copy = ((ClipboardController) modeController.getExtension(ClipboardController.class))
 		    .copySingle(selection);
 		if (copy != null) {

@@ -29,16 +29,16 @@ import org.freeplane.features.common.map.NodeModel;
 class AddMenuItemLinkAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
-	public AddMenuItemLinkAction(final Controller controller) {
+	public AddMenuItemLinkAction() {
 		super(AddMenuItemLinkAction.class.getSimpleName());
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel selectedNode = getModeController().getMapController().getSelectedNode();
+		final NodeModel selectedNode = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		final SelectMenuItemDialog dialog = new SelectMenuItemDialog(selectedNode);
 		final String menuItemKey = dialog.getMenuItemKey();
 		if (menuItemKey != null) {
-			((MLinkController) LinkController.getController(getModeController())).setLink(selectedNode, LinkController
+			((MLinkController) LinkController.getController()).setLink(selectedNode, LinkController
 			    .createMenuItemLink(menuItemKey), false);
 		}
 	}

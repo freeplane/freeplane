@@ -35,34 +35,32 @@ public class TextController implements IExtension {
 		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
 	}
 
-	public static TextController getController(final ModeController modeController) {
+	public static TextController getController() {
+		final ModeController modeController = Controller.getCurrentModeController();
 		return (TextController) modeController.getExtension(TextController.class);
 	}
 
-	public static void install(final Controller controller) {
-		FilterController.getController(controller).getConditionFactory().addConditionController(0,
+	public static void install() {
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(0,
 		    new NodeConditionController());
 	}
 
-	public static void install(final ModeController modeController, final TextController textController) {
+	public static void install( final TextController textController) {
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(TextController.class, textController);
-		modeController.getController();
 	}
 
 // 	final private ModeController modeController;
 
-	public TextController(final ModeController modeController) {
+	public TextController() {
 		super();
 //		this.modeController = modeController;
+		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		final NodeTextBuilder textBuilder = new NodeTextBuilder();
 		textBuilder.registerBy(readManager, writeManager);
-	}
-
-	public ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
 	}
 
 }

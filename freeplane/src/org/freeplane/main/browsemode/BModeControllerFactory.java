@@ -58,32 +58,33 @@ import org.freeplane.view.swing.ui.UserInputListenerFactory;
 public class BModeControllerFactory {
 	private static BModeController modeController;
 
-	static public BModeController createModeController(final Controller controller, final String menuStructure) {
-		modeController = new BModeController(controller);
+	static public BModeController createModeController( final String menuStructure) {
+		modeController = new BModeController();
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
-		controller.addModeController(modeController);
-		modeController.setMapController(new MapController(modeController));
-		UrlManager.install(modeController, new UrlManager(modeController));
-		AttributeController.install(modeController, new AttributeController(modeController));
-		LinkController.install(modeController, new LinkController(modeController));
-		IconController.install(modeController, new IconController(modeController));
-		NodeStyleController.install(modeController, new NodeStyleController(modeController));
-		EdgeController.install(modeController, new EdgeController(modeController));
-		CloudController.install(modeController, new CloudController(modeController));
-		NoteController.install(modeController, new NoteController(modeController));
-		TextController.install(modeController, new TextController(modeController));
-		LogicalStyleController.install(modeController, new LogicalStyleController(modeController));
+		final Controller controller = Controller.getCurrentController();
+		controller.addModeController();
+		modeController.setMapController(new MapController());
+		UrlManager.install(new UrlManager());
+		AttributeController.install(new AttributeController());
+		LinkController.install(new LinkController());
+		IconController.install(new IconController());
+		NodeStyleController.install(new NodeStyleController());
+		EdgeController.install(new EdgeController());
+		CloudController.install(new CloudController());
+		NoteController.install(new NoteController());
+		TextController.install(new TextController());
+		LogicalStyleController.install(new LogicalStyleController());
 		try {
-			ClipboardController.install(modeController, new ClipboardController(modeController));
+			ClipboardController.install(new ClipboardController());
 		}
 		catch (final AccessControlException e) {
 			LogUtils.warn("can not access system clipboard, clipboard controller disabled");
 		}
-		LocationController.install(modeController, new LocationController(modeController));
-		new MapStyle(modeController, true);
-		modeController.getMapController().addNodeSelectionListener(new BNodeNoteViewer(modeController.getController()));
-		final BToolbarContributor toolbarContributor = new BToolbarContributor(modeController);
+		LocationController.install(new LocationController());
+		new MapStyle(true);
+		modeController.getMapController().addNodeSelectionListener(new BNodeNoteViewer());
+		final BToolbarContributor toolbarContributor = new BToolbarContributor();
 		modeController.addMenuContributor(toolbarContributor);
 		controller.getMapViewManager().addMapViewChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
@@ -95,13 +96,13 @@ public class BModeControllerFactory {
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
 		userInputListenerFactory.setMenuStructure(menuStructure);
-		final UnfoldAll unfoldAll = new UnfoldAll(modeController);
+		final UnfoldAll unfoldAll = new UnfoldAll();
 		for (final AFreeplaneAction annotatedAction : unfoldAll.getAnnotatedActions()) {
 			modeController.addAction(annotatedAction);
 		}
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
-		new ViewerController(modeController);
+		new ViewerController();
 		NodeHistory.install(modeController);
 		return modeController;
 	}

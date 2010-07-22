@@ -36,13 +36,13 @@ class RedoAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private Action undo;
 
-	public RedoAction(final Controller controller) {
+	public RedoAction() {
 		super("RedoAction");
 		setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.getRedoAction().actionPerformed(e);
 		undo.setEnabled(undoHandler.canUndo());
@@ -50,7 +50,7 @@ class RedoAction extends AFreeplaneAction {
 	}
 
 	public void reset() {
-		final MMapModel map = (MMapModel) getController().getMap();
+		final MMapModel map = (MMapModel) Controller.getCurrentController().getMap();
 		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.resetRedo();
 		setEnabled(false);

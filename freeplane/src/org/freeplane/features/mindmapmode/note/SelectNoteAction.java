@@ -28,8 +28,6 @@ import javax.swing.JSplitPane;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.common.map.ModeController;
-
 import com.lightdev.app.shtm.SHTMLPanel;
 
 class SelectNoteAction extends AFreeplaneAction {
@@ -42,7 +40,7 @@ class SelectNoteAction extends AFreeplaneAction {
 	 */
 	final private MNoteController noteController;
 
-	public SelectNoteAction(final MNoteController noteController, final ModeController modeController) {
+	public SelectNoteAction(final MNoteController noteController) {
 		super("SelectNoteAction");
 		this.noteController = noteController;
 	}

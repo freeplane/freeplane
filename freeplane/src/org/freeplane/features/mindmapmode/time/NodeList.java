@@ -292,7 +292,7 @@ class NodeList {
 		 */
 		private static final long serialVersionUID = 1L;
 
-		public IconsRenderer(final ModeController controller) {
+		public IconsRenderer() {
 			super();
 		}
 
@@ -423,7 +423,7 @@ class NodeList {
 
 	private class ReplaceAllInfo implements IReplaceInputInformation {
 		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) TextController.getController(getModeController())).setNodeText(nodeHolder.node, newText);
+			((MTextController) TextController.getController()).setNodeText(nodeHolder.node, newText);
 		}
 
 		public int getLength() {
@@ -437,7 +437,7 @@ class NodeList {
 
 	private class ReplaceSelectedInfo implements IReplaceInputInformation {
 		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) TextController.getController(getModeController())).setNodeText(nodeHolder.node, newText);
+			((MTextController) TextController.getController()).setNodeText(nodeHolder.node, newText);
 		}
 
 		public int getLength() {
@@ -509,11 +509,11 @@ class NodeList {
 	private final JCheckBox ignoreCase;
 	final private boolean modal;
 
-	public NodeList(final ModeController modeController,  final boolean showAllNodes, final boolean searchInAllMaps) {
-	    this(modeController, false, showAllNodes, searchInAllMaps);
+	public NodeList(  final boolean showAllNodes, final boolean searchInAllMaps) {
+	    this(false, showAllNodes, searchInAllMaps);
     }
 
-	public NodeList(final ModeController modeController, final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps) {		
+	public NodeList( final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps) {		
 //		this.modeController = modeController;
 //		controller = modeController.getController();
 		this.modal = modal;
@@ -550,6 +550,7 @@ class NodeList {
 		ignoreCase = new JCheckBox();
 		ignoreCase.addChangeListener(listener);
 		final MapChangeListener mapChangeListener = new MapChangeListener();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapChangeListener(mapChangeListener);
 		mapController.addNodeChangeListener(mapChangeListener);
@@ -584,19 +585,15 @@ class NodeList {
 			final int row = selectedRows[i];
 			selectedNodes.add(getMindMapNode(row));
 		}
-		final ModeController mindMapController = getModeController();
+		final ModeController mindMapController = Controller.getCurrentModeController();
 		final MapModel newMap = mindMapController.getMapController().newMap(((NodeModel) null));;
 		for (final NodeModel node : selectedNodes) {
-			final NodeModel copy = ClipboardController.getController(mindMapController).shallowCopy(node);
+			final NodeModel copy = ClipboardController.getController().shallowCopy(node);
 			if (copy != null) {
 				mindMapController.getMapController().insertNodeIntoWithoutUndo(copy, newMap.getRootNode());
 			}
 		}
 		disposeDialog();
-	}
-
-	private ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
 	}
 
 	/**
@@ -661,7 +658,7 @@ class NodeList {
 				selectedNodes.add(node);
 			}
 			selectMap(map);
-			getModeController().getMapController().selectMultipleNodes(focussedNode, selectedNodes);
+			Controller.getCurrentModeController().getMapController().selectMultipleNodes(focussedNode, selectedNodes);
 		}
 	}
 
@@ -766,7 +763,7 @@ class NodeList {
 		dateRenderer = new DateRenderer();
 		nodeRenderer = new NodeRenderer();
 		notesRenderer = new NotesRenderer();
-		iconsRenderer = new IconsRenderer(getModeController());
+		iconsRenderer = new IconsRenderer();
 		timeTable = new FlatNodeTable();
 		timeTable.addKeyListener(new FlatNodeTableKeyListener());
 		timeTable.addMouseListener(new FlatNodeTableMouseAdapter());
@@ -989,7 +986,7 @@ class NodeList {
 			        node.getHistoryInformation().getCreatedAt(), node.getHistoryInformation().getLastModifiedAt(),
 			        new NotesHolder(node) });
 		}
-		for (final Iterator<NodeModel> i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator<NodeModel> i = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = i.next();
 			updateModel(model, child);
 		}

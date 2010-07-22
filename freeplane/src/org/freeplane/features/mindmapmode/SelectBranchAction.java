@@ -35,12 +35,12 @@ class SelectBranchAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
-	public SelectBranchAction(final Controller controller) {
+	public SelectBranchAction() {
 		super("SelectBranchAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final IMapSelection selection = getController().getSelection();
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		selection.selectBranch(selection.getSelected(), true);
 	}
 }

@@ -55,7 +55,7 @@ class AppletViewController extends ViewController {
 	private JComponent mComponentInSplitPane;
 	private JPanel southPanel;
 
-	public AppletViewController(final Controller controller, final JApplet applet,
+	public AppletViewController( final JApplet applet, Controller controller,
 	                            final IMapViewManager mapViewController) {
 		super(controller, mapViewController, "");
 		this.applet = applet;

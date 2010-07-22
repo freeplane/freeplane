@@ -39,7 +39,7 @@ class AboutAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
-	AboutAction(final Controller controller) {
+	AboutAction() {
 		super("AboutAction");
 	}
 
@@ -54,7 +54,7 @@ class AboutAction extends AFreeplaneAction {
 		sb.append('\n');
 		sb.append(TextUtils.format("user_config_folder", ResourceController.getResourceController()
 		    .getFreeplaneUserDirectory()));
-		JOptionPane.showMessageDialog(getController().getViewController().getViewport(), sb.toString(), TextUtils
+		JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getViewport(), sb.toString(), TextUtils
 		    .getText("AboutAction.text"), JOptionPane.INFORMATION_MESSAGE);
 	}
 }

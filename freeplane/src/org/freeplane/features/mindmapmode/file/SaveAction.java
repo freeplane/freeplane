@@ -32,13 +32,13 @@ class SaveAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public SaveAction(final Controller controller) {
+	public SaveAction() {
 		super("SaveAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final boolean success = ((MModeController) getModeController()).save();
-		final Controller controller = getController();
+		final boolean success = ((MModeController) Controller.getCurrentModeController()).save();
+		final Controller controller = Controller.getCurrentController();
 		if (success) {
 			controller.getViewController().out(TextUtils.getText("saved"));
 		}

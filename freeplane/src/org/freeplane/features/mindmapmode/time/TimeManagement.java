@@ -99,7 +99,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	private final ReminderHook reminderHook;
 	private JPanel timePanel;
 
-	public TimeManagement(final ModeController modeController, final ReminderHook reminderHook) {
+	public TimeManagement( final ReminderHook reminderHook) {
 //		this.modeController = modeController;
 //		controller = modeController.getController();
 		this.reminderHook = reminderHook;
@@ -172,7 +172,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	}
 
 	private ModeController getMindMapController() {
-		return Controller.getCurrentController().getModeController();
+		return Controller.getCurrentModeController();
 	}
 
 	private String getResourceString(final String string) {
@@ -292,7 +292,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 						text.replaceSelection(dateAsString);
 						return;
 					}
-					ModeController mController  = Controller.getCurrentController().getModeController();
+					ModeController mController  = Controller.getCurrentModeController();
 					for (final NodeModel element : mController .getMapController().getSelectedNodes()) {
 						final String text = element.getText();
 						final StringBuilder newText = new StringBuilder();
@@ -309,7 +309,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 							newText.append(" ");
 							newText.append(dateAsString);
 						}
-						((MTextController) TextController.getController(mController)).setNodeText(element, newText
+						((MTextController) TextController.getController()).setNodeText(element, newText
 						    .toString());
 					}
 				}

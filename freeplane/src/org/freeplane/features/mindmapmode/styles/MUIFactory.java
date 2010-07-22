@@ -36,6 +36,7 @@ import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -43,7 +44,6 @@ import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
 public class MUIFactory implements INodeSelectionListener, INodeChangeListener, IMapChangeListener,
@@ -54,9 +54,10 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	final private DefaultComboBoxModel fonts, size, styles;
 //  private final MModeController modeController;
 
-	public MUIFactory(final MModeController modeController) {
+	public MUIFactory() {
 		size = new DefaultComboBoxModel(MUIFactory.sizes);
 		styles = new DefaultComboBoxModel();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final MNodeStyleController styleController = (MNodeStyleController) modeController
 		    .getExtension(NodeStyleController.class);
 		final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();

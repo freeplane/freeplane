@@ -36,14 +36,14 @@ class OpenURLAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	final private String url;
 
-	OpenURLAction(final String key, final Controller controller, final String url) {
+	OpenURLAction(final String key, final String url) {
 		super(key);
 		this.url = url;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		try {
-			getController().getViewController().openDocument(new URL(url));
+			Controller.getCurrentController().getViewController().openDocument(new URL(url));
 		}
 		catch (final MalformedURLException ex) {
 			UITools.errorMessage(TextUtils.getText("url_error") + "\n" + ex);

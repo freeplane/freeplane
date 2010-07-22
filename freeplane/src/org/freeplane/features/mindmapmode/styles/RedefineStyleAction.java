@@ -15,17 +15,17 @@ import org.freeplane.features.common.styles.MapStyleModel;
 public class RedefineStyleAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	
-	public RedefineStyleAction(final Controller controller) {
+	public RedefineStyleAction() {
 		super("RedefineStyleAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel node = getController().getSelection().getSelected();
+		final NodeModel node = Controller.getCurrentController().getSelection().getSelected();
 		final Object style = LogicalStyleModel.getStyle(node);
 		final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
 		final NodeModel styleNode = extension.getStyleNode(style);
-		getModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
-		getModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
-		LogicalStyleController.getController(getModeController()).refreshMap(node.getMap());
+		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
+		Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
+		LogicalStyleController.getController().refreshMap(node.getMap());
 	}
 }

@@ -35,6 +35,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
@@ -132,7 +133,7 @@ public class FilterConditionEditor extends Box {
 		caseInsensitive.setText(TextUtils.getText("filter_ignore_case"));
 		caseInsensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
 		    PROPERTY_FILTER_IGNORE_CASE));
-		mapChanged(filterController.getController().getMap());
+		mapChanged(Controller.getCurrentController().getMap());
 	}
 
 	public void focusInputField() {

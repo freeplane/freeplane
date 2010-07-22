@@ -31,12 +31,12 @@ class SaveAsAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public SaveAsAction(final Controller controller) {
+	public SaveAsAction() {
 		super("SaveAsAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MFileManager) UrlManager.getController(getModeController())).saveAs(getController().getMap());
-		getController().getViewController().setTitle();
+		((MFileManager) UrlManager.getController()).saveAs(Controller.getCurrentController().getMap());
+		Controller.getCurrentController().getViewController().setTitle();
 	}
 }

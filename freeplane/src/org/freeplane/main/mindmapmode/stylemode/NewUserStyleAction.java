@@ -38,7 +38,7 @@ import org.freeplane.features.mindmapmode.map.MMapController;
  * 02.10.2009
  */
 public class NewUserStyleAction extends AFreeplaneAction {
-	public NewUserStyleAction(final Controller controller) {
+	public NewUserStyleAction() {
 		super("NewUserStyleAction");
 	}
 
@@ -52,13 +52,13 @@ public class NewUserStyleAction extends AFreeplaneAction {
 		if (styleName == null) {
 			return;
 		}
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		if (null != styleModel.getStyleNode(styleName)) {
 			UITools.errorMessage(TextUtils.getText("style_already_exists"));
 			return;
 		}
-		final MMapController mapController = (MMapController) getModeController().getMapController();
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node = new NodeModel(map);
 		node.setUserObject(styleName);
 		mapController.insertNode(node, getUserStyleParentNode(map), false, false, true);
@@ -76,7 +76,7 @@ public class NewUserStyleAction extends AFreeplaneAction {
 				styleModel.addStyleNode(node);
 			}
 		};
-		getModeController().execute(actor, map);
+		Controller.getCurrentModeController().execute(actor, map);
 	}
 
 	private NodeModel getUserStyleParentNode(final MapModel map) {

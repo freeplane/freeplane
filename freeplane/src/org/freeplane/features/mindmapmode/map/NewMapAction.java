@@ -34,12 +34,12 @@ class NewMapAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
-	public NewMapAction(final Controller controller) {
+	public NewMapAction() {
 		super("NewMapAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		getModeController().getMapController().newMap(((NodeModel) null));
+		Controller.getCurrentModeController().getMapController().newMap(((NodeModel) null));
 	}
 
 	@Override

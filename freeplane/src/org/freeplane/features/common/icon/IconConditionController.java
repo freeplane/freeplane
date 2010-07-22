@@ -42,7 +42,7 @@ class IconConditionController implements IElementaryConditionController {
 	static final String FILTER_ICON = "filter_icon";
 // // 	final private Controller controller;
 
-	public IconConditionController(final Controller controller) {
+	public IconConditionController() {
 		super();
 //		this.controller = controller;
 	}

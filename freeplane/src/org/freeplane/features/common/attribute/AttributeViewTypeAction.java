@@ -9,22 +9,22 @@ import org.freeplane.features.common.map.MapModel;
 public abstract class AttributeViewTypeAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
-	public AttributeViewTypeAction(final String key, final Controller controller) {
+	public AttributeViewTypeAction(final String key) {
 		super(key);
 	}
 
-	public AttributeViewTypeAction(final String key, final Controller controller, final String title,
+	public AttributeViewTypeAction(final String key, final String title,
 	                               final ImageIcon icon) {
 		super(key, title, icon);
 	}
 
 	protected void setAttributeViewType(final String type) {
-		final MapModel map = getController().getMap();
-		ModelessAttributeController.getController(getController()).setAttributeViewType(map, type);
+		final MapModel map = Controller.getCurrentController().getMap();
+		ModelessAttributeController.getController().setAttributeViewType(map, type);
 	}
 
 	protected String getAttributeViewType() {
-		final MapModel map = getController().getMap();
-		return ModelessAttributeController.getController(getController()).getAttributeViewType(map);
+		final MapModel map = Controller.getCurrentController().getMap();
+		return ModelessAttributeController.getController().getAttributeViewType(map);
 	}
 }

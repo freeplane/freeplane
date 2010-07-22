@@ -107,8 +107,8 @@ public class FreeplaneStarter {
 	public Controller createController() {
 		try {
 			Controller controller = new Controller();
-			Compat.macAppChanges(controller);
-			applicationResourceController.init(controller);
+			Compat.macAppChanges();
+			applicationResourceController.init();
 			LogUtils.createLogger();
 			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController
 			    .getProperty("lookandfeel"));
@@ -123,31 +123,31 @@ public class FreeplaneStarter {
 			viewController = new ApplicationViewController(controller, mapViewController, frame);
 			System.setSecurityManager(new FreeplaneSecurityManager());
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
-			FilterController.install(controller);
-			PrintController.install(controller);
-			ModelessAttributeController.install(controller);
-			TextController.install(controller);
-			NoteController.install(controller);
-			TimeController.install(controller);
-			LinkController.install(controller);
-			IconController.install(controller);
-			HelpController.install(controller);
-			controller.addAction(new UpdateCheckAction(controller));
-			controller.addAction(new NextNodeAction(controller, Direction.FORWARD));
-			controller.addAction(new NextNodeAction(controller, Direction.BACK));
-			controller.addAction(new NextNodeAction(controller, Direction.FORWARD_N_FOLD));
-			controller.addAction(new NextNodeAction(controller, Direction.BACK_N_FOLD));
-			controller.addAction(new ShowSelectionAsRectangleAction(controller));
-			controller.addAction(new ViewLayoutTypeAction(controller, MapViewLayout.OUTLINE));
-			FilterController.getController(controller).getConditionFactory().addConditionController(7,
-			    new LogicalStyleFilterController(controller));
+			FilterController.install();
+			PrintController.install();
+			ModelessAttributeController.install();
+			TextController.install();
+			NoteController.install();
+			TimeController.install();
+			LinkController.install();
+			IconController.install();
+			HelpController.install();
+			controller.addAction(new UpdateCheckAction());
+			controller.addAction(new NextNodeAction(Direction.FORWARD));
+			controller.addAction(new NextNodeAction(Direction.BACK));
+			controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));
+			controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
+			controller.addAction(new ShowSelectionAsRectangleAction());
+			controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
+			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(7,
+			    new LogicalStyleFilterController());
 
 			NodeHistory.install(controller);
-			MModeControllerFactory.createModeController(controller);
+			MModeControllerFactory.createModeController();
 			controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(
 			    applicationResourceController.getLastOpenedList());
-			BModeControllerFactory.createModeController(controller, "/xml/browsemodemenu.xml");
-			FModeControllerFactory.createModeController(controller);
+			BModeControllerFactory.createModeController("/xml/browsemodemenu.xml");
+			FModeControllerFactory.createModeController();
 			return controller;
 		}
 		catch (final Exception e) {
@@ -156,13 +156,13 @@ public class FreeplaneStarter {
 		}
 	}
 
-	public void createFrame(final Controller controller, final String[] args) {
-		Compat.macMenuChanges(controller);
+	public void createFrame(final Controller controller,  final String[] args) {
+		Compat.macMenuChanges();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				viewController.init(controller);
 				splash.toBack();
-				loadMaps(controller, args);
+				loadMaps(args);
 				final Frame frame = viewController.getFrame();
 				final int extendedState = frame.getExtendedState();
 				frame.setVisible(true);
@@ -176,7 +176,8 @@ public class FreeplaneStarter {
 		});
 	}
 
-	private void loadMaps(Controller controller, final String[] args) {
+	private void loadMaps( final String[] args) {
+		final Controller controller = Controller.getCurrentController();
 		final boolean alwaysLoadLastMaps = ResourceController.getResourceController().getBooleanProperty(
 		    "always_load_last_maps");
 		if (alwaysLoadLastMaps && !dontLoadLastMaps) {

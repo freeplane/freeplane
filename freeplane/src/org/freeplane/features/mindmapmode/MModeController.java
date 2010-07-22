@@ -46,14 +46,15 @@ public class MModeController extends ModeController {
 	public static final String RESOURCES_DELETE_NODES_WITHOUT_QUESTION = "delete_nodes_without_question";
 	private UndoAction undo;
 
-	static public MModeController getMModeController(final Controller controller) {
+	static public MModeController getMModeController() {
+		Controller controller = Controller.getCurrentController();
 		return (MModeController) controller.getModeController(MODENAME);
 	}
 
 	private OptionPanelBuilder optionPanelBuilder;
 
-	public MModeController(final Controller controller) {
-		super(controller);
+	public MModeController() {
+		super();
 		createActions();
 		createOptionPanelControls();
 	}
@@ -88,15 +89,14 @@ public class MModeController extends ModeController {
 	}
 
 	private void createActions() {
-		final Controller controller = getController();
-		undo = new UndoAction(controller);
-		redo = new RedoAction(controller);
+		undo = new UndoAction();
+		redo = new RedoAction();
 		undo.setRedo(redo);
 		redo.setUndo(undo);
 		addAction(undo);
 		addAction(redo);
-		addAction(new SelectBranchAction(controller));
-		addAction(new SelectAllAction(controller));
+		addAction(new SelectBranchAction());
+		addAction(new SelectAllAction());
 	}
 
 	private void createOptionPanelControls() {
@@ -115,7 +115,7 @@ public class MModeController extends ModeController {
 		}
 		optionPanelBuilder.addComboProperty("Appearance/look_and_feel/lookandfeel", "lookandfeel", lafNames,
 		    translatedLafNames, IndexedTree.AS_CHILD);
-		addAction(new PropertyAction(getController(), optionPanelBuilder.getRoot()));
+		addAction(new PropertyAction(optionPanelBuilder.getRoot()));
 	}
 
 	@Override
@@ -153,13 +153,13 @@ public class MModeController extends ModeController {
 	 *
 	 */
 	public boolean save() {
-		return ((MFileManager) UrlManager.getController(this)).save(getController().getMap());
+		return ((MFileManager) UrlManager.getController()).save(getController().getMap());
 	}
 
 	@Override
 	public void shutdown() {
 		super.shutdown();
-		final MNoteController noteController = (MNoteController) NoteController.getController(this);
+		final MNoteController noteController = (MNoteController) NoteController.getController();
 		if (noteController != null) {
 			noteController.shutdownController();
 		}
@@ -179,7 +179,7 @@ public class MModeController extends ModeController {
 	@Override
 	public void startup() {
 		super.startup();
-		final NoteController noteController = NoteController.getController(this);
+		final NoteController noteController = NoteController.getController();
 		if (noteController != null) {
 			((MNoteController) noteController).startupController();
 		}

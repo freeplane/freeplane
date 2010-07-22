@@ -48,8 +48,9 @@ class DialogController extends ViewController {
 	private JComponent mContentComponent = null;
 
 	/** Contains the value where the Note Window should be displayed (right, left, top, bottom) */
-	/** Contains the Note Window Component */
-	public DialogController(final Controller controller, final IMapViewManager mapViewController, final JDialog dialog) {
+	/** Contains the Note Window Component 
+	 * @param controller */
+	public DialogController(Controller controller, final IMapViewManager mapViewController, final JDialog dialog) {
 		super(controller, mapViewController, "dialog_");
 		this.dialog = dialog;
 		getContentPane().setLayout(new BorderLayout());

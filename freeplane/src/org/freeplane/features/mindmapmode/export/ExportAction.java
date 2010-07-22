@@ -32,7 +32,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.url.UrlManager;
 
 /**
@@ -44,9 +43,9 @@ abstract public class ExportAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	static File chooseFile(final Controller controller, final String type, final String description,
+	static protected File chooseFile( final String type, final String description,
 	                       final String nameExtension) {
-		final ModeController mindMapController = controller.getModeController();
+		final Controller controller = Controller.getCurrentController();
 		final Container component = controller.getViewController().getContentPane();
 		JFileChooser chooser = null;
 		chooser = new JFileChooser();
@@ -56,7 +55,7 @@ abstract public class ExportAction extends AFreeplaneAction {
 			        + ((nameExtension != null) ? nameExtension : "") + "." + type;
 			chooser.setSelectedFile(new File(proposedName));
 		}
-		final File lastCurrentDir = UrlManager.getController(mindMapController).getLastCurrentDir();
+		final File lastCurrentDir = UrlManager.getController().getLastCurrentDir();
 		if (lastCurrentDir != null) {
 			chooser.setCurrentDirectory(lastCurrentDir);
 		}
@@ -66,7 +65,7 @@ abstract public class ExportAction extends AFreeplaneAction {
 			return null;
 		}
 		File chosenFile = chooser.getSelectedFile();
-		UrlManager.getController(mindMapController).setLastCurrentDir(chosenFile.getParentFile());
+		UrlManager.getController().setLastCurrentDir(chosenFile.getParentFile());
 		final String ext = FileUtils.getExtension(chosenFile.getName());
 		if (!StringUtils.equalsIgnoreCase(ext, type)) {
 			chosenFile = new File(chosenFile.getParent(), chosenFile.getName() + "." + type);
@@ -83,19 +82,12 @@ abstract public class ExportAction extends AFreeplaneAction {
 		return chosenFile;
 	}
 
-	public ExportAction(final String key, final Controller controller) {
+	public ExportAction(final String key) {
 		super(key);
 	}
 
-	/**
-	 * @param nameExtension
-	 */
-	protected File chooseFile(final String type, final String description, final String nameExtension) {
-		final Controller controller = getController();
-		return ExportAction.chooseFile(controller, type, description, nameExtension);
-	}
-
+	
 	public RenderedImage createBufferedImage() {
-		return getController().getMapViewManager().createImage();
+		return Controller.getCurrentController().getMapViewManager().createImage();
 	}
 }

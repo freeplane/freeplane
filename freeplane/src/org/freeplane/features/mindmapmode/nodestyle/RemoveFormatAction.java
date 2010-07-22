@@ -8,7 +8,7 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
 
 class RemoveFormatAction extends AMultipleNodeAction {
-	public RemoveFormatAction(final Controller controller) {
+	public RemoveFormatAction() {
 		super("RemoveFormatAction");
 	}
 
@@ -19,6 +19,6 @@ class RemoveFormatAction extends AMultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		getModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
+		Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
 	}
 }

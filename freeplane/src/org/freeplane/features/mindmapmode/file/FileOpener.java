@@ -49,7 +49,7 @@ class FileOpener implements DropTargetListener {
 	/**
 	 * @param modeController
 	 */
-	FileOpener(final ModeController modeController) {
+	FileOpener() {
 //		this.modeController = modeController;
 	}
 
@@ -80,7 +80,7 @@ class FileOpener implements DropTargetListener {
 		dtde.acceptDrop(DnDConstants.ACTION_COPY);
 		try {
 			final Transferable transferable = dtde.getTransferable();
-			ModeController modeController = Controller.getCurrentController().getModeController();
+			ModeController modeController = Controller.getCurrentModeController();
 			if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 				final List<File> list = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 				for (final File file : list) {

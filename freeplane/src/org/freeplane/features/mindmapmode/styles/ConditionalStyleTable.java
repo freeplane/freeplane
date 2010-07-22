@@ -17,9 +17,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.filter.condition.DefaultConditionRenderer;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.styles.MapStyleModel;
 
 public class ConditionalStyleTable extends JTable {
@@ -40,8 +38,7 @@ public class ConditionalStyleTable extends JTable {
 		public Component getTableCellEditorComponent(final JTable table, final Object value, boolean isSelected, int row, int column) {
 			btn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					final ModeController modeController = UITools.getController(table).getModeController();
-					final MLogicalStyleController styleController = MLogicalStyleController.getController(modeController);
+					final MLogicalStyleController styleController = MLogicalStyleController.getController();
 					final FilterComposerDialog filterComposerDialog = styleController.getFilterComposerDialog();
 					filterComposerDialog.show();
 					cellEditorValue = filterComposerDialog.getCondition();

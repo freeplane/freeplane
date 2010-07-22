@@ -21,7 +21,6 @@ package org.freeplane.features.mindmapmode.nodelocation;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodelocation.LocationController;
@@ -37,13 +36,13 @@ class ResetNodeLocationAction extends AMultipleNodeAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ResetNodeLocationAction(final Controller controller) {
+	public ResetNodeLocationAction() {
 		super("ResetNodeLocationAction");
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MLocationController) LocationController.getController(getModeController())).moveNodePosition(node,
+		((MLocationController) LocationController.getController()).moveNodePosition(node,
 		    LocationModel.NULL_LOCATION.getVGap(), LocationModel.NULL_LOCATION.getHGap(), LocationModel.NULL_LOCATION
 		        .getShiftY());
 	}

@@ -48,7 +48,7 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 	private JComponent noteScrollPane;
 	private JLabel noteViewer;
 
-	public BNodeNoteViewer(final Controller controller) {
+	public BNodeNoteViewer() {
 //		this.controller = controller;
 	}
 

@@ -30,11 +30,11 @@ class MoveToRootAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	MoveToRootAction(final Controller controller) {
+	MoveToRootAction() {
 		super("MoveToRootAction");
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		getController().getSelection().selectRoot();
+		Controller.getCurrentController().getSelection().selectRoot();
 	}
 }

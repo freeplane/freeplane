@@ -23,12 +23,12 @@ import java.awt.Color;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.map.INodeChangeListener;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -42,9 +42,9 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @ActionLocationDescriptor(locations = {})
 @NodeHookDescriptor(hookName = "accessories/plugins/RevisionPlugin.properties")
 public class RevisionPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
-	public RevisionPlugin(final ModeController modeController) {
-		super(modeController);
-		getModeController().getMapController().addNodeChangeListener(this);
+	public RevisionPlugin() {
+		super();
+		Controller.getCurrentModeController().getMapController().addNodeChangeListener(this);
 	}
 
 	@Override
@@ -62,9 +62,9 @@ public class RevisionPlugin extends PersistentNodeHook implements INodeChangeLis
 		if (!isActive(node)) {
 			return;
 		}
-		if (event.getProperty().equals(NodeModel.NODE_TEXT) && !((MModeController) getModeController()).isUndoAction()) {
+		if (event.getProperty().equals(NodeModel.NODE_TEXT) && !((MModeController) Controller.getCurrentModeController()).isUndoAction()) {
 			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
-			    .getController(getModeController());
+			    .getController();
 			final String colorProperty = ResourceController.getResourceController().getProperty("revision_color");
 			final Color color = ColorUtils.stringToColor(colorProperty);
 			nodeStyleController.setBackgroundColor(event.getNode(), color);

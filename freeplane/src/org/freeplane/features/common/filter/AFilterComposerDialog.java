@@ -59,7 +59,6 @@ import org.freeplane.features.common.filter.condition.ConjunctConditions;
 import org.freeplane.features.common.filter.condition.DisjunctConditions;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.url.UrlManager;
 
 /**
@@ -75,7 +74,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		 */
 		private static final long serialVersionUID = 1L;
 
-		AddElementaryConditionAction(final Controller controller) {
+		AddElementaryConditionAction() {
 			super("AddElementaryConditionAction");
 		}
 
@@ -355,16 +354,16 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	final private FilterController filterController;
 	private DefaultComboBoxModel internalConditionsModel;
 
-	public AFilterComposerDialog(final Controller controller, String title, boolean modal) {
-		super(controller.getViewController().getFrame(), title, modal);
-		filterController = FilterController.getController(controller);
+	public AFilterComposerDialog( String title, boolean modal) {
+		super(Controller.getCurrentController().getViewController().getFrame(), title, modal);
+		filterController = FilterController.getCurrentFilterController();
 		editor = new FilterConditionEditor(filterController);
 //		this.controller = controller;
 		getContentPane().add(editor, BorderLayout.NORTH);
 		final Box conditionButtonBox = Box.createVerticalBox();
 		conditionButtonBox.setBorder(new EmptyBorder(0, 10, 0, 10));
 		getContentPane().add(conditionButtonBox, BorderLayout.EAST);
-		btnAdd = new JButton(new AddElementaryConditionAction(controller));
+		btnAdd = new JButton(new AddElementaryConditionAction());
 		btnAdd.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(Box.createVerticalGlue());
 		conditionButtonBox.add(btnAdd);
@@ -417,6 +416,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnCancel);
 		controllerBox.add(Box.createHorizontalGlue());
+		Controller controller = Controller.getCurrentController();
 		if (!controller.getViewController().isApplet()) {
 			final ActionListener saveAction = new SaveAction();
 			btnSave = new JButton();
@@ -479,8 +479,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	}
 
 	protected JFileChooser getFileChooser() {
-		final ModeController modeController = Controller.getCurrentController().getModeController();
-		final JFileChooser chooser = UrlManager.getController(modeController).getFileChooser(
+		final JFileChooser chooser = UrlManager.getController().getFileChooser(
 		    MindMapFilterFileFilter.filter);
 		return chooser;
 	}

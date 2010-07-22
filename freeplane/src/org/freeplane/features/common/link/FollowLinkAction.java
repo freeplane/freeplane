@@ -34,24 +34,24 @@ import org.freeplane.features.common.map.NodeModel;
 class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
 	private static final long serialVersionUID = 1L;
 
-	public FollowLinkAction(final Controller controller) {
+	public FollowLinkAction() {
 		super("FollowLinkAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		LinkController linkController = null;
 		for (final NodeModel selNode : mapController.getSelectedNodes()) {
 			if (linkController == null) {
-				linkController = LinkController.getController(modeController);
+				linkController = LinkController.getController();
 			}
 			linkController.loadURL(selNode, e);
 		}
 	}
 
 	private boolean isLinkEnabled() {
-		final MapController mapController = getModeController().getMapController();
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		for (final NodeModel selNode : mapController.getSelectedNodes()) {
 			if (NodeLinks.getValidLink(selNode) != null) {
 				return true;

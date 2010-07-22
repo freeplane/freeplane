@@ -38,7 +38,7 @@ class CloudAction extends AMultipleNodeAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CloudAction(final Controller controller) {
+	public CloudAction() {
 		super("CloudAction");
 	}
 
@@ -50,12 +50,12 @@ class CloudAction extends AMultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MCloudController cloudController = (MCloudController) CloudController.getController(getModeController());
+		final MCloudController cloudController = (MCloudController) CloudController.getController();
 		cloudController.setCloud(node, CloudModel.getModel(node) == null);
 	}
 
 	@Override
 	public void setSelected() {
-		setSelected(CloudModel.getModel(getModeController().getMapController().getSelectedNode()) != null);
+		setSelected(CloudModel.getModel(Controller.getCurrentModeController().getMapController().getSelectedNode()) != null);
 	}
 }

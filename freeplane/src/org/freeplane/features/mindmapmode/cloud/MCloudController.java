@@ -75,12 +75,13 @@ public class MCloudController extends CloudController {
 		}
 	}
 
-	public MCloudController(final ModeController modeController) {
-		super(modeController);
-		final Controller controller = modeController.getController();
+	public MCloudController() {
+		super();
+		final Controller controller = Controller.getCurrentController();
+		final ModeController modeController = controller.getModeController();
 		modeController.registerExtensionCopier(new ExtensionCopier());
-		modeController.addAction(new CloudAction(controller));
-		modeController.addAction(new CloudColorAction(controller));
+		modeController.addAction(new CloudAction());
+		modeController.addAction(new CloudColorAction());
 	}
 
 	public void setCloud(final NodeModel node, final boolean enable) {
@@ -89,7 +90,7 @@ public class MCloudController extends CloudController {
 			return;
 		}
 		final Color color = cloud != null ? cloud.getColor() : CloudController.getStandardColor();
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final IActor actor = new IActor() {
 			public void act() {
 				if (enable) {
@@ -132,7 +133,7 @@ public class MCloudController extends CloudController {
 
 	public void setColor(final NodeModel node, final Color color) {
 		setCloud(node, true);
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final Color oldColor = CloudModel.getModel(node).getColor();
 		if (color == oldColor || color != null && color.equals(oldColor)) {
 			return;

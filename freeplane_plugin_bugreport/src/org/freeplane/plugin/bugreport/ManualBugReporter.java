@@ -17,7 +17,7 @@ import org.freeplane.core.util.TextUtils;
 class ManualBugReporter implements IBugReportListener {
 // // 	final private Controller controller;
 
-	public ManualBugReporter(final Controller controller) {
+	public ManualBugReporter() {
 		super();
 //		this.controller = controller;
 	}

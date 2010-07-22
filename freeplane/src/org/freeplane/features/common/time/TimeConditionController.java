@@ -27,7 +27,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -45,7 +44,7 @@ class TimeConditionController implements IElementaryConditionController {
 	private final ComboBoxEditor editor = new TimeComboBoxEditor();
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
-	public TimeConditionController(final Controller controller) {
+	public TimeConditionController() {
 		super();
 //		this.controller = controller;
 	}

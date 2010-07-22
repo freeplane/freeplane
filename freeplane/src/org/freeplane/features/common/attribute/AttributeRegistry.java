@@ -28,6 +28,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.util.collection.IListModel;
@@ -35,7 +36,6 @@ import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.core.util.collection.SortedMapVector;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.attribute.IAttributesListener;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -47,13 +47,13 @@ public class AttributeRegistry implements IExtension {
 	static public final int GLOBAL = -1;
 	private static final int TABLE_FONT_SIZE = 12;
 
-	static AttributeRegistry createRegistry(final ModeController modeController, final MapModel map) {
+	static AttributeRegistry createRegistry( final MapModel map) {
 		AttributeRegistry registry = AttributeRegistry.getRegistry(map);
 		if (registry == null) {
-			final AttributeController attributeController = AttributeController.getController(modeController);
+			final AttributeController attributeController = AttributeController.getController();
 			registry = new AttributeRegistry(attributeController);
 			map.addExtension(AttributeRegistry.class, registry);
-			registry.registryAttributes(modeController.getMapController(), map.getRootNode());
+			registry.registryAttributes(Controller.getCurrentModeController().getMapController(), map.getRootNode());
 		}
 		return registry;
 	}

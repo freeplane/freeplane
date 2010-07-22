@@ -21,12 +21,12 @@ package org.freeplane.features.mindmapmode.edge;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
 @SelectableAction(checkOnNodeChange = true)
@@ -37,7 +37,7 @@ class EdgeStyleAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 	final private EdgeStyle mStyle;
 
-	public EdgeStyleAction(final ModeController controller, final EdgeStyle style) {
+	public EdgeStyleAction( final EdgeStyle style) {
 		super("EdgeStyleAction." + style);
 		mStyle = style;
 	}
@@ -50,12 +50,12 @@ class EdgeStyleAction extends AMultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MEdgeController) EdgeController.getController(getModeController())).setStyle(node, mStyle);
+		((MEdgeController) EdgeController.getController()).setStyle(node, mStyle);
 	}
 
 	@Override
 	public void setSelected() {
-		final NodeModel node = getModeController().getMapController().getSelectedNode();
+		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		final EdgeModel model = EdgeModel.getModel(node);
 		if (model != null) {
 			if (mStyle.equals(model.getStyle())) {

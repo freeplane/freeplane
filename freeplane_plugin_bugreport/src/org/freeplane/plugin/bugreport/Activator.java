@@ -20,8 +20,8 @@ public class Activator implements BundleActivator {
 		handler = new XmlRpcHandler();
 		parentLogger.addHandler(handler);
 		context.registerService(IControllerExtensionProvider.class.getName(), new IControllerExtensionProvider() {
-			public void installExtension(final Controller Controller) {
-				handler.setBugReportListener(new ManualBugReporter(Controller));
+			public void installExtension(Controller controller) {
+				handler.setBugReportListener(new ManualBugReporter());
 			}
 		}, null);
 	}

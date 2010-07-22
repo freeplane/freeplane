@@ -30,12 +30,12 @@ class NavigationPreviousMapAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	NavigationPreviousMapAction(final Controller controller) {
+	NavigationPreviousMapAction() {
 		super("NavigationPreviousMapAction");
 		setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		getController().getMapViewManager().previousMapView();
+		Controller.getCurrentController().getMapViewManager().previousMapView();
 	}
 }

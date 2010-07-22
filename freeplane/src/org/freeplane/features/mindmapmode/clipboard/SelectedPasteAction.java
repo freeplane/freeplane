@@ -43,13 +43,13 @@ class SelectedPasteAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public SelectedPasteAction(final Controller controller) {
+	public SelectedPasteAction() {
 		super("SelectedPasteAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MClipboardController clipboardController = (MClipboardController) ClipboardController
-		    .getController(getModeController());
+		    .getController();
 		final Collection<IDataFlavorHandler> flavorHandlers = clipboardController.getFlavorHandlers();
 		if (flavorHandlers.isEmpty()) {
 			return;
@@ -59,7 +59,7 @@ class SelectedPasteAction extends AFreeplaneAction {
 		    .getActionCommand(), JOptionPane.OK_CANCEL_OPTION)) {
 			return;
 		}
-		final NodeModel parent = getController().getSelection().getSelected();
+		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();
 		clipboardController.paste(selectedHandler, parent, false, parent.isNewChildLeft());
 		selectedHandler = null;
 	}

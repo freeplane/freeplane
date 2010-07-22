@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
 
@@ -58,7 +59,7 @@ class EditFilterAction extends AFreeplaneAction {
 	private class FilterComposerDialog extends AFilterComposerDialog{
 
 		public FilterComposerDialog() {
-	        super(getController(), TextUtils.getText("filter_dialog"), false);
+	        super(TextUtils.getText("filter_dialog"), false);
         }
 
 		protected DefaultComboBoxModel createModel() {
@@ -100,7 +101,7 @@ class EditFilterAction extends AFreeplaneAction {
 		if (filterDialog == null) {
 			filterDialog = new FilterComposerDialog();
 			getFilterDialog().setLocationRelativeTo(filterController.getFilterToolbar());
-			getController().getMapViewManager().addMapSelectionListener(filterDialog);
+			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(filterDialog);
 		}
 		return filterDialog;
 	}

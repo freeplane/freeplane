@@ -51,7 +51,6 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
@@ -80,27 +79,27 @@ public class MTextController extends TextController {
 		return SHTMLPanel.createSHTMLPanel();
 	}
 
-	public MTextController(final MModeController modeController) {
-		super(modeController);
-		createActions(modeController);
+	public MTextController() {
+		super();
+		createActions();
 	}
 
 	/**
 	 *
 	 */
-	private void createActions(final ModeController modeController) {
-		final Controller controller = modeController.getController();
-		edit = new EditAction(controller);
+	private void createActions() {
+		ModeController modeController = Controller.getCurrentModeController();
+		edit = new EditAction();
 		modeController.addAction(edit);
-		modeController.addAction(new UseRichFormattingAction(controller));
-		modeController.addAction(new UsePlainTextAction(controller));
-		modeController.addAction(new JoinNodesAction(controller));
-		modeController.addAction(new EditLongAction(controller));
-		modeController.addAction(new SetImageByFileChooserAction(controller));
+		modeController.addAction(new UseRichFormattingAction());
+		modeController.addAction(new UsePlainTextAction());
+		modeController.addAction(new JoinNodesAction());
+		modeController.addAction(new EditLongAction());
+		modeController.addAction(new SetImageByFileChooserAction());
 	}
 
 	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
-		((EditAction) getModeController().getAction("EditAction")).edit(e, addNew, editLong);
+		((EditAction) Controller.getCurrentModeController().getAction("EditAction")).edit(e, addNew, editLong);
 	}
 
 	public void edit(final NodeModel node, final NodeModel prevSelected, final KeyEvent firstEvent,
@@ -166,12 +165,12 @@ public class MTextController extends TextController {
 	}
 
 	public void joinNodes(final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
-		((JoinNodesAction) getModeController().getAction("JoinNodesAction")).joinNodes(selectedNode, selectedNodes);
+		((JoinNodesAction) Controller.getCurrentModeController().getAction("JoinNodesAction")).joinNodes(selectedNode, selectedNodes);
 	}
 
 	public void setImageByFileChooser() {
 		boolean picturesAmongSelecteds = false;
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		for (final NodeModel node : modeController.getMapController().getSelectedNodes()) {
 			final URI link = NodeLinks.getLink(node);
 			if (link != null) {
@@ -182,7 +181,7 @@ public class MTextController extends TextController {
 					picturesAmongSelecteds = true;
 					final String encodedLinkString = HtmlUtils.unicodeToHTMLUnicodeEntity(linkString);
 					final String strText = "<html><img src=\"" + encodedLinkString + "\">";
-					((MLinkController) LinkController.getController(modeController)).setLink(node, (URI) null, false);
+					((MLinkController) LinkController.getController()).setLink(node, (URI) null, false);
 					setNodeText(node, strText);
 				}
 			}
@@ -238,7 +237,7 @@ public class MTextController extends TextController {
 			public void act() {
 				if (!oldText.equals(newText)) {
 					node.setText(newText);
-					getModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, oldText, newText);
+					Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, oldText, newText);
 				}
 			}
 
@@ -249,11 +248,11 @@ public class MTextController extends TextController {
 			public void undo() {
 				if (!oldText.equals(newText)) {
 					node.setText(oldText);
-					getModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, newText, oldText);
+					Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, newText, oldText);
 				}
 			}
 		};
-		getModeController().execute(actor, node.getMap());
+		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
 	public void splitNode(final NodeModel node, final int caretPosition, final String newText) {
@@ -269,11 +268,11 @@ public class MTextController extends TextController {
 		final String newLowerContent = strings[1];
 		setNodeText(node, newUpperContent);
 		final NodeModel parent = node.getParentNode();
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel lowerNode = ((MMapController) modeController.getMapController()).addNewNode(parent, parent
 		    .getChildPosition(node) + 1, node.isLeft());
 		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
-		    .getController(modeController);
+		    .getController();
 		nodeStyleController.copyStyle(node, lowerNode);
 		setNodeText(lowerNode, newLowerContent);
 	}
@@ -286,7 +285,7 @@ public class MTextController extends TextController {
 	}
 
 	public boolean useRichTextInNewLongNodes() {
-		final int showResult = OptionalDontShowMeAgainDialog.show(getModeController().getController(),
+		final int showResult = OptionalDontShowMeAgainDialog.show(
 		    "edit.edit_rich_text", "edit.decision", MTextController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES,
 		    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
 		final String useRichTextInNewLongNodes = (showResult == JOptionPane.OK_OPTION) ? "true" : "false";

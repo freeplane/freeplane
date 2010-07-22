@@ -8,7 +8,6 @@ import java.awt.Color;
 import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
@@ -30,7 +29,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	private MLinkController getLinkController() {
-		return (MLinkController) LinkController.getController(getModeController());
+		return (MLinkController) LinkController.getController();
 	}
 
 	public String getMiddleLabel() {

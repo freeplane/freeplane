@@ -28,14 +28,13 @@ import java.util.Locale;
 import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.mindmapmode.MModeController;
-
 import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.LanguageChangeEvent;
 import com.inet.jortho.LanguageChangeListener;
@@ -49,11 +48,13 @@ import com.inet.jortho.SpellCheckerOptions;
 public class SpellCheckerController implements IExtension {
 	private static final String SPELLING_LANGUAGE = "spelling_language";
 
-	public static SpellCheckerController getController(final ModeController modeController) {
+	public static SpellCheckerController getController() {
+		final ModeController modeController = Controller.getCurrentModeController();
 		return (SpellCheckerController) modeController.getExtension(SpellCheckerController.class);
 	}
 
-	public static void install(final MModeController modeController) {
+	public static void install() {
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(SpellCheckerController.class, new SpellCheckerController());
 	}
 

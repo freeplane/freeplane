@@ -36,15 +36,15 @@ class ShowAttributeDialogAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
-	ShowAttributeDialogAction(final Controller controller) {
+	ShowAttributeDialogAction() {
 		super("ShowAttributeDialogAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		if (frame == null) {
-			frame = getController().getViewController().getFrame();
+			frame = Controller.getCurrentController().getViewController().getFrame();
 		}
-		if (getAttributeDialog().isVisible() == false && getController().getMap() != null) {
+		if (getAttributeDialog().isVisible() == false && Controller.getCurrentController().getMap() != null) {
 			getAttributeDialog().pack();
 			getAttributeDialog().show();
 		}
@@ -52,7 +52,7 @@ class ShowAttributeDialogAction extends AFreeplaneAction {
 
 	private AttributeManagerDialog getAttributeDialog() {
 		if (attributeDialog == null) {
-			attributeDialog = new AttributeManagerDialog(getController(), frame);
+			attributeDialog = new AttributeManagerDialog(frame);
 		}
 		return attributeDialog;
 	}

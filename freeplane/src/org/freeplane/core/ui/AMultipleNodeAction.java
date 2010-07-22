@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
@@ -40,7 +41,7 @@ public abstract class AMultipleNodeAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		for (final NodeModel selected : getModeController().getMapController().getSelectedNodes()) {
+		for (final NodeModel selected : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
 			actionPerformed(e, selected);
 		}
 	}

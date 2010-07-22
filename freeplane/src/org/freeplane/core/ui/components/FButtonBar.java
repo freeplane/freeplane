@@ -44,7 +44,6 @@ import javax.swing.Timer;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IAcceleratorChangeListener;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.ModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -67,7 +66,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		}
 	});
 
-	public FButtonBar(final ModeController modeController) {
+	public FButtonBar() {
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 		buttons = new HashMap<Integer, JButton[]>();
 		onModifierChange();

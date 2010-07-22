@@ -19,12 +19,12 @@
  */
 package org.freeplane.features.mindmapmode.nodelocation;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodelocation.LocationModel;
-import org.freeplane.features.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -65,7 +65,7 @@ public class MLocationController extends LocationController {
 			if (!node.isRoot()) {
 				LocationModel.createLocationModel(node.getParentNode()).setVGap(parentVGap);
 			}
-			getModeController().getMapController().nodeChanged(node);
+			Controller.getCurrentModeController().getMapController().nodeChanged(node);
 		}
 
 		public void undo() {
@@ -73,17 +73,18 @@ public class MLocationController extends LocationController {
 		}
 	}
 
-	public MLocationController(final MModeController modeController) {
-		super(modeController);
-		createActions(modeController);
+	public MLocationController() {
+		super();
+		createActions();
 	}
 
-	private void createActions(final ModeController modeController) {
-		modeController.addAction(new ResetNodeLocationAction(modeController.getController()));
+	private void createActions() {
+		final ModeController modeController = Controller.getCurrentModeController();
+		modeController.addAction(new ResetNodeLocationAction());
 	}
 
 	public void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap, final int shiftY) {
 		final IActor actor = new ChangeNodePositionActor(node, hGap, shiftY, parentVGap);
-		getModeController().execute(actor, node.getMap());
+		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 }

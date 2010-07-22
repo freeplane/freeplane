@@ -280,7 +280,8 @@ public class UITools {
 		UITools.setDialogLocationRelativeTo(dialog, c);
 	}
 
-	public static void setDialogLocationUnder(final JDialog dialog, final Controller controller, final NodeModel node) {
+	public static void setDialogLocationUnder(final JDialog dialog, final NodeModel node) {
+		final Controller controller = Controller.getCurrentController();
 		final ViewController viewController = controller.getViewController();
 		final JComponent c = (JComponent) viewController.getComponent(node);
 		final int x = 0;
@@ -290,30 +291,33 @@ public class UITools {
 		UITools.setBounds(dialog, location.x, location.y, dialog.getWidth(), dialog.getHeight());
 	}
 
-	public static int showConfirmDialog(final Controller controller, final NodeModel node, final Object message,
+	public static int showConfirmDialog( final NodeModel node, final Object message,
 	                                    final String title, final int optionType) {
+		final Controller controller = Controller.getCurrentController();
 		final ViewController viewController = controller.getViewController();
 		viewController.scrollNodeToVisible(node);
 		final Component parentComponent = viewController.getComponent(node);
 		return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType);
 	}
 
-	public static String showInputDialog(final Controller controller, final NodeModel node, final String text,
+	public static String showInputDialog( final NodeModel node, final String text,
 	                                     final String string) {
 		if (node == null) {
 			return null;
 		}
+		final Controller controller = Controller.getCurrentController();
 		final ViewController viewController = controller.getViewController();
 		viewController.scrollNodeToVisible(node);
 		final Component parentComponent = viewController.getComponent(node);
 		return JOptionPane.showInputDialog(parentComponent, text, string);
 	}
 
-	public static String showInputDialog(final Controller controller, final NodeModel node, final String text,
+	public static String showInputDialog( final NodeModel node, final String text,
 	                                     final String title, final int type) {
 		if (node == null) {
 			return null;
 		}
+		final Controller controller = Controller.getCurrentController();
 		final ViewController viewController = controller.getViewController();
 		viewController.scrollNodeToVisible(node);
 		final Component parentComponent = viewController.getComponent(node);

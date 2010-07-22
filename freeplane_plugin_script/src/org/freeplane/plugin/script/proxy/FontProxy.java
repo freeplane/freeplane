@@ -6,7 +6,6 @@ package org.freeplane.plugin.script.proxy;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
 class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
@@ -23,7 +22,7 @@ class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
 	}
 
 	private MNodeStyleController getStyleController() {
-		return (MNodeStyleController) NodeStyleController.getController(getModeController());
+		return (MNodeStyleController) NodeStyleController.getController();
 	}
 
 	public boolean isBold() {

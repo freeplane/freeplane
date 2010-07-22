@@ -29,7 +29,6 @@ import java.util.Properties;
 
 import javax.swing.JApplet;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 
 /**
@@ -96,8 +95,8 @@ class AppletResourceController extends ResourceController {
 	}
 
 	@Override
-	public void init(final Controller controller) {
-		super.init(controller);
+	public void init() {
+		super.init();
 	}
 
 	@Override
@@ -111,7 +110,7 @@ class AppletResourceController extends ResourceController {
 	}
 
 	@Override
-	public void saveProperties(final Controller controller) {
+	public void saveProperties() {
 	}
 
 	@Override

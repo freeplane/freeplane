@@ -43,7 +43,7 @@ class AttributeConditionController implements IElementaryConditionController {
 // // 	final private Controller controller;
 	private final ExtendedComboBoxModel values = new ExtendedComboBoxModel();
 
-	public AttributeConditionController(final Controller controller) {
+	public AttributeConditionController() {
 		super();
 //		this.controller = controller;
 	}

@@ -10,7 +10,6 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.common.styles.MapStyleModel;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.styles.MLogicalStyleController;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
@@ -29,7 +28,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	}
 
 	public Proxy.Edge getEdge() {
-		return new EdgeProxy(getDelegate(), getModeController());
+		return new EdgeProxy(getDelegate());
 	}
 
 	public Proxy.Font getFont() {
@@ -41,11 +40,11 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	}
 
 	private MLogicalStyleController getLogicalStyleController() {
-		return (MLogicalStyleController) LogicalStyleController.getController(getModeController());
+		return (MLogicalStyleController) LogicalStyleController.getController();
 	}
 
 	private MNodeStyleController getStyleController() {
-		return (MNodeStyleController) NodeStyleController.getController(getModeController());
+		return (MNodeStyleController) NodeStyleController.getController();
 	}
 
 	public void setBackgroundColor(final Color color) {

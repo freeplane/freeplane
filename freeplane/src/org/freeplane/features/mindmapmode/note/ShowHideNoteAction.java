@@ -27,7 +27,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
 @SelectableAction(checkOnPropertyChange = "use_split_pane")
@@ -41,7 +40,7 @@ class ShowHideNoteAction extends AFreeplaneAction {
 	 */
 	final private MNoteController noteController;
 
-	public ShowHideNoteAction(final MNoteController noteController, final ModeController modeController) {
+	public ShowHideNoteAction(final MNoteController noteController) {
 		super("ShowHideNoteAction");
 		this.noteController = noteController;
 		setSelected(ResourceController.getResourceController().getBooleanProperty(
@@ -54,7 +53,7 @@ class ShowHideNoteAction extends AFreeplaneAction {
 		}
 		else {
 			(noteController).hideNotesPanel();
-			final Controller controller = getModeController().getController();
+			final Controller controller = Controller.getCurrentModeController().getController();
 			final NodeModel node = controller.getSelection().getSelected();
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {

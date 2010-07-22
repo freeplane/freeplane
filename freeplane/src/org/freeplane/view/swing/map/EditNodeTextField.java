@@ -40,6 +40,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.common.map.ModeController;
@@ -234,8 +235,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	private int maxWidth;
 
 	public EditNodeTextField(final NodeModel node, final String text, final KeyEvent firstEvent,
-	                         final ModeController controller, final IEditControl editControl) {
-		super(node, text, controller, editControl);
+	                         final IEditControl editControl) {
+		super(node, text, editControl);
 		this.firstEvent = firstEvent;
 		documentListener = new MyDocumentListener();
 	}
@@ -268,7 +269,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	@Override
 	public void show() {
 		textfield = new JTextArea(getText());
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final ViewController viewController = modeController.getController().getViewController();
 		final Component component = viewController.getComponent(getNode());
 		nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
@@ -295,7 +296,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.addKeyListener(textFieldListener);
 		textfield.addMouseListener(textFieldListener);
 		textfield.setWrapStyleWord(true);
-		SpellCheckerController.getController(modeController).enableAutoSpell(textfield, true);
+		SpellCheckerController.getController().enableAutoSpell(textfield, true);
 		mapView.scrollNodeToVisible(nodeView);
 		final MainView mainView = nodeView.getMainView();
 		final int nodeWidth = mainView.getWidth();

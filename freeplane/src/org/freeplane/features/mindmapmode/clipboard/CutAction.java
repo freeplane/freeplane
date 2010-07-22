@@ -38,19 +38,19 @@ class CutAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CutAction(final Controller controller) {
+	public CutAction() {
 		super("CutAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController mMindMapController = getModeController();
-		final Controller controller = getController();
+		final ModeController mMindMapController = Controller.getCurrentModeController();
+		final Controller controller = Controller.getCurrentController();
 		final NodeModel root = controller.getMap().getRootNode();
 		if (controller.getSelection().isSelected(root)) {
 			UITools.errorMessage(TextUtils.getText("cannot_delete_root"));
 			return;
 		}
-		final int showResult = OptionalDontShowMeAgainDialog.show(controller, "really_cut_node", "confirmation",
+		final int showResult = OptionalDontShowMeAgainDialog.show("really_cut_node", "confirmation",
 		    MClipboardController.RESOURCES_CUT_NODES_WITHOUT_QUESTION,
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {

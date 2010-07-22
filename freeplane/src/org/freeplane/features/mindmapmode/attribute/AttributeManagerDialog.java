@@ -76,7 +76,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		 */
 		public void actionPerformed(final ActionEvent e) {
 			applyChanges();
-			Controller.getCurrentController().getModeController().startTransaction();
+			Controller.getCurrentModeController().startTransaction();
 		}
 	}
 
@@ -163,7 +163,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		 */
 		public void actionPerformed(final ActionEvent e) {
 			if (importDialog == null) {
-				importDialog = new ImportAttributesDialog(Controller.getCurrentController(), AttributeManagerDialog.this);
+				importDialog = new ImportAttributesDialog(AttributeManagerDialog.this);
 			}
 			importDialog.show();
 		}
@@ -204,8 +204,9 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	final private JComboBox size;
 	final private JTable view;
 
-	public AttributeManagerDialog(final Controller controller, final Frame frame) {
+	public AttributeManagerDialog( final Frame frame) {
 		super(frame, TextUtils.getText("attributes_dialog_title"), true);
+		Controller controller = Controller.getCurrentController();
 //		this.controller = controller;
 		view = new AttributeRegistryTable(new EditListAction());
 		model = AttributeRegistry.getRegistry(controller.getMap());
@@ -272,7 +273,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		final int iSize = Integer.parseInt(size.toString());
 		model.getAttributeController().performSetFontSize(model, iSize);
 		model.applyChanges();
-		((MModeController) Controller.getCurrentController().getModeController()).delayedCommit();
+		((MModeController) Controller.getCurrentModeController()).delayedCommit();
 	}
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
@@ -282,12 +283,12 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		final int iSize = model.getFontSize();
 		size.setSelectedItem(Integer.toString(iSize));
 		model.resetChanges();
-		Controller.getCurrentController().getModeController().rollback();
+		Controller.getCurrentModeController().rollback();
 	}
 
 	@Override
 	public void show() {
-		Controller.getCurrentController().getModeController().startTransaction();
+		Controller.getCurrentModeController().startTransaction();
 		super.show();
 	}
 }

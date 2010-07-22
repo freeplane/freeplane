@@ -52,20 +52,20 @@ class ExportBranchAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ExportBranchAction(final Controller controller) {
+	public ExportBranchAction() {
 		super("ExportBranchAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel existingNode = getModeController().getMapController().getSelectedNode();
-		final Controller controller = getController();
+		final NodeModel existingNode = Controller.getCurrentModeController().getMapController().getSelectedNode();
+		final Controller controller = Controller.getCurrentController();
 		if (controller.getMap() == null || existingNode == null || existingNode.isRoot()) {
 			controller.getViewController().err("Could not export branch.");
 			return;
 		}
 		if (controller.getMap().getFile() == null) {
 			controller.getViewController().out("You must save the current map first!");
-			((MModeController) getModeController()).save();
+			((MModeController) Controller.getCurrentModeController()).save();
 		}
 		JFileChooser chooser;
 		final File file = controller.getMap().getFile();
@@ -74,8 +74,8 @@ class ExportBranchAction extends AFreeplaneAction {
 		}
 		chooser = new JFileChooser(file.getParentFile());
 		chooser.setSelectedFile(new File(createFileName(existingNode.getShortText())));
-		if (((MFileManager) UrlManager.getController(getModeController())).getFileFilter() != null) {
-			chooser.addChoosableFileFilter(((MFileManager) UrlManager.getController(getModeController()))
+		if (((MFileManager) UrlManager.getController()).getFileFilter() != null) {
+			chooser.addChoosableFileFilter(((MFileManager) UrlManager.getController())
 			    .getFileFilter());
 		}
 		final int returnVal = chooser.showSaveDialog(controller.getViewController().getContentPane());
@@ -112,10 +112,10 @@ class ExportBranchAction extends AFreeplaneAction {
 			    "relative");
 			final URI newUri = useRelativeUri ? LinkController.toRelativeURI(oldFile, chosenFile) : chosenFile.toURI();
 			final URI oldUri = useRelativeUri ? LinkController.toRelativeURI(chosenFile, file) : file.toURI();
-			((MLinkController) LinkController.getController(controller.getModeController())).setLink(existingNode,
+			((MLinkController) LinkController.getController()).setLink(existingNode,
 			    oldUri, false);
 			final int nodePosition = parent.getChildPosition(existingNode);
-			final MMapController mMapController = (MMapController) getModeController().getMapController();
+			final MMapController mMapController = (MMapController) Controller.getCurrentModeController().getMapController();
 			mMapController.deleteNode(existingNode);
 			final MapModel parentMap = parent.getMap();
 			{
@@ -137,15 +137,15 @@ class ExportBranchAction extends AFreeplaneAction {
 						mMapController.newModel(existingNode);
 					}
 				};
-				getModeController().execute(actor, parentMap);
+				Controller.getCurrentModeController().execute(actor, parentMap);
 			}
 			final MapModel map = existingNode.getMap();
-			((MFileManager) UrlManager.getController(getModeController())).save(map, chosenFile);
+			((MFileManager) UrlManager.getController()).save(map, chosenFile);
 			final NodeModel newNode = mMapController.addNewNode(parent, nodePosition, existingNode.isLeft());
-			((MTextController) TextController.getController(getModeController())).setNodeText(newNode, existingNode
+			((MTextController) TextController.getController()).setNodeText(newNode, existingNode
 			    .getText());
 			map.getFile();
-			((MLinkController) LinkController.getController(controller.getModeController())).setLink(newNode, newUri,
+			((MLinkController) LinkController.getController()).setLink(newNode, newUri,
 			    false);
 			map.destroy();
 		}

@@ -54,7 +54,7 @@ class RevertAction extends AFreeplaneAction {
 		private String localFileName;
 		private String map;
 
-		public RevertActionInstance(final Controller controller) {
+		public RevertActionInstance() {
 			super();
 //			this.controller = controller;
 		}
@@ -118,7 +118,7 @@ class RevertAction extends AFreeplaneAction {
 
 	/**
 	 */
-	public RevertAction(final Controller controller) {
+	public RevertAction() {
 		super("RevertAction");
 	}
 
@@ -129,7 +129,7 @@ class RevertAction extends AFreeplaneAction {
 	 */
 	public void actionPerformed(final ActionEvent arg0) {
 		try {
-			final File file = getController().getMap().getFile();
+			final File file = Controller.getCurrentController().getMap().getFile();
 			if (file == null) {
 				UITools.errorMessage(TextUtils.getText("map_not_saved"));
 				return;
@@ -156,7 +156,7 @@ class RevertAction extends AFreeplaneAction {
 	public RevertActionInstance createRevertXmlAction(final MapModel map, final String fileName, final String filePrefix)
 	        throws IOException {
 		final StringWriter writer = new StringWriter();
-		getModeController().getMapController().getMapWriter().writeMapAsXml(map, writer, Mode.FILE, true, false);
+		Controller.getCurrentModeController().getMapController().getMapWriter().writeMapAsXml(map, writer, Mode.FILE, true, false);
 		return createRevertXmlAction(writer.getBuffer().toString(), fileName, filePrefix);
 	}
 
@@ -167,7 +167,7 @@ class RevertAction extends AFreeplaneAction {
 	 */
 	public RevertActionInstance createRevertXmlAction(final String xmlPackedFile, final String fileName,
 	                                                  final String filePrefix) {
-		final RevertActionInstance revertXmlAction = new RevertActionInstance(getController());
+		final RevertActionInstance revertXmlAction = new RevertActionInstance();
 		revertXmlAction.setLocalFileName(fileName);
 		revertXmlAction.setMap(xmlPackedFile);
 		revertXmlAction.setFilePrefix(filePrefix);

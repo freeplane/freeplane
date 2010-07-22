@@ -12,11 +12,10 @@ import org.freeplane.features.common.attribute.Attribute;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 
 class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attributes {
-	AttributesProxy(final NodeModel delegate, final MModeController modeController) {
+	AttributesProxy(final NodeModel delegate) {
 		super(delegate);
 	}
 
@@ -152,7 +151,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	}
 
 	private MAttributeController getAttributeController() {
-		return (MAttributeController) AttributeController.getController(getModeController());
+		return (MAttributeController) AttributeController.getController();
 	}
 
 	private NodeAttributeTableModel getNodeAttributeTableModel() {

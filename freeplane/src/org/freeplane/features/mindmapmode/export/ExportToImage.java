@@ -43,14 +43,13 @@ public class ExportToImage extends ExportAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static void createActions(final ModeController modeController) {
+	public static void createActions() {
+		final ModeController modeController = Controller.getCurrentModeController();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		final ExportToImage pngExport = new ExportToImage(modeController.getController(), "png",
-		    "Portable Network Graphic (PNG)");
+		final ExportToImage pngExport = new ExportToImage("png","Portable Network Graphic (PNG)");
 		modeController.addAction(pngExport);
 		menuBuilder.addAction("/menu_bar/file/export", pngExport, MenuBuilder.AS_CHILD);
-		final ExportToImage jpgExport = new ExportToImage(modeController.getController(), "jpg",
-		    "Compressed image (JPEG)");
+		final ExportToImage jpgExport = new ExportToImage("jpg","Compressed image (JPEG)");
 		modeController.addAction(jpgExport);
 		menuBuilder.addAction("/menu_bar/file/export", jpgExport, MenuBuilder.AS_CHILD);
 	}
@@ -58,8 +57,8 @@ public class ExportToImage extends ExportAction {
 	private final String imageDescripton;
 	private final String imageType;
 
-	ExportToImage(final Controller controller, final String imageType, final String imageDescripton) {
-		super("ExportToImage." + imageType, controller);
+	ExportToImage( final String imageType, final String imageDescripton) {
+		super("ExportToImage." + imageType);
 		this.imageType = imageType;
 		this.imageDescripton = imageDescripton;
 	}
@@ -85,7 +84,7 @@ public class ExportToImage extends ExportAction {
 			return false;
 		}
 		try {
-			getController().getViewController().setWaitingCursor(true);
+			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final FileOutputStream out = new FileOutputStream(chosenFile);
 			ImageIO.write(image, imageType, out);
 			out.close();
@@ -94,7 +93,7 @@ public class ExportToImage extends ExportAction {
 			LogUtils.warn(e1);
 			UITools.errorMessage(TextUtils.getText("export_failed"));
 		}
-		getController().getViewController().setWaitingCursor(false);
+		Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		return true;
 	}
 }

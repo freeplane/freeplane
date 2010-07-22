@@ -21,6 +21,7 @@ package org.freeplane.features.common.map;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 /**
@@ -38,6 +39,6 @@ class ToggleFoldedAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		getModeController().getMapController().toggleFolded();
+		Controller.getCurrentModeController().getMapController().toggleFolded();
 	}
 }

@@ -42,7 +42,7 @@ class NodeUpAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public NodeUpAction(final Controller controller) {
+	public NodeUpAction() {
 		super("NodeUpAction");
 	}
 
@@ -77,18 +77,18 @@ class NodeUpAction extends AFreeplaneAction {
 				final NodeModel node = sortedChildren.get(position.intValue());
 				moveNodeTo(node, direction);
 			}
-			final IMapSelection selection = getController().getSelection();
+			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			selection.selectAsTheOnlyOneSelected(selected);
 			for (final Integer position : range) {
 				final NodeModel node = sortedChildren.get(position.intValue());
 				selection.makeTheSelected(node);
 			}
-			getController().getViewController().obtainFocusForSelected();
+			Controller.getCurrentController().getViewController().obtainFocusForSelected();
 		}
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		moveNodes(getModeController().getMapController().getSelectedNode(), getModeController().getMapController()
+		moveNodes(Controller.getCurrentModeController().getMapController().getSelectedNode(), Controller.getCurrentModeController().getMapController()
 		    .getSelectedNodes(), -1);
 	}
 
@@ -97,7 +97,7 @@ class NodeUpAction extends AFreeplaneAction {
 	 */
 	private Vector<NodeModel> getSortedSiblings(final NodeModel node) {
 		final Vector<NodeModel> nodes = new Vector<NodeModel>();
-		for (final Iterator<NodeModel> i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator<NodeModel> i = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			nodes.add(i.next());
 		}
 		if(! node.isRoot()){
@@ -142,7 +142,7 @@ class NodeUpAction extends AFreeplaneAction {
 				_moveNodes(selected, selecteds, -direction);
 			}
 		};
-		getModeController().execute(actor, selected.getMap());
+		Controller.getCurrentModeController().execute(actor, selected.getMap());
 	}
 
 	private int moveNodeTo(final NodeModel child, final int direction) {
@@ -160,7 +160,7 @@ class NodeUpAction extends AFreeplaneAction {
 		}
 		final NodeModel destinationNode = (NodeModel) sortedNodesIndices.get(newPositionInVector);
 		newIndex = parent.getIndex(destinationNode);
-		((MMapController) getModeController().getMapController()).moveNodeToWithoutUndo(child, parent, newIndex, false,
+		((MMapController) Controller.getCurrentModeController().getMapController()).moveNodeToWithoutUndo(child, parent, newIndex, false,
 		    false);
 		return newIndex;
 	}

@@ -21,7 +21,6 @@ package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.KeyEvent;
 
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 
@@ -31,6 +30,6 @@ import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
  */
 public interface INodeTextFieldCreator {
 	public AbstractEditNodeTextField createNodeTextField(final NodeModel node, final String text,
-	                                                     final KeyEvent firstEvent, final ModeController controller,
+	                                                     final KeyEvent firstEvent,
 	                                                     final IEditControl editControl);
 }

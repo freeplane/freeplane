@@ -21,7 +21,6 @@ package org.freeplane.core.frame;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
@@ -34,7 +33,7 @@ class ToggleMenubarAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	final private ViewController controller;
 
-	ToggleMenubarAction(final Controller controller, final ViewController viewController) {
+	ToggleMenubarAction( final ViewController viewController) {
 		super("ToggleMenubarAction");
 		this.controller = viewController;
 	}

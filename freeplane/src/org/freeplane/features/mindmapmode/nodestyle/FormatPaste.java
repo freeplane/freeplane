@@ -43,20 +43,20 @@ class FormatCopy extends AFreeplaneAction {
 		return pattern;
 	}
 
-	public FormatCopy(final Controller controller) {
+	public FormatCopy() {
 		super("FormatCopy");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		copyFormat(getModeController().getMapController().getSelectedNode());
+		copyFormat(Controller.getCurrentModeController().getMapController().getSelectedNode());
 	}
 
 	/**
 	 */
 	private void copyFormat(final NodeModel node) {
 		FormatCopy.pattern = new NodeModel(null);
-		getModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, pattern);
-		getModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, node, pattern);
+		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, pattern);
+		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, node, pattern);
 	}
 }
 
@@ -71,7 +71,7 @@ class FormatPaste extends AMultipleNodeAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public FormatPaste(final Controller controller) {
+	public FormatPaste() {
 		super("FormatPaste");
 	}
 
@@ -85,11 +85,11 @@ class FormatPaste extends AMultipleNodeAction {
 	private void pasteFormat(final NodeModel node) {
 		final NodeModel pattern = FormatCopy.getPattern();
 		if (pattern == null) {
-			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), TextUtils
+			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(), TextUtils
 			    .getText("no_format_copy_before_format_paste"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		getModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, pattern, node);
-		getModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, pattern, node);
+		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, pattern, node);
+		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, pattern, node);
 	}
 }

@@ -108,7 +108,7 @@ public class CreatePlugin extends Task {
 		        + "public class " + capPluginName + "Action extends AFreeplaneAction {\n" //
 		        + "	private static final long serialVersionUID = 1L;\n" //
 		        + "\n" //
-		        + "	public " + capPluginName + "Action(final Controller controller) {\n" //
+		        + "	public " + capPluginName + "Action() {\n" //
 		        + "		super(\"" + capPluginName + "\", controller, \"" + capPluginName + "\", null);\n" //
 		        + "	}\n" //
 		        + "\n" //
@@ -147,7 +147,7 @@ public class CreatePlugin extends Task {
 		        + "		props.put(\"mode\", new String[] { MModeController.MODENAME /*TODO: other modes too?*/});\n" //
 		        + "		context.registerService(IModeControllerExtensionProvider.class.getName(),\n" //
 		        + "		    new IModeControllerExtensionProvider() {\n" //
-		        + "			    public void installExtension(final ModeController modeController) {\n" //
+		        + "			    public void installExtension() {\n" //
 		        + registerAction + "			    }\n" //
 		        + "		    /*TODO: further initializations*/}, props);\n" //
 		        + "	}\n" //

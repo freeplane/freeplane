@@ -86,7 +86,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	 */
 	final private Map<String, String> mRestorableToMapName = new HashMap<String, String>();
 
-	LastOpenedList(final Controller controller) {
+	LastOpenedList() {
 //		this.controller = controller;
 		restoreList(LAST_OPENED, lastOpenedList);
 	}
@@ -97,9 +97,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			return;
 		}
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		final ModeController modeController = mapViewManager.getModeController(newView);
 		final MapModel map = mapViewManager.getModel(newView);
-		final String restoreString = getRestoreable(modeController, map);
+		final String restoreString = getRestoreable(map);
 		updateList(map, restoreString);
 	}
 
@@ -143,16 +142,16 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 
 	private String getRestoreable(final Component mapView) {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		final ModeController modeController = mapViewManager.getModeController(mapView);
 		final MapModel map = mapViewManager.getModel(mapView);
-		final String restoreString = getRestoreable(modeController, map);
+		final String restoreString = getRestoreable(map);
 		return restoreString;
 	}
 
-	public String getRestoreable(final ModeController modeController, final MapModel map) {
+	public String getRestoreable( final MapModel map) {
 		if (map == null) {
 			return null;
 		}
+		final ModeController modeController = Controller.getCurrentModeController();
 		if (!modeController.getModeName().equals(MModeController.MODENAME)) {
 			return null;
 		}
@@ -208,7 +207,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 				if (PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")) {
 					fileName = USER_DRIVE + fileName.substring(1);
 				}
-				Controller.getCurrentController().getModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
+				Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
 			}
 		}
 	}
@@ -316,7 +315,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			if (i == maxEntries) {
 				break;
 			}
-			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i++, controller, this);
+			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i++, this);
 			final IFreeplaneAction decoratedAction = menuBuilder.decorateAction(lastOpenedActionListener);
 			final JMenuItem item = new JFreeplaneMenuItem(decoratedAction);
 			item.setText(key);

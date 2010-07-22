@@ -30,35 +30,35 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
      */
     private static final long serialVersionUID = 1L;
 
-	public ManageConditionalStylesAction(Controller controller) {
+	public ManageConditionalStylesAction() {
 	    super("ManageConditionalStylesAction");
     }
 
 	public void actionPerformed(ActionEvent e) {
-		final Controller controller = getController();
+		final Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 		Component pane = createConditionalStylePane(map);
 		try{
-			getModeController().startTransaction();
+			Controller.getCurrentModeController().startTransaction();
 			final int confirmed = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(), pane, "", JOptionPane.OK_CANCEL_OPTION);
 			if(JOptionPane.OK_OPTION == confirmed){
-				LogicalStyleController.getController(getModeController()).refreshMap(map);
-				getModeController().commit();
+				LogicalStyleController.getController().refreshMap(map);
+				Controller.getCurrentModeController().commit();
 			}
 			else{
-				getModeController().rollback();
+				Controller.getCurrentModeController().rollback();
 
 			}
 		}
 		catch(Exception ex){
-			getModeController().rollback();
+			Controller.getCurrentModeController().rollback();
 		}
 	}
 
 	private Component createConditionalStylePane(final MapModel map) {
 		final JPanel pane = new JPanel(new BorderLayout());
 	    final MapStyleModel styles = MapStyleModel.getExtension(map);
-		final TableModel tableModel = MLogicalStyleController.getController(getModeController()).getConditionalStyleModelAsTableModel(map);
+		final TableModel tableModel = MLogicalStyleController.getController().getConditionalStyleModelAsTableModel(map);
 		final ConditionalStyleTable conditionalStyleTable = new ConditionalStyleTable(styles, tableModel);
 		if(conditionalStyleTable.getRowCount() > 0){
 			conditionalStyleTable.setRowSelectionInterval(0, 0);
@@ -73,14 +73,14 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 	    create.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final MLogicalStyleController styleController = MLogicalStyleController.getController(getModeController());
+				final MLogicalStyleController styleController = MLogicalStyleController.getController();
 				final FilterComposerDialog filterComposerDialog = styleController.getFilterComposerDialog();
 				filterComposerDialog.show();
 				final ISelectableCondition condition = filterComposerDialog.getCondition();
 				if(condition == null){
 					return;
 				}
-				LogicalStyleController.getController(getModeController()).addConditionalStyle(map, true, condition, MapStyleModel.DEFAULT_STYLE);
+				LogicalStyleController.getController().addConditionalStyle(map, true, condition, MapStyleModel.DEFAULT_STYLE);
 				int row = conditionalStyleTable.getRowCount() - 1;
 				conditionalStyleTable.setRowSelectionInterval(row, row);
 			} 
@@ -94,7 +94,7 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 				if(selectedRow == -1){
 					return;
 				}
-				LogicalStyleController.getController(getModeController()).removeConditionalStyle(map, selectedRow);
+				LogicalStyleController.getController().removeConditionalStyle(map, selectedRow);
 				if(conditionalStyleTable.getRowCount() == selectedRow){
 					selectedRow--;
 				}
@@ -113,7 +113,7 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 				if(selectedRow <= 0){
 					return;
 				}
-				LogicalStyleController.getController(getModeController()).moveConditionalStyleUp(map, selectedRow);
+				LogicalStyleController.getController().moveConditionalStyleUp(map, selectedRow);
 				selectedRow--;
 				conditionalStyleTable.setRowSelectionInterval(selectedRow, selectedRow);
 			}
@@ -127,7 +127,7 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 				if(selectedRow == -1 || selectedRow == conditionalStyleTable.getRowCount() - 1){
 					return;
 				}
-				LogicalStyleController.getController(getModeController()).moveConditionalStyleDown(map, selectedRow);
+				LogicalStyleController.getController().moveConditionalStyleDown(map, selectedRow);
 				selectedRow++;
 				conditionalStyleTable.setRowSelectionInterval(selectedRow, selectedRow);
 			}

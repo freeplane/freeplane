@@ -43,27 +43,30 @@ import org.freeplane.features.common.styles.MapStyleModel;
 public class IconController implements IExtension {
 	final private CombinedPropertyChain<List<MindIcon>, NodeModel> iconHandlers;
 
-	public static IconController getController(final ModeController modeController) {
+	public static IconController getController() {
+		final ModeController modeController = Controller.getCurrentModeController();
 		return (IconController) modeController.getExtension(IconController.class);
 	}
 
-	public static void install(final Controller controller) {
-		FilterController.getController(controller).getConditionFactory().addConditionController(1,
-		    new IconConditionController(controller));
-		FilterController.getController(controller).getConditionFactory().addConditionController(5,
+	public static void install() {
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(1,
+		    new IconConditionController());
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(5,
 		    new PriorityConditionController());
 	}
 
-	public static void install(final ModeController modeController, final IconController iconController) {
+	public static void install( final IconController iconController) {
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(IconController.class, iconController);
 	}
 
 // 	final private ModeController modeController;
 
-	public IconController(final ModeController modeController) {
+	public IconController() {
 		super();
 		iconHandlers = new CombinedPropertyChain<List<MindIcon>, NodeModel>();
 //		this.modeController = modeController;
+		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -87,7 +90,7 @@ public class IconController implements IExtension {
 		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<List<MindIcon>, NodeModel>() {
 			public List<MindIcon> getProperty(final NodeModel node, final List<MindIcon> currentValue) {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-				final NodeModel styleNode = model.getStyleNode(LogicalStyleController.getController(modeController).getStyle(node));
+				final NodeModel styleNode = model.getStyleNode(LogicalStyleController.getController().getStyle(node));
 				final List<MindIcon> styleIcons;
 				if (styleNode == null || styleNode.equals(node)) {
 					styleIcons = Collections.emptyList();
@@ -98,10 +101,6 @@ public class IconController implements IExtension {
 				return styleIcons;
 			}
 		});
-	}
-
-	public ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
 	}
 
 	public IPropertyHandler<List<MindIcon>, NodeModel> addIconGetter(
@@ -118,8 +117,7 @@ public class IconController implements IExtension {
 
 
 	public static List<MindIcon> getIcons(final NodeModel node) {
-		ModeController modeController = Controller.getCurrentController().getModeController();
-		final IconController iconController = IconController.getController(modeController);
+		final IconController iconController = IconController.getController();
 		final List<MindIcon> icons = iconController.iconHandlers.getProperty(node);
 		return icons;
 	}

@@ -2,14 +2,13 @@ package org.freeplane.plugin.spreadsheet;
 
 import org.freeplane.features.common.map.ITextTransformer;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.ScriptingEngine;
 
 class SpreadsheetTextTransformer implements ITextTransformer {
 // 	private MModeController modeController;
 
-	SpreadsheetTextTransformer(MModeController modeController) {
+	SpreadsheetTextTransformer() {
 	}
 
 	public String transform(String text, NodeModel nodeModel) {

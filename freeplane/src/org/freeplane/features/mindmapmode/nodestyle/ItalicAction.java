@@ -37,7 +37,7 @@ class ItalicAction extends AMultipleNodeAction {
 
 	/**
 	 */
-	public ItalicAction(final Controller controller) {
+	public ItalicAction() {
 		super("ItalicAction");
 	}
 
@@ -49,12 +49,12 @@ class ItalicAction extends AMultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel selected) {
-		((MNodeStyleController) NodeStyleController.getController(getModeController())).setItalic(selected, italic);
+		((MNodeStyleController) NodeStyleController.getController()).setItalic(selected, italic);
 	}
 
 	boolean isItalic() {
-		final NodeModel node = getModeController().getMapController().getSelectedNode();
-		return NodeStyleController.getController(getModeController()).isItalic(node);
+		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+		return NodeStyleController.getController().isItalic(node);
 	}
 
 	@Override

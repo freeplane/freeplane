@@ -30,6 +30,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.ClipboardController;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.url.UrlManager;
 
 @ActionLocationDescriptor(accelerator = "control H", locations = { "/menu_bar/file/export/html" })
@@ -39,19 +40,19 @@ class ExportBranchToHTMLAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ExportBranchToHTMLAction(final Controller controller) {
+	public ExportBranchToHTMLAction() {
 		super("ExportBranchToHTMLAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		try {
-			final File file = ExportAction.chooseFile(getController(), "html", "html", null);
+			final File file = ExportAction.chooseFile("html", "html", null);
 			if (file == null) {
 				return;
 			}
-			ClipboardController.getController(getModeController()).saveHTML(
-			    getModeController().getMapController().getSelectedNode(), file);
-			((UrlManager) getModeController().getMapController().getModeController().getExtension(UrlManager.class))
+			ClipboardController.getController().saveHTML(
+			    Controller.getCurrentModeController().getMapController().getSelectedNode(), file);
+			((UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class))
 			    .loadURL(file.toURI());
 		}
 		catch (final IOException ex) {

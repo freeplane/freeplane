@@ -2,7 +2,6 @@ package org.freeplane.features.mindmapmode.styles;
 
 import javax.swing.DefaultComboBoxModel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.AFilterComposerDialog;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
@@ -10,8 +9,8 @@ import org.freeplane.features.common.filter.condition.ISelectableCondition;
 @SuppressWarnings("serial")
 class FilterComposerDialog extends AFilterComposerDialog{
 
-	public FilterComposerDialog(Controller controller) {
-        super(controller, TextUtils.getText("filter_dialog"), true);
+	public FilterComposerDialog() {
+        super(TextUtils.getText("filter_dialog"), true);
     }
 
 	protected DefaultComboBoxModel createModel() {

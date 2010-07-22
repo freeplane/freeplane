@@ -45,7 +45,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ImportExplorerFavoritesAction(final Controller controller) {
+	public ImportExplorerFavoritesAction() {
 		super("ImportExplorerFavoritesAction");
 	}
 
@@ -53,22 +53,22 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(TextUtils.getText("select_favorites_folder"));
-		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
+		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File folder = chooser.getSelectedFile();
-			getController().getViewController().out("Importing Favorites ...");
-			importExplorerFavorites(folder, getModeController().getMapController().getSelectedNode(),
+			Controller.getCurrentController().getViewController().out("Importing Favorites ...");
+			importExplorerFavorites(folder, Controller.getCurrentModeController().getMapController().getSelectedNode(),
 			/*redisplay=*/true);
-			getController().getViewController().out("Favorites imported.");
+			Controller.getCurrentController().getViewController().out("Favorites imported.");
 		}
 	}
 
 	/**
 	 */
 	private NodeModel addNode(final NodeModel target, final String nodeContent) {
-		final NodeModel node = ((MMapController) getModeController().getMapController()).addNewNode(target, target
+		final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(target, target
 		    .getChildCount(), target.isNewChildLeft());
-		((MTextController) TextController.getController(getModeController())).setNodeText(node, nodeContent);
+		((MTextController) TextController.getController()).setNodeText(node, nodeContent);
 		return node;
 	}
 
@@ -85,7 +85,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 						favoritesFound = true;
 					}
 					else {
-						((MMapController) getModeController().getMapController()).deleteNode(node);
+						((MMapController) Controller.getCurrentModeController().getMapController()).deleteNode(node);
 					}
 				}
 			}
@@ -99,7 +99,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 						String line = null;
 						while ((line = in.readLine()) != null) {
 							if (line.startsWith("URL=")) {
-								((MLinkController) LinkController.getController(getModeController())).setLink(node,
+								((MLinkController) LinkController.getController()).setLink(node,
 								    line.substring(4), false);
 								break;
 							}
@@ -122,7 +122,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 			}
 		}
 		if (redisplay) {
-			getModeController().getMapController().nodeChanged(target);
+			Controller.getCurrentModeController().getMapController().nodeChanged(target);
 		}
 		return favoritesFound;
 	}

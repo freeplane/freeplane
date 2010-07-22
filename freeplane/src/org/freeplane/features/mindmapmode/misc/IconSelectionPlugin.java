@@ -42,23 +42,23 @@ accelerator = "control F2")
 public class IconSelectionPlugin extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
-	public IconSelectionPlugin(final Controller controller) {
+	public IconSelectionPlugin() {
 		super("IconSelectionPlugin");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		ArrayList<IIconInformation> actions = new ArrayList<IIconInformation>();
-		final MIconController mIconController = (MIconController) IconController.getController(modeController);
+		final MIconController mIconController = (MIconController) IconController.getController();
 		for (AFreeplaneAction aFreeplaneAction : mIconController.getIconActions())
 			actions.add((IIconInformation) aFreeplaneAction);
 		actions.add((IIconInformation) modeController.getAction("RemoveIcon_0_Action"));
 		actions.add((IIconInformation) modeController.getAction("RemoveIconAction"));
 		actions.add((IIconInformation) modeController.getAction("RemoveAllIconsAction"));
-		final ViewController viewController = getController().getViewController();
+		final ViewController viewController = Controller.getCurrentController().getViewController();
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(viewController.getJFrame(),
 		    actions);
-		final NodeModel selected = getController().getSelection().getSelected();
+		final NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
 		viewController.scrollNodeToVisible(selected);
 		selectionDialog.pack();
 		UITools.setDialogLocationRelativeTo(selectionDialog, selected);

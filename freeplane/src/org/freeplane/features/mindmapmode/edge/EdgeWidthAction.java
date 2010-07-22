@@ -21,12 +21,12 @@ package org.freeplane.features.mindmapmode.edge;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
 @SelectableAction(checkOnNodeChange = true)
@@ -36,7 +36,7 @@ class EdgeWidthAction extends AMultipleNodeAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static String getWidthTitle(final ModeController controller, final int width) {
+	private static String getWidthTitle( final int width) {
 		String returnValue;
 		if (width <= 0) {
 			returnValue = TextUtils.getText(EdgeWidthAction.width2String(width) + ".text");
@@ -59,9 +59,9 @@ class EdgeWidthAction extends AMultipleNodeAction {
 
 	final private int mWidth;
 
-	public EdgeWidthAction(final ModeController controller, final int width) {
+	public EdgeWidthAction( final int width) {
 		super(EdgeWidthAction.width2String(width), EdgeWidthAction.getWidthTitle(
-		    controller, width), null);
+		    width), null);
 		mWidth = width;
 	}
 
@@ -73,12 +73,12 @@ class EdgeWidthAction extends AMultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MEdgeController) EdgeController.getController(getModeController())).setWidth(node, mWidth);
+		((MEdgeController) EdgeController.getController()).setWidth(node, mWidth);
 	}
 
 	@Override
 	public void setSelected() {
-		final NodeModel node = getModeController().getMapController().getSelectedNode();
+		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		final EdgeModel model = EdgeModel.getModel(node);
 		if (model == null) {
 			if (mWidth == EdgeModel.WIDTH_PARENT) {

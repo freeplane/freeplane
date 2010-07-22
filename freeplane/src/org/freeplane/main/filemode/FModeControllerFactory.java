@@ -52,39 +52,38 @@ import org.freeplane.view.swing.ui.UserInputListenerFactory;
 public class FModeControllerFactory {
 	static private FModeController modeController;
 
-	static public FModeController createModeController(final Controller controller) {
-		modeController = new FModeController(controller);
+	static public FModeController createModeController() {
+		modeController = new FModeController();
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
-		controller.addModeController(modeController);
-		modeController.setMapController(new FMapController(modeController));
-		UrlManager.install(modeController, new UrlManager(modeController));
-		IconController.install(modeController, new IconController(modeController));
-		NodeStyleController.install(modeController, new NodeStyleController(modeController));
-		EdgeController.install(modeController, new EdgeController(modeController));
-		LinkController.install(modeController, new LinkController(modeController));
-		TextController.install(modeController, new TextController(modeController));
-		CloudController.install(modeController, new CloudController(modeController));
-		ClipboardController.install(modeController, new ClipboardController(modeController));
-		LocationController.install(modeController, new LocationController(modeController));
-		LogicalStyleController.install(modeController, new LogicalStyleController(modeController));
-		new MapStyle(modeController, true);
-		NodeStyleController.getController(modeController).addShapeGetter(new Integer(0),
+		final Controller controller = Controller.getCurrentController();
+		controller.addModeController();
+		modeController.setMapController(new FMapController());
+		UrlManager.install(new UrlManager());
+		IconController.install(new IconController());
+		NodeStyleController.install(new NodeStyleController());
+		EdgeController.install(new EdgeController());
+		LinkController.install(new LinkController());
+		TextController.install(new TextController());
+		CloudController.install(new CloudController());
+		ClipboardController.install(new ClipboardController());
+		LocationController.install(new LocationController());
+		LogicalStyleController.install(new LogicalStyleController());
+		new MapStyle(true);
+		NodeStyleController.getController().addShapeGetter(new Integer(0),
 		    new IPropertyHandler<String, NodeModel>() {
 			    public String getProperty(final NodeModel node, final String currentValue) {
 				    return "fork";
 			    }
 		    });
-		modeController.addAction(new CenterAction(controller));
-		modeController.addAction(new OpenPathAction(controller));
+		modeController.addAction(new CenterAction());
+		modeController.addAction(new OpenPathAction());
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
 		toolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
-		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(
-		    controller).getFilterToolbar());
-		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
-		    .getStatusBar());
+		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getCurrentFilterController().getFilterToolbar());
+		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController().getStatusBar());
 		userInputListenerFactory.setMenuStructure("/xml/filemodemenu.xml");
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();

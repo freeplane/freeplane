@@ -35,7 +35,7 @@ class KeyDocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 // // 	final private Controller controller;
 
-	public KeyDocumentationAction(final Controller controller) {
+	public KeyDocumentationAction() {
 		super("KeyDocumentationAction");
 //		this.controller = controller;
 	}

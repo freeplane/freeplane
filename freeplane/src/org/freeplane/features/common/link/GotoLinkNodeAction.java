@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
@@ -48,8 +49,8 @@ class GotoLinkNodeAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		linkController.onDeselect(getModeController().getMapController().getSelectedNode());
-		getModeController().getMapController().select(target);
+		linkController.onDeselect(Controller.getCurrentModeController().getMapController().getSelectedNode());
+		Controller.getCurrentModeController().getMapController().select(target);
 		linkController.onSelect(target);
 	}
 }

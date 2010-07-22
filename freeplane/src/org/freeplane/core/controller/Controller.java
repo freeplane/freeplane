@@ -53,16 +53,16 @@ public class Controller extends AController {
 	public Controller() {
 		super();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
-		addAction(new QuitAction(this));
-		addAction(new MoveToRootAction(this));
-		addAction(new CenterSelectedNodeAction(this));
+		addAction(new QuitAction());
+		addAction(new MoveToRootAction());
+		addAction(new CenterSelectedNodeAction());
 	}
 
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
 		extensionContainer.addExtension(clazz, extension);
 	}
 
-	public void addModeController(final ModeController modeController) {
+	public void addModeController() {
 		modeControllers.put(modeController.getModeName(), modeController);
 	}
 
@@ -129,7 +129,7 @@ public class Controller extends AController {
 		getActions().get("QuitAction").actionPerformed(actionEvent);
 	}
 
-	public void selectMode(final ModeController newModeController) {
+	public void selectMode(ModeController newModeController) {
 		final ModeController oldModeController = modeController;
 		if (oldModeController == newModeController) {
 			return;
@@ -160,7 +160,7 @@ public class Controller extends AController {
 
 	public boolean shutdown() {
 		getViewController().saveProperties();
-		ResourceController.getResourceController().saveProperties(this);
+		ResourceController.getResourceController().saveProperties();
 		if (!getViewController().quit()) {
 			return false;
 		}
@@ -182,4 +182,8 @@ public class Controller extends AController {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public static ModeController getCurrentModeController() {
+	    return getCurrentModeController();
+    }
 }

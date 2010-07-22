@@ -55,14 +55,14 @@ public class LogicalStyleController implements IExtension {
 	private WeakReference<NodeModel> cachedNode;
 	private WeakReference<Object> cachedStyle;
 
-	public LogicalStyleController(final ModeController modeController) {
+	public LogicalStyleController() {
 //	    this.modeController = modeController;
 		createBuilder();
 		registerChangeListener();
 	}
 
 	private void registerChangeListener() {
-		ModeController modeController = Controller.getCurrentController().getModeController();
+		ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapChangeListener(new IMapChangeListener() {
 			public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
@@ -98,7 +98,7 @@ public class LogicalStyleController implements IExtension {
     }
 
 	private void createBuilder() {
-		ModeController modeController = Controller.getCurrentController().getModeController();
+		ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE_REF", new IAttributeHandler() {
@@ -135,11 +135,13 @@ public class LogicalStyleController implements IExtension {
 		});
     }
 
-	public static void install(final ModeController modeController, final LogicalStyleController logicalStyleController) {
+	public static void install( final LogicalStyleController logicalStyleController) {
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(LogicalStyleController.class, logicalStyleController);
 	}
 
-	public static LogicalStyleController getController(final ModeController modeController) {
+	public static LogicalStyleController getController() {
+		final ModeController modeController = Controller.getCurrentModeController();
 		return (LogicalStyleController) modeController.getExtension(LogicalStyleController.class);
 	}
 
@@ -157,11 +159,7 @@ public class LogicalStyleController implements IExtension {
 				refreshMapLater(map);
 			}
 		};
-		getModeController().execute(actor, map);
-	}
-
-	protected ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
+		Controller.getCurrentModeController().execute(actor, map);
 	}
 
 	private static Map<MapModel, Integer> mapsToRefresh = new HashMap<MapModel, Integer>();
@@ -183,7 +181,7 @@ public class LogicalStyleController implements IExtension {
 					return;
 				}
 				mapsToRefresh.remove(map);
-				getModeController().getMapController().fireMapChanged(
+				Controller.getCurrentModeController().getMapController().fireMapChanged(
 				    new MapChangeEvent(this, map, MapStyle.MAP_STYLES, null, null));
 			}
 		});

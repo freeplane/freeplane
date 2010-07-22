@@ -35,13 +35,13 @@ public class EditAttributesAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public EditAttributesAction(final Controller controller) {
+	public EditAttributesAction() {
 		super("EditAttributesAction");
 	};
 
 	public void actionPerformed(final ActionEvent e) {
 		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-		final Controller controller = getController();
+		final Controller controller = Controller.getCurrentController();
 		final AttributeView attributeView = (((MapView) controller.getViewController().getMapView()).getSelected())
 		    .getAttributeView();
 		final boolean attributesClosed = null == SwingUtilities.getAncestorOfClass(AttributeTable.class, focusOwner);

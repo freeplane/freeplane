@@ -21,7 +21,6 @@ package org.freeplane.view.swing.map;
 
 import java.awt.event.KeyEvent;
 
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
 import org.freeplane.features.mindmapmode.text.INodeTextFieldCreator;
@@ -33,8 +32,8 @@ import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
  */
 public class MMapViewController extends MapViewController implements INodeTextFieldCreator {
 	public AbstractEditNodeTextField createNodeTextField(final NodeModel node, final String text,
-	                                                     final KeyEvent firstEvent, final ModeController controller,
+	                                                     final KeyEvent firstEvent,
 	                                                     final IEditControl editControl) {
-		return new EditNodeTextField(node, text, firstEvent, controller, editControl);
+		return new EditNodeTextField(node, text, firstEvent,editControl);
 	}
 }

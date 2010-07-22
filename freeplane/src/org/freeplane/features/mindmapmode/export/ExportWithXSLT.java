@@ -95,18 +95,18 @@ public class ExportWithXSLT extends ExportAction {
 		}
 	}
 
-	public static void createXSLTExportActions(final ModeController modeController, final String xmlDescriptorFile) {
+	public static void createXSLTExportActions( final String xmlDescriptorFile) {
 		try {
+			final ModeController modeController = Controller.getCurrentModeController();
 			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-			final Controller controller = modeController.getController();
 			{
-				final ExportToHTMLAction e1 = new ExportToHTMLAction(controller);
+				final ExportToHTMLAction e1 = new ExportToHTMLAction();
 				modeController.addAction(e1);
 				menuBuilder.addAnnotatedAction(e1);
-				final ExportBranchToHTMLAction e2 = new ExportBranchToHTMLAction(controller);
+				final ExportBranchToHTMLAction e2 = new ExportBranchToHTMLAction();
 				modeController.addAction(e2);
 				menuBuilder.addAnnotatedAction(e2);
-				final ExportWithXSLTDialogAction action = new ExportWithXSLTDialogAction(controller);
+				final ExportWithXSLTDialogAction action = new ExportWithXSLTDialogAction();
 				modeController.addAction(action);
 				menuBuilder.addAction("/menu_bar/file/export/dialog", action, MenuBuilder.AS_CHILD);
 			}
@@ -122,7 +122,7 @@ public class ExportWithXSLT extends ExportAction {
 				final String location = descriptor.getAttribute("location", null);
 				final XMLElement xmlProperties = descriptor.getFirstChildNamed("properties");
 				final Properties properties = xmlProperties.getAttributes();
-				final ExportWithXSLT action = new ExportWithXSLT(name, controller, properties);
+				final ExportWithXSLT action = new ExportWithXSLT(name, properties);
 				modeController.addAction(action);
 				menuBuilder.addAction(location, action, MenuBuilder.AS_CHILD);
 			}
@@ -138,8 +138,8 @@ public class ExportWithXSLT extends ExportAction {
 	private boolean mTransformResultWithoutError = false;
 	final private Properties properties;
 
-	public ExportWithXSLT(final String name, final Controller controller, final Properties properties) {
-		super(name, controller);
+	public ExportWithXSLT(final String name, final Properties properties) {
+		super(name);
 		this.properties = properties;
 	}
 
@@ -186,7 +186,7 @@ public class ExportWithXSLT extends ExportAction {
 		try {
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
 			    pDirectoryName + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
-			getModeController().getMapController().getFilteredXml(map, fileout, Mode.EXPORT, true);
+			Controller.getCurrentModeController().getMapController().getFilteredXml(map, fileout, Mode.EXPORT, true);
 		}
 		catch (final IOException e) {
 			success = false;
@@ -197,7 +197,7 @@ public class ExportWithXSLT extends ExportAction {
 	/**
 	 */
 	private void createImageFromMap(final String directoryName) {
-		if (getController().getViewController().getMapView() == null) {
+		if (Controller.getCurrentController().getViewController().getMapView() == null) {
 			return;
 		}
 		final RenderedImage image = createBufferedImage();
@@ -217,7 +217,7 @@ public class ExportWithXSLT extends ExportAction {
 	private String getAreaCode(final boolean create_image) {
 		String areaCode = "";
 		if (create_image) {
-			areaCode = getController().getMapViewManager().createHtmlMap();
+			areaCode = Controller.getCurrentController().getMapViewManager().createHtmlMap();
 		}
 		return areaCode;
 	}
@@ -228,7 +228,7 @@ public class ExportWithXSLT extends ExportAction {
 	 */
 	private String getMapXml(final Mode mode) throws IOException {
 		final StringWriter writer = new StringWriter();
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final Controller controller = modeController.getController();
 		final MapModel map = controller.getMap();
 		modeController.getMapController().getFilteredXml(map, writer, mode, true);
@@ -266,7 +266,7 @@ public class ExportWithXSLT extends ExportAction {
 		try {
 			mTransformResultWithoutError = true;
 			final boolean create_image = StringUtils.equals(getProperty("create_html_linked_image"), "true");
-			final MapModel map = getController().getMap();
+			final MapModel map = Controller.getCurrentController().getMap();
 			final String areaCode = getAreaCode(create_image);
 			final String xsltFileName = getProperty("xslt_file");
 			boolean success = transformMapWithXslt(xsltFileName, saveFile, areaCode);
@@ -299,7 +299,7 @@ public class ExportWithXSLT extends ExportAction {
 				return;
 			}
 			if (StringUtils.equals(getProperty("load_file"), "true")) {
-				getController().getViewController().openDocument(Compat.fileToUrl(saveFile));
+				Controller.getCurrentController().getViewController().openDocument(Compat.fileToUrl(saveFile));
 			}
 		}
 		catch (final Exception e) {

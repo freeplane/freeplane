@@ -29,7 +29,7 @@ import org.freeplane.features.mindmapmode.styles.MUIFactory;
 class MToolbarContributor implements IMenuContributor {
 	private final MUIFactory uiFactory;
 
-	public MToolbarContributor(final ModeController modeController, final MUIFactory uiFactory) {
+	public MToolbarContributor( final MUIFactory uiFactory) {
 		super();
 //		this.modeController = modeController;
 		this.uiFactory = uiFactory;
@@ -38,7 +38,7 @@ class MToolbarContributor implements IMenuContributor {
 // 	final private ModeController modeController;
 
 	public void updateMenus(final MenuBuilder builder) {
-		final ModeController modeController = Controller.getCurrentController().getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		final AFreeplaneAction action = modeController.getAction("IncreaseNodeFontAction");
 		builder.addComponent("/main_toolbar/font", uiFactory.createFontBox(), action, MenuBuilder.AS_CHILD);
 		builder.addComponent("/main_toolbar/font", uiFactory.createSizeBox(), action, MenuBuilder.AS_CHILD);

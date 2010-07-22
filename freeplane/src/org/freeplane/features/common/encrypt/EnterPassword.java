@@ -41,18 +41,19 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public EnterPassword(final ModeController modeController) {
+	public EnterPassword() {
 		super("EnterPassword");
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getMapController().addNodeSelectionListener(this);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel node = getModeController().getMapController().getSelectedNode();
+		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		toggleCryptState(node);
 	}
 
 	public boolean canBeEnabled() {
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		if (modeController == null) {
 			return false;
 		}
@@ -78,7 +79,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 	 */
 	private boolean doPasswordCheckAndDecryptNode(final EncryptionModel encNode) {
 		while (true) {
-			final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController()
+			final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getCurrentController().getViewController()
 			    .getFrame(), false);
 			pwdDialog.setModal(true);
 			pwdDialog.setVisible(true);
@@ -86,8 +87,8 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 				return false;
 			}
 			final StringBuilder password = pwdDialog.getPassword();
-			if (!encNode.decrypt(getModeController().getMapController(), new SingleDesEncrypter(password))) {
-				final Controller controller = getController();
+			if (!encNode.decrypt(Controller.getCurrentModeController().getMapController(), new SingleDesEncrypter(password))) {
+				final Controller controller = Controller.getCurrentController();
 				JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), TextUtils
 				    .getText("accessories/plugins/EncryptNode.properties_wrong_password"), "Freeplane",
 				    JOptionPane.ERROR_MESSAGE);
@@ -112,7 +113,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 			public void act() {
 				node.addExtension(encryptedMindMapNode);
 				encryptedMindMapNode.updateIcon();
-				getModeController().getMapController().nodeChanged(node);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
@@ -122,16 +123,16 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 			public void undo() {
 				node.removeExtension(encryptedMindMapNode);
 				node.removeStateIcons("decrypted");
-				getModeController().getMapController().nodeChanged(node);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 		};
-		getModeController().execute(actor, node.getMap());
+		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
 	/**
 	 */
 	private StringBuilder getUsersPassword() {
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController().getFrame(),
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getCurrentController().getViewController().getFrame(),
 		    true);
 		pwdDialog.setModal(true);
 		pwdDialog.show();
@@ -154,7 +155,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 	 * @param e 
 	 */
 	private void toggleCryptState(final NodeModel node) {
-		final ModeController mindMapController = getModeController();
+		final ModeController mindMapController = Controller.getCurrentModeController();
 		final EncryptionModel encNode = EncryptionModel.getModel(node);
 		if (encNode != null) {
 			final boolean wasAccessible = encNode.isAccessible();
@@ -172,7 +173,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 					return;
 				}
 			}
-			final Controller controller = getController();
+			final Controller controller = Controller.getCurrentController();
 			final IMapSelection selection = controller.getSelection();
 			selection.selectAsTheOnlyOneSelected(node);
 			final IActor actor = new IActor() {
@@ -198,7 +199,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 					mindMapController.getMapController().nodeRefresh(node);
 				}
 			};
-			getModeController().execute(actor, node.getMap());
+			Controller.getCurrentModeController().execute(actor, node.getMap());
 		}
 		else {
 			encrypt(node);

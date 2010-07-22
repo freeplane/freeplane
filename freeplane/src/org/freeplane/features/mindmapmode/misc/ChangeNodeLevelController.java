@@ -28,6 +28,7 @@ import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.map.MMapController;
@@ -49,15 +50,15 @@ public class ChangeNodeLevelController {
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			final ModeController modeController = getModeController();
+			final ModeController modeController = Controller.getCurrentModeController();
 			final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-			final IMapViewManager mapViewManager = getController().getMapViewManager();
+			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final Component mapViewComponent = mapViewManager.getMapViewComponent();
 			if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft()) {
-				moveDownwards(modeController, selectedNode);
+				moveDownwards(selectedNode);
 			}
 			else {
-				moveUpwards(modeController, selectedNode);
+				moveUpwards(selectedNode);
 			}
 		}
 	}
@@ -75,22 +76,22 @@ public class ChangeNodeLevelController {
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			final ModeController modeController = getModeController();
+			final ModeController modeController = Controller.getCurrentModeController();
 			final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-			final IMapViewManager mapViewManager = getController().getMapViewManager();
+			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final Component mapViewComponent = mapViewManager.getMapViewComponent();
 			if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft()) {
-				moveUpwards(modeController, selectedNode);
+				moveUpwards(selectedNode);
 			}
 			else {
-				moveDownwards(modeController, selectedNode);
+				moveDownwards(selectedNode);
 			}
 		}
 	};
 
 // // 	final private Controller controller;;
 
-	public ChangeNodeLevelController(final Controller controller) {
+	public ChangeNodeLevelController() {
 //		this.controller = controller;
 	}
 
@@ -99,10 +100,11 @@ public class ChangeNodeLevelController {
 		menuBuilder.addAnnotatedAction(new ChangeNodeLevelRightsAction());
 	}
 
-	private boolean checkSelection(final ModeController modeController) {
-		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-		final List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
-		modeController.getController();
+	private boolean checkSelection() {
+		final ModeController currentModeController = Controller.getCurrentModeController();
+		final MapController mapController = currentModeController.getMapController();
+		final NodeModel selectedNode = mapController.getSelectedNode();
+		final List<NodeModel> selectedNodes = mapController.getSelectedNodes();
 		if (selectedNode.isRoot()) {
 			UITools.errorMessage(TextUtils.getText("cannot_add_parent_to_root"));
 			return false;
@@ -121,13 +123,13 @@ public class ChangeNodeLevelController {
 		return true;
 	}
 
-	private void moveDownwards(final ModeController modeController, final NodeModel selectedNode) {
-		if (!checkSelection(modeController)) {
+	private void moveDownwards( final NodeModel selectedNode) {
+		if (!checkSelection()) {
 			return;
 		}
 		final NodeModel selectedParent = selectedNode.getParentNode();
-		final List<NodeModel> selectedNodes = modeController.getController().getSelection().getSortedSelection(true);
-		final MMapController mapController = (MMapController) modeController.getMapController();
+		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(true);
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final int ownPosition = selectedParent.getChildPosition(selectedNode);
 		NodeModel directSibling = null;
 		for (int i = ownPosition - 1; i >= 0; --i) {
@@ -150,21 +152,21 @@ public class ChangeNodeLevelController {
 			for (final NodeModel node : selectedNodes) {
 				mapController.moveNode(node, directSibling, directSibling.getChildCount());
 			}
-			modeController.getMapController().selectMultipleNodes(selectedNode, selectedNodes);
+			Controller.getCurrentModeController().getMapController().selectMultipleNodes(selectedNode, selectedNodes);
 		}
 	}
 
-	private void moveUpwards(final ModeController modeController, final NodeModel selectedNode) {
-		if (!checkSelection(modeController)) {
+	private void moveUpwards( final NodeModel selectedNode) {
+		if (!checkSelection()) {
 			return;
 		}
-		final MMapController mapController = (MMapController) modeController.getMapController();
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		NodeModel selectedParent = selectedNode.getParentNode();
-		final List<NodeModel> selectedNodes = modeController.getController().getSelection().getSortedSelection(true);
+		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(true);
 		int position;
 		final boolean changeSide;
 		if (selectedParent.isRoot()) {
-			final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
+			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final Component mapViewComponent = mapViewManager.getMapViewComponent();
 			if (!mapViewManager.isLeftTreeSupported(mapViewComponent)) {
 				return;

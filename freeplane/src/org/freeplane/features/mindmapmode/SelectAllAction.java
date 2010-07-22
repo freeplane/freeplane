@@ -23,8 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
 /** */
@@ -37,15 +35,13 @@ class SelectAllAction extends AMultipleNodeAction {
 	/**
 	 *
 	 */
-	public SelectAllAction(final Controller controller) {
+	public SelectAllAction() {
 		super("SelectAllAction");
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final ModeController modeController = getModeController();
-		final NodeModel root = getController().getMap().getRootNode();
-		final MapController mapController = modeController.getMapController();
-		mapController.getController().getSelection().selectBranch(root, true);
+		final NodeModel root = Controller.getCurrentController().getMap().getRootNode();
+		Controller.getCurrentController().getSelection().selectBranch(root, true);
 	}
 }

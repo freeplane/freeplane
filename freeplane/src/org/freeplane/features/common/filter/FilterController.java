@@ -61,7 +61,6 @@ import org.freeplane.features.common.filter.condition.NoFilteringCondition;
 import org.freeplane.features.common.filter.condition.SelectedViewCondition;
 import org.freeplane.features.common.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController.Direction;
 import org.freeplane.n3.nanoxml.IXMLParser;
@@ -110,12 +109,16 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
 	private static final ISelectableCondition NO_FILTERING = NoFilteringCondition.createCondition();
 
-	public static FilterController getController(final Controller controller) {
+	public static FilterController getController(Controller controller) {
 		return (FilterController) controller.getExtension(FilterController.class);
 	}
 
-	public static void install(final Controller controller) {
-		controller.addExtension(FilterController.class, new FilterController(controller));
+	public static FilterController getCurrentFilterController() {
+		return getController(Controller.getCurrentController());
+	}
+
+	public static void install() {
+		Controller.getCurrentController().addExtension(FilterController.class, new FilterController());
 	}
 
 	private final ButtonModel applyToVisibleNodeOnly;
@@ -134,9 +137,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private final ButtonModel unfold;
 	private JComboBox activeFilterConditionComboBox;
 
-	public FilterController(final Controller controller) {
-//		this.controller = controller;
-		history = new FilterHistory(controller);
+	public FilterController() {
+		Controller controller = Controller.getCurrentController();
+		history = new FilterHistory();
 		filterChangeListener = new FilterChangeListener();
 		showAncestors = new JToggleButton.ToggleButtonModel();
 		showAncestors.setSelected(true);
@@ -149,7 +152,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		unfold = new JToggleButton.ToggleButtonModel();
 		unfold.setSelected(true);
 		controller.getMapViewManager().addMapSelectionListener(this);
-		final AFreeplaneAction showFilterToolbar = new ToggleToolbarAction(controller, "ShowFilterToolbarAction",
+		final AFreeplaneAction showFilterToolbar = new ToggleToolbarAction("ShowFilterToolbarAction",
 		    "/filter_toolbar");
 		controller.addAction(showFilterToolbar);
 		final UnfoldFilteredAncestorsAction unfoldFilteredAncestors = new UnfoldFilteredAncestorsAction(this);
@@ -174,9 +177,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.addAction(applyToVisibleAction);
 		pathToFilterFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
 		        + "auto." + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
-		final FindAction find = new FindAction(controller);
+		final FindAction find = new FindAction();
 		controller.addAction(find);
-		controller.addAction(new FindNextAction(controller, find));
+		controller.addAction(new FindNextAction(find));
 	}
 
 	private void addStandardConditions() {
@@ -216,7 +219,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	void applyFilter(final boolean force) {
 		final Filter filter = createFilter();
-		filter.applyFilter(getController().getModeController(), getController().getMap(), force);
+		filter.applyFilter(Controller.getCurrentController().getMap(), force);
 		final boolean isActive = filter.getCondition() != null;
 		applyToVisibleNodeOnly.setSelected(isActive);
 		history.add(filter);
@@ -331,10 +334,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			conditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"));
 		}
 		return conditionRenderer;
-	}
-
-	public Controller getController() {
-		return Controller.getCurrentController();
 	}
 
 	public DefaultComboBoxModel getFilterConditions() {
@@ -511,7 +510,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			final int childCount = parentNode.getChildCount();
 			if (index < childCount) {
 				if (direction == Direction.FORWARD_N_FOLD) {
-					getModeController().getMapController().setFolded(current, true);
+					Controller.getCurrentModeController().getMapController().setFolded(current, true);
 				}
 				final NodeModel next = (NodeModel) parentNode.getChildAt(index);
 				if (next.equals(end)) {
@@ -533,12 +532,12 @@ public class FilterController implements IMapSelectionListener, IExtension {
 				break;
 			}
 			if (direction == Direction.BACK_N_FOLD) {
-				getModeController().getMapController().setFolded(current, true);
+				Controller.getCurrentModeController().getMapController().setFolded(current, true);
 			}
 			final int index = parentNode.getIndex(current) - 1;
 			if (index < 0) {
 				if (direction == Direction.BACK_N_FOLD) {
-					getModeController().getMapController().setFolded(parentNode, true);
+					Controller.getCurrentModeController().getMapController().setFolded(parentNode, true);
 				}
 				if (parentNode.equals(end)) {
 					return null;
@@ -560,10 +559,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			}
 			current = (NodeModel) current.getChildAt(current.getChildCount() - 1);
 		}
-	}
-
-	private ModeController getModeController() {
-		return getController().getModeController();
 	}
 
 

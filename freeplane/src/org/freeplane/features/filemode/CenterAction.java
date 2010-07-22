@@ -31,14 +31,14 @@ public class CenterAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CenterAction(final Controller controller) {
+	public CenterAction() {
 		super("CenterAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if (getModeController().getMapController().getSelectedNode() != null) {
-			final File file = ((FNodeModel) getModeController().getMapController().getSelectedNode()).getFile();
-			((FMapController) getModeController().getMapController()).newMap(file);
+		if (Controller.getCurrentModeController().getMapController().getSelectedNode() != null) {
+			final File file = ((FNodeModel) Controller.getCurrentModeController().getMapController().getSelectedNode()).getFile();
+			((FMapController) Controller.getCurrentModeController().getMapController()).newMap(file);
 		}
 	}
 }

@@ -38,6 +38,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.EncryptionModel;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.url.UrlManager;
@@ -59,8 +60,8 @@ public class MMapController extends MapController {
 	public static final String RESOURCES_CONVERT_TO_CURRENT_VERSION = "convert_to_current_version";
 	private static IFreeplanePropertyListener sSaveIdPropertyChangeListener;
 
-	public MMapController(final MModeController modeController) {
-		super(modeController);
+	public MMapController() {
+		super();
 		if (sSaveIdPropertyChangeListener == null) {
 			sSaveIdPropertyChangeListener = new IFreeplanePropertyListener() {
 				public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
@@ -72,16 +73,16 @@ public class MMapController extends MapController {
 			ResourceController.getResourceController().addPropertyChangeListenerAndPropagate(
 			    sSaveIdPropertyChangeListener);
 		}
-		createActions(modeController);
+		createActions();
 		addNodeSelectionListener(new INodeSelectionListener() {
 			public void onSelect(final NodeModel node) {
 				if (ResourceController.getResourceController().getBooleanProperty("display_node_id")) {
-					getController().getViewController().addStatusInfo("display_node_id", "ID=" + node.createID());
+					Controller.getCurrentController().getViewController().addStatusInfo("display_node_id", "ID=" + node.createID());
 				}
 			}
 
 			public void onDeselect(final NodeModel node) {
-				getController().getViewController().addStatusInfo("display_node_id", null);
+				Controller.getCurrentController().getViewController().addStatusInfo("display_node_id", null);
 			}
 		});
 	}
@@ -99,17 +100,17 @@ public class MMapController extends MapController {
 	 */
 	@Override
 	public boolean close(final boolean force) {
-		final MapModel map = getController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		if (!force && !map.isSaved()) {
-			final List<Component> views = getController().getMapViewManager().getViews(map);
+			final List<Component> views = Controller.getCurrentController().getMapViewManager().getViews(map);
 			if (views.size() == 1) {
 				final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
 				final String title = TextUtils.removeMnemonic(TextUtils.getText("SaveAction.text"));
 				final int returnVal = JOptionPane.showOptionDialog(
-				    getController().getViewController().getContentPane(), text, title,
+				    Controller.getCurrentController().getViewController().getContentPane(), text, title,
 				    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 				if (returnVal == JOptionPane.YES_OPTION) {
-					final boolean savingNotCancelled = ((MFileManager) UrlManager.getController(getModeController()))
+					final boolean savingNotCancelled = ((MFileManager) UrlManager.getController())
 					    .save(map);
 					if (!savingNotCancelled) {
 						return false;
@@ -123,18 +124,18 @@ public class MMapController extends MapController {
 		return super.close(force);
 	}
 
-	private void createActions(final MModeController modeController) {
-		final Controller controller = modeController.getController();
-		modeController.addAction(new NewMapAction(controller));
-		modeController.addAction(new NewMapViewAction(controller));
-		modeController.addAction(new NewSiblingAction(controller));
-		modeController.addAction(new NewPreviousSiblingAction(controller));
-		newChild = new NewChildAction(controller);
+	private void createActions() {
+		final ModeController modeController = Controller.getCurrentModeController();
+		modeController.addAction(new NewMapAction());
+		modeController.addAction(new NewMapViewAction());
+		modeController.addAction(new NewSiblingAction());
+		modeController.addAction(new NewPreviousSiblingAction());
+		newChild = new NewChildAction();
 		modeController.addAction(newChild);
-		delete = new DeleteAction(controller);
+		delete = new DeleteAction();
 		modeController.addAction(delete);
-		modeController.addAction(new NodeUpAction(controller));
-		modeController.addAction(new NodeDownAction(controller));
+		modeController.addAction(new NodeUpAction());
+		modeController.addAction(new NodeDownAction());
 	}
 
 	public void deleteNode(final NodeModel node) {
@@ -153,7 +154,7 @@ public class MMapController extends MapController {
 	}
 
 	public MModeController getMModeController() {
-		return (MModeController) getModeController();
+		return (MModeController) Controller.getCurrentModeController();
 	}
 
 	public void insertNode(final NodeModel node, final NodeModel parent) {
@@ -184,7 +185,7 @@ public class MMapController extends MapController {
 	public void insertNode(final NodeModel node, final NodeModel parentNode, final int index) {
 		final IActor actor = new IActor() {
 			public void act() {
-				(getModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
+				(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
 			}
 
 			public String getDescription() {
@@ -192,10 +193,10 @@ public class MMapController extends MapController {
 			}
 
 			public void undo() {
-				((MMapController) getModeController().getMapController()).deleteWithoutUndo(node);
+				((MMapController) Controller.getCurrentModeController().getMapController()).deleteWithoutUndo(node);
 			}
 		};
-		getModeController().execute(actor, node.getMap());
+		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
 	@Override
@@ -213,7 +214,7 @@ public class MMapController extends MapController {
 	}
 
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
-		return ((MFileManager) UrlManager.getController(getModeController())).loadTree(map, file);
+		return ((MFileManager) UrlManager.getController()).loadTree(map, file);
 	}
 
 	public void moveNode(final NodeModel node, final NodeModel targetNode, final boolean asSibling,
@@ -251,7 +252,7 @@ public class MMapController extends MapController {
 				moveNodeToWithoutUndo(child, oldParent, oldIndex, wasLeft, changeSide);
 			}
 		};
-		getModeController().execute(actor, newParent.getMap());
+		Controller.getCurrentModeController().execute(actor, newParent.getMap());
 	}
 
 	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft,
@@ -271,7 +272,7 @@ public class MMapController extends MapController {
 	}
 
 	public void moveNodes(final NodeModel selected, final List<NodeModel> selecteds, final int direction) {
-		((NodeUpAction) getModeController().getAction("NodeUpAction")).moveNodes(selected, selecteds, direction);
+		((NodeUpAction) Controller.getCurrentModeController().getAction("NodeUpAction")).moveNodes(selected, selecteds, direction);
 	}
 
 	/**
@@ -299,7 +300,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public MapModel newModel(final NodeModel root) {
-		final MMapModel mindMapMapModel = new MMapModel(getModeController(), root);
+		final MMapModel mindMapMapModel = new MMapModel(root);
 		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}
@@ -330,7 +331,7 @@ public class MMapController extends MapController {
 	}
 
 	private void toggleFolded(final NodeModel node) {
-		if (!getModeController().getMapController().hasChildren(node)
+		if (!Controller.getCurrentModeController().getMapController().hasChildren(node)
 		        && !StringUtils.equals(ResourceController.getResourceController().getProperty("enable_leaves_folding"),
 		            "true")) {
 			return;
@@ -354,6 +355,6 @@ public class MMapController extends MapController {
 				act();
 			}
 		};
-		getModeController().execute(actor, node.getMap());
+		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 }

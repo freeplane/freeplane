@@ -39,7 +39,6 @@ import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGeneratorContext.GraphicContextDefaults;
 import org.apache.batik.util.SVGConstants;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mindmapmode.export.ExportAction;
@@ -56,8 +55,8 @@ abstract class ExportVectorGraphic extends ExportAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ExportVectorGraphic(final String key, final Controller controller) {
-		super(key, controller);
+	public ExportVectorGraphic(final String key) {
+		super(key);
 	}
 
 	/**

@@ -19,12 +19,12 @@
  */
 package org.freeplane.plugin.latex;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.util.Set;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeViewLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.ActionLocationDescriptor;
@@ -49,8 +49,9 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 
 	/**
 	 */
-	public LatexNodeHook(final ModeController modeController) {
-		super(modeController);
+	public LatexNodeHook() {
+		super();
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addINodeViewLifeCycleListener(this);
 	}
 
@@ -69,7 +70,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 		final LatexExtension latexExtension = new LatexExtension();
 		if (element != null) {
 			latexExtension.setEquation(element.getAttribute("EQUATION", null));
-			getModeController().getMapController().nodeChanged(node);
+			Controller.getCurrentModeController().getMapController().nodeChanged(node);
 		}
 		return latexExtension;
 	}
@@ -137,8 +138,8 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 
 			public void act() {
 				model.setEquation(newEquation);
-				final MapModel map = getModeController().getController().getMap();
-				getModeController().getMapController().setSaved(map, false);
+				final MapModel map = Controller.getCurrentModeController().getController().getMap();
+				Controller.getCurrentModeController().getMapController().setSaved(map, false);
 			}
 
 			public String getDescription() {
@@ -149,6 +150,6 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 				model.setEquation(oldEquation);
 			}
 		};
-		getModeController().execute(actor, getModeController().getController().getMap());
+		Controller.getCurrentModeController().execute(actor, Controller.getCurrentModeController().getController().getMap());
 	}
 }

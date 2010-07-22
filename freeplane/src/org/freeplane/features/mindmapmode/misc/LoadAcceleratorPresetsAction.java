@@ -68,12 +68,13 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 		return new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "accelerators");
 	}
 
-	final static public void install(final ModeController modecontroller) {
+	final static public void install() {
 		final File[] dirs = { LoadAcceleratorPresetsAction.getAcceleratorsUserDirectory(),
 		        LoadAcceleratorPresetsAction.getAcceleratorsSysDirectory() };
-		final Controller controller = modecontroller.getController();
-		final SaveAcceleratorPresetsAction saveAction = new SaveAcceleratorPresetsAction(controller);
+		final Controller controller = Controller.getCurrentController();
+		final SaveAcceleratorPresetsAction saveAction = new SaveAcceleratorPresetsAction();
 		controller.addAction(saveAction);
+		ModeController modecontroller = controller.getModeController();
 		final MenuBuilder menuBuilder = modecontroller.getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.addAction("/menu_bar/extras/first/options/acceleratorPresets/save", "SaveAcceleratorPresetsAction",
 		    saveAction, MenuBuilder.AS_CHILD);
@@ -99,7 +100,7 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 					}
 					final String title = TextUtils.getText(key + ".text", propName);
 					final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
-					    prop.toURL(), key, title, controller);
+					    prop.toURL(), key, title);
 					controller.addAction(loadAcceleratorPresetsAction);
 					menuBuilder.addAction("/menu_bar/extras/first/options/acceleratorPresets/new", key,
 					    loadAcceleratorPresetsAction, MenuBuilder.AS_CHILD);
@@ -113,15 +114,14 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 
 	final private URL resource;
 
-	LoadAcceleratorPresetsAction(final URL resource, final String propFileName, final String title,
-	                             final Controller controller) {
+	LoadAcceleratorPresetsAction(final URL resource, final String propFileName, final String title) {
 		super("LoadAcceleratorPresetsAction." + propFileName, title, null);
 		this.resource = resource;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		try {
-			MenuBuilder.loadAcceleratorPresets(resource.openStream(), getController());
+			MenuBuilder.loadAcceleratorPresets(resource.openStream());
 		}
 		catch (final IOException e1) {
 			// TODO Auto-generated catch block
@@ -136,7 +136,7 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public SaveAcceleratorPresetsAction(final Controller controller) {
+	public SaveAcceleratorPresetsAction() {
 		super("SaveAcceleratorPresetsAction");
 	}
 
@@ -169,15 +169,15 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 			keysetProperties.store(output, "");
 			output.close();
 			final String key = "LoadAcceleratorPresetsAction." + keyset;
-			if (getController().getAction(key) != null) {
+			if (Controller.getCurrentController().getAction(key) != null) {
 				return;
 			}
 			final String title = TextUtils.getText(key + ".text", keyset);
 			final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
-			    keysetFile.toURL(), key, title, getController());
-			if (null == getController().getAction(loadAcceleratorPresetsAction.getKey())) {
-				getController().addAction(loadAcceleratorPresetsAction);
-				getModeController().getUserInputListenerFactory().getMenuBuilder().addAction(
+			    keysetFile.toURL(), key, title);
+			if (null == Controller.getCurrentController().getAction(loadAcceleratorPresetsAction.getKey())) {
+				Controller.getCurrentController().addAction(loadAcceleratorPresetsAction);
+				Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder().addAction(
 				    "/menu_bar/extras/first/options/acceleratorPresets/new", key, loadAcceleratorPresetsAction,
 				    MenuBuilder.AS_CHILD);
 			}

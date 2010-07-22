@@ -25,7 +25,6 @@ import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -35,7 +34,7 @@ public class FilterHistory {
 // // 	private final Controller controller;
 	private ListIterator<Filter> filters;
 
-	FilterHistory(final Controller controller) {
+	FilterHistory() {
 //		this.controller = controller;
 		init();
 	}
@@ -78,17 +77,15 @@ public class FilterHistory {
 		}
 		Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
-		final ModeController modeController = controller.getModeController();
 		final Filter next = filters.next();
-		next.applyFilter(modeController, map, true);
+		next.applyFilter(map, true);
 	}
 
 	void undo() {
 		Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
-		final ModeController modeController = controller.getModeController();
 		final Filter previous = filters.previous();
-		undoImpl(modeController, map);
+		undoImpl(map);
 		while (previous != filters.next()) {
 			;
 		}
@@ -97,14 +94,14 @@ public class FilterHistory {
 		}
 	}
 
-	private void undoImpl(final ModeController modeController, final MapModel map) {
+	private void undoImpl( final MapModel map) {
 		if (!filters.hasPrevious()) {
 			return;
 		}
 		final Filter previous = filters.previous();
 		if (previous.appliesToVisibleNodesOnly()) {
-			undoImpl(modeController, map);
+			undoImpl(map);
 		}
-		previous.applyFilter(modeController, map, true);
+		previous.applyFilter(map, true);
 	}
 }

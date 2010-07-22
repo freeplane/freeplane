@@ -26,6 +26,7 @@ import java.util.Vector;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementContentHandler;
@@ -65,10 +66,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 	public static final String MAX_NODE_WIDTH = "max_node_width";
 	
-	public MapStyle(final ModeController modeController, final boolean persistent) {
-		super(modeController);
+	public MapStyle( final boolean persistent) {
+		super();
+		ModeController modeController = Controller.getCurrentModeController();
 		if (persistent) {
-			final MapController mapController = getModeController().getMapController();
+			final MapController mapController = modeController.getMapController();
 			mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(),
 			    new XmlWriter());
 			mapController.getReadManager().addElementHandler("conditional_styles", new IElementDOMHandler() {
@@ -89,7 +91,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapLifeCycleListener(this);
-		modeController.addAction(new MaxNodeWidthAction(getController()));
+		modeController.addAction(new MaxNodeWidthAction());
 	}
 
 	protected class XmlWriter implements IExtensionElementWriter {
@@ -100,7 +102,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			if (styleMap == null) {
 				return;
 			}
-			final MapWriter mapWriter = getModeController().getMapController().getMapWriter();
+			final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
 			final StringWriter sw = new StringWriter();
 			final NodeModel rootNode = styleMap.getRootNode();
 			try {
@@ -131,7 +133,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				return;
 			}
 			final MapModel map = node.getMap();
-			mapStyleModel.createStyleMap(map, mapStyleModel, getModeController(), content);
+			mapStyleModel.createStyleMap(map, mapStyleModel, content);
 			map.getIconRegistry().addIcons(mapStyleModel.getStyleMap());
 		}
 	}
@@ -180,7 +182,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	private void loadConditionalStyles(ConditionalStyleModel conditionalStyleModel, XMLElement conditionalStylesRoot) {
-		final ConditionFactory conditionFactory = FilterController.getController(getController()).getConditionFactory();
+		final ConditionFactory conditionFactory = FilterController.getCurrentFilterController().getConditionFactory();
 		final Vector<XMLElement> styleElements = conditionalStylesRoot.getChildrenNamed("conditional_style");
 		for(XMLElement styleElement : styleElements){
 			final boolean isActive = Boolean.valueOf(styleElement.getAttribute("ACTIVE", "false"));
@@ -244,7 +246,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		final MapStyleModel extension = new MapStyleModel();
 		rootNode.addExtension(extension);
-		extension.createStyleMap(map, null, getModeController(), null);
+		extension.createStyleMap(map, null, null);
 	}
 
 	public void onRemove(final MapModel map) {
@@ -276,7 +278,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			return;
 		}
 		mapStyleModel.setZoom(zoom);
-		getModeController().getMapController().setSaved(map, false);
+		Controller.getCurrentModeController().getMapController().setSaved(map, false);
 	}
 
 	public void setMaxNodeWidth(final MapModel map, final int width) {
@@ -286,9 +288,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			return;
 		}
 		mapStyleModel.setMaxNodeWidth(width);
-		getModeController().getMapController()
+		Controller.getCurrentModeController().getMapController()
 		    .fireMapChanged(
-		        new MapChangeEvent(MapStyle.this, getController().getMap(), MapStyle.MAX_NODE_WIDTH, oldMaxNodeWidth,
+		        new MapChangeEvent(MapStyle.this, Controller.getCurrentController().getMap(), MapStyle.MAX_NODE_WIDTH, oldMaxNodeWidth,
 		            width));
 	}
 
@@ -298,7 +300,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			return;
 		}
 		mapStyleModel.setMapViewLayout(layout);
-		getModeController().getMapController().setSaved(map, false);
+		Controller.getCurrentModeController().getMapController().setSaved(map, false);
 	}
 
 	public void setBackgroundColor(final MapStyleModel model, final Color actionColor) {
@@ -309,8 +311,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		final IActor actor = new IActor() {
 			public void act() {
 				model.setBackgroundColor(actionColor);
-				getModeController().getMapController().fireMapChanged(
-				    new MapChangeEvent(MapStyle.this, getController().getMap(), MapStyle.RESOURCES_BACKGROUND_COLOR,
+				Controller.getCurrentModeController().getMapController().fireMapChanged(
+				    new MapChangeEvent(MapStyle.this, Controller.getCurrentController().getMap(), MapStyle.RESOURCES_BACKGROUND_COLOR,
 				        oldColor, actionColor));
 			}
 
@@ -320,11 +322,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 			public void undo() {
 				model.setBackgroundColor(oldColor);
-				getModeController().getMapController().fireMapChanged(
-				    new MapChangeEvent(MapStyle.this, getController().getMap(), MapStyle.RESOURCES_BACKGROUND_COLOR,
+				Controller.getCurrentModeController().getMapController().fireMapChanged(
+				    new MapChangeEvent(MapStyle.this, Controller.getCurrentController().getMap(), MapStyle.RESOURCES_BACKGROUND_COLOR,
 				        actionColor, oldColor));
 			}
 		};
-		getModeController().execute(actor, getController().getMap());
+		Controller.getCurrentModeController().execute(actor, Controller.getCurrentController().getMap());
 	}
 }

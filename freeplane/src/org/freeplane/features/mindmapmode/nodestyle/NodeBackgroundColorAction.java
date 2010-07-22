@@ -37,21 +37,21 @@ class NodeBackgroundColorAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 	private Color actionBackgroundColor;
 
-	public NodeBackgroundColorAction(final Controller controller) {
+	public NodeBackgroundColorAction() {
 		super("NodeBackgroundColorAction");
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		actionBackgroundColor = ColorTracker.showCommonJColorChooserDialog(getController(), getController()
+		actionBackgroundColor = ColorTracker.showCommonJColorChooserDialog(Controller.getCurrentController()
 		    .getSelection().getSelected(), TextUtils.getText("choose_node_background_color"), NodeStyleModel
-		    .getBackgroundColor(getModeController().getMapController().getSelectedNode()));
+		    .getBackgroundColor(Controller.getCurrentModeController().getMapController().getSelectedNode()));
 		super.actionPerformed(e);
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) NodeStyleController.getController(getModeController())).setBackgroundColor(node,
+		((MNodeStyleController) NodeStyleController.getController()).setBackgroundColor(node,
 		    actionBackgroundColor);
 	}
 }

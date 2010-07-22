@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 
 /**
@@ -36,13 +35,13 @@ public class OpenSourceForgeURLAction extends OpenURLAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	OpenSourceForgeURLAction(final String key, final Controller controller, final String url) {
-		super(key, controller, url);
+	OpenSourceForgeURLAction(final String key, final String url) {
+		super(key, url);
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		final int showResult = OptionalDontShowMeAgainDialog.show(getController(), "sf_login_required", "confirmation",
+		final int showResult = OptionalDontShowMeAgainDialog.show("sf_login_required", "confirmation",
 		    "open_source_forge_url", OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;

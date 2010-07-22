@@ -37,30 +37,30 @@ class ImportBranchAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ImportBranchAction(final Controller controller) {
+	public ImportBranchAction() {
 		super("ImportBranchAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel parent = getModeController().getMapController().getSelectedNode();
+		final NodeModel parent = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		if (parent == null) {
 			return;
 		}
 		final JFileChooser chooser = new JFileChooser();
-		final FileFilter fileFilter = ((MFileManager) UrlManager.getController(getModeController())).getFileFilter();
+		final FileFilter fileFilter = ((MFileManager) UrlManager.getController()).getFileFilter();
 		if (fileFilter != null) {
 			chooser.addChoosableFileFilter(fileFilter);
 		}
-		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
+		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				final MapModel map = parent.getMap();
-				final NodeModel node = ((MMapController) getModeController().getMapController()).loadTree(map, chooser
+				final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).loadTree(map, chooser
 				    .getSelectedFile());
-				((MMapController) getModeController().getMapController()).insertNode(node, parent);
+				((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, parent);
 			}
 			catch (final Exception ex) {
-				UrlManager.getController(getModeController()).handleLoadingException(ex);
+				UrlManager.getController().handleLoadingException(ex);
 			}
 		}
 	}

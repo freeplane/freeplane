@@ -21,6 +21,7 @@ package org.freeplane.core.frame;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
@@ -40,13 +41,13 @@ public class ToggleFullScreenAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ViewController viewController = getController().getViewController();
+		final ViewController viewController = Controller.getCurrentController().getViewController();
 		viewController.setFullScreen(!viewController.isFullScreenEnabled());
 	}
 
 	@Override
 	public void setSelected() {
-		final ViewController viewController = getController().getViewController();
+		final ViewController viewController = Controller.getCurrentController().getViewController();
 		setSelected(viewController.isFullScreenEnabled());
 	}
 }

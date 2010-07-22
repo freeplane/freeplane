@@ -52,13 +52,13 @@ public class PropertyAction extends AFreeplaneAction {
 	 * @param controls 
 	 *
 	 */
-	public PropertyAction(final Controller controller, final DefaultMutableTreeNode controls) {
+	public PropertyAction( final DefaultMutableTreeNode controls) {
 		super("PropertyAction");
 		this.controls = controls;
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final JDialog dialog = new JDialog(getController().getViewController().getFrame(), true /* modal */);
+		final JDialog dialog = new JDialog(Controller.getCurrentController().getViewController().getFrame(), true /* modal */);
 		dialog.setResizable(true);
 		dialog.setUndecorated(false);
 		final OptionPanel options = new OptionPanel(dialog, new IOptionPanelFeedback() {
@@ -74,7 +74,7 @@ public class PropertyAction extends AFreeplaneAction {
 				if (propertiesChanged) {
 					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils
 					    .getText("option_changes_may_require_restart"));
-					ResourceController.getResourceController().saveProperties(getController());
+					ResourceController.getResourceController().saveProperties();
 				}
 			}
 		});

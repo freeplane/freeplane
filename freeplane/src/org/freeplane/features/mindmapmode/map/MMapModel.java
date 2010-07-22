@@ -28,7 +28,6 @@ import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.file.DoAutomaticSave;
@@ -46,15 +45,15 @@ public class MMapModel extends MapModel {
 	 * The current version and all other version that don't need XML update for
 	 * sure.
 	 */
-	MMapModel(final ModeController modeController, final NodeModel root) {
-		super(modeController, root);
+	MMapModel( final NodeModel root) {
+		super(root);
 		addExtension(IUndoHandler.class, new UndoHandler());
 		setReadOnly(false);
 		this.setLockManager(ResourceController.getResourceController().getBooleanProperty(
 		    "experimental_file_locking_on") ? new LockManager() : new DummyLockManager());
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				scheduleTimerForAutomaticSaving(modeController);
+				scheduleTimerForAutomaticSaving();
 			}
 		});
 	}
@@ -94,8 +93,8 @@ public class MMapModel extends MapModel {
 		return TextUtils.getText("mindmap") + titleNumber;
 	}
 
-	public void scheduleTimerForAutomaticSaving(final ModeController modeController) {
-		if (!(UrlManager.getController(modeController) instanceof MFileManager)) {
+	public void scheduleTimerForAutomaticSaving() {
+		if (!(UrlManager.getController() instanceof MFileManager)) {
 			return;
 		}
 		final int numberOfTempFiles = Integer.parseInt(ResourceController.getResourceController().getProperty(
@@ -111,7 +110,7 @@ public class MMapModel extends MapModel {
 			return;
 		}
 		final Timer timer = SysUtils.createTimer("TimerForAutomaticSaving");
-		timer.schedule(new DoAutomaticSave(modeController, this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown),
+		timer.schedule(new DoAutomaticSave(this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown),
 		    delay, delay);
 		this.setTimerForAutomaticSaving(timer);
 	}

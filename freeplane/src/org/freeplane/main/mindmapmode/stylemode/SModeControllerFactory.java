@@ -42,13 +42,13 @@ import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
@@ -83,28 +83,28 @@ public class SModeControllerFactory {
 		final MapViewController mapViewController = new MapViewController();
 		final DialogController viewController = new DialogController(controller, mapViewController, dialog);
 		controller.setViewController(viewController);
-		FilterController.install(controller);
-		TextController.install(controller);
-		controller.addAction(new ViewLayoutTypeAction(controller, MapViewLayout.OUTLINE));
-		controller.addAction(new ShowSelectionAsRectangleAction(controller));
-		modeController = new SModeController(controller);
-		modeController.addAction(new NewUserStyleAction(controller));
-		modeController.addAction(new DeleteUserStyleAction(controller));
-		modeController.addAction(new NewLevelStyleAction(controller));
-		modeController.addAction(new DeleteLevelStyleAction(controller));
+		FilterController.install();
+		TextController.install();
+		controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
+		controller.addAction(new ShowSelectionAsRectangleAction());
+		modeController = new SModeController();
+		modeController.addAction(new NewUserStyleAction());
+		modeController.addAction(new DeleteUserStyleAction());
+		modeController.addAction(new NewLevelStyleAction());
+		modeController.addAction(new DeleteLevelStyleAction());
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener());
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
-		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController(controller));
-		modeController.setMapController(new MMapController(modeController));
-		TextController.install(modeController, new TextController(modeController));
-		IconController.install(modeController, new MIconController(modeController));
-		NodeStyleController.install(modeController, new MNodeStyleController(modeController));
-		EdgeController.install(modeController, new MEdgeController(modeController));
-		CloudController.install(modeController, new MCloudController(modeController));
-		LinkController.install(modeController, new LinkController(modeController));
-		MFileManager.install(modeController, new MFileManager(modeController));
-		LogicalStyleController.install(modeController, new LogicalStyleController(modeController));
+		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());
+		modeController.setMapController(new MMapController());
+		TextController.install(new TextController());
+		IconController.install(new MIconController());
+		NodeStyleController.install(new MNodeStyleController());
+		EdgeController.install(new MEdgeController());
+		CloudController.install(new MCloudController());
+		LinkController.install(new LinkController());
+		MFileManager.install(new MFileManager());
+		LogicalStyleController.install(new LogicalStyleController());
 		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(new MMouseMotionListener()));
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
@@ -112,21 +112,21 @@ public class SModeControllerFactory {
 		toolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
 		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT, ((MIconController) IconController
-		    .getController(modeController)).getIconToolBarScrollPane());
+		    .getController()).getIconToolBarScrollPane());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
-		modeController.addAction(new ToggleToolbarAction(controller, "ToggleLeftToolbarAction", "/icon_toolbar"));
+		modeController.addAction(new ToggleToolbarAction("ToggleLeftToolbarAction", "/icon_toolbar"));
 		userInputListenerFactory.setMenuStructure("/xml/stylemodemenu.xml");
 		final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		userInputListenerFactory.updateMenus(modeController);
-		((MIconController) IconController.getController(modeController)).updateIconToolbar();
-		((MIconController) IconController.getController(modeController)).updateMenus(builder);
+		((MIconController) IconController.getController()).updateIconToolbar();
+		((MIconController) IconController.getController()).updateMenus(builder);
 		modeController.updateMenus();
-		new MapStyle(modeController, false);
-		controller.addModeController(modeController);
+		new MapStyle(false);
+		controller.addModeController();
 		final SModeController modeController = this.modeController;
 		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(null, false);
-		styleEditorPanel.init(modeController);
+		styleEditorPanel.init();
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
 			public void onSelect(final NodeModel node) {
@@ -165,8 +165,9 @@ public class SModeControllerFactory {
 		return controller;
 	}
 
-	public static void createModeController(final MModeController modeController) {
-		modeController.addAction(new EditStylesAction(modeController));
-		modeController.addAction(new EditDefaultStylesAction(modeController));
+	public static void install() {
+		ModeController modeController = Controller.getCurrentModeController();
+		modeController.addAction(new EditStylesAction());
+		modeController.addAction(new EditDefaultStylesAction());
 	}
 }

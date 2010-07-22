@@ -31,12 +31,12 @@ class NodeDownAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public NodeDownAction(final Controller controller) {
+	public NodeDownAction() {
 		super("NodeDownAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		((MMapController) modeController.getMapController()).moveNodes(modeController.getMapController()
 		    .getSelectedNode(), modeController.getMapController().getSelectedNodes(), 1);
 	}

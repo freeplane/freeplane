@@ -31,13 +31,13 @@ class OpenAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public OpenAction(final Controller controller) {
+	public OpenAction() {
 		super("OpenAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MFileManager) UrlManager.getController(getModeController())).open();
-		getController().getViewController().setTitle();
+		((MFileManager) UrlManager.getController()).open();
+		Controller.getCurrentController().getViewController().setTitle();
 	}
 
 	@Override

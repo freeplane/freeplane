@@ -35,7 +35,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 
 /**
@@ -43,7 +42,7 @@ import org.freeplane.features.mindmapmode.file.MFileManager;
  * 13.09.2009
  */
 public class EditDefaultStylesAction extends AFreeplaneAction {
-	public EditDefaultStylesAction(final MModeController mainModeController) {
+	public EditDefaultStylesAction() {
 		super("EditDefaultStylesAction");
 	}
 
@@ -68,7 +67,7 @@ public class EditDefaultStylesAction extends AFreeplaneAction {
 				switch (modeController.getStatus()) {
 					case JOptionPane.OK_OPTION:
 						if (undoHandler.canUndo()) {
-							((MFileManager) MFileManager.getController(modeController)).save(map);
+							((MFileManager) MFileManager.getController()).save(map);
 						}
 				}
 				mapViewManager.close(true);
@@ -100,7 +99,7 @@ public class EditDefaultStylesAction extends AFreeplaneAction {
 			e1.printStackTrace();
 			return;
 		}
-		dialog.setLocationRelativeTo(getController().getViewController().getJFrame());
+		dialog.setLocationRelativeTo(Controller.getCurrentController().getViewController().getJFrame());
 		dialog.setVisible(true);
 	}
 }

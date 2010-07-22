@@ -37,6 +37,7 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
@@ -44,7 +45,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
@@ -119,8 +119,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			if (htmlEditorPanel == null) {
 				htmlEditorPanel = MTextController.createSHTMLPanel();
 				final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
-				final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getBase()
-				    .getModeController());
+				final SpellCheckerController spellCheckerController = SpellCheckerController.getController();
 				spellCheckerController.enableAutoSpell(editorPane, true);
 				spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
 				spellCheckerController.enableShortKey(editorPane, true);
@@ -185,9 +184,8 @@ class EditNodeWYSIWYG extends EditNodeBase {
 	private static HTMLDialog htmlEditorWindow;
 	final private KeyEvent firstEvent;
 
-	public EditNodeWYSIWYG(final NodeModel node, final String text, final KeyEvent firstEvent,
-	                       final ModeController modeController, final IEditControl editControl) {
-		super(node, text, modeController, editControl);
+	public EditNodeWYSIWYG(final NodeModel node, final String text, final KeyEvent firstEvent, final IEditControl editControl) {
+		super(node, text, editControl);
 		this.firstEvent = firstEvent;
 	}
 
@@ -198,7 +196,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			}
 			EditNodeWYSIWYG.htmlEditorWindow.setBase(this);
 			final SHTMLPanel htmlEditorPanel = (EditNodeWYSIWYG.htmlEditorWindow).getHtmlEditorPanel();
-			final ViewController viewController = getModeController().getController().getViewController();
+			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
 			final Font font = viewController.getFont(node);
 			final Color nodeTextBackground = viewController.getBackgroundColor(node);
 			final StringBuilder ruleBuilder = new StringBuilder(100);
@@ -246,7 +244,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth, preferredHeight));
 			EditNodeWYSIWYG.htmlEditorWindow.pack();
 			if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
-				UITools.setDialogLocationUnder(EditNodeWYSIWYG.htmlEditorWindow, getController(), node);
+				UITools.setDialogLocationUnder(EditNodeWYSIWYG.htmlEditorWindow, node);
 			}
 			else {
 				UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, node);

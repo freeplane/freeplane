@@ -46,16 +46,18 @@ public class NoteController implements IExtension {
 	private static UIIcon noteIcon;
 	public static final String RESOURCES_DON_T_SHOW_NOTE_ICONS = "don_t_show_note_icons";
 
-	public static NoteController getController(final ModeController modeController) {
+	public static NoteController getController() {
+		final ModeController modeController = Controller.getCurrentModeController();
 		return (NoteController) modeController.getExtension(NoteController.class);
 	}
 
-	public static void install(final Controller controller) {
-		FilterController.getController(controller).getConditionFactory().addConditionController(6,
+	public static void install() {
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(6,
 		    new NoteConditionController());
 	}
 
-	public static void install(final ModeController modeController, final NoteController noteController) {
+	public static void install( final NoteController noteController) {
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(NoteController.class, noteController);
 		if (firstRun) {
 			noteIcon = IconStoreFactory.create().getUIIcon("knotes.png");
@@ -65,18 +67,15 @@ public class NoteController implements IExtension {
 
 // 	final private ModeController modeController;
 
-	public NoteController(final ModeController modeController) {
+	public NoteController() {
 		super();
 //		this.modeController = modeController;
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getMapController().getReadManager().addElementHandler("richcontent", new NoteBuilder(this));
 		final NoteWriter noteWriter = new NoteWriter(this);
 		final WriteManager writeManager = modeController.getMapController().getWriteManager();
 		writeManager.addAttributeWriter("map", noteWriter);
 		writeManager.addExtensionElementWriter(NoteModel.class, noteWriter);
-	}
-
-	public ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
 	}
 
 	public final String getNoteText(final NodeModel node) {
@@ -105,7 +104,7 @@ public class NoteController implements IExtension {
 		if (enabled) {
 			final String noteText = NoteModel.getNoteText(node);
 			if (noteText != null) {
-				final NodeStyleController style = (NodeStyleController) getModeController().getExtension(
+				final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
 				    NodeStyleController.class);
 				final Font defaultFont = style.getDefaultFont(node.getMap());
 				final StringBuilder rule = new StringBuilder();
@@ -114,7 +113,7 @@ public class NoteController implements IExtension {
 				rule.append("margin-top:0;");
 				final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
 				    .replaceFirst("</body>", "</div></body>");
-				(getModeController().getMapController()).setToolTip(node, "nodeNoteText", new ITooltipProvider() {
+				(Controller.getCurrentModeController().getMapController()).setToolTip(node, "nodeNoteText", new ITooltipProvider() {
 					public String getTooltip() {
 						return tooltipText;
 					}
@@ -122,6 +121,6 @@ public class NoteController implements IExtension {
 			}
 			return;
 		}
-		(getModeController().getMapController()).setToolTip(node, "nodeNoteText", null);
+		(Controller.getCurrentModeController().getMapController()).setToolTip(node, "nodeNoteText", null);
 	}
 }

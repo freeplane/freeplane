@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.text.html.HTMLDocument;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeModel;
@@ -73,7 +74,7 @@ final class NoteManager implements INodeSelectionListener {
 		String documentText = noteViewerComponent.getDocumentText();
 		documentText = HEAD.matcher(documentText).replaceFirst("");
 		editorContentEmpty = HtmlUtils.htmlToPlain(documentText).equals("");
-		noteController.getModeController().getMapController().removeNodeSelectionListener(this);
+		Controller.getCurrentModeController().getMapController().removeNodeSelectionListener(this);
 		if (noteViewerComponent.needsSaving()) {
 			try {
 				ignoreEditorUpdate = true;
@@ -89,7 +90,7 @@ final class NoteManager implements INodeSelectionListener {
 			}
 			noteController.setLastContentEmpty(editorContentEmpty);
 		}
-		noteController.getModeController().getMapController().addNodeSelectionListener(this);
+		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(this);
 	}
 
 	void saveNote(final NodeModel node) {
