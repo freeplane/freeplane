@@ -36,12 +36,10 @@ import org.freeplane.core.resources.ResourceController;
  * @author Dimitry Polivaev
  */
 class AppletResourceController extends ResourceController {
-	final private JApplet applet;
 	private Properties userProps;
 
 	public AppletResourceController(final FreeplaneApplet freeplaneApplet) {
 		super();
-		applet = freeplaneApplet;
 		final URL defaultPropsURL = getResource(ResourceController.FREEPLANE_PROPERTIES);
 		try {
 			userProps = new Properties();
@@ -55,7 +53,7 @@ class AppletResourceController extends ResourceController {
 		final Enumeration allKeys = userProps.propertyNames();
 		while (allKeys.hasMoreElements()) {
 			final String key = (String) allKeys.nextElement();
-			setPropertyByParameter(key);
+			setPropertyByParameter(freeplaneApplet, key);
 		}
 		ResourceController.setResourceController(this);
 	}
@@ -124,7 +122,7 @@ class AppletResourceController extends ResourceController {
 		userProps.setProperty(key, value);
 	}
 
-	public void setPropertyByParameter(final String key) {
+	void setPropertyByParameter(JApplet applet, final String key) {
 		final String val = applet.getParameter(key);
 		if (val != null && val != "") {
 			userProps.setProperty(key, val);

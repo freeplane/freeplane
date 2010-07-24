@@ -21,6 +21,7 @@ package org.freeplane.main.applet;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.HeadlessException;
 
 import javax.swing.JApplet;
 
@@ -53,13 +54,17 @@ public class FreeplaneApplet extends JApplet {
 	private AppletViewController appletViewController;
 	private Controller controller;
 
+	public FreeplaneApplet() throws HeadlessException {
+	    super();
+    }
+
 	@Override
-	public void destroy() {
+	synchronized public void destroy() {
 		controller.shutdown();
 	}
 
 	@Override
-	public void init() {
+	synchronized public void init() {
 		if (appletResourceController == null) {
 			appletResourceController = new AppletResourceController(this);
 		}
@@ -86,23 +91,24 @@ public class FreeplaneApplet extends JApplet {
 		controller.addAction(new NextNodeAction(controller, Direction.FORWARD));
 		controller.addAction(new NextNodeAction(controller, Direction.BACK));
 		controller.selectMode(browseController);
+		appletResourceController.setPropertyByParameter(this, "browsemode_initial_map");
 		appletViewController.init();
 		controller.getViewController().setMenubarVisible(false);
 	}
 
 	@Override
-	public void start() {
+	synchronized public void start() {
 		appletViewController.start();
 	}
 
 	@Override
-	public void stop() {
+	synchronized public void stop() {
 		super.stop();
 	}
 
 	private void updateLookAndFeel() {
 		String lookAndFeel = "";
-		appletResourceController.setPropertyByParameter("lookandfeel");
+		appletResourceController.setPropertyByParameter(this, "lookandfeel");
 		lookAndFeel = appletResourceController.getProperty("lookandfeel");
 		ViewController.setLookAndFeel(lookAndFeel);
 	}
