@@ -29,9 +29,9 @@ public class SingleInstanceManager {
 	private boolean isMasterPresent;
 // // 	private Controller controller;
 
-	public SingleInstanceManager() {
-		isSingleInstanceMode = ResourceController.getResourceController().getBooleanProperty("single_instance");
-		isSingleInstanceForceMode = ResourceController.getResourceController().getBooleanProperty(
+	public SingleInstanceManager(ResourceController resourceController) {
+		isSingleInstanceMode = resourceController.getBooleanProperty("single_instance");
+		isSingleInstanceForceMode = resourceController.getBooleanProperty(
 		    "single_instance_force");
 	}
 

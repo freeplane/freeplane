@@ -256,4 +256,8 @@ public class FreeplaneStarter {
 			LogUtils.severe(e);
 		}
 	}
+
+	public ResourceController getResourceController() {
+	    return applicationResourceController;
+    }
 }
