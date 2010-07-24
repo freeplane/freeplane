@@ -105,9 +105,8 @@ public class MNodeStyleController extends NodeStyleController {
 		}
 	}
 
-	public MNodeStyleController() {
-		super();
-		final ModeController modeController = Controller.getCurrentModeController();
+	public MNodeStyleController(final ModeController modeController) {
+		super(modeController);
 		modeController.registerExtensionCopier(new StyleCopier());
 		modeController.addAction(new BoldAction());
 		modeController.addAction(new ItalicAction());

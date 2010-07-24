@@ -65,12 +65,13 @@ public class ModeController extends AController {
 	 */
 	private IUserInputListenerFactory userInputListenerFactory;
 	private ArrayList<ITextTransformer> textTransformers = new ArrayList<ITextTransformer>();
+	final private Controller controller;
 
 	/**
 	 * Instantiation order: first me and then the model.
 	 */
-	public ModeController() {
-//		this.controller = controller;
+	public ModeController(final Controller controller) {
+		this.controller = controller;
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		copiers = new LinkedList<IExtensionCopier>();
 	}
@@ -211,7 +212,7 @@ public class ModeController extends AController {
 	}
 
 	public Controller getController() {
-		return Controller.getCurrentController();
+		return controller;
 	}
 
 	public IExtension getExtension(final Class<? extends IExtension> clazz) {

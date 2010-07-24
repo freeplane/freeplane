@@ -50,9 +50,14 @@ public class Controller extends AController {
 	private ModeController modeController4build;
 	final private Map<String, ModeController> modeControllers = new LinkedHashMap<String, ModeController>();
 	private ViewController viewController;
+	final private ResourceController resourceController;
 
-	public Controller() {
+	public Controller(ResourceController resourceController) {
 		super();
+		if(currentController == null){
+			currentController = this;
+		}
+		this.resourceController = resourceController; 
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		addAction(new QuitAction());
 		addAction(new MoveToRootAction());
@@ -198,5 +203,9 @@ public class Controller extends AController {
 	public void selectModeForBuild(ModeController modeController4build) {
 	    this.modeController4build = modeController4build;
 	    
+    }
+
+	public ResourceController getResourceController() {
+	    return resourceController;
     }
 }

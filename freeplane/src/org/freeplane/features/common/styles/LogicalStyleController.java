@@ -142,9 +142,12 @@ public class LogicalStyleController implements IExtension {
 
 	public static LogicalStyleController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
-		return (LogicalStyleController) modeController.getExtension(LogicalStyleController.class);
+		return getController(modeController);
 	}
 
+	public static LogicalStyleController getController(ModeController modeController) {
+		return (LogicalStyleController) modeController.getExtension(LogicalStyleController.class);
+    }
 	public void refreshMap(final MapModel map) {
 		final IActor actor = new IActor() {
 			public void undo() {
@@ -228,4 +231,5 @@ public class LogicalStyleController implements IExtension {
 	    cachedStyle = null;
 	    cachedNode = null;
     }
+
 }

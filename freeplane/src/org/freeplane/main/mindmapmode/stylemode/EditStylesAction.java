@@ -44,9 +44,13 @@ public class EditStylesAction extends AFreeplaneAction {
 	public EditStylesAction() {
 		super("EditStylesAction");
 	}
+	
+	private Controller controller = null;
 
 	private void init() {
+		this.controller = Controller.getCurrentController();
 		if (dialog != null) {
+			Controller.setCurrentController ((Controller) dialog.getRootPane().getClientProperty(Controller.class));
 			return;
 		}
 		dialog = new JDialog(Controller.getCurrentController().getViewController().getJFrame());
@@ -63,6 +67,9 @@ public class EditStylesAction extends AFreeplaneAction {
 				final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
 				final MapModel map = mapViewManager.getModel();
 				final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+				mapViewManager.close(true);
+				Controller.setCurrentController(EditStylesAction.this.controller);
+				super.componentHidden(e);
 				switch (modeController.getStatus()) {
 					case JOptionPane.OK_OPTION:
 						if (undoHandler.canUndo()) {
@@ -77,8 +84,6 @@ public class EditStylesAction extends AFreeplaneAction {
 					case JOptionPane.CANCEL_OPTION:
 						Controller.getCurrentModeController().rollback();
 				}
-				mapViewManager.close(true);
-				super.componentHidden(e);
 			}
 		});
 	}
@@ -91,12 +96,12 @@ public class EditStylesAction extends AFreeplaneAction {
 	private SModeController modeController;
 
 	public void actionPerformed(final ActionEvent e) {
-		init();
 		final MapModel map = Controller.getCurrentController().getMap();
 		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.startTransaction();
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
 		final MapModel styleMap = mapStyleModel.getStyleMap();
+		init();
 		modeController.getMapController().newMapView(styleMap);
 		dialog.setLocationRelativeTo(Controller.getCurrentController().getViewController().getJFrame());
 		dialog.setVisible(true);

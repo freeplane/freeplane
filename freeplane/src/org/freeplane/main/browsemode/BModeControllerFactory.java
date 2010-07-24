@@ -40,6 +40,7 @@ import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.misc.UnfoldAll;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
@@ -47,7 +48,6 @@ import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
-import org.freeplane.features.mindmapmode.misc.UnfoldAll;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
@@ -58,21 +58,21 @@ import org.freeplane.view.swing.ui.UserInputListenerFactory;
 public class BModeControllerFactory {
 	private static BModeController modeController;
 
-	static public BModeController createModeController( final String menuStructure) {
-		modeController = new BModeController();
+	static public BModeController createModeController(final String menuStructure) {
+		final Controller controller = Controller.getCurrentController();
+		modeController = new BModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
-		final Controller controller = Controller.getCurrentController();
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		modeController.setMapController(new MapController());
 		UrlManager.install(new UrlManager());
 		AttributeController.install(new AttributeController());
 		LinkController.install(new LinkController());
-		IconController.install(new IconController());
-		NodeStyleController.install(new NodeStyleController());
-		EdgeController.install(new EdgeController());
-		CloudController.install(new CloudController());
+		IconController.install(new IconController(modeController));
+		NodeStyleController.install(new NodeStyleController(modeController));
+		EdgeController.install(new EdgeController(modeController));
+		CloudController.install(new CloudController(modeController));
 		NoteController.install(new NoteController());
 		TextController.install(new TextController());
 		LogicalStyleController.install(new LogicalStyleController());
@@ -104,7 +104,7 @@ public class BModeControllerFactory {
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
 		new ViewerController();
-		NodeHistory.install(modeController);
+//		NodeHistory.install(modeController);
 		return modeController;
 	}
 }

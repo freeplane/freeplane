@@ -47,12 +47,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.main.application.ApplicationResourceController;
 
 /**
  * @author vboerchers
@@ -264,13 +262,5 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 
 	public boolean confirmContinue() {
 		return canContinue;
-	}
-
-	public static void main(final String[] args) {
-		ResourceController.setResourceController(new ApplicationResourceController());
-		final NewerFileRevisionsFoundDialog newerFileRevisionsFoundDialog = new NewerFileRevisionsFoundDialog(new File(
-		    "someMap.mm"), new File(".").listFiles());
-		System.out.println("confirmContinue=" + newerFileRevisionsFoundDialog.confirmContinue());
-		System.out.println("selectedFile=" + newerFileRevisionsFoundDialog.getSelectedFile());
 	}
 }

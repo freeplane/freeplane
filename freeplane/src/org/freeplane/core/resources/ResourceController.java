@@ -31,9 +31,9 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 import java.util.Map.Entry;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.AController.IActionOnChange;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.LogUtils;
 
 /**
  * @author Dimitry Polivaev
@@ -42,16 +42,9 @@ public abstract class ResourceController {
 	public static final String FREEPLANE_PROPERTIES = "/freeplane.properties";
 	public static final String LOCAL_PROPERTIES = "LocalProperties.";
 	public static final String RESOURCE_DRAW_RECTANGLE_FOR_SELECTION = "standarddrawrectangleforselection";
-	// TODO rladstaetter 15.02.2009 remove static
-	private static ResourceController resourceController;
 
 	static public ResourceController getResourceController() {
-		return ResourceController.resourceController;
-	}
-
-	static public void setResourceController(final ResourceController resourceController) {
-		ResourceController.resourceController = resourceController;
-		LogUtils.info("called ResourceController.setResourceController(...)");
+		return Controller.getCurrentController().getResourceController();
 	}
 
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();

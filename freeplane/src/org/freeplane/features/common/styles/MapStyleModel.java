@@ -106,9 +106,9 @@ public class MapStyleModel implements IExtension {
 				loadingStyleMap = true;
 				try {
 					final ResourceController resourceController = ResourceController.getResourceController();
-					final File freeplaneUserDirectory = new File(resourceController.getFreeplaneUserDirectory());
-					final File styles = new File(freeplaneUserDirectory, "default.stylemm");
 					try {
+						final File freeplaneUserDirectory = new File(resourceController.getFreeplaneUserDirectory());
+						final File styles = new File(freeplaneUserDirectory, "default.stylemm");
 						root = load(styles.toURL(), mapReader, styleMap);
 					}
 					catch (final Exception e) {

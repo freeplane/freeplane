@@ -79,9 +79,8 @@ public class MEdgeController extends EdgeController {
 		}
 	}
 
-	public MEdgeController() {
-		super();
-		final ModeController modeController = Controller.getCurrentModeController();
+	public MEdgeController(final ModeController modeController) {
+		super(modeController);
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		modeController.addAction(new EdgeColorAction());
 		modeController.addAction(new EdgeWidthAction(EdgeModel.WIDTH_PARENT));

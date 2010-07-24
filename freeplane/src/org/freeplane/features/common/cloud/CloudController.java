@@ -76,7 +76,7 @@ public class CloudController implements IExtension {
 	final private ExclusivePropertyChain<CloudModel, NodeModel> cloudHandlers;
 // 	private final ModeController modeController;
 
-	public CloudController() {
+	public CloudController(final ModeController modeController) {
 //		this.modeController = modeController;
 		cloudHandlers = new ExclusivePropertyChain<CloudModel, NodeModel>();
 		if (listener == null) {
@@ -92,7 +92,7 @@ public class CloudController implements IExtension {
 		});
 		addCloudGetter(IPropertyHandler.STYLE, new IPropertyHandler<CloudModel, NodeModel>() {
 			public CloudModel getProperty(final NodeModel node, final CloudModel currentValue) {
-				return getStyleCloud(node.getMap(), LogicalStyleController.getController().getStyle(node));
+				return getStyleCloud(node.getMap(), LogicalStyleController.getController(modeController).getStyle(node));
 			}
 		});
 		addCloudGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<CloudModel, NodeModel>() {

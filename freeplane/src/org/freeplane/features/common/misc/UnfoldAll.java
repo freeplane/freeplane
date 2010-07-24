@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.misc;
+package org.freeplane.features.common.misc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;

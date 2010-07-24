@@ -97,7 +97,6 @@ public class FreeplaneStarter {
 	public FreeplaneStarter() {
 		super();
 		applicationResourceController = new ApplicationResourceController();
-		ResourceController.setResourceController(applicationResourceController);
 	}
 
 	public void setDontLoadLastMaps() {
@@ -106,7 +105,7 @@ public class FreeplaneStarter {
 
 	public Controller createController() {
 		try {
-			Controller controller = new Controller();
+			Controller controller = new Controller(applicationResourceController);
 			Controller.setCurrentController(controller);
 			Compat.macAppChanges();
 			applicationResourceController.init();

@@ -53,8 +53,8 @@ public class MModeController extends ModeController {
 
 	private OptionPanelBuilder optionPanelBuilder;
 
-	public MModeController() {
-		super();
+	public MModeController(final Controller controller) {
+		super(controller);
 		createActions();
 		createOptionPanelControls();
 	}

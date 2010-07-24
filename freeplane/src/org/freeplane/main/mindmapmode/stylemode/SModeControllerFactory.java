@@ -31,6 +31,7 @@ import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.frame.ToggleToolbarAction;
 import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
@@ -79,7 +80,8 @@ public class SModeControllerFactory {
 	private SModeController modeController;
 
 	Controller createController(final JDialog dialog) {
-		final Controller controller = new Controller();
+		final Controller controller = new Controller(ResourceController.getResourceController());
+		Controller.setCurrentController(controller);
 		final MapViewController mapViewController = new MapViewController();
 		final DialogController viewController = new DialogController(controller, mapViewController, dialog);
 		controller.setViewController(viewController);
@@ -87,7 +89,8 @@ public class SModeControllerFactory {
 		TextController.install();
 		controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
 		controller.addAction(new ShowSelectionAsRectangleAction());
-		modeController = new SModeController();
+		modeController = new SModeController(controller);
+		controller.selectModeForBuild(modeController);
 		modeController.addAction(new NewUserStyleAction());
 		modeController.addAction(new DeleteUserStyleAction());
 		modeController.addAction(new NewLevelStyleAction());
@@ -98,10 +101,10 @@ public class SModeControllerFactory {
 		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());
 		modeController.setMapController(new MMapController());
 		TextController.install(new TextController());
-		IconController.install(new MIconController());
-		NodeStyleController.install(new MNodeStyleController());
-		EdgeController.install(new MEdgeController());
-		CloudController.install(new MCloudController());
+		IconController.install(new MIconController(modeController));
+		NodeStyleController.install(new MNodeStyleController(modeController));
+		EdgeController.install(new MEdgeController(modeController));
+		CloudController.install(new MCloudController(modeController));
 		LinkController.install(new LinkController());
 		MFileManager.install(new MFileManager());
 		LogicalStyleController.install(new LogicalStyleController());

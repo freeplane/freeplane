@@ -75,10 +75,8 @@ public class MCloudController extends CloudController {
 		}
 	}
 
-	public MCloudController() {
-		super();
-		final Controller controller = Controller.getCurrentController();
-		final ModeController modeController = controller.getModeController();
+	public MCloudController(final ModeController modeController) {
+		super(modeController);
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		modeController.addAction(new CloudAction());
 		modeController.addAction(new CloudColorAction());

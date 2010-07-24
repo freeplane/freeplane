@@ -129,9 +129,8 @@ public class MIconController extends IconController {
 	/**
 	 * @param modeController
 	 */
-	public MIconController() {
-		super();
-		final ModeController modeController = Controller.getCurrentModeController();
+	public MIconController(final ModeController modeController) {
+		super(modeController);
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		iconToolBar = new FreeplaneToolBar("icon_toolbar", SwingConstants.VERTICAL);
 		iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);

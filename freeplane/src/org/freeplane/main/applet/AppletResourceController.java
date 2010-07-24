@@ -54,7 +54,6 @@ class AppletResourceController extends ResourceController {
 			final String key = (String) allKeys.nextElement();
 			setPropertyByParameter(freeplaneApplet, key);
 		}
-		ResourceController.setResourceController(this);
 	}
 
 	@Override

@@ -51,6 +51,7 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.misc.BlinkingNodeHook;
 import org.freeplane.features.common.misc.CreationModificationPlugin;
 import org.freeplane.features.common.misc.HierarchicalIcons;
+import org.freeplane.features.common.misc.UnfoldAll;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
@@ -80,7 +81,6 @@ import org.freeplane.features.mindmapmode.misc.RevisionPlugin;
 import org.freeplane.features.mindmapmode.misc.SaveAll;
 import org.freeplane.features.mindmapmode.misc.SortNodes;
 import org.freeplane.features.mindmapmode.misc.SplitNode;
-import org.freeplane.features.mindmapmode.misc.UnfoldAll;
 import org.freeplane.features.mindmapmode.nodelocation.MLocationController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
@@ -170,7 +170,8 @@ public class MModeControllerFactory {
 	}
 
 	private void createStandardControllers() {
-		modeController = new MModeController();
+		final Controller controller = Controller.getCurrentController();
+		modeController = new MModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener() {
 			@Override
@@ -211,15 +212,14 @@ public class MModeControllerFactory {
 			}
 		});
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
-		final Controller controller = Controller.getCurrentController();
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		modeController.setMapController(new MMapController());
 		final MFileManager fileManager = new MFileManager();
 		UrlManager.install(fileManager);
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
-		IconController.install(new MIconController());
-		NodeStyleController.install(new MNodeStyleController());
+		IconController.install(new MIconController(modeController));
+		NodeStyleController.install(new MNodeStyleController(modeController));
 		final MapController mapController = modeController.getMapController();
 		uiFactory = new MUIFactory();
 		mapController.addNodeChangeListener(uiFactory);
@@ -228,8 +228,8 @@ public class MModeControllerFactory {
 		controller.getMapViewManager().addMapSelectionListener(uiFactory);
 		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
 		modeController.addMenuContributor(menuContributor);
-		EdgeController.install(new MEdgeController());
-		CloudController.install(new MCloudController());
+		EdgeController.install(new MEdgeController(modeController));
+		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
 		LinkController.install(new MLinkController());
 		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(new MMouseMotionListener()));

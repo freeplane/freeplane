@@ -54,14 +54,14 @@ public class NodeHistory implements IExtension {
 	}
 
 	private BackAction backAction;
-// // 	final private Controller controller;
+	final private Controller controller;
 	private NodeHolder currentNodeHolder;
 	private ForwardAction forwardAction;
 	private ListIterator<NodeHolder> nodeIterator;
 	private final LinkedList<NodeHolder> nodes;
 
 	private NodeHistory(final Controller controller) {
-//		this.controller = controller;
+		this.controller = controller;
 		nodes = new LinkedList<NodeHolder>();
 		nodeIterator = nodes.listIterator();
 	}
@@ -190,7 +190,6 @@ public class NodeHistory implements IExtension {
 	}
 
 	private void onNodeSelect(final NodeModel pNode) {
-		Controller controller = Controller.getCurrentController();
 		if (currentNodeHolder != null
 		        && currentNodeHolder.isIdentical(((MapView) controller.getViewController().getMapView())
 		            .getNodeView(pNode))) {

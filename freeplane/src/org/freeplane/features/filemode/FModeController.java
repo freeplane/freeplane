@@ -27,8 +27,8 @@ import org.freeplane.features.common.map.ModeController;
 public class FModeController extends ModeController {
 	static public final String MODENAME = "File";
 
-	public FModeController() {
-		super();
+	public FModeController(final Controller controller) {
+		super(controller);
 	}
 
 	@Override

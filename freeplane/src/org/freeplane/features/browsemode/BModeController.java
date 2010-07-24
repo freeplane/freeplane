@@ -21,6 +21,7 @@ package org.freeplane.features.browsemode;
 
 import java.util.ListIterator;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.ModeController;
@@ -32,8 +33,8 @@ public class BModeController extends ModeController {
 	static public final String MODENAME = "Browse";
 	private UIIcon noteIcon;
 
-	public BModeController() {
-		super();
+	public BModeController(final Controller controller) {
+		super(controller);
 	}
 
 	@Override

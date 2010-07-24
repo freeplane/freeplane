@@ -62,11 +62,10 @@ public class IconController implements IExtension {
 
 // 	final private ModeController modeController;
 
-	public IconController() {
+	public IconController(final ModeController modeController) {
 		super();
 		iconHandlers = new CombinedPropertyChain<List<MindIcon>, NodeModel>();
 //		this.modeController = modeController;
-		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -90,7 +89,7 @@ public class IconController implements IExtension {
 		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<List<MindIcon>, NodeModel>() {
 			public List<MindIcon> getProperty(final NodeModel node, final List<MindIcon> currentValue) {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-				final NodeModel styleNode = model.getStyleNode(LogicalStyleController.getController().getStyle(node));
+				final NodeModel styleNode = model.getStyleNode(LogicalStyleController.getController(modeController).getStyle(node));
 				final List<MindIcon> styleIcons;
 				if (styleNode == null || styleNode.equals(node)) {
 					styleIcons = Collections.emptyList();

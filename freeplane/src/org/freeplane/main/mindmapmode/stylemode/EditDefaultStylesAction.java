@@ -45,9 +45,13 @@ public class EditDefaultStylesAction extends AFreeplaneAction {
 	public EditDefaultStylesAction() {
 		super("EditDefaultStylesAction");
 	}
+	
+	private Controller controller = null;
 
 	private void init() {
+		this.controller = Controller.getCurrentController();
 		if (dialog != null) {
+			Controller.setCurrentController ((Controller) dialog.getRootPane().getClientProperty(Controller.class));
 			return;
 		}
 		dialog = new JDialog(Controller.getCurrentController().getViewController().getJFrame());
@@ -56,7 +60,7 @@ public class EditDefaultStylesAction extends AFreeplaneAction {
 		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		Controller controller = SModeControllerFactory.getInstance().createController(dialog);
 		modeController = (SModeController) controller.getModeController();
-		final ViewController viewController = modeController.getController().getViewController();
+		final ViewController viewController = controller.getViewController();
 		viewController.init(controller);
 		dialog.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -64,14 +68,15 @@ public class EditDefaultStylesAction extends AFreeplaneAction {
 				final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
 				final MapModel map = mapViewManager.getModel();
 				final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+				mapViewManager.close(true);
+				Controller.setCurrentController(EditDefaultStylesAction.this.controller);
+				super.componentHidden(e);
 				switch (modeController.getStatus()) {
 					case JOptionPane.OK_OPTION:
 						if (undoHandler.canUndo()) {
 							((MFileManager) MFileManager.getController()).save(map);
 						}
 				}
-				mapViewManager.close(true);
-				super.componentHidden(e);
 			}
 		});
 	}

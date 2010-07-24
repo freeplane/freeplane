@@ -56,7 +56,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.ui.mindmapmode.MDefaultNodeDropListener;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";

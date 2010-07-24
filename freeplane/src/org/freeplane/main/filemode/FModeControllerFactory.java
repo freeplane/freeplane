@@ -53,20 +53,20 @@ public class FModeControllerFactory {
 	static private FModeController modeController;
 
 	static public FModeController createModeController() {
-		modeController = new FModeController();
+		final Controller controller = Controller.getCurrentController();
+		modeController = new FModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
-		final Controller controller = Controller.getCurrentController();
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		modeController.setMapController(new FMapController());
 		UrlManager.install(new UrlManager());
-		IconController.install(new IconController());
-		NodeStyleController.install(new NodeStyleController());
-		EdgeController.install(new EdgeController());
+		IconController.install(new IconController(modeController));
+		NodeStyleController.install(new NodeStyleController(modeController));
+		EdgeController.install(new EdgeController(modeController));
 		LinkController.install(new LinkController());
 		TextController.install(new TextController());
-		CloudController.install(new CloudController());
+		CloudController.install(new CloudController(modeController));
 		ClipboardController.install(new ClipboardController());
 		LocationController.install(new LocationController());
 		LogicalStyleController.install(new LogicalStyleController());
