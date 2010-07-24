@@ -52,7 +52,6 @@ import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 
 public class FreeplaneApplet extends JApplet {
 	private AppletResourceController appletResourceController;
-	private static PropertyChangeListener focusListener;
 	/**
 	 * 
 	 */
@@ -72,15 +71,6 @@ public class FreeplaneApplet extends JApplet {
 	@Override
 	public void init() {
 		synchronized (FreeplaneApplet.class){
-			if(focusListener == null){
-				focusListener  = new PropertyChangeListener() {
-					public void propertyChange(PropertyChangeEvent evt) {
-						System.out.print(evt.toString());
-					}
-				};
-			}
-			FocusManager.getCurrentKeyboardFocusManager().removePropertyChangeListener("currentFocusCycleRoot", focusListener);
-			FocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("currentFocusCycleRoot", focusListener);
 			appletResourceController = new AppletResourceController(this);
 			updateLookAndFeel();
 			createRootPane();
