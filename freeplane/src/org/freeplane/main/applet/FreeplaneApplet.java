@@ -99,7 +99,7 @@ public class FreeplaneApplet extends JApplet {
 	}
 
 	@Override
-	synchronized public void start() {
+	public void start() {
 		appletViewController.start();
 	}
 
