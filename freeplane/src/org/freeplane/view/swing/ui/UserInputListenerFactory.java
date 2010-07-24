@@ -56,6 +56,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.ui.mindmapmode.MDefaultNodeDropListener;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
@@ -152,16 +153,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	}
 
 	public DragGestureListener getNodeDragListener() {
-		if (nodeDragListener == null) {
-			nodeDragListener = new DefaultNodeDragListener();
-		}
 		return nodeDragListener;
 	}
 
 	public DropTargetListener getNodeDropTargetListener() {
-		if (nodeDropTargetListener == null) {
-			nodeDropTargetListener = new DefaultNodeDropListener();
-		}
 		return nodeDropTargetListener;
 	}
 
@@ -173,9 +168,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	}
 
 	public IMouseListener getNodeMotionListener() {
-		if (nodeMotionListener == null) {
-			nodeMotionListener = new DefaultNodeMotionListener();
-		}
 		return nodeMotionListener;
 	}
 
@@ -234,6 +226,13 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 		this.menuStructure = menuStructure;
 	}
+
+	public void setNodeDragListener(DragGestureListener nodeDragListener) {
+		if (this.nodeDragListener != null) {
+			throw new RuntimeException("already set");
+		}
+    	this.nodeDragListener = nodeDragListener;
+    }
 
 	public void setNodeDropTargetListener(final DropTargetListener nodeDropTargetListener) {
 		if (this.nodeDropTargetListener != null) {

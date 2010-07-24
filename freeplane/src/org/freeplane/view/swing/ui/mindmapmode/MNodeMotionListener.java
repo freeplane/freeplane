@@ -23,12 +23,14 @@ import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
@@ -39,12 +41,11 @@ import org.freeplane.features.mindmapmode.nodelocation.MLocationController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeMotionListenerView;
 import org.freeplane.view.swing.map.NodeView;
-import org.freeplane.view.swing.ui.DefaultNodeMotionListener;
 
 /**
  * The MouseMotionListener which belongs to every NodeView
  */
-public class MNodeMotionListener extends DefaultNodeMotionListener {
+public class MNodeMotionListener extends MouseAdapter implements IMouseListener {
 	private Point dragStartingPoint = null;
 	private int originalHGap;
 	private int originalParentVGap;
@@ -126,7 +127,6 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 	}
 
 	/** Invoked when a mouse button is pressed on a component and then dragged. */
-	@Override
 	public void mouseDragged(final MouseEvent e) {
 		if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
 			final NodeMotionListenerView motionListenerView = (NodeMotionListenerView) e.getSource();
@@ -188,7 +188,6 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 		}
 	}
 
-	@Override
 	public void mouseMoved(final MouseEvent e) {
 	}
 
