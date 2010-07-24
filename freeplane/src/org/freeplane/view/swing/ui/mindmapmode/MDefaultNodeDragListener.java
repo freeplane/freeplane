@@ -1,4 +1,4 @@
-package org.freeplane.view.swing.ui;
+package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.Cursor;
 import java.awt.datatransfer.Transferable;
@@ -24,10 +24,10 @@ import org.freeplane.view.swing.map.MainView;
 /**
  * The NodeDragListener which belongs to every NodeView
  */
-class DefaultNodeDragListener implements DragGestureListener {
+class MDefaultNodeDragListener implements DragGestureListener {
 	final private Controller controller;
 
-	public DefaultNodeDragListener(final Controller controller) {
+	public MDefaultNodeDragListener(final Controller controller) {
 		this.controller = controller;
 	}
 

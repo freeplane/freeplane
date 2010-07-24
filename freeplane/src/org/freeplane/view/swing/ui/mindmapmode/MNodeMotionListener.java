@@ -23,6 +23,7 @@ import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JOptionPane;
@@ -32,6 +33,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodelocation.LocationModel;
@@ -39,12 +41,11 @@ import org.freeplane.features.mindmapmode.nodelocation.MLocationController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeMotionListenerView;
 import org.freeplane.view.swing.map.NodeView;
-import org.freeplane.view.swing.ui.DefaultNodeMotionListener;
 
 /**
  * The MouseMotionListener which belongs to every NodeView
  */
-public class MNodeMotionListener extends DefaultNodeMotionListener {
+public class MNodeMotionListener extends MouseAdapter implements IMouseListener {
 	final private ModeController c;
 	private Point dragStartingPoint = null;
 	private int originalHGap;

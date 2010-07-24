@@ -146,12 +146,18 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void addDragListener(final DragGestureListener dgl) {
+		if(dgl == null){
+			return;
+		}
 		final DragSource dragSource = DragSource.getDefaultDragSource();
 		dragSource.createDefaultDragGestureRecognizer(getMainView(), DnDConstants.ACTION_COPY
 		        | DnDConstants.ACTION_MOVE | DnDConstants.ACTION_LINK, dgl);
 	}
 
 	void addDropListener(final DropTargetListener dtl) {
+		if(dtl == null){
+			return;
+		}
 		final DropTarget dropTarget = new DropTarget(getMainView(), dtl);
 		dropTarget.setActive(true);
 	}

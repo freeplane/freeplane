@@ -59,41 +59,43 @@ public class FreeplaneApplet extends JApplet {
     }
 
 	@Override
-	synchronized public void destroy() {
+	public void destroy() {
 		controller.shutdown();
 	}
 
 	@Override
-	synchronized public void init() {
-		if (appletResourceController == null) {
-			appletResourceController = new AppletResourceController(this);
+	public void init() {
+		synchronized (FreeplaneApplet.class){
+			if (appletResourceController == null) {
+				appletResourceController = new AppletResourceController(this);
+			}
+			updateLookAndFeel();
+			createRootPane();
+			controller = new Controller();
+			appletResourceController.init(controller);
+			final Container contentPane = getContentPane();
+			contentPane.setLayout(new BorderLayout());
+			ResourceController.setResourceController(appletResourceController);
+			appletViewController = new AppletViewController(controller, this, new MapViewController());
+			controller.addAction(new ViewLayoutTypeAction(controller, MapViewLayout.OUTLINE));
+			FilterController.install(controller);
+			PrintController.install(controller);
+			HelpController.install(controller);
+			NodeHistory.install(controller);
+			ModelessAttributeController.install(controller);
+			TextController.install(controller);
+			TimeController.install(controller);
+			LinkController.install(controller);
+			IconController.install(controller);
+			final BModeController browseController = BModeControllerFactory.createModeController(controller,
+			"/xml/appletMenu.xml");
+			controller.addAction(new NextNodeAction(controller, Direction.FORWARD));
+			controller.addAction(new NextNodeAction(controller, Direction.BACK));
+			controller.selectMode(browseController);
+			appletResourceController.setPropertyByParameter(this, "browsemode_initial_map");
+			appletViewController.init();
+			appletViewController.setMenubarVisible(false);
 		}
-		updateLookAndFeel();
-		createRootPane();
-		controller = new Controller();
-		appletResourceController.init(controller);
-		final Container contentPane = getContentPane();
-		contentPane.setLayout(new BorderLayout());
-		ResourceController.setResourceController(appletResourceController);
-		appletViewController = new AppletViewController(controller, this, new MapViewController());
-		controller.addAction(new ViewLayoutTypeAction(controller, MapViewLayout.OUTLINE));
-		FilterController.install(controller);
-		PrintController.install(controller);
-		HelpController.install(controller);
-		NodeHistory.install(controller);
-		ModelessAttributeController.install(controller);
-		TextController.install(controller);
-		TimeController.install(controller);
-		LinkController.install(controller);
-		IconController.install(controller);
-		final BModeController browseController = BModeControllerFactory.createModeController(controller,
-		    "/xml/appletMenu.xml");
-		controller.addAction(new NextNodeAction(controller, Direction.FORWARD));
-		controller.addAction(new NextNodeAction(controller, Direction.BACK));
-		controller.selectMode(browseController);
-		appletResourceController.setPropertyByParameter(this, "browsemode_initial_map");
-		appletViewController.init();
-		controller.getViewController().setMenubarVisible(false);
 	}
 
 	@Override

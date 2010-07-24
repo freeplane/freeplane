@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.ui;
+package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
@@ -28,8 +28,8 @@ import java.awt.dnd.DropTargetListener;
  * @author Dimitry Polivaev
  * 06.01.2009
  */
-public class DefaultNodeDropListener implements DropTargetListener {
-	public DefaultNodeDropListener() {
+public class MDefaultNodeDropListener implements DropTargetListener {
+	public MDefaultNodeDropListener() {
 	}
 
 	public void dragEnter(final DropTargetDragEvent dtde) {
