@@ -334,7 +334,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private FitMap fitMap = FitMap.USER_DEFINED;
 	private boolean isPreparedForPrinting = false;
 	private boolean isPrinting = false;
-// 	private final ModeController modeController;
+	private final ModeController modeController;
 	final private MapModel model;
 	private NodeView nodeToBeVisible = null;
 	private NodeView rootView = null;
@@ -351,8 +351,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
 		this.model = model;
-//		this.modeController = modeController;
-//		controller = modeController.getController();
+		this.modeController = modeController;
 		final String name = getModel().getTitle();
 		setName(name);
 		if (MapView.standardSelectColor == null) {
@@ -670,7 +669,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public ModeController getModeController() {
-		return Controller.getCurrentController().getModeController();
+		return modeController;
 	}
 
 	public MapModel getModel() {

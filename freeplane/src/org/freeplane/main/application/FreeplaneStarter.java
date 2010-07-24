@@ -107,6 +107,7 @@ public class FreeplaneStarter {
 	public Controller createController() {
 		try {
 			Controller controller = new Controller();
+			Controller.setCurrentController(controller);
 			Compat.macAppChanges();
 			applicationResourceController.init();
 			LogUtils.createLogger();
@@ -156,11 +157,11 @@ public class FreeplaneStarter {
 		}
 	}
 
-	public void createFrame(final Controller controller,  final String[] args) {
+	public void createFrame(final String[] args) {
 		Compat.macMenuChanges();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				viewController.init(controller);
+				viewController.init(Controller.getCurrentController());
 				splash.toBack();
 				loadMaps(args);
 				final Frame frame = viewController.getFrame();
@@ -227,7 +228,7 @@ public class FreeplaneStarter {
 				System.setProperty("org.freeplane.core.dir.lib", "/lib/");
 			}
 			Controller controller = createController();
-			createFrame(controller, args);
+			createFrame(args);
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);

@@ -57,7 +57,8 @@ public class FModeControllerFactory {
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		final Controller controller = Controller.getCurrentController();
-		controller.addModeController();
+		controller.addModeController(modeController);
+		controller.selectModeForBuild(modeController);
 		modeController.setMapController(new FMapController());
 		UrlManager.install(new UrlManager());
 		IconController.install(new IconController());

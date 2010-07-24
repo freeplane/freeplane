@@ -23,7 +23,7 @@ public class ShowNotesInMapAction extends AFreeplaneAction {
 	@Override
 	public void setSelected() {
 		MapView map = (MapView)Controller.getCurrentController().getMapViewManager().getMapViewComponent();
-		setSelected(map.showNotes());
+		setSelected(map != null && map.showNotes());
 	}
 
 

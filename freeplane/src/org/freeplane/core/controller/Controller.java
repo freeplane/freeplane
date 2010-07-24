@@ -35,6 +35,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.filemode.FModeController;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
@@ -47,6 +48,7 @@ public class Controller extends AController {
 	 * (Used to change this behavior under MacOSX).
 	 */
  	private ModeController modeController;
+	private ModeController modeController4build;
 	final private Map<String, ModeController> modeControllers = new LinkedHashMap<String, ModeController>();
 	private ViewController viewController;
 
@@ -62,7 +64,7 @@ public class Controller extends AController {
 		extensionContainer.addExtension(clazz, extension);
 	}
 
-	public void addModeController() {
+	public void addModeController(final ModeController modeController) {
 		modeControllers.put(modeController.getModeName(), modeController);
 	}
 
@@ -93,7 +95,7 @@ public class Controller extends AController {
 
 	/** @return the current modeController. */
 	public ModeController getModeController() {
-		return modeController;
+		return modeController4build != null ? modeController4build : modeController;
 	}
 
 	public ModeController getModeController(final String modeName) {
@@ -130,6 +132,7 @@ public class Controller extends AController {
 	}
 
 	public void selectMode(ModeController newModeController) {
+		modeController4build = null;
 		final ModeController oldModeController = modeController;
 		if (oldModeController == newModeController) {
 			return;
@@ -178,12 +181,23 @@ public class Controller extends AController {
 		return Runtime.getRuntime().exec(command);
 	}
 
+	private static ThreadLocal<Controller> threadController = new ThreadLocal<Controller>();
+	private static Controller currentController = null;
 	public static Controller getCurrentController() {
-		// TODO Auto-generated method stub
-		return null;
+		final Controller controller = threadController.get();
+		return controller != null ? controller : currentController;
+	}
+	
+	public static void setCurrentController(final Controller controller){
+		currentController = controller;
 	}
 
 	public static ModeController getCurrentModeController() {
-	    return getCurrentModeController();
+	    return getCurrentController().getModeController();
+    }
+
+	public void selectModeForBuild(ModeController modeController4build) {
+	    this.modeController4build = modeController4build;
+	    
     }
 }

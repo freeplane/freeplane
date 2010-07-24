@@ -123,7 +123,8 @@ public class SModeControllerFactory {
 		((MIconController) IconController.getController()).updateMenus(builder);
 		modeController.updateMenus();
 		new MapStyle(false);
-		controller.addModeController();
+		controller.addModeController(modeController);
+		controller.selectModeForBuild(modeController);
 		final SModeController modeController = this.modeController;
 		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(null, false);
 		styleEditorPanel.init();

@@ -172,6 +172,7 @@ class ActivatorImpl implements BundleActivator {
 				    IModeControllerExtensionProvider.class.getName(), "(mode=" + modeName + ")");
 				if (modeControllerProviders != null) {
 					final ModeController modeController = controller.getModeController(modeName);
+					Controller.getCurrentController().selectModeForBuild(modeController);
 					for (int i = 0; i < modeControllerProviders.length; i++) {
 						final ServiceReference modeControllerProvider = modeControllerProviders[i];
 						final IModeControllerExtensionProvider service = (IModeControllerExtensionProvider) context
@@ -200,7 +201,7 @@ class ActivatorImpl implements BundleActivator {
 		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				starter.createFrame(controller, getCallParameters());
+				starter.createFrame(getCallParameters());
 			}
 		});
 	}
