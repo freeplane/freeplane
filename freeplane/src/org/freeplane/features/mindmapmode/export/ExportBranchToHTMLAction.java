@@ -30,7 +30,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.ClipboardController;
-import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.url.UrlManager;
 
 @ActionLocationDescriptor(accelerator = "control H", locations = { "/menu_bar/file/export/html" })

@@ -32,7 +32,6 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.NodeModel;
@@ -52,7 +51,7 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 //		this.controller = controller;
 	}
 
-	protected JComponent getNoteViewerComponent() {
+	private JComponent createNoteViewerComponent() {
 		if (noteViewer == null) {
 			noteViewer = new JLabel();
 			noteViewer.setBackground(Color.WHITE);
@@ -75,26 +74,19 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 	}
 
 	public void onDeselect(final NodeModel pNode) {
-		Controller.getCurrentController().getViewController().removeSplitPane();
+		if(noteViewer != null){
+			noteViewer.setText("");
+		}
 	}
 
 	public void onSelect(final NodeModel pNode) {
 		final String noteText = NoteModel.getNoteText(pNode);
 		if (noteText != null && !noteText.equals("")) {
-			Controller.getCurrentController().getViewController().insertComponentIntoSplitPane(getNoteViewerComponent());
+			if(noteViewer == null){
+				Controller.getCurrentController().getViewController().insertComponentIntoSplitPane(createNoteViewerComponent());
+			}
 			noteViewer.setText(noteText);
-			try {
-				noteViewer.setText(noteText);
-			}
-			catch (final Exception ex) {
-				setTextWithExceptionInfo(noteText, ex);
-			}
 		}
-	}
-
-	private void setTextWithExceptionInfo(final String text, final Exception ex) {
-		final String string = HtmlUtils.combineTextWithExceptionInfo(text, ex);
-		noteViewer.setText(string);
 	}
 
 	public void onUpdate(final NodeModel pNode) {

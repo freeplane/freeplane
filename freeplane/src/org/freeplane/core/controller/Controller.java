@@ -35,7 +35,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.filemode.FModeController;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to

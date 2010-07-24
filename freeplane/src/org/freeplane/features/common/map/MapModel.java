@@ -122,7 +122,7 @@ public class MapModel {
 	 * Change this to always return null if your model doesn't support files.
 	 */
 	public File getFile() {
-		return url != null ? new File(url.getFile()) : null;
+		return url != null  && url.getProtocol().equals("file") ? new File(url.getFile()) : null;
 	}
 
 	public Filter getFilter() {
