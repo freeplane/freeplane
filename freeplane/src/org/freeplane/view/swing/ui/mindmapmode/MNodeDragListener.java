@@ -23,7 +23,7 @@ import org.freeplane.view.swing.map.MainView;
 /**
  * The NodeDragListener which belongs to every NodeView
  */
-class MDefaultNodeDragListener implements DragGestureListener {
+public class MNodeDragListener implements DragGestureListener {
 
 	public void dragGestureRecognized(final DragGestureEvent e) {
 		if (!ResourceController.getResourceController().getBooleanProperty("draganddrop")) {
