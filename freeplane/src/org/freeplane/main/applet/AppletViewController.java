@@ -51,11 +51,11 @@ import org.freeplane.features.browsemode.BModeController;
  * @author Dimitry Polivaev
  */
 class AppletViewController extends ViewController {
-	final private JApplet applet;
+	final private FreeplaneApplet applet;
 	private JComponent mComponentInSplitPane;
 	private JPanel southPanel;
 
-	public AppletViewController( final JApplet applet, Controller controller,
+	public AppletViewController( final FreeplaneApplet applet, Controller controller,
 	                            final IMapViewManager mapViewController) {
 		super(controller, mapViewController, "");
 		this.applet = applet;
@@ -211,14 +211,7 @@ class AppletViewController extends ViewController {
 
 	@Override
 	public void setWaitingCursor(final boolean waiting) {
-		if (waiting) {
-			applet.getRootPane().getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			applet.getRootPane().getGlassPane().setVisible(true);
-		}
-		else {
-			applet.getRootPane().getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			applet.getRootPane().getGlassPane().setVisible(false);
-		}
+		applet.setWaitingCursor(waiting);
 	}
 
 	public void start() {

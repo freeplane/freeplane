@@ -23,6 +23,8 @@ import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.DefaultKeyboardFocusManager;
 import java.awt.EventQueue;
 import java.awt.HeadlessException;
 import java.awt.KeyboardFocusManager;
@@ -38,6 +40,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.FocusManager;
 import javax.swing.JApplet;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
@@ -61,6 +64,24 @@ import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 
 public class FreeplaneApplet extends JApplet {
+	
+	private class GlassPane extends JComponent{
+
+		@Override
+        protected void processMouseEvent(MouseEvent e) {
+			if (e.getID() == MouseEvent.MOUSE_CLICKED && controller != Controller.getCurrentController() ){
+				if(appletLock.tryLock()){
+					Controller.setCurrentController(controller);
+					appletLock.unlock();
+					JOptionPane.getFrameForComponent(this).getMostRecentFocusOwner().requestFocus();
+				}
+				return;
+			}
+			final MouseEvent mouseEvent = new MouseEvent(rootPane, e.getID(), e.getWhen(), e.getModifiers(), e.getX(), e.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton());
+			DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().redispatchEvent(rootPane, mouseEvent);
+        }
+	}
+	
 	private AppletResourceController appletResourceController;
 	/**
 	 * 
@@ -85,6 +106,9 @@ public class FreeplaneApplet extends JApplet {
 			appletResourceController = new AppletResourceController(this);
 			updateLookAndFeel();
 			createRootPane();
+			final GlassPane glassPane = new GlassPane();
+			setGlassPane(glassPane);
+			glassPane.setVisible(true);
 			controller = new Controller(appletResourceController);
 			appletResourceController.init();
 			Controller.setCurrentController(controller);
@@ -148,5 +172,15 @@ public class FreeplaneApplet extends JApplet {
 			}
 		}
 		return c;
-    }
+	}
+
+	public void setWaitingCursor(final boolean waiting) {
+		if (waiting) {
+			getRootPane().getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		}
+		else {
+			getRootPane().getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		}
+	}
+
 }
