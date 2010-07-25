@@ -86,6 +86,10 @@
 			<menu_category name="folding">
 				<menu_action action="ToggleFoldedAction" accelerator="SPACE"  />
 				<menu_action action="ToggleChildrenFoldedAction"   accelerator="control SPACE" />
+				<menu_action action="UnfoldAllAction" accelerator="alt END" />
+				<menu_action action="FoldAllAction" accelerator="alt HOME" />
+				<menu_action action="UnfoldOneLevelAction" accelerator="alt PAGE_DOWN" />
+				<menu_action action="FoldOneLevelAction" accelerator="alt PAGE_UP" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="links">
@@ -136,14 +140,18 @@
 		<menu_category name="main">
 			<menu_action action="PrintDirectAction" />
 		</menu_category>
-		<menu_category name="zoom">
+		<menu_category name="zoom"/>
+		<menu_category name="folding">
+				<menu_action action="UnfoldAllAction"/>
+				<menu_action action="FoldAllAction"/>
+				<menu_action action="UnfoldOneLevelAction"/>
+				<menu_action action="FoldOneLevelAction"/>
 		</menu_category>
 		<menu_category name="PasteAction">
 			<menu_action action="CopyAction"  />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="history"/>
-		<menu_category name="folding">
-		</menu_category>
+		<menu_category name="url"/>
 	</menu_category>
 </menu_structure>

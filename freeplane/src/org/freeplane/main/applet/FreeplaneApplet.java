@@ -19,16 +19,26 @@
  */
 package org.freeplane.main.applet;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.EventQueue;
 import java.awt.HeadlessException;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.FocusManager;
 import javax.swing.JApplet;
+import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
@@ -57,24 +67,25 @@ public class FreeplaneApplet extends JApplet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private AppletViewController appletViewController;
-// // 	private Controller controller;
+ 	private Controller controller;
+ 	
+ 	final static Lock appletLock = new ReentrantLock();
 
 	public FreeplaneApplet() throws HeadlessException {
 	    super();
     }
 
 	@Override
-	synchronized public void destroy() {
-		Controller.getCurrentController().shutdown();
+	public void destroy() {
 	}
-
 	@Override
 	public void init() {
-		synchronized (FreeplaneApplet.class){
+		try{
+			appletLock.lock();
 			appletResourceController = new AppletResourceController(this);
 			updateLookAndFeel();
 			createRootPane();
-			Controller controller = new Controller(appletResourceController);
+			controller = new Controller(appletResourceController);
 			appletResourceController.init();
 			Controller.setCurrentController(controller);
 			final Container contentPane = getContentPane();
@@ -99,6 +110,9 @@ public class FreeplaneApplet extends JApplet {
 			appletViewController.init(controller);
 			controller.getViewController().setMenubarVisible(false);
 		}
+		finally{
+			appletLock.unlock();
+		}
 	}
 
 	@Override
@@ -107,7 +121,7 @@ public class FreeplaneApplet extends JApplet {
 	}
 
 	@Override
-	synchronized public void stop() {
+	public void stop() {
 		super.stop();
 	}
 
@@ -117,4 +131,22 @@ public class FreeplaneApplet extends JApplet {
 		lookAndFeel = appletResourceController.getProperty("lookandfeel");
 		ViewController.setLookAndFeel(lookAndFeel);
 	}
+
+	@Override
+    public Component findComponentAt(int x, int y) {
+	    final Component c = super.findComponentAt(x, y);
+	    if(c == null){
+	    	return null;
+	    }
+		final AWTEvent currentEvent = EventQueue.getCurrentEvent();
+		if(controller != Controller.getCurrentController() 
+				&& currentEvent instanceof MouseEvent 
+				&& currentEvent.getID() == MouseEvent.MOUSE_MOVED){
+			if(appletLock.tryLock()){
+				Controller.setCurrentController(controller);
+				appletLock.unlock();
+			}
+		}
+		return c;
+    }
 }

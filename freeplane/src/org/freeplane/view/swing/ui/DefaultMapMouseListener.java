@@ -21,6 +21,7 @@ package org.freeplane.view.swing.ui;
 
 import java.awt.event.MouseEvent;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
@@ -71,7 +72,6 @@ public class DefaultMapMouseListener implements IMouseListener {
 	public void mouseClicked(final MouseEvent e) {
 		final MapView map = (MapView) e.getSource();
 		final Controller controller = map.getModeController().getController();
-		Controller.setCurrentController(controller);
 		final IMapSelection selection = controller.getSelection();
 		selection.selectAsTheOnlyOneSelected(selection.getSelected());
 	}
@@ -83,8 +83,6 @@ public class DefaultMapMouseListener implements IMouseListener {
 	}
 
 	public void mouseEntered(final MouseEvent e) {
-		final MapView map = (MapView) e.getSource();
-		Controller.setCurrentController(map.getModeController().getController());
 	}
 
 	public void mouseExited(final MouseEvent e) {

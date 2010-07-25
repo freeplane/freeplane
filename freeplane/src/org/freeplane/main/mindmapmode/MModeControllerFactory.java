@@ -152,7 +152,6 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new SaveAll());
 		menuBuilder.addAnnotatedAction(new SortNodes());
 		menuBuilder.addAnnotatedAction(new SplitNode());
-		new UnfoldAll().addActionsAtMenuBuilder(menuBuilder);
 		new ChangeNodeLevelController().addActionsAtMenuBuilder(menuBuilder);
 		ExportWithXSLT.createXSLTExportActions("/xml/ExportWithXSLT.xml");
 		ExportToImage.createActions();
@@ -271,6 +270,7 @@ public class MModeControllerFactory {
 		    .getController()).getIconToolBarScrollPane());
 		modeController.addAction(new ToggleToolbarAction("ToggleLeftToolbarAction", "/icon_toolbar"));
 		new RevisionPlugin();
+		new UnfoldAll();
 		userInputListenerFactory.setMenuStructure("/xml/mindmapmodemenu.xml");
 		userInputListenerFactory.updateMenus(modeController);
 		final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();

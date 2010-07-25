@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
@@ -37,8 +38,6 @@ import org.freeplane.features.common.map.NodeModel;
  * @author foltin
  */
 public class UnfoldAll implements IMouseWheelEventHandler {
-	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
-	accelerator = "alt HOME")
 	private class FoldAllAction extends AMultipleNodeAction {
 		private static final long serialVersionUID = 1L;
 
@@ -52,8 +51,6 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
-	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
-	accelerator = "alt PAGE_UP")
 	private class FoldOneLevelAction extends AMultipleNodeAction {
 		private static final long serialVersionUID = 1L;
 
@@ -67,8 +64,6 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
-	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
-	accelerator = "alt END")
 	private class UnfoldAllAction extends AMultipleNodeAction {
 		private static final long serialVersionUID = 1L;
 
@@ -82,8 +77,6 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
-	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
-	accelerator = "alt PAGE_DOWN")
 	private class UnfoldOneLevelAction extends AMultipleNodeAction {
 		private static final long serialVersionUID = 1L;
 
@@ -103,15 +96,12 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		super();
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getUserInputListenerFactory().addMouseWheelEventHandler(this);
-	}
-
-	public void addActionsAtMenuBuilder(final MenuBuilder menuBuilder) {
-		for (final AMultipleNodeAction aMultipleNodeAction : getAnnotatedActions()) {
-			menuBuilder.addAnnotatedAction(aMultipleNodeAction);
+		for (final AFreeplaneAction annotatedAction : getAnnotatedActions()) {
+			modeController.addAction(annotatedAction);
 		}
 	}
 
-	public List<AMultipleNodeAction> getAnnotatedActions() {
+	private List<AMultipleNodeAction> getAnnotatedActions() {
 		final ArrayList<AMultipleNodeAction> result = new ArrayList<AMultipleNodeAction>();
 		result.add(new UnfoldAllAction());
 		result.add(new FoldAllAction());

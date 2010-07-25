@@ -97,10 +97,7 @@ public class BModeControllerFactory {
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
 		userInputListenerFactory.setMenuStructure(menuStructure);
-		final UnfoldAll unfoldAll = new UnfoldAll();
-		for (final AFreeplaneAction annotatedAction : unfoldAll.getAnnotatedActions()) {
-			modeController.addAction(annotatedAction);
-		}
+		new UnfoldAll();
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
 		new ViewerController();
