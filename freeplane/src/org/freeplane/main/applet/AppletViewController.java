@@ -20,14 +20,12 @@
 package org.freeplane.main.applet;
 
 import java.awt.BorderLayout;
-import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
-import javax.swing.JApplet;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;

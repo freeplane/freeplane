@@ -21,7 +21,6 @@ package org.freeplane.view.swing.ui;
 
 import java.awt.event.MouseEvent;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;

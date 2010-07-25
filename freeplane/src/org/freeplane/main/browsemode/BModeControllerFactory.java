@@ -26,7 +26,6 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.browsemode.BModeController;
@@ -49,7 +48,6 @@ import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
-import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 /**

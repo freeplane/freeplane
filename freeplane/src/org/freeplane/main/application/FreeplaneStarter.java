@@ -226,7 +226,7 @@ public class FreeplaneStarter {
 			if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
 				System.setProperty("org.freeplane.core.dir.lib", "/lib/");
 			}
-			Controller controller = createController();
+			createController();
 			createFrame(args);
 		}
 		catch (final Exception e) {
