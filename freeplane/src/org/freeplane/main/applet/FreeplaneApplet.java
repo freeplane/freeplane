@@ -24,21 +24,13 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
-import java.awt.DefaultKeyboardFocusManager;
 import java.awt.EventQueue;
 import java.awt.HeadlessException;
-import java.awt.KeyboardFocusManager;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.swing.FocusManager;
 import javax.swing.JApplet;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -65,20 +57,30 @@ import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 
 public class FreeplaneApplet extends JApplet {
 	
+	@SuppressWarnings("serial")
 	private class GlassPane extends JComponent{
+		public GlassPane() {
+			addMouseListener(new MouseAdapter(){});
+		}
+
 
 		@Override
         protected void processMouseEvent(MouseEvent e) {
-			if (e.getID() == MouseEvent.MOUSE_CLICKED && controller != Controller.getCurrentController() ){
-				if(appletLock.tryLock()){
+			if (e.getID() == MouseEvent.MOUSE_CLICKED){ 
+				Controller currentController = Controller.getCurrentController();
+				if( controller != currentController ){
+					if(! appletLock.tryLock()){
+						return;
+					}
 					Controller.setCurrentController(controller);
 					appletLock.unlock();
 					JOptionPane.getFrameForComponent(this).getMostRecentFocusOwner().requestFocus();
+					setVisible(false);
 				}
-				return;
+				if(currentController != null){
+					currentController.getViewController().getRootPaneContainer().getGlassPane().setVisible(true);
+				}
 			}
-			final MouseEvent mouseEvent = new MouseEvent(rootPane, e.getID(), e.getWhen(), e.getModifiers(), e.getX(), e.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton());
-			DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().redispatchEvent(rootPane, mouseEvent);
         }
 	}
 	
@@ -106,9 +108,6 @@ public class FreeplaneApplet extends JApplet {
 			appletResourceController = new AppletResourceController(this);
 			updateLookAndFeel();
 			createRootPane();
-			final GlassPane glassPane = new GlassPane();
-			setGlassPane(glassPane);
-			glassPane.setVisible(true);
 			controller = new Controller(appletResourceController);
 			appletResourceController.init();
 			Controller.setCurrentController(controller);
@@ -132,6 +131,9 @@ public class FreeplaneApplet extends JApplet {
 			controller.selectMode(browseController);
 			appletResourceController.setPropertyByParameter(this, "browsemode_initial_map");
 			appletViewController.init(controller);
+			final GlassPane glassPane = new GlassPane();
+			setGlassPane(glassPane);
+			glassPane.setVisible(true);
 			controller.getViewController().setMenubarVisible(false);
 		}
 		finally{
@@ -175,11 +177,14 @@ public class FreeplaneApplet extends JApplet {
 	}
 
 	public void setWaitingCursor(final boolean waiting) {
+		Component glassPane = getRootPane().getGlassPane();
 		if (waiting) {
-			getRootPane().getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			glassPane.setVisible(true);
 		}
 		else {
-			getRootPane().getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			glassPane.setVisible(false);
 		}
 	}
 
