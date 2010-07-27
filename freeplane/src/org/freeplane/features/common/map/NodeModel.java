@@ -263,7 +263,7 @@ public class NodeModel implements MutableTreeNode {
 	public int getNodeLevel(final boolean countHidden) {
 		int level = 0;
 		NodeModel parent;
-		for (parent = this; !parent.isRoot(); parent = parent.getParentNode()) {
+		for (parent = getParentNode(); parent != null; parent = parent.getParentNode()) {
 			if (countHidden || parent.isVisible()) {
 				level++;
 			}
