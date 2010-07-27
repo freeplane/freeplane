@@ -557,7 +557,7 @@ public class StyleEditorPanel extends JPanel {
 			}
 			{
 				final String shape = NodeStyleModel.getShape(node);
-				final String viewShape = styleController.getShape(node);
+				final String viewShape = styleController.getShapeEx(node);
 				mSetNodeShape.setValue(shape != null);
 				mNodeShape.setValue(viewShape);
 				mNodeShape.setEnabled(mSetNodeShape.getBooleanValue());
