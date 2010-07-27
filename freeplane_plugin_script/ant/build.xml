@@ -28,6 +28,9 @@
 	<target name="dist" depends="build">
 		<jar jarfile="lib/plugin.jar">
 			<fileset dir="${build}"/>
+			<fileset dir="${src}">
+				<include name="**/*.xml"/>
+			</fileset>
 		</jar>
 		<delete dir="${dist.osgi.dir}" quiet="true"/>
 		<mkdir dir="${dist.osgi.dir}" />
