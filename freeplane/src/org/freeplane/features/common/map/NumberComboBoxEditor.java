@@ -38,7 +38,7 @@ public class NumberComboBoxEditor implements ComboBoxEditor{
 	}
 
 	public Object getItem() {
-		return editor.getValue();
+		return editor.getValue().toString();
 	}
 
 	public void removeActionListener(ActionListener l) {
@@ -49,11 +49,10 @@ public class NumberComboBoxEditor implements ComboBoxEditor{
 	}
 
 	public void setItem(Object anObject) {
-		if(anObject instanceof Integer){
-			editor.setValue(anObject);
+		if(anObject != null){
+			editor.setValue(Integer.valueOf(anObject.toString()));
+			return;
 		}
-		else{
-			editor.setValue(0);
-		}
+		editor.setValue(0);
 	}
 }

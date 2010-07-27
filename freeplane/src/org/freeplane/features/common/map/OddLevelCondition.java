@@ -6,7 +6,7 @@ import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class OddLevelCondition extends ASelectableCondition {
-	public static final String NAME = "node_even_level_condition";
+	public static final String NAME = "node_odd_level_condition";
 	@Override
 	protected String getName() {
 		return NAME;

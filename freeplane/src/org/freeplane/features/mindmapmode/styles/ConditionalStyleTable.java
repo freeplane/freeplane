@@ -40,8 +40,9 @@ public class ConditionalStyleTable extends JTable {
 				public void actionPerformed(ActionEvent e) {
 					final MLogicalStyleController styleController = MLogicalStyleController.getController();
 					final FilterComposerDialog filterComposerDialog = styleController.getFilterComposerDialog();
+					filterComposerDialog.acceptMultipleConditions(false);
 					filterComposerDialog.show();
-					cellEditorValue = filterComposerDialog.getCondition();
+					cellEditorValue = filterComposerDialog.getConditions().get(0);
 					if(cellEditorValue == null){
 						cellEditorValue = value;
 					}

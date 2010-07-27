@@ -463,7 +463,8 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	private boolean applyChanges() {
 		internalConditionsModel.setSelectedItem(elementaryConditionList.getSelectedValue());
 		internalConditionsModel.removeListDataListener(conditionListListener);
-		if (applyModel(internalConditionsModel)){
+		final int[] selectedIndices = elementaryConditionList.getSelectedIndices();
+		if (applyModel(internalConditionsModel, selectedIndices)){
 			internalConditionsModel = null;
 			return true;
 		}
@@ -473,7 +474,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		}
 	}
 
-	abstract protected boolean applyModel(DefaultComboBoxModel model);
+	abstract protected boolean applyModel(DefaultComboBoxModel model, int[] selectedIndices);
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}

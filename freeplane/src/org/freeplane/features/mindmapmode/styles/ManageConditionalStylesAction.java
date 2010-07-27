@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -75,13 +76,13 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 			public void actionPerformed(ActionEvent e) {
 				final MLogicalStyleController styleController = MLogicalStyleController.getController();
 				final FilterComposerDialog filterComposerDialog = styleController.getFilterComposerDialog();
+				filterComposerDialog.acceptMultipleConditions(true);
 				filterComposerDialog.show();
-				final ISelectableCondition condition = filterComposerDialog.getCondition();
-				if(condition == null){
-					return;
+				final List<ISelectableCondition> conditions = filterComposerDialog.getConditions();
+				int row = conditionalStyleTable.getRowCount();
+				for(final ISelectableCondition condition : conditions){
+					LogicalStyleController.getController().addConditionalStyle(map, true, condition, MapStyleModel.DEFAULT_STYLE);
 				}
-				LogicalStyleController.getController().addConditionalStyle(map, true, condition, MapStyleModel.DEFAULT_STYLE);
-				int row = conditionalStyleTable.getRowCount() - 1;
 				conditionalStyleTable.setRowSelectionInterval(row, row);
 			} 
 		});

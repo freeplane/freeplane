@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
@@ -79,7 +78,7 @@ class EditFilterAction extends AFreeplaneAction {
 			return model;
 	    }
 		
-		protected boolean applyModel(DefaultComboBoxModel model) {
+		protected boolean applyModel(DefaultComboBoxModel model, int[] selectedIndices) {
 		    filterController.setFilterConditions(model);
 		    return true;
 	    }
