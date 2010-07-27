@@ -76,9 +76,12 @@ public class TextController implements IExtension {
 	public void addTextTransformer(ITextTransformer textTransformer) {
 	    textTransformers.add(textTransformer);
     }
-	private List<ITextTransformer> getTextTransformers() {
+	public List<ITextTransformer> getTextTransformers() {
 	    return textTransformers;
 	}
+	public void removeTextTransformer(ITextTransformer textTransformer) {
+	    textTransformers.remove(textTransformer);
+    }
 
 	final private List<ITextTransformer> textTransformers;
 	
