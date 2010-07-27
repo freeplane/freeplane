@@ -9,6 +9,10 @@
 		<ant antfile="freeplane_framework/ant/build.xml"  target="dist"
 			inheritAll="false" />
 	</target>
+	<target name="format-translation">
+		<ant antfile="freeplane_framework/ant/build.xml"  target="format-translation"
+			inheritAll="false" />
+	</target>
 
 	<target name="clean">
 		<ant antfile="freeplane_framework/ant/build.xml"  target="clean"
