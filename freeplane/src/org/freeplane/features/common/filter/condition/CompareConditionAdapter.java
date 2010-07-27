@@ -57,18 +57,29 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 	protected int compareTo(final String nodeValue) throws NumberFormatException {
 		if (conditionValue instanceof Integer) {
 			try {
-				return Integer.valueOf(nodeValue).compareTo((Integer) conditionValue);
+				final Integer value = Integer.valueOf(nodeValue);
+				return compareTo(value);
 			}
 			catch (final NumberFormatException fne) {
 			};
-			return Double.valueOf(nodeValue).compareTo(new Double((Integer) conditionValue));
+			final Double value = Double.valueOf(nodeValue);
+			return compareTo(value);
 		}
 		else if (conditionValue instanceof Double) {
-			return Double.valueOf(nodeValue).compareTo((Double) conditionValue);
+			final Double value = Double.valueOf(nodeValue);
+			return compareTo(value);
 		}
 		return ignoreCase ? nodeValue.compareToIgnoreCase(conditionValue.toString()) : nodeValue
 		    .compareTo(conditionValue.toString());
 	}
+
+	protected int compareTo(final Double value) {
+	    return value.compareTo(new Double((Integer) conditionValue));
+    }
+
+	protected int compareTo(final Integer value) {
+	    return value.compareTo((Integer) conditionValue);
+    }
 
 	public String createDescription(final String attribute, final int comparationResult, final boolean succeed) {
 		String simpleCondition;

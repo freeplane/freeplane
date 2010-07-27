@@ -21,9 +21,8 @@ package org.freeplane.features.common.link;
 
 import java.net.URI;
 
-import javax.swing.JComponent;
 
-import org.freeplane.features.common.filter.condition.ConditionFactory;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -32,12 +31,9 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public abstract class HyperLinkCondition implements ISelectableCondition {
+public abstract class HyperLinkCondition extends ASelectableCondition implements ISelectableCondition {
 	static final String TEXT = "TEXT";
-	private String description;
 	final private String hyperlink;
-	private JComponent renderer;
-
 	public HyperLinkCondition(final String hyperlink) {
 		super();
 		this.hyperlink = hyperlink;
@@ -53,33 +49,11 @@ public abstract class HyperLinkCondition implements ISelectableCondition {
 		return checkLink(nodeLink);
 	}
 
-	abstract protected String createDesctiption();
-
 	public String getHyperlink() {
 		return hyperlink;
 	}
-
-	public JComponent getListCellRendererComponent() {
-		if (renderer == null) {
-			renderer = ConditionFactory.createCellRendererComponent(toString());
-		}
-		return renderer;
-	}
-
-	abstract String getName();
-
-	@Override
-	public String toString() {
-		if (description == null) {
-			description = createDesctiption();
-		}
-		return description;
-	}
-
-	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(getName());
-		child.setAttribute(TEXT, hyperlink);
-		element.addChild(child);
+	
+	protected void fillXML(XMLElement element){
+		element.setAttribute(TEXT, hyperlink);
 	}
 }

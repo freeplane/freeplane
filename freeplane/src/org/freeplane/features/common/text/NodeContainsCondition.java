@@ -52,7 +52,7 @@ public class NodeContainsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = TextUtils.getText(NodeConditionController.FILTER_NODE);
+		final String nodeCondition = TextUtils.getText(NodeTextConditionController.FILTER_NODE);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false);
 	}

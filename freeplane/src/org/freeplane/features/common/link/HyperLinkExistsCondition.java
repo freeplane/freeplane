@@ -49,6 +49,7 @@ public class HyperLinkExistsCondition extends HyperLinkCondition {
 	}
 
 	@Override
+    protected
 	String getName() {
 		return NAME;
 	}

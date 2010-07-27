@@ -35,7 +35,7 @@ public class NodeMatchesRegexpCondition extends NodeCondition {
 	static final String SEARCH_PATTERN = "SEARCH_PATTERN";
 
 	static ISelectableCondition load(final XMLElement element) {
-		final Boolean ignoreCase = Boolean.valueOf(element.getAttribute(NodeCompareCondition.IGNORE_CASE, "false"));
+		final Boolean ignoreCase = Boolean.valueOf(element.getAttribute(NodeTextCompareCondition.IGNORE_CASE, "false"));
 		final String searchPattern = element.getAttribute(SEARCH_PATTERN, null);
 		return new NodeMatchesRegexpCondition(searchPattern, ignoreCase);
 	}
@@ -66,7 +66,7 @@ public class NodeMatchesRegexpCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = TextUtils.getText(NodeConditionController.FILTER_NODE);
+		final String nodeCondition = TextUtils.getText(NodeTextConditionController.FILTER_NODE);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, searchPattern.pattern(),
 		    isIgnoreCase());

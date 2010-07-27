@@ -44,6 +44,7 @@ import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.filter.NextNodeAction;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.text.TextController.Direction;
@@ -121,6 +122,8 @@ public class FreeplaneApplet extends JApplet {
 			NodeHistory.install(controller);
 			ModelessAttributeController.install();
 			TextController.install();
+			MapController.install();
+
 			TimeController.install();
 			LinkController.install();
 			IconController.install();

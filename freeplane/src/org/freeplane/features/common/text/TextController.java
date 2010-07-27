@@ -42,7 +42,7 @@ public class TextController implements IExtension {
 
 	public static void install() {
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(0,
-		    new NodeConditionController());
+		    new NodeTextConditionController());
 	}
 
 	public static void install( final TextController textController) {

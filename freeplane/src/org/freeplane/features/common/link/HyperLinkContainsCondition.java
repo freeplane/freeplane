@@ -48,7 +48,7 @@ public class HyperLinkContainsCondition extends HyperLinkCondition {
 	}
 
 	@Override
-	String getName() {
+	protected String getName() {
 		return NAME;
 	}
 }

@@ -27,23 +27,23 @@ import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class NodeCompareCondition extends CompareConditionAdapter {
+class NodeTextCompareCondition extends CompareConditionAdapter {
 	static final String COMPARATION_RESULT = "COMPARATION_RESULT";
 	static final String NAME = "node_compare_condition";
 	static final String SUCCEED = "SUCCEED";
 	static final String VALUE = "VALUE";
 
 	static ISelectableCondition load(final XMLElement element) {
-		return new NodeCompareCondition(element.getAttribute(NodeCompareCondition.VALUE, null), TreeXmlReader
+		return new NodeTextCompareCondition(element.getAttribute(NodeTextCompareCondition.VALUE, null), TreeXmlReader
 		    .xmlToBoolean(element.getAttribute(CompareConditionAdapter.IGNORE_CASE, null)), Integer.parseInt(element
-		    .getAttribute(NodeCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader.xmlToBoolean(element
-		    .getAttribute(NodeCompareCondition.SUCCEED, null)));
+		    .getAttribute(NodeTextCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader.xmlToBoolean(element
+		    .getAttribute(NodeTextCompareCondition.SUCCEED, null)));
 	}
 
 	final private int comparationResult;
 	final private boolean succeed;
 
-	NodeCompareCondition(final String value, final boolean ignoreCase, final int comparationResult,
+	NodeTextCompareCondition(final String value, final boolean ignoreCase, final int comparationResult,
 	                     final boolean succeed) {
 		super(value, ignoreCase);
 		this.comparationResult = comparationResult;
@@ -66,16 +66,16 @@ public class NodeCompareCondition extends CompareConditionAdapter {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = TextUtils.getText(NodeConditionController.FILTER_NODE);
+		final String nodeCondition = TextUtils.getText(NodeTextConditionController.FILTER_NODE);
 		return super.createDescription(nodeCondition, comparationResult, succeed);
 	}
 
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
-		child.setName(NodeCompareCondition.NAME);
+		child.setName(NodeTextCompareCondition.NAME);
 		super.attributesToXml(child);
-		child.setAttribute(NodeCompareCondition.COMPARATION_RESULT, Integer.toString(comparationResult));
-		child.setAttribute(NodeCompareCondition.SUCCEED, TreeXmlWriter.BooleanToXml(succeed));
+		child.setAttribute(NodeTextCompareCondition.COMPARATION_RESULT, Integer.toString(comparationResult));
+		child.setAttribute(NodeTextCompareCondition.SUCCEED, TreeXmlWriter.BooleanToXml(succeed));
 		element.addChild(child);
 	}
 }

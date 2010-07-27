@@ -40,7 +40,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * 21.12.2008
  */
-class NodeConditionController implements IElementaryConditionController {
+class NodeTextConditionController implements IElementaryConditionController {
 	static final String FILTER_NODE = "filter_node";
 	private final ComboBoxEditor editor = new BasicComboBoxEditor();
 	private final ComboBoxModel values = new DefaultComboBoxModel();
@@ -54,7 +54,7 @@ class NodeConditionController implements IElementaryConditionController {
 			return false;
 		}
 		final NamedObject namedObject = (NamedObject) selectedItem;
-		return namedObject.objectEquals(NodeConditionController.FILTER_NODE);
+		return namedObject.objectEquals(NodeTextConditionController.FILTER_NODE);
 	}
 
 	public boolean canSelectValues(final Object selectedItem, final NamedObject simpleCond) {
@@ -85,22 +85,22 @@ class NodeConditionController implements IElementaryConditionController {
 			}
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-			return new NodeCompareCondition(value, ignoreCase, 0, true);
+			return new NodeTextCompareCondition(value, ignoreCase, 0, true);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-			return new NodeCompareCondition(value, ignoreCase, 0, false);
+			return new NodeTextCompareCondition(value, ignoreCase, 0, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-			return new NodeCompareCondition(value, ignoreCase, 1, true);
+			return new NodeTextCompareCondition(value, ignoreCase, 1, true);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-			return new NodeCompareCondition(value, ignoreCase, -1, false);
+			return new NodeTextCompareCondition(value, ignoreCase, -1, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-			return new NodeCompareCondition(value, ignoreCase, -1, true);
+			return new NodeTextCompareCondition(value, ignoreCase, -1, true);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-			return new NodeCompareCondition(value, ignoreCase, 1, false);
+			return new NodeTextCompareCondition(value, ignoreCase, 1, false);
 		}
 		return null;
 	}
@@ -117,7 +117,7 @@ class NodeConditionController implements IElementaryConditionController {
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(TextUtils.createTranslatedString(NodeConditionController.FILTER_NODE));
+		list.addElement(TextUtils.createTranslatedString(NodeTextConditionController.FILTER_NODE));
 		return list;
 	}
 
@@ -140,8 +140,8 @@ class NodeConditionController implements IElementaryConditionController {
 		if (element.getName().equalsIgnoreCase(IgnoreCaseNodeContainsCondition.NAME)) {
 			return IgnoreCaseNodeContainsCondition.load(element);
 		}
-		if (element.getName().equalsIgnoreCase(NodeCompareCondition.NAME)) {
-			return NodeCompareCondition.load(element);
+		if (element.getName().equalsIgnoreCase(NodeTextCompareCondition.NAME)) {
+			return NodeTextCompareCondition.load(element);
 		}
 		if (element.getName().equalsIgnoreCase(NodeMatchesRegexpCondition.NAME)) {
 			return NodeMatchesRegexpCondition.load(element);

@@ -41,6 +41,7 @@ import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.filter.NextNodeAction;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.styles.LogicalStyleFilterController;
@@ -141,6 +142,7 @@ public class FreeplaneStarter {
 			controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
 			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(7,
 			    new LogicalStyleFilterController());
+			MapController.install();
 
 			NodeHistory.install(controller);
 			MModeControllerFactory.createModeController();
