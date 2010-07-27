@@ -369,7 +369,7 @@ public class NodeStyleController implements IExtension {
 	}
 
 	public String getShape(final NodeModel node) {
-		final String returnedString = shapeHandlers.getProperty(node);
+		final String returnedString = getShapeEx(node);
 		if (returnedString.equals(NodeStyleModel.SHAPE_COMBINED)) {
 			if (Controller.getCurrentModeController().getMapController().isFolded(node)) {
 				return NodeStyleModel.STYLE_BUBBLE;
@@ -380,6 +380,10 @@ public class NodeStyleController implements IExtension {
 		}
 		return returnedString;
 	}
+
+	public String getShapeEx(final NodeModel node) {
+	    return shapeHandlers.getProperty(node);
+    }
 
 	public boolean isBold(final NodeModel node) {
 		return getFont(node).isBold();
