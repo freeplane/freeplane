@@ -19,13 +19,19 @@
  */
 package org.freeplane.features.common.text;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.map.ITextTransformer;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev
@@ -37,8 +43,12 @@ public class TextController implements IExtension {
 
 	public static TextController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
-		return (TextController) modeController.getExtension(TextController.class);
+		return getController(modeController);
 	}
+
+	public static TextController getController(ModeController modeController) {
+		return (TextController) modeController.getExtension(TextController.class);
+    }
 
 	public static void install() {
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(0,
@@ -54,6 +64,7 @@ public class TextController implements IExtension {
 
 	public TextController() {
 		super();
+		textTransformers = new LinkedList<ITextTransformer>();
 //		this.modeController = modeController;
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
@@ -61,6 +72,28 @@ public class TextController implements IExtension {
 		final WriteManager writeManager = mapController.getWriteManager();
 		final NodeTextBuilder textBuilder = new NodeTextBuilder();
 		textBuilder.registerBy(readManager, writeManager);
+	}
+
+	public void addTextTransformer(ITextTransformer textTransformer) {
+	    textTransformers.add(textTransformer);
+    }
+	private List<ITextTransformer> getTextTransformers() {
+	    return textTransformers;
+	}
+
+	final private List<ITextTransformer> textTransformers;
+	
+	public String getText(NodeModel nodeModel) {
+		String nodeText = nodeModel.getText();
+		for (ITextTransformer textTransformer : getTextTransformers()) {
+			nodeText = textTransformer.transform(nodeText, nodeModel);
+		}
+		return nodeText;
+    }
+
+	public String getPlainTextContent(NodeModel nodeModel) {
+		final String text = getText(nodeModel);
+		return HtmlUtils.htmlToPlain(text);    
 	}
 
 }

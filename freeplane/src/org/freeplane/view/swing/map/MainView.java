@@ -57,9 +57,10 @@ import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
-import org.freeplane.features.common.map.ITextTransformer;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.text.TextController;
 
 /**
  * Base class for all node views.
@@ -330,28 +331,20 @@ public abstract class MainView extends ZoomableLabel {
 		return new Point(0, getHeight());
 	}
 
-	private List<ITextTransformer> getTextTransformers() {
-		if (textTransformers == null) {
-			final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
-			textTransformers = mapView.getModeController().getTextTransformers();
-		}
-	    return textTransformers;
-	}
-
-	private List<ITextTransformer> textTransformers;
 	protected void updateText(NodeModel nodeModel){
-		String nodeText = nodeModel.getText();
+		final ModeController modeController = getMap().getModeController();
+		String text;
 		try {
-			for (ITextTransformer textTransformer : getTextTransformers()) {
-				nodeText = textTransformer.transform(nodeText, nodeModel);
-			}
+			text = TextController.getController(modeController).getText(nodeModel);
 	    }
 	    catch (Exception e) {
-	    	nodeText = nodeModel.getText();
+	    	text = nodeModel.getText();
 	    	setBorder(errorBorder );
 	    	setToolTipText(e.getLocalizedMessage());
 	    }
-		updateText(nodeText);
+		updateText(text);
 	}
+	
+	
 
 }

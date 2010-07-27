@@ -26,6 +26,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 
 /**
@@ -39,8 +40,8 @@ public class SortNodes extends AMultipleNodeAction {
 				final NodeModel node1 = (NodeModel) pArg0;
 				if (pArg1 instanceof NodeModel) {
 					final NodeModel node2 = (NodeModel) pArg1;
-					final String nodeText1 = node1.getPlainTextContent();
-					final String nodeText2 = node2.getPlainTextContent();
+					final String nodeText1 = TextController.getController().getPlainTextContent(node1);
+					final String nodeText2 = TextController.getController().getPlainTextContent(node2);
 					return nodeText1.compareToIgnoreCase(nodeText2);
 				}
 			}

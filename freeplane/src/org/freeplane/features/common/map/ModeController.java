@@ -20,7 +20,6 @@
 package org.freeplane.features.common.map;
 
 import java.awt.Container;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -64,7 +63,6 @@ public class ModeController extends AController {
 	 * links).
 	 */
 	private IUserInputListenerFactory userInputListenerFactory;
-	private ArrayList<ITextTransformer> textTransformers = new ArrayList<ITextTransformer>();
 	final private Controller controller;
 
 	/**
@@ -329,12 +327,4 @@ public class ModeController extends AController {
 	public boolean canEdit() {
 		return false;
 	}
-
-	public List<ITextTransformer> getTextTransformers() {
-	    return textTransformers ;
-    }
-
-	public void addTextTransformer(ITextTransformer textTransformer) {
-	    textTransformers.add(textTransformer);
-    }
 }

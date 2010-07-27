@@ -130,12 +130,12 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 	
 	public String getPlainText() {
-		return getDelegate().getPlainTextContent();
+		return TextController.getController().getPlainTextContent(getDelegate());
 	}
 
 	@Deprecated // use getPlainText() instead
 	public String getPlainTextContent() {
-		return getDelegate().getPlainTextContent();
+		return TextController.getController().getPlainTextContent(getDelegate());
 	}
 
 	public Proxy.NodeStyle getStyle() {

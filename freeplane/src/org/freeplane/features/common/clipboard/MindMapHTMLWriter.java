@@ -36,6 +36,7 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
 
 class MindMapHTMLWriter {
@@ -205,7 +206,7 @@ class MindMapHTMLWriter {
 		    .write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"
 		            + MindMapHTMLWriter.el + "<html>" + MindMapHTMLWriter.el + "<head>" + MindMapHTMLWriter.el);
 		fileout.write("<title>"
-		        + MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(rootNodeOfBranch.getPlainTextContent()
+		        + MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(TextController.getController().getPlainTextContent(rootNodeOfBranch)
 		            .replace('\n', ' ')) + "</title>" + MindMapHTMLWriter.el);
 		writeStyle();
 		fileout.write(MindMapHTMLWriter.el + "</head>" + MindMapHTMLWriter.el + "<body");

@@ -56,7 +56,7 @@ public class NodeMatchesRegexpCondition extends NodeCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final String text = node.getPlainTextContent();
+		final String text = TextController.getController().getPlainTextContent(node);
 		return checkText(text);
 	}
 

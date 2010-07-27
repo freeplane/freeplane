@@ -8,6 +8,7 @@ import javax.swing.JMenu;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
@@ -22,7 +23,7 @@ public class Activator implements BundleActivator {
 		// implements IModeControllerExtensionProvider.installExtension()
 		public void installExtension(ModeController modeController) {
 			addMenuItems(modeController);
-			modeController.addTextTransformer(new SpreadsheetTextTransformer());
+			TextController.getController(modeController).addTextTransformer(new SpreadsheetTextTransformer());
 		}
 
 		private void addMenuItems(ModeController modeController) {

@@ -49,6 +49,7 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.map.MapWriter.Mode;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.text.TextController;
 
 /**
  * @author Dimitry Polivaev
@@ -382,7 +383,7 @@ public class ClipboardController implements IExtension {
 			fileout.write("o");
 		}
 		else {
-			final String text = rtfEscapeUnicodeAndSpecialCharacters(mindMapNodeModel.getPlainTextContent());
+			final String text = rtfEscapeUnicodeAndSpecialCharacters(TextController.getController().getPlainTextContent(mindMapNodeModel));
 			if (NodeLinks.getValidLink(mindMapNodeModel) != null) {
 				final String link = rtfEscapeUnicodeAndSpecialCharacters(NodeLinks.getLinkAsString(mindMapNodeModel));
 				if (link.equals(mindMapNodeModel.toString())) {
@@ -403,7 +404,7 @@ public class ClipboardController implements IExtension {
 	}
 
 	public void writeTXT(final NodeModel mindMapNodeModel, final Writer fileout, final int depth) throws IOException {
-		final String plainTextContent = mindMapNodeModel.getPlainTextContent();
+		final String plainTextContent = TextController.getController().getPlainTextContent(mindMapNodeModel);
 		for (int i = 0; i < depth; ++i) {
 			fileout.write("    ");
 		}

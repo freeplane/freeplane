@@ -43,6 +43,7 @@ import org.freeplane.features.common.filter.Filter;
 import org.freeplane.features.common.filter.FilterInfo;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.icon.UIIcon;
+import org.freeplane.features.common.text.TextController;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to
@@ -290,12 +291,8 @@ public class NodeModel implements MutableTreeNode {
 		return path;
 	}
 
-	public String getPlainTextContent() {
-		return HtmlUtils.htmlToPlain(getText());
-	}
-
 	public String getShortText() {
-		String adaptedText = getPlainTextContent();
+		String adaptedText = TextController.getController().getPlainTextContent(this);
 		if (adaptedText.length() > 40) {
 			adaptedText = adaptedText.substring(0, 40) + " ...";
 		}

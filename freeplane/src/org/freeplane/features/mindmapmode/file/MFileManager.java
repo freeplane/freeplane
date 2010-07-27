@@ -69,6 +69,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.map.MapWriter.Mode;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.map.MMapController;
@@ -259,7 +260,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 * @param map
 	 */
 	private String getFileNameProposal(final MapModel map) {
-		String rootText = (map.getRootNode()).getPlainTextContent();
+		String rootText = TextController.getController().getPlainTextContent((map.getRootNode()));
 		rootText = rootText.replaceAll("[&:/\\\\\0%$#~\\?\\*]+", "");
 		return rootText;
 	}
