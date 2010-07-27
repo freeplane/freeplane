@@ -1,7 +1,7 @@
 package org.freeplane.plugin.spreadsheet;
 
-import org.freeplane.features.common.map.ITextTransformer;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.ScriptingEngine;
 

@@ -28,7 +28,6 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.filter.FilterController;
-import org.freeplane.features.common.map.ITextTransformer;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
