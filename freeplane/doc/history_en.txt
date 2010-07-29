@@ -1,4 +1,10 @@
 ===============================
+1.1.2
+===============================
+Bug fixes in applet browser
+Catch exceptions thrown from hook writers
+
+===============================
 1.1.1
 ===============================
 New version of latex component included
