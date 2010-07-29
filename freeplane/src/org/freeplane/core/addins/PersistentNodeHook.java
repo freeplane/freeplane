@@ -150,10 +150,15 @@ public abstract class PersistentNodeHook {
 
 	protected class XmlWriter implements IExtensionElementWriter {
 		public void writeContent(final ITreeWriter writer, final Object object, final IExtension extension)
-		        throws IOException {
+		throws IOException {
 			final XMLElement element = new XMLElement("hook");
-			saveExtension(extension, element);
-			writer.addElement(null, element);
+			try{
+				saveExtension(extension, element);
+				writer.addElement(null, element);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 	}
 
