@@ -133,14 +133,18 @@ public abstract class PersistentNodeHook {
 					return;
 				}
 			}
-			if (selectableHookAction != null) {
-				selectableHookAction.setEnabled(true);
-			}
 			final NodeModel node = (NodeModel) userObject;
 			if (node.getExtension(getExtensionClass()) != null) {
 				return;
 			}
-			add(node, createExtension(node, lastBuiltElement));
+			final IExtension extension = createExtension(node, lastBuiltElement);
+			if(extension == null){
+				return;
+			}
+			add(node, extension);
+			if (selectableHookAction != null) {
+				selectableHookAction.setEnabled(true);
+			}
 		}
 	}
 
