@@ -1,6 +1,6 @@
 @echo off
 set freeplanedir=%~dp0
-set defines= "-Dportableapp=true" "-Duser.home=%freeplanedir%..\..\Data"
+set defines= "-Dportableapp=true" "-Duser.home=%freeplanedir%..\..\Data"  "-Dorg.freeplane.userfpdir=%freeplanedir%..\..\Data"
 set java_exe=%freeplanedir%..\..\..\CommonFiles\Java\bin\javaw.exe
 if not exist "%java_exe%" set java_exe=javaw.exe
 set xargs=init.xargs

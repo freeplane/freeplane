@@ -68,6 +68,7 @@ Name: associate; Description: {cm:AssocFileExtension,Freeplane,.mm}; GroupDescri
 [Files]
 Source: ..\build\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: fwdir\*
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: {%USERPROFILE}\.freeplane\*; DestDir: {userappdata}\Freeplane; Flags: uninsneveruninstall external skipifsourcedoesntexist recursesubdirs onlyifdoesntexist; Tasks: ; Languages: 
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: 

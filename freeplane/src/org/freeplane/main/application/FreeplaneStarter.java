@@ -60,15 +60,21 @@ import org.freeplane.view.swing.map.MMapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 
 public class FreeplaneStarter {
-	private static final String PROPERTIES_FOLDER = ".freeplane";
-
 	public static String getResourceBaseDir() {
 		return System.getProperty(FreeplaneStarter.ORG_FREEPLANE_GLOBALRESOURCEDIR,
 		    FreeplaneStarter.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
 	}
 
+	final private static String PREVIEW_DIR=File.separatorChar + "1.2.x";
+	
 	public static String getFreeplaneUserDirectory() {
-		return System.getProperty("user.home") + File.separator + PROPERTIES_FOLDER;
+		String userFpDir = System.getProperty("org.freeplane.userfpdir");
+		if(userFpDir == null){
+			userFpDir = System.getProperty("user.home") + ".freeplane";
+		}
+		if(PREVIEW_DIR != null)
+			return userFpDir + PREVIEW_DIR;
+		return userFpDir;
 	}
 
 	public static void showSysInfo() {
