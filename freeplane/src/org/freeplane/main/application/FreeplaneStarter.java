@@ -60,15 +60,9 @@ import org.freeplane.view.swing.map.MMapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 
 public class FreeplaneStarter {
-	private static final String PROPERTIES_FOLDER = ".freeplane";
-
 	public static String getResourceBaseDir() {
 		return System.getProperty(FreeplaneStarter.ORG_FREEPLANE_GLOBALRESOURCEDIR,
 		    FreeplaneStarter.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
-	}
-
-	public static String getFreeplaneUserDirectory() {
-		return System.getProperty("user.home") + File.separator + PROPERTIES_FOLDER;
 	}
 
 	public static void showSysInfo() {

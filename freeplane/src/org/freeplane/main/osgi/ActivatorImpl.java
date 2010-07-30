@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.jar.Manifest;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.main.application.FreeplaneStarter;
@@ -81,7 +82,7 @@ class ActivatorImpl implements BundleActivator {
 		final String resourceBaseDir = FreeplaneStarter.getResourceBaseDir();
 		final File baseDir = new File(resourceBaseDir).getAbsoluteFile().getParentFile();
 		loadPlugins(context, new File(baseDir, "plugins"));
-		final String freeplaneUserDirectory = FreeplaneStarter.getFreeplaneUserDirectory();
+		final String freeplaneUserDirectory = Compat.getFreeplaneUserDirectory();
 		loadPlugins(context, new File(freeplaneUserDirectory));
 	}
 

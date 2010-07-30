@@ -21,7 +21,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 public class SingleInstanceManager {
-	private File lockFile = new File(FreeplaneStarter.getFreeplaneUserDirectory(), "single_instance.lock");
+	private File lockFile = new File(Compat.getFreeplaneUserDirectory(), "single_instance.lock");
 	private boolean isSingleInstanceMode;
 	private boolean isSingleInstanceForceMode;
 	private Integer port;

@@ -131,4 +131,24 @@ public class Compat {
 			}
 		}
 	}
+
+	//private static final String PROPERTIES_FOLDER = "freeplane";
+	private static final String PROPERTIES_FOLDER = "freeplane" + File.separator +"1.2.x";
+
+	public static String getUserHome() {
+		if(isWindowsOS()){
+			final String appData = System.getenv("appdata");
+			if(appData != null){
+				return appData;
+			}
+		}
+		return System.getProperty("user.home");
+	}
+
+	public static String getFreeplaneUserDirectory() {
+		if(isWindowsOS()){
+			return getUserHome() + File.separator + PROPERTIES_FOLDER;
+		}
+    	return getUserHome() + File.separator + '.' + PROPERTIES_FOLDER;
+    }
 }

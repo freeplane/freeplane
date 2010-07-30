@@ -105,7 +105,7 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public String getFreeplaneUserDirectory() {
-		return FreeplaneStarter.getFreeplaneUserDirectory();
+		return Compat.getFreeplaneUserDirectory();
 	}
 
 	public LastOpenedList getLastOpenedList() {
