@@ -61,7 +61,6 @@ import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.ui.mindmapmode.MDefaultNodeDropListener;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";

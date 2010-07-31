@@ -127,7 +127,6 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 	}
 
 	/** Invoked when a mouse button is pressed on a component and then dragged. */
-	@Override
 	public void mouseDragged(final MouseEvent e) {
 		if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
 			final NodeMotionListenerView motionListenerView = (NodeMotionListenerView) e.getSource();
@@ -188,7 +187,6 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 		}
 	}
 
-	@Override
 	public void mouseMoved(final MouseEvent e) {
 	}
 

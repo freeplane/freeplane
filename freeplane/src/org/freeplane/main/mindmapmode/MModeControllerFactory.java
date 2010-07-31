@@ -99,6 +99,7 @@ import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DefaultNodeKeyListener;
 import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
+import org.freeplane.view.swing.ui.mindmapmode.MNodeDragListener;
 import org.freeplane.view.swing.ui.mindmapmode.MMouseMotionListener;
 import org.freeplane.view.swing.ui.mindmapmode.MNodeDropListener;
 import org.freeplane.view.swing.ui.mindmapmode.MNodeMotionListener;
@@ -227,6 +228,7 @@ public class MModeControllerFactory {
 		}));
 		ClipboardController.install(modeController, new MClipboardController(modeController));
 		userInputListenerFactory.setNodeDropTargetListener(new MNodeDropListener(modeController));
+		userInputListenerFactory.setNodeDragListener(new MNodeDragListener(controller));
 		LocationController.install(modeController, new MLocationController(modeController));
 		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener(modeController));
 		AttributeController.install(modeController, new MAttributeController(modeController));
