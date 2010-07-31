@@ -1,38 +1,19 @@
 [Project]
 FileName=freeplane.dev
-Name=Freeplane
+Name=freeplane
 UnitCount=2
-Type=0
-Ver=1
-ObjFiles=
-Includes=
-Libs=
-PrivateResource=Freeplane_private.rc
-ResourceIncludes=
-MakeIncludes=
-Compiler=
-CppCompiler=_@@_
-Linker=
+PchHead=-1
+PchSource=-1
+Ver=3
 IsCpp=1
-Icon=
-ExeOutput=
-ObjectOutput=
-OverrideOutput=1
-OverrideOutputName=freeplane.exe
-HostApplication=
+ProfilesCount=1
+ProfileIndex=0
 Folders=
-CommandLine=test1.mm
-UseCustomMakefile=0
-CustomMakefile=
-IncludeVersionInfo=1
-SupportXPThemes=0
-CompilerSet=0
-CompilerSettings=0000000000000000000000
 
 [Unit1]
 FileName=Freeplane.c
 CompileCpp=1
-Folder=Freeplane
+Folder=freeplane
 Compile=1
 Link=1
 Priority=1000
@@ -41,7 +22,7 @@ BuildCmd=
 
 [Unit2]
 FileName=Icon1.rc
-Folder=Freeplane
+Folder=freeplane
 Compile=1
 Link=0
 Priority=1000
@@ -50,19 +31,47 @@ BuildCmd=
 
 [VersionInfo]
 Major=1
-Minor=0
-Release=35
+Minor=1
+Release=2
 Build=1
 LanguageID=1033
 CharsetID=1252
-CompanyName=Freeplane team
+CompanyName=
 FileVersion=
-FileDescription=Freeplane - free mind mapping software
+FileDescription=
 InternalName=
-LegalCopyright=Freeplane is a free software, licenced under GPL (GNU General Public License)
+LegalCopyright=
 LegalTrademarks=
 OriginalFilename=
-ProductName=Freeplane
+ProductName=
 ProductVersion=
-AutoIncBuildNr=0
+AutoIncBuildNrOnRebuild=0
+AutoIncBuildNrOnCompile=0
+
+[Profile1]
+ProfileName=Mingw gcc 3.4.5
+Type=0
+ObjFiles=
+Includes=
+Libs=
+ResourceIncludes=
+MakeIncludes=
+Compiler=
+CppCompiler=
+Linker=-mwindows_@@_
+PreprocDefines=
+CompilerSettings=0000000000000000000000
+Icon=
+ExeOutput=
+ObjectOutput=Objects\MingW
+OverrideOutput=0
+OverrideOutputName=freeplane.exe
+HostApplication=
+CommandLine=
+UseCustomMakefile=0
+CustomMakefile=
+IncludeVersionInfo=1
+SupportXPThemes=0
+CompilerSet=0
+CompilerType=0
 

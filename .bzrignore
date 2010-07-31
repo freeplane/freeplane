@@ -6,10 +6,8 @@ backups
 .backup
 ./.metadata
 ./freeplane/lib/jortho.jar
-./freeplane_framework/windows-launcher/Freeplane_private.h
-./freeplane_framework/windows-launcher/Freeplane_private.rc
-./freeplane_framework/windows-launcher/Freeplane_private.res
-./freeplane_framework/windows-launcher/Freeplane.o
+./freeplane_framework/windows-launcher/Objects
+./freeplane_framework/windows-launcher/*.layout
 ./freeplane_framework/windows-launcher/Makefile.win
 ./freeplane_framework/build4mac
 ./freeplane_framework/ant/lib/freeplaneant.jar
