@@ -1,5 +1,5 @@
 [Project]
-FileName=freeplane.dev
+FileName=freeplanePortable.dev
 Name=freeplanePortable
 UnitCount=2
 PchHead=-1
@@ -54,7 +54,7 @@ PreprocDefines=PORTABLE_APP_@@_
 CompilerSettings=0000000000000000000000
 Icon=
 ExeOutput=
-ObjectOutput=Portable\Objects\MingW
+ObjectOutput=Objects\Portable\MingW
 OverrideOutput=1
 OverrideOutputName=freeplanePortable.exe
 HostApplication=

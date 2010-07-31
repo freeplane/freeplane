@@ -1,6 +1,6 @@
 [Project]
-FileName=freeplane.dev
-Name=freeplanePortable
+FileName=freeplaneConsole.dev
+Name=freeplaneConsole
 UnitCount=1
 PchHead=-1
 PchSource=-1
@@ -54,7 +54,7 @@ PreprocDefines=CONSOLE_APP_@@_
 CompilerSettings=0000000000000000000000
 Icon=
 ExeOutput=
-ObjectOutput=Console\Objects\MingW
+ObjectOutput=Objects\Console\MingW
 OverrideOutput=1
 OverrideOutputName=freeplaneConsole.exe
 HostApplication=
