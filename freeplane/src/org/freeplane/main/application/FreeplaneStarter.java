@@ -70,7 +70,7 @@ public class FreeplaneStarter {
 	public static String getFreeplaneUserDirectory() {
 		String userFpDir = System.getProperty("org.freeplane.userfpdir");
 		if(userFpDir == null){
-			userFpDir = System.getProperty("user.home") + ".freeplane";
+			userFpDir = System.getProperty("user.home")+ File.separator + ".freeplane";
 		}
 		if(PREVIEW_DIR != null)
 			return userFpDir + PREVIEW_DIR;

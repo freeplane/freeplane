@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.EventObject;
+import java.util.List;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
@@ -18,6 +19,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.features.common.filter.condition.DefaultConditionRenderer;
+import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.styles.MapStyleModel;
 
 public class ConditionalStyleTable extends JTable {
@@ -42,10 +44,8 @@ public class ConditionalStyleTable extends JTable {
 					final FilterComposerDialog filterComposerDialog = styleController.getFilterComposerDialog();
 					filterComposerDialog.acceptMultipleConditions(false);
 					filterComposerDialog.show();
-					cellEditorValue = filterComposerDialog.getConditions().get(0);
-					if(cellEditorValue == null){
-						cellEditorValue = value;
-					}
+					List<ISelectableCondition> conditions = filterComposerDialog.getConditions();
+					cellEditorValue = conditions.isEmpty() ? value : conditions.get(0);
 					btn.removeActionListener(this);
 					fireEditingStopped();
 				}
@@ -73,7 +73,7 @@ public class ConditionalStyleTable extends JTable {
 	    setRowSelectionAllowed(true);
 	    final TableColumnModel columnModel = getColumnModel();
 	    setAutoResizeMode(JTable.AUTO_RESIZE_OFF); 
-	    setSelectionBackground(DefaultConditionRenderer.SELECTED_BACKGROUND);
+//	    setSelectionBackground(DefaultConditionRenderer.SELECTED_BACKGROUND);
 	    setRowHeight(20);
 		conditionRenderer = new DefaultConditionRenderer("");
 		columnModel.getColumn(1).setCellRenderer(conditionRenderer);

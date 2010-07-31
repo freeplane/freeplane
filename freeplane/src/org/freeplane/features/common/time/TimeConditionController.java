@@ -87,11 +87,11 @@ class TimeConditionController implements IElementaryConditionController {
 		        TextUtils.createTranslatedString(TimeCondition.FILTER_CREATED_BEFORE) };
 	}
 
-	public ComboBoxEditor getValueEditor() {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
 		return editor;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object selectedItem) {
+	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
 		values.setSelectedItem(new DayDate());
 		return values;
 	}

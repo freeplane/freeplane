@@ -52,14 +52,7 @@ public class FilterConditionEditor extends Box {
 	private class ElementaryConditionChangeListener implements ItemListener {
 		public void itemStateChanged(final ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
-				final Object property = filteredPropertiesModel.getSelectedItem();
-				final NamedObject selectedItem = (NamedObject) elementaryConditions.getSelectedItem();
-				final IElementaryConditionController conditionController = filterController.getConditionFactory()
-				    .getConditionController(property);
-				final boolean canSelectValues = conditionController.canSelectValues(property, selectedItem);
-				values.setEnabled(canSelectValues);
-				caseInsensitive.setEnabled(canSelectValues
-				        && conditionController.isCaseDependent(property, selectedItem));
+				setValuesEditor();
 			}
 		}
 	}
@@ -69,30 +62,36 @@ public class FilterConditionEditor extends Box {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				final Object selectedProperty = filteredPropertiesComponent.getSelectedItem();
 				final IElementaryConditionController conditionController = filterController.getConditionFactory()
-				    .getConditionController(selectedProperty);
+				.getConditionController(selectedProperty);
 				final ComboBoxModel simpleConditionComboBoxModel = conditionController
-				    .getConditionsForProperty(selectedProperty);
+				.getConditionsForProperty(selectedProperty);
 				elementaryConditions.setModel(simpleConditionComboBoxModel);
 				elementaryConditions.setEnabled(simpleConditionComboBoxModel.getSize() > 0);
-				final NamedObject selectedCondition = (NamedObject) simpleConditionComboBoxModel.getSelectedItem();
-				final boolean canSelectValues = conditionController
-				    .canSelectValues(selectedProperty, selectedCondition);
-				values.setEnabled(canSelectValues);
-				values.setEditable(false);
-				values.setModel(conditionController.getValuesForProperty(selectedProperty));
-				final ComboBoxEditor valueEditor = conditionController.getValueEditor();
-				values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
-				values.setEditable(conditionController.canEditValues(selectedProperty, selectedCondition));
-				if (values.getModel().getSize() > 0) {
-					values.setSelectedIndex(0);
-				}
-				caseInsensitive.setEnabled(canSelectValues
-				        && conditionController.isCaseDependent(selectedProperty, selectedCondition));
+				setValuesEditor();
 				return;
 			}
 		}
 	}
 
+	private void setValuesEditor() {
+		final Object selectedProperty = filteredPropertiesComponent.getSelectedItem();
+		final IElementaryConditionController conditionController = filterController.getConditionFactory()
+		    .getConditionController(selectedProperty);
+		final NamedObject selectedCondition = (NamedObject) elementaryConditions.getSelectedItem();
+		final boolean canSelectValues = conditionController
+		    .canSelectValues(selectedProperty, selectedCondition);
+		values.setEnabled(canSelectValues);
+		values.setEditable(false);
+		values.setModel(conditionController.getValuesForProperty(selectedProperty, selectedCondition));
+		final ComboBoxEditor valueEditor = conditionController.getValueEditor(selectedProperty, selectedCondition);
+		values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
+		values.setEditable(conditionController.canEditValues(selectedProperty, selectedCondition));
+		if (values.getModel().getSize() > 0) {
+			values.setSelectedIndex(0);
+		}
+		caseInsensitive.setEnabled(canSelectValues
+		        && conditionController.isCaseDependent(selectedProperty, selectedCondition));
+	}
 	/**
 	 * 
 	 */
@@ -195,4 +194,5 @@ public class FilterConditionEditor extends Box {
 		}
 		lastMap = new WeakReference<MapModel>(newMap);
 	}
+
 }

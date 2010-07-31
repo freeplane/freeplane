@@ -99,11 +99,11 @@ class PriorityConditionController implements IElementaryConditionController {
 		return list;
 	}
 
-	public ComboBoxEditor getValueEditor() {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
 		return null;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object property) {
+	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
 		final Object[] items = new Object[10];
 		for (int i = 1; i < 10; ++i) {
 			items[i - 1] = STORE.getMindIcon("full-" + Integer.toString(i));

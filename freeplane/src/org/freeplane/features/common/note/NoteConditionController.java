@@ -95,11 +95,11 @@ class NoteConditionController implements IElementaryConditionController {
 		return list;
 	}
 
-	public ComboBoxEditor getValueEditor() {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
 		return editor;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object selectedItem) {
+	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
 		return values;
 	}
 

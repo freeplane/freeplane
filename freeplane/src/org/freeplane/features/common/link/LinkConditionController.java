@@ -121,11 +121,11 @@ public class LinkConditionController implements IElementaryConditionController {
 		return list;
 	}
 
-	public ComboBoxEditor getValueEditor() {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
 		return editor;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object property) {
+	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
 		return values;
 	}
 

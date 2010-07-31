@@ -82,11 +82,11 @@ class IconConditionController implements IElementaryConditionController {
 		return new NamedObject[] { TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS), };
 	}
 
-	public ComboBoxEditor getValueEditor() {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
 		return null;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object property) {
+	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
 		final ListModel icons = Controller.getCurrentController().getMap().getIconRegistry().getIconsAsListModel();
 		final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
 		extendedComboBoxModel.setExtensionList(icons);

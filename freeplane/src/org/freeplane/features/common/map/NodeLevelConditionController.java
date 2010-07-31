@@ -24,6 +24,8 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
+import javax.swing.plaf.basic.BasicComboBoxEditor;
+
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
@@ -39,13 +41,14 @@ class NodeLevelConditionController implements IElementaryConditionController {
 	static final String FILTER_LEVEL = "filter_node_level";
 	static final String FILTER_ROOT = "filter_root";
 	static final String FILTER_LEAF = "filter_leaf";
-	static final String FILTER_ODD_LEVEL = "filter_odd_level";
-	static final String FILTER_EVEN_LEVEL = "filter_even_level";
+	static final String FILTER_PERIODIC_LEVEL = "filter_periodic_level";
 	private final ComboBoxEditor levelEditor = new NumberComboBoxEditor();
 	private final ComboBoxModel values = new DefaultComboBoxModel();
+	private final ComboBoxModel periodicValues = new DefaultComboBoxModel(PeriodicLevelCondition.createConditions(7));
+
 
 	public boolean canEditValues(final Object selectedItem, final NamedObject simpleCond) {
-		return true;
+		return ! simpleCond.objectEquals(FILTER_PERIODIC_LEVEL);
 	}
 
 	public boolean canHandle(final Object selectedItem) {
@@ -77,11 +80,18 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
 			return true;
 		}
+		if (simpleCondition.objectEquals(FILTER_PERIODIC_LEVEL)) {
+			return true;
+		}
+		
 		return false;
 	}
 
 	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean ignoreCase) {
+		if(value instanceof PeriodicLevelCondition){
+			return (ISelectableCondition) value;
+		}
 		return createNodeCondition(simpleCond, (String) value, ignoreCase);
 	}
 
@@ -109,10 +119,6 @@ class NodeLevelConditionController implements IElementaryConditionController {
 			return new RootCondition();
 		if (simpleCondition.objectEquals(NodeLevelConditionController.FILTER_LEAF))
 			return new LeafCondition();
-		if (simpleCondition.objectEquals(NodeLevelConditionController.FILTER_ODD_LEVEL))
-			return new OddLevelCondition();
-		if (simpleCondition.objectEquals(NodeLevelConditionController.FILTER_EVEN_LEVEL))
-			return new EvenLevelCondition();
 		return null;
 	}
 
@@ -124,8 +130,7 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT),
 		        TextUtils.createTranslatedString(NodeLevelConditionController.FILTER_ROOT),
 		        TextUtils.createTranslatedString(NodeLevelConditionController.FILTER_LEAF),
-		        TextUtils.createTranslatedString(NodeLevelConditionController.FILTER_ODD_LEVEL),
-		        TextUtils.createTranslatedString(NodeLevelConditionController.FILTER_EVEN_LEVEL)
+		        TextUtils.createTranslatedString(NodeLevelConditionController.FILTER_PERIODIC_LEVEL),
 		        });
 	}
 
@@ -135,11 +140,17 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		return list;
 	}
 
-	public ComboBoxEditor getValueEditor() {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
+		if(selectedCondition.objectEquals(FILTER_PERIODIC_LEVEL)){
+			return new BasicComboBoxEditor();
+		}
 		return levelEditor;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object selectedItem) {
+	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
+		if(simpleCond.objectEquals(FILTER_PERIODIC_LEVEL)){
+			return periodicValues;
+		}
 		return values;
 	}
 
@@ -157,11 +168,8 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		if (element.getName().equalsIgnoreCase(LeafCondition.NAME)) {
 			return LeafCondition.load(element);
 		}
-		if (element.getName().equalsIgnoreCase(EvenLevelCondition.NAME)) {
-			return EvenLevelCondition.load(element);
-		}
-		if (element.getName().equalsIgnoreCase(OddLevelCondition.NAME)) {
-			return OddLevelCondition.load(element);
+		if (element.getName().equalsIgnoreCase(PeriodicLevelCondition.NAME)) {
+			return PeriodicLevelCondition.load(element);
 		}
 		return null;
 	}
