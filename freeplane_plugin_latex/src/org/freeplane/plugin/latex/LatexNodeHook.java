@@ -69,7 +69,12 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		final LatexExtension latexExtension = new LatexExtension();
 		if (element != null) {
-			latexExtension.setEquation(element.getAttribute("EQUATION", null));
+			String equation = element.getAttribute("EQUATION");
+			if(equation == null){
+				// error: do not create anything
+				return null;
+			}
+			latexExtension.setEquation(equation);
 			Controller.getCurrentModeController().getMapController().nodeChanged(node);
 		}
 		return latexExtension;

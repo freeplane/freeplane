@@ -9,10 +9,8 @@ backups
 .backup
 ./.metadata
 ./freeplane/lib/jortho.jar
-./freeplane_framework/windows-launcher/Freeplane_private.h
-./freeplane_framework/windows-launcher/Freeplane_private.rc
-./freeplane_framework/windows-launcher/Freeplane_private.res
-./freeplane_framework/windows-launcher/Freeplane.o
+./freeplane_framework/windows-launcher/Objects
+./freeplane_framework/windows-launcher/*.layout
 ./freeplane_framework/windows-launcher/Makefile.win
 ./freeplane/lib/forms-1_2_1.zip
 ./freeplane_framework/build4mac
