@@ -21,25 +21,17 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileFilter;
-import java.io.FileReader;
-import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
@@ -65,39 +57,25 @@ import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
  *
  */
 public class ExportDialog {
-	final private static String EXPORT_FILTER_PATTERN = "^.*MINDMAPEXPORTFILTER\\s+(\\S+)\\s+(.*)(?:\\s+-->)?$";
-	final private static String FILE_NAME_PATTERN = "mm2([\\w]+)\\.xsl";
-	static final Pattern COMPILED_EXPORT_FILTER_PATTERN = Pattern.compile(EXPORT_FILTER_PATTERN);
-	static final Pattern COMPILED_FILE_NAME_PATTERN = Pattern.compile(FILE_NAME_PATTERN);
-	/** A pattern which is "MINDMAPEXPORTFILTER ext1;ext2;... File format description" */
 	/** the JFileChooser dialog used to choose filter and the file to export to. */
-	private JFileChooser filechooser = null;
-	/** a hash where the key is the filter description and the value the filename of
-	 * the corresponding XSLT sheet. */
-	private final HashMap<String, File> filtermap = new HashMap<String, File>();
-	/** Maximum number of lines we read in each XSLT files for performance reasons */
-	final private int MAX_READ_LINES = 5;
+	final private JFileChooser fileChooser = new JFileChooser();
+	final private XsltFileRegistry xsltFileRegistry;
 
 	/**
-	 * Constructor that accepts one parameter. This constructor does <i>not</i> the
-	 * export per itself.
+	 * This constructor does <i>not</i> the export per itself.
+	 * It populates the {@link #fileChooser} field
+	 * (especially the {@link JFileChooser#getChoosableFileFilters() choosable
+	 * file filters}).
 	 */
 	public ExportDialog() {
 		super();
-		filechooser = new JFileChooser();
-		filechooser.setAcceptAllFileFilterUsed(false); // the user can't select an "All Files filter"
-		filechooser.setDialogTitle(TextUtils.getText("export_using_xslt"));
-		filechooser.setToolTipText(TextUtils.getText("select_file_export_to")); // "Select the file to export to"
-	}
-
-	private void addXsltFile(final String[] filters, final String description, final File somefile) {
-		final ExampleFileFilter eff = new ExampleFileFilter(filters, description);
-		// we don't want to overwrite an already existing filter
-		if (!filtermap.containsKey(eff.getDescription())) {
-			// we add it as filter and in the map.
-			filechooser.addChoosableFileFilter(eff);
-			filtermap.put(eff.getDescription(), somefile);
-		}
+		xsltFileRegistry = XsltFileRegistry.newInstance();
+		fileChooser.setAcceptAllFileFilterUsed(false); // the user can't select an "All Files filter"
+		fileChooser.setDialogTitle(TextUtils.getText("export_using_xslt"));
+		fileChooser.setToolTipText(TextUtils.getText("select_file_export_to"));
+		for (FileFilter filter : xsltFileRegistry.getFileFilters()) {
+	        fileChooser.addChoosableFileFilter(filter);
+        }
 	}
 
 	/**
@@ -110,11 +88,10 @@ public class ExportDialog {
 	 * @param streamSource 
 	 */
 	void export(final Component parentframe, final StreamSource xmlSource, final File xmlSourceFile) {
-		gatherXsltScripts();
-		if (filtermap.isEmpty()) {
+		if (xsltFileRegistry.getFilterMap().isEmpty()) {
 			JOptionPane.showMessageDialog(parentframe, TextUtils.formatText("xslt_export_file_not_found_in_dirs",
-			    getXsltUserDirectory().getAbsolutePath(), getXsltSysDirectory().getAbsolutePath()), TextUtils
-			    .getText("xslt_export_not_possible"), JOptionPane.WARNING_MESSAGE);
+			    xsltFileRegistry.getXsltUserDirectory().getAbsolutePath(), xsltFileRegistry.getXsltSysDirectory()
+			        .getAbsolutePath()), TextUtils.getText("xslt_export_not_possible"), JOptionPane.WARNING_MESSAGE);
 			/* "No XSLT export file could be found,\n neither in '"
 			+ getXsltUserDirectory() + "'\n nor in '"
 			+ getXsltSysDirectory() + "'.",
@@ -143,18 +120,18 @@ public class ExportDialog {
 					final File acceptableFile = getAcceptableFile(selectedFile, filter);
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							filechooser.setSelectedFile(acceptableFile);
+							fileChooser.setSelectedFile(acceptableFile);
 						}
 					});
 					return;
 				}
 				if (evt.getPropertyName().equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
 					if (evt.getNewValue() == null) {
-						final ExampleFileFilter filter = (ExampleFileFilter) filechooser.getFileFilter();
+						final ExampleFileFilter filter = (ExampleFileFilter) fileChooser.getFileFilter();
 						final File acceptableFile = getAcceptableFile(selectedFile, filter);
 						EventQueue.invokeLater(new Runnable() {
 							public void run() {
-								filechooser.setSelectedFile(acceptableFile);
+								fileChooser.setSelectedFile(acceptableFile);
 							}
 						});
 					}
@@ -162,18 +139,18 @@ public class ExportDialog {
 				}
 			}
 		};
-		filterChangeListener.propertyChange(new PropertyChangeEvent(filechooser,
-		    JFileChooser.FILE_FILTER_CHANGED_PROPERTY, null, filechooser.getFileFilter()));
+		filterChangeListener.propertyChange(new PropertyChangeEvent(fileChooser,
+		    JFileChooser.FILE_FILTER_CHANGED_PROPERTY, null, fileChooser.getFileFilter()));
 		try {
-			filechooser.addPropertyChangeListener(filterChangeListener);
-			final int returnVal = filechooser.showSaveDialog(parentframe);
+			fileChooser.addPropertyChangeListener(filterChangeListener);
+			final int returnVal = fileChooser.showSaveDialog(parentframe);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				final XmlExporter xe = new XmlExporter();
 				// we check which filter has been selected by the user and use its
 				// description as key for the map to get the corresponding XSLT file
-				final ExampleFileFilter fileFilter = (ExampleFileFilter) filechooser.getFileFilter();
-				final File xsltFile = filtermap.get(fileFilter.getDescription());
-				final File selectedFile = getAcceptableFile(filechooser.getSelectedFile(), fileFilter);
+				final ExampleFileFilter fileFilter = (ExampleFileFilter) fileChooser.getFileFilter();
+				final File xsltFile = xsltFileRegistry.getFilterMap().get(fileFilter.getDescription());
+				final File selectedFile = getAcceptableFile(fileChooser.getSelectedFile(), fileFilter);
 				if (selectedFile == null) {
 					return;
 				}
@@ -194,92 +171,7 @@ public class ExportDialog {
 			}
 		}
 		finally {
-			filechooser.removePropertyChangeListener(filterChangeListener);
-		}
-	}
-
-	/**
-	 * The function checks if the pattern matches with one of the lines in the file.
-	 * @param somefile the file to open and search a line matching the pattern.
-	 */
-	private void extractFilterFromFile(final File somefile) {
-		BufferedReader xsl = null;
-		try {
-			xsl = new BufferedReader(new FileReader(somefile));
-			String line;
-			int l = 0;
-			boolean keyFound = false;
-			// ...we open it and check if it contains the right marker
-			while ((line = xsl.readLine()) != null && l < MAX_READ_LINES) {
-				final Matcher m = COMPILED_EXPORT_FILTER_PATTERN.matcher(line);
-				if (m.matches()) { // if it does
-					keyFound = true;
-					final String[] filters = m.group(1).split(";");
-					final String description = m.group(2);
-					addXsltFile(filters, description, somefile);
-					// we want to allow for more than one filter line per XSLT file
-					// so we don't exit once we've found one and even account for
-					// the fact that we might trespass the MAX_READ_LINES limit
-					l--;
-				}
-				l++;
-			}
-			if (keyFound) {
-				return;
-			}
-			final Matcher m = COMPILED_FILE_NAME_PATTERN.matcher(somefile.getName());
-			if (m.matches()) { // if it does
-				final String extension = m.group(1);
-				final String[] filters = new String[] { extension };
-				addXsltFile(filters, TextUtils.formatText("exported_file", extension), somefile);
-			}
-		}
-		catch (final IOException e) {
-			LogUtils.warn(e);
-			UITools.errorMessage(TextUtils.getText("export_failed"));
-		}
-		finally {
-			if (xsl != null) {
-				try {
-					xsl.close();
-				}
-				catch (final IOException e) {
-					LogUtils.severe(e);
-				}
-			}
-		}
-	}
-
-	/**
-	 * This method populates the {@link #filechooser filechooser} field
-	 * (especially the {@link JFileChooser#getChoosableFileFilters() choosable
-	 * file filters}) and the {@link #filtermap filtermap} field.
-	 */
-	private void gatherXsltScripts() {
-		gatherXsltScripts(getXsltUserDirectory());
-		gatherXsltScripts(getXsltSysDirectory());
-	}
-
-	/**
-		 * This methods checks all readable files ending in '.xsl' from a given directory,
-		 * and passes them to the method {@link #extractFilterFromFile}.
-		 * @param xsltdir the directory where XSLT files are to be searched for
-		 */
-	private void gatherXsltScripts(final File xsltdir) {
-		if (!(xsltdir.isDirectory() && xsltdir.canRead())) {
-			return;
-		}
-		// we list the files using an anonymous filter class that accepts only files
-		// readable by the user and with name ending in .xsl
-		final File xslfiles[] = xsltdir.listFiles(new FileFilter() {
-			public boolean accept(final File pathname) {
-				return (pathname.isFile() && pathname.canRead() && pathname.getPath().toLowerCase().endsWith(".xsl"));
-			}
-		});
-		// we compile the pattern for performance reasons.
-		// then for each found file, we check and extract a potentially present filter
-		for (int i = 0; i < xslfiles.length; i++) {
-			extractFilterFromFile(xslfiles[i]);
+			fileChooser.removePropertyChangeListener(filterChangeListener);
 		}
 	}
 
@@ -291,23 +183,5 @@ public class ExportDialog {
 			selectedFile = new File(selectedFile.getAbsolutePath() + '.' + fileFilter.getExtensionProposal());
 		}
 		return selectedFile;
-	}
-
-	/**
-	 * A simple help function to get the directory where to search for XSLT 
-	 * export files distributed with Freeplane.
-	 * @return The system directory where XSLT export files are supposed to be.
-	 */
-	private File getXsltSysDirectory() {
-		return new File(ResourceController.getResourceController().getResourceBaseDir(), "xslt");
-	}
-
-	/**
-	 * A simple help function to get the directory where to search for XSLT 
-	 * export files written by the user.
-	 * @return The user directory where XSLT export files are supposed to be.
-	 */
-	private File getXsltUserDirectory() {
-		return new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "xslt");
 	}
 }
