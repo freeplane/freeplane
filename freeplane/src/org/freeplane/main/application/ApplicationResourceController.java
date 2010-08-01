@@ -88,7 +88,7 @@ public class ApplicationResourceController extends ResourceController {
 		final File userPropertiesFolder = new File(getFreeplaneUserDirectory());
 		try {
 			if (!userPropertiesFolder.exists()) {
-				userPropertiesFolder.mkdir();
+				userPropertiesFolder.mkdirs();
 			}
 		}
 		catch (final Exception e) {

@@ -343,6 +343,9 @@ public class XMLElement implements Serializable {
 	 * @return the attribute, or null if the attribute does not exist.
 	 */
 	private XMLAttribute findAttribute(final String fullName) {
+		if (fullName == null) {
+			throw new IllegalArgumentException("fullName must not be null");
+		}
 		final Enumeration<XMLAttribute> enumeration = attributes.elements();
 		while (enumeration.hasMoreElements()) {
 			final XMLAttribute attr = enumeration.nextElement();
@@ -363,6 +366,9 @@ public class XMLElement implements Serializable {
 	 * @return the attribute, or null if the attribute does not exist.
 	 */
 	private XMLAttribute findAttribute(final String name, final String namespace) {
+		if (name == null) {
+			throw new IllegalArgumentException("name must not be null");
+		}
 		final Enumeration<XMLAttribute> enumeration = attributes.elements();
 		while (enumeration.hasMoreElements()) {
 			final XMLAttribute attr = enumeration.nextElement();
@@ -829,6 +835,9 @@ public class XMLElement implements Serializable {
 	 *            the non-null name of the attribute.
 	 */
 	public void removeAttribute(final String name) {
+		if (name == null) {
+			throw new IllegalArgumentException("name must not be null");
+		}
 		for (int i = 0; i < attributes.size(); i++) {
 			final XMLAttribute attr = attributes.elementAt(i);
 			if (attr.getFullName().equals(name)) {
@@ -847,6 +856,9 @@ public class XMLElement implements Serializable {
 	 *            the namespace URI of the attribute, which may be null.
 	 */
 	public void removeAttribute(final String name, final String namespace) {
+		if (name == null) {
+			throw new IllegalArgumentException("name must not be null");
+		}
 		for (int i = 0; i < attributes.size(); i++) {
 			final XMLAttribute attr = attributes.elementAt(i);
 			boolean found = attr.getName().equals(name);
@@ -895,6 +907,9 @@ public class XMLElement implements Serializable {
 	 *            the non-null value of the attribute.
 	 */
 	public void setAttribute(final String name, final String value) {
+		if (value == null) {
+			throw new IllegalArgumentException("value must not be null");
+		}
 		XMLAttribute attr = this.findAttribute(name);
 		if (attr == null) {
 			attr = new XMLAttribute(name, name, null, value, "CDATA");
@@ -916,6 +931,12 @@ public class XMLElement implements Serializable {
 	 *            the non-null value of the attribute.
 	 */
 	public void setAttribute(final String fullName, final String namespace, final String value) {
+		if (fullName == null) {
+			throw new IllegalArgumentException("fullName must not be null");
+		}
+		if (value == null) {
+			throw new IllegalArgumentException("value must not be null");
+		}
 		final int index = fullName.indexOf(':');
 		final String name = fullName.substring(index + 1);
 		XMLAttribute attr = this.findAttribute(name, namespace);
@@ -947,6 +968,9 @@ public class XMLElement implements Serializable {
 	 *            the non-null name.
 	 */
 	public void setName(final String name) {
+		if (name == null) {
+			throw new IllegalArgumentException("name must not be null");
+		}
 		this.name = name;
 		fullName = name;
 		namespace = null;
@@ -961,6 +985,9 @@ public class XMLElement implements Serializable {
 	 *            the namespace URI, which may be null.
 	 */
 	public void setName(final String fullName, final String namespace) {
+		if (fullName == null) {
+			throw new IllegalArgumentException("fullName must not be null");
+		}
 		final int index = fullName.indexOf(':');
 		if ((namespace == null) || (index < 0)) {
 			name = fullName;

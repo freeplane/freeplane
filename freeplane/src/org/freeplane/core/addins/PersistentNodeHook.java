@@ -125,23 +125,32 @@ public abstract class PersistentNodeHook {
 					return;
 				}
 			}
-			if (selectableHookAction != null) {
-				selectableHookAction.setEnabled(true);
-			}
 			final NodeModel node = (NodeModel) userObject;
 			if (node.getExtension(getExtensionClass()) != null) {
 				return;
 			}
-			add(node, createExtension(node, lastBuiltElement));
+			final IExtension extension = createExtension(node, lastBuiltElement);
+			if(extension == null){
+				return;
+			}
+			add(node, extension);
+			if (selectableHookAction != null) {
+				selectableHookAction.setEnabled(true);
+			}
 		}
 	}
 
 	protected class XmlWriter implements IExtensionElementWriter {
 		public void writeContent(final ITreeWriter writer, final Object object, final IExtension extension)
-		        throws IOException {
+		throws IOException {
 			final XMLElement element = new XMLElement("hook");
-			saveExtension(extension, element);
-			writer.addElement(null, element);
+			try{
+				saveExtension(extension, element);
+				writer.addElement(null, element);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 	}
 

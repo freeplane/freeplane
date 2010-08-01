@@ -68,6 +68,8 @@ Name: associate; Description: {cm:AssocFileExtension,Freeplane,.mm}; GroupDescri
 [Files]
 Source: ..\build\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: fwdir\*
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: {%USERPROFILE}\.freeplane\auto.mmfilter; DestDir: {userappdata}\Freeplane; Flags: uninsneveruninstall external skipifsourcedoesntexist recursesubdirs onlyifdoesntexist; Tasks: ; Languages: 
+Source: {%USERPROFILE}\.freeplane\auto.properties; DestDir: {userappdata}\Freeplane; Flags: uninsneveruninstall external skipifsourcedoesntexist recursesubdirs onlyifdoesntexist; Tasks: ; Languages: 
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: 
@@ -129,3 +131,5 @@ function InitializeSetup(): Boolean;
 begin
 	Result := CheckJavaVersion;
 end;
+[Dirs]
+Name: {userappdata}\Freeplane; Flags: uninsneveruninstall; Tasks: ; Languages: 

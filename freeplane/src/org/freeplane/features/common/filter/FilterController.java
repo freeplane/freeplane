@@ -263,7 +263,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.setVisible(ResourceController.getResourceController()
 		    .getBooleanProperty("filter_toolbar_visible"));
 		filterToolbar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "filter_toolbar_visible");
-		filterToolbar.setFocusable(false);
 		Controller controller = Controller.getCurrentController();
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
 		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));
@@ -302,7 +301,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.add(applyBtn);
 		filterToolbar.add(noFilteringBtn);
 		filterToolbar.add(btnEdit);
-		activeFilterConditionComboBox.setFocusable(false);
 		activeFilterConditionComboBox.setRenderer(this.getConditionRenderer());
 		return filterToolbar;
 	}

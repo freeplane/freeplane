@@ -45,9 +45,9 @@ public interface IElementaryConditionController {
 
 	ListModel getFilteredProperties();
 
-	ComboBoxEditor getValueEditor();
+	ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition);
 
-	ComboBoxModel getValuesForProperty(final Object property);
+	ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond);
 
 	boolean isCaseDependent(final Object property, final NamedObject simpleCond);
 

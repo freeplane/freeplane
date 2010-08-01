@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.common.filter.condition;
 
+import java.awt.Component;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -37,5 +39,20 @@ public class JCondition extends JPanel {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		setOpaque(false);
+		
+	}
+
+	@Override
+	public Component add(Component comp, int index) {
+		comp.setForeground(null);
+		comp.setBackground(null);
+		return super.add(comp, index);
+	}
+
+	@Override
+	public Component add(Component comp) {
+		comp.setForeground(null);
+		comp.setBackground(null);
+		return super.add(comp);
 	}
 }

@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.icon;
 
+import java.awt.Color;
 import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
@@ -88,7 +89,9 @@ public class IconContainedCondition implements ISelectableCondition {
 		final JCondition component = new JCondition();
 		final String text = TextUtils.getText("filter_icon") + ' ' + TextUtils.getText("filter_contains") + ' ';
 		component.add(new JLabel(text));
-		component.add(new JLabel(STORE.getUIIcon(getIconName()).getIcon()));
+		JLabel icon = new JLabel(STORE.getUIIcon(getIconName()).getIcon());
+		component.add(icon);
+		icon.setBackground(Color.WHITE);
 		return component;
 	}
 

@@ -50,10 +50,19 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 	 */
 	public Component getListCellRendererComponent(final JList list, final Object value, final int index,
 	                                              final boolean isSelected, final boolean cellHasFocus) {
-		return getCellRendererComponent(value, isSelected);
+		Component cellRendererComponent = getCellRendererComponent(value, isSelected);
+        if (isSelected) {
+        	cellRendererComponent.setBackground(list.getSelectionBackground());
+        	cellRendererComponent.setForeground(list.getSelectionForeground());
+        }
+        else {
+        	cellRendererComponent.setBackground(list.getBackground());
+        	cellRendererComponent.setForeground(list.getForeground());
+        }
+		return cellRendererComponent;
 	}
 	
-	public Component getCellRendererComponent(final Object value, final boolean isSelected) {
+	private Component getCellRendererComponent(final Object value, final boolean isSelected) {
 		if (value == null) {
 			return new JLabel(noValueText);
 		}
@@ -69,18 +78,21 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 			component = new JLabel(value.toString());
 		}
 		component.setOpaque(true);
-		if (isSelected) {
-			component.setBackground(DefaultConditionRenderer.SELECTED_BACKGROUND);
-		}
-		else {
-			component.setBackground(Color.WHITE);
-		}
 		component.setAlignmentX(Component.LEFT_ALIGNMENT);
 		return component;
 	}
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
                                                    int row, int column) {
-		return getCellRendererComponent(value, isSelected);
+		Component cellRendererComponent = getCellRendererComponent(value, isSelected);
+	       if (isSelected) {
+	    	   cellRendererComponent.setBackground(table.getSelectionBackground());
+	    	   cellRendererComponent.setForeground(table.getSelectionForeground());
+	        }
+	        else {
+	        	cellRendererComponent.setBackground(table.getBackground());
+	        	cellRendererComponent.setForeground(table.getForeground());
+	        }
+		return cellRendererComponent;
     }
 }

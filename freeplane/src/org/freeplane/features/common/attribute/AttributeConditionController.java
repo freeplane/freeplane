@@ -132,11 +132,11 @@ class AttributeConditionController implements IElementaryConditionController {
 		return new DefaultListModel();
 	}
 
-	public ComboBoxEditor getValueEditor() {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
 		return new BasicComboBoxEditor();
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object selectedItem) {
+	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
 		values.setExtensionList(AttributeRegistry.getRegistry(Controller.getCurrentController().getMap()).getElement(selectedItem.toString())
 		    .getValues());
 		return values;

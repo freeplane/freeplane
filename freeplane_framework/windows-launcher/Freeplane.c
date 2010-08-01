@@ -58,7 +58,7 @@ char *param2define(int number, const char *in_string) {
 int main(int argc, char *argv[])  {
     // argv[0] - caller name, argv[argc -1] == last argument,
 
-   int no_of_fixed_arguments = 11;
+   int no_of_fixed_arguments = 12;
    int one_for_stopping_null = 1;
    int no_of_passed_arguments_without_caller = argc - 1;
 
@@ -144,6 +144,20 @@ int main(int argc, char *argv[])  {
    {
       arguments[argumentNumber++] = "\"-Dportableapp=true\"";
       const char *argv[] = {"\"-Duser.home=", pathToPortableApp, "Data\"", 0};
+      arguments[argumentNumber++] = concat(argv);
+   }
+   {      
+      const char *argv[] = {"\"-Dorg.freeplane.userfpdir=", pathToPortableApp, "Data\\Freeplane\"", 0};
+      arguments[argumentNumber++] = concat(argv);
+   }
+#else
+   {
+      const char* szAppData = getenv("APPDATA");
+      if(szAppData == 0)
+      {
+         szAppData = getenv("USERPROFILE");
+      }
+      const char *argv[] = {"\"-Dorg.freeplane.userfpdir=", szAppData, "\\Freeplane\"", 0};
       arguments[argumentNumber++] = concat(argv);
    }
 #endif
