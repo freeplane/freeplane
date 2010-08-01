@@ -32,4 +32,9 @@ public abstract class AbstractProxy<T> {
 	public int hashCode() {
 		return delegate.hashCode() * 31 + getClass().hashCode();
 	}
+
+	@Override
+    public String toString() {
+	    return getClass() + ":" + delegate.toString();
+    }
 }
