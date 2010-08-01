@@ -97,6 +97,15 @@
 	    </antcall>
 	</target>
 	
+	<target name="build_spreadsheet" unless="skip_spreadsheet">
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_spreadsheet"/>
+			<param name="pluginname" value="org.freeplane.plugin.spreadsheet"/>
+	    </antcall>
+	</target>
+	
 	<target name="build_bugreport" unless="skip_bugreport">
 		<antcall target="makePlugin" inheritall="false">
 			<param name="anttarget" value="dist"/>
@@ -106,7 +115,7 @@
 	    </antcall>
 	</target>
 	
-	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_bugreport">
+	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_spreadsheet, build_bugreport">
 
        <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
@@ -404,6 +413,8 @@
 			  dir="${workspace}/freeplane_plugin_latex"/>
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/freeplane_plugin_script"/>
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_spreadsheet"/>
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/freeplane_plugin_bugreport"/>		
 	</target>

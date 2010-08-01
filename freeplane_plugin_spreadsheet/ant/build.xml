@@ -15,7 +15,7 @@
 	<property name="java_source_version" value="1.5" />
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
-	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}"/>
+	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}:${freeplanescript.jar}"/>
 
 	<target name="build">
 		<mkdir dir="${build}" />
@@ -28,6 +28,9 @@
 	<target name="dist" depends="build">
 		<jar jarfile="lib/plugin.jar">
 			<fileset dir="${build}"/>
+			<fileset dir="${src}">
+				<include name="**/*.xml"/>
+			</fileset>
 		</jar>
 		<delete dir="${dist.osgi.dir}" quiet="true"/>
 		<mkdir dir="${dist.osgi.dir}" />
