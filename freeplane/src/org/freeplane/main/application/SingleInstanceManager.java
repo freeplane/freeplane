@@ -62,12 +62,8 @@ public class SingleInstanceManager {
 			LogUtils.info("master is present.");
 			return true;
 		}
-		catch (UnknownHostException e) {
-			LogUtils.severe(e.getMessage(), e);
-			return false;
-		}
-		catch (IOException e) {
-			LogUtils.warn("Error connecting to existing instance (stale lockfiles may cause this).", e);
+		catch (Exception e) {
+			// this is only a check - we'll log later
 			return false;
 		}
 	}
