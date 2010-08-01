@@ -98,9 +98,10 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 					}
                 }
                 catch (ExecuteScriptException ex) {
-                	LogUtils.warn("error executing script " + script + " - giving up");
+                	LogUtils.warn("error executing script " + script + " - giving up", ex);
                 	modeController.delayedRollback();
-                	UITools.errorMessage(TextUtils.getText("ExecuteScriptError.text"));
+                	// FIXME: fold long lines
+                	UITools.errorMessage(TextUtils.format("ExecuteScriptError.text", ex.getMessage()));
                 	return;
                 }
 			}

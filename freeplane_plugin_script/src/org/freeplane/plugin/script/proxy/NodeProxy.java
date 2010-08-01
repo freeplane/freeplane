@@ -26,7 +26,6 @@ import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.plugin.script.proxy.Proxy.Connector;
-import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeProxy extends AbstractProxy<NodeModel> implements Node {
@@ -34,7 +33,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		super(node);
 	}
 
-	public Proxy.Connector addConnectorTo(final Node target) {
+	public Proxy.Connector addConnectorTo(final Proxy.Node target) {
 		return addConnectorTo(target.getNodeID());
 	}
 
@@ -44,14 +43,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return new ConnectorProxy(connectorModel);
 	}
 
-	public Node createChild() {
+	public Proxy.Node createChild() {
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
 		mapController.insertNode(newNodeModel, getDelegate());
 		return new NodeProxy(newNodeModel);
 	}
 
-	public Node createChild(final int position) {
+	public Proxy.Node createChild(final int position) {
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
 		mapController.insertNode(newNodeModel, getDelegate(), position);
@@ -67,15 +66,15 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return new AttributesProxy(getDelegate());
 	}
 
-	public int getChildPosition(final Node childNode) {
+	public int getChildPosition(final Proxy.Node childNode) {
 		final NodeModel childNodeModel = ((NodeProxy) childNode).getDelegate();
 		return getDelegate().getChildPosition(childNodeModel);
 	}
 
-	public List<Node> getChildren() {
-		return new ArrayList<Node>(new AbstractList<Node>() {
+	public List<Proxy.Node> getChildren() {
+		return new ArrayList<Proxy.Node>(new AbstractList<Proxy.Node>() {
 			@Override
-			public Node get(final int index) {
+			public Proxy.Node get(final int index) {
 				final NodeModel child = (NodeModel) getDelegate().getChildAt(index);
 				return new NodeProxy(child);
 			}
@@ -123,17 +122,18 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public String getNoteText() {
 		return NoteModel.getNoteText(getDelegate());
 	}
-	
-	public Node getParentNode() {
+
+	public Proxy.Node getParentNode() {
 		final NodeModel parentNode = getDelegate().getParentNode();
 		return parentNode != null ? new NodeProxy(parentNode) : null;
 	}
-	
+
 	public String getPlainText() {
 		return TextController.getController().getPlainTextContent(getDelegate());
 	}
 
-	@Deprecated // use getPlainText() instead
+	@Deprecated
+	// use getPlainText() instead
 	public String getPlainTextContent() {
 		return TextController.getController().getPlainTextContent(getDelegate());
 	}
@@ -146,7 +146,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return getDelegate().getText();
 	}
 
-	public boolean isDescendantOf(final Node otherNode) {
+	public boolean isDescendantOf(final Proxy.Node otherNode) {
 		final NodeModel otherNodeModel = ((NodeProxy) otherNode).getDelegate();
 		NodeModel node = this.getDelegate();
 		do {
@@ -178,13 +178,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return getDelegate().isVisible();
 	}
 
-	public void moveTo(final Node parentNode) {
+	public void moveTo(final Proxy.Node parentNode) {
 		final NodeProxy parentNodeProxy = (NodeProxy) parentNode;
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		mapController.moveNodeAsChild(getDelegate(), parentNodeProxy.getDelegate(), getDelegate().isLeft(), false);
 	}
 
-	public void moveTo(final Node parentNode, final int position) {
+	public void moveTo(final Proxy.Node parentNode, final int position) {
 		final NodeProxy parentNodeProxy = (NodeProxy) parentNode;
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		mapController.moveNode(getDelegate(), parentNodeProxy.getDelegate(), position, getDelegate().isLeft(), false);
@@ -205,7 +205,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public void setPlainNoteText(String text) {
 		final MNoteController noteController = (MNoteController) NoteController.getController();
 		noteController.setNoteText(getDelegate(), (text == null ? null : HtmlUtils.plainToHTML(text)));
-    }
+	}
 
 	public void setNoteText(final String text) {
 		final MNoteController noteController = (MNoteController) NoteController.getController();
@@ -217,7 +217,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		textController.setNodeText(getDelegate(), text);
 	}
 
-	public Map getMap() {
+	public Proxy.Map getMap() {
 		final MapModel map = getDelegate().getMap();
 		return map != null ? new MapProxy(map) : null;
 	}

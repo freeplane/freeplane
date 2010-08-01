@@ -39,14 +39,11 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.main.application.FreeplaneSecurityManager;
@@ -80,7 +77,6 @@ public class ScriptingEngine {
 	static Object executeScript(final NodeModel node, String script,
 	                            final IErrorHandler pErrorHandler, final PrintStream pOutStream)
 	        throws ExecuteScriptException {
-		MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		if (!noUserPermissionRequired) {
 			final int showResult = OptionalDontShowMeAgainDialog.show(
 			    "really_execute_script", "confirmation", RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
@@ -178,15 +174,16 @@ public class ScriptingEngine {
 			}
 			return result;
 		}
-		catch (final GroovyRuntimeException e1) {
+		catch (final GroovyRuntimeException e) {
 			/*
 			 * Cover exceptions in normal security context (ie. no problem with
 			 * (log) file writing etc.)
 			 */
-			final String resultString = e1.getMessage();
+			// LogUtils.warn(e);
+			final String resultString = e.getMessage();
 			pOutStream.print("message: " + resultString);
-			final ModuleNode module = e1.getModule();
-			final ASTNode astNode = e1.getNode();
+			final ModuleNode module = e.getModule();
+			final ASTNode astNode = e.getNode();
 			int lineNumber = -1;
 			if (module != null) {
 				lineNumber = module.getLineNumber();
@@ -199,17 +196,16 @@ public class ScriptingEngine {
 			}
 			pOutStream.print("Line number: " + lineNumber);
 			pErrorHandler.gotoLine(lineNumber);
-			throw new ExecuteScriptException(e1.getMessage(), e1);
+			throw new ExecuteScriptException(e.getMessage(), e);
 		}
-		catch (final Throwable e2) {
-			modeController.getMapController().select(node);
-			LogUtils.warn(e2);
-			pOutStream.print(e2.getMessage());
-			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
-			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");
-			UITools.errorMessage(e2.getClass().getName() + ": " + cause
-			        + ((cause.length() != 0 && message.length() != 0) ? ", " : "") + message);
-			throw new ExecuteScriptException(e2.getMessage(), e2);
+		catch (final ExecuteScriptException e) {
+			throw e;
+		}
+		catch (final Throwable e) {
+			Controller.getCurrentModeController().getMapController().select(node);
+			// LogUtils.warn(e);
+			pOutStream.print(e.getMessage());
+			throw new ExecuteScriptException(e.getMessage(), e);
 		}
 		finally {
 			System.setOut(oldOut);

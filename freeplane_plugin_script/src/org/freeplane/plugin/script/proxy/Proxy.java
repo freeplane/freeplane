@@ -4,6 +4,7 @@ import groovy.lang.Closure;
 
 import java.awt.Color;
 import java.io.File;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -15,9 +16,7 @@ import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.link.ArrowType;
 
 public interface Proxy {
-	/** Attributes are name - value pairs assigned to a node. A node may have multiple attributes
-	 * with the same name. */
-	interface Attributes {
+	interface AttributesRO {
 		/** returns the <em>first</em> value of an attribute with the given name or null otherwise.
 		 * @deprecated use {@link #get(int)} or {@link #getAll(String)} instead. */
 		@Deprecated
@@ -26,7 +25,8 @@ public interface Proxy {
 		/** returns all values for the attribute name. */
 		List<String> getAll(final String name);
 
-		/** returns all attribute names in the proper sequence.
+		/** returns all attribute names in the proper sequence. The number of names returned
+		 * is equal to the number of attributes.
 		 * <pre>
 		 *   // rename attribute
 		 *   int i = 0;
@@ -36,13 +36,25 @@ public interface Proxy {
 		 *       ++i;
 		 *   }
 		 * </pre> */
-		public List<String> getAttributeNames();
+		List<String> getAttributeNames();
 
 		/** returns the attribute value at the given index.
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
 		 *         &lt; 0 || index &gt;= size())</tt>.*/
 		String get(final int index);
 
+		/** returns the index of the first attribute with the given name if one exists or -1 otherwise.
+		         * For searches for <em>all</em> attributes with a given name <code>getAttributeNames()</code>
+		         * must be used. */
+		int findAttribute(final String name);
+
+		/** the number of attributes. It is <code>size() == getAttributeNames().size()</code>. */
+		int size();
+	}
+
+	/** Attributes are name - value pairs assigned to a node. A node may have multiple attributes
+	 * with the same name. */
+	interface Attributes extends AttributesRO {
 		/** sets the value of the attribute at an index. This method will not create new attributes.
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
 		 *         &lt; 0 || index &gt;= size())</tt>. */
@@ -52,11 +64,6 @@ public interface Proxy {
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
 		 *         &lt; 0 || index &gt;= size())</tt>. */
 		void set(final int index, final String name, final String value);
-
-		/** returns the index of the first attribute with the given name if one exists or -1 otherwise.
-		         * For searches for <em>all</em> attributes with a given name <code>getAttributeNames()</code>
-		         * must be used. */
-		public int findAttribute(final String name);
 
 		/** removes the <em>first</em> attribute with this name.
 		 * @returns true on removal of an existing attribute and false otherwise.
@@ -79,28 +86,31 @@ public interface Proxy {
 
 		/** adds an attribute no matter if an attribute with the given name already exists. */
 		void add(final String name, final String value);
-
-		/** the number of attributes. It is <code>size() == getAttributeNames().size()</code>. */
-		int size();
 	}
 
-	interface Connector {
+	interface ConnectorRO {
 		Color getColor();
 
 		ArrowType getEndArrow();
 
 		String getMiddleLabel();
 
+		// FIXME: beware!
 		Node getSource();
 
 		String getSourceLabel();
 
 		ArrowType getStartArrow();
 
+		// FIXME: beware!
 		Node getTarget();
 
 		String getTargetLabel();
 
+		boolean simulatesEdge();
+	}
+
+	interface Connector extends ConnectorRO {
 		void setColor(Color color);
 
 		void setEndArrow(ArrowType arrowType);
@@ -114,13 +124,9 @@ public interface Proxy {
 		void setStartArrow(ArrowType arrowType);
 
 		void setTargetLabel(String label);
-
-		boolean simulatesEdge();
 	}
 
-	interface Controller {
-		void centerOnNode(Node center);
-
+	interface ControllerRO {
 		/** if multiple nodes are selected returns one (arbitrarily chosen)
 		 * selected node or the selected node for a single node selection. */
 		Node getSelected();
@@ -134,30 +140,10 @@ public interface Proxy {
 		 *   parent nodes are excluded from the result. */
 		List<Node> getSortedSelection(boolean differentSubtrees);
 
-		void select(Node toSelect);
-
-		/** selects branchRoot and all children */
-		void selectBranch(Node branchRoot);
-
-		/** toSelect is a List<Node> of Node objects */
-		void selectMultipleNodes(List<Node> toSelect);
-
-		/** reset undo / redo lists and deactivate Undo for current script */
-		void deactivateUndo();
-
-		/** The main info for the status line, null to remove*/
-		public void setStatusInfo(String info);
-
-		/** Info for status line, null to remove*/
-		public void setStatusInfo(String key, String info);
-
-		/** Info for status line, null to remove*/
-		public void setStatusInfo(String key, Icon icon);
-
 		/** Starting from the root node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
 		 * @see Node.find(ICondition) for searches on subtrees */
-		public List<Node> find(ICondition condition);
+		List<Node> find(ICondition condition);
 
 		/**
 		 * Starting from the root node, recursively searches for nodes for which <code>closure.call(node)</code>
@@ -180,16 +166,54 @@ public interface Proxy {
 		 * @return all nodes for which <code>closure.call(NodeModel)</code> returns true.
 		 * @see Node.find(Closure) for searches on subtrees
 		 */
-		public List<Node> find(Closure closure);
+		List<Node> find(Closure closure);
 	}
 
-	interface Edge {
+	interface Controller extends ControllerRO {
+		void centerOnNode(Node center);
+
+		void select(Node toSelect);
+
+		/** selects branchRoot and all children */
+		void selectBranch(Node branchRoot);
+
+		/** toSelect is a List<Node> of Node objects */
+		void selectMultipleNodes(List<Node> toSelect);
+
+		/** reset undo / redo lists and deactivate Undo for current script */
+		void deactivateUndo();
+
+		/** invokes undo once - for testing purposes mainly. */
+		void undo();
+		
+		/** invokes redo once - for testing purposes mainly. */
+		void redo();
+
+		/** The main info for the status line, null to remove*/
+		void setStatusInfo(String info);
+
+		/** Info for status line, null to remove*/
+		void setStatusInfo(String key, String info);
+
+		/** Info for status line, null to remove*/
+		void setStatusInfo(String key, Icon icon);
+
+		/** opens a new map with a default name in the foreground. */
+		Map newMap();
+		
+		/** opens a new map for url in the foreground if it isn't opened already. */
+		Map newMap(URL url);
+	}
+
+	interface EdgeRO {
 		Color getColor();
 
 		EdgeStyle getType();
 
 		int getWidth();
+	}
 
+	interface Edge extends EdgeRO {
 		void setColor(Color color);
 
 		void setType(EdgeStyle type);
@@ -198,19 +222,21 @@ public interface Proxy {
 		void setWidth(int width);
 	}
 
-	interface ExternalObject {
+	interface ExternalObjectRO {
 		/** empty string means that there's no external object */
 		String getURI();
 
 		float getZoom();
+	}
 
+	interface ExternalObject extends ExternalObjectRO {
 		/** setting empty String uri means remove external object (as for Links); */
 		void setURI(String uri);
 
 		void setZoom(float zoom);
 	}
 
-	interface Font {
+	interface FontRO {
 		String getName();
 
 		int getSize();
@@ -226,7 +252,9 @@ public interface Proxy {
 		boolean isNameSet();
 
 		boolean isSizeSet();
+	}
 
+	interface Font extends FontRO {
 		void resetBold();
 
 		void resetItalic();
@@ -244,28 +272,32 @@ public interface Proxy {
 		void setSize(int size);
 	}
 
-	interface Icons {
-		void addIcon(String name);
-
+	interface IconsRO {
 		/** returns List<Node> of Strings (corresponding to iconID above);
 		 * iconID is one of "Idea","Question","Important", etc. */
 		List<String> getIcons();
+	}
+
+	interface Icons extends IconsRO {
+		void addIcon(String name);
 
 		/** deletes first occurence of icon with name iconID, returns true if
 		 * success (icon existed); */
 		boolean removeIcon(String iconID);
 	}
 
-	interface Link {
+	interface LinkRO {
 		String get();
+	}
 
+	interface Link extends LinkRO {
 		/** target is a URI.
 		 * An empty String will remove the link.
 		 * To get a local link (i.e. to another node) target should be: "#" + nodeID */
 		boolean set(String target);
 	}
 
-	interface Map {
+	interface MapRO {
 		Node getRootNode();
 
 		/** returns the node if the map contains it or null otherwise. */
@@ -273,26 +305,32 @@ public interface Proxy {
 
 		/** returns the physical location of the map if available or null otherwise. */
 		File getFile();
+
+		/** returns the title of the MapView. */
+		String getName();
 	}
 
-	interface Node {
-		Connector addConnectorTo(Node target);
+	interface Map extends MapRO {
+		/**
+		 * closes a map. Note that there is no undo for this method.
+		 * @param close map even if there are unsaved changes.
+		 * @param allowInteraction if (allowInteraction && ! force) a saveAs dialog will be opened if there are
+		 *        unsaved changes.
+		 * @return false if the saveAs was cancelled by the user and true otherwise.
+		 * @throws RuntimeException if the map contains changes and parameter force is false.
+		 */
+		boolean close(boolean force, boolean allowInteraction);
 
-		/** adds a new Connector object to List<Node> connectors and returns
-		 * reference for optional further editing (style); also enlists the
-		 * Connector on the target Node object. */
-		Connector addConnectorTo(String targetNodeID);
+		/**
+		 * saves the map to disk. Note that there is no undo for this method.
+		 * @param allowInteraction if a saveAs dialog should be opened if the map has no assigned URL so far.
+		 * @return false if the saveAs was cancelled by the user and true otherwise.
+		 * @throws RuntimeException if the map has no assigned URL and parameter allowInteraction is false.
+		 */
+		boolean save(boolean allowInteraction);
+	}
 
-		/** inserts *new* node as child, takes care of all construction work and
-		 * internal stuff inserts as last child. */
-		Node createChild();
-
-		/** inserts *new* node as child, takes care of all construction work and
-		 * internal stuff */
-		Node createChild(int position);
-
-		void delete();
-
+	interface NodeRO {
 		Attributes getAttributes();
 
 		/** returns the index (0..) of this node in the (by Y coordinate sorted)
@@ -321,7 +359,7 @@ public interface Proxy {
 		/** if countHidden is false then only nodes that are matched by the
 		 * current filter are counted. */
 		int getNodeLevel(boolean countHidden);
-		
+
 		/** get the note text with all HTML tags removed. */
 		String getPlainNoteText();
 
@@ -352,24 +390,6 @@ public interface Proxy {
 
 		boolean isVisible();
 
-		/** removes connector from List<Node> connectors; does the corresponding
-		 * on the target Node object referenced by connectorToBeRemoved */
-		void moveTo(Node parentNode);
-
-		void moveTo(Node parentNode, int position);
-
-		/** as above, using String nodeID instead of Node object to establish the connector*/
-		void removeConnector(Connector connectorToBeRemoved);
-
-		void setFolded(boolean folded);
-		
-		/** set the note text. Required HTML tags will be automatically added. */
-		void setPlainNoteText(String text);
-
-		void setNoteText(String text);
-		
-		void setText(String text);
-
 		/** Starting from this node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true. */
 		List<Node> find(ICondition condition);
@@ -380,16 +400,51 @@ public interface Proxy {
 
 		Date getLastModifiedAt();
 
-		void setLastModifiedAt(Date date);
-
 		Date getCreatedAt();
+	}
+
+	interface Node extends NodeRO {
+		Connector addConnectorTo(Node target);
+
+		/** adds a new Connector object to List<Node> connectors and returns
+		 * reference for optional further editing (style); also enlists the
+		 * Connector on the target Node object. */
+		Connector addConnectorTo(String targetNodeID);
+
+		/** inserts *new* node as child, takes care of all construction work and
+		 * internal stuff inserts as last child. */
+		Node createChild();
+
+		/** inserts *new* node as child, takes care of all construction work and
+		 * internal stuff */
+		Node createChild(int position);
+
+		void delete();
+
+		/** removes connector from List<Node> connectors; does the corresponding
+		 * on the target Node object referenced by connectorToBeRemoved */
+		void moveTo(Node parentNode);
+
+		void moveTo(Node parentNode, int position);
+
+		/** as above, using String nodeID instead of Node object to establish the connector*/
+		void removeConnector(Connector connectorToBeRemoved);
+
+		void setFolded(boolean folded);
+
+		/** set the note text. Required HTML tags will be automatically added. */
+		void setPlainNoteText(String text);
+
+		void setNoteText(String text);
+
+		void setText(String text);
+
+		void setLastModifiedAt(Date date);
 
 		void setCreatedAt(Date date);
 	}
 
-	interface NodeStyle {
-		void setStyle(Object key);
-
+	interface NodeStyleRO {
 		Object getStyle();
 
 		Node getStyleNode();
@@ -401,6 +456,10 @@ public interface Proxy {
 		Font getFont();
 
 		Color getNodeTextColor();
+	}
+
+	interface NodeStyle extends NodeStyleRO {
+		void setStyle(Object key);
 
 		void setBackgroundColor(Color color);
 

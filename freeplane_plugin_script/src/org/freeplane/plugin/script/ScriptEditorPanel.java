@@ -192,8 +192,18 @@ class ScriptEditorPanel extends JDialog {
 			storeCurrent();
 			if (!mScriptList.isSelectionEmpty()) {
 				mScriptResultField.setText("");
-				final Object result = mScriptModel.executeScript(mScriptList.getSelectedIndex(), getPrintStream(),
-				    getErrorHandler());
+				Object result = null;
+				try {
+					result = mScriptModel.executeScript(mScriptList.getSelectedIndex(), getPrintStream(),
+						getErrorHandler());
+                }
+                catch (Throwable e2) {
+        			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
+        			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");
+        			UITools.errorMessage(e2.getClass().getName() + ": " + cause
+        			        + ((cause.length() != 0 && message.length() != 0) ? ", " : "") + message);
+        			result = message;
+                }
 				getPrintStream().print(TextUtils.getText("plugins/ScriptEditor/window.Result") + result);
 			}
 		}
