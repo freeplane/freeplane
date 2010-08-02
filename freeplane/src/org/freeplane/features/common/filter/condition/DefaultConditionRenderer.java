@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.common.filter.condition;
 
-import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JComponent;
