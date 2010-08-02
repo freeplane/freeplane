@@ -73,7 +73,6 @@ public class ConditionNotSatisfiedDecorator implements ISelectableCondition {
 		final String text = not + ' ';
 		component.add(new JLabel(text));
 		final JComponent renderer = originalCondition.getListCellRendererComponent();
-		renderer.setOpaque(false);
 		component.add(renderer);
 		return component;
 	}

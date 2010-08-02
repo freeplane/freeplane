@@ -78,7 +78,6 @@ public class DisjunctConditions implements ISelectableCondition {
 		component.add(new JLabel("("));
 		ISelectableCondition cond = conditions[0];
 		JComponent rendererComponent = cond.getListCellRendererComponent();
-		rendererComponent.setOpaque(false);
 		component.add(rendererComponent);
 		for (int i = 1; i < conditions.length; i++) {
 			final String or = TextUtils.removeMnemonic(TextUtils.getText("filter_or"));
@@ -86,7 +85,6 @@ public class DisjunctConditions implements ISelectableCondition {
 			component.add(new JLabel(text));
 			cond = conditions[i];
 			rendererComponent = cond.getListCellRendererComponent();
-			rendererComponent.setOpaque(false);
 			component.add(rendererComponent);
 		}
 		component.add(new JLabel(")"));

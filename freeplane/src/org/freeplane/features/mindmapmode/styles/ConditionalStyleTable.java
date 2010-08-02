@@ -1,5 +1,6 @@
 package org.freeplane.features.mindmapmode.styles;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
+import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
@@ -22,7 +24,7 @@ import org.freeplane.features.common.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.styles.MapStyleModel;
 
-public class ConditionalStyleTable extends JTable {
+class ConditionalStyleTable extends JTable {
 
 	/**
      * 
@@ -35,7 +37,22 @@ public class ConditionalStyleTable extends JTable {
     private class ConditionEditor extends AbstractCellEditor
     implements TableCellEditor{
 		
-		JButton btn = new JButton();
+		private JButton btn;
+		public ConditionEditor() {
+			super();
+			btn = new JButton(){
+				{
+					setUI(BasicButtonUI.createUI(this));
+				}
+
+				@Override
+                public Color getBackground() {
+	                return getSelectionBackground();
+                }
+
+			};
+        }
+
 		private Object cellEditorValue;
 		public Component getTableCellEditorComponent(final JTable table, final Object value, boolean isSelected, int row, int column) {
 			btn.addActionListener(new ActionListener() {

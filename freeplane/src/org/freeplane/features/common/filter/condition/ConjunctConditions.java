@@ -78,7 +78,6 @@ public class ConjunctConditions implements ISelectableCondition {
 		component.add(new JLabel("("));
 		ISelectableCondition cond = conditions[0];
 		JComponent rendererComponent = cond.getListCellRendererComponent();
-		rendererComponent.setOpaque(false);
 		component.add(rendererComponent);
 		for (int i = 1; i < conditions.length; i++) {
 			final String and = TextUtils.removeMnemonic(TextUtils.getText("filter_and"));
@@ -86,7 +85,6 @@ public class ConjunctConditions implements ISelectableCondition {
 			component.add(new JLabel(text));
 			cond = conditions[i];
 			rendererComponent = cond.getListCellRendererComponent();
-			rendererComponent.setOpaque(false);
 			component.add(rendererComponent);
 		}
 		component.add(new JLabel(")"));

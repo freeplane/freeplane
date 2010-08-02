@@ -35,7 +35,6 @@ import org.freeplane.features.common.icon.UIIcon;
  * @author Dimitry Polivaev
  */
 public class DefaultConditionRenderer implements ListCellRenderer, TableCellRenderer {
-	final public static Color SELECTED_BACKGROUND = new Color(207, 247, 202);
 	private final String noValueText;
 
 	public DefaultConditionRenderer(String noValueText) {

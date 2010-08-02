@@ -92,6 +92,7 @@ public class IconContainedCondition implements ISelectableCondition {
 		JLabel icon = new JLabel(STORE.getUIIcon(getIconName()).getIcon());
 		component.add(icon);
 		icon.setBackground(Color.WHITE);
+		icon.setOpaque(true);
 		return component;
 	}
 
