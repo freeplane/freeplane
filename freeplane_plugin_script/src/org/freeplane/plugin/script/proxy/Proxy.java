@@ -378,6 +378,8 @@ public interface Proxy {
 
 		String getText();
 
+		/** returns true if p is a parent, or grandparent, ... of this node, or if it <em>is equal<em>
+		 * to this node; returns false otherwise. */
 		boolean isDescendantOf(Node p);
 
 		boolean isFolded();
