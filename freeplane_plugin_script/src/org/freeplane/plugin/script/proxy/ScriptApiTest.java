@@ -19,11 +19,12 @@ public class ScriptApiTest {
 	ControllerProxy c;
 	NodeProxy node;
 	private Map map;
-	private Comparator<NodeProxy> nodeComparator = new Comparator<NodeProxy>(){
-    	public int compare(NodeProxy o1, NodeProxy o2) {
-    		return new Integer(System.identityHashCode(o1.getDelegate())).compareTo(System.identityHashCode(o2
-    		    .getDelegate()));
-    	}};
+	private Comparator<NodeProxy> nodeComparator = new Comparator<NodeProxy>() {
+		public int compare(NodeProxy o1, NodeProxy o2) {
+			return new Integer(System.identityHashCode(o1.getDelegate())).compareTo(System.identityHashCode(o2
+			    .getDelegate()));
+		}
+	};
 
 	@SuppressWarnings("serial")
 	public static class TestException extends RuntimeException {
@@ -116,6 +117,7 @@ public class ScriptApiTest {
 	}
 
 	private void assertEquals(String message, Object expected, Object actual) {
+		message = (message == null || message.length() == 0) ? "Failure" : message;
 		boolean isEqual = expected == null && actual == null || expected != null && actual != null
 		        && expected.equals(actual);
 		if (!isEqual) {
@@ -148,6 +150,10 @@ public class ScriptApiTest {
 		final Node child = aNode.createChild();
 		child.setText(text);
 		return child;
+	}
+
+	private Node firstChild(final Node node) {
+		return node.getChildren().get(0);
 	}
 
 	public void test_AttributesRO_getAll_String_name() {
@@ -231,20 +237,20 @@ public class ScriptApiTest {
 		    .getAttributes().getAll("a1"));
 		assertEquals("first matching attribute should be removed", 3, map.getRootNode().getAttributes().size());
 	}
-	
+
 	private <T> List<T> list(T... args) {
 		return Arrays.asList(args);
 	}
-	
+
 	private <T> Set<T> set(T... args) {
 		return set(Arrays.asList(args));
 	}
-	
+
 	@SuppressWarnings("unchecked")
-    private <T> Set<T> set(List<T> list) {
+	private <T> Set<T> set(List<T> list) {
 		TreeSet<T> set = null;
 		if (list.size() > 0 && list.get(0) instanceof Node)
-			set = new TreeSet<T>((Comparator<T>)nodeComparator);
+			set = new TreeSet<T>((Comparator<T>) nodeComparator);
 		else
 			set = new TreeSet<T>();
 		set.addAll(list);
@@ -419,12 +425,12 @@ public class ScriptApiTest {
 		map = c.newMap();
 		final Node child1 = addChild(map.getRootNode(), "child 1");
 		final Node child2 = addChild(map.getRootNode(), "child 2");
-		final Node grandChild1 = addChild(child1, "child 1.1");
-		final Node grandChild2 = addChild(child1, "child 1.2");
+		final Node grandchild1 = addChild(child1, "child 1.1");
+		final Node grandchild2 = addChild(child1, "child 1.2");
 		final Node grandGrandChild = addChild(child1, "child 1.1.1");
 		c.selectBranch(child1);
 		assertEquals("all node of the branch should be selected",
-		    set(child1, grandChild1, grandChild2, grandGrandChild), set(c.getSelecteds()));
+		    set(child1, grandchild1, grandchild2, grandGrandChild), set(c.getSelecteds()));
 		c.selectBranch(child2);
 		assertEquals("one node should be selected", set(child2), set(c.getSelecteds()));
 	}
@@ -596,9 +602,11 @@ public class ScriptApiTest {
 	//	public void test_Link_set_String_target() {
 	//		// TODO
 	//	}
-	//
-	//	public void test_MapRO_getRootNode() {
-	//	}
+	public void test_MapRO_getRootNode() {
+		map = c.newMap();
+		assertEquals("the root node shouldn't have a parent", null, map.getRootNode().getParentNode());
+	}
+
 	public void test_MapRO_node_String_id() {
 		map = c.newMap();
 		final Node firstChild = addChild(map.getRootNode(), "child 1");
@@ -650,6 +658,7 @@ public class ScriptApiTest {
 		assertEquals("wrong order", child1, children.get(0));
 		assertEquals("wrong order", child2, children.get(1));
 	}
+
 	//
 	//	public void test_NodeRO_getConnectorsIn() {
 	//		// TODO
@@ -662,83 +671,183 @@ public class ScriptApiTest {
 	//	public void test_NodeRO_getExternalObject() {
 	//		// TODO
 	//	}
-	//
-	//	public void test_NodeRO_getIcons() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_getLink() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_getMap() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_getNodeID() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_getNodeLevel_boolean_countHidden() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_getPlainNoteText() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_getNoteText() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_getParentNode() {
-	//		// TODO
-	//	}
-	//
+	public void test_NodeRO_getIcons() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		assertTrue("by default a node has no icons", root.getIcons().getIcons().isEmpty());
+		root.getIcons().addIcon("bee");
+		assertEquals("one icon added", 1, root.getIcons().getIcons().size());
+	}
+
+	public void test_NodeRO_getLink() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		assertEquals("by default a node has no links", null, root.getLink().get());
+		final String url = "file://blabla.txt";
+		root.getLink().set(url);
+		assertEquals("a link should have been added", url, root.getLink().get());
+	}
+
+	public void test_NodeRO_getMap() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		assertEquals("???", map, root.getMap());
+	}
+
+	public void test_NodeRO_getNodeID() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		assertTrue("unknown node id pattern in '" + root.getNodeID() + "'", root.getNodeID().matches("ID_[1-9]\\d+"));
+	}
+
+	public void test_NodeRO_getNodeLevel_boolean_countHidden() {
+		map = createTestMap();
+		assertEquals("root is level 0", 0, map.getRootNode().getNodeLevel(true));
+		final Node child = firstChild(map.getRootNode());
+		assertEquals("children are at level 1", 1, child.getNodeLevel(false));
+		final Node grandchild = child.createChild();
+		assertEquals("grandchildren are at level 2", 2, grandchild.getNodeLevel(false));
+		assertEquals("grandchildren are at level 2 - countHidden only matters if there are hidden nodes" //
+		    , 2, grandchild.getNodeLevel(true));
+		// seems that the countHidden flag isn't testable here since it's not possible to filter nodes (and it
+		// doesn't make sense to extent the API for that), right?
+	}
+
+	public void test_NodeRO_getPlainNoteText() {
+		map = c.newMap();
+		final Node rootNode = map.getRootNode();
+		final String plainText = " xx\nx ";
+		rootNode.setNoteText(plainText);
+		assertEquals("", plainText, rootNode.getNoteText());
+		assertEquals("", plainText, rootNode.getPlainNoteText());
+		final String xml = "<x> yyy </x>";
+		rootNode.setNoteText(xml);
+		assertEquals("", xml, rootNode.getPlainNoteText());
+		rootNode.setNoteText("<html> <em>zzzzz</em> </hmtl>");
+		assertEquals("", "zzzzz", rootNode.getPlainNoteText());
+	}
+
+	public void test_NodeRO_getNoteText() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		root.setNoteText(" xxx ");
+		assertEquals("", " xxx ", root.getNoteText());
+		root.setNoteText(" x\nxx ");
+		assertEquals("", " x\nxx ", root.getNoteText());
+	}
+
+	public void test_NodeRO_getParentNode() {
+		map = createTestMap();
+		final Node root = map.getRootNode();
+		assertEquals("root has no parent", null, root.getParentNode());
+		final Node child = firstChild(root);
+		assertEquals("", root, child.getParentNode());
+	}
+
 	//	public void test_NodeRO_getStyle() {
 	//		// TODO
 	//	}
 	//
-	//	public void test_NodeRO_getPlainText() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_getPlainTextContent() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_getText() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_isDescendantOf_Node_p() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_isFolded() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_isLeaf() {
-	//		// TODO
-	//	}
+	public void test_NodeRO_getPlainText() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		final String plainText = " xxx ";
+		root.setText(plainText);
+		assertEquals("", plainText, root.getText());
+		assertEquals("plain text should be kept untouched", plainText, root.getPlainText());
+		final String xml = "<x> yyy </x>";
+		root.setText(xml);
+		assertEquals("xml tags are not stripped", xml, root.getPlainText());
+		root.setText("<html> <em>zzzzz</em> </hmtl>");
+		assertEquals("html tags should be stripped", "zzzzz", root.getPlainText());
+	}
+
+	public void test_NodeRO_getPlainTextContent() {
+		// getPlainTextContent() is deprecated - see #test_NodeRO_getPlainText()
+	}
+
+	public void test_NodeRO_getText() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		root.setText(" xxx ");
+		assertEquals("", " xxx ", root.getText());
+		root.setText(" x\nxx ");
+		assertEquals("", " x\nxx ", root.getText());
+	}
+
+	public void test_NodeRO_isDescendantOf_Node_p() {
+		map = createTestMap();
+		final Node root = map.getRootNode();
+		assertTrue("a node is its own descendant", root.isDescendantOf(root));
+		assertFalse("siblings aren't descendants of each other", firstChild(root).isDescendantOf(
+		    root.getChildren().get(1)));
+		assertFalse("siblings aren't descendants of each other", root.getChildren().get(1).isDescendantOf(
+		    firstChild(root)));
+		assertTrue("children are descendants of their parents", firstChild(root).isDescendantOf(root));
+		final Node grandchild = firstChild(root).createChild();
+		assertTrue("grandchildren are descendants of their parents", firstChild(root).isDescendantOf(root));
+		assertTrue("grandchildren are descendants of their grandparents", grandchild.isDescendantOf(root));
+	}
+
+	public void test_NodeRO_isFolded() {
+		map = createTestMap();
+		final Node root = map.getRootNode();
+		final Node child = firstChild(map.getRootNode());
+		final Node grandchild = addChild(child, "grandchild");
+		assertFalse("initially nothing should be folded", root.isFolded());
+		assertFalse("initially nothing should be folded", child.isFolded());
+		root.setFolded(true);
+		assertFalse("root isn't foldable", root.isFolded());
+		child.setFolded(true);
+		assertTrue("node should be folded now", child.isFolded());
+		assertFalse("folding is not recursive in terms of isFolded()", grandchild.isFolded());
+		child.setFolded(false);
+		assertFalse("node should be unfolded again", child.isFolded());
+		grandchild.setFolded(true);
+		assertFalse("a node without children is not foldable", grandchild.isFolded());
+		// test undo of folding - give the new node a child first to make it foldable
+		addChild(grandchild, "grandgrandchild");
+		grandchild.setFolded(true);
+		assertTrue("node should be folded now", grandchild.isFolded());
+		c.undo();
+		assertFalse("folding should be undone now", grandchild.isFolded());
+	}
+
+	public void test_NodeRO_isLeaf() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		assertTrue("even root is a leaf, if single", root.isLeaf());
+		addChild(root, "child");
+		assertFalse("root is never a leaf, even without children", root.isLeaf());
+		assertTrue("child without children should be leaf", firstChild(root).isLeaf());
+		addChild(firstChild(root), "grandchild");
+		assertFalse("child with children is not a leaf", firstChild(root).isLeaf());
+	}
+
 	//
 	//	public void test_NodeRO_isLeft() {
 	//		// TODO
 	//	}
 	//
-	//	public void test_NodeRO_isRoot() {
-	//		// TODO
-	//	}
-	//
+	public void test_NodeRO_isRoot() {
+		map = createTestMap();
+		assertTrue("root has no parent", map.getRootNode().getParentNode() == null);
+	}
+
 	//	public void test_NodeRO_isVisible() {
 	//		// TODO
 	//	}
 	//
-	//	public void test_NodeRO_find_ICondition_condition() {
-	//		// TODO
-	//	}
-	//
+	/** copy of {@link #test_ControllerRO_find_ICondition_condition()}. */
+	public void test_NodeRO_find_ICondition_condition() {
+		map = c.newMap();
+		@SuppressWarnings("unused")
+		final Node firstChild = addChild(map.getRootNode(), "child 1");
+		final Node secondChild = addChild(map.getRootNode(), "child 2");
+		final List<Node> found = c.find(new NodeContainsCondition("child 2"));
+		assertEquals("one matching node should be found", list(secondChild), found);
+	}
+
 	//	public void test_NodeRO_find_Closure_closure() {
 	//		// TODO
 	//	}
@@ -758,10 +867,12 @@ public class ScriptApiTest {
 	//	public void test_Node_addConnectorTo_String_targetNodeID() {
 	//		// TODO
 	//	}
-	//
-	//	public void test_Node_createChild() {
-	//		// TODO
-	//	}
+	public void test_Node_createChild() {
+		map = c.newMap();
+		assertEquals("", 0, map.getRootNode().getChildren().size());
+		map.getRootNode().createChild();
+		assertEquals("child should be created", 1, map.getRootNode().getChildren().size());
+	}
 	//
 	//	public void test_Node_createChild_int_position() {
 	//		// TODO
