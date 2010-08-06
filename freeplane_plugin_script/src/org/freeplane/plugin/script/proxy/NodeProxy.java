@@ -143,7 +143,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 			if (node.equals(otherNodeModel)) {
 				return true;
 			}
-			node = getDelegate().getParentNode();
+			node = node.getParentNode();
 		} while (node != null);
 		return false;
 	}
