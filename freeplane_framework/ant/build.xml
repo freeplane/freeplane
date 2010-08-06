@@ -40,7 +40,7 @@
 			<fileset dir="${workspace}/${plugindir}/dist/${pluginname}" />
 		</copy>
 	</target>
-	
+
 
 	<target name="build_core">
 		<echo>Freeplane Version = ${ver}.</echo>
@@ -60,7 +60,7 @@
 			<param name="pluginname" value="org.freeplane.core"/>
 	    </antcall>
 	</target>
-	
+
 	<target name="build_help" unless="skip_help">
 		<antcall target="makePlugin" inheritall="false">
 			<param name="anttarget" value="dist"/>
@@ -69,7 +69,7 @@
 			<param name="pluginname" value="org.freeplane.plugin.help"/>
 	    </antcall>
 	</target>
-	
+
 	<target name="build_latex" unless="skip_latex">
 		<antcall target="makePlugin" inheritall="false">
 			<param name="anttarget" value="dist"/>
@@ -78,7 +78,7 @@
 			<param name="pluginname" value="org.freeplane.plugin.latex"/>
 	    </antcall>
 	</target>
-	
+
 	<target name="build_svg" unless="skip_svg">
 		<antcall target="makePlugin" inheritall="false">
 			<param name="anttarget" value="dist"/>
@@ -87,7 +87,7 @@
 			<param name="pluginname" value="org.freeplane.plugin.svg"/>
 	    </antcall>
 	</target>
-	
+
 	<target name="build_script" unless="skip_script">
 		<antcall target="makePlugin" inheritall="false">
 			<param name="anttarget" value="dist"/>
@@ -96,7 +96,7 @@
 			<param name="pluginname" value="org.freeplane.plugin.script"/>
 	    </antcall>
 	</target>
-	
+
 	<target name="build_bugreport" unless="skip_bugreport">
 		<antcall target="makePlugin" inheritall="false">
 			<param name="anttarget" value="dist"/>
@@ -105,7 +105,7 @@
 			<param name="pluginname" value="org.freeplane.plugin.bugreport"/>
 	    </antcall>
 	</target>
-	
+
 	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_bugreport">
 
        <mkdir dir="${build.resources}" />
@@ -127,7 +127,7 @@
 	<target name="bzr_version_info" depends="mkdistdir">
         <delete file="${build}/bzrinfo.txt" quiet="true"/>
         <delete file="${dist}/bzr.properties" quiet="true"/>
-		<exec dir="${build}" executable="bzr" output="${build}/bzrinfo.txt" 
+		<exec dir="${build}" executable="bzr" output="${build}/bzrinfo.txt"
 			failifexecutionfails="false" failonerror="false" logError="true">
 		    <arg value="version-info"/>
 		</exec>
@@ -151,7 +151,7 @@
 		<fixcrlf srcdir="${build}"
 		         includes="bzrinfo.txt" eol="asis" />
 	</target>
-	
+
 	<target name="binzip" depends="build, mkdistdir">
 		<zip destfile="${dist}/freeplane_bin${branch-nick}-${ver}.zip" compress="true">
 			<zipfileset dir="${build}" prefix="freeplane-${ver}">
@@ -185,6 +185,9 @@
 					<exclude name="*/build4mac/**" />
 					<exclude name="*/dist/**" />
 					<exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho" />
+					<exclude name="freeplane_framework/windows-launcher/Objects/**" />
+					<exclude name="freeplane_framework/windows-launcher/*.layout" />
+					<exclude name="freeplane_framework/windows-launcher/Makefile.win" />
 				</patternset>
 			</tarfileset>
 			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
@@ -213,7 +216,7 @@
 			<arg line="/Q Freeplane_without_Java.iss" />
 		</exec>
 	</target>
-	
+
 	<target name="portableinstaller" depends="build, mkdistdir">
 		<property name="workingdir" value="${root}/temp/FreeplanePortable" />
 		<delete quiet="true" includeemptydirs="false">
@@ -231,7 +234,7 @@
         <copy tofile="${workingdir}/App/AppInfo/appicon.ico">
             <fileset file="windows-launcher/Freeplane_app.ico" />
         </copy>
-		
+
 		<copy todir="${workingdir}/App/Freeplane">
 			<fileset dir="${build}">
 				<exclude name="*.exe" />
@@ -260,21 +263,21 @@
 
     <property name="macpluginsdir" value="plugins" />
     <!-- !! TODO: Delete this unused property, and also delete its use in below in the jarbundler vmoptions field
-            Disabled "command-line" parameters because the "$1" syntax is probably incorrect here: 
+            Disabled "command-line" parameters because the "$1" syntax is probably incorrect here:
     <property name="macparams" value="-Dorg.freeplane.param1=$1 -Dorg.freeplane.param2=$2 -Dorg.freeplane.param3=$3 -Dorg.freeplane.param4=$4" />
-    --> 
+    -->
     <property name="macdefines" value="-Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
 
-	<!-- uncomment to start remote debug session for the app	
-	<property name="debugparams" value="-Xdebug -Xrunjdwp:transport=dt_socket,address=localhost:8000"/>	
+	<!-- uncomment to start remote debug session for the app
+	<property name="debugparams" value="-Xdebug -Xrunjdwp:transport=dt_socket,address=localhost:8000"/>
 	-->
-		
+
 	<condition property="debugparams" else="">
 		<isset property="debugparams"/>
-	</condition>	
-		
+	</condition>
+
     <!-- Delete any existing Freeplane.app (it's a directory) -->
-	<mkdir dir="${build4mac}"/>	
+	<mkdir dir="${build4mac}"/>
     <delete dir="${build4mac}/Freeplane.app"/>
     <jarbundler dir="${build4mac}"
                 name="Freeplane"
@@ -303,7 +306,7 @@
                     iconfile="${mac-jarbundler}/Banner.icns"
       -->
       <documenttype name="Mindmap"
-                    extensions="mm" 
+                    extensions="mm"
                     ostypes="MM"
                     iconfile="${mac-jarbundler}/freeplanedoc.icns"
                     role="Editor"/>
@@ -329,7 +332,7 @@
           Also exclude the OSGI framework.jar which is copied by the jarbundler task
           Doing this separately to allow specifying jar=framework.jar in the jarbundler task
             jarbundler allows either jar= or jarfileset but not both
-            Copying after the jarbundler task which creates the Freeplane.app directory 
+            Copying after the jarbundler task which creates the Freeplane.app directory
               JarBundler may erase the directory if it already exists
                 This is documented in their change log
             !! TODO: Test restoring the jarfileset inside jarbundler
@@ -354,7 +357,7 @@
 			<zipfileset dir="${build4mac}" prefix="freeplane-${ver}">
 				<exclude name="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub"/>
 			</zipfileset>
-            <zipfileset file="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" filemode="775" 
+            <zipfileset file="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" filemode="775"
             	prefix="freeplane-${ver}/Freeplane.app/Contents/MacOS"/>
 		</zip>
 	</target>
@@ -405,7 +408,7 @@
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/freeplane_plugin_script"/>
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
-			  dir="${workspace}/freeplane_plugin_bugreport"/>		
+			  dir="${workspace}/freeplane_plugin_bugreport"/>
 	</target>
 
 </project>
