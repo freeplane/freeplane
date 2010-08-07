@@ -174,10 +174,8 @@ public class StyleEditorPanel extends JPanel {
 
 		@Override
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MNodeStyleController styleController = (MNodeStyleController) Controller
-			.getCurrentModeController().getExtension(
-					NodeStyleController.class);
-			styleController.setColor(node, enabled ? mEdgeColor.getColorValue() : null);
+			final MEdgeController edgeController = (MEdgeController) MEdgeController.getController();
+			edgeController.setColor(node, enabled ? mEdgeColor.getColorValue() : null);
 		}
 	}
 
