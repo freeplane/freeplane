@@ -27,12 +27,10 @@ import java.text.MessageFormat;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
 /**
@@ -59,7 +57,6 @@ import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 public class ExportDialog {
 	/** the JFileChooser dialog used to choose filter and the file to export to. */
 	final private JFileChooser fileChooser = new JFileChooser();
-	final private XsltFileRegistry xsltFileRegistry;
 
 	/**
 	 * This constructor does <i>not</i> the export per itself.
@@ -69,13 +66,15 @@ public class ExportDialog {
 	 */
 	public ExportDialog() {
 		super();
-		xsltFileRegistry = XsltFileRegistry.newInstance();
 		fileChooser.setAcceptAllFileFilterUsed(false); // the user can't select an "All Files filter"
 		fileChooser.setDialogTitle(TextUtils.getText("export_using_xslt"));
 		fileChooser.setToolTipText(TextUtils.getText("select_file_export_to"));
-		for (FileFilter filter : xsltFileRegistry.getFileFilters()) {
+		final ExportController  exportEngineRegistry = ExportController.getContoller();
+		for (FileFilter filter : exportEngineRegistry.getFileFilters()) {
 	        fileChooser.addChoosableFileFilter(filter);
         }
+		final FileFilter fileFilter = fileChooser.getChoosableFileFilters()[0];
+		fileChooser.setFileFilter(fileFilter);
 	}
 
 	/**
@@ -87,20 +86,16 @@ public class ExportDialog {
 	 * @param parentframe a parent component for the dialogs to appear (can be null).
 	 * @param streamSource 
 	 */
-	void export(final Component parentframe, final StreamSource xmlSource, final File xmlSourceFile) {
-		if (xsltFileRegistry.getFilterMap().isEmpty()) {
-			JOptionPane.showMessageDialog(parentframe, TextUtils.formatText("xslt_export_file_not_found_in_dirs",
-			    xsltFileRegistry.getXsltUserDirectory().getAbsolutePath(), xsltFileRegistry.getXsltSysDirectory()
-			        .getAbsolutePath()), TextUtils.getText("xslt_export_not_possible"), JOptionPane.WARNING_MESSAGE);
-			/* "No XSLT export file could be found,\n neither in '"
-			+ getXsltUserDirectory() + "'\n nor in '"
-			+ getXsltSysDirectory() + "'.",
-			"Freeplane XSLT export not possible", */
+	void export(final Component parentframe, final MapModel map) {
+		final ExportController exportEngineRegistry = ExportController.getContoller();
+		if (exportEngineRegistry.getFilterMap().isEmpty()) {
+			JOptionPane.showMessageDialog(parentframe, TextUtils.getText("xslt_export_not_possible"));
 			return;
 		}
 		// Finish to setup the File Chooser...
 		// And then use it
 		final String absolutePathWithoutExtension;
+		final File xmlSourceFile = map.getFile();
 		if (xmlSourceFile != null) {
 			absolutePathWithoutExtension = FileUtils.removeExtension(xmlSourceFile.getAbsolutePath());
 		}
@@ -145,11 +140,9 @@ public class ExportDialog {
 			fileChooser.addPropertyChangeListener(filterChangeListener);
 			final int returnVal = fileChooser.showSaveDialog(parentframe);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				final XmlExporter xe = new XmlExporter();
 				// we check which filter has been selected by the user and use its
 				// description as key for the map to get the corresponding XSLT file
 				final ExampleFileFilter fileFilter = (ExampleFileFilter) fileChooser.getFileFilter();
-				final File xsltFile = xsltFileRegistry.getFilterMap().get(fileFilter.getDescription());
 				final File selectedFile = getAcceptableFile(fileChooser.getSelectedFile(), fileFilter);
 				if (selectedFile == null) {
 					return;
@@ -166,8 +159,8 @@ public class ExportDialog {
 						return;
 					}
 				}
-				final Source xsltSource = new StreamSource(xsltFile);
-				xe.transform(xmlSource, xsltSource, selectedFile);
+				final IExportEngine exportEngine = exportEngineRegistry.getFilterMap().get(fileFilter);
+				exportEngine.export(map, selectedFile);
 			}
 		}
 		finally {

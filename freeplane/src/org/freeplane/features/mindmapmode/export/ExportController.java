@@ -4,27 +4,38 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
+import org.freeplane.n3.nanoxml.IXMLParser;
+import org.freeplane.n3.nanoxml.IXMLReader;
+import org.freeplane.n3.nanoxml.StdXMLReader;
+import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.n3.nanoxml.XMLParserFactory;
 
 /**
  * A registry of all XSLT scripts that are available to transform a .mm file into another format.
  * The XSLT file directories are scanned anew by each instance of this class to account for changes during uptime.
  * The filterMap maps descriptions onto a XSLT file. This enables multiple filters for one file extension.
  */
-public class XsltFileRegistry {
+public class ExportController implements IExtension{
 	final private static String EXPORT_FILTER_PATTERN = "^.*MINDMAPEXPORTFILTER\\s+(\\S+)\\s+(.*)(?:\\s+-->)?$";
 	/** A pattern which is "MINDMAPEXPORTFILTER ext1;ext2;... File format description" */
 	final private static String FILE_NAME_PATTERN = "mm2([\\w]+)\\.xsl";
@@ -35,17 +46,60 @@ public class XsltFileRegistry {
 
 	/** a hash where the key is the file extension and the value the filename of
 	 * the corresponding XSLT sheet. */
-	final private HashMap<String, File> filterMap = new HashMap<String, File>();
+	final private HashMap<FileFilter, IExportEngine> filterMap = new HashMap<FileFilter, IExportEngine>();
 	final private ArrayList<FileFilter> fileFilters = new ArrayList<FileFilter>();
 
-	private XsltFileRegistry() {
+	public static void install(ExportController exportController) {
+	    Controller.getCurrentModeController().addExtension(ExportController.class, exportController);
+    }
+	
+	public ExportController(final String xmlDescriptorFile) {
+		final ModeController modeController = Controller.getCurrentModeController();
+		final ExportAction action = new ExportAction();
+		modeController.addAction(action);
+
+		final ExportToHTMLAction exportToHTMLAction = new ExportToHTMLAction();
+		addExportEngine(exportToHTMLAction.getFileFilter(), exportToHTMLAction);
+		final ExportBranchToHTMLAction exportBranchToHTMLAction = new ExportBranchToHTMLAction();
+		addExportEngine(exportBranchToHTMLAction.getFileFilter(), exportBranchToHTMLAction);
+		
+		final ExportToOoWriter exportToOoWriter = new ExportToOoWriter();
+		
+		addExportEngine(exportToOoWriter.getFileFilter(), exportToOoWriter);
+		createImageExporters();
+		createXSLTExportActions(xmlDescriptorFile);
 		gatherXsltScripts();
 	}
 
-	public static XsltFileRegistry newInstance() {
-	    return new XsltFileRegistry();
-    }
+	public void createImageExporters() {
+		final ExportToImage pngExport = new ExportToImage("png","Portable Network Graphic (PNG)");
+		addExportEngine(pngExport.getFileFilter(), pngExport);
+		final ExportToImage jpgExport = new ExportToImage("jpg","Compressed image (JPEG)");
+		addExportEngine(jpgExport.getFileFilter(), jpgExport);
+	}
 	
+	private void createXSLTExportActions( final String xmlDescriptorFile) {
+		try {
+			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+			final URL resource = ResourceController.getResourceController().getResource(xmlDescriptorFile);
+			final IXMLReader reader = new StdXMLReader(resource.openStream());
+			parser.setReader(reader);
+			final XMLElement xml = (XMLElement) parser.parse();
+			final Enumeration<XMLElement> actionDescriptors = xml.enumerateChildren();
+			while (actionDescriptors.hasMoreElements()) {
+				final XMLElement descriptor = actionDescriptors.nextElement();
+				final String name = descriptor.getAttribute("name", null);
+				final XMLElement xmlProperties = descriptor.getFirstChildNamed("properties");
+				final Properties properties = xmlProperties.getAttributes();
+				final ExportWithXSLT action = new ExportWithXSLT(name, properties);
+				addExportEngine(action.getFileFilter(), action);
+			}
+		}
+		catch (final Exception e) {
+			LogUtils.severe(e);
+		}
+	}
+
 	/** This method populates the {@link #filterMap} and the {@link #fileFilters} field. */
 	private void gatherXsltScripts() {
 		gatherXsltScripts(getXsltSysDirectory());
@@ -130,10 +184,14 @@ public class XsltFileRegistry {
 
 	private void addXsltFile(final String[] extensions, final String description, final File xsltFile) {
 		final ExampleFileFilter filter = new ExampleFileFilter(extensions, description);
-		fileFilters.add(filter);
-		// note: filter.getDescription() will be something like (description + " (.tex)")
-		filterMap.put(filter.getDescription(), xsltFile);
+		final XsltExportEngine exporter = new XsltExportEngine(xsltFile);
+		addExportEngine(filter, exporter);
 	}
+
+	public void addExportEngine(final FileFilter filter, final IExportEngine exporter) {
+	    fileFilters.add(filter);
+		filterMap.put(filter, exporter);
+    }
 
 	/**
 	 * A simple help function to get the directory where to search for XSLT 
@@ -154,7 +212,7 @@ public class XsltFileRegistry {
 	}
 
 	/** returns a Map(description -> xsltFile). */
-	public Map<String, File> getFilterMap() {
+	public HashMap<FileFilter, IExportEngine> getFilterMap() {
     	return filterMap;
     }
 
@@ -162,4 +220,21 @@ public class XsltFileRegistry {
 	public List<FileFilter> getFileFilters() {
     	return fileFilters;
     }
+
+	public static ExportController getContoller() {
+		return getController(Controller.getCurrentModeController());
+    }
+
+	public static ExportController getController(ModeController modeController) {
+		return (ExportController) modeController.getExtension(ExportController.class);
+    }
+
+	public boolean checkCurrentMap(MapModel map) {
+		if(map.equals(Controller.getCurrentController().getMap())){
+			return true;
+		}
+		UITools.errorMessage(TextUtils.getText("export_works_for_current_map_only"));
+	    return false;
+    }
+
 }

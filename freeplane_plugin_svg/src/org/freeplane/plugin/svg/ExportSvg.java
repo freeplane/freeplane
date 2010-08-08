@@ -20,34 +20,26 @@
  */
 package org.freeplane.plugin.svg;
 
-import java.awt.event.ActionEvent;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
-import javax.swing.Action;
-
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.mindmapmode.export.ExportController;
 import org.freeplane.view.swing.map.MapView;
 
-@ActionLocationDescriptor(locations = { "/menu_bar/file/export" })
 class ExportSvg extends ExportVectorGraphic {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ExportSvg() {
-		super("ExportSvg");
-	}
-
-	public void actionPerformed(final ActionEvent e) {
-		final File chosenFile = chooseFile("svg", (String) getValue(Action.NAME), null);
-		if (chosenFile == null) {
+	public void export(MapModel map, File chosenFile) {
+		if (!ExportController.getContoller().checkCurrentMap(map)){
 			return;
 		}
 		try {
@@ -71,4 +63,5 @@ class ExportSvg extends ExportVectorGraphic {
 		}
 		Controller.getCurrentController().getViewController().setWaitingCursor(false);
 	}
+
 }

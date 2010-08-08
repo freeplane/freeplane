@@ -2,11 +2,9 @@
 <export_with_xslt>
     <action
         name="accessories/plugins/ExportWithXSLT_HTML"
-        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="html"
-            file_description="accessories/plugins/ExportWithXSLT_Applet.properties_webpage"
             xslt_file="/xslt/toxhtml.xsl"
             create_dir="true"
             files_to_copy="marktree.js,minus.png,plus.png,ilink.png,treestyles.css"
@@ -17,11 +15,9 @@
     </action>
     <action
         name="accessories/plugins/ExportWithXSLT_HTML3"
-        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="html"
-            file_description="accessories/plugins/ExportWithXSLT_Applet.properties_webpage"
             xslt_file="/xslt/freeplane2html.xsl"
             create_dir="true"
             files_to_copy="freeplane2html.css,hide.png,leaf.png,show.png,ilink.png"
@@ -32,11 +28,9 @@
     </action>
     <action
         name="accessories/plugins/ExportWithXSLT_Applet"
-        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="html"
-            file_description="accessories/plugins/ExportWithXSLT_Applet.properties_webpage"
             xslt_file="/xslt/freeplane2applet.xsl"
             create_dir="true"
             files_to_copy="freeplaneviewer.jar"
@@ -46,11 +40,9 @@
     </action>
     <action
         name="accessories/plugins/ExportWithXSLT_Flash"
-        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="html"
-            file_description="accessories/plugins/ExportWithXSLT_Applet.properties_webpage"
             xslt_file="/xslt/freeplane2flash.xsl"
             create_dir="true"
             files_to_copy="visorFreeplane.swf,flashobject.js"
@@ -60,12 +52,10 @@
     </action>
     <action
         name="accessories/plugins/ExportWithXSLT_TASKSTJI"
-        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="tji"
             name_extension=".tasks"
-            file_description="accessories/plugins/ExportWithXSLT_Applet.properties_tji"
             xslt_file="/xslt/mm2tjitasks.xsl"
             copy_map="false"
             load_file="false"
@@ -74,12 +64,10 @@
     </action>
     <action
         name="accessories/plugins/ExportWithXSLT_RESOURCESTJI"
-        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="tji"
             name_extension=".resources"
-            file_description="accessories/plugins/ExportWithXSLT_Applet.properties_tji"
             xslt_file="/xslt/mm2tjiresources.xsl"
             copy_map="false"
             load_file="false"
@@ -88,12 +76,10 @@
     </action>
     <action
         name="accessories/plugins/ExportWithTWiki"
-        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="twi"
             name_extension=""
-            file_description="accessories/plugins/ExportWithTWiki.properties"
             xslt_file="/xslt/mm2twiki.xsl"
             copy_map="false"
             load_file="false"

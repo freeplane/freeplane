@@ -19,36 +19,34 @@
  */
 package org.freeplane.features.mindmapmode.export;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.filechooser.FileFilter;
+
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.ClipboardController;
+import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
-@ActionLocationDescriptor(accelerator = "control H", locations = { "/menu_bar/file/export/html" })
-class ExportBranchToHTMLAction extends AFreeplaneAction {
+class ExportBranchToHTMLAction implements IExportEngine {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	public ExportBranchToHTMLAction() {
-		super("ExportBranchToHTMLAction");
 	}
 
-	public void actionPerformed(final ActionEvent e) {
+	public void export(MapModel map, File file) {
+		if (! ExportController.getContoller().checkCurrentMap(map)){
+			return;
+		}
 		try {
-			final File file = ExportAction.chooseFile("html", "html", null);
-			if (file == null) {
-				return;
-			}
 			ClipboardController.getController().saveHTML(
 			    Controller.getCurrentModeController().getMapController().getSelectedNode(), file);
 			((UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class))
@@ -59,4 +57,8 @@ class ExportBranchToHTMLAction extends AFreeplaneAction {
 			UITools.errorMessage(TextUtils.getText("export_failed"));
 		}
 	}
+
+	public FileFilter getFileFilter() {
+	    return new ExampleFileFilter("html", TextUtils.getText("ExportBranchToHTMLAction.text"));
+    }
 }

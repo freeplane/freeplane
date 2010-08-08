@@ -2,10 +2,12 @@ package org.freeplane.plugin.svg;
 
 import java.util.Hashtable;
 
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.export.ExportController;
+import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
 import org.osgi.framework.BundleActivator;
@@ -27,9 +29,9 @@ public class Activator implements BundleActivator {
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(ModeController modeController) {
-				    final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-				    menuBuilder.addAnnotatedAction(new ExportPdf());
-				    menuBuilder.addAnnotatedAction(new ExportSvg());
+			    	final ExportController exportController = ExportController.getController(modeController);
+			    	exportController.addExportEngine(new ExampleFileFilter("pdf", TextUtils.getText("export_pdf_text")), new ExportPdf());
+			    	exportController.addExportEngine(new ExampleFileFilter("svg", TextUtils.getText("export_svg_text")), new ExportSvg());
 				    final ViewerController extension = (ViewerController) modeController
 				        .getExtension(ViewerController.class);
 				    extension.addFactory(new SvgViewerFactory());

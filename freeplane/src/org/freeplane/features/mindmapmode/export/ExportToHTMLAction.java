@@ -19,39 +19,36 @@
  */
 package org.freeplane.features.mindmapmode.export;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.filechooser.FileFilter;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
-@ActionLocationDescriptor(accelerator = "control E", locations = { "/menu_bar/file/export/html" })
-class ExportToHTMLAction extends AFreeplaneAction {
+class ExportToHTMLAction implements IExportEngine {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	public ExportToHTMLAction() {
-		super("ExportToHTMLAction");
+		super();
 	}
 
-	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = Controller.getCurrentController().getMap();
+	public FileFilter getFileFilter() {
+		return new ExampleFileFilter("html", TextUtils.getText("ExportToHTMLAction.text"));
+    }
+	public void export(MapModel map, File file) {
 		try {
-			final File file = ExportAction.chooseFile("html", "html", null);
-			if (file == null) {
-				return;
-			}
 			ClipboardController.getController().saveHTML(map.getRootNode(), file);
 			if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
 				ExportWithXSLT.copyIconsToDirectory(map, new File(file.getAbsoluteFile().getParentFile(), "icons")
@@ -65,4 +62,5 @@ class ExportToHTMLAction extends AFreeplaneAction {
 			UITools.errorMessage(TextUtils.getText("export_failed"));
 		}
 	}
+
 }

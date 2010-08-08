@@ -17,7 +17,6 @@
  */
 package org.freeplane.features.mindmapmode.export;
 
-import java.awt.event.ActionEvent;
 import java.awt.image.RenderedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
@@ -29,13 +28,13 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
+import javax.swing.filechooser.FileFilter;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -46,7 +45,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
@@ -57,17 +55,13 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.MapWriter.Mode;
 import org.freeplane.features.common.url.UrlManager;
-import org.freeplane.n3.nanoxml.IXMLParser;
-import org.freeplane.n3.nanoxml.IXMLReader;
-import org.freeplane.n3.nanoxml.StdXMLReader;
-import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLParserFactory;
+import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
 /**
  * @author foltin To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class ExportWithXSLT extends ExportAction {
+public class ExportWithXSLT extends AExportEngine {
 //	private static final IconStore STORE = IconStoreFactory.create();
 	private static final String NAME_EXTENSION_PROPERTY = "name_extension";
 	/**
@@ -95,65 +89,16 @@ public class ExportWithXSLT extends ExportAction {
 		}
 	}
 
-	public static void createXSLTExportActions( final String xmlDescriptorFile) {
-		try {
-			final ModeController modeController = Controller.getCurrentModeController();
-			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-			{
-				final ExportToHTMLAction e1 = new ExportToHTMLAction();
-				modeController.addAction(e1);
-				menuBuilder.addAnnotatedAction(e1);
-				final ExportBranchToHTMLAction e2 = new ExportBranchToHTMLAction();
-				modeController.addAction(e2);
-				menuBuilder.addAnnotatedAction(e2);
-				final ExportWithXSLTDialogAction action = new ExportWithXSLTDialogAction();
-				modeController.addAction(action);
-				menuBuilder.addAction("/menu_bar/file/export/dialog", action, MenuBuilder.AS_CHILD);
-			}
-			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
-			final URL resource = ResourceController.getResourceController().getResource(xmlDescriptorFile);
-			final IXMLReader reader = new StdXMLReader(resource.openStream());
-			parser.setReader(reader);
-			final XMLElement xml = (XMLElement) parser.parse();
-			final Enumeration<XMLElement> actionDescriptors = xml.enumerateChildren();
-			while (actionDescriptors.hasMoreElements()) {
-				final XMLElement descriptor = actionDescriptors.nextElement();
-				final String name = descriptor.getAttribute("name", null);
-				final String location = descriptor.getAttribute("location", null);
-				final XMLElement xmlProperties = descriptor.getFirstChildNamed("properties");
-				final Properties properties = xmlProperties.getAttributes();
-				final ExportWithXSLT action = new ExportWithXSLT(name, properties);
-				modeController.addAction(action);
-				menuBuilder.addAction(location, action, MenuBuilder.AS_CHILD);
-			}
-		}
-		catch (final Exception e) {
-			LogUtils.severe(e);
-		}
-	}
-
 	/**
 	 * For test purposes. True=no error
 	 */
 	private boolean mTransformResultWithoutError = false;
 	final private Properties properties;
+	private String name;
 
 	public ExportWithXSLT(final String name, final Properties properties) {
-		super(name);
+		this.name = name;
 		this.properties = properties;
-	}
-
-	public void actionPerformed(final ActionEvent e) {
-		final File saveFile = chooseFile();
-		if (saveFile == null) {
-			return;
-		}
-		transform(saveFile);
-	}
-
-	protected File chooseFile() {
-		final String nameExtension = getProperty(ExportWithXSLT.NAME_EXTENSION_PROPERTY);
-		return chooseFile(getProperty("file_type"), getTranslatableResourceString("file_description"), nameExtension);
 	}
 
 	/**
@@ -195,19 +140,25 @@ public class ExportWithXSLT extends ExportAction {
 	}
 
 	/**
+	 * @param map 
 	 */
-	private void createImageFromMap(final String directoryName) {
+	private boolean createImageFromMap(MapModel map, final String directoryName) {
 		if (Controller.getCurrentController().getViewController().getMapView() == null) {
-			return;
+			return false;
 		}
-		final RenderedImage image = createBufferedImage();
+		final RenderedImage image = createBufferedImage(map);
+		if(image == null){
+			return false;
+		}
 		try {
 			final FileOutputStream out = new FileOutputStream(directoryName + File.separator + "image.png");
 			ImageIO.write(image, "png", out);
 			out.close();
+			return true;
 		}
 		catch (final IOException e1) {
 			LogUtils.severe(e1);
+			return false;
 		}
 	}
 
@@ -247,14 +198,6 @@ public class ExportWithXSLT extends ExportAction {
 		return properties.getProperty(key, value);
 	}
 
-	private String getTranslatableResourceString(final String resourceName) {
-		final String returnValue = getProperty(resourceName);
-		if (returnValue != null && returnValue.startsWith("%")) {
-			return TextUtils.getText(returnValue.substring(1));
-		}
-		return returnValue;
-	}
-
 	public boolean isTransformResultWithoutError() {
 		return mTransformResultWithoutError;
 	}
@@ -262,11 +205,10 @@ public class ExportWithXSLT extends ExportAction {
 	/**
 	 * @param saveFile
 	 */
-	protected void transform(final File saveFile) {
+	public void export(final MapModel map, final File saveFile) {
 		try {
 			mTransformResultWithoutError = true;
 			final boolean create_image = StringUtils.equals(getProperty("create_html_linked_image"), "true");
-			final MapModel map = Controller.getCurrentController().getMap();
 			final String areaCode = getAreaCode(create_image);
 			final String xsltFileName = getProperty("xslt_file");
 			boolean success = transformMapWithXslt(xsltFileName, saveFile, areaCode);
@@ -290,7 +232,7 @@ public class ExportWithXSLT extends ExportAction {
 					success = copyMap(map, directoryName);
 				}
 				if (success && create_image) {
-					createImageFromMap(directoryName);
+					success = createImageFromMap(map, directoryName);
 				}
 			}
 			if (!success) {
@@ -339,4 +281,8 @@ public class ExportWithXSLT extends ExportAction {
 		};
 		return true;
 	}
+
+	public FileFilter getFileFilter() {
+		return new ExampleFileFilter(getProperty("file_type"), TextUtils.getText(name + ".text"));
+    }
 }

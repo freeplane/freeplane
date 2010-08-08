@@ -44,6 +44,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -64,7 +65,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 		final String type = "mmap";
 		final Container component = Controller.getCurrentController().getViewController().getContentPane();
 		final JFileChooser chooser = new JFileChooser();
-		chooser.addChoosableFileFilter(new ExportFilter(type, null));
+		chooser.addChoosableFileFilter(new ExampleFileFilter(type, null));
 		final File mmFile = Controller.getCurrentController().getMap().getFile();
 		if (mmFile != null && mmFile.getParentFile() != null) {
 			chooser.setSelectedFile(mmFile.getParentFile());

@@ -20,7 +20,6 @@
  */
 package org.freeplane.plugin.svg;
 
-import java.awt.event.ActionEvent;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,9 +30,9 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.mindmapmode.export.ExportController;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -41,7 +40,6 @@ import org.w3c.dom.Element;
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/file/export" })
 class ExportPdf extends ExportVectorGraphic {
 	/**
 	 * 
@@ -49,12 +47,10 @@ class ExportPdf extends ExportVectorGraphic {
 	private static final long serialVersionUID = 1L;
 
 	public ExportPdf() {
-		super("ExportPdf");
 	}
 
-	public void actionPerformed(final ActionEvent e) {
-		final File chosenFile = chooseFile("pdf", TextUtils.getText("export_pdf_text"), null);
-		if (chosenFile == null) {
+	public void export(MapModel map, File chosenFile) {
+		if (!ExportController.getContoller().checkCurrentMap(map)){
 			return;
 		}
 		try {
@@ -90,4 +86,5 @@ class ExportPdf extends ExportVectorGraphic {
 		}
 		Controller.getCurrentController().getViewController().setWaitingCursor(false);
 	}
+
 }

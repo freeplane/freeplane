@@ -65,9 +65,7 @@ import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 import org.freeplane.features.mindmapmode.encrypt.EncryptedMap;
-import org.freeplane.features.mindmapmode.export.ExportToImage;
-import org.freeplane.features.mindmapmode.export.ExportToOoWriter;
-import org.freeplane.features.mindmapmode.export.ExportWithXSLT;
+import org.freeplane.features.mindmapmode.export.ExportController;
 import org.freeplane.features.mindmapmode.export.ImportMindmanagerFiles;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.icon.MIconController;
@@ -154,10 +152,7 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new SortNodes());
 		menuBuilder.addAnnotatedAction(new SplitNode());
 		new ChangeNodeLevelController().addActionsAtMenuBuilder(menuBuilder);
-		ExportWithXSLT.createXSLTExportActions("/xml/ExportWithXSLT.xml");
-		ExportToImage.createActions();
 		NodeHistory.install(modeController);
-		menuBuilder.addAnnotatedAction(new ExportToOoWriter());
 		menuBuilder.addAnnotatedAction(new ImportMindmanagerFiles());
 		LoadAcceleratorPresetsAction.install();
 	}
@@ -249,6 +244,7 @@ public class MModeControllerFactory {
 		AttributeController.install(new MAttributeController());
 		modeController.addAction(new EditAttributesAction());
 		SpellCheckerController.install();
+		ExportController.install(new ExportController("/xml/ExportWithXSLT.xml"));
 		new MapStyle(true);
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);

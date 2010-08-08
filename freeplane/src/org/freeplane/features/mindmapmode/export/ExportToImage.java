@@ -17,57 +17,46 @@
  */
 package org.freeplane.features.mindmapmode.export;
 
-import java.awt.event.ActionEvent;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
 /**
  * @author foltin
  * @author kakeda
  * @author rreppel
  */
-public class ExportToImage extends ExportAction {
+public class ExportToImage extends AExportEngine {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static void createActions() {
-		final ModeController modeController = Controller.getCurrentModeController();
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		final ExportToImage pngExport = new ExportToImage("png","Portable Network Graphic (PNG)");
-		modeController.addAction(pngExport);
-		menuBuilder.addAction("/menu_bar/file/export", pngExport, MenuBuilder.AS_CHILD);
-		final ExportToImage jpgExport = new ExportToImage("jpg","Compressed image (JPEG)");
-		modeController.addAction(jpgExport);
-		menuBuilder.addAction("/menu_bar/file/export", jpgExport, MenuBuilder.AS_CHILD);
-	}
 
 	private final String imageDescripton;
 	private final String imageType;
 
 	ExportToImage( final String imageType, final String imageDescripton) {
-		super("ExportToImage." + imageType);
 		this.imageType = imageType;
 		this.imageDescripton = imageDescripton;
 	}
 
-	public void actionPerformed(final ActionEvent e) {
+	public void export(MapModel map, File toFile) {
 		try {
-			final RenderedImage image = createBufferedImage();
+			final RenderedImage image = createBufferedImage(map);
 			if (image != null) {
-				exportToImage(image);
+				exportToImage(image, toFile);
 			}
 		}
 		catch (final OutOfMemoryError ex) {
@@ -77,12 +66,9 @@ public class ExportToImage extends ExportAction {
 
 	/**
 	 * Export image.
+	 * @param toFile 
 	 */
-	public boolean exportToImage(final RenderedImage image) {
-		final File chosenFile = chooseFile(imageType, imageDescripton, null);
-		if (chosenFile == null) {
-			return false;
-		}
+	public boolean exportToImage(final RenderedImage image, File chosenFile) {
 		try {
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final FileOutputStream out = new FileOutputStream(chosenFile);
@@ -96,4 +82,9 @@ public class ExportToImage extends ExportAction {
 		Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		return true;
 	}
+
+	public FileFilter getFileFilter() {
+		return new ExampleFileFilter(imageType, imageDescripton);
+    }
+
 }

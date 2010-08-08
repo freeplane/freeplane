@@ -41,7 +41,7 @@ import org.apache.batik.svggen.SVGGeneratorContext.GraphicContextDefaults;
 import org.apache.batik.util.SVGConstants;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mindmapmode.export.ExportAction;
+import org.freeplane.features.mindmapmode.export.AExportEngine;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -49,16 +49,11 @@ import org.w3c.dom.Document;
 /**
  * @author foltin
  */
-abstract class ExportVectorGraphic extends ExportAction {
+abstract class ExportVectorGraphic extends AExportEngine {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	public ExportVectorGraphic(final String key) {
-		super(key);
-	}
-
 	/**
 	 */
 	protected SVGGraphics2D fillSVGGraphics2D(final MapView view) {

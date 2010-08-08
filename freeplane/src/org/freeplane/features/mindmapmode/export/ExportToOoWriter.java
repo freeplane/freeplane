@@ -17,7 +17,6 @@
  */
 package org.freeplane.features.mindmapmode.export;
 
-import java.awt.event.ActionEvent;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,6 +29,7 @@ import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.swing.filechooser.FileFilter;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -39,36 +39,35 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.MapWriter.Mode;
+import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/file/export" })
-public class ExportToOoWriter extends ExportAction {
+public class ExportToOoWriter extends AExportEngine {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	public ExportToOoWriter() {
-		super("ExportToOoWriter");
 	}
 
-	public void actionPerformed(final ActionEvent e) {
-		final File chosenFile = chooseFile("odt", null, null);
-		if (chosenFile == null) {
-			return;
-		}
-		Controller.getCurrentController().getViewController().setWaitingCursor(true);
+ 	
+	public FileFilter getFileFilter(){
+		return new ExampleFileFilter("odt", TextUtils.getText("ExportToOoWriter.text"));
+	}
+	
+	public void export(MapModel map, File chosenFile) {
+			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
-			exportToOoWriter(chosenFile);
+			exportToOoWriter(map, chosenFile);
 		}
 		catch (final Exception ex) {
 			LogUtils.warn(ex);
@@ -130,12 +129,11 @@ public class ExportToOoWriter extends ExportAction {
 		}
 	}
 
-	public void exportToOoWriter(final File file) throws IOException {
+	public void exportToOoWriter(MapModel map, final File file) throws IOException {
 		final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(file));
 		try {
 			final StringWriter writer = new StringWriter();
 			final ModeController controller = Controller.getCurrentModeController();
-			final MapModel map = controller.getController().getMap();
 			controller.getMapController().getFilteredXml(map, writer, Mode.EXPORT, true);
 			final Result result = new StreamResult(zipout);
 			ZipEntry entry = new ZipEntry("content.xml");
@@ -174,4 +172,5 @@ public class ExportToOoWriter extends ExportAction {
 		};
 		return;
 	}
+
 }

@@ -2,6 +2,8 @@
  *  Freeplane - mind map editor
  *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
  *
+ *  This file is modified by Dimitry Polivaev in 2008.
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 2 of the License, or
@@ -17,34 +19,20 @@
  */
 package org.freeplane.features.mindmapmode.export;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.image.RenderedImage;
 
-class WindowClosingAdapter extends WindowAdapter {
-	final private boolean exitSystem;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.features.common.map.MapModel;
 
-	/**
-	 * Erzeugt einen WindowClosingAdapter zum Schliessen des Fensters. Das
-	 * Programm wird nicht beendet.
-	 */
-	public WindowClosingAdapter() {
-		this(false);
-	}
-
-	/**
-	 * Erzeugt einen WindowClosingAdapter zum Schliessen des Fensters. Ist
-	 * exitSystem true, wird das komplette Programm beendet.
-	 */
-	public WindowClosingAdapter(final boolean exitSystem) {
-		this.exitSystem = exitSystem;
-	}
-
-	@Override
-	public void windowClosing(final WindowEvent event) {
-		event.getWindow().setVisible(false);
-		event.getWindow().dispose();
-		if (exitSystem) {
-			System.exit(0);
-		}
+/**
+ * @author foltin
+ */
+abstract public class AExportEngine implements IExportEngine {
+	public RenderedImage createBufferedImage(MapModel map) {
+        final Controller controller = Controller.getCurrentController();
+		if(! map.equals(controller.getMap())) {
+			return null;
+        }
+        return controller.getMapViewManager().createImage();
 	}
 }
