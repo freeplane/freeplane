@@ -129,8 +129,8 @@ class XsltExportEngineFactory {
 		}
 	}
 
-	private void addXsltFile(final String[] extensions, final String description, final File xsltFile) {
-		final ExampleFileFilter filter = new ExampleFileFilter(extensions, description);
+	private void addXsltFile(final String[] extensions, String description, final File xsltFile) {
+		final ExampleFileFilter filter = new ExampleFileFilter(extensions, TextUtils.getOptionalTranslation(description));
 		final XsltExportEngine exporter = new XsltExportEngine(xsltFile);
 		controller.addExportEngine(filter, exporter);
 	}

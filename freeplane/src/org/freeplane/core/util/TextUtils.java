@@ -92,4 +92,11 @@ public class TextUtils {
 		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(key,
 		    defaultString);
 	}
+
+	public static String getOptionalTranslation(String text) {
+		if(text.startsWith("%")){
+			return getText(text.substring(1));
+		}
+		return text;
+    }
 }

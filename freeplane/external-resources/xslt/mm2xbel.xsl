@@ -1,6 +1,9 @@
 <?xml version="1.0" standalone="no" ?>
 	<!--
 		: mm2xbel.xsl : XSL stylesheet to convert from Mindmap to XBEL : :
+
+		MINDMAPEXPORTFILTER xbel XBEL
+
 		This code released under the GPL. :
 		(http://www.gnu.org/copyleft/gpl.html) : : William McVey
 		<wam@cisco.com> : September 11, 2003 : : $Id: mm2xbel.xsl,v 1.1.34.1

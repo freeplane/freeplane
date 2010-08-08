@@ -32,6 +32,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -90,6 +91,7 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElem
 		reader.addElementHandler("cloud", this);
 		registerAttributeHandlers(reader);
 		writer.addExtensionElementWriter(CloudModel.class, this);
+		writer.addElementWriter(NodeBuilder.XML_NODE, this);
 	}
 
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {

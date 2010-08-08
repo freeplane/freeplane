@@ -192,7 +192,7 @@ public class ExampleFileFilter extends FileFilter {
 	/**
 	 * Return the extension portion of the file's name .
 	 */
-	public String getExtension(final File f) {
+	private String getExtension(final File f) {
 		if (f != null) {
 			final String filename = f.getName();
 			final int i = filename.lastIndexOf('.');
