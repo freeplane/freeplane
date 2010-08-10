@@ -38,10 +38,12 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.FixedHTMLWriter;
@@ -222,10 +224,22 @@ public class MTextController extends TextController {
 		if (uri == null) {
 			return;
 		}
-		if (useRelativeUri) {
+		// bad hack: try to interpret file as http link
+		if(! input.exists()){
+			uri = LinkController.toRelativeURI(map.getFile(), input);
+			if(uri == null || ! "http".equals(uri.getScheme())){
+				UITools.errorMessage(FpStringUtils.formatText("file_not_found", input.toString()));
+				return;
+			}
+		}
+		else if (useRelativeUri) {
 			uri = LinkController.toRelativeURI(map.getFile(), input);
 		}
-		final String strText = "<html><img src=\"" + uri.toString() + "\">";
+		String uriString = uri.toString();
+		if(uriString.startsWith("http:/")){
+			uriString = "http://" + uriString.substring("http:/".length());
+		}
+		final String strText = "<html><img src=\"" + uriString + "\">";
 		setNodeText(selectedNode, strText);
 	}
 
