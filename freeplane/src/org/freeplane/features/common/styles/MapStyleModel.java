@@ -154,10 +154,14 @@ public class MapStyleModel implements IExtension {
 	    final NodeModel defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
 	    final NodeStyleModel nodeStyle = NodeStyleModel.createNodeStyleModel(defaultStyleNode);
 	    Font defaultFont = UIManager.getDefaults().getFont("Label.font");
-	    nodeStyle.setFontFamilyName(defaultFont.getFamily());
-	    nodeStyle.setFontSize(defaultFont.getSize());
-	    nodeStyle.setBold(false);
-	    nodeStyle.setItalic(false);
+	    if(nodeStyle.getFontFamilyName() == null )
+	    	nodeStyle.setFontFamilyName(defaultFont.getFamily());
+	    if(nodeStyle.getFontSize() == null )
+	    	nodeStyle.setFontSize(defaultFont.getSize());
+	    if(nodeStyle.isBold() == null )
+	    	nodeStyle.setBold(false);
+	    if(nodeStyle.isItalic() == null )
+	    	nodeStyle.setItalic(false);
     }
 
 	private void createNodeStyleMap(final NodeModel node) {
