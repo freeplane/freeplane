@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
+import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -96,9 +97,11 @@ class AppletViewController extends ViewController {
 
 	@Override
 	public void init(Controller controller) {
-		getContentPane().add(getScrollPane(), BorderLayout.CENTER);
+		Box mapContentBox = Box.createVerticalBox(); 
+		mapContentBox.add(getScrollPane());
 		southPanel = new JPanel(new BorderLayout());
-		getContentPane().add(southPanel, BorderLayout.SOUTH);
+		mapContentBox.add(southPanel);
+		getContentPane().add(mapContentBox, BorderLayout.CENTER);
 		super.init(controller);
 		SwingUtilities.updateComponentTreeUI(applet);
 		if (!EventQueue.isDispatchThread()) {
