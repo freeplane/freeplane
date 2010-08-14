@@ -68,7 +68,7 @@ class LetterBasedBreakIterator {
 			if(c == CharacterIterator.DONE){
 				return BreakIterator.DONE;
 			}
-			if(wasLetter != Character.isLetter(c)){
+			if(wasLetter != isLetter(c)){
 				return text.getIndex();
 			}
 			c = text.next();
@@ -98,7 +98,7 @@ class LetterBasedBreakIterator {
 		}
 		int lastIndex = text.getIndex();
 		text.setIndex(wordOffset);
-		boolean wasLetter = Character.isLetter(text.current());
+		boolean wasLetter = isLetter(text.current());
 		int nextBoundary = nextBoundary(text.next(), wasLetter);
 		if(nextBoundary == BreakIterator.DONE){
 			text.setIndex(lastIndex);
@@ -118,8 +118,12 @@ class LetterBasedBreakIterator {
      * @see #next(int)
      */
 	public int next() {
-		boolean wasLetter = Character.isLetter(text.current());
+		boolean wasLetter = isLetter(text.current());
 		return nextBoundary(text.next(), wasLetter);
+    }
+
+	private boolean isLetter(char current) {
+	    return Character.isDigit(current) || Character.isLetter(current);
     }
 
 }
