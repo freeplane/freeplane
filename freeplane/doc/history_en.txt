@@ -1,8 +1,10 @@
-===============================
+﻿===============================
 1.1.2
 ===============================
 Bug fixes in applet browser
 Catch exceptions thrown from hook writers
+414: handling of non letter characters in spell checker
+722]: Image http url putted in open file dialog for inserting an image hangs freeplane 
 
 ===============================
 1.1.1
