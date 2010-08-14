@@ -49,7 +49,7 @@ class Tokenizer {
 	private final BreakIterator sentences;
 	private int startSentence, endSentence, startWord, endWord;
 	private int wordOffset;
-	private final BreakIterator words;
+	private final LetterBasedBreakIterator words;
 
 	/**
 	* Create a tokenizer for the selected range.
@@ -60,7 +60,7 @@ class Tokenizer {
 		doc = jText.getDocument();
 		this.options = options == null ? SpellChecker.getOptions() : options;
 		sentences = BreakIterator.getSentenceInstance(locale);
-		words = BreakIterator.getWordInstance(locale);
+		words = new LetterBasedBreakIterator();
 		paragraphOffset = startOffset;
 		this.endOffset = endOffset;
 		//loadSentences();
