@@ -52,7 +52,7 @@ import org.freeplane.features.browsemode.BModeController;
 class AppletViewController extends ViewController {
 	final private FreeplaneApplet applet;
 	private JComponent mComponentInSplitPane;
-	private JPanel southPanel;
+	private JComponent mapContentBox;
 
 	public AppletViewController( final FreeplaneApplet applet, Controller controller,
 	                            final IMapViewManager mapViewController) {
@@ -87,20 +87,10 @@ class AppletViewController extends ViewController {
 		throw new IllegalArgumentException("The applet has no frames");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#getSouthPanel()
-	 */
-	public JPanel getSouthPanel() {
-		return southPanel;
-	}
-
 	@Override
 	public void init(Controller controller) {
-		Box mapContentBox = Box.createVerticalBox(); 
-		mapContentBox.add(getScrollPane());
-		southPanel = new JPanel(new BorderLayout());
-		mapContentBox.add(southPanel);
+		mapContentBox = new JPanel(new BorderLayout());
+		mapContentBox.add(getScrollPane(), BorderLayout.CENTER);
 		getContentPane().add(mapContentBox, BorderLayout.CENTER);
 		super.init(controller);
 		SwingUtilities.updateComponentTreeUI(applet);
@@ -151,8 +141,8 @@ class AppletViewController extends ViewController {
 		}
 		removeSplitPane();
 		mComponentInSplitPane = pMindMapComponent;
-		southPanel.add(pMindMapComponent, BorderLayout.CENTER);
-		southPanel.revalidate();
+		mapContentBox.add(pMindMapComponent, BorderLayout.SOUTH);
+		mapContentBox.revalidate();
 		return null;
 	}
 
@@ -195,8 +185,8 @@ class AppletViewController extends ViewController {
 	@Override
 	public void removeSplitPane() {
 		if (mComponentInSplitPane != null) {
-			southPanel.remove(mComponentInSplitPane);
-			southPanel.revalidate();
+			mapContentBox.remove(mComponentInSplitPane);
+			mapContentBox.revalidate();
 			mComponentInSplitPane = null;
 		}
 	}

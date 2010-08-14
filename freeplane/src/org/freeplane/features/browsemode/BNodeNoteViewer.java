@@ -44,7 +44,7 @@ import org.freeplane.features.common.note.NoteModel;
 public class BNodeNoteViewer implements INodeSelectionListener {
 	private static UIIcon noteIcon = null;
 // // 	final private Controller controller;
-	private JComponent noteScrollPane;
+	private JScrollPane noteScrollPane;
 	private JLabel noteViewer;
 
 	public BNodeNoteViewer() {
@@ -62,14 +62,25 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 
 				@Override
 				public Dimension getPreferredSize() {
-					final JApplet applet = (JApplet) SwingUtilities.getAncestorOfClass(JApplet.class, noteScrollPane);
-					final Dimension appletSize = applet.getContentPane().getSize();
-					return new Dimension(appletSize.width, Math.min(appletSize.height / 3, 200));
+					final Dimension appletSize = getRootPane().getSize();
+					final int height;
+					if(appletSize.height < 300){
+						height = appletSize.height / 3;
+					}
+					else if (appletSize.height < 2100){
+						height = 100 + (appletSize.height - 300) / 5;
+					}
+					else{
+						height = 600;
+					}
+					return new Dimension(appletSize.width, height);
 				}
 			};
 			UITools.setScrollbarIncrement((JScrollPane) noteScrollPane);
 			UITools.addScrollbarIncrementPropertyListener((JScrollPane) noteScrollPane);
 		}
+		noteScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		noteScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		return noteScrollPane;
 	}
 
