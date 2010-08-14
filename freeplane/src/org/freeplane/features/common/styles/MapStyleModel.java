@@ -20,7 +20,6 @@
 package org.freeplane.features.common.styles;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -30,8 +29,6 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import javax.swing.UIManager;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
@@ -44,7 +41,6 @@ import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.map.MapWriter.Mode;
-import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 /**
  * @author Dimitry Polivaev
@@ -141,7 +137,6 @@ public class MapStyleModel implements IExtension {
 			}
 			extension.styleNodes = styleNodes;
 			createNodeStyleMap(root);
-			adjustDefaultStyle();
 			styleMap.setReadOnly(false);
 		}
 		catch (final Exception e) {
@@ -149,20 +144,6 @@ public class MapStyleModel implements IExtension {
 			e.printStackTrace();
 		}
 	}
-
-	private void adjustDefaultStyle() {
-	    final NodeModel defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
-	    final NodeStyleModel nodeStyle = NodeStyleModel.createNodeStyleModel(defaultStyleNode);
-	    Font defaultFont = UIManager.getDefaults().getFont("Label.font");
-	    if(nodeStyle.getFontFamilyName() == null )
-	    	nodeStyle.setFontFamilyName(defaultFont.getFamily());
-	    if(nodeStyle.getFontSize() == null )
-	    	nodeStyle.setFontSize(defaultFont.getSize());
-	    if(nodeStyle.isBold() == null )
-	    	nodeStyle.setBold(false);
-	    if(nodeStyle.isItalic() == null )
-	    	nodeStyle.setItalic(false);
-    }
 
 	private void createNodeStyleMap(final NodeModel node) {
 		if (node.hasChildren()) {
