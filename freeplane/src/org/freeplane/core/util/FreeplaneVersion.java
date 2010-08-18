@@ -17,18 +17,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.controller;
+package org.freeplane.core.util;
 
 import java.util.Properties;
 import java.util.StringTokenizer;
-
-import org.freeplane.core.util.FileUtils;
 
 public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	private static final FreeplaneVersion VERSION = FreeplaneVersion.loadVersion();
 	public static final String VERSION_KEY = "freeplane_version";
 	public static final String VERSION_PROPERTIES = "/version.properties";
 	public static final String XML_VERSION = "0.9.0";
+	/** major version, the 1 in "1.0.38 rc" */
+	private final int mMaj;
+	/** mid version, the 0 in "1.0.38 rc" */
+	private final int mMid;
+	/** minor version, the 38 in "1.0.38 rc" */
+	private final int mMin;
+	/** optional patch level (testversion only). */
+	private final int mNum;
+	/** release type e.g. "", "rc", "beta", "alpha" or "nightly_build". */
+	private String mType;
 
 	public static FreeplaneVersion getVersion() {
 		return VERSION;
@@ -79,12 +87,6 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 		return version;
 	}
 
-	private final int mMaj;
-	private final int mMid;
-	private final int mMin;
-	private final int mNum;
-	private String mType;
-
 	public int getMaj() {
 		return mMaj;
 	}
@@ -114,6 +116,14 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 		mNum = pNum;
 	}
 
+	/** Use it like this:
+	 * <pre>
+	 *   FreeplaneVersion required = FreeplaneVersion.getVersion("1.0.38");
+	 *   if (FreeplaneVersion.getVersion().compareTo(required) < 0)
+	 *       UITools.errorMessage("Freeplane version not supported"
+	 *           + " - update to at least " + required);
+	 * </pre>
+	 */
 	public int compareTo(final FreeplaneVersion o) {
 		if (mMaj < o.mMaj) {
 			return -1;
@@ -142,6 +152,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 		return 0;
 	}
 
+	/** returns the full version number, e.g. "1.0.38 rc". */
 	@Override
 	public String toString() {
 		final StringBuilder buf = new StringBuilder();
@@ -161,6 +172,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 		return buf.toString();
 	}
 
+	/** returns the version number only, e.g. "1.0.38". */
 	public String numberToString() {
 		final StringBuilder buf = new StringBuilder();
 		buf.append(mMaj);

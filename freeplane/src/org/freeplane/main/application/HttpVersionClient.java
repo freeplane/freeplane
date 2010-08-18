@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.freeplane.core.controller.FreeplaneVersion;
+import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 
 /**

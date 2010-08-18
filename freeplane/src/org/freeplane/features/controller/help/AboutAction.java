@@ -24,10 +24,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.TextUtils;
 
 class AboutAction extends AFreeplaneAction {

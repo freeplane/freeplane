@@ -33,11 +33,11 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.common.filter.FilterController;
 
 /**

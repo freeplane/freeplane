@@ -48,7 +48,6 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.resources.ResourceController;
@@ -61,6 +60,7 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;

@@ -19,12 +19,12 @@ import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.TextUtils;
 
 /**
