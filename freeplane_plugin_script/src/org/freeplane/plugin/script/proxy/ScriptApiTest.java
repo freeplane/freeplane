@@ -5,11 +5,14 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.common.filter.Filter;
 import org.freeplane.features.common.icon.factory.MindIconFactory;
 import org.freeplane.features.common.text.NodeContainsCondition;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
@@ -43,6 +46,7 @@ public class ScriptApiTest {
 	}
 
 	public static void runAll(ControllerProxy c, NodeProxy node) {
+		final long startMillis = System.currentTimeMillis();
 		int failures = 0;
 		int errors = 0;
 		int pass = 0;
@@ -88,11 +92,21 @@ public class ScriptApiTest {
 				}
 			}
 		}
-		if (errors + failures == 0)
-			LogUtils.info("success! " + pass + " tests passed");
-		else
-			LogUtils.severe("error! test result: " + errors + " errors, " + failures + " failures; " + pass
-			        + " tests passed");
+		double seconds = (System.currentTimeMillis() - startMillis) / 1000.;
+		String message = null;
+		String iconKey = null;
+		if (errors + failures == 0) {
+			message = "success! " + pass + " tests passed in " + seconds + " seconds";
+			iconKey = "button_ok";
+		}
+		else {
+			message = "error! test result: " + errors + " errors, " + failures + " failures; " + pass
+			        + " tests passed in " + seconds + " seconds";
+			iconKey = "button_cancel";
+		}
+		LogUtils.info(message);
+		c.setStatusInfo(message);
+		c.setStatusInfo("display_node_id", MindIconFactory.create(iconKey).getIcon());
 	}
 
 	public void tearDown() {
@@ -108,7 +122,7 @@ public class ScriptApiTest {
 	}
 
 	private Map setupMapWithSomeAttributes() {
-		map = createTestMap();
+		createTestMap();
 		map.getRootNode().getAttributes().add("a1", "va1");
 		map.getRootNode().getAttributes().add("a1", "va2");
 		map.getRootNode().getAttributes().add("a1", "va3");
@@ -154,6 +168,10 @@ public class ScriptApiTest {
 
 	private Node firstChild(final Node node) {
 		return node.getChildren().get(0);
+	}
+
+	private Node firstChild() {
+		return firstChild(map.getRootNode());
 	}
 
 	public void test_AttributesRO_getAll_String_name() {
@@ -469,7 +487,7 @@ public class ScriptApiTest {
 
 	public void test_Controller_setStatusInfo_String_key_Icon_icon() {
 		// no actual test
-		c.setStatusInfo("test statusinfo", MindIconFactory.create("user_icon").getIcon());
+		c.setStatusInfo("display_node_id", MindIconFactory.create("user_icon").getIcon());
 		// no actual test - info should be removed
 		c.setStatusInfo(null);
 	}
@@ -610,7 +628,7 @@ public class ScriptApiTest {
 	public void test_MapRO_node_String_id() {
 		map = c.newMap();
 		final Node firstChild = addChild(map.getRootNode(), "child 1");
-		final String id = firstChild.getNodeID();
+		final String id = firstChild.getId();
 		assertEquals("get by id returned wrong node", firstChild, map.node(id));
 	}
 
@@ -636,7 +654,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_getAttributes() {
-		map = createTestMap();
+		createTestMap();
 		map.getRootNode().getAttributes().add("a1", "va1");
 		assertEquals("value should be found", "va1", map.getRootNode().getAttributes().get(0));
 	}
@@ -694,16 +712,23 @@ public class ScriptApiTest {
 		assertEquals("???", map, root.getMap());
 	}
 
-	public void test_NodeRO_getNodeID() {
+	public void test_NodeRO_getId() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		assertTrue("unknown node id pattern in '" + root.getId() + "'", root.getId().matches("ID_[1-9]\\d+"));
+	}
+	
+	@SuppressWarnings("deprecation")
+    public void test_NodeRO_getNodeID() {
 		map = c.newMap();
 		final Node root = map.getRootNode();
 		assertTrue("unknown node id pattern in '" + root.getNodeID() + "'", root.getNodeID().matches("ID_[1-9]\\d+"));
 	}
 
 	public void test_NodeRO_getNodeLevel_boolean_countHidden() {
-		map = createTestMap();
+		createTestMap();
 		assertEquals("root is level 0", 0, map.getRootNode().getNodeLevel(true));
-		final Node child = firstChild(map.getRootNode());
+		final Node child = firstChild();
 		assertEquals("children are at level 1", 1, child.getNodeLevel(false));
 		final Node grandchild = child.createChild();
 		assertEquals("grandchildren are at level 2", 2, grandchild.getNodeLevel(false));
@@ -737,7 +762,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_getParentNode() {
-		map = createTestMap();
+		createTestMap();
 		final Node root = map.getRootNode();
 		assertEquals("root has no parent", null, root.getParentNode());
 		final Node child = firstChild(root);
@@ -776,7 +801,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_isDescendantOf_Node_p() {
-		map = createTestMap();
+		createTestMap();
 		final Node root = map.getRootNode();
 		assertTrue("a node is its own descendant", root.isDescendantOf(root));
 		assertFalse("siblings aren't descendants of each other", firstChild(root).isDescendantOf(
@@ -790,9 +815,9 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_isFolded() {
-		map = createTestMap();
+		createTestMap();
 		final Node root = map.getRootNode();
-		final Node child = firstChild(map.getRootNode());
+		final Node child = firstChild();
 		final Node grandchild = addChild(child, "grandchild");
 		assertFalse("initially nothing should be folded", root.isFolded());
 		assertFalse("initially nothing should be folded", child.isFolded());
@@ -830,14 +855,22 @@ public class ScriptApiTest {
 	//	}
 	//
 	public void test_NodeRO_isRoot() {
-		map = createTestMap();
+		createTestMap();
 		assertTrue("root has no parent", map.getRootNode().getParentNode() == null);
 	}
 
-	//	public void test_NodeRO_isVisible() {
-	//		// TODO
-	//	}
-	//
+	public void test_NodeRO_isVisible() {
+		map = c.newMap();
+		addChild(map.getRootNode(), "first node");
+		addChild(map.getRootNode(), "second node");
+		assertTrue("initially all nodes should be visible", firstChild().isVisible());
+		new Filter(new NodeContainsCondition("first"), true, true, true, true).applyFilter(Controller
+		    .getCurrentController().getMap(), true);
+		assertTrue("first node should be  matched by the filter", firstChild().isVisible());
+		assertFalse("second node should not be matched by the filter", map.getRootNode().getChildren().get(1)
+		    .isVisible());
+	}
+
 	/** copy of {@link #test_ControllerRO_find_ICondition_condition()}. */
 	public void test_NodeRO_find_ICondition_condition() {
 		map = c.newMap();
@@ -851,15 +884,38 @@ public class ScriptApiTest {
 	//	public void test_NodeRO_find_Closure_closure() {
 	//		// TODO
 	//	}
-	//
-	//	public void test_NodeRO_getLastModifiedAt() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_NodeRO_getCreatedAt() {
-	//		// TODO
-	//	}
-	//
+	public void test_NodeRO_getLastModifiedAt() {
+		map = c.newMap();
+		final Node child = addChild(map.getRootNode(), "a node");
+		final Date initialLastModifiedAt = child.getLastModifiedAt();
+		final long diff = System.currentTimeMillis() - initialLastModifiedAt.getTime();
+		// one second should be enough
+		assertTrue("lastModifiedAt seems to be set incorrectly. It says it's " + diff + " ms ago", //
+		    diff >= 0 && diff < 1000L);
+		assertEquals("modifiedAt and createdAt should be the same initially", child.getCreatedAt().getTime(),
+		    initialLastModifiedAt.getTime());
+		final Date epoch = new Date(0);
+		child.setLastModifiedAt(epoch);
+		child.setText("changed");
+		assertTrue("lastModifiedAt should be changed after changing the node text", //
+		    child.getLastModifiedAt().after(epoch));
+	}
+
+	public void test_NodeRO_getCreatedAt() {
+		map = c.newMap();
+		final Node child = addChild(map.getRootNode(), "a node");
+		final Date initialCreatedAt = child.getCreatedAt();
+		final long diff = System.currentTimeMillis() - initialCreatedAt.getTime();
+		// one second should be enough
+		assertTrue("createdAt seems to be set incorrectly. It says it's " + diff + " ms ago", //
+		    diff >= 0 && diff < 1000L);
+		final Date epoch = new Date(0);
+		child.setCreatedAt(epoch);
+		child.setText("changed");
+		assertEquals("createdAt should not be changed after changing the node text", //
+		    epoch, child.getCreatedAt());
+	}
+
 	//	public void test_Node_addConnectorTo_Node_target() {
 	//		// TODO
 	//	}
@@ -873,51 +929,105 @@ public class ScriptApiTest {
 		map.getRootNode().createChild();
 		assertEquals("child should be created", 1, map.getRootNode().getChildren().size());
 	}
-	//
-	//	public void test_Node_createChild_int_position() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_Node_delete() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_Node_moveTo_Node_parentNode() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_Node_moveTo_Node_parentNode_int_position() {
-	//		// TODO
-	//	}
+
+	public void test_Node_createChild_int_position() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		final Node child1 = addChild(root, "child 1");
+		final Node child2 = addChild(root, "child 2");
+		assertEquals("wrong position", 0, root.getChildPosition(child1));
+		assertEquals("wrong position", 1, root.getChildPosition(child2));
+		final Node child3 = root.createChild(0);
+		assertEquals("wrong insert position", 0, root.getChildPosition(child3));
+		assertEquals("node should be shifted", 1, root.getChildPosition(child1));
+		assertEquals("node should be shifted", 2, root.getChildPosition(child2));
+		final Node child4 = root.createChild(3);
+		assertEquals("wrong insert position", 3, root.getChildPosition(child4));
+		assertEquals("node should be shifted", 0, root.getChildPosition(child3));
+		assertEquals("node should be shifted", 1, root.getChildPosition(child1));
+		try {
+			root.createChild(-1);
+			fail("a negative position should lead to an exception");
+		}
+		catch (Throwable e) {
+		}
+		try {
+			root.createChild(5);
+			fail("too large positions should lead to an exception");
+		}
+		catch (Throwable e) {
+		}
+	}
+
+	public void test_Node_delete() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		final Node child1 = addChild(root, "child 1");
+		final Node child2 = addChild(root, "child 2");
+		assertEquals("", 2, root.getChildren().size());
+		child1.delete();
+		assertEquals("deletion failed", 1, root.getChildren().size());
+		assertEquals("wrong node deleted", child2, root.getChildren().get(0));
+	}
+
+	public void test_Node_moveTo_Node_parentNode() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		final Node child1 = addChild(root, "child 1");
+		final Node child2 = addChild(root, "child 2");
+		final Node grandchild = addChild(child1, "grandchild");
+		assertEquals("child2 should have no children", 0, child2.getChildren().size());
+		grandchild.moveTo(child2);
+		assertEquals("grandchild should be a child of child2 now", child2, grandchild.getParentNode());
+	}
+
+	public void test_Node_moveTo_Node_parentNode_int_position() {
+		map = c.newMap();
+		final Node root = map.getRootNode();
+		final Node child1 = addChild(root, "child 1");
+		final Node child2 = addChild(root, "child 2");
+		final Node grandchild = addChild(child1, "grandchild");
+		assertEquals("wrong count of children", 2, root.getChildren().size());
+		grandchild.moveTo(root, 1);
+		assertEquals("wrong position", child1, root.getChildren().get(0));
+		assertEquals("wrong position", grandchild, root.getChildren().get(1));
+		assertEquals("wrong position", child2, root.getChildren().get(2));
+	}
+
 	//
 	//	public void test_Node_removeConnector_Connector_connectorToBeRemoved() {
 	//		// TODO
 	//	}
 	//
-	//	public void test_Node_setFolded_boolean_folded() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_Node_setPlainNoteText_String_text() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_Node_setNoteText_String_text() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_Node_setText_String_text() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_Node_setLastModifiedAt_Date_date() {
-	//		// TODO
-	//	}
-	//
-	//	public void test_Node_setCreatedAt_Date_date() {
-	//		// TODO
-	//	}
-	//
+	public void test_Node_setFolded_boolean_folded() {
+		createTestMap();
+		final Node child = firstChild();
+		addChild(child, "grandchild");
+		child.setFolded(true);
+		assertTrue("node should be folded now", child.isFolded());
+		child.setFolded(false);
+		assertFalse("node should be unfolded again", child.isFolded());
+	}
+
+	public void test_Node_setPlainNoteText_String_text() {
+		// see test_NodeRO_getPlainNoteText()
+	}
+
+	public void test_Node_setNoteText_String_text() {
+		// see test_NodeRO_getNoteText()
+	}
+
+	public void test_Node_setText_String_text() {
+		// see test_NodeRO_getText()
+	}
+
+	public void test_Node_setLastModifiedAt_Date_date() {
+		// see test_NodeRO_getLastModifiedAt()
+	}
+
+	public void test_Node_setCreatedAt_Date_date() {
+		// see test_NodeRO_getCreatedAt()
+	}
 	//	public void test_NodeStyleRO_getStyle() {
 	//		// TODO
 	//	}
