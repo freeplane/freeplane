@@ -25,12 +25,18 @@ import java.net.InetAddress;
 import java.security.Permission;
 import java.util.HashSet;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.plugin.script.proxy.Proxy;
 
 /**
  * @author foltin
  */
 class ScriptingSecurityManager extends SecurityManager {
+	private static final String FREEPLANE_UITOOLS_PACKAGE = UITools.class.getPackage().getName();
+	private static final String FREEPLANE_SCRIPT_PROXY_PACKAGE = Proxy.class.getPackage().getName();
+	private static final String FREEPLANE_UTILS_PACKAGE = TextUtils.class.getPackage().getName();
+	private static final String INTERNAL_API_PACKAGE_BASE = "org.freeplane";
 	private static final int PERM_Accept = 0;
 	private static final int PERM_Connect = 1;
 	private static final int PERM_Delete = 7;
@@ -160,7 +166,14 @@ class ScriptingSecurityManager extends SecurityManager {
 	}
 
 	@Override
-	public void checkPackageAccess(final String pPkg) {
+	public void checkPackageAccess(final String pkg) {
+		if (pkg.startsWith(INTERNAL_API_PACKAGE_BASE) && !pkg.equals(FREEPLANE_UTILS_PACKAGE)
+		        && !pkg.equals(FREEPLANE_SCRIPT_PROXY_PACKAGE) && !pkg.equals(FREEPLANE_UITOOLS_PACKAGE)) {
+			throw new SecurityException(TextUtils.format("plugins/ScriptingEngine.illegalAccessToInternalAPI", pkg));
+		}
+		//		if (pkg.startsWith(INTERNAL_API_PACKAGE_BASE) && !pkg.equals(FREEPLANE_UTILS_PACKAGE)
+		//		        && !pkg.equals(FREEPLANE_SCRIPT_PROXY_PACKAGE))
+		//			LogUtils.warn(pkg, new Exception("dummy"));
 	}
 
 	@Override

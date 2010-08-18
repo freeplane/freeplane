@@ -33,8 +33,8 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
@@ -49,6 +49,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.IconStore;
@@ -331,20 +332,23 @@ public abstract class MainView extends ZoomableLabel {
 		return new Point(0, getHeight());
 	}
 
-	protected void updateText(NodeModel nodeModel){
+	protected void updateText(NodeModel nodeModel) {
 		final ModeController modeController = getMap().getModeController();
 		String text;
 		try {
 			text = TextController.getController(modeController).getText(nodeModel);
-	    }
-	    catch (Exception e) {
-	    	text = nodeModel.getText();
-	    	setBorder(errorBorder );
-	    	setToolTipText(e.getLocalizedMessage());
-	    }
+			// FIXME: temporarily, to show evaluated formulas:
+			if (!text.equals(nodeModel.getText())) {
+				setBorder(new LineBorder(Color.GREEN, 2));
+			}
+			else {
+				setBorder(null);
+			}
+		}
+		catch (Exception e) {
+			text = TextUtils.format("MainView.errorUpdateText", nodeModel.getText(), e.getLocalizedMessage());
+			setBorder(errorBorder);
+		}
 		updateText(text);
 	}
-	
-	
-
 }
