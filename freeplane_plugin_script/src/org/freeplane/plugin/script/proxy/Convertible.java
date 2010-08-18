@@ -9,27 +9,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.plugin.script.ScriptingEngine;
 
 /** Utility class that is used to convert node texts to different types.
  * <p>
  * <em>Warning:</em> The nodeModel is used for script invocation ({@link #getValue()}), not
  *          for access its properties. Therefore text and nodeModel are not synchronized */
-public class ConvertibleObject {
+public class Convertible {
 	private static final Pattern DATE_REGEXP_PATTERN = Pattern.compile("\\d{4}(-?)\\d{2}(-?)\\d{2}"
 		+ "(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?)?");
 	private final String text;
-	private final NodeModel nodeModel;
-
-	public ConvertibleObject(NodeModel nodeModel, String text) {
-		this.text = nodeModel.getText();
-		this.nodeModel = nodeModel;
-	}
 	
-	public ConvertibleObject(String text) {
+	public Convertible(String text) {
 		this.text = text;
-		this.nodeModel = null;
 	}
 
 	/**
@@ -145,12 +136,9 @@ public class ConvertibleObject {
 		}
 	}
 
-	private Object getValue() {
-		// will fail if nodeModel is not initialized
-		if (text.length() > 1 && text.charAt(0) == '=')
-			return ScriptingEngine.executeScript(nodeModel, text.substring(1));
-		else
-			return text;
+	/** without a calculation rule or NodeModel - there's nothing to evaluate. */
+	public Object getValue() {
+		return text;
 	}
 
 	@Override
@@ -169,7 +157,7 @@ public class ConvertibleObject {
 		    return false;
 	    if (getClass() != obj.getClass())
 		    return false;
-	    ConvertibleObject other = (ConvertibleObject) obj;
+	    Convertible other = (Convertible) obj;
 	    if (text == null) {
 		    if (other.text != null)
 			    return false;

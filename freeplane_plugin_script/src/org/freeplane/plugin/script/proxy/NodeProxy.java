@@ -25,7 +25,6 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.features.mindmapmode.text.MTextController;
-import org.freeplane.plugin.script.ScriptingEngine;
 import org.freeplane.plugin.script.proxy.Proxy.Connector;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
@@ -185,18 +184,15 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
-	public ConvertibleObject getTo() {
+	public Convertible getTo() {
 	    final NodeModel nodeModel = getDelegate();
-		return new ConvertibleObject(nodeModel, nodeModel.getText());
+		return new ConvertibleNodeText(nodeModel);
     }
 	
 	// NodeRO: R
 	public Object getValue() {
-		final String text = getDelegate().getText();
-		if (text.length() > 1 && text.charAt(0) == '=')
-			return ScriptingEngine.executeScript(getDelegate(), text.substring(1));
-		else
-			return text;
+		final NodeModel nodeModel = getDelegate();
+		return FormulaUtils.evalNodeText(nodeModel);
 	}
 
 	// NodeRO: R

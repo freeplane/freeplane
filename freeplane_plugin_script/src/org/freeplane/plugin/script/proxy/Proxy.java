@@ -405,18 +405,18 @@ public interface Proxy {
 
 		/** returns an object that performs conversions (name is choosen to give descriptive code):
 		 * <dl>
-		 * <dt>node.to.num <dd>Long or Double, see {@link ConvertibleObject#getDate()}.
-		 * <dt>node.to.date <dd>Date, see {@link ConvertibleObject#getDate()}.
+		 * <dt>node.to.num <dd>Long or Double, see {@link Convertible#getDate()}.
+		 * <dt>node.to.date <dd>Date, see {@link Convertible#getDate()}.
 		 * <dt>node.to.value <dd>Text or, in case of a formula the evaluation result,
-		 *     see {@link ConvertibleObject#getValue()}.
-		 * <dt>node.to.string <dd>Text, see {@link ConvertibleObject#getString()}.
-		 * <dt>node.to.text <dd>an alias for getString(), see {@link ConvertibleObject#getText()}.
-		 * <dt>node.to.object <dd>returns what fits best, see {@link ConvertibleObject#getObject()}.
+		 *     see {@link Convertible#getValue()}.
+		 * <dt>node.to.string <dd>Text, see {@link Convertible#getString()}.
+		 * <dt>node.to.text <dd>an alias for getString(), see {@link Convertible#getText()}.
+		 * <dt>node.to.object <dd>returns what fits best, see {@link Convertible#getObject()}.
 		 * </dl>
 		 * Note that parse errors result in {@link ConversionException}s.
 		 * @return ConvertibleObject
 		 */
-		ConvertibleObject getTo();
+		Convertible getTo();
 
 		/** returns node.text or, in case of a formula the evaluation result. */
 		Object getValue();

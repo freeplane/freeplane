@@ -12,11 +12,12 @@ import java.util.GregorianCalendar;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.plugin.script.proxy.ConversionException;
-import org.freeplane.plugin.script.proxy.ConvertibleObject;
+import org.freeplane.plugin.script.proxy.Convertible;
+import org.freeplane.plugin.script.proxy.ConvertibleNodeText;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class ConvertibleObjectTest {
+public class ConvertibleTest {
 	@BeforeClass
 	public static void initStatics() {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
@@ -41,10 +42,10 @@ public class ConvertibleObjectTest {
 		assertTrue("not a number: " + notANumber, caughtException);
 	}
 
-	private ConvertibleObject convertibleObject(String text) {
+	private Convertible convertibleObject(String text) {
 		NodeModel nodeModel = new NodeModel(null);
 		nodeModel.setText(text);
-	    return new ConvertibleObject(nodeModel, nodeModel.getText());
+	    return new ConvertibleNodeText(nodeModel);
     }
 
 	@Test
