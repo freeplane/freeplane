@@ -48,7 +48,6 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.main.application.FreeplaneSecurityManager;
-import org.freeplane.plugin.script.proxy.ConvertibleObject;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
 
 /**
@@ -142,7 +141,7 @@ public class ScriptingEngine {
 			System.setOut(pOutStream);
 			CompilerConfiguration config = new CompilerConfiguration();
 			config.setScriptBaseClass(FreeplaneScriptBaseClass.class.getName());
-			final GroovyShell shell = new GroovyShell(ConvertibleObject.class.getClassLoader(), binding, config) {
+			final GroovyShell shell = new GroovyShell(binding, config) {
 				/**
 				 * Evaluates some script against the current Binding and returns the result
 				 *
