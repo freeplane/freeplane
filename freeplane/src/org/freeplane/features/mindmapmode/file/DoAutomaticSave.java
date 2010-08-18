@@ -100,7 +100,7 @@ public class DoAutomaticSave extends TimerTask {
 						((MFileManager) UrlManager.getController()).saveInternal((MMapModel) model,
 						    tempFile, true /*=internal call*/);
 						modeController.getController().getViewController().out(
-						    TextUtils.format("automatically_save_message", new Object[] { tempFile.toString() }));
+						    TextUtils.format("automatically_save_message", tempFile));
 					}
 					catch (final Exception e) {
 						LogUtils.severe("Error in automatic MapModel.save(): ", e);

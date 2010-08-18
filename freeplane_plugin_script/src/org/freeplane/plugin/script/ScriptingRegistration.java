@@ -175,7 +175,7 @@ class ScriptingRegistration {
 	                         final ExecutionMode executionMode, final boolean cacheContent) {
 		final String scriptName = entry.getKey();
 		final String key = ExecuteScriptAction.getExecutionModeKey(executionMode);
-		final String menuName = TextUtils.format(key, new Object[] { scriptName });
+		final String menuName = TextUtils.format(key, scriptName);
 		menuBuilder.addAction(location, new ExecuteScriptAction(scriptName, menuName, entry.getValue(),
 		    executionMode, cacheContent), MenuBuilder.AS_CHILD);
 	}
