@@ -25,6 +25,6 @@ class SpreadsheetTextTransformer implements ITextTransformer {
 			throw new ExecuteScriptException("got null result from evaluating " + nodeModel.getID() + ", text='"
 			        + script + "'");
 		}
-		return "eval: " + result;
+		return result.toString();
 	}
 }

@@ -16,6 +16,7 @@ import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
@@ -109,6 +110,10 @@ class ControllerProxy implements Proxy.Controller {
 		final ViewController viewController = getViewController();
 		viewController.addStatusImage(key, icon);
 	}
+
+	public FreeplaneVersion getFreeplaneVersion() {
+	    return FreeplaneVersion.getVersion();
+    }
 
 	public List<Node> find(final ICondition condition) {
 		return ProxyUtils.find(condition, Controller.getCurrentController().getMap().getRootNode());

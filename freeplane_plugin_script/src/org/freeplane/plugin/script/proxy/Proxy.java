@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.link.ArrowType;
@@ -140,6 +141,21 @@ public interface Proxy {
 		 *   parent nodes are excluded from the result. */
 		List<Node> getSortedSelection(boolean differentSubtrees);
 
+		/**
+		 * returns Freeplane version.
+		 * Use it like this:
+		 * <pre>
+		 *   import org.freeplane.core.util.FreeplaneVersion
+		 *   import org.freeplane.core.ui.components.UITools
+		 * 
+		 *   def required = FreeplaneVersion.getVersion("1.1.2");
+		 *   if (c.freeplaneVersion < required)
+		 *       UITools.errorMessage("Freeplane version " + c.freeplaneVersion
+		 *           + " not supported - update to at least " + required);
+		 * </pre>
+		 */
+		FreeplaneVersion getFreeplaneVersion();
+		
 		/** Starting from the root node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
 		 * @see Node.find(ICondition) for searches on subtrees */
@@ -293,13 +309,16 @@ public interface Proxy {
 	interface Link extends LinkRO {
 		/** target is a URI.
 		 * An empty String will remove the link.
-		 * To get a local link (i.e. to another node) target should be: "#" + nodeID */
+		 * To get a local link (i.e. to another node) target should be: "#" + nodeId */
 		boolean set(String target);
 	}
 
 	interface MapRO {
-		Node getRootNode();
+		Node getRoot();
 
+		/** @deprecated use {@link #getRoot()} instead. */
+		Node getRootNode();
+		
 		/** returns the node if the map contains it or null otherwise. */
 		Node node(String id);
 
@@ -354,7 +373,10 @@ public interface Proxy {
 		/** the map this node belongs to. */
 		Map getMap();
 
+		/** @deprecated use Node.getId() instead. */
 		String getNodeID();
+		
+		String getId();
 
 		/** if countHidden is false then only nodes that are matched by the
 		 * current filter are counted. */
@@ -365,6 +387,9 @@ public interface Proxy {
 
 		String getNoteText();
 
+		Node getParent();
+		
+		/** @deprecated use {@link #getParent()}. */
 		Node getParentNode();
 
 		NodeStyle getStyle();
@@ -378,6 +403,24 @@ public interface Proxy {
 
 		String getText();
 
+		/** returns an object that performs conversions (name is choosen to give descriptive code):
+		 * <dl>
+		 * <dt>node.to.num <dd>Long or Double, see {@link ConvertibleObject#getDate()}.
+		 * <dt>node.to.date <dd>Date, see {@link ConvertibleObject#getDate()}.
+		 * <dt>node.to.value <dd>Text or, in case of a formula the evaluation result,
+		 *     see {@link ConvertibleObject#getValue()}.
+		 * <dt>node.to.string <dd>Text, see {@link ConvertibleObject#getString()}.
+		 * <dt>node.to.text <dd>an alias for getString(), see {@link ConvertibleObject#getText()}.
+		 * <dt>node.to.object <dd>returns what fits best, see {@link ConvertibleObject#getObject()}.
+		 * </dl>
+		 * Note that parse errors result in {@link ConversionException}s.
+		 * @return ConvertibleObject
+		 */
+		ConvertibleObject getTo();
+
+		/** returns node.text or, in case of a formula the evaluation result. */
+		Object getValue();
+		
 		/** returns true if p is a parent, or grandparent, ... of this node, or if it <em>is equal<em>
 		 * to this node; returns false otherwise. */
 		boolean isDescendantOf(Node p);
@@ -411,7 +454,7 @@ public interface Proxy {
 		/** adds a new Connector object to List<Node> connectors and returns
 		 * reference for optional further editing (style); also enlists the
 		 * Connector on the target Node object. */
-		Connector addConnectorTo(String targetNodeID);
+		Connector addConnectorTo(String targetNodeId);
 
 		/** inserts *new* node as child, takes care of all construction work and
 		 * internal stuff inserts as last child. */
@@ -429,7 +472,7 @@ public interface Proxy {
 
 		void moveTo(Node parentNode, int position);
 
-		/** as above, using String nodeID instead of Node object to establish the connector*/
+		/** as above, using String nodeId instead of Node object to establish the connector*/
 		void removeConnector(Connector connectorToBeRemoved);
 
 		void setFolded(boolean folded);
