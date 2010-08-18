@@ -19,8 +19,8 @@ import java.util.logging.StreamHandler;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -194,6 +194,11 @@ public class XmlRpcHandler extends StreamHandler {
 			close();
 			createInfo();
 			final String errorMessage = out.toString(getEncoding());
+			if (errorMessage.indexOf(getClass().getPackage().getName()) != -1) {
+				// avoid infinite loops
+				System.err.println("don't send bug reports from bugreport plugin");
+				return;
+			}
 			log = info + errorMessage;
 			if (log.equals("")) {
 				return;
