@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilationFailedException;
+import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
@@ -47,6 +48,7 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.main.application.FreeplaneSecurityManager;
+import org.freeplane.plugin.script.proxy.ConvertibleObject;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
 
 /**
@@ -138,7 +140,9 @@ public class ScriptingEngine {
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		try {
 			System.setOut(pOutStream);
-			final GroovyShell shell = new GroovyShell(binding) {
+			CompilerConfiguration config = new CompilerConfiguration();
+			config.setScriptBaseClass(FreeplaneScriptBaseClass.class.getName());
+			final GroovyShell shell = new GroovyShell(ConvertibleObject.class.getClassLoader(), binding, config) {
 				/**
 				 * Evaluates some script against the current Binding and returns the result
 				 *
@@ -148,15 +152,18 @@ public class ScriptingEngine {
 				@Override
 				public Object evaluate(final InputStream in, final String fileName) throws CompilationFailedException {
 					Script script = null;
+					boolean needsSecurityManager = securityManager.hasFinalSecurityManager();
 					try {
 						script = parse(in, fileName);
-						securityManager.setFinalSecurityManager(scriptingSecurityManager);
+						if (needsSecurityManager)
+							securityManager.setFinalSecurityManager(scriptingSecurityManager);
 						return script.run();
 					}
 					finally {
 						if (script != null) {
 							InvokerHelper.removeClass(script.getClass());
-							securityManager.removeFinalSecurityManager(scriptingSecurityManager);
+							if (needsSecurityManager)
+								securityManager.removeFinalSecurityManager(scriptingSecurityManager);
 						}
 					}
 				}
@@ -202,7 +209,8 @@ public class ScriptingEngine {
 			throw e;
 		}
 		catch (final Throwable e) {
-			Controller.getCurrentModeController().getMapController().select(node);
+			if (Controller.getCurrentController().getSelection() != null)
+				Controller.getCurrentModeController().getMapController().select(node);
 			// LogUtils.warn(e);
 			pOutStream.print(e.getMessage());
 			throw new ExecuteScriptException(e.getMessage(), e);

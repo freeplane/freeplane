@@ -312,4 +312,9 @@ public final class FreeplaneSecurityManager extends SecurityManager {
 			throw new SecurityException("Wrong SecurityManager to remove.");
 		}
 	}
+
+	// FIXME: only temporary until a proper mechanism is found to check the recursionlevel of scripts
+	public boolean hasFinalSecurityManager() {
+	    return mFinalSecurityManager != null;
+    }
 }
