@@ -120,7 +120,7 @@ public class MenuUtils {
 		return treeRoot;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static void addChildrenRecursively(final DefaultMutableTreeNode treeNode, final Enumeration menuChildren,
 	                                           final HashMap<String, KeyStroke> menuKeyToKeyStrokeMap) {
 		while (menuChildren.hasMoreElements()) {
@@ -167,7 +167,7 @@ public class MenuUtils {
 	}
 
 	// filters out non-acceleratable menu entries
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static void addAcceleratableChildrenRecursively(final DefaultMutableTreeNode target,
 	                                                        final Enumeration sourceChildren) {
 		while (sourceChildren.hasMoreElements()) {
@@ -197,7 +197,7 @@ public class MenuUtils {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static void insertAsNodeModelRecursively(final NodeModel nodeModel, final Enumeration children,
 	                                                final MapController mapController) {
 		while (children.hasMoreElements()) {

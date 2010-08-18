@@ -23,13 +23,13 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
 
-import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.n3.nanoxml.XMLElement;
 

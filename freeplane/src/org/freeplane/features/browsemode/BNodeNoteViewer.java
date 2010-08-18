@@ -22,12 +22,10 @@ package org.freeplane.features.browsemode;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.JApplet;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;

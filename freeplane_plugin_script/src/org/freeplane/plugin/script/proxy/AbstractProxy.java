@@ -11,7 +11,7 @@ public abstract class AbstractProxy<T> {
 		this.delegate = delegate;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
     @Override
 	public boolean equals(final Object obj) {
 		if (!getClass().equals(obj.getClass())) {

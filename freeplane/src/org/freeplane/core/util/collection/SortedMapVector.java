@@ -25,7 +25,7 @@ import java.util.Vector;
 /**
  * @author Dimitry Polivaev
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class SortedMapVector {
 	private static class MapElement {
         final private Comparable key;

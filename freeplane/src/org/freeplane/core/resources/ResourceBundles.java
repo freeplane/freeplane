@@ -78,8 +78,8 @@ public class ResourceBundles extends ResourceBundle {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
 	public Enumeration getKeys() {
 		final Iterator<String> iterator = defaultResources.keySet().iterator();
 		return new Enumeration() {
@@ -114,12 +114,9 @@ public class ResourceBundles extends ResourceBundle {
 		return resources;
 	}
 
-	@SuppressWarnings("unchecked")
-	private Map<String, String> getLanguageResources(final URL systemResource) throws IOException {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+    private Map<String, String> getLanguageResources(final URL systemResource) throws IOException {
 		final InputStream in = new BufferedInputStream(systemResource.openStream());
-		if (in == null) {
-			return null;
-		}
 		final Properties bundle = new Properties();
 		bundle.load(in);
 		in.close();
