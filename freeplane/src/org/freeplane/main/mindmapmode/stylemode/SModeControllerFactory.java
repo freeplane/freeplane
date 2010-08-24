@@ -135,6 +135,9 @@ public class SModeControllerFactory {
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
 			public void onSelect(final NodeModel node) {
 				final IMapSelection selection = controller.getSelection();
+				if (selection == null) {
+					return;
+				}
 				if (selection.size() == 1 && node.depth() >= 2) {
 					return;
 				}

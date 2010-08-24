@@ -139,11 +139,6 @@ public class FreeplaneStarter {
 			MapController.install();
 
 			NodeHistory.install(controller);
-			MModeControllerFactory.createModeController();
-			controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(
-			    applicationResourceController.getLastOpenedList());
-			BModeControllerFactory.createModeController("/xml/browsemodemenu.xml");
-			FModeControllerFactory.createModeController();
 			return controller;
 		}
 		catch (final Exception e) {
@@ -152,13 +147,21 @@ public class FreeplaneStarter {
 		}
 	}
 
+	public void createModeControllers() {
+	    MModeControllerFactory.createModeController();
+	    Controller.getCurrentController().getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(
+	        applicationResourceController.getLastOpenedList());
+	    BModeControllerFactory.createModeController("/xml/browsemodemenu.xml");
+	    FModeControllerFactory.createModeController();
+    }
+
 	public void createFrame(final String[] args) {
 		Compat.macMenuChanges();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				loadMaps(args);
 				viewController.init(Controller.getCurrentController());
 				splash.toBack();
-				loadMaps(args);
 				final Frame frame = viewController.getFrame();
 				final int extendedState = frame.getExtendedState();
 				frame.setVisible(true);
@@ -223,6 +226,7 @@ public class FreeplaneStarter {
 				System.setProperty("org.freeplane.core.dir.lib", "/lib/");
 			}
 			createController();
+			createModeControllers();
 			createFrame(args);
 		}
 		catch (final Exception e) {

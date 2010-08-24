@@ -644,6 +644,9 @@ public class StyleEditorPanel extends JPanel {
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
 			public void onSelect(final NodeModel node) {
 				final IMapSelection selection = controller.getSelection();
+				if (selection == null) {
+					return;
+				}
 				if (selection.size() == 1) {
 					setStyle(node);
 				}

@@ -76,10 +76,6 @@ public class SingleInstanceManager {
 		return isSlave || isMasterPresent;
 	}
 
-	public void setController() {
-//		this.controller = controller;
-	}
-
 	private boolean startAsSlave(String[] filesToLoad) {
 		if (port != null) {
 			isSlave = openFilesInMaster(filesToLoad);
