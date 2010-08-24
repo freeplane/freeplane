@@ -59,4 +59,5 @@ class RedoAction extends AFreeplaneAction {
 	public void setUndo(final Action undo) {
 		this.undo = undo;
 	}
+	public void afterMapChange(final Object newMap) {};
 }
