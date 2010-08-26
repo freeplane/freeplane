@@ -41,10 +41,6 @@ class XMLWriter {
 	 */
 	private PrintWriter writer;
 
-	public void close() {
-	    writer.close();
-    }
-
 	public void flush() {
 	    writer.flush();
     }
