@@ -1,4 +1,9 @@
 ﻿===============================
+1.1.3
+===============================
+Bug fixes:
+732]: Saving to any networkshare takes extremely long time
+===============================
 1.1.2
 ===============================
 Bug fixes in applet browser

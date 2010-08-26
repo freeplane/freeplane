@@ -41,6 +41,14 @@ class XMLWriter {
 	 */
 	private PrintWriter writer;
 
+	public void close() {
+	    writer.close();
+    }
+
+	public void flush() {
+	    writer.flush();
+    }
+
 	/**
 	 * Creates a new XML writer.
 	 * 
@@ -78,6 +86,7 @@ class XMLWriter {
 	 */
 	@Override
 	protected void finalize() throws Throwable {
+		flush();
 		writer = null;
 		super.finalize();
 	}
@@ -216,7 +225,6 @@ class XMLWriter {
 				}
 			}
 		}
-		writer.flush();
 	}
 
 	/**
