@@ -13,7 +13,7 @@
   </body>
 </html></richcontent>
 <font NAME="Dialog" SIZE="18" BOLD="true"/>
-<hook NAME="MapStyle" max_node_width="600"/>
+<hook NAME="MapStyle" zoom="1.127" max_node_width="600"/>
 <node FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1272502789896" HGAP="-94" VSHIFT="-27">
 <richcontent TYPE="NODE">
 <html>
@@ -745,6 +745,9 @@
 <attribute NAME="y" VALUE="20"/>
 </node>
 <node TEXT="Use Edit &gt; Edit Attributes or Alt + F9 for editing attributes on a single node" ID="ID_541565942" CREATED="1270896865255" MODIFIED="1271992984612"/>
+<node TEXT="Use Tab and Shift + Tab to navigate through the attributes." ID="ID_1615277113" CREATED="1282804659500" MODIFIED="1282804860031"/>
+<node TEXT="Use Tab at the last value or the context menu to add a new attribute." ID="ID_818113319" CREATED="1282804860609" MODIFIED="1282804938859"/>
+<node TEXT="Use the context menu of an attribute to delete it." ID="ID_109784525" CREATED="1282804659500" MODIFIED="1282805237468"/>
 <node TEXT="Use Tools &gt; Assign Attributes... for assigning / changing attribute for multiple nodes" ID="ID_1213222306" CREATED="1270896956119" MODIFIED="1271982291797"/>
 </node>
 <node TEXT="Using rich text by means of HTML in nodes" FOLDED="true" ID="Freeplane_Link_841140408" CREATED="1270892460698" MODIFIED="1270895987526" COLOR="#407000">
@@ -1019,14 +1022,14 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="Scripting" FOLDED="true" ID="ID_1046070222" CREATED="1271021863642" MODIFIED="1271022630845" COLOR="#407000">
+<node TEXT="Scripting" ID="ID_1046070222" CREATED="1271021863642" MODIFIED="1271022630845" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Freeplane&apos;s built in functionality can be extended by Groovy scripts." FOLDED="true" ID="ID_871333484" CREATED="1271022419501" MODIFIED="1271530281330">
 <node TEXT="Groovy scripts can access the mindmap by means of a Scripting API." ID="ID_893034881" CREATED="1271022419501" MODIFIED="1271022439407"/>
 <node TEXT="Scripts can use some Freeplane utility classes that are provided by Freeplane, e.g. UITools, LogTool or HtmlTools." ID="ID_670788358" CREATED="1271022419501" MODIFIED="1271022442735"/>
 <node TEXT="Scripts can use some of the functionality provided by libraries which are included in Freeplane." ID="ID_21879568" CREATED="1271022419501" MODIFIED="1271022447860"/>
 </node>
-<node TEXT="Scripts can be defined in three ways." FOLDED="true" ID="ID_1916933814" CREATED="1271022419501" MODIFIED="1271022615564">
+<node TEXT="Scripts can be defined in three ways." ID="ID_1916933814" CREATED="1271022419501" MODIFIED="1271022615564">
 <node TEXT="External Groovy scripts can be integrated simply by telling Freeplane where they are. Such scripts can be used like any other built in function of Freeplane." ID="ID_905639720" CREATED="1271022419501" MODIFIED="1271530299711"/>
 <node TEXT="Physical styles/Patterns may contain scripts for formatting purposes. They are automatically applied to any node when the given pattern is assigned." ID="ID_1457942941" CREATED="1271022419501" MODIFIED="1272011736760"/>
 <node TEXT="Map local scripts may be defined within a map as attributes of some node. These scripts are embedded within a map, so they can be easily shipped as part of the map. A special, built in editor is used for editing map local scripts." ID="ID_1545994363" CREATED="1271022419501" MODIFIED="1272011807552"/>
