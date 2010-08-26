@@ -77,12 +77,12 @@ public class MMapController extends MapController {
 		addNodeSelectionListener(new INodeSelectionListener() {
 			public void onSelect(final NodeModel node) {
 				if (ResourceController.getResourceController().getBooleanProperty("display_node_id")) {
-					Controller.getCurrentController().getViewController().addStatusInfo("display_node_id", "ID=" + node.createID());
+					Controller.getCurrentController().getViewController().addStatusInfo("display_node_id", "ID=" + node.createID(), null);
 				}
 			}
 
 			public void onDeselect(final NodeModel node) {
-				Controller.getCurrentController().getViewController().addStatusInfo("display_node_id", null);
+				Controller.getCurrentController().getViewController().addStatusInfo("display_node_id", null, null);
 			}
 		});
 	}

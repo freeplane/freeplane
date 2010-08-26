@@ -24,6 +24,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 		return new NodeProxy(rootNode);
 	}
 	
+	@Deprecated
 	public Node getRootNode() {
 		return getRoot();
 	}

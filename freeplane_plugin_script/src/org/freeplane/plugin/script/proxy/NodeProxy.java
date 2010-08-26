@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
@@ -25,6 +27,7 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.features.mindmapmode.text.MTextController;
+import org.freeplane.plugin.script.proxy.Proxy.Attributes;
 import org.freeplane.plugin.script.proxy.Proxy.Connector;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
@@ -72,6 +75,36 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// NodeRO: R
 	public Proxy.Attributes getAttributes() {
 		return new AttributesProxy(getDelegate());
+	}
+
+	// NodeRO: R
+	public ConvertibleAttributeValue getAt(String attributeName) {
+		return new ConvertibleAttributeValue(getDelegate(), getAttributes().getFirst(attributeName));
+	}
+
+	// Node: R/W
+	public String putAt(String attributeName, Object value) {
+		final String stringValue = Convertible.toString(value);
+		final Attributes attributes = getAttributes();
+		if (stringValue == null) {
+			final int index = attributes.findFirst(attributeName);
+			if (index != -1)
+				attributes.remove(index);
+			// else: ignore request
+		}
+		else {
+			attributes.set(attributeName, stringValue);
+		}
+		return stringValue;
+	}
+
+	// Node: R/W
+	public void setAttributes(Map<String, Object> attributeMap) {
+		final Attributes attributes = getAttributes();
+		attributes.clear();
+		for (Entry<String, Object> entry : attributeMap.entrySet()) {
+			attributes.set(entry.getKey(), Convertible.toString(entry.getValue()));
+		}
 	}
 
 	// NodeRO: R
@@ -124,10 +157,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
+	@Deprecated
 	public String getId() {
 		return getDelegate().createID();
 	}
-	
+
 	// NodeRO: R
 	public String getNodeID() {
 		return getId();
@@ -139,14 +173,20 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
-	public String getPlainNoteText() {
+	public String getPlainNote() {
 		final String noteText = NoteModel.getNoteText(getDelegate());
 		return noteText == null ? null : HtmlUtils.htmlToPlain(noteText);
 	}
 
 	// NodeRO: R
+	@Deprecated
 	public String getNoteText() {
-		return NoteModel.getNoteText(getDelegate());
+		return getNote().getString();
+	}
+
+	// NodeRO: R
+	public Convertible getNote() {
+		return new ConvertibleNoteText(getDelegate());
 	}
 
 	// NodeRO: R
@@ -155,8 +195,9 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		final NodeModel parentNode = getDelegate().getParentNode();
 		return parentNode != null ? new NodeProxy(parentNode) : null;
 	}
-	
+
 	// NodeRO: R
+	@Deprecated
 	public Proxy.Node getParentNode() {
 		return getParent();
 	}
@@ -168,7 +209,6 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	@Deprecated
-	// use getPlainText() instead
 	public String getPlainTextContent() {
 		return TextController.getController().getPlainTextContent(getDelegate());
 	}
@@ -185,14 +225,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public Convertible getTo() {
-	    final NodeModel nodeModel = getDelegate();
-		return new ConvertibleNodeText(nodeModel);
-    }
-	
-	// NodeRO: R
-	public Object getValue() {
 		final NodeModel nodeModel = getDelegate();
-		return FormulaUtils.evalNodeText(nodeModel);
+		return new ConvertibleNodeText(nodeModel);
+	}
+
+	// NodeRO: R
+	public Convertible getValue() {
+		final NodeModel nodeModel = getDelegate();
+		return new Convertible(FormulaUtils.evalNodeText(nodeModel));
 	}
 
 	// NodeRO: R
@@ -263,21 +303,29 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// Node: R/W
-	public void setPlainNoteText(String text) {
+	public void setNote(Object value) {
 		final MNoteController noteController = (MNoteController) NoteController.getController();
-		noteController.setNoteText(getDelegate(), (text == null ? null : HtmlUtils.plainToHTML(text)));
+		noteController.setNoteText(getDelegate(), convertConvertibleToHtml(value));
+	}
+
+	private String convertConvertibleToHtml(Object value) {
+		if (value == null)
+			return null;
+		final String text = Convertible.toString(value);
+		return HtmlUtils.isHtmlNode(text) ? text : HtmlUtils.plainToHTML(text);
 	}
 
 	// Node: R/W
+	@Deprecated
 	public void setNoteText(final String text) {
 		final MNoteController noteController = (MNoteController) NoteController.getController();
 		noteController.setNoteText(getDelegate(), text);
 	}
 
 	// Node: R/W
-	public void setText(final String text) {
+	public void setText(final Object value) {
 		final MTextController textController = (MTextController) TextController.getController();
-		textController.setNodeText(getDelegate(), text);
+		textController.setNodeText(getDelegate(), Convertible.toString(value));
 	}
 
 	// NodeRO: R
@@ -287,6 +335,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
+	@Deprecated
 	public List<Node> find(final ICondition condition) {
 		return ProxyUtils.find(condition, getDelegate());
 	}

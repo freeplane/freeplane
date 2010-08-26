@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.WordUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -98,10 +99,10 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 					}
                 }
                 catch (ExecuteScriptException ex) {
-                	LogUtils.warn("error executing script " + script + " - giving up", ex);
-                	modeController.delayedRollback();
-                	// FIXME: fold long lines
-                	UITools.errorMessage(TextUtils.format("ExecuteScriptError.text", ex.getMessage()));
+					LogUtils.warn("error executing script " + script + " - giving up", ex);
+					modeController.delayedRollback();
+					final String message = WordUtils.wrap(ex.getMessage(), 80, "\n    ", false);
+					UITools.errorMessage(TextUtils.format("ExecuteScriptError.text", message));
                 	return;
                 }
 			}

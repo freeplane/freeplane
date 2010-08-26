@@ -313,7 +313,7 @@ public final class FreeplaneSecurityManager extends SecurityManager {
 		}
 	}
 
-	// FIXME: only temporary until a proper mechanism is found to check the recursionlevel of scripts
+	/** needed since scripts may be invoked recursively and the security manager may only be set replaced. */
 	public boolean hasFinalSecurityManager() {
 	    return mFinalSecurityManager != null;
     }

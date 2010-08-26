@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.filter.condition.ICondition;
@@ -18,10 +19,13 @@ import org.freeplane.features.common.link.ArrowType;
 
 public interface Proxy {
 	interface AttributesRO {
-		/** returns the <em>first</em> value of an attribute with the given name or null otherwise.
-		 * @deprecated use {@link #get(int)} or {@link #getAll(String)} instead. */
+		/** alias for {@link #getFirst(int)}.
+		 * @deprecated before 1.1 - use {@link #get(int)}, {@link #getFirst(int)} or {@link #getAll(String)} instead. */
 		@Deprecated
 		String get(final String name);
+
+		/** returns the <em>first</em> value of an attribute with the given name or null otherwise. @since 1.2 */
+		String getFirst(final String name);
 
 		/** returns all values for the attribute name. */
 		List<String> getAll(final String name);
@@ -44,11 +48,14 @@ public interface Proxy {
 		 *         &lt; 0 || index &gt;= size())</tt>.*/
 		String get(final int index);
 
-		/** returns the index of the first attribute with the given name if one exists or -1 otherwise.
-		         * For searches for <em>all</em> attributes with a given name <code>getAttributeNames()</code>
-		         * must be used. */
+		/** @deprecated since 1.2 - use {@link #findFirst(String)} instead. */
 		int findAttribute(final String name);
 
+		/** returns the index of the first attribute with the given name if one exists or -1 otherwise.
+		 * For searches for <em>all</em> attributes with a given name <code>getAttributeNames()</code>
+		 * must be used. @since 1.2*/
+		int findFirst(final String name);
+		
 		/** the number of attributes. It is <code>size() == getAttributeNames().size()</code>. */
 		int size();
 	}
@@ -68,7 +75,7 @@ public interface Proxy {
 
 		/** removes the <em>first</em> attribute with this name.
 		 * @returns true on removal of an existing attribute and false otherwise.
-		 * @deprecated use {@link #remove(int)} or {@link #removeAll(String)} instead. */
+		 * @deprecated before 1.1 - use {@link #remove(int)} or {@link #removeAll(String)} instead. */
 		@Deprecated
 		boolean remove(final String name);
 
@@ -87,6 +94,9 @@ public interface Proxy {
 
 		/** adds an attribute no matter if an attribute with the given name already exists. */
 		void add(final String name, final String value);
+
+		/** removes all attributes. @since 1.2 */
+		void clear();
 	}
 
 	interface ConnectorRO {
@@ -155,10 +165,11 @@ public interface Proxy {
 		 * </pre>
 		 */
 		FreeplaneVersion getFreeplaneVersion();
-		
+
 		/** Starting from the root node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
-		 * @see Node.find(ICondition) for searches on subtrees */
+		 * @see Node.find(ICondition) for searches on subtrees
+		 * @deprecated since 1.2 use {@link #find(Closure)} instead. */
 		List<Node> find(ICondition condition);
 
 		/**
@@ -199,25 +210,39 @@ public interface Proxy {
 		/** reset undo / redo lists and deactivate Undo for current script */
 		void deactivateUndo();
 
-		/** invokes undo once - for testing purposes mainly. */
+		/** invokes undo once - for testing purposes mainly. @since 1.2 */
 		void undo();
-		
-		/** invokes redo once - for testing purposes mainly. */
+
+		/** invokes redo once - for testing purposes mainly. @since 1.2 */
 		void redo();
 
-		/** The main info for the status line, null to remove*/
+		/** The main info for the status line with key="standard", use null to remove. Removes icon if there is one. */
 		void setStatusInfo(String info);
 
-		/** Info for status line, null to remove*/
-		void setStatusInfo(String key, String info);
+		/** Info for status line, null to remove. Removes icon if there is one.
+		 * @see {@link #setStatusInfo(String, String, String)} */
+		void setStatusInfo(String infoPanelKey, String info);
 
-		/** Info for status line, null to remove*/
-		void setStatusInfo(String key, Icon icon);
-
-		/** opens a new map with a default name in the foreground. */
-		Map newMap();
+		/** Info for status line - text and icon - null stands for "remove" (text or icon)
+		 * @param infoPanelKey "standard" is the left most standard info panel. If a panel with
+		 *        this name doesn't exist it will be created.
+		 * @param info Info text
+		 * @param iconKey key as those that are used for nodes (see {@link Icons#addIcon(String)}).
+		 * <pre>
+		 *   println("all available icon keys: " + FreeplaneIconUtils.listStandardIconKeys())
+		 *   c.setStatusInfo("standard", "hi there!", "button_ok");
+		 * </pre>
+		 * @see FreeplaneIconUtils
+		 * @since 1.2 */
+		void setStatusInfo(String infoPanelKey, String info, String iconKey);
 		
-		/** opens a new map for url in the foreground if it isn't opened already. */
+		/** @deprecated since 1.2 - use {@link #setStatusInfo(String, String, String)} */
+		void setStatusInfo(String infoPanelKey, Icon icon);
+
+		/** opens a new map with a default name in the foreground. @since 1.2 */
+		Map newMap();
+
+		/** opens a new map for url in the foreground if it isn't opened already. @since 1.2 */
 		Map newMap(URL url);
 	}
 
@@ -295,11 +320,19 @@ public interface Proxy {
 	}
 
 	interface Icons extends IconsRO {
+		/**
+		 * adds an icon to a node if an icon for the given key can be found. The same icon can be added multiple
+		 * times.
+		 * <pre>
+		 *   println("all available icon keys: " + FreeplaneIconUtils.listStandardIconKeys())
+		 *   node.icons.addIcon("button_ok")
+		 * </pre>
+		 * @see FreeplaneIconUtils */
 		void addIcon(String name);
 
-		/** deletes first occurence of icon with name iconID, returns true if
+		/** deletes first occurence of icon with the given name, returns true if
 		 * success (icon existed); */
-		boolean removeIcon(String iconID);
+		boolean removeIcon(String name);
 	}
 
 	interface LinkRO {
@@ -314,18 +347,19 @@ public interface Proxy {
 	}
 
 	interface MapRO {
+		/** @since 1.2 */
 		Node getRoot();
 
-		/** @deprecated use {@link #getRoot()} instead. */
+		/** @deprecated since 1.2 - use {@link #getRoot()} instead. */
 		Node getRootNode();
-		
+
 		/** returns the node if the map contains it or null otherwise. */
 		Node node(String id);
 
 		/** returns the physical location of the map if available or null otherwise. */
 		File getFile();
 
-		/** returns the title of the MapView. */
+		/** returns the title of the MapView. @since 1.2 */
 		String getName();
 	}
 
@@ -337,6 +371,7 @@ public interface Proxy {
 		 *        unsaved changes.
 		 * @return false if the saveAs was cancelled by the user and true otherwise.
 		 * @throws RuntimeException if the map contains changes and parameter force is false.
+		 * @since 1.2
 		 */
 		boolean close(boolean force, boolean allowInteraction);
 
@@ -345,12 +380,30 @@ public interface Proxy {
 		 * @param allowInteraction if a saveAs dialog should be opened if the map has no assigned URL so far.
 		 * @return false if the saveAs was cancelled by the user and true otherwise.
 		 * @throws RuntimeException if the map has no assigned URL and parameter allowInteraction is false.
+		 * @since 1.2
 		 */
 		boolean save(boolean allowInteraction);
 	}
 
 	interface NodeRO {
 		Attributes getAttributes();
+
+		/** allows to access attribute values like array elements. Note that the returned type is a
+		 * {@link Convertible}, not a String. Nevertheless it behaves like a String in almost all respects,
+		 * that is, in Groovy scripts it understands all String methods like lenght(), matches() etc.
+		 * <pre>
+		 *   // standard way
+		 *   node.attributes.set("attribute name", "12")
+		 *   // implicitely use getAt()
+		 *   def val = node["attribute name"]
+		 *   // use all conversions that Convertible provides (num, date, string, ...)
+		 *   assert val.num == new Long(12)
+		 *   // or use it just like a string
+		 *   assert val.startsWith("1")
+		 * </pre>
+		 * @since 1.2
+		 */
+		Convertible getAt(String attributeName);
 
 		/** returns the index (0..) of this node in the (by Y coordinate sorted)
 		 * list of this node's children. Returns -1 if childNode is not a child
@@ -373,32 +426,43 @@ public interface Proxy {
 		/** the map this node belongs to. */
 		Map getMap();
 
-		/** @deprecated use Node.getId() instead. */
+		/** @deprecated since 1.2 - use Node.getId() instead. */
 		String getNodeID();
-		
+
+		/** @since 1.2 */
 		String getId();
 
 		/** if countHidden is false then only nodes that are matched by the
 		 * current filter are counted. */
 		int getNodeLevel(boolean countHidden);
 
-		/** get the note text with all HTML tags removed. */
-		String getPlainNoteText();
-
+		/**
+		 * Returns the note text as a flexible Convertible objects. Convertibles behave like Strings in most respects
+		 * but note that while Convertible tries to be a String replacement, String itself does not know about
+		 * Convertible so 
+		 * @return Convertible For conversions to <em>all other types than String</em> we use the plain note text.
+		 *         for getString(), getText() and toString() we use the HTML text.
+		 * @since 1.2
+		 */
+		Convertible getNote();
+		
+		/** Returns the HTML text of the node. (Notes always contain HTML text.) Alternatively use
+		 * getNote().getText() or node.note.text */
 		String getNoteText();
 
+		/** @since 1.2 */
 		Node getParent();
-		
-		/** @deprecated use {@link #getParent()}. */
+
+		/** @deprecated since 1.2 - use {@link #getParent()} instead. */
 		Node getParentNode();
 
 		NodeStyle getStyle();
 
-		/** use this method to remove all tags from an HTML node. */
+		/** use this method to remove all tags from an HTML node. @since 1.2 */
 		String getPlainText();
 
 		/** use this method to remove all tags from an HTML node.
-		 * @deprecated use getPlainText() instead. */
+		 * @deprecated since 1.2 - use getPlainText() or getTo().getPlain() instead. */
 		String getPlainTextContent();
 
 		String getText();
@@ -415,12 +479,13 @@ public interface Proxy {
 		 * </dl>
 		 * Note that parse errors result in {@link ConversionException}s.
 		 * @return ConvertibleObject
+		 * @since 1.2
 		 */
 		Convertible getTo();
 
-		/** returns node.text or, in case of a formula the evaluation result. */
-		Object getValue();
-		
+		/** returns node.text or, in case of a formula the evaluation result. @since 1.2 */
+		Convertible getValue();
+
 		/** returns true if p is a parent, or grandparent, ... of this node, or if it <em>is equal<em>
 		 * to this node; returns false otherwise. */
 		boolean isDescendantOf(Node p);
@@ -436,7 +501,8 @@ public interface Proxy {
 		boolean isVisible();
 
 		/** Starting from this node, recursively searches for nodes for which
-		 * <code>condition.checkNode(node)</code> returns true. */
+		 * <code>condition.checkNode(node)</code> returns true.
+		 * @deprecated since 1.2 use {@link #find(Closure)} instead. */
 		List<Node> find(ICondition condition);
 
 		/** Starting from this node, recursively searches for nodes for which <code>closure.call(node)</code>
@@ -477,16 +543,129 @@ public interface Proxy {
 
 		void setFolded(boolean folded);
 
-		/** set the note text. Required HTML tags will be automatically added. */
-		void setPlainNoteText(String text);
+		/**
+		 * Set the note text:
+		 * <ul>
+		 * <li>This methods provides automatic conversion to String in a way that node.getNote().getXyz()
+		 *     methods will be able to convert the string properly to the wanted type.
+		 * <li>Special conversion is provided for dates and calendars: They will be converted in a way that
+		 *     node.note.date and node.note.calendar will work. All other types are converted via value.toString().
+		 * <li>If the conversion result is not valid HTML it will be automatically converted to HTML.
+		 * </ul>
+		 * <p>
+		 * <pre>
+		 *   // converts numbers and other stuff with toString()
+		 *   node.note = 1.2
+		 *   assert node.note.text == "<html><body><p>1.2"
+		 *   assert node.note.plain == "1.2"
+		 *   assert node.note.num == 1.2d
+		 *   // == dates
+		 *   // a date in some non-UTC time zone
+		 *   def date = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").
+		 *       parse("1970-01-01 00:00:00.000-0200")
+		 *   // converts to "1970-01-01T02:00:00.000+0000" (GMT)
+		 *   // - note the shift due to the different time zone
+		 *   // - the missing end tags don't matter for rendering
+		 *   node.note = date
+		 *   assert node.note == "<html><body><p>1970-01-01T02:00:00.000+0000"
+		 *   assert node.note.plain == "1970-01-01T02:00:00.000+0000"
+		 *   assert node.note.date == date
+		 *   // == remove note
+		 *   node.note = null
+		 *   assert node.note.text == null
+		 * </pre>
+		 * @param value An object for conversion to String. Works well for all types that {@link Convertible}
+		 *        handles, especially {@link Convertible}s itself.
+		 * @since 1.2 (note that the old setNoteText() did not support non-String arguments.
+		 */
+		void setNote(Object value);
 
+		/** @deprecated since 1.2 - use {@link #setNote()} instead. */
 		void setNoteText(String text);
 
-		void setText(String text);
+		/**
+		 * A node's text is String valued. This methods provides automatic conversion to String in a way that
+		 * node.to.getXyz() methods will be able to convert the string properly to the wanted type.
+		 * Special conversion is provided for dates and calendars: They will be converted in a way that
+		 * node.to.date and node.to.calendar will work. All other types are converted via value.toString():
+		 * <pre>
+		 *   // converts non-Dates with toString()
+		 *   node.text = 1.2
+		 *   assert node.to.text == "1.2"
+		 *   assert node.to.num == 1.2d
+		 *   // == dates
+		 *   // a date in some non-GMT time zone
+		 *   def date = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").
+		 *       parse("1970-01-01 00:00:00.000-0200")
+		 *   // converts to "1970-01-01T02:00:00.000+0000" (GMT)
+		 *   // - note the shift due to the different time zone
+		 *   node.text = date
+		 *   assert node.to.text == "1970-01-01T02:00:00.000+0000"
+		 *   assert node.to.date == date
+		 * </pre>
+		 * @param value A not-null object for conversion to String. Works well for all types that {@link Convertible}
+		 *        handles, especially {@link Convertible}s itself.
+		 */
+		void setText(Object value);
 
 		void setLastModifiedAt(Date date);
 
 		void setCreatedAt(Date date);
+
+		// Attributes
+		/**
+		 * Allows to set and to change attribute like array elements.
+		 * <p>
+		 * Note that attributes are String valued. This methods provides automatic conversion to String in a way that
+		 * node["a name"].getXyz() methods will be able to convert the string properly to the wanted type.
+		 * Special conversion is provided for dates and calendars: They will be converted in a way that
+		 * node["a name"].date and node["a name"].calendar will work. All other types are converted via
+		 * value.toString():
+		 * <pre>
+		 *   // == text
+		 *   node["attribute name"] = "a value"
+		 *   assert node["attribute name"] == "a value"
+		 *   assert node.attributes.getFirst("attribute name") == "a value" // the same
+		 *   // == numbers and others
+		 *   // converts numbers and other stuff with toString()
+		 *   node["a number"] = 1.2
+		 *   assert node["a number"].text == "1.2"
+		 *   assert node["a number"].num == 1.2d
+		 *   // == dates
+		 *   // a date in some non-GMT time zone
+		 *   def date = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").
+		 *       parse("1970-01-01 00:00:00.000-0200")
+		 *   // converts to "1970-01-01T02:00:00.000+0000" (GMT)
+		 *   // - note the shift due to the different time zone
+		 *   node["a date"] = date
+		 *   assert node["a date"].text == "1970-01-01T02:00:00.000+0000"
+		 *   assert node["a date"].date == date
+		 *   // == remove an attribute
+		 *   node["removed attribute"] = "to be removed"
+		 *   assert node["removed attribute"] == "to be removed"
+		 *   node["removed attribute"] = null
+		 *   assert node.attributes.find("removed attribute") == -1
+		 * </pre>
+		 * @param value An object for conversion to String. Works well for all types that {@link Convertible}
+		 *        handles, especially {@link Convertible}s itself. Use null to unset an attribute.
+		 * @return the new value
+		 */
+		String putAt(String attributeName, Object value);
+
+		/** allows to set all attributes at once:
+		 * <pre>
+		 *   node.attributes = [:] // clear the attributes
+		 *   assert node.attributes.size() == 0
+		 *   node.attributes = ["1st" : "a value", "2nd" : "another value"] // create 2 attributes 
+		 *   assert node.attributes.size() == 2
+		 *   node.attributes = ["one attrib" : new Double(1.22)] // replace all attributes
+		 *   assert node.attributes.size() == 1
+		 *   assert node.attributes.getFirst("one attrib") == "1.22" // note the type conversion
+		 *   assert node["one attrib"] == "1.22"
+		 *   node["one attrib"] = "1.22" // here we compare Convertible with String
+		 * </pre>
+		 */
+		void setAttributes(java.util.Map<String, Object> attributes);
 	}
 
 	interface NodeStyleRO {

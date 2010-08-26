@@ -11,9 +11,11 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.util.FreeplaneIconUtils;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.filter.Filter;
-import org.freeplane.features.common.icon.factory.MindIconFactory;
 import org.freeplane.features.common.text.NodeContainsCondition;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
@@ -105,8 +107,7 @@ public class ScriptApiTest {
 			iconKey = "button_cancel";
 		}
 		LogUtils.info(message);
-		c.setStatusInfo(message);
-		c.setStatusInfo("display_node_id", MindIconFactory.create(iconKey).getIcon());
+		c.setStatusInfo(ViewController.STANDARD_STATUS_INFO_KEY, message, iconKey);
 	}
 
 	public void tearDown() {
@@ -117,16 +118,16 @@ public class ScriptApiTest {
 	@SuppressWarnings("deprecation")
 	public void test_AttributesRO_get_String_name() {
 		map = setupMapWithSomeAttributes();
-		assertEquals("first value should be found", "va1", map.getRootNode().getAttributes().get("a1"));
-		assertEquals("should return null for non-existing attributes", null, map.getRootNode().getAttributes().get("x"));
+		assertEquals("first value should be found", "va1", map.getRoot().getAttributes().get("a1"));
+		assertEquals("should return null for non-existing attributes", null, map.getRoot().getAttributes().get("x"));
 	}
 
 	private Map setupMapWithSomeAttributes() {
 		createTestMap();
-		map.getRootNode().getAttributes().add("a1", "va1");
-		map.getRootNode().getAttributes().add("a1", "va2");
-		map.getRootNode().getAttributes().add("a1", "va3");
-		map.getRootNode().getAttributes().add("b1", "vb1");
+		map.getRoot().getAttributes().add("a1", "va1");
+		map.getRoot().getAttributes().add("a1", "va2");
+		map.getRoot().getAttributes().add("a1", "va3");
+		map.getRoot().getAttributes().add("b1", "vb1");
 		return map;
 	}
 
@@ -155,8 +156,8 @@ public class ScriptApiTest {
 
 	private Map createTestMap() {
 		map = c.newMap();
-		addChild(map.getRootNode(), "first node");
-		addChild(map.getRootNode(), "second node");
+		addChild(map.getRoot(), "first node");
+		addChild(map.getRoot(), "second node");
 		return map;
 	}
 
@@ -171,33 +172,33 @@ public class ScriptApiTest {
 	}
 
 	private Node firstChild() {
-		return firstChild(map.getRootNode());
+		return firstChild(map.getRoot());
 	}
 
 	public void test_AttributesRO_getAll_String_name() {
 		map = setupMapWithSomeAttributes();
-		assertEquals("all values should be found", list("va1", "va2", "va3"), map.getRootNode().getAttributes().getAll(
+		assertEquals("all values should be found", list("va1", "va2", "va3"), map.getRoot().getAttributes().getAll(
 		    "a1"));
-		assertEquals("all values should be found", Collections.singletonList("vb1"), map.getRootNode().getAttributes()
+		assertEquals("all values should be found", Collections.singletonList("vb1"), map.getRoot().getAttributes()
 		    .getAll("b1"));
-		assertEquals("should return empty list for non-existing attributes", Collections.EMPTY_LIST, map.getRootNode()
+		assertEquals("should return empty list for non-existing attributes", Collections.EMPTY_LIST, map.getRoot()
 		    .getAttributes().getAll("x"));
 	}
 
 	public void test_AttributesRO_getAttributeNames() {
 		map = setupMapWithSomeAttributes();
-		assertEquals("all names should be found", list("a1", "a1", "a1", "b1"), map.getRootNode().getAttributes()
+		assertEquals("all names should be found", list("a1", "a1", "a1", "b1"), map.getRoot().getAttributes()
 		    .getAttributeNames());
 	}
 
 	public void test_AttributesRO_get_int_index() {
 		map = setupMapWithSomeAttributes();
-		assertEquals("find by index", "va1", map.getRootNode().getAttributes().get(0));
-		assertEquals("find by index", "va2", map.getRootNode().getAttributes().get(1));
-		assertEquals("find by index", "va3", map.getRootNode().getAttributes().get(2));
-		assertEquals("find by index", "vb1", map.getRootNode().getAttributes().get(3));
+		assertEquals("find by index", "va1", map.getRoot().getAttributes().get(0));
+		assertEquals("find by index", "va2", map.getRoot().getAttributes().get(1));
+		assertEquals("find by index", "va3", map.getRoot().getAttributes().get(2));
+		assertEquals("find by index", "vb1", map.getRoot().getAttributes().get(3));
 		try {
-			map.getRootNode().getAttributes().get(4);
+			map.getRoot().getAttributes().get(4);
 			fail("expect IndexOutOfBoundsException on get(int) with illegal index");
 		}
 		catch (IndexOutOfBoundsException e) {
@@ -207,24 +208,23 @@ public class ScriptApiTest {
 
 	public void test_AttributesRO_findAttribute_String_name() {
 		map = setupMapWithSomeAttributes();
-		assertEquals("first matching attribute should be found", 0, map.getRootNode().getAttributes().findAttribute(
-		    "a1"));
+		assertEquals("first matching attribute should be found", 0, map.getRoot().getAttributes().findFirst("a1"));
 	}
 
 	public void test_AttributesRO_size() {
 		map = setupMapWithSomeAttributes();
-		assertEquals("count attributes", 4, map.getRootNode().getAttributes().size());
+		assertEquals("count attributes", 4, map.getRoot().getAttributes().size());
 	}
 
 	public void test_Attributes_set_int_index_String_value() {
 		map = setupMapWithSomeAttributes();
-		map.getRootNode().getAttributes().set(3, "VB1");
-		map.getRootNode().getAttributes().set(1, "VA2");
-		assertEquals("values should be updated", list("va1", "VA2", "va3"), map.getRootNode().getAttributes().getAll(
+		map.getRoot().getAttributes().set(3, "VB1");
+		map.getRoot().getAttributes().set(1, "VA2");
+		assertEquals("values should be updated", list("va1", "VA2", "va3"), map.getRoot().getAttributes().getAll(
 		    "a1"));
-		assertEquals("values should be updated", list("VB1"), map.getRootNode().getAttributes().getAll("b1"));
+		assertEquals("values should be updated", list("VB1"), map.getRoot().getAttributes().getAll("b1"));
 		try {
-			map.getRootNode().getAttributes().set(4, "xx");
+			map.getRoot().getAttributes().set(4, "xx");
 			fail("expect IndexOutOfBoundsException on set(int, value) with illegal index");
 		}
 		catch (IndexOutOfBoundsException e) {
@@ -234,12 +234,12 @@ public class ScriptApiTest {
 
 	public void test_Attributes_set_int_index_String_name_String_value() {
 		map = setupMapWithSomeAttributes();
-		map.getRootNode().getAttributes().set(1, "c1", "VC1");
-		assertEquals("values should be updated", list("va1", "va3"), map.getRootNode().getAttributes().getAll("a1"));
-		assertEquals("values should be updated", 1, map.getRootNode().getAttributes().findAttribute("c1"));
-		assertEquals("values should be updated", "VC1", map.getRootNode().getAttributes().get(1));
+		map.getRoot().getAttributes().set(1, "c1", "VC1");
+		assertEquals("values should be updated", list("va1", "va3"), map.getRoot().getAttributes().getAll("a1"));
+		assertEquals("values should be updated", 1, map.getRoot().getAttributes().findFirst("c1"));
+		assertEquals("values should be updated", "VC1", map.getRoot().getAttributes().get(1));
 		try {
-			map.getRootNode().getAttributes().set(4, "xx", "yy");
+			map.getRoot().getAttributes().set(4, "xx", "yy");
 			fail("expect IndexOutOfBoundsException on set(int, name, value) with illegal index");
 		}
 		catch (IndexOutOfBoundsException e) {
@@ -250,10 +250,10 @@ public class ScriptApiTest {
 	@SuppressWarnings("deprecation")
 	public void test_Attributes_remove_String_name() {
 		map = setupMapWithSomeAttributes();
-		map.getRootNode().getAttributes().remove("a1");
-		assertEquals("first matching attribute should be removed", list("va2", "va3"), map.getRootNode()
+		map.getRoot().getAttributes().remove("a1");
+		assertEquals("first matching attribute should be removed", list("va2", "va3"), map.getRoot()
 		    .getAttributes().getAll("a1"));
-		assertEquals("first matching attribute should be removed", 3, map.getRootNode().getAttributes().size());
+		assertEquals("first matching attribute should be removed", 3, map.getRoot().getAttributes().size());
 	}
 
 	private <T> List<T> list(T... args) {
@@ -277,39 +277,39 @@ public class ScriptApiTest {
 
 	public void test_Attributes_removeAll_String_name() {
 		map = setupMapWithSomeAttributes();
-		map.getRootNode().getAttributes().removeAll("a1");
-		assertEquals("all matching attributes should be removed", list(), map.getRootNode().getAttributes()
+		map.getRoot().getAttributes().removeAll("a1");
+		assertEquals("all matching attributes should be removed", list(), map.getRoot().getAttributes()
 		    .getAll("a1"));
-		assertEquals("all matching attribute should be removed", 1, map.getRootNode().getAttributes().size());
+		assertEquals("all matching attribute should be removed", 1, map.getRoot().getAttributes().size());
 	}
 
 	public void test_Attributes_remove_int_index() {
 		map = setupMapWithSomeAttributes();
 		// remove from the rear to keep the index stable (otherwise remove(1) twice)
-		map.getRootNode().getAttributes().remove(2);
-		map.getRootNode().getAttributes().remove(1);
-		assertEquals("attribute should be removed", list("va1"), map.getRootNode().getAttributes().getAll("a1"));
-		assertEquals("attribute should be removed", 2, map.getRootNode().getAttributes().size());
+		map.getRoot().getAttributes().remove(2);
+		map.getRoot().getAttributes().remove(1);
+		assertEquals("attribute should be removed", list("va1"), map.getRoot().getAttributes().getAll("a1"));
+		assertEquals("attribute should be removed", 2, map.getRoot().getAttributes().size());
 	}
 
 	public void test_Attributes_set_String_name_String_value() {
 		map = setupMapWithSomeAttributes();
-		map.getRootNode().getAttributes().set("a1", "VA1");
-		map.getRootNode().getAttributes().set("c1", "vc1");
-		assertEquals("first matching attribute should be changed", list("VA1", "va2", "va3"), map.getRootNode()
+		map.getRoot().getAttributes().set("a1", "VA1");
+		map.getRoot().getAttributes().set("c1", "vc1");
+		assertEquals("first matching attribute should be changed", list("VA1", "va2", "va3"), map.getRoot()
 		    .getAttributes().getAll("a1"));
-		assertEquals("attribute should be added", list("vc1"), map.getRootNode().getAttributes().getAll("c1"));
-		assertEquals("attribute should be added", 5, map.getRootNode().getAttributes().size());
+		assertEquals("attribute should be added", list("vc1"), map.getRoot().getAttributes().getAll("c1"));
+		assertEquals("attribute should be added", 5, map.getRoot().getAttributes().size());
 	}
 
 	public void test_Attributes_add_String_name_String_value() {
 		map = setupMapWithSomeAttributes();
-		map.getRootNode().getAttributes().add("a1", "va1");
-		map.getRootNode().getAttributes().set("c1", "vc1");
-		assertEquals("attribute should be added", list("va1", "va2", "va3", "va1"), map.getRootNode().getAttributes()
+		map.getRoot().getAttributes().add("a1", "va1");
+		map.getRoot().getAttributes().set("c1", "vc1");
+		assertEquals("attribute should be added", list("va1", "va2", "va3", "va1"), map.getRoot().getAttributes()
 		    .getAll("a1"));
-		assertEquals("attribute should be added", list("vc1"), map.getRootNode().getAttributes().getAll("c1"));
-		assertEquals("attribute should be added", 6, map.getRootNode().getAttributes().size());
+		assertEquals("attribute should be added", list("vc1"), map.getRoot().getAttributes().getAll("c1"));
+		assertEquals("attribute should be added", 6, map.getRoot().getAttributes().size());
 	}
 
 	//
@@ -378,11 +378,11 @@ public class ScriptApiTest {
 	//	}
 	public void test_ControllerRO_getSelected() {
 		map = c.newMap();
-		assertEquals("new root node should be selected", map.getRootNode(), c.getSelected());
-		final Node firstChild = addChild(map.getRootNode(), "child 1");
-		final Node secondChild = addChild(map.getRootNode(), "child 2");
+		assertEquals("new root node should be selected", map.getRoot(), c.getSelected());
+		final Node firstChild = addChild(map.getRoot(), "child 1");
+		final Node secondChild = addChild(map.getRoot(), "child 2");
 		// FIXME: why aren't the new node selected?
-		assertEquals("root node should still be selected after adding nodes", map.getRootNode(), c.getSelected());
+		assertEquals("root node should still be selected after adding nodes", map.getRoot(), c.getSelected());
 		c.selectMultipleNodes(list(firstChild, secondChild));
 		// what's the rule?
 		assertEquals("last selected node should be returned", secondChild, c.getSelected());
@@ -390,10 +390,10 @@ public class ScriptApiTest {
 
 	public void test_ControllerRO_getSelecteds() {
 		map = c.newMap();
-		assertEquals("new root node should be selected", map.getRootNode(), c.getSelected());
-		final Node firstChild = addChild(map.getRootNode(), "child 1");
-		final Node secondChild = addChild(map.getRootNode(), "child 2");
-		assertEquals("root node should still be selected after adding nodes", set(map.getRootNode()), set(c
+		assertEquals("new root node should be selected", map.getRoot(), c.getSelected());
+		final Node firstChild = addChild(map.getRoot(), "child 1");
+		final Node secondChild = addChild(map.getRoot(), "child 2");
+		assertEquals("root node should still be selected after adding nodes", set(map.getRoot()), set(c
 		    .getSelecteds()));
 		c.selectMultipleNodes(list(firstChild, secondChild));
 		assertEquals("only the nodes selected via selectMultipleNodes should be returned",
@@ -407,8 +407,8 @@ public class ScriptApiTest {
 	public void test_ControllerRO_find_ICondition_condition() {
 		map = c.newMap();
 		@SuppressWarnings("unused")
-		final Node firstChild = addChild(map.getRootNode(), "child 1");
-		final Node secondChild = addChild(map.getRootNode(), "child 2");
+		final Node firstChild = addChild(map.getRoot(), "child 1");
+		final Node secondChild = addChild(map.getRoot(), "child 2");
 		final List<Node> found = c.find(new NodeContainsCondition("child 2"));
 		assertEquals("one matching node should be found", list(secondChild), found);
 	}
@@ -419,16 +419,16 @@ public class ScriptApiTest {
 
 	public void test_Controller_centerOnNode_Node_center() {
 		map = c.newMap();
-		final Node firstChild = addChild(map.getRootNode(), "child 1");
+		final Node firstChild = addChild(map.getRoot(), "child 1");
 		// no actual test
 		c.centerOnNode(firstChild);
 	}
 
 	public void test_Controller_select_Node_toSelect() {
 		map = c.newMap();
-		final Node firstChild = addChild(map.getRootNode(), "child 1");
-		final Node secondChild = addChild(map.getRootNode(), "child 2");
-		final Node thirdChild = addChild(map.getRootNode(), "child 3");
+		final Node firstChild = addChild(map.getRoot(), "child 1");
+		final Node secondChild = addChild(map.getRoot(), "child 2");
+		final Node thirdChild = addChild(map.getRoot(), "child 3");
 		c.select(secondChild);
 		final Set<Node> set = set(secondChild);
 		final Set<Node> selected = set(c.getSelecteds());
@@ -441,8 +441,8 @@ public class ScriptApiTest {
 
 	public void test_Controller_selectBranch_Node_branchRoot() {
 		map = c.newMap();
-		final Node child1 = addChild(map.getRootNode(), "child 1");
-		final Node child2 = addChild(map.getRootNode(), "child 2");
+		final Node child1 = addChild(map.getRoot(), "child 1");
+		final Node child2 = addChild(map.getRoot(), "child 2");
 		final Node grandchild1 = addChild(child1, "child 1.1");
 		final Node grandchild2 = addChild(child1, "child 1.2");
 		final Node grandGrandChild = addChild(child1, "child 1.1.1");
@@ -459,7 +459,7 @@ public class ScriptApiTest {
 
 	public void test_Controller_undo_redo_stuff() {
 		map = c.newMap();
-		addChild(map.getRootNode(), "child 1");
+		addChild(map.getRoot(), "child 1");
 		assertFalse("node should be there before undo", c.find(new NodeContainsCondition("child 1")).isEmpty());
 		c.undo();
 		assertTrue("node should be away after undo", c.find(new NodeContainsCondition("child 1")).isEmpty());
@@ -478,18 +478,34 @@ public class ScriptApiTest {
 		c.setStatusInfo(null);
 	}
 
-	public void test_Controller_setStatusInfo_String_key_String_info() {
+	public void test_Controller_setStatusInfo_String_infoPanelKey_String_info() {
 		// no actual test
-		c.setStatusInfo("display_node_id", "someid");
+		final String infoPanelKey = "testStatusPanel";
+		c.setStatusInfo(infoPanelKey, "someid");
 		// no actual test - info should be removed
-		c.setStatusInfo("display_node_id", (String) null);
+		c.setStatusInfo(infoPanelKey, (String) null);
 	}
 
-	public void test_Controller_setStatusInfo_String_key_Icon_icon() {
+	public void test_Controller_setStatusInfo_String_infoPanelKey_Icon_icon() {
+		final List<String> keys = FreeplaneIconUtils.listStandardIconKeys();
+		assertTrue("find out about the available icons with FreeplaneIconUtils.listStandardIconKeys() -> " + keys,
+		    keys.contains("button_ok"));
 		// no actual test
-		c.setStatusInfo("display_node_id", MindIconFactory.create("user_icon").getIcon());
+		c.setStatusInfo("standard", FreeplaneIconUtils.createStandardIcon("button_ok"));
 		// no actual test - info should be removed
 		c.setStatusInfo(null);
+	}
+
+	public void test_Controller_setStatusInfo_String_infoPanelKey_String_info_String_iconKey() {
+		final List<String> keys = FreeplaneIconUtils.listStandardIconKeys();
+		final String iconKey = "button_ok";
+		assertTrue("check if FreeplaneIconUtils.listStandardIconKeys() contains '" + iconKey + "'; list content: "
+		        + keys, keys.contains(iconKey));
+		// no actual test
+		final String infoPanelKey = "standard";
+		c.setStatusInfo(infoPanelKey, "hi there!", iconKey);
+		// no actual test - info should be removed
+		c.setStatusInfo(infoPanelKey, (String) null);
 	}
 
 	public void test_Controller_newMap() {
@@ -620,14 +636,14 @@ public class ScriptApiTest {
 	//	public void test_Link_set_String_target() {
 	//		// TODO
 	//	}
-	public void test_MapRO_getRootNode() {
+	public void test_MapRO_getRoot() {
 		map = c.newMap();
-		assertEquals("the root node shouldn't have a parent", null, map.getRootNode().getParentNode());
+		assertEquals("the root node shouldn't have a parent", null, map.getRoot().getParent());
 	}
 
 	public void test_MapRO_node_String_id() {
 		map = c.newMap();
-		final Node firstChild = addChild(map.getRootNode(), "child 1");
+		final Node firstChild = addChild(map.getRoot(), "child 1");
 		final String id = firstChild.getId();
 		assertEquals("get by id returned wrong node", firstChild, map.node(id));
 	}
@@ -640,7 +656,7 @@ public class ScriptApiTest {
 	public void test_Map_close() {
 		Map originalMap = node.getMap();
 		map = c.newMap();
-		addChild(map.getRootNode(), "child 1");
+		addChild(map.getRoot(), "child 1");
 		assertFalse("a new map should have been opened", originalMap.equals(map));
 		map.close(true, false);
 		assertEquals("the original map should be selected again", originalMap.getName(), c.getSelected().getMap()
@@ -655,23 +671,23 @@ public class ScriptApiTest {
 
 	public void test_NodeRO_getAttributes() {
 		createTestMap();
-		map.getRootNode().getAttributes().add("a1", "va1");
-		assertEquals("value should be found", "va1", map.getRootNode().getAttributes().get(0));
+		map.getRoot().getAttributes().add("a1", "va1");
+		assertEquals("value should be found", "va1", map.getRoot().getAttributes().get(0));
 	}
 
 	public void test_NodeRO_getChildPosition_Node_childNode() {
 		map = c.newMap();
-		final Node child1 = addChild(map.getRootNode(), "child 1");
-		final Node child2 = addChild(map.getRootNode(), "child 2");
-		assertEquals("wrong position", 0, map.getRootNode().getChildPosition(child1));
-		assertEquals("wrong position", 1, map.getRootNode().getChildPosition(child2));
+		final Node child1 = addChild(map.getRoot(), "child 1");
+		final Node child2 = addChild(map.getRoot(), "child 2");
+		assertEquals("wrong position", 0, map.getRoot().getChildPosition(child1));
+		assertEquals("wrong position", 1, map.getRoot().getChildPosition(child2));
 	}
 
 	public void test_NodeRO_getChildren() {
 		map = c.newMap();
-		final Node child1 = addChild(map.getRootNode(), "child 1");
-		final Node child2 = addChild(map.getRootNode(), "child 2");
-		final List<Node> children = map.getRootNode().getChildren();
+		final Node child1 = addChild(map.getRoot(), "child 1");
+		final Node child2 = addChild(map.getRoot(), "child 2");
+		final List<Node> children = map.getRoot().getChildren();
 		assertEquals("wrong children count", 2, children.size());
 		assertEquals("wrong order", child1, children.get(0));
 		assertEquals("wrong order", child2, children.get(1));
@@ -691,7 +707,7 @@ public class ScriptApiTest {
 	//	}
 	public void test_NodeRO_getIcons() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		assertTrue("by default a node has no icons", root.getIcons().getIcons().isEmpty());
 		root.getIcons().addIcon("bee");
 		assertEquals("one icon added", 1, root.getIcons().getIcons().size());
@@ -699,7 +715,7 @@ public class ScriptApiTest {
 
 	public void test_NodeRO_getLink() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		assertEquals("by default a node has no links", null, root.getLink().get());
 		final String url = "file://blabla.txt";
 		root.getLink().set(url);
@@ -708,26 +724,26 @@ public class ScriptApiTest {
 
 	public void test_NodeRO_getMap() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		assertEquals("???", map, root.getMap());
 	}
 
 	public void test_NodeRO_getId() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		assertTrue("unknown node id pattern in '" + root.getId() + "'", root.getId().matches("ID_[1-9]\\d+"));
 	}
 	
 	@SuppressWarnings("deprecation")
     public void test_NodeRO_getNodeID() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		assertTrue("unknown node id pattern in '" + root.getNodeID() + "'", root.getNodeID().matches("ID_[1-9]\\d+"));
 	}
 
-	public void test_NodeRO_getNodeLevel_boolean_countHidden() {
+    public void test_NodeRO_getNodeLevel_boolean_countHidden() {
 		createTestMap();
-		assertEquals("root is level 0", 0, map.getRootNode().getNodeLevel(true));
+		assertEquals("root is level 0", 0, map.getRoot().getNodeLevel(true));
 		final Node child = firstChild();
 		assertEquals("children are at level 1", 1, child.getNodeLevel(false));
 		final Node grandchild = child.createChild();
@@ -738,35 +754,43 @@ public class ScriptApiTest {
 		// doesn't make sense to extent the API for that), right?
 	}
 
-	public void test_NodeRO_getPlainNoteText() {
+	public void test_NodeRO_getNote_getPlain() {
 		map = c.newMap();
-		final Node rootNode = map.getRootNode();
+		final Node rootNode = map.getRoot();
 		final String plainText = " xx\nx ";
-		rootNode.setNoteText(plainText);
-		assertEquals("", plainText, rootNode.getNoteText());
-		assertEquals("", plainText, rootNode.getPlainNoteText());
+		rootNode.setNote(plainText);
+		assertEquals("", HtmlUtils.plainToHTML(plainText), rootNode.getNoteText());
+		assertEquals("", HtmlUtils.plainToHTML(plainText), rootNode.getNote().getText());
+		assertEquals("", plainText, rootNode.getNote().getPlain());
 		final String xml = "<x> yyy </x>";
-		rootNode.setNoteText(xml);
-		assertEquals("", xml, rootNode.getPlainNoteText());
-		rootNode.setNoteText("<html> <em>zzzzz</em> </hmtl>");
-		assertEquals("", "zzzzz", rootNode.getPlainNoteText());
+		rootNode.setNote(xml);
+		assertEquals("", HtmlUtils.plainToHTML(xml), rootNode.getNoteText());
+		// in Groovy also assert HtmlUtils.plainToHTML(" xxx ") == root.note would be OK
+		assertEquals("", HtmlUtils.plainToHTML(xml), rootNode.getNote().getText());
+		assertEquals("", xml, rootNode.getNote().getPlain());
+		rootNode.setNote("<html> <em>zzzzz</em> </hmtl>");
+		assertEquals("", "zzzzz", rootNode.getNote().getPlain());
 	}
 
-	public void test_NodeRO_getNoteText() {
+	public void test_NodeRO_getNote() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
-		root.setNoteText(" xxx ");
-		assertEquals("", " xxx ", root.getNoteText());
-		root.setNoteText(" x\nxx ");
-		assertEquals("", " x\nxx ", root.getNoteText());
+		final Node root = map.getRoot();
+		root.setNote(" xxx ");
+		// in Groovy also assert HtmlUtils.plainToHTML(" xxx ") == root.note would be OK
+		assertEquals("", HtmlUtils.plainToHTML(" xxx "), root.getNote().getText());
+		assertEquals("", HtmlUtils.plainToHTML(" xxx "), root.getNoteText());
+		root.setNote(" x\nxx ");
+		// in Groovy also assert HtmlUtils.plainToHTML(" xxx ") == root.note would be OK
+		assertEquals("", HtmlUtils.plainToHTML(" x\nxx "), root.getNote().getText());
+		assertEquals("", HtmlUtils.plainToHTML(" x\nxx "), root.getNoteText());
 	}
 
-	public void test_NodeRO_getParentNode() {
+	public void test_NodeRO_getParent() {
 		createTestMap();
-		final Node root = map.getRootNode();
-		assertEquals("root has no parent", null, root.getParentNode());
+		final Node root = map.getRoot();
+		assertEquals("root has no parent", null, root.getParent());
 		final Node child = firstChild(root);
-		assertEquals("", root, child.getParentNode());
+		assertEquals("", root, child.getParent());
 	}
 
 	//	public void test_NodeRO_getStyle() {
@@ -775,7 +799,7 @@ public class ScriptApiTest {
 	//
 	public void test_NodeRO_getPlainText() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		final String plainText = " xxx ";
 		root.setText(plainText);
 		assertEquals("", plainText, root.getText());
@@ -793,7 +817,7 @@ public class ScriptApiTest {
 
 	public void test_NodeRO_getText() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		root.setText(" xxx ");
 		assertEquals("", " xxx ", root.getText());
 		root.setText(" x\nxx ");
@@ -802,7 +826,7 @@ public class ScriptApiTest {
 
 	public void test_NodeRO_isDescendantOf_Node_p() {
 		createTestMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		assertTrue("a node is its own descendant", root.isDescendantOf(root));
 		assertFalse("siblings aren't descendants of each other", firstChild(root).isDescendantOf(
 		    root.getChildren().get(1)));
@@ -816,7 +840,7 @@ public class ScriptApiTest {
 
 	public void test_NodeRO_isFolded() {
 		createTestMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		final Node child = firstChild();
 		final Node grandchild = addChild(child, "grandchild");
 		assertFalse("initially nothing should be folded", root.isFolded());
@@ -840,7 +864,7 @@ public class ScriptApiTest {
 
 	public void test_NodeRO_isLeaf() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		assertTrue("even root is a leaf, if single", root.isLeaf());
 		addChild(root, "child");
 		assertFalse("root is never a leaf, even without children", root.isLeaf());
@@ -856,27 +880,27 @@ public class ScriptApiTest {
 	//
 	public void test_NodeRO_isRoot() {
 		createTestMap();
-		assertTrue("root has no parent", map.getRootNode().getParentNode() == null);
+		assertTrue("root has no parent", map.getRoot().getParent() == null);
 	}
 
 	public void test_NodeRO_isVisible() {
 		map = c.newMap();
-		addChild(map.getRootNode(), "first node");
-		addChild(map.getRootNode(), "second node");
+		addChild(map.getRoot(), "first node");
+		addChild(map.getRoot(), "second node");
 		assertTrue("initially all nodes should be visible", firstChild().isVisible());
 		new Filter(new NodeContainsCondition("first"), true, true, true, true).applyFilter(Controller
 		    .getCurrentController().getMap(), true);
 		assertTrue("first node should be  matched by the filter", firstChild().isVisible());
-		assertFalse("second node should not be matched by the filter", map.getRootNode().getChildren().get(1)
-		    .isVisible());
+		assertFalse("second node should not be matched by the filter", map.getRoot().getChildren().get(1).isVisible());
+		c.setStatusInfo("filter", (String) null);
 	}
 
 	/** copy of {@link #test_ControllerRO_find_ICondition_condition()}. */
 	public void test_NodeRO_find_ICondition_condition() {
 		map = c.newMap();
 		@SuppressWarnings("unused")
-		final Node firstChild = addChild(map.getRootNode(), "child 1");
-		final Node secondChild = addChild(map.getRootNode(), "child 2");
+		final Node firstChild = addChild(map.getRoot(), "child 1");
+		final Node secondChild = addChild(map.getRoot(), "child 2");
 		final List<Node> found = c.find(new NodeContainsCondition("child 2"));
 		assertEquals("one matching node should be found", list(secondChild), found);
 	}
@@ -886,14 +910,18 @@ public class ScriptApiTest {
 	//	}
 	public void test_NodeRO_getLastModifiedAt() {
 		map = c.newMap();
-		final Node child = addChild(map.getRootNode(), "a node");
+		final Node child = addChild(map.getRoot(), "a node");
 		final Date initialLastModifiedAt = child.getLastModifiedAt();
-		final long diff = System.currentTimeMillis() - initialLastModifiedAt.getTime();
+		long diff = System.currentTimeMillis() - initialLastModifiedAt.getTime();
 		// one second should be enough
 		assertTrue("lastModifiedAt seems to be set incorrectly. It says it's " + diff + " ms ago", //
 		    diff >= 0 && diff < 1000L);
-		assertEquals("modifiedAt and createdAt should be the same initially", child.getCreatedAt().getTime(),
-		    initialLastModifiedAt.getTime());
+		// createChild() initially set both timestamps to the same value and changes modifiedAt directly
+		// afterwards in setText()
+		diff = initialLastModifiedAt.getTime() - child.getCreatedAt().getTime();
+		assertTrue("modifiedAt and createdAt should be set nearly to the same timestamp initially but modifiedAt = "
+		        + initialLastModifiedAt.getTime() + ", createdAt = " + child.getCreatedAt().getTime(), //
+		    diff >= 0 && diff < 50);
 		final Date epoch = new Date(0);
 		child.setLastModifiedAt(epoch);
 		child.setText("changed");
@@ -903,7 +931,7 @@ public class ScriptApiTest {
 
 	public void test_NodeRO_getCreatedAt() {
 		map = c.newMap();
-		final Node child = addChild(map.getRootNode(), "a node");
+		final Node child = addChild(map.getRoot(), "a node");
 		final Date initialCreatedAt = child.getCreatedAt();
 		final long diff = System.currentTimeMillis() - initialCreatedAt.getTime();
 		// one second should be enough
@@ -925,14 +953,14 @@ public class ScriptApiTest {
 	//	}
 	public void test_Node_createChild() {
 		map = c.newMap();
-		assertEquals("", 0, map.getRootNode().getChildren().size());
-		map.getRootNode().createChild();
-		assertEquals("child should be created", 1, map.getRootNode().getChildren().size());
+		assertEquals("", 0, map.getRoot().getChildren().size());
+		map.getRoot().createChild();
+		assertEquals("child should be created", 1, map.getRoot().getChildren().size());
 	}
 
 	public void test_Node_createChild_int_position() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		final Node child1 = addChild(root, "child 1");
 		final Node child2 = addChild(root, "child 2");
 		assertEquals("wrong position", 0, root.getChildPosition(child1));
@@ -961,7 +989,7 @@ public class ScriptApiTest {
 
 	public void test_Node_delete() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		final Node child1 = addChild(root, "child 1");
 		final Node child2 = addChild(root, "child 2");
 		assertEquals("", 2, root.getChildren().size());
@@ -972,18 +1000,18 @@ public class ScriptApiTest {
 
 	public void test_Node_moveTo_Node_parentNode() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		final Node child1 = addChild(root, "child 1");
 		final Node child2 = addChild(root, "child 2");
 		final Node grandchild = addChild(child1, "grandchild");
 		assertEquals("child2 should have no children", 0, child2.getChildren().size());
 		grandchild.moveTo(child2);
-		assertEquals("grandchild should be a child of child2 now", child2, grandchild.getParentNode());
+		assertEquals("grandchild should be a child of child2 now", child2, grandchild.getParent());
 	}
 
 	public void test_Node_moveTo_Node_parentNode_int_position() {
 		map = c.newMap();
-		final Node root = map.getRootNode();
+		final Node root = map.getRoot();
 		final Node child1 = addChild(root, "child 1");
 		final Node child2 = addChild(root, "child 2");
 		final Node grandchild = addChild(child1, "grandchild");
@@ -1009,12 +1037,12 @@ public class ScriptApiTest {
 		assertFalse("node should be unfolded again", child.isFolded());
 	}
 
-	public void test_Node_setPlainNoteText_String_text() {
-		// see test_NodeRO_getPlainNoteText()
+	public void test_Node_setPlainNote_String_text() {
+		// see test_NodeRO_getPlainNote()
 	}
 
 	public void test_Node_setNoteText_String_text() {
-		// see test_NodeRO_getNoteText()
+		// see test_NodeRO_getNote()
 	}
 
 	public void test_Node_setText_String_text() {

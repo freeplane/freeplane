@@ -19,7 +19,12 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		super(delegate);
 	}
 
+	@Deprecated
 	public String get(final String name) {
+		return getFirst(name);
+	}
+
+	public String getFirst(final String name) {
 		final int index = findAttribute(name);
 		if (index == -1) {
 			return null;
@@ -79,7 +84,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		getAttributeController().setAttribute(getDelegate(), index, new Attribute(name, value));
 	}
 
-	public int findAttribute(final String name) {
+	public int findFirst(final String name) {
 		final List<String> attributeNames = getAttributeNames();
 		int i = 0;
 		for (final String a : attributeNames) {
@@ -91,8 +96,14 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		return -1;
 	}
 
+	@Deprecated
+	public int findAttribute(final String name) {
+		return findFirst(name);
+	}
+
+	@Deprecated
 	public boolean remove(final String name) {
-		final int index = findAttribute(name);
+		final int index = findFirst(name);
 		if (index == -1) {
 			return false;
 		}
@@ -127,14 +138,23 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		getAttributeController().removeAttribute(getDelegate(), index);
 	}
 
+	public void clear() {
+		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
+		final int size = nodeAttributeTableModel.getRowCount();
+		for (int i = size - 1; i >= 0; i--) {
+			getAttributeController().removeAttribute(getDelegate(), i);
+		}
+	}
+
 	public void set(final String name, final String value) {
-		final int index = findAttribute(name);
+		final int index = findFirst(name);
 		final Attribute attribute = new Attribute(name, value);
 		if (index == -1) {
 			getAttributeController().addAttribute(getDelegate(), attribute);
-			return;
 		}
-		getAttributeController().setAttribute(getDelegate(), index, attribute);
+		else {
+			getAttributeController().setAttribute(getDelegate(), index, attribute);
+		}
 	}
 
 	public void add(final String name, final String value) {

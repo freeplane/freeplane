@@ -78,6 +78,8 @@ import org.freeplane.features.common.map.NodeModel;
  * @author Dimitry Polivaev
  */
 abstract public class ViewController implements IMapViewChangeListener, IFreeplanePropertyListener {
+	public static final String STANDARD_STATUS_INFO_KEY = "standard";
+
 	private final class HorizontalToolbarPanel extends JPanel {
 		/**
 		 * 
@@ -159,10 +161,11 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	                      final String propertyKeyPrefix) {
 		super();
 		this.propertyKeyPrefix = propertyKeyPrefix;
-		statusInfos = new HashMap<String, JLabel>();
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
 		status = new JLabel();
 		statusPanel.add(status);
+		statusInfos = new HashMap<String, JLabel>();
+		statusInfos.put(STANDARD_STATUS_INFO_KEY, status);
 //		this.controller = controller;
 		controller.setViewController(this);
 		this.mapViewManager = mapViewManager;
@@ -459,37 +462,22 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		status.setText(msg);
 	}
 
-	public void addStatusImage(final String key, final Icon image) {
-		final JLabel oldLabel = statusInfos.get(key);
-		if (oldLabel == null) {
-			final JLabel imageLabel = new JLabel(image);
-			imageLabel.setBorder(BorderFactory.createEtchedBorder());
-			statusInfos.put(key, imageLabel);
-			statusPanel.add(imageLabel, 0);
-		}
-		else {
-			oldLabel.setText(null);
-			oldLabel.setIcon(image);
-			oldLabel.revalidate();
-			oldLabel.repaint();
-		}
-	}
-
-	public void addStatusInfo(final String key, final String info) {
+	public void addStatusInfo(final String key, final String info, Icon icon) {
 		JLabel label = statusInfos.get(key);
 		if (label == null) {
 			label = new JLabel(info);
 			label.setBorder(BorderFactory.createEtchedBorder());
 			statusInfos.put(key, label);
 			statusPanel.add(label);
+			label.setIcon(icon);
 		}
 		else {
 			label.setText(info);
-			label.setIcon(null);
+			label.setIcon(icon);
 			label.revalidate();
 			label.repaint();
 		}
-		label.setVisible(info != null);
+		label.setVisible(info != null || icon != null);
 	}
 
 	public void removeStatus(final String key) {

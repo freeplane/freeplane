@@ -151,7 +151,7 @@ public class ScriptingEngine {
 				@Override
 				public Object evaluate(final InputStream in, final String fileName) throws CompilationFailedException {
 					Script script = null;
-					boolean needsSecurityManager = securityManager.hasFinalSecurityManager();
+					boolean needsSecurityManager = !securityManager.hasFinalSecurityManager();
 					try {
 						script = parse(in, fileName);
 						if (needsSecurityManager)

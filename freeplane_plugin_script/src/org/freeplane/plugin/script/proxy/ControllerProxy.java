@@ -16,6 +16,7 @@ import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.map.MapModel;
@@ -101,20 +102,27 @@ class ControllerProxy implements Proxy.Controller {
 		return Controller.getCurrentController().getViewController();
 	}
 
-	public void setStatusInfo(final String key, final String info) {
+	public void setStatusInfo(final String infoPanelKey, final String info) {
 		final ViewController viewController = getViewController();
-		viewController.addStatusInfo(key, info);
+		viewController.addStatusInfo(infoPanelKey, info, null);
 	}
 
-	public void setStatusInfo(final String key, final Icon icon) {
+	public void setStatusInfo(final String infoPanelKey, final String info, final String iconKey) {
 		final ViewController viewController = getViewController();
-		viewController.addStatusImage(key, icon);
+		viewController.addStatusInfo(infoPanelKey, info, FreeplaneIconUtils.createStandardIcon(iconKey));
+    }
+
+	@Deprecated
+	public void setStatusInfo(final String infoPanelKey, final Icon icon) {
+		final ViewController viewController = getViewController();
+		viewController.addStatusInfo(infoPanelKey, null, icon);
 	}
 
 	public FreeplaneVersion getFreeplaneVersion() {
 	    return FreeplaneVersion.getVersion();
     }
 
+	@Deprecated
 	public List<Node> find(final ICondition condition) {
 		return ProxyUtils.find(condition, Controller.getCurrentController().getMap().getRootNode());
 	}
