@@ -79,11 +79,31 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				}
 				
 				public void endElement(Object parent, String tag, Object element, XMLElement dom) {
-					MapModel map = (MapModel) parent;
-					final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) map.getExtension(ConditionalStyleModel.class);
-					loadConditionalStyles(conditionalStyleModel, dom);
+					final NodeModel node = (NodeModel) parent;
+					final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
+					loadConditionalStyles(mapStyleModel.getConditionalStyleModel(), dom);
 				}
 			});
+			
+			mapController.getReadManager().addElementHandler("map_styles",  new IElementContentHandler() {
+				public Object createElement(Object parent, String tag, XMLElement attributes) {
+	                return parent;
+                }
+				public void endElement(final Object parent, final String tag, final Object userObject,
+				                       final XMLElement attributes, final String content) {
+					final NodeModel node = (NodeModel) userObject;
+					final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
+					if (mapStyleModel == null) {
+						return;
+					}
+					final MapModel map = node.getMap();
+					mapStyleModel.createStyleMap(map, mapStyleModel, content);
+					map.getIconRegistry().addIcons(mapStyleModel.getStyleMap());
+				}
+
+			}
+			);
+
 		}
 		modeController.getMapController().addMapLifeCycleListener(this);
 		if (modeController.getModeName().equals("MindMap")) {
@@ -104,6 +124,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			}
 			final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
 			final StringWriter sw = new StringWriter();
+			sw.append("<map_styles>\n");
 			final NodeModel rootNode = styleMap.getRootNode();
 			try {
 				mapWriter.writeNodeAsXml(sw, rootNode, Mode.STYLE, true, true);
@@ -112,6 +133,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			sw.append("</map_styles>\n");
 			final XMLElement element = new XMLElement("hook");
 			saveExtension(extension, element);
 			writer.addElement(sw.toString(), element);
@@ -123,19 +145,28 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		return null;
 	}
 
-	protected class MyXmlReader extends XmlReader implements IElementContentHandler {
-		public void endElement(final Object parent, final String tag, final Object userObject,
-		                       final XMLElement attributes, final String content) {
-			super.endElement(parent, tag, userObject, attributes);
+	protected class MyXmlReader extends XmlReader{
+		public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
+			if (null == super.createElement(parent, tag, attributes)){
+				return null;
+			}
+			super.endElement(parent, tag, parent, attributes);
+			return parent;
+		}
+
+		@Override
+        public void endElement(Object parent, String tag, Object userObject, XMLElement lastBuiltElement) {
 			final NodeModel node = (NodeModel) userObject;
 			final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
 			if (mapStyleModel == null) {
 				return;
 			}
-			final MapModel map = node.getMap();
-			mapStyleModel.createStyleMap(map, mapStyleModel, content);
-			map.getIconRegistry().addIcons(mapStyleModel.getStyleMap());
-		}
+			if(mapStyleModel.getStyleMap() == null){
+				final MapModel map = node.getMap();
+				mapStyleModel.createStyleMap(map, null, null);
+			}
+       }
+		
 	}
 
 	@Override
