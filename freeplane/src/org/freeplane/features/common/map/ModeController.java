@@ -94,7 +94,7 @@ public class ModeController extends AController {
 		copiers.remove(copier);
 	}
 
-	void copyExtensions(final Object key, final NodeModel from, final NodeModel to) {
+	public void copyExtensions(final Object key, final NodeModel from, final NodeModel to) {
 		for (final IExtensionCopier copier : copiers) {
 			copier.copy(key, from, to);
 		}

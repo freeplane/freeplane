@@ -42,4 +42,8 @@ class SModeController extends MModeController {
 	public int getStatus() {
 		return controlToolbar.getStatus();
 	}
+
+	public void setStatus(int status) {
+		controlToolbar.setStatus(status);
+    }
 }

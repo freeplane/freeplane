@@ -71,4 +71,8 @@ public class ControlToolbar {
 	protected void closeDialog(final Component source) {
 		window.setVisible(false);
 	}
+
+	public void setStatus(int status) {
+	   this.status = status;
+    }
 }

@@ -30,6 +30,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.LogicalStyleKeys;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.map.MMapController;
 
@@ -37,9 +38,9 @@ import org.freeplane.features.mindmapmode.map.MMapController;
  * @author Dimitry Polivaev
  * 02.10.2009
  */
-public class NewUserStyleAction extends AFreeplaneAction {
-	public NewUserStyleAction() {
-		super("NewUserStyleAction");
+public class DuplicateUserStyleAction extends AFreeplaneAction {
+	public DuplicateUserStyleAction() {
+		super("DuplicateUserStyleAction");
 	}
 
 	/**
@@ -52,20 +53,23 @@ public class NewUserStyleAction extends AFreeplaneAction {
 		if (styleName == null) {
 			return;
 		}
-		final MapModel map = Controller.getCurrentController().getMap();
+		final Controller controller = Controller.getCurrentController();
+		final NodeModel selectedNode = controller.getSelection().getSelected();
+		final MapModel map = controller.getMap();
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		if (null != styleModel.getStyleNode(styleName)) {
 			UITools.errorMessage(TextUtils.getText("style_already_exists"));
 			return;
 		}
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		final NodeModel node = new NodeModel(map);
-		node.setUserObject(styleName);
-		mapController.insertNode(node, getUserStyleParentNode(map), false, false, true);
-		mapController.select(node);
+		final NodeModel newNode = new NodeModel(map);
+		newNode.setUserObject(styleName);
+		Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, newNode);
+		mapController.insertNode(newNode, getUserStyleParentNode(map), false, false, true);
+		mapController.select(newNode);
 		final IActor actor = new IActor() {
 			public void undo() {
-				styleModel.removeStyleNode(node);
+				styleModel.removeStyleNode(newNode);
 			}
 
 			public String getDescription() {
@@ -73,7 +77,7 @@ public class NewUserStyleAction extends AFreeplaneAction {
 			}
 
 			public void act() {
-				styleModel.addStyleNode(node);
+				styleModel.addStyleNode(newNode);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, map);

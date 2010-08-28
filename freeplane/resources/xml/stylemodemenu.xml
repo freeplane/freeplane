@@ -8,7 +8,7 @@
             </menu_category>
         </menu_submenu>
         <menu_submenu name="styles" name_ref="styles_menu">
-            <menu_action action="NewUserStyleAction" accelerator="ENTER" />
+            <menu_action action="DuplicateUserStyleAction" accelerator="ENTER" />
             <menu_action action="DeleteUserStyleAction" accelerator="DELETE" />
 			<menu_action action="NewLevelStyleAction"/>
 			<menu_action action="DeleteLevelStyleAction"/>
@@ -157,6 +157,9 @@
 			<menu_action action="NodeUpAction" />
 			<menu_action action="NodeDownAction" />
 		</menu_category>
+		<menu_separator />
+        <menu_action action="DuplicateUserStyleAction"/>
+        <menu_action action="DeleteUserStyleAction"/>
 		<menu_separator />
 		<menu_category name="folding">
 			<menu_action action="ToggleFoldedAction" />
