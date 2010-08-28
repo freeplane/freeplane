@@ -347,7 +347,7 @@
 <node TEXT="To switch between the two last edited maps use Ctrl + 1." ID="ID_771867461" CREATED="1272092801195" MODIFIED="1272096101491"/>
 </node>
 </node>
-<node TEXT="Editing map content" FOLDED="true" POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1272092212339" COLOR="#006666">
+<node TEXT="Editing map content" POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1272092212339" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Creating and deleting nodes" FOLDED="true" ID="_Freeplane_Link_1709752669" CREATED="1270892460670" MODIFIED="1270892460670" COLOR="#407000">
 <node TEXT="To create a child node, press Insert (On Mac OS use TAB)." ID="ID_847485935" CREATED="1270892460670" MODIFIED="1271975334093"/>
@@ -736,7 +736,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Adding attributes" FOLDED="true" ID="ID_540307688" CREATED="1270896851973" MODIFIED="1270897006788" COLOR="#407000">
+<node TEXT="Adding attributes" ID="ID_540307688" CREATED="1270896851973" MODIFIED="1270897006788" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Nodes can have attributes" ID="ID_1293545211" CREATED="1270893318566" MODIFIED="1270896944585">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
@@ -745,6 +745,9 @@
 <attribute NAME="y" VALUE="20"/>
 </node>
 <node TEXT="Use Edit &gt; Edit Attributes or Alt + F9 for editing attributes on a single node" ID="ID_541565942" CREATED="1270896865255" MODIFIED="1271992984612"/>
+<node TEXT="Use Tab and Shift + Tab to navigate through the attributes." ID="ID_682341346" CREATED="1282804659500" MODIFIED="1282804860031"/>
+<node TEXT="Use Tab at the last value or the context menu to add a new attribute." ID="ID_1813830505" CREATED="1282804860609" MODIFIED="1282804938859"/>
+<node TEXT="Use the context menu of an attribute to delete it." ID="ID_403610288" CREATED="1282804659500" MODIFIED="1282805237468"/>
 <node TEXT="Use Tools &gt; Assign Attributes... for assigning / changing attribute for multiple nodes" ID="ID_1213222306" CREATED="1270896956119" MODIFIED="1271982291797"/>
 </node>
 <node TEXT="Using rich text by means of HTML in nodes" FOLDED="true" ID="Freeplane_Link_841140408" CREATED="1270892460698" MODIFIED="1270895987526" COLOR="#407000">
