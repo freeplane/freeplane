@@ -62,7 +62,7 @@ public class EditDefaultStylesAction extends  AEditStylesAction  {
 				FileUtils
 				    .copyFromURL(resourceController.getResource("/styles/default.stylemm"), freeplaneUserDirectory);
 			}
-			getModeController().getMapController().newMap(styles.toURL());
+			getModeController().getMapController().newMap(styles.toURL(), false);
 		}
 		catch (final Exception e1) {
 			e1.printStackTrace();

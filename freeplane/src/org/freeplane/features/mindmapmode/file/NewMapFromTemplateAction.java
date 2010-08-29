@@ -17,29 +17,29 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.map;
+package org.freeplane.features.mindmapmode.file;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.url.UrlManager;
 
-class NewMapAction extends AFreeplaneAction {
+class NewMapFromTemplateAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private File startFile;
 
-	/**
-	 * 
-	 */
-	public NewMapAction() {
-		super("NewMapAction");
+	public NewMapFromTemplateAction(String key, File file) {
+		super(key);
+		this.startFile = file;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		Controller.getCurrentModeController().getMapController().newMap(((NodeModel) null));
+		((MFileManager) UrlManager.getController()).newMapFromTemplate(startFile);
 	}
 
 	@Override

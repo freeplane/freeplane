@@ -20,27 +20,32 @@
 package org.freeplane.features.mindmapmode.file;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.MModeController;
 
-class OpenAction extends AFreeplaneAction {
+class NewMapAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public OpenAction() {
-		super("OpenAction");
+	/**
+	 * @param files 
+	 * 
+	 */
+	public NewMapAction() {
+		super("NewMapAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
-		MFileManager.getController(modeController).open();
-		Controller.getCurrentController().getViewController().setTitle();
+		MFileManager.getController(modeController).newMap();
 	}
 
 	@Override

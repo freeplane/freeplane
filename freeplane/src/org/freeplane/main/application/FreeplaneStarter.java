@@ -52,6 +52,7 @@ import org.freeplane.features.common.time.TimeController;
 import org.freeplane.features.controller.help.HelpController;
 import org.freeplane.features.controller.print.PrintController;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
@@ -195,7 +196,7 @@ public class FreeplaneStarter {
 						controller.selectMode(MModeController.MODENAME);
 					}
 					final MModeController modeController = (MModeController) controller.getModeController();
-					modeController.getMapController().newMap(Compat.fileToUrl(new File(fileArgument)));
+					modeController.getMapController().newMap(Compat.fileToUrl(new File(fileArgument)), false);
 					fileLoaded = true;
 				}
 				catch (final Exception ex) {
@@ -215,7 +216,7 @@ public class FreeplaneStarter {
 		}
 		controller.selectMode(MModeController.MODENAME);
 		final MModeController modeController = (MModeController) controller.getModeController();
-		modeController.getMapController().newMap(((NodeModel) null));
+		MFileManager.getController(modeController).newMap();
 	}
 
 	/**

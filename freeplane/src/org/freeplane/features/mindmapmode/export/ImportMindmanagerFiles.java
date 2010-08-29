@@ -103,7 +103,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(xml);
 					fw.close();
-					Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(tempFile));
+					Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(tempFile), false);
 				}
 				break;
 			}

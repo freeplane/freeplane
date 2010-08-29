@@ -49,7 +49,7 @@ public class BToolbarContributor implements IMenuContributor, IMapViewChangeList
 					return;
 				}
 				try {
-					Controller.getCurrentModeController().getMapController().newMap(new URL(urlText));
+					Controller.getCurrentModeController().getMapController().newMap(new URL(urlText), false);
 				}
 				catch (final Exception e1) {
 					LogUtils.warn(e1);

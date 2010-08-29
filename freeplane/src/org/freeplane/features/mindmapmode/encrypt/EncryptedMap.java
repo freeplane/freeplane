@@ -28,6 +28,8 @@ import org.freeplane.features.common.encrypt.SingleDesEncrypter;
 import org.freeplane.features.common.map.EncryptionModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.mindmapmode.file.MFileManager;
+import org.freeplane.features.mindmapmode.text.MTextController;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/file/open" })
 public class EncryptedMap extends AFreeplaneAction {
@@ -68,14 +70,14 @@ public class EncryptedMap extends AFreeplaneAction {
 		if (password == null) {
 			return;
 		}
-		final ModeController newModeController = Controller.getCurrentModeController();
-		final NodeModel node = new NodeModel(TextUtils.getText("accessories/plugins/EncryptNode.properties_select_me"),
-		    null);
+		final ModeController modeController = Controller.getCurrentModeController();
+		MFileManager.getController(modeController).newMap();
+		NodeModel node = Controller.getCurrentController().getMap().getRootNode();
 		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
 		encryptedMindMapNode.setEncrypter(new SingleDesEncrypter(password));
 		node.addExtension(encryptedMindMapNode);
-		newModeController.getMapController().newMap(node);
 		encryptedMindMapNode.updateIcon();
+		Controller.getCurrentModeController().getMapController().nodeChanged(node);
 	}
 	
 	@Override

@@ -82,7 +82,7 @@ class DocumentationAction extends AFreeplaneAction {
 					try {
 						if (endUrl.getFile().endsWith(".mm")) {
 							 Controller.getCurrentController().selectMode(BModeController.MODENAME);
-							if (Controller.getCurrentModeController().getMapController().newMap(endUrl)) {
+							if (Controller.getCurrentModeController().getMapController().newMap(endUrl, false)) {
 								appendAcceleratableMenuEntries();
 							}
 						}

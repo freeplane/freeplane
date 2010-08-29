@@ -92,6 +92,7 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 /**
@@ -586,7 +587,8 @@ class NodeList {
 			selectedNodes.add(getMindMapNode(row));
 		}
 		final ModeController mindMapController = Controller.getCurrentModeController();
-		final MapModel newMap = mindMapController.getMapController().newMap(((NodeModel) null));;
+		MFileManager.getController(mindMapController).newMap();
+		final MapModel newMap = Controller.getCurrentController().getMap();
 		for (final NodeModel node : selectedNodes) {
 			final NodeModel copy = ClipboardController.getController().shallowCopy(node);
 			if (copy != null) {

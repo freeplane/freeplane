@@ -130,7 +130,7 @@ public class SingleInstanceManager {
 								        + "' for client");
 								for (String file : filesToLoadForClient) {
 									Controller.getCurrentModeController().getMapController().newMap(
-									    Compat.fileToUrl(new File(file)));
+									    Compat.fileToUrl(new File(file)), false);
 								}
 								UITools.getFrame().toFront();
 								in.close();

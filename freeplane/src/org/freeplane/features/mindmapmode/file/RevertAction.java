@@ -65,7 +65,7 @@ class RevertAction extends AFreeplaneAction {
 			try {
 				controller.close(true);
 				if (this.getLocalFileName() != null) {
-					mapController.newMap(Compat.fileToUrl(new File(this.getLocalFileName())));
+					mapController.newMap(Compat.fileToUrl(new File(this.getLocalFileName())), false);
 				}
 				else {
 					String filePrefix = TextUtils.getText("freeplane_reverted");
@@ -78,7 +78,7 @@ class RevertAction extends AFreeplaneAction {
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(this.getMap());
 					fw.close();
-					mapController.newMap(Compat.fileToUrl(tempFile));
+					mapController.newMap(Compat.fileToUrl(tempFile), false);
 				}
 			}
 			catch (final Exception e) {

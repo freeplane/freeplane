@@ -226,8 +226,19 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	private void createActions() {
-		Controller.getCurrentController().addAction(new OpenAction());
-		final ModeController modeController = Controller.getCurrentModeController();
+		final Controller controller = Controller.getCurrentController();
+		final ModeController modeController = controller.getModeController();
+		controller.addAction(new OpenAction());
+		controller.addAction(new NewMapAction());
+		final String resourceBaseDir = ResourceController.getResourceController().getResourceBaseDir();
+		final File allUserTemplates = new File(resourceBaseDir, "templates");
+		if(allUserTemplates.exists()){
+			modeController.addAction(new NewMapFromTemplateAction("new_map_from_all_user_templates", allUserTemplates));
+		}
+		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
+		final File userTemplates = new File(userDir, "templates");
+		userTemplates.mkdir();
+		modeController.addAction(new NewMapFromTemplateAction("new_map_from_user_templates", userTemplates));
 		modeController.addAction(new SaveAction());
 		modeController.addAction(new SaveAsAction());
 		modeController.addAction(new ExportBranchAction());
@@ -459,7 +470,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				final File theFile = selectedFiles[i];
 				try {
 					setLastCurrentDir(theFile.getParentFile());
-					Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(theFile));
+					Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(theFile), false);
 				}
 				catch (final Exception ex) {
 					handleLoadingException(ex);
@@ -469,7 +480,81 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 		Controller.getCurrentController().getViewController().setTitle();
 	}
+	
+	public void newMap(){
+		final String resourceBaseDir = ResourceController.getResourceController().getResourceBaseDir();
+		final File allUserTemplates = new File(resourceBaseDir, "templates");
+		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
+		final File userTemplates = new File(userDir, "templates");
+		File[] files = new File[]{
+				new File(userTemplates, getStandardTemplateName()),
+				new File(allUserTemplates, getStandardTemplateName())};
+		for(File file:files){
+			if(file.exists() && ! file.isDirectory()){
+				((MFileManager) UrlManager.getController()).newMapFromTemplate(file);
+				return;
+			}
+		}
+		Controller.getCurrentModeController().getMapController().newMap(((NodeModel) null));
+	}
 
+	private String getStandardTemplateName() {
+	    return ResourceController.getResourceController().getProperty("standard_template");
+    }
+
+	public void newMapFromTemplate(final File startFile) {
+		final File file;
+		if(startFile == null){
+			file = getLastCurrentDir();
+		}
+		else if(startFile.isDirectory()){
+			final JFileChooser chooser = new JFileChooser();
+			final FileFilter filter = getFileFilter();
+			chooser.addChoosableFileFilter(filter);
+			chooser.setFileFilter(filter);
+			chooser.setCurrentDirectory(startFile);
+			final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getMapView());
+			if (returnVal != JFileChooser.APPROVE_OPTION) {
+				return;
+			}
+			file = chooser.getSelectedFile();
+		}
+		else{
+			file = startFile;
+		}
+		try {
+			Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(file), true);
+			final Controller controller = Controller.getCurrentController();
+			controller.getModeController().getMapController().setSaved(controller.getMap(), false);
+		}
+		catch (Exception e) {
+			handleLoadingException(e);
+		}
+	}
+
+	public void saveAsUserTemplate() {
+		final JFileChooser chooser = new JFileChooser();
+		final FileFilter filter = getFileFilter();
+		chooser.addChoosableFileFilter(filter);
+		chooser.setFileFilter(filter);
+		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
+		final File userTemplates = new File(userDir, "templates");
+		chooser.setCurrentDirectory(userTemplates);
+		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getMapView());
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			return;
+		}
+		File file = chooser.getSelectedFile();
+		if (file.exists()) {
+			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getMapView(),
+			    TextUtils.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+			if (overwriteMap != JOptionPane.YES_OPTION) {
+				return;
+			}
+		}
+		saveInternal((MMapModel) Controller.getCurrentController().getMap(), file, false);
+    }
+	
 	public boolean save(final MapModel map) {
 		if (map.isSaved()) {
 			return true;
@@ -574,26 +659,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			if (map.getTimerForAutomaticSaving() != null) {
 				map.getTimerForAutomaticSaving().cancel();
 			}
-			final FileOutputStream out = new FileOutputStream(file);
-			final FileLock lock = out.getChannel().tryLock();
-			if (lock == null) {
-				throw new IOException("can not obtain file lock for " + file);
-			}
-			try {
-	            final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
-				Controller.getCurrentModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true, false);
-	            if (!isInternal) {
-	            	setFile(map, file);
-	            	map.setSaved(true);
-	            }
-	            map.scheduleTimerForAutomaticSaving();
-	            return true;
+			writeToFile(map, file);
+            if (!isInternal) {
+            	setFile(map, file);
+            	map.setSaved(true);
             }
-            finally{
-            	 if (lock.isValid() ){
-            		 lock.release();
-            	 }
-            }
+            map.scheduleTimerForAutomaticSaving();
+            return true;
 		}
 		catch (final IOException e) {
 			final String message = TextUtils.formatText("save_failed", file.getName());
@@ -610,6 +682,23 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		map.scheduleTimerForAutomaticSaving();
 		return false;
 	}
+
+	private void writeToFile(final MapModel map, final File file) throws FileNotFoundException, IOException {
+	    final FileOutputStream out = new FileOutputStream(file);
+	    final FileLock lock = out.getChannel().tryLock();
+	    if (lock == null) {
+	    	throw new IOException("can not obtain file lock for " + file);
+	    }
+	    try {
+	        final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
+	    	Controller.getCurrentModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true, false);
+	    }
+	    finally{
+	    	 if (lock.isValid() ){
+	    		 lock.release();
+	    	 }
+	    }
+    }
 
 	public void setFile(final MapModel map, final File file) {
 		try {
@@ -658,4 +747,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public void beforeViewChange(final Component oldView, final Component newView) {
 	}
+
+	public static MFileManager getController(ModeController modeController) {
+	    return (MFileManager) modeController.getExtension(UrlManager.class);
+	    
+    }
+
 }

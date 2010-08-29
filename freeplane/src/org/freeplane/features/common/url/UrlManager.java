@@ -282,7 +282,7 @@ public class UrlManager implements IExtension {
 				        && extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 					final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
 					final ModeController modeController = Controller.getCurrentModeController();
-					modeController.getMapController().newMap(url);
+					modeController.getMapController().newMap(url, false);
 					final String ref = uri.getFragment();
 					if (ref != null) {
 						final ModeController newModeController = Controller.getCurrentModeController();

@@ -552,8 +552,9 @@ public class MapController extends SelectionController {
 	}
 
 	/** creates a new MapView for the url unless it is already opened.
-	 * @returns false if the map was already opened and true if it is newly created. */
-	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException, IOException,
+	 * @returns false if the map was already opened and true if it is newly created. 
+	 * @param untitled TODO*/
+	public boolean newMap(final URL url, boolean untitled) throws FileNotFoundException, XMLParseException, IOException,
 	        URISyntaxException {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		/*
@@ -562,15 +563,22 @@ public class MapController extends SelectionController {
 		 * check whether or not the file is already opened.
 		 * VB: this comment seems to be out-of-date since the url is checked.
 		 */
-		final String mapExtensionKey = mapViewManager.checkIfFileIsAlreadyOpened(url);
-		if (mapExtensionKey != null) {
-			mapViewManager.tryToChangeToMapView(mapExtensionKey);
-			return false;
+		if(! untitled)
+		{
+			final String mapExtensionKey = mapViewManager.checkIfFileIsAlreadyOpened(url);
+			if (mapExtensionKey != null) {
+				mapViewManager.tryToChangeToMapView(mapExtensionKey);
+				return false;
+			}
 		}
 		try {
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final MapModel newModel = newModel(null);
 			((UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class)).load(url, newModel);
+			if(untitled)
+			{
+				newModel.setURL(null);
+			}
 			fireMapCreated(newModel);
 			newMapView(newModel);
 			// FIXME: removed to be able to set state in MFileManager

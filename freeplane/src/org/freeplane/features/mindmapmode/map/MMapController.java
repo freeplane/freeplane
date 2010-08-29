@@ -126,7 +126,6 @@ public class MMapController extends MapController {
 
 	private void createActions() {
 		final ModeController modeController = Controller.getCurrentModeController();
-		modeController.addAction(new NewMapAction());
 		modeController.addAction(new NewMapViewAction());
 		modeController.addAction(new NewSiblingAction());
 		modeController.addAction(new NewPreviousSiblingAction());
