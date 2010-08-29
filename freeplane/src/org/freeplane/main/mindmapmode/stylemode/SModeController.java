@@ -19,9 +19,20 @@
  */
 package org.freeplane.main.mindmapmode.stylemode;
 
+import java.awt.Component;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
+import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.IMapViewManager;
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**
@@ -29,21 +40,74 @@ import org.freeplane.features.mindmapmode.MModeController;
  * 18.09.2009
  */
 class SModeController extends MModeController {
-	private final ControlToolbar controlToolbar;
 
-	public SModeController(final Controller controller) {
+	@SuppressWarnings("serial")
+    public SModeController(final Controller controller) {
 		super(controller);
 		final Window dialog = ((DialogController) controller.getViewController()).getDialog();
-		controlToolbar = new ControlToolbar("styledialog", dialog);
-		controller.addAction(controlToolbar.getOkAction());
-		controller.addAction(controlToolbar.getCancelAction());
+		dialog.addComponentListener(new ComponentAdapter() {
+			public void componentShown(final ComponentEvent e) {
+				status = JOptionPane.DEFAULT_OPTION;
+			}
+		});
+		final String key = "styledialog";
+		AFreeplaneAction okAction = new AFreeplaneAction(key + ".ok") {
+			public void actionPerformed(final ActionEvent e) {
+				status = JOptionPane.OK_OPTION;
+				closeDialog();
+			}
+		};
+		controller.addAction(okAction);
+		AFreeplaneAction cancelAction = new AFreeplaneAction(key + ".cancel") {
+			public void actionPerformed(final ActionEvent e) {
+				status = JOptionPane.CANCEL_OPTION;
+				closeDialog();
+			}
+		};
+		controller.addAction(cancelAction);
+		AFreeplaneAction tryToCloseAction = new AFreeplaneAction("QuitAction") {
+			public void actionPerformed(final ActionEvent e) {
+				tryToCloseDialog();
+			}
+		};
+		controller.addAction(tryToCloseAction);
 	}
 
+	private int status = JOptionPane.DEFAULT_OPTION;
+
 	public int getStatus() {
-		return controlToolbar.getStatus();
+		return status;
+	}
+
+
+	protected void closeDialog() {
+		final Window dialog = ((DialogController) getController().getViewController()).getDialog();
+		dialog.setVisible(false);
 	}
 
 	public void setStatus(int status) {
-		controlToolbar.setStatus(status);
+	   this.status = status;
     }
+	
+	void tryToCloseDialog() {
+	    final IMapViewManager mapViewManager = getController().getMapViewManager();
+	    final MapModel map = mapViewManager.getModel();
+	    final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+	    final Window dialog = ((DialogController) getController().getViewController()).getDialog();
+	    if (! undoHandler.canUndo()){
+	    	dialog.setVisible(false);
+	    	return;
+	    }
+	    final String text = TextUtils.getText("save_unsaved_styles");
+	    final String title = TextUtils.removeMnemonic(TextUtils.getText("SaveAction.text"));
+	    final int returnVal = JOptionPane.showOptionDialog(
+	    	dialog, text, title,
+	    	JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+	    if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
+	    	return;
+	    }
+	    setStatus(returnVal);
+	    dialog.setVisible(false);
+    }
+
 }

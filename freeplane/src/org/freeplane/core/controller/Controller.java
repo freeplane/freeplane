@@ -59,7 +59,6 @@ public class Controller extends AController {
 		}
 		this.resourceController = resourceController; 
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
-		addAction(new QuitAction());
 		addAction(new MoveToRootAction());
 		addAction(new CenterSelectedNodeAction());
 	}

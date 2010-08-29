@@ -5,6 +5,8 @@
             <menu_category name="close">
                 <menu_action action="styledialog.ok"  accelerator="control S"/>
                 <menu_action action="styledialog.cancel" accelerator="control W" />
+                <menu_action action="QuitAction" accelerator="ESCAPE" />
+                
             </menu_category>
         </menu_submenu>
         <menu_submenu name="styles" name_ref="styles_menu">
@@ -122,7 +124,6 @@
 			<menu_category name="navigate">
 			</menu_category>
 			<menu_category name="nodes">
-				<menu_action action="MoveToRootAction" accelerator="ESCAPE" />
 				<menu_action action="NodeUpAction" accelerator="control UP" />
 				<menu_action action="NodeDownAction" accelerator="control DOWN" />
 			</menu_category>

@@ -28,6 +28,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.QuitAction;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
@@ -104,6 +105,7 @@ public class FreeplaneStarter {
 			Controller controller = new Controller(applicationResourceController);
 			Controller.setCurrentController(controller);
 			Compat.macAppChanges();
+			controller.addAction(new QuitAction());
 			applicationResourceController.init();
 			LogUtils.createLogger();
 			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController

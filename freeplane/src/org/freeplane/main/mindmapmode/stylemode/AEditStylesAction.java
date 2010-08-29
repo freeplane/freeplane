@@ -53,23 +53,7 @@ abstract class AEditStylesAction extends AFreeplaneAction {
     	dialog.addWindowListener(new WindowAdapter() {
     		@Override
     		public void windowClosing(final WindowEvent e) {
-    			final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
-    			final MapModel map = mapViewManager.getModel();
-    			final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
-    			if (! undoHandler.canUndo()){
-    				dialog.setVisible(false);
-    				return;
-    			}
-    			final String text = TextUtils.getText("save_unsaved_styles");
-    			final String title = TextUtils.removeMnemonic(TextUtils.getText("SaveAction.text"));
-    			final int returnVal = JOptionPane.showOptionDialog(
-    				dialog, text, title,
-    				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-    			if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
-    				return;
-    			}
-    			modeController.setStatus(returnVal);
-    			dialog.setVisible(false);
+    			getModeController().tryToCloseDialog();
     		}
     	});
     	Controller controller = SModeControllerFactory.getInstance().createController(dialog);
@@ -98,5 +82,4 @@ abstract class AEditStylesAction extends AFreeplaneAction {
 
     	});
     }
-
 }
