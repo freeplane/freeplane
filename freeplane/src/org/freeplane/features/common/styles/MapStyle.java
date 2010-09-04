@@ -37,6 +37,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
@@ -49,6 +50,7 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.map.MapWriter.Mode;
 import org.freeplane.features.common.styles.ConditionalStyleModel.Item;
+import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -130,7 +132,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				mapWriter.writeNodeAsXml(sw, rootNode, Mode.STYLE, true, true);
 			}
 			catch (final IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			sw.append("</map_styles>\n");
@@ -163,7 +164,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			}
 			if(mapStyleModel.getStyleMap() == null){
 				final MapModel map = node.getMap();
-				mapStyleModel.createStyleMap(map, null, null);
+				final MapModel styleMapContainer = new MapModel(null);
+				UrlManager.getController().loadDefault(styleMapContainer);
+				final MapModel styleMap = MapStyleModel.getExtension(node).getStyleMap();
+				styleMap.getRootNode().removeExtension(MapStyleModel.class);
+				styleMap.removeExtension(IUndoHandler.class);
+				mapStyleModel.insertStyleMap(map, styleMap);
 			}
        }
 		
@@ -277,7 +283,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		final MapStyleModel extension = new MapStyleModel();
 		rootNode.addExtension(extension);
-		extension.createStyleMap(map, null, null);
+		final MapModel styleMapContainer = new MapModel(null);
+		UrlManager.getController().loadDefault(styleMapContainer);
+		final MapModel styleMap = MapStyleModel.getExtension(styleMapContainer).getStyleMap();
+		styleMap.getRootNode().removeExtension(MapStyleModel.class);
+		styleMap.removeExtension(IUndoHandler.class);
+		extension.insertStyleMap(map, styleMap);
 	}
 
 	public void onRemove(final MapModel map) {

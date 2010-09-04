@@ -232,9 +232,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		controller.addAction(new NewMapAction());
 		final String resourceBaseDir = ResourceController.getResourceController().getResourceBaseDir();
 		final File allUserTemplates = new File(resourceBaseDir, "templates");
-		if(allUserTemplates.exists()){
-			modeController.addAction(new NewMapFromTemplateAction("new_map_from_all_user_templates", allUserTemplates));
-		}
+		modeController.addAction(new NewMapFromTemplateAction("new_map_from_all_user_templates", allUserTemplates));
 		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
 		final File userTemplates = new File(userDir, "templates");
 		userTemplates.mkdir();
@@ -337,7 +335,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 						LogUtils.warn("Unable to set the last modification time for " + file);
 				}
 				else {
-					throw new IOException("skip " + file.toString());
+					throw new SkipException(file);
 				}
 				if (!file.equals(newerFileRevisionsFoundDialog.getSelectedFile())) {
 					LogUtils.info("opening " + newerFileRevisionsFoundDialog.getSelectedFile() + " instead of " + file);
@@ -482,21 +480,26 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 	
 	public void newMap(){
-		final String resourceBaseDir = ResourceController.getResourceController().getResourceBaseDir();
+		File[] files = defaultTemplateFiles();
+		for(File file:files){
+			if(file.exists() && ! file.isDirectory()){
+				newMapFromTemplate(file);
+				return;
+			}
+		}
+		Controller.getCurrentModeController().getMapController().newMap(((NodeModel) null));
+	}
+
+	private File[] defaultTemplateFiles() {
+	    final String resourceBaseDir = ResourceController.getResourceController().getResourceBaseDir();
 		final File allUserTemplates = new File(resourceBaseDir, "templates");
 		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
 		final File userTemplates = new File(userDir, "templates");
 		File[] files = new File[]{
 				new File(userTemplates, getStandardTemplateName()),
 				new File(allUserTemplates, getStandardTemplateName())};
-		for(File file:files){
-			if(file.exists() && ! file.isDirectory()){
-				((MFileManager) UrlManager.getController()).newMapFromTemplate(file);
-				return;
-			}
-		}
-		Controller.getCurrentModeController().getMapController().newMap(((NodeModel) null));
-	}
+	    return files;
+    }
 
 	private String getStandardTemplateName() {
 	    return ResourceController.getResourceController().getProperty("standard_template");
@@ -753,4 +756,28 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	    
     }
 
+	public void loadDefault(MapModel target) {
+	    try {
+			File[] files = defaultTemplateFiles();
+			for(File file:files){
+				if(file.exists() && ! file.isDirectory()){
+					try{
+						loadImpl(Compat.fileToUrl(file), target);
+						return;
+					}
+					catch(Exception e){
+						UITools.errorMessage(e.getMessage());
+						LogUtils.warn(e);
+						continue;
+					}
+				}
+			}
+	    	final URL url = ResourceController.getResourceController().getResource("/styles/viewer_standard.mm");
+			loadImpl(url, target);
+        }
+         catch (Exception e) {
+        	 LogUtils.severe(e);
+        }
+	    
+    }
 }

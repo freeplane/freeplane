@@ -21,6 +21,7 @@ package org.freeplane.features.common.styles;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
@@ -41,6 +42,7 @@ import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.map.MapWriter.Mode;
+import org.freeplane.n3.nanoxml.XMLException;
 
 /**
  * @author Dimitry Polivaev
@@ -49,8 +51,7 @@ import org.freeplane.features.common.map.MapWriter.Mode;
 public class MapStyleModel implements IExtension {
 	public static final NamedObject DEFAULT_STYLE = new NamedObject("default");
 	private static final String STYLES = "styles";
-	private Map<Object, NodeModel> styleNodes;
-	private static boolean loadingStyleMap = false;
+	final private Map<Object, NodeModel> styleNodes;
 	private MapModel styleMap;
 	final private ConditionalStyleModel conditionalStyleModel;
 
@@ -70,79 +71,46 @@ public class MapStyleModel implements IExtension {
 
 	public MapStyleModel() {
 		conditionalStyleModel = new ConditionalStyleModel();
+		styleNodes = new LinkedHashMap<Object, NodeModel>();
 	}
 
 	public ConditionalStyleModel getConditionalStyleModel() {
     	return conditionalStyleModel;
     }
 
+
+	void insertStyleMap(MapModel map, MapModel styleMap) {
+	    this.styleMap = styleMap;
+		final NodeModel rootNode = styleMap.getRootNode();
+		createNodeStyleMap(rootNode);
+		styleMap.setReadOnly(false);
+		styleMap.addExtension(IUndoHandler.class, map.getExtension(IUndoHandler.class));
+		final MapStyleModel defaultStyleModel = new MapStyleModel();
+		final NodeModel defaultStyleNode = new NodeModel(styleMap);
+		defaultStyleNode.setUserObject(DEFAULT_STYLE);
+		defaultStyleModel.addStyleNode(defaultStyleNode);
+		rootNode.addExtension(defaultStyleModel);
+	}
+	
 	void createStyleMap(final MapModel parentMap, MapStyleModel mapStyleModel, final String styleMapStr) {
-		if (loadingStyleMap) {
-			styleMap = null;
-			styleNodes = null;
-			return;
-		}
-		styleNodes = new LinkedHashMap<Object, NodeModel>();
-		styleMap = new MapModel(null) {
+		MapModel styleMap = new MapModel(null) {
 			@Override
 			public String getTitle() {
 				return TextUtils.removeMnemonic(TextUtils.getText(STYLES));
 			}
 		};
-		if(mapStyleModel != null){
-			styleMap.addExtension(mapStyleModel.getConditionalStyleModel());
-		}
-		styleMap.addExtension(IUndoHandler.class, parentMap.getExtension(IUndoHandler.class));
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapReader mapReader = modeController.getMapController().getMapReader();
+		final Reader styleReader = new StringReader(styleMapStr);
 		NodeModel root;
-		try {
-			if (styleMapStr != null) {
-				final Reader styleReader;
-				styleReader = new StringReader(styleMapStr);
-				root = mapReader.createNodeTreeFromXml(styleMap, styleReader, Mode.FILE);
-			}
-			else {
-				loadingStyleMap = true;
-				try {
-					final ResourceController resourceController = ResourceController.getResourceController();
-					try {
-						final File freeplaneUserDirectory = new File(resourceController.getFreeplaneUserDirectory());
-						final File styles = new File(freeplaneUserDirectory, "default.stylemm");
-						root = load(styles.toURL(), mapReader, styleMap);
-					}
-					catch (final Exception e) {
-						root = load(ResourceController.getResourceController().getResource("/styles/default.stylemm"),
-						    mapReader, styleMap);
-					}
-				}
-				finally {
-					loadingStyleMap = false;
-				}
-			}
-			if(mapStyleModel != null){
-				styleMap.removeExtension(mapStyleModel.getConditionalStyleModel());
-			}
+        try {
+	        root = mapReader.createNodeTreeFromXml(styleMap, styleReader, Mode.FILE);
 			styleMap.setRoot(root);
-			MapStyleModel extension = MapStyleModel.getExtension(styleMap);
-			if (extension == null) {
-				loadingStyleMap = true;
-				try {
-					extension = new MapStyleModel();
-					styleMap.getRootNode().addExtension(extension);
-				}
-				finally {
-					loadingStyleMap = false;
-				}
-			}
-			extension.styleNodes = styleNodes;
-			createNodeStyleMap(root);
-			styleMap.setReadOnly(false);
-		}
-		catch (final Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			insertStyleMap(parentMap, styleMap);
+        }
+         catch (Exception e) {
+	        e.printStackTrace();
+        }
 	}
 
 	private void createNodeStyleMap(final NodeModel node) {
@@ -230,4 +198,5 @@ public class MapStyleModel implements IExtension {
 			    "el__max_default_window_width")) * 2 / 3;
 		}
 	}
+
 }

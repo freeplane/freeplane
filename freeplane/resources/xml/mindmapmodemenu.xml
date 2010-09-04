@@ -219,7 +219,6 @@
         <menu_submenu name="styles" name_ref="styles">
             <menu_category name="manage">
                 <menu_action action="EditStylesAction" />
-                <menu_action action="EditDefaultStylesAction" />
                 <menu_action action="RedefineStyleAction" />
                 <menu_action action="ManageConditionalStylesAction" />
             </menu_category>

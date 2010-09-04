@@ -175,6 +175,5 @@ public class SModeControllerFactory {
 	public static void install() {
 		ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new EditStylesAction());
-		modeController.addAction(new EditDefaultStylesAction());
 	}
 }

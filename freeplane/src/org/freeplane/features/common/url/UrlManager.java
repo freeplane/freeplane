@@ -220,6 +220,9 @@ public class UrlManager implements IExtension {
 		else if (exceptionType.equals("java.io.FileNotFoundException")) {
 			UITools.errorMessage(ex.getMessage());
 		}
+		else if (exceptionType.equals("org.freeplane.features.mindmapmode.file.SkipException")) {
+			return;
+		}
 		else {
 			LogUtils.severe(ex);
 			UITools.errorMessage(ex);
@@ -228,7 +231,11 @@ public class UrlManager implements IExtension {
 
 	public void load(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException,
 	        URISyntaxException {
-		setURL(map, url);
+		loadImpl(url, map);
+	}
+
+	protected void loadImpl(final URL url, final MapModel map) {
+	    setURL(map, url);
 		InputStreamReader urlStreamReader = null;
 		try {
 			urlStreamReader = new InputStreamReader(url.openStream());
@@ -254,7 +261,7 @@ public class UrlManager implements IExtension {
 			LogUtils.severe(ex);
 			return;
 		}
-	}
+    }
 
 	public void loadURL(URI uri) {
 		final String uriString = uri.toString();
@@ -360,4 +367,14 @@ public class UrlManager implements IExtension {
 	protected void setURL(final MapModel map, final URL url) {
 		map.setURL(url);
 	}
+
+	public void loadDefault(MapModel target) {
+	    try {
+	    	loadImpl(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), target);
+        }
+         catch (Exception e) {
+	        e.printStackTrace();
+        }
+	    
+    }
 }
