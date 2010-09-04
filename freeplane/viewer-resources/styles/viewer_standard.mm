@@ -3,7 +3,7 @@
 <node TEXT="viewer standard">
 <hook NAME="MapStyle" max_node_width="600">
 <map_styles>
-<stylenode LOCALIZED_TEXT="styles">
+<stylenode LOCALIZED_TEXT="styles.root_node">
 <stylenode LOCALIZED_TEXT="styles.predefined">
 <stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
