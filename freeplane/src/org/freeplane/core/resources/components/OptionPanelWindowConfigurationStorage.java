@@ -25,6 +25,10 @@ import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class OptionPanelWindowConfigurationStorage extends WindowConfigurationStorage {
+	public OptionPanelWindowConfigurationStorage() {
+	    super("option_panel_window_configuration_storage");
+    }
+
 	public static OptionPanelWindowConfigurationStorage decorateDialog(final String marshalled, final JDialog dialog) {
 		final OptionPanelWindowConfigurationStorage storage = new OptionPanelWindowConfigurationStorage();
 		final XMLElement xml = storage.unmarschall(marshalled, dialog);
@@ -43,7 +47,6 @@ class OptionPanelWindowConfigurationStorage extends WindowConfigurationStorage {
 
 	@Override
 	protected void marshallSpecificElements(final XMLElement xml) {
-		xml.setName("option_panel_window_configuration_storage");
 		xml.setAttribute("panel", panel);
 	}
 

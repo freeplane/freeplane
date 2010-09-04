@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
@@ -47,7 +48,8 @@ abstract class AEditStylesAction extends AFreeplaneAction {
     		return;
     	}
     	dialog = new JDialog(Controller.getCurrentController().getViewController().getJFrame());
-    	dialog.setSize(800, 300);
+    	final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(getKey() + ".dialog");
+    	windowConfigurationStorage.restoreDialogPositions(dialog);
     	dialog.setModal(true);
     	dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
     	dialog.addWindowListener(new WindowAdapter() {
@@ -63,6 +65,8 @@ abstract class AEditStylesAction extends AFreeplaneAction {
     	dialog.addComponentListener(new ComponentAdapter() {
     		@Override
     		public void componentHidden(final ComponentEvent e) {
+    	    	final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(getKey() + ".dialog");
+    	    	windowConfigurationStorage.storeDialogPositions(dialog);
     			final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
     			final MapModel map = mapViewManager.getModel();
     			final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);

@@ -19,11 +19,17 @@ import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
 
-abstract public class WindowConfigurationStorage {
+public class WindowConfigurationStorage {
 	protected int height;
 	protected int width;
 	protected int x;
 	protected int y;
+	final private String name;
+
+	public WindowConfigurationStorage(String name) {
+	    super();
+	    this.name = name;
+    }
 
 	public int getHeight() {
 		return height;
@@ -47,6 +53,7 @@ abstract public class WindowConfigurationStorage {
 		xml.setAttribute("y", Integer.toString(y));
 		xml.setAttribute("width", Integer.toString(width));
 		xml.setAttribute("height", Integer.toString(height));
+		xml.setName(name);
 		marshallSpecificElements(xml);
 		final StringWriter string = new StringWriter();
 		final XMLWriter writer = new XMLWriter(string);
@@ -60,7 +67,8 @@ abstract public class WindowConfigurationStorage {
 		}
 	}
 
-	abstract protected void marshallSpecificElements(XMLElement xml);
+	protected void marshallSpecificElements(XMLElement xml){
+	};
 
 	public void setHeight(final int height) {
 		this.height = height;
@@ -78,6 +86,9 @@ abstract public class WindowConfigurationStorage {
 		this.y = y;
 	}
 
+	public void storeDialogPositions(final JDialog dialog) {
+		storeDialogPositions(dialog, name);
+	}
 	public void storeDialogPositions(final JDialog dialog, final String window_preference_storage_property) {
 		setX((dialog.getX()));
 		setY((dialog.getY()));
@@ -87,6 +98,13 @@ abstract public class WindowConfigurationStorage {
 		ResourceController.getResourceController().setProperty(window_preference_storage_property, marshalled);
 	}
 
+	public XMLElement restoreDialogPositions(final JDialog dialog) {
+		return restoreDialogPositions(dialog, name);
+	}
+	public XMLElement restoreDialogPositions(final JDialog dialog, final String window_preference_storage_property) {
+		String marshalled = ResourceController.getResourceController().getProperty(window_preference_storage_property);
+		return unmarschall(marshalled, dialog);
+	}
 	protected XMLElement unmarschall(final String marshalled, final JDialog dialog) {
 		if (marshalled != null) {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();

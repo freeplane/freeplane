@@ -23,6 +23,10 @@ class TimeWindowConfigurationStorage extends WindowConfigurationStorage {
 		return null;
 	}
 
+	public TimeWindowConfigurationStorage() {
+	    super("time_window_configuration_storage");
+    }
+
 	protected List<TimeWindowColumnSetting> timeWindowColumnSettingList = new ArrayList<TimeWindowColumnSetting>();
 
 	public void addAtTimeWindowColumnSetting(final int position, final TimeWindowColumnSetting timeWindowColumnSetting) {
@@ -47,7 +51,6 @@ class TimeWindowConfigurationStorage extends WindowConfigurationStorage {
 
 	@Override
 	protected void marshallSpecificElements(final XMLElement xml) {
-		xml.setName("time_window_configuration_storage");
 		final Iterator<TimeWindowColumnSetting> iterator = timeWindowColumnSettingList.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().marschall(xml);
