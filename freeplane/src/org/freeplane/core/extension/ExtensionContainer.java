@@ -28,6 +28,15 @@ public class ExtensionContainer {
 		addExtension(extension.getClass(), extension);
 	}
 
+	public IExtension putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		final IExtension oldExtension = getExtensions().put(clazz, extension);
+		return oldExtension;
+	}
+
+	public IExtension putExtension(final IExtension extension) {
+		return putExtension(extension.getClass(), extension);
+	}
+
 	public boolean containsExtension(final Class<? extends IExtension> clazz) {
 		return extensions.containsKey(clazz);
 	}

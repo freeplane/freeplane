@@ -108,6 +108,10 @@ public class NodeModel implements MutableTreeNode {
 		extensionContainer.addExtension(extension);
 	}
 
+	public IExtension putExtension(final IExtension extension) {
+		return extensionContainer.putExtension(extension);
+	}
+
 	public void addIcon(final MindIcon icon) {
 		icons.addIcon(icon);
 		if (map != null) {

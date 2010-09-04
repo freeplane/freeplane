@@ -81,6 +81,14 @@ public class MapModel {
 		extensionContainer.addExtension(extension);
 	}
 
+	public IExtension putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		return extensionContainer.putExtension(clazz, extension);
+	}
+
+	public IExtension putExtension(final IExtension extension) {
+		return extensionContainer.putExtension(extension);
+	}
+
 	public void addMapChangeListener(final IMapChangeListener listener) {
 		listeners.add(listener);
 	}
