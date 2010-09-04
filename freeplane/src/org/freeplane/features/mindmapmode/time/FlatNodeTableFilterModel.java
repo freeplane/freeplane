@@ -108,7 +108,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	}
 
 	public void setFilter(final String filterRegexp, boolean ignoreCase, boolean useRegex) {
-		if("".equals(filterRegexp)){
+		if(filterRegexp == null || "".equals(filterRegexp)){
 			mFilterRegexp = null;
 		}
 		else{
