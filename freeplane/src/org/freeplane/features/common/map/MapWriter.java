@@ -89,6 +89,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		final XMLElement xmlMap = new XMLElement("map");
 		setSaveInvisible(saveInvisible);
 		xmlWriter.addElement(map, xmlMap);
+		xmlWriter.flush();
 		fileout.close();
 	}
 
@@ -129,5 +130,6 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, writer);
 		xmlWriter.setHint(Hint.MODE, mode);
 		writeNode(xmlWriter, node, writeInvisible, writeChildren);
+		xmlWriter.flush();
 	}
 }

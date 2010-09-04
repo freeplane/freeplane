@@ -75,6 +75,10 @@ public class TreeXmlWriter implements ITreeWriter {
 	private XMLElement xmlElement;
 	final private XMLWriter xmlwriter;
 
+	public void flush() {
+	    xmlwriter.flush();
+    }
+
 	public TreeXmlWriter(final WriteManager writeManager, final Writer writer) {
 		super();
 		this.writeManager = writeManager;
