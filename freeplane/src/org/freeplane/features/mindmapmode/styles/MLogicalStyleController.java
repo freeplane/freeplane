@@ -249,19 +249,19 @@ public class MLogicalStyleController extends LogicalStyleController {
 			return;
 		}
 		final NodeModel rootNode = extension.getStyleMap().getRootNode();
-		addStyleMenu(menuBuilder, formatMenuString + "/styles/assign", rootNode);
+		addStyleMenu(menuBuilder, formatMenuString + "/styles/assign", rootNode, extension);
 	}
 
-	private void addStyleMenu(final MenuBuilder menuBuilder, final String category, final NodeModel rootNode) {
+	private void addStyleMenu(final MenuBuilder menuBuilder, final String category, final NodeModel rootNode, MapStyleModel extension) {
 		final List<NodeModel> children = rootNode.getChildren();
 		for (final NodeModel child : children) {
 			final Object style = child.getUserObject();
 			if (child.hasChildren()) {
 				final String newCategory = category + '/' + style;
 				menuBuilder.addMenuItem(category, new JMenu(style.toString()), newCategory, MenuBuilder.AS_CHILD);
-				addStyleMenu(menuBuilder, newCategory, child);
+				addStyleMenu(menuBuilder, newCategory, child, extension);
 			}
-			else {
+			else if(null != extension.getStyleNode(style)){
 				final AssignStyleAction action = new AssignStyleAction(style, style.toString(), null);
 				actions.add(action);
 				menuBuilder.addAction(category, action, MenuBuilder.AS_CHILD);

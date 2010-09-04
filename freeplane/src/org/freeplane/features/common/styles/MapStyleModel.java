@@ -92,6 +92,12 @@ public class MapStyleModel implements IExtension {
 		rootNode.putExtension(defaultStyleModel);
 	}
 	
+	public void refreshStyles() {
+		final NodeModel rootNode = styleMap.getRootNode();
+		styleNodes.clear();
+		createNodeStyleMap(rootNode);
+    }
+
 	void createStyleMap(final MapModel parentMap, MapStyleModel mapStyleModel, final String styleMapStr) {
 		MapModel styleMap = new MapModel(null) {
 			@Override
