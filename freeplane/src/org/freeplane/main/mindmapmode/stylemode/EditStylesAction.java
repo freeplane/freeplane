@@ -52,12 +52,12 @@ public class EditStylesAction extends AEditStylesAction {
 	}
 
 	void commit(final MapModel map) {
-	    Controller.getCurrentModeController().commit();
 	    final MapModel currentMap = Controller.getCurrentController().getMap();
+	    LogicalStyleController.getController().refreshMap(currentMap);
+	    Controller.getCurrentModeController().commit();
 	    Controller.getCurrentModeController().getMapController().setSaved(currentMap, false);
 	    final MapController mapController = getModeController().getMapController();
 	    mapController.setSaved(map, false);
-	    LogicalStyleController.getController().refreshMap(currentMap);
     }
 
 	void rollback() {
