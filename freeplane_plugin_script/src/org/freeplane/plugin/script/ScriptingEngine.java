@@ -70,18 +70,20 @@ public class ScriptingEngine {
 	private static final HashMap<String, Object> sScriptCookies = new HashMap<String, Object>();
 	private static Boolean noUserPermissionRequired = false;
 	private static Pattern attributeNamePattern = Pattern.compile("^([a-zA-Z0-9_]*)=");
+	private static final IErrorHandler scriptErrorHandler = new IErrorHandler() {
+    	public void gotoLine(final int pLineNumber) {
+    	}
+    };
 
 	/**
 	 * @return the result of the script, or null, if the user has cancelled.
 	 * @throws ExecuteScriptException on errors
 	 */
-	static Object executeScript(final NodeModel node, String script,
-	                            final IErrorHandler pErrorHandler, final PrintStream pOutStream)
-	        throws ExecuteScriptException {
+	static Object executeScript(final NodeModel node, String script, final IErrorHandler pErrorHandler,
+	                            final PrintStream pOutStream) throws ExecuteScriptException {
 		if (!noUserPermissionRequired) {
-			final int showResult = OptionalDontShowMeAgainDialog.show(
-			    "really_execute_script", "confirmation", RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
+			final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
+			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 			if (showResult != JOptionPane.OK_OPTION) {
 				return null;
 			}
@@ -170,12 +172,11 @@ public class ScriptingEngine {
 			Object result = shell.evaluate(script);
 			if (assignResult && result != null) {
 				if (assignTo == null) {
-					((MTextController) TextController.getController()).setNodeText(node, result
-					    .toString());
+					((MTextController) TextController.getController()).setNodeText(node, result.toString());
 				}
 				else {
-					((MAttributeController) AttributeController.getController()).editAttribute(node,
-					    assignTo, result.toString());
+					((MAttributeController) AttributeController.getController()).editAttribute(node, assignTo,
+					    result.toString());
 				}
 			}
 			return result;
@@ -241,10 +242,7 @@ public class ScriptingEngine {
 	}
 
 	public static Object executeScript(final NodeModel node, final String script) {
-		return ScriptingEngine.executeScript(node, script, new IErrorHandler() {
-			public void gotoLine(final int pLineNumber) {
-			}
-		}, System.out);
+		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out);
 	}
 
 	static Object executeScriptRecursive(final NodeModel node, final String script) {
