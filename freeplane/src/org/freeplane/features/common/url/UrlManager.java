@@ -234,7 +234,7 @@ public class UrlManager implements IExtension {
 		loadImpl(url, map);
 	}
 
-	protected void loadImpl(final URL url, final MapModel map) {
+	public void loadImpl(final URL url, final MapModel map) {
 	    setURL(map, url);
 		InputStreamReader urlStreamReader = null;
 		try {

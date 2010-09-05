@@ -248,7 +248,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		modeController.addAction(new RevertAction());
 	}
 
-	protected JFileChooser getFileChooser() {
+	public JFileChooser getFileChooser() {
 		return getFileChooser(getFileFilter());
 	}
 
@@ -455,25 +455,22 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public void open() {
 		final JFileChooser chooser = getFileChooser();
+		chooser.setMultiSelectionEnabled(true);
 		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getMapView());
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File[] selectedFiles;
-			if (chooser.isMultiSelectionEnabled()) {
-				selectedFiles = chooser.getSelectedFiles();
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			return;
+		}
+		File[] selectedFiles;
+		selectedFiles = chooser.getSelectedFiles();
+		for (int i = 0; i < selectedFiles.length; i++) {
+			final File theFile = selectedFiles[i];
+			try {
+				setLastCurrentDir(theFile.getParentFile());
+				Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(theFile), false);
 			}
-			else {
-				selectedFiles = new File[] { chooser.getSelectedFile() };
-			}
-			for (int i = 0; i < selectedFiles.length; i++) {
-				final File theFile = selectedFiles[i];
-				try {
-					setLastCurrentDir(theFile.getParentFile());
-					Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(theFile), false);
-				}
-				catch (final Exception ex) {
-					handleLoadingException(ex);
-					break;
-				}
+			catch (final Exception ex) {
+				handleLoadingException(ex);
+				break;
 			}
 		}
 		Controller.getCurrentController().getViewController().setTitle();

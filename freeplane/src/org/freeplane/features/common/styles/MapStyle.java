@@ -22,6 +22,7 @@ package org.freeplane.features.common.styles;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.Vector;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
@@ -38,6 +39,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
@@ -110,6 +112,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		modeController.getMapController().addMapLifeCycleListener(this);
 		if (modeController.getModeName().equals("MindMap")) {
 			modeController.addAction(new MapBackgroundColorAction(this));
+			modeController.addAction(new CopyMapStylesAction());
 		}
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapLifeCycleListener(this);
@@ -157,15 +160,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 		@Override
         public void endElement(Object parent, String tag, Object userObject, XMLElement lastBuiltElement) {
-			final NodeModel node = (NodeModel) userObject;
-			final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
-			if (mapStyleModel == null) {
-				return;
-			}
-			if(mapStyleModel.getStyleMap() == null){
-				final MapModel map = node.getMap();
-				createStyleMap(map, mapStyleModel);
-			}
        }
 		
 	}
@@ -273,21 +267,59 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 	public void onCreate(final MapModel map) {
 		final NodeModel rootNode = map.getRootNode();
-		if (rootNode.containsExtension(MapStyleModel.class)) {
+		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(rootNode);
+		if (mapStyleModel != null && mapStyleModel.getStyleMap() != null) {
 			return;
 		}
-		final MapStyleModel extension = new MapStyleModel();
-		rootNode.addExtension(extension);
-		createStyleMap(map, extension);
+		createDefaultStyleMap(map);
 	}
 
-	private void createStyleMap(final MapModel map, final MapStyleModel extension) {
+	private void createDefaultStyleMap(final MapModel map) {
 	    final MapModel styleMapContainer = new MapModel(null);
 		UrlManager.getController().loadDefault(styleMapContainer);
-		final MapModel styleMap = MapStyleModel.getExtension(styleMapContainer).getStyleMap();
-		extension.insertStyleMap(map, styleMap);
+		moveStyle(styleMapContainer, map, false);
     }
 
+	private void moveStyle(final MapModel sourceMap, final MapModel targetMap, boolean overwrite) {
+	    final MapStyleModel source = (MapStyleModel) sourceMap.getRootNode().removeExtension(MapStyleModel.class);
+		final IExtension undoHandler = targetMap.getExtension(IUndoHandler.class);
+		source.getStyleMap().putExtension(IUndoHandler.class, undoHandler);
+		final NodeModel targetRoot = targetMap.getRootNode();
+		final MapStyleModel target = MapStyleModel.getExtension(targetRoot);
+		if(target == null){
+			targetRoot.addExtension(source);
+		}
+		else{
+			target.copyFrom(source, overwrite);
+		}
+    }
+
+	public void copyStyle(final URL source, final MapModel targetMap, boolean undoable) {
+	    final MapModel styleMapContainer = new MapModel(null);
+		final IExtension oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
+		UrlManager.getController().loadImpl(source, styleMapContainer);
+		moveStyle(styleMapContainer, targetMap, true);
+		LogicalStyleController.getController().refreshMap(targetMap);
+		if(! undoable){
+			return;
+		}
+		final IExtension newStyleModel = targetMap.getRootNode().getExtension(MapStyleModel.class);
+		IActor actor = new IActor() {
+			public void undo() {
+				targetMap.getRootNode().putExtension(oldStyleModel);
+			}
+			
+			public String getDescription() {
+				return "moveStyle";
+			}
+			
+			public void act() {
+				targetMap.getRootNode().putExtension(newStyleModel);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, targetMap);
+	}
+	
 	public void onRemove(final MapModel map) {
 	}
 

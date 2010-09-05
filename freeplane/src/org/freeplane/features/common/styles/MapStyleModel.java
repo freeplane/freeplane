@@ -51,9 +51,9 @@ import org.freeplane.n3.nanoxml.XMLException;
 public class MapStyleModel implements IExtension {
 	public static final NamedObject DEFAULT_STYLE = new NamedObject("default");
 	private static final String STYLES = "styles";
-	final private Map<Object, NodeModel> styleNodes;
+	private Map<Object, NodeModel> styleNodes;
 	private MapModel styleMap;
-	final private ConditionalStyleModel conditionalStyleModel;
+	private ConditionalStyleModel conditionalStyleModel;
 
 	public static MapStyleModel getExtension(final MapModel map) {
 		return MapStyleModel.getExtension(map.getRootNode());
@@ -79,7 +79,7 @@ public class MapStyleModel implements IExtension {
     }
 
 
-	void insertStyleMap(MapModel map, MapModel styleMap) {
+	private void insertStyleMap(MapModel map, MapModel styleMap) {
 	    this.styleMap = styleMap;
 		final NodeModel rootNode = styleMap.getRootNode();
 		createNodeStyleMap(rootNode);
@@ -204,5 +204,19 @@ public class MapStyleModel implements IExtension {
 			    "el__max_default_window_width")) * 2 / 3;
 		}
 	}
+
+	void copyFrom(MapStyleModel source, boolean overwrite) {
+		if(overwrite && source.styleMap != null  || styleMap == null){
+			styleMap = source.styleMap;
+			styleNodes = source.styleNodes;
+			conditionalStyleModel = source.conditionalStyleModel;
+		}
+		if(overwrite && source.backgroundColor != null|| backgroundColor == null){
+			backgroundColor = source.backgroundColor;
+		}
+		if(overwrite){
+			maxNodeWidth = source.maxNodeWidth;
+		}
+    }
 
 }

@@ -574,7 +574,7 @@ public class MapController extends SelectionController {
 		try {
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final MapModel newModel = newModel(null);
-			((UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class)).load(url, newModel);
+			UrlManager.getController().load(url, newModel);
 			if(untitled)
 			{
 				newModel.setURL(null);
@@ -598,13 +598,13 @@ public class MapController extends SelectionController {
 
 	public MapModel newMap(final NodeModel root) {
 		final MapModel newModel = newModel(root);
+		fireMapCreated(newModel);
 		newMapView(newModel);
 		return newModel;
 	}
 
-	public MapModel newModel(final NodeModel root) {
+	protected MapModel newModel(final NodeModel root) {
 		final MapModel mindMapMapModel = new MapModel(root);
-		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}
 

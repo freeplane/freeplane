@@ -300,7 +300,6 @@ public class MMapController extends MapController {
 	@Override
 	public MapModel newModel(final NodeModel root) {
 		final MMapModel mindMapMapModel = new MMapModel(root);
-		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}
 
