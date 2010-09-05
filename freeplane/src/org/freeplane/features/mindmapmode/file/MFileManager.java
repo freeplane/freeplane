@@ -21,6 +21,10 @@ package org.freeplane.features.mindmapmode.file;
 
 import java.awt.Component;
 import java.awt.dnd.DropTarget;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
@@ -33,23 +37,32 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.SequenceInputStream;
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.swing.Box;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewChangeListener;
+import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
@@ -76,6 +89,8 @@ import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.map.MMapModel;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
+
+import com.sun.corba.se.spi.activation.InitialNameServicePackage.NameAlreadyBound;
 
 /**
  * @author Dimitry Polivaev
@@ -230,11 +245,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final ModeController modeController = controller.getModeController();
 		controller.addAction(new OpenAction());
 		controller.addAction(new NewMapAction());
-		final String resourceBaseDir = ResourceController.getResourceController().getResourceBaseDir();
-		final File allUserTemplates = new File(resourceBaseDir, "templates");
-		modeController.addAction(new NewMapFromTemplateAction("new_map_from_all_user_templates", allUserTemplates));
-		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
-		final File userTemplates = new File(userDir, "templates");
+		final File userTemplates = defaultUserTemplateDir();
 		userTemplates.mkdir();
 		modeController.addAction(new NewMapFromTemplateAction("new_map_from_user_templates", userTemplates));
 		modeController.addAction(new SaveAction());
@@ -248,14 +259,46 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		modeController.addAction(new RevertAction());
 	}
 
-	public JFileChooser getFileChooser() {
-		return getFileChooser(getFileFilter());
+	public JFileChooser getFileChooser(boolean useDirectorySelector) {
+		final JFileChooser fileChooser = getFileChooser(getFileFilter(), useDirectorySelector);
+		return fileChooser;
 	}
 
 	public FileFilter getFileFilter() {
 		return filefilter;
 	};
 
+	protected JComponent createDirectorySelector(final JFileChooser chooser) {
+		final JComboBox box = new JComboBox();
+		box.setEditable(false);
+		final File dir = getLastCurrentDir() != null ?  getLastCurrentDir() : chooser.getCurrentDirectory();
+		final File templateDir = defaultStandardTemplateDir();
+		final File userTemplateDir = defaultUserTemplateDir();
+		box.addItem(new NamedObject(dir, TextUtils.getText("current_dir")));
+		box.addItem(new NamedObject(templateDir, TextUtils.getText("template_dir")));
+		box.addItem(new NamedObject(userTemplateDir, TextUtils.getText("user_template_dir")));
+		box.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final JComboBox box = (JComboBox) e.getSource();
+				final NamedObject obj = (NamedObject) box.getSelectedItem();
+				final File dir = (File) obj.getObject();
+				chooser.setCurrentDirectory(dir);
+			}
+		});
+		File selectedDir = chooser.getCurrentDirectory();
+		final String selectedPath = selectedDir.getAbsolutePath();
+		if(! selectedDir.equals(dir)){
+			for(int i = 0; i < box.getItemCount(); i++){
+				NamedObject item = (NamedObject) box.getItemAt(i);
+				File itemDir = (File) item.getObject();
+				if(itemDir.getAbsolutePath().equals(selectedPath)){
+					box.setSelectedItem(item);
+					break;
+				}
+			}
+		}
+		return box;
+	}
 	/**
 	 * Creates a proposal for a file name to save the map. Removes all illegal
 	 * characters. Fixed: When creating file names based on the text of the root
@@ -454,7 +497,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public void open() {
-		final JFileChooser chooser = getFileChooser();
+		final JFileChooser chooser = getFileChooser(true);
 		chooser.setMultiSelectionEnabled(true);
 		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -488,14 +531,24 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	private File[] defaultTemplateFiles() {
-	    final String resourceBaseDir = ResourceController.getResourceController().getResourceBaseDir();
-		final File allUserTemplates = new File(resourceBaseDir, "templates");
-		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
-		final File userTemplates = new File(userDir, "templates");
+	    final File allUserTemplates = defaultStandardTemplateDir();
+		final File userTemplates = defaultUserTemplateDir();
 		File[] files = new File[]{
 				new File(userTemplates, getStandardTemplateName()),
 				new File(allUserTemplates, getStandardTemplateName())};
 	    return files;
+    }
+
+	private File defaultUserTemplateDir() {
+	    final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
+		final File userTemplates = new File(userDir, "templates");
+	    return userTemplates;
+    }
+
+	private File defaultStandardTemplateDir() {
+	    final String resourceBaseDir = ResourceController.getResourceController().getResourceBaseDir();
+		final File allUserTemplates = new File(resourceBaseDir, "templates");
+	    return allUserTemplates;
     }
 
 	private String getStandardTemplateName() {
@@ -508,10 +561,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			file = getLastCurrentDir();
 		}
 		else if(startFile.isDirectory()){
-			final JFileChooser chooser = new JFileChooser();
-			final FileFilter filter = getFileFilter();
-			chooser.addChoosableFileFilter(filter);
-			chooser.setFileFilter(filter);
+			final JFileChooser chooser = getFileChooser(true);
 			chooser.setCurrentDirectory(startFile);
 			final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getMapView());
 			if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -537,8 +587,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final FileFilter filter = getFileFilter();
 		chooser.addChoosableFileFilter(filter);
 		chooser.setFileFilter(filter);
-		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
-		final File userTemplates = new File(userDir, "templates");
+		final File userTemplates = defaultUserTemplateDir();
 		chooser.setCurrentDirectory(userTemplates);
 		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -604,7 +653,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 * Save as; return false is the action was cancelled
 	 */
 	public boolean saveAs(final MapModel map) {
-		final JFileChooser chooser = getFileChooser();
+		final JFileChooser chooser = getFileChooser(true);
 		if (getMapsParentFile() == null) {
 			chooser.setSelectedFile(new File(getFileNameProposal(map)
 			        + org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION));

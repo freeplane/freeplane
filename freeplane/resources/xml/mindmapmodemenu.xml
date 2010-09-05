@@ -5,7 +5,6 @@
 			<menu_category name="open">
 				<menu_action action="NewMapAction" accelerator="control N" />
 				<menu_action action="NewMapFromTemplateAction"/>
-				<menu_action action="new_map_from_all_user_templates" />
 				<menu_action action="new_map_from_user_templates" />
 				<menu_action action="OpenAction" accelerator="control O" />
 				<menu_action action="SaveAction" accelerator="control S" />

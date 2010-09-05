@@ -19,6 +19,9 @@
  */
 package org.freeplane.features.common.url;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.HeadlessException;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,7 +38,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.xml.transform.Result;
@@ -179,13 +187,27 @@ public class UrlManager implements IExtension {
 
 	/**
 	 * Creates a file chooser with the last selected directory as default.
+	 * @param useDirectorySelector TODO
 	 */
-	public JFileChooser getFileChooser(final FileFilter filter) {
-		final JFileChooser chooser = new JFileChooser();
+	@SuppressWarnings("serial")
+    public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector) {
 		final File parentFile = getMapsParentFile();
 		if (parentFile != null && getLastCurrentDir() == null) {
 			setLastCurrentDir(parentFile);
 		}
+		final JFileChooser chooser = new JFileChooser(){
+ 			@Override
+            protected JDialog createDialog(Component parent) throws HeadlessException {
+	            final JDialog dialog = super.createDialog(parent);
+	            final JComponent selector = createDirectorySelector(this);
+	            if(selector != null){
+	            	dialog.getContentPane().add(selector, BorderLayout.NORTH);
+	            	dialog.pack();
+	            }
+				return dialog;
+            }
+
+		};
 		if (getLastCurrentDir() != null) {
 			chooser.setCurrentDirectory(getLastCurrentDir());
 		}
@@ -196,6 +218,9 @@ public class UrlManager implements IExtension {
 		return chooser;
 	}
 
+	protected JComponent createDirectorySelector(JFileChooser chooser) {
+        return null;
+    }
 	public File getLastCurrentDir() {
 		return lastCurrentDir;
 	}

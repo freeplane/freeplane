@@ -481,7 +481,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 
 	protected JFileChooser getFileChooser() {
 		final JFileChooser chooser = UrlManager.getController().getFileChooser(
-		    MindMapFilterFileFilter.filter);
+		    MindMapFilterFileFilter.filter, false);
 		return chooser;
 	}
 
