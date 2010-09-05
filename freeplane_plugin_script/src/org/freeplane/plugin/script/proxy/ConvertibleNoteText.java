@@ -4,15 +4,12 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.note.NoteModel;
 
-/**
- * Notes are special since they have HTML text. For conversions to other type than String we use the plain note text.
- * for {@link #getString()}, {@link #getText()} and {@link #toString()} we use the HTML text.
- */
+/** Uses plain note text as a basis for conversions. */
 public class ConvertibleNoteText extends Convertible {
 	private final NodeModel nodeModel;
 
 	public ConvertibleNoteText(NodeModel nodeModel) {
-		super(htmlToPlain(nodeModel));
+		super(FormulaUtils.evalNoteText(nodeModel, htmlToPlain(nodeModel)));
 		this.nodeModel = nodeModel;
 	}
 
@@ -23,10 +20,6 @@ public class ConvertibleNoteText extends Convertible {
 
 	private static String getHtmlNote(NodeModel nodeModel) {
 		return NoteModel.getNoteText(nodeModel);
-	}
-
-	public Convertible getValue() {
-		return new Convertible(FormulaUtils.evalNoteText(nodeModel, getText()));
 	}
 
 	/** returns the original HTML text. */
