@@ -497,7 +497,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public void open() {
-		final JFileChooser chooser = getFileChooser(true);
+		final JFileChooser chooser = getFileChooser(false);
 		chooser.setMultiSelectionEnabled(true);
 		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
