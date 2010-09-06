@@ -32,8 +32,6 @@ import org.freeplane.plugin.script.proxy.Proxy.Connector;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeProxy extends AbstractProxy<NodeModel> implements Node {
-	private Tracer tracer = new Tracer();
-
 	public NodeProxy(final NodeModel node) {
 		super(node);
 	}
@@ -116,7 +114,6 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public List<Proxy.Node> getChildren() {
-		tracer.accessedChildrenOf(getDelegate());
 		return new ArrayList<Proxy.Node>(new AbstractList<Proxy.Node>() {
 			@Override
 			public Proxy.Node get(final int index) {
@@ -191,7 +188,6 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public Proxy.Node getParent() {
-		tracer.accessedParent(getDelegate());
 		final NodeModel parentNode = getDelegate().getParentNode();
 		return parentNode != null ? new NodeProxy(parentNode) : null;
 	}
@@ -231,8 +227,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public Convertible getValue() {
-		final NodeModel nodeModel = getDelegate();
-		return new Convertible(FormulaUtils.evalNodeText(nodeModel));
+		return getTo();
 	}
 
 	// NodeRO: R

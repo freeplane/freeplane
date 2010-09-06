@@ -25,16 +25,9 @@ import org.junit.Test;
 public class ConvertibleTest {
 	/** provides an easy mean to create a Convertible with a null text. */
 	public static final class TestConvertible extends Convertible {
-		private NodeModel nodeModel;
-
 		public TestConvertible(NodeModel nodeModel, String text) {
-			super(text);
-			this.nodeModel = nodeModel;
-		}
-
-		public Convertible getValue() {
 			// some eval method that allows to directly hand in the text
-			return new Convertible(FormulaUtils.evalAttributeText(nodeModel, getText()));
+			super(FormulaUtils.evalAttributeText(nodeModel, text));
 		}
 	}
 
@@ -149,7 +142,8 @@ public class ConvertibleTest {
 	@Test
 	public void testGetObject() throws ConversionException {
 		assertEquals(null, convertible(null).getObject());
-		assertEquals(new Integer(3), convertible("= 1 + 2").getObject());
+		// Convertibles contain the evaluated text
+		assertEquals(new Long(3), convertible("= 1 + 2").getObject());
 		assertEquals(new Long(1234567890), convertible("1234567890").getObject());
 		assertEquals(new Double(0.00001), convertible("0.00001").getObject());
 		assertEquals(date("2010-12-24 23:59:59"), convertible("2010-12-24 23:59:59").getObject());
@@ -173,7 +167,7 @@ public class ConvertibleTest {
 	@Test
 	public void testIsNum() throws ConversionException {
 		assertFalse(convertible(null).isNum());
-		assertFalse(convertible("= 1 + 2").isNum());
+		assertTrue("Convertibles contain evaluated text", convertible("= 1 + 2").isNum());
 		assertTrue(convertible("0x1f").isNum());
 		assertTrue(convertible("-0x1F").isNum());
 		assertFalse("this is a known NumberUtils bug - use 0x encoding instead", convertible("#1F").isNum());

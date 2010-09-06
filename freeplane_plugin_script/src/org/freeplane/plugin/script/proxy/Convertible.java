@@ -30,6 +30,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	        + "(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?");
 	private final String text;
 
+	/** doesn't evaluate formulas since this would require a calculation rule or NodeModel. */
 	public Convertible(String text) {
 		this.text = text;
 	}
@@ -136,7 +137,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	/**
 	 * Uses the following priority ranking to determine the type of the text:
 	 * <ol>
-	 * <li>Formula: evaluation result
+	 * <li>null
 	 * <li>Long
 	 * <li>Double
 	 * <li>Date
@@ -147,8 +148,6 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	public Object getObject() {
 		if (text == null)
 			return null;
-		if (text.length() > 1 && text.charAt(0) == '=')
-			return getValue();
 		try {
 			return getNum();
 		}
@@ -160,11 +159,6 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 				return text;
 			}
 		}
-	}
-
-	/** without a calculation rule or NodeModel - there's nothing to evaluate. */
-	public Convertible getValue() {
-		return new Convertible(text);
 	}
 
 	/** returns true if the text is convertible to number. */

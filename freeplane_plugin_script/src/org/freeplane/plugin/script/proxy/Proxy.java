@@ -437,17 +437,16 @@ public interface Proxy {
 		int getNodeLevel(boolean countHidden);
 
 		/**
-		 * Returns the note text as a flexible Convertible objects. Convertibles behave like Strings in most respects
-		 * but note that while Convertible tries to be a String replacement, String itself does not know about
-		 * Convertible so 
-		 * @return Convertible For conversions to <em>all other types than String</em> we use the plain note text.
-		 *         for getString(), getText() and toString() we use the HTML text.
+		 * Returns a Convertible object for the plain not text. Convertibles behave like Strings in most respects.
+		 * Additionally String methods are overridden to handle Convertible arguments as if the argument were the
+		 * result of Convertible.getText().
+		 * @return Convertible getString(), getText() and toString() will return plain text instead of the HTML.
+		 *         Use {@link #getNoteText()} to get the HTML text.
 		 * @since 1.2
 		 */
 		Convertible getNote();
 		
-		/** Returns the HTML text of the node. (Notes always contain HTML text.) Alternatively use
-		 * getNote().getText() or node.note.text */
+		/** Returns the HTML text of the node. (Notes always contain HTML text.) */
 		String getNoteText();
 
 		/** @since 1.2 */
@@ -467,12 +466,11 @@ public interface Proxy {
 
 		String getText();
 
-		/** returns an object that performs conversions (name is choosen to give descriptive code):
+		/**
+		 * returns an object that performs conversions (method name is choosen to give descriptive code):
 		 * <dl>
 		 * <dt>node.to.num <dd>Long or Double, see {@link Convertible#getDate()}.
 		 * <dt>node.to.date <dd>Date, see {@link Convertible#getDate()}.
-		 * <dt>node.to.value <dd>Text or, in case of a formula the evaluation result,
-		 *     see {@link Convertible#getValue()}.
 		 * <dt>node.to.string <dd>Text, see {@link Convertible#getString()}.
 		 * <dt>node.to.text <dd>an alias for getString(), see {@link Convertible#getText()}.
 		 * <dt>node.to.object <dd>returns what fits best, see {@link Convertible#getObject()}.
@@ -483,7 +481,7 @@ public interface Proxy {
 		 */
 		Convertible getTo();
 
-		/** returns node.text or, in case of a formula the evaluation result. @since 1.2 */
+		/** an alias for {@link #getTo()}. @since 1.2 */
 		Convertible getValue();
 
 		/** returns true if p is a parent, or grandparent, ... of this node, or if it <em>is equal<em>
@@ -575,7 +573,7 @@ public interface Proxy {
 		 *   assert node.note.text == null
 		 * </pre>
 		 * @param value An object for conversion to String. Works well for all types that {@link Convertible}
-		 *        handles, especially {@link Convertible}s itself.
+		 *        handles, particularly {@link Convertible}s itself.
 		 * @since 1.2 (note that the old setNoteText() did not support non-String arguments.
 		 */
 		void setNote(Object value);
@@ -604,7 +602,7 @@ public interface Proxy {
 		 *   assert node.to.date == date
 		 * </pre>
 		 * @param value A not-null object for conversion to String. Works well for all types that {@link Convertible}
-		 *        handles, especially {@link Convertible}s itself.
+		 *        handles, particularly {@link Convertible}s itself.
 		 */
 		void setText(Object value);
 
@@ -647,7 +645,7 @@ public interface Proxy {
 		 *   assert node.attributes.find("removed attribute") == -1
 		 * </pre>
 		 * @param value An object for conversion to String. Works well for all types that {@link Convertible}
-		 *        handles, especially {@link Convertible}s itself. Use null to unset an attribute.
+		 *        handles, particularly {@link Convertible}s itself. Use null to unset an attribute.
 		 * @return the new value
 		 */
 		String putAt(String attributeName, Object value);
@@ -661,8 +659,7 @@ public interface Proxy {
 		 *   node.attributes = ["one attrib" : new Double(1.22)] // replace all attributes
 		 *   assert node.attributes.size() == 1
 		 *   assert node.attributes.getFirst("one attrib") == "1.22" // note the type conversion
-		 *   assert node["one attrib"] == "1.22"
-		 *   node["one attrib"] = "1.22" // here we compare Convertible with String
+		 *   assert node["one attrib"] == "1.22" // here we compare Convertible with String
 		 * </pre>
 		 */
 		void setAttributes(java.util.Map<String, Object> attributes);
