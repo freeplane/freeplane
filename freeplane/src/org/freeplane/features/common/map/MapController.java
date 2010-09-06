@@ -605,6 +605,7 @@ public class MapController extends SelectionController {
 
 	protected MapModel newModel(final NodeModel root) {
 		final MapModel mindMapMapModel = new MapModel(root);
+		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}
 
