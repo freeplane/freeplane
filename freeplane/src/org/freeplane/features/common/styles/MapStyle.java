@@ -295,7 +295,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     }
 
 	public void copyStyle(final URL source, final MapModel targetMap, boolean undoable) {
-	    final MapModel styleMapContainer = new MapModel(null);
+	    final MapModel styleMapContainer = Controller.getCurrentModeController().getMapController().newModel(null);
 		final IExtension oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
 		UrlManager.getController().loadImpl(source, styleMapContainer);
 		onCreate(styleMapContainer);
