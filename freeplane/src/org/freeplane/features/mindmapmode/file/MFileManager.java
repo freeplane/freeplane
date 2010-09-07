@@ -78,6 +78,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapChangeEvent;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -96,6 +97,7 @@ import com.sun.corba.se.spi.activation.InitialNameServicePackage.NameAlreadyBoun
  * @author Dimitry Polivaev
  */
 public class MFileManager extends UrlManager implements IMapViewChangeListener {
+	private static final boolean SET_NEW_MAP_SAVED = true;
 	private static final String BACKUP_EXTENSION = "bak";
 	private static final String BACKUP_DIR = ".backup";
 	// FIXME: set to 0!!!
@@ -527,7 +529,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				return;
 			}
 		}
-		Controller.getCurrentModeController().getMapController().newMap(((NodeModel) null));
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
+		final MapModel map = mapController.newMap(((NodeModel) null));
+		mapController.setSaved(map, SET_NEW_MAP_SAVED);
 	}
 
 	private File[] defaultTemplateFiles() {
@@ -575,7 +579,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		try {
 			Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(file), true);
 			final Controller controller = Controller.getCurrentController();
-			controller.getModeController().getMapController().setSaved(controller.getMap(), false);
+			controller.getModeController().getMapController().setSaved(controller.getMap(), SET_NEW_MAP_SAVED);
 		}
 		catch (Exception e) {
 			handleLoadingException(e);
