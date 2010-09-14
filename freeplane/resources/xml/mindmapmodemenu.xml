@@ -192,6 +192,12 @@
 			</menu_category>
 			<menu_category name="clouds">
 				<menu_action action="CloudColorAction" />
+				<menu_submenu name="shapes" name_ref="format_menu_cloud_shapes">
+					<menu_radio_action action="CloudShapeAction.ARC" />
+					<menu_radio_action action="CloudShapeAction.STAR" />
+					<menu_radio_action action="CloudShapeAction.RECT" />
+					<menu_radio_action action="CloudShapeAction.ROUND_RECT" />
+				</menu_submenu>
 			</menu_category>
 			<menu_separator />
 			<menu_category name="edges">

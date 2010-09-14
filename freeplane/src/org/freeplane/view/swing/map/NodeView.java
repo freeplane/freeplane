@@ -63,6 +63,7 @@ import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
+import org.freeplane.view.swing.map.cloud.CloudViewFactory;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.EdgeViewFactory;
 
@@ -280,8 +281,9 @@ public class NodeView extends JComponent implements INodeView {
 			if (byChildren) {
 				final ModeController modeController = getMap().getModeController();
 				final CloudController cloudController = CloudController.getController(modeController);
-				if (cloudController.cloudExist(getModel())) {
-					additionalDistanceForConvexHull += CloudView.getAdditionalHeigth(this) / 5;
+				final CloudModel cloud = cloudController.getCloud(getModel());
+				if (cloud != null) {
+					additionalDistanceForConvexHull += CloudView.getAdditionalHeigth(cloud, this) / 5;
 				}
 			}
 			final int x = transX + getContent().getX() - getDeltaX();
@@ -965,7 +967,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (cloudModel == null) {
 			return;
 		}
-		final CloudView cloud = new CloudView(cloudModel, this);
+		final CloudView cloud = new CloudViewFactory().createCloudView(cloudModel, this);
 		cloud.paint(g);
 	}
 

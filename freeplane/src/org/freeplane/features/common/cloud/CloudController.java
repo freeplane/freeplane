@@ -32,6 +32,7 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.cloud.CloudModel.Shape;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
@@ -169,4 +170,8 @@ public class CloudController implements IExtension {
 		return cloudHandlers.getProperty(model);
 	}
 
+	public Shape getShape(NodeModel node) {
+		final CloudModel cloud = getCloud(node);
+		return cloud != null ? cloud.getShape() : null;
+    }
 }

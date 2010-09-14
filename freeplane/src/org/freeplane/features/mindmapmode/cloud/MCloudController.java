@@ -26,6 +26,7 @@ import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
+import org.freeplane.features.common.cloud.CloudModel.Shape;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -50,6 +51,7 @@ public class MCloudController extends CloudController {
 			}
 			final CloudModel toStyle = CloudModel.createModel(to);
 			toStyle.setColor(fromStyle.getColor());
+			toStyle.setShape(fromStyle.getShape());
 		}
 
 		public void remove(final Object key, final NodeModel from) {
@@ -80,6 +82,9 @@ public class MCloudController extends CloudController {
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		modeController.addAction(new CloudAction());
 		modeController.addAction(new CloudColorAction());
+		for(Shape shape : Shape.values()){
+				modeController.addAction(new CloudShapeAction(shape));
+		}
 	}
 
 	public void setCloud(final NodeModel node, final boolean enable) {
@@ -148,6 +153,31 @@ public class MCloudController extends CloudController {
 
 			public void undo() {
 				CloudModel.getModel(node).setColor(oldColor);
+				modeController.getMapController().nodeChanged(node);
+			}
+		};
+		modeController.execute(actor, node.getMap());
+	}
+
+	public void setShape(final NodeModel node, final CloudModel.Shape shape) {
+		setCloud(node, true);
+		final ModeController modeController = Controller.getCurrentModeController();
+		final CloudModel.Shape oldShape = CloudModel.getModel(node).getShape();
+		if (shape == oldShape || shape != null && shape.equals(oldShape)) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				CloudModel.getModel(node).setShape(shape);
+				modeController.getMapController().nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setShape";
+			}
+
+			public void undo() {
+				CloudModel.getModel(node).setShape(oldShape);
 				modeController.getMapController().nodeChanged(node);
 			}
 		};

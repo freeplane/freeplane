@@ -77,6 +77,12 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElem
 				cloud.setColor(ColorUtils.stringToColor(value.toString()));
 			}
 		});
+		reader.addAttributeHandler("cloud", "SHAPE", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final CloudModel cloud = (CloudModel) userObject;
+				cloud.setShape(CloudModel.Shape.valueOf(value));
+			}
+		});
 		reader.addAttributeHandler("cloud", "WIDTH", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				//				final CloudModel cloud = (CloudModel) userObject;
@@ -129,6 +135,10 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElem
 		final Color color = model.getColor();
 		if (color != null) {
 			cloud.setAttribute("COLOR", ColorUtils.colorToString(color));
+		}
+		final CloudModel.Shape shape = model.getShape();
+		if (shape != null) {
+			cloud.setAttribute("SHAPE", shape.toString());
 		}
 		//		final int width = model.getWidth();
 		//		if (width != CloudController.DEFAULT_WIDTH) {

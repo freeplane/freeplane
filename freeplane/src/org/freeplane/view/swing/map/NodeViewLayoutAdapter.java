@@ -27,6 +27,7 @@ import java.awt.Point;
 import javax.swing.JComponent;
 
 import org.freeplane.features.common.cloud.CloudController;
+import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.view.swing.map.cloud.CloudView;
@@ -320,8 +321,9 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 		}
 		final ModeController modeController = node.getMap().getModeController();
 		final CloudController cloudController = CloudController.getController(modeController);
-		if (cloudController.cloudExist(getModel())) {
-			return CloudView.getAdditionalHeigth(node);
+		final CloudModel cloud = cloudController.getCloud(node.getModel());
+		if (cloud != null) {
+			return CloudView.getAdditionalHeigth(cloud, node);
 		}
 		else {
 			return 0;

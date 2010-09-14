@@ -45,6 +45,7 @@ import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.FontProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.core.resources.components.NextLineProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.util.TextUtils;
@@ -229,6 +230,26 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
+	private class CloudShapeChangeListener extends ChangeListener {
+		public CloudShapeChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node,
+				final PropertyChangeEvent evt) {
+			final MCloudController styleController = (MCloudController) Controller
+					.getCurrentModeController().getExtension(
+						CloudController.class);
+			if (enabled) {
+				styleController.setShape(node, CloudModel.Shape.valueOf(mCloudShape.getValue()));
+			}
+			else {
+				styleController.setCloud(node, false);
+			}
+		}
+	}
+
 	private abstract class ChangeListener implements PropertyChangeListener {
 		final private IPropertyControl mProperty;
 		final private BooleanProperty mSet;
@@ -266,7 +287,9 @@ public class StyleEditorPanel extends JPanel {
 	private static final String CLOUD_COLOR = "cloudcolor";
 	private static final String EDGE_COLOR = "edgecolor";
 	private static final String EDGE_STYLE = "edgestyle";
+	private static final String CLOUD_SHAPE = "cloudshape";
 	private static final String[] EDGE_STYLES = StyleEditorPanel.initializeEdgeStyles();
+	private static final String[] CLOUD_SHAPES = StyleEditorPanel.initializeCloudShapes();
 	private static final String EDGE_WIDTH = "edgewidth";
 	private static final String[] EDGE_WIDTHS = new String[] { "EdgeWidth_thin", "EdgeWidth_1", "EdgeWidth_2",
 	        "EdgeWidth_4", "EdgeWidth_8" };
@@ -283,20 +306,8 @@ public class StyleEditorPanel extends JPanel {
 	* 
 	*/
 	private static final long serialVersionUID = 1L;
-	private static final String SET_CLOUD_COLOR = StyleEditorPanel.SET_RESOURCE;
-	private static final String SET_EDGE_COLOR = StyleEditorPanel.SET_RESOURCE;
-	private static final String SET_EDGE_STYLE = StyleEditorPanel.SET_RESOURCE;
-	private static final String SET_EDGE_WIDTH = StyleEditorPanel.SET_RESOURCE;
-//	private static final String SET_ICON = StyleEditorPanel.SET_RESOURCE;
-	private static final String SET_NODE_BACKGROUND_COLOR = StyleEditorPanel.SET_RESOURCE;
-	private static final String SET_NODE_COLOR = StyleEditorPanel.SET_RESOURCE;
-	private static final String SET_NODE_FONT_BOLD = StyleEditorPanel.SET_RESOURCE;
-	private static final String SET_NODE_FONT_ITALIC = StyleEditorPanel.SET_RESOURCE;
-	private static final String SET_NODE_FONT_NAME = StyleEditorPanel.SET_RESOURCE;
-	private static final String SET_NODE_FONT_SIZE = StyleEditorPanel.SET_RESOURCE;
-	private static final String SET_NODE_STYLE = StyleEditorPanel.SET_RESOURCE;
 	private static final String SET_RESOURCE = "set_property_text";
-
+	
 	private static String[] initializeEdgeStyles() {
 		final EdgeStyle[] enumConstants = EdgeStyle.class.getEnumConstants();
 		final String[] strings = new String[enumConstants.length];
@@ -306,8 +317,18 @@ public class StyleEditorPanel extends JPanel {
 		return strings;
 	}
 
+	private static String[] initializeCloudShapes() {
+		final CloudModel.Shape[] enumConstants = CloudModel.Shape.class.getEnumConstants();
+		final String[] strings = new String[enumConstants.length];
+		for (int i = 0; i < enumConstants.length; i++) {
+			strings[i] = enumConstants[i].toString();
+		}
+		return strings;
+	}
+
 	private boolean internalChange;
 	private ColorProperty mCloudColor;
+	private ComboProperty mCloudShape;
 	private List<IPropertyControl> mControls;
 	private ColorProperty mEdgeColor;
 	private ComboProperty mEdgeStyle;
@@ -320,7 +341,7 @@ public class StyleEditorPanel extends JPanel {
 	private FontProperty mNodeFontName;
 	private ComboProperty mNodeFontSize;
 	private ComboProperty mNodeShape;
-	private BooleanProperty mSetCloudColor;
+	private BooleanProperty mSetCloud;
 	private BooleanProperty mSetEdgeColor;
 	private BooleanProperty mSetEdgeStyle;
 	private BooleanProperty mSetEdgeWidth;
@@ -347,7 +368,7 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void addBgColorControl(final List<IPropertyControl> controls) {
-		mSetNodeBackgroundColor = new BooleanProperty(StyleEditorPanel.SET_NODE_BACKGROUND_COLOR);
+		mSetNodeBackgroundColor = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeBackgroundColor);
 		mNodeBackgroundColor = new ColorProperty(StyleEditorPanel.NODE_BACKGROUND_COLOR, ResourceController
 		    .getResourceController().getDefaultProperty(NODE_BACKGROUND_COLOR));
@@ -358,18 +379,18 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void addCloudColorControl(final List<IPropertyControl> controls) {
-		mSetCloudColor = new BooleanProperty(StyleEditorPanel.SET_CLOUD_COLOR);
-		controls.add(mSetCloudColor);
+		mSetCloud = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetCloud);
 		mCloudColor = new ColorProperty(StyleEditorPanel.CLOUD_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
 		controls.add(mCloudColor);
-		final CloudColorChangeListener listener = new CloudColorChangeListener(mSetCloudColor, mCloudColor);
-		mSetCloudColor.addPropertyChangeListener(listener);
+		final CloudColorChangeListener listener = new CloudColorChangeListener(mSetCloud, mCloudColor);
+		mSetCloud.addPropertyChangeListener(listener);
 		mCloudColor.addPropertyChangeListener(listener);
 	}
 
 	private void addColorControl(final List<IPropertyControl> controls) {
-		mSetNodeColor = new BooleanProperty(StyleEditorPanel.SET_NODE_COLOR);
+		mSetNodeColor = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeColor);
 		mNodeColor = new ColorProperty(StyleEditorPanel.NODE_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(NODE_TEXT_COLOR));
@@ -380,7 +401,7 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void addEdgeColorControl(final List<IPropertyControl> controls) {
-		mSetEdgeColor = new BooleanProperty(StyleEditorPanel.SET_EDGE_COLOR);
+		mSetEdgeColor = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetEdgeColor);
 		mEdgeColor = new ColorProperty(StyleEditorPanel.EDGE_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(EdgeController.RESOURCES_EDGE_COLOR));
@@ -391,7 +412,7 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void addEdgeStyleControl(final List<IPropertyControl> controls) {
-		mSetEdgeStyle = new BooleanProperty(StyleEditorPanel.SET_EDGE_STYLE);
+		mSetEdgeStyle = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetEdgeStyle);
 		mEdgeStyle = new ComboProperty(StyleEditorPanel.EDGE_STYLE, EDGE_STYLES);
 		controls.add(mEdgeStyle);
@@ -400,8 +421,16 @@ public class StyleEditorPanel extends JPanel {
 		mEdgeStyle.addPropertyChangeListener(listener);
 	}
 
+	private void addCloudShapeControl(final List<IPropertyControl> controls) {
+		mCloudShape = new ComboProperty(StyleEditorPanel.CLOUD_SHAPE, CLOUD_SHAPES);
+		controls.add(mCloudShape);
+		final CloudShapeChangeListener listener = new CloudShapeChangeListener(mSetCloud, mCloudShape);
+		mSetCloud.addPropertyChangeListener(listener);
+		mCloudShape.addPropertyChangeListener(listener);
+	}
+
 	private void addEdgeWidthControl(final List<IPropertyControl> controls) {
-		mSetEdgeWidth = new BooleanProperty(StyleEditorPanel.SET_EDGE_WIDTH);
+		mSetEdgeWidth = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetEdgeWidth);
 		mEdgeWidth = new ComboProperty(StyleEditorPanel.EDGE_WIDTH, EDGE_WIDTHS);
 		controls.add(mEdgeWidth);
@@ -411,7 +440,7 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void addFontBoldControl(final List<IPropertyControl> controls) {
-		mSetNodeFontBold = new BooleanProperty(StyleEditorPanel.SET_NODE_FONT_BOLD);
+		mSetNodeFontBold = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeFontBold);
 		mNodeFontBold = new BooleanProperty(StyleEditorPanel.NODE_FONT_BOLD);
 		controls.add(mNodeFontBold);
@@ -421,7 +450,7 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void addFontItalicControl(final List<IPropertyControl> controls) {
-		mSetNodeFontItalic = new BooleanProperty(StyleEditorPanel.SET_NODE_FONT_ITALIC);
+		mSetNodeFontItalic = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeFontItalic);
 		mNodeFontItalic = new BooleanProperty(StyleEditorPanel.NODE_FONT_ITALIC);
 		controls.add(mNodeFontItalic);
@@ -431,7 +460,7 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void addFontNameControl(final List<IPropertyControl> controls) {
-		mSetNodeFontName = new BooleanProperty(StyleEditorPanel.SET_NODE_FONT_NAME);
+		mSetNodeFontName = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeFontName);
 		mNodeFontName = new FontProperty(StyleEditorPanel.NODE_FONT_NAME);
 		controls.add(mNodeFontName);
@@ -441,7 +470,7 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void addFontSizeControl(final List<IPropertyControl> controls) {
-		mSetNodeFontSize = new BooleanProperty(StyleEditorPanel.SET_NODE_FONT_SIZE);
+		mSetNodeFontSize = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeFontSize);
 		final List<String> sizesVector = new ArrayList<String>(Arrays.asList(sizes));
 		mNodeFontSize = new ComboProperty(StyleEditorPanel.NODE_FONT_SIZE, sizesVector, sizesVector);
@@ -452,7 +481,7 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void addNodeShapeControl(final List<IPropertyControl> controls) {
-		mSetNodeShape = new BooleanProperty(StyleEditorPanel.SET_NODE_STYLE);
+		mSetNodeShape = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeShape);
 		mNodeShape = new ComboProperty(StyleEditorPanel.NODE_SHAPE, new String[] { "fork", "bubble", "as_parent",
 		        "combined" });
@@ -483,6 +512,9 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.CloudControls"));
 		addCloudColorControl(controls);
+		controls.add(new NextLineProperty());
+		controls.add(new NextColumnProperty(2));
+		addCloudShapeControl(controls);
 		return controls;
 	}
 
@@ -583,12 +615,18 @@ public class StyleEditorPanel extends JPanel {
 				mEdgeWidth.setValue(transformEdgeWidth(viewWidth));
 				mEdgeWidth.setEnabled(mSetEdgeWidth.getBooleanValue());
 			}
-			final CloudController cloudController = CloudController.getController();
-			final CloudModel cloudModel = CloudModel.getModel(node);
-			final Color viewCloudColor = cloudController.getColor(node);
-			mSetCloudColor.setValue(cloudModel != null);
-			mCloudColor.setColorValue(viewCloudColor);
-			mCloudColor.setEnabled(mSetCloudColor.getBooleanValue());
+			{
+				final CloudController cloudController = CloudController.getController();
+				final CloudModel cloudModel = CloudModel.getModel(node);
+				final Color viewCloudColor = cloudController.getColor(node);
+				mSetCloud.setValue(cloudModel != null);
+				mCloudColor.setColorValue(viewCloudColor);
+				mCloudColor.setEnabled(mSetCloud.getBooleanValue());
+
+				final CloudModel.Shape viewCloudShape = cloudController.getShape(node);
+				mCloudShape.setValue(viewCloudShape != null ? viewCloudShape.toString() : CloudModel.Shape.ARC.toString());
+				mCloudShape.setEnabled(mSetCloud.getBooleanValue());
+			}
 			{
 				final String fontFamilyName = NodeStyleModel.getFontFamilyName(node);
 				final String viewFontFamilyName = styleController.getFontFamilyName(node);
