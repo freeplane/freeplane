@@ -81,7 +81,7 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 				final List<ISelectableCondition> conditions = filterComposerDialog.getConditions();
 				int row = conditionalStyleTable.getRowCount();
 				for(final ISelectableCondition condition : conditions){
-					LogicalStyleController.getController().addConditionalStyle(map, true, condition, MapStyleModel.DEFAULT_STYLE);
+					LogicalStyleController.getController().addConditionalStyle(map, true, condition, MapStyleModel.DEFAULT_STYLE, false);
 				}
 				if(row < conditionalStyleTable.getRowCount()){
 					conditionalStyleTable.setRowSelectionInterval(row, row);

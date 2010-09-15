@@ -212,6 +212,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		final Vector<XMLElement> styleElements = conditionalStylesRoot.getChildrenNamed("conditional_style");
 		for(XMLElement styleElement : styleElements){
 			final boolean isActive = Boolean.valueOf(styleElement.getAttribute("ACTIVE", "false"));
+			final boolean isLast = Boolean.valueOf(styleElement.getAttribute("LAST", "false"));
 			String styleText = styleElement.getAttribute("LOCALIZED_STYLE_REF", null);
 			final IStyle style;
 			if(styleText != null){
@@ -222,7 +223,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			}
 			final XMLElement conditionElement = styleElement.getChildAtIndex(0);
 			final ISelectableCondition condition = conditionFactory.loadCondition(conditionElement);
-			conditionalStyleModel.addCondition(isActive, condition, style);
+			conditionalStyleModel.addCondition(isActive, condition, style, isLast);
 		}
     }
 	private void saveConditinalStyles(ConditionalStyleModel conditionalStyleModel, XMLElement parent) {
@@ -244,6 +245,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			else {
 				itemElement.setAttribute("STYLE_REF", referencedStyle);
 			}
+			itemElement.setAttribute("LAST", Boolean.toString(item.isLast()));
 			item.getCondition().toXml(itemElement);
 		}
 	    

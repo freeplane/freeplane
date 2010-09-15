@@ -66,8 +66,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 		}
 
 		public void undo() {
-			MLogicalStyleController.super.insertConditionalStyle(map, index, item.isActive(), item.getCondition(), item
-			    .getStyle());
+			MLogicalStyleController.super.insertConditionalStyle(map, index, item.isActive(), item.getCondition(), 
+				item.getStyle(), item.isLast());
 		}
 
 		public String getDescription() {
@@ -84,12 +84,14 @@ public class MLogicalStyleController extends LogicalStyleController {
 		private final boolean isActive;
 		private final ISelectableCondition condition;
 		private final IStyle style;
+		private boolean isLast;
 
-		public AddConditionalStyleActor(MapModel map, boolean isActive, ISelectableCondition condition, IStyle style) {
+		public AddConditionalStyleActor(MapModel map, boolean isActive, ISelectableCondition condition, IStyle style, boolean isLast) {
 			this.map = map;
 			this.isActive = isActive;
 			this.condition = condition;
 			this.style = style;
+			this.isLast = isLast;
 		}
 
 		public void undo() {
@@ -102,7 +104,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		}
 
 		public void act() {
-			MLogicalStyleController.super.addConditionalStyle(map, isActive, condition, style);
+			MLogicalStyleController.super.addConditionalStyle(map, isActive, condition, style, isLast);
 		}
 	}
 
@@ -361,8 +363,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	@Override
-	public void addConditionalStyle(MapModel map, boolean isActive, ISelectableCondition condition, IStyle style) {
-		AddConditionalStyleActor actor = new AddConditionalStyleActor(map, isActive, condition, style);
+	public void addConditionalStyle(MapModel map, boolean isActive, ISelectableCondition condition, IStyle style, boolean isLast) {
+		AddConditionalStyleActor actor = new AddConditionalStyleActor(map, isActive, condition, style, isLast);
 		Controller.getCurrentModeController().execute(actor, map);
 	}
 

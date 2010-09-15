@@ -219,13 +219,13 @@ public class LogicalStyleController implements IExtension {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		styleModel.getConditionalStyleModel().moveUp(index);
 	}
-	public void addConditionalStyle(final MapModel map, boolean isActive, ISelectableCondition condition, IStyle style){
+	public void addConditionalStyle(final MapModel map, boolean isActive, ISelectableCondition condition, IStyle style, boolean isLast){
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		styleModel.getConditionalStyleModel().addCondition(isActive, condition, style);
+		styleModel.getConditionalStyleModel().addCondition(isActive, condition, style, isLast);
 	}
-	public void insertConditionalStyle(final MapModel map, int index, boolean isActive, ISelectableCondition condition, IStyle style){
+	public void insertConditionalStyle(final MapModel map, int index, boolean isActive, ISelectableCondition condition, IStyle style, boolean isLast){
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		styleModel.getConditionalStyleModel().insertCondition(index, isActive, condition, style);
+		styleModel.getConditionalStyleModel().insertCondition(index, isActive, condition, style, isLast);
 	}
 	public Item removeConditionalStyle(final MapModel map, int index){
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
