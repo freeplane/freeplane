@@ -93,7 +93,7 @@ public class CloudController implements IExtension {
 		});
 		addCloudGetter(IPropertyHandler.STYLE, new IPropertyHandler<CloudModel, NodeModel>() {
 			public CloudModel getProperty(final NodeModel node, final CloudModel currentValue) {
-				return getStyleCloud(node.getMap(), LogicalStyleController.getController(modeController).getStyle(node));
+				return getStyleCloud(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
 		addCloudGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<CloudModel, NodeModel>() {

@@ -49,9 +49,9 @@ import org.freeplane.n3.nanoxml.XMLException;
  * Mar 12, 2009
  */
 public class MapStyleModel implements IExtension {
-	public static final NamedObject DEFAULT_STYLE = new NamedObject("default");
+	public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
 	private static final String STYLES = "styles";
-	private Map<Object, NodeModel> styleNodes;
+	private Map<IStyle, NodeModel> styleNodes;
 	private MapModel styleMap;
 	private ConditionalStyleModel conditionalStyleModel;
 
@@ -71,7 +71,7 @@ public class MapStyleModel implements IExtension {
 
 	public MapStyleModel() {
 		conditionalStyleModel = new ConditionalStyleModel();
-		styleNodes = new LinkedHashMap<Object, NodeModel>();
+		styleNodes = new LinkedHashMap<IStyle, NodeModel>();
 	}
 
 	public ConditionalStyleModel getConditionalStyleModel() {
@@ -133,7 +133,7 @@ public class MapStyleModel implements IExtension {
 	}
 
 	public void addStyleNode(final NodeModel node) {
-		final Object userObject = node.getUserObject();
+		final IStyle userObject = (IStyle) node.getUserObject();
 		styleNodes.put(userObject, node);
 	}
 
@@ -162,7 +162,7 @@ public class MapStyleModel implements IExtension {
 		this.backgroundColor = backgroundColor;
 	}
 
-	public Collection<Object> getStyles() {
+	public Collection<IStyle> getStyles() {
 		return styleNodes.keySet();
 	}
 

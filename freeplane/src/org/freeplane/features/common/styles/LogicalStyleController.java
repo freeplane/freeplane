@@ -53,7 +53,7 @@ public class LogicalStyleController implements IExtension {
 // 	final private ModeController modeController;
 	
 	private WeakReference<NodeModel> cachedNode;
-	private WeakReference<Object> cachedStyle;
+	private WeakReference<IStyle> cachedStyle;
 
 	public LogicalStyleController() {
 //	    this.modeController = modeController;
@@ -104,13 +104,13 @@ public class LogicalStyleController implements IExtension {
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE_REF", new IAttributeHandler() {
 			public void setAttribute(final Object node, final String value) {
 				final LogicalStyleModel extension = LogicalStyleModel.createExtension((NodeModel) node);
-				extension.setStyle(value);
+				extension.setStyle(StyleFactory.create(value));
 			}
 		});
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, "LOCALIZED_STYLE_REF", new IAttributeHandler() {
 			public void setAttribute(final Object node, final String value) {
 				final LogicalStyleModel extension = LogicalStyleModel.createExtension((NodeModel) node);
-				extension.setStyle(NamedObject.formatText(value));
+				extension.setStyle(StyleFactory.create(NamedObject.formatText(value)));
 			}
 		});
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -191,20 +191,20 @@ public class LogicalStyleController implements IExtension {
 			}
 		});
 	}
-	public Object getStyle(final NodeModel node) {
+	public IStyle getStyles(final NodeModel node) {
 		if(cachedNode != null && node.equals(cachedNode.get())){
 			return cachedStyle.get();
 		}
-		Object style = LogicalStyleModel.getStyle(node);
+		IStyle style = LogicalStyleModel.getStyle(node);
 		if(! MapStyleModel.DEFAULT_STYLE.equals(style)){
 			cachedNode = new WeakReference<NodeModel>(node);
-			cachedStyle = new WeakReference<Object>(style);
+			cachedStyle = new WeakReference<IStyle>(style);
 			return style;
 		}
 		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
-		style = styleModel.getConditionalStyleModel().getStyle(node);
+		style = styleModel.getConditionalStyleModel().getStyles(node);
 		cachedNode = new WeakReference<NodeModel>(node);
-		cachedStyle = new WeakReference<Object>(style);
+		cachedStyle = new WeakReference<IStyle>(style);
 		return style;
 	}
 	
@@ -216,11 +216,11 @@ public class LogicalStyleController implements IExtension {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		styleModel.getConditionalStyleModel().moveUp(index);
 	}
-	public void addConditionalStyle(final MapModel map, boolean isActive, ISelectableCondition condition, Object style){
+	public void addConditionalStyle(final MapModel map, boolean isActive, ISelectableCondition condition, IStyle style){
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		styleModel.getConditionalStyleModel().addCondition(isActive, condition, style);
 	}
-	public void insertConditionalStyle(final MapModel map, int index, boolean isActive, ISelectableCondition condition, Object style){
+	public void insertConditionalStyle(final MapModel map, int index, boolean isActive, ISelectableCondition condition, IStyle style){
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		styleModel.getConditionalStyleModel().insertCondition(index, isActive, condition, style);
 	}

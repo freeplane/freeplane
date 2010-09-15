@@ -89,7 +89,7 @@ public class IconController implements IExtension {
 		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<List<MindIcon>, NodeModel>() {
 			public List<MindIcon> getProperty(final NodeModel node, final List<MindIcon> currentValue) {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-				NodeModel styleNode = model.getStyleNode(LogicalStyleController.getController(modeController).getStyle(node));
+				NodeModel styleNode = model.getStyleNode(LogicalStyleController.getController(modeController).getStyles(node));
 				final List<MindIcon> styleIcons;
 				if(styleNode == null){
 					styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);

@@ -92,7 +92,7 @@ public class EdgeController implements IExtension {
 		});
 		addColorGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
-				return getStyleEdgeColor(node.getMap(), LogicalStyleController.getController(modeController).getStyle(node));
+				return getStyleEdgeColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
 		addColorGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<Color, NodeModel>() {
@@ -116,7 +116,7 @@ public class EdgeController implements IExtension {
 		});
 		addStyleGetter(IPropertyHandler.STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {
 			public EdgeStyle getProperty(final NodeModel node, final EdgeStyle currentValu) {
-				return getStyleStyle(node.getMap(), LogicalStyleController.getController(modeController).getStyle(node));
+				return getStyleStyle(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {
@@ -142,7 +142,7 @@ public class EdgeController implements IExtension {
 		});
 		addWidthGetter(IPropertyHandler.STYLE, new IPropertyHandler<Integer, NodeModel>() {
 			public Integer getProperty(final NodeModel node, final Integer currentValue) {
-				return getStyleWidth(node.getMap(), LogicalStyleController.getController(modeController).getStyle(node));
+				return getStyleWidth(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
 		addWidthGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<Integer, NodeModel>() {

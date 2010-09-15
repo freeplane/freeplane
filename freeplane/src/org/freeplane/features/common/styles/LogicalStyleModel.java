@@ -27,13 +27,13 @@ import org.freeplane.features.common.map.NodeModel;
  * 28.09.2009
  */
 public class LogicalStyleModel implements IExtension {
-	private Object style;
+	private IStyle style;
 
-	public Object getStyle() {
+	public IStyle getStyle() {
 		return style;
 	}
 
-	public void setStyle(final Object style) {
+	public void setStyle(final IStyle style) {
 		this.style = style;
 	}
 
@@ -41,12 +41,12 @@ public class LogicalStyleModel implements IExtension {
 		return (LogicalStyleModel) node.getExtension(LogicalStyleModel.class);
 	}
 
-	static public Object getStyle(final NodeModel node) {
+	static public IStyle getStyle(final NodeModel node) {
 		final LogicalStyleModel extension = LogicalStyleModel.getExtension(node);
 		if (extension == null) {
 			return MapStyleModel.DEFAULT_STYLE;
 		}
-		final Object style = extension.getStyle();
+		final IStyle style = extension.getStyle();
 		if (style == null) {
 			return MapStyleModel.DEFAULT_STYLE;
 		}

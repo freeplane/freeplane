@@ -42,6 +42,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
 import org.freeplane.features.common.styles.LogicalStyleModel;
@@ -82,9 +83,9 @@ public class MLogicalStyleController extends LogicalStyleController {
 		private final MapModel map;
 		private final boolean isActive;
 		private final ISelectableCondition condition;
-		private final Object style;
+		private final IStyle style;
 
-		public AddConditionalStyleActor(MapModel map, boolean isActive, ISelectableCondition condition, Object style) {
+		public AddConditionalStyleActor(MapModel map, boolean isActive, ISelectableCondition condition, IStyle style) {
 			this.map = map;
 			this.isActive = isActive;
 			this.condition = condition;
@@ -255,7 +256,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	private void addStyleMenu(final MenuBuilder menuBuilder, final String category, final NodeModel rootNode, MapStyleModel extension) {
 		final List<NodeModel> children = rootNode.getChildren();
 		for (final NodeModel child : children) {
-			final Object style = child.getUserObject();
+			final IStyle style = (IStyle) child.getUserObject();
 			if (child.hasChildren()) {
 				final String newCategory = category + '/' + style;
 				menuBuilder.addMenuItem(category, new JMenu(style.toString()), newCategory, MenuBuilder.AS_CHILD);
@@ -269,9 +270,9 @@ public class MLogicalStyleController extends LogicalStyleController {
 		}
 	}
 
-	public void setStyle(final NodeModel node, final Object style) {
+	public void setStyle(final NodeModel node, final IStyle style) {
 		final LogicalStyleModel model = LogicalStyleModel.createExtension(node);
-		final Object oldStyle = model.getStyle();
+		final IStyle oldStyle = model.getStyle();
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (oldStyle != null && oldStyle.equals(style) || oldStyle == style) {
 			modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
@@ -303,7 +304,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		}
 	}
 
-	public void setStyle(final Object style) {
+	public void setStyle(final IStyle style) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
 		for (final NodeModel selected : selectedNodes) {
@@ -360,7 +361,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	@Override
-	public void addConditionalStyle(MapModel map, boolean isActive, ISelectableCondition condition, Object style) {
+	public void addConditionalStyle(MapModel map, boolean isActive, ISelectableCondition condition, IStyle style) {
 		AddConditionalStyleActor actor = new AddConditionalStyleActor(map, isActive, condition, style);
 		Controller.getCurrentModeController().execute(actor, map);
 	}

@@ -7,6 +7,7 @@ import java.awt.Color;
 
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.common.styles.MapStyleModel;
@@ -19,7 +20,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		super(delegate);
 	}
 
-	public void setStyle(final Object key) {
+	public void setStyle(final IStyle key) {
 		getLogicalStyleController().setStyle(getDelegate(), key);
 	}
 
@@ -55,7 +56,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		getStyleController().setColor(getDelegate(), color);
 	}
 
-	public Object getStyle() {
+	public IStyle getStyle() {
 		return LogicalStyleModel.getStyle(getDelegate());
 	}
 

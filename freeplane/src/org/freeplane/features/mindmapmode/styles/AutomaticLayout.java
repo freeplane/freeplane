@@ -36,8 +36,10 @@ import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.styles.StyleFactory;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -119,18 +121,19 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	private void setStyleImpl(final NodeModel node) {
 		final MLogicalStyleController styleController = (MLogicalStyleController) Controller.getCurrentModeController().getExtension(
 		    LogicalStyleController.class);
-		final Object style = getStyle(node);
+		final IStyle style = getStyle(node);
 		styleController.setStyle(node, style);
 	}
 
-	private Object getStyle(final NodeModel node) {
+	private IStyle getStyle(final NodeModel node) {
 		final int depth = node.depth();
 		final MapModel map = node.getMap();
 		final MapStyleModel extension = MapStyleModel.getExtension(map);
 		final String name = depth == 0 ? "AutomaticLayout.level.root" : "AutomaticLayout.level," + depth;
 		final NamedObject obj = NamedObject.formatText(name);
-		if (extension.getStyleNode(obj) != null) {
-			return obj;
+		final IStyle style = StyleFactory.create(obj);
+		if (extension.getStyleNode(style) != null) {
+			return style;
 		}
 		return MapStyleModel.DEFAULT_STYLE;
 	}

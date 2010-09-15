@@ -32,6 +32,9 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.StyleFactory;
+import org.freeplane.features.common.styles.StyleNamedObject;
+import org.freeplane.features.common.styles.StyleString;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter {
@@ -61,22 +64,30 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	}
 
 	private void registerAttributeHandlers(final ReadManager reader) {
-		final IAttributeHandler textHandler = new IAttributeHandler() {
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
 				node.setText(value);
 			}
-		};
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT, textHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_TEXT, textHandler);
-		final IAttributeHandler ltextHandler = new IAttributeHandler() {
+		});
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_TEXT, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
-				node.setUserObject(NamedObject.formatText(value));
+				node.setUserObject(StyleFactory.create(value));
 			}
-		};
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ltextHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ltextHandler);
+		});
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = ((NodeModel) userObject);
+				node.setUserObject(StyleFactory.create(NamedObject.formatText(value)));
+			}
+		});
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = ((NodeModel) userObject);
+				node.setUserObject(StyleFactory.create(NamedObject.formatText(value)));
+			}
+		});
 	}
 
 	/**
@@ -93,14 +104,19 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final Object data = ((NodeModel) userObject).getUserObject();
-		if (data.getClass().equals(NamedObject.class)) {
+		final Class<? extends Object> dataClass = data.getClass();
+		if (dataClass.equals(StyleNamedObject.class)) {
+			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((StyleNamedObject) data).getObject().toString());
+			return;
+		}
+		if (dataClass.equals(NamedObject.class)) {
 			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((NamedObject) data).getObject().toString());
 			return;
 		}
-		if (!data.getClass().equals(String.class)) {
+		if (!(dataClass.equals(StyleString.class) || dataClass.equals(String.class))) {
 			return;
 		}
-		final String text = (String) data;
+		final String text =  data.toString();
 		if (!HtmlUtils.isHtmlNode(text)) {
 			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 		}

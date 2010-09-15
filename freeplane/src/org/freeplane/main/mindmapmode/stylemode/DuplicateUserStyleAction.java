@@ -32,6 +32,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
 import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.styles.StyleFactory;
 import org.freeplane.features.mindmapmode.icon.MIconController.Keys;
 import org.freeplane.features.mindmapmode.map.MMapController;
 
@@ -64,7 +65,7 @@ public class DuplicateUserStyleAction extends AFreeplaneAction {
 		}
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel newNode = new NodeModel(map);
-		newNode.setUserObject(styleName);
+		newNode.setUserObject(StyleFactory.create(styleName));
 		Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, newNode);
 		Controller.getCurrentModeController().copyExtensions(Keys.ICONS, selectedNode, newNode);
 		mapController.insertNode(newNode, getUserStyleParentNode(map), false, false, true);

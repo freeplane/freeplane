@@ -103,7 +103,7 @@ public class NodeStyleController implements IExtension {
 		});
 		addFontGetter(IPropertyHandler.STYLE, new IPropertyHandler<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, final Font currentValue) {
-				final Font defaultFont = getStyleFont(currentValue, node.getMap(), LogicalStyleController.getController(modeController).getStyle(node));
+				final Font defaultFont = getStyleFont(currentValue, node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 				return defaultFont;
 			}
 		});
@@ -124,7 +124,7 @@ public class NodeStyleController implements IExtension {
 		});
 		addColorGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
-				return getStyleTextColor(node.getMap(), LogicalStyleController.getController(modeController).getStyle(node));
+				return getStyleTextColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
 		addBackgroundColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, NodeModel>() {
@@ -144,7 +144,7 @@ public class NodeStyleController implements IExtension {
 		});
 		addBackgroundColorGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
-				return getStyleBackgroundColor(node.getMap(), LogicalStyleController.getController(modeController).getStyle(node));
+				return getStyleBackgroundColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
 		addShapeGetter(IPropertyHandler.NODE, new IPropertyHandler<String, NodeModel>() {
@@ -160,7 +160,7 @@ public class NodeStyleController implements IExtension {
 			public String getProperty(final NodeModel node, final String currentValue) {
 				final MapModel map = node.getMap();
 				final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
-				final Object style = styleController.getStyle(node);
+				final Object style = styleController.getStyles(node);
 				final String returnedString = getStyleShape(map, style);
 				return returnedString;
 			}

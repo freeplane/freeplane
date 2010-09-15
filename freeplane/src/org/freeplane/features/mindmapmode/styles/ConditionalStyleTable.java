@@ -22,6 +22,7 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.features.common.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
 
 class ConditionalStyleTable extends JTable {
@@ -110,7 +111,7 @@ class ConditionalStyleTable extends JTable {
 			@Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
                                                          int column) {
-				final Collection<Object> styles = ConditionalStyleTable.this.styleModel.getStyles();
+				final Collection<IStyle> styles = ConditionalStyleTable.this.styleModel.getStyles();
 				final DefaultComboBoxModel boxContent = new DefaultComboBoxModel(styles.toArray());
 				styleBox.setModel(boxContent);
 	            return super.getTableCellEditorComponent(table, value, isSelected, row, column);

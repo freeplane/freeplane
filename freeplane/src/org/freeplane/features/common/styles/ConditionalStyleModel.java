@@ -14,9 +14,9 @@ import org.freeplane.features.common.map.NodeModel;
 public class ConditionalStyleModel implements IExtension, Iterable<ConditionalStyleModel.Item>{
 	public class Item{
 		private ISelectableCondition condition;
-		private Object style;
+		private IStyle style;
 		private boolean isActive;
-		private Item(boolean isActive, ISelectableCondition condition, Object style) {
+		private Item(boolean isActive, ISelectableCondition condition, IStyle style) {
 	        super();
 	        this.isActive = isActive;
 	        this.condition = condition;
@@ -28,10 +28,10 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		public ISelectableCondition getCondition() {
 	        return condition;
         }
-		public void setStyle(Object style) {
+		public void setStyle(IStyle style) {
 	        this.style = style;
         }
-		public Object getStyle() {
+		public IStyle getStyle() {
 	        return style;
         }
 		public void setActive(boolean isActive) {
@@ -49,7 +49,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
     }
 	private boolean recursiveCall;
 	
-	public Object getStyle(NodeModel node){
+	public IStyle getStyles(NodeModel node){
 		if(recursiveCall){
 			return null;
 		}
@@ -68,7 +68,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		}
 	}
 	
-	void addCondition(boolean isActive, ISelectableCondition condition, Object style){
+	void addCondition(boolean isActive, ISelectableCondition condition, IStyle style){
 		styles.add(new Item(isActive, condition, style));
 		if(table == null){
 			return;
@@ -77,7 +77,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		table.fireTableRowsInserted(index, index);
 	}
 	
-	void insertCondition(int index, boolean isActive, ISelectableCondition condition, Object style){
+	void insertCondition(int index, boolean isActive, ISelectableCondition condition, IStyle style){
 		styles.add(index, new Item(isActive, condition, style));
 		if(table == null){
 			return;
@@ -194,7 +194,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 						item.setCondition((ISelectableCondition) aValue);
 						return;
 					case 2:
-						 item.setStyle(aValue);
+						 item.setStyle((IStyle) aValue);
 						 return;
 					default:
 						throw new ArrayIndexOutOfBoundsException();

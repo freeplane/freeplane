@@ -28,6 +28,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 
@@ -37,9 +38,9 @@ import org.freeplane.features.common.styles.LogicalStyleModel;
  */
 @SelectableAction(checkOnNodeChange = true)
 public class AssignStyleAction extends AMultipleNodeAction {
-	final private Object style;
+	final private IStyle style;
 
-	public AssignStyleAction(final Object style, final String title, final ImageIcon icon) {
+	public AssignStyleAction(final IStyle style, final String title, final ImageIcon icon) {
 		super("AssignStyleAction." + NamedObject.toKeyString(style), title, icon);
 		this.style = style;
 	}

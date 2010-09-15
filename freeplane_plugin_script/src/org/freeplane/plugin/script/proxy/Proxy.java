@@ -16,6 +16,7 @@ import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.link.ArrowType;
+import org.freeplane.features.common.styles.IStyle;
 
 public interface Proxy {
 	interface AttributesRO {
@@ -666,7 +667,7 @@ public interface Proxy {
 	}
 
 	interface NodeStyleRO {
-		Object getStyle();
+		IStyle getStyle();
 
 		Node getStyleNode();
 
@@ -680,7 +681,7 @@ public interface Proxy {
 	}
 
 	interface NodeStyle extends NodeStyleRO {
-		void setStyle(Object key);
+		void setStyle(IStyle key);
 
 		void setBackgroundColor(Color color);
 

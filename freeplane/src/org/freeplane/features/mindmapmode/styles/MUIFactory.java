@@ -40,6 +40,7 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.common.styles.MapStyle;
@@ -123,7 +124,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 					return;
 				}
 				final DefaultComboBoxModel source = (DefaultComboBoxModel) e.getSource();
-				final Object style = source.getSelectedItem();
+				final IStyle style = (IStyle) source.getSelectedItem();
 				final MLogicalStyleController controller = (MLogicalStyleController) modeController
 				    .getExtension(LogicalStyleController.class);
 				controller.setStyle(style);
@@ -231,8 +232,8 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		if (newMap == null) {
 			return;
 		}
-		final Collection<Object> styleObjects = MapStyleModel.getExtension(newMap).getStyles();
-		for (final Object style : styleObjects) {
+		final Collection<IStyle> styleObjects = MapStyleModel.getExtension(newMap).getStyles();
+		for (final IStyle style : styleObjects) {
 			styles.addElement(style);
 		}
 		ignoreChangeEvent = false;
