@@ -6,6 +6,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
 import org.freeplane.features.common.styles.LogicalStyleModel;
@@ -21,7 +22,7 @@ public class RedefineStyleAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = Controller.getCurrentController().getSelection().getSelected();
-		final Object style = LogicalStyleModel.getStyle(node);
+		final IStyle style = LogicalStyleModel.getStyle(node);
 		final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
 		final NodeModel styleNode = extension.getStyleNode(style);
 		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);

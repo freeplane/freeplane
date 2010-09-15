@@ -22,6 +22,7 @@ package org.freeplane.features.common.cloud;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
+import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.ExclusivePropertyChain;
@@ -37,6 +38,7 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyleModel;
 
@@ -96,11 +98,6 @@ public class CloudController implements IExtension {
 				return getStyleCloud(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
-		addCloudGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<CloudModel, NodeModel>() {
-			public CloudModel getProperty(final NodeModel node, final CloudModel currentValue) {
-				return getStyleCloud(node.getMap(), MapStyleModel.DEFAULT_STYLE);
-			}
-		});
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -108,14 +105,19 @@ public class CloudController implements IExtension {
 		cloudBuilder.registerBy(readManager, writeManager);
 	}
 
-	protected CloudModel getStyleCloud(final MapModel map, final Object styleKey) {
+	protected CloudModel getStyleCloud(final MapModel map, final List<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(styleKey);
-		if (styleNode == null) {
-			return null;
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final CloudModel styleModel = CloudModel.getModel(styleNode);
+			if (styleModel != null) {
+				return styleModel;
+			}
 		}
-		final CloudModel styleModel = CloudModel.getModel(styleNode);
-		return styleModel;
+		return null;
 	}
 
 	public IPropertyHandler<CloudModel, NodeModel> addCloudGetter(final Integer key,

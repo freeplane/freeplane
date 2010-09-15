@@ -30,6 +30,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.styles.StyleFactory;
@@ -59,13 +60,14 @@ public class DuplicateUserStyleAction extends AFreeplaneAction {
 		final NodeModel selectedNode = controller.getSelection().getSelected();
 		final MapModel map = controller.getMap();
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		if (null != styleModel.getStyleNode(styleName)) {
+		final IStyle style = StyleFactory.create(styleName);
+		if (null != styleModel.getStyleNode(style)) {
 			UITools.errorMessage(TextUtils.getText("style_already_exists"));
 			return;
 		}
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel newNode = new NodeModel(map);
-		newNode.setUserObject(StyleFactory.create(styleName));
+		newNode.setUserObject(style);
 		Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, newNode);
 		Controller.getCurrentModeController().copyExtensions(Keys.ICONS, selectedNode, newNode);
 		mapController.insertNode(newNode, getUserStyleParentNode(map), false, false, true);

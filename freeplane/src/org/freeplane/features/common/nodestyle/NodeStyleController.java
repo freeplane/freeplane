@@ -21,6 +21,7 @@ package org.freeplane.features.common.nodestyle;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.List;
 
 import org.freeplane.core.controller.CombinedPropertyChain;
 import org.freeplane.core.controller.Controller;
@@ -37,6 +38,7 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyleModel;
 
@@ -95,12 +97,6 @@ public class NodeStyleController implements IExtension {
 				return defaultFont;
 			}
 		});
-		addFontGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<Font, NodeModel>() {
-			public Font getProperty(final NodeModel node, final Font currentValue) {
-				final Font defaultFont = getStyleFont(currentValue, node.getMap(), MapStyleModel.DEFAULT_STYLE);
-				return defaultFont;
-			}
-		});
 		addFontGetter(IPropertyHandler.STYLE, new IPropertyHandler<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, final Font currentValue) {
 				final Font defaultFont = getStyleFont(currentValue, node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
@@ -117,11 +113,6 @@ public class NodeStyleController implements IExtension {
 				return standardNodeTextColor;
 			}
 		});
-		addColorGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node, final Color currentValue) {
-				return getStyleTextColor(node.getMap(), MapStyleModel.DEFAULT_STYLE);
-			}
-		});
 		addColorGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return getStyleTextColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
@@ -130,16 +121,6 @@ public class NodeStyleController implements IExtension {
 		addBackgroundColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return NodeStyleModel.getBackgroundColor(node);
-			}
-		});
-		addBackgroundColorGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node, final Color currentValue) {
-				return getStyleBackgroundColor(node.getMap(), MapStyleModel.DEFAULT_STYLE);
-			}
-		});
-		addBackgroundColorGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node, final Color currentValue) {
-				return getStyleBackgroundColor(node.getMap(), MapStyleModel.DEFAULT_STYLE);
 			}
 		});
 		addBackgroundColorGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
@@ -160,14 +141,8 @@ public class NodeStyleController implements IExtension {
 			public String getProperty(final NodeModel node, final String currentValue) {
 				final MapModel map = node.getMap();
 				final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
-				final Object style = styleController.getStyles(node);
+				final List<IStyle> style = styleController.getStyles(node);
 				final String returnedString = getStyleShape(map, style);
-				return returnedString;
-			}
-		});
-		addShapeGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<String, NodeModel>() {
-			public String getProperty(final NodeModel node, final String currentValue) {
-				final String returnedString = getStyleShape(node.getMap(), MapStyleModel.DEFAULT_STYLE);
 				return returnedString;
 			}
 		});
@@ -252,15 +227,21 @@ public class NodeStyleController implements IExtension {
 		return textColorHandlers.getProperty(node);
 	}
 
-	private Color getStyleBackgroundColor(final MapModel map, final Object styleKey) {
+	private Color getStyleBackgroundColor(final MapModel map, final List<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(styleKey);
-		if (styleNode == null) {
-			return null;
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+			if (styleModel == null) {
+				continue;
+			}
+			final Color styleColor =styleModel.getBackgroundColor();
+			return styleColor;
 		}
-		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
-		final Color styleColor = styleModel == null ? null : styleModel.getBackgroundColor();
-		return styleColor;
+		return null;
 	}
 
 	public static Font getDefaultFont() {
@@ -285,12 +266,9 @@ public class NodeStyleController implements IExtension {
 	}
 
 	public Font getDefaultFont(final MapModel map) {
-		return getStyleFont(NodeStyleController.getDefaultFont(), map, MapStyleModel.DEFAULT_STYLE);
-	}
-
-	private Font getStyleFont(final Font baseFont, final MapModel map, final Object styleKey) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(styleKey);
+		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+		Font baseFont = NodeStyleController.getDefaultFont();
 		if (styleNode == null) {
 			return baseFont;
 		}
@@ -298,11 +276,31 @@ public class NodeStyleController implements IExtension {
 		if (styleModel == null) {
 			return baseFont;
 		}
-		final Boolean bold = styleModel.isBold();
+		return createFont(baseFont, styleModel);
+	}
+
+	private Font createFont(Font baseFont, final NodeStyleModel styleModel) {
+	    final Boolean bold = styleModel.isBold();
 		final Boolean italic = styleModel.isItalic();
 		final String fontFamilyName = styleModel.getFontFamilyName();
 		final Integer fontSize = styleModel.getFontSize();
 		return createFont(baseFont, fontFamilyName, fontSize, bold, italic);
+    }
+
+	private Font getStyleFont(final Font baseFont, final MapModel map, final List<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+			if (styleModel == null) {
+				continue;
+			}
+			return createFont(baseFont, styleModel);
+		}
+		return baseFont;
 	}
 
 	private Font createFont(final Font baseFont, String family, Integer size, Boolean bold, Boolean italic) {
@@ -331,26 +329,38 @@ public class NodeStyleController implements IExtension {
 		return new Font(family, style, size);
 	}
 
-	private String getStyleShape(final MapModel map, final Object styleKey) {
+	private String getStyleShape(final MapModel map, final List<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(styleKey);
-		if (styleNode == null) {
-			return null;
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+			if (styleModel == null) {
+				continue;
+			}
+			final String shape = styleModel.getShape();
+			return shape;
 		}
-		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
-		final String shape = styleModel == null ? null : styleModel.getShape();
-		return shape;
+		return null;
 	}
 
-	private Color getStyleTextColor(final MapModel map, final Object styleKey) {
+	private Color getStyleTextColor(final MapModel map, final List<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(styleKey);
-		if (styleNode == null) {
-			return null;
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+			if (styleModel == null) {
+				continue;
+			}
+			final Color styleColor = styleModel == null ? null : styleModel.getColor();
+			return styleColor;
 		}
-		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
-		final Color styleColor = styleModel == null ? null : styleModel.getColor();
-		return styleColor;
+		return null;
 	}
 
 	public Font getFont(final NodeModel node) {

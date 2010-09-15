@@ -22,6 +22,8 @@ package org.freeplane.features.common.styles;
 import java.awt.EventQueue;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.freeplane.core.controller.Controller;
@@ -53,7 +55,7 @@ public class LogicalStyleController implements IExtension {
 // 	final private ModeController modeController;
 	
 	private WeakReference<NodeModel> cachedNode;
-	private WeakReference<IStyle> cachedStyle;
+	private List<IStyle>  cachedStyle;
 
 	public LogicalStyleController() {
 //	    this.modeController = modeController;
@@ -191,21 +193,22 @@ public class LogicalStyleController implements IExtension {
 			}
 		});
 	}
-	public IStyle getStyles(final NodeModel node) {
+	public List<IStyle>  getStyles(final NodeModel node) {
 		if(cachedNode != null && node.equals(cachedNode.get())){
-			return cachedStyle.get();
+			return cachedStyle;
 		}
 		IStyle style = LogicalStyleModel.getStyle(node);
-		if(! MapStyleModel.DEFAULT_STYLE.equals(style)){
-			cachedNode = new WeakReference<NodeModel>(node);
-			cachedStyle = new WeakReference<IStyle>(style);
-			return style;
-		}
 		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
-		style = styleModel.getConditionalStyleModel().getStyles(node);
+		List<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
 		cachedNode = new WeakReference<NodeModel>(node);
-		cachedStyle = new WeakReference<IStyle>(style);
-		return style;
+		cachedStyle = condStyles;
+		if(! MapStyleModel.DEFAULT_STYLE.equals(style)){
+			cachedStyle.add(0, style);
+		}
+		if(! cachedStyle.contains(MapStyleModel.DEFAULT_STYLE)){
+			cachedStyle.add(cachedStyle.size(), MapStyleModel.DEFAULT_STYLE);
+		}
+		return cachedStyle;
 	}
 	
 	public void moveConditionalStyleDown(final MapModel map, int index){

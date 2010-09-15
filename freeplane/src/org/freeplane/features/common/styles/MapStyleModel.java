@@ -150,7 +150,7 @@ public class MapStyleModel implements IExtension {
 		return root;
 	}
 
-	public NodeModel getStyleNode(final Object style) {
+	public NodeModel getStyleNode(final IStyle style) {
 		return styleNodes.get(style);
 	}
 

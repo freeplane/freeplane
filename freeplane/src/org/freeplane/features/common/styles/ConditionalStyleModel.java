@@ -2,6 +2,8 @@ package org.freeplane.features.common.styles;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
@@ -49,19 +51,20 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
     }
 	private boolean recursiveCall;
 	
-	public IStyle getStyles(NodeModel node){
+	public List<IStyle> getStyles(NodeModel node){
 		if(recursiveCall){
 			return null;
 		}
 		try{
 			recursiveCall = true;
-		for(Item item : styles){
-			final ISelectableCondition condition = item.getCondition();
-			if(condition != null && item.isActive() && condition.checkNode(node)){
-				return item.style;
+			LinkedList<IStyle> matchingStyles = new LinkedList<IStyle>();
+			for(Item item : styles){
+				final ISelectableCondition condition = item.getCondition();
+				if(condition != null && item.isActive() && condition.checkNode(node)){
+					matchingStyles.add(item.style);
+				}
 			}
-		}
-		return null;
+			return matchingStyles;
 		}
 		finally{
 			recursiveCall = false;

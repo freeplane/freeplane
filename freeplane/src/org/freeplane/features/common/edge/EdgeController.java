@@ -20,6 +20,7 @@
 package org.freeplane.features.common.edge;
 
 import java.awt.Color;
+import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.ExclusivePropertyChain;
@@ -34,6 +35,7 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyleModel;
 
@@ -95,11 +97,6 @@ public class EdgeController implements IExtension {
 				return getStyleEdgeColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
-		addColorGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node, final Color currentValue) {
-				return getStyleEdgeColor(node.getMap(), MapStyleModel.DEFAULT_STYLE);
-			}
-		});
 		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				if (node.isRoot()) {
@@ -117,11 +114,6 @@ public class EdgeController implements IExtension {
 		addStyleGetter(IPropertyHandler.STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {
 			public EdgeStyle getProperty(final NodeModel node, final EdgeStyle currentValu) {
 				return getStyleStyle(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
-			}
-		});
-		addStyleGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {
-			public EdgeStyle getProperty(final NodeModel node, final EdgeStyle currentValu) {
-				return getStyleStyle(node.getMap(), MapStyleModel.DEFAULT_STYLE);
 			}
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<EdgeStyle, NodeModel>() {
@@ -143,11 +135,6 @@ public class EdgeController implements IExtension {
 		addWidthGetter(IPropertyHandler.STYLE, new IPropertyHandler<Integer, NodeModel>() {
 			public Integer getProperty(final NodeModel node, final Integer currentValue) {
 				return getStyleWidth(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
-			}
-		});
-		addWidthGetter(IPropertyHandler.DEFAULT_STYLE, new IPropertyHandler<Integer, NodeModel>() {
-			public Integer getProperty(final NodeModel node, final Integer currentValue) {
-				return getStyleWidth(node.getMap(), MapStyleModel.DEFAULT_STYLE);
 			}
 		});
 		addWidthGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Integer, NodeModel>() {
@@ -224,43 +211,56 @@ public class EdgeController implements IExtension {
 		}
 	}
 
-	private Color getStyleEdgeColor(final MapModel map, final Object styleKey) {
+	private Color getStyleEdgeColor(final MapModel map, final List<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(styleKey);
-		if (styleNode == null) {
-			return null;
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final EdgeModel styleModel = EdgeModel.getModel(styleNode);
+			if (styleModel == null) {
+				continue;
+			}
+			final Color styleColor = styleModel.getColor();
+			return styleColor;
 		}
-		final EdgeModel styleModel = EdgeModel.getModel(styleNode);
-		final Color styleColor = styleModel == null ? null : styleModel.getColor();
-		return styleColor;
+		return null;
 	}
 
-	private Integer getStyleWidth(final MapModel map, final Object styleKey) {
+	private Integer getStyleWidth(final MapModel map, final List<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(styleKey);
-		if (styleNode == null) {
-			return null;
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final EdgeModel styleModel = EdgeModel.getModel(styleNode);
+			if (styleModel == null) {
+				continue;
+			}
+			final Color styleColor = styleModel.getColor();
+			final int width = styleModel.getWidth();
+			return width == EdgeModel.DEFAULT_WIDTH ? null : width;
 		}
-		final EdgeModel styleModel = EdgeModel.getModel(styleNode);
-		if (styleModel == null) {
-			return null;
-		}
-		final int width = styleModel.getWidth();
-		return width == EdgeModel.DEFAULT_WIDTH ? null : width;
+		return null;
 	}
 
-	private EdgeStyle getStyleStyle(final MapModel map, final Object styleKey) {
+	private EdgeStyle getStyleStyle(final MapModel map, final List<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(styleKey);
-		if (styleNode == null) {
-			return null;
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final EdgeModel styleModel = EdgeModel.getModel(styleNode);
+			if (styleModel == null) {
+				continue;
+			}
+			final EdgeStyle style = styleModel.getStyle();
+			return style;
 		}
-		final EdgeModel styleModel = EdgeModel.getModel(styleNode);
-		if (styleModel == null) {
-			return null;
-		}
-		final EdgeStyle style = styleModel == null ? null : styleModel.getStyle();
-		return style;
+		return null;
 	}
 
 }

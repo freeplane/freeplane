@@ -30,7 +30,9 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.styles.StyleFactory;
 import org.freeplane.features.mindmapmode.map.MMapController;
 
 /**
@@ -57,7 +59,7 @@ public class DeleteLevelStyleAction extends AFreeplaneAction {
 			return;
 		}
 		final String styleName = "AutomaticLayout.level," + childNumber;
-		final NamedObject styleObject = NamedObject.formatText(styleName);
+		final IStyle styleObject = StyleFactory.create(NamedObject.formatText(styleName));
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		final NodeModel node = styleModel.getStyleNode(styleObject);

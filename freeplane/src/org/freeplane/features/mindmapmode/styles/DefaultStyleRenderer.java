@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
 
 public class DefaultStyleRenderer implements TableCellRenderer {
@@ -14,7 +15,7 @@ public class DefaultStyleRenderer implements TableCellRenderer {
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 	                                               int row, int column) {
 		final MapStyleModel styles = ((ConditionalStyleTable)table).getStyles();
-		final NodeModel styleNode = styles.getStyleNode(value);
+		final NodeModel styleNode = styles.getStyleNode((IStyle)value);
 		if (styleNode == null){
 			value = MapStyleModel.DEFAULT_STYLE;
 		}

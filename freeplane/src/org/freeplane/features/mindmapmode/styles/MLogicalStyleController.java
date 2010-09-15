@@ -120,7 +120,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 			final NodeModel node = event.getNode();
 			final MapModel map = node.getMap();
-			final Object styleKey = event.getNewValue();
+			final IStyle styleKey = (IStyle) event.getNewValue();
 			final MapStyleModel mapStyles = MapStyleModel.getExtension(map);
 			final NodeModel styleNode = mapStyles.getStyleNode(styleKey);
 			if (styleNode == null) {
