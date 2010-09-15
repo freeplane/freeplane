@@ -83,7 +83,9 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 				for(final ISelectableCondition condition : conditions){
 					LogicalStyleController.getController().addConditionalStyle(map, true, condition, MapStyleModel.DEFAULT_STYLE);
 				}
-				conditionalStyleTable.setRowSelectionInterval(row, row);
+				if(row < conditionalStyleTable.getRowCount()){
+					conditionalStyleTable.setRowSelectionInterval(row, row);
+				}
 			} 
 		});
 	    JButton delete = new JButton();
