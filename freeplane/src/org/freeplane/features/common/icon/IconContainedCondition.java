@@ -21,6 +21,7 @@ package org.freeplane.features.common.icon;
 
 import java.awt.Color;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -40,12 +41,13 @@ public class IconContainedCondition implements ISelectableCondition {
 	static final String NAME = "icon_contained_condition";
 
 	static private int iconFirstIndex(final NodeModel node, final String iconName) {
-		final List<MindIcon> icons = IconController.getIcons(node);
-		for (final ListIterator<MindIcon> i = icons.listIterator(); i.hasNext();) {
-			final MindIcon nextIcon = i.next();
+		final Collection<MindIcon> icons = IconController.getIcons(node);
+		int i = 0;
+		for (MindIcon nextIcon : icons) {
 			if (iconName.equals(nextIcon.getName())) {
-				return i.previousIndex();
+				return i;
 			}
+			i++;
 		}
 		return -1;
 	}

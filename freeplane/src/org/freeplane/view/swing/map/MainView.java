@@ -31,6 +31,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
@@ -271,7 +272,7 @@ public abstract class MainView extends ZoomableLabel {
 		for (final Entry<String, UIIcon> iconEntry : model.getStateIcons().entrySet()) {
 			iconImages.addImage(iconEntry.getValue().getIcon());
 		}
-		final List<MindIcon> icons = IconController.getIcons(model);
+		final Collection<MindIcon> icons = IconController.getIcons(model);
 		for (final MindIcon myIcon : icons) {
 			iconImages.addImage(myIcon.getIcon());
 		}

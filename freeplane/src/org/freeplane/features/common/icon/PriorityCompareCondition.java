@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.icon;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -64,7 +65,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final List<MindIcon> icons = IconController.getIcons(node);
+		final Collection<MindIcon> icons = IconController.getIcons(node);
 		for (final MindIcon icon : icons) {
 			final String iconName = icon.getFileName();
 			if (iconName.length() != 10) {
