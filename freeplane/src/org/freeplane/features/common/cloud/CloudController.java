@@ -22,6 +22,7 @@ package org.freeplane.features.common.cloud;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
+import java.util.Collection;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
@@ -105,9 +106,9 @@ public class CloudController implements IExtension {
 		cloudBuilder.registerBy(readManager, writeManager);
 	}
 
-	protected CloudModel getStyleCloud(final MapModel map, final List<IStyle> styleKeys) {
+	protected CloudModel getStyleCloud(final MapModel map, final Collection<IStyle> collection) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
+		for(IStyle styleKey : collection){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;

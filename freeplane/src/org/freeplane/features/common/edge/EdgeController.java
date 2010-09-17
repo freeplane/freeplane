@@ -20,6 +20,7 @@
 package org.freeplane.features.common.edge;
 
 import java.awt.Color;
+import java.util.Collection;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
@@ -211,9 +212,9 @@ public class EdgeController implements IExtension {
 		}
 	}
 
-	private Color getStyleEdgeColor(final MapModel map, final List<IStyle> styleKeys) {
+	private Color getStyleEdgeColor(final MapModel map, final Collection<IStyle> collection) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
+		for(IStyle styleKey : collection){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;
@@ -228,9 +229,9 @@ public class EdgeController implements IExtension {
 		return null;
 	}
 
-	private Integer getStyleWidth(final MapModel map, final List<IStyle> styleKeys) {
+	private Integer getStyleWidth(final MapModel map, final Collection<IStyle> collection) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
+		for(IStyle styleKey : collection){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;
@@ -246,9 +247,9 @@ public class EdgeController implements IExtension {
 		return null;
 	}
 
-	private EdgeStyle getStyleStyle(final MapModel map, final List<IStyle> styleKeys) {
+	private EdgeStyle getStyleStyle(final MapModel map, final Collection<IStyle> collection) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
+		for(IStyle styleKey : collection){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;

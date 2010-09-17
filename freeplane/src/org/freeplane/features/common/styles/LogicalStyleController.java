@@ -21,6 +21,7 @@ package org.freeplane.features.common.styles;
 
 import java.awt.EventQueue;
 import java.lang.ref.WeakReference;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -193,7 +194,7 @@ public class LogicalStyleController implements IExtension {
 			}
 		});
 	}
-	public List<IStyle>  getStyles(final NodeModel node) {
+	public Collection<IStyle>  getStyles(final NodeModel node) {
 		if(cachedNode != null && node.equals(cachedNode.get())){
 			return cachedStyle;
 		}

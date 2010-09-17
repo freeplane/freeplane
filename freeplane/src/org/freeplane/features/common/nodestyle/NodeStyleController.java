@@ -21,6 +21,7 @@ package org.freeplane.features.common.nodestyle;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.Collection;
 import java.util.List;
 
 import org.freeplane.core.controller.CombinedPropertyChain;
@@ -141,7 +142,7 @@ public class NodeStyleController implements IExtension {
 			public String getProperty(final NodeModel node, final String currentValue) {
 				final MapModel map = node.getMap();
 				final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
-				final List<IStyle> style = styleController.getStyles(node);
+				final Collection<IStyle> style = styleController.getStyles(node);
 				final String returnedString = getStyleShape(map, style);
 				return returnedString;
 			}
@@ -227,7 +228,7 @@ public class NodeStyleController implements IExtension {
 		return textColorHandlers.getProperty(node);
 	}
 
-	private Color getStyleBackgroundColor(final MapModel map, final List<IStyle> styleKeys) {
+	private Color getStyleBackgroundColor(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -287,9 +288,9 @@ public class NodeStyleController implements IExtension {
 		return createFont(baseFont, fontFamilyName, fontSize, bold, italic);
     }
 
-	private Font getStyleFont(final Font baseFont, final MapModel map, final List<IStyle> styleKeys) {
+	private Font getStyleFont(final Font baseFont, final MapModel map, final Collection<IStyle> collection) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
+		for(IStyle styleKey : collection){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;
@@ -329,9 +330,9 @@ public class NodeStyleController implements IExtension {
 		return new Font(family, style, size);
 	}
 
-	private String getStyleShape(final MapModel map, final List<IStyle> styleKeys) {
+	private String getStyleShape(final MapModel map, final Collection<IStyle> style) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
+		for(IStyle styleKey : style){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;
@@ -346,9 +347,9 @@ public class NodeStyleController implements IExtension {
 		return null;
 	}
 
-	private Color getStyleTextColor(final MapModel map, final List<IStyle> styleKeys) {
+	private Color getStyleTextColor(final MapModel map, final Collection<IStyle> collection) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
+		for(IStyle styleKey : collection){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;
