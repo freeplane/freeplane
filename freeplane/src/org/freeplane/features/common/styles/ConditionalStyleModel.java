@@ -1,7 +1,9 @@
 package org.freeplane.features.common.styles;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,13 +61,13 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
     }
 	private boolean recursiveCall;
 	
-	public List<IStyle> getStyles(NodeModel node){
+	public Collection<IStyle> getStyles(NodeModel node){
 		if(recursiveCall){
 			return null;
 		}
 		try{
 			recursiveCall = true;
-			LinkedList<IStyle> matchingStyles = new LinkedList<IStyle>();
+			Collection<IStyle> matchingStyles = new LinkedHashSet<IStyle>();
 			for(Item item : styles){
 				final ISelectableCondition condition = item.getCondition();
 				if(condition != null && item.isActive() && condition.checkNode(node)){

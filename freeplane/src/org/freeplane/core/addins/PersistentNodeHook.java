@@ -84,17 +84,7 @@ public abstract class PersistentNodeHook {
 		}
 
 		public void act() {
-			if (extension != null && node.containsExtension(extension.getClass())) {
-				remove(node, extension);
-			}
-			else {
-				if (extension == null) {
-					extension = createExtension(node);
-				}
-				if (extension != null) {
-					add(node, extension);
-				}
-			}
+			toggle(node, extension);
 		}
 
 		public String getDescription() {
@@ -195,7 +185,6 @@ public abstract class PersistentNodeHook {
 	protected void add(final NodeModel node, final IExtension extension) {
 		assert (getExtensionClass().equals(extension.getClass()));
 		node.addExtension(extension);
-		Controller.getCurrentModeController().getMapController().nodeChanged(node);
 	}
 
 	protected IExtension createExtension(final NodeModel node) {
@@ -294,7 +283,6 @@ public abstract class PersistentNodeHook {
 
 	protected void remove(final NodeModel node, final IExtension extension) {
 		node.removeExtension(extension);
-		Controller.getCurrentModeController().getMapController().nodeChanged(node);
 	}
 
 	protected void saveExtension(final IExtension extension, final XMLElement element) {
@@ -339,4 +327,19 @@ public abstract class PersistentNodeHook {
 		final IActor actor = new ToggleHookActor(node, extension);
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
+
+	protected void toggle(NodeModel node, IExtension extension) {
+	    if (extension != null && node.containsExtension(extension.getClass())) {
+	    	remove(node, extension);
+	    }
+	    else {
+	    	if (extension == null) {
+	    		extension = createExtension(node);
+	    	}
+	    	if (extension != null) {
+	    		add(node, extension);
+	    	}
+	    }
+		Controller.getCurrentModeController().getMapController().nodeChanged(node);	    
+    }
 }

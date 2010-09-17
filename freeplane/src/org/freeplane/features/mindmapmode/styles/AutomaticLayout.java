@@ -21,12 +21,14 @@
 package org.freeplane.features.mindmapmode.styles;
 
 import java.awt.EventQueue;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.resources.NamedObject;
@@ -35,6 +37,7 @@ import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
@@ -45,84 +48,26 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 @NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
 @ActionLocationDescriptor(locations = "/menu_bar/format/nodes")
-public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener, IReadCompletionListener,
-        IExtension {
-	private boolean setStyleActive = false;
+public class AutomaticLayout extends PersistentNodeHook implements IExtension {
 
 	/**
 	 *
 	 */
 	public AutomaticLayout() {
 		super();
-		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		mapController.getReadManager().addReadCompletionListener(this);
-		mapController.addMapChangeListener(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.extensions.NodeHook#invoke(freeplane.modes.MindMapNode)
-	 */
-	@Override
-	protected void add(final NodeModel node, final IExtension extension) {
-		super.add(node, extension);
-		setStyleRecursive(node);
+		LogicalStyleController.getController().addStyleGetter(IPropertyHandler.AUTO, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
+			public Collection<IStyle> getProperty(NodeModel model, Collection<IStyle> currentValue) {
+				if(model.getMap().getRootNode().containsExtension(AutomaticLayout.class)){
+					currentValue.add(getStyle(model));
+				}
+				return currentValue;
+			}
+		});
 	}
 
 	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		return this;
-	}
-
-	public void mapChanged(final MapChangeEvent event) {
-	}
-
-	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
-	}
-
-	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
-		if (setStyleActive || !isActive(parent)) {
-			return;
-		}
-		setStyleRecursive(child);
-	}
-
-	public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-	                        final NodeModel child, final int newIndex) {
-		if (setStyleActive || !isActive(newParent)) {
-			return;
-		}
-		setStyleRecursive(child);
-	}
-
-	public void onPreNodeDelete(final NodeModel parent, final NodeModel child, final int index) {
-	}
-
-	public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
-		if (!topNode.containsExtension(getClass())) {
-			return;
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				setStyleRecursive(topNode);
-			}
-		});
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.extensions.NodeHook#invoke(freeplane.modes.MindMapNode)
-	 */
-	@Override
-	protected void remove(final NodeModel node, final IExtension extension) {
-		super.remove(node, extension);
-	}
-
-	private void setStyleImpl(final NodeModel node) {
-		final MLogicalStyleController styleController = (MLogicalStyleController) Controller.getCurrentModeController().getExtension(
-		    LogicalStyleController.class);
-		final IStyle style = getStyle(node);
-		styleController.setStyle(node, style);
 	}
 
 	private IStyle getStyle(final NodeModel node) {
@@ -138,27 +83,10 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		return MapStyleModel.DEFAULT_STYLE;
 	}
 
-	/**
-	 */
-	private void setStyleRecursive(final NodeModel node) {
-		setStyleActive = true;
-		setStyleRecursiveImpl(node);
-		setStyleActive = false;
-	}
-
-	private void setStyleRecursiveImpl(final NodeModel node) {
-		if (((MModeController) Controller.getCurrentModeController()).isUndoAction()) {
-			return;
-		}
-		setStyleImpl(node);
-		for (final Iterator<NodeModel> i = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
-			final NodeModel child = i.next();
-			setStyleRecursiveImpl(child);
-		}
-	}
-
-	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-	                           final NodeModel child, final int newIndex) {
-		// TODO Auto-generated method stub
-	}
+	@Override
+    protected void toggle(NodeModel node, IExtension extension) {
+	    super.toggle(node, extension);
+	    LogicalStyleController.getController().refreshMap(node.getMap());
+    }
+	
 }
