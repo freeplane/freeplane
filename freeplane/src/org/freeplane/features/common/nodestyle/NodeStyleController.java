@@ -74,7 +74,7 @@ public class NodeStyleController implements IExtension {
 	public NodeStyleController(final ModeController modeController) {
 //		this.modeController = modeController;
 //		controller = modeController.getController();
-		fontHandlers = new CombinedPropertyChain<Font, NodeModel>();
+		fontHandlers = new CombinedPropertyChain<Font, NodeModel>(true);
 		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		shapeHandlers = new ExclusivePropertyChain<String, NodeModel>();
@@ -364,7 +364,7 @@ public class NodeStyleController implements IExtension {
 	}
 
 	public Font getFont(final NodeModel node) {
-		final Font font = fontHandlers.getProperty(node);
+		final Font font = fontHandlers.getProperty(node, null);
 		return font;
 	}
 

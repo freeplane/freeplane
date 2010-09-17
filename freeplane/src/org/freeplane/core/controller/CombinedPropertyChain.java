@@ -23,14 +23,23 @@ import java.util.Iterator;
 import java.util.TreeMap;
 
 public class CombinedPropertyChain<V, T> {
+	final private boolean reversed;
+	public CombinedPropertyChain(boolean reversed) {
+	    super();
+	    this.reversed = reversed;
+    }
+
 	final private TreeMap<Integer, IPropertyHandler<V, T>> handlers = new TreeMap<Integer, IPropertyHandler<V, T>>();
 
 	public IPropertyHandler<V, T> addGetter(final Integer key, final IPropertyHandler<V, T> getter) {
-		return handlers.put(-key, getter);
+		return handlers.put(key(key), getter);
 	}
 
-	public V getProperty(final T node) {
-		V property = null;
+	private int key(final int key) {
+	    return reversed ? -key : key;
+    }
+
+	public V getProperty(final T node, V property) {
 		final Iterator<IPropertyHandler<V, T>> iterator = handlers.values().iterator();
 		while (iterator.hasNext()) {
 			final IPropertyHandler<V, T> getter = iterator.next();
@@ -40,6 +49,6 @@ public class CombinedPropertyChain<V, T> {
 	}
 
 	public IPropertyHandler<V, T> removeGetter(final Integer key) {
-		return handlers.remove(-key);
+		return handlers.remove(key(key));
 	}
 }

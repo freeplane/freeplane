@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -68,7 +69,7 @@ public class IconController implements IExtension {
 
 	public IconController(final ModeController modeController) {
 		super();
-		iconHandlers = new CombinedPropertyChain<Collection<MindIcon>, NodeModel>();
+		iconHandlers = new CombinedPropertyChain<Collection<MindIcon>, NodeModel>(false);
 //		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
@@ -78,23 +79,17 @@ public class IconController implements IExtension {
 		addIconGetter(IPropertyHandler.NODE, new IPropertyHandler<Collection<MindIcon>, NodeModel>() {
 			public Collection<MindIcon> getProperty(final NodeModel node, final Collection<MindIcon> currentValue) {
 				final Collection<MindIcon> icons = node.getIcons();
-				if (currentValue.isEmpty()) {
-					return icons;
-				}
 				if (icons.isEmpty()) {
 					return currentValue;
 				}
-				final ArrayList<MindIcon> arrayList = new ArrayList<MindIcon>(icons.size() + currentValue.size());
-				arrayList.addAll(currentValue);
-				arrayList.addAll(icons);
-				return arrayList;
+				currentValue.addAll(icons);
+				return currentValue;
 			}
 		});
 		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<Collection<MindIcon>, NodeModel>() {
 			public Collection<MindIcon> getProperty(final NodeModel node, final Collection<MindIcon> currentValue) {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
 				final List<IStyle> styleKeys = LogicalStyleController.getController(modeController).getStyles(node);
-				LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
 				for(IStyle styleKey : styleKeys){
 					final NodeModel styleNode = model.getStyleNode(styleKey);
 					if (styleNode == null) {
@@ -102,9 +97,9 @@ public class IconController implements IExtension {
 					}
 					final List<MindIcon> styleIcons;
 					styleIcons = styleNode.getIcons();
-					icons.addAll(styleIcons);
+					currentValue.addAll(styleIcons);
 				}
-				return icons;
+				return currentValue;
 			}
 		});
 	}
@@ -124,7 +119,7 @@ public class IconController implements IExtension {
 
 	public static Collection<MindIcon> getIcons(final NodeModel node) {
 		final IconController iconController = IconController.getController();
-		final Collection<MindIcon> icons = iconController.iconHandlers.getProperty(node);
+		final Collection<MindIcon> icons = iconController.iconHandlers.getProperty(node, new LinkedList<MindIcon>());
 		return icons;
 	}
 }
