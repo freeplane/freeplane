@@ -23,11 +23,14 @@ import java.awt.EventQueue;
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.freeplane.core.controller.CombinedPropertyChain;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
@@ -37,6 +40,7 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
@@ -56,12 +60,47 @@ public class LogicalStyleController implements IExtension {
 // 	final private ModeController modeController;
 	
 	private WeakReference<NodeModel> cachedNode;
-	private List<IStyle>  cachedStyle;
+	private Collection<IStyle>  cachedStyle;
+	final private CombinedPropertyChain<Collection<IStyle>, NodeModel> styleHandlers;
 
 	public LogicalStyleController() {
 //	    this.modeController = modeController;
+		styleHandlers = new CombinedPropertyChain<Collection<IStyle>, NodeModel>(false);		
 		createBuilder();
 		registerChangeListener();
+//		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
+//		List<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
+//		cachedStyle = condStyles;
+//		IStyle style = LogicalStyleModel.getStyle(node);
+//		if(! MapStyleModel.DEFAULT_STYLE.equals(style)){
+//			cachedStyle.add(0, style);
+//		}
+//		if(! cachedStyle.contains(MapStyleModel.DEFAULT_STYLE)){
+//			cachedStyle.add(cachedStyle.size(), MapStyleModel.DEFAULT_STYLE);
+//		}
+		addStyleGetter(IPropertyHandler.NODE, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
+			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
+				IStyle style = LogicalStyleModel.getStyle(node);
+				if(! MapStyleModel.DEFAULT_STYLE.equals(style)){
+					currentValue.add(style);
+				}
+				return currentValue;
+			}
+		});
+		addStyleGetter(IPropertyHandler.STYLE, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
+			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
+				final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
+				Collection<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
+				currentValue.addAll(condStyles);
+				return currentValue;
+			}
+		});
+		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
+			public Collection<IStyle> getProperty(NodeModel model, Collection<IStyle> currentValue) {
+				currentValue.add(MapStyleModel.DEFAULT_STYLE);
+				return currentValue;
+			}
+		});
 	}
 
 	private void registerChangeListener() {
@@ -198,17 +237,8 @@ public class LogicalStyleController implements IExtension {
 		if(cachedNode != null && node.equals(cachedNode.get())){
 			return cachedStyle;
 		}
-		IStyle style = LogicalStyleModel.getStyle(node);
-		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
-		List<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
+		cachedStyle = styleHandlers.getProperty(node, new LinkedHashSet<IStyle>());
 		cachedNode = new WeakReference<NodeModel>(node);
-		cachedStyle = condStyles;
-		if(! MapStyleModel.DEFAULT_STYLE.equals(style)){
-			cachedStyle.add(0, style);
-		}
-		if(! cachedStyle.contains(MapStyleModel.DEFAULT_STYLE)){
-			cachedStyle.add(cachedStyle.size(), MapStyleModel.DEFAULT_STYLE);
-		}
 		return cachedStyle;
 	}
 	
@@ -237,5 +267,18 @@ public class LogicalStyleController implements IExtension {
 	    cachedStyle = null;
 	    cachedNode = null;
     }
+
+	public IPropertyHandler<Collection<IStyle>, NodeModel> addStyleGetter(
+		final Integer key,
+		final IPropertyHandler<Collection<IStyle>, NodeModel> getter) {
+		return styleHandlers.addGetter(key, getter);
+	}
+
+	public IPropertyHandler<Collection<IStyle>, NodeModel> removeStyleGetter(
+		final Integer key,
+		final IPropertyHandler<Collection<IStyle>, NodeModel> getter) {
+		return styleHandlers.addGetter(key, getter);
+	}
+
 
 }
