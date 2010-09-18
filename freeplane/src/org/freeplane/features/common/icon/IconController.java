@@ -76,16 +76,6 @@ public class IconController implements IExtension {
 		final WriteManager writeManager = mapController.getWriteManager();
 		final IconBuilder textBuilder = new IconBuilder(this, IconStoreFactory.create());
 		textBuilder.registerBy(readManager, writeManager);
-		addIconGetter(IPropertyHandler.NODE, new IPropertyHandler<Collection<MindIcon>, NodeModel>() {
-			public Collection<MindIcon> getProperty(final NodeModel node, final Collection<MindIcon> currentValue) {
-				final Collection<MindIcon> icons = node.getIcons();
-				if (icons.isEmpty()) {
-					return currentValue;
-				}
-				currentValue.addAll(icons);
-				return currentValue;
-			}
-		});
 		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<Collection<MindIcon>, NodeModel>() {
 			public Collection<MindIcon> getProperty(final NodeModel node, final Collection<MindIcon> currentValue) {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());

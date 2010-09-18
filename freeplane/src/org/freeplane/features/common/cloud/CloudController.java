@@ -88,12 +88,6 @@ public class CloudController implements IExtension {
 			ResourceController.getResourceController().addPropertyChangeListener(listener);
 		}
 		updateStandards();
-		addCloudGetter(IPropertyHandler.NODE, new IPropertyHandler<CloudModel, NodeModel>() {
-			public CloudModel getProperty(final NodeModel node, final CloudModel currentValue) {
-				final CloudModel cloud = CloudModel.getModel(node);
-				return cloud;
-			}
-		});
 		addCloudGetter(IPropertyHandler.STYLE, new IPropertyHandler<CloudModel, NodeModel>() {
 			public CloudModel getProperty(final NodeModel node, final CloudModel currentValue) {
 				return getStyleCloud(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));

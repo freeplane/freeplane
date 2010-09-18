@@ -151,6 +151,9 @@ public class MapStyleModel implements IExtension {
 	}
 
 	public NodeModel getStyleNode(final IStyle style) {
+		if(style instanceof StyleNode){
+			return ((StyleNode)style).getNode();
+		}
 		return styleNodes.get(style);
 	}
 

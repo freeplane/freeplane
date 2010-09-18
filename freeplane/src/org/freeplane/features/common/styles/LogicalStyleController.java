@@ -68,18 +68,9 @@ public class LogicalStyleController implements IExtension {
 		styleHandlers = new CombinedPropertyChain<Collection<IStyle>, NodeModel>(false);		
 		createBuilder();
 		registerChangeListener();
-//		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
-//		List<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
-//		cachedStyle = condStyles;
-//		IStyle style = LogicalStyleModel.getStyle(node);
-//		if(! MapStyleModel.DEFAULT_STYLE.equals(style)){
-//			cachedStyle.add(0, style);
-//		}
-//		if(! cachedStyle.contains(MapStyleModel.DEFAULT_STYLE)){
-//			cachedStyle.add(cachedStyle.size(), MapStyleModel.DEFAULT_STYLE);
-//		}
 		addStyleGetter(IPropertyHandler.NODE, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
 			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
+				currentValue.add(new StyleNode(node));
 				IStyle style = LogicalStyleModel.getStyle(node);
 				if(! MapStyleModel.DEFAULT_STYLE.equals(style)){
 					currentValue.add(style);

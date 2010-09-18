@@ -79,19 +79,6 @@ public class NodeStyleController implements IExtension {
 		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		shapeHandlers = new ExclusivePropertyChain<String, NodeModel>();
-		addFontGetter(IPropertyHandler.NODE, new IPropertyHandler<Font, NodeModel>() {
-			public Font getProperty(final NodeModel node, final Font font) {
-				final NodeStyleModel nodeStyleModel = NodeStyleModel.getModel(node);
-				if (nodeStyleModel == null) {
-					return font;
-				}
-				final String family = nodeStyleModel.getFontFamilyName();
-				final Integer size = nodeStyleModel.getFontSize();
-				final Boolean bold = nodeStyleModel.isBold();
-				final Boolean italic = nodeStyleModel.isItalic();
-				return createFont(font, family, size, bold, italic);
-			}
-		});
 		addFontGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, final Font currentValue) {
 				final Font defaultFont = NodeStyleController.getDefaultFont();
@@ -104,11 +91,6 @@ public class NodeStyleController implements IExtension {
 				return defaultFont;
 			}
 		});
-		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node, final Color currentValue) {
-				return NodeStyleModel.getColor(node);
-			}
-		});
 		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return standardNodeTextColor;
@@ -119,23 +101,9 @@ public class NodeStyleController implements IExtension {
 				return getStyleTextColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
-		addBackgroundColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node, final Color currentValue) {
-				return NodeStyleModel.getBackgroundColor(node);
-			}
-		});
 		addBackgroundColorGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return getStyleBackgroundColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
-			}
-		});
-		addShapeGetter(IPropertyHandler.NODE, new IPropertyHandler<String, NodeModel>() {
-			public String getProperty(final NodeModel node, final String currentValue) {
-				final String returnedString = NodeStyleModel.getShape(node);
-				if (NodeStyleModel.SHAPE_AS_PARENT.equals(returnedString)) {
-					return null;
-				}
-				return returnedString;
 			}
 		});
 		addShapeGetter(IPropertyHandler.STYLE, new IPropertyHandler<String, NodeModel>() {
