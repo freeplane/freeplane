@@ -7,9 +7,10 @@ Conditional node styles: node formatting depends on its content and position
 Hyperlinks for menu items
 Keyboard shortcut documentation: Map and HTML table generation added for the documentation map
 Check for newer auto save files on opening of a map
-343] Single instance mode: open files in existing program instance instead of opening a new one.
+343] Single instance mode: open files in existing program instance instead of opening a new one
 Node level dependent filters
 Improvement in search and replace functions
+Different shapes for clouds
 
 Bug fixes:
 
