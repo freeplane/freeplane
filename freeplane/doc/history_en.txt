@@ -19,6 +19,7 @@ Bug fixes:
 ===============================
 Bug fixes:
 732]: Saving to any networkshare takes extremely long time
+749]: highlighted text does not appear highlighted anymore
 ===============================
 1.1.2
 ===============================
