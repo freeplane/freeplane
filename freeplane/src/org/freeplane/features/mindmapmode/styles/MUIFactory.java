@@ -184,6 +184,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 
 	public Container createSizeBox() {
 		final JComboBox sizeBox = new JComboBox(size);
+		sizeBox.setPreferredSize(sizeBox.getPreferredSize());
 		sizeBox.setEditor(new BasicComboBoxEditor());
 		sizeBox.setEditable(true);
 		return sizeBox;
