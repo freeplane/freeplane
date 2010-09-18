@@ -86,6 +86,10 @@ public class AutomaticLayout extends PersistentNodeHook implements IExtension {
 	@Override
     protected void toggle(NodeModel node, IExtension extension) {
 	    super.toggle(node, extension);
+	    final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+	    if(modeController.isUndoAction()){
+	    	return;
+	    }
 	    LogicalStyleController.getController().refreshMap(node.getMap());
     }
 	

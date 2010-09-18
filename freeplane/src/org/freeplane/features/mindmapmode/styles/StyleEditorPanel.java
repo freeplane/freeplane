@@ -24,6 +24,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.freeplane.core.controller.Controller;
@@ -64,6 +68,8 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
+
+import sun.java2d.opengl.OGLRenderer.Texture;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Borders;
@@ -539,13 +545,10 @@ public class StyleEditorPanel extends JPanel {
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.setBorder(Borders.DLU2_BORDER);
 		if (addStyleBox) {
-			final String label = TextUtils.getText("OptionPanel.separator.NodeStyle");
-			rightBuilder.appendSeparator(label);
-			final Container styleBox = uiFactory.createStyleBox();
-			rightBuilder.nextLine();
-			rightBuilder.append("");
-			rightBuilder.append(styleBox, 5);
-			rightBuilder.nextLine();
+		    final String label = TextUtils.getText("OptionPanel.separator.NodeStyle");
+		    rightBuilder.appendSeparator(label);
+			addAutomaticLayout(rightBuilder);
+			addStyleBox(rightBuilder);
 		}
 		mControls = getControls();
 		for (final IPropertyControl control : mControls) {
@@ -555,6 +558,32 @@ public class StyleEditorPanel extends JPanel {
 		addListeners();
 		setFont(this, 10);
 	}
+
+	private void addStyleBox(final DefaultFormBuilder rightBuilder) {
+	    final Container styleBox = uiFactory.createStyleBox();
+	    rightBuilder.nextLine();
+	    rightBuilder.append(new JLabel(TextUtils.getText("style")), 2);
+	    rightBuilder.append(styleBox, 4);
+	    rightBuilder.nextLine();
+    }
+
+	private JCheckBox mAutomaticLayoutCheckBox;
+	private void addAutomaticLayout(final DefaultFormBuilder rightBuilder) {
+		if(mAutomaticLayoutCheckBox == null){
+			 mAutomaticLayoutCheckBox = new JCheckBox();
+			 mAutomaticLayoutCheckBox.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					final ModeController modeController = Controller.getCurrentModeController();
+					AutomaticLayout al = (AutomaticLayout) modeController.getExtension(AutomaticLayout.class);
+					al.undoableToggleHook(Controller.getCurrentController().getMap().getRootNode(), al);
+				}
+			});
+		}
+	    rightBuilder.nextLine();
+	    final String label = TextUtils.removeMnemonic(TextUtils.getText("AutomaticLayoutAction.text"));
+	    rightBuilder.append(new JLabel(label), 5);
+	    rightBuilder.append(mAutomaticLayoutCheckBox);
+    }
 
 	private void setFont(Container c, float size) {
 		c.setFont(c.getFont().deriveFont(size));
@@ -654,6 +683,11 @@ public class StyleEditorPanel extends JPanel {
 				mSetNodeFontItalic.setValue(italic != null);
 				mNodeFontItalic.setValue(viewitalic);
 				mNodeFontItalic.setEnabled(mSetNodeFontItalic.getBooleanValue());
+			}
+			if(mAutomaticLayoutCheckBox != null){
+				final ModeController modeController = Controller.getCurrentModeController();
+				AutomaticLayout al = (AutomaticLayout) modeController.getExtension(AutomaticLayout.class);
+				mAutomaticLayoutCheckBox.setSelected(al.isActive(node));
 			}
 		}
 		finally {

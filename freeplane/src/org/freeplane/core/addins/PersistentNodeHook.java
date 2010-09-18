@@ -254,7 +254,7 @@ public abstract class PersistentNodeHook {
 		return nodes;
 	}
 
-	protected boolean isActive(final NodeModel nodeModel) {
+	public boolean isActive(final NodeModel nodeModel) {
 		if (!nodeModel.isRoot() && getHookAnnotation().onceForMap()) {
 			return isActive(nodeModel.getMap().getRootNode());
 		}

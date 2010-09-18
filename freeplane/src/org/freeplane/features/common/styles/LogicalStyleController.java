@@ -213,7 +213,6 @@ public class LogicalStyleController implements IExtension {
 				final Integer count = mapsToRefresh.get(map);
 				if (count > 0) {
 					mapsToRefresh.put(map, count - 1);
-					EventQueue.invokeLater(this);
 					return;
 				}
 				mapsToRefresh.remove(map);
