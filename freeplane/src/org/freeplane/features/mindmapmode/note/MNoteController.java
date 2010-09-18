@@ -153,14 +153,20 @@ public class MNoteController extends NoteController {
 		
 		editorPane.addFocusListener(new FocusListener() {
 			private SpellCheckerController spellCheckerController = null;
-
+			private boolean enabled = false;
 			public void focusLost(final FocusEvent e) {
-				spellCheckerController.enableAutoSpell(editorPane, false);
+				if(! e.isTemporary()){
+					spellCheckerController.enableAutoSpell(editorPane, false);
+					enabled = false;
+				}
 			}
 
 			public void focusGained(final FocusEvent e) {
-				initSpellChecker();
-				spellCheckerController.enableAutoSpell(editorPane, true);
+				if(! enabled){
+					initSpellChecker();
+					spellCheckerController.enableAutoSpell(editorPane, true);
+					enabled = true;
+				}
 			}
 
 			private void initSpellChecker() {
