@@ -23,8 +23,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
 import java.util.Collection;
-import java.util.List;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.ExclusivePropertyChain;
 import org.freeplane.core.controller.IPropertyHandler;

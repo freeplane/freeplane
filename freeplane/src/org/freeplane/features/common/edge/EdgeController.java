@@ -21,8 +21,6 @@ package org.freeplane.features.common.edge;
 
 import java.awt.Color;
 import java.util.Collection;
-import java.util.List;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.ExclusivePropertyChain;
 import org.freeplane.core.controller.IPropertyHandler;

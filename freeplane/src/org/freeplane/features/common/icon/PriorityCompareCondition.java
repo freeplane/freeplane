@@ -20,8 +20,6 @@
 package org.freeplane.features.common.icon;
 
 import java.util.Collection;
-import java.util.List;
-
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 

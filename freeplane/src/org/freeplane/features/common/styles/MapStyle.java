@@ -39,7 +39,6 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.filter.condition.ConditionFactory;

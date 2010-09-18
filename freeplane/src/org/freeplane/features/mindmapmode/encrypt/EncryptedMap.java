@@ -23,13 +23,11 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.encrypt.SingleDesEncrypter;
 import org.freeplane.features.common.map.EncryptionModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.file.MFileManager;
-import org.freeplane.features.mindmapmode.text.MTextController;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/file/open" })
 public class EncryptedMap extends AFreeplaneAction {

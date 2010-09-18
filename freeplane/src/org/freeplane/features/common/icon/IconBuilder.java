@@ -21,8 +21,6 @@ package org.freeplane.features.common.icon;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
-
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementWriter;

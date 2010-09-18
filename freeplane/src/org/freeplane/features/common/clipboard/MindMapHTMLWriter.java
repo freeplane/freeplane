@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
-import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.core.resources.ResourceController;

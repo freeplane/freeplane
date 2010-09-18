@@ -19,7 +19,6 @@
  */
 package org.freeplane.main.mindmapmode.stylemode;
 
-import java.awt.Component;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;

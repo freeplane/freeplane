@@ -20,8 +20,6 @@
 package org.freeplane.features.common.styles;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
@@ -33,7 +31,6 @@ import java.util.Map;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
@@ -42,7 +39,6 @@ import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.map.MapWriter.Mode;
-import org.freeplane.n3.nanoxml.XMLException;
 
 /**
  * @author Dimitry Polivaev

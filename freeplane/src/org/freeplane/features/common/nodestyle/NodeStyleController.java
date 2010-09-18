@@ -22,8 +22,6 @@ package org.freeplane.features.common.nodestyle;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.Collection;
-import java.util.List;
-
 import org.freeplane.core.controller.CombinedPropertyChain;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.ExclusivePropertyChain;

@@ -22,7 +22,6 @@ package org.freeplane.features.mindmapmode.file;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.url.UrlManager;
 

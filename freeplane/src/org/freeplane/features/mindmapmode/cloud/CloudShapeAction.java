@@ -27,7 +27,6 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.cloud.CloudModel.Shape;
-import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 

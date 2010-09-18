@@ -23,8 +23,6 @@ import java.awt.Component;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
@@ -37,28 +35,21 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.SequenceInputStream;
-import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import javax.swing.Box;
-import javax.swing.Icon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileSystemView;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewChangeListener;
@@ -90,8 +81,6 @@ import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.map.MMapModel;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
-
-import com.sun.corba.se.spi.activation.InitialNameServicePackage.NameAlreadyBound;
 
 /**
  * @author Dimitry Polivaev

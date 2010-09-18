@@ -20,24 +20,15 @@
  */
 package org.freeplane.features.mindmapmode.styles;
 
-import java.awt.EventQueue;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.ActionLocationDescriptor;
-import org.freeplane.features.common.map.IMapChangeListener;
-import org.freeplane.features.common.map.MapChangeEvent;
-import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;

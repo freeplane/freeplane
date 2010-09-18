@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 

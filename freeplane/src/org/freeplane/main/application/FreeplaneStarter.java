@@ -43,7 +43,6 @@ import org.freeplane.features.common.filter.NextNodeAction;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.styles.LogicalStyleFilterController;
 import org.freeplane.features.common.styles.MapViewLayout;

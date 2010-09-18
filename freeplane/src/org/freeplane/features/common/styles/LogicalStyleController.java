@@ -24,8 +24,6 @@ import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.freeplane.core.controller.CombinedPropertyChain;
@@ -40,7 +38,6 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
