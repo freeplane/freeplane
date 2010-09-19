@@ -543,9 +543,8 @@ public class StyleEditorPanel extends JPanel {
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.setBorder(Borders.DLU2_BORDER);
 		if (addStyleBox) {
-		    final String label = TextUtils.getText("OptionPanel.separator.NodeStyle");
-		    rightBuilder.appendSeparator(label);
 			addAutomaticLayout(rightBuilder);
+		    rightBuilder.appendSeparator(TextUtils.getText("OptionPanel.separator.NodeStyle"));
 			addStyleBox(rightBuilder);
 		}
 		mControls = getControls();
@@ -577,11 +576,10 @@ public class StyleEditorPanel extends JPanel {
 				}
 			});
 		}
-	    rightBuilder.nextLine();
 	    final String label = TextUtils.removeMnemonic(TextUtils.getText("AutomaticLayoutAction.text"));
 	    rightBuilder.append(new JLabel(label), 5);
 	    rightBuilder.append(mAutomaticLayoutCheckBox);
-    }
+	}
 
 	private void setFont(Container c, float size) {
 		c.setFont(c.getFont().deriveFont(size));
