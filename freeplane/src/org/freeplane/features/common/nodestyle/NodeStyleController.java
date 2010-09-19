@@ -206,6 +206,9 @@ public class NodeStyleController implements IExtension {
 				continue;
 			}
 			final Color styleColor =styleModel.getBackgroundColor();
+			if (styleColor == null) {
+				continue;
+			}
 			return styleColor;
 		}
 		return null;
@@ -256,6 +259,10 @@ public class NodeStyleController implements IExtension {
 
 	private Font getStyleFont(final Font baseFont, final MapModel map, final Collection<IStyle> collection) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
+		Boolean bold = null;
+        Boolean italic = null;
+        String fontFamilyName = null;
+        Integer fontSize = null;
 		for(IStyle styleKey : collection){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
@@ -265,9 +272,13 @@ public class NodeStyleController implements IExtension {
 			if (styleModel == null) {
 				continue;
 			}
-			return createFont(baseFont, styleModel);
+			if (bold == null) bold = styleModel.isBold();
+			if (italic == null) italic = styleModel.isItalic();
+			if (fontFamilyName == null) fontFamilyName = styleModel.getFontFamilyName();
+			if (fontSize == null) fontSize = styleModel.getFontSize();
+			if(bold != null && italic != null && fontFamilyName != null && fontSize != null) break;
 		}
-		return baseFont;
+		return createFont(baseFont, fontFamilyName, fontSize, bold, italic);
 	}
 
 	private Font createFont(final Font baseFont, String family, Integer size, Boolean bold, Boolean italic) {
@@ -308,6 +319,9 @@ public class NodeStyleController implements IExtension {
 				continue;
 			}
 			final String shape = styleModel.getShape();
+			if (shape == null) {
+				continue;
+			}
 			return shape;
 		}
 		return null;
@@ -325,6 +339,9 @@ public class NodeStyleController implements IExtension {
 				continue;
 			}
 			final Color styleColor = styleModel == null ? null : styleModel.getColor();
+			if (styleColor == null) {
+				continue;
+			}
 			return styleColor;
 		}
 		return null;
