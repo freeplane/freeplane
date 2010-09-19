@@ -40,7 +40,7 @@ public class MindIconFactory {
 	 * @return
 	 */
 	public static MindIcon create(final String name) {
-		final String description = name.indexOf('/') > 0 ? "" : TextUtils.getText(String.format(DESC_KEY, name));
+		final String description = name.indexOf('/') > 0 ? "" : TextUtils.getText(String.format(DESC_KEY, name), "");
 		return new MindIcon(name, name + ".png", description);
 	}
 }
