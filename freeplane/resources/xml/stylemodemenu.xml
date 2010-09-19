@@ -159,6 +159,8 @@
 			<menu_action action="NodeDownAction" />
 		</menu_category>
 		<menu_separator />
+        <menu_action action="FormatCopy"/>
+        <menu_action action="FormatPaste"/>
         <menu_action action="DuplicateUserStyleAction"/>
         <menu_action action="DeleteUserStyleAction"/>
 		<menu_separator />
@@ -233,6 +235,8 @@
 		<menu_separator />
 		<menu_category name="zoom">
 		</menu_category>
+        <menu_action action="FormatCopy"/>
+        <menu_action action="FormatPaste"/>
 		<menu_category name="font">
 			<menu_action action="BoldAction" />
 			<menu_action action="ItalicAction" />
