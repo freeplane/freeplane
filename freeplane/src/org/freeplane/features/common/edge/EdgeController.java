@@ -203,6 +203,9 @@ public class EdgeController implements IExtension {
 				continue;
 			}
 			final Color styleColor = styleModel.getColor();
+			if (styleColor == null) {
+				continue;
+			}
 			return styleColor;
 		}
 		return null;
@@ -219,9 +222,11 @@ public class EdgeController implements IExtension {
 			if (styleModel == null) {
 				continue;
 			}
-			final Color styleColor = styleModel.getColor();
 			final int width = styleModel.getWidth();
-			return width == EdgeModel.DEFAULT_WIDTH ? null : width;
+			if (width == EdgeModel.DEFAULT_WIDTH ) {
+				continue;
+			}
+			return width;
 		}
 		return null;
 	}
@@ -238,6 +243,9 @@ public class EdgeController implements IExtension {
 				continue;
 			}
 			final EdgeStyle style = styleModel.getStyle();
+			if (style == null) {
+				continue;
+			}
 			return style;
 		}
 		return null;
