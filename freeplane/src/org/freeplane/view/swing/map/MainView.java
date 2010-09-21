@@ -49,6 +49,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.icon.IconController;
@@ -346,6 +347,7 @@ public abstract class MainView extends ZoomableLabel {
 			}
 		}
 		catch (Exception e) {
+			LogUtils.warn(e.getMessage(), e);
 			text = TextUtils.format("MainView.errorUpdateText", nodeModel.getText(), e.getLocalizedMessage());
 			setBorder(errorBorder);
 		}
