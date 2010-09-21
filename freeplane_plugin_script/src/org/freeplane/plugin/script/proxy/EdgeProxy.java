@@ -9,10 +9,11 @@ import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
+import org.freeplane.plugin.script.ScriptContext;
 
 class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
-	EdgeProxy(final NodeModel delegate) {
-		super(delegate);
+	EdgeProxy(final NodeModel delegate, final ScriptContext scriptContext) {
+		super(delegate, scriptContext);
 	}
 
 	public Color getColor() {

@@ -4,6 +4,7 @@
 		<tab name="plugins">
 			<separator name="spreadsheet">
 				<boolean name="spreadsheet_enable_plugin" />
+				<boolean name="spreadsheet_enable_caching" />
 			</separator>
 		</tab>
 	</tabbed_pane>

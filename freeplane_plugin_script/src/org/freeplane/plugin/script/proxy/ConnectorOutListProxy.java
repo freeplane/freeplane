@@ -8,18 +8,20 @@ import java.util.Iterator;
 
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.plugin.script.ScriptContext;
 
 class ConnectorOutListProxy extends AbstractCollection<Proxy.Connector> {
-// 	private final MModeController modeController;
 	private final NodeModel node;
+	private final ScriptContext scriptContext;
 
-	public ConnectorOutListProxy(final NodeModel node) {
-		this.node = node;
+	public ConnectorOutListProxy(final NodeProxy nodeProxy) {
+		this.node = nodeProxy.getDelegate();
+		this.scriptContext = nodeProxy.getScriptContext();
 	}
 
 	@Override
 	public Iterator<Proxy.Connector> iterator() {
-		return new ConnectorIterator(NodeLinks.getLinks(node).iterator());
+		return new ConnectorIterator(NodeLinks.getLinks(node).iterator(), scriptContext);
 	}
 
 	@Override

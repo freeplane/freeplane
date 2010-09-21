@@ -218,6 +218,8 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	public static String toString(Object value) {
 		if (value == null)
 			return null;
+		else if (value.getClass().equals(String.class))
+			return (String) value;
 		else if (value instanceof Date)
 			return Convertible.dateToString(((Date) value));
 		else if (value instanceof Calendar)

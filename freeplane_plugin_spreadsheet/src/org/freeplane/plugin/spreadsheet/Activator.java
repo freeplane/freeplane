@@ -18,18 +18,21 @@ public class Activator implements BundleActivator {
 	static final String MENU_BAR_LOCATION = "/menu_bar/extras/first/spreadsheet";
 
 	private final class SpreadsheetRegistration implements IModeControllerExtensionProvider {
-// 		private MModeController modeController;
-
+		// 		private MModeController modeController;
 		// implements IModeControllerExtensionProvider.installExtension()
 		public void installExtension(ModeController modeController) {
 			addMenuItems(modeController);
 			TextController.getController(modeController).addTextTransformer(new SpreadsheetTextTransformer());
+			final FormulaUpdateChangeListener listener = new FormulaUpdateChangeListener();
+			Controller.getCurrentModeController().getMapController().addNodeChangeListener(listener);
+			Controller.getCurrentModeController().getMapController().addMapChangeListener(listener);
+			Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(listener);
 		}
 
 		private void addMenuItems(ModeController modeController) {
 			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-			addSubMenu(menuBuilder, "/menu_bar/extras/first", MENU_BAR_LOCATION, SpreadSheetUtils
-			    .getSpreadSheetKey("ExecuteScripts"));
+			addSubMenu(menuBuilder, "/menu_bar/extras/first", MENU_BAR_LOCATION,
+			    SpreadSheetUtils.getSpreadSheetKey("ExecuteScripts"));
 			menuBuilder.addAnnotatedAction(new EvaluateAllAction());
 			addPropertiesToOptionPanel();
 		}

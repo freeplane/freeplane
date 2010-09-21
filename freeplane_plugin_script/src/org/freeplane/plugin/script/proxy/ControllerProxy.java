@@ -23,12 +23,15 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.map.MMapModel;
+import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class ControllerProxy implements Proxy.Controller {
-	public ControllerProxy() {
-		super();
+	private final ScriptContext scriptContext;
+
+	public ControllerProxy(final ScriptContext scriptContext) {
+		this.scriptContext = scriptContext;
 	}
 
 	public void centerOnNode(final Node center) {
@@ -37,16 +40,23 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	public Node getSelected() {
-		return new NodeProxy(Controller.getCurrentController().getSelection().getSelected());
+		if (scriptContext != null)
+			scriptContext.accessAll();
+		return new NodeProxy(Controller.getCurrentController().getSelection().getSelected(), scriptContext);
 	}
 
 	public List<Node> getSelecteds() {
-		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection().getSelection());
+		if (scriptContext != null)
+			scriptContext.accessAll();
+		return ProxyUtils
+		    .createNodeList(Controller.getCurrentController().getSelection().getSelection(), scriptContext);
 	}
 
 	public List<Node> getSortedSelection(final boolean differentSubtrees) {
-		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection().getSortedSelection(
-		    differentSubtrees));
+		if (scriptContext != null)
+			scriptContext.accessAll();
+		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection()
+		    .getSortedSelection(differentSubtrees), scriptContext);
 	}
 
 	public void select(final Node toSelect) {
@@ -110,7 +120,7 @@ class ControllerProxy implements Proxy.Controller {
 	public void setStatusInfo(final String infoPanelKey, final String info, final String iconKey) {
 		final ViewController viewController = getViewController();
 		viewController.addStatusInfo(infoPanelKey, info, FreeplaneIconUtils.createStandardIcon(iconKey));
-    }
+	}
 
 	@Deprecated
 	public void setStatusInfo(final String infoPanelKey, final Icon icon) {
@@ -119,21 +129,25 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	public FreeplaneVersion getFreeplaneVersion() {
-	    return FreeplaneVersion.getVersion();
-    }
+		return FreeplaneVersion.getVersion();
+	}
 
 	@Deprecated
 	public List<Node> find(final ICondition condition) {
-		return ProxyUtils.find(condition, Controller.getCurrentController().getMap().getRootNode());
+		if (scriptContext != null)
+			scriptContext.accessAll();
+		return ProxyUtils.find(condition, Controller.getCurrentController().getMap().getRootNode(), scriptContext);
 	}
 
 	public List<Node> find(final Closure closure) {
-		return ProxyUtils.find(closure, Controller.getCurrentController().getMap().getRootNode());
+		if (scriptContext != null)
+			scriptContext.accessAll();
+		return ProxyUtils.find(closure, Controller.getCurrentController().getMap().getRootNode(), scriptContext);
 	}
 
 	public Map newMap() {
 		final MapModel newMap = Controller.getCurrentModeController().getMapController().newMap(((NodeModel) null));
-		return new MapProxy(newMap);
+		return new MapProxy(newMap, scriptContext);
 	}
 
 	public Map newMap(URL url) {
@@ -144,7 +158,7 @@ class ControllerProxy implements Proxy.Controller {
 			// make the map the current map even if it was already opened
 			if (key == null || !mapViewManager.tryToChangeToMapView(key))
 				throw new RuntimeException("map " + url + " does not seem to be opened");
-			return new MapProxy(mapViewManager.getModel());
+			return new MapProxy(mapViewManager.getModel(), scriptContext);
 		}
 		catch (Exception e) {
 			throw new RuntimeException("error on newMap", e);

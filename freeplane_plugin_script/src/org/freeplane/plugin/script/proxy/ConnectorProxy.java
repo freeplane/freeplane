@@ -9,11 +9,12 @@ import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
+import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Connector {
-	ConnectorProxy(final ConnectorModel connector) {
-		super(connector);
+	ConnectorProxy(final ConnectorModel connector, final ScriptContext scriptContext) {
+		super(connector, scriptContext);
 	}
 
 	public Color getColor() {
@@ -37,7 +38,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public Node getSource() {
-		return new NodeProxy(getConnector().getSource());
+		return new NodeProxy(getConnector().getSource(), getScriptContext());
 	}
 
 	public String getSourceLabel() {
@@ -49,7 +50,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public Node getTarget() {
-		return new NodeProxy(getConnector().getTarget());
+		return new NodeProxy(getConnector().getTarget(), getScriptContext());
 	}
 
 	public String getTargetLabel() {

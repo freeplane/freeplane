@@ -1,29 +1,23 @@
 package org.freeplane.plugin.spreadsheet;
 
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.plugin.script.ExecuteScriptException;
-import org.freeplane.plugin.script.ScriptingEngine;
+import org.freeplane.plugin.script.FormulaUtils;
 
 class SpreadsheetTextTransformer implements ITextTransformer {
-// 	private MModeController modeController;
-
 	SpreadsheetTextTransformer() {
 	}
 
+	// FIXME: do we actually need a null check here? - wouldn't a NPE be fine?
 	public String transform(String text, NodeModel nodeModel) {
-		// I don't think we need a null check here - NPE would be fine
-		if (text.startsWith("="))
-			return eval(text.substring(1), nodeModel);
-		else
-			return text;
-	}
-
-	private String eval(String script, NodeModel nodeModel) {
-		final Object result = ScriptingEngine.executeScript(nodeModel, script);
+		final String plainText = HtmlUtils.htmlToPlain(nodeModel.getText());
+		// starting a new ScriptContext in evalIfScript
+		final Object result = FormulaUtils.evalIfScript(nodeModel, null, plainText);
 		if (result == null) {
 			throw new ExecuteScriptException("got null result from evaluating " + nodeModel.getID() + ", text='"
-			        + script + "'");
+			        + plainText.substring(1) + "'");
 		}
 		return result.toString();
 	}

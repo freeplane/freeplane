@@ -13,11 +13,12 @@ import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.styles.MLogicalStyleController;
+import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle {
-	NodeStyleProxy(final NodeModel delegate) {
-		super(delegate);
+	NodeStyleProxy(final NodeModel delegate, final ScriptContext scriptContext) {
+		super(delegate, scriptContext);
 	}
 
 	public void setStyle(final IStyle key) {
@@ -29,11 +30,11 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	}
 
 	public Proxy.Edge getEdge() {
-		return new EdgeProxy(getDelegate());
+		return new EdgeProxy(getDelegate(), getScriptContext());
 	}
 
 	public Proxy.Font getFont() {
-		return new FontProxy(getDelegate());
+		return new FontProxy(getDelegate(), getScriptContext());
 	}
 
 	public Color getNodeTextColor() {
@@ -62,6 +63,6 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 
 	public Node getStyleNode() {
 		final NodeModel styleNode = MapStyleModel.getExtension(getDelegate().getMap()).getStyleNode(getStyle());
-		return new NodeProxy(styleNode);
+		return new NodeProxy(styleNode, getScriptContext());
 	}
 }
