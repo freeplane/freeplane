@@ -7,6 +7,7 @@ import javax.swing.JMenu;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -15,9 +16,11 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
-	static final String MENU_BAR_LOCATION = "/menu_bar/extras/first/spreadsheet";
+	private static final String MENU_BAR_PARENT_LOCATION = "/menu_bar/extras/first";
+	static final String MENU_BAR_LOCATION = MENU_BAR_PARENT_LOCATION + "/spreadsheet";
 
 	private final class SpreadsheetRegistration implements IModeControllerExtensionProvider {
+
 		// 		private MModeController modeController;
 		// implements IModeControllerExtensionProvider.installExtension()
 		public void installExtension(ModeController modeController) {
@@ -31,18 +34,17 @@ public class Activator implements BundleActivator {
 
 		private void addMenuItems(ModeController modeController) {
 			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-			addSubMenu(menuBuilder, "/menu_bar/extras/first", MENU_BAR_LOCATION,
-			    SpreadSheetUtils.getSpreadSheetKey("ExecuteScripts"));
+			addSubMenu(menuBuilder, MENU_BAR_PARENT_LOCATION, MENU_BAR_LOCATION,
+			    SpreadSheetUtils.getSpreadSheetKey("menuname"));
 			menuBuilder.addAnnotatedAction(new EvaluateAllAction());
 			addPropertiesToOptionPanel();
 		}
 
-		private void addSubMenu(final MenuBuilder menuBuilder, final String scriptsParentLocation,
-		                        final String scriptsLocation, final String baseKey) {
+		private void addSubMenu(final MenuBuilder menuBuilder, final String parentLocation,
+		                        final String location, final String menuKey) {
 			final JMenu menuItem = new JMenu();
-			MenuBuilder.setLabelAndMnemonic(menuItem, baseKey + ".text");
-			menuItem.setToolTipText(baseKey + ".tooltip");
-			menuBuilder.addMenuItem(scriptsParentLocation, menuItem, scriptsLocation, MenuBuilder.AS_CHILD);
+			MenuBuilder.setLabelAndMnemonic(menuItem, TextUtils.getText(menuKey));
+			menuBuilder.addMenuItem(parentLocation, menuItem, location, MenuBuilder.AS_CHILD);
 		}
 
 		private void addPropertiesToOptionPanel() {

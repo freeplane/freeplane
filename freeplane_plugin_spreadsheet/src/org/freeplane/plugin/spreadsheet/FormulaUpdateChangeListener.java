@@ -66,7 +66,7 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 	public void afterViewClose(Component mapView) {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		final MapModel map = mapViewManager.getModel(mapView);
-		FormulaUtils.mapClosed(map);
+		FormulaUtils.clearCache(map);
     }
 
 	public void afterViewCreated(Component mapView) {

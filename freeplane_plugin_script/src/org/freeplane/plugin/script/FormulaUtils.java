@@ -11,7 +11,8 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.plugin.script.proxy.FormulaCache;
 
 public class FormulaUtils {
-	// don't let caching use too much memory
+	// don't let caching use too much memory - but currently there are little means to cope with unavailable
+	// dependency data. It has to be tested but it should "only" lead to some missing updates.
 	private static WeakHashMap<MapModel, FormulaCache> formulaCaches = new WeakHashMap<MapModel, FormulaCache>();
 	private static WeakHashMap<MapModel, EvaluationDependencies> evaluationDependencies = new WeakHashMap<MapModel, EvaluationDependencies>();
 	private static final boolean ENABLE_CACHING = Controller.getCurrentController().getResourceController()
@@ -37,6 +38,7 @@ public class FormulaUtils {
 			scriptContext.push(nodeModel);
 			Object value = formulaCache.get(nodeModel, text);
 			if (value == null) {
+//				System.out.println("eval(" + text + ")");
 				value = ScriptingEngine.executeScript(nodeModel, text, scriptContext);
 				formulaCache.put(nodeModel, text, value);
 			}
@@ -54,10 +56,11 @@ public class FormulaUtils {
 	public static List<NodeModel> manageChangeAndReturnDependencies(final NodeModel... nodes) {
 		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
 		for (int i = 0; i < nodes.length; i++) {
-			final Set<NodeModel> nodeDependencies = getEvaluationDependencies(nodes[i].getMap()).getDependencies(nodes[i]);
+			final Set<NodeModel> nodeDependencies = getEvaluationDependencies(nodes[i].getMap()).getDependencies(
+			    nodes[i]);
 			if (nodeDependencies != null)
 				dependencies.addAll(nodeDependencies);
-        }
+		}
 		if (ENABLE_CACHING) {
 			for (NodeModel nodeModel : dependencies) {
 				getFormulaCache(nodeModel.getMap()).markAsDirtyIfFormulaNode(nodeModel);
@@ -97,9 +100,9 @@ public class FormulaUtils {
 		getEvaluationDependencies(accessingNode.getMap()).accessAll(accessingNode);
 	}
 
-	public static void mapClosed(MapModel map) {
-//		System.out.println("clearing formula cache for " + map.getTitle());
+	public static void clearCache(MapModel map) {
+		//		System.out.println("clearing formula cache for " + map.getTitle());
 		evaluationDependencies.remove(map);
 		formulaCaches.remove(map);
-    }
+	}
 }
