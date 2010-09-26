@@ -40,13 +40,6 @@ class BubbleMainView extends MainView {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Returns the relative position of the Edge
-	 */
-	@Override
-	int getAlignment() {
-		return NodeView.ALIGN_CENTER;
-	}
 
 	@Override
 	Point getCenterPoint() {

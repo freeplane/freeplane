@@ -109,8 +109,6 @@ public abstract class MainView extends ZoomableLabel {
 		return getNodeView().isLeft();
 	}
 
-	abstract int getAlignment();
-
 	abstract Point getCenterPoint();
 
 	/** get x coordinate including folding symbol */

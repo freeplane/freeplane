@@ -47,13 +47,6 @@ class RootMainView extends MainView {
 		return xCoord < getSize().width * 1 / 2;
 	}
 
-	/**
-	 * Returns the relative position of the Edge
-	 */
-	@Override
-	int getAlignment() {
-		return NodeView.ALIGN_CENTER;
-	}
 
 	@Override
 	Point getCenterPoint() {

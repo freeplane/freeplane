@@ -200,14 +200,6 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	/**
-	 * Returns the relative position of the Edge. This is used by bold edge to
-	 * know how to shift the line.
-	 */
-	int getAlignment() {
-		return mainView.getAlignment();
-	}
-
-	/**
 	 */
 	public AttributeView getAttributeView() {
 		if (attributeView == null) {
