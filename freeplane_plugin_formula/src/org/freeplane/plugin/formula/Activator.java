@@ -1,4 +1,4 @@
-package org.freeplane.plugin.spreadsheet;
+package org.freeplane.plugin.formula;
 
 import java.net.URL;
 import java.util.Hashtable;
@@ -17,15 +17,15 @@ import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
 	private static final String MENU_BAR_PARENT_LOCATION = "/menu_bar/extras/first";
-	static final String MENU_BAR_LOCATION = MENU_BAR_PARENT_LOCATION + "/spreadsheet";
+	static final String MENU_BAR_LOCATION = MENU_BAR_PARENT_LOCATION + "/formula";
 
-	private final class SpreadsheetRegistration implements IModeControllerExtensionProvider {
+	private final class FormulaPluginRegistration implements IModeControllerExtensionProvider {
 
 		// 		private MModeController modeController;
 		// implements IModeControllerExtensionProvider.installExtension()
 		public void installExtension(ModeController modeController) {
 			addMenuItems(modeController);
-			TextController.getController(modeController).addTextTransformer(new SpreadsheetTextTransformer());
+			TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer());
 			final FormulaUpdateChangeListener listener = new FormulaUpdateChangeListener();
 			Controller.getCurrentModeController().getMapController().addNodeChangeListener(listener);
 			Controller.getCurrentModeController().getMapController().addMapChangeListener(listener);
@@ -35,7 +35,7 @@ public class Activator implements BundleActivator {
 		private void addMenuItems(ModeController modeController) {
 			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 			addSubMenu(menuBuilder, MENU_BAR_PARENT_LOCATION, MENU_BAR_LOCATION,
-			    SpreadSheetUtils.getSpreadSheetKey("menuname"));
+			    FormulaUtils.getFormulaKey("menuname"));
 			menuBuilder.addAnnotatedAction(new EvaluateAllAction());
 			addPropertiesToOptionPanel();
 		}
@@ -64,7 +64,7 @@ public class Activator implements BundleActivator {
 	public void start(final BundleContext context) throws Exception {
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("mode", new String[] { MModeController.MODENAME /*TODO: browse mode too?*/});
-		context.registerService(IModeControllerExtensionProvider.class.getName(), new SpreadsheetRegistration(), props);
+		context.registerService(IModeControllerExtensionProvider.class.getName(), new FormulaPluginRegistration(), props);
 	}
 
 	/*

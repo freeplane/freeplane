@@ -1,4 +1,4 @@
-package org.freeplane.plugin.spreadsheet;
+package org.freeplane.plugin.formula;
 
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeModel;
@@ -6,8 +6,8 @@ import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.FormulaUtils;
 
-class SpreadsheetTextTransformer implements ITextTransformer {
-	SpreadsheetTextTransformer() {
+class FormulaTextTransformer implements ITextTransformer {
+	FormulaTextTransformer() {
 	}
 
 	// FIXME: do we actually need a null check here? - wouldn't a NPE be fine?

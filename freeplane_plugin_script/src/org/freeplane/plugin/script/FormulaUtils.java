@@ -16,7 +16,7 @@ public class FormulaUtils {
 	private static WeakHashMap<MapModel, FormulaCache> formulaCaches = new WeakHashMap<MapModel, FormulaCache>();
 	private static WeakHashMap<MapModel, EvaluationDependencies> evaluationDependencies = new WeakHashMap<MapModel, EvaluationDependencies>();
 	private static final boolean ENABLE_CACHING = Controller.getCurrentController().getResourceController()
-	    .getBooleanProperty("spreadsheet_enable_caching");
+	    .getBooleanProperty("formula_enable_caching");
 
 	/** evaluate text as a script if it starts with '='.
 	 * @return the evaluation result for script and the original text otherwise */
@@ -33,23 +33,27 @@ public class FormulaUtils {
 	/** evaluate text as a script.
 	 * @return the evaluation result. */
 	public static Object eval(final NodeModel nodeModel, final ScriptContext scriptContext, final String text) {
-		if (ENABLE_CACHING && scriptContext != null) {
-			final FormulaCache formulaCache = getFormulaCache(nodeModel.getMap());
-			scriptContext.push(nodeModel);
-			Object value = formulaCache.get(nodeModel, text);
-			if (value == null) {
-//				System.out.println("eval(" + text + ")");
-				value = ScriptingEngine.executeScript(nodeModel, text, scriptContext);
-				formulaCache.put(nodeModel, text, value);
+		scriptContext.push(nodeModel);
+		try {
+			if (ENABLE_CACHING) {
+				final FormulaCache formulaCache = getFormulaCache(nodeModel.getMap());
+				Object value = formulaCache.get(nodeModel, text);
+				if (value == null) {
+					//				System.out.println("eval(" + text + ")");
+					value = ScriptingEngine.executeScript(nodeModel, text, scriptContext);
+					formulaCache.put(nodeModel, text, value);
+				}
+				else {
+					scriptContext.accessNode(nodeModel);
+				}
+				return value;
 			}
 			else {
-				scriptContext.accessNode(nodeModel);
+				return ScriptingEngine.executeScript(nodeModel, text, scriptContext);
 			}
-			scriptContext.pop();
-			return value;
 		}
-		else {
-			return ScriptingEngine.executeScript(nodeModel, text.substring(1), scriptContext);
+		finally {
+			scriptContext.pop();
 		}
 	}
 

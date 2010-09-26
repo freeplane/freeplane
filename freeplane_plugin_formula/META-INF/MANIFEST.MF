@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.freeplane.plugin.spreadsheet
-Bundle-SymbolicName: org.freeplane.plugin.spreadsheet
+Bundle-Name: org.freeplane.plugin.formula
+Bundle-SymbolicName: org.freeplane.plugin.formula
 Bundle-Version: 1.0.1
-Bundle-Activator: org.freeplane.plugin.spreadsheet.Activator
+Bundle-Activator: org.freeplane.plugin.formula.Activator
 Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1",

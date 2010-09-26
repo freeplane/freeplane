@@ -1,4 +1,4 @@
-package org.freeplane.plugin.spreadsheet;
+package org.freeplane.plugin.formula;
 
 import java.awt.Component;
 import java.util.List;
