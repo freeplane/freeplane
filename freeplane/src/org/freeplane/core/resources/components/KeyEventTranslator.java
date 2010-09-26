@@ -125,12 +125,7 @@ class KeyEventTranslator {
 	public static String modifiersToString(final int mods) {
 		StringBuilder buf = null;
 		if ((mods & InputEvent.CTRL_MASK) != 0) {
-			if (buf == null) {
-				buf = new StringBuilder();
-			}
-			else {
-				buf.append(GrabKeyDialog.MODIFIER_SEPARATOR);
-			}
+			buf = new StringBuilder();
 			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.CTRL_MASK));
 		}
 		if ((mods & InputEvent.ALT_MASK) != 0) {
