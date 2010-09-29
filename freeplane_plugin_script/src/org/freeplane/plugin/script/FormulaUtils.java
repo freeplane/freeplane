@@ -57,13 +57,15 @@ public class FormulaUtils {
 		}
 	}
 
-	public static List<NodeModel> manageChangeAndReturnDependencies(final NodeModel... nodes) {
+	public static List<NodeModel> manageChangeAndReturnDependencies(boolean includeChanged, final NodeModel... nodes) {
 		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
 		for (int i = 0; i < nodes.length; i++) {
 			final Set<NodeModel> nodeDependencies = getEvaluationDependencies(nodes[i].getMap()).getDependencies(
 			    nodes[i]);
 			if (nodeDependencies != null)
 				dependencies.addAll(nodeDependencies);
+			if (includeChanged)
+				dependencies.add(nodes[i]);
 		}
 		if (ENABLE_CACHING) {
 			for (NodeModel nodeModel : dependencies) {

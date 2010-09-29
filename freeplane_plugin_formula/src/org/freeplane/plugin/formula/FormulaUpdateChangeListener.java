@@ -18,23 +18,24 @@ import org.freeplane.plugin.script.FormulaUtils;
 /** cares for updating formula nodes on change of other nodes. */
 public class FormulaUpdateChangeListener implements INodeChangeListener, IMapChangeListener, IMapViewChangeListener {
 	public void nodeChanged(NodeChangeEvent event) {
-		if (NodeModel.NODE_TEXT.equals(event.getProperty()))
-			nodeChangedImpl(event.getNode());
+		if (NodeModel.NODE_TEXT.equals(event.getProperty())) {
+			nodeChangedImpl(false, event.getNode());
+		}
 	}
 
 	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
-		nodeChangedImpl(parent);
+		nodeChangedImpl(true, parent);
 	}
 
 	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
 		// all formulas dependent on the child via getChildren() are also dependent on its parent
-		nodeChangedImpl(parent);
+		nodeChangedImpl(true, parent);
 	}
 
 	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
 		// - all formulas dependent on the child via getChildren() are also dependent on its parent
 		// FIXME: is child updated or do we have to force that here?
-		nodeChangedImpl(oldParent, newParent);
+		nodeChangedImpl(true, oldParent, newParent);
 	}
 
 	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
@@ -47,13 +48,16 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 		
 	}
 
-	private void nodeChangedImpl(NodeModel... nodes) {
+	/** in case of insert we look for dependencies of the parent. But the parent is not actually changed in this case.
+	 * So there won't be any updates on the parent, even if it has formula that needs an update due to the 
+	 * changed children count. */
+	private void nodeChangedImpl(boolean includeChanged, NodeModel... nodes) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		//FIXME: needed???
 		//		if (modeController == null || modeController.isUndoAction()) {
 		//			return;
 		//		}
-		final List<NodeModel> dependencies = FormulaUtils.manageChangeAndReturnDependencies(nodes);
+		final List<NodeModel> dependencies = FormulaUtils.manageChangeAndReturnDependencies(includeChanged, nodes);
 		for (NodeModel dependentNode : dependencies) {
 			modeController.getMapController().delayedNodeRefresh(dependentNode, FormulaUpdateChangeListener.class,
 			    null, null);
