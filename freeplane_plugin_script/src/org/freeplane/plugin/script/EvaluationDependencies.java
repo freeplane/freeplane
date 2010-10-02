@@ -2,7 +2,6 @@ package org.freeplane.plugin.script;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -18,8 +17,7 @@ public class EvaluationDependencies {
 	private HashMap<NodeModel, HashSet<NodeModel>> onBranchDependencies = new HashMap<NodeModel, HashSet<NodeModel>>();
 	private HashSet<NodeModel> onAnyNodeDependencies = new HashSet<NodeModel>();
 
-	public Set<NodeModel> getDependencies(final NodeModel node) {
-		LinkedHashSet<NodeModel> result = new LinkedHashSet<NodeModel>(0);
+	public Set<NodeModel> getDependencies(Set<NodeModel> result, final NodeModel node) {
 		final HashSet<NodeModel> onNode = onNodeDependencies.get(node);
 		if (onNode != null)
 			addRecursively(result, onNode);
@@ -32,12 +30,13 @@ public class EvaluationDependencies {
 		return result;
 	}
 
-	private void addRecursively(LinkedHashSet<NodeModel> result, final HashSet<NodeModel> nodesToAdd) {
-		for (NodeModel node: nodesToAdd) {
-			result.add(node);
-			result.addAll(getDependencies(node));
-        }
-    }
+	private void addRecursively(Set<NodeModel> dependentNodes, final HashSet<NodeModel> nodesToAdd) {
+		for (NodeModel node : nodesToAdd) {
+			// avoid loops
+			if (dependentNodes.add(node))
+				dependentNodes.addAll(getDependencies(dependentNodes, node));
+		}
+	}
 
 	/** accessedNode was accessed when formulaNode was evaluated. */
 	public void accessNode(NodeModel formulaNode, NodeModel accessedNode) {

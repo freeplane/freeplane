@@ -1,11 +1,12 @@
 package org.freeplane.plugin.script;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.WeakHashMap;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.plugin.script.proxy.FormulaCache;
@@ -33,7 +34,9 @@ public class FormulaUtils {
 	/** evaluate text as a script.
 	 * @return the evaluation result. */
 	public static Object eval(final NodeModel nodeModel, final ScriptContext scriptContext, final String text) {
-		scriptContext.push(nodeModel);
+		if (!scriptContext.push(nodeModel))
+			throw new StackOverflowError(TextUtils.format("formula.error.circularReference", scriptContext.getStackFront()
+			    .getText()));
 		try {
 			if (ENABLE_CACHING) {
 				final FormulaCache formulaCache = getFormulaCache(nodeModel.getMap());
@@ -60,8 +63,8 @@ public class FormulaUtils {
 	public static List<NodeModel> manageChangeAndReturnDependencies(boolean includeChanged, final NodeModel... nodes) {
 		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
 		for (int i = 0; i < nodes.length; i++) {
-			final Set<NodeModel> nodeDependencies = getEvaluationDependencies(nodes[i].getMap()).getDependencies(
-			    nodes[i]);
+			final LinkedHashSet<NodeModel> nodeDependencies = new LinkedHashSet<NodeModel>(0);
+			getEvaluationDependencies(nodes[i].getMap()).getDependencies(nodeDependencies, nodes[i]);
 			if (nodeDependencies != null)
 				dependencies.addAll(nodeDependencies);
 			if (includeChanged)

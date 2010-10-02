@@ -5,6 +5,7 @@
 			<separator name="formula">
 				<boolean name="formula_enable_plugin" />
 				<boolean name="formula_enable_caching" />
+				<boolean name="formula_dont_mark_formulas" />
 			</separator>
 		</tab>
 	</tabbed_pane>

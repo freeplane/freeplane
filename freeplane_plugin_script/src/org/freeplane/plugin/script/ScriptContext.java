@@ -3,7 +3,7 @@ package org.freeplane.plugin.script;
 import org.freeplane.features.common.map.NodeModel;
 
 public class ScriptContext {
-	private final FastStack<NodeModel> stack = new FastStack<NodeModel>();
+	private final UniqueStack<NodeModel> stack = new UniqueStack<NodeModel>();
 
 	public ScriptContext() {
     }
@@ -20,12 +20,16 @@ public class ScriptContext {
 		FormulaUtils.accessAll(stack.last());
 	}
 	
-	public void push(NodeModel nodeModel) {
-		stack.push(nodeModel);
+	public boolean push(NodeModel nodeModel) {
+		return stack.push(nodeModel);
 	}
 	
 	public void pop() {
 		stack.pop();
+	}
+	
+	public NodeModel getStackFront() {
+		return stack.first();
 	}
 
 	@Override
