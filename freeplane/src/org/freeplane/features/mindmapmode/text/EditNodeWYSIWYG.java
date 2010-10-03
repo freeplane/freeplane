@@ -54,13 +54,14 @@ import com.lightdev.app.shtm.SHTMLPanel;
 /**
  * @author Daniel Polansky
  */
-class EditNodeWYSIWYG extends EditNodeBase {
+public class EditNodeWYSIWYG extends EditNodeBase {
 	private static class HTMLDialog extends EditDialog {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
 		private SHTMLPanel htmlEditorPanel;
+		private JButton splitButton;
 
 		HTMLDialog(final EditNodeBase base, final Frame frame) throws Exception {
 			super(base, frame);
@@ -69,7 +70,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			UITools.addEscapeActionToDialog(this, new CancelAction());
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
-			final JButton splitButton = new JButton();
+			splitButton = new JButton();
 			MenuBuilder.setLabelAndMnemonic(okButton, base.getText("ok"));
 			MenuBuilder.setLabelAndMnemonic(cancelButton, base.getText("cancel"));
 			MenuBuilder.setLabelAndMnemonic(splitButton, base.getText("split"));
@@ -179,6 +180,11 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			}
 			super.submit();
 		}
+
+		public void setSplitEnabled(boolean enableSplit) {
+			splitButton.setEnabled(enableSplit);
+	        splitButton.setVisible(enableSplit);
+        }
 	}
 
 	private static HTMLDialog htmlEditorWindow;
@@ -189,12 +195,13 @@ class EditNodeWYSIWYG extends EditNodeBase {
 		this.firstEvent = firstEvent;
 	}
 
-	public void show(final Frame frame) {
+	public void show(final Frame frame, boolean enableSplit) {
 		try {
 			if (EditNodeWYSIWYG.htmlEditorWindow == null) {
 				EditNodeWYSIWYG.htmlEditorWindow = new HTMLDialog(this, frame);
 			}
 			EditNodeWYSIWYG.htmlEditorWindow.setBase(this);
+			htmlEditorWindow.setSplitEnabled(enableSplit);
 			final SHTMLPanel htmlEditorPanel = (EditNodeWYSIWYG.htmlEditorWindow).getHtmlEditorPanel();
 			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
 			final Font font = viewController.getFont(node);
@@ -249,7 +256,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			else {
 				UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, node);
 			}
-			String content = node.toString();
+			String content = text;
 			if (!HtmlUtils.isHtmlNode(content)) {
 				content = HtmlUtils.plainToHTML(content);
 			}

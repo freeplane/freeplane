@@ -4,7 +4,6 @@
 		<menu_submenu name="file" name_ref="file">
 			<menu_category name="open">
 				<menu_action action="NewMapAction" accelerator="control N" />
-				<menu_action action="NewMapFromTemplateAction"/>
 				<menu_action action="new_map_from_user_templates" />
 				<menu_action action="OpenAction" accelerator="control O" />
 				<menu_action action="SaveAction" accelerator="control S" />
@@ -65,6 +64,9 @@
 			<menu_category name="edit">
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
+				<menu_action action="EditDetailsAction" accelerator="shift F2" />
+				<menu_action action="ToggleDetailsAction" accelerator="alt F2" />
+				<menu_action action="DeleteDetailsAction"/>
 				<menu_action action="EditAttributesAction" accelerator="alt F9" />
 				<menu_action action="SelectNoteAction" accelerator="control LESS"/> <!-- goto -->
 				<menu_separator />
@@ -272,8 +274,8 @@
 			<menu_action action="RedoFilterAction" />
 			<menu_action action="ReapplyFilterAction" />
 			<menu_separator />
-			<menu_action action="ApplyNoFilteringAction" accelerator="shift F2"/>
-			<menu_action action="ApplySelectedViewConditionAction"  accelerator="shift F3"/>
+			<menu_action action="ApplyNoFilteringAction"/>
+			<menu_action action="ApplySelectedViewConditionAction"/>
 			<menu_action action="ApplyToVisibleAction" />
 			<menu_action action="UnfoldFilteredAncestorsAction" />
 			<menu_action action="ShowAncestorsAction" />

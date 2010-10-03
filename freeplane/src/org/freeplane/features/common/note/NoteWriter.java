@@ -40,21 +40,6 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 		this.noteManager = noteManager;
 	}
 
-	/**
-	 * @param writer
-	 * @param note
-	 * @throws IOException
-	 */
-	private void saveContent(final ITreeWriter writer, final NoteModel note) throws IOException {
-		if (note.getXmlNoteText() != null) {
-			final XMLElement htmlElement = new XMLElement();
-			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
-			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE);
-			final String content = note.getXmlNoteText().replace('\0', ' ');
-			writer.addElement(content, htmlElement);
-		}
-	}
-
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		noteManager.onWrite((MapModel) userObject);
 	}
@@ -65,7 +50,25 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 	 * java.lang.Object, java.lang.String)
 	 */
 	public void writeContent(final ITreeWriter writer, final Object element, final IExtension note) throws IOException {
-		saveContent(writer, (NoteModel) note);
+		RichTextModel note1 = (RichTextModel) note;
+		if (note1.getXml() != null) {
+        	final XMLElement htmlElement = new XMLElement();
+    		htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
+        	if(note instanceof NoteModel){
+            	htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE);
+        	}
+        	else if(note instanceof DetailTextModel ){
+        		htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS);
+        		if(((DetailTextModel)note).isHidden()){
+        			htmlElement.setAttribute("HIDDEN", "true");
+        		}
+        	}
+        	else{
+        		htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, "UNKNOWN");
+        	}
+        	final String content = note1.getXml().replace('\0', ' ');
+        	writer.addElement(content, htmlElement);
+        }
 		return;
 	}
 }

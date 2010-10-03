@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.note;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.NodeTextBuilder;
@@ -40,20 +41,28 @@ class NoteBuilder implements IElementContentHandler {
 			return null;
 		}
 		final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
-		if (typeAttribute == null || NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
-			return null;
+		if (NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE.equals(typeAttribute) || NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS.equals(typeAttribute)) {
+			return parent;
 		}
-		return parent;
+		return null;
 	}
 
 	public void endElement(final Object parent, final String tag, final Object node, final XMLElement attributes,
 	                       final String content) {
 		if (tag.equals("richcontent")) {
 			final String xmlText = content;
-			final NoteModel note = new NoteModel();
-			note.setXmlNoteText(xmlText);
-			((NodeModel) node).addExtension(note);
-			noteController.setStateIcon(((NodeModel) node), true);
+			final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
+			final RichTextModel note;
+			if (NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE.equals(typeAttribute)) {
+				note = new NoteModel();
+				noteController.setStateIcon(((NodeModel) node), true);
+			}
+			else if (NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS.equals(typeAttribute)) {
+				note = new DetailTextModel("true".equals(attributes.getAttribute("HIDDEN", "false")));
+			}
+			else return;
+			note.setXml(xmlText);
+			((NodeModel) node).addExtension((IExtension) note);
 		}
 	}
 }

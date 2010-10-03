@@ -25,29 +25,42 @@ import org.freeplane.features.common.map.NodeModel;
 /**
  * @author Dimitry Polivaev
  */
-public class NoteModel extends RichTextModel implements IExtension {
-	public static NoteModel createNote(final NodeModel node) {
-		NoteModel note = NoteModel.getNote(node);
+public class DetailTextModel extends RichTextModel implements IExtension {
+	private boolean hidden = false;
+	public DetailTextModel(boolean hidden) {
+	    this.hidden = hidden;
+    }
+
+	public boolean isHidden() {
+    	return hidden;
+    }
+
+	public void setHidden(boolean hidden) {
+    	this.hidden = hidden;
+    }
+
+	public static DetailTextModel createDetailText(final NodeModel node) {
+		DetailTextModel note = DetailTextModel.getDetailText(node);
 		if (note == null) {
-			note = new NoteModel();
+			note = new DetailTextModel(false);
 			node.addExtension(note);
 		}
 		return note;
 	}
 
-	public static NoteModel getNote(final NodeModel node) {
-		final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
+	public static DetailTextModel getDetailText(final NodeModel node) {
+		final DetailTextModel extension = (DetailTextModel) node.getExtension(DetailTextModel.class);
 		return extension;
 	}
 
-	public static String getNoteText(final NodeModel node) {
-		final NoteModel extension = NoteModel.getNote(node);
+	public static String getDetailTextText(final NodeModel node) {
+		final DetailTextModel extension = DetailTextModel.getDetailText(node);
 		return extension != null ? extension.getHtml() : null;
 	}
 
-	public static String getXmlNoteText(final NodeModel node) {
-		final NoteModel extension = NoteModel.getNote(node);
-		return extension != null ? extension.getXml() : null;
+	public static String getXmlDetailTextText(final NodeModel node) {
+		final DetailTextModel extension = DetailTextModel.getDetailText(node);
+		return extension != null ? extension.getHtml() : null;
 	}
 
 }

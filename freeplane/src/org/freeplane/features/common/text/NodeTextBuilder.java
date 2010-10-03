@@ -43,6 +43,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	public static final String XML_NODE_XHTML_CONTENT_TAG = "richcontent";
 	public static final String XML_NODE_XHTML_TYPE_NODE = "NODE";
 	public static final String XML_NODE_XHTML_TYPE_NOTE = "NOTE";
+	public static final String XML_NODE_XHTML_TYPE_DETAILS = "DETAILS";
 	public static final String XML_NODE_XHTML_TYPE_TAG = "TYPE";
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {

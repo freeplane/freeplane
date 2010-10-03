@@ -22,6 +22,7 @@ package org.freeplane.view.swing.map;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -33,9 +34,12 @@ import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 
@@ -58,8 +62,10 @@ import org.freeplane.features.common.map.NodeModel.NodeChangeType;
 import org.freeplane.features.common.misc.HierarchicalIcons;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.note.DetailTextModel;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapViewLayout;
+import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
@@ -90,6 +96,7 @@ public class NodeView extends JComponent implements INodeView {
 	public final static int SHIFT = -2;
 	static final int SPACE_AROUND = 50;
 	private static final int MAIN_VIEWER_POSITION = 0;
+	private static final int DETAIL_VIEWER_POSITION = 1;
 	private static final int NOTE_VIEWER_POSITION = 10;
 
 	/**
@@ -149,8 +156,110 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
+	@SuppressWarnings("serial")
+    static final class DetailsView extends ZoomableLabel {
+	    public DetailsView() {
+	        super();
+	        addMouseListener(new MouseAdapter() {
+
+				@Override
+                public void mouseClicked(MouseEvent e) {
+					final NodeView nodeView = getNodeView();
+					final NodeModel model = nodeView.getModel();
+					MNoteController controller = (MNoteController) MNoteController.getController();
+					controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
+                }
+	        	
+			});
+        }
+
+
+		@Override
+	    public Dimension getPreferredSize() {
+			final NodeView nodeView = getNodeView();
+			if(nodeView == null){
+				return super.getPreferredSize();
+			}
+	    	int mainW = nodeView.getMainView().getPreferredSize().width;
+	    	final Dimension ownPrefSize = new Dimension(super.getPreferredSize());
+	    	if(ownPrefSize.width < mainW){
+	    		ownPrefSize.width = mainW;
+	    	}
+	    	return ownPrefSize;
+	    }
+    }
+
+	static private class ArrowIcon implements Icon{
+		final private boolean down;
+
+		public ArrowIcon(boolean down) {
+	        super();
+	        this.down = down;
+        }
+
+		public int getIconHeight() {
+			return 5; 
+        }
+
+		public int getIconWidth() {
+			return 5; 
+        }
+
+		public void paintIcon(Component c, Graphics g, int x, int y) {
+			int[]   xs = new int[3];
+			int[]   ys = new int[3];
+			int     blockSize;
+
+			// Fill the background first ...
+			g.setColor(c.getBackground());
+			g.fillRect(0, 0, this.getIconWidth(),
+				this.getIconHeight());
+
+			// ... then draw the arrow.
+			g.setColor(Color.black);
+			blockSize = 3;
+			xs[0] = blockSize;
+			xs[1] = 0;
+			xs[2] = blockSize << 1;
+			if(down){
+				ys[0] = blockSize;
+				ys[1] = ys[2] = 0;
+			}
+			else{
+				ys[0] = 0;
+				ys[1] = ys[2] = blockSize;
+			}
+			g.drawPolygon(xs, ys, 3); // Little trick to make the
+			// arrows of equal size
+			g.fillPolygon(xs, ys, 3);
+        }
+		
+	}
+	@SuppressWarnings("serial")
+	private void updateDetails() {
+		final DetailTextModel detailText = DetailTextModel.getDetailText(model);
+		if (detailText == null) {
+			removeContent(DETAIL_VIEWER_POSITION);
+			return;
+		}
+		ZoomableLabel detailContent = (ZoomableLabel) getContent(DETAIL_VIEWER_POSITION);
+		if (detailContent == null) {
+			detailContent = new DetailsView();
+			addContent(detailContent, DETAIL_VIEWER_POSITION);
+		}
+		if (detailText.isHidden()) {
+			detailContent.updateText("");
+			detailContent.setIcon(new ArrowIcon(true));
+		}
+		else {
+			detailContent.updateText(detailText.getHtml());
+			detailContent.setFont(mainView.getFont());
+			detailContent.setIcon(new ArrowIcon(false));
+		}
+	}
+
 	void addDragListener(final DragGestureListener dgl) {
-		if(dgl == null){
+		if (dgl == null) {
 			return;
 		}
 		final DragSource dragSource = DragSource.getDefaultDragSource();
@@ -159,7 +268,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void addDropListener(final DropTargetListener dtl) {
-		if(dtl == null){
+		if (dtl == null) {
 			return;
 		}
 		final DropTarget dropTarget = new DropTarget(getMainView(), dtl);
@@ -844,7 +953,7 @@ public class NodeView extends JComponent implements INodeView {
 			revalidate();
 			return;
 		}
-		if(property.equals(NodeModel.NOTE_TEXT)){
+		if (property.equals(NodeModel.NOTE_TEXT)) {
 			updateNoteViewer();
 			return;
 		}
@@ -964,7 +1073,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	private void paintCloudsAndEdges(final Graphics2D g) {
-		for (int i = getComponentCount()-1; i>=0; i--) {
+		for (int i = getComponentCount() - 1; i >= 0; i--) {
 			final Component component = getComponent(i);
 			if (!(component instanceof NodeView)) {
 				continue;
@@ -987,30 +1096,30 @@ public class NodeView extends JComponent implements INodeView {
 
 	void paintFoldingMark(final Graphics2D g) {
 		FoldingMarkType markType = foldingMarkType(getMap().getModeController().getMapController(), getModel());
-		if (! markType.equals(FoldingMarkType.UNFOLDED)) {
+		if (!markType.equals(FoldingMarkType.UNFOLDED)) {
 			final Point out = getMainViewOutPoint(null, null);
 			UITools.convertPointToAncestor(getMainView(), out, this);
 			mainView.paintFoldingMark(this, g, out, markType.equals(FoldingMarkType.ITSELF_FOLDED));
 		}
 	}
-	
-	private enum FoldingMarkType  {UNFOLDED, ITSELF_FOLDED, UNVISIBLE_CHILDREN_FOLDED };
+
+	private enum FoldingMarkType {
+		UNFOLDED, ITSELF_FOLDED, UNVISIBLE_CHILDREN_FOLDED
+	};
+
 	static private FoldingMarkType foldingMarkType(MapController mapController, NodeModel model) {
-		if (mapController.isFolded(model) 
-				&& (model.isVisible() 
-						|| model.getFilterInfo().isAncestor())){
-				return FoldingMarkType.ITSELF_FOLDED;
+		if (mapController.isFolded(model) && (model.isVisible() || model.getFilterInfo().isAncestor())) {
+			return FoldingMarkType.ITSELF_FOLDED;
 		}
 		ListIterator<NodeModel> children = mapController.childrenUnfolded(model);
-	    while(children.hasNext()){
-	    	NodeModel child = children.next();
-	    	if(! child.isVisible() 
-	    			&& ! FoldingMarkType.UNFOLDED.equals(foldingMarkType(mapController, child))){
-	    		return FoldingMarkType.UNVISIBLE_CHILDREN_FOLDED;
-	    	}
-	    }
-	    return FoldingMarkType.UNFOLDED;
-    }
+		while (children.hasNext()) {
+			NodeModel child = children.next();
+			if (!child.isVisible() && !FoldingMarkType.UNFOLDED.equals(foldingMarkType(mapController, child))) {
+				return FoldingMarkType.UNVISIBLE_CHILDREN_FOLDED;
+			}
+		}
+		return FoldingMarkType.UNFOLDED;
+	}
 
 	/**
 	 * This is a bit problematic, because getChildrenViews() only works if model
@@ -1192,6 +1301,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (attributeView != null) {
 			attributeView.update();
 		}
+		updateDetails();
 		if (contentPane != null) {
 			final int componentCount = contentPane.getComponentCount();
 			for (int i = 1; i < componentCount; i++) {
@@ -1277,9 +1387,9 @@ public class NodeView extends JComponent implements INodeView {
 	public void addContent(JComponent component, int pos) {
 		component.putClientProperty("NODE_VIEW_CONTENT_POSITION", pos);
 		final Container contentPane = getContentPane();
-		for(int i = 0; i < contentPane.getComponentCount(); i++){
+		for (int i = 0; i < contentPane.getComponentCount(); i++) {
 			JComponent content = (JComponent) contentPane.getComponent(i);
-			if(pos < (Integer)content.getClientProperty("NODE_VIEW_CONTENT_POSITION")){
+			if (pos < (Integer) content.getClientProperty("NODE_VIEW_CONTENT_POSITION")) {
 				contentPane.add(component, i);
 				return;
 			}
@@ -1290,27 +1400,30 @@ public class NodeView extends JComponent implements INodeView {
 	public JComponent removeContent(int pos) {
 		return removeContent(pos, true);
 	}
+
 	private JComponent removeContent(int pos, boolean remove) {
-		if(contentPane == null)
+		if (contentPane == null)
 			return null;
-		for(int i = 0; i < contentPane.getComponentCount(); i++){
+		for (int i = 0; i < contentPane.getComponentCount(); i++) {
 			JComponent component = (JComponent) contentPane.getComponent(i);
-			int contentPos = (Integer)component.getClientProperty("NODE_VIEW_CONTENT_POSITION");
-			if(contentPos == pos){
-				if(remove){
+			Integer contentPos = (Integer) component.getClientProperty("NODE_VIEW_CONTENT_POSITION");
+			if (contentPos == null){
+				continue;
+			}
+			if (contentPos == pos) {
+				if (remove) {
 					component.putClientProperty("NODE_VIEW_CONTENT_POSITION", null);
 					contentPane.remove(i);
 				}
 				return component;
 			}
-			if(contentPos > pos){
+			if (contentPos > pos) {
 				return null;
 			}
 		}
 		return null;
 	}
 
-	
 	public JComponent getContent(int pos) {
 		return removeContent(pos, false);
 	}
@@ -1318,28 +1431,28 @@ public class NodeView extends JComponent implements INodeView {
 	void updateNoteViewer() {
 		ZoomableLabel note = (ZoomableLabel) getContent(NOTE_VIEWER_POSITION);
 		String oldText = note != null ? note.getText() : null;
-		final String newText; 
-		if(getMap().showNotes()){
+		final String newText;
+		if (getMap().showNotes()) {
 			newText = NoteModel.getNoteText(model);
 		}
-		else{
+		else {
 			newText = null;
 		}
-		if(oldText == null && newText == null){
+		if (oldText == null && newText == null) {
 			return;
 		}
-		if(oldText != null && newText != null){
+		if (oldText != null && newText != null) {
 			ZoomableLabel view = (ZoomableLabel) getContent(NOTE_VIEWER_POSITION);
 			view.updateText(newText);
 			return;
 		}
-		if(oldText == null && newText != null){
+		if (oldText == null && newText != null) {
 			ZoomableLabel view = NodeViewFactory.getInstance().createNoteViewer();
 			addContent(view, NOTE_VIEWER_POSITION);
 			view.updateText(newText);
 			return;
 		}
-		if(oldText != null && newText == null){
+		if (oldText != null && newText == null) {
 			removeContent(NOTE_VIEWER_POSITION);
 			return;
 		}

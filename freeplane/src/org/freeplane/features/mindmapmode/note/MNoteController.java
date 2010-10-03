@@ -55,6 +55,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.note.DetailTextModel;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
@@ -138,6 +139,9 @@ public class MNoteController extends NoteController {
 		modeController.addAction(new SetNoteWindowPosition("right"));
 		modeController.addAction(new SetNoteWindowPosition("bottom"));
 		modeController.addAction(new RemoveNoteAction(this));
+		modeController.addAction(new EditDetailsAction());
+		modeController.addAction(new ToggleDetailsAction());
+		modeController.addAction(new DeleteDetailsAction());
 	}
 
 	SHTMLPanel getHtmlEditorPanel() {
@@ -252,7 +256,7 @@ public class MNoteController extends NoteController {
 				final boolean enabled = !(text == null || text.equals(""));
 				if (enabled) {
 					final NoteModel note = NoteModel.createNote(node);
-					note.setNoteText(text);
+					note.setHtml(text);
 					node.addExtension(note);
 				}
 				else {
@@ -267,6 +271,78 @@ public class MNoteController extends NoteController {
 
 			public void undo() {
 				setText(oldText);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, node.getMap());
+	}
+
+	public void setDetails(final NodeModel node, final String newText) {
+		final String oldText = DetailTextModel.getDetailTextText(node);
+		if (oldText == newText || null != oldText && oldText.equals(newText)) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				setText(newText);
+			}
+
+			public String getDescription() {
+				return "setDetailText";
+			}
+
+			private void setText(final String text) {
+				final boolean containsDetails = !(text == null || text.equals(""));
+				if (containsDetails) {
+					final DetailTextModel details = DetailTextModel.createDetailText(node);
+					details.setHtml(text);
+					node.addExtension(details);
+				}
+				else {
+					final DetailTextModel details = (DetailTextModel) node.getExtension(DetailTextModel.class);
+					if (null != details ) {
+						if(details.isHidden()){
+							details.setHtml(null);
+						}
+						else{
+							node.removeExtension(DetailTextModel.class);
+						}
+					}
+				}
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailTextModel.class, oldText, text);
+				noteManager.updateEditor();
+			}
+
+			public void undo() {
+				setText(oldText);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, node.getMap());
+	}
+
+	public void setDetailsHidden(final NodeModel node, final boolean isHidden) {
+		DetailTextModel details = (DetailTextModel) node.getExtension(DetailTextModel.class);
+		if (details == null && isHidden == false || details.isHidden() == isHidden) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				setHidden(isHidden);
+			}
+
+			public String getDescription() {
+				return "setDetailsHidden";
+			}
+
+			private void setHidden(final boolean isHidden) {
+				final DetailTextModel details = DetailTextModel.createDetailText(node);
+				details.setHidden(isHidden);
+				node.addExtension(details);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, "DETAILS_HIDDEN", ! isHidden, isHidden);
+				noteManager.updateEditor();
+			}
+
+			public void undo() {
+				setHidden(! isHidden);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());

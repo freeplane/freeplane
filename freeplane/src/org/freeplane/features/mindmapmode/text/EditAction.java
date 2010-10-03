@@ -132,7 +132,7 @@ class EditAction extends AFreeplaneAction {
 				    }
 			    });
 			mCurrentEditDialog = editNodeWYSIWYG;
-			editNodeWYSIWYG.show(controller.getViewController().getFrame());
+			editNodeWYSIWYG.show(controller.getViewController().getFrame(), true);
 			return;
 		}
 		if (editExternal) {

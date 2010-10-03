@@ -76,16 +76,17 @@ public class NoteController implements IExtension {
 		final WriteManager writeManager = modeController.getMapController().getWriteManager();
 		writeManager.addAttributeWriter("map", noteWriter);
 		writeManager.addExtensionElementWriter(NoteModel.class, noteWriter);
+		writeManager.addExtensionElementWriter(DetailTextModel.class, noteWriter);
 	}
 
 	public final String getNoteText(final NodeModel node) {
 		final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
-		return extension != null ? extension.getNoteText() : null;
+		return extension != null ? extension.getHtml() : null;
 	}
 
 	public final String getXmlNoteText(final NodeModel node) {
 		final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
-		return extension != null ? extension.getXmlNoteText() : null;
+		return extension != null ? extension.getXml() : null;
 	}
 
 	/**
