@@ -21,11 +21,12 @@ package org.freeplane.features.browsemode;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.net.URL;
 
 import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
+import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
@@ -41,9 +42,8 @@ import org.freeplane.features.common.note.NoteModel;
  */
 public class BNodeNoteViewer implements INodeSelectionListener {
 	private static UIIcon noteIcon = null;
-// // 	final private Controller controller;
 	private JScrollPane noteScrollPane;
-	private JLabel noteViewer;
+	private JEditorPane noteViewer;
 
 	public BNodeNoteViewer() {
 //		this.controller = controller;
@@ -51,10 +51,13 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 
 	private JComponent createNoteViewerComponent() {
 		if (noteViewer == null) {
-			noteViewer = new JLabel();
+			noteViewer = new JEditorPane();
+			noteViewer.setEditable(false);
+			noteViewer.setContentType("text/html");
 			noteViewer.setBackground(Color.WHITE);
-			noteViewer.setVerticalAlignment(SwingConstants.TOP);
 			noteViewer.setOpaque(true);
+			HTMLDocument document = (HTMLDocument) noteViewer.getDocument();
+			document.getStyleSheet().addRule("p { margin-top: 0 }");
 			noteScrollPane = new JScrollPane(noteViewer) {
 				private static final long serialVersionUID = -4923850893346946687L;
 
@@ -93,6 +96,18 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 		if (noteText != null && !noteText.equals("")) {
 			if(noteViewer == null){
 				Controller.getCurrentController().getViewController().insertComponentIntoSplitPane(createNoteViewerComponent());
+			}
+			HTMLDocument document = (HTMLDocument) noteViewer.getDocument();
+			URL url = pNode.getMap().getURL();
+			try {
+				if (url != null) {
+					document.setBase(url);
+				}
+				else {
+					document.setBase(new URL("file: "));
+				}
+			}
+			catch (Exception e) {
 			}
 			noteViewer.setText(noteText);
 		}
