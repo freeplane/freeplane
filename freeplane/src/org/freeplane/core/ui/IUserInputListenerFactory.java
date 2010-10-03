@@ -55,7 +55,7 @@ public interface IUserInputListenerFactory {
 
 	IMouseListener getNodeMotionListener();
 
-	INodeMouseMotionListener getNodeMouseMotionListener();
+	IMouseListener getNodeMouseMotionListener();
 
 	JPopupMenu getNodePopupMenu();
 

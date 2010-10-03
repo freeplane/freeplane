@@ -31,6 +31,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ToggleToolbarAction;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
@@ -47,7 +48,6 @@ import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.misc.BlinkingNodeHook;
 import org.freeplane.features.common.misc.CreationModificationPlugin;
 import org.freeplane.features.common.misc.HierarchicalIcons;
@@ -168,7 +168,7 @@ public class MModeControllerFactory {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new MModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
-		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener() {
+		userInputListenerFactory.setNodeMouseMotionListener(new DelayedMouseListener( new DefaultNodeMouseMotionListener() {
 			@Override
 			public void mouseReleased(final MouseEvent e) {
 				stopTimerForDelayedSelection();
@@ -190,14 +190,9 @@ public class MModeControllerFactory {
 						LinkController.getController().loadURL(e);
 					}
 					else {
-						final NodeModel node = (component).getNodeView().getModel();
-						if (!mapController.hasChildren(node)) {
-							/* If the link exists, follow the link; toggle folded otherwise */
-							if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown()
-							        && !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1) {
-								((MTextController) TextController.getController()).edit(null, false,
-								    false);
-							}
+						if (e.getClickCount() == 2 && !e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown()
+								&& !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1) {
+							((MTextController) TextController.getController()).edit(null, false, false);
 							return;
 						}
 						mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
@@ -205,7 +200,7 @@ public class MModeControllerFactory {
 					e.consume();
 				}
 			}
-		});
+		}, 2, MouseEvent.BUTTON1));
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);

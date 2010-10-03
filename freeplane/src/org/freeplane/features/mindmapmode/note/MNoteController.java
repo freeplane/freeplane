@@ -486,4 +486,9 @@ public class MNoteController extends NoteController {
 		modeController.getMapController().addNodeSelectionListener(noteManager);
 		noteManager.mNoteDocumentListener = new NoteDocumentListener();
 	}
+
+	public void editDetails(NodeModel model) {
+		final EditDetailsAction action = (EditDetailsAction) Controller.getCurrentModeController().getAction("EditDetailsAction");
+		action.edit(model);
+    }
 }

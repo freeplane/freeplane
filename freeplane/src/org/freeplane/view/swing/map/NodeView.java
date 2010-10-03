@@ -34,7 +34,6 @@ import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -44,6 +43,8 @@ import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AMouseListener;
+import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.AttributeController;
@@ -160,17 +161,24 @@ public class NodeView extends JComponent implements INodeView {
     static final class DetailsView extends ZoomableLabel {
 	    public DetailsView() {
 	        super();
-	        addMouseListener(new MouseAdapter() {
+	        addMouseListener(new DelayedMouseListener(new AMouseListener() {
 
 				@Override
                 public void mouseClicked(MouseEvent e) {
 					final NodeView nodeView = getNodeView();
 					final NodeModel model = nodeView.getModel();
 					MNoteController controller = (MNoteController) MNoteController.getController();
-					controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
+					switch(e.getClickCount()){
+						case 1:
+							controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
+							break;
+						case 2:
+							controller.editDetails(model);
+							break;
+					}
                 }
 	        	
-			});
+			}, 2, MouseEvent.BUTTON1));
         }
 
 

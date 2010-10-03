@@ -16,7 +16,7 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
-import org.freeplane.core.ui.INodeMouseMotionListener;
+import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
@@ -30,7 +30,7 @@ import org.freeplane.view.swing.map.NodeView;
 /**
  * The MouseMotionListener which belongs to every NodeView
  */
-public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener {
+public class DefaultNodeMouseMotionListener implements IMouseListener {
 	private static final String SELECTION_METHOD_DIRECT = "selection_method_direct";
 	private static final String SELECTION_METHOD_BY_CLICK = "selection_method_by_click";
 	private static final String TIME_FOR_DELAYED_SELECTION = "time_for_delayed_selection";

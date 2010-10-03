@@ -56,7 +56,12 @@ class EditDetailsAction extends AFreeplaneAction {
 		final ViewController viewController = controller.getViewController();
 		final Component node = viewController.getComponent(nodeModel);
 		node.requestFocus();
-		stopEditing();
+		edit(nodeModel);
+	}
+
+	void edit(final NodeModel nodeModel) {
+		final Controller controller = Controller.getCurrentController();
+	    stopEditing();
 		Controller.getCurrentModeController().setBlocked(true);
 		String text = DetailTextModel.getDetailTextText(nodeModel);
 		if(text ==  null){
@@ -79,7 +84,7 @@ class EditDetailsAction extends AFreeplaneAction {
 		});
 		mCurrentEditDialog = editNodeWYSIWYG;
 		editNodeWYSIWYG.show(controller.getViewController().getFrame(), false);
-	}
+    }
 
 
 	private void setHtmlText(final NodeModel node, final String newText) {

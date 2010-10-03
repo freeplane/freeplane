@@ -47,7 +47,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
-import org.freeplane.core.ui.INodeMouseMotionListener;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
@@ -72,7 +71,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private DropTargetListener nodeDropTargetListener;
 	private KeyListener nodeKeyListener;
 	private IMouseListener nodeMotionListener;
-	private INodeMouseMotionListener nodeMouseMotionListener;
+	private IMouseListener nodeMouseMotionListener;
 	private JPopupMenu nodePopupMenu;
 	private final Map<String, JComponent> toolBars;
 	private final List<JComponent>[] toolbarLists;
@@ -170,7 +169,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return nodeMotionListener;
 	}
 
-	public INodeMouseMotionListener getNodeMouseMotionListener() {
+	public IMouseListener getNodeMouseMotionListener() {
 		if (nodeMouseMotionListener == null) {
 			nodeMouseMotionListener = new DefaultNodeMouseMotionListener();
 		}
@@ -254,7 +253,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		this.nodeMotionListener = nodeMotionListener;
 	}
 
-	public void setNodeMouseMotionListener(final INodeMouseMotionListener nodeMouseMotionListener) {
+	public void setNodeMouseMotionListener(final IMouseListener nodeMouseMotionListener) {
 		if (this.nodeMouseMotionListener != null) {
 			throw new RuntimeException("already set");
 		}
