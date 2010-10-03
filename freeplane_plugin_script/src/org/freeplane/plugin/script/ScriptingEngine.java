@@ -80,7 +80,8 @@ public class ScriptingEngine {
 	 * @throws ExecuteScriptException on errors
 	 */
 	static Object executeScript(final NodeModel node, String script, final IErrorHandler pErrorHandler,
-	                            final PrintStream pOutStream) throws ExecuteScriptException {
+	                            final PrintStream pOutStream, final ScriptContext scriptContext)
+	        throws ExecuteScriptException {
 		if (!noUserPermissionRequired) {
 			final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
 			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
@@ -90,8 +91,8 @@ public class ScriptingEngine {
 		}
 		noUserPermissionRequired = Boolean.TRUE;
 		final Binding binding = new Binding();
-		binding.setVariable("c", ProxyFactory.createController());
-		binding.setVariable("node", ProxyFactory.createNode(node));
+		binding.setVariable("c", ProxyFactory.createController(scriptContext));
+		binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
 		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
 		boolean assignResult = false;
 		String assignTo = null;
@@ -242,7 +243,11 @@ public class ScriptingEngine {
 	}
 
 	public static Object executeScript(final NodeModel node, final String script) {
-		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out);
+		return ScriptingEngine.executeScript(node, script, null);
+	}
+	
+	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext) {
+		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out, scriptContext);
 	}
 
 	static Object executeScriptRecursive(final NodeModel node, final String script) {

@@ -49,7 +49,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	public Number getNum() throws ConversionException {
 		try {
 			try {
-				return text == null ? null : Long.decode(text);
+				return text == null ? null : text.length() == 0 ? 0 : Long.decode(text);
 			}
 			catch (NumberFormatException e) {
 				return Double.valueOf(text);
@@ -218,6 +218,8 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	public static String toString(Object value) {
 		if (value == null)
 			return null;
+		else if (value.getClass().equals(String.class))
+			return (String) value;
 		else if (value instanceof Date)
 			return Convertible.dateToString(((Date) value));
 		else if (value instanceof Calendar)

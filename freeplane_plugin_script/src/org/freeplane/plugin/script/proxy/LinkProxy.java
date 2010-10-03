@@ -11,10 +11,11 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.link.MLinkController;
+import org.freeplane.plugin.script.ScriptContext;
 
 class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
-	LinkProxy(final NodeModel delegate) {
-		super(delegate);
+	LinkProxy(final NodeModel delegate, final ScriptContext scriptContext) {
+		super(delegate, scriptContext);
 	}
 
 	public String get() {

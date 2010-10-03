@@ -189,7 +189,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (pkg.startsWith(INTERNAL_API_PACKAGE_BASE) && !whiteList.contains(pkg)) {
 			// temporaribly disabled:
 			// throw new SecurityException(TextUtils.format("plugins/ScriptingEngine.illegalAccessToInternalAPI", pkg));
-			LogUtils.warn("access to internal package " + pkg);
+//			LogUtils.warn("access to internal package " + pkg);
 		}
 	}
 

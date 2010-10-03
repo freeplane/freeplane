@@ -10,17 +10,18 @@ import java.util.List;
 
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 public class ProxyUtils {
-	static List<Node> createNodeList(final List<NodeModel> list) {
+	static List<Node> createNodeList(final List<NodeModel> list, final ScriptContext scriptContext) {
 		return new AbstractList<Node>() {
 			final private List<NodeModel> nodeModels = list;
 
 			@Override
 			public Node get(final int index) {
 				final NodeModel nodeModel = nodeModels.get(index);
-				return new NodeProxy(nodeModel);
+				return new NodeProxy(nodeModel, scriptContext);
 			}
 
 			@Override
@@ -30,15 +31,16 @@ public class ProxyUtils {
 		};
 	}
 
-	static List<Node> find(final ICondition condition, final NodeModel nodeModel) {
-		return ProxyUtils.createNodeList(ProxyUtils.findImpl(condition, nodeModel));
+	static List<Node> find(final ICondition condition, final NodeModel node, final ScriptContext scriptContext) {
+		return ProxyUtils.createNodeList(ProxyUtils.findImpl(condition, node), scriptContext);
 	}
 
-	static List<Node> find(final Closure closure, final NodeModel nodeModel) {
+	static List<Node> find(final Closure closure, final NodeModel node, final ScriptContext scriptContext) {
 		final ICondition condition = new ICondition() {
 			public boolean checkNode(final NodeModel node) {
 				try {
-					final Object result = closure.call(new Object[] { new NodeProxy(node) });
+					final Object result = closure
+					    .call(new Object[] { new NodeProxy(node, scriptContext) });
 					if (result == null) {
 						throw new RuntimeException("find(): closure returned null instead of boolean/Boolean");
 					}
@@ -50,7 +52,7 @@ public class ProxyUtils {
 				}
 			}
 		};
-		return ProxyUtils.find(condition, nodeModel);
+		return ProxyUtils.find(condition, node, scriptContext);
 	}
 
 	/** finds from any node downwards. */
@@ -72,4 +74,19 @@ public class ProxyUtils {
 		}
 		return matches;
 	}
+
+	public static List<Proxy.Node> createListOfChildren(final NodeModel nodeModel, final ScriptContext scriptContext) {
+        return new ArrayList<Proxy.Node>(new AbstractList<Proxy.Node>() {
+    		@Override
+    		public Proxy.Node get(final int index) {
+    			final NodeModel child = (NodeModel) nodeModel.getChildAt(index);
+    			return new NodeProxy(child, scriptContext);
+    		}
+    
+    		@Override
+    		public int size() {
+    			return nodeModel.getChildCount();
+    		}
+    	});
+    }
 }

@@ -124,7 +124,7 @@ class ScriptEditor extends AFreeplaneAction {
 			ScriptingEngine.setNoUserPermissionRequired(true);
 			ModeController mMindMapController = Controller.getCurrentModeController();
 			return ScriptingEngine.executeScript(mMindMapController.getMapController().getSelectedNode(), script,
-			    pErrorHandler, pOutStream);
+			    pErrorHandler, pOutStream, null);
 		}
 
 		public int getAmountOfScripts() {

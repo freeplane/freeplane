@@ -18,7 +18,6 @@ import org.freeplane.plugin.script.proxy.ConversionException;
 import org.freeplane.plugin.script.proxy.Convertible;
 import org.freeplane.plugin.script.proxy.ConvertibleAttributeValue;
 import org.freeplane.plugin.script.proxy.ConvertibleNoteText;
-import org.freeplane.plugin.script.proxy.FormulaUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -27,7 +26,7 @@ public class ConvertibleTest {
 	public static final class TestConvertible extends Convertible {
 		public TestConvertible(NodeModel nodeModel, String text) {
 			// some eval method that allows to directly hand in the text
-			super(FormulaUtils.evalAttributeText(nodeModel, text));
+			super(FormulaUtils.evalIfScript(nodeModel, null, text));
 		}
 	}
 
@@ -268,19 +267,19 @@ public class ConvertibleTest {
 	public void testConvertibleAttributeValuesMayNotBeNull() throws ConversionException {
 		boolean exceptionThrown = false;
 		try {
-			new ConvertibleAttributeValue(new NodeModel(null), null);
+			new ConvertibleAttributeValue(new NodeModel(null), null, null);
 		}
 		catch (NullPointerException e) {
 			exceptionThrown = true;
 		}
 		assertTrue("you may not set a ConvertibleAttributeValuesMayNotBeNull's text to null!", exceptionThrown);
 	}
-	
+
 	@Test
 	public void testOtherConvertibleNoteTextMayBeNull() throws ConversionException {
 		try {
 			// by default there are no notes, i.e. they are null
-			assertNull(new ConvertibleNoteText(new NodeModel(null)).getText());
+			assertNull(new ConvertibleNoteText(new NodeModel(null), null).getText());
 		}
 		catch (Exception e) {
 			fail("null texts are allowed for other Convertibles");

@@ -27,6 +27,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     @SuppressWarnings("unchecked")
 	public void initBinding() {
 	    boundVariables = super.getBinding().getVariables();
+	    // this is important: we need this reference no matter if "node" is overridden later by the user
 	    node = (NodeRO) boundVariables.get("node");
     }
 
@@ -41,6 +42,13 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	 * <li> "imports" node's methods into the script's namespace
 	 * </ul> */
 	public Object getProperty(String property) {
+		// shortcuts for the most usual cases
+		if (property.equals("node")) {
+			return node;
+		}			
+		if (property.equals("c")) {
+			return boundVariables.get(property);
+		}			
 		if (nodeIdPattern.matcher(property).matches()) {
 			return N(property);
 		}
@@ -93,4 +101,9 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 		final NodeRO n = N(id);
 		return n == null ? null : n.getValue();
 	}
+	
+//	/** Shortcut for new {@link org.freeplane.plugin.script.proxy.Convertible}. */
+//	public Convertible convertible(String string) {
+//		return new Convertible(FormulaUtils.eval string, node.get);
+//	}
 }

@@ -25,6 +25,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -112,6 +114,16 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 					}
 				}
 			});
+			addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					if (e.getClickCount() == 2) {
+						final FileWrapper fileWrapper = (FileWrapper) getModel().getValueAt(getSelectedRow(), 0);
+						setSelectedFile(fileWrapper.getFile());
+						if (fileWrapper != null)
+							btnOpen.doClick();
+					}
+				}
+			});
 		}
 
 		private final DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
@@ -142,8 +154,8 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 
 		private void setButtonOpenRestore(final FileWrapper fileWrapper) {
 			MenuBuilder.setLabelAndMnemonic(btnOpen, TextUtils.getText(NewerFileRevisionsFoundDialog.key("restore")));
-			btnOpen.setToolTipText(TextUtils.format(NewerFileRevisionsFoundDialog.key("restore.tooltip"), file
-			    .getName(), fileWrapper.toString()));
+			btnOpen.setToolTipText(TextUtils.format(NewerFileRevisionsFoundDialog.key("restore.tooltip"),
+			    file.getName(), fileWrapper.toString()));
 		}
 	}
 
@@ -228,10 +240,10 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		final Box controllerBox = Box.createHorizontalBox();
 		controllerBox.setBorder(new EmptyBorder(5, 0, 5, 0));
 		final CloseAction closeAction = new CloseAction();
-		btnOpen = createButton(NewerFileRevisionsFoundDialog.key("open"), NewerFileRevisionsFoundDialog
-		    .key("open.tooltip"), closeAction);
-		btnSkip = createButton(NewerFileRevisionsFoundDialog.key("skip"), NewerFileRevisionsFoundDialog
-		    .key("skip.tooltip"), closeAction);
+		btnOpen = createButton(NewerFileRevisionsFoundDialog.key("open"),
+		    NewerFileRevisionsFoundDialog.key("open.tooltip"), closeAction);
+		btnSkip = createButton(NewerFileRevisionsFoundDialog.key("skip"),
+		    NewerFileRevisionsFoundDialog.key("skip.tooltip"), closeAction);
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnOpen);
 		controllerBox.add(Box.createHorizontalGlue());

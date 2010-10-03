@@ -44,11 +44,14 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.icon.IconController;
@@ -83,6 +86,8 @@ public abstract class MainView extends ZoomableLabel {
 	private static final long serialVersionUID = 1L;
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
 	private static final IconStore STORE = IconStoreFactory.create();
+	private static final boolean DONT_MARK_FORMULAS_FIXME_REMOVE = Controller.getCurrentController()
+	    .getResourceController().getBooleanProperty("formula_dont_mark_formulas");;
 	private Border errorBorder = new LineBorder(Color.RED, 2);
 
 	MainView() {
@@ -336,7 +341,7 @@ public abstract class MainView extends ZoomableLabel {
 		try {
 			text = TextController.getController(modeController).getText(nodeModel);
 			// FIXME: temporarily, to show evaluated formulas:
-			if (!text.equals(nodeModel.getText())) {
+			if (!DONT_MARK_FORMULAS_FIXME_REMOVE && !text.equals(HtmlUtils.htmlToPlain(nodeModel.getText()))) {
 				setBorder(new LineBorder(Color.GREEN, 2));
 			}
 			else {
@@ -344,6 +349,7 @@ public abstract class MainView extends ZoomableLabel {
 			}
 		}
 		catch (Exception e) {
+			LogUtils.warn(e.getMessage(), e);
 			text = TextUtils.format("MainView.errorUpdateText", nodeModel.getText(), e.getLocalizedMessage());
 			setBorder(errorBorder);
 		}

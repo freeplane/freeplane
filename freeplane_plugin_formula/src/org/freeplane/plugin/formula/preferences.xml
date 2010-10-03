@@ -2,8 +2,10 @@
 <preferences_structure>
 	<tabbed_pane>
 		<tab name="plugins">
-			<separator name="spreadsheet">
-				<boolean name="spreadsheet_enable_plugin" />
+			<separator name="formula">
+				<boolean name="formula_enable_plugin" />
+				<boolean name="formula_enable_caching" />
+				<boolean name="formula_dont_mark_formulas" />
 			</separator>
 		</tab>
 	</tabbed_pane>

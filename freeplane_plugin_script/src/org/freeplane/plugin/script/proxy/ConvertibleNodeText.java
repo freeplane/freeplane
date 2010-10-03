@@ -1,6 +1,9 @@
 package org.freeplane.plugin.script.proxy;
 
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.plugin.script.FormulaUtils;
+import org.freeplane.plugin.script.ScriptContext;
 
 public class ConvertibleNodeText extends Convertible {
 	/**
@@ -9,7 +12,7 @@ public class ConvertibleNodeText extends Convertible {
 	 * Note that nodeModel.getText() will never return null since nodeModel.setText(null)
 	 * will result in a NullPointerException. So there's nothing to check here.
 	 */
-	public ConvertibleNodeText(NodeModel nodeModel) {
-		super(FormulaUtils.evalNodeText(nodeModel));
+	public ConvertibleNodeText(NodeModel nodeModel, ScriptContext scriptContext) {
+		super(FormulaUtils.evalIfScript(nodeModel, scriptContext, HtmlUtils.htmlToPlain(nodeModel.getText(), true)));
 	}
 }

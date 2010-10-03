@@ -13,10 +13,11 @@ import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
+import org.freeplane.plugin.script.ScriptContext;
 
 class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attributes {
-	AttributesProxy(final NodeModel delegate) {
-		super(delegate);
+	AttributesProxy(final NodeModel delegate, final ScriptContext scriptContext) {
+		super(delegate, scriptContext);
 	}
 
 	@Deprecated

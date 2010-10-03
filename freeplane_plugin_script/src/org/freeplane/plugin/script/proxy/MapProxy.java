@@ -6,22 +6,23 @@ import java.util.Map.Entry;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 public class MapProxy extends AbstractProxy<MapModel> implements Map {
-	public MapProxy(final MapModel map) {
-		super(map);
+	public MapProxy(final MapModel map, final ScriptContext scriptContext) {
+		super(map, scriptContext);
 	}
 
 	public Node node(final String id) {
 		final NodeModel node = getDelegate().getNodeForID(id);
-		return node != null ? new NodeProxy(node) : null;
+		return node != null ? new NodeProxy(node, getScriptContext()) : null;
 	}
 
 	public Node getRoot() {
 		final NodeModel rootNode = getDelegate().getRootNode();
-		return new NodeProxy(rootNode);
+		return new NodeProxy(rootNode, getScriptContext());
 	}
 	
 	@Deprecated

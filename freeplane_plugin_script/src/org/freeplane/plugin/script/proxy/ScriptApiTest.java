@@ -404,7 +404,8 @@ public class ScriptApiTest {
 		// TODO
 	}
 
-	public void test_ControllerRO_find_ICondition_condition() {
+	@SuppressWarnings("deprecation")
+    public void test_ControllerRO_find_ICondition_condition() {
 		map = c.newMap();
 		@SuppressWarnings("unused")
 		final Node firstChild = addChild(map.getRoot(), "child 1");
@@ -457,6 +458,7 @@ public class ScriptApiTest {
 		// see test_ControllerRO_getSelected()
 	}
 
+	@SuppressWarnings("deprecation")
 	public void test_Controller_undo_redo_stuff() {
 		map = c.newMap();
 		addChild(map.getRoot(), "child 1");
@@ -486,6 +488,7 @@ public class ScriptApiTest {
 		c.setStatusInfo(infoPanelKey, (String) null);
 	}
 
+	@SuppressWarnings("deprecation")
 	public void test_Controller_setStatusInfo_String_infoPanelKey_Icon_icon() {
 		final List<String> keys = FreeplaneIconUtils.listStandardIconKeys();
 		assertTrue("find out about the available icons with FreeplaneIconUtils.listStandardIconKeys() -> " + keys,
@@ -896,6 +899,7 @@ public class ScriptApiTest {
 	}
 
 	/** copy of {@link #test_ControllerRO_find_ICondition_condition()}. */
+	@SuppressWarnings("deprecation")
 	public void test_NodeRO_find_ICondition_condition() {
 		map = c.newMap();
 		@SuppressWarnings("unused")

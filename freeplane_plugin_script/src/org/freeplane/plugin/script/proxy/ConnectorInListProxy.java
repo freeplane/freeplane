@@ -10,13 +10,15 @@ import java.util.Set;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.MapLinks;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.plugin.script.ScriptContext;
 
 class ConnectorInListProxy extends AbstractCollection<Proxy.Connector> {
-// 	private final MModeController modeController;
 	private final NodeModel node;
+	private final ScriptContext scriptContext;
 
-	public ConnectorInListProxy(final NodeModel node) {
-		this.node = node;
+	public ConnectorInListProxy(final NodeProxy nodeProxy) {
+		this.node = nodeProxy.getDelegate();
+		this.scriptContext = nodeProxy.getScriptContext();
 	}
 
 	Set<LinkModel> getConnectorSet() {
@@ -25,7 +27,7 @@ class ConnectorInListProxy extends AbstractCollection<Proxy.Connector> {
 
 	@Override
 	public Iterator<Proxy.Connector> iterator() {
-		return new ConnectorIterator(getConnectorSet().iterator());
+		return new ConnectorIterator(getConnectorSet().iterator(), scriptContext);
 	}
 
 	@Override

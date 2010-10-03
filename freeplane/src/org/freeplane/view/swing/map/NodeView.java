@@ -1324,7 +1324,7 @@ public class NodeView extends JComponent implements INodeView {
 		revalidate();
 	}
 
-	void updateAll() {
+	public void updateAll() {
 		updateNoteViewer();
 		update();
 		invalidate();
