@@ -11,6 +11,7 @@ Check for newer auto save files on opening of a map
 Node level dependent filters
 Improvement in search and replace functions
 Different shapes for clouds
+Node details
 
 Bug fixes:
 
