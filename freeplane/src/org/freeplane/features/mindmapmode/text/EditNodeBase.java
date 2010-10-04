@@ -129,7 +129,7 @@ public class EditNodeBase {
 		private EditNodeBase base;
 
 		EditDialog(final EditNodeBase base, final Frame frame) {
-			super(frame, base.getText("edit_long_node"), /*modal=*/true);
+			super(frame, TextUtils.getText("edit_long_node"), /*modal=*/true);
 			getContentPane().setLayout(new BorderLayout());
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			final DialogWindowListener dfl = new DialogWindowListener();
@@ -143,7 +143,7 @@ public class EditNodeBase {
 
 		protected void confirmedCancel() {
 			if (isChanged()) {
-				final int action = JOptionPane.showConfirmDialog(this, base.getText("long_node_changed_cancel"), "",
+				final int action = JOptionPane.showConfirmDialog(this, TextUtils.getText("long_node_changed_cancel"), "",
 				    JOptionPane.OK_CANCEL_OPTION);
 				if (action == JOptionPane.CANCEL_OPTION) {
 					return;
@@ -154,7 +154,7 @@ public class EditNodeBase {
 
 		protected void confirmedSubmit() {
 			if (isChanged()) {
-				final int action = JOptionPane.showConfirmDialog(this, base.getText("long_node_changed_submit"), "",
+				final int action = JOptionPane.showConfirmDialog(this, TextUtils.getText("long_node_changed_submit"), "",
 				    JOptionPane.YES_NO_CANCEL_OPTION);
 				if (action == JOptionPane.CANCEL_OPTION) {
 					return;
@@ -252,12 +252,6 @@ public class EditNodeBase {
 	 */
 	protected String getText() {
 		return text;
-	}
-
-	/**
-		 */
-	protected String getText(final String string) {
-		return TextUtils.getText(string);
 	}
 
 	/**

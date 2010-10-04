@@ -48,6 +48,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
@@ -87,10 +88,10 @@ public class EditNodeDialog extends EditNodeBase {
 			final JButton splitButton = new JButton();
 			final JCheckBox enterConfirms = new JCheckBox("", ResourceController.getResourceController()
 			    .getBooleanProperty("el__enter_confirms_by_default"));
-			MenuBuilder.setLabelAndMnemonic(okButton, getText("ok"));
-			MenuBuilder.setLabelAndMnemonic(cancelButton, getText("cancel"));
-			MenuBuilder.setLabelAndMnemonic(splitButton, getText("split"));
-			MenuBuilder.setLabelAndMnemonic(enterConfirms, getText("enter_confirms"));
+			MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getText("ok"));
+			MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getText("cancel"));
+			MenuBuilder.setLabelAndMnemonic(splitButton, TextUtils.getText("split"));
+			MenuBuilder.setLabelAndMnemonic(enterConfirms, TextUtils.getText("enter_confirms"));
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					submit();

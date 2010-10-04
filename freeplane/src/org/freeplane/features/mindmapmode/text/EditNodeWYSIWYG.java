@@ -45,6 +45,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
@@ -71,9 +72,9 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
 			splitButton = new JButton();
-			MenuBuilder.setLabelAndMnemonic(okButton, base.getText("ok"));
-			MenuBuilder.setLabelAndMnemonic(cancelButton, base.getText("cancel"));
-			MenuBuilder.setLabelAndMnemonic(splitButton, base.getText("split"));
+			MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getText("ok"));
+			MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getText("cancel"));
+			MenuBuilder.setLabelAndMnemonic(splitButton, TextUtils.getText("split"));
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					submit();
@@ -201,6 +202,14 @@ class EditNodeWYSIWYG extends EditNodeBase {
 				EditNodeWYSIWYG.htmlEditorWindow = new HTMLDialog(this, frame);
 			}
 			EditNodeWYSIWYG.htmlEditorWindow.setBase(this);
+			final String title;
+			if(enableSplit){
+				title = TextUtils.getText("edit_long_node");
+			}
+			else{
+				title = TextUtils.getText("edit_details");
+			}
+			EditNodeWYSIWYG.htmlEditorWindow.setTitle(title);
 			htmlEditorWindow.setSplitEnabled(enableSplit);
 			final SHTMLPanel htmlEditorPanel = (EditNodeWYSIWYG.htmlEditorWindow).getHtmlEditorPanel();
 			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
