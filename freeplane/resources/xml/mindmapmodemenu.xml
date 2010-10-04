@@ -360,6 +360,10 @@
 		<menu_category name="EditAction">
 			<menu_action action="EditAction" />
 			<menu_action action="EditLongAction" />
+			<menu_action action="EditDetailsAction"/>
+			<menu_action action="ToggleDetailsAction"/>
+			<menu_action action="DeleteDetailsAction"/>
+			
 			<menu_action action="EditAttributesAction" />
 			<!--
 				<menu_action action="UseRichFormattingAction" /> <menu_action
