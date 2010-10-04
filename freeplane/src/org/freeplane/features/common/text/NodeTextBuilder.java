@@ -21,10 +21,12 @@ package org.freeplane.features.common.text;
 
 import java.io.IOException;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.core.io.IElementWriter;
+import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -32,12 +34,13 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.StyleFactory;
 import org.freeplane.features.common.styles.StyleNamedObject;
 import org.freeplane.features.common.styles.StyleString;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter {
+public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter, IExtensionElementWriter {
 	public static final String XML_NODE_TEXT = "TEXT";
 	public static final String XML_NODE_LOCALIZED_TEXT = "LOCALIZED_TEXT";
 	public static final String XML_NODE_XHTML_CONTENT_TAG = "richcontent";
@@ -51,17 +54,26 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			return null;
 		}
 		final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
-		if (typeAttribute != null && !NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
-			return null;
+		if (NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)
+				 || NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS.equals(typeAttribute)) {
+			return parent;
 		}
-		return parent;
+		return null;
 	}
 
 	public void endElement(final Object parent, final String tag, final Object node, final XMLElement attributes,
 	                       final String content) {
 		assert tag.equals("richcontent");
 		final String xmlText = content;
-		((NodeModel) node).setXmlText(xmlText);
+		final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
+		if (NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
+			((NodeModel) node).setXmlText(xmlText);
+		}
+		else if (NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS.equals(typeAttribute)) {
+			final DetailTextModel note = new DetailTextModel("true".equals(attributes.getAttribute("HIDDEN", "false")));
+			note.setXml(xmlText);
+			((NodeModel) node).addExtension((IExtension) note);
+		}
 	}
 
 	private void registerAttributeHandlers(final ReadManager reader) {
@@ -133,5 +145,26 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			final String content = xmlText.replace('\0', ' ');
 			writer.addElement(content, htmlElement);
 		}
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see freeplane.io.INodeWriter#saveContent(freeplane.io.ITreeWriter,
+	 * java.lang.Object, java.lang.String)
+	 */
+	public void writeContent(final ITreeWriter writer, final Object element, final IExtension note) throws IOException {
+		RichTextModel note1 = (RichTextModel) note;
+		if (note1.getXml() != null) {
+        	final XMLElement htmlElement = new XMLElement();
+    		htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
+    		if(note instanceof DetailTextModel ){
+        		htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS);
+        		if(((DetailTextModel)note).isHidden()){
+        			htmlElement.setAttribute("HIDDEN", "true");
+        		}
+        	}
+        	final String content = note1.getXml().replace('\0', ' ');
+        	writer.addElement(content, htmlElement);
+        }
+		return;
 	}
 }

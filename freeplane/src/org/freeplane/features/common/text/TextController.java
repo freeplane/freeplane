@@ -19,11 +19,13 @@
  */
 package org.freeplane.features.common.text;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.HtmlUtils;
@@ -31,6 +33,8 @@ import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.note.NoteModel;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
@@ -71,6 +75,8 @@ public class TextController implements IExtension {
 		final WriteManager writeManager = mapController.getWriteManager();
 		final NodeTextBuilder textBuilder = new NodeTextBuilder();
 		textBuilder.registerBy(readManager, writeManager);
+		writeManager.addExtensionElementWriter(DetailTextModel.class, textBuilder);
+
 	}
 
 	public void addTextTransformer(ITextTransformer textTransformer) {
@@ -97,5 +103,4 @@ public class TextController implements IExtension {
 		final String text = getText(nodeModel);
 		return HtmlUtils.htmlToPlain(text);    
 	}
-
 }

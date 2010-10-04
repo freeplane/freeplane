@@ -50,6 +50,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.link.MLinkController;
@@ -97,6 +98,9 @@ public class MTextController extends TextController {
 		modeController.addAction(new JoinNodesAction());
 		modeController.addAction(new EditLongAction());
 		modeController.addAction(new SetImageByFileChooserAction());
+		modeController.addAction(new EditDetailsAction());
+		modeController.addAction(new ToggleDetailsAction());
+		modeController.addAction(new DeleteDetailsAction());
 	}
 
 	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
@@ -304,4 +308,78 @@ public class MTextController extends TextController {
 		final String useRichTextInNewLongNodes = (showResult == JOptionPane.OK_OPTION) ? "true" : "false";
 		return useRichTextInNewLongNodes.equals("true");
 	}
+	public void editDetails(NodeModel model) {
+		final EditDetailsAction action = (EditDetailsAction) Controller.getCurrentModeController().getAction("EditDetailsAction");
+		action.edit(model);
+    }
+	public void setDetails(final NodeModel node, final String newText) {
+		final String oldText = DetailTextModel.getDetailTextText(node);
+		if (oldText == newText || null != oldText && oldText.equals(newText)) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				setText(newText);
+			}
+
+			public String getDescription() {
+				return "setDetailText";
+			}
+
+			private void setText(final String text) {
+				final boolean containsDetails = !(text == null || text.equals(""));
+				if (containsDetails) {
+					final DetailTextModel details = DetailTextModel.createDetailText(node);
+					details.setHtml(text);
+					node.addExtension(details);
+				}
+				else {
+					final DetailTextModel details = (DetailTextModel) node.getExtension(DetailTextModel.class);
+					if (null != details ) {
+						if(details.isHidden()){
+							details.setHtml(null);
+						}
+						else{
+							node.removeExtension(DetailTextModel.class);
+						}
+					}
+				}
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailTextModel.class, oldText, text);
+			}
+
+			public void undo() {
+				setText(oldText);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, node.getMap());
+	}
+
+	public void setDetailsHidden(final NodeModel node, final boolean isHidden) {
+		DetailTextModel details = (DetailTextModel) node.getExtension(DetailTextModel.class);
+		if (details == null && isHidden == false || details.isHidden() == isHidden) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				setHidden(isHidden);
+			}
+
+			public String getDescription() {
+				return "setDetailsHidden";
+			}
+
+			private void setHidden(final boolean isHidden) {
+				final DetailTextModel details = DetailTextModel.createDetailText(node);
+				details.setHidden(isHidden);
+				node.addExtension(details);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, "DETAILS_HIDDEN", ! isHidden, isHidden);
+			}
+
+			public void undo() {
+				setHidden(! isHidden);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, node.getMap());
+	}
+
 }

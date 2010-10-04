@@ -63,10 +63,11 @@ import org.freeplane.features.common.map.NodeModel.NodeChangeType;
 import org.freeplane.features.common.misc.HierarchicalIcons;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.features.common.note.DetailTextModel;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapViewLayout;
+import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.mindmapmode.note.MNoteController;
+import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
@@ -167,7 +168,7 @@ public class NodeView extends JComponent implements INodeView {
                 public void mouseClicked(MouseEvent e) {
 					final NodeView nodeView = getNodeView();
 					final NodeModel model = nodeView.getModel();
-					MNoteController controller = (MNoteController) MNoteController.getController();
+					MTextController controller = (MTextController) MTextController.getController();
 					switch(e.getClickCount()){
 						case 1:
 							controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());

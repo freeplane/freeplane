@@ -33,6 +33,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.text.DetailTextModel;
 
 /**
  * @author Dimitry Polivaev
@@ -76,7 +77,6 @@ public class NoteController implements IExtension {
 		final WriteManager writeManager = modeController.getMapController().getWriteManager();
 		writeManager.addAttributeWriter("map", noteWriter);
 		writeManager.addExtensionElementWriter(NoteModel.class, noteWriter);
-		writeManager.addExtensionElementWriter(DetailTextModel.class, noteWriter);
 	}
 
 	public final String getNoteText(final NodeModel node) {

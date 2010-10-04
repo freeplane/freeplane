@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.note;
+package org.freeplane.features.mindmapmode.text;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -28,9 +28,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.note.DetailTextModel;
-import org.freeplane.features.mindmapmode.text.EditNodeBase;
-import org.freeplane.features.mindmapmode.text.EditNodeWYSIWYG;
+import org.freeplane.features.common.text.DetailTextModel;
+import org.freeplane.features.mindmapmode.note.MNoteController;
 
 class EditDetailsAction extends AFreeplaneAction {
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
@@ -89,7 +88,7 @@ class EditDetailsAction extends AFreeplaneAction {
 
 	private void setHtmlText(final NodeModel node, final String newText) {
 		final String body = EditDetailsAction.HTML_HEAD.matcher(newText).replaceFirst("");
-		final MNoteController textController = (MNoteController) MNoteController.getController();
+		final MTextController textController = (MTextController) MTextController.getController();
         textController.setDetails(node, body.replaceFirst("\\s+$", ""));
 	}
 

@@ -1,5 +1,6 @@
 package org.freeplane.core.ui;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -21,7 +22,8 @@ public class DelayedMouseListener implements IMouseListener {
 	final private int button;
 	private int clickCounter = 0;
 	private Timer timer = null;
-	static final private int MAX_TIME_BETWEEN_CLICKS = 300;
+	static final private int MAX_TIME_BETWEEN_CLICKS = 
+		(Integer) Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval");
 	final private int maxClickNumber;
 	
 

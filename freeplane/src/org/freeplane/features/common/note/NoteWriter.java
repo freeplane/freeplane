@@ -26,7 +26,9 @@ import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.NodeTextBuilder;
+import org.freeplane.features.common.text.RichTextModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -56,12 +58,6 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
     		htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
         	if(note instanceof NoteModel){
             	htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE);
-        	}
-        	else if(note instanceof DetailTextModel ){
-        		htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS);
-        		if(((DetailTextModel)note).isHidden()){
-        			htmlElement.setAttribute("HIDDEN", "true");
-        		}
         	}
         	else{
         		htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, "UNKNOWN");

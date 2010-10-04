@@ -21,6 +21,7 @@ package org.freeplane.features.common.note;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.RichTextModel;
 
 /**
  * @author Dimitry Polivaev

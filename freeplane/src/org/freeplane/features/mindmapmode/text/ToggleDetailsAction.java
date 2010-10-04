@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.note;
+package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.ActionEvent;
 
@@ -26,7 +26,8 @@ import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.note.DetailTextModel;
+import org.freeplane.features.common.text.DetailTextModel;
+import org.freeplane.features.mindmapmode.note.MNoteController;
 
 @SelectableAction(checkOnNodeChange=true)
 @EnabledAction(checkOnNodeChange=true)
@@ -46,7 +47,7 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 		if(detailText == null){
 			return;
 		}
-		MNoteController controller = (MNoteController) MNoteController.getController();
+		MTextController controller = (MTextController) MTextController.getController();
 		controller.setDetailsHidden(node, !detailText.isHidden());
     }
 

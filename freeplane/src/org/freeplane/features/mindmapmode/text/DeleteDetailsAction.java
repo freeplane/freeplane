@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.note;
+package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.ActionEvent;
 
@@ -25,7 +25,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.note.DetailTextModel;
+import org.freeplane.features.common.text.DetailTextModel;
+import org.freeplane.features.mindmapmode.note.MNoteController;
 
 @EnabledAction(checkOnNodeChange=true)
 class DeleteDetailsAction extends AMultipleNodeAction {
@@ -44,7 +45,7 @@ class DeleteDetailsAction extends AMultipleNodeAction {
 		if(detailText == null){
 			return;
 		}
-		MNoteController controller = (MNoteController) MNoteController.getController();
+		MTextController controller = (MTextController) MTextController.getController();
 		controller.setDetailsHidden(node, false);
 		controller.setDetails(node, null);
     }

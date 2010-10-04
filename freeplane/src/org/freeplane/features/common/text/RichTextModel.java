@@ -1,4 +1,4 @@
-package org.freeplane.features.common.note;
+package org.freeplane.features.common.text;
 
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.XmlUtils;

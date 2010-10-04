@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.note;
+package org.freeplane.features.common.text;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.common.map.NodeModel;
