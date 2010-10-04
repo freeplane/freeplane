@@ -36,10 +36,26 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private boolean isHidden;
 
 	public ToggleDetailsAction() {
 		super("ToggleDetailsAction");
 	}
+
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+		isHidden = !isHidden();
+		super.actionPerformed(e);
+	}
+	
+	private boolean isHidden() {
+		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+		if(node == null){
+			return false;
+		}
+		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
+		return detailText != null && detailText.isHidden();
+    }
 
 	@Override
     protected void actionPerformed(ActionEvent e, NodeModel node) {
@@ -48,18 +64,12 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 			return;
 		}
 		MTextController controller = (MTextController) MTextController.getController();
-		controller.setDetailsHidden(node, !detailText.isHidden());
+		controller.setDetailsHidden(node, isHidden);
     }
 
 	@Override
 	public void setSelected() {
-		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		if(node == null){
-			setSelected(false);
-			return;
-		}
-		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
-		setSelected(detailText != null && detailText.isHidden());
+		setSelected(!isHidden());
 	}
 	
 	@Override
