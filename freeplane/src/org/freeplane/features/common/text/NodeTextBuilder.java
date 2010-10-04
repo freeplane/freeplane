@@ -34,7 +34,6 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.StyleFactory;
 import org.freeplane.features.common.styles.StyleNamedObject;
 import org.freeplane.features.common.styles.StyleString;

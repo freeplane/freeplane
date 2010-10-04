@@ -66,7 +66,6 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.DetailTextModel;
-import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;

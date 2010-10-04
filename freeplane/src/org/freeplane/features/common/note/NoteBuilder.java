@@ -22,9 +22,7 @@ package org.freeplane.features.common.note;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.NodeTextBuilder;
-import org.freeplane.features.common.text.RichTextModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

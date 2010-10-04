@@ -27,7 +27,6 @@ import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.DetailTextModel;
-import org.freeplane.features.mindmapmode.note.MNoteController;
 
 @SelectableAction(checkOnNodeChange=true)
 @EnabledAction(checkOnNodeChange=true)

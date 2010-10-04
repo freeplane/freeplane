@@ -26,7 +26,6 @@ import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.DetailTextModel;
-import org.freeplane.features.mindmapmode.note.MNoteController;
 
 @EnabledAction(checkOnNodeChange=true)
 class DeleteDetailsAction extends AMultipleNodeAction {
