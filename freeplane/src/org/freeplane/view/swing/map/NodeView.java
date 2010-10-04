@@ -35,6 +35,7 @@ import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -66,6 +67,7 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.DetailTextModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -73,6 +75,8 @@ import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.cloud.CloudViewFactory;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.EdgeViewFactory;
+import org.freeplane.view.swing.ui.DefaultMapMouseListener;
+import org.freeplane.view.swing.ui.DefaultMapMouseReceiver;
 
 /**
  * This class represents a single Node of a MindMap (in analogy to
@@ -161,19 +165,34 @@ public class NodeView extends JComponent implements INodeView {
     static final class DetailsView extends ZoomableLabel {
 	    public DetailsView() {
 	        super();
+	        final DefaultMapMouseReceiver mouseReceiver = new DefaultMapMouseReceiver();
+			final DefaultMapMouseListener mouseListener = new DefaultMapMouseListener(mouseReceiver);
+			addMouseMotionListener(mouseListener);
 	        addMouseListener(new DelayedMouseListener(new AMouseListener() {
+
+				@Override
+                public void mousePressed(MouseEvent e) {
+					mouseReceiver.mousePressed(e);
+                }
+
+				@Override
+                public void mouseReleased(MouseEvent e) {
+					mouseReceiver.mouseReleased(e);
+                }
 
 				@Override
                 public void mouseClicked(MouseEvent e) {
 					final NodeView nodeView = getNodeView();
 					final NodeModel model = nodeView.getModel();
-					MTextController controller = (MTextController) MTextController.getController();
+					TextController controller = TextController.getController();
 					switch(e.getClickCount()){
 						case 1:
 							controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
 							break;
 						case 2:
-							controller.editDetails(model);
+							if(controller instanceof MTextController){
+								((MTextController) controller).editDetails(model);
+							}
 							break;
 					}
                 }

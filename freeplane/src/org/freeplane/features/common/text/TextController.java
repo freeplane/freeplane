@@ -99,4 +99,13 @@ public class TextController implements IExtension {
 		final String text = getText(nodeModel);
 		return HtmlUtils.htmlToPlain(text);    
 	}
+
+	public void setDetailsHidden(NodeModel node, boolean isHidden) {
+		final DetailTextModel details = DetailTextModel.createDetailText(node);
+		if(isHidden == details.isHidden()){
+			return;
+		}
+		details.setHidden(isHidden);
+		node.addExtension(details);
+		Controller.getCurrentModeController().getMapController().nodeChanged(node, "DETAILS_HIDDEN", ! isHidden, isHidden);    }
 }

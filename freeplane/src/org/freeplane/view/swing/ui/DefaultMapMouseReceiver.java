@@ -19,8 +19,12 @@
  */
 package org.freeplane.view.swing.ui;
 
+import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IMapMouseReceiver;
@@ -45,15 +49,22 @@ public class DefaultMapMouseReceiver implements IMapMouseReceiver {
 
 	public void mouseDragged(final MouseEvent e) {
 		final Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
-		final MapView mapView = (MapView) e.getComponent();
-		final boolean isEventPointVisible = mapView.getVisibleRect().contains(r);
+	    final JComponent component = (JComponent) e.getComponent();
+		final MapView mapView = getMapView(component);
+		final boolean isEventPointVisible = component.getVisibleRect().contains(r);
 		if (!isEventPointVisible) {
-			mapView.scrollRectToVisible(r);
+			component.scrollRectToVisible(r);
 		}
 		if (originX >= 0 && isEventPointVisible) {
-			((MapView) e.getComponent()).scrollBy(originX - e.getX(), originY - e.getY());
+			mapView.scrollBy(originX - e.getX(), originY - e.getY());
 		}
 	}
+
+	private MapView getMapView(final Component component) {
+	    if(component instanceof MapView)
+	    	return (MapView) component;
+	    return (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
+    }
 
 	public void mousePressed(final MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {

@@ -50,13 +50,12 @@ public class DelayedMouseListener implements IMouseListener {
 				final MouseEvent newMouseEvent = new MouseEvent(me.getComponent(),me.getID(), e.getWhen(), me.getModifiers(), me.getX(), me.getY(), clickCounter, me.isPopupTrigger(), button);
 				delegate.mouseClicked(newMouseEvent);
 				delegate.mouseReleased(newMouseEvent);
-				timer.stop();
 				timer = null;
 			}
 		});
 		timer.setRepeats(false);
 		timer.start();
-		me.consume();
+//		me.consume();
     }
 
 	public void mouseEntered(MouseEvent e) {
