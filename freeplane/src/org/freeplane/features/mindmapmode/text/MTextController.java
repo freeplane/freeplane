@@ -51,7 +51,9 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.DetailTextModel;
+import org.freeplane.features.common.text.ShortenedTextModel;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.common.text.ShortenedTextModel.State;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
@@ -81,8 +83,8 @@ public class MTextController extends TextController {
 		return SHTMLPanel.createSHTMLPanel();
 	}
 
-	public MTextController() {
-		super();
+	public MTextController(ModeController modeController) {
+		super(modeController);
 		createActions();
 	}
 
@@ -101,6 +103,11 @@ public class MTextController extends TextController {
 		modeController.addAction(new EditDetailsAction());
 		modeController.addAction(new ToggleDetailsAction());
 		modeController.addAction(new DeleteDetailsAction());
+		
+		modeController.addAction(new SetShortenerStateAction(null));
+		for (State s : State.values()){
+			modeController.addAction(new SetShortenerStateAction(s));
+		}
 	}
 
 	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
@@ -377,6 +384,40 @@ public class MTextController extends TextController {
 
 			public void undo() {
 				setHidden(! isHidden);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, node.getMap());
+	}
+
+	public void setShortenerState(final NodeModel node, final State state) {
+		ShortenedTextModel details = (ShortenedTextModel) node.getExtension(ShortenedTextModel.class);
+		if (details == null && state == null || details != null && details.getState().equals(State.DISABLED)) {
+			return;
+		}
+		final State oldState = details == null ? null : details.getState(); 
+		final IActor actor = new IActor() {
+			public void act() {
+				setShortener(oldState, state);
+			}
+
+			public String getDescription() {
+				return "setShortener";
+			}
+
+			private void setShortener(final State oldState, final State state) {
+				if(state != null){
+					final ShortenedTextModel details = ShortenedTextModel.createShortenedTextModel(node);
+					details.setState(state);
+					node.addExtension(details);
+				}
+				else{
+					node.removeExtension(ShortenedTextModel.class);
+				}
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", oldState, state);
+			}
+
+			public void undo() {
+				setShortener(state, oldState);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());

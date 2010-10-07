@@ -62,8 +62,6 @@ import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class ExportWithXSLT extends AExportEngine {
-//	private static final IconStore STORE = IconStoreFactory.create();
-	private static final String NAME_EXTENSION_PROPERTY = "name_extension";
 	/**
 	 * 
 	 */

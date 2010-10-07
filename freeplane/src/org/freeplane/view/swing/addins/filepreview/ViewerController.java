@@ -305,7 +305,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	private static final int BORDER_SIZE = 2;
 	private static final Color BORDER_COLOR = Color.GRAY;
-	static final int VIEWER_POSITION = 4;
+	static final int VIEWER_POSITION = 5;
 	private final MyMouseListener mouseListener = new MyMouseListener();
 	final private Set<IViewerFactory> factories;
 

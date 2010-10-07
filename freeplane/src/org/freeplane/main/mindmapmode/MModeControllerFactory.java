@@ -223,7 +223,7 @@ public class MModeControllerFactory {
 		NoteController.install(new MNoteController(modeController));
 		LinkController.install(new MLinkController());
 		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(new MMouseMotionListener()));
-		final MTextController textController = new MTextController();
+		final MTextController textController = new MTextController(modeController);
 		TextController.install(textController);
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
 			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {

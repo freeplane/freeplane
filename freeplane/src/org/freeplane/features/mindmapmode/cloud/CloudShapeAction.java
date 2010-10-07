@@ -45,7 +45,6 @@ class CloudShapeAction extends AMultipleNodeAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		Shape selectedColor = null;
 		ModeController controller;
 		{
 			controller = Controller.getCurrentModeController();
@@ -53,7 +52,6 @@ class CloudShapeAction extends AMultipleNodeAction {
 			final MCloudController cloudController = (MCloudController) CloudController
 			    .getController();
 			cloudController.setCloud(selected, true);
-			selectedColor = cloudController.getShape(selected);
 		}
 		super.actionPerformed(e);
 	}

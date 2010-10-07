@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.text;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,8 +30,13 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.IStyle;
+import org.freeplane.features.common.styles.LogicalStyleController;
+import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.text.ShortenedTextModel.State;
 
 /**
  * @author Dimitry Polivaev
@@ -59,19 +65,21 @@ public class TextController implements IExtension {
 		modeController.addExtension(TextController.class, textController);
 	}
 
+	final private ModeController modeController;
+
 // 	final private ModeController modeController;
 
-	public TextController() {
+	public TextController(final ModeController modeController) {
 		super();
 		textTransformers = new LinkedList<ITextTransformer>();
-//		this.modeController = modeController;
-		final ModeController modeController = Controller.getCurrentModeController();
+		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		final NodeTextBuilder textBuilder = new NodeTextBuilder();
 		textBuilder.registerBy(readManager, writeManager);
 		writeManager.addExtensionElementWriter(DetailTextModel.class, textBuilder);
+		writeManager.addExtensionAttributeWriter(ShortenedTextModel.class, textBuilder);
 
 	}
 
@@ -94,6 +102,16 @@ public class TextController implements IExtension {
 		}
 		return nodeText;
     }
+	
+	public State getShortenerState(NodeModel node){
+		{
+			final ShortenedTextModel shortened = ShortenedTextModel.getShortenedTextModel(node);
+			if (shortened != null) {
+				return shortened.getState();
+			}
+		}
+		return State.DISABLED;
+	}
 
 	public String getPlainTextContent(NodeModel nodeModel) {
 		final String text = getText(nodeModel);
@@ -108,4 +126,15 @@ public class TextController implements IExtension {
 		details.setHidden(isHidden);
 		node.addExtension(details);
 		Controller.getCurrentModeController().getMapController().nodeChanged(node, "DETAILS_HIDDEN", ! isHidden, isHidden);    }
+
+	public void setShortenerState(NodeModel node, State newState) {
+		final ShortenedTextModel shortener = ShortenedTextModel.createShortenedTextModel(node);
+		final State oldState = shortener.getState();
+		if(newState == oldState || newState != null && newState.equals(oldState)){
+			return;
+		}
+		shortener.setState(newState);
+		node.addExtension(shortener);
+		Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", oldState, newState);   
+    }
 }

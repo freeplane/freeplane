@@ -100,7 +100,7 @@ public class SModeControllerFactory {
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());
 		modeController.setMapController(new MMapController());
-		TextController.install(new TextController());
+		TextController.install(new TextController(modeController));
 		IconController.install(new MIconController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		EdgeController.install(new MEdgeController(modeController));

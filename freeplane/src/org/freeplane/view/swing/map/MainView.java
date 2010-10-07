@@ -65,6 +65,7 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.common.text.ShortenedTextModel.State;
 
 /**
  * Base class for all node views.
@@ -337,9 +338,10 @@ public abstract class MainView extends ZoomableLabel {
 
 	protected void updateText(NodeModel nodeModel) {
 		final ModeController modeController = getMap().getModeController();
+		final TextController textController = TextController.getController(modeController);
 		String text;
 		try {
-			text = TextController.getController(modeController).getText(nodeModel);
+			text = textController.getText(nodeModel);
 			// FIXME: temporarily, to show evaluated formulas:
 			if (!DONT_MARK_FORMULAS_FIXME_REMOVE && !text.equals(HtmlUtils.htmlToPlain(nodeModel.getText()))) {
 				setBorder(new LineBorder(Color.GREEN, 2));
@@ -353,6 +355,29 @@ public abstract class MainView extends ZoomableLabel {
 			text = TextUtils.format("MainView.errorUpdateText", nodeModel.getText(), e.getLocalizedMessage());
 			setBorder(errorBorder);
 		}
+		final State textShortened = textController.getShortenerState(nodeModel);
+		if(State.HIDDEN.equals(textShortened)){
+			text = shortenText(text);
+		}
 		updateText(text);
 	}
+
+	private String shortenText(String text) {
+	    if(HtmlUtils.isHtmlNode(text)){
+	    	text = HtmlUtils.htmlToPlain(text).trim();
+	    }
+	    int length = text.length();
+	    final int eolPosition = text.indexOf('\n');
+	    if(eolPosition == -1 || eolPosition >= length || eolPosition >= 20){
+	    	if(length <= 20){
+	    		return text;
+	    	}
+	    	length = 20;
+	    }
+	    else{
+	    	length = eolPosition;
+	    }
+	    text = text.substring(0, length) + "...";
+	    return text;
+    }
 }

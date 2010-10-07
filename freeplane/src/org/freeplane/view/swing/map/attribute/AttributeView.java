@@ -152,7 +152,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 		        && (AttributeView.tablePopupMenu.getTable() == attributeTable);
 	}
 	
-	static private int VIEWER_POSITION = 2; 
+	static private int VIEWER_POSITION = 3; 
 
 	private void provideAttributeTable() {
 		if (attributeTable == null) {

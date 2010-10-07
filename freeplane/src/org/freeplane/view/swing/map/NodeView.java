@@ -34,8 +34,8 @@ import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -67,7 +67,9 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.DetailTextModel;
+import org.freeplane.features.common.text.ShortenedTextModel;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.common.text.ShortenedTextModel.State;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -100,8 +102,9 @@ public class NodeView extends JComponent implements INodeView {
 	private static final long serialVersionUID = 1L;
 	public final static int SHIFT = -2;
 	static final int SPACE_AROUND = 50;
-	private static final int MAIN_VIEWER_POSITION = 0;
-	private static final int DETAIL_VIEWER_POSITION = 1;
+	private static final int SHORTENER_VIEWER_POSITION = 0;
+	private static final int MAIN_VIEWER_POSITION = 1;
+	private static final int DETAIL_VIEWER_POSITION = 2;
 	private static final int NOTE_VIEWER_POSITION = 10;
 
 	/**
@@ -165,40 +168,7 @@ public class NodeView extends JComponent implements INodeView {
     static final class DetailsView extends ZoomableLabel {
 	    public DetailsView() {
 	        super();
-	        final DefaultMapMouseReceiver mouseReceiver = new DefaultMapMouseReceiver();
-			final DefaultMapMouseListener mouseListener = new DefaultMapMouseListener(mouseReceiver);
-			addMouseMotionListener(mouseListener);
-	        addMouseListener(new DelayedMouseListener(new AMouseListener() {
-
-				@Override
-                public void mousePressed(MouseEvent e) {
-					mouseReceiver.mousePressed(e);
-                }
-
-				@Override
-                public void mouseReleased(MouseEvent e) {
-					mouseReceiver.mouseReleased(e);
-                }
-
-				@Override
-                public void mouseClicked(MouseEvent e) {
-					final NodeView nodeView = getNodeView();
-					final NodeModel model = nodeView.getModel();
-					TextController controller = TextController.getController();
-					switch(e.getClickCount()){
-						case 1:
-							controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
-							break;
-						case 2:
-							if(controller instanceof MTextController){
-								((MTextController) controller).editDetails(model);
-							}
-							break;
-					}
-                }
-	        	
-			}, 2, MouseEvent.BUTTON1));
-        }
+       }
 
 
 		@Override
@@ -269,9 +239,9 @@ public class NodeView extends JComponent implements INodeView {
 			removeContent(DETAIL_VIEWER_POSITION);
 			return;
 		}
-		ZoomableLabel detailContent = (ZoomableLabel) getContent(DETAIL_VIEWER_POSITION);
+		DetailsView detailContent = (DetailsView) getContent(DETAIL_VIEWER_POSITION);
 		if (detailContent == null) {
-			detailContent = new DetailsView();
+			detailContent = createDetailView();
 			addContent(detailContent, DETAIL_VIEWER_POSITION);
 		}
 		if (detailText.isHidden()) {
@@ -284,6 +254,44 @@ public class NodeView extends JComponent implements INodeView {
 			detailContent.setIcon(new ArrowIcon(false));
 		}
 	}
+
+	private DetailsView createDetailView() {
+	    DetailsView detailContent;
+	    detailContent = createShortenerStateView();
+	    final DefaultMapMouseReceiver mouseReceiver = new DefaultMapMouseReceiver();
+	    final DefaultMapMouseListener mouseListener = new DefaultMapMouseListener(mouseReceiver);
+	    detailContent.addMouseMotionListener(mouseListener);
+	    detailContent.addMouseListener(new DelayedMouseListener(new AMouseListener() {
+	    
+	    	@Override
+	        public void mousePressed(MouseEvent e) {
+	    		mouseReceiver.mousePressed(e);
+	        }
+	    
+	    	@Override
+	        public void mouseReleased(MouseEvent e) {
+	    		mouseReceiver.mouseReleased(e);
+	        }
+	    
+	    	@Override
+	        public void mouseClicked(MouseEvent e) {
+	    		final NodeModel model = NodeView.this.getModel();
+	    		TextController controller = TextController.getController();
+	    		switch(e.getClickCount()){
+	    			case 1:
+	    				controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
+	    				break;
+	    			case 2:
+	    				if(controller instanceof MTextController){
+	    					((MTextController) controller).editDetails(model);
+	    				}
+	    				break;
+	    		}
+	        }
+	    	
+	    }, 2, MouseEvent.BUTTON1));
+	    return detailContent;
+    }
 
 	void addDragListener(final DragGestureListener dgl) {
 		if (dgl == null) {
@@ -1338,10 +1346,55 @@ public class NodeView extends JComponent implements INodeView {
 				}
 			}
 		}
+		updateShortener(getModel());
 		mainView.updateText(getModel());
 		updateToolTip();
 		revalidate();
 	}
+
+	private void updateShortener(NodeModel nodeModel) {
+		final ModeController modeController = getMap().getModeController();
+		final TextController textController = TextController.getController(modeController);
+		final State textShortened = textController.getShortenerState(nodeModel);
+		ZoomableLabel shortener = (ZoomableLabel) getContent(SHORTENER_VIEWER_POSITION);
+		if(shortener == null){
+			if(textShortened.equals(State.DISABLED)){
+				return;
+			}
+			shortener = new ZoomableLabel();
+		}
+		if (textShortened.equals(State.DISABLED)) {
+			removeContent(SHORTENER_VIEWER_POSITION);
+			return;
+		}
+		ZoomableLabel detailContent = (ZoomableLabel) getContent(SHORTENER_VIEWER_POSITION);
+		if (detailContent == null) {
+			detailContent = createShortenerStateView();
+			addContent(detailContent, SHORTENER_VIEWER_POSITION);
+		}
+		final boolean componentsVisible = ! State.HIDDEN.equals(textShortened);
+		detailContent.setIcon(new ArrowIcon(! componentsVisible));
+	}
+
+	private DetailsView createShortenerStateView() {
+	    final DetailsView detailsView = new DetailsView();
+	    detailsView.addMouseListener(new MouseAdapter() {
+
+			@Override
+            public void mouseClicked(MouseEvent e) {
+				final State state = ShortenedTextModel.getState(getModel());
+				TextController controller = TextController.getController();
+				if(State.HIDDEN.equals(state)){
+					controller.setShortenerState(model, State.SHOWN);
+				}
+				else{
+					controller.setShortenerState(model, State.HIDDEN);
+				}
+            }
+	    	
+		});
+		return detailsView;
+    }
 
 	public void updateAll() {
 		updateNoteViewer();

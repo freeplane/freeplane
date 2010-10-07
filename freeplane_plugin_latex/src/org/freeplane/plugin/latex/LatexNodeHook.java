@@ -45,7 +45,7 @@ import org.freeplane.view.swing.map.NodeView;
 onceForMap = false)
 @ActionLocationDescriptor(locations = "/menu_bar/insert/other")
 class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleListener {
-	static final int VIEWER_POSITION = 3;
+	static final int VIEWER_POSITION = 4;
 
 	/**
 	 */

@@ -46,6 +46,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.common.text.ShortenedTextModel.State;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
 
@@ -271,6 +273,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield = new JTextArea(getText());
 		final ModeController modeController = Controller.getCurrentModeController();
 		final ViewController viewController = modeController.getController().getViewController();
+		final TextController textController = TextController.getController(modeController);
 		final Component component = viewController.getComponent(getNode());
 		nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
 		final MapView mapView = (MapView) viewController.getMapView();
@@ -351,6 +354,9 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			textfield.setCaretPosition(getText().length());
 		}
 		textfield.getDocument().addDocumentListener(documentListener);
+		if(State.HIDDEN.equals(textController.getShortenerState(node))){
+			layout();
+		}
 		textfield.repaint();
 		textfield.requestFocus();
 	}

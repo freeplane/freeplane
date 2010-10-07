@@ -64,6 +64,10 @@
 			<menu_category name="edit">
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
+				<menu_radio_action action="SetShortenerStateAction.null" />
+				<menu_radio_action action="SetShortenerStateAction.HIDDEN" />
+				<menu_radio_action action="SetShortenerStateAction.SHOWN" />
+				<!-- <menu_radio_action action="SetShortenerStateAction.DISABLED" /> -->
 				<menu_action action="EditDetailsAction" accelerator="shift F2" />
 				<menu_action action="ToggleDetailsAction" accelerator="alt F2" />
 				<menu_action action="DeleteDetailsAction"/>

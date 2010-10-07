@@ -72,7 +72,7 @@ public class BModeControllerFactory {
 		EdgeController.install(new EdgeController(modeController));
 		CloudController.install(new CloudController(modeController));
 		NoteController.install(new NoteController());
-		TextController.install(new TextController());
+		TextController.install(new TextController(modeController));
 		LogicalStyleController.install(new LogicalStyleController());
 		try {
 			ClipboardController.install(new ClipboardController());
