@@ -161,6 +161,11 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 		}
 	}
 
+	/** Allow statements like this: <code>node['attr_name'].to.num</code>. */
+	public Convertible getTo() {
+		return this;
+	}
+
 	/** returns true if the text is convertible to number. */
 	public boolean isNum() {
 		// handles null -> false
