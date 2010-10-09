@@ -129,6 +129,7 @@ public abstract class ResourceController {
 	 */
 	abstract public String getFreeplaneUserDirectory();
 
+	@Deprecated
 	public int getIntProperty(final String key, final int defaultValue) {
 		try {
 			return Integer.parseInt(getProperty(key));
@@ -138,6 +139,11 @@ public abstract class ResourceController {
 		}
 	}
 
+
+	public int getIntProperty(String key) {
+		return Integer.parseInt(getProperty(key));
+    }
+	
 	public long getLongProperty(final String key, final int defaultValue) {
 		try {
 			return Long.parseLong(getProperty(key));

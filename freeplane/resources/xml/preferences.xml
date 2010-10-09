@@ -123,8 +123,6 @@
             <number name="defaultfontstyle" min="0" max="3"/>
             <boolean name="resources_use_default_font_for_notes_too"/>
             <boolean name="resources_use_margin_top_zero_for_notes"/>
-            <number name="max_node_width"/>
-            <number name="toolTipManager.max_tooltip_width"/>
          </separator>
         <separator name="other_defaults">
             <combo name="standardedgestyle">
@@ -157,9 +155,10 @@
                 <choice value="antialias_none"/>
             </combo>
         </separator>
-        <separator name="initial_map_size">        
-            <number name="mapxsize"/>
-            <number name="mapysize"/>
+        <separator name="size_limits">        
+            <number name="max_shortened_text_length"/>
+            <number name="max_node_width"/>
+            <number name="toolTipManager.max_tooltip_width"/>
         </separator>
         <separator name="connectors">
         	<font name="label_font_family"/>

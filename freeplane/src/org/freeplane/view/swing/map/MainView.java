@@ -368,7 +368,7 @@ public abstract class MainView extends ZoomableLabel {
 	    }
 	    int length = text.length();
 	    final int eolPosition = text.indexOf('\n');
-	    final int maxNodeWidth = ResourceController.getResourceController().getIntProperty("MAX_SHORTENED_TEXT_LENGTH", 64);
+	    final int maxNodeWidth = ResourceController.getResourceController().getIntProperty("max_shortened_text_length");
 		if(eolPosition == -1 || eolPosition >= length || eolPosition >= maxNodeWidth){
 	    	if(length <= maxNodeWidth){
 	    		return text;
