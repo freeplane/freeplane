@@ -31,18 +31,22 @@ public class NodeContainsCondition extends NodeCondition {
 	static final String VALUE = "VALUE";
 
 	static ISelectableCondition load(final XMLElement element) {
-		return new NodeContainsCondition(element.getAttribute(NodeContainsCondition.VALUE, null));
+		return new NodeContainsCondition(
+			element.getAttribute(NodeTextCompareCondition.ITEM, NodeTextConditionController.FILTER_NODE), 
+			element.getAttribute(NodeContainsCondition.VALUE, null));
 	}
 
 	final private String value;
+	final private Object nodeItem;
 
-	public NodeContainsCondition(final String value) {
+	public NodeContainsCondition(Object nodeItem, final String value) {
 		super();
 		this.value = value;
+		this.nodeItem = nodeItem;
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final String text = TextController.getController().getPlainTextContent(node);
+		final String text = NodeTextConditionController.getItemForComparison(nodeItem, node);
 		return checkText(text);
 	}
 
@@ -62,6 +66,7 @@ public class NodeContainsCondition extends NodeCondition {
 		child.setName(NodeContainsCondition.NAME);
 		super.attributesToXml(child);
 		child.setAttribute(NodeContainsCondition.VALUE, value);
+		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem.toString());
 		element.addChild(child);
 	}
 }

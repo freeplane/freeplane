@@ -30,10 +30,12 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -42,6 +44,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 class NodeTextConditionController implements IElementaryConditionController {
 	static final String FILTER_NODE = "filter_node";
+	static final String FILTER_PARENT = "filter_parent";
+	static final String FILTER_DETAILS = "filter_details";
 	private final ComboBoxEditor editor = new BasicComboBoxEditor();
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
@@ -54,30 +58,33 @@ class NodeTextConditionController implements IElementaryConditionController {
 			return false;
 		}
 		final NamedObject namedObject = (NamedObject) selectedItem;
-		return namedObject.objectEquals(NodeTextConditionController.FILTER_NODE);
+		return namedObject.objectEquals(NodeTextConditionController.FILTER_NODE)
+		|| namedObject.objectEquals(NodeTextConditionController.FILTER_PARENT)
+		|| namedObject.objectEquals(NodeTextConditionController.FILTER_DETAILS);
 	}
 
 	public boolean canSelectValues(final Object selectedItem, final NamedObject simpleCond) {
 		return true;
 	}
 
-	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
 	                                            final Object value, final boolean ignoreCase) {
-		return createNodeCondition(simpleCond, (String) value, ignoreCase);
+		final String item = (String) ((NamedObject)selectedItem).getObject();
+		return createNodeCondition(item, simpleCondition, (String) value, ignoreCase);
 	}
 
-	protected ISelectableCondition createNodeCondition(final NamedObject simpleCondition, final String value,
+	private ISelectableCondition createNodeCondition(final String item, final NamedObject simpleCondition, final String value,
 	                                                   final boolean ignoreCase) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
 			if (value.equals("")) {
 				return null;
 			}
 			// TODO: make ignoreCase a parameter of NodeContainsCondition
-			return ignoreCase ? new IgnoreCaseNodeContainsCondition(value) : new NodeContainsCondition(value);
+			return ignoreCase ? new IgnoreCaseNodeContainsCondition(item, value) : new NodeContainsCondition(item, value);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
 			try {
-				return new NodeMatchesRegexpCondition(value, ignoreCase);
+				return new NodeMatchesRegexpCondition(item, value, ignoreCase);
 			}
 			catch (final PatternSyntaxException e) {
 				UITools.errorMessage(TextUtils.format("wrong_regexp", value, e.getMessage()));
@@ -85,22 +92,22 @@ class NodeTextConditionController implements IElementaryConditionController {
 			}
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-			return new NodeTextCompareCondition(value, ignoreCase, 0, true);
+			return new NodeTextCompareCondition(item, value, ignoreCase, 0, true);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-			return new NodeTextCompareCondition(value, ignoreCase, 0, false);
+			return new NodeTextCompareCondition(item, value, ignoreCase, 0, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-			return new NodeTextCompareCondition(value, ignoreCase, 1, true);
+			return new NodeTextCompareCondition(item, value, ignoreCase, 1, true);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-			return new NodeTextCompareCondition(value, ignoreCase, -1, false);
+			return new NodeTextCompareCondition(item, value, ignoreCase, -1, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-			return new NodeTextCompareCondition(value, ignoreCase, -1, true);
+			return new NodeTextCompareCondition(item, value, ignoreCase, -1, true);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-			return new NodeTextCompareCondition(value, ignoreCase, 1, false);
+			return new NodeTextCompareCondition(item, value, ignoreCase, 1, false);
 		}
 		return null;
 	}
@@ -118,6 +125,8 @@ class NodeTextConditionController implements IElementaryConditionController {
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
 		list.addElement(TextUtils.createTranslatedString(NodeTextConditionController.FILTER_NODE));
+		list.addElement(TextUtils.createTranslatedString(NodeTextConditionController.FILTER_PARENT));
+		list.addElement(TextUtils.createTranslatedString(NodeTextConditionController.FILTER_DETAILS));
 		return list;
 	}
 
@@ -148,4 +157,25 @@ class NodeTextConditionController implements IElementaryConditionController {
 		}
 		return null;
 	}
+
+	static String getItemForComparison(Object nodeItem, final NodeModel node) {
+		if(nodeItem.equals(FILTER_NODE)){
+			return TextController.getController().getPlainTextContent(node);
+		}
+		if(nodeItem.equals(FILTER_PARENT)){
+			final NodeModel parentNode = node.getParentNode();
+			if(parentNode == null){
+				return null;
+			}
+			return TextController.getController().getPlainTextContent(parentNode);
+		}
+		if(nodeItem.equals(FILTER_DETAILS)){
+			final String html = DetailTextModel.getDetailTextText(node);
+			if(html == null){
+				return null;
+			}
+			return HtmlUtils.htmlToPlain(html);
+		}
+		return null;
+    }
 }

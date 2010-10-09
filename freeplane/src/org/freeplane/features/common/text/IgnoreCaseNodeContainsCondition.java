@@ -31,19 +31,24 @@ public class IgnoreCaseNodeContainsCondition extends NodeCondition {
 	static final String VALUE = "VALUE";
 
 	static ISelectableCondition load(final XMLElement element) {
-		return new IgnoreCaseNodeContainsCondition(element.getAttribute(IgnoreCaseNodeContainsCondition.VALUE, null));
+		return new IgnoreCaseNodeContainsCondition(
+			element.getAttribute(NodeTextCompareCondition.ITEM, NodeTextConditionController.FILTER_NODE), 
+			element.getAttribute(IgnoreCaseNodeContainsCondition.VALUE, null)
+);
 	}
 
 	final private String value;
+	final private String nodeItem;
 
-	IgnoreCaseNodeContainsCondition(final String value) {
+	IgnoreCaseNodeContainsCondition(String nodeItem, final String value) {
 		super();
 		this.value = value.toLowerCase();
+		this.nodeItem = nodeItem;
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final String text = TextController.getController().getPlainTextContent(node);
-		return checkText(text);
+		final String text = NodeTextConditionController.getItemForComparison(nodeItem, node);
+		return text != null && checkText(text);
 	}
 
 	private boolean checkText(final String plainTextContent) {
@@ -52,7 +57,7 @@ public class IgnoreCaseNodeContainsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = TextUtils.getText(NodeTextConditionController.FILTER_NODE);
+		final String nodeCondition = TextUtils.getText(nodeItem);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, true);
 	}
@@ -62,6 +67,7 @@ public class IgnoreCaseNodeContainsCondition extends NodeCondition {
 		child.setName(IgnoreCaseNodeContainsCondition.NAME);
 		super.attributesToXml(child);
 		child.setAttribute(IgnoreCaseNodeContainsCondition.VALUE, value);
+		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem.toString());
 		element.addChild(child);
 	}
 }
