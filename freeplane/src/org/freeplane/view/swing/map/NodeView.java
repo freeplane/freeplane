@@ -256,8 +256,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	private DetailsView createDetailView() {
-	    DetailsView detailContent;
-	    detailContent = createShortenerStateView();
+	    DetailsView detailContent =  new DetailsView();
 	    final DefaultMapMouseReceiver mouseReceiver = new DefaultMapMouseReceiver();
 	    final DefaultMapMouseListener mouseListener = new DefaultMapMouseListener(mouseReceiver);
 	    detailContent.addMouseMotionListener(mouseListener);
@@ -1395,8 +1394,8 @@ public class NodeView extends JComponent implements INodeView {
     }
 
 	private DetailsView createShortenerStateView() {
-	    final DetailsView detailsView = new DetailsView();
-	    detailsView.addMouseListener(new MouseAdapter() {
+	    final DetailsView shortenerView = new DetailsView();
+	    shortenerView.addMouseListener(new MouseAdapter() {
 
 			@Override
             public void mouseClicked(MouseEvent e) {
@@ -1411,7 +1410,7 @@ public class NodeView extends JComponent implements INodeView {
             }
 	    	
 		});
-		return detailsView;
+		return shortenerView;
     }
 
 	public void updateAll() {
