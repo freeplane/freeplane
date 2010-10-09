@@ -32,7 +32,7 @@ public class IgnoreCaseNodeContainsCondition extends NodeCondition {
 
 	static ISelectableCondition load(final XMLElement element) {
 		return new IgnoreCaseNodeContainsCondition(
-			element.getAttribute(NodeTextCompareCondition.ITEM, NodeTextConditionController.FILTER_NODE), 
+			element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE), 
 			element.getAttribute(IgnoreCaseNodeContainsCondition.VALUE, null)
 );
 	}

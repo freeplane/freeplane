@@ -32,7 +32,7 @@ public class NodeContainsCondition extends NodeCondition {
 
 	static ISelectableCondition load(final XMLElement element) {
 		return new NodeContainsCondition(
-			element.getAttribute(NodeTextCompareCondition.ITEM, NodeTextConditionController.FILTER_NODE), 
+			element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE), 
 			element.getAttribute(NodeContainsCondition.VALUE, null));
 	}
 
@@ -56,7 +56,7 @@ public class NodeContainsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = TextUtils.getText(NodeTextConditionController.FILTER_NODE);
+		final String nodeCondition = TextUtils.getText(TextController.FILTER_NODE);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false);
 	}

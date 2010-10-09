@@ -26,7 +26,6 @@ import java.security.Permission;
 import java.util.HashSet;
 
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.plugin.script.proxy.Proxy;

@@ -17,6 +17,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.filter.Filter;
 import org.freeplane.features.common.text.NodeContainsCondition;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
@@ -410,7 +411,7 @@ public class ScriptApiTest {
 		@SuppressWarnings("unused")
 		final Node firstChild = addChild(map.getRoot(), "child 1");
 		final Node secondChild = addChild(map.getRoot(), "child 2");
-		final List<Node> found = c.find(new NodeContainsCondition("child 2"));
+		final List<Node> found = c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 2"));
 		assertEquals("one matching node should be found", list(secondChild), found);
 	}
 
@@ -462,15 +463,15 @@ public class ScriptApiTest {
 	public void test_Controller_undo_redo_stuff() {
 		map = c.newMap();
 		addChild(map.getRoot(), "child 1");
-		assertFalse("node should be there before undo", c.find(new NodeContainsCondition("child 1")).isEmpty());
+		assertFalse("node should be there before undo", c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 1")).isEmpty());
 		c.undo();
-		assertTrue("node should be away after undo", c.find(new NodeContainsCondition("child 1")).isEmpty());
+		assertTrue("node should be away after undo", c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 1")).isEmpty());
 		c.redo();
-		assertFalse("node should be there after redo", c.find(new NodeContainsCondition("child 1")).isEmpty());
+		assertFalse("node should be there after redo", c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 1")).isEmpty());
 		c.deactivateUndo();
 		c.undo();
 		assertTrue("node should still be there after undo since undo is deactivated", c.find(
-		    new NodeContainsCondition("child 1")).isEmpty());
+		    new NodeContainsCondition(TextController.FILTER_NODE, "child 1")).isEmpty());
 	}
 
 	public void test_Controller_setStatusInfo_String_info() {
@@ -891,7 +892,7 @@ public class ScriptApiTest {
 		addChild(map.getRoot(), "first node");
 		addChild(map.getRoot(), "second node");
 		assertTrue("initially all nodes should be visible", firstChild().isVisible());
-		new Filter(new NodeContainsCondition("first"), true, true, true, true).applyFilter(Controller
+		new Filter(new NodeContainsCondition(TextController.FILTER_NODE, "first"), true, true, true, true).applyFilter(Controller
 		    .getCurrentController().getMap(), true);
 		assertTrue("first node should be  matched by the filter", firstChild().isVisible());
 		assertFalse("second node should not be matched by the filter", map.getRoot().getChildren().get(1).isVisible());
@@ -905,7 +906,7 @@ public class ScriptApiTest {
 		@SuppressWarnings("unused")
 		final Node firstChild = addChild(map.getRoot(), "child 1");
 		final Node secondChild = addChild(map.getRoot(), "child 2");
-		final List<Node> found = c.find(new NodeContainsCondition("child 2"));
+		final List<Node> found = c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 2"));
 		assertEquals("one matching node should be found", list(secondChild), found);
 	}
 

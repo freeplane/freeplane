@@ -21,14 +21,13 @@ package org.freeplane.features.common.text;
 
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class NodeTextCompareCondition extends CompareConditionAdapter {
+public class NodeTextCompareCondition extends CompareConditionAdapter {
 	static final String COMPARATION_RESULT = "COMPARATION_RESULT";
 	static final String NAME = "node_compare_condition";
 	static final String SUCCEED = "SUCCEED";
@@ -37,7 +36,7 @@ class NodeTextCompareCondition extends CompareConditionAdapter {
 
 	static ISelectableCondition load(final XMLElement element) {
 		return new NodeTextCompareCondition(
-			element.getAttribute(NodeTextCompareCondition.ITEM, NodeTextConditionController.FILTER_NODE), 
+			element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE), 
 			element.getAttribute(NodeTextCompareCondition.VALUE, null), 
 			TreeXmlReader.xmlToBoolean(element.getAttribute(CompareConditionAdapter.IGNORE_CASE, null)), 
 			Integer.parseInt(element.getAttribute(NodeTextCompareCondition.COMPARATION_RESULT, null)), 

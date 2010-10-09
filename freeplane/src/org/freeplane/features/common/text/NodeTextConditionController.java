@@ -43,9 +43,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * 21.12.2008
  */
 class NodeTextConditionController implements IElementaryConditionController {
-	static final String FILTER_NODE = "filter_node";
-	static final String FILTER_PARENT = "filter_parent";
-	static final String FILTER_DETAILS = "filter_details";
 	private final ComboBoxEditor editor = new BasicComboBoxEditor();
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
@@ -58,9 +55,9 @@ class NodeTextConditionController implements IElementaryConditionController {
 			return false;
 		}
 		final NamedObject namedObject = (NamedObject) selectedItem;
-		return namedObject.objectEquals(NodeTextConditionController.FILTER_NODE)
-		|| namedObject.objectEquals(NodeTextConditionController.FILTER_PARENT)
-		|| namedObject.objectEquals(NodeTextConditionController.FILTER_DETAILS);
+		return namedObject.objectEquals(TextController.FILTER_NODE)
+		|| namedObject.objectEquals(TextController.FILTER_PARENT)
+		|| namedObject.objectEquals(TextController.FILTER_DETAILS);
 	}
 
 	public boolean canSelectValues(final Object selectedItem, final NamedObject simpleCond) {
@@ -124,9 +121,9 @@ class NodeTextConditionController implements IElementaryConditionController {
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(TextUtils.createTranslatedString(NodeTextConditionController.FILTER_NODE));
-		list.addElement(TextUtils.createTranslatedString(NodeTextConditionController.FILTER_PARENT));
-		list.addElement(TextUtils.createTranslatedString(NodeTextConditionController.FILTER_DETAILS));
+		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_NODE));
+		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_PARENT));
+		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_DETAILS));
 		return list;
 	}
 
@@ -159,17 +156,17 @@ class NodeTextConditionController implements IElementaryConditionController {
 	}
 
 	static String getItemForComparison(Object nodeItem, final NodeModel node) {
-		if(nodeItem.equals(FILTER_NODE)){
+		if(nodeItem.equals(TextController.FILTER_NODE)){
 			return TextController.getController().getPlainTextContent(node);
 		}
-		if(nodeItem.equals(FILTER_PARENT)){
+		if(nodeItem.equals(TextController.FILTER_PARENT)){
 			final NodeModel parentNode = node.getParentNode();
 			if(parentNode == null){
 				return null;
 			}
 			return TextController.getController().getPlainTextContent(parentNode);
 		}
-		if(nodeItem.equals(FILTER_DETAILS)){
+		if(nodeItem.equals(TextController.FILTER_DETAILS)){
 			final String html = DetailTextModel.getDetailTextText(node);
 			if(html == null){
 				return null;

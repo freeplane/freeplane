@@ -37,7 +37,7 @@ public class NodeMatchesRegexpCondition extends NodeCondition {
 	static ISelectableCondition load(final XMLElement element) {
 		final Boolean ignoreCase = Boolean.valueOf(element.getAttribute(NodeTextCompareCondition.IGNORE_CASE, "false"));
 		final String searchPattern = element.getAttribute(SEARCH_PATTERN, null);
-		final String nodeItem = element.getAttribute(NodeTextCompareCondition.ITEM, NodeTextConditionController.FILTER_NODE);
+		final String nodeItem = element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE);
 		return new NodeMatchesRegexpCondition(nodeItem, searchPattern, ignoreCase);
 	}
 
