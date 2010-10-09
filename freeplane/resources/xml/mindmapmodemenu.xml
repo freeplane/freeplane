@@ -64,13 +64,7 @@
 			<menu_category name="edit">
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
-				<menu_radio_action action="SetShortenerStateAction.null" />
-				<menu_radio_action action="SetShortenerStateAction.HIDDEN" />
-				<menu_radio_action action="SetShortenerStateAction.SHOWN" />
-				<!-- <menu_radio_action action="SetShortenerStateAction.DISABLED" /> -->
 				<menu_action action="EditDetailsAction" accelerator="shift F2" />
-				<menu_action action="ToggleDetailsAction" accelerator="alt F2" />
-				<menu_action action="DeleteDetailsAction"/>
 				<menu_action action="EditAttributesAction" accelerator="alt F9" />
 				<menu_action action="SelectNoteAction" accelerator="control LESS"/> <!-- goto -->
 				<menu_separator />
@@ -94,6 +88,11 @@
 			</menu_category>
 			<menu_separator />
 			<menu_category name="general">
+				<menu_radio_action action="SetShortenerStateAction.null" />
+				<menu_radio_action action="SetShortenerStateAction.SHORT" />
+				<menu_radio_action action="SetShortenerStateAction.FULL" />
+				<!-- <menu_radio_action action="SetShortenerStateAction.DISABLED" /> -->
+				<menu_action action="ToggleDetailsAction" accelerator="alt F2" />
 				<menu_action action="ShowSelectionAsRectangleAction" />
 				<menu_action action="ViewLayoutTypeAction.OUTLINE" />
 				<menu_action action="MaxNodeWidthAction" />
@@ -302,6 +301,7 @@
 						<menu_action action="RevisionPluginAction" />
 					</menu_category>
 				</menu_category>
+				<menu_action action="DeleteDetailsAction"/>
 				<menu_action action="RemoveNoteAction" />
 				<menu_separator />
 				<menu_action action="ShowAttributeDialogAction" />

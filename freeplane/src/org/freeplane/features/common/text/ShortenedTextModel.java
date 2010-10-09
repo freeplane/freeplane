@@ -26,8 +26,8 @@ import org.freeplane.features.common.map.NodeModel;
  * @author Dimitry Polivaev
  */
 public class ShortenedTextModel implements IExtension {
-	public enum State{HIDDEN, SHOWN, DISABLED};
-	private State state = State.SHOWN;
+	public enum State{SHORT, FULL, DISABLED};
+	private State state = State.FULL;
 	public ShortenedTextModel(State shortened) {
 	    this.state = shortened;
     }
@@ -58,4 +58,6 @@ public class ShortenedTextModel implements IExtension {
 		 final ShortenedTextModel shortened = getShortenedTextModel(node);
 		 return shortened != null ? shortened.getState() : State.DISABLED;
 	}
+	
+	
 }

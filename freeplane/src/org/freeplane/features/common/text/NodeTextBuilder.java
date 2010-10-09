@@ -33,6 +33,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.StyleFactory;
@@ -88,7 +89,12 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT_SHORTENED, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
-				node.addExtension(new ShortenedTextModel(State.valueOf(value)));
+				try {
+	                node.addExtension(new ShortenedTextModel(State.valueOf(value)));
+                }
+                catch (IllegalArgumentException e) {
+	                LogUtils.warn(e);
+                }
 			}
 		});
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_TEXT, new IAttributeHandler() {

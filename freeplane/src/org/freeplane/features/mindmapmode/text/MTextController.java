@@ -101,13 +101,7 @@ public class MTextController extends TextController {
 		modeController.addAction(new EditLongAction());
 		modeController.addAction(new SetImageByFileChooserAction());
 		modeController.addAction(new EditDetailsAction());
-		modeController.addAction(new ToggleDetailsAction());
 		modeController.addAction(new DeleteDetailsAction());
-		
-		modeController.addAction(new SetShortenerStateAction(null));
-		for (State s : State.values()){
-			modeController.addAction(new SetShortenerStateAction(s));
-		}
 	}
 
 	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {

@@ -38,6 +38,11 @@
 			</menu_category>
 			<menu_separator />
 			<menu_category name="general">
+				<menu_radio_action action="SetShortenerStateAction.null" />
+				<menu_radio_action action="SetShortenerStateAction.SHORT" />
+				<menu_radio_action action="SetShortenerStateAction.FULL" />
+				<!-- <menu_radio_action action="SetShortenerStateAction.DISABLED" /> -->
+				<menu_action action="ToggleDetailsAction" accelerator="alt F2" />
 				<menu_action action="ShowSelectionAsRectangleAction" />
 				<menu_action action="ViewLayoutTypeAction.OUTLINE" />
                 <menu_action action="MaxNodeWidthAction"/>

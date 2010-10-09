@@ -1356,14 +1356,16 @@ public class NodeView extends JComponent implements INodeView {
 		final ModeController modeController = getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);
 		final State textShortened = textController.getShortenerState(nodeModel);
+		final boolean componentsVisible = ! State.SHORT.equals(textShortened);
+		setContentComponentVisible(componentsVisible);
 		ZoomableLabel shortener = (ZoomableLabel) getContent(SHORTENER_VIEWER_POSITION);
 		if(shortener == null){
-			if(textShortened.equals(State.DISABLED)){
+			if(null == textShortened || State.DISABLED.equals(textShortened)){
 				return;
 			}
 			shortener = new ZoomableLabel();
 		}
-		if (textShortened.equals(State.DISABLED)) {
+		if (null == textShortened || State.DISABLED.equals(textShortened)) {
 			removeContent(SHORTENER_VIEWER_POSITION);
 			return;
 		}
@@ -1372,9 +1374,25 @@ public class NodeView extends JComponent implements INodeView {
 			detailContent = createShortenerStateView();
 			addContent(detailContent, SHORTENER_VIEWER_POSITION);
 		}
-		final boolean componentsVisible = ! State.HIDDEN.equals(textShortened);
 		detailContent.setIcon(new ArrowIcon(! componentsVisible));
 	}
+
+	private void setContentComponentVisible(final boolean componentsVisible) {
+	    final Component[] components = getContentPane().getComponents();
+		int index;
+		for (index = 0; index < components.length; index++){
+			if(components[index] == getMainView()){
+				break;
+			}
+		}
+		index ++;
+		for (;index < components.length; index++){
+			final Component component = components[index];
+			if(component.isVisible() != componentsVisible){
+				component.setVisible(componentsVisible);
+			}
+		}
+    }
 
 	private DetailsView createShortenerStateView() {
 	    final DetailsView detailsView = new DetailsView();
@@ -1384,11 +1402,11 @@ public class NodeView extends JComponent implements INodeView {
             public void mouseClicked(MouseEvent e) {
 				final State state = ShortenedTextModel.getState(getModel());
 				TextController controller = TextController.getController();
-				if(State.HIDDEN.equals(state)){
-					controller.setShortenerState(model, State.SHOWN);
+				if(State.SHORT.equals(state)){
+					controller.setShortenerState(model, State.FULL);
 				}
 				else{
-					controller.setShortenerState(model, State.HIDDEN);
+					controller.setShortenerState(model, State.SHORT);
 				}
             }
 	    	

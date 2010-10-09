@@ -51,6 +51,6 @@ class AttributeViewScrollPane extends JScrollPane {
 
 	@Override
 	public boolean isVisible() {
-		return getViewport().getView().isVisible();
+		return super.isVisible() && getViewport().getView().isVisible();
 	}
 }

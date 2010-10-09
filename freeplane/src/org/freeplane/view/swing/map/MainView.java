@@ -356,7 +356,7 @@ public abstract class MainView extends ZoomableLabel {
 			setBorder(errorBorder);
 		}
 		final State textShortened = textController.getShortenerState(nodeModel);
-		if(State.HIDDEN.equals(textShortened)){
+		if(State.SHORT.equals(textShortened)){
 			text = shortenText(text);
 		}
 		updateText(text);
@@ -368,11 +368,12 @@ public abstract class MainView extends ZoomableLabel {
 	    }
 	    int length = text.length();
 	    final int eolPosition = text.indexOf('\n');
-	    if(eolPosition == -1 || eolPosition >= length || eolPosition >= 20){
-	    	if(length <= 20){
+	    final int maxNodeWidth = ResourceController.getResourceController().getIntProperty("MAX_SHORTENED_TEXT_LENGTH", 64);
+		if(eolPosition == -1 || eolPosition >= length || eolPosition >= maxNodeWidth){
+	    	if(length <= maxNodeWidth){
 	    		return text;
 	    	}
-	    	length = 20;
+	    	length = maxNodeWidth;
 	    }
 	    else{
 	    	length = eolPosition;

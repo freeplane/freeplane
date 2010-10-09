@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.common.text;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,12 +29,8 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.styles.IStyle;
-import org.freeplane.features.common.styles.LogicalStyleController;
-import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.text.ShortenedTextModel.State;
 
 /**
@@ -81,6 +76,11 @@ public class TextController implements IExtension {
 		writeManager.addExtensionElementWriter(DetailTextModel.class, textBuilder);
 		writeManager.addExtensionAttributeWriter(ShortenedTextModel.class, textBuilder);
 
+		modeController.addAction(new ToggleDetailsAction());
+		modeController.addAction(new SetShortenerStateAction(null));
+		for (State s : State.values()){
+			modeController.addAction(new SetShortenerStateAction(s));
+		}
 	}
 
 	public void addTextTransformer(ITextTransformer textTransformer) {

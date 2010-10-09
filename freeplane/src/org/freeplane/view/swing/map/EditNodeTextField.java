@@ -354,7 +354,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			textfield.setCaretPosition(getText().length());
 		}
 		textfield.getDocument().addDocumentListener(documentListener);
-		if(State.HIDDEN.equals(textController.getShortenerState(node))){
+		if(State.SHORT.equals(textController.getShortenerState(node))){
 			layout();
 		}
 		textfield.repaint();

@@ -327,7 +327,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	@Override
 	public boolean isVisible() {
-		return attributeView.areAttributesVisible();
+		return super.isVisible() && attributeView.areAttributesVisible();
 	}
 
 	/**
