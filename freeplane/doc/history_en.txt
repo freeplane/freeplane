@@ -12,6 +12,7 @@ Node level dependent filters
 Improvement in search and replace functions
 Different shapes for clouds
 Node details
+Shortened node view
 Formula plugin ("spreadsheet plugin")
 
 Bug fixes:
