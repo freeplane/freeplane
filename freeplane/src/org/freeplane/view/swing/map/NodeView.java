@@ -188,47 +188,48 @@ public class NodeView extends JComponent implements INodeView {
 
 	static private class ArrowIcon implements Icon{
 		final private boolean down;
+		final private Color color;
+		final private static int ARROW_HEIGTH = 5;
+		final private static int ARROW_HALF_WIDTH = 4;
+		final private static int ICON_HEIGTH = ARROW_HEIGTH + 2;
+		final private static int ICON_WIDTH = 1 + ARROW_HALF_WIDTH * 2 + 1;
+		
 
-		public ArrowIcon(boolean down) {
+		public ArrowIcon(Color color, boolean down) {
 	        super();
 	        this.down = down;
+	        this.color = color;
         }
 
 		public int getIconHeight() {
-			return 5; 
+			return ICON_HEIGTH; 
         }
 
 		public int getIconWidth() {
-			return 5; 
+			return ICON_WIDTH; 
         }
 
 		public void paintIcon(Component c, Graphics g, int x, int y) {
 			int[]   xs = new int[3];
 			int[]   ys = new int[3];
-			int     blockSize;
-
-			// Fill the background first ...
-			g.setColor(c.getBackground());
-			g.fillRect(0, 0, this.getIconWidth(),
-				this.getIconHeight());
-
-			// ... then draw the arrow.
-			g.setColor(Color.black);
-			blockSize = 3;
-			xs[0] = blockSize;
-			xs[1] = 0;
-			xs[2] = blockSize << 1;
+			
+			xs[0] = 1 + ARROW_HALF_WIDTH;
+			xs[1] = 1;
+			xs[2] = xs[0] + ARROW_HALF_WIDTH;
 			if(down){
-				ys[0] = blockSize;
-				ys[1] = ys[2] = 0;
+				ys[0] = 1 + ARROW_HEIGTH;
+				ys[1] = ys[2] = 1;
 			}
 			else{
-				ys[0] = 0;
-				ys[1] = ys[2] = blockSize;
+				ys[0] = 1;
+				ys[1] = ys[2] = 1 + ARROW_HEIGTH;
 			}
-			g.drawPolygon(xs, ys, 3); // Little trick to make the
-			// arrows of equal size
+			final Color oldColor = g.getColor();
+			g.setColor(color);
+			g.drawPolygon(xs, ys, 3); 
+			// Little trick to make the arrows of equal size
 			g.fillPolygon(xs, ys, 3);
+			g.setColor(oldColor);
         }
 		
 	}
@@ -244,16 +245,22 @@ public class NodeView extends JComponent implements INodeView {
 			detailContent = createDetailView();
 			addContent(detailContent, DETAIL_VIEWER_POSITION);
 		}
+		Color arrowColor = getArrowColor();
 		if (detailText.isHidden()) {
 			detailContent.updateText("");
-			detailContent.setIcon(new ArrowIcon(true));
+			detailContent.setIcon(new ArrowIcon(arrowColor, true));
 		}
 		else {
 			detailContent.updateText(detailText.getHtml());
 			detailContent.setFont(mainView.getFont());
-			detailContent.setIcon(new ArrowIcon(false));
+			detailContent.setIcon(new ArrowIcon(arrowColor, false));
 		}
 	}
+
+	private Color getArrowColor() {
+		final Color backgroundColor = getBackgroundColor();
+	    return UITools.getTextColorForBackground(backgroundColor);
+    }
 
 	private DetailsView createDetailView() {
 	    DetailsView detailContent =  new DetailsView();
@@ -1373,7 +1380,7 @@ public class NodeView extends JComponent implements INodeView {
 			detailContent = createShortenerStateView();
 			addContent(detailContent, SHORTENER_VIEWER_POSITION);
 		}
-		detailContent.setIcon(new ArrowIcon(! componentsVisible));
+		detailContent.setIcon(new ArrowIcon(getArrowColor(), ! componentsVisible));
 	}
 
 	private void setContentComponentVisible(final boolean componentsVisible) {
