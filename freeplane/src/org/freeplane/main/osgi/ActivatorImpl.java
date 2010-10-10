@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.jar.Manifest;
 
@@ -81,12 +82,22 @@ class ActivatorImpl implements BundleActivator {
 	private void loadPlugins(final BundleContext context) {
 		final String resourceBaseDir = FreeplaneStarter.getResourceBaseDir();
 		final File baseDir = new File(resourceBaseDir).getAbsoluteFile().getParentFile();
-		loadPlugins(context, new File(baseDir, "plugins"));
+		List<Bundle> loadedPlugins = new LinkedList<Bundle>();
+		loadPlugins(context, new File(baseDir, "plugins"), loadedPlugins);
 		final String freeplaneUserDirectory = Compat.getFreeplaneUserDirectory();
-		loadPlugins(context, new File(freeplaneUserDirectory));
+		loadPlugins(context, new File(freeplaneUserDirectory), loadedPlugins);
+		for(Bundle plugin:loadedPlugins){
+			try{
+				plugin.start();
+				System.out.println("Started: " + plugin.getLocation() + " (id#" + plugin.getBundleId() + ")");
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
 	}
 
-	private void loadPlugins(final BundleContext context, final File file) {
+	private void loadPlugins(final BundleContext context, final File file, List<Bundle> loadedPlugins) {
 		if (!file.exists() || !file.isDirectory()) {
 			return;
 		}
@@ -107,8 +118,10 @@ class ActivatorImpl implements BundleActivator {
 						return;
 					}
 				}
-				final Bundle bundle = context.installBundle("reference:file:" + file.getAbsolutePath());
-				bundle.start();
+				final String location = "reference:file:" + file.getAbsolutePath();
+				final Bundle bundle = context.installBundle(location);
+				System.out.println("Installed: " + location + " (id#" + bundle.getBundleId() + ")");
+				loadedPlugins.add(bundle);
 			}
 			catch (final Exception e) {
 				e.printStackTrace();
@@ -118,7 +131,7 @@ class ActivatorImpl implements BundleActivator {
 		final File[] childFiles = file.listFiles();
 		for (int i = 0; i < childFiles.length; i++) {
 			final File child = childFiles[i];
-			loadPlugins(context, child);
+			loadPlugins(context, child, loadedPlugins);
 		}
 	}
 
