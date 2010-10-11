@@ -237,11 +237,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			conditionalStylesRoot.addChild(itemElement);
 			itemElement.setAttribute("ACTIVE", Boolean.toString(item.isActive()));
 			final Object style = item.getStyle();
-			final String referencedStyle = NamedObject.toKeyString(style);
-			if (style instanceof NamedObject) {
+			if (style instanceof StyleNamedObject) {
+				final String referencedStyle = ((StyleNamedObject)style).getObject().toString();
 				itemElement.setAttribute("LOCALIZED_STYLE_REF", referencedStyle);
 			}
 			else {
+				final String referencedStyle = style.toString();
 				itemElement.setAttribute("STYLE_REF", referencedStyle);
 			}
 			itemElement.setAttribute("LAST", Boolean.toString(item.isLast()));
