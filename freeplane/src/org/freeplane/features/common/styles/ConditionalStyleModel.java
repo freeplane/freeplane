@@ -2,6 +2,7 @@ package org.freeplane.features.common.styles;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import javax.swing.table.AbstractTableModel;
@@ -60,7 +61,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 	
 	public Collection<IStyle> getStyles(NodeModel node){
 		if(recursiveCall){
-			return null;
+			return Collections.emptyList();
 		}
 		try{
 			recursiveCall = true;
