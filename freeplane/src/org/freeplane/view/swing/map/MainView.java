@@ -343,7 +343,7 @@ public abstract class MainView extends ZoomableLabel {
 		try {
 			text = textController.getText(nodeModel);
 			// FIXME: temporarily, to show evaluated formulas:
-			if (!DONT_MARK_FORMULAS_FIXME_REMOVE && !text.equals(HtmlUtils.htmlToPlain(nodeModel.getText()))) {
+			if (!DONT_MARK_FORMULAS_FIXME_REMOVE && !text.equals(nodeModel.getText())) {
 				setBorder(new LineBorder(Color.GREEN, 2));
 			}
 			else {

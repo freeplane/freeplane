@@ -11,8 +11,11 @@ class FormulaTextTransformer implements ITextTransformer {
 	}
 
 	// FIXME: do we actually need a null check here? - wouldn't a NPE be fine?
-	public String transform(String text, NodeModel nodeModel) {
+	public String transform(final String text, final NodeModel nodeModel) {
 		final String plainText = HtmlUtils.htmlToPlain(nodeModel.getText());
+		if(! FormulaUtils.containsFormula(plainText)){
+			return text;
+		}
 		// starting a new ScriptContext in evalIfScript
 		final Object result = FormulaUtils.evalIfScript(nodeModel, null, plainText);
 		if (result == null) {

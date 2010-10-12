@@ -22,7 +22,7 @@ public class FormulaUtils {
 	/** evaluate text as a script if it starts with '='.
 	 * @return the evaluation result for script and the original text otherwise */
 	public static Object evalIfScript(final NodeModel nodeModel, ScriptContext scriptContext, final String text) {
-		if (text != null && text.length() > 1 && text.charAt(0) == '=') {
+		if (containsFormula(text)) {
 			scriptContext = (scriptContext == null) ? new ScriptContext() : scriptContext;
 			return eval(nodeModel, scriptContext, text.substring(1));
 		}
@@ -30,6 +30,10 @@ public class FormulaUtils {
 			return text;
 		}
 	}
+
+	public static boolean containsFormula(final String text) {
+	    return text != null && text.length() > 1 && text.charAt(0) == '=';
+    }
 
 	/** evaluate text as a script.
 	 * @return the evaluation result. */
