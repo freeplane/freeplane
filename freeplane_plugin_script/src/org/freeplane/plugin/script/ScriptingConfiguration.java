@@ -22,6 +22,7 @@ package org.freeplane.plugin.script;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.FileUtils;
@@ -89,18 +91,24 @@ class ScriptingConfiguration {
 		}
 	}
 
-	private static final String DEFAULT_SCRIPT_DIRECTORIES = "scripts";
 	private static final String SCRIPT_REGEX = ".*\\.groovy$";
 	private final TreeMap<String, String> nameScriptMap = new TreeMap<String, String>();
 	private final TreeMap<String, ScriptMetaData> nameScriptMetaDataMap = new TreeMap<String, ScriptMetaData>();
 
 	ScriptingConfiguration() {
+		addPluginDefaults();
 		initNameScriptMap();
+	}
+
+	private void addPluginDefaults() {
+		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
+		if (defaults == null)
+			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
+		Controller.getCurrentController().getResourceController().addDefaults(defaults);
 	}
 
 	private void initNameScriptMap() {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		resourceController.setDefaultProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES, DEFAULT_SCRIPT_DIRECTORIES);
 		final String dirsString = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES);
 		if (dirsString != null) {
 			final List<String> dirs = ConfigurationUtils.decodeListValue(dirsString);

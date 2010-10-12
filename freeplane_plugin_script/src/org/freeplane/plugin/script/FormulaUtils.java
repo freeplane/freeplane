@@ -16,8 +16,8 @@ public class FormulaUtils {
 	// dependency data. It has to be tested but it should "only" lead to some missing updates.
 	private static WeakHashMap<MapModel, FormulaCache> formulaCaches = new WeakHashMap<MapModel, FormulaCache>();
 	private static WeakHashMap<MapModel, EvaluationDependencies> evaluationDependencies = new WeakHashMap<MapModel, EvaluationDependencies>();
-	private static final boolean ENABLE_CACHING = Controller.getCurrentController().getResourceController()
-	    .getBooleanProperty("formula_enable_caching");
+	private static final boolean ENABLE_CACHING = !Controller.getCurrentController().getResourceController()
+	    .getBooleanProperty("formula_disable_caching");
 
 	/** evaluate text as a script if it starts with '='.
 	 * @return the evaluation result for script and the original text otherwise */

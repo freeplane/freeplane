@@ -29,7 +29,6 @@ import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.InvalidPropertiesFormatException;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -183,16 +182,6 @@ public class ApplicationResourceController extends ResourceController {
 		super.init();
 	}
 
-	@Override
-	public void loadProperties(final InputStream inStream) throws IOException {
-		defProps.load(inStream);
-	}
-
-	@Override
-	public void loadPropertiesFromXML(final InputStream in) throws IOException, InvalidPropertiesFormatException {
-		defProps.loadFromXML(in);
-	}
-
 	private Properties readDefaultPreferences() {
 		final Properties props = new Properties();
 		readDefaultPreferences(props, ResourceController.FREEPLANE_PROPERTIES);
@@ -212,21 +201,11 @@ public class ApplicationResourceController extends ResourceController {
 
 	private void readDefaultPreferences(final Properties props, final String propsLoc) {
 		final URL defaultPropsURL = getResource(propsLoc);
-		try {
-			InputStream in = null;
-			in = defaultPropsURL.openStream();
-			props.load(in);
-			in.close();
-		}
-		catch (final Exception ex) {
-			ex.printStackTrace();
-			System.err.println("Panic! Error while loading default properties.");
-		}
+		loadProperties(props, defaultPropsURL);
 	}
 
 	private Properties readUsersPreferences(final Properties defaultPreferences) {
-		Properties auto = null;
-		auto = new Properties(defaultPreferences);
+		final Properties auto = new Properties(defaultPreferences);
 		try {
 			InputStream in = null;
 			final File autoPropertiesFile = getUserPreferencesFile(defaultPreferences);

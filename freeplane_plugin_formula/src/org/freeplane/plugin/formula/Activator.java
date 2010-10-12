@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import javax.swing.JMenu;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
@@ -16,20 +17,28 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
+	private static final String FORMULA_DISABLE_PLUGIN = "formula_disable_plugin";
 	private static final String MENU_BAR_PARENT_LOCATION = "/menu_bar/extras/first";
 	static final String MENU_BAR_LOCATION = MENU_BAR_PARENT_LOCATION + "/formula";
 
 	private final class FormulaPluginRegistration implements IModeControllerExtensionProvider {
-
-		// 		private MModeController modeController;
-		// implements IModeControllerExtensionProvider.installExtension()
+		private static final String PREFERENCES_RESOURCE = "preferences.xml";
 		public void installExtension(ModeController modeController) {
-			addMenuItems(modeController);
-			TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer());
-			final FormulaUpdateChangeListener listener = new FormulaUpdateChangeListener();
-			Controller.getCurrentModeController().getMapController().addNodeChangeListener(listener);
-			Controller.getCurrentModeController().getMapController().addMapChangeListener(listener);
-			Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(listener);
+			addPluginDefaults();
+			addPreferencesToOptionPanel();
+			final String disableProperty = ResourceController.getResourceController().getProperty(
+			    FORMULA_DISABLE_PLUGIN);
+			if (disableProperty == null || !Boolean.parseBoolean(disableProperty)) {
+				addMenuItems(modeController);
+				TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer());
+				final FormulaUpdateChangeListener listener = new FormulaUpdateChangeListener();
+				modeController.getMapController().addNodeChangeListener(listener);
+				modeController.getMapController().addMapChangeListener(listener);
+				Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(listener);
+			}
+			else {
+				System.out.println("formula plugin is disabled");
+			}
 		}
 
 		private void addMenuItems(ModeController modeController) {
@@ -37,7 +46,6 @@ public class Activator implements BundleActivator {
 			addSubMenu(menuBuilder, MENU_BAR_PARENT_LOCATION, MENU_BAR_LOCATION,
 			    FormulaUtils.getFormulaKey("menuname"));
 			menuBuilder.addAnnotatedAction(new EvaluateAllAction());
-			addPropertiesToOptionPanel();
 		}
 
 		private void addSubMenu(final MenuBuilder menuBuilder, final String parentLocation,
@@ -47,13 +55,20 @@ public class Activator implements BundleActivator {
 			menuBuilder.addMenuItem(parentLocation, menuItem, location, MenuBuilder.AS_CHILD);
 		}
 
-		private void addPropertiesToOptionPanel() {
-			final URL preferences = this.getClass().getResource("preferences.xml");
+		private void addPreferencesToOptionPanel() {
+			final URL preferences = this.getClass().getResource(PREFERENCES_RESOURCE);
 			if (preferences == null)
 				throw new RuntimeException("cannot open preferences");
 			final Controller controller = Controller.getCurrentController();
 			MModeController modeController = (MModeController) controller.getModeController();
 			modeController.getOptionPanelBuilder().load(preferences);
+		}
+
+		private void addPluginDefaults() {
+			final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
+			if (defaults == null)
+				throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
+			Controller.getCurrentController().getResourceController().addDefaults(defaults);
 		}
 	}
 
@@ -64,7 +79,8 @@ public class Activator implements BundleActivator {
 	public void start(final BundleContext context) throws Exception {
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("mode", new String[] { MModeController.MODENAME /*TODO: browse mode too?*/});
-		context.registerService(IModeControllerExtensionProvider.class.getName(), new FormulaPluginRegistration(), props);
+		context.registerService(IModeControllerExtensionProvider.class.getName(), new FormulaPluginRegistration(),
+		    props);
 	}
 
 	/*
