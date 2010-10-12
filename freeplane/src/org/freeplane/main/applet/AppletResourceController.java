@@ -19,12 +19,8 @@
  */
 package org.freeplane.main.applet;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 
 import javax.swing.JApplet;
@@ -40,15 +36,8 @@ class AppletResourceController extends ResourceController {
 	public AppletResourceController(final FreeplaneApplet freeplaneApplet) {
 		super();
 		final URL defaultPropsURL = getResource(ResourceController.FREEPLANE_PROPERTIES);
-		try {
-			userProps = new Properties();
-			final InputStream in = new BufferedInputStream(defaultPropsURL.openStream());
-			userProps.load(in);
-			in.close();
-		}
-		catch (final Exception ex) {
-			System.err.println("Could not load properties.");
-		}
+		userProps = new Properties();
+		loadProperties(userProps, defaultPropsURL);
 		final Enumeration<?> allKeys = userProps.propertyNames();
 		while (allKeys.hasMoreElements()) {
 			final String key = (String) allKeys.nextElement();
@@ -97,21 +86,12 @@ class AppletResourceController extends ResourceController {
 	}
 
 	@Override
-	public void loadProperties(final InputStream inStream) throws IOException {
-		userProps.load(inStream);
-	}
-
-	@Override
-	public void loadPropertiesFromXML(final InputStream in) throws IOException, InvalidPropertiesFormatException {
-		userProps.loadFromXML(in);
-	}
-
-	@Override
 	public void saveProperties() {
 	}
 
 	@Override
 	public void setDefaultProperty(final String key, final String value) {
+		// FIXME: shouldn't this be if (!userProps.contains(key)) ??
 		userProps.setProperty(key, value);
 	}
 

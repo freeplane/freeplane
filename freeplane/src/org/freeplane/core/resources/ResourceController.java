@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -42,6 +43,8 @@ public abstract class ResourceController {
 	public static final String FREEPLANE_PROPERTIES = "/freeplane.properties";
 	public static final String LOCAL_PROPERTIES = "LocalProperties.";
 	public static final String RESOURCE_DRAW_RECTANGLE_FOR_SELECTION = "standarddrawrectangleforselection";
+	// some plugins have their own file for registration of defaults
+	public static final String PLUGIN_DEFAULTS_RESOURCE = "defaults.properties";
 
 	static public ResourceController getResourceController() {
 		return Controller.getCurrentController().getResourceController();
@@ -115,6 +118,7 @@ public abstract class ResourceController {
 		return null;
 	}
 
+	/** register defaults in freeplane.properties respectively defaults.properties instead! */
 	public double getDoubleProperty(final String key, final double defaultValue) {
 		try {
 			return Double.parseDouble(ResourceController.getResourceController().getProperty("user_zoom"));
@@ -129,7 +133,7 @@ public abstract class ResourceController {
 	 */
 	abstract public String getFreeplaneUserDirectory();
 
-	@Deprecated
+	/** register defaults in freeplane.properties respectively defaults.properties instead! */
 	public int getIntProperty(final String key, final int defaultValue) {
 		try {
 			return Integer.parseInt(getProperty(key));
@@ -144,6 +148,7 @@ public abstract class ResourceController {
 		return Integer.parseInt(getProperty(key));
     }
 	
+	/** register defaults in freeplane.properties respectively defaults.properties instead. */
 	public long getLongProperty(final String key, final int defaultValue) {
 		try {
 			return Long.parseLong(getProperty(key));
@@ -157,6 +162,7 @@ public abstract class ResourceController {
 
 	abstract public String getProperty(final String key);
 
+	/** register defaults in freeplane.properties respectively defaults.properties instead! */
 	public String getProperty(final String key, final String value) {
 		return getProperties().getProperty(key, value);
 	}
@@ -188,10 +194,6 @@ public abstract class ResourceController {
 	protected void init() {
 	}
 
-	abstract public void loadProperties(InputStream inStream) throws IOException;
-
-	abstract public void loadPropertiesFromXML(InputStream inStream) throws IOException;
-
 	public void removePropertyChangeListener(final IFreeplanePropertyListener listener) {
 		propertyChangeListeners.remove(listener);
 	}
@@ -205,7 +207,41 @@ public abstract class ResourceController {
 	}
 
 	abstract public void setProperty(final String property, final String value);
+	
+	/** adds properties from url to properties. Existing properties in resultProps will be overridden.
+	 * @return false if anything went wrong. */
+	protected static boolean loadProperties(Properties resultProps, final URL url) {
+		InputStream in = null;
+		try {
+			in = new BufferedInputStream(url.openStream());
+			resultProps.load(in);
+			return true;
+		}
+		catch (final Exception ex) {
+			System.err.println("Could not load properties from " + url);
+		}
+		finally {
+			try {
+				if (in != null)
+					in.close();
+			}
+			catch (IOException e) {
+				// there's no remedy
+			}
+		}
+		return false;
+	}
 
+	/** will add properties from propertiesUrl if they don't exist yet. */
+	public void addDefaults(URL propertiesUrl) {
+		Properties props = new Properties();
+		loadProperties(props, propertiesUrl);
+		for (Entry<Object, Object> entry : props.entrySet()) {
+			if (getProperty((String) entry.getKey()) == null)
+				props.setProperty((String) entry.getKey(), (String) entry.getValue());
+		}
+    }
+	
 	public boolean isApplet() {
 		return false;
 	}
