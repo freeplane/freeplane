@@ -17,6 +17,7 @@ Formula plugin ("spreadsheet plugin")
 Single backup directory
 
 Bug fixes:
+630]: Language not sorted alphabetically
 
 ===============================
 1.1.3

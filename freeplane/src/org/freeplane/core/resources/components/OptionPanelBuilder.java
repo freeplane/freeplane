@@ -23,6 +23,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -32,6 +34,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLException;
@@ -61,10 +64,25 @@ public class OptionPanelBuilder {
 			final int childrenCount = data.getChildrenCount();
 			final Vector<String> choices = new Vector<String>(childrenCount);
 			final Vector<String> translations = new Vector<String>(childrenCount);
+			final TreeMap<String, String> inverseMap = new TreeMap<String, String>();
 			for (int i = 0; i < childrenCount; i++) {
 				final String choice = data.getChildAtIndex(i).getAttribute("value", null);
 				choices.add(choice);
-				translations.add(TextUtils.getOptionalText("OptionPanel." + choice));
+				final String translation = TextUtils.getOptionalText("OptionPanel." + choice);
+				translations.add(translation);
+				inverseMap.put(translation, choice);
+			}
+			if (inverseMap.size() == choices.size()) {
+				// fix #630: Language not sorted alphabetically
+				choices.clear();
+				translations.clear();
+				for (Entry<String, String> entry : inverseMap.entrySet()) {
+					choices.add(entry.getValue());
+					translations.add(entry.getKey());
+				}
+			}
+			else {
+				LogUtils.severe("found duplicate in translations for combo box selection for " + choices);
 			}
 			return createComboProperty(name, choices, translations);
 		}
