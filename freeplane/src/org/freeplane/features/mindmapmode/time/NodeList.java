@@ -623,7 +623,7 @@ class NodeList {
 			UITools.errorMessage(TextUtils.format("wrong_regexp", searchString, e.getMessage()));
 			return;
 		}
-		final String replacement = replaceString;
+		final String replacement = replaceString == null ? "" : replaceString;
 		final int length = info.getLength();
 		for (int i = 0; i < length; i++) {
 			final NodeHolder nodeHolder = info.getNodeHolderAt(i);
