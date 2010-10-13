@@ -43,16 +43,18 @@ public class DoAutomaticSave extends TimerTask {
 	 */
 	private int changeState;
 	final private boolean filesShouldBeDeletedAfterShutdown;
-// 	final private ModeController modeController;
 	final private MapModel model;
 	final private int numberOfFiles;
+	final private boolean useSingleDirectory;
+	static final String SINGLE_BACKUP_DIR = ".backup";
+	static final String BACKUP_DIR = ".backup";
 
 	public DoAutomaticSave( final MapModel model, final int numberOfTempFiles,
-	                       final boolean filesShouldBeDeletedAfterShutdown) {
-//		this.modeController = modeController;
+	                       final boolean filesShouldBeDeletedAfterShutdown, boolean useSingleDirectory) {
 		this.model = model;
 		numberOfFiles = ((numberOfTempFiles > 0) ? numberOfTempFiles : 1);
 		this.filesShouldBeDeletedAfterShutdown = filesShouldBeDeletedAfterShutdown;
+		this.useSingleDirectory = useSingleDirectory;
 		changeState = model.getNumberOfChangesSinceLastSave();
 	}
 
@@ -73,22 +75,20 @@ public class DoAutomaticSave extends TimerTask {
 				public void run() {
 					/* Now, it is dirty, we save it. */
 					try {
-						final String name;
 						final File pathToStore;
 						final URL url = model.getURL();
-						if (url == null) {
-							name = model.getTitle() + UrlManager.FREEPLANE_FILE_EXTENSION;
+						final File file = new File(url != null ? url.getFile() //
+						        : model.getTitle() + UrlManager.FREEPLANE_FILE_EXTENSION);
+						if (url == null || useSingleDirectory) {
 							final String freeplaneUserDirectory = ResourceController.getResourceController()
 							    .getFreeplaneUserDirectory();
-							pathToStore = new File(freeplaneUserDirectory, ".backup");
+							pathToStore = new File(freeplaneUserDirectory, SINGLE_BACKUP_DIR);
 						}
 						else {
-							final File file = new File(url.getFile());
-							name = file.getName();
-							pathToStore = new File(file.getParent(), ".backup");
+							pathToStore = new File(file.getParent(), BACKUP_DIR);
 						}
 						pathToStore.mkdirs();
-						final File tempFile = MFileManager.renameBackupFiles(pathToStore, name, numberOfFiles,
+						final File tempFile = MFileManager.renameBackupFiles(pathToStore, file, numberOfFiles,
 						    AUTOSAVE_EXTENSION);
 						if (tempFile == null) {
 							return;
@@ -96,11 +96,11 @@ public class DoAutomaticSave extends TimerTask {
 						if (filesShouldBeDeletedAfterShutdown) {
 							tempFile.deleteOnExit();
 						}
-						MModeController modeController = ((MModeController)Controller.getCurrentModeController());
-						((MFileManager) UrlManager.getController()).saveInternal((MMapModel) model,
-						    tempFile, true /*=internal call*/);
-						modeController.getController().getViewController().out(
-						    TextUtils.format("automatically_save_message", tempFile));
+						MModeController modeController = ((MModeController) Controller.getCurrentModeController());
+						((MFileManager) UrlManager.getController())
+						    .saveInternal((MMapModel) model, tempFile, true /*=internal call*/);
+						modeController.getController().getViewController()
+						    .out(TextUtils.format("automatically_save_message", tempFile));
 					}
 					catch (final Exception e) {
 						LogUtils.severe("Error in automatic MapModel.save(): ", e);

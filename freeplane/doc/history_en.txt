@@ -14,6 +14,7 @@ Different shapes for clouds
 Node details
 Shortened node view
 Formula plugin ("spreadsheet plugin")
+Single backup directory
 
 Bug fixes:
 
