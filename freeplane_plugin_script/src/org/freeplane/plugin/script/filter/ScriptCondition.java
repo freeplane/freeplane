@@ -8,6 +8,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ScriptingEngine;
 
 public class ScriptCondition extends NodeCondition {
+	private static final String SCRIPT_FILTER_DESCRIPTION_RESOURCE = "plugins/script_filter";
+	private static final String SCRIPT_FILTER_ERROR_RESOURCE = "plugins/script_filter_error";
 	private static final String NAME = "script_condition";
 	private static final String SCRIPT = "SCRIPT";
 	final private String script;
@@ -23,15 +25,18 @@ public class ScriptCondition extends NodeCondition {
 
 	public boolean checkNode(final NodeModel node) {
 		final Object result = ScriptingEngine.executeScript(node, script);
-		// FIXME: temporarily!
 		System.out.println(this + ": got '" + result + "' for " + node);
-		return result != null && Boolean.valueOf(String.valueOf(result));
+		if (result == null || !(result instanceof Boolean)) {
+			throw new RuntimeException(TextUtils.format(SCRIPT_FILTER_ERROR_RESOURCE, createDesctiption(),
+			    node.toString(), String.valueOf(result)));
+		}
+		return (Boolean) result;
 	}
 
 	@Override
-    protected String createDesctiption() {
-	    return TextUtils.format("plugins/script_filter", script);
-    }
+	protected String createDesctiption() {
+		return TextUtils.format(SCRIPT_FILTER_DESCRIPTION_RESOURCE, script);
+	}
 
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();

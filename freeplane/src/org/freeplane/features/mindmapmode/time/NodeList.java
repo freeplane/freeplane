@@ -477,9 +477,15 @@ class NodeList {
 	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = NodeList.class.getName() + "_properties";
 
 	private static String replace(final Pattern p, String text, final String replacement) {
+		// avoid infinite loops in any case
+		final int MAX_ITERATIONS = 10;
 		try {
-	        Object before;
+	        String before;
+	        int i = 0;
 	        do {
+	        	if (i++ > MAX_ITERATIONS) {
+	        		throw new RuntimeException("infinite loop on replacing '" + text + "' by '" + replacement + "'");
+	        	}
 		        before = text;
 		        text = HtmlUtils.getReplaceResult(p, text, replacement);
 	        } while (!text.equals(before));
@@ -623,7 +629,7 @@ class NodeList {
 			UITools.errorMessage(TextUtils.format("wrong_regexp", searchString, e.getMessage()));
 			return;
 		}
-		final String replacement = replaceString;
+		final String replacement = replaceString == null ? "" : replaceString;
 		final int length = info.getLength();
 		for (int i = 0; i < length; i++) {
 			final NodeHolder nodeHolder = info.getNodeHolderAt(i);

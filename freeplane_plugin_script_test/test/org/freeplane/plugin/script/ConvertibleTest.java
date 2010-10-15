@@ -60,6 +60,22 @@ public class ConvertibleTest {
 		}
 		assertTrue("not a number: " + notANumber, caughtException);
 	}
+	
+	@Test
+	public void testGetNum0() throws ConversionException {
+		assertEquals(null, convertible(null).getNum0());
+		assertEquals(new Long(20), convertible("20").getNum0());
+		assertEquals(new Double(0.00001), ((Double) convertible("0.00001").getNum0()), 1e-9);
+		assertEquals(new Long(31), convertible("0x1f").getNum0());
+		assertEquals(new Long(-31), convertible("-0x1F").getNum0());
+		assertEquals(new Long(31), convertible("#1F").getNum0());
+		assertEquals(new Long(-31), convertible("-#1f").getNum0());
+		assertEquals(new Long(23), convertible("027").getNum0());
+		assertEquals(new Long(-23), convertible("-027").getNum0());
+		// now the test the fallback on conversion errors
+		assertEquals(new Long(0), convertible("xyz").getNum0());
+		assertEquals(new Long(0), convertible("2010-08-16 22:31:55.123+0530").getNum0());
+	}
 
 	private Convertible convertible(String text) {
 		NodeModel nodeModel = new NodeModel(null);
