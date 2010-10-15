@@ -215,8 +215,14 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		createActions();
 		createPreferences();
 		if (ResourceController.getResourceController().getBooleanProperty("single_backup_directory")) {
-			singleBackupDirectory = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(),
-			    DoAutomaticSave.SINGLE_BACKUP_DIR);
+			String value = ResourceController.getResourceController().getProperty("single_backup_directory_path");
+			// vb, 2010-10-14: I'm not exactly happy with putting this here - if you have a better place move it!
+			if (value != null && value.indexOf("{freeplaneuserdir}") >= 0) {
+				value = value.replace("{freeplaneuserdir}", ResourceController.getResourceController()
+				    .getFreeplaneUserDirectory());
+				ResourceController.getResourceController().setProperty("single_backup_directory_path", value);
+			}
+			singleBackupDirectory = new File(value);
 		}
 	}
 
