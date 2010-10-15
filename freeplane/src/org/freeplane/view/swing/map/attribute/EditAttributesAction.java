@@ -27,8 +27,12 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.ShortenedTextModel;
 import org.freeplane.view.swing.map.MapView;
 
+@EnabledAction(checkOnNodeChange=true)
 public class EditAttributesAction extends AFreeplaneAction {
 	/**
 	 * 
@@ -52,4 +56,11 @@ public class EditAttributesAction extends AFreeplaneAction {
 			attributeView.stopEditing();
 		}
 	}
+
+	@Override
+	public void setEnabled() {
+		final NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
+		setEnabled(! ShortenedTextModel.isShortened(selected));
+	}
+
 }
