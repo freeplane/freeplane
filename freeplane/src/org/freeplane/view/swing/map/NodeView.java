@@ -69,7 +69,7 @@ import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.ShortenedTextModel;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.common.text.ShortenedTextModel.State;
+
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -1361,26 +1361,9 @@ public class NodeView extends JComponent implements INodeView {
 	private void updateShortener(NodeModel nodeModel) {
 		final ModeController modeController = getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);
-		final State textShortened = textController.getShortenerState(nodeModel);
-		final boolean componentsVisible = ! State.SHORT.equals(textShortened);
+		final boolean textShortened = textController.getIsShortened(nodeModel);
+		final boolean componentsVisible = ! textShortened;
 		setContentComponentVisible(componentsVisible);
-		ZoomableLabel shortener = (ZoomableLabel) getContent(SHORTENER_VIEWER_POSITION);
-		if(shortener == null){
-			if(null == textShortened || State.DISABLED.equals(textShortened)){
-				return;
-			}
-			shortener = new ZoomableLabel();
-		}
-		if (null == textShortened || State.DISABLED.equals(textShortened)) {
-			removeContent(SHORTENER_VIEWER_POSITION);
-			return;
-		}
-		ZoomableLabel detailContent = (ZoomableLabel) getContent(SHORTENER_VIEWER_POSITION);
-		if (detailContent == null) {
-			detailContent = createShortenerStateView();
-			addContent(detailContent, SHORTENER_VIEWER_POSITION);
-		}
-		detailContent.setIcon(new ArrowIcon(getArrowColor(), ! componentsVisible));
 	}
 
 	private void setContentComponentVisible(final boolean componentsVisible) {
@@ -1398,26 +1381,6 @@ public class NodeView extends JComponent implements INodeView {
 				component.setVisible(componentsVisible);
 			}
 		}
-    }
-
-	private DetailsView createShortenerStateView() {
-	    final DetailsView shortenerView = new DetailsView();
-	    shortenerView.addMouseListener(new MouseAdapter() {
-
-			@Override
-            public void mouseClicked(MouseEvent e) {
-				final State state = ShortenedTextModel.getState(getModel());
-				TextController controller = TextController.getController();
-				if(State.SHORT.equals(state)){
-					controller.setShortenerState(model, State.FULL);
-				}
-				else{
-					controller.setShortenerState(model, State.SHORT);
-				}
-            }
-	    	
-		});
-		return shortenerView;
     }
 
 	public void updateAll() {

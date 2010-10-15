@@ -53,7 +53,7 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.ShortenedTextModel;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.common.text.ShortenedTextModel.State;
+
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
@@ -383,35 +383,33 @@ public class MTextController extends TextController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void setShortenerState(final NodeModel node, final State state) {
+	public void setIsShortened(final NodeModel node, final boolean state) {
 		ShortenedTextModel details = (ShortenedTextModel) node.getExtension(ShortenedTextModel.class);
-		if (details == null && state == null || details != null && details.getState().equals(State.DISABLED)) {
+		if (details == null && state == false || details != null && state == true) {
 			return;
 		}
-		final State oldState = details == null ? null : details.getState(); 
 		final IActor actor = new IActor() {
 			public void act() {
-				setShortener(oldState, state);
+				setShortener(state);
 			}
 
 			public String getDescription() {
 				return "setShortener";
 			}
 
-			private void setShortener(final State oldState, final State state) {
-				if(state != null){
+			private void setShortener(final boolean state) {
+				if(state){
 					final ShortenedTextModel details = ShortenedTextModel.createShortenedTextModel(node);
-					details.setState(state);
 					node.addExtension(details);
 				}
 				else{
 					node.removeExtension(ShortenedTextModel.class);
 				}
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", oldState, state);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", ! state, state);
 			}
 
 			public void undo() {
-				setShortener(state, oldState);
+				setShortener(! state);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());

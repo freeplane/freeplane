@@ -47,7 +47,7 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.common.text.ShortenedTextModel.State;
+
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
 
@@ -354,7 +354,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			textfield.setCaretPosition(getText().length());
 		}
 		textfield.getDocument().addDocumentListener(documentListener);
-		if(State.SHORT.equals(textController.getShortenerState(node))){
+		if(textController.getIsShortened(node)){
 			layout();
 		}
 		textfield.repaint();

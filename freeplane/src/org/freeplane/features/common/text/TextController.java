@@ -31,7 +31,7 @@ import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.ShortenedTextModel.State;
+
 
 /**
  * @author Dimitry Polivaev
@@ -80,10 +80,7 @@ public class TextController implements IExtension {
 		writeManager.addExtensionAttributeWriter(ShortenedTextModel.class, textBuilder);
 
 		modeController.addAction(new ToggleDetailsAction());
-		modeController.addAction(new SetShortenerStateAction(null));
-		for (State s : State.values()){
-			modeController.addAction(new SetShortenerStateAction(s));
-		}
+		modeController.addAction(new SetShortenerStateAction());
 	}
 
 	public void addTextTransformer(ITextTransformer textTransformer) {
@@ -104,16 +101,11 @@ public class TextController implements IExtension {
 			nodeText = textTransformer.transform(nodeText, nodeModel);
 		}
 		return nodeText;
-    }
-	
-	public State getShortenerState(NodeModel node){
-		{
-			final ShortenedTextModel shortened = ShortenedTextModel.getShortenedTextModel(node);
-			if (shortened != null) {
-				return shortened.getState();
-			}
-		}
-		return State.DISABLED;
+	}
+
+	public boolean getIsShortened(NodeModel node){
+		final ShortenedTextModel shortened = ShortenedTextModel.getShortenedTextModel(node);
+		return shortened != null;
 	}
 
 	public String getPlainTextContent(NodeModel nodeModel) {
@@ -130,14 +122,17 @@ public class TextController implements IExtension {
 		node.addExtension(details);
 		Controller.getCurrentModeController().getMapController().nodeChanged(node, "DETAILS_HIDDEN", ! isHidden, isHidden);    }
 
-	public void setShortenerState(NodeModel node, State newState) {
-		final ShortenedTextModel shortener = ShortenedTextModel.createShortenedTextModel(node);
-		final State oldState = shortener.getState();
-		if(newState == oldState || newState != null && newState.equals(oldState)){
+	public void setIsShortened(NodeModel node, boolean newState) {
+		boolean oldState = ShortenedTextModel.getShortenedTextModel(node) == null;
+		if(oldState == newState){
 			return;
 		}
-		shortener.setState(newState);
-		node.addExtension(shortener);
+		if(newState){
+			ShortenedTextModel.createShortenedTextModel(node);
+		}
+		else{
+			node.removeExtension(ShortenedTextModel.class);
+		}
 		Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", oldState, newState);   
     }
 }

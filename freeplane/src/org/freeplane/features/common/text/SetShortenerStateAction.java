@@ -25,7 +25,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.ShortenedTextModel.State;
+
 
 @SelectableAction(checkOnNodeChange=true)
 class SetShortenerStateAction extends AMultipleNodeAction {
@@ -33,31 +33,35 @@ class SetShortenerStateAction extends AMultipleNodeAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private State state;
-
-	public SetShortenerStateAction(State state) {
-		super("SetShortenerStateAction." + String.valueOf(state));
-		this.state = state;
+	private boolean setShortened;
+	public SetShortenerStateAction() {
+		super("SetShortenerStateAction");
 	}
 
-	private State getNodeState() {
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+		setShortened = !isShortened();
+		super.actionPerformed(e);
+	}
+	
+	private boolean isShortened() {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		if(node == null){
-			return null;
+			return false;
 		}
 		final ShortenedTextModel model = ShortenedTextModel.getShortenedTextModel(node);
-		return model != null ? model.getState() : null;
+		return model != null;
     }
 
 	@Override
     protected void actionPerformed(ActionEvent e, NodeModel node) {
 		TextController controller = TextController.getController();
-		controller.setShortenerState(node, state);
+		controller.setIsShortened(node, setShortened);
     }
 
 	@Override
 	public void setSelected() {
-		setSelected(getNodeState() == state || state != null && state.equals(getNodeState()));
+		setSelected(isShortened());
 	}
 	
 }

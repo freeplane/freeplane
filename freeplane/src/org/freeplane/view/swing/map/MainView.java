@@ -65,7 +65,7 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.common.text.ShortenedTextModel.State;
+
 
 /**
  * Base class for all node views.
@@ -355,8 +355,8 @@ public abstract class MainView extends ZoomableLabel {
 			text = TextUtils.format("MainView.errorUpdateText", nodeModel.getText(), e.getLocalizedMessage());
 			setBorder(errorBorder);
 		}
-		final State textShortened = textController.getShortenerState(nodeModel);
-		if(State.SHORT.equals(textShortened)){
+		final boolean textShortened = textController.getIsShortened(nodeModel);
+		if(textShortened){
 			text = shortenText(text);
 		}
 		updateText(text);
@@ -371,7 +371,7 @@ public abstract class MainView extends ZoomableLabel {
 	    final int maxNodeWidth = ResourceController.getResourceController().getIntProperty("max_shortened_text_length");
 		if(eolPosition == -1 || eolPosition >= length || eolPosition >= maxNodeWidth){
 	    	if(length <= maxNodeWidth){
-	    		return text;
+	    		return text + "...";
 	    	}
 	    	length = maxNodeWidth;
 	    }

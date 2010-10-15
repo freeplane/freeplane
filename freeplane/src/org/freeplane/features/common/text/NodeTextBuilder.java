@@ -39,7 +39,7 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.StyleFactory;
 import org.freeplane.features.common.styles.StyleNamedObject;
 import org.freeplane.features.common.styles.StyleString;
-import org.freeplane.features.common.text.ShortenedTextModel.State;
+
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter, IExtensionElementWriter, IExtensionAttributeWriter {
@@ -90,11 +90,13 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
 				try {
-	                node.addExtension(new ShortenedTextModel(State.valueOf(value)));
-                }
-                catch (IllegalArgumentException e) {
-	                LogUtils.warn(e);
-                }
+					if(Boolean.valueOf(value)){
+						node.addExtension(new ShortenedTextModel());
+					}
+				}
+				catch (Exception e) {
+					LogUtils.warn(e);
+				}
 			}
 		});
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_TEXT, new IAttributeHandler() {
@@ -181,7 +183,6 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	}
 
 	public void writeAttributes(ITreeWriter writer, Object userObject, IExtension extension) {
-		ShortenedTextModel model = (ShortenedTextModel) extension;
-		writer.addAttribute(XML_NODE_TEXT_SHORTENED, model.getState().toString());
+		writer.addAttribute(XML_NODE_TEXT_SHORTENED, Boolean.TRUE.toString());
     }
 }
