@@ -256,6 +256,9 @@ Todo:
 			<xsl:call-template name="textnode" />
 		</xsl:otherwise>
 		</xsl:choose>
+		<xsl:if test="richcontent[@TYPE='DETAILS']">
+			<xsl:apply-templates select="richcontent[@TYPE='DETAILS']/html/body" mode="richcontent" />
+		</xsl:if>
 </xsl:template> <!-- xsl:template name="output-nodecontent" -->
 
 <xsl:template match="body" mode="richcontent">
