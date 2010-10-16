@@ -15,12 +15,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.misc;
+package org.freeplane.features.mindmapmode.icon;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import javax.swing.Action;
+import javax.swing.ListModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
@@ -30,9 +31,11 @@ import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.icon.IIconInformation;
 import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.icon.IconRegistry;
+import org.freeplane.features.common.icon.MindIcon;
+import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.icon.MIconController;
 
 /**
  * @author adapted to the plugin mechanism by ganzer
@@ -49,12 +52,25 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		ArrayList<IIconInformation> actions = new ArrayList<IIconInformation>();
+		
+		final MapModel map = Controller.getCurrentController().getMap();
+		final IconRegistry iconRegistry = map.getIconRegistry();
+		final ListModel usedIcons = iconRegistry.getIconsAsListModel();
+		for(int i = 0; i < usedIcons.getSize(); i++){
+			final Object icon = usedIcons.getElementAt(i);
+			if(icon instanceof MindIcon){
+				actions.add(new IconAction((MindIcon) icon));
+			}
+		}
+
 		final MIconController mIconController = (MIconController) IconController.getController();
 		for (AFreeplaneAction aFreeplaneAction : mIconController.getIconActions())
 			actions.add((IIconInformation) aFreeplaneAction);
+		
 		actions.add((IIconInformation) modeController.getAction("RemoveIcon_0_Action"));
 		actions.add((IIconInformation) modeController.getAction("RemoveIconAction"));
 		actions.add((IIconInformation) modeController.getAction("RemoveAllIconsAction"));
+
 		final ViewController viewController = Controller.getCurrentController().getViewController();
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(viewController.getJFrame(),
 		    actions);
