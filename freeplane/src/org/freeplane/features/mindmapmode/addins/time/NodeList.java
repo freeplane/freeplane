@@ -485,12 +485,15 @@ class NodeList {
 	public static void replace(final IReplaceInputInformation info, final String searchString,
 	                           final String replaceString) {
 		final String regExp = "(" + NodeList.getPureRegularExpression(searchString) + ")";
-		Pattern p;
+		final Pattern p;
 		try {
 			p = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
 		}
 		catch (final PatternSyntaxException e) {
 			UITools.errorMessage(FpStringUtils.format("wrong_regexp", searchString, e.getMessage()));
+			return;
+		}
+		if(p.matcher("").matches()){
 			return;
 		}
 		final String replacement = NodeList.getPureRegularExpression(replaceString);
