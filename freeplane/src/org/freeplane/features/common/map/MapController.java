@@ -801,7 +801,7 @@ public class MapController extends SelectionController {
 	/**
 	*
 	*/
-	public void setToolTip(final NodeModel node, final String key, final ITooltipProvider value) {
+	public void setToolTip(final NodeModel node, final Integer key, final ITooltipProvider value) {
 		node.setToolTip(key, value);
 		nodeRefresh(node);
 	}

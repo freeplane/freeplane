@@ -117,6 +117,7 @@ public class ReminderHook extends PersistentNodeHook {
 	//******************************************
 	static final String PLUGIN_LABEL = "plugins/TimeManagementReminder.xml";
 	static final String REMINDUSERAT = "REMINDUSERAT";
+	private static final Integer REMINDER_TOOLTIP = 12;
 	final private String STATE_TOOLTIP = TimerBlinkTask.class.getName() + "_STATE_";
 
 	/**
@@ -251,7 +252,7 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	private void setToolTip(final NodeModel node, final String value) {
-		(Controller.getCurrentModeController().getMapController()).setToolTip(node, getClass().getName(), new ITooltipProvider() {
+		(Controller.getCurrentModeController().getMapController()).setToolTip(node, REMINDER_TOOLTIP, new ITooltipProvider() {
 			public String getTooltip() {
 				return value;
 			}

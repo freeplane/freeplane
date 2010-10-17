@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.text;
 
+import java.awt.Font;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,9 +29,12 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.map.ITooltipProvider;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.note.NoteModel;
 
 
 /**
@@ -43,6 +47,8 @@ public class TextController implements IExtension {
 	public static final String FILTER_NODE = "filter_node";
 	public static final String FILTER_PARENT = "filter_parent";
 	public static final String FILTER_DETAILS = "filter_details";
+	private static final Integer NODE_TOOLTIP = 1;
+	private static final Integer DETAILS_TOOLTIP = 2;
 
 	public static TextController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -120,19 +126,72 @@ public class TextController implements IExtension {
 		}
 		details.setHidden(isHidden);
 		node.addExtension(details);
-		Controller.getCurrentModeController().getMapController().nodeChanged(node, "DETAILS_HIDDEN", ! isHidden, isHidden);    }
+		setDetailsTooltip(node);
+		Controller.getCurrentModeController().getMapController().nodeChanged(node, "DETAILS_HIDDEN", ! isHidden, isHidden);    
+	}
 
-	public void setIsShortened(NodeModel node, boolean newState) {
-		boolean oldState = ShortenedTextModel.getShortenedTextModel(node) == null;
-		if(oldState == newState){
+	protected void setDetailsTooltip(final NodeModel node) {
+		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
+		if (detailText != null) {
+			(Controller.getCurrentModeController().getMapController()).setToolTip(node, DETAILS_TOOLTIP, new ITooltipProvider() {
+				public String getTooltip() {
+					 if (! (detailText.isHidden() || ShortenedTextModel.isShortened(node)) ){
+						 return null;
+					 }
+					final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
+					    NodeStyleController.class);
+					final Font font = style.getFont(node);
+					final StringBuilder rule = new StringBuilder();
+					rule.append("font-family: " + font.getFamily() + ";");
+					rule.append("font-size: " + font.getSize() + "pt;");
+					rule.append("margin-top:0;");
+					String noteText= detailText.getHtml();
+					final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
+					    .replaceFirst("</body>", "</div></body>");
+					return tooltipText;
+				}
+			});
 			return;
 		}
-		if(newState){
+		(Controller.getCurrentModeController().getMapController()).setToolTip(node, DETAILS_TOOLTIP, null);
+	}
+
+	protected void setNodeTextTooltip(final NodeModel node) {
+		(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, new ITooltipProvider() {
+			public String getTooltip() {
+				if (! ShortenedTextModel.isShortened(node)){
+					return null;
+				}
+				final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
+					NodeStyleController.class);
+				final Font font = style.getFont(node);
+				final StringBuilder rule = new StringBuilder();
+				rule.append("font-family: " + font.getFamily() + ";");
+				rule.append("font-size: " + font.getSize() + "pt;");
+				rule.append("margin-top:0;");
+				String text = getText(node);
+				if(! HtmlUtils.isHtmlNode(text)) {
+					text = HtmlUtils.plainToHTML(text);
+				}
+				final String tooltipText = text.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
+				.replaceFirst("</body>", "</div></body>");
+				return tooltipText;
+			}
+		});
+	}
+
+	public void setIsShortened(NodeModel node, boolean shortened) {
+		boolean oldState = ShortenedTextModel.getShortenedTextModel(node) == null;
+		if(oldState == shortened){
+			return;
+		}
+		if(shortened){
 			ShortenedTextModel.createShortenedTextModel(node);
+			setNodeTextTooltip(node);
 		}
 		else{
 			node.removeExtension(ShortenedTextModel.class);
 		}
-		Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", oldState, newState);   
-    }
+		Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", oldState, shortened);   
+	}
 }

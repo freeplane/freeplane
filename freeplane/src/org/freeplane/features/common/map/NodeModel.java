@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -79,7 +80,7 @@ public class NodeModel implements MutableTreeNode {
 		return userObject;
 	}
 
-	private Map<String, ITooltipProvider> toolTip = null;
+	private Map<Integer, ITooltipProvider> toolTip = null;
 	private Collection<INodeView> views = null;
 	private String xmlText = "no text";
 
@@ -158,7 +159,7 @@ public class NodeModel implements MutableTreeNode {
 
 	private void createToolTip() {
 		if (toolTip == null) {
-			toolTip = new LinkedHashMap<String, ITooltipProvider>();
+			toolTip = new TreeMap<Integer, ITooltipProvider>();
 		}
 	}
 
@@ -322,8 +323,8 @@ public class NodeModel implements MutableTreeNode {
 			return null;
 		}
 		final StringBuilder text = new StringBuilder("<html><table>");
-		for (final String key : toolTip.keySet()) {
-			String value = toolTip.get(key).getTooltip();
+		for (ITooltipProvider provider : toolTip.values()) {
+			String value = provider.getTooltip();
 			if (value == null) {
 				continue;
 			}
@@ -331,7 +332,7 @@ public class NodeModel implements MutableTreeNode {
 			value = value.replaceFirst("<body>", "");
 			value = value.replaceFirst("</body>", "");
 			value = value.replaceFirst("</html>", "</div>");
-			text.append("<tr><td>");
+			text.append("<tr><td><hr>");
 			text.append(value);
 			text.append("</td></tr>");
 		}
@@ -581,7 +582,7 @@ public class NodeModel implements MutableTreeNode {
 
 	/**
 	 */
-	public void setToolTip(final String key, final ITooltipProvider tooltip) {
+	public void setToolTip(final Integer key, final ITooltipProvider tooltip) {
 		if (tooltip == null && toolTip == null) {
 			return;
 		}

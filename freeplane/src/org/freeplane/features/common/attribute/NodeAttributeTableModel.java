@@ -41,7 +41,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  */
 public class NodeAttributeTableModel implements IExtension, IAttributeTableModel, TableModel {
-	private static final String ATTRIBUTE_TOOLTIP = "attribute_tooltip";
+	private static final Integer ATTRIBUTE_TOOLTIP = 9;
 	private static final int CAPACITY_INCREMENT = 10;
 	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(null);
 	static private UIIcon attributeIcon = null;

@@ -45,6 +45,7 @@ public class NoteController implements IExtension {
 	public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
 	private static UIIcon noteIcon;
 	public static final String RESOURCES_DON_T_SHOW_NOTE_ICONS = "don_t_show_note_icons";
+	private static final Integer NODE_TOOLTIP = 7;
 
 	public static NoteController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -101,26 +102,30 @@ public class NoteController implements IExtension {
 			showIcon = false;
 		}
 		node.setStateIcon(NoteController.NODE_NOTE_ICON, (showIcon) ? noteIcon : null, true);
-		if (enabled) {
+		setNoteTooltip(node, enabled);
+	}
+
+	void setNoteTooltip(final NodeModel node, final boolean enabled) {
+	    if (enabled) {
 			final String noteText = NoteModel.getNoteText(node);
 			if (noteText != null) {
-				final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-				    NodeStyleController.class);
-				final Font defaultFont = style.getDefaultFont(node.getMap());
-				final StringBuilder rule = new StringBuilder();
-				rule.append("font-family: " + defaultFont.getFamily() + ";");
-				rule.append("font-size: " + defaultFont.getSize() + "pt;");
-				rule.append("margin-top:0;");
-				final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
-				    .replaceFirst("</body>", "</div></body>");
-				(Controller.getCurrentModeController().getMapController()).setToolTip(node, "nodeNoteText", new ITooltipProvider() {
+				(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, new ITooltipProvider() {
 					public String getTooltip() {
+						final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
+						    NodeStyleController.class);
+						final Font defaultFont = style.getDefaultFont(node.getMap());
+						final StringBuilder rule = new StringBuilder();
+						rule.append("font-family: " + defaultFont.getFamily() + ";");
+						rule.append("font-size: " + defaultFont.getSize() + "pt;");
+						rule.append("margin-top:0;");
+						final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
+						    .replaceFirst("</body>", "</div></body>");
 						return tooltipText;
 					}
 				});
 			}
 			return;
 		}
-		(Controller.getCurrentModeController().getMapController()).setToolTip(node, "nodeNoteText", null);
-	}
+		(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, null);
+    }
 }

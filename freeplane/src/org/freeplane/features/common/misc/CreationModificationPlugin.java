@@ -43,6 +43,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "accessories/plugins/CreationModificationPlugin.properties")
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/change" })
 public class CreationModificationPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
+	private static final Integer CREATION_TOOLTIP = 14;
 	private boolean nodeChangeListenerDisabled;
 	private String tooltipFormat = null;
 
@@ -109,7 +110,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	 *
 	 */
 	private void removeToolTipRecursively(final NodeModel node) {
-		setToolTip(node, getHookName(), null);
+		setToolTip(node, CREATION_TOOLTIP, null);
 		for (final Iterator<NodeModel> i = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = i.next();
 			removeToolTipRecursively(child);
@@ -130,7 +131,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 		}
 		final MessageFormat formatter = new MessageFormat(tooltipFormat);
 		final String message = formatter.format(messageArguments);
-		setToolTip(node, getHookName(), message);
+		setToolTip(node, CREATION_TOOLTIP, message);
 	}
 
 	/**
@@ -143,7 +144,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 		}
 	}
 
-	protected void setToolTip(final NodeModel node, final String key, final String value) {
+	protected void setToolTip(final NodeModel node, final Integer key, final String value) {
 		final ITooltipProvider tooltipProvider;
 		if (value != null) {
 			tooltipProvider = new ITooltipProvider() {
