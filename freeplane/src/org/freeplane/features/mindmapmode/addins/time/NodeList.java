@@ -514,12 +514,8 @@ class NodeList {
 		}
 	}
 
-	private static String replace(final Pattern p, final String replacement, String replaceResult) {
-		Object before;
-		do {
-			before = replaceResult;
-			replaceResult = HtmlTools.getInstance().getReplaceResult(p, replacement, replaceResult);
-		} while (!replaceResult.equals(before));
+	private static String replace(final Pattern p, final String replacement, String input) {
+		String replaceResult = HtmlTools.getReplaceResult(p, replacement, input);
 		return replaceResult;
 	}
 
