@@ -54,9 +54,9 @@ class NoteBuilder implements IElementContentHandler {
 			final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
 			if (NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE.equals(typeAttribute)) {
 				final NoteModel note = new NoteModel();
-				noteController.setStateIcon(((NodeModel) node), true);
 				note.setXml(xmlText);
 				((NodeModel) node).addExtension((IExtension) note);
+				noteController.setStateIcon(((NodeModel) node), true);
 			}
 		}
 	}
