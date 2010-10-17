@@ -31,6 +31,7 @@
 			<fileset dir="${build}"/>
 			<fileset dir="${src}">
 				<include name="**/*.xml"/>
+				<include name="**/*.properties"/>
 			</fileset>
 		</jar>
 		<delete dir="${dist.osgi.dir}" quiet="true"/>
