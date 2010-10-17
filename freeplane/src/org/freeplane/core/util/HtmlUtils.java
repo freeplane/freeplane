@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -38,23 +39,22 @@ import org.xml.sax.helpers.DefaultHandler;
 /** */
 public class HtmlUtils {
 	public static class IndexPair {
-		public boolean mIsAlreadyAppended = false;
-		public boolean mIsTag;
-		public int originalEnd;
-		public int originalStart;
-		public int replacedEnd;
-		public int replacedStart;
+		final public boolean mIsTag;
+		final public int originalEnd;
+		final public int originalStart;
+		final public int pureTextEnd;
+		final public int pureTextStart;
 
 		/**
 		 * @param pIsTag
 		 */
-		public IndexPair(final int pOriginalStart, final int pOriginalEnd, final int pReplacedStart,
-		                 final int pReplacedEnd, final boolean pIsTag) {
+		public IndexPair(final int pOriginalStart, final int pOriginalEnd, final int pPureTextStart,
+		                 final int pPureTextEnd, final boolean pIsTag) {
 			super();
 			originalStart = pOriginalStart;
 			originalEnd = pOriginalEnd;
-			replacedStart = pReplacedStart;
-			replacedEnd = pReplacedEnd;
+			pureTextStart = pPureTextStart;
+			pureTextEnd = pPureTextEnd;
 			mIsTag = pIsTag;
 		}
 
@@ -69,10 +69,10 @@ public class HtmlUtils {
 			buffer.append(originalStart);
 			buffer.append(" originalEnd: ");
 			buffer.append(originalEnd);
-			buffer.append(" replacedStart: ");
-			buffer.append(replacedStart);
-			buffer.append(" replacedEnd: ");
-			buffer.append(replacedEnd);
+			buffer.append(" pureTextStart: ");
+			buffer.append(pureTextStart);
+			buffer.append(" pureTextEnd: ");
+			buffer.append(pureTextEnd);
 			buffer.append(" is a tag: ");
 			buffer.append(mIsTag);
 			buffer.append("]");
@@ -359,10 +359,10 @@ public class HtmlUtils {
 	 */
 	public static int getMaximalOriginalPosition(final int pI, final ArrayList<IndexPair> pListOfIndices) {
 		for (int i = pListOfIndices.size() - 1; i >= 0; --i) {
-			final IndexPair pair = pListOfIndices.get(i);
-			if (pI >= pair.replacedStart) {
+			final IndexPair pair =  pListOfIndices.get(i);
+			if (pI >= pair.pureTextStart) {
 				if (!pair.mIsTag) {
-					return pair.originalStart + pI - pair.replacedStart;
+					return pair.originalStart + pI - pair.pureTextStart;
 				}
 				else {
 					return pair.originalEnd;
@@ -373,9 +373,9 @@ public class HtmlUtils {
 	}
 
 	public static int getMinimalOriginalPosition(final int pI, final ArrayList<IndexPair> pListOfIndices) {
-		for (final IndexPair pair : pListOfIndices) {
-			if (pI >= pair.replacedStart && pI <= pair.replacedEnd) {
-				return pair.originalStart + pI - pair.replacedStart;
+	for (final IndexPair pair : pListOfIndices) {
+			if (pI >= pair.pureTextStart && pI <= pair.pureTextEnd) {
+				return pair.originalStart + pI - pair.pureTextStart;
 			}
 		}
 		throw new IllegalArgumentException("Position " + pI + " not found.");
@@ -387,130 +387,150 @@ public class HtmlUtils {
 	 * it. But look that it complies with FindTextTests!!!
 	 */
 	public static String getReplaceResult(final Pattern pattern, final String text, final String replacement) {
-		final ArrayList<IndexPair> splittedStringList = new ArrayList<IndexPair>();
-		String stringWithoutTags = null;
-		{
-			final StringBuffer sb = new StringBuffer();
-			final Matcher matcher = HtmlUtils.FIND_TAGS_PATTERN.matcher(text);
-			int lastMatchEnd = 0;
-			while (matcher.find()) {
-				final String textWithoutTag = matcher.group(1);
-				int replStart = sb.length();
-				matcher.appendReplacement(sb, "$1");
-				IndexPair indexPair;
-				if (textWithoutTag.length() > 0) {
-					indexPair = new IndexPair(lastMatchEnd, matcher.end(1), replStart, sb.length(), false);
-					lastMatchEnd = matcher.end(1);
+		return new HtmlReplacer().getReplaceResult(pattern, replacement, text);
+	}
+	static class HtmlReplacer{
+		private ArrayList<IndexPair> splittedStringList;
+		private String stringWithoutTags;
+
+		public String getReplaceResult(final Pattern pattern, final String replacement, final String text) {
+			initialize(text);
+			final Matcher matcher = pattern.matcher(stringWithoutTags);
+			if (! matcher.find()) {
+				return text;
+			}
+			final StringBuilder sbResult = new StringBuilder();
+			int pureTextPosition = 0;
+			final Iterator<IndexPair> indexPairs = splittedStringList.iterator();
+			IndexPair pair = null;
+			for(;;){
+				final int mStart = matcher.start();
+				final int mEnd = matcher.end();
+				
+				if(pair == null){
+					for(pair = indexPairs.next();pair.pureTextEnd <= mStart;pair = indexPairs.next()){
+						if(pair.mIsTag || pureTextPosition <= pair.pureTextStart){
+							sbResult.append(text, pair.originalStart, pair.originalEnd);
+						}
+						else if(pureTextPosition <= pair.pureTextEnd){
+							sbResult.append(text, pair.originalStart + pureTextPosition - pair.pureTextStart, pair.originalEnd);
+						}
+					}
+					if(pureTextPosition < pair.pureTextStart){
+						pureTextPosition = pair.pureTextStart;
+					}
+				}
+
+				sbResult.append(text, 
+					pair.originalStart + pureTextPosition - pair.pureTextStart, 
+					pair.originalStart + mStart - pair.pureTextStart);
+				appendReplacement(sbResult, matcher, replacement);
+				pureTextPosition = mEnd;
+				
+				if(matcher.find()){
+					if(matcher.start() >= pair.pureTextEnd){
+						if(mEnd < pair.pureTextEnd){
+							sbResult.append(text, pair.originalStart + pureTextPosition - pair.pureTextStart, pair.originalEnd);
+							pureTextPosition = pair.pureTextEnd;
+						}
+						pair = null;
+					}
+					continue;
+				}
+				for(;;){
+					if(pureTextPosition <= pair.pureTextEnd){
+						sbResult.append(text, pair.originalStart + pureTextPosition - pair.pureTextStart, text.length());
+						return sbResult.toString();
+					}
+					if(pair.mIsTag){
+						sbResult.append(text, pair.originalStart, pair.originalEnd);
+					}
+					pair = indexPairs.next();
+				}
+			}
+
+		}
+		
+		private void initialize(final String text) {
+			splittedStringList = new ArrayList<IndexPair>();
+			stringWithoutTags = null;
+			{
+				final StringBuffer sb = new StringBuffer();
+				final Matcher matcher = FIND_TAGS_PATTERN.matcher(text);
+				int lastMatchEnd = 0;
+				while (matcher.find()) {
+					final String textWithoutTag = matcher.group(1);
+					int replStart = sb.length();
+					matcher.appendReplacement(sb, "$1");
+					IndexPair indexPair;
+					if (textWithoutTag.length() > 0) {
+						indexPair = new IndexPair(lastMatchEnd, matcher.end(1), replStart, sb.length(), false);
+						lastMatchEnd = matcher.end(1);
+						splittedStringList.add(indexPair);
+					}
+					replStart = sb.length();
+					indexPair = new IndexPair(lastMatchEnd, matcher.end(2), sb.length(), sb.length(), true);
+					lastMatchEnd = matcher.end(2);
 					splittedStringList.add(indexPair);
 				}
-				replStart = sb.length();
-				indexPair = new IndexPair(lastMatchEnd, matcher.end(2), replStart, sb.length(), true);
-				lastMatchEnd = matcher.end(2);
-				splittedStringList.add(indexPair);
+				final int replStart = sb.length();
+				matcher.appendTail(sb);
+				if (sb.length() != replStart) {
+					final IndexPair indexPair = new IndexPair(lastMatchEnd, text.length(), replStart, sb.length(), false);
+					splittedStringList.add(indexPair);
+				}
+				stringWithoutTags = sb.toString();
 			}
-			final int replStart = sb.length();
-			matcher.appendTail(sb);
-			if (sb.length() != replStart) {
-				final IndexPair indexPair = new IndexPair(lastMatchEnd, text.length(), replStart, sb.length(), false);
-				splittedStringList.add(indexPair);
-			}
-			stringWithoutTags = sb.toString();
 		}
-		final Matcher matcher = pattern.matcher(stringWithoutTags);
-		final StringBuilder sbResult = new StringBuilder();
-		if (matcher.find()) {
-			/*
-			 * now, take all from 0 to m.start() from original. append the
-			 * replaced text, append all removed tags from the original that
-			 * stays in between and append the rest.
-			 */
-			final int mStart = matcher.start();
-			final int mEnd = matcher.end();
-			int state = 0;
-			for (final IndexPair pair : splittedStringList) {
-				switch (state) {
-					case 0:
-						if (!pair.mIsTag && pair.replacedStart <= mStart && pair.replacedEnd > mStart) {
-							state = 1;
-							sbResult.append(text.substring(pair.originalStart, pair.originalStart + mStart
-							        - pair.replacedStart));
-							appendReplacement(sbResult, matcher, replacement);
-						}
-						else {
-							sbResult.append(text.substring(pair.originalStart, pair.originalEnd));
+
+		private void appendReplacement(final StringBuilder sbResult, final Matcher matcher, final String replacement) {
+			int cursor = 0;
+			while (cursor < replacement.length()) {
+				char nextChar = replacement.charAt(cursor);
+				if (nextChar == '\\') {
+					cursor++;
+					nextChar = replacement.charAt(cursor);
+					sbResult.append(nextChar);
+					cursor++;
+				}
+				else if (nextChar == '$') {
+					// Skip past $
+					cursor++;
+					// The first number is always a group
+					int refNum = (int) replacement.charAt(cursor) - '0';
+					if ((refNum < 0) || (refNum > 9))
+						throw new IllegalArgumentException("Illegal group reference");
+					cursor++;
+					// Capture the largest legal group string
+					boolean done = false;
+					while (!done) {
+						if (cursor >= replacement.length()) {
 							break;
 						}
-					case 1:
-						if (!pair.mIsTag && pair.replacedStart <= mEnd && pair.replacedEnd > mEnd) {
-							state = 2;
-							sbResult.append(text.substring(pair.originalStart + mEnd - pair.replacedStart,
-							    pair.originalEnd));
+						int nextDigit = replacement.charAt(cursor) - '0';
+						if ((nextDigit < 0) || (nextDigit > 9)) { // not a number
+							break;
+						}
+						int newRefNum = (refNum * 10) + nextDigit;
+						if (matcher.groupCount() < newRefNum) {
+							done = true;
 						}
 						else {
-							if (pair.mIsTag) {
-								sbResult.append(text.substring(pair.originalStart, pair.originalEnd));
-							}
+							refNum = newRefNum;
+							cursor++;
 						}
-						break;
-					case 2:
-						sbResult.append(text.substring(pair.originalStart, pair.originalEnd));
-						break;
+					}
+					// Append group
+					if (matcher.group(refNum) != null)
+						sbResult.append(matcher.group(refNum));
+				}
+				else {
+					sbResult.append(nextChar);
+					cursor++;
 				}
 			}
 		}
-		else {
-			sbResult.append(text);
-		}
-		return sbResult.toString();
 	}
-
-	private static void appendReplacement(final StringBuilder sbResult, final Matcher matcher, final String replacement) {
-	    int cursor = 0;
-	    while (cursor < replacement.length()) {
-	    	char nextChar = replacement.charAt(cursor);
-	    	if (nextChar == '\\') {
-	    		cursor++;
-	    		nextChar = replacement.charAt(cursor);
-	    		sbResult.append(nextChar);
-	    		cursor++;
-	    	}
-	    	else if (nextChar == '$') {
-	    		// Skip past $
-	    		cursor++;
-	    		// The first number is always a group
-	    		int refNum = (int) replacement.charAt(cursor) - '0';
-	    		if ((refNum < 0) || (refNum > 9))
-	    			throw new IllegalArgumentException("Illegal group reference");
-	    		cursor++;
-	    		// Capture the largest legal group string
-	    		boolean done = false;
-	    		while (!done) {
-	    			if (cursor >= replacement.length()) {
-	    				break;
-	    			}
-	    			int nextDigit = replacement.charAt(cursor) - '0';
-	    			if ((nextDigit < 0) || (nextDigit > 9)) { // not a number
-	    				break;
-	    			}
-	    			int newRefNum = (refNum * 10) + nextDigit;
-	    			if (matcher.groupCount() < newRefNum) {
-	    				done = true;
-	    			}
-	    			else {
-	    				refNum = newRefNum;
-	    				cursor++;
-	    			}
-	    		}
-	    		// Append group
-	    		if (matcher.group(refNum) != null)
-	    			sbResult.append(matcher.group(refNum));
-	    	}
-	    	else {
-	    		sbResult.append(nextChar);
-	    		cursor++;
-	    	}
-	    }
-    }
 
 	/**
 	 * @return true, if well formed XML.
