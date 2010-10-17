@@ -403,7 +403,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		getContentPane().add(toolbarPanel[LEFT], BorderLayout.WEST);
 		getContentPane().add(toolbarPanel[RIGHT], BorderLayout.EAST);
 		getContentPane().add(toolbarPanel[BOTTOM], BorderLayout.SOUTH);
-		status.setPreferredSize(status.getPreferredSize());
+//		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
 		getRootPaneContainer().getRootPane().putClientProperty(Controller.class, controller);
 		final Frame frame = getFrame();

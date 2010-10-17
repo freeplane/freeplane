@@ -45,16 +45,16 @@ public class DoAutomaticSave extends TimerTask {
 	final private boolean filesShouldBeDeletedAfterShutdown;
 	final private MapModel model;
 	final private int numberOfFiles;
-	final private boolean useSingleDirectory;
-	static final String SINGLE_BACKUP_DIR = ".backup";
+	private final File singleBackupDirectory;
 	static final String BACKUP_DIR = ".backup";
 
-	public DoAutomaticSave( final MapModel model, final int numberOfTempFiles,
-	                       final boolean filesShouldBeDeletedAfterShutdown, boolean useSingleDirectory) {
+	public DoAutomaticSave(final MapModel model, final int numberOfTempFiles,
+	                       final boolean filesShouldBeDeletedAfterShutdown, boolean useSingleBackupDirectory,
+	                       final String singleBackupDirectory) {
 		this.model = model;
 		numberOfFiles = ((numberOfTempFiles > 0) ? numberOfTempFiles : 1);
 		this.filesShouldBeDeletedAfterShutdown = filesShouldBeDeletedAfterShutdown;
-		this.useSingleDirectory = useSingleDirectory;
+		this.singleBackupDirectory = useSingleBackupDirectory ? new File(singleBackupDirectory) : null;
 		changeState = model.getNumberOfChangesSinceLastSave();
 	}
 
@@ -72,6 +72,7 @@ public class DoAutomaticSave extends TimerTask {
 		try {
 			cancel();
 			EventQueue.invokeAndWait(new Runnable() {
+
 				public void run() {
 					/* Now, it is dirty, we save it. */
 					try {
@@ -79,10 +80,12 @@ public class DoAutomaticSave extends TimerTask {
 						final URL url = model.getURL();
 						final File file = new File(url != null ? url.getFile() //
 						        : model.getTitle() + UrlManager.FREEPLANE_FILE_EXTENSION);
-						if (url == null || useSingleDirectory) {
-							final String freeplaneUserDirectory = ResourceController.getResourceController()
-							    .getFreeplaneUserDirectory();
-							pathToStore = new File(freeplaneUserDirectory, SINGLE_BACKUP_DIR);
+						if (url == null) {
+							pathToStore = new File(ResourceController.getResourceController()
+							    .getFreeplaneUserDirectory(), BACKUP_DIR);
+						}
+						else if (singleBackupDirectory != null) {
+							pathToStore = singleBackupDirectory;
 						}
 						else {
 							pathToStore = new File(file.getParent(), BACKUP_DIR);

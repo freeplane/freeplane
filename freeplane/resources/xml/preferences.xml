@@ -55,6 +55,7 @@
         <separator name = "automatic_save">
             <number name = "time_for_automatic_save" min = "0"/> 
             <boolean name = "single_backup_directory"/>
+            <path name = "single_backup_directory_path" dir="true" defaultValue="{freeplaneuserdir}/.backup"/>
             <boolean name = "delete_automatic_saves_at_exit"/>
             <number name = "number_of_different_files_for_automatic_save" min = "0" max="25"/>
             <number name = "backup_file_number" min = "0" max="25"/>

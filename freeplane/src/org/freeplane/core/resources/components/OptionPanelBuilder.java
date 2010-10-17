@@ -127,6 +127,32 @@ public class OptionPanelBuilder {
 			return createNumberPropertyCreator(name, min, step, max);
 		}
 	}
+	
+	private class PathOptionCreator extends PropertyCreator {
+		private IPropertyControlCreator createPathPropertyCreator(final String name, final boolean isDir,
+		                                                          final String[] suffixes) {
+			return new IPropertyControlCreator() {
+				public IPropertyControl createControl() {
+					return new PathProperty(name, isDir, suffixes);
+				}
+			};
+		}
+		
+		@Override
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
+			final boolean isDir = Boolean.parseBoolean(data.getAttribute("dir", "false"));
+			final String[] suffixes = parseCSV(data.getAttribute("suffixes", ""));
+			return createPathPropertyCreator(name, isDir, suffixes);
+		}
+
+		// Parses CSV, strips whitespace, returns null if empty
+		private String[] parseCSV(String csv) {
+			if (csv == null)
+				return null;
+			final String[] result = csv.trim().split("\\s*,\\s*");
+	        return result.length > 0 ? result : null;
+        }
+	}
 
 	private static class Path {
 		static Path emptyPath() {
@@ -433,6 +459,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("font", new FontOptionCreator());
 		readManager.addElementHandler("boolean", new BooleanOptionCreator());
 		readManager.addElementHandler("number", new NumberOptionCreator());
+		readManager.addElementHandler("path", new PathOptionCreator());
 		readManager.addElementHandler("color", new ColorOptionCreator());
 		readManager.addElementHandler("combo", new ComboOptionCreator());
 		readManager.addElementHandler("key", new KeyOptionCreator());
