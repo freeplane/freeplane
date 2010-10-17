@@ -147,20 +147,27 @@ class NodeViewFactory {
 	 */
 	NodeView newNodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
 		final NodeView newView = new NodeView(model, position, map, parent);
-		newView.setLayout(SelectableLayout.getInstance());
-		if (model.isRoot()) {
-			final MainView mainView = new RootMainView();
-			newView.setMainView(mainView);
-		}
-		else {
-			newView.setMainView(newMainView(newView));
-		}
 		model.addViewer(newView);
-		newView.updateNoteViewer();
-		newView.update();
-		fireNodeViewCreated(newView);
 		return newView;
 	}
+
+	void initNodeView(final NodeView nodeView) {
+		if(nodeView.getMainView() != null){
+			return;
+		}
+	    nodeView.setLayout(SelectableLayout.getInstance());
+	    final NodeModel model = nodeView.getModel();
+		if (model.isRoot()) {
+			final MainView mainView = new RootMainView();
+			nodeView.setMainView(mainView);
+		}
+		else {
+			nodeView.setMainView(newMainView(nodeView));
+		}
+		nodeView.updateNoteViewer();
+		nodeView.update();
+		fireNodeViewCreated(nodeView);
+    }
 
 	public ZoomableLabel createNoteViewer() {
 		ZoomableLabel label = new ZoomableLabel();

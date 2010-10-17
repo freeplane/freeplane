@@ -164,6 +164,18 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
+
+	
+	@Override
+    public void layout() {
+		if(mainView == null){
+			NodeViewFactory.getInstance().initNodeView(this);
+		}
+		super.layout();
+    }
+
+
+
 	@SuppressWarnings("serial")
     static final class DetailsView extends ZoomableLabel {
 	    public DetailsView() {
@@ -1204,6 +1216,10 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void repaintSelected() {
+		// return if main view was not set
+		if(mainView == null){
+			return;
+		}
 		// do not repaint removed nodes
 		if (model.getParentNode() == null && !model.isRoot()) {
 			return;
@@ -1230,6 +1246,9 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public void requestFocus() {
+		if(mainView == null){
+			return;
+		}
 		getMap().scrollNodeToVisible(this);
 		mainView.requestFocus();
 	}
