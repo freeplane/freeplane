@@ -166,15 +166,6 @@ public class NodeView extends JComponent implements INodeView {
 
 
 	
-	@Override
-    public void layout() {
-		if(mainView == null){
-			NodeViewFactory.getInstance().initNodeView(this);
-		}
-		super.layout();
-    }
-
-
 
 	@SuppressWarnings("serial")
     static final class DetailsView extends ZoomableLabel {
@@ -1464,6 +1455,9 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	protected void validateTree() {
+		if(mainView == null){
+			NodeViewFactory.getInstance().initNodeView(this);
+		}
 		super.validateTree();
 	}
 

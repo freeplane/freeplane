@@ -1558,6 +1558,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	protected void validateTree() {
 		registerParentListener();
 		validateSelecteds();
+		getRoot().validateTree();
 		super.validateTree();
 		setViewPositionAfterValidate();
 	}
