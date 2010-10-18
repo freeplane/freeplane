@@ -363,9 +363,13 @@ public abstract class MainView extends ZoomableLabel {
 		updateText(text);
 	}
 
-	private String shortenText(String text) {
-	    if(HtmlUtils.isHtmlNode(text)){
-	    	text = HtmlUtils.htmlToPlain(text).trim();
+	private String shortenText(String longText) {
+		String text;
+	    if(HtmlUtils.isHtmlNode(longText)){
+	    	text = HtmlUtils.htmlToPlain(longText).trim();
+	    }
+	    else{
+	    	text = longText;
 	    }
 	    int length = text.length();
 	    final int eolPosition = text.indexOf('\n');
@@ -374,7 +378,7 @@ public abstract class MainView extends ZoomableLabel {
 	    	if(length <= maxNodeWidth){
 	    		final Container parent = getParent();
 	    		if(parent instanceof NodeView || parent.getComponentCount() == 1){
-	    			return text;
+	    			return longText;
 	    		}
 	    		return text + "...";
 	    	}
