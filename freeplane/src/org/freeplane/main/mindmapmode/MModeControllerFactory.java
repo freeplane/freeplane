@@ -19,6 +19,7 @@
  */
 package org.freeplane.main.mindmapmode;
 
+import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -26,6 +27,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ToggleToolbarAction;
@@ -174,6 +176,8 @@ public class MModeControllerFactory {
 				stopTimerForDelayedSelection();
 				final Controller controller = Controller.getCurrentController();
 				final ModeController modeController = controller.getModeController();
+				final Component selectedComponent = controller.getViewController().getSelectedComponent();
+				final boolean isFocused = SwingUtilities.isDescendingFrom(e.getComponent(), selectedComponent);
 				extendSelection(e);
 				showPopupMenu(e);
 				if (e.isConsumed()) {
@@ -195,7 +199,9 @@ public class MModeControllerFactory {
 							((MTextController) TextController.getController()).edit(null, false, false);
 							return;
 						}
-						mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
+						if(isFocused){
+							mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
+						}
 					}
 					e.consume();
 				}
