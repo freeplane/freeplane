@@ -1389,13 +1389,10 @@ public class NodeView extends JComponent implements INodeView {
 	    final Component[] components = getContentPane().getComponents();
 		int index;
 		for (index = 0; index < components.length; index++){
-			if(components[index] == getMainView()){
-				break;
-			}
-		}
-		index ++;
-		for (;index < components.length; index++){
 			final Component component = components[index];
+			if(component == getMainView()){
+				continue;
+			}
 			if(component.isVisible() != componentsVisible){
 				component.setVisible(componentsVisible);
 			}

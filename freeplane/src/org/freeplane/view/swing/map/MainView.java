@@ -21,6 +21,7 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -371,6 +372,10 @@ public abstract class MainView extends ZoomableLabel {
 	    final int maxNodeWidth = ResourceController.getResourceController().getIntProperty("max_shortened_text_length");
 		if(eolPosition == -1 || eolPosition >= length || eolPosition >= maxNodeWidth){
 	    	if(length <= maxNodeWidth){
+	    		final Container parent = getParent();
+	    		if(parent instanceof NodeView || parent.getComponentCount() == 1){
+	    			return text;
+	    		}
 	    		return text + "...";
 	    	}
 	    	length = maxNodeWidth;
