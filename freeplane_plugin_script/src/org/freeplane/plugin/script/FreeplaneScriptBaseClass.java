@@ -101,6 +101,11 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 		final NodeRO n = N(id);
 		return n == null ? null : n.getValue();
 	}
+
+	/** returns valueIfNull if value is null and value otherwise. */
+	public Object ifNull(Object value, Object valueIfNull) {
+		return value == null ? valueIfNull : value;
+	}
 	
 //	/** Shortcut for new {@link org.freeplane.plugin.script.proxy.Convertible}. */
 //	public Convertible convertible(String string) {
