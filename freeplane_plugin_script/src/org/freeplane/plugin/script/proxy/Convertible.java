@@ -62,15 +62,17 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 
 
 	/**
-	 * "Safe" variant of getNum(): returns a Long or a Double, and (long) 0 on conversion errors.
+	 * "Safe" variant of getNum(): returns a Long or a Double if text is convertible to it or 0 otherwise
+	 * (even if text is null).
 	 * 
-	 * @throws nothing - on error (long) 0 is returned.
+	 * @throws nothing - on any error (long) 0 is returned.
 	 */
 	public Number getNum0() {
 	    try {
-	        return getNum();
+	        final Number result = getNum();
+			return result == null ? 0L : result;
         }
-        catch (ConversionException e) {
+        catch (Exception e) {
         	return 0L;
         }
     }
