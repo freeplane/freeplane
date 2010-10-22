@@ -91,6 +91,7 @@ public abstract class MainView extends ZoomableLabel {
 	private static final boolean DONT_MARK_FORMULAS_FIXME_REMOVE = Controller.getCurrentController()
 	    .getResourceController().getBooleanProperty("formula_dont_mark_formulas");;
 	private Border errorBorder = new LineBorder(Color.RED, 2);
+	private boolean shortenedText;
 
 	MainView() {
 		setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -280,11 +281,11 @@ public abstract class MainView extends ZoomableLabel {
 		for (final MindIcon myIcon : icons) {
 			iconImages.addImage(myIcon.getIcon());
 		}
-		addLinkIcon(iconImages, model);
+		addOwnIcons(iconImages, model);
 		setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
 	}
 
-	private void addLinkIcon(final MultipleImage iconImages, final NodeModel model) {
+	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
 		final URI link = NodeLinks.getLink(model);
 		if (link != null) {
 			String iconPath = LINK_ICON;
@@ -310,6 +311,11 @@ public abstract class MainView extends ZoomableLabel {
 			}
 			final UIIcon icon = STORE.getUIIcon(iconPath);
 			iconImages.addImage(icon.getIcon());
+		}
+		if(shortenedText){
+			final Color textBackground = getNodeView().getTextBackground();
+			final Color textColorForBackground = UITools.getTextColorForBackground(textBackground);
+			iconImages.addImage(new ShortenedNodeIcon(textColorForBackground));
 		}
 	}
 
@@ -360,6 +366,9 @@ public abstract class MainView extends ZoomableLabel {
 		if(textShortened){
 			text = shortenText(text);
 		}
+		else{
+			shortenedText = false;
+		}
 		updateText(text);
 	}
 
@@ -378,16 +387,19 @@ public abstract class MainView extends ZoomableLabel {
 	    	if(length <= maxNodeWidth){
 	    		final Container parent = getParent();
 	    		if(parent instanceof NodeView || parent.getComponentCount() == 1){
+	    			shortenedText = false;
 	    			return longText;
 	    		}
-	    		return text + "...";
+	    		shortenedText = true;
+	    		return text;
 	    	}
 	    	length = maxNodeWidth;
 	    }
 	    else{
 	    	length = eolPosition;
 	    }
-	    text = text.substring(0, length) + "...";
+	    text = text.substring(0, length);
+	    shortenedText = true;
 	    return text;
     }
 }

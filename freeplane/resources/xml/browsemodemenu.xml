@@ -138,6 +138,8 @@
 				 />
 		</menu_category>
 		<menu_category name="folding">
+			<menu_action action="SetShortenerStateAction" />
+			<menu_action action="ToggleDetailsAction"/>
 			<menu_action action="ToggleFoldedAction"  />
 		</menu_category>
 		<menu_category name="context">

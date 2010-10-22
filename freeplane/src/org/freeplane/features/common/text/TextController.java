@@ -181,7 +181,7 @@ public class TextController implements IExtension {
 	}
 
 	public void setIsShortened(NodeModel node, boolean shortened) {
-		boolean oldState = ShortenedTextModel.getShortenedTextModel(node) == null;
+		boolean oldState = ShortenedTextModel.getShortenedTextModel(node) != null;
 		if(oldState == shortened){
 			return;
 		}

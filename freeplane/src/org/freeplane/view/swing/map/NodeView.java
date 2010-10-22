@@ -1347,7 +1347,6 @@ public class NodeView extends JComponent implements INodeView {
 		mainView.setVisible(true);
 		mainView.updateTextColor(this);
 		mainView.updateFont(this);
-		mainView.updateIcons(this);
 		createAttributeView();
 		if (attributeView != null) {
 			attributeView.update();
@@ -1364,6 +1363,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		updateShortener(getModel());
 		mainView.updateText(getModel());
+		mainView.updateIcons(this);
 		updateToolTip();
 		revalidate();
 	}
