@@ -302,7 +302,7 @@ public class MTextController extends TextController {
 		edit.stopEditing();
 	}
 
-	public boolean useRichTextInNewLongNodes() {
+	public boolean useRichTextInNewNodes() {
 		final int showResult = OptionalDontShowMeAgainDialog.show(
 		    "edit.edit_rich_text", "edit.decision", MTextController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES,
 		    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);

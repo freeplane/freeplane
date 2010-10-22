@@ -483,7 +483,7 @@ public class MClipboardController extends ClipboardController {
 					if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 						final MTextController textController = (MTextController) TextController
 						    .getController();
-						final boolean richText = textController.useRichTextInNewLongNodes();
+						final boolean richText = textController.useRichTextInNewNodes();
 						if (richText) {
 							final boolean structuredHtmlImport = resourceController
 							    .getBooleanProperty("structured_html_import");
