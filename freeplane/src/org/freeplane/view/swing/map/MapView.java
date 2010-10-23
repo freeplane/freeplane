@@ -397,7 +397,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	void anchorToSelected(final NodeView view, final float horizontalPoint, final float verticalPoint) {
-		if (view != null) {
+		if (view != null && view.getMainView() != null) {
 			anchor = view;
 			anchorHorizontalPoint = horizontalPoint;
 			anchorVerticalPoint = verticalPoint;
