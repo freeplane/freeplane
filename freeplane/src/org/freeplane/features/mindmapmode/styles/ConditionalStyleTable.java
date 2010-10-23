@@ -7,8 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.EventObject;
-import java.util.List;
-
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
@@ -58,14 +56,10 @@ class ConditionalStyleTable extends JTable {
 		public Component getTableCellEditorComponent(final JTable table, final Object value, boolean isSelected, int row, int column) {
 			btn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					final MLogicalStyleController styleController = MLogicalStyleController.getController();
-					final FilterComposerDialog filterComposerDialog = styleController.getFilterComposerDialog();
-					filterComposerDialog.acceptMultipleConditions(false);
-					filterComposerDialog.show();
-					List<ASelectableCondition> conditions = filterComposerDialog.getConditions();
-					cellEditorValue = conditions.isEmpty() ? value : conditions.get(0);
-					btn.removeActionListener(this);
-					fireEditingStopped();
+				    final MLogicalStyleController styleController = MLogicalStyleController.getController();
+					cellEditorValue = styleController.editCondition((ASelectableCondition) value);
+				    btn.removeActionListener(this);
+				    fireEditingStopped();
 				}
 			});
 	        return btn;
@@ -125,6 +119,6 @@ class ConditionalStyleTable extends JTable {
 	public MapStyleModel getStyles() {
 	    return styleModel;
     }
-    
+
 }
 

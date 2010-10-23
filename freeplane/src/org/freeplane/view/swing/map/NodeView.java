@@ -234,7 +234,7 @@ public class NodeView extends JComponent implements INodeView {
         }
 		
 	}
-	@SuppressWarnings("serial")
+
 	private void updateDetails() {
 		final DetailTextModel detailText = DetailTextModel.getDetailText(model);
 		if (detailText == null) {

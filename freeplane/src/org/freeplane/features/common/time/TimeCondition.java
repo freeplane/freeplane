@@ -22,8 +22,6 @@ package org.freeplane.features.common.time;
 import java.text.DateFormat;
 import java.util.Date;
 
-import javax.swing.JComponent;
-
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.n3.nanoxml.XMLElement;

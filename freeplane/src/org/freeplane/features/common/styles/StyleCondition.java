@@ -1,7 +1,5 @@
 package org.freeplane.features.common.styles;
 
-import javax.swing.JComponent;
-
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;

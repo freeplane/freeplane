@@ -41,8 +41,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
@@ -402,37 +400,42 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		final Box conditionButtonBox = Box.createVerticalBox();
 		conditionButtonBox.setBorder(new EmptyBorder(0, 10, 0, 10));
 		getContentPane().add(conditionButtonBox, BorderLayout.EAST);
+
 		btnAdd = new JButton(new AddElementaryConditionAction());
 		btnAdd.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(Box.createVerticalGlue());
 		conditionButtonBox.add(btnAdd);
+
 		btnNot = new JButton(new CreateNotSatisfiedConditionAction());
 		conditionButtonBox.add(Box.createVerticalGlue());
 		btnNot.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(btnNot);
 		btnNot.setEnabled(false);
 
+		btnAnd = new JButton(new CreateConjunctConditionAction());
+		conditionButtonBox.add(Box.createVerticalGlue());
+		btnAnd.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
+		conditionButtonBox.add(btnAnd);
+		btnAnd.setEnabled(false);
+
+		btnOr = new JButton(new CreateDisjunctConditionAction());
+		conditionButtonBox.add(Box.createVerticalGlue());
+		btnOr.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
+		conditionButtonBox.add(btnOr);
+		btnOr.setEnabled(false);
+		
 		btnSplit = new JButton(new SplitConditionAction());
 		conditionButtonBox.add(Box.createVerticalGlue());
 		btnSplit.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(btnSplit);
 		btnSplit.setEnabled(false);
 
-		btnAnd = new JButton(new CreateConjunctConditionAction());
-		conditionButtonBox.add(Box.createVerticalGlue());
-		btnAnd.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-		conditionButtonBox.add(btnAnd);
-		btnAnd.setEnabled(false);
-		btnOr = new JButton(new CreateDisjunctConditionAction());
-		conditionButtonBox.add(Box.createVerticalGlue());
-		btnOr.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-		conditionButtonBox.add(btnOr);
-		btnOr.setEnabled(false);
 		btnDelete = new JButton(new DeleteConditionAction());
 		btnDelete.setEnabled(false);
 		conditionButtonBox.add(Box.createVerticalGlue());
 		btnDelete.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(btnDelete);
+		
 		conditionButtonBox.add(Box.createVerticalGlue());
 		final Box controllerBox = Box.createHorizontalBox();
 		controllerBox.setBorder(new EmptyBorder(5, 0, 5, 0));

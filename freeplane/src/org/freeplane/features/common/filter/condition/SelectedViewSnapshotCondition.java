@@ -31,7 +31,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class SelectedViewSnapshotCondition extends ASelectableCondition {
 	private static final String NAME = "selected_view_snapshot";
 	private static String description;
-	private static JComponent renderer;
 
 	public static ASelectableCondition CreateCondition() {
 		return new SelectedViewSnapshotCondition();

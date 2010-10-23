@@ -442,4 +442,15 @@ public class MLogicalStyleController extends LogicalStyleController {
 		}
 		return filterComposerDialog;
     }
+	
+	public ASelectableCondition editCondition(ASelectableCondition value) {
+	    final FilterComposerDialog filterComposerDialog = getFilterComposerDialog();
+	    filterComposerDialog.acceptMultipleConditions(false);
+	    filterComposerDialog.addCondition(value);
+	    filterComposerDialog.show();
+	    List<ASelectableCondition> conditions = filterComposerDialog.getConditions();
+	    return conditions.isEmpty() ? value : conditions.get(0);
+    }
+    
+
 }

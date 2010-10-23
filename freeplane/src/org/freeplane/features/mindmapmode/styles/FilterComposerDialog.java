@@ -18,10 +18,14 @@ class FilterComposerDialog extends AFilterComposerDialog{
 
 	protected DefaultComboBoxModel createModel() {
 		conditions.clear();
-		if(model == null){
+		initializeModel();
+		return model;
+    }
+
+	protected void initializeModel() {
+	    if(model == null){
 			model = new DefaultComboBoxModel();
 		}
-		return model;
     }
 	
 	protected boolean applyModel(DefaultComboBoxModel model, int[] selectedIndices) {
@@ -46,5 +50,13 @@ class FilterComposerDialog extends AFilterComposerDialog{
 
 	public void acceptMultipleConditions(boolean acceptMultipleConditions) {
 	    this.acceptMultipleConditions = acceptMultipleConditions;
+    }
+
+	public void addCondition(ASelectableCondition value) {
+		initializeModel();
+		if (model.getIndexOf(value) == -1){
+			model.addElement(value);
+		}
+		setSelectedItem(value);
     }
 }

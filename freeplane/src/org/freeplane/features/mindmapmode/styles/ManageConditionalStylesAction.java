@@ -88,6 +88,23 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 				}
 			} 
 		});
+
+	    JButton edit = new JButton();
+	    MenuBuilder.setLabelAndMnemonic(edit, TextUtils.getText("edit"));
+	    edit.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
+	    edit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = conditionalStyleTable.getSelectedRow();
+				if(selectedRow == -1){
+					return;
+				}
+				final ASelectableCondition value = (ASelectableCondition) conditionalStyleTable.getValueAt(selectedRow, 1);
+				final MLogicalStyleController styleController = MLogicalStyleController.getController();
+				final ASelectableCondition newCondition = styleController.editCondition(value);
+				conditionalStyleTable.setValueAt(newCondition, selectedRow, 1);
+			}
+		});
+
 	    JButton delete = new JButton();
 	    MenuBuilder.setLabelAndMnemonic(delete, TextUtils.getText("delete"));
 	    delete.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
@@ -137,6 +154,8 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 		});
 	    buttons.add(Box.createVerticalStrut(BUTTON_GAP));
 	    buttons.add(create);
+	    buttons.add(Box.createVerticalStrut(BUTTON_GAP));
+	    buttons.add(edit);
 	    buttons.add(Box.createVerticalStrut(BUTTON_GAP));
 	    buttons.add(delete);
 	    buttons.add(Box.createVerticalStrut(BUTTON_GAP));
