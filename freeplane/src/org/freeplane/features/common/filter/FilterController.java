@@ -289,6 +289,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			}
 		};
 		final JButton applyBtn = new JButton(controller.getAction("ReapplyFilterAction"));
+		final JButton filterSelectedBtn = new JButton(controller.getAction("ApplySelectedViewConditionAction"));
 		final JButton noFilteringBtn = new JButton(controller.getAction("ApplyNoFilteringAction"));
 		filterToolbar.addSeparator();
 		filterToolbar.add(undoBtn);
@@ -299,6 +300,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.add(btnUnfoldAncestors);
 		filterToolbar.add(activeFilterConditionComboBox);
 		filterToolbar.add(applyBtn);
+		filterToolbar.add(filterSelectedBtn);
 		filterToolbar.add(noFilteringBtn);
 		filterToolbar.add(btnEdit);
 		activeFilterConditionComboBox.setRenderer(this.getConditionRenderer());
