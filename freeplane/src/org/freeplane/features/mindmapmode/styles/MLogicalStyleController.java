@@ -33,7 +33,7 @@ import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.cloud.CloudModel;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
@@ -82,11 +82,11 @@ public class MLogicalStyleController extends LogicalStyleController {
 	private final class AddConditionalStyleActor implements IActor {
 		private final MapModel map;
 		private final boolean isActive;
-		private final ISelectableCondition condition;
+		private final ASelectableCondition condition;
 		private final IStyle style;
 		private boolean isLast;
 
-		public AddConditionalStyleActor(MapModel map, boolean isActive, ISelectableCondition condition, IStyle style, boolean isLast) {
+		public AddConditionalStyleActor(MapModel map, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
 			this.map = map;
 			this.isActive = isActive;
 			this.condition = condition;
@@ -363,7 +363,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	@Override
-	public void addConditionalStyle(MapModel map, boolean isActive, ISelectableCondition condition, IStyle style, boolean isLast) {
+	public void addConditionalStyle(MapModel map, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
 		AddConditionalStyleActor actor = new AddConditionalStyleActor(map, isActive, condition, style, isLast);
 		Controller.getCurrentModeController().execute(actor, map);
 	}

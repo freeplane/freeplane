@@ -68,8 +68,8 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 		if (value instanceof UIIcon) {
 			component = new JLabel(((UIIcon) value).getIcon());
 		}
-		else if (value instanceof ISelectableCondition) {
-			final ISelectableCondition cond = (ISelectableCondition) value;
+		else if (value instanceof ASelectableCondition) {
+			final ASelectableCondition cond = (ASelectableCondition) value;
 			component = cond.getListCellRendererComponent();
 		}
 		else {

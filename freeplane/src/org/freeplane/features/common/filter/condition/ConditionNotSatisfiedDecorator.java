@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.common.filter.condition;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Vector;
 
 import javax.swing.JComponent;
@@ -31,21 +33,21 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class ConditionNotSatisfiedDecorator implements ISelectableCondition {
+public class ConditionNotSatisfiedDecorator extends ASelectableCondition implements ICombinedCondition{
 	static final String NAME = "negate_condition";
 
-	static ISelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
+	static ASelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
 		final Vector<XMLElement> children = element.getChildren();
-		final ISelectableCondition cond = conditionFactory.loadCondition(children.get(0));
+		final ASelectableCondition cond = conditionFactory.loadCondition(children.get(0));
 		return new ConditionNotSatisfiedDecorator(cond);
 	}
 
-	final private ISelectableCondition originalCondition;
+	final private ASelectableCondition originalCondition;
 
 	/**
 	 *
 	 */
-	public ConditionNotSatisfiedDecorator(final ISelectableCondition originalCondition) {
+	public ConditionNotSatisfiedDecorator(final ASelectableCondition originalCondition) {
 		super();
 		assert originalCondition != null;
 		this.originalCondition = originalCondition;
@@ -67,20 +69,32 @@ public class ConditionNotSatisfiedDecorator implements ISelectableCondition {
 	 * freeplane.controller.filter.condition.Condition#getListCellRendererComponent
 	 * ()
 	 */
-	public JComponent getListCellRendererComponent() {
+	protected JComponent createRendererComponent() {
 		final JCondition component = new JCondition();
 		final String not = TextUtils.removeMnemonic(TextUtils.getText("filter_not"));
 		final String text = not + ' ';
 		component.add(new JLabel(text));
-		final JComponent renderer = originalCondition.getListCellRendererComponent();
+		final JComponent renderer = originalCondition.createRendererComponent();
 		component.add(renderer);
 		return component;
 	}
 
-	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(ConditionNotSatisfiedDecorator.NAME);
+	public void fillXML(final XMLElement child) {
 		originalCondition.toXml(child);
-		element.addChild(child);
 	}
+
+	@Override
+    protected String createDesctiption() {
+	    return NAME;
+    }
+
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
+	
+	public Collection<ASelectableCondition> split() {
+	    return Arrays.asList(new ASelectableCondition[]{originalCondition});
+    }
+
 }

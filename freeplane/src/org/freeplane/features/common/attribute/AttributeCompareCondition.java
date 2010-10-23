@@ -22,7 +22,7 @@ package org.freeplane.features.common.attribute;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -35,7 +35,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	static final String NAME = "attribute_compare_condition";
 	static final String SUCCEED = "SUCCEED";
 
-	static ISelectableCondition load(final XMLElement element) {
+	static ASelectableCondition load(final XMLElement element) {
 		return new AttributeCompareCondition(element.getAttribute(AttributeCompareCondition.ATTRIBUTE, null), element
 		    .getAttribute(CompareConditionAdapter.VALUE, null), TreeXmlReader.xmlToBoolean(element.getAttribute(
 		    CompareConditionAdapter.IGNORE_CASE, null)), Integer.parseInt(element.getAttribute(
@@ -83,13 +83,15 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 		return super.createDescription(attribute, comparationResult, succeed);
 	}
 
-	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(AttributeCompareCondition.NAME);
-		super.attributesToXml(child);
+	public void fillXML(final XMLElement child) {
+		super.fillXML(child);
 		child.setAttribute(AttributeCompareCondition.ATTRIBUTE, attribute);
 		child.setAttribute(AttributeCompareCondition.COMPARATION_RESULT, Integer.toString(comparationResult));
 		child.setAttribute(AttributeCompareCondition.SUCCEED, TreeXmlWriter.BooleanToXml(succeed));
-		element.addChild(child);
 	}
+
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
 }

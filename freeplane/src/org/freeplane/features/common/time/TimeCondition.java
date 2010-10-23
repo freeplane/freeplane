@@ -25,18 +25,17 @@ import java.util.Date;
 import javax.swing.JComponent;
 
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.features.common.filter.condition.ConditionFactory;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public abstract class TimeCondition implements ISelectableCondition {
+public abstract class TimeCondition extends ASelectableCondition {
 	static final String DATE = "DATE";
 	static final String FILTER_CREATED_AFTER = "filter_created_after";
 	static final String FILTER_CREATED_BEFORE = "filter_created_before";
 	static final String FILTER_MODIFIED_AFTER = "filter_modified_after";
 	static final String FILTER_MODIFIED_BEFORE = "filter_modified_before";
 
-	public static ISelectableCondition create(final NamedObject simpleCond, final Date date) {
+	public static ASelectableCondition create(final NamedObject simpleCond, final Date date) {
 		if (simpleCond.objectEquals(TimeCondition.FILTER_MODIFIED_AFTER)) {
 			return new TimeConditionModifiedAfter(date);
 		}
@@ -57,9 +56,6 @@ public abstract class TimeCondition implements ISelectableCondition {
 	}
 
 	final private Date date;
-	private String description;
-	private JComponent renderer;
-
 	public TimeCondition(final Date date) {
 		this.date = date;
 	}
@@ -70,27 +66,10 @@ public abstract class TimeCondition implements ISelectableCondition {
 		return date;
 	}
 
-	public JComponent getListCellRendererComponent() {
-		if (renderer == null) {
-			renderer = ConditionFactory.createCellRendererComponent(toString());
-		}
-		return renderer;
-	}
+	abstract protected String getName();
 
-	abstract String getName();
 
-	@Override
-	public String toString() {
-		if (description == null) {
-			description = createDesctiption();
-		}
-		return description;
-	}
-
-	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(getName());
+	public void fillXML(final XMLElement child) {
 		child.setAttribute(DATE, Long.toString(getDate().getTime()));
-		element.addChild(child);
 	}
 }

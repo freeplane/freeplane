@@ -34,7 +34,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -64,13 +64,13 @@ class NodeTextConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
+	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
 	                                            final Object value, final boolean ignoreCase) {
 		final String item = (String) ((NamedObject)selectedItem).getObject();
-		return createNodeCondition(item, simpleCondition, (String) value, ignoreCase);
+		return createASelectableCondition(item, simpleCondition, (String) value, ignoreCase);
 	}
 
-	private ISelectableCondition createNodeCondition(final String item, final NamedObject simpleCondition, final String value,
+	private ASelectableCondition createASelectableCondition(final String item, final NamedObject simpleCondition, final String value,
 	                                                   final boolean ignoreCase) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
 			if (value.equals("")) {
@@ -139,7 +139,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ISelectableCondition loadCondition(final XMLElement element) {
+	public ASelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(NodeContainsCondition.NAME)) {
 			return NodeContainsCondition.load(element);
 		}

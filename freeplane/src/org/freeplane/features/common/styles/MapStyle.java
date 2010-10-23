@@ -42,7 +42,7 @@ import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
@@ -221,7 +221,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				style = StyleFactory.create(styleElement.getAttribute("STYLE_REF", null));
 			}
 			final XMLElement conditionElement = styleElement.getChildAtIndex(0);
-			final ISelectableCondition condition = conditionFactory.loadCondition(conditionElement);
+			final ASelectableCondition condition = conditionFactory.loadCondition(conditionElement);
 			conditionalStyleModel.addCondition(isActive, condition, style, isLast);
 		}
     }

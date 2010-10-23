@@ -20,18 +20,17 @@
 package org.freeplane.features.common.filter.condition;
 
 import javax.swing.JComponent;
-import javax.swing.JLabel;
-
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class NoFilteringCondition implements ISelectableCondition {
+public class NoFilteringCondition extends ASelectableCondition {
+	private static final String NAME = "no_filtering_condition";
 	private static NoFilteringCondition condition;
 	private static String description;
 	private static JComponent renderer;
 
-	public static ISelectableCondition createCondition() {
+	public static ASelectableCondition createCondition() {
 		if (NoFilteringCondition.condition == null) {
 			NoFilteringCondition.condition = new NoFilteringCondition();
 		}
@@ -46,13 +45,6 @@ public class NoFilteringCondition implements ISelectableCondition {
 		return true;
 	}
 
-	public JComponent getListCellRendererComponent() {
-		if (NoFilteringCondition.renderer == null) {
-			NoFilteringCondition.renderer = new JLabel(toString());
-		}
-		return NoFilteringCondition.renderer;
-	}
-
 	@Override
 	public String toString() {
 		if (NoFilteringCondition.description == null) {
@@ -61,6 +53,15 @@ public class NoFilteringCondition implements ISelectableCondition {
 		return NoFilteringCondition.description;
 	}
 
-	public void toXml(final XMLElement element) {
-	}
+	@Override
+    protected String createDesctiption() {
+	    return NAME;
+    }
+
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
+	
+	public void toXml(final XMLElement element) {}
 }

@@ -20,7 +20,7 @@
 package org.freeplane.features.common.note;
 
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -28,7 +28,7 @@ public class IgnoreCaseNoteContainsCondition extends NoteContainsCondition {
 	static final String NAME = "ignore_case_note_contains_condition";
 	static final String VALUE = "VALUE";
 
-	static ISelectableCondition load(final XMLElement element) {
+	static ASelectableCondition load(final XMLElement element) {
 		return new IgnoreCaseNoteContainsCondition(element.getAttribute(IgnoreCaseNoteContainsCondition.VALUE, null));
 	}
 
@@ -45,10 +45,5 @@ public class IgnoreCaseNoteContainsCondition extends NoteContainsCondition {
 	protected String getText(final NodeModel node) {
 		final String noteText = NoteModel.getNoteText(node);
 		return noteText == null ? null : HtmlUtils.htmlToPlain(noteText).toLowerCase();
-	}
-
-	@Override
-	public void toXml(final XMLElement element) {
-		toXml(element, NAME);
 	}
 }

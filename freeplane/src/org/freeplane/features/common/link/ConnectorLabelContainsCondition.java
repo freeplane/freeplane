@@ -68,7 +68,7 @@ public class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 	}
 
 	@Override
-	String getName() {
+	protected String getName() {
 		return NAME;
 	}
 }

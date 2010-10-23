@@ -31,7 +31,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -65,7 +65,7 @@ class TimeConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean ignoreCase) {
 		return TimeCondition.create(simpleCond, (Date) value);
 	}
@@ -100,7 +100,7 @@ class TimeConditionController implements IElementaryConditionController {
 		return false;
 	}
 
-	public ISelectableCondition loadCondition(final XMLElement element) {
+	public ASelectableCondition loadCondition(final XMLElement element) {
 		try {
 			if (element.getName().equalsIgnoreCase(TimeConditionCreatedBefore.NAME)) {
 				final String dateString = element.getAttribute(TimeCondition.DATE, null);

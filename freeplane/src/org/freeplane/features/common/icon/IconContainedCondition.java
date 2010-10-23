@@ -25,13 +25,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.filter.condition.JCondition;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class IconContainedCondition implements ISelectableCondition {
+public class IconContainedCondition extends ASelectableCondition {
 	private static final IconStore STORE = IconStoreFactory.create();
 	static final String ICON = "ICON";
 	static final String NAME = "icon_contained_condition";
@@ -58,7 +58,7 @@ public class IconContainedCondition implements ISelectableCondition {
 		return false;
 	}
 
-	static ISelectableCondition load(final XMLElement element) {
+	static ASelectableCondition load(final XMLElement element) {
 		return new IconContainedCondition(element.getAttribute(IconContainedCondition.ICON, null));
 	}
 
@@ -83,7 +83,7 @@ public class IconContainedCondition implements ISelectableCondition {
 	 * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing
 	 * .JList, java.lang.Object, int, boolean, boolean)
 	 */
-	public JComponent getListCellRendererComponent() {
+	public JComponent createRendererComponent() {
 		final JCondition component = new JCondition();
 		final String text = TextUtils.getText("filter_icon") + ' ' + TextUtils.getText("filter_contains") + ' ';
 		component.add(new JLabel(text));
@@ -94,15 +94,22 @@ public class IconContainedCondition implements ISelectableCondition {
 		return component;
 	}
 
-	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(IconContainedCondition.NAME);
+	public void fillXML(final XMLElement child) {
 		child.setAttribute(IconContainedCondition.ICON, iconName);
-		element.addChild(child);
 	}
 
 	@Override
 	public String toString() {
 		return TextUtils.getText("filter_icon") + " \"" + getIconName() + "\"";
 	}
+
+	@Override
+    protected String createDesctiption() {
+	    return NAME;
+    }
+
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
 }

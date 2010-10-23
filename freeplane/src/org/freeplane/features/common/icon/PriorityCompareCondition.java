@@ -20,6 +20,8 @@
 package org.freeplane.features.common.icon;
 
 import java.util.Collection;
+
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
@@ -27,7 +29,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.filter.condition.JCondition;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.NodeModel;
@@ -40,7 +42,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 	static final String VALUE = "VALUE";
 	private static final IconStore STORE = IconStoreFactory.create();
 
-	static ISelectableCondition load(final XMLElement element) {
+	static ASelectableCondition load(final XMLElement element) {
 		return new PriorityCompareCondition(element.getAttribute(PriorityCompareCondition.VALUE, null), Integer
 		    .parseInt(element.getAttribute(PriorityCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader
 		    .xmlToBoolean(element.getAttribute(PriorityCompareCondition.SUCCEED, null)));
@@ -53,14 +55,18 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 		super(value, false);
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
+	}
+
+	@Override
+    protected JComponent createRendererComponent() {
 		final JCondition renderer = new JCondition();
 		final String string = toString();
 		final JLabel label = new JLabel(string.substring(0, string.length() - 3));
 		label.setIcon(STORE.getMindIcon(getIconName()).getIcon());
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 		renderer.add(label);
-		setListCellRendererComponent(renderer);
-	}
+		return renderer;
+    }
 
 	public boolean checkNode(final NodeModel node) {
 		final Collection<MindIcon> icons = IconController.getIcons(node);
@@ -92,12 +98,14 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 		return "full-" + getConditionValue().toString();
 	}
 
-	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(PriorityCompareCondition.NAME);
-		super.attributesToXml(child);
+	public void fillXML(final XMLElement child) {
+		super.fillXML(child);
 		child.setAttribute(PriorityCompareCondition.COMPARATION_RESULT, Integer.toString(comparationResult));
 		child.setAttribute(PriorityCompareCondition.SUCCEED, TreeXmlWriter.BooleanToXml(succeed));
-		element.addChild(child);
 	}
+
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
 }

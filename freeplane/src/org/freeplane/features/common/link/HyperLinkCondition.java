@@ -23,7 +23,6 @@ import java.net.URI;
 
 
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -31,7 +30,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public abstract class HyperLinkCondition extends ASelectableCondition implements ISelectableCondition {
+public abstract class HyperLinkCondition extends ASelectableCondition {
 	static final String TEXT = "TEXT";
 	final private String hyperlink;
 	public HyperLinkCondition(final String hyperlink) {

@@ -28,11 +28,12 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class SelectedViewSnapshotCondition implements ISelectableCondition {
+public class SelectedViewSnapshotCondition extends ASelectableCondition {
+	private static final String NAME = "selected_view_snapshot";
 	private static String description;
 	private static JComponent renderer;
 
-	public static ISelectableCondition CreateCondition() {
+	public static ASelectableCondition CreateCondition() {
 		return new SelectedViewSnapshotCondition();
 	}
 
@@ -48,13 +49,6 @@ public class SelectedViewSnapshotCondition implements ISelectableCondition {
 		return selectedNodes.contains(node);
 	}
 
-	public JComponent getListCellRendererComponent() {
-		if (SelectedViewSnapshotCondition.renderer == null) {
-			SelectedViewSnapshotCondition.renderer = ConditionFactory.createCellRendererComponent(toString());
-		}
-		return SelectedViewSnapshotCondition.renderer;
-	}
-
 	@Override
 	public String toString() {
 		if (SelectedViewSnapshotCondition.description == null) {
@@ -63,6 +57,14 @@ public class SelectedViewSnapshotCondition implements ISelectableCondition {
 		return SelectedViewSnapshotCondition.description;
 	}
 
-	public void toXml(final XMLElement element) {
-	}
+	@Override
+    protected String createDesctiption() {
+	    return NAME;
+    }
+
+	@Override
+    protected String getName() {
+	    return NAME;
+   }
+	public void toXml(final XMLElement element) {}
 }

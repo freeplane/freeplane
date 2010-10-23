@@ -23,14 +23,13 @@ import java.util.Date;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev
  * Mar 5, 2009
  */
-public class TimeConditionModifiedAfter extends TimeConditionModifiedBefore implements ISelectableCondition {
+public class TimeConditionModifiedAfter extends TimeConditionModifiedBefore{
 	static final String NAME = "time_condition_modified_after";
 
 	public TimeConditionModifiedAfter(final Date date) {
@@ -51,6 +50,7 @@ public class TimeConditionModifiedAfter extends TimeConditionModifiedBefore impl
 	}
 
 	@Override
+    protected
 	String getName() {
 		return NAME;
 	}

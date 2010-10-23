@@ -1,20 +1,20 @@
 package org.freeplane.plugin.script.filter;
 
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.filter.condition.NodeCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ScriptingEngine;
 
-public class ScriptCondition extends NodeCondition {
+public class ScriptCondition extends ASelectableCondition {
 	private static final String SCRIPT_FILTER_DESCRIPTION_RESOURCE = "plugins/script_filter";
 	private static final String SCRIPT_FILTER_ERROR_RESOURCE = "plugins/script_filter_error";
 	private static final String NAME = "script_condition";
 	private static final String SCRIPT = "SCRIPT";
 	final private String script;
 
-	static ISelectableCondition load(final XMLElement element) {
+	static ASelectableCondition load(final XMLElement element) {
 		return new ScriptCondition(element.getAttribute(SCRIPT, null));
 	}
 
@@ -38,11 +38,13 @@ public class ScriptCondition extends NodeCondition {
 		return TextUtils.format(SCRIPT_FILTER_DESCRIPTION_RESOURCE, script);
 	}
 
-	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(ScriptCondition.NAME);
-		super.attributesToXml(child);
+	public void fillXML(final XMLElement child) {
+		super.fillXML(child);
 		child.setAttribute(SCRIPT, script);
-		element.addChild(child);
 	}
+
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
 }

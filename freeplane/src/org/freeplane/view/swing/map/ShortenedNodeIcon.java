@@ -8,8 +8,6 @@ import java.awt.Graphics2D;
 
 import javax.swing.Icon;
 
-import org.freeplane.core.ui.components.UITools;
-
 public class ShortenedNodeIcon implements Icon {
 	public ShortenedNodeIcon(Color color) {
 	    super();

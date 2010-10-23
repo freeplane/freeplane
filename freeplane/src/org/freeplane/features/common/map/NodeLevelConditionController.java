@@ -30,7 +30,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -87,15 +87,15 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		return false;
 	}
 
-	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean ignoreCase) {
 		if(value instanceof PeriodicLevelCondition){
-			return (ISelectableCondition) value;
+			return (ASelectableCondition) value;
 		}
-		return createNodeCondition(simpleCond, (String) value, ignoreCase);
+		return createASelectableCondition(simpleCond, (String) value, ignoreCase);
 	}
 
-	protected ISelectableCondition createNodeCondition(final NamedObject simpleCondition, final String value,
+	protected ASelectableCondition createASelectableCondition(final NamedObject simpleCondition, final String value,
 	                                                   final boolean ignoreCase) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 			return new NodeLevelCompareCondition(value, ignoreCase, 0, true);
@@ -158,7 +158,7 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		return false;
 	}
 
-	public ISelectableCondition loadCondition(final XMLElement element) {
+	public ASelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(NodeLevelCompareCondition.NAME)) {
 			return NodeLevelCompareCondition.load(element);
 		}

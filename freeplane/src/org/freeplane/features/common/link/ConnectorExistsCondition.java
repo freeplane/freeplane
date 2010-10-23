@@ -21,7 +21,6 @@ package org.freeplane.features.common.link;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
@@ -47,14 +46,7 @@ public class ConnectorExistsCondition extends ConnectorLabelCondition {
 	}
 
 	@Override
-	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(getName());
-		element.addChild(child);
-	}
-
-	@Override
-	String getName() {
+	protected String getName() {
 		return NAME;
 	}
 }

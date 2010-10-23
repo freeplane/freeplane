@@ -29,7 +29,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -61,7 +61,7 @@ class PriorityConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
+	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
 	                                            final Object valueObj, final boolean ignoreCase) {
 		final String value = ((MindIcon) valueObj).getName().substring(5, 6);
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
@@ -116,7 +116,7 @@ class PriorityConditionController implements IElementaryConditionController {
 		return false;
 	}
 
-	public ISelectableCondition loadCondition(final XMLElement element) {
+	public ASelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(PriorityCompareCondition.NAME)) {
 			return PriorityCompareCondition.load(element);
 		}

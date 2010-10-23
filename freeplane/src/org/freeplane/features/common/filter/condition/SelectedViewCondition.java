@@ -27,11 +27,12 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class SelectedViewCondition implements ISelectableCondition {
+public class SelectedViewCondition extends ASelectableCondition {
+	private static final String NAME = "selected_view_condition";
 	private static String description;
 	private static JComponent renderer;
 
-	public static ISelectableCondition CreateCondition() {
+	public static ASelectableCondition CreateCondition() {
 		return new SelectedViewCondition();
 	}
 
@@ -47,13 +48,6 @@ public class SelectedViewCondition implements ISelectableCondition {
 		return selection != null && selection.isSelected(node);
 	}
 
-	public JComponent getListCellRendererComponent() {
-		if (SelectedViewCondition.renderer == null) {
-			SelectedViewCondition.renderer = ConditionFactory.createCellRendererComponent(toString());
-		}
-		return SelectedViewCondition.renderer;
-	}
-
 	@Override
 	public String toString() {
 		if (SelectedViewCondition.description == null) {
@@ -62,6 +56,14 @@ public class SelectedViewCondition implements ISelectableCondition {
 		return SelectedViewCondition.description;
 	}
 
-	public void toXml(final XMLElement element) {
-	}
+	@Override
+    protected String createDesctiption() {
+	    return NAME;
+    }
+
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
+	public void toXml(final XMLElement element) {}
 }

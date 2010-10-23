@@ -21,16 +21,15 @@ package org.freeplane.features.common.text;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.filter.condition.NodeCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class IgnoreCaseNodeContainsCondition extends NodeCondition {
+public class IgnoreCaseNodeContainsCondition extends ASelectableCondition {
 	static final String NAME = "ignore_case_node_contains_condition";
 	static final String VALUE = "VALUE";
 
-	static ISelectableCondition load(final XMLElement element) {
+	static ASelectableCondition load(final XMLElement element) {
 		return new IgnoreCaseNodeContainsCondition(
 			element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE), 
 			element.getAttribute(IgnoreCaseNodeContainsCondition.VALUE, null)
@@ -62,12 +61,14 @@ public class IgnoreCaseNodeContainsCondition extends NodeCondition {
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, true);
 	}
 
-	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(IgnoreCaseNodeContainsCondition.NAME);
-		super.attributesToXml(child);
+	public void fillXML(final XMLElement child) {
+		super.fillXML(child);
 		child.setAttribute(IgnoreCaseNodeContainsCondition.VALUE, value);
 		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem.toString());
-		element.addChild(child);
 	}
+
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
 }

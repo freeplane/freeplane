@@ -25,16 +25,15 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.filter.condition.NodeCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class NodeMatchesRegexpCondition extends NodeCondition {
+public class NodeMatchesRegexpCondition extends ASelectableCondition {
 	static final String NAME = "node_matches_regexp";
 	static final String SEARCH_PATTERN = "SEARCH_PATTERN";
 
-	static ISelectableCondition load(final XMLElement element) {
+	static ASelectableCondition load(final XMLElement element) {
 		final Boolean ignoreCase = Boolean.valueOf(element.getAttribute(NodeTextCompareCondition.IGNORE_CASE, "false"));
 		final String searchPattern = element.getAttribute(SEARCH_PATTERN, null);
 		final String nodeItem = element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE);
@@ -75,17 +74,19 @@ public class NodeMatchesRegexpCondition extends NodeCondition {
 		    isIgnoreCase());
 	}
 
-	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(NAME);
-		super.attributesToXml(child);
+	public void fillXML(final XMLElement child) {
+		super.fillXML(child);
 		child.setAttribute(SEARCH_PATTERN, searchPattern.pattern());
 		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, TreeXmlWriter.BooleanToXml(isIgnoreCase()));
 		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem);
-		element.addChild(child);
 	}
 
 	private boolean isIgnoreCase() {
 		return (searchPattern.flags() & Pattern.CASE_INSENSITIVE) != 0;
 	}
+
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
 }

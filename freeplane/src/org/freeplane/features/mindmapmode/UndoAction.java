@@ -100,12 +100,6 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
 	public void setRedo(final Action redo) {
 		this.redo = redo;
 	}
-
-	@Override
-    public void setEnabled(boolean newValue) {
-	    // TODO Auto-generated method stub
-	    super.setEnabled(newValue);
-    }
 	
 	
 }

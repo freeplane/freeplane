@@ -2,24 +2,40 @@ package org.freeplane.features.common.filter.condition;
 
 import javax.swing.JComponent;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 
-public abstract class ASelectableCondition  implements ISelectableCondition{
-	private String description;
-	private JComponent renderer;
+public abstract class ASelectableCondition  implements ICondition{
+	transient private String description;
+	transient private JComponent renderer;
 
 	public ASelectableCondition() {
 		super();
 	}
 
-	protected abstract String createDesctiption();
 
-	public JComponent getListCellRendererComponent() {
-    	if (renderer == null) {
-    		renderer = ConditionFactory.createCellRendererComponent(toString());
-    	}
-    	return renderer;
+	@Override
+    public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+	@Override
+    public boolean equals(Object obj) {
+		return EqualsBuilder.reflectionEquals(this, obj);
+    }
+	protected abstract String createDesctiption();
+	
+	final public JComponent getListCellRendererComponent() {
+		if (renderer == null) {
+			renderer = createRendererComponent();
+		}
+		return renderer;
+	}
+
+	protected JComponent createRendererComponent() {
+	    return ConditionFactory.createCellRendererComponent(toString());
     }
 
 	@Override

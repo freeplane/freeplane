@@ -22,16 +22,15 @@ package org.freeplane.features.common.note;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.filter.condition.NodeCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class NoteContainsCondition extends NodeCondition {
+public class NoteContainsCondition extends ASelectableCondition {
 	static final String NAME = "node_contains_condition";
 	static final String VALUE = "VALUE";
 
-	static ISelectableCondition load(final XMLElement element) {
+	static ASelectableCondition load(final XMLElement element) {
 		return new NoteContainsCondition(element.getAttribute(NoteContainsCondition.VALUE, null));
 	}
 
@@ -66,15 +65,13 @@ public class NoteContainsCondition extends NodeCondition {
 		return noteText == null ? null : HtmlUtils.htmlToPlain(noteText);
 	}
 
-	public void toXml(final XMLElement element) {
-		toXml(element, NAME);
+	public void fillXML(final XMLElement child) {
+		super.fillXML(child);
+		child.setAttribute(NoteContainsCondition.VALUE, value);
 	}
 
-	protected void toXml(final XMLElement element, final String name) {
-		final XMLElement child = new XMLElement();
-		child.setName(name);
-		super.attributesToXml(child);
-		child.setAttribute(NoteContainsCondition.VALUE, value);
-		element.addChild(child);
-	}
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
 }

@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Collection;
 
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
@@ -57,7 +58,8 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.features.common.filter.condition.ConjunctConditions;
 import org.freeplane.features.common.filter.condition.DisjunctConditions;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
+import org.freeplane.features.common.filter.condition.ICombinedCondition;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.url.UrlManager;
 
@@ -79,7 +81,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			ISelectableCondition newCond;
+			ASelectableCondition newCond;
 			newCond = editor.getCondition();
 			if (newCond != null) {
 				final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
@@ -127,20 +129,11 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		}
 	}
 
-	private class ConditionListSelectionListener implements ListSelectionListener, ListDataListener {
-		public void contentsChanged(final ListDataEvent e) {
-		}
-
-		public void intervalAdded(final ListDataEvent e) {
-			elementaryConditionList.setSelectedIndex(e.getIndex0());
-		}
-
-		public void intervalRemoved(final ListDataEvent e) {
-		}
-
-		public void valueChanged(final ListSelectionEvent e) {
+	private class ConditionListSelectionListener implements ListSelectionListener{
+			public void valueChanged(final ListSelectionEvent e) {
 			if (elementaryConditionList.getMinSelectionIndex() == -1) {
 				btnNot.setEnabled(false);
+				btnSplit.setEnabled(false);
 				btnAnd.setEnabled(false);
 				btnOr.setEnabled(false);
 				btnDelete.setEnabled(false);
@@ -148,6 +141,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			}
 			else if (elementaryConditionList.getMinSelectionIndex() == elementaryConditionList.getMaxSelectionIndex()) {
 				btnNot.setEnabled(true);
+				btnSplit.setEnabled(elementaryConditionList.getSelectedValue() instanceof ICombinedCondition);
 				btnAnd.setEnabled(false);
 				btnOr.setEnabled(false);
 				btnDelete.setEnabled(true);
@@ -155,6 +149,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			}
 			else {
 				btnNot.setEnabled(false);
+				btnSplit.setEnabled(false);
 				btnAnd.setEnabled(true);
 				btnOr.setEnabled(true);
 				btnDelete.setEnabled(true);
@@ -173,11 +168,11 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			final ISelectableCondition[] selectedValues = toConditionsArray(elementaryConditionList.getSelectedValues());
+			final ASelectableCondition[] selectedValues = toConditionsArray(elementaryConditionList.getSelectedValues());
 			if (selectedValues.length < 2) {
 				return;
 			}
-			final ISelectableCondition newCond = new ConjunctConditions(selectedValues);
+			final ASelectableCondition newCond = new ConjunctConditions(selectedValues);
 			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			model.addElement(newCond);
 			validate();
@@ -195,21 +190,21 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			final ISelectableCondition[] selectedValues = toConditionsArray(elementaryConditionList.getSelectedValues());
+			final ASelectableCondition[] selectedValues = toConditionsArray(elementaryConditionList.getSelectedValues());
 			if (selectedValues.length < 2) {
 				return;
 			}
-			final ISelectableCondition newCond = new DisjunctConditions(selectedValues);
+			final ASelectableCondition newCond = new DisjunctConditions(selectedValues);
 			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			model.addElement(newCond);
 			validate();
 		}
 	}
 
-	private ISelectableCondition[] toConditionsArray(final Object[] objects) {
-		final ISelectableCondition[] conditions = new ISelectableCondition[objects.length];
+	private ASelectableCondition[] toConditionsArray(final Object[] objects) {
+		final ASelectableCondition[] conditions = new ASelectableCondition[objects.length];
 		for (int i = 0; i < objects.length; i++) {
-			conditions[i] = (ISelectableCondition) objects[i];
+			conditions[i] = (ASelectableCondition) objects[i];
 		}
 		return conditions;
 	}
@@ -232,11 +227,54 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			if (min >= 0) {
 				final int max = elementaryConditionList.getMinSelectionIndex();
 				if (min == max) {
-					final ISelectableCondition oldCond = (ISelectableCondition) elementaryConditionList
+					final ASelectableCondition oldCond = (ASelectableCondition) elementaryConditionList
 					    .getSelectedValue();
-					final ISelectableCondition newCond = new ConditionNotSatisfiedDecorator(oldCond);
+					final ASelectableCondition newCond = new ConditionNotSatisfiedDecorator(oldCond);
 					final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 					model.addElement(newCond);
+					validate();
+				}
+			}
+		}
+	}
+
+	private class SplitConditionAction extends AFreeplaneAction {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * 
+		 */
+		SplitConditionAction() {
+			super("SplitConditionAction");
+		}
+
+		public void actionPerformed(final ActionEvent e) {
+			final int min = elementaryConditionList.getMinSelectionIndex();
+			if (min >= 0) {
+				final int max = elementaryConditionList.getMinSelectionIndex();
+				if (min == max) {
+					final ASelectableCondition oldCond = (ASelectableCondition) elementaryConditionList
+					    .getSelectedValue();
+					if(! (oldCond instanceof ICombinedCondition)){
+						return;
+					}
+					final Collection<ASelectableCondition> newConditions = ((ICombinedCondition) oldCond).split();
+					final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
+					for(ASelectableCondition newCond : newConditions){
+						final int index = model.getIndexOf(newCond);
+						if(-1 == index){
+							model.addElement(newCond);
+							final int newIndex = model.getSize() - 1;
+							elementaryConditionList.addSelectionInterval(newIndex, newIndex);
+						}
+						else{
+							elementaryConditionList.addSelectionInterval(index, index);
+						}
+					}
+					elementaryConditionList.removeSelectionInterval(min, min);
 					validate();
 				}
 			}
@@ -344,6 +382,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	final private JButton btnDelete;
 	private JButton btnLoad;
 	final private JButton btnNot;
+	final private JButton btnSplit;
 	final private JButton btnOK;
 	final private JButton btnOr;
 	private JButton btnSave;
@@ -372,6 +411,13 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		btnNot.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(btnNot);
 		btnNot.setEnabled(false);
+
+		btnSplit = new JButton(new SplitConditionAction());
+		conditionButtonBox.add(Box.createVerticalGlue());
+		btnSplit.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
+		conditionButtonBox.add(btnSplit);
+		btnSplit.setEnabled(false);
+
 		btnAnd = new JButton(new CreateConjunctConditionAction());
 		conditionButtonBox.add(Box.createVerticalGlue());
 		btnAnd.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
@@ -462,14 +508,12 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 
 	private boolean applyChanges() {
 		internalConditionsModel.setSelectedItem(elementaryConditionList.getSelectedValue());
-		internalConditionsModel.removeListDataListener(conditionListListener);
 		final int[] selectedIndices = elementaryConditionList.getSelectedIndices();
 		if (applyModel(internalConditionsModel, selectedIndices)){
 			internalConditionsModel = null;
 			return true;
 		}
 		else{
-			internalConditionsModel.addListDataListener(conditionListListener);
 			return false;
 		}
 	}
@@ -487,7 +531,6 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 
 	private void initInternalConditionModel() {
 		internalConditionsModel = createModel();
-		internalConditionsModel.addListDataListener(conditionListListener);
 		elementaryConditionList.setModel(internalConditionsModel);
 		Object selectedItem = internalConditionsModel.getSelectedItem();
 		if(selectedItem != null){

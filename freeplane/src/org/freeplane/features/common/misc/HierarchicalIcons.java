@@ -117,7 +117,6 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	}
 
 	public void mapChanged(final MapChangeEvent event) {
-		// TODO Auto-generated method stub
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
@@ -224,6 +223,5 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 
 	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 	                           final NodeModel child, final int newIndex) {
-		// TODO Auto-generated method stub
 	}
 }

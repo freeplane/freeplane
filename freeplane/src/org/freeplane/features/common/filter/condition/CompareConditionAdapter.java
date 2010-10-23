@@ -23,7 +23,7 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-abstract public class CompareConditionAdapter extends NodeCondition {
+abstract public class CompareConditionAdapter extends ASelectableCondition {
 	public static final String IGNORE_CASE = "IGNORE_CASE";
 	public static final String VALUE = "VALUE";
 	private Comparable<?> conditionValue;
@@ -48,8 +48,8 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 	}
 
 	@Override
-	public void attributesToXml(final XMLElement child) {
-		super.attributesToXml(child);
+	public void fillXML(final XMLElement child) {
+		super.fillXML(child);
 		child.setAttribute(CompareConditionAdapter.VALUE, conditionValue.toString());
 		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, TreeXmlWriter.BooleanToXml(ignoreCase));
 	}

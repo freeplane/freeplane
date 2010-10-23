@@ -34,7 +34,6 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.features.common.note.NoteModel;
 
 
 /**

@@ -52,6 +52,7 @@ public class TimeConditionCreatedBefore extends TimeCondition {
 	}
 
 	@Override
+    protected
 	String getName() {
 		return NAME;
 	}

@@ -30,7 +30,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -61,7 +61,7 @@ public class LinkConditionController implements IElementaryConditionController {
 		return !simpleCond.objectEquals(ConditionFactory.FILTER_EXIST);
 	}
 
-	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean ignoreCase) {
 		final NamedObject namedObject = (NamedObject) selectedItem;
 		if (namedObject.objectEquals(FILTER_LINK)) {
@@ -133,7 +133,7 @@ public class LinkConditionController implements IElementaryConditionController {
 		return ((NamedObject) property).objectEquals(CONNECTOR_LABEL);
 	}
 
-	public ISelectableCondition loadCondition(final XMLElement element) {
+	public ASelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(HyperLinkEqualsCondition.NAME)) {
 			final String target = element.getAttribute(HyperLinkEqualsCondition.TEXT, null);
 			return new HyperLinkEqualsCondition(target);

@@ -37,7 +37,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
@@ -237,11 +237,11 @@ public class LogicalStyleController implements IExtension {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		styleModel.getConditionalStyleModel().moveUp(index);
 	}
-	public void addConditionalStyle(final MapModel map, boolean isActive, ISelectableCondition condition, IStyle style, boolean isLast){
+	public void addConditionalStyle(final MapModel map, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast){
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		styleModel.getConditionalStyleModel().addCondition(isActive, condition, style, isLast);
 	}
-	public void insertConditionalStyle(final MapModel map, int index, boolean isActive, ISelectableCondition condition, IStyle style, boolean isLast){
+	public void insertConditionalStyle(final MapModel map, int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast){
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		styleModel.getConditionalStyleModel().insertCondition(index, isActive, condition, style, isLast);
 	}

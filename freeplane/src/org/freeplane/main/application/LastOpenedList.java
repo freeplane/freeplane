@@ -327,6 +327,5 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 
 	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 	                           final NodeModel child, final int newIndex) {
-		// TODO Auto-generated method stub
 	}
 }

@@ -19,7 +19,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyleModel;
@@ -78,9 +78,9 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 				final FilterComposerDialog filterComposerDialog = styleController.getFilterComposerDialog();
 				filterComposerDialog.acceptMultipleConditions(true);
 				filterComposerDialog.show();
-				final List<ISelectableCondition> conditions = filterComposerDialog.getConditions();
+				final List<ASelectableCondition> conditions = filterComposerDialog.getConditions();
 				int row = conditionalStyleTable.getRowCount();
-				for(final ISelectableCondition condition : conditions){
+				for(final ASelectableCondition condition : conditions){
 					LogicalStyleController.getController().addConditionalStyle(map, true, condition, MapStyleModel.DEFAULT_STYLE, false);
 				}
 				if(row < conditionalStyleTable.getRowCount()){

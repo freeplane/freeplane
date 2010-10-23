@@ -41,7 +41,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.MapModel;
 
 /**
@@ -146,8 +146,8 @@ public class FilterConditionEditor extends Box {
 		}
 	}
 
-	public ISelectableCondition getCondition() {
-		ISelectableCondition newCond;
+	public ASelectableCondition getCondition() {
+		ASelectableCondition newCond;
 		Object value = values.getSelectedItem();
 		if (value == null) {
 			value = "";

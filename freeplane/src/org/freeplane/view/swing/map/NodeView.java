@@ -34,7 +34,6 @@ import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -67,7 +66,6 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.DetailTextModel;
-import org.freeplane.features.common.text.ShortenedTextModel;
 import org.freeplane.features.common.text.TextController;
 
 import org.freeplane.features.mindmapmode.text.MTextController;

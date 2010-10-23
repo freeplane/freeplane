@@ -2,7 +2,6 @@ package org.freeplane.features.common.map;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class LeafCondition extends ASelectableCondition {
@@ -16,7 +15,7 @@ public class LeafCondition extends ASelectableCondition {
 		return node.isLeaf();
 	}
 
-	public static ISelectableCondition load(XMLElement element) {
+	public static ASelectableCondition load(XMLElement element) {
 	    return new LeafCondition();
     }
 

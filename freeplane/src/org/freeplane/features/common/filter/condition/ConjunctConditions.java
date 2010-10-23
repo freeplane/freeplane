@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.common.filter.condition;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Vector;
 
 import javax.swing.JComponent;
@@ -31,24 +33,24 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class ConjunctConditions implements ISelectableCondition {
+public class ConjunctConditions extends ASelectableCondition implements ICombinedCondition{
 	static final String NAME = "conjunct_condition";
 
-	static ISelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
+	static ASelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
 		final Vector<XMLElement> children = element.getChildren();
-		final ISelectableCondition[] conditions = new ISelectableCondition[children.size()];
+		final ASelectableCondition[] conditions = new ASelectableCondition[children.size()];
 		for (int i = 0; i < conditions.length; i++) {
 			conditions[i] = conditionFactory.loadCondition(children.get(i));
 		}
 		return new ConjunctConditions(conditions);
 	}
 
-	final private ISelectableCondition[] conditions;
+	final private ASelectableCondition[] conditions;
 
 	/**
 	 *
 	 */
-	public ConjunctConditions(final ISelectableCondition[] conditions) {
+	public ConjunctConditions(final ASelectableCondition[] conditions) {
 		this.conditions = conditions;
 	}
 
@@ -59,7 +61,7 @@ public class ConjunctConditions implements ISelectableCondition {
 	 * .MindMapNode)
 	 */
 	public boolean checkNode(final NodeModel node) {
-		for (final ISelectableCondition condition : conditions) {
+		for (final ASelectableCondition condition : conditions) {
 			if (!condition.checkNode(node)) {
 				return false;
 			}
@@ -73,10 +75,10 @@ public class ConjunctConditions implements ISelectableCondition {
 	 * freeplane.controller.filter.condition.Condition#getListCellRendererComponent
 	 * ()
 	 */
-	public JComponent getListCellRendererComponent() {
+	public JComponent createRendererComponent() {
 		final JCondition component = new JCondition();
 		component.add(new JLabel("("));
-		ISelectableCondition cond = conditions[0];
+		ASelectableCondition cond = conditions[0];
 		JComponent rendererComponent = cond.getListCellRendererComponent();
 		component.add(rendererComponent);
 		for (int i = 1; i < conditions.length; i++) {
@@ -91,12 +93,23 @@ public class ConjunctConditions implements ISelectableCondition {
 		return component;
 	}
 
-	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(ConjunctConditions.NAME);
-		for (final ISelectableCondition condition : conditions) {
+	public void fillXML(final XMLElement child) {
+		for (final ASelectableCondition condition : conditions) {
 			condition.toXml(child);
 		}
-		element.addChild(child);
 	}
+
+	@Override
+    protected String createDesctiption() {
+	    return NAME;
+    }
+
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
+
+	public Collection<ASelectableCondition> split() {
+	    return Arrays.asList(conditions);
+    }
 }

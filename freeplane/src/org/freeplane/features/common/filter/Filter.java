@@ -28,7 +28,7 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -42,7 +42,7 @@ public class Filter {
 	}
 
 	final private boolean appliesToVisibleNodesOnly;
-	final private ISelectableCondition condition;
+	final private ASelectableCondition condition;
 // // 	final private Controller controller;
 	final private int options;
 	final private boolean unfold;
@@ -50,7 +50,7 @@ public class Filter {
 	/**
 	 * @param b 
 	 */
-	public Filter(final ISelectableCondition condition, final boolean areAnchestorsShown,
+	public Filter(final ASelectableCondition condition, final boolean areAnchestorsShown,
 	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly, final boolean unfold) {
 		super();
 //		this.controller = controller;

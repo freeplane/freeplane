@@ -21,7 +21,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.features.common.filter.condition.DefaultConditionRenderer;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
 
@@ -62,7 +62,7 @@ class ConditionalStyleTable extends JTable {
 					final FilterComposerDialog filterComposerDialog = styleController.getFilterComposerDialog();
 					filterComposerDialog.acceptMultipleConditions(false);
 					filterComposerDialog.show();
-					List<ISelectableCondition> conditions = filterComposerDialog.getConditions();
+					List<ASelectableCondition> conditions = filterComposerDialog.getConditions();
 					cellEditorValue = conditions.isEmpty() ? value : conditions.get(0);
 					btn.removeActionListener(this);
 					fireEditingStopped();

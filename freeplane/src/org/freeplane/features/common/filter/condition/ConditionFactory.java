@@ -77,7 +77,7 @@ public class ConditionFactory {
 		return iterator;
 	}
 
-	public ISelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean ignoreCase) {
 		return getConditionController(selectedItem).createCondition(selectedItem, simpleCond, value, ignoreCase);
 	}
@@ -93,7 +93,7 @@ public class ConditionFactory {
 		throw new NoSuchElementException();
 	}
 
-	public ISelectableCondition loadCondition(final XMLElement element) {
+	public ASelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(ConditionNotSatisfiedDecorator.NAME)) {
 			return ConditionNotSatisfiedDecorator.load(this, element);
 		}
@@ -105,7 +105,7 @@ public class ConditionFactory {
 		}
 		final Iterator<IElementaryConditionController> conditionIterator = conditionIterator();
 		while (conditionIterator.hasNext()) {
-			final ISelectableCondition condition = conditionIterator.next().loadCondition(element);
+			final ASelectableCondition condition = conditionIterator.next().loadCondition(element);
 			if (condition != null) {
 				return condition;
 			}

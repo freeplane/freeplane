@@ -6,14 +6,14 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.AFilterComposerDialog;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 
 @SuppressWarnings("serial")
 class FilterComposerDialog extends AFilterComposerDialog{
 
 	public FilterComposerDialog() {
         super(TextUtils.getText("filter_dialog"), true);
-        conditions = new LinkedList<ISelectableCondition>();
+        conditions = new LinkedList<ASelectableCondition>();
     }
 
 	protected DefaultComboBoxModel createModel() {
@@ -31,16 +31,16 @@ class FilterComposerDialog extends AFilterComposerDialog{
 		conditions.clear();
 		this.model = model;
 		for(int i : selectedIndices){
-			conditions.add((ISelectableCondition) model.getElementAt(i));
+			conditions.add((ASelectableCondition) model.getElementAt(i));
 		}
 	    return ! conditions.isEmpty();
     }
 			
-	final private List<ISelectableCondition> conditions ;
+	final private List<ASelectableCondition> conditions ;
 	private DefaultComboBoxModel model;
 	private boolean acceptMultipleConditions;
 
-	public List<ISelectableCondition> getConditions() {
+	public List<ASelectableCondition> getConditions() {
     	return conditions;
     }
 

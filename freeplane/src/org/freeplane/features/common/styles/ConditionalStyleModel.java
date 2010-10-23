@@ -10,26 +10,26 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 
 public class ConditionalStyleModel implements IExtension, Iterable<ConditionalStyleModel.Item>{
 	public class Item{
-		private ISelectableCondition condition;
+		private ASelectableCondition condition;
 		private IStyle style;
 		private boolean isActive;
 		private boolean isLast;
-		private Item(boolean isActive, ISelectableCondition condition, IStyle style, boolean isLast) {
+		private Item(boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
 	        super();
 	        this.isActive = isActive;
 	        this.condition = condition;
 	        this.style = style;
 	        this.setLast(isLast);
         }
-		public void setCondition(ISelectableCondition condition) {
+		public void setCondition(ASelectableCondition condition) {
 	        this.condition = condition;
         }
-		public ISelectableCondition getCondition() {
+		public ASelectableCondition getCondition() {
 	        return condition;
         }
 		public void setStyle(IStyle style) {
@@ -67,7 +67,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 			recursiveCall = true;
 			Collection<IStyle> matchingStyles = new LinkedHashSet<IStyle>();
 			for(Item item : styles){
-				final ISelectableCondition condition = item.getCondition();
+				final ASelectableCondition condition = item.getCondition();
 				if(condition != null && item.isActive() && condition.checkNode(node)){
 					matchingStyles.add(item.style);
 					if(item.isLast()){
@@ -82,7 +82,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		}
 	}
 	
-	void addCondition(boolean isActive, ISelectableCondition condition, IStyle style, boolean isLast){
+	void addCondition(boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast){
 		styles.add(new Item(isActive, condition, style, isLast));
 		if(table == null){
 			return;
@@ -91,7 +91,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		table.fireTableRowsInserted(index, index);
 	}
 	
-	void insertCondition(int index, boolean isActive, ISelectableCondition condition, IStyle style, boolean isLast){
+	void insertCondition(int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast){
 		styles.add(index, new Item(isActive, condition, style, isLast));
 		if(table == null){
 			return;
@@ -183,7 +183,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 				switch(columnIndex){
 					case 0:
 					case 3: return Boolean.class;
-					case 1: return ISelectableCondition.class;
+					case 1: return ASelectableCondition.class;
 				}
 				return super.getColumnClass(columnIndex);
             }
@@ -209,7 +209,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 						item.setActive((Boolean) aValue);
 						return;
 					case 1:
-						item.setCondition((ISelectableCondition) aValue);
+						item.setCondition((ASelectableCondition) aValue);
 						return;
 					case 2:
 						 item.setStyle((IStyle) aValue);

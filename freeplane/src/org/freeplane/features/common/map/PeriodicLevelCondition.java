@@ -2,7 +2,6 @@ package org.freeplane.features.common.map;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class PeriodicLevelCondition extends ASelectableCondition {
@@ -27,7 +26,7 @@ public class PeriodicLevelCondition extends ASelectableCondition {
 		return nodeLevel > 0 && nodeLevel % period == remainder;
 	}
 
-	public static ISelectableCondition load(XMLElement element) {
+	public static ASelectableCondition load(XMLElement element) {
 		int period = Integer.valueOf(element.getAttribute("PERIOD", null));
 		int remainder = Integer.valueOf(element.getAttribute("REMAINDER", null));
 	    return new PeriodicLevelCondition(period, remainder);

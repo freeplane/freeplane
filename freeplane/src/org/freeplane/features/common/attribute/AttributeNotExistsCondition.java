@@ -21,19 +21,18 @@ package org.freeplane.features.common.attribute;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
-import org.freeplane.features.common.filter.condition.ISelectableCondition;
-import org.freeplane.features.common.filter.condition.NodeCondition;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  */
-public class AttributeNotExistsCondition extends NodeCondition {
+public class AttributeNotExistsCondition extends ASelectableCondition {
 	static final String ATTRIBUTE = "ATTRIBUTE";
 	static final String NAME = "attribute_not_exists_condition";
 
-	static ISelectableCondition load(final XMLElement element) {
+	static ASelectableCondition load(final XMLElement element) {
 		return new AttributeNotExistsCondition(element.getAttribute(AttributeNotExistsCondition.ATTRIBUTE, null));
 	}
 
@@ -68,11 +67,13 @@ public class AttributeNotExistsCondition extends NodeCondition {
 		return ConditionFactory.createDescription(attribute, simpleCondition, null, false);
 	}
 
-	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(AttributeNotExistsCondition.NAME);
-		super.attributesToXml(child);
+	public void fillXML(final XMLElement child) {
+		super.fillXML(child);
 		child.setAttribute(AttributeNotExistsCondition.ATTRIBUTE, attribute);
-		element.addChild(child);
 	}
+
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
 }
