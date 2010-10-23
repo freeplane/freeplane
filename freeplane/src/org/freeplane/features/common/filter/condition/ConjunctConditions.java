@@ -79,14 +79,14 @@ public class ConjunctConditions extends ASelectableCondition implements ICombine
 		final JCondition component = new JCondition();
 		component.add(new JLabel("("));
 		ASelectableCondition cond = conditions[0];
-		JComponent rendererComponent = cond.getListCellRendererComponent();
+		JComponent rendererComponent = cond.createRendererComponent();
 		component.add(rendererComponent);
 		for (int i = 1; i < conditions.length; i++) {
 			final String and = TextUtils.removeMnemonic(TextUtils.getText("filter_and"));
 			final String text = ' ' + and + ' ';
 			component.add(new JLabel(text));
 			cond = conditions[i];
-			rendererComponent = cond.getListCellRendererComponent();
+			rendererComponent = cond.createRendererComponent();
 			component.add(rendererComponent);
 		}
 		component.add(new JLabel(")"));

@@ -89,7 +89,7 @@ public abstract class ConnectorLabelCondition extends ASelectableCondition {
 
 	protected abstract String getName();
 
-	public void fillXML(final XMLElement child) {
+	protected void fillXML(final XMLElement child) {
 		child.setAttribute(TEXT, text);
 		child.setAttribute(IGNORE_CASE, Boolean.toString(ignoreCase));
 	}
