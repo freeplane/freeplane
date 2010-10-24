@@ -65,6 +65,10 @@ import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.styles.IStyle;
+import org.freeplane.features.common.styles.LogicalStyleController;
+import org.freeplane.features.common.styles.LogicalStyleModel;
+import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
@@ -254,6 +258,29 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
+	private class StyleChangeListener implements PropertyChangeListener{
+
+		final private Container styleBox;
+
+		public StyleChangeListener(Container styleBox) {
+	        this.styleBox = styleBox;
+        }
+
+		public void propertyChange(PropertyChangeEvent evt) {
+			if(internalChange){
+				return;
+			}
+			BooleanProperty isSet = (BooleanProperty) evt.getSource();
+			final MLogicalStyleController styleController = (MLogicalStyleController) LogicalStyleController.getController();
+			if(isSet.getBooleanValue()){
+				styleController.setStyle((IStyle) uiFactory.getStyles().getSelectedItem());
+			}
+			else{
+				styleController.setStyle(null);
+			}
+        }
+		
+	}
 	private abstract class ChangeListener implements PropertyChangeListener {
 		final private IPropertyControl mProperty;
 		final private BooleanProperty mSet;
@@ -356,6 +383,7 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetNodeFontName;
 	private BooleanProperty mSetNodeFontSize;
 	private BooleanProperty mSetNodeShape;
+	private BooleanProperty mSetStyle;
 	final private String[] sizes = new String[] { "2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24",
 	        "30", "36", "48", "72" };
 	private final boolean addStyleBox;
@@ -543,8 +571,8 @@ public class StyleEditorPanel extends JPanel {
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.setBorder(Borders.DLU2_BORDER);
 		if (addStyleBox) {
-			addAutomaticLayout(rightBuilder);
 		    rightBuilder.appendSeparator(TextUtils.getText("OptionPanel.separator.NodeStyle"));
+			addAutomaticLayout(rightBuilder);
 			addStyleBox(rightBuilder);
 		}
 		mControls = getControls();
@@ -557,14 +585,19 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void addStyleBox(final DefaultFormBuilder rightBuilder) {
-	    final Container styleBox = uiFactory.createStyleBox();
+	    mStyleBox = uiFactory.createStyleBox();
 	    rightBuilder.nextLine();
-	    rightBuilder.append(new JLabel(TextUtils.getText("style")), 2);
-	    rightBuilder.append(styleBox, 4);
+	    mSetStyle = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		final StyleChangeListener listener = new StyleChangeListener(mStyleBox);
+		mSetStyle.addPropertyChangeListener(listener);
+		mSetStyle.layout(rightBuilder);
+	    rightBuilder.append(new JLabel(TextUtils.getText("style")));
+	    rightBuilder.append(mStyleBox);
 	    rightBuilder.nextLine();
     }
 
 	private JCheckBox mAutomaticLayoutCheckBox;
+	private Container mStyleBox;
 	private void addAutomaticLayout(final DefaultFormBuilder rightBuilder) {
 		if(mAutomaticLayoutCheckBox == null){
 			 mAutomaticLayoutCheckBox = new JCheckBox();
@@ -594,6 +627,10 @@ public class StyleEditorPanel extends JPanel {
 		}
 		internalChange = true;
 		try {
+			if(addStyleBox){
+				final boolean isStyleSet = ! MapStyleModel.DEFAULT_STYLE.equals(LogicalStyleModel.getStyle(node));
+				mSetStyle.setValue(isStyleSet);
+			}
 			final NodeStyleController styleController = NodeStyleController.getController();
 			{
 				final Color nodeColor = NodeStyleModel.getColor(node);

@@ -55,6 +55,10 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	final private DefaultComboBoxModel fonts, size, styles;
 //  private final MModeController modeController;
 
+	public DefaultComboBoxModel getStyles() {
+    	return styles;
+    }
+
 	public MUIFactory() {
 		size = new DefaultComboBoxModel(MUIFactory.sizes);
 		styles = new DefaultComboBoxModel();
@@ -139,7 +143,10 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		    .getExtension(NodeStyleController.class);
 		selectFontSize(Integer.toString(styleController.getFontSize(node)));
 		selectFontName(styleController.getFontFamilyName(node));
-		selectStyle(LogicalStyleModel.getStyle(node));
+		final LogicalStyleController logicalStyleController = LogicalStyleController.getController();
+		ignoreChangeEvent = true;
+ 		styles.setSelectedItem(logicalStyleController.getFirstStyle(node));
+        ignoreChangeEvent = false;
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
@@ -168,12 +175,6 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	private void selectFontSize(final String fontSize) {
 		ignoreChangeEvent = true;
 		size.setSelectedItem(fontSize);
-		ignoreChangeEvent = false;
-	}
-
-	private void selectStyle(final Object style) {
-		ignoreChangeEvent = true;
-		styles.setSelectedItem(style);
 		ignoreChangeEvent = false;
 	}
 

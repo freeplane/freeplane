@@ -220,6 +220,20 @@ public class LogicalStyleController implements IExtension {
 			}
 		});
 	}
+	
+	public IStyle getFirstStyle(final NodeModel node){
+		final Collection<IStyle> styles = getStyles(node);
+		boolean found = false;
+		for(IStyle style:styles){
+			if(found){
+				return style;
+			}
+			if((style instanceof StyleNode)){
+				found = true;
+			}
+		}
+		return null;
+	}
 	public Collection<IStyle>  getStyles(final NodeModel node) {
 		if(cachedNode != null && node.equals(cachedNode.get())){
 			return cachedStyle;
