@@ -38,6 +38,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.swing.JComponent;
+import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -402,4 +403,13 @@ public abstract class MainView extends ZoomableLabel {
 	    shortenedText = true;
 	    return text;
     }
+
+	@Override
+    public JToolTip createToolTip() {
+        JToolTip tip = new NodeTooltip();
+        tip.setComponent(this);
+        return tip;
+    }
+
+
 }

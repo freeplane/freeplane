@@ -50,9 +50,9 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.core.ui.components.LimitedWidthTooltipUI;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.view.swing.map.NodeTooltip;
 
 class ApplicationViewController extends ViewController {
 	private static final String TOOL_TIP_MANAGER = "toolTipManager.";
@@ -473,7 +473,6 @@ class ApplicationViewController extends ViewController {
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
 		setTooltipDelays();
-		LimitedWidthTooltipUI.initialize();
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.startsWith(TOOL_TIP_MANAGER)) {
@@ -496,6 +495,6 @@ class ApplicationViewController extends ViewController {
 		toolTipManager.setReshowDelay(reshowDelay);
 		final int maxWidth = ResourceController.getResourceController().getIntProperty(
 		    "toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
-		LimitedWidthTooltipUI.setMaximumWidth(maxWidth);
+		NodeTooltip.setMaximumWidth(maxWidth);
 	}
 }
