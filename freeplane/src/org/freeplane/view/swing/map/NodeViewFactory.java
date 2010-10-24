@@ -172,7 +172,6 @@ class NodeViewFactory {
 	public ZoomableLabel createNoteViewer() {
 		ZoomableLabel label = new ZoomableLabel();
 		label.setIcon(IconStoreFactory.create().getUIIcon("knotes.png").getIcon());
-		label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		return label;
 	}
 }
