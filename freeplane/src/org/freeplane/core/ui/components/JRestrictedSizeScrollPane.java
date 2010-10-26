@@ -27,6 +27,12 @@ public class JRestrictedSizeScrollPane extends JAutoScrollBarPane {
 			preferredSize.width = Math.min(maximumSize.width, preferredSize.width);
 			preferredSize.height = Math.min(maximumSize.height, preferredSize.height);
 		}
+		if(getVerticalScrollBar().isVisible()){
+			preferredSize.width += getVerticalScrollBar().getPreferredSize().width;
+		}
+		if(getHorizontalScrollBar().isVisible()){
+			preferredSize.height += getHorizontalScrollBar().getPreferredSize().height;
+		}
 		return preferredSize;
     }
 	

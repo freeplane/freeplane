@@ -55,10 +55,6 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.view.swing.map.NodeTooltip;
 
 class ApplicationViewController extends ViewController {
-	private static final String TOOL_TIP_MANAGER = "toolTipManager.";
-	private static final String TOOL_TIP_MANAGER_DISMISS_DELAY = "toolTipManager.dismissDelay";
-	private static final String TOOL_TIP_MANAGER_INITIAL_DELAY = "toolTipManager.initialDelay";
-	private static final String TOOL_TIP_MANAGER_RESHOW_DELAY = "toolTipManager.reshowDelay";
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
 	private static final String SPLIT_PANE_LAST_LEFT_POSITION = "split_pane_last_left_position";
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";
@@ -472,29 +468,6 @@ class ApplicationViewController extends ViewController {
 		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
-		setTooltipDelays();
-		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
-			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-				if (propertyName.startsWith(TOOL_TIP_MANAGER)) {
-					setTooltipDelays();
-				}
-			}
-		});
 	}
 
-	private void setTooltipDelays() {
-		final ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
-		final int initialDelay = ResourceController.getResourceController().getIntProperty(
-		    TOOL_TIP_MANAGER_INITIAL_DELAY, 0);
-		toolTipManager.setInitialDelay(initialDelay);
-		final int dismissDelay = ResourceController.getResourceController().getIntProperty(
-		    TOOL_TIP_MANAGER_DISMISS_DELAY, 0);
-		toolTipManager.setDismissDelay(dismissDelay);
-		final int reshowDelay = ResourceController.getResourceController().getIntProperty(
-		    TOOL_TIP_MANAGER_RESHOW_DELAY, 0);
-		toolTipManager.setReshowDelay(reshowDelay);
-		final int maxWidth = ResourceController.getResourceController().getIntProperty(
-		    "toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
-		NodeTooltip.setMaximumWidth(maxWidth);
-	}
 }

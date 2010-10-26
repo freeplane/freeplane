@@ -42,6 +42,7 @@ import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.text.JTextComponent;
@@ -409,6 +410,21 @@ public abstract class MainView extends ZoomableLabel {
         JToolTip tip = new NodeTooltip();
         tip.setComponent(this);
         return tip;
+    }
+
+	@Override
+    public void setToolTipText(String text) {
+        String oldText = getToolTipText();
+        putClientProperty(TOOL_TIP_TEXT_KEY, text);
+        NodeTooltipManager toolTipManager = NodeTooltipManager.getSharedInstance();
+//        ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
+        if (text != null) {
+	    if (oldText == null) {
+                toolTipManager.registerComponent(this);
+	    }
+        } else {
+            toolTipManager.unregisterComponent(this);
+        }
     }
 
 
