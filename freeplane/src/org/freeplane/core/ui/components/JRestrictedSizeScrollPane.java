@@ -3,25 +3,11 @@ package org.freeplane.core.ui.components;
 import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.JScrollPane;
-
 @SuppressWarnings("serial")
-public class JRestrictedSizeScrollPane extends JScrollPane {
-
-	public JRestrictedSizeScrollPane() {
-	    super();
-    }
-
-	public JRestrictedSizeScrollPane(Component view, int vsbPolicy, int hsbPolicy) {
-	    super(view, vsbPolicy, hsbPolicy);
-    }
+public class JRestrictedSizeScrollPane extends JAutoScrollBarPane {
 
 	public JRestrictedSizeScrollPane(Component view) {
 	    super(view);
-    }
-
-	public JRestrictedSizeScrollPane(int vsbPolicy, int hsbPolicy) {
-	    super(vsbPolicy, hsbPolicy);
     }
 
 	@Override
