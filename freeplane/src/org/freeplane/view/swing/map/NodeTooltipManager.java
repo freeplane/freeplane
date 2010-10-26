@@ -1,20 +1,16 @@
 package org.freeplane.view.swing.map;
 
-/*
- * %W% %E%
- *
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
- * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- */
+
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
-import java.awt.Window;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 import javax.swing.JToolTip;
@@ -33,7 +29,6 @@ class NodeTooltipManager{
 	private Timer enterTimer;
 	private Timer exitTimer;
 	private String toolTipText;
-	private Point preferredLocation;
 	private JComponent insideComponent;
 	private MouseEvent mouseEvent;
 	
@@ -101,12 +96,54 @@ class NodeTooltipManager{
 	private void showTipWindow() {
 		if (insideComponent == null || !insideComponent.isShowing())
 			return;
-		Point screenLocation = insideComponent.getLocationOnScreen();
 		tip = insideComponent.createToolTip();
+//	    InputMap inputMap = tip.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+//	    ActionMap actionMap = tip.getActionMap();
+//
+//	    if (inputMap != null && actionMap != null) {
+//	    	final KeyStroke hideTip = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0);
+//	    	final Action hideTipAction = new AbstractAction() {
+//				public void actionPerformed(ActionEvent e) {
+//					hideTipWindow();
+//				}
+//			};
+//	    	inputMap.put(hideTip, "hideTip");
+//	    	actionMap.put("hideTip", hideTipAction);
+//	    }
+
 		tip.setTipText(toolTipText);
-		int x = screenLocation.x + preferredLocation.x;
-		int y = screenLocation.y + preferredLocation.y;
 		PopupFactory popupFactory = PopupFactory.getSharedInstance();
+		final Point locationOnScreen = insideComponent.getLocationOnScreen();
+		final int height = insideComponent.getHeight();
+		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+		final Insets screenInsets = defaultToolkit.getScreenInsets(insideComponent.getGraphicsConfiguration());
+		final Dimension screenSize = defaultToolkit.getScreenSize();
+		final int minX = screenInsets.left;
+		final int maxX = screenSize.width - screenInsets.right;
+		final int minY = screenInsets.top;
+		final int maxY = screenSize.height - screenInsets.bottom;
+		int x = locationOnScreen.x;
+		int y = locationOnScreen.y + height;
+		final Dimension tipSize = tip.getPreferredSize();
+		final int tipWidth = tipSize.width;
+		if(x + tipWidth > maxX){
+			x = maxX - tipWidth;
+			if(x < minX){
+				x = minX;
+			}
+		}
+		final int tipHeight = tipSize.height;
+		if(y + tipHeight > maxY){
+			if(locationOnScreen.y - height > minY){
+				y = locationOnScreen.y - tipHeight;
+			}
+			else{
+				y = maxY - tipHeight;
+				if(y < minY){
+					y = minY;
+				}
+			}
+		}
 		tipPopup = popupFactory.getPopup(insideComponent, tip, x, y);
 		tipPopup.show();
 	}
@@ -114,7 +151,6 @@ class NodeTooltipManager{
 	private void hideTipWindow() {
 		insideComponent = null;
 		toolTipText = null;
-		preferredLocation = null;
 		mouseEvent = null;
 		if (tipPopup != null) {
 			tipPopup.hide();
@@ -194,7 +230,6 @@ class NodeTooltipManager{
 				// Lazy lookup
 				if (toolTipText == null && mouseEvent != null) {
 					toolTipText = insideComponent.getToolTipText(mouseEvent);
-					preferredLocation = insideComponent.getToolTipLocation(mouseEvent);
 				}
 				if (toolTipText != null) {
 					showTipWindow();
@@ -217,8 +252,7 @@ class NodeTooltipManager{
 			}
 			final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 			if(focusOwner != null){
-				final Window tipWindow = SwingUtilities.getWindowAncestor(tip);
-				if(SwingUtilities.isDescendingFrom(focusOwner, tipWindow)){
+				if(SwingUtilities.isDescendingFrom(focusOwner, tip)){
 					exitTimer.restart();
 					return;
 				}

@@ -340,11 +340,6 @@ public abstract class MainView extends ZoomableLabel {
 		return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
 	}
 
-	@Override
-	public Point getToolTipLocation(final MouseEvent event) {
-		return new Point(0, getHeight());
-	}
-
 	protected void updateText(NodeModel nodeModel) {
 		final ModeController modeController = getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);

@@ -17,12 +17,14 @@ public class NodeTooltip extends JToolTip {
 	public NodeTooltip(){
 		tip  = new JEditorPane();
 		tip.setContentType("text/html");
-		tip.setOpaque(false);
+		tip.setEditable(false);
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(tip);
 		scrollPane.setMaximumSize(new Dimension(maximumWidth, maximumWidth / 2));
 		UITools.setScrollbarIncrement(scrollPane);
 		add(scrollPane);
-		
+		tip.setOpaque(false);
+//		scrollPane.setOpaque(false);
+//		scrollPane.getViewport().setOpaque(false);
 	}
 	private static int maximumWidth = Integer.MAX_VALUE;
 	/**
