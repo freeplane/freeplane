@@ -226,7 +226,7 @@ public class NodeTooltipManager{
 
 	private class insideTimerAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (insideComponent != null && insideComponent.isShowing()) {
+			if (insideComponent != null && insideComponent.isShowing() && insideComponent.getMousePosition(true) != null) {
 				// Lazy lookup
 				if (toolTipText == null && mouseEvent != null) {
 					toolTipText = insideComponent.getToolTipText(mouseEvent);
