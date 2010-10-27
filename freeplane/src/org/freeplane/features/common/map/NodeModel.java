@@ -322,11 +322,13 @@ public class NodeModel implements MutableTreeNode {
 			return null;
 		}
 		final StringBuilder text = new StringBuilder("<html><table>");
+		boolean tooltipSet = false;
 		for (ITooltipProvider provider : toolTip.values()) {
 			String value = provider.getTooltip();
 			if (value == null) {
 				continue;
 			}
+			tooltipSet = true;
 			value = value.replaceFirst("<html>", "<div>");
 			value = value.replaceFirst("<body>", "");
 			value = value.replaceFirst("</body>", "");
@@ -335,8 +337,11 @@ public class NodeModel implements MutableTreeNode {
 			text.append(value);
 			text.append("</td></tr>");
 		}
-		text.append("</table></html>");
-		return text.toString();
+		if(tooltipSet){
+			text.append("</table></html>");
+			return text.toString();
+		}
+		return null;
 	}
 
 	public Collection<INodeView> getViewers() {

@@ -1,7 +1,6 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Window;
 
 import javax.swing.JEditorPane;
