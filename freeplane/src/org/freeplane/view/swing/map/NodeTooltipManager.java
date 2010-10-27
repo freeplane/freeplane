@@ -22,7 +22,7 @@ import javax.swing.Timer;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 
-class NodeTooltipManager{
+public class NodeTooltipManager{
 	private static final String TOOL_TIP_MANAGER = "toolTipManager.";
 	private static final String TOOL_TIP_MANAGER_INITIAL_DELAY = "toolTipManager.initialDelay";
 	private static NodeTooltipManager instance;
@@ -39,7 +39,7 @@ class NodeTooltipManager{
 	private JToolTip tip;
 	final private ComponentMouseListener componentMouseListener;
 
-	static NodeTooltipManager getSharedInstance(){
+	public static NodeTooltipManager getSharedInstance(){
 		if(instance == null){
 			instance = new NodeTooltipManager();
 			final int maxWidth = ResourceController.getResourceController().getIntProperty(
@@ -148,7 +148,7 @@ class NodeTooltipManager{
 		tipPopup.show();
 	}
 
-	private void hideTipWindow() {
+	public void hideTipWindow() {
 		insideComponent = null;
 		toolTipText = null;
 		mouseEvent = null;

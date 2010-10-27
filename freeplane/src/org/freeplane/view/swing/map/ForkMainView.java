@@ -140,7 +140,7 @@ class ForkMainView extends MainView {
 	@Override
 	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, boolean itself) {
 		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
-		if (nodeView.isLeft()) {
+		if (p.x <= 0) {
 			p.x -= zoomedFoldingSymbolHalfWidth;
 		}
 		else {

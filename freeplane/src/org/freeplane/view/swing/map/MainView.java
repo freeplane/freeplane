@@ -93,7 +93,11 @@ public abstract class MainView extends ZoomableLabel {
 	private static final boolean DONT_MARK_FORMULAS_FIXME_REMOVE = Controller.getCurrentController()
 	    .getResourceController().getBooleanProperty("formula_dont_mark_formulas");;
 	private Border errorBorder = new LineBorder(Color.RED, 2);
-	private boolean shortenedText;
+	private boolean isShortened;
+
+	boolean isShortened() {
+    	return isShortened;
+    }
 
 	MainView() {
 		setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -208,6 +212,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, boolean itself) {
+		UITools.convertPointToAncestor(this, p, nodeView);
 		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
 		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
 		final Color color = g.getColor();
@@ -314,11 +319,6 @@ public abstract class MainView extends ZoomableLabel {
 			final UIIcon icon = STORE.getUIIcon(iconPath);
 			iconImages.addImage(icon.getIcon());
 		}
-		if(shortenedText){
-			final Color textBackground = getNodeView().getTextBackground();
-			final Color textColorForBackground = UITools.getTextColorForBackground(textBackground);
-			iconImages.addImage(new ShortenedNodeIcon(textColorForBackground));
-		}
 	}
 
 	private boolean isExecutable(final String linkText) {
@@ -364,7 +364,7 @@ public abstract class MainView extends ZoomableLabel {
 			text = shortenText(text);
 		}
 		else{
-			shortenedText = false;
+			isShortened = false;
 		}
 		updateText(text);
 	}
@@ -384,10 +384,10 @@ public abstract class MainView extends ZoomableLabel {
 	    	if(length <= maxNodeWidth){
 	    		final Container parent = getParent();
 	    		if(parent instanceof NodeView || parent.getComponentCount() == 1){
-	    			shortenedText = false;
+	    			isShortened = false;
 	    			return longText;
 	    		}
-	    		shortenedText = true;
+	    		isShortened = true;
 	    		return text;
 	    	}
 	    	length = maxNodeWidth;
@@ -396,7 +396,7 @@ public abstract class MainView extends ZoomableLabel {
 	    	length = eolPosition;
 	    }
 	    text = text.substring(0, length);
-	    shortenedText = true;
+	    isShortened = true;
 	    return text;
     }
 
