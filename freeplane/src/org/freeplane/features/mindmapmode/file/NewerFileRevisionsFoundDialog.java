@@ -116,7 +116,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 			});
 			addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-					if (e.getClickCount() == 2) {
+					if (e.getClickCount() >= 2) {
 						final FileWrapper fileWrapper = (FileWrapper) getModel().getValueAt(getSelectedRow(), 0);
 						setSelectedFile(fileWrapper.getFile());
 						if (fileWrapper != null)
