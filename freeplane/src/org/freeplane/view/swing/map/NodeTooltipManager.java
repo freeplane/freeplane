@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JComponent;
 import javax.swing.JToolTip;
@@ -190,7 +191,7 @@ public class NodeTooltipManager{
 	}
 
 
-	private class ComponentMouseListener extends MouseAdapter {
+	private class ComponentMouseListener extends MouseAdapter implements MouseMotionListener{
 
 		public void mouseEntered(MouseEvent event) {
 			initiateToolTip(event);
@@ -201,6 +202,8 @@ public class NodeTooltipManager{
 		public void mouseExited(MouseEvent event) {
 				exitTimer.start();
 		}
+		public void mouseDragged(MouseEvent e) {
+        }
 	}
 	
 	private void initiateToolTip(MouseEvent event) {
