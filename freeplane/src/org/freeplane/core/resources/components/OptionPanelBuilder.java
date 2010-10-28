@@ -23,6 +23,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.Collator;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.Vector;
@@ -64,7 +65,8 @@ public class OptionPanelBuilder {
 			final int childrenCount = data.getChildrenCount();
 			final Vector<String> choices = new Vector<String>(childrenCount);
 			final Vector<String> translations = new Vector<String>(childrenCount);
-			final TreeMap<String, String> inverseMap = new TreeMap<String, String>();
+			// sort according to current locale
+			final TreeMap<String, String> inverseMap = new TreeMap<String, String>(Collator.getInstance());
 			for (int i = 0; i < childrenCount; i++) {
 				final String choice = data.getChildAtIndex(i).getAttribute("value", null);
 				choices.add(choice);
