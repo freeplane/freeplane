@@ -77,5 +77,6 @@ public class DefaultMapMouseReceiver implements IMapMouseReceiver {
 	public void mouseReleased(final MouseEvent e) {
 		originX = -1;
 		originY = -1;
+		((MapView) Controller.getCurrentController().getViewController().getMapView()).setMoveCursor(false);
 	}
 }

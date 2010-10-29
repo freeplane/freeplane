@@ -149,7 +149,7 @@ public class NodeTooltipManager{
 		tipPopup.show();
 	}
 
-	public void hideTipWindow() {
+	private void hideTipWindow() {
 		insideComponent = null;
 		toolTipText = null;
 		mouseEvent = null;
@@ -200,9 +200,13 @@ public class NodeTooltipManager{
 			initiateToolTip(event);
 		}
 		public void mouseExited(MouseEvent event) {
-				exitTimer.start();
+			exitTimer.start();
 		}
 		public void mouseDragged(MouseEvent e) {
+        }
+		@Override
+        public void mousePressed(MouseEvent e) {
+	        hideTipWindow();
         }
 	}
 	

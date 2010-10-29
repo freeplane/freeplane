@@ -109,8 +109,9 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 	public void mouseReleased(final MouseEvent e) {
 		originX = -1;
 		originY = -1;
+		final MapView mapView = (MapView) e.getComponent();
+		mapView.setMoveCursor(false);
 		if (draggedLink != null) {
-			final MapView mapView = (MapView) e.getComponent();
 			draggedLink.setShowControlPoints(false);
 			final Point draggedLinkNewStartPoint = draggedLink.getStartInclination();
 			final Point draggedLinkNewEndPoint = draggedLink.getEndInclination();

@@ -1,5 +1,6 @@
 package org.freeplane.view.swing.ui;
 
+import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
@@ -113,6 +114,33 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mouseClicked(final MouseEvent e) {
+		if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
+			ModeController mc = Controller.getCurrentController().getModeController();
+			/* perform action only if one selected node. */
+			final MapController mapController = mc.getMapController();
+			if (mapController.getSelectedNodes().size() != 1) {
+				return;
+			}
+			final MainView component = (MainView) e.getComponent();
+			if (component.isInFollowLinkRegion(e.getX())) {
+				LinkController.getController(mc).loadURL(e);
+			}
+			else {
+				final NodeModel node = (component).getNodeView().getModel();
+				if (!mapController.hasChildren(node)) {
+					/* If the link exists, follow the link; toggle folded otherwise */
+					if (NodeLinks.getValidLink(mapController.getSelectedNode()) == null) {
+						mapController.toggleFolded();
+					}
+					else {
+						LinkController.getController(mc).loadURL(e);
+					}
+					return;
+				}
+				mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
+			}
+			e.consume();
+		}
 	}
 
 	/**
@@ -151,43 +179,19 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mousePressed(final MouseEvent e) {
-		showPopupMenu(e);
+		final Controller controller = Controller.getCurrentController();
+		final Component selectedComponent = controller.getViewController().getSelectedComponent();
+		final boolean isFocused = SwingUtilities.isDescendingFrom(e.getComponent(), selectedComponent);
+		if(isFocused) showPopupMenu(e);
 	}
 
 	public void mouseReleased(final MouseEvent e) {
 		stopTimerForDelayedSelection();
+		final Controller controller = Controller.getCurrentController();
+		final Component selectedComponent = controller.getViewController().getSelectedComponent();
+		final boolean isFocused = SwingUtilities.isDescendingFrom(e.getComponent(), selectedComponent);
 		extendSelection(e);
-		showPopupMenu(e);
-		if (e.isConsumed()) {
-			return;
-		}
-		if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
-			ModeController mc = Controller.getCurrentController().getModeController();
-			/* perform action only if one selected node. */
-			final MapController mapController = mc.getMapController();
-			if (mapController.getSelectedNodes().size() != 1) {
-				return;
-			}
-			final MainView component = (MainView) e.getComponent();
-			if (component.isInFollowLinkRegion(e.getX())) {
-				LinkController.getController(mc).loadURL(e);
-			}
-			else {
-				final NodeModel node = (component).getNodeView().getModel();
-				if (!mapController.hasChildren(node)) {
-					/* If the link exists, follow the link; toggle folded otherwise */
-					if (NodeLinks.getValidLink(mapController.getSelectedNode()) == null) {
-						mapController.toggleFolded();
-					}
-					else {
-						LinkController.getController(mc).loadURL(e);
-					}
-					return;
-				}
-				mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
-			}
-			e.consume();
-		}
+		if(isFocused) showPopupMenu(e);
 	}
 
 	public void showPopupMenu(final MouseEvent e) {
