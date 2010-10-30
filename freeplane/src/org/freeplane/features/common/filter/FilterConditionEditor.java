@@ -20,6 +20,7 @@
 package org.freeplane.features.common.filter;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.ref.WeakReference;
@@ -32,12 +33,14 @@ import javax.swing.ComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
@@ -106,32 +109,51 @@ public class FilterConditionEditor extends Box {
 	final private JComboBox values;
 
 	public FilterConditionEditor(final FilterController filterController) {
-		super(BoxLayout.X_AXIS);
+		super(BoxLayout.PAGE_AXIS);
 		this.filterController = filterController;
-		setBorder(new EmptyBorder(5, 0, 5, 0));
+		setBorder(new EtchedBorder());
+		Box top = new Box(BoxLayout.LINE_AXIS);
+		Box middle = new Box(BoxLayout.LINE_AXIS);
+		Box bottom = new Box(BoxLayout.LINE_AXIS);
+		this.add(Box.createRigidArea(new Dimension(15,15)));
+		this.add(top);
+		this.add(middle);
+		this.add(bottom);
+		this.add(Box.createRigidArea(new Dimension(15,15)));
+		// Ignore case checkbox
+		caseInsensitive = new JCheckBox();
+		caseInsensitive.setAlignmentX(Component.LEFT_ALIGNMENT);
+		top.add(Box.createRigidArea(new Dimension(15,15)));
+		top.add(caseInsensitive);
+		top.add(Box.createHorizontalGlue());
+		MenuBuilder.setLabelAndMnemonic(caseInsensitive,TextUtils.getText(PROPERTY_FILTER_IGNORE_CASE));
+		caseInsensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
+		    PROPERTY_FILTER_IGNORE_CASE));
+		middle.add(Box.createRigidArea(new Dimension(15,15)));		
+		//Item to search for
 		filteredPropertiesComponent = new JComboBox();
 		filteredPropertiesModel = new ExtendedComboBoxModel();
 		filteredPropertiesComponent.setModel(filteredPropertiesModel);
 		filteredPropertiesComponent.addItemListener(new FilteredPropertyChangeListener());
-		add(Box.createHorizontalGlue());
-		add(filteredPropertiesComponent);
+		bottom.add(Box.createRigidArea(new Dimension(15,15)));
+		bottom.add(Box.createHorizontalGlue());
+		bottom.add(filteredPropertiesComponent);
+		bottom.add(Box.createRigidArea(new Dimension(10,5)));
 		filteredPropertiesComponent.setRenderer(filterController.getConditionRenderer());
+		//Search condition
 		elementaryConditions = new JComboBox();
 		elementaryConditions.addItemListener(new ElementaryConditionChangeListener());
-		add(Box.createHorizontalGlue());
-		add(elementaryConditions);
+		//bottom.add(Box.createHorizontalGlue());
+		bottom.add(elementaryConditions);
+		bottom.add(Box.createRigidArea(new Dimension(10,5)));
 		elementaryConditions.setRenderer(filterController.getConditionRenderer());
+		//Search value
 		values = new JComboBox();
-		add(Box.createHorizontalGlue());
-		add(values);
+		values.setPreferredSize(new Dimension(300,20));
+		bottom.add(values);
+		bottom.add(Box.createRigidArea(new Dimension(15,15)));
 		values.setRenderer(filterController.getConditionRenderer());
 		values.setEditable(true);
-		caseInsensitive = new JCheckBox();
-		add(Box.createHorizontalGlue());
-		add(caseInsensitive);
-		caseInsensitive.setText(TextUtils.getText("filter_ignore_case"));
-		caseInsensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
-		    PROPERTY_FILTER_IGNORE_CASE));
 		mapChanged(Controller.getCurrentController().getMap());
 	}
 
