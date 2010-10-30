@@ -1140,8 +1140,11 @@ public class NodeView extends JComponent implements INodeView {
 		FoldingMarkType markType = foldingMarkType(getMap().getModeController().getMapController(), getModel());
 		if (!markType.equals(FoldingMarkType.UNFOLDED)) {
 			final Point out = getMainViewOutPoint(null, null);
-			UITools.convertPointToAncestor(getMainView(), out, this);
 			mainView.paintFoldingMark(this, g, out, markType.equals(FoldingMarkType.ITSELF_FOLDED));
+		}
+		if(mainView.isShortened()){
+			final Point in = getMainViewInPoint();
+			mainView.paintFoldingMark(this, g, in, true);
 		}
 	}
 

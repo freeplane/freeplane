@@ -134,4 +134,12 @@ class RootMainView extends MainView {
 	public void setDraggedOver(final Point p) {
 		setDraggedOver((dropPosition(p.getX())) ? NodeView.DRAGGED_OVER_SON_LEFT : NodeView.DRAGGED_OVER_SON);
 	}
+
+	@Override
+    void paintFoldingMark(NodeView nodeView, Graphics2D g, Point p, boolean itself) {
+		p.x = 0;
+	    super.paintFoldingMark(nodeView, g, p, itself);
+    }
+	
+	
 }

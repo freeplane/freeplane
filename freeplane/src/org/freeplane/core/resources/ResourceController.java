@@ -238,7 +238,7 @@ public abstract class ResourceController {
 		loadProperties(props, propertiesUrl);
 		for (Entry<Object, Object> entry : props.entrySet()) {
 			if (getProperty((String) entry.getKey()) == null)
-				props.setProperty((String) entry.getKey(), (String) entry.getValue());
+				setProperty((String) entry.getKey(), (String) entry.getValue());
 		}
     }
 	

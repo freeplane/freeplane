@@ -171,18 +171,7 @@ public class MModeControllerFactory {
 		modeController = new MModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		userInputListenerFactory.setNodeMouseMotionListener(new DelayedMouseListener( new DefaultNodeMouseMotionListener() {
-			@Override
-			public void mouseReleased(final MouseEvent e) {
-				stopTimerForDelayedSelection();
-				final Controller controller = Controller.getCurrentController();
-				final ModeController modeController = controller.getModeController();
-				final Component selectedComponent = controller.getViewController().getSelectedComponent();
-				final boolean isFocused = SwingUtilities.isDescendingFrom(e.getComponent(), selectedComponent);
-				extendSelection(e);
-				showPopupMenu(e);
-				if (e.isConsumed()) {
-					return;
-				}
+			public void mouseClicked(final MouseEvent e) {
 				if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
 					/* perform action only if one selected node. */
 					final MapController mapController = modeController.getMapController();
@@ -199,6 +188,8 @@ public class MModeControllerFactory {
 							((MTextController) TextController.getController()).edit(null, false, false);
 							return;
 						}
+						final Component selectedComponent = controller.getViewController().getSelectedComponent();
+						final boolean isFocused = SwingUtilities.isDescendingFrom(e.getComponent(), selectedComponent);
 						if(isFocused){
 							mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
 						}

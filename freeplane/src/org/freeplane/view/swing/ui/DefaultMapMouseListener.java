@@ -106,6 +106,5 @@ public class DefaultMapMouseListener implements IMouseListener {
 		}
 		handlePopup(e);
 		e.consume();
-		((MapView) Controller.getCurrentController().getViewController().getMapView()).setMoveCursor(false);
 	}
 }

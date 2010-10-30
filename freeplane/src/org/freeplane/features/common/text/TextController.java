@@ -190,4 +190,8 @@ public class TextController implements IExtension {
 		}
 		Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", oldState, shortened);   
 	}
+
+	public void toggleShortened(NodeModel node) {
+		setIsShortened(node, ! getIsShortened(node)); 
+    }
 }
