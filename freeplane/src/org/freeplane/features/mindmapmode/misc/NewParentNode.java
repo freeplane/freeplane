@@ -17,6 +17,7 @@
  */
 package org.freeplane.features.mindmapmode.misc;
 
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,9 @@ import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.map.MMapController;
+import org.freeplane.features.mindmapmode.text.MTextController;
 
 /**
  * @author foltin The original version was sent by Stephen Viles (sviles) https:
@@ -79,6 +82,12 @@ public class NewParentNode extends AFreeplaneAction {
 			return;
 		}
 		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(newNode);
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				((MTextController) TextController.getController()).edit(newNode, selectedNode, null, true, false, false);
+			}
+		});
+
 	}
 
 	private NodeModel moveToNewParent(final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
