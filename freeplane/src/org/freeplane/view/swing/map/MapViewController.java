@@ -479,6 +479,9 @@ public class MapViewController implements IMapViewManager {
 		}
 		final MapModel map = mapView.getModel();
 		final MapStyle mapStyle = (MapStyle) mapView.getModeController().getExtension(MapStyle.class);
+		if(mapView.getZoom() == zoom){
+			return;
+		}
 		mapStyle.setZoom(map, zoom);
 		mapView.setZoom(zoom);
 	}
