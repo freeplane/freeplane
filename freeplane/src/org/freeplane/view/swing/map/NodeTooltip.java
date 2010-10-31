@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Window;
 
 import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
 import javax.swing.JToolTip;
 import javax.swing.SwingUtilities;
 
@@ -18,7 +19,9 @@ public class NodeTooltip extends JToolTip {
 		tip.setContentType("text/html");
 		tip.setEditable(false);
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(tip);
-		scrollPane.setMaximumSize(new Dimension(maximumWidth, maximumWidth / 2));
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, maximumWidth / 2));
 		UITools.setScrollbarIncrement(scrollPane);
 		add(scrollPane);
 		tip.setOpaque(false);

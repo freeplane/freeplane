@@ -3,8 +3,10 @@ package org.freeplane.core.ui.components;
 import java.awt.Component;
 import java.awt.Dimension;
 
+import javax.swing.JScrollPane;
+
 @SuppressWarnings("serial")
-public class JRestrictedSizeScrollPane extends JAutoScrollBarPane {
+public class JRestrictedSizeScrollPane extends JScrollPane {
 
 	public JRestrictedSizeScrollPane(Component view) {
 	    super(view);
@@ -12,11 +14,10 @@ public class JRestrictedSizeScrollPane extends JAutoScrollBarPane {
 
 	@Override
     public Dimension getPreferredSize() {
+		final Dimension preferredSize = super.getPreferredSize();
 		if(isPreferredSizeSet() || ! (isMaximumSizeSet() || isMinimumSizeSet())){
-			return super.getPreferredSize();
+			return preferredSize;
 		}
-		final Dimension viewPreferredSize = getViewport().getView().getPreferredSize();
-		final Dimension preferredSize = new Dimension(viewPreferredSize);
 		if(isMinimumSizeSet()){
 			final Dimension minimumSize = getMinimumSize();
 			preferredSize.width = Math.max(minimumSize.width, preferredSize.width);
@@ -26,12 +27,6 @@ public class JRestrictedSizeScrollPane extends JAutoScrollBarPane {
 			final Dimension maximumSize = getMaximumSize();
 			preferredSize.width = Math.min(maximumSize.width, preferredSize.width);
 			preferredSize.height = Math.min(maximumSize.height, preferredSize.height);
-		}
-		if(getVerticalScrollBar().isVisible()){
-			preferredSize.width += getVerticalScrollBar().getPreferredSize().width;
-		}
-		if(getHorizontalScrollBar().isVisible()){
-			preferredSize.height += getHorizontalScrollBar().getPreferredSize().height;
 		}
 		return preferredSize;
     }

@@ -43,7 +43,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * 21.12.2008
  */
 class NodeTextConditionController implements IElementaryConditionController {
-	private final ComboBoxEditor editor = new BasicComboBoxEditor();
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
 	public boolean canEditValues(final Object selectedItem, final NamedObject simpleCond) {
@@ -128,7 +127,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
-		return editor;
+		return new BasicComboBoxEditor();
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
