@@ -59,6 +59,8 @@ public class AssignStyleAction extends AMultipleNodeAction {
 
 	@Override
 	public void setSelected() {
-		setSelected(style.equals(LogicalStyleModel.getStyle(Controller.getCurrentController().getSelection().getSelected())));
+		NodeModel node= Controller.getCurrentController().getSelection().getSelected();
+		final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
+		setSelected(this.style.equals(style));
 	}
 }

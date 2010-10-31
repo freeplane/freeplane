@@ -69,7 +69,7 @@ public class LogicalStyleController implements IExtension {
 			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
 				currentValue.add(new StyleNode(node));
 				IStyle style = LogicalStyleModel.getStyle(node);
-				if(! MapStyleModel.DEFAULT_STYLE.equals(style)){
+				if(style != null){
 					currentValue.add(style);
 				}
 				return currentValue;
@@ -151,7 +151,7 @@ public class LogicalStyleController implements IExtension {
 					return;
 				}
 				final Object style = extension.getStyle();
-				if (style == null || style.equals(MapStyleModel.DEFAULT_STYLE)) {
+				if (style == null) {
 					return;
 				}
 				final String value = NamedObject.toKeyString(style);
