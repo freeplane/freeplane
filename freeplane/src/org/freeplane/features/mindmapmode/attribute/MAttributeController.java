@@ -627,9 +627,10 @@ public class MAttributeController extends AttributeController {
 
 	@Override
 	public void performRegistrySubtreeAttributes(final NodeModel node) {
-		for (int i = 0; i < NodeAttributeTableModel.getModel(node).getRowCount(); i++) {
-			final String name = NodeAttributeTableModel.getModel(node).getValueAt(i, 0).toString();
-			final String value = NodeAttributeTableModel.getModel(node).getValueAt(i, 1).toString();
+		final NodeAttributeTableModel nodeAttributeTableModel = NodeAttributeTableModel.getModel(node);
+		for (int i = 0; i < nodeAttributeTableModel.getRowCount(); i++) {
+			final String name = nodeAttributeTableModel.getValueAt(i, 0).toString();
+			final String value = nodeAttributeTableModel.getValueAt(i, 1).toString();
 			performRegistryAttributeValue(name, value);
 		}
 		for (final ListIterator<NodeModel> e = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); e.hasNext();) {
