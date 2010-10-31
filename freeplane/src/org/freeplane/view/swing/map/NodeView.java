@@ -67,7 +67,6 @@ import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.TextController;
-
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -1429,7 +1428,9 @@ public class NodeView extends JComponent implements INodeView {
 			mainView.setToolTipText(null);
 			return;
 		}
-		mainView.setToolTipText(getModel().getToolTip());
+		final TextController textController = TextController.getController();
+		final NodeModel nodeModel = getModel();
+		mainView.setToolTipText(textController.getTransformedText(nodeModel.getToolTip(), nodeModel));
 	}
 
 	void updateToolTipsRecursive() {
@@ -1511,7 +1512,8 @@ public class NodeView extends JComponent implements INodeView {
 		String oldText = note != null ? note.getText() : null;
 		final String newText;
 		if (getMap().showNotes()) {
-			newText = NoteModel.getNoteText(model);
+			final TextController textController = TextController.getController();
+			newText = textController.getTransformedText(NoteModel.getNoteText(model), model);
 		}
 		else {
 			newText = null;

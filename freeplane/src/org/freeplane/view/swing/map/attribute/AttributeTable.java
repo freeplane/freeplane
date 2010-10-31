@@ -51,8 +51,10 @@ import javax.swing.table.TableModel;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
+import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.IColumnWidthChangeListener;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -269,8 +271,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	@Override
-	public TableCellRenderer getCellRenderer(final int row, final int column) {
-		final String text = getValueAt(row, column).toString();
+	public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+		final String text = getTransformedIfValue(row, column);
 		AttributeTable.dtcr.setText(text);
 		final int prefWidth = AttributeTable.dtcr.getPreferredSize().width;
 		final int width = getColumnModel().getColumn(column).getWidth();
@@ -280,6 +282,32 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		else {
 			AttributeTable.dtcr.setToolTipText(null);
 		}
+		// this is a copy from JTable.prepareRenderer()
+		boolean isSelected = false;
+		boolean hasFocus = false;
+		// Only indicate the selection and focused cell if not printing
+		if (!isPaintingForPrint()) {
+			isSelected = isCellSelected(row, column);
+			boolean rowIsLead = (selectionModel.getLeadSelectionIndex() == row);
+			boolean colIsLead = (columnModel.getSelectionModel().getLeadSelectionIndex() == column);
+			hasFocus = (rowIsLead && colIsLead) && isFocusOwner();
+		}
+		return renderer.getTableCellRendererComponent(this, text, isSelected, hasFocus, row, column);
+	}
+
+	private String getTransformedIfValue(int row, int column) {
+	    final IAttributeTableModel attributeTableModel = (IAttributeTableModel) getModel();
+		final String rawText = getValueAt(row, column).toString();
+		if (column == 1) {
+			// evaluate values only
+			final TextController textController = TextController.getController();
+			return textController.getTransformedText(rawText, attributeTableModel.getNode());
+		}
+	    return rawText;
+    }
+
+    @Override
+	public TableCellRenderer getCellRenderer(final int row, final int column) {
 		return AttributeTable.dtcr;
 	}
 
@@ -513,9 +541,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		attributeView.getMapView().getModeController().getMapController().nodeChanged(node);
 	}
 
-	/**
-	 *
-	 */
 	void updateAttributeTable() {
 		updateFontSize(this, 1F);
 		updateRowHeights();

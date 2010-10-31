@@ -35,6 +35,7 @@ import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.ITooltipProvider;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -313,6 +314,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		setTooltip();
 	}
 
+	// FIXME: isn't this view logic?
 	protected void setTooltip() {
 		final int rowCount = getRowCount();
 		if (rowCount == 0) {
@@ -326,6 +328,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 					if (registry.getAttributeViewType().equals(AttributeTableLayoutModel.SHOW_ALL)) {
 						return null;
 					}
+					final TextController textController = TextController.getController();
 					final StringBuilder tooltip = new StringBuilder();
 					tooltip.append("<html><body><table  border=\"1\">");
 					final int currentRowCount = getRowCount();
@@ -333,7 +336,8 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 						tooltip.append("<tr><td>");
 						tooltip.append(getValueAt(i, 0));
 						tooltip.append("</td><td>");
-						tooltip.append(getValueAt(i, 1));
+						final String value = String.valueOf(getValueAt(i, 1));
+						tooltip.append(textController.getTransformedText(value, node));
 						tooltip.append("</td></tr>");
 					}
 					tooltip.append("</table></body></html>");
