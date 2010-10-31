@@ -285,13 +285,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		// this is a copy from JTable.prepareRenderer()
 		boolean isSelected = false;
 		boolean hasFocus = false;
-		// Only indicate the selection and focused cell if not printing
-		if (!isPaintingForPrint()) {
-			isSelected = isCellSelected(row, column);
-			boolean rowIsLead = (selectionModel.getLeadSelectionIndex() == row);
-			boolean colIsLead = (columnModel.getSelectionModel().getLeadSelectionIndex() == column);
-			hasFocus = (rowIsLead && colIsLead) && isFocusOwner();
-		}
+//FIXME: works only since 1.6 - re-enable once Freeplane switches to 1.6
+//		// Only indicate the selection and focused cell if not printing
+//		if (!isPaintingForPrint()) {
+//			isSelected = isCellSelected(row, column);
+//			boolean rowIsLead = (selectionModel.getLeadSelectionIndex() == row);
+//			boolean colIsLead = (columnModel.getSelectionModel().getLeadSelectionIndex() == column);
+//			hasFocus = (rowIsLead && colIsLead) && isFocusOwner();
+//		}
 		return renderer.getTableCellRendererComponent(this, text, isSelected, hasFocus, row, column);
 	}
 
