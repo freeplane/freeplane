@@ -41,7 +41,6 @@ public class LinkConditionController implements IElementaryConditionController {
 	static final String FILTER_LINK = "filter_link";
 	static final String CONNECTOR_LABEL = "connector_label";
 	static final String CONNECTOR = "connector";
-	private final ComboBoxEditor editor = new BasicComboBoxEditor();
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
 	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
@@ -122,7 +121,7 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
-		return editor;
+		return new BasicComboBoxEditor();
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
