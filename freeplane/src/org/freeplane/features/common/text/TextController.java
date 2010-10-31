@@ -49,6 +49,8 @@ public class TextController implements IExtension {
 	private static final Integer NODE_TOOLTIP = 1;
 	private static final Integer DETAILS_TOOLTIP = 2;
 
+	private final List<ITextTransformer> textTransformers;
+
 	public static TextController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return getController(modeController);
@@ -67,8 +69,6 @@ public class TextController implements IExtension {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(TextController.class, textController);
 	}
-
-// 	final private ModeController modeController;
 
 	public TextController(final ModeController modeController) {
 		super();
@@ -95,12 +95,13 @@ public class TextController implements IExtension {
 	    textTransformers.remove(textTransformer);
     }
 
-	final private List<ITextTransformer> textTransformers;
-	
 	public String getText(NodeModel nodeModel) {
-		String nodeText = nodeModel.getText();
+		return nodeModel.getText();
+	}
+	
+	public String getTransformedText(String nodeText, final NodeModel nodeModel) {
 		for (ITextTransformer textTransformer : getTextTransformers()) {
-			nodeText = textTransformer.transform(nodeText, nodeModel);
+			nodeText = textTransformer.transformText(nodeText, nodeModel);
 		}
 		return nodeText;
 	}
@@ -111,7 +112,7 @@ public class TextController implements IExtension {
 	}
 
 	public String getPlainTextContent(NodeModel nodeModel) {
-		final String text = getText(nodeModel);
+		final String text = getTransformedText(nodeModel.getText(), nodeModel);
 		return HtmlUtils.htmlToPlain(text);    
 	}
 
@@ -165,7 +166,7 @@ public class TextController implements IExtension {
 				rule.append("font-family: " + font.getFamily() + ";");
 				rule.append("font-size: " + font.getSize() + "pt;");
 				rule.append("margin-top:0;");
-				String text = getText(node);
+				String text = getTransformedText(node.getText(), node);
 				if(! HtmlUtils.isHtmlNode(text)) {
 					text = HtmlUtils.plainToHTML(text);
 				}

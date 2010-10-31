@@ -4,5 +4,5 @@ import org.freeplane.features.common.map.NodeModel;
 
 
 public interface ITextTransformer {
-	String transform(String nodeText, NodeModel nodeModel);
+	String transformText(String nodeText, NodeModel nodeModel);
 }

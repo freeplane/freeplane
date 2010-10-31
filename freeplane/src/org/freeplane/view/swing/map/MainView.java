@@ -343,11 +343,13 @@ public abstract class MainView extends ZoomableLabel {
 	protected void updateText(NodeModel nodeModel) {
 		final ModeController modeController = getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);
-		String text;
+		final String originalText = textController.getText(nodeModel);
+		String text = originalText;
 		try {
-			text = textController.getText(nodeModel);
+			text = textController.getTransformedText(text, nodeModel);
 			// FIXME: temporarily, to show evaluated formulas:
-			if (!DONT_MARK_FORMULAS_FIXME_REMOVE && !text.equals(nodeModel.getText())) {
+			// note: test for identity is OK here
+			if (!DONT_MARK_FORMULAS_FIXME_REMOVE && text != originalText) {
 				setBorder(new LineBorder(Color.GREEN, 2));
 			}
 			else {
@@ -356,7 +358,7 @@ public abstract class MainView extends ZoomableLabel {
 		}
 		catch (Exception e) {
 			LogUtils.warn(e.getMessage(), e);
-			text = TextUtils.format("MainView.errorUpdateText", nodeModel.getText(), e.getLocalizedMessage());
+			text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
 			setBorder(errorBorder);
 		}
 		final boolean textShortened = textController.getIsShortened(nodeModel);
