@@ -121,9 +121,11 @@ public class ResourceBundles extends ResourceBundle {
 	 * @throws IOException
 	 */
 	private Map<String, String> getLanguageResources(final String lang) throws IOException {
+		String resourceName = "/translations/Resources" + "_" + lang + ".properties";
 		final URL systemResource = ResourceController.getResourceController().getResource(
-		    "/translations/Resources" + "_" + lang + ".properties");
+		    resourceName);
 		if (systemResource == null) {
+			System.out.println("core resource " + resourceName + " not found");
 			return null;
 		}
 		final Map<String, String> resources = getLanguageResources(systemResource);
@@ -192,6 +194,10 @@ public class ResourceBundles extends ResourceBundle {
 			lang = "nb";
 		}
 		languageResources = getLanguageResources(lang);
+		if(languageResources == null){
+			System.err.println("language resources for " + lang + " not found");
+			System.exit(1);
+		}
 	}
 
 	public void reloadLanguage() {
