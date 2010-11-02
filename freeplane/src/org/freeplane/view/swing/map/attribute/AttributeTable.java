@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.map.attribute;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -48,6 +49,9 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
@@ -166,11 +170,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final int MAX_HEIGTH = 300;
 	private static final int MAX_WIDTH = 600;
 	private static final Dimension prefHeaderSize = new Dimension(1, 8);
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private static final float TABLE_ROW_HEIGHT = 4;
+	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
+	    .getBooleanProperty("formula_dont_mark_formulas");;
 
 	static ComboBoxModel getDefaultComboBoxModel() {
 		if (AttributeTable.defaultComboBoxModel == null) {
@@ -272,7 +275,30 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	@Override
 	public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-		final String text = getTransformedIfValue(row, column);
+	    final IAttributeTableModel attributeTableModel = (IAttributeTableModel) getModel();
+		final String originalText = getValueAt(row, column).toString();
+		String text = originalText;
+		if (column == 1) {
+			try {
+				// evaluate values only
+				final TextController textController = TextController.getController();
+				text = textController.getTransformedText(originalText, attributeTableModel.getNode());
+				if (!DONT_MARK_FORMULAS && text != originalText) {
+					AttributeTable.dtcr.setForeground(Color.GREEN);
+				}
+				else {
+					AttributeTable.dtcr.setForeground(Color.BLACK);
+				}
+			}
+			catch (Exception e) {
+				LogUtils.warn(e.getMessage(), e);
+				text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
+				AttributeTable.dtcr.setForeground(Color.RED);
+			}
+		}
+		else {
+			AttributeTable.dtcr.setForeground(Color.BLACK);
+		}
 		AttributeTable.dtcr.setText(text);
 		final int prefWidth = AttributeTable.dtcr.getPreferredSize().width;
 		final int width = getColumnModel().getColumn(column).getWidth();
@@ -296,18 +322,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		return renderer.getTableCellRendererComponent(this, text, isSelected, hasFocus, row, column);
 	}
 
-	private String getTransformedIfValue(int row, int column) {
-	    final IAttributeTableModel attributeTableModel = (IAttributeTableModel) getModel();
-		final String rawText = getValueAt(row, column).toString();
-		if (column == 1) {
-			// evaluate values only
-			final TextController textController = TextController.getController();
-			return textController.getTransformedText(rawText, attributeTableModel.getNode());
-		}
-	    return rawText;
-    }
-
-    @Override
+	@Override
 	public TableCellRenderer getCellRenderer(final int row, final int column) {
 		return AttributeTable.dtcr;
 	}

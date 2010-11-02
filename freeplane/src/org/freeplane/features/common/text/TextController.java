@@ -28,6 +28,8 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.map.ITooltipProvider;
 import org.freeplane.features.common.map.MapController;
@@ -48,7 +50,6 @@ public class TextController implements IExtension {
 	public static final String FILTER_DETAILS = "filter_details";
 	private static final Integer NODE_TOOLTIP = 1;
 	private static final Integer DETAILS_TOOLTIP = 2;
-
 	private final List<ITextTransformer> textTransformers;
 
 	public static TextController getController() {
@@ -99,11 +100,23 @@ public class TextController implements IExtension {
 		return nodeModel.getText();
 	}
 	
-	public String getTransformedText(String nodeText, final NodeModel nodeModel) {
+	/** @throws RuntimeException if something goes wrong. */
+	public String getTransformedText(String text, final NodeModel nodeModel) {
 		for (ITextTransformer textTransformer : getTextTransformers()) {
-			nodeText = textTransformer.transformText(nodeText, nodeModel);
+			text = textTransformer.transformText(text, nodeModel);
 		}
-		return nodeText;
+		return text;
+	}
+	
+	/** returns an error message instead of a normal result if something goes wrong. */
+	public String getTransformedTextNoThrow(String originalText, final NodeModel node) {
+		try {
+			return getTransformedText(originalText, node);
+		}
+		catch (Throwable e) {
+			LogUtils.warn(e.getMessage(), e);
+			    return TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
+		}
 	}
 
 	public boolean getIsShortened(NodeModel node){
@@ -112,7 +125,7 @@ public class TextController implements IExtension {
 	}
 
 	public String getPlainTextContent(NodeModel nodeModel) {
-		final String text = getTransformedText(nodeModel.getText(), nodeModel);
+		final String text = getTransformedTextNoThrow(nodeModel.getText(), nodeModel);
 		return HtmlUtils.htmlToPlain(text);    
 	}
 
@@ -155,25 +168,33 @@ public class TextController implements IExtension {
 
 	protected void setNodeTextTooltip(final NodeModel node) {
 		(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip() {
-				if (! ShortenedTextModel.isShortened(node)){
-					return null;
-				}
-				final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-					NodeStyleController.class);
-				final Font font = style.getFont(node);
-				final StringBuilder rule = new StringBuilder();
-				rule.append("font-family: " + font.getFamily() + ";");
-				rule.append("font-size: " + font.getSize() + "pt;");
-				rule.append("margin-top:0;");
-				String text = getTransformedText(node.getText(), node);
-				if(! HtmlUtils.isHtmlNode(text)) {
-					text = HtmlUtils.plainToHTML(text);
-				}
-				final String tooltipText = text.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
-				.replaceFirst("</body>", "</div></body>");
-				return tooltipText;
-			}
+			    public String getTooltip() {
+				    if (!ShortenedTextModel.isShortened(node)) {
+					    return null;
+				    }
+				    final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController()
+				        .getExtension(NodeStyleController.class);
+				    final Font font = style.getFont(node);
+				    final StringBuilder rule = new StringBuilder();
+				    rule.append("font-family: " + font.getFamily() + ";");
+				    rule.append("font-size: " + font.getSize() + "pt;");
+				    rule.append("margin-top:0;");
+				    final String originalText = node.getText();
+				    String text;
+				    try {
+					    text = getTransformedText(originalText, node);
+				    }
+				    catch (Exception e) {
+					    text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
+					    rule.append("color:red;");
+				    }
+				    if (!HtmlUtils.isHtmlNode(text)) {
+					    text = HtmlUtils.plainToHTML(text);
+				    }
+				    final String tooltipText = text.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
+				        .replaceFirst("</body>", "</div></body>");
+				    return tooltipText;
+			    }
 		});
 	}
 
