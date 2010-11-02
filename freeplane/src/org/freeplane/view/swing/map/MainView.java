@@ -29,7 +29,6 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,8 +41,6 @@ import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.text.JTextComponent;
 
@@ -90,9 +87,8 @@ public abstract class MainView extends ZoomableLabel {
 	private static final long serialVersionUID = 1L;
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
 	private static final IconStore STORE = IconStoreFactory.create();
-	private static final boolean DONT_MARK_FORMULAS_FIXME_REMOVE = Controller.getCurrentController()
+	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController()
 	    .getResourceController().getBooleanProperty("formula_dont_mark_formulas");;
-	private Border errorBorder = new LineBorder(Color.RED, 2);
 	private boolean isShortened;
 
 	boolean isShortened() {
@@ -343,21 +339,21 @@ public abstract class MainView extends ZoomableLabel {
 	protected void updateText(NodeModel nodeModel) {
 		final ModeController modeController = getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);
-		String text;
+		final String originalText = textController.getText(nodeModel);
+		String text = originalText;
 		try {
-			text = textController.getText(nodeModel);
+			text = textController.getTransformedText(text, nodeModel);
 			// FIXME: temporarily, to show evaluated formulas:
-			if (!DONT_MARK_FORMULAS_FIXME_REMOVE && !text.equals(nodeModel.getText())) {
+			// note: test for identity is OK here
+			if (!DONT_MARK_FORMULAS && text != originalText)
 				setBorder(new LineBorder(Color.GREEN, 2));
-			}
-			else {
+			else
 				setBorder(null);
-			}
 		}
-		catch (Exception e) {
+		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);
-			text = TextUtils.format("MainView.errorUpdateText", nodeModel.getText(), e.getLocalizedMessage());
-			setBorder(errorBorder);
+			text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
+			setBorder(new LineBorder(Color.RED, 2));
 		}
 		final boolean textShortened = textController.getIsShortened(nodeModel);
 		if(textShortened){

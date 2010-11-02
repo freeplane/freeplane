@@ -42,11 +42,14 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMouseListener;
 import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.cloud.CloudController;
@@ -67,7 +70,6 @@ import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.TextController;
-
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -94,9 +96,6 @@ public class NodeView extends JComponent implements INodeView {
 	public final static int DRAGGED_OVER_SON_LEFT = 3;
 	static private int FOLDING_SYMBOL_WIDTH = -1;
 	public static final String RESOURCES_SHOW_NODE_TOOLTIPS = "show_node_tooltips";
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public final static int SHIFT = -2;
 	static final int SPACE_AROUND = 50;
@@ -104,6 +103,8 @@ public class NodeView extends JComponent implements INodeView {
 	private static final int MAIN_VIEWER_POSITION = 1;
 	private static final int DETAIL_VIEWER_POSITION = 2;
 	private static final int NOTE_VIEWER_POSITION = 10;
+	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
+	    .getBooleanProperty("formula_dont_mark_formulas");;
 
 	/**
 	 * Determines to a given color a color, that is the best contrary color. It
@@ -1429,7 +1430,28 @@ public class NodeView extends JComponent implements INodeView {
 			mainView.setToolTipText(null);
 			return;
 		}
-		mainView.setToolTipText(getModel().getToolTip());
+		final NodeModel nodeModel = getModel();
+		mainView.setToolTipText(getTransformedText(nodeModel, nodeModel.getToolTip()));
+	}
+
+	private String getTransformedText(final NodeModel node, final String originalText) {
+		final TextController textController = TextController.getController();
+		try {
+			final String text = textController.getTransformedText(originalText, node);
+			if (!DONT_MARK_FORMULAS && text != originalText)
+				return colorize(text, "green");
+			else
+				return text;
+		}
+		catch (Exception e) {
+			LogUtils.warn(e.getMessage(), e);
+			return colorize(
+			    TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage()), "red");
+		}
+    }
+
+	private String colorize(final String text, String color) {
+		return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";
 	}
 
 	void updateToolTipsRecursive() {
@@ -1509,9 +1531,18 @@ public class NodeView extends JComponent implements INodeView {
 	void updateNoteViewer() {
 		ZoomableLabel note = (ZoomableLabel) getContent(NOTE_VIEWER_POSITION);
 		String oldText = note != null ? note.getText() : null;
-		final String newText;
+		String newText;
 		if (getMap().showNotes()) {
-			newText = NoteModel.getNoteText(model);
+			final TextController textController = TextController.getController();
+			final String originalText = NoteModel.getNoteText(model);
+		    try {
+		    	newText = textController.getTransformedTextNoThrow(originalText, model);
+				if (!DONT_MARK_FORMULAS && newText != originalText)
+					newText = colorize(newText, "green");
+		    }
+		    catch (Exception e) {
+			    newText = colorize(TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage()), "red");
+		    }
 		}
 		else {
 			newText = null;

@@ -67,7 +67,7 @@ public class ZoomableLabel extends JLabel {
 
 	protected void updateText(String nodeText) {
 		final MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
-		if (map == null) {
+		if (map == null || nodeText == null) {
 			return;
 		}
 		final boolean isHtml = nodeText.startsWith("<html>");

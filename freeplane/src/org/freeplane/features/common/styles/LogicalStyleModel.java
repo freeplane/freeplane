@@ -44,12 +44,9 @@ public class LogicalStyleModel implements IExtension {
 	static public IStyle getStyle(final NodeModel node) {
 		final LogicalStyleModel extension = LogicalStyleModel.getExtension(node);
 		if (extension == null) {
-			return MapStyleModel.DEFAULT_STYLE;
+			return null;
 		}
 		final IStyle style = extension.getStyle();
-		if (style == null) {
-			return MapStyleModel.DEFAULT_STYLE;
-		}
 		return style;
 	}
 

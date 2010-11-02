@@ -15,7 +15,7 @@ public class StyleCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		return LogicalStyleModel.getStyle(node).equals(value);
+		return LogicalStyleController.getController().getFirstStyle(node).equals(value);
 	}
 
 	public void fillXML(final XMLElement child) {

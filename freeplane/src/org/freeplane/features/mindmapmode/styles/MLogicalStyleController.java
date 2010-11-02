@@ -273,29 +273,37 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	public void setStyle(final NodeModel node, final IStyle style) {
-		final LogicalStyleModel model = LogicalStyleModel.createExtension(node);
-		final IStyle oldStyle = model.getStyle();
+		final IStyle oldStyle = LogicalStyleModel.getStyle(node);
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (oldStyle != null && oldStyle.equals(style) || oldStyle == style) {
 			modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
 			return;
 		}
 		final IActor actor = new IActor() {
-			public void undo() {
-				model.setStyle(oldStyle);
-				modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, style, oldStyle);
-				selectActions();
-			}
-
 			public String getDescription() {
 				return "setStyle";
 			}
 
 			public void act() {
-				model.setStyle(style);
+				changeStyle(modeController, node, oldStyle, style);
+			}
+
+			public void undo() {
+				changeStyle(modeController, node, style, oldStyle);
+			}
+
+			private void changeStyle(final ModeController modeController, final NodeModel node, final IStyle oldStyle,
+                                    final IStyle style) {
+	            if(style != null){
+					final LogicalStyleModel model = LogicalStyleModel.createExtension(node);
+					model.setStyle(style);
+				}
+				else{
+					node.removeExtension(LogicalStyleModel.class);
+				}
 				modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
 				selectActions();
-			}
+            }
 		};
 		modeController.execute(actor, node.getMap());
 	}

@@ -628,7 +628,7 @@ public class StyleEditorPanel extends JPanel {
 		internalChange = true;
 		try {
 			if(addStyleBox){
-				final boolean isStyleSet = ! MapStyleModel.DEFAULT_STYLE.equals(LogicalStyleModel.getStyle(node));
+				final boolean isStyleSet = LogicalStyleModel.getStyle(node) != null;
 				mSetStyle.setValue(isStyleSet);
 			}
 			final NodeStyleController styleController = NodeStyleController.getController();

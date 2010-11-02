@@ -22,7 +22,7 @@ public class RedefineStyleAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = Controller.getCurrentController().getSelection().getSelected();
-		final IStyle style = LogicalStyleModel.getStyle(node);
+		final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
 		final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
 		final NodeModel styleNode = extension.getStyleNode(style);
 		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
