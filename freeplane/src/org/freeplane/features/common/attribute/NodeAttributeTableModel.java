@@ -28,9 +28,12 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.ITooltipProvider;
@@ -47,6 +50,8 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(null);
 	static private UIIcon attributeIcon = null;
 	private static final String STATE_ICON = "AttributeExist";
+	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
+	    .getBooleanProperty("formula_dont_mark_formulas");;
 
 	public static NodeAttributeTableModel getModel(final NodeModel node) {
 		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) node
@@ -336,12 +341,30 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 						tooltip.append("<tr><td>");
 						tooltip.append(getValueAt(i, 0));
 						tooltip.append("</td><td>");
-						final String value = String.valueOf(getValueAt(i, 1));
-						tooltip.append(textController.getTransformedText(value, node));
+						tooltip.append(getTransformedValue(textController, String.valueOf(getValueAt(i, 1))));
 						tooltip.append("</td></tr>");
 					}
 					tooltip.append("</table></body></html>");
 					return tooltip.toString();
+				}
+
+				private String getTransformedValue(final TextController textController, final String originalText) {
+					try {
+						final String text = textController.getTransformedText(originalText, node);
+						if (!DONT_MARK_FORMULAS && text != originalText)
+							return colorize(text, "green");
+						else
+							return text;
+					}
+					catch (Throwable e) {
+						LogUtils.warn(e.getMessage(), e);
+						return colorize(
+						    TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage()), "red");
+					}
+				}
+
+				private String colorize(final String text, String color) {
+					return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";
 				}
 			});
 		}
