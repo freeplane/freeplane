@@ -203,13 +203,13 @@ public class SpellChecker {
 			}
 			setEnabled(false);
 			setSelected(true);
+			final Locale oldLocale = currentLocale;
+			currentDictionary = null;
+			currentLocale = null;
+			SpellChecker.fireLanguageChanged(oldLocale);
 			final Thread thread = new Thread(new Runnable() {
 				public void run() {
 					try {
-						final Locale oldLocale = currentLocale;
-						currentDictionary = null;
-						currentLocale = null;
-						SpellChecker.fireLanguageChanged(oldLocale);
 						final DictionaryFactory factory = new DictionaryFactory();
 						try {
 							factory.loadWordList(new URL(baseURL, "dictionary_" + locale + extension));
