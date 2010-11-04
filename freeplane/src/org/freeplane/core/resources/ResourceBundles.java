@@ -182,22 +182,37 @@ public class ResourceBundles extends ResourceBundle {
 	private void loadLocalLanguageResources() throws IOException {
 		lang = controller.getProperty(ResourceBundles.RESOURCE_LANGUAGE);
 		if (lang == null || lang.equals("automatic")) {
-			lang = Locale.getDefault().getLanguage() + "_" + Locale.getDefault().getCountry();
-			if (getLanguageResources(lang) == null) {
-				lang = Locale.getDefault().getLanguage();
-				if (getLanguageResources(lang) == null) {
-					lang = DEFAULT_LANGUAGE;
+			final String country = Locale.getDefault().getCountry();
+			if(! country.equals("")){
+				lang = Locale.getDefault().getLanguage() + "_" + country;
+				languageResources = getLanguageResources(lang);
+				if (languageResources != null) {
+					return;
 				}
+				LogTool.info("language resources for " + lang + " not found");
 			}
+			lang = Locale.getDefault().getLanguage();
+			languageResources = getLanguageResources(lang);
+			if (languageResources != null) {
+				return;
+			}
+			LogTool.info("language resources for " + lang + " not found");
 		}
 		if ("no".equals(lang)) {
 			lang = "nb";
 		}
 		languageResources = getLanguageResources(lang);
-		if(languageResources == null){
-			System.err.println("language resources for " + lang + " not found");
-			System.exit(1);
+		if (languageResources != null) {
+			return;
 		}
+		LogTool.info("language resources for " + lang + " not found");
+		lang = DEFAULT_LANGUAGE;
+		languageResources = getLanguageResources(lang);
+		if (languageResources != null) {
+			return;
+		}
+		LogTool.severe("language resources for " + lang + " not found, aborting");
+		System.exit(1);
 	}
 
 	public void reloadLanguage() {
