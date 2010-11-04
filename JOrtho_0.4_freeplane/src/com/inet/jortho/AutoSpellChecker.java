@@ -22,6 +22,7 @@
  */
 package com.inet.jortho;
 
+import java.awt.EventQueue;
 import java.util.Locale;
 
 import javax.swing.SwingUtilities;
@@ -157,39 +158,35 @@ class AutoSpellChecker implements DocumentListener, LanguageChangeListener {
 	 *            the to checking Element
 	 */
 	private void checkElement(final javax.swing.text.Element element) {
-		try {
-			final int i = element.getStartOffset();
-			int j = element.getEndOffset();
-			final Highlighter highlighter = jText.getHighlighter();
-			final Highlight[] highlights = highlighter.getHighlights();
-			for (int k = highlights.length; --k >= 0;) {
-				final Highlight highlight = highlights[k];
-				final int hlStartOffset = highlight.getStartOffset();
-				final int hlEndOffset = highlight.getEndOffset();
-				if ((i <= hlStartOffset && hlStartOffset <= j) || (i <= hlEndOffset && hlEndOffset <= j)) {
-					highlighter.removeHighlight(highlight);
-				}
-			}
-			final int l = ((AbstractDocument) jText.getDocument()).getLength();
-			j = Math.min(j, l);
-			if (i >= j) {
-				return;
-			}
-			// prevent a NPE if the dictionary is currently not loaded.
-			final Dictionary dic = dictionary;
-			final Locale loc = locale;
-			if (dic == null || loc == null) {
-				return;
-			}
-			final Tokenizer tok = new Tokenizer(jText, dic, loc, i, j, options);
-			String word;
-			while ((word = tok.nextInvalidWord()) != null) {
-				final int wordOffset = tok.getWordOffset();
-				highlighter.addHighlight(wordOffset, wordOffset + word.length(), painter);
-			}
+		final int i = element.getStartOffset();
+		int j = element.getEndOffset();
+		final int l = ((AbstractDocument) jText.getDocument()).getLength();
+		j = Math.min(j, l);
+		if (i >= j) {
+			return;
 		}
-		catch (final BadLocationException e) {
-			e.printStackTrace();
+		// prevent a NPE if the dictionary is currently not loaded.
+		final Dictionary dic = dictionary;
+		final Locale loc = locale;
+		if (dic == null || loc == null) {
+			return;
+		}
+		final Tokenizer tok = new Tokenizer(jText, dic, loc, i, j, options);
+		String word;
+		final Highlighter highlighter = jText.getHighlighter();
+		while ((word = tok.nextInvalidWord()) != null) {
+			final int wordOffset = tok.getWordOffset();
+			final int wordEnd = wordOffset + word.length();
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try{
+						highlighter.addHighlight(wordOffset, wordEnd, painter);
+					}
+					catch (final BadLocationException e) {
+						e.printStackTrace();
+					}
+				}
+			});
 		}
 	}
 
