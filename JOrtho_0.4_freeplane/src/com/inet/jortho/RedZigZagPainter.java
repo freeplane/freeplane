@@ -28,6 +28,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.Stroke;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
@@ -55,6 +56,7 @@ class RedZigZagPainter extends DefaultHighlighter.DefaultHighlightPainter {
 		final int x2 = x1 + rect.width - 1;
 		int y = rect.y + rect.height - 1;
 		final Graphics2D g2 = (Graphics2D) g;
+		Stroke stroke = g2.getStroke();
 		g2.setStroke(STROKE1);
 		g2.drawLine(x1, y, x2, y);
 		y--;
@@ -63,6 +65,7 @@ class RedZigZagPainter extends DefaultHighlighter.DefaultHighlightPainter {
 		y--;
 		g2.setStroke(STROKE3);
 		g2.drawLine(x1, y, x2, y);
+		g2.setStroke(stroke);
 	}
 
 	/**
