@@ -50,6 +50,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeRegistry;
@@ -185,6 +186,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	final private AttributeView attributeView;
 	private int highRowIndex = 0;
 	private static DefaultCellEditor dce;
+	private static final Color mediumGreen = new Color(0, 210, 0);
 
 	AttributeTable(final AttributeView attributeView) {
 		super();
@@ -303,7 +305,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		final int prefWidth = AttributeTable.dtcr.getPreferredSize().width;
 		final int width = getColumnModel().getColumn(column).getWidth();
 		if (prefWidth > width) {
-			AttributeTable.dtcr.setToolTipText(text);
+			final String toolTip = HtmlUtils.isHtmlNode(text) ? text : HtmlUtils.plainToHTML(text);
+			AttributeTable.dtcr.setToolTipText(toolTip.replace("\n", "<br>"));
 		}
 		else {
 			AttributeTable.dtcr.setToolTipText(null);
