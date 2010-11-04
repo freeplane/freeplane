@@ -359,7 +359,8 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 					catch (Throwable e) {
 						LogUtils.warn(e.getMessage(), e);
 						return colorize(
-						    TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage()), "red");
+						    TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
+						        .replace("\n", "<br>"), "red");
 					}
 				}
 
