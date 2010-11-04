@@ -38,7 +38,8 @@ public class FormulaUtils {
 	/** evaluate text as a script.
 	 * @return the evaluation result. */
 	public static Object eval(final NodeModel nodeModel, final ScriptContext scriptContext, final String text) {
-		if (!scriptContext.push(nodeModel))
+//		System.err.println(nodeModel.getID() + ": " + text);
+		if (!scriptContext.push(nodeModel, text))
 			throw new StackOverflowError(TextUtils.format("formula.error.circularReference", scriptContext.getStackFront()
 			    .getText()));
 		try {
