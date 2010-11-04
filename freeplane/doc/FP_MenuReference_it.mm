@@ -21,7 +21,7 @@
 </node>
 <node TEXT="F-Barra" FOLDED="true" ID="ID_674395086" CREATED="1279371310825" MODIFIED="1279375779262" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Attiva o disattiva la barra dei tasti funzione F1-F12" ID="ID_1031878066" CREATED="1279371310825" MODIFIED="1279375788137"/>
+<node TEXT="Attiva o disattiva la barra dei tasti funzione F1-F12" ID="ID_1031878066" CREATED="1279371310825" MODIFIED="1279809917872" LINK="#ID_1732424312"/>
 </node>
 <node TEXT="Barra delle icone" FOLDED="true" ID="ID_700752732" CREATED="1279371310825" MODIFIED="1279375793309" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
@@ -177,7 +177,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Menu principale" FOLDED="true" POSITION="right" ID="ID_746161842" CREATED="1279371310403" MODIFIED="1279375580965" VGAP="0" COLOR="#006666">
+<node TEXT="Menu principale" POSITION="right" ID="ID_746161842" CREATED="1279371310403" MODIFIED="1279375580965" VGAP="0" COLOR="#006666">
 <font BOLD="true"/>
 <node TEXT="File" FOLDED="true" ID="ID_1948996852" CREATED="1279371310403" MODIFIED="1279372884778" COLOR="#407000">
 <node TEXT="Nuovo" FOLDED="true" ID="ID_1306068938" CREATED="1279371310403" MODIFIED="1279371851247" COLOR="#663300">
@@ -308,8 +308,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node ID="ID_1763015446" CREATED="1279371310465" MODIFIED="1279371310465">
 <richcontent TYPE="NODE">
 <html>
@@ -325,8 +324,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node FOLDED="true" ID="ID_424358787" CREATED="1279371310465" MODIFIED="1279371310465">
@@ -344,8 +342,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node ID="ID_834759011" CREATED="1279371310465" MODIFIED="1279371310465">
 <richcontent TYPE="NODE">
 <html>
@@ -361,8 +358,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node FOLDED="true" ID="ID_572007596" CREATED="1279371310465" MODIFIED="1279371310465">
@@ -380,8 +376,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node ID="ID_1724788738" CREATED="1279371310465" MODIFIED="1279371310465">
 <richcontent TYPE="NODE">
 <html>
@@ -397,8 +392,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node FOLDED="true" ID="ID_1500381159" CREATED="1279371310481" MODIFIED="1279371310481">
@@ -416,8 +410,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node ID="ID_1964553378" CREATED="1279371310481" MODIFIED="1279371310481">
 <richcontent TYPE="NODE">
 <html>
@@ -433,8 +426,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
@@ -547,7 +539,7 @@
 </node>
 <node TEXT="F-Barra" FOLDED="true" ID="ID_18475873" CREATED="1279371310528" MODIFIED="1279373700122" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Attiva o disattiva la barra delle funzioni." ID="ID_1732424312" CREATED="1279371310528" MODIFIED="1279373696981"/>
+<node TEXT="Attiva o disattiva la barra delle funzioni.  La barra delle funzioni &quot;F-Barra&quot; &#xe8; una rappresentazione visiva delle assegnazioni dei tasti rapidi F1-F12. Queste assegnazioni possono essere cambiate tramite il menu  &quot;Strumenti&gt; Assegna scorciatoia&quot;. La &quot;F-Barra&quot; sar&#xe0; automaticamente aggiornata, in base alle impostazioni fatte." ID="ID_1732424312" CREATED="1279371310528" MODIFIED="1279809841824" LINK="#ID_1459486405"/>
 </node>
 <node TEXT="Barra delle icone" FOLDED="true" ID="ID_1385413038" CREATED="1279371310528" MODIFIED="1279373706106" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
@@ -585,11 +577,11 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Regola la dimensione del font e la distanza tra i nodi in modo da visualizzare tutta la mappa sullo schermo. Se sono visibili molti nodi, il font potrebbe essere troppo piccolo affinch&#xe9; sia leggibile." ID="ID_388625370" CREATED="1279371310559" MODIFIED="1279373771965"/>
 </node>
-<node TEXT="Finestra delle Note" ID="ID_1140637918" CREATED="1279371310559" MODIFIED="1279373780059" COLOR="#663300">
+<node TEXT="Finestra delle Note" FOLDED="true" ID="ID_1140637918" CREATED="1279371310559" MODIFIED="1279373780059" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Attiva o disattiva la finestra delle note. VEDI ANCHE: Menu contestuale &gt; sfondo della mappa &gt; Finestra delle note." ID="ID_1429840359" CREATED="1279371310559" MODIFIED="1279373777653"/>
 </node>
-<node TEXT="Posizione finestra delle note" ID="ID_658909155" CREATED="1279371310559" MODIFIED="1279373785481" COLOR="#663300">
+<node TEXT="Posizione finestra delle note" FOLDED="true" ID="ID_658909155" CREATED="1279371310559" MODIFIED="1279373785481" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Determina la posizione della finestra delle note. Le opzioni sono Alto, sinistra, destra, basso." ID="ID_1358708218" CREATED="1279371310559" MODIFIED="1279373782903"/>
 </node>
@@ -616,7 +608,7 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Crea un nuovo nodo tra il nodo corrente e il suo nodo genitore. Il nuovo nodo &#xe8; figlio del nodo padre originale." ID="ID_784041465" CREATED="1279371310559" MODIFIED="1279373900262"/>
 </node>
-<node TEXT="Collegamento a Immagini" FOLDED="true" ID="ID_704516915" CREATED="1279371310575" MODIFIED="1279373910434" COLOR="#663300">
+<node TEXT="Immagini" ID="ID_704516915" CREATED="1279371310575" MODIFIED="1281275187887" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Inserire un file di immagine di tipo: bitmap, gif, jpg, jpeg o png." ID="ID_140897000" CREATED="1279371310575" MODIFIED="1279373907340"/>
 </node>
@@ -640,7 +632,7 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Disegna una nuvola intorno a tutti i nodi selezionati. Questo &#xe8; utile per evidenziare alcuni nodi. La nuvola copre il nodo selezionato e tutti i suoi nodi figli. Nuvole multiple possono essere create allo stesso tempo, tenendo premuto il tasto Ctrl (per selezionare singoli nodi sparsi), o il tasto Shift per selezionare tutti i nodi tra il primo selezionato e l&apos;ultimo. VEDI ANCHE: Formato &gt; colore nuvola." ID="ID_1200850617" CREATED="1279371310575" MODIFIED="1279373951340"/>
 </node>
-<node TEXT="Immagini da file esterno" FOLDED="true" ID="ID_165142136" CREATED="1279371310575" MODIFIED="1279373959168" COLOR="#663300">
+<node TEXT=" Immagini ridimensionabili" FOLDED="true" ID="ID_165142136" CREATED="1279371310575" MODIFIED="1281275706684" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Inserire un file immagine bitmap o SVG." ID="ID_581735630" CREATED="1279371310575" MODIFIED="1279373845325"/>
 </node>
@@ -753,8 +745,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node ID="ID_720130012" CREATED="1279371310637" MODIFIED="1279371310637">
 <richcontent TYPE="NODE">
@@ -771,8 +762,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node ID="ID_1148614297" CREATED="1279371310637" MODIFIED="1279371310637">
 <richcontent TYPE="NODE">
@@ -789,8 +779,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node ID="ID_722024256" CREATED="1279371310637" MODIFIED="1279371310637">
 <richcontent TYPE="NODE">
@@ -807,8 +796,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node ID="ID_1063039323" CREATED="1279371310637" MODIFIED="1279371310637">
 <richcontent TYPE="NODE">
@@ -825,8 +813,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node ID="ID_1608434524" CREATED="1279371310637" MODIFIED="1279371310637">
 <richcontent TYPE="NODE">
@@ -843,8 +830,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node ID="ID_160752549" CREATED="1279371310637" MODIFIED="1279371310637">
 <richcontent TYPE="NODE">
@@ -861,8 +847,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
@@ -884,8 +869,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node ID="ID_51022029" CREATED="1279371310637" MODIFIED="1279371310637">
 <richcontent TYPE="NODE">
@@ -902,8 +886,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node ID="ID_1096031699" CREATED="1279371310637" MODIFIED="1279371310637">
 <richcontent TYPE="NODE">
@@ -920,8 +903,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node ID="ID_1832780066" CREATED="1279371310637" MODIFIED="1279371310637">
 <richcontent TYPE="NODE">
@@ -938,8 +920,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node ID="ID_295792981" CREATED="1279371310653" MODIFIED="1279371310653">
 <richcontent TYPE="NODE">
@@ -956,8 +937,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node ID="ID_1309899827" CREATED="1279371310653" MODIFIED="1279371310653">
 <richcontent TYPE="NODE">
@@ -974,8 +954,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
@@ -1166,7 +1145,7 @@
 </node>
 <node TEXT="Editor Script..." FOLDED="true" ID="ID_819544993" CREATED="1279371310747" MODIFIED="1279374908106" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Visualizza una finestra per la creazione di script collegati a singoli nodi, e sono salvati assieme al file della mappa attuale." ID="ID_396027003" CREATED="1279371310747" MODIFIED="1279374821653"/>
+<node TEXT="Visualizza una finestra per la creazione di script collegati a singoli nodi, e salvati assieme al file della mappa attuale." ID="ID_396027003" CREATED="1279371310747" MODIFIED="1281424801446"/>
 </node>
 <node TEXT="Eseguire tutti gli script" FOLDED="true" ID="ID_1181095879" CREATED="1279371310747" MODIFIED="1279374910856" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
@@ -1233,7 +1212,7 @@
 </node>
 <node TEXT="Assegna scorciatoia" FOLDED="true" ID="ID_699823109" CREATED="1279371310778" MODIFIED="1279375335028" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Consente di assegnare una combinazione di tasti di scelta rapida a molti comandi dei menu, o ridefinire quelli gi&#xe0; esistenti." ID="ID_1459486405" CREATED="1279371310778" MODIFIED="1279375331590"/>
+<node TEXT="Consente di assegnare una combinazione di tasti di scelta rapida a molti comandi dei menu, o ridefinire quelli gi&#xe0; esistenti." ID="ID_1459486405" CREATED="1279371310778" MODIFIED="1279809720899"/>
 </node>
 <node TEXT="Preset Tasti Rapidi" FOLDED="true" ID="ID_36414706" CREATED="1279371310778" MODIFIED="1279375391622" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
