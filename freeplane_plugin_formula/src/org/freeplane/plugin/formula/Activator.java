@@ -18,26 +18,34 @@ import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
 	private static final String FORMULA_DISABLE_PLUGIN = "formula_disable_plugin";
+	private static final String FORMULA_DISABLE_CACHING = "formula_disable_caching";
 	private static final String MENU_BAR_PARENT_LOCATION = "/menu_bar/extras/first";
 	static final String MENU_BAR_LOCATION = MENU_BAR_PARENT_LOCATION + "/formula";
 
 	private final class FormulaPluginRegistration implements IModeControllerExtensionProvider {
 		private static final String PREFERENCES_RESOURCE = "preferences.xml";
+
 		public void installExtension(ModeController modeController) {
 			addPluginDefaults();
 			addPreferencesToOptionPanel();
-			final String disableProperty = ResourceController.getResourceController().getProperty(
+			final boolean disablePluginProperty = ResourceController.getResourceController().getBooleanProperty(
 			    FORMULA_DISABLE_PLUGIN);
-			if (disableProperty == null || !Boolean.parseBoolean(disableProperty)) {
+			if (!disablePluginProperty) {
 				addMenuItems(modeController);
 				TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer());
 				final FormulaUpdateChangeListener listener = new FormulaUpdateChangeListener();
 				modeController.getMapController().addNodeChangeListener(listener);
 				modeController.getMapController().addMapChangeListener(listener);
 				Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(listener);
+				final boolean disableCacheProperty = ResourceController.getResourceController().getBooleanProperty(
+				    FORMULA_DISABLE_CACHING);
+				if (disableCacheProperty) {
+					System.err.println("Formula cache disabled."
+					        + " This might severely impair performance when using formulas.");
+				}
 			}
 			else {
-				System.out.println("formula plugin is disabled");
+				System.out.println("Formula plugin is disabled");
 			}
 		}
 
