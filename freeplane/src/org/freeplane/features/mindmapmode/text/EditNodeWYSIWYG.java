@@ -287,4 +287,8 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			LogUtils.severe("Loading of WYSIWYG HTML editor failed. Use the other editors instead.", ex);
 		}
 	}
+
+	public void show(Frame frame) {
+	    show(frame, true);
+    }
 }

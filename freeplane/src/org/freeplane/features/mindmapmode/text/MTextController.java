@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.mindmapmode.text;
 
+import java.awt.Component;
+import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +28,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -33,6 +36,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
@@ -46,6 +50,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -55,6 +60,7 @@ import org.freeplane.features.common.text.ShortenedTextModel;
 import org.freeplane.features.common.text.TextController;
 
 import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
@@ -66,7 +72,7 @@ import com.lightdev.app.shtm.TextResources;
  * @author Dimitry Polivaev
  */
 public class MTextController extends TextController {
-	static private EditAction edit;
+	private EditNodeBase mCurrentEditDialog = null;
 	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES = "remind_use_rich_text_in_new_long_nodes";
 
 	static public SHTMLPanel createSHTMLPanel() {
@@ -93,8 +99,7 @@ public class MTextController extends TextController {
 	 */
 	private void createActions() {
 		ModeController modeController = Controller.getCurrentModeController();
-		edit = new EditAction();
-		modeController.addAction(edit);
+		modeController.addAction(new EditAction());
 		modeController.addAction(new UseRichFormattingAction());
 		modeController.addAction(new UsePlainTextAction());
 		modeController.addAction(new JoinNodesAction());
@@ -102,15 +107,6 @@ public class MTextController extends TextController {
 		modeController.addAction(new SetImageByFileChooserAction());
 		modeController.addAction(new EditDetailsAction());
 		modeController.addAction(new DeleteDetailsAction());
-	}
-
-	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
-		((EditAction) Controller.getCurrentModeController().getAction("EditAction")).edit(e, addNew, editLong);
-	}
-
-	public void edit(final NodeModel node, final NodeModel prevSelected, final KeyEvent firstEvent,
-	                 final boolean isNewNode, final boolean parentFolded, final boolean editLong) {
-		edit.edit(node, prevSelected, firstEvent, isNewNode, parentFolded, editLong);
 	}
 
 	private String[] getContent(final String text, final int pos) {
@@ -246,6 +242,8 @@ public class MTextController extends TextController {
 		setNodeText(selectedNode, strText);
 	}
 
+	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
+
 	public void setNodeText(final NodeModel node, final String newText) {
 		final String oldText = node.toString();
 		if (oldText.equals(newText)) {
@@ -293,13 +291,6 @@ public class MTextController extends TextController {
 		    .getController();
 		nodeStyleController.copyStyle(node, lowerNode);
 		setNodeText(lowerNode, newLowerContent);
-	}
-
-	/**
-	 *
-	 */
-	public void stopEditing() {
-		edit.stopEditing();
 	}
 
 	public boolean useRichTextInNewNodes() {
@@ -418,4 +409,111 @@ public class MTextController extends TextController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
+	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
+		final Controller controller = Controller.getCurrentController();
+		final NodeModel selectedNode = controller.getSelection().getSelected();
+		if (selectedNode != null) {
+			if (e == null || !addNew) {
+				edit(selectedNode, selectedNode, e, false, false, editLong);
+			}
+			else if (!Controller.getCurrentModeController().isBlocked()) {
+				((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(MMapController.NEW_SIBLING_BEHIND,
+				    e);
+			}
+			if (e != null) {
+				e.consume();
+			}
+		}
+	}
+
+	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final KeyEvent firstEvent,
+	          final boolean isNewNode, final boolean parentFolded, final boolean editLong) {
+		if (nodeModel == null || mCurrentEditDialog != null) {
+			return;
+		}
+		final Controller controller = Controller.getCurrentController();
+		if (controller.getMap() != nodeModel.getMap()) {
+			return;
+		}
+		final ViewController viewController = controller.getViewController();
+		final Component map = viewController.getMapView();
+		map.validate();
+		map.invalidate();
+		final Component node = viewController.getComponent(nodeModel);
+		if (node == null) {
+			return;
+		}
+		node.requestFocus();
+		stopEditing();
+		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
+			public void cancel() {
+				if (isNewNode) {
+					controller.getSelection().selectAsTheOnlyOneSelected(nodeModel);
+					((MModeController) Controller.getCurrentModeController()).undo();
+					final MapController mapController = Controller.getCurrentModeController().getMapController();
+					mapController.select(prevSelectedModel);
+					if (parentFolded) {
+						mapController.setFolded(prevSelectedModel, true);
+					}
+				}
+				stop();
+			}
+
+			private void stop() {
+				Controller.getCurrentModeController().setBlocked(false);
+				viewController.obtainFocusForSelected();
+				mCurrentEditDialog = null;
+			}
+
+			public void ok(String text) {
+				if(HtmlUtils.isHtmlNode(text)){
+					text = HTML_HEAD.matcher(text).replaceFirst("");
+				}
+				text = text.replaceFirst("\\s+$", "");
+				setNodeText(nodeModel, text);
+				stop();
+			}
+
+			public void split(final String newText, final int position) {
+				splitNode(nodeModel, position, newText);
+				viewController.obtainFocusForSelected();
+				stop();
+			}
+		};
+		final Frame frame = controller.getViewController().getFrame();
+		Controller.getCurrentModeController().setBlocked(true);
+		String text = nodeModel.toString();
+		final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
+		final boolean isHtmlNode = HtmlUtils.isHtmlNode(text);
+		final boolean editHtml = isHtmlNode || isNewNode && useRichTextInNewNodes();
+		final boolean editInternalWysiwyg = editHtml && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
+		final boolean editExternal = editHtml && StringUtils.equals(htmlEditingOption, "external");
+		if (editHtml && !isHtmlNode) {
+			text = HtmlUtils.plainToHTML(text);
+		}
+		if (editInternalWysiwyg) {
+			mCurrentEditDialog = new EditNodeWYSIWYG(nodeModel, text, firstEvent, editControl);
+		}
+		else if (editExternal) {
+			mCurrentEditDialog = new EditNodeExternalApplication(nodeModel, text, firstEvent, editControl);
+		}
+		else if (editLong) {
+			mCurrentEditDialog = new EditNodeDialog(nodeModel, text, firstEvent, editControl);
+		}
+		else {
+			final INodeTextFieldCreator textFieldCreator = (INodeTextFieldCreator) controller.getMapViewManager();
+			final AbstractEditNodeTextField textfield = textFieldCreator.createNodeTextField(nodeModel, text,
+			    firstEvent, editControl);
+			mCurrentEditDialog = textfield;
+		}
+		mCurrentEditDialog.show(frame);
+	}
+
+
+	public void stopEditing() {
+		if (mCurrentEditDialog != null) {
+			mCurrentEditDialog.closeEdit();
+			mCurrentEditDialog = null;
+		}
+	}
 }

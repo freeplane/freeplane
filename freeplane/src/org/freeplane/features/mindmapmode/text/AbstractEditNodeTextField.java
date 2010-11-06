@@ -30,6 +30,4 @@ public abstract class AbstractEditNodeTextField extends EditNodeBase {
 	                                    final IEditControl editControl) {
 		super(node, text, editControl);
 	}
-
-	public abstract void show();
 }

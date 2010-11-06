@@ -47,7 +47,7 @@ import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 /**
  * @author foltin
  */
-public class EditNodeBase {
+abstract public class EditNodeBase {
 	protected class EditCopyAction extends AbstractAction {
 		/**
 		 * 
@@ -320,4 +320,6 @@ public class EditNodeBase {
 	public void setTextFieldListener(final FocusListener listener) {
 		textFieldListener = listener;
 	}
+
+	abstract public void show(Frame frame);
 }
