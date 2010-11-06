@@ -79,9 +79,9 @@ class EditDetailsAction extends AFreeplaneAction {
 
 			public void split(final String newText, final int position) {
 			}
-		});
+		}, false);
 		mCurrentEditDialog = editNodeWYSIWYG;
-		editNodeWYSIWYG.show(controller.getViewController().getFrame(), false);
+		editNodeWYSIWYG.show(controller.getViewController().getFrame());
     }
 
 

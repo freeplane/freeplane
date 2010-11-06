@@ -56,6 +56,7 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.DetailTextModel;
+import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.features.common.text.ShortenedTextModel;
 import org.freeplane.features.common.text.TextController;
 
@@ -480,9 +481,22 @@ public class MTextController extends TextController {
 				stop();
 			}
 		};
+		mCurrentEditDialog = createEditor(nodeModel, editControl, firstEvent, isNewNode, editLong);
 		final Frame frame = controller.getViewController().getFrame();
-		Controller.getCurrentModeController().setBlocked(true);
+		mCurrentEditDialog.show(frame);
+	}
+
+	public EditNodeBase createEditor(final NodeModel nodeModel, final EditNodeBase.IEditControl editControl,
+                             final KeyEvent firstEvent, final boolean isNewNode, final boolean editLong) {
+	    Controller.getCurrentModeController().setBlocked(true);
 		String text = nodeModel.toString();
+		final List<ITextTransformer> textTransformers = getTextTransformers();
+		for(ITextTransformer t : textTransformers){
+			final EditNodeBase base = t.createEditNodeBase(nodeModel, editControl, firstEvent, isNewNode, editLong);
+			if(base != null){
+				return base;
+			}
+		}
 		final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
 		final boolean isHtmlNode = HtmlUtils.isHtmlNode(text);
 		final boolean editHtml = isHtmlNode || isNewNode && useRichTextInNewNodes();
@@ -492,22 +506,21 @@ public class MTextController extends TextController {
 			text = HtmlUtils.plainToHTML(text);
 		}
 		if (editInternalWysiwyg) {
-			mCurrentEditDialog = new EditNodeWYSIWYG(nodeModel, text, firstEvent, editControl);
+			return new EditNodeWYSIWYG(nodeModel, text, firstEvent, editControl, true);
 		}
 		else if (editExternal) {
-			mCurrentEditDialog = new EditNodeExternalApplication(nodeModel, text, firstEvent, editControl);
+			return new EditNodeExternalApplication(nodeModel, text, firstEvent, editControl);
 		}
 		else if (editLong) {
-			mCurrentEditDialog = new EditNodeDialog(nodeModel, text, firstEvent, editControl);
+			return new EditNodeDialog(nodeModel, text, firstEvent, editControl, true);
 		}
 		else {
-			final INodeTextFieldCreator textFieldCreator = (INodeTextFieldCreator) controller.getMapViewManager();
+			final INodeTextFieldCreator textFieldCreator = (INodeTextFieldCreator) Controller.getCurrentController().getMapViewManager();
 			final AbstractEditNodeTextField textfield = textFieldCreator.createNodeTextField(nodeModel, text,
 			    firstEvent, editControl);
-			mCurrentEditDialog = textfield;
+			return textfield;
 		}
-		mCurrentEditDialog.show(frame);
-	}
+    }
 
 
 	public void stopEditing() {

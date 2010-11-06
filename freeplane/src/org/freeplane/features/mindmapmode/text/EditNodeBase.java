@@ -128,8 +128,8 @@ abstract public class EditNodeBase {
 		private static final long serialVersionUID = 1L;
 		private EditNodeBase base;
 
-		EditDialog(final EditNodeBase base, final Frame frame) {
-			super(frame, TextUtils.getText("edit_long_node"), /*modal=*/true);
+		EditDialog(final EditNodeBase base, final String title, final Frame frame) {
+			super(frame, title, /*modal=*/true);
 			getContentPane().setLayout(new BorderLayout());
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			final DialogWindowListener dfl = new DialogWindowListener();

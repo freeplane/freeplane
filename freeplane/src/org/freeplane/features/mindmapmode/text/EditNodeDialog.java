@@ -37,11 +37,15 @@ import java.awt.event.MouseListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
@@ -51,25 +55,36 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
+import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 
 /**
  * @author foltin
  */
 public class EditNodeDialog extends EditNodeBase {
+	private JTextComponent textComponent;
+	private final boolean enableSplit;
 	class LongNodeDialog extends EditDialog {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		final private JTextArea textArea;
 
-		public LongNodeDialog(final Frame frame) {
-			super(EditNodeDialog.this, frame);
+		public LongNodeDialog(final Frame frame, final String title) {
+			super(EditNodeDialog.this, title, frame);
 			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
-			textArea = new JTextArea(getText());
-			textArea.setLineWrap(true);
-			textArea.setWrapStyleWord(true);
-			final JScrollPane editorScrollPane = new JScrollPane(textArea);
+			final JScrollPane editorScrollPane;
+			if(textComponent == null){
+				JTextArea textArea = new JTextArea(getText());
+				textArea.setLineWrap(true);
+				textArea.setWrapStyleWord(true);
+				textComponent = textArea;
+				editorScrollPane = new JScrollPane(textComponent);
+			}
+			else{
+				textComponent.setText(getText());
+				editorScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, textComponent);
+			}
+			
 			editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			int preferredHeight = viewController.getComponent(getNode()).getHeight();
 			preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
@@ -109,12 +124,12 @@ public class EditNodeDialog extends EditNodeBase {
 			});
 			enterConfirms.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
-					textArea.requestFocus();
+					textComponent.requestFocus();
 					ResourceController.getResourceController().setProperty("el__enter_confirms_by_default",
 					    Boolean.toString(enterConfirms.isSelected()));
 				}
 			});
-			textArea.addKeyListener(new KeyListener() {
+			textComponent.addKeyListener(new KeyListener() {
 				public void keyPressed(final KeyEvent e) {
 					switch (e.getKeyCode()) {
 						case KeyEvent.VK_ESCAPE:
@@ -125,17 +140,26 @@ public class EditNodeDialog extends EditNodeBase {
 							e.consume();
 							if ((e.getModifiers() & InputEvent.SHIFT_MASK) != 0
 							        || enterConfirms.isSelected() == ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
-								textArea.insert("\n", textArea.getCaretPosition());
+								insertString("\n");
 								break;
 							}
 							submit();
 							break;
 						case KeyEvent.VK_TAB:
 							e.consume();
-							textArea.insert("    ", textArea.getCaretPosition());
+							insertString("    ");
 							break;
 					}
 				}
+
+				public void insertString(final String text){
+	                try {
+	                    textComponent.getDocument().insertString(textComponent.getCaretPosition(), text, null);
+                    }
+                    catch (BadLocationException e) {
+	                    e.printStackTrace();
+                    }
+                }
 
 				public void keyReleased(final KeyEvent e) {
 				}
@@ -143,10 +167,10 @@ public class EditNodeDialog extends EditNodeBase {
 				public void keyTyped(final KeyEvent e) {
 				}
 			});
-			textArea.addMouseListener(new MouseListener() {
+			textComponent.addMouseListener(new MouseListener() {
 				private void conditionallyShowPopup(final MouseEvent e) {
 					if (e.isPopupTrigger()) {
-						final JPopupMenu popupMenu = new EditPopupMenu(textArea);
+						final JPopupMenu popupMenu = new EditPopupMenu(textComponent);
 						popupMenu.show(e.getComponent(), e.getX(), e.getY());
 						e.consume();
 					}
@@ -170,19 +194,19 @@ public class EditNodeDialog extends EditNodeBase {
 				}
 			});
 			final Font nodeFont = viewController.getFont(getNode());
-			textArea.setFont(nodeFont);
+			textComponent.setFont(nodeFont);
 			final Color nodeTextColor = viewController.getTextColor(getNode());
-			textArea.setForeground(nodeTextColor);
+			textComponent.setForeground(nodeTextColor);
 			final Color nodeTextBackground = viewController.getBackgroundColor(getNode());
-			textArea.setBackground(nodeTextBackground);
-			textArea.setCaretColor(nodeTextColor);
+			textComponent.setBackground(nodeTextBackground);
+			textComponent.setCaretColor(nodeTextColor);
 			final SpellCheckerController spellCheckerController = SpellCheckerController.getController();
-			spellCheckerController.enableAutoSpell(textArea, true);
+			spellCheckerController.enableAutoSpell(textComponent, true);
 			final JPanel buttonPane = new JPanel();
 			buttonPane.add(enterConfirms);
 			buttonPane.add(okButton);
 			buttonPane.add(cancelButton);
-			buttonPane.add(splitButton);
+			if(enableSplit) buttonPane.add(splitButton);
 			buttonPane.setMaximumSize(new Dimension(1000, 20));
 			if (ResourceController.getResourceController().getBooleanProperty("el__buttons_above")) {
 				panel.add(buttonPane);
@@ -195,10 +219,10 @@ public class EditNodeDialog extends EditNodeBase {
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 			setContentPane(panel);
 			if (firstEvent != null) {
-				redispatchKeyEvents(textArea, firstEvent);
+				redispatchKeyEvents(textComponent, firstEvent);
 			}
 			else {
-				textArea.setCaretPosition(getText().length());
+				textComponent.setCaretPosition(getText().length());
 			}
 		}
 
@@ -218,7 +242,7 @@ public class EditNodeDialog extends EditNodeBase {
 				return getFocusOwner();
 			}
 			else {
-				return textArea;
+				return textComponent;
 			}
 		}
 
@@ -228,12 +252,12 @@ public class EditNodeDialog extends EditNodeBase {
 		 */
 		@Override
 		protected boolean isChanged() {
-			return !getText().equals(textArea.getText());
+			return !getText().equals(textComponent.getText());
 		}
 
 		@Override
 		public void show() {
-			textArea.requestFocus();
+			textComponent.requestFocus();
 			super.show();
 		}
 
@@ -243,7 +267,7 @@ public class EditNodeDialog extends EditNodeBase {
 		 */
 		@Override
 		protected void split() {
-			getEditControl().split(textArea.getText(), textArea.getCaretPosition());
+			getEditControl().split(textComponent.getText(), textComponent.getCaretPosition());
 			super.split();
 		}
 
@@ -253,21 +277,35 @@ public class EditNodeDialog extends EditNodeBase {
 		 */
 		@Override
 		protected void submit() {
-			getEditControl().ok(textArea.getText());
+			getEditControl().ok(textComponent.getText());
 			super.submit();
 		}
 	}
 
 	/** Private variable to hold the last value of the "Enter confirms" state. */
 	final private KeyEvent firstEvent;
-
-	public EditNodeDialog(final NodeModel node, final String text, final KeyEvent firstEvent, final IEditControl editControl) {
+	private String title;
+	
+	public EditNodeDialog(final NodeModel node, final String text, final KeyEvent firstEvent,
+	                      final IEditControl editControl, boolean enableSplit) {
 		super(node, text, editControl);
 		this.firstEvent = firstEvent;
+		this.enableSplit = enableSplit;
 	}
 
+	public EditNodeDialog(NodeModel nodeModel, String text, KeyEvent firstEvent, IEditControl editControl,
+	                      boolean enableSplit,
+                          JEditorPane textEditor) {
+	    this(nodeModel, text, firstEvent, editControl, enableSplit);
+	    textComponent = textEditor;
+	    new JScrollPane(textComponent);
+    }
+
 	public void show(final Frame frame) {
-		final EditDialog dialog = new LongNodeDialog(frame);
+		if(title == null){
+			title = TextUtils.getText("edit_long_node");
+		}
+		final EditDialog dialog = new LongNodeDialog(frame, title);
 		dialog.pack();
 		Controller.getCurrentModeController().getController().getViewController().scrollNodeToVisible(node);
 		if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
@@ -292,4 +330,8 @@ public class EditNodeDialog extends EditNodeBase {
 			}
 		});
 	}
+
+	public void setTitle(String title) {
+	    this.title = title;
+    }
 }

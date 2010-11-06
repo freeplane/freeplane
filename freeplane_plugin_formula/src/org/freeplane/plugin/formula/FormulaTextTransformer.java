@@ -1,10 +1,20 @@
 package org.freeplane.plugin.formula;
 
+import java.awt.event.KeyEvent;
+
+import javax.swing.JEditorPane;
+
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.ITextTransformer;
+import org.freeplane.features.mindmapmode.text.EditNodeBase;
+import org.freeplane.features.mindmapmode.text.EditNodeDialog;
+import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.FormulaUtils;
+import org.freeplane.plugin.script.JSyntaxPaneProxy;
 
 class FormulaTextTransformer implements ITextTransformer {
 	FormulaTextTransformer() {
@@ -26,4 +36,19 @@ class FormulaTextTransformer implements ITextTransformer {
 		}
 		return result.toString();
 	}
+
+	public EditNodeBase createEditNodeBase(NodeModel nodeModel, IEditControl editControl, KeyEvent firstEvent, boolean isNewNode,
+	                                       boolean editLong) {
+		String text = nodeModel.toString();
+		if(firstEvent != null && firstEvent.getKeyChar() == '=' 
+			|| firstEvent == null && text.startsWith("=")){
+			JSyntaxPaneProxy.init();
+			JEditorPane textEditor = new JEditorPane();
+			final EditNodeDialog editNodeDialog = new EditNodeDialog(nodeModel, text, firstEvent, editControl, false, textEditor);
+			editNodeDialog.setTitle(TextUtils.getText("formula_editor"));
+			textEditor.setContentType("text/groovy");
+			return editNodeDialog;
+		}
+		return null;
+    }
 }
