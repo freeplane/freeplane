@@ -751,7 +751,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return false;
 	}
 
-	private void writeToFile(final MapModel map, final File file) throws FileNotFoundException, IOException {
+	public void writeToFile(final MapModel map, final File file) throws FileNotFoundException, IOException {
 		final FileOutputStream out = new FileOutputStream(file);
 		final FileLock lock = out.getChannel().tryLock();
 		if (lock == null) {

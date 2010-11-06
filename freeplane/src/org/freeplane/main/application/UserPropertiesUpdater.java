@@ -20,12 +20,24 @@
 package org.freeplane.main.application;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 
 /**
@@ -33,57 +45,79 @@ import org.freeplane.features.mindmapmode.file.MFileManager;
  * Nov 1, 2010
  */
 public class UserPropertiesUpdater {
-	private File defaultTemplateFile() {
-		MFileManager fm = (MFileManager) MFileManager.getController();
+	void importOldProperties(){
+		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
+		if(userPreferencesFile.exists()){
+			return;
+		}
+		final File oldUserPreferencesFile =new File(System.getProperty("user.home"), ".freeplane/auto.properties");
+		if(! oldUserPreferencesFile.exists()){
+			return;
+		}
+		Properties userProp = new Properties();
+		try {
+	        userProp.load(new FileInputStream(oldUserPreferencesFile));
+	        userProp.remove("lastOpened_1.0.20");
+	        userProp.remove("openedNow_1.0.20");
+	        userProp.remove("browse_url_storage");
+	        userProp.store(new FileOutputStream(userPreferencesFile), null);
+        }
+        catch (IOException e) {
+        }
+	}
+	void importOldDefaultStyle() {
+		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
+		MFileManager fm = (MFileManager) MFileManager.getController(modeController);
 		final File userTemplates = fm.defaultUserTemplateDir();
 		final File userDefault = new File(userTemplates, fm.getStandardTemplateName());
 		if(userDefault.exists()){
-			return userDefault;
+			return;
 		}
+		userDefault.getParentFile().mkdirs();
 		MapModel defaultStyleMap = new MapModel(null);
 		final File allUserTemplates = fm.defaultStandardTemplateDir();
 		final File standardTemplate = new File(allUserTemplates, fm.getStandardTemplateName());
-	    try {
-	    	fm.loadImpl(standardTemplate.toURL(), defaultStyleMap);
+		try {
+			fm.loadImpl(standardTemplate.toURL(), defaultStyleMap);
+		}
+		catch (Exception e) {
+			LogUtils.warn(e);
+			try {
+				fm.loadImpl(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), defaultStyleMap);
+			}
+			catch (Exception e2) {
+				LogUtils.severe(e);
+			}
+		}
+		NodeModel styleNode = findDefaultStyleNode(defaultStyleMap);
+		styleNode.removeExtension(NodeStyleModel.class);
+		styleNode.removeExtension(EdgeModel.class);
+
+		final NodeStyleController nodeStyleController = NodeStyleController.getController(modeController);
+		final NodeStyleModel nodeStyleModel = new NodeStyleModel();
+
+		nodeStyleModel.setBackgroundColor(nodeStyleController.getBackgroundColor(styleNode));
+		nodeStyleModel.setBold(nodeStyleController.isBold(styleNode));
+		nodeStyleModel.setColor(nodeStyleController.getColor(styleNode));
+		nodeStyleModel.setFontFamilyName(nodeStyleController.getFontFamilyName(styleNode));
+		nodeStyleModel.setFontSize(nodeStyleController.getFontSize(styleNode));
+		nodeStyleModel.setItalic(nodeStyleController.isItalic(styleNode));
+		nodeStyleModel.setShape(nodeStyleController.getShape(styleNode));
+
+		final EdgeController edgeController = EdgeController.getController(modeController);
+		final EdgeModel edgeModel = new EdgeModel();
+		edgeModel.setColor(edgeController.getColor(styleNode));
+		edgeModel.setStyle(edgeController.getStyle(styleNode));
+		edgeModel.setWidth(edgeController.getWidth(styleNode));
+
+		styleNode.addExtension(nodeStyleModel);
+		styleNode.addExtension(edgeModel);
+
+        try {
+	        fm.writeToFile(defaultStyleMap, userDefault);
         }
-         catch (Exception e) {
-	        LogUtils.warn(e);
-		    try {
-		    	fm.loadImpl(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), defaultStyleMap);
-	        }
-	         catch (Exception e2) {
-	        	 LogUtils.severe(e);
-	        }
+        catch (IOException e) {
         }
-        NodeModel styleNode = findDefaultStyleNode(defaultStyleMap);
-//    <combo name="standardnodeshape">
-//        <choice value="fork"/>
-//        <choice value="bubble"/>
-//        <choice value="as_parent"/>
-//        <choice value="combined"/>
-//    </combo>
-//    <combo name="standardrootnodeshape">
-//        <choice value="fork"/>
-//        <choice value="bubble"/>
-//        <choice value="combined"/>
-//    </combo>
-//    <color name="standardnodetextcolor"/>
-//    <color name="standardedgecolor"/>
-//    <color name="standardlinkcolor"/>
-//    <color name="standardbackgroundcolor"/>
-//    <color name="standardcloudcolor"/>
-//    <font name="defaultfont"/>
-//    <number name="defaultfontsize" min="4" max="272"/>
-//    <number name="defaultfontstyle" min="0" max="3"/>
-//    <combo name="standardedgestyle">
-//        <choice value="bezier"/>
-//        <choice value="linear"/>
-//        <choice value="sharp_bezier"/>
-//        <choice value="sharp_linear"/>
-//        <choice value="horizontal"/>
-//        <choice value="hide_edge"/>
-//    </combo>
-		return userDefault;
 	}
 	private NodeModel findDefaultStyleNode(MapModel defaultStyleMap) {
 		NodeModel styleNode = MapStyleModel.getExtension(defaultStyleMap).getStyleNode(MapStyleModel.DEFAULT_STYLE);
