@@ -63,8 +63,7 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 
 	public KeyStroke getKeyStroke() {
 		final String keystrokeResourceName = icon.getShortcutKey();
-		final String keyStrokeDescription = ResourceController.getResourceController().getAdjustableProperty(
-		    keystrokeResourceName);
+		final String keyStrokeDescription = ResourceController.getResourceController().getProperty(keystrokeResourceName);
 		return UITools.getKeyStroke(keyStrokeDescription);
 	}
 

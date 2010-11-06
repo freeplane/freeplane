@@ -92,20 +92,6 @@ public abstract class ResourceController {
 		}
 	}
 
-	public String getAdjustableProperty(final String label) {
-		String value = getProperty(label);
-		if (value == null) {
-			return value;
-		}
-		if (value.startsWith("?") && !value.equals("?")) {
-			final String localValue = ((ResourceBundles) getResources()).getResourceString(
-			    ResourceController.LOCAL_PROPERTIES + label, null);
-			value = localValue == null ? value.substring(1).trim() : localValue;
-			setDefaultProperty(label, value);
-		}
-		return value;
-	}
-
 	public boolean getBooleanProperty(final String key) {
 		return Boolean.parseBoolean(getProperty(key));
 	}

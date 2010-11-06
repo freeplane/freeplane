@@ -204,7 +204,7 @@ public class OptionPanel {
 			if (control instanceof PropertyBean) {
 				final PropertyBean bean = (PropertyBean) control;
 				final String name = bean.getName();
-				final String value = ResourceController.getResourceController().getAdjustableProperty(name);
+				final String value = ResourceController.getResourceController().getProperty(name);
 				bean.setValue(value);
 			}
 		}

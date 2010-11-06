@@ -613,7 +613,7 @@ public class MenuBuilder extends UIBuilder {
 
 	public void addMenuItem(final String relativeKey, final JMenuItem item, final String key, final int position) {
 		final String shortcutKey = getShortcutKey(key);
-		final String keyStrokeString = ResourceController.getResourceController().getAdjustableProperty(shortcutKey);
+		final String keyStrokeString = ResourceController.getResourceController().getProperty(shortcutKey);
 		final Node element = (Node) addElement(relativeKey, item, key, position);
 		if (null == getMenubar(element)) {
 			return;

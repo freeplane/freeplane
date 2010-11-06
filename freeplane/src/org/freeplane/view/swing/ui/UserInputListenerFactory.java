@@ -331,7 +331,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				isSelected = false;
 			}
 			menuBuilder.addRadioItem(FreeplaneMenuBar.MODES_MENU, modesMenuActionListener, isSelected);
-			ResourceController.getResourceController().getAdjustableProperty("keystroke_mode_" + key);
+			ResourceController.getResourceController().getProperty(("keystroke_mode_" + key));
 		}
 	}
 }
