@@ -35,6 +35,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
@@ -52,6 +53,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
+import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
@@ -286,7 +288,7 @@ class ScriptEditorPanel extends JDialog {
 	final private JList mScriptList;
 	final private IScriptModel mScriptModel;
 	final private JTextArea mScriptResultField;
-	final private JTextArea mScriptTextField;
+	final private JTextComponent mScriptTextField;
 	final private SignAction mSignAction;
 	final private JLabel mStatus;
 
@@ -325,11 +327,12 @@ class ScriptEditorPanel extends JDialog {
 				select(mScriptList.getSelectedIndex());
 			}
 		});
-		mScriptTextField = new JTextArea();
-		mScriptTextField.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		JSyntaxPaneProxy.init();
+		final JEditorPane editorPane = new JEditorPane();
+		mScriptTextField = editorPane;
 		mScriptTextField.setEnabled(false);
-		mScriptTextField.setTabSize(2);
 		mCentralUpperPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mScriptList, new JScrollPane(mScriptTextField));
+		editorPane.setContentType("text/groovy");
 		mCentralUpperPanel.setContinuousLayout(true);
 		mScriptResultField = new JTextArea();
 		mScriptResultField.setEditable(false);
@@ -344,14 +347,9 @@ class ScriptEditorPanel extends JDialog {
 		mScriptTextField.addCaretListener(new CaretListener() {
 			public void caretUpdate(final CaretEvent arg0) {
 				final int caretPosition = mScriptTextField.getCaretPosition();
-				try {
-					final int lineOfOffset = mScriptTextField.getLineOfOffset(caretPosition);
-					mStatus.setText("Line: " + (lineOfOffset + 1) + ", Column: "
-					        + (caretPosition - mScriptTextField.getLineStartOffset(lineOfOffset) + 1));
-				}
-				catch (final BadLocationException e) {
-					LogUtils.severe(e);
-				}
+				final int lineOfOffset = JSyntaxPaneProxy.getLineOfOffset(mScriptTextField, caretPosition);
+				mStatus.setText("Line: " + (lineOfOffset + 1) + ", Column: "
+					+ (caretPosition - JSyntaxPaneProxy.getLineOfOffset(mScriptTextField, lineOfOffset) + 1));
 			}
 		});
 		updateFields();
@@ -418,13 +416,7 @@ class ScriptEditorPanel extends JDialog {
 	IErrorHandler getErrorHandler() {
 		return new IErrorHandler() {
 			public void gotoLine(final int pLineNumber) {
-				if (pLineNumber > 0 && pLineNumber <= mScriptTextField.getLineCount()) {
-					final Element element3 = mScriptTextField.getDocument().getDefaultRootElement();
-					final Element element4 = element3.getElement(pLineNumber - 1);
-					if (element4 != null) {
-						mScriptTextField.select((element4.getStartOffset()), element4.getEndOffset());
-					}
-				}
+				JSyntaxPaneProxy.gotoPosition(mScriptTextField, pLineNumber, 1);
 			}
 		};
 	}
