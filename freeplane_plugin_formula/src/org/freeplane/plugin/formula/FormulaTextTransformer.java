@@ -37,11 +37,17 @@ class FormulaTextTransformer implements ITextTransformer {
 		return result.toString();
 	}
 
-	public EditNodeBase createEditNodeBase(NodeModel nodeModel, IEditControl editControl, KeyEvent firstEvent, boolean isNewNode,
-	                                       boolean editLong) {
-		String text = nodeModel.toString();
-		if(firstEvent != null && firstEvent.getKeyChar() == '=' 
-			|| firstEvent == null && text.startsWith("=")){
+	public EditNodeBase createEditNodeBase(NodeModel nodeModel, String text, IEditControl editControl, KeyEvent firstEvent,
+	                                       boolean isNewNode, boolean editLong) {
+		if(firstEvent != null){
+			if (firstEvent.getKeyChar() == '='){
+				text = "=";
+			}
+			else{
+				return null;
+			}
+		}
+		if(text.startsWith("=")){
 			JSyntaxPaneProxy.init();
 			JEditorPane textEditor = new JEditorPane();
 			final EditNodeDialog editNodeDialog = new EditNodeDialog(nodeModel, text, firstEvent, editControl, false, textEditor);

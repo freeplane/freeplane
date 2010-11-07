@@ -481,21 +481,18 @@ public class MTextController extends TextController {
 				stop();
 			}
 		};
-		mCurrentEditDialog = createEditor(nodeModel, editControl, firstEvent, isNewNode, editLong);
+		mCurrentEditDialog = createEditor(nodeModel, editControl, firstEvent, isNewNode, editLong, true);
 		final Frame frame = controller.getViewController().getFrame();
 		mCurrentEditDialog.show(frame);
 	}
 
 	public EditNodeBase createEditor(final NodeModel nodeModel, final EditNodeBase.IEditControl editControl,
-                             final KeyEvent firstEvent, final boolean isNewNode, final boolean editLong) {
+                             final KeyEvent firstEvent, final boolean isNewNode, final boolean editLong, boolean internal) {
 	    Controller.getCurrentModeController().setBlocked(true);
 		String text = nodeModel.toString();
-		final List<ITextTransformer> textTransformers = getTextTransformers();
-		for(ITextTransformer t : textTransformers){
-			final EditNodeBase base = t.createEditNodeBase(nodeModel, editControl, firstEvent, isNewNode, editLong);
-			if(base != null){
-				return base;
-			}
+		EditNodeBase base = getEditNodeBase(nodeModel, text, editControl, firstEvent, isNewNode, editLong);
+		if(base != null || ! internal){
+			return base;
 		}
 		final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
 		final boolean isHtmlNode = HtmlUtils.isHtmlNode(text);
@@ -520,6 +517,18 @@ public class MTextController extends TextController {
 			    firstEvent, editControl);
 			return textfield;
 		}
+    }
+
+	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, final EditNodeBase.IEditControl editControl,
+                                final KeyEvent firstEvent, final boolean isNewNode, final boolean editLong) {
+	    final List<ITextTransformer> textTransformers = getTextTransformers();
+		for(ITextTransformer t : textTransformers){
+			final EditNodeBase base = t.createEditNodeBase(nodeModel, text, editControl, firstEvent, isNewNode, editLong);
+			if(base != null){
+				return base;
+			}
+		}
+		return null;
     }
 
 

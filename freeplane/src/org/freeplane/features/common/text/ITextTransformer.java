@@ -10,5 +10,5 @@ import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 public interface ITextTransformer {
 	String transformText(String nodeText, NodeModel nodeModel);
 
-	EditNodeBase createEditNodeBase(NodeModel nodeModel, IEditControl editControl, KeyEvent firstEvent, boolean isNewNode, boolean editLong);
+	EditNodeBase createEditNodeBase(NodeModel nodeModel, String text, IEditControl editControl, KeyEvent firstEvent, boolean isNewNode, boolean editLong);
 }

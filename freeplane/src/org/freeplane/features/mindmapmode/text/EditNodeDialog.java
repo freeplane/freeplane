@@ -81,6 +81,13 @@ public class EditNodeDialog extends EditNodeBase {
 				editorScrollPane = new JScrollPane(textComponent);
 				final SpellCheckerController spellCheckerController = SpellCheckerController.getController();
 				spellCheckerController.enableAutoSpell(textComponent, true);
+				final Font nodeFont = viewController.getFont(getNode());
+				textComponent.setFont(nodeFont);
+				final Color nodeTextColor = viewController.getTextColor(getNode());
+				textComponent.setForeground(nodeTextColor);
+				final Color nodeTextBackground = viewController.getBackgroundColor(getNode());
+				textComponent.setBackground(nodeTextBackground);
+				textComponent.setCaretColor(nodeTextColor);
 			}
 			else{
 				textComponent.setText(getText());
@@ -195,13 +202,6 @@ public class EditNodeDialog extends EditNodeBase {
 					conditionallyShowPopup(e);
 				}
 			});
-			final Font nodeFont = viewController.getFont(getNode());
-			textComponent.setFont(nodeFont);
-			final Color nodeTextColor = viewController.getTextColor(getNode());
-			textComponent.setForeground(nodeTextColor);
-			final Color nodeTextBackground = viewController.getBackgroundColor(getNode());
-			textComponent.setBackground(nodeTextBackground);
-			textComponent.setCaretColor(nodeTextColor);
 			final JPanel buttonPane = new JPanel();
 			buttonPane.add(enterConfirms);
 			buttonPane.add(okButton);
