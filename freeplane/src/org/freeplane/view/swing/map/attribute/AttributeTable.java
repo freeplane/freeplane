@@ -276,6 +276,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	@Override
     public boolean editCellAt(int row, int column, EventObject e) {
+		if(isEditing() && getCellEditor() instanceof DialogTableCellEditor){
+			return false;
+		}
 		putClientProperty("AttributeTable.EditEvent", e);
 		try{
 			return super.editCellAt(row, column, e);
