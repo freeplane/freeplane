@@ -79,6 +79,8 @@ public class EditNodeDialog extends EditNodeBase {
 				textArea.setWrapStyleWord(true);
 				textComponent = textArea;
 				editorScrollPane = new JScrollPane(textComponent);
+				final SpellCheckerController spellCheckerController = SpellCheckerController.getController();
+				spellCheckerController.enableAutoSpell(textComponent, true);
 			}
 			else{
 				textComponent.setText(getText());
@@ -200,8 +202,6 @@ public class EditNodeDialog extends EditNodeBase {
 			final Color nodeTextBackground = viewController.getBackgroundColor(getNode());
 			textComponent.setBackground(nodeTextBackground);
 			textComponent.setCaretColor(nodeTextColor);
-			final SpellCheckerController spellCheckerController = SpellCheckerController.getController();
-			spellCheckerController.enableAutoSpell(textComponent, true);
 			final JPanel buttonPane = new JPanel();
 			buttonPane.add(enterConfirms);
 			buttonPane.add(okButton);
