@@ -63,6 +63,7 @@ import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 public class EditNodeDialog extends EditNodeBase {
 	private JTextComponent textComponent;
 	private final boolean enableSplit;
+
 	class LongNodeDialog extends EditDialog {
 		/**
 		 * 
@@ -71,9 +72,10 @@ public class EditNodeDialog extends EditNodeBase {
 
 		public LongNodeDialog(final Frame frame, final String title) {
 			super(EditNodeDialog.this, title, frame);
-			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
+			final ViewController viewController = Controller.getCurrentModeController().getController()
+			    .getViewController();
 			final JScrollPane editorScrollPane;
-			if(textComponent == null){
+			if (textComponent == null) {
 				JTextArea textArea = new JTextArea(getText());
 				textArea.setLineWrap(true);
 				textArea.setWrapStyleWord(true);
@@ -88,24 +90,29 @@ public class EditNodeDialog extends EditNodeBase {
 				final Color nodeTextBackground = viewController.getBackgroundColor(getNode());
 				textComponent.setBackground(nodeTextBackground);
 				textComponent.setCaretColor(nodeTextColor);
+				editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+				int preferredHeight = viewController.getComponent(getNode()).getHeight();
+				preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
+				    .getProperty("el__min_default_window_height")));
+				preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
+				    .getProperty("el__max_default_window_height")));
+				int preferredWidth = viewController.getComponent(getNode()).getWidth();
+				preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
+				    .getProperty("el__min_default_window_width")));
+				preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
+				    .getProperty("el__max_default_window_width")));
+				editorScrollPane.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
 			}
-			else{
+			else {
 				textComponent.setText(getText());
-				editorScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, textComponent);
+				final JScrollPane ancestorScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, textComponent);
+				if (ancestorScrollPane != null) {
+					editorScrollPane = ancestorScrollPane;
+				}
+				else {
+					editorScrollPane = new JScrollPane(textComponent);
+				}
 			}
-			
-			editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-			int preferredHeight = viewController.getComponent(getNode()).getHeight();
-			preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
-			    .getProperty("el__min_default_window_height")));
-			preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
-			    .getProperty("el__max_default_window_height")));
-			int preferredWidth = viewController.getComponent(getNode()).getWidth();
-			preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
-			    .getProperty("el__min_default_window_width")));
-			preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
-			    .getProperty("el__max_default_window_width")));
-			editorScrollPane.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
 			final JPanel panel = new JPanel();
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
@@ -161,14 +168,14 @@ public class EditNodeDialog extends EditNodeBase {
 					}
 				}
 
-				public void insertString(final String text){
-	                try {
-	                    textComponent.getDocument().insertString(textComponent.getCaretPosition(), text, null);
-                    }
-                    catch (BadLocationException e) {
-	                    e.printStackTrace();
-                    }
-                }
+				public void insertString(final String text) {
+					try {
+						textComponent.getDocument().insertString(textComponent.getCaretPosition(), text, null);
+					}
+					catch (BadLocationException e) {
+						e.printStackTrace();
+					}
+				}
 
 				public void keyReleased(final KeyEvent e) {
 				}
@@ -206,7 +213,8 @@ public class EditNodeDialog extends EditNodeBase {
 			buttonPane.add(enterConfirms);
 			buttonPane.add(okButton);
 			buttonPane.add(cancelButton);
-			if(enableSplit) buttonPane.add(splitButton);
+			if (enableSplit)
+				buttonPane.add(splitButton);
 			buttonPane.setMaximumSize(new Dimension(1000, 20));
 			if (ResourceController.getResourceController().getBooleanProperty("el__buttons_above")) {
 				panel.add(buttonPane);
@@ -285,7 +293,7 @@ public class EditNodeDialog extends EditNodeBase {
 	/** Private variable to hold the last value of the "Enter confirms" state. */
 	final private KeyEvent firstEvent;
 	private String title;
-	
+
 	public EditNodeDialog(final NodeModel node, final String text, final KeyEvent firstEvent,
 	                      final IEditControl editControl, boolean enableSplit) {
 		super(node, text, editControl);
@@ -294,15 +302,13 @@ public class EditNodeDialog extends EditNodeBase {
 	}
 
 	public EditNodeDialog(NodeModel nodeModel, String text, KeyEvent firstEvent, IEditControl editControl,
-	                      boolean enableSplit,
-                          JEditorPane textEditor) {
-	    this(nodeModel, text, firstEvent, editControl, enableSplit);
-	    textComponent = textEditor;
-	    new JScrollPane(textComponent);
-    }
+	                      boolean enableSplit, JEditorPane textEditor) {
+		this(nodeModel, text, firstEvent, editControl, enableSplit);
+		textComponent = textEditor;
+	}
 
 	public void show(final Frame frame) {
-		if(title == null){
+		if (title == null) {
 			title = TextUtils.getText("edit_long_node");
 		}
 		final EditDialog dialog = new LongNodeDialog(frame, title);
@@ -332,6 +338,6 @@ public class EditNodeDialog extends EditNodeBase {
 	}
 
 	public void setTitle(String title) {
-	    this.title = title;
-    }
+		this.title = title;
+	}
 }

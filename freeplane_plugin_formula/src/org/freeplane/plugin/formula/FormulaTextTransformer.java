@@ -3,6 +3,7 @@ package org.freeplane.plugin.formula;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
@@ -50,6 +51,7 @@ class FormulaTextTransformer implements ITextTransformer {
 		if(text.startsWith("=")){
 			JSyntaxPaneProxy.init();
 			JEditorPane textEditor = new JEditorPane();
+			new JScrollPane(textEditor);
 			final EditNodeDialog editNodeDialog = new EditNodeDialog(nodeModel, text, firstEvent, editControl, false, textEditor);
 			editNodeDialog.setTitle(TextUtils.getText("formula_editor"));
 			textEditor.setContentType("text/groovy");
