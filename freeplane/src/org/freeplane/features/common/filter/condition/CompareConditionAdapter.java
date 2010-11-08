@@ -24,14 +24,14 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 abstract public class CompareConditionAdapter extends ASelectableCondition {
-	public static final String IGNORE_CASE = "IGNORE_CASE";
+	public static final String MATCH_CASE = "MATCH_CASE";
 	public static final String VALUE = "VALUE";
 	private Comparable<?> conditionValue;
-	final private boolean ignoreCase;
+	final private boolean matchCase;
 
-	protected CompareConditionAdapter(final String value, final boolean ignoreCase) {
+	protected CompareConditionAdapter(final String value, final boolean matchCase) {
 		super();
-		this.ignoreCase = ignoreCase;
+		this.matchCase = matchCase;
 		try {
 			conditionValue = Integer.valueOf(value);
 			return;
@@ -51,7 +51,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
 		child.setAttribute(CompareConditionAdapter.VALUE, conditionValue.toString());
-		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, TreeXmlWriter.BooleanToXml(ignoreCase));
+		child.setAttribute(CompareConditionAdapter.MATCH_CASE, TreeXmlWriter.BooleanToXml(matchCase));
 	}
 
 	protected int compareTo(final String nodeValue) throws NumberFormatException {
@@ -69,8 +69,8 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			final Double value = Double.valueOf(nodeValue);
 			return compareTo(value);
 		}
-		return ignoreCase ? nodeValue.compareToIgnoreCase(conditionValue.toString()) : nodeValue
-		    .compareTo(conditionValue.toString());
+		return matchCase ? nodeValue.compareTo(conditionValue.toString()) : nodeValue
+		    .compareToIgnoreCase(conditionValue.toString());
 	}
 
 	protected int compareTo(final Double value) {
@@ -97,7 +97,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			default:
 				throw new IllegalArgumentException();
 		}
-		return ConditionFactory.createDescription(attribute, simpleCondition, conditionValue.toString(), ignoreCase);
+		return ConditionFactory.createDescription(attribute, simpleCondition, conditionValue.toString(), matchCase);
 	}
 
 	public Comparable<?> getConditionValue() {

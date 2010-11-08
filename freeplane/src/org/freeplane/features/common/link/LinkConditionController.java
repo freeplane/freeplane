@@ -61,7 +61,7 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                            final Object value, final boolean ignoreCase) {
+	                                            final Object value, final boolean matchCase) {
 		final NamedObject namedObject = (NamedObject) selectedItem;
 		if (namedObject.objectEquals(FILTER_LINK)) {
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
@@ -77,10 +77,10 @@ public class LinkConditionController implements IElementaryConditionController {
 		}
 		if (namedObject.objectEquals(CONNECTOR_LABEL)) {
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new ConnectorLabelEqualsCondition((String) value, ignoreCase);
+				return new ConnectorLabelEqualsCondition((String) value, matchCase);
 			}
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-				return new ConnectorLabelContainsCondition((String) value, ignoreCase);
+				return new ConnectorLabelContainsCondition((String) value, matchCase);
 			}
 			return null;
 		}
@@ -146,15 +146,15 @@ public class LinkConditionController implements IElementaryConditionController {
 		}
 		if (element.getName().equalsIgnoreCase(ConnectorLabelEqualsCondition.NAME)) {
 			final String text = element.getAttribute(ConnectorLabelEqualsCondition.TEXT, null);
-			final boolean ignoreCase = Boolean.toString(true).equals(
-			    element.getAttribute(ConnectorLabelEqualsCondition.IGNORE_CASE, null));
-			return new ConnectorLabelEqualsCondition(text, ignoreCase);
+			final boolean matchCase = Boolean.toString(true).equals(
+			    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_CASE, null));
+			return new ConnectorLabelEqualsCondition(text, matchCase);
 		}
 		if (element.getName().equalsIgnoreCase(ConnectorLabelContainsCondition.NAME)) {
 			final String text = element.getAttribute(ConnectorLabelContainsCondition.TEXT, null);
-			final boolean ignoreCase = Boolean.toString(true).equals(
-			    element.getAttribute(ConnectorLabelEqualsCondition.IGNORE_CASE, null));
-			return new ConnectorLabelContainsCondition(text, ignoreCase);
+			final boolean matchCase = Boolean.toString(true).equals(
+			    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_CASE, null));
+			return new ConnectorLabelContainsCondition(text, matchCase);
 		}
 		if (element.getName().equalsIgnoreCase(ConnectorExistsCondition.NAME)) {
 			return new ConnectorExistsCondition();

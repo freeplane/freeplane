@@ -105,7 +105,7 @@ class FindAction extends AFreeplaneAction {
 			}
 		});
 		final int run = UITools.showConfirmDialog(start, editor, TextUtils.removeMnemonic(TextUtils.getText("FindAction.text")),
-		    JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
+		    JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);	
 		final Container parent = editor.getParent();
 		if (parent != null) {
 			parent.remove(editor);

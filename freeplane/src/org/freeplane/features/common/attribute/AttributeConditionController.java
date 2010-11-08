@@ -62,7 +62,7 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
-	                                            final Object v, final boolean ignoreCase) {
+	                                            final Object v, final boolean matchCase) {
 		final String attribute = (String) selectedItem;
 		final String value = (String) v;
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST)) {
@@ -71,7 +71,7 @@ class AttributeConditionController implements IElementaryConditionController {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_DOES_NOT_EXIST)) {
 			return new AttributeNotExistsCondition(attribute);
 		}
-		if (ignoreCase) {
+		if (matchCase) {
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 				return new AttributeCompareCondition(attribute, value, true, 0, true);
 			}
