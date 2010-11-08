@@ -55,6 +55,7 @@ class NodeLevelCompareCondition extends CompareConditionAdapter {
 		return succeed == (compareTo(level) == comparationResult);
 	}
 
+	@SuppressWarnings("unused")
 	private boolean checkLevel(final int level) {
 		return succeed == (compareTo(level) == comparationResult);
 	}
