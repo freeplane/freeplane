@@ -141,11 +141,12 @@ class ScriptingRegistration {
 		menuBuilder.addAnnotatedAction(new ScriptEditor());
 		menuBuilder.addAnnotatedAction(new ExecuteScriptForAllNodes());
 		menuBuilder.addAnnotatedAction(new ExecuteScriptForSelectionAction());
-		registerScripts(menuBuilder);
+		final ScriptingConfiguration configuration = new ScriptingConfiguration();
+		ScriptingEngine.setClasspath(configuration.getClasspath());
+		registerScripts(menuBuilder, configuration);
 	}
 
-	private void registerScripts( final MenuBuilder menuBuilder) {
-		final ScriptingConfiguration configuration = new ScriptingConfiguration();
+	private void registerScripts( final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {
 		final String scriptsParentLocation = MENU_BAR_SCRIPTING_LOCATION;
 		final String scriptsLocation = scriptsParentLocation + "/scripts";
 		addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));

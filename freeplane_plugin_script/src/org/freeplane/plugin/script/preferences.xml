@@ -10,6 +10,7 @@
 				<boolean name="signed_script_are_trusted" />
 				<string name="script_user_key_name_for_signing" />
 				<string name="script_directories" />
+				<string name="script_classpath" />
 			</separator>
 		</tab>
 	</tabbed_pane>
