@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.map.attribute;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -28,12 +29,21 @@ import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.attribute.IAttributeTableModel;
+import org.freeplane.features.common.text.TextController;
+
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	static final float ZOOM_CORRECTION_FACTOR = 0.97F;
+	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
+	.getBooleanProperty("formula_dont_mark_formulas");
 	private boolean isPainting;
 	private float zoom;
 
@@ -60,6 +70,40 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 			setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
 		}
 		zoom = ((AttributeTable) table).getZoom();
+	    final IAttributeTableModel attributeTableModel = (IAttributeTableModel) table.getModel();
+		final String originalText = value.toString();
+		String text = originalText;
+		if (column == 1) {
+			try {
+				// evaluate values only
+				final TextController textController = TextController.getController();
+				text = textController.getTransformedText(originalText, attributeTableModel.getNode());
+				if (!DONT_MARK_FORMULAS && text != originalText) {
+					setForeground(Color.GREEN);
+				}
+				else {
+					setForeground(Color.BLACK);
+				}
+			}
+			catch (Exception e) {
+				LogUtils.warn(e.getMessage(), e);
+				text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
+				setForeground(Color.RED);
+			}
+		}
+		else {
+			setForeground(Color.BLACK);
+		}
+		setText(text);
+		final int prefWidth = getPreferredSize().width;
+		final int width = table.getColumnModel().getColumn(column).getWidth();
+		if (prefWidth > width) {
+			final String toolTip = HtmlUtils.isHtmlNode(text) ? text : HtmlUtils.plainToHTML(text);
+			setToolTipText(toolTip.replace("\n", "<br>"));
+		}
+		else {
+			setToolTipText(null);
+		}
 		return rendererComponent;
 	}
 

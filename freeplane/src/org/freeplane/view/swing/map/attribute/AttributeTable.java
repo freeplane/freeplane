@@ -186,8 +186,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final Dimension prefHeaderSize = new Dimension(1, 8);
 	private static final long serialVersionUID = 1L;
 	private static final float TABLE_ROW_HEIGHT = 4;
-	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
-	    .getBooleanProperty("formula_dont_mark_formulas");;
 
 	static ComboBoxModel getDefaultComboBoxModel() {
 		if (AttributeTable.defaultComboBoxModel == null) {
@@ -281,7 +279,15 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		putClientProperty("AttributeTable.EditEvent", e);
 		try{
-			return super.editCellAt(row, column, e);
+			if(super.editCellAt(row, column, e)){
+				final TableCellEditor cellEditor = getCellEditor();
+				if(isEditing() && cellEditor instanceof DialogTableCellEditor){
+					((DialogTableCellEditor)cellEditor).startEditing();
+					return false;
+				}
+				return true;
+			}
+			return false;
 		}
 		finally{
 			putClientProperty("AttributeTable.EditEvent", null);
@@ -291,18 +297,11 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	@SuppressWarnings("serial")
     private class DialogTableCellEditor extends AbstractCellEditor implements TableCellEditor{
 		
-		final private JLabel label;
 		final private IEditControl editControl;
 		private Object value;
 		private EditNodeBase editBase;
 		public DialogTableCellEditor() {
 			super();
-			label = new JLabel(){
-				@Override
-                public Color getBackground() {
-	                return getSelectionBackground();
-                }
-			};
 			editControl = new IEditControl() {
 				public void split(String newText, int position) {
 				}
@@ -318,10 +317,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			};
         }
 
-		public JLabel getLabel() {
-        	return label;
-        }
-
 		public IEditControl getEditControl() {
         	return editControl;
         }
@@ -329,10 +324,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		public void setEditBase(EditNodeBase editBase) {
         	this.editBase = editBase;
         }
-
-		public Component getTableCellEditorComponent(final JTable table, final Object value, boolean isSelected, int row, int column) {
-			return label;
-		}
+		
 		public Object getCellEditorValue() {
 	        return value;
         }
@@ -344,6 +336,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final Frame frame = JOptionPane.getFrameForComponent(AttributeTable.this);
 			editBase.show(frame);
 		}
+
+		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+	        return table.getCellRenderer(row, column).getTableCellRendererComponent(table, value, true, true, row, column);
+        }
 	};
 
 	@Override
@@ -382,55 +378,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		return dce;
 	}
 
-	@Override
-	public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-	    final IAttributeTableModel attributeTableModel = (IAttributeTableModel) getModel();
-		final String originalText = getValueAt(row, column).toString();
-		String text = originalText;
-		if (column == 1) {
-			try {
-				// evaluate values only
-				final TextController textController = TextController.getController();
-				text = textController.getTransformedText(originalText, attributeTableModel.getNode());
-				if (!DONT_MARK_FORMULAS && text != originalText) {
-					AttributeTable.dtcr.setForeground(Color.GREEN);
-				}
-				else {
-					AttributeTable.dtcr.setForeground(Color.BLACK);
-				}
-			}
-			catch (Exception e) {
-				LogUtils.warn(e.getMessage(), e);
-				text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
-				AttributeTable.dtcr.setForeground(Color.RED);
-			}
-		}
-		else {
-			AttributeTable.dtcr.setForeground(Color.BLACK);
-		}
-		AttributeTable.dtcr.setText(text);
-		final int prefWidth = AttributeTable.dtcr.getPreferredSize().width;
-		final int width = getColumnModel().getColumn(column).getWidth();
-		if (prefWidth > width) {
-			final String toolTip = HtmlUtils.isHtmlNode(text) ? text : HtmlUtils.plainToHTML(text);
-			AttributeTable.dtcr.setToolTipText(toolTip.replace("\n", "<br>"));
-		}
-		else {
-			AttributeTable.dtcr.setToolTipText(null);
-		}
-		// this is a copy from JTable.prepareRenderer()
-		boolean isSelected = false;
-		boolean hasFocus = false;
-//FIXME: works only since 1.6 - re-enable once Freeplane switches to 1.6
-//		// Only indicate the selection and focused cell if not printing
-//		if (!isPaintingForPrint()) {
-//			isSelected = isCellSelected(row, column);
-//			boolean rowIsLead = (selectionModel.getLeadSelectionIndex() == row);
-//			boolean colIsLead = (columnModel.getSelectionModel().getLeadSelectionIndex() == column);
-//			hasFocus = (rowIsLead && colIsLead) && isFocusOwner();
-//		}
-		return renderer.getTableCellRendererComponent(this, text, isSelected, hasFocus, row, column);
-	}
 
 	@Override
 	public TableCellRenderer getCellRenderer(final int row, final int column) {
@@ -507,17 +454,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	@Override
 	public Component prepareEditor(final TableCellEditor tce, final int row, final int col) {
 		if(tce instanceof DialogTableCellEditor){
-			final DialogTableCellEditor dialogTableCellEditor = (DialogTableCellEditor) tce;
-			final JLabel label = dialogTableCellEditor.getLabel();
-			updateFontSize(label, getZoom());
-			String originalText= getValueAt(row, col).toString();
-			setRenderedText(label, originalText);
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					dialogTableCellEditor.startEditing();
-				}
-			});
-			return super.prepareEditor(tce, row, col);
+			return super.prepareRenderer(getCellRenderer(row, col), row, col);
 		}
 		final JComboBox comboBox = (JComboBox) ((DefaultCellEditor) tce).getComponent();
 		final NodeModel node = getAttributeTableModel().getNode();
@@ -545,16 +482,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		updateFontSize(comboBox, getZoom());
 		return super.prepareEditor(tce, row, col);
 	}
-
-	public void setRenderedText(final JLabel label, String originalText) {
-	    final TextController textController = TextController.getController();
-	    IAttributeTableModel attributeTableModel = (IAttributeTableModel) getModel();
-	    String text = textController.getTransformedText(originalText, attributeTableModel.getNode());
-	    if (!DONT_MARK_FORMULAS && text != originalText) {
-	    	label.setForeground(Color.GREEN);
-	    }
-	    label.setText(text);
-    }
 
 	@Override
 	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
