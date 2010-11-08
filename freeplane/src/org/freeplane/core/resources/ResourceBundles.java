@@ -101,9 +101,11 @@ public class ResourceBundles extends ResourceBundle {
 	 * @throws IOException
 	 */
 	private Map<String, String> getLanguageResources(final String lang) throws IOException {
+		String resourceName = "/translations/Resources" + "_" + lang + ".properties";
 		final URL systemResource = ResourceController.getResourceController().getResource(
-		    "/translations/Resources" + "_" + lang + ".properties");
+		    resourceName);
 		if (systemResource == null) {
+			System.out.println("core resource " + resourceName + " not found");
 			return null;
 		}
 		final Map<String, String> resources = getLanguageResources(systemResource);
@@ -158,18 +160,37 @@ public class ResourceBundles extends ResourceBundle {
 	private void loadLocalLanguageResources() throws IOException {
 		lang = controller.getProperty(ResourceBundles.RESOURCE_LANGUAGE);
 		if (lang == null || lang.equals("automatic")) {
-			lang = Locale.getDefault().getLanguage() + "_" + Locale.getDefault().getCountry();
-			if (getLanguageResources(lang) == null) {
-				lang = Locale.getDefault().getLanguage();
-				if (getLanguageResources(lang) == null) {
-					lang = DEFAULT_LANGUAGE;
+			final String country = Locale.getDefault().getCountry();
+			if(! country.equals("")){
+				lang = Locale.getDefault().getLanguage() + "_" + country;
+				languageResources = getLanguageResources(lang);
+				if (languageResources != null) {
+					return;
 				}
+				LogUtils.info("language resources for " + lang + " not found");
 			}
+			lang = Locale.getDefault().getLanguage();
+			languageResources = getLanguageResources(lang);
+			if (languageResources != null) {
+				return;
+			}
+			LogUtils.info("language resources for " + lang + " not found");
 		}
 		if ("no".equals(lang)) {
 			lang = "nb";
 		}
 		languageResources = getLanguageResources(lang);
+		if (languageResources != null) {
+			return;
+		}
+		LogUtils.info("language resources for " + lang + " not found");
+		lang = DEFAULT_LANGUAGE;
+		languageResources = getLanguageResources(lang);
+		if (languageResources != null) {
+			return;
+		}
+		LogUtils.severe("language resources for " + lang + " not found, aborting");
+		System.exit(1);
 	}
 
 	public void reloadLanguage() {

@@ -23,6 +23,7 @@
 package com.inet.jortho;
 
 import java.awt.Dialog;
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -32,6 +33,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -203,13 +205,13 @@ public class SpellChecker {
 			}
 			setEnabled(false);
 			setSelected(true);
+			final Locale oldLocale = currentLocale;
+			currentDictionary = null;
+			currentLocale = null;
+			SpellChecker.fireLanguageChanged(oldLocale);
 			final Thread thread = new Thread(new Runnable() {
 				public void run() {
 					try {
-						final Locale oldLocale = currentLocale;
-						currentDictionary = null;
-						currentLocale = null;
-						SpellChecker.fireLanguageChanged(oldLocale);
 						final DictionaryFactory factory = new DictionaryFactory();
 						try {
 							factory.loadWordList(new URL(baseURL, "dictionary_" + locale + extension));
@@ -225,8 +227,17 @@ public class SpellChecker {
 							JOptionPane.showMessageDialog(null, ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
 						}
 						currentDictionary = factory.create();
-						currentLocale = locale;
-						SpellChecker.fireLanguageChanged(null);
+						try {
+	                        EventQueue.invokeAndWait(new Runnable() {
+	                        	public void run() {
+	        						currentLocale = locale;
+	                        		SpellChecker.fireLanguageChanged(null);
+	                        	}
+	                        });
+                        }
+                        catch (Exception e) {
+	                        e.printStackTrace();
+                        }
 					}
 					finally {
 						setEnabled(true);
