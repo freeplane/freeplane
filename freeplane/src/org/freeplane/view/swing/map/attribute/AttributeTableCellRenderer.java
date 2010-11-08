@@ -64,7 +64,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	@Override
 	public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected,
 	                                               final boolean hasFocus, final int row, final int column) {
-		final Component rendererComponent = super.getTableCellRendererComponent(table, value, hasFocus, false, row,
+		final Component rendererComponent = super.getTableCellRendererComponent(table, value, hasFocus, isSelected, row,
 		    column);
 		if (hasFocus) {
 			setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
@@ -80,9 +80,6 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 				text = textController.getTransformedText(originalText, attributeTableModel.getNode());
 				if (!DONT_MARK_FORMULAS && text != originalText) {
 					setForeground(Color.GREEN);
-				}
-				else {
-					setForeground(Color.BLACK);
 				}
 			}
 			catch (Exception e) {

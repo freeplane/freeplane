@@ -282,6 +282,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			if(super.editCellAt(row, column, e)){
 				final TableCellEditor cellEditor = getCellEditor();
 				if(isEditing() && cellEditor instanceof DialogTableCellEditor){
+					((JComponent)editorComp).paintImmediately(0, 0, editorComp.getWidth(), editorComp.getHeight());
 					((DialogTableCellEditor)cellEditor).startEditing();
 					return false;
 				}
@@ -338,7 +339,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 
 		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-	        return table.getCellRenderer(row, column).getTableCellRendererComponent(table, value, true, true, row, column);
+	        return new AttributeTableCellRenderer().getTableCellRendererComponent(table, value, true, true, row, column);
         }
 	};
 
@@ -454,7 +455,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	@Override
 	public Component prepareEditor(final TableCellEditor tce, final int row, final int col) {
 		if(tce instanceof DialogTableCellEditor){
-			return super.prepareRenderer(getCellRenderer(row, col), row, col);
+			return super.prepareEditor(tce, row, col);
 		}
 		final JComboBox comboBox = (JComboBox) ((DefaultCellEditor) tce).getComponent();
 		final NodeModel node = getAttributeTableModel().getNode();
