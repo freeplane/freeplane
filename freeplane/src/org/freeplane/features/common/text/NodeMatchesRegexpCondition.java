@@ -83,7 +83,7 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition {
 	}
 
 	private boolean isMatchCase() {
-		return !((searchPattern.flags() & Pattern.CASE_INSENSITIVE) != 0);
+		return (searchPattern.flags() & Pattern.CASE_INSENSITIVE) == 0;
 	}
 
 	@Override
