@@ -20,33 +20,20 @@
 package org.freeplane.features.common.note;
 
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class NoteContainsCondition extends ASelectableCondition {
-	static final String NAME = "node_contains_condition";
+public class NoteContainsCondition extends MatchCaseNoteContainsCondition {
+	static final String NAME = "note_contains_condition";
 	static final String VALUE = "VALUE";
 
 	static ASelectableCondition load(final XMLElement element) {
 		return new NoteContainsCondition(element.getAttribute(NoteContainsCondition.VALUE, null));
 	}
 
-	final private String value;
-
 	NoteContainsCondition(final String value) {
-		super();
-		this.value = value;
-	}
-
-	public boolean checkNode(final NodeModel node) {
-		final String text = getText(node);
-		if (text == null) {
-			return false;
-		}
-		return text.indexOf(value) > -1;
+		super(value.toLowerCase());
 	}
 
 	@Override
@@ -54,24 +41,9 @@ public class NoteContainsCondition extends ASelectableCondition {
 		return createDesctiption(false);
 	}
 
-	protected String createDesctiption(final boolean ignoreCase) {
-		final String nodeCondition = TextUtils.getText(NoteConditionController.FILTER_NOTE);
-		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, ignoreCase);
-	}
-
+	@Override
 	protected String getText(final NodeModel node) {
 		final String noteText = NoteModel.getNoteText(node);
-		return noteText == null ? null : HtmlUtils.htmlToPlain(noteText);
+		return noteText == null ? null : HtmlUtils.htmlToPlain(noteText).toLowerCase();
 	}
-
-	public void fillXML(final XMLElement child) {
-		super.fillXML(child);
-		child.setAttribute(NoteContainsCondition.VALUE, value);
-	}
-
-	@Override
-    protected String getName() {
-	    return NAME;
-    }
 }

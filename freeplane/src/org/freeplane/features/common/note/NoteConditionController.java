@@ -58,18 +58,18 @@ class NoteConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                            final Object value, final boolean ignoreCase) {
-		return createASelectableCondition(simpleCond, (String) value, ignoreCase);
+	                                            final Object value, final boolean matchCase) {
+		return createASelectableCondition(simpleCond, (String) value, matchCase);
 	}
 
 	protected ASelectableCondition createASelectableCondition(final NamedObject simpleCondition, final String value,
-	                                                   final boolean ignoreCase) {
-		if (ignoreCase) {
+	                                                   final boolean matchCase) {
+		if (matchCase) {
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
 				if (value.equals("")) {
 					return null;
 				}
-				return new IgnoreCaseNoteContainsCondition(value);
+				return new MatchCaseNoteContainsCondition(value);
 			}
 		}
 		else {
@@ -110,8 +110,8 @@ class NoteConditionController implements IElementaryConditionController {
 		if (element.getName().equalsIgnoreCase(NoteContainsCondition.NAME)) {
 			return NoteContainsCondition.load(element);
 		}
-		if (element.getName().equalsIgnoreCase(IgnoreCaseNoteContainsCondition.NAME)) {
-			return IgnoreCaseNoteContainsCondition.load(element);
+		if (element.getName().equalsIgnoreCase(MatchCaseNoteContainsCondition.NAME)) {
+			return MatchCaseNoteContainsCondition.load(element);
 		}
 		return null;
 	}

@@ -29,8 +29,8 @@ import org.freeplane.features.common.filter.condition.ConditionFactory;
 public class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 	public static final String NAME = "connector_label_contains";
 
-	public ConnectorLabelContainsCondition(final String text, final boolean ignoreCase) {
-		super(text, ignoreCase);
+	public ConnectorLabelContainsCondition(final String text, final boolean matchCase) {
+		super(text, matchCase);
 	}
 
 	@Override
@@ -54,17 +54,17 @@ public class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 		if (middleLabel == null) {
 			return false;
 		}
-		if (ignoreCase()) {
-			return middleLabel.toLowerCase().contains(getText());
+		if (matchCase()) {
+			return middleLabel.contains(getText());
 		}
-		return middleLabel.contains(getText());
+		return middleLabel.toLowerCase().contains(getText());
 	}
 
 	@Override
 	protected String createDesctiption() {
 		final String condition = TextUtils.getText(LinkConditionController.CONNECTOR_LABEL);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(condition, simpleCondition, getText(), ignoreCase());
+		return ConditionFactory.createDescription(condition, simpleCondition, getText(), matchCase());
 	}
 
 	@Override

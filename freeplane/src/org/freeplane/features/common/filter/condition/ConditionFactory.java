@@ -40,7 +40,7 @@ public class ConditionFactory {
 	public static final String FILTER_EXIST = "filter_exist";
 	public static final String FILTER_GE = ">=";
 	public static final String FILTER_GT = ">";
-	public static final String FILTER_IGNORE_CASE = "filter_ignore_case";
+	public static final String FILTER_MATCH_CASE = "filter_match_case";
 	public static final String FILTER_IS_EQUAL_TO = "filter_is_equal_to";
 	public static final String FILTER_IS_NOT_EQUAL_TO = "filter_is_not_equal_to";
 	public static final String FILTER_LE = "<=";
@@ -55,9 +55,9 @@ public class ConditionFactory {
 	}
 
 	public static String createDescription(final String attribute, final String simpleCondition, final String value,
-	                                       final boolean ignoreCase) {
+	                                       final boolean matchCase) {
 		final String description = attribute + " " + simpleCondition + (value != null ? " \"" + value + "\"" : "")
-		        + (ignoreCase && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_IGNORE_CASE) : "");
+		        + (matchCase && value != null ? ", " + TextUtils.removeMnemonic(TextUtils.getText(ConditionFactory.FILTER_MATCH_CASE)) : "");
 		return description;
 	}
 
@@ -78,8 +78,8 @@ public class ConditionFactory {
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                            final Object value, final boolean ignoreCase) {
-		return getConditionController(selectedItem).createCondition(selectedItem, simpleCond, value, ignoreCase);
+	                                            final Object value, final boolean matchCase) {
+		return getConditionController(selectedItem).createCondition(selectedItem, simpleCond, value, matchCase);
 	}
 
 	public IElementaryConditionController getConditionController(final Object item) {

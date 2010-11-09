@@ -34,10 +34,11 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition {
 	static final String SEARCH_PATTERN = "SEARCH_PATTERN";
 
 	static ASelectableCondition load(final XMLElement element) {
-		final Boolean ignoreCase = Boolean.valueOf(element.getAttribute(NodeTextCompareCondition.IGNORE_CASE, "false"));
+		//TODO: check if it should be "false" or "true"
+		final Boolean matchCase = Boolean.valueOf(element.getAttribute(NodeTextCompareCondition.MATCH_CASE, "false"));
 		final String searchPattern = element.getAttribute(SEARCH_PATTERN, null);
 		final String nodeItem = element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE);
-		return new NodeMatchesRegexpCondition(nodeItem, searchPattern, ignoreCase);
+		return new NodeMatchesRegexpCondition(nodeItem, searchPattern, matchCase);
 	}
 
 	private final Pattern searchPattern;
@@ -47,10 +48,10 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition {
 		this(nodeItem, searchPattern, false);
 	}
 
-	public NodeMatchesRegexpCondition(String nodeItem, final String searchPattern, final boolean ignoreCase) {
+	public NodeMatchesRegexpCondition(String nodeItem, final String searchPattern, final boolean matchCase) {
 		super();
 		int flags = 0;
-		if (ignoreCase) {
+		if (!matchCase) {
 			flags |= Pattern.CASE_INSENSITIVE;
 		}
 		this.searchPattern = Pattern.compile(searchPattern, flags);
@@ -71,18 +72,18 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition {
 		final String nodeCondition = TextUtils.getText(nodeItem);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, searchPattern.pattern(),
-		    isIgnoreCase());
+		    isMatchCase());
 	}
 
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
 		child.setAttribute(SEARCH_PATTERN, searchPattern.pattern());
-		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, TreeXmlWriter.BooleanToXml(isIgnoreCase()));
+		child.setAttribute(CompareConditionAdapter.MATCH_CASE, TreeXmlWriter.BooleanToXml(isMatchCase()));
 		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem);
 	}
 
-	private boolean isIgnoreCase() {
-		return (searchPattern.flags() & Pattern.CASE_INSENSITIVE) != 0;
+	private boolean isMatchCase() {
+		return !((searchPattern.flags() & Pattern.CASE_INSENSITIVE) != 0);
 	}
 
 	@Override
