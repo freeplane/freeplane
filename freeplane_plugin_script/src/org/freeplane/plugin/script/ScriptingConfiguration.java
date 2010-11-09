@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -92,12 +93,15 @@ class ScriptingConfiguration {
 	}
 
 	private static final String SCRIPT_REGEX = ".*\\.groovy$";
+	private static final String JAR_REGEX = ".*\\.jar$";
 	private final TreeMap<String, String> nameScriptMap = new TreeMap<String, String>();
 	private final TreeMap<String, ScriptMetaData> nameScriptMetaDataMap = new TreeMap<String, ScriptMetaData>();
+	private ArrayList<String> classpath;
 
 	ScriptingConfiguration() {
 		addPluginDefaults();
 		initNameScriptMap();
+		initClasspath();
 	}
 
 	private void addPluginDefaults() {
@@ -113,19 +117,19 @@ class ScriptingConfiguration {
 		if (dirsString != null) {
 			final List<String> dirs = ConfigurationUtils.decodeListValue(dirsString);
 			for (String dir : dirs) {
-				addScripts(getDirectory(dir));
+				addScripts(createFile(dir));
             }
 		}
 	}
 
 	/**
-	 * if <code>dir</code> is not an absolute dir, prepends the freeplane user
+	 * if <code>path</code> is not an absolute path, prepends the freeplane user
 	 * directory to it.
 	 */
-	private File getDirectory(final String dir) {
-		File file = new File(dir);
+	private File createFile(final String path) {
+		File file = new File(path);
 		if (!file.isAbsolute()) {
-			file = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), dir);
+			file = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), path);
 		}
 		return file;
 	}
@@ -133,12 +137,7 @@ class ScriptingConfiguration {
 	/** scans <code>dir</code> for script files matching a given rexgex. */
 	private void addScripts(final File dir) {
 		if (dir.isDirectory()) {
-			final FilenameFilter filter = new FilenameFilter() {
-				public boolean accept(final File dir, final String name) {
-					return name.matches(SCRIPT_REGEX);
-				}
-			};
-			for (final File file : Arrays.asList(dir.listFiles(filter))) {
+			for (final File file : Arrays.asList(dir.listFiles(createFilenameFilter(SCRIPT_REGEX)))) {
 				addScript(file);
 			}
 		}
@@ -146,6 +145,15 @@ class ScriptingConfiguration {
 			LogUtils.warn("not a (script) directory: " + dir);
 		}
 	}
+
+	private FilenameFilter createFilenameFilter(final String regexp) {
+	    final FilenameFilter filter = new FilenameFilter() {
+	    	public boolean accept(final File dir, final String name) {
+				return name.matches(regexp);
+	    	}
+	    };
+	    return filter;
+    }
 
 	private void addScript(final File file) {
 		String name = getScriptName(file);
@@ -244,5 +252,33 @@ class ScriptingConfiguration {
 
 	SortedMap<String, ScriptMetaData> getNameScriptMetaDataMap() {
 		return Collections.unmodifiableSortedMap(nameScriptMetaDataMap);
+	}
+
+	private void initClasspath() {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		final String entries = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_CLASSPATH);
+		classpath = new ArrayList<String>();
+		if (entries != null) {
+			for (String entry : ConfigurationUtils.decodeListValue(entries)) {
+				final File file = createFile(entry);
+				if (!file.exists()) {
+					LogUtils.warn("classpath entry '" + entry + "' doesn't exist. (Use "
+						+ ConfigurationUtils.CONFIG_LIST_VALUE_SEPARATOR + " to separate entries.)");
+				}
+				else if (file.isDirectory()) {
+					classpath.add(file.getAbsolutePath());
+					for (final File jar : file.listFiles(createFilenameFilter(JAR_REGEX))) {
+						classpath.add(jar.getAbsolutePath());
+					}
+				}
+				else {
+					classpath.add(file.getAbsolutePath());
+				}
+			}
+		}
+	}
+
+	ArrayList<String> getClasspath() {
+		return classpath;
 	}
 }

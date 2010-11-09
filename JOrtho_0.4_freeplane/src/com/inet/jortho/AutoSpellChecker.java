@@ -22,6 +22,8 @@
  */
 package com.inet.jortho;
 
+import java.awt.EventQueue;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 
 import javax.swing.SwingUtilities;
@@ -133,11 +135,7 @@ class AutoSpellChecker implements DocumentListener, LanguageChangeListener {
 					try {
 						final Element element = ((AbstractDocument) document).getParagraphElement(i);
 						i = element.getEndOffset();
-						SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								checkElement(element);
-							}
-						});
+						checkElement(element);
 					}
 					catch (final java.lang.Exception ex) {
 						return;
@@ -158,20 +156,22 @@ class AutoSpellChecker implements DocumentListener, LanguageChangeListener {
 	 */
 	private void checkElement(final javax.swing.text.Element element) {
 		try {
-			final int i = element.getStartOffset();
-			int j = element.getEndOffset();
-			final Highlighter highlighter = jText.getHighlighter();
-			final Highlight[] highlights = highlighter.getHighlights();
-			for (int k = highlights.length; --k >= 0;) {
-				final Highlight highlight = highlights[k];
-				final int hlStartOffset = highlight.getStartOffset();
-				final int hlEndOffset = highlight.getEndOffset();
-				if ((i <= hlStartOffset && hlStartOffset <= j) || (i <= hlEndOffset && hlEndOffset <= j)) {
-					highlighter.removeHighlight(highlight);
-				}
+			if(! EventQueue.isDispatchThread()){
+				try {
+	                EventQueue.invokeAndWait(new Runnable() {
+	                	public void run() {
+	                		checkElement(element);
+	                		return;
+	                	}
+	                });
+                }
+                catch (Exception e) {
+	                e.printStackTrace();
+                }
 			}
+			final int i = element.getStartOffset();
 			final int l = ((AbstractDocument) jText.getDocument()).getLength();
-			j = Math.min(j, l);
+			final int j = Math.min(element.getEndOffset(), l);
 			if (i >= j) {
 				return;
 			}
@@ -183,6 +183,7 @@ class AutoSpellChecker implements DocumentListener, LanguageChangeListener {
 			}
 			final Tokenizer tok = new Tokenizer(jText, dic, loc, i, j, options);
 			String word;
+			final Highlighter highlighter = jText.getHighlighter();
 			while ((word = tok.nextInvalidWord()) != null) {
 				final int wordOffset = tok.getWordOffset();
 				highlighter.addHighlight(wordOffset, wordOffset + word.length(), painter);
@@ -192,6 +193,25 @@ class AutoSpellChecker implements DocumentListener, LanguageChangeListener {
 			e.printStackTrace();
 		}
 	}
+
+	private void removeHighlighters(final javax.swing.text.Element element) {
+	    {
+	    	final int i = element.getStartOffset();
+	    	final int j = element.getEndOffset();
+	    	final Highlighter highlighter = jText.getHighlighter();
+	    	final Highlight[] highlights = highlighter.getHighlights();
+	    	for (int k = highlights.length; --k >= 0;) {
+	    		final Highlight highlight = highlights[k];
+	    		final int hlStartOffset = highlight.getStartOffset();
+	    		final int hlEndOffset = highlight.getEndOffset();
+	    		if ((i <= hlStartOffset && hlStartOffset <= j) || (i <= hlEndOffset && hlEndOffset <= j)) {
+	    			if (highlight.getPainter() == painter) {
+	    				highlighter.removeHighlight(highlight);
+	    			}
+	    		}
+	    	}
+	    }
+    }
 
 	/**
 	 * Check the Elements on the given position.
@@ -208,6 +228,7 @@ class AutoSpellChecker implements DocumentListener, LanguageChangeListener {
 			catch (final java.lang.Exception ex) {
 				return;
 			}
+			removeHighlighters(element);
 			checkElement(element);
 			offset = element.getEndOffset();
 		} while (offset <= end && offset < document.getLength());

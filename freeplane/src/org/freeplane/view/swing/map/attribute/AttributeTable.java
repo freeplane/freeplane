@@ -24,6 +24,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
@@ -31,25 +34,33 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.EventObject;
 
+import javax.swing.AbstractCellEditor;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
+import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeRegistry;
@@ -59,6 +70,9 @@ import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.IColumnWidthChangeListener;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.mindmapmode.text.EditNodeBase;
+import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
+import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -172,8 +186,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final Dimension prefHeaderSize = new Dimension(1, 8);
 	private static final long serialVersionUID = 1L;
 	private static final float TABLE_ROW_HEIGHT = 4;
-	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
-	    .getBooleanProperty("formula_dont_mark_formulas");;
 
 	static ComboBoxModel getDefaultComboBoxModel() {
 		if (AttributeTable.defaultComboBoxModel == null) {
@@ -185,6 +197,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	final private AttributeView attributeView;
 	private int highRowIndex = 0;
 	private static DefaultCellEditor dce;
+	private static final Color mediumGreen = new Color(0, 210, 0);
 
 	AttributeTable(final AttributeView attributeView) {
 		super();
@@ -256,15 +269,108 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	public AttributeView getAttributeView() {
 		return attributeView;
 	}
+	
+	
+
+	@Override
+    public boolean editCellAt(int row, int column, EventObject e) {
+		if(isEditing() && getCellEditor() instanceof DialogTableCellEditor){
+			return false;
+		}
+		putClientProperty("AttributeTable.EditEvent", e);
+		try{
+			if(super.editCellAt(row, column, e)){
+				final TableCellEditor cellEditor = getCellEditor();
+				if(isEditing() && cellEditor instanceof DialogTableCellEditor){
+					((JComponent)editorComp).paintImmediately(0, 0, editorComp.getWidth(), editorComp.getHeight());
+					((DialogTableCellEditor)cellEditor).startEditing();
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		finally{
+			putClientProperty("AttributeTable.EditEvent", null);
+		}
+    }
+	
+	@SuppressWarnings("serial")
+    private class DialogTableCellEditor extends AbstractCellEditor implements TableCellEditor{
+		
+		final private IEditControl editControl;
+		private Object value;
+		private EditNodeBase editBase;
+		public DialogTableCellEditor() {
+			super();
+			editControl = new IEditControl() {
+				public void split(String newText, int position) {
+				}
+				
+				public void ok(String newText) {
+					value = newText;
+					stopCellEditing();
+				}
+				
+				public void cancel() {
+					stopCellEditing();
+				}
+			};
+        }
+
+		public IEditControl getEditControl() {
+        	return editControl;
+        }
+
+		public void setEditBase(EditNodeBase editBase) {
+        	this.editBase = editBase;
+        }
+		
+		public Object getCellEditorValue() {
+	        return value;
+        }
+
+		public void startEditing(){
+			if(editBase == null){
+				return;
+			}
+			final Frame frame = JOptionPane.getFrameForComponent(AttributeTable.this);
+			editBase.show(frame);
+		}
+
+		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+	        return new AttributeTableCellRenderer().getTableCellRendererComponent(table, value, true, true, row, column);
+        }
+	};
 
 	@Override
 	public TableCellEditor getCellEditor(final int row, final int col) {
-		final JComboBox comboBox;
+		return getCellEditor(row, col, (EventObject) getClientProperty("AttributeTable.EditEvent"));
+	}
+	public TableCellEditor getCellEditor(final int row, final int col, EventObject e) {
 		if (dce != null) {
 			dce.stopCellEditing();
-			comboBox = (JComboBox) dce.getComponent();
 		}
-		else {
+		if(col == 1){
+			final KeyEvent kev;
+			if(e instanceof KeyEvent){
+				kev = (KeyEvent) e;
+			}
+			else{
+				kev = null;
+			}
+			MTextController textController = (MTextController) TextController.getController();
+			final IAttributeTableModel model = (IAttributeTableModel) getModel();
+			final String text = getValueAt(row, col).toString();
+			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
+			EditNodeBase base = textController.getEditNodeBase(model.getNode(), text, dialogTableCellEditor.getEditControl(), kev, false, false);
+			if(base != null){
+				dialogTableCellEditor.setEditBase(base);
+				return dialogTableCellEditor;
+			}
+		}
+		final JComboBox comboBox;
+		if (dce == null) {
 			comboBox = new JComboBox();
 			comboBox.addFocusListener(AttributeTable.focusListener);
 			comboBox.getEditor().getEditorComponent().addFocusListener(AttributeTable.focusListener);
@@ -273,54 +379,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		return dce;
 	}
 
-	@Override
-	public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-	    final IAttributeTableModel attributeTableModel = (IAttributeTableModel) getModel();
-		final String originalText = getValueAt(row, column).toString();
-		String text = originalText;
-		if (column == 1) {
-			try {
-				// evaluate values only
-				final TextController textController = TextController.getController();
-				text = textController.getTransformedText(originalText, attributeTableModel.getNode());
-				if (!DONT_MARK_FORMULAS && text != originalText) {
-					AttributeTable.dtcr.setForeground(Color.GREEN);
-				}
-				else {
-					AttributeTable.dtcr.setForeground(Color.BLACK);
-				}
-			}
-			catch (Exception e) {
-				LogUtils.warn(e.getMessage(), e);
-				text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
-				AttributeTable.dtcr.setForeground(Color.RED);
-			}
-		}
-		else {
-			AttributeTable.dtcr.setForeground(Color.BLACK);
-		}
-		AttributeTable.dtcr.setText(text);
-		final int prefWidth = AttributeTable.dtcr.getPreferredSize().width;
-		final int width = getColumnModel().getColumn(column).getWidth();
-		if (prefWidth > width) {
-			AttributeTable.dtcr.setToolTipText(text);
-		}
-		else {
-			AttributeTable.dtcr.setToolTipText(null);
-		}
-		// this is a copy from JTable.prepareRenderer()
-		boolean isSelected = false;
-		boolean hasFocus = false;
-//FIXME: works only since 1.6 - re-enable once Freeplane switches to 1.6
-//		// Only indicate the selection and focused cell if not printing
-//		if (!isPaintingForPrint()) {
-//			isSelected = isCellSelected(row, column);
-//			boolean rowIsLead = (selectionModel.getLeadSelectionIndex() == row);
-//			boolean colIsLead = (columnModel.getSelectionModel().getLeadSelectionIndex() == column);
-//			hasFocus = (rowIsLead && colIsLead) && isFocusOwner();
-//		}
-		return renderer.getTableCellRendererComponent(this, text, isSelected, hasFocus, row, column);
-	}
 
 	@Override
 	public TableCellRenderer getCellRenderer(final int row, final int column) {
@@ -396,10 +454,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	@Override
 	public Component prepareEditor(final TableCellEditor tce, final int row, final int col) {
-		ComboBoxModel model;
+		if(tce instanceof DialogTableCellEditor){
+			return super.prepareEditor(tce, row, col);
+		}
 		final JComboBox comboBox = (JComboBox) ((DefaultCellEditor) tce).getComponent();
 		final NodeModel node = getAttributeTableModel().getNode();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(node.getMap());
+		final ComboBoxModel model;
 		switch (col) {
 			case 0:
 				model = attributes.getComboBoxModel();
@@ -442,7 +503,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final int leadRow = getSelectionModel().getLeadSelectionIndex();
 			final int leadColumn = getColumnModel().getSelectionModel().getLeadSelectionIndex();
 			if (leadRow != -1 && leadColumn != -1 && !isEditing()) {
-				if (!editCellAt(leadRow, leadColumn)) {
+				if (!editCellAt(leadRow, leadColumn, e)) {
 					return false;
 				}
 			}
@@ -613,7 +674,15 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
     public void editingStopped(ChangeEvent e) {
 		try{
 			putClientProperty(EDITING_STOPPED, Boolean.TRUE);
-			super.editingStopped(e);
+		       // Take in the new value
+	        TableCellEditor editor = getCellEditor();
+	        if (editor != null) {
+	            Object value = editor.getCellEditorValue();
+	            if(value != null){
+	            	setValueAt(value, editingRow, editingColumn);
+	            }
+	            removeEditor();
+	        }
 		}
 		finally{
 			putClientProperty(EDITING_STOPPED, null);

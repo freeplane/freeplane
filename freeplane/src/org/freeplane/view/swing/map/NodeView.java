@@ -1445,10 +1445,10 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		catch (Exception e) {
 			LogUtils.warn(e.getMessage(), e);
-			return colorize(
-			    TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage()), "red");
+			return colorize(TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
+			    .replace("\n", "<br>"), "red");
 		}
-    }
+	}
 
 	private String colorize(final String text, String color) {
 		return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";
@@ -1535,14 +1535,15 @@ public class NodeView extends JComponent implements INodeView {
 		if (getMap().showNotes()) {
 			final TextController textController = TextController.getController();
 			final String originalText = NoteModel.getNoteText(model);
-		    try {
-		    	newText = textController.getTransformedTextNoThrow(originalText, model);
+			try {
+				newText = textController.getTransformedTextNoThrow(originalText, model);
 				if (!DONT_MARK_FORMULAS && newText != originalText)
 					newText = colorize(newText, "green");
-		    }
-		    catch (Exception e) {
-			    newText = colorize(TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage()), "red");
-		    }
+			}
+			catch (Exception e) {
+				newText = colorize(TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
+				    .replace("\n", "<br>"), "red");
+			}
 		}
 		else {
 			newText = null;

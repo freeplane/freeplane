@@ -7,7 +7,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 public class ConfigurationUtils {
-	private static final String CONFIG_LIST_VALUE_SEPARATOR = File.pathSeparator + File.pathSeparator;
+	public static final String CONFIG_LIST_VALUE_SEPARATOR = File.pathSeparator + File.pathSeparator;
 
 	public  static List<String> decodeListValue(final String value) {
         final String[] values = value.split(CONFIG_LIST_VALUE_SEPARATOR);

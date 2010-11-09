@@ -125,7 +125,7 @@ class ApplicationViewController extends ViewController {
 	}
 
 	public String getAdjustableProperty(final String label) {
-		return resourceController.getAdjustableProperty(label);
+		return resourceController.getProperty(label);
 	}
 
 	/*

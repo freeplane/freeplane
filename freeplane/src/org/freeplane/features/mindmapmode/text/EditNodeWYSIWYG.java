@@ -64,8 +64,8 @@ class EditNodeWYSIWYG extends EditNodeBase {
 		private SHTMLPanel htmlEditorPanel;
 		private JButton splitButton;
 
-		HTMLDialog(final EditNodeBase base, final Frame frame) throws Exception {
-			super(base, frame);
+		HTMLDialog(final EditNodeBase base, final String title, final Frame frame) throws Exception {
+			super(base, title, frame);
 			createEditorPanel();
 			getContentPane().add(htmlEditorPanel, BorderLayout.CENTER);
 			UITools.addEscapeActionToDialog(this, new CancelAction());
@@ -190,16 +190,18 @@ class EditNodeWYSIWYG extends EditNodeBase {
 
 	private static HTMLDialog htmlEditorWindow;
 	final private KeyEvent firstEvent;
+	final private boolean enableSplit;
 
-	public EditNodeWYSIWYG(final NodeModel node, final String text, final KeyEvent firstEvent, final IEditControl editControl) {
+	public EditNodeWYSIWYG(final NodeModel node, final String text, final KeyEvent firstEvent, final IEditControl editControl, boolean enableSplit) {
 		super(node, text, editControl);
 		this.firstEvent = firstEvent;
+		this.enableSplit = enableSplit;
 	}
 
-	public void show(final Frame frame, boolean enableSplit) {
+	public void show(final Frame frame) {
 		try {
 			if (EditNodeWYSIWYG.htmlEditorWindow == null) {
-				EditNodeWYSIWYG.htmlEditorWindow = new HTMLDialog(this, frame);
+				EditNodeWYSIWYG.htmlEditorWindow = new HTMLDialog(this, "", frame);
 			}
 			EditNodeWYSIWYG.htmlEditorWindow.setBase(this);
 			final String title;

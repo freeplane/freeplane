@@ -553,19 +553,19 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return files;
 	}
 
-	private File defaultUserTemplateDir() {
+	public File defaultUserTemplateDir() {
 		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
 		final File userTemplates = new File(userDir, "templates");
 		return userTemplates;
 	}
 
-	private File defaultStandardTemplateDir() {
+	public File defaultStandardTemplateDir() {
 		final String resourceBaseDir = ResourceController.getResourceController().getResourceBaseDir();
 		final File allUserTemplates = new File(resourceBaseDir, "templates");
 		return allUserTemplates;
 	}
 
-	private String getStandardTemplateName() {
+	public String getStandardTemplateName() {
 		return ResourceController.getResourceController().getProperty("standard_template");
 	}
 
@@ -751,7 +751,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return false;
 	}
 
-	private void writeToFile(final MapModel map, final File file) throws FileNotFoundException, IOException {
+	public void writeToFile(final MapModel map, final File file) throws FileNotFoundException, IOException {
 		final FileOutputStream out = new FileOutputStream(file);
 		final FileLock lock = out.getChannel().tryLock();
 		if (lock == null) {

@@ -92,6 +92,7 @@ public class FreeplaneStarter {
 
 	public FreeplaneStarter() {
 		super();
+		new UserPropertiesUpdater().importOldProperties();
 		applicationResourceController = new ApplicationResourceController();
 	}
 
@@ -159,6 +160,7 @@ public class FreeplaneStarter {
 
 	public void createFrame(final String[] args) {
 		Compat.macMenuChanges();
+		new UserPropertiesUpdater().importOldDefaultStyle();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				loadMaps(args);

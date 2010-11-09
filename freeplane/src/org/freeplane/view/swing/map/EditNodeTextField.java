@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -269,7 +270,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	 * @see org.freeplane.view.swing.map.INodeTextField#show()
 	 */
 	@Override
-	public void show() {
+	public void show(final Frame frame) {
 		textfield = new JTextArea(getText());
 		final ModeController modeController = Controller.getCurrentModeController();
 		final ViewController viewController = modeController.getController().getViewController();

@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mindmapmode.text;
 
+import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileWriter;
@@ -45,7 +46,7 @@ class EditNodeExternalApplication extends EditNodeBase {
 		return firstEvent;
 	}
 
-	public void show() {
+	public void show(Frame frame) {
 		new Thread() {
 			@Override
 			public void run() {

@@ -25,8 +25,10 @@ import groovy.lang.Script;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,11 +67,13 @@ public class ScriptingEngine {
 	public static final String RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING = "script_user_key_name_for_signing";
 	public static final String RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED = "signed_script_are_trusted";
 	public static final String RESOURCES_SCRIPT_DIRECTORIES = "script_directories";
+	public static final String RESOURCES_SCRIPT_CLASSPATH = "script_classpath";
 	public static final String SCRIPT_PREFIX = "script";
 	private static final long serialVersionUID = 1L;
 	private static final HashMap<String, Object> sScriptCookies = new HashMap<String, Object>();
 	private static Boolean noUserPermissionRequired = false;
 	private static Pattern attributeNamePattern = Pattern.compile("^([a-zA-Z0-9_]*)=");
+	private static List<String> classpath;
 	private static final IErrorHandler scriptErrorHandler = new IErrorHandler() {
     	public void gotoLine(final int pLineNumber) {
     	}
@@ -142,9 +146,7 @@ public class ScriptingEngine {
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		try {
 			System.setOut(pOutStream);
-			CompilerConfiguration config = new CompilerConfiguration();
-			config.setScriptBaseClass(FreeplaneScriptBaseClass.class.getName());
-			final GroovyShell shell = new GroovyShell(binding, config) {
+			final GroovyShell shell = new GroovyShell(binding, createCompilerConfiguration()) {
 				/**
 				 * Evaluates some script against the current Binding and returns the result
 				 *
@@ -232,6 +234,13 @@ public class ScriptingEngine {
 		}
 	}
 
+	private static CompilerConfiguration createCompilerConfiguration() {
+		CompilerConfiguration config = new CompilerConfiguration();
+		config.setScriptBaseClass(FreeplaneScriptBaseClass.class.getName());
+		config.setClasspathList(classpath);
+		return config;
+	}
+
 	public static int findLineNumberInString(final String resultString, int lineNumber) {
 		final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(".*@ line ([0-9]+).*",
 		    java.util.regex.Pattern.DOTALL);
@@ -291,4 +300,12 @@ public class ScriptingEngine {
 	static Boolean getNoUserPermissionRequired() {
 		return noUserPermissionRequired;
 	}
+
+	/** allows to set the classpath for scripts. Due to security considerations it's not possible to set
+	 * this more than once. */
+	static void setClasspath(final List<String> classpath) {
+		if (ScriptingEngine.classpath != null)
+			throw new SecurityException("reset of script classpath is forbidden.");
+		ScriptingEngine.classpath = Collections.unmodifiableList(classpath);
+    }
 }

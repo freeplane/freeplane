@@ -99,6 +99,7 @@ public abstract class MainView extends ZoomableLabel {
 		setAlignmentX(Component.CENTER_ALIGNMENT);
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setVerticalAlignment(SwingConstants.CENTER);
+		setHorizontalTextPosition(SwingConstants.TRAILING);
 	}
 
 	protected void convertPointFromMap(final Point p) {
@@ -177,9 +178,7 @@ public abstract class MainView extends ZoomableLabel {
 	 * the total width.
 	 */
 	public boolean isInVerticalRegion(final double xCoord, final double p) {
-		final NodeView nodeView = getNodeView();
-		return nodeView.isLeft() && !nodeView.isRoot() ? xCoord > getSize().width * (1.0 - p)
-		        : xCoord < getSize().width * p;
+		return xCoord < getSize().width * p;
 	}
 
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
@@ -273,7 +272,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	void updateIcons(final NodeView node) {
-		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
+//		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		final MultipleImage iconImages = new MultipleImage();
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();

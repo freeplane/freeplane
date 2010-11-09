@@ -73,7 +73,7 @@ public class ApplicationResourceController extends ResourceController {
 		props = readUsersPreferences(defProps);
 		createUserDirectory(defProps);
 		setDefaultLocale(props);
-		autoPropertiesFile = getUserPreferencesFile(defProps);
+		autoPropertiesFile = getUserPreferencesFile();
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.equals(ResourceBundles.RESOURCE_LANGUAGE)) {
@@ -165,14 +165,10 @@ public class ApplicationResourceController extends ResourceController {
 		return FreeplaneStarter.getResourceBaseDir();
 	}
 
-	private File getUserPreferencesFile(final Properties defaultPreferences) {
-		if (defaultPreferences == null) {
-			System.err.println("Panic! Error while loading default properties.");
-			System.exit(1);
-		}
-		final String freeplaneDirectory = getFreeplaneUserDirectory();
+	public static File getUserPreferencesFile() {
+		final String freeplaneDirectory = Compat.getFreeplaneUserDirectory();
 		final File userPropertiesFolder = new File(freeplaneDirectory);
-		final File autoPropertiesFile = new File(userPropertiesFolder, defaultPreferences.getProperty("autoproperties"));
+		final File autoPropertiesFile = new File(userPropertiesFolder, "auto.properties");
 		return autoPropertiesFile;
 	}
 
@@ -208,7 +204,7 @@ public class ApplicationResourceController extends ResourceController {
 		final Properties auto = new Properties(defaultPreferences);
 		try {
 			InputStream in = null;
-			final File autoPropertiesFile = getUserPreferencesFile(defaultPreferences);
+			final File autoPropertiesFile = getUserPreferencesFile();
 			in = new FileInputStream(autoPropertiesFile);
 			auto.load(in);
 			in.close();
