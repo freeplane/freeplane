@@ -327,7 +327,6 @@ class ScriptEditorPanel extends JDialog {
 				select(mScriptList.getSelectedIndex());
 			}
 		});
-		JSyntaxPaneProxy.init();
 		final JEditorPane editorPane = new JEditorPane();
 		mScriptTextField = editorPane;
 		mScriptTextField.setEnabled(false);

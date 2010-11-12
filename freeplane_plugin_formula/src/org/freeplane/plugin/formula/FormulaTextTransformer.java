@@ -51,7 +51,6 @@ class FormulaTextTransformer implements ITextTransformer {
 			}
 		}
 		if(text.startsWith("=")){
-			JSyntaxPaneProxy.init();
 			JEditorPane textEditor = new JEditorPane();
 			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 			scrollPane.setMinimumSize(new Dimension(0, 60));

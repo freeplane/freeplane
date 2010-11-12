@@ -20,12 +20,16 @@
 package org.freeplane.plugin.script;
 
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogUtils;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 
 /**
  * @author Dimitry Polivaev
@@ -38,17 +42,24 @@ public class JSyntaxPaneProxy {
 	private static Method getLineNumberMethod;
 	private static Method setCaretPositionMethod;
 
-	public static void init() {
+	static void init(BundleContext context) {
 		if(loader != null){
 			return;
 		}
-	    final URL jar;
-		if(Compat.isLowerJdk(Compat.VERSION_1_6_0)){
-			jar = JSyntaxPaneProxy.class.getClassLoader().getResource("/jsyntaxpane-jdk5.jar"); 
-		}
-		else{
-			jar = JSyntaxPaneProxy.class.getClassLoader().getResource("/jsyntaxpane.jar");
-		}
+		URL jar;
+        try {
+	        final URL pluginUrl = context.getBundle().getEntry("/");
+	        if(Compat.isLowerJdk(Compat.VERSION_1_6_0)){
+	        	jar =  new URL(pluginUrl, "lib/jsyntaxpane/jsyntaxpane-jdk5.jar"); 
+	        }
+	        else{
+	        	jar =  new URL(pluginUrl, "lib/jsyntaxpane/jsyntaxpane.jar");
+	        }
+        }
+        catch (MalformedURLException e1) {
+	        e1.printStackTrace();
+	        return;
+        }
 		loader = new URLClassLoader(new URL[]{jar});
 		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		try {
@@ -58,6 +69,7 @@ public class JSyntaxPaneProxy {
 	        actionUtils = loader.loadClass("jsyntaxpane.actions.ActionUtils");
         }
         catch (Exception e) {
+        	LogUtils.severe(e);
         	throw new RuntimeException(e);
         }
         finally{

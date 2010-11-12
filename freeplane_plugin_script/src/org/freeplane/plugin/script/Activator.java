@@ -22,6 +22,7 @@ public class Activator implements BundleActivator {
 				    new ScriptingRegistration();
 			    }
 		    }, props);
+		JSyntaxPaneProxy.init(context);
 	}
 
 	/*

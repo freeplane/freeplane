@@ -229,7 +229,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutFileRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read, pFile);
 	}
 
 	@Override
@@ -277,8 +277,12 @@ class ScriptingSecurityManager extends SecurityManager {
 		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Write);
 	}
 
-	private SecurityException getException(final int pPermissionGroup, final int pPermission) {
+	private SecurityException getException(final int pPermissionGroup, final int pPermission, String pFile) {
 		return new SecurityException(TextUtils.format("plugins/ScriptEditor.FORBIDDEN_ACTION", new Integer(
-		    pPermissionGroup), new Integer(pPermission)));
+		    pPermissionGroup), new Integer(pPermission), pFile));
+    }
+
+	private SecurityException getException(final int pPermissionGroup, final int pPermission) {
+		return getException(pPermissionGroup, pPermission, "");
 	}
 }
