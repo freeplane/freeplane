@@ -169,12 +169,13 @@ public class OptionPanel {
 		if (!result.isValid()) {
 			UITools.errorMessage(TextUtils.format("OptionPanel.validation_error",
 			    ("<ul><li>" + StringUtils.join(result.getErrors().iterator(), "<li>") + "</ul>")));
+			LogUtils.severe(result.toString());
 		}
 		else if (result.hasWarnings()) {
 			UITools.informationMessage(TextUtils.format("OptionPanel.validation_warning",
 			    ("<ul><li>" + StringUtils.join(result.getWarnings().iterator(), "<li>") + "</ul>")));
+			LogUtils.warn(result.toString());
 		}
-		LogUtils.info(result.toString());
 		return result.isValid();
 	}
 
