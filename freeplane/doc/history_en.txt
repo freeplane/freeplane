@@ -25,6 +25,15 @@ Bug fixes:
 Bug fixes:
 732]: Saving to any networkshare takes extremely long time
 749]: highlighted text does not appear highlighted anymore
+add dutch translation to spell checker
+Dutch docs and translation
+translations  for  it, zh_TW
+multiple bug fixes in spell checker
+bug fix: freeplane did not start if unsupported language code was set in properties
+770]: Find and Replace... runs into infinite loop on certain HTML nodes
+Fix layout for long textes in BNodeNoteViewer: use JEditorPane instead of JLabel
+Bug fix in remove format action of simply html
+
 ===============================
 1.1.2
 ===============================
