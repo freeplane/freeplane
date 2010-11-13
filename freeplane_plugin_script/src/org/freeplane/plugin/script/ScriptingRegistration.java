@@ -125,11 +125,17 @@ class ScriptingRegistration {
 				final ValidationResult result = new ValidationResult();
 				final String readAccessString = properties
 				    .getProperty(ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
+				final String writeAccessString = properties
+				.getProperty(ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION);
 				final String classpath = properties.getProperty(ScriptingEngine.RESOURCES_SCRIPT_CLASSPATH);
 				final boolean readAccess = readAccessString != null && Boolean.parseBoolean(readAccessString);
+				final boolean writeAccess = writeAccessString != null && Boolean.parseBoolean(writeAccessString);
 				final boolean classpathIsSet = classpath != null && classpath.length() > 0;
 				if (classpathIsSet && !readAccess) {
 					result.addError(TextUtils.getText("OptionPanel.validate_classpath_needs_readaccess"));
+				}
+				if (writeAccess && !readAccess) {
+					result.addWarning(TextUtils.getText("OptionPanel.validate_write_without_read"));
 				}
 				return result;
 			}
