@@ -422,7 +422,7 @@ class MindMapHTMLWriter {
 	}
 
 	private void writeModelContent(final String string) throws IOException {
-	    if (string.matches(" *")) {
+	    if (string.matches(" +")) {
 			fileout.write("&nbsp;");
 		}
 		else if (string.startsWith("<html")) {
@@ -442,13 +442,12 @@ class MindMapHTMLWriter {
 				end = output.length();
 			}
 			output = output.substring(start, end);
-			fileout.write(HtmlUtils.unicodeToHTMLUnicodeEntity(output));
+			fileout.write(output);
 		}
 		else {
-			fileout.write(MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(string));
+			fileout.write(string);
 		}
     }
-
 	private void writeStyle() throws IOException {
 		fileout.write("<style type=\"text/css\">" + MindMapHTMLWriter.el);
 		fileout.write("    li { list-style: none;  margin: 0; }" + MindMapHTMLWriter.el);
