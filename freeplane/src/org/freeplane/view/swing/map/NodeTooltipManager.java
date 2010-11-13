@@ -6,9 +6,12 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -19,6 +22,8 @@ import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -65,7 +70,7 @@ public class NodeTooltipManager{
 	private NodeTooltipManager() {
 		enterTimer = new Timer(750, new insideTimerAction());
 		enterTimer.setRepeats(false);
-		exitTimer = new Timer(750, new exitTimerAction());
+		exitTimer = new Timer(150, new exitTimerAction());
 		exitTimer.setRepeats(false);
 		componentMouseListener = new ComponentMouseListener();
 	}
@@ -98,6 +103,19 @@ public class NodeTooltipManager{
 		if (insideComponent == null || !insideComponent.isShowing())
 			return;
 		tip = insideComponent.createToolTip();
+		tip.addAncestorListener(new AncestorListener() {
+			public void ancestorRemoved(AncestorEvent event) {
+			}
+			
+			public void ancestorMoved(AncestorEvent event) {
+			}
+			
+			public void ancestorAdded(AncestorEvent event) {
+				final NodeTooltip component = (NodeTooltip) event.getComponent();
+				component.scrollUp();
+				component.removeAncestorListener(this);
+			}
+		});
 //	    InputMap inputMap = tip.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 //	    ActionMap actionMap = tip.getActionMap();
 //

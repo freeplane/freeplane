@@ -1,6 +1,7 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.Window;
 
 import javax.swing.JEditorPane;
@@ -65,6 +66,10 @@ public class NodeTooltip extends JToolTip {
 		}
 		getComponent(0).setSize(getPreferredSize());
 	    super.layout();
+    }
+
+	void scrollUp() {
+		tip.scrollRectToVisible(new Rectangle(1, 1));
     }
 
 }
