@@ -208,8 +208,8 @@
 					</xsl:with-param>
 				</xsl:call-template>
 				<xsl:apply-templates select="hook|@LINK" />
-				<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="DETAILS"/> </xsl:call-template>
-				<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="NOTE"/> </xsl:call-template>
+				<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="'DETAILS'"/> </xsl:call-template>
+				<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="'NOTE'"/> </xsl:call-template>
 				<xsl:apply-templates select="node" />
 			</xsl:when>
 			<xsl:otherwise>
@@ -224,10 +224,10 @@
 								</xsl:call-template>
 								<xsl:apply-templates select="hook|@LINK" />
 								<xsl:call-template name="output-notecontent">
-									<xsl:with-param name="contentType" select="DETAILS" />
+									<xsl:with-param name="contentType" select="'DETAILS'" />
 								</xsl:call-template>
 								<xsl:call-template name="output-notecontent">
-									<xsl:with-param name="contentType" select="NOTE" />
+									<xsl:with-param name="contentType" select="'NOTE'" />
 								</xsl:call-template>
 								<xsl:apply-templates select="node" />
 							</text:list-item>
@@ -251,8 +251,8 @@
 							</xsl:call-template>
 						</xsl:element>
 						<xsl:apply-templates select="hook|@LINK" />
-						<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="DETAILS"/> </xsl:call-template>
-						<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="NOTE"/> </xsl:call-template>
+						<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="'DETAILS'"/> </xsl:call-template>
+						<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="'NOTE'"/> </xsl:call-template>
 						<xsl:apply-templates select="node" />
 					</xsl:otherwise>
 				</xsl:choose>

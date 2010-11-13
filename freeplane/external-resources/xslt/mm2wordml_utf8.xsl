@@ -100,8 +100,8 @@
 							</w:t>
 						</w:r>
 					</w:p>
-					<xsl:call-template name="output-note-text-as-bodytext"><xsl:with-param name="contentType" select="DETAILS"/></xsl:call-template>
-					<xsl:call-template name="output-note-text-as-bodytext"><xsl:with-param name="contentType" select="NOTE"/></xsl:call-template>
+					<xsl:call-template name="output-note-text-as-bodytext"><xsl:with-param name="contentType" select="'DETAILS'"/></xsl:call-template>
+					<xsl:call-template name="output-note-text-as-bodytext"><xsl:with-param name="contentType" select="'NOTE'"/></xsl:call-template>
 					<!--
 						if the level is higher than maxlevel, or if the current node is
 						marked with LastHeading, we start outputting normal paragraphs,
