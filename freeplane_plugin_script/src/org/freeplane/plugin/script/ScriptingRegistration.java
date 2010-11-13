@@ -24,12 +24,14 @@ import java.io.PrintStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import javax.swing.JMenu;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
@@ -118,6 +120,20 @@ class ScriptingRegistration {
 		if (preferences == null)
 			throw new RuntimeException("cannot open preferences");
 		MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		modeController.getOptionPanelBuilder().addValidator(new IValidator() {
+			public ValidationResult validate(Properties properties) {
+				final ValidationResult result = new ValidationResult();
+				final String readAccessString = properties
+				    .getProperty(ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
+				final String classpath = properties.getProperty(ScriptingEngine.RESOURCES_SCRIPT_CLASSPATH);
+				final boolean readAccess = readAccessString != null && Boolean.parseBoolean(readAccessString);
+				final boolean classpathIsSet = classpath != null && classpath.length() > 0;
+				if (classpathIsSet && !readAccess) {
+					result.addError(TextUtils.getText("OptionPanel.validate_classpath_needs_readaccess"));
+				}
+				return result;
+			}
+		});
 		modeController.getOptionPanelBuilder().load(preferences);
 	}
 

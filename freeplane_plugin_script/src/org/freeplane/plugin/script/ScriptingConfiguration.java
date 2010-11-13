@@ -115,7 +115,7 @@ class ScriptingConfiguration {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		final String dirsString = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES);
 		if (dirsString != null) {
-			final List<String> dirs = ConfigurationUtils.decodeListValue(dirsString);
+			final List<String> dirs = ConfigurationUtils.decodeListValue(dirsString, false);
 			for (String dir : dirs) {
 				addScripts(createFile(dir));
             }
@@ -259,11 +259,11 @@ class ScriptingConfiguration {
 		final String entries = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_CLASSPATH);
 		classpath = new ArrayList<String>();
 		if (entries != null) {
-			for (String entry : ConfigurationUtils.decodeListValue(entries)) {
+			for (String entry : ConfigurationUtils.decodeListValue(entries, false)) {
 				final File file = createFile(entry);
 				if (!file.exists()) {
-					LogUtils.warn("classpath entry '" + entry + "' doesn't exist. (Use "
-						+ ConfigurationUtils.CONFIG_LIST_VALUE_SEPARATOR + " to separate entries.)");
+					LogUtils.warn("classpath entry '" + entry + "' doesn't exist. (Use " + File.pathSeparator
+					        + " to separate entries.)");
 				}
 				else if (file.isDirectory()) {
 					classpath.add(file.getAbsolutePath());

@@ -42,6 +42,7 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.ModeController;
@@ -61,8 +62,9 @@ public class ScriptingEngine {
 	}
 
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING = "execute_scripts_without_asking";
+	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION = "execute_scripts_without_file_restriction";
+	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION = "execute_scripts_without_write_restriction";
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION = "execute_scripts_without_exec_restriction";
-	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION = "execute_scripts_without_file_restriction";
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION = "execute_scripts_without_network_restriction";
 	public static final String RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING = "script_user_key_name_for_signing";
 	public static final String RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED = "signed_script_are_trusted";
@@ -118,8 +120,10 @@ public class ScriptingEngine {
 		 */
 		final String executeWithoutAsking = ResourceController.getResourceController().getProperty(
 		    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
-		final String executeWithoutFileRestriction = ResourceController.getResourceController().getProperty(
-		    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION);
+		final String executeWithoutReadRestriction = ResourceController.getResourceController().getProperty(
+		    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
+		final String executeWithoutWriteRestriction = ResourceController.getResourceController().getProperty(
+			RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION);
 		final String executeWithoutNetworkRestriction = ResourceController.getResourceController().getProperty(
 		    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
 		final String executeWithoutExecRestriction = ResourceController.getResourceController().getProperty(
@@ -130,19 +134,21 @@ public class ScriptingEngine {
 		/* Signature */
 		/* *************** */
 		final PrintStream oldOut = System.out;
-		boolean filePerm = Boolean.parseBoolean(executeWithoutFileRestriction);
+		boolean readPerm = Boolean.parseBoolean(executeWithoutReadRestriction);
+		boolean writePerm = Boolean.parseBoolean(executeWithoutWriteRestriction);
 		boolean networkPerm = Boolean.parseBoolean(executeWithoutNetworkRestriction);
 		boolean execPerm = Boolean.parseBoolean(executeWithoutExecRestriction);
 		if (Boolean.parseBoolean(signedScriptsWithoutRestriction)) {
 			final boolean isSigned = new SignedScriptHandler().isScriptSigned(script, pOutStream);
 			if (isSigned) {
-				filePerm = true;
+				readPerm = true;
+				writePerm = true;
 				networkPerm = true;
 				execPerm = true;
 			}
 		}
-		final ScriptingSecurityManager scriptingSecurityManager = new ScriptingSecurityManager(filePerm, networkPerm,
-		    execPerm);
+		final ScriptingSecurityManager scriptingSecurityManager = new ScriptingSecurityManager(readPerm, writePerm,
+		    networkPerm, execPerm);
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		try {
 			System.setOut(pOutStream);
@@ -223,8 +229,8 @@ public class ScriptingEngine {
 			/* restore preferences (and assure that the values are unchanged!). */
 			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 			    executeWithoutAsking);
-			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
-			    executeWithoutFileRestriction);
+			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION,
+			    executeWithoutReadRestriction);
 			ResourceController.getResourceController().setProperty(
 			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION, executeWithoutNetworkRestriction);
 			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
@@ -237,7 +243,10 @@ public class ScriptingEngine {
 	private static CompilerConfiguration createCompilerConfiguration() {
 		CompilerConfiguration config = new CompilerConfiguration();
 		config.setScriptBaseClass(FreeplaneScriptBaseClass.class.getName());
-		config.setClasspathList(classpath);
+		if (!classpath.isEmpty()) {
+			LogUtils.info("extending script's classpath by " + classpath);
+			config.setClasspathList(classpath);
+		}
 		return config;
 	}
 

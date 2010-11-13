@@ -49,13 +49,15 @@ class ScriptingSecurityManager extends SecurityManager {
 	private static final int PERM_Read = 8;
 	private static final int PERM_SetFactory = 4;
 	private static final int PERM_Write = 9;
+	final private boolean mWithoutReadRestriction;
+	final private boolean mWithoutWriteRestriction;
 	final private boolean mWithoutExecRestriction;
-	final private boolean mWithoutFileRestriction;
 	final private boolean mWithoutNetworkRestriction;
 
-	public ScriptingSecurityManager(final boolean pWithoutFileRestriction, final boolean pWithoutNetworkRestriction,
-	                                final boolean pWithoutExecRestriction) {
-		mWithoutFileRestriction = pWithoutFileRestriction;
+	public ScriptingSecurityManager(final boolean pWithoutFileRestriction, boolean pWithoutWriteRestriction,
+	                                final boolean pWithoutNetworkRestriction, final boolean pWithoutExecRestriction) {
+		mWithoutReadRestriction = pWithoutFileRestriction;
+		mWithoutWriteRestriction = pWithoutWriteRestriction;
 		mWithoutNetworkRestriction = pWithoutNetworkRestriction;
 		mWithoutExecRestriction = pWithoutExecRestriction;
 	}
@@ -121,7 +123,7 @@ class ScriptingSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkDelete(final String pFile) {
-		if (mWithoutFileRestriction) {
+		if (mWithoutReadRestriction) {
 			return;
 		}
 		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Delete);
@@ -218,7 +220,7 @@ class ScriptingSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkRead(final FileDescriptor pFd) {
-		if (mWithoutFileRestriction) {
+		if (mWithoutReadRestriction) {
 			return;
 		}
 		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read);
@@ -226,7 +228,7 @@ class ScriptingSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkRead(final String pFile) {
-		if (mWithoutFileRestriction) {
+		if (mWithoutReadRestriction) {
 			return;
 		}
 		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read, pFile);
@@ -234,7 +236,7 @@ class ScriptingSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkRead(final String pFile, final Object pContext) {
-		if (mWithoutFileRestriction) {
+		if (mWithoutReadRestriction) {
 			return;
 		}
 		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read);
@@ -263,7 +265,7 @@ class ScriptingSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkWrite(final FileDescriptor pFd) {
-		if (mWithoutFileRestriction) {
+		if (mWithoutWriteRestriction) {
 			return;
 		}
 		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Write);
@@ -271,7 +273,7 @@ class ScriptingSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkWrite(final String pFile) {
-		if (mWithoutFileRestriction) {
+		if (mWithoutWriteRestriction) {
 			return;
 		}
 		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Write);

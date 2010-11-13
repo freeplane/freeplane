@@ -244,7 +244,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	private void restoreList(final String key, final List<String> list) {
 		final String restored = ResourceController.getResourceController().getProperty(key, null);
 		if (restored != null && !restored.equals("")) {
-			list.addAll(ConfigurationUtils.decodeListValue(restored));
+			list.addAll(ConfigurationUtils.decodeListValue(restored, true));
 		}
 	}
 
@@ -278,9 +278,9 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 
 	public void saveProperties() {
 		ResourceController.getResourceController().setProperty(LAST_OPENED,
-		    ConfigurationUtils.encodeListValue(lastOpenedList));
+		    ConfigurationUtils.encodeListValue(lastOpenedList, true));
 		ResourceController.getResourceController().setProperty(OPENED_NOW,
-		    ConfigurationUtils.encodeListValue(currenlyOpenedList));
+		    ConfigurationUtils.encodeListValue(currenlyOpenedList, true));
 	}
 
 	private boolean tryToChangeToMapView(final String restoreable) {

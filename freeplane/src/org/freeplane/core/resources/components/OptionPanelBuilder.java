@@ -25,6 +25,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.Collator;
 import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.Vector;
 
@@ -43,6 +45,9 @@ import org.freeplane.n3.nanoxml.XMLException;
 /**
  * @author Dimitry Polivaev
  * 26.12.2008
+ * <p>
+ * Note that the OptionPanelBuilder allows to set a custom validator for options,
+ * see {@link #addValidator(IValidator)}.
  */
 public class OptionPanelBuilder {
 	private class BooleanOptionCreator extends PropertyCreator {
@@ -271,6 +276,7 @@ public class OptionPanelBuilder {
 	final private IPropertyControlCreator nextLineCreator;
 	final private ReadManager readManager;
 	final private IndexedTree tree;
+	private final List<IValidator> optionValidators = new ArrayList<IValidator>();
 
 	public OptionPanelBuilder() {
 		readManager = new ReadManager();
@@ -480,4 +486,12 @@ public class OptionPanelBuilder {
 			throw new RuntimeException(e);
 		}
 	}
+
+	public List<IValidator> getOptionValidators() {
+	    return optionValidators;
+    }
+
+	public void addValidator(IValidator validator) {
+		optionValidators.add(validator);
+    }
 }

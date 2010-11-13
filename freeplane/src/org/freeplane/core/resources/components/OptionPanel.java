@@ -38,10 +38,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.IValidator.ValidationResult;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mindmapmode.MModeController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
@@ -144,12 +149,33 @@ public class OptionPanel {
 		MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getText("ok"));
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
-				closeWindow();
-				feedback.writeProperties(getOptionProperties());
+				if (validate()) {
+					closeWindow();
+					feedback.writeProperties(getOptionProperties());
+				}
 			}
 		});
 		topDialog.getRootPane().setDefaultButton(okButton);
 		topDialog.getContentPane().add(ButtonBarFactory.buildOKCancelBar(cancelButton, okButton), BorderLayout.SOUTH);
+	}
+	
+	private boolean validate() {
+		MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		final Properties properties = getOptionProperties();
+		final ValidationResult result = new ValidationResult();
+		for (IValidator validator : modeController.getOptionPanelBuilder().getOptionValidators()) {
+			result.add(validator.validate(properties));
+		}
+		if (!result.isValid()) {
+			UITools.errorMessage(TextUtils.format("OptionPanel.validation_error",
+			    ("<ul><li>" + StringUtils.join(result.getErrors().iterator(), "<li>") + "</ul>")));
+		}
+		else if (result.hasWarnings()) {
+			UITools.informationMessage(TextUtils.format("OptionPanel.validation_warning",
+			    ("<ul><li>" + StringUtils.join(result.getWarnings().iterator(), "<li>") + "</ul>")));
+		}
+		LogUtils.info(result.toString());
+		return result.isValid();
 	}
 
 	@SuppressWarnings("unchecked")
