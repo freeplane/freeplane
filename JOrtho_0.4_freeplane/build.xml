@@ -10,6 +10,11 @@
 	<property name="build" location="build" />
 	<property name="dist" location="dist" />
 	<property name="jarver" value="0.4+fp1.1.1" />
+	<property name="workspace" location=".." />
+	<property name="freeplaneant.jar" value="${workspace}/freeplane_ant/dist/freeplaneant.jar" />
+	<property name="eolstyle" value="unix" />
+	<taskdef name="format-translation" classname="org.freeplane.ant.FormatTranslation" classpath="${freeplaneant.jar}" onerror="report" />
+	<taskdef name="check-translation" classname="org.freeplane.ant.FormatTranslationCheck" classpath="${freeplaneant.jar}" onerror="report" />
 
 	<target name="init">
 		<!-- Create the time stamp -->
@@ -31,7 +36,7 @@
 		</javac>
 	</target>
 
-	<target name="jar" depends="compile" description="generate the distribution">
+	<target name="jar" depends="check-translation, compile" description="generate the distribution">
 		<!-- Create the distribution directory -->
 		<mkdir dir="${dist}/lib" />
 
@@ -45,6 +50,12 @@
 		</jar>
 	</target>
 
+	<target name="check-translation">
+		<check-translation dir="${src}/com/inet/jortho/i18n" includes="*.properties" eolstyle="${eolstyle}" />
+	</target>
+	<target name="format-translation">
+		<format-translation dir="${src}/com/inet/jortho/i18n" includes="*.properties" eolstyle="${eolstyle}" />
+	</target>
 	<target name="dist" depends="jar" description="generate the distribution" />
 
 	<target name="clean" description="clean up">
