@@ -255,6 +255,8 @@ public class NodeView extends JComponent implements INodeView {
 		else {
 			detailContent.updateText(detailText.getHtml());
 			detailContent.setFont(mainView.getFont());
+			detailContent.setForeground(mainView.getForeground());
+			detailContent.setBackground(mainView.getBackground());
 			detailContent.setIcon(new ArrowIcon(arrowColor, false));
 		}
 	}
