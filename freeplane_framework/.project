@@ -8,4 +8,30 @@
 	</buildSpec>
 	<natures>
 	</natures>
+	<filteredResources>
+		<filter>
+			<id>1289645596004</id>
+			<name>build</name>
+			<type>30</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.andFilterMatcher</id>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1289645609679</id>
+			<name>build4mac</name>
+			<type>30</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.andFilterMatcher</id>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1289645624170</id>
+			<name>dist</name>
+			<type>30</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.andFilterMatcher</id>
+			</matcher>
+		</filter>
+	</filteredResources>
 </projectDescription>
