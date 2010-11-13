@@ -32,7 +32,12 @@
 	<taskdef name="format-translation" classname="org.freeplane.ant.FormatTranslation" classpath="${freeplaneant.jar}" onerror="report" />
 	<taskdef name="check-translation" classname="org.freeplane.ant.FormatTranslationCheck" classpath="${freeplaneant.jar}" onerror="report" />
 
-	<target name="prepare_jortho">
+	<target name="prepare_freeplaneant">
+		<ant antfile="${workspace}/freeplane_ant/build.xml" target="jar"
+			dir="${workspace}/freeplane_ant"  inheritAll="false" />
+	</target>
+	
+	<target name="prepare_jortho" depends="prepare_freeplaneant">
 		<ant antfile="${workspace}/JOrtho_0.4_freeplane/build.xml" target="jar"
 			 dir="${workspace}/JOrtho_0.4_freeplane" inheritAll="false"/>
 		<copy
@@ -41,12 +46,7 @@
 			/>
 	</target>
 	
-	<target name="prepare_freeplaneant">
-		<ant antfile="${workspace}/freeplane_ant/build.xml" target="jar"
-			dir="${workspace}/freeplane_ant"  inheritAll="false" />
-	</target>
-	
-	<target name="build" depends="prepare_jortho, prepare_freeplaneant">
+	<target name="build" depends="prepare_jortho">
 		<antcall target="check-translation" />
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
