@@ -34,7 +34,9 @@ import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
 
@@ -268,10 +270,19 @@ class MindMapHTMLWriter {
 		if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
 			writeIcons(model);
 		}
-		writeModelContent(model);
+		final String string = model.toString();
+        writeModelContent(string);
+        final String detailText = DetailTextModel.getDetailTextText(model);
+        if(detailText != null){
+        	writeModelContent(detailText);
+        }
 		if (fontStyle != "") {
 			fileout.write("</span>");
 		}
+        final String noteContent = NoteModel.getNoteText(model);
+        if(noteContent != null){
+        	writeModelContent(noteContent);
+        }
 		fileout.write(MindMapHTMLWriter.el);
 		if (link != null) {
 			fileout.write("</a>" + MindMapHTMLWriter.el);
@@ -410,12 +421,12 @@ class MindMapHTMLWriter {
 		        + "" + MindMapHTMLWriter.el + "</script>" + MindMapHTMLWriter.el);
 	}
 
-	private void writeModelContent(final NodeModel model) throws IOException {
-		if (model.toString().matches(" *")) {
+	private void writeModelContent(final String string) throws IOException {
+	    if (string.matches(" *")) {
 			fileout.write("&nbsp;");
 		}
-		else if (model.toString().startsWith("<html")) {
-			String output = model.toString().substring(6);
+		else if (string.startsWith("<html")) {
+			String output = string.substring(6);
 			int start = output.indexOf("<body");
 			if (start == -1) {
 				start = output.indexOf('>') + 1;
@@ -434,9 +445,9 @@ class MindMapHTMLWriter {
 			fileout.write(HtmlUtils.unicodeToHTMLUnicodeEntity(output));
 		}
 		else {
-			fileout.write(MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(model.toString()));
+			fileout.write(MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(string));
 		}
-	}
+    }
 
 	private void writeStyle() throws IOException {
 		fileout.write("<style type=\"text/css\">" + MindMapHTMLWriter.el);

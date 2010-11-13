@@ -100,7 +100,8 @@
 							</w:t>
 						</w:r>
 					</w:p>
-					<xsl:call-template name="output-note-text-as-bodytext" />
+					<xsl:call-template name="output-note-text-as-bodytext"><xsl:with-param name="contentType" select="DETAILS"/></xsl:call-template>
+					<xsl:call-template name="output-note-text-as-bodytext"><xsl:with-param name="contentType" select="NOTE"/></xsl:call-template>
 					<!--
 						if the level is higher than maxlevel, or if the current node is
 						marked with LastHeading, we start outputting normal paragraphs,
@@ -155,14 +156,15 @@
 	</xsl:template>
 
 	<xsl:template name="output-note-text-as-bodytext">
-		<xsl:if test="richcontent[@TYPE='NOTE']">
+		<xsl:param name="contentType"></xsl:param>
+		<xsl:if test="richcontent[@TYPE=$contentType]">
 			<w:p>
 				<w:pPr>
 					<w:pStyle w:val="BodyText" />
 				</w:pPr>
 				<w:r>
 					<w:t>
-						<xsl:value-of select="string(richcontent[@TYPE='NOTE']/html/body)" />
+						<xsl:value-of select="string(richcontent[@TYPE='DETAILS']/html/body)" />
 					</w:t>
 				</w:r>
 			</w:p>

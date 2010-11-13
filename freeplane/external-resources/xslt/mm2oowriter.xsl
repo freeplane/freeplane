@@ -208,7 +208,8 @@
 					</xsl:with-param>
 				</xsl:call-template>
 				<xsl:apply-templates select="hook|@LINK" />
-				<xsl:call-template name="output-notecontent" />
+				<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="DETAILS"/> </xsl:call-template>
+				<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="NOTE"/> </xsl:call-template>
 				<xsl:apply-templates select="node" />
 			</xsl:when>
 			<xsl:otherwise>
@@ -222,7 +223,12 @@
 									</xsl:with-param>
 								</xsl:call-template>
 								<xsl:apply-templates select="hook|@LINK" />
-								<xsl:call-template name="output-notecontent" />
+								<xsl:call-template name="output-notecontent">
+									<xsl:with-param name="contentType" select="DETAILS" />
+								</xsl:call-template>
+								<xsl:call-template name="output-notecontent">
+									<xsl:with-param name="contentType" select="NOTE" />
+								</xsl:call-template>
 								<xsl:apply-templates select="node" />
 							</text:list-item>
 						</text:list>
@@ -245,7 +251,8 @@
 							</xsl:call-template>
 						</xsl:element>
 						<xsl:apply-templates select="hook|@LINK" />
-						<xsl:call-template name="output-notecontent" />
+						<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="DETAILS"/> </xsl:call-template>
+						<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="NOTE"/> </xsl:call-template>
 						<xsl:apply-templates select="node" />
 					</xsl:otherwise>
 				</xsl:choose>
@@ -327,8 +334,9 @@
 	</xsl:template> <!-- xsl:template name="output-nodecontent" -->
 
 	<xsl:template name="output-notecontent">
-		<xsl:if test="richcontent[@TYPE='NOTE']">
-			<xsl:apply-templates select="richcontent[@TYPE='NOTE']/html/body"
+	<xsl:param name="contentType"/>
+		<xsl:if test="richcontent[@TYPE=$contentType]">
+			<xsl:apply-templates select="richcontent[@TYPE=$contentType]/html/body"
 				mode="richcontent">
 				<xsl:with-param name="style">
 					Standard

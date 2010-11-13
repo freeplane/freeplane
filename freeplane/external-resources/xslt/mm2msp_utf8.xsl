@@ -83,8 +83,9 @@
 	</xsl:template>
 
 	<xsl:template name="output-note-text-as-notes">
-		<xsl:if test="richcontent[@TYPE='NOTE']">
+		<xsl:if test="richcontent[@TYPE='NOTE' or @TYPE='DETAILS']">
 			<Notes>
+				<xsl:value-of select="string(richcontent[@TYPE='DETAILS']/html/body)" />
 				<xsl:value-of select="string(richcontent[@TYPE='NOTE']/html/body)" />
 			</Notes>
 		</xsl:if>

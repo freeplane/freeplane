@@ -112,9 +112,10 @@
 	</xsl:template>
 
 	<xsl:template name="output-note-text-as-comment">
-		<xsl:if test="richcontent[@TYPE='NOTE']">
+		<xsl:if test="richcontent[@TYPE='NOTE' or @TYPE='DETAILS']">
 			<Comment>
 				<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+					<xsl:copy-of select="richcontent[@TYPE='DETAILS']/html/body/*" />
 					<xsl:copy-of select="richcontent[@TYPE='NOTE']/html/body/*" />
 				</ss:Data>
 			</Comment>

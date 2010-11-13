@@ -32,6 +32,9 @@
 	</xsl:template>
 	
 	<xsl:template match="richcontent">
+		<xsl:if test="@TYPE='DETAILS'">
+			<xsl:text>&#xA;DETAILS: </xsl:text>
+		</xsl:if>
 		<xsl:if test="@TYPE='NOTE'">
 			<xsl:text>&#xA;NOTE: </xsl:text>
 		</xsl:if>
@@ -59,7 +62,9 @@
 			<xsl:value-of select="normalize-space(@TEXT)" />
 			<xsl:text>&#xA;</xsl:text>
     	</xsl:if>
-		<xsl:apply-templates select="richcontent"/>
+		<xsl:apply-templates select="richcontent[@TYPE='NODE']"/>
+		<xsl:apply-templates select="richcontent[@TYPE='DETAILS']"/>
+		<xsl:apply-templates select="richcontent[@TYPE='NOTE']"/>
 		<xsl:if test="arrowlink/@DESTINATION != ''">
 			<xsl:text> (see:</xsl:text>
 			<xsl:for-each select="key('refid', $target)">
