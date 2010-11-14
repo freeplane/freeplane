@@ -246,7 +246,7 @@ public class MTextController extends TextController {
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 
 	public void setNodeText(final NodeModel node, final String newText) {
-		final String oldText = node.toString();
+		final String oldText = node.getText();
 		if (oldText.equals(newText)) {
 			return;
 		}
@@ -276,7 +276,7 @@ public class MTextController extends TextController {
 		if (node.isRoot()) {
 			return;
 		}
-		final String futureText = newText != null ? newText : node.toString();
+		final String futureText = newText != null ? newText : node.getText();
 		final String[] strings = getContent(futureText, caretPosition);
 		if (strings == null) {
 			return;
@@ -489,7 +489,7 @@ public class MTextController extends TextController {
 	public EditNodeBase createEditor(final NodeModel nodeModel, final EditNodeBase.IEditControl editControl,
                              final KeyEvent firstEvent, final boolean isNewNode, final boolean editLong, boolean internal) {
 	    Controller.getCurrentModeController().setBlocked(true);
-		String text = nodeModel.toString();
+		String text = nodeModel.getText();
 		EditNodeBase base = getEditNodeBase(nodeModel, text, editControl, firstEvent, isNewNode, editLong);
 		if(base != null || ! internal){
 			return base;

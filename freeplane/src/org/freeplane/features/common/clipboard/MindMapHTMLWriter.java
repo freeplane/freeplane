@@ -269,7 +269,7 @@ class MindMapHTMLWriter {
 		if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
 			writeIcons(model);
 		}
-		final String string = model.toString();
+		final String string = model.getText();
         writeModelContent(string);
         final String detailText = DetailTextModel.getDetailTextText(model);
         if(detailText != null){

@@ -196,7 +196,7 @@ class FindAction extends AFreeplaneAction {
 	}
 
 	public String getFindFromText(final NodeModel node) {
-		final String plainNodeText = HtmlUtils.htmlToPlain(node.toString()).replaceAll("\n", " ");
+		final String plainNodeText = node.toString().replaceAll("\n", " ");
 		return plainNodeText.length() <= 30 ? plainNodeText : plainNodeText.substring(0, 30) + "...";
 	}
 }
