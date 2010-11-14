@@ -70,20 +70,18 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 			setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
 		}
 		zoom = ((AttributeTable) table).getZoom();
-	    final IAttributeTableModel attributeTableModel = (IAttributeTableModel) table.getModel();
+	    final IAttributeTableModelTransformer attributeTableModel = (IAttributeTableModelTransformer) table.getModel();
 		final String originalText = value.toString();
 		String text = originalText;
 		if (column == 1) {
 			try {
 				// evaluate values only
-				final TextController textController = TextController.getController();
-				text = textController.getTransformedText(originalText, attributeTableModel.getNode());
+				text = attributeTableModel.transformValueAt(row, column).toString();
 				if (!DONT_MARK_FORMULAS && text != originalText) {
 					setForeground(Color.GREEN);
 				}
 			}
 			catch (Exception e) {
-				LogUtils.warn(e.getMessage(), e);
 				text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
 				setForeground(Color.RED);
 			}

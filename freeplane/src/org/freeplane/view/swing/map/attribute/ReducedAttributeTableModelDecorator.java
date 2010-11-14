@@ -79,6 +79,10 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 		return getNodeAttributeModel().getValueAt(calcRow(row), col);
 	}
 
+
+	public Object transformValueAt(int row, int col) throws Exception{
+		return super.transformValueAt(calcRow(row), col);
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see freeplane.modes.attributes.AttributeTableModel#insertRow(int,
@@ -139,6 +143,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 	}
 
 	public void tableChanged(final TableModelEvent e) {
+		super.tableChanged(e);
 		if (e.getType() != TableModelEvent.UPDATE || e.getColumn() != 0) {
 			rebuildTableModel();
 		}

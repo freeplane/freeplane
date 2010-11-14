@@ -19,21 +19,27 @@
  */
 package org.freeplane.view.swing.map.attribute;
 
+import java.util.ArrayList;
+
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 
 /**
  * @author Dimitry Polivaev
  */
-abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel implements IAttributeTableModel,
+abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel 
+		implements IAttributeTableModel, IAttributeTableModelTransformer,
         TableModelListener, ChangeListener {
 	/**
 	 * 
@@ -42,6 +48,7 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel im
 	final private AttributeController attributeController;
 	private AttributeRegistry attributeRegistry;
 	private NodeAttributeTableModel nodeAttributeModel;
+	private ArrayList<Object> transformedValues;
 
 	public AttributeTableModelDecoratorAdapter(final AttributeView attrView) {
 		super();
@@ -115,9 +122,66 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel im
 
 	public void setNodeAttributeModel(final NodeAttributeTableModel nodeAttributeModel) {
 		this.nodeAttributeModel = nodeAttributeModel;
+		int rowCount = nodeAttributeModel.getRowCount();
+		transformedValues = new ArrayList<Object>(rowCount);
+		insertTransformedValues(0, rowCount-1);
+	}
+
+	private void setTransformedValue(int row) {
+		try {
+			final TextController textController = TextController.getController();
+			final String originalText = nodeAttributeModel.getValueAt(row, 1).toString();
+			final String text = textController.getTransformedText(originalText, getNode());
+			transformedValues.set(row, text);
+		}
+		catch (Exception e) {
+			LogUtils.warn(e.getMessage(), e);
+			transformedValues.set(row, e);
+		}
 	}
 
 	public void viewRemoved() {
 		removeListeners();
 	}
-}
+	public void tableChanged(final TableModelEvent e) {
+		switch(e.getType()){
+		case TableModelEvent.DELETE:
+			deleteTransformedValues(e.getFirstRow(), e.getLastRow());
+		case TableModelEvent.INSERT:
+			insertTransformedValues(e.getFirstRow(), e.getLastRow());
+		case TableModelEvent.UPDATE:
+			updateTransformedValues(e.getFirstRow(), e.getLastRow());
+		}
+		
+	}
+	private void updateTransformedValues(int firstRow, int lastRow) {
+		for(int row = firstRow; row <= lastRow; row++){
+			setTransformedValue(row);
+		}
+	}
+
+	private void insertTransformedValues(int firstRow, int lastRow) {
+		for(int row = firstRow; row <= lastRow; row++){
+			transformedValues.add(row, null);
+		}
+		updateTransformedValues(firstRow, lastRow);
+		
+	}
+
+	private void deleteTransformedValues(int firstRow, int lastRow) {
+		for(int row = firstRow; row <= lastRow; row++){
+			transformedValues.remove(firstRow);
+		}
+	}
+
+	public Object transformValueAt(int row, int col) throws Exception{
+		if(col == 1){
+			Object object = transformedValues.get(row);
+			if(object instanceof Exception){
+				throw (Exception)object;
+			}
+			return object;
+		}
+		return getValueAt(row, col);
+	}
+	}

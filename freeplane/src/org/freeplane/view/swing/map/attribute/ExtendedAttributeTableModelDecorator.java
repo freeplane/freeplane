@@ -135,6 +135,14 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 	}
 	
 	public void tableChanged(final TableModelEvent e) {
+		super.tableChanged(e);
 		fireTableChanged(new TableModelEvent(this, e.getFirstRow(), e.getLastRow(), e.getColumn(), e.getType()));
+	}
+
+	public Object transformValueAt(int row, int col) throws Exception {
+		if (row < newRow) {
+			return super.transformValueAt(row, col);
+		}
+		return getValueAt(row, col);
 	}
 }
