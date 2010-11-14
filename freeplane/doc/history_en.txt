@@ -15,6 +15,8 @@ Node details
 Shortened node view
 Formula plugin ("spreadsheet plugin")
 Single backup directory
+Node tool tips with copy and scroll bar
+Script and formula editor JSyntaxPane from http://code.google.com/p/jsyntaxpane/
 
 Bug fixes:
 630]: Language not sorted alphabetically
