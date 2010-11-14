@@ -68,6 +68,8 @@ import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.IColumnWidthChangeListener;
+import org.freeplane.features.common.attribute.NodeAttributeTableModel;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
@@ -615,7 +617,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			}
 		getParent().getParent().invalidate();
 		final NodeModel node = attributeView.getNode();
-		attributeView.getMapView().getModeController().getMapController().nodeChanged(node);
+		MapController mapController = attributeView.getMapView().getModeController().getMapController();
+		mapController.nodeChanged(node, NodeAttributeTableModel.class, null, null);
 	}
 
 	void updateAttributeTable() {
@@ -666,7 +669,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 	}
 
-	public void viewRemoved() {
+	public void viewRemoved(NodeView nodeView) {
 		getModel().removeTableModelListener(this);
 	}
 

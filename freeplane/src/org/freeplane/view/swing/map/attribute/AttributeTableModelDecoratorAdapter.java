@@ -31,16 +31,21 @@ import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
+import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
  */
 abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel 
 		implements IAttributeTableModel, IAttributeTableModelTransformer,
-        TableModelListener, ChangeListener {
+        TableModelListener, ChangeListener, INodeChangeListener {
 	/**
 	 * 
 	 */
@@ -57,10 +62,11 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 		getNodeAttributeModel().getNode();
 		final ModeController modeController = attrView.getMapView().getModeController();
 		attributeController = AttributeController.getController(modeController);
-		addListeners();
+		addListeners(modeController);
 	}
 
-	private void addListeners() {
+	private void addListeners(ModeController modeController) {
+		modeController.getMapController().addNodeChangeListener(this);
 		getNodeAttributeModel().addTableModelListener(this);
 		getAttributeRegistry().addChangeListener(this);
 	}
@@ -107,7 +113,8 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 		return nodeAttributeModel;
 	}
 
-	private void removeListeners() {
+	private void removeListeners(ModeController modeController) {
+		modeController.getMapController().removeNodeChangeListener(this);
 		getNodeAttributeModel().removeTableModelListener(this);
 		getAttributeRegistry().removeChangeListener(this);
 	}
@@ -140,8 +147,8 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 		}
 	}
 
-	public void viewRemoved() {
-		removeListeners();
+	public void viewRemoved(NodeView nodeView) {
+		removeListeners(nodeView.getMap().getModeController());
 	}
 	public void tableChanged(final TableModelEvent e) {
 		switch(e.getType()){
@@ -184,4 +191,12 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 		}
 		return getValueAt(row, col);
 	}
+
+	public void nodeChanged(NodeChangeEvent event) {
+		if(ITextTransformer.class.equals(event.getProperty())){
+			updateTransformedValues(0, getRowCount()-1);
+		}
 	}
+	
+	
+}

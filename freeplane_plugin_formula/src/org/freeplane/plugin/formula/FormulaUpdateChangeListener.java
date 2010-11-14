@@ -6,6 +6,7 @@ import java.util.List;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
+import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
@@ -13,12 +14,14 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.plugin.script.FormulaUtils;
 
 /** cares for updating formula nodes on change of other nodes. */
 public class FormulaUpdateChangeListener implements INodeChangeListener, IMapChangeListener, IMapViewChangeListener {
 	public void nodeChanged(NodeChangeEvent event) {
-		if (NodeModel.NODE_TEXT.equals(event.getProperty())) {
+		Object property = event.getProperty();
+		if (NodeModel.NODE_TEXT.equals(property) || NodeAttributeTableModel.class.equals(property)) {
 			nodeChangedImpl(false, event.getNode());
 		}
 	}
@@ -59,7 +62,7 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 		//		}
 		final List<NodeModel> dependencies = FormulaUtils.manageChangeAndReturnDependencies(includeChanged, nodes);
 		for (NodeModel dependentNode : dependencies) {
-			modeController.getMapController().delayedNodeRefresh(dependentNode, FormulaUpdateChangeListener.class,
+			modeController.getMapController().delayedNodeRefresh(dependentNode, ITextTransformer.class,
 			    null, null);
 		}
 	}

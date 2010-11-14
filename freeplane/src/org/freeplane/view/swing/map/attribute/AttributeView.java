@@ -270,13 +270,13 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	public void viewRemoved() {
 		removeListeners();
 		if (reducedAttributeTableModel != null) {
-			reducedAttributeTableModel.viewRemoved();
+			reducedAttributeTableModel.viewRemoved(nodeView);
 		}
 		if (extendedAttributeTableModel != null) {
-			extendedAttributeTableModel.viewRemoved();
+			extendedAttributeTableModel.viewRemoved(nodeView);
 		}
 		if (attributeTable != null) {
-			attributeTable.viewRemoved();
+			attributeTable.viewRemoved(nodeView);
 		}
 	}
 }

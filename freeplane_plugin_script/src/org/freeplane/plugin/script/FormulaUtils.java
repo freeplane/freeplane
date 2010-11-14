@@ -102,7 +102,6 @@ public class FormulaUtils {
 	}
 
 	public static void accessNode(NodeModel accessingNode, NodeModel accessedNode) {
-		if (accessingNode != accessedNode)
 			getEvaluationDependencies(accessingNode.getMap()).accessNode(accessingNode, accessedNode);
 	}
 
