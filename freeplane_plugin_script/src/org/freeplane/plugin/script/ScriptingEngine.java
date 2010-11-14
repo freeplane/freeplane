@@ -43,6 +43,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.ModeController;
@@ -92,7 +93,7 @@ public class ScriptingEngine {
 			final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
 			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
 			if (showResult != JOptionPane.OK_OPTION) {
-				return null;
+				throw new ExecuteScriptException(TextUtils.getText("script_execution_disabled"));
 			}
 		}
 		noUserPermissionRequired = Boolean.TRUE;
