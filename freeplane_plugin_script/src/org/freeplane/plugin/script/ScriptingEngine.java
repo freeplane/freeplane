@@ -245,7 +245,6 @@ public class ScriptingEngine {
 		CompilerConfiguration config = new CompilerConfiguration();
 		config.setScriptBaseClass(FreeplaneScriptBaseClass.class.getName());
 		if (!classpath.isEmpty()) {
-			LogUtils.info("extending script's classpath by " + classpath);
 			config.setClasspathList(classpath);
 		}
 		return config;
@@ -317,5 +316,6 @@ public class ScriptingEngine {
 		if (ScriptingEngine.classpath != null)
 			throw new SecurityException("reset of script classpath is forbidden.");
 		ScriptingEngine.classpath = Collections.unmodifiableList(classpath);
+		LogUtils.info("extending script's classpath by " + classpath);
     }
 }
