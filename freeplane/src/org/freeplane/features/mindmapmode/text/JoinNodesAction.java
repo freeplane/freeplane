@@ -110,7 +110,7 @@ class JoinNodesAction extends AFreeplaneAction {
 		final LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
 		for (final Iterator<NodeModel> it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
-			final String nodeContent = node.toString();
+			final String nodeContent = node.getText();
 			icons.addAll(node.getIcons());
 			final boolean isHtmlNode = HtmlUtils.isHtmlNode(nodeContent);
 			joinedContent = addContent(joinedContent, isHtml, nodeContent, isHtmlNode);

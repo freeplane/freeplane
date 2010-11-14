@@ -36,9 +36,9 @@ public class NodeContainsCondition extends ASelectableCondition {
 	}
 
 	final private String value;
-	final private Object nodeItem;
+	final private String nodeItem;
 
-	public NodeContainsCondition(Object nodeItem, final String value) {
+	public NodeContainsCondition(String nodeItem, final String value) {
 		super();
 		this.value = value;
 		this.nodeItem = nodeItem;
@@ -63,7 +63,7 @@ public class NodeContainsCondition extends ASelectableCondition {
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
 		child.setAttribute(NodeContainsCondition.VALUE, value);
-		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem.toString());
+		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem);
 	}
 
 	@Override

@@ -64,7 +64,7 @@ public class IgnoreCaseNodeContainsCondition extends ASelectableCondition {
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
 		child.setAttribute(IgnoreCaseNodeContainsCondition.VALUE, value);
-		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem.toString());
+		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem);
 	}
 
 	@Override

@@ -89,7 +89,7 @@ public class SplitNode extends AFreeplaneAction {
 		if (node.isRoot()) {
 			return;
 		}
-		final String text = node.toString();
+		final String text = node.getText();
 		final String[] parts = splitNode(text);
 		if (parts == null || parts.length == 1) {
 			return;

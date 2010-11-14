@@ -611,7 +611,7 @@ public class NodeModel implements MutableTreeNode {
 
 	@Override
 	public String toString() {
-		return getText();
+		return HtmlUtils.htmlToPlain(getText());
 	}
 
 	public int depth() {
