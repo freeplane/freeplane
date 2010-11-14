@@ -90,7 +90,7 @@ public class ScriptingEngine {
 	        throws ExecuteScriptException {
 		if (!noUserPermissionRequired) {
 			final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
-			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
+			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
 			if (showResult != JOptionPane.OK_OPTION) {
 				return null;
 			}
