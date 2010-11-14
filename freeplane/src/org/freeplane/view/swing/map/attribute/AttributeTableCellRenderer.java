@@ -31,10 +31,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.attribute.IAttributeTableModel;
-import org.freeplane.features.common.text.TextController;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	/**

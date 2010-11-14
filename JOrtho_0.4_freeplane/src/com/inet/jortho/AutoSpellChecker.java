@@ -23,10 +23,8 @@
 package com.inet.jortho;
 
 import java.awt.EventQueue;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AbstractDocument;

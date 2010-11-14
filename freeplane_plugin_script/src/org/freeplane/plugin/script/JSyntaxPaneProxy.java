@@ -28,7 +28,6 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**

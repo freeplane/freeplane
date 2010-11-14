@@ -19,14 +19,12 @@
  */
 package org.freeplane.view.swing.map;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 import org.freeplane.features.common.icon.factory.IconStoreFactory;

@@ -37,7 +37,6 @@ import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**

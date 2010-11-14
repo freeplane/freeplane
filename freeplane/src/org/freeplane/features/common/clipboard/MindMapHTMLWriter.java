@@ -27,7 +27,6 @@ import java.util.ListIterator;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.link.NodeLinks;

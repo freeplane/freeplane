@@ -21,8 +21,6 @@ package org.freeplane.features.common.filter.condition;
 
 import java.util.HashSet;
 
-import javax.swing.JComponent;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;

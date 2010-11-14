@@ -68,7 +68,6 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleModel;
-import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;

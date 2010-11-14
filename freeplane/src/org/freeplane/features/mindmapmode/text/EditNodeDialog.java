@@ -55,7 +55,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
-import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 
 /**
  * @author foltin

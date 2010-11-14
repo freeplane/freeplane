@@ -30,7 +30,6 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
-import org.freeplane.features.common.styles.LogicalStyleModel;
 
 /**
  * @author Dimitry Polivaev

@@ -4,9 +4,6 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JEditorPane;
-import javax.swing.JScrollPane;
-
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
@@ -17,7 +14,6 @@ import org.freeplane.features.mindmapmode.text.EditNodeDialog;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.FormulaUtils;
-import org.freeplane.plugin.script.JSyntaxPaneProxy;
 
 class FormulaTextTransformer implements ITextTransformer {
 	FormulaTextTransformer() {

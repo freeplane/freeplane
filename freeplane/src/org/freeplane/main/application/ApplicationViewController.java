@@ -41,18 +41,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
-import org.freeplane.view.swing.map.NodeTooltip;
 
 class ApplicationViewController extends ViewController {
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
