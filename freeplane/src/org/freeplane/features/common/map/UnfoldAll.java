@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.misc;
+package org.freeplane.features.common.map;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -28,9 +28,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
 
 /**
  * @author foltin

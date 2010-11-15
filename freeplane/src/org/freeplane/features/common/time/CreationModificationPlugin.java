@@ -18,7 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.misc;
+package org.freeplane.features.common.time;
 
 import java.awt.EventQueue;
 import java.text.MessageFormat;

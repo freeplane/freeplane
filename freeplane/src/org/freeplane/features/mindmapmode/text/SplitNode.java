@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.misc;
+package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -40,7 +40,6 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
-import org.freeplane.features.mindmapmode.text.MTextController;
 
 /**
  * @author Dimitry Polivaev

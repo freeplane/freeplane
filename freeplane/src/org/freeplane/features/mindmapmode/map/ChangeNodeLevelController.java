@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.misc;
+package org.freeplane.features.mindmapmode.map;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -31,7 +31,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.map.MMapController;
 
 /**
  * @author foltin

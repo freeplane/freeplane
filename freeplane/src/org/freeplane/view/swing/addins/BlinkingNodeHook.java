@@ -18,7 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.misc;
+package org.freeplane.view.swing.addins;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -45,6 +45,7 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  */
@@ -88,7 +89,10 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 					}
 					getNode().acceptViewVisitor(new INodeViewVisitor() {
 						public void visit(final INodeView nodeView) {
-							final Component container = nodeView.getComponent();
+							if(! (nodeView instanceof NodeView)){
+								return;
+							}
+							final Component container = ((NodeView)nodeView).getMainView();
 							if (!container.isVisible()) {
 								return;
 							}

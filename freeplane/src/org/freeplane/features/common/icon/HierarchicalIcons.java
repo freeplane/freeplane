@@ -18,7 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.misc;
+package org.freeplane.features.common.icon;
 
 import java.util.HashMap;
 import java.util.ListIterator;
@@ -30,10 +30,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.ui.ActionLocationDescriptor;
-import org.freeplane.features.common.icon.IconController;
-import org.freeplane.features.common.icon.MindIcon;
-import org.freeplane.features.common.icon.UIIcon;
-import org.freeplane.features.common.icon.UIIconSet;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
