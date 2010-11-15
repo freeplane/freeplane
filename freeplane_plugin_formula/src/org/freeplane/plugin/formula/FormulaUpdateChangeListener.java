@@ -21,7 +21,11 @@ import org.freeplane.plugin.script.FormulaUtils;
 public class FormulaUpdateChangeListener implements INodeChangeListener, IMapChangeListener, IMapViewChangeListener {
 	public void nodeChanged(NodeChangeEvent event) {
 		Object property = event.getProperty();
-		if (NodeModel.NODE_TEXT.equals(property) || NodeAttributeTableModel.class.equals(property)) {
+		// Note: this doesn't mean that other properties are not interesting here (e.g. links, notes, ...)
+		// since all these could be referenced by formulas too. It's restricted to the properties that may
+		// contain formulas only to limit the number of updates.
+		if (NodeModel.NODE_TEXT.equals(property) || NodeAttributeTableModel.class.equals(property)
+		        || NodeModel.NOTE_TEXT.equals(property)) {
 			nodeChangedImpl(false, event.getNode());
 		}
 	}
