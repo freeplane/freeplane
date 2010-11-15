@@ -445,7 +445,10 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				if (getMapView() != null) {
-					getSelectedComponent().requestFocus();
+					final Component selectedComponent = getSelectedComponent();
+					if(selectedComponent != null){
+						selectedComponent.requestFocus();
+					}
 				}
 				else {
 					getFreeplaneMenuBar().requestFocus();

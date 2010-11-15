@@ -687,6 +687,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return null;
 		}
 		for (INodeView iNodeView : node.getViewers()) {
+			if(! (iNodeView instanceof NodeView)){
+				continue;
+			}
 			final NodeView candidateView = (NodeView) iNodeView;
 			if (candidateView.getMap() == this) {
 				return candidateView;

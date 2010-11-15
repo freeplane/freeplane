@@ -32,6 +32,8 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.INodeChangeListener;
+import org.freeplane.features.common.map.INodeView;
+import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
@@ -44,7 +46,7 @@ import org.freeplane.view.swing.map.NodeView;
  */
 abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel 
 		implements IAttributeTableModel,
-        TableModelListener, ChangeListener, INodeChangeListener {
+        TableModelListener, ChangeListener, INodeView{
 	/**
 	 * 
 	 */
@@ -64,9 +66,9 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	}
 
 	private void addListeners(ModeController modeController) {
-		modeController.getMapController().addNodeChangeListener(this);
 		getNodeAttributeModel().addTableModelListener(this);
 		getAttributeRegistry().addChangeListener(this);
+		getNodeAttributeModel().getNode().addViewer(this);
 	}
 
 	/**
@@ -112,9 +114,9 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	}
 
 	private void removeListeners(ModeController modeController) {
-		modeController.getMapController().removeNodeChangeListener(this);
 		getNodeAttributeModel().removeTableModelListener(this);
 		getAttributeRegistry().removeChangeListener(this);
+		getNodeAttributeModel().getNode().removeViewer(this);
 	}
 
 	public void setAttributeRegistry(final AttributeRegistry attributeRegistry) {
@@ -158,6 +160,24 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 			cacheTransformedValue(row);
 		}
 	}
+
+	public void mapChanged(MapChangeEvent event) {
+    }
+
+	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+    }
+
+	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+    }
+
+	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+    }
+
+	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+    }
+
+	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
+    }
 
 	public void nodeChanged(NodeChangeEvent event) {
 		if(ITextTransformer.class.equals(event.getProperty())){

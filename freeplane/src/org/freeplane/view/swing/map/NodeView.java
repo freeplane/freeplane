@@ -390,10 +390,6 @@ public class NodeView extends JComponent implements INodeView {
 		return childrenViews;
 	}
 
-	public Component getComponent() {
-		return getMainView();
-	}
-
 	public JComponent getContent() {
 		return contentPane == null ? mainView : contentPane;
 	}
