@@ -19,10 +19,12 @@
  */
 package org.freeplane.view.swing.map.attribute;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 
 import javax.swing.JTable;
@@ -36,6 +38,7 @@ import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.text.TextController;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
+	private static final BasicStroke AUTO_TEXT_STROKE = new  BasicStroke(2);
 	/**
 	 * 
 	 */
@@ -45,6 +48,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	.getBooleanProperty("formula_dont_mark_formulas");
 	private boolean isPainting;
 	private float zoom;
+	private Color borderColor;
 
 	/*
 	 * (non-Javadoc)
@@ -72,22 +76,20 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	    final IAttributeTableModel attributeTableModel = (IAttributeTableModel) table.getModel();
 		final String originalText = value.toString();
 		String text = originalText;
+		borderColor = null;
 		if (column == 1) {
 			try {
 				// evaluate values only
 				final TextController textController = TextController.getController();
 				text = textController.getTransformedText(originalText, attributeTableModel.getNode());
 				if (!DONT_MARK_FORMULAS && text != originalText) {
-					setForeground(Color.GREEN);
+					borderColor = Color.GREEN;
 				}
 			}
 			catch (Exception e) {
 				text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
-				setForeground(Color.RED);
+				borderColor = Color.RED;
 			}
-		}
-		else {
-			setForeground(Color.BLACK);
 		}
 		setText(text);
 		final int prefWidth = getPreferredSize().width;
@@ -118,6 +120,12 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 
 	@Override
 	public void paint(final Graphics g) {
+		if(borderColor != null){
+			final Color color = g.getColor();
+			g.setColor(borderColor);
+			g.drawRect(0, 0, getWidth()-1, getHeight()-1);
+			g.setColor(color);
+		}
 		final Graphics2D g2 = (Graphics2D) g;
 		if (zoom != 1F) {
 			zoom *= AttributeTableCellRenderer.ZOOM_CORRECTION_FACTOR;
