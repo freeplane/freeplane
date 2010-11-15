@@ -62,10 +62,10 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 		getNodeAttributeModel().getNode();
 		final ModeController modeController = attrView.getMapView().getModeController();
 		attributeController = AttributeController.getController(modeController);
-		addListeners(modeController);
+		addListeners();
 	}
 
-	private void addListeners(ModeController modeController) {
+	private void addListeners() {
 		getNodeAttributeModel().addTableModelListener(this);
 		getAttributeRegistry().addChangeListener(this);
 		getNodeAttributeModel().getNode().addViewer(this);
@@ -113,7 +113,7 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 		return nodeAttributeModel;
 	}
 
-	private void removeListeners(ModeController modeController) {
+	private void removeListeners() {
 		getNodeAttributeModel().removeTableModelListener(this);
 		getAttributeRegistry().removeChangeListener(this);
 		getNodeAttributeModel().getNode().removeViewer(this);
@@ -145,7 +145,7 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	}
 
 	public void viewRemoved(NodeView nodeView) {
-		removeListeners(nodeView.getMap().getModeController());
+		removeListeners();
 	}
 	public void tableChanged(final TableModelEvent e) {
 		switch(e.getType()){
