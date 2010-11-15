@@ -33,6 +33,11 @@ public class ExecuteScriptForSelectionAction extends AMultipleNodeAction {
 		if (!success) {
 			return;
 		}
-		success = ScriptingEngine.performScriptOperation(node);
+		try {
+	        ScriptingEngine.performScriptOperation(node);
+        }
+        catch (ExecuteScriptException e1) {
+    		success = false;
+        }
 	}
 }

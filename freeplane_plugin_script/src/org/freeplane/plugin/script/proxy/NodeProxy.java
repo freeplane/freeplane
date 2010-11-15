@@ -25,6 +25,7 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.features.mindmapmode.text.MTextController;
+import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Attributes;
 import org.freeplane.plugin.script.proxy.Proxy.Connector;
@@ -77,7 +78,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
-	public ConvertibleAttributeValue getAt(String attributeName) {
+	public ConvertibleAttributeValue getAt(String attributeName) throws ExecuteScriptException {
 		return new ConvertibleAttributeValue(getDelegate(), getScriptContext(), getAttributes().getFirst(attributeName));
 	}
 
@@ -166,12 +167,12 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	@Deprecated
-	public String getNoteText() {
+	public String getNoteText() throws ExecuteScriptException {
 		return getNote().getString();
 	}
 
 	// NodeRO: R
-	public Convertible getNote() {
+	public Convertible getNote() throws ExecuteScriptException {
 		return new ConvertibleNoteText(getDelegate(), getScriptContext());
 	}
 
@@ -209,13 +210,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
-	public Convertible getTo() {
+	public Convertible getTo() throws ExecuteScriptException {
 		final NodeModel nodeModel = getDelegate();
 		return new ConvertibleNodeText(nodeModel, getScriptContext());
 	}
 
 	// NodeRO: R
-	public Convertible getValue() {
+	public Convertible getValue() throws ExecuteScriptException {
 		return getTo();
 	}
 

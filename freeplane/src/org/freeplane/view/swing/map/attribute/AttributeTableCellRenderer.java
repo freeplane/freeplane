@@ -32,6 +32,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.attribute.IAttributeTableModel;
+import org.freeplane.features.common.text.TextController;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	/**
@@ -67,13 +69,14 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 			setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
 		}
 		zoom = ((AttributeTable) table).getZoom();
-	    final IAttributeTableModelTransformer attributeTableModel = (IAttributeTableModelTransformer) table.getModel();
+	    final IAttributeTableModel attributeTableModel = (IAttributeTableModel) table.getModel();
 		final String originalText = value.toString();
 		String text = originalText;
 		if (column == 1) {
 			try {
 				// evaluate values only
-				text = attributeTableModel.transformValueAt(row, column).toString();
+				final TextController textController = TextController.getController();
+				text = textController.getTransformedText(originalText, attributeTableModel.getNode());
 				if (!DONT_MARK_FORMULAS && text != originalText) {
 					setForeground(Color.GREEN);
 				}

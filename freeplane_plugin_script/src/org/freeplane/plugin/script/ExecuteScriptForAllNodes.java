@@ -21,6 +21,8 @@ public class ExecuteScriptForAllNodes extends AFreeplaneAction {
 		try {
 			ScriptingEngine.performScriptOperationRecursive(node);
 		}
+        catch (ExecuteScriptException ex) {
+        }
 		finally {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}

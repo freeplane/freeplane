@@ -43,7 +43,7 @@ import org.freeplane.view.swing.map.NodeView;
  * @author Dimitry Polivaev
  */
 abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel 
-		implements IAttributeTableModel, IAttributeTableModelTransformer,
+		implements IAttributeTableModel,
         TableModelListener, ChangeListener, INodeChangeListener {
 	/**
 	 * 
@@ -52,7 +52,6 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	final private AttributeController attributeController;
 	private AttributeRegistry attributeRegistry;
 	private NodeAttributeTableModel nodeAttributeModel;
-	private ArrayList<Object> transformedValues;
 
 	public AttributeTableModelDecoratorAdapter(final AttributeView attrView) {
 		super();
@@ -129,21 +128,18 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	public void setNodeAttributeModel(final NodeAttributeTableModel nodeAttributeModel) {
 		this.nodeAttributeModel = nodeAttributeModel;
 		int rowCount = nodeAttributeModel.getRowCount();
-		transformedValues = new ArrayList<Object>(rowCount);
-		insertTransformedValues(0, rowCount-1);
+		cacheTransformedValues(0, (rowCount-1));
 	}
 
-	private void setTransformedValue(int row) {
-		try {
+	private void cacheTransformedValue(int row) {
 			final TextController textController = TextController.getController();
 			final String originalText = nodeAttributeModel.getValueAt(row, 1).toString();
-			final String text = textController.getTransformedText(originalText, getNode());
-			transformedValues.set(row, text);
-		}
-		catch (Exception e) {
-			LogUtils.warn(e.getMessage(), e);
-			transformedValues.set(row, e);
-		}
+			try {
+	            textController.getTransformedText(originalText, getNode());
+            }
+            catch (Exception e) {
+            	LogUtils.warn(e);
+            }
 	}
 
 	public void viewRemoved(NodeView nodeView) {
@@ -151,49 +147,21 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	}
 	public void tableChanged(final TableModelEvent e) {
 		switch(e.getType()){
-		case TableModelEvent.DELETE:
-			deleteTransformedValues(e.getFirstRow(), e.getLastRow());
 		case TableModelEvent.INSERT:
-			insertTransformedValues(e.getFirstRow(), e.getLastRow());
 		case TableModelEvent.UPDATE:
-			updateTransformedValues(e.getFirstRow(), e.getLastRow());
+			cacheTransformedValues(e.getFirstRow(), e.getLastRow());
 		}
 		
 	}
-	private void updateTransformedValues(int firstRow, int lastRow) {
+	private void cacheTransformedValues(int firstRow, int lastRow) {
 		for(int row = firstRow; row <= lastRow; row++){
-			setTransformedValue(row);
+			cacheTransformedValue(row);
 		}
-	}
-
-	private void insertTransformedValues(int firstRow, int lastRow) {
-		for(int row = firstRow; row <= lastRow; row++){
-			transformedValues.add(row, null);
-		}
-		updateTransformedValues(firstRow, lastRow);
-		
-	}
-
-	private void deleteTransformedValues(int firstRow, int lastRow) {
-		for(int row = firstRow; row <= lastRow; row++){
-			transformedValues.remove(firstRow);
-		}
-	}
-
-	public Object transformValueAt(int row, int col) throws Exception{
-		if(col == 1){
-			Object object = transformedValues.get(row);
-			if(object instanceof Exception){
-				throw (Exception)object;
-			}
-			return object;
-		}
-		return getValueAt(row, col);
 	}
 
 	public void nodeChanged(NodeChangeEvent event) {
 		if(ITextTransformer.class.equals(event.getProperty())){
-			updateTransformedValues(0, getRowCount()-1);
+			cacheTransformedValues(0, getRowCount()-1);
 		}
 	}
 	

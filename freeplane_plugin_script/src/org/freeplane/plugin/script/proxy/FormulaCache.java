@@ -1,16 +1,24 @@
 package org.freeplane.plugin.script.proxy;
 
+import groovy.util.ScriptException;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.plugin.script.ExecuteScriptException;
 
 public class FormulaCache {
-	private HashMap<NodeModel, LinkedHashMap<String, Object>> cache = new HashMap<NodeModel, LinkedHashMap<String, Object>>();
+	private HashMap<String, LinkedHashMap<String, Object>> cache = new HashMap<String, LinkedHashMap<String, Object>>();
 
-	public Object get(NodeModel nodeModel, String text) {
-		final LinkedHashMap<String, Object> cacheEntry = cache.get(nodeModel);
-		return cacheEntry == null ? null : cacheEntry.get(text);
+	public Object get(NodeModel nodeModel, String text) throws ExecuteScriptException {
+		final LinkedHashMap<String, Object> cacheEntry = cache.get(nodeModel.getID());
+		if (cacheEntry == null) return null;
+		final Object object = cacheEntry.get(text);
+		if(object instanceof ExecuteScriptException){
+			throw (ExecuteScriptException)object;
+		}
+		return object;
 	}
 
 	public void put(NodeModel nodeModel, String text, Object value) {
@@ -18,18 +26,18 @@ public class FormulaCache {
 	}
 
 	private LinkedHashMap<String, Object> getOrAdd(NodeModel node) {
-		LinkedHashMap<String, Object> cacheEntry = cache.get(node);
+		LinkedHashMap<String, Object> cacheEntry = cache.get(node.getID());
 		if (cacheEntry == null) {
 			cacheEntry = new LinkedHashMap<String, Object>(8);
-			cache.put(node, cacheEntry);
+			cache.put(node.getID(), cacheEntry);
 		}
 		return cacheEntry;
 	}
 
 	public void markAsDirtyIfFormulaNode(NodeModel node) {
-		final LinkedHashMap<String, Object> entry = cache.get(node);
+		final LinkedHashMap<String, Object> entry = cache.get(node.getID());
 		if (entry != null) {
-			System.out.println("clearing cache for " + node);
+//			System.out.println("clearing cache for " + node);
 			entry.clear();
 		}
 	}

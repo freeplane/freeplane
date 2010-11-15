@@ -74,7 +74,7 @@ class ScriptingRegistration {
 			}
 		}
 
-		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
+		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) throws ExecuteScriptException {
 			ModeController modeController = Controller.getCurrentModeController();
 			 return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
 					pErrorHandler, pOutStream, null);

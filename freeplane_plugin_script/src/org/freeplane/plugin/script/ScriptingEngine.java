@@ -215,9 +215,6 @@ public class ScriptingEngine {
 			pErrorHandler.gotoLine(lineNumber);
 			throw new ExecuteScriptException(e.getMessage(), e);
 		}
-		catch (final ExecuteScriptException e) {
-			throw e;
-		}
 		catch (final Throwable e) {
 			if (Controller.getCurrentController().getSelection() != null)
 				Controller.getCurrentModeController().getMapController().select(node);
@@ -244,7 +241,7 @@ public class ScriptingEngine {
 	private static CompilerConfiguration createCompilerConfiguration() {
 		CompilerConfiguration config = new CompilerConfiguration();
 		config.setScriptBaseClass(FreeplaneScriptBaseClass.class.getName());
-		if (!classpath.isEmpty()) {
+		if (!(classpath == null || classpath.isEmpty())) {
 			config.setClasspathList(classpath);
 		}
 		return config;
@@ -260,15 +257,15 @@ public class ScriptingEngine {
 		return lineNumber;
 	}
 
-	public static Object executeScript(final NodeModel node, final String script) {
+	public static Object executeScript(final NodeModel node, final String script) throws ExecuteScriptException {
 		return ScriptingEngine.executeScript(node, script, null);
 	}
 	
-	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext) {
+	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext) throws ExecuteScriptException {
 		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out, scriptContext);
 	}
 
-	static Object executeScriptRecursive(final NodeModel node, final String script) {
+	static Object executeScriptRecursive(final NodeModel node, final String script) throws ExecuteScriptException {
 		ModeController modeController = Controller.getCurrentModeController();
 		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
 			executeScriptRecursive(iter.next(), script);
@@ -276,21 +273,19 @@ public class ScriptingEngine {
 		return executeScript(node, script);
 	}
 
-	static boolean performScriptOperationRecursive(final NodeModel node) {
+	static void performScriptOperationRecursive(final NodeModel node) throws ExecuteScriptException {
 		ModeController modeController = Controller.getCurrentModeController();
 		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
 			final NodeModel child = iter.next();
-			if (!performScriptOperationRecursive(child)) {
-				return false;
-			}
+			performScriptOperationRecursive(child);
 		}
-		return performScriptOperation(node);
+		performScriptOperation(node);
 	}
 
-	static boolean performScriptOperation(final NodeModel node) {
+	static void performScriptOperation(final NodeModel node) throws ExecuteScriptException {
 		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		if (attributes == null) {
-			return true;
+			return;
 		}
 		for (int row = 0; row < attributes.getRowCount(); ++row) {
 			final String attrKey = (String) attributes.getName(row);
@@ -299,7 +294,7 @@ public class ScriptingEngine {
 				executeScript(node, script);
 			}
 		}
-		return true;
+		return;
 	}
 
 	static void setNoUserPermissionRequired(final Boolean noUserPermissionRequired) {

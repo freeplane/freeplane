@@ -24,7 +24,7 @@ import org.junit.Test;
 public class ConvertibleTest {
 	/** provides an easy mean to create a Convertible with a null text. */
 	public static final class TestConvertible extends Convertible {
-		public TestConvertible(NodeModel nodeModel, String text) {
+		public TestConvertible(NodeModel nodeModel, String text) throws ExecuteScriptException {
 			// some eval method that allows to directly hand in the text
 			super(FormulaUtils.evalIfScript(nodeModel, null, text));
 		}
@@ -39,7 +39,7 @@ public class ConvertibleTest {
 	}
 
 	@Test
-	public void testGetNum() throws ConversionException {
+	public void testGetNum() throws ConversionException, ExecuteScriptException {
 		assertEquals(null, convertible(null).getNum());
 		assertEquals(new Long(20), convertible("20").getNum());
 		assertEquals(new Double(0.00001), ((Double) convertible("0.00001").getNum()), 1e-9);
@@ -62,8 +62,8 @@ public class ConvertibleTest {
 	}
 	
 	@Test
-	public void testGetNum0() throws ConversionException {
-		assertEquals(null, convertible(null).getNum0());
+	public void testGetNum0() throws ConversionException, ExecuteScriptException {
+		assertEquals(new Long(0), convertible(null).getNum0());
 		assertEquals(new Long(20), convertible("20").getNum0());
 		assertEquals(new Double(0.00001), ((Double) convertible("0.00001").getNum0()), 1e-9);
 		assertEquals(new Long(31), convertible("0x1f").getNum0());
@@ -77,13 +77,13 @@ public class ConvertibleTest {
 		assertEquals(new Long(0), convertible("2010-08-16 22:31:55.123+0530").getNum0());
 	}
 
-	private Convertible convertible(String text) {
+	private Convertible convertible(String text) throws ExecuteScriptException {
 		NodeModel nodeModel = new NodeModel(null);
 		return new TestConvertible(nodeModel, text);
 	}
 
 	@Test
-	public void testGetDate() throws ConversionException {
+	public void testGetDate() throws ConversionException, ExecuteScriptException {
 		testOneDatePattern(null, null);
 		testOneDatePattern("2010-08-16 22:31:55.123+0530", "2010-08-16 22:31:55.123+0530");
 		// note that SimpleDateFormat uses local time zone for conversion - use DateFormatUtils instead!
@@ -121,7 +121,7 @@ public class ConvertibleTest {
 		assertTrue("not a date: " + notADate, caughtException);
 	}
 
-	private void testOneDatePattern(String expected, String testInput) throws ConversionException {
+	private void testOneDatePattern(String expected, String testInput) throws ConversionException, ExecuteScriptException {
 		assertEquals(date(expected), convertible(testInput).getDate());
 		assertEquals(calendar(expected), convertible(testInput).getCalendar());
 	}
@@ -155,7 +155,7 @@ public class ConvertibleTest {
 	}
 
 	@Test
-	public void testGetObject() throws ConversionException {
+	public void testGetObject() throws ConversionException, ExecuteScriptException {
 		assertEquals(null, convertible(null).getObject());
 		// Convertibles contain the evaluated text
 		assertEquals(new Long(3), convertible("= 1 + 2").getObject());
@@ -166,7 +166,7 @@ public class ConvertibleTest {
 	}
 
 	@Test
-	public void testGetPlain() throws ConversionException {
+	public void testGetPlain() throws ConversionException, ExecuteScriptException {
 		assertEquals(null, convertible(null).getPlain());
 		assertEquals("12", convertible("12").getPlain());
 		assertEquals("text", convertible("text").getPlain());
@@ -180,7 +180,7 @@ public class ConvertibleTest {
 	}
 
 	@Test
-	public void testIsNum() throws ConversionException {
+	public void testIsNum() throws ConversionException, ExecuteScriptException {
 		assertFalse(convertible(null).isNum());
 		assertTrue("Convertibles contain evaluated text", convertible("= 1 + 2").isNum());
 		assertTrue(convertible("0x1f").isNum());
@@ -197,7 +197,7 @@ public class ConvertibleTest {
 	}
 
 	@Test
-	public void testIsDate() throws ConversionException {
+	public void testIsDate() throws ConversionException, ExecuteScriptException {
 		assertFalse(convertible(null).isDate());
 		assertFalse(convertible("").isDate());
 		assertFalse(convertible("12").isDate());
@@ -226,7 +226,7 @@ public class ConvertibleTest {
 	}
 
 	@Test
-	public void testGetStringAndToString() throws ConversionException {
+	public void testGetStringAndToString() throws ConversionException, ExecuteScriptException {
 		assertGetStringAndToStringEqualsInputText(null);
 		assertGetStringAndToStringEqualsInputText("2010-08-16 22:31:55");
 		assertGetStringAndToStringEqualsInputText("12");
@@ -235,14 +235,14 @@ public class ConvertibleTest {
 		assertGetStringAndToStringEqualsInputText("");
 	}
 
-	private void assertGetStringAndToStringEqualsInputText(String text) {
+	private void assertGetStringAndToStringEqualsInputText(String text) throws ExecuteScriptException {
 		assertEquals(text, convertible(text).toString());
 		assertEquals(text, convertible(text).getString());
 		assertEquals(text, convertible(text).getText());
 	}
 
 	@Test
-	public void testGetProperty() throws ConversionException {
+	public void testGetProperty() throws ConversionException, ExecuteScriptException {
 		assertEquals(null, convertible(null).getProperty("string"));
 		assertEquals(null, convertible(null).getProperty("num"));
 		assertEquals("12", convertible("12").getProperty("string"));
@@ -256,7 +256,7 @@ public class ConvertibleTest {
 	}
 
 	@Test
-	public void testInvokeMethod() throws ConversionException {
+	public void testInvokeMethod() throws ConversionException, ExecuteScriptException {
 		assertEquals(null, convertible(null).invokeMethod("getString", null));
 		assertEquals("12", convertible("12").invokeMethod("getString", null));
 		assertEquals("12", convertible("12").invokeMethod("getText", null));
@@ -280,15 +280,8 @@ public class ConvertibleTest {
 	}
 
 	@Test
-	public void testConvertibleAttributeValuesMayNotBeNull() throws ConversionException {
-		boolean exceptionThrown = false;
-		try {
-			new ConvertibleAttributeValue(new NodeModel(null), null, null);
-		}
-		catch (NullPointerException e) {
-			exceptionThrown = true;
-		}
-		assertTrue("you may not set a ConvertibleAttributeValuesMayNotBeNull's text to null!", exceptionThrown);
+	public void testConvertibleAttributeValuesMayBeNull() throws ConversionException, ExecuteScriptException {
+		new ConvertibleAttributeValue(new NodeModel(null), null, null);
 	}
 
 	@Test
@@ -303,7 +296,7 @@ public class ConvertibleTest {
 	}
 
 	@Test
-	public void testSomethingToString() throws ConversionException {
+	public void testSomethingToString() throws ConversionException, ExecuteScriptException {
 		// this works but you may not set a Convertibles's text to null!
 		assertEquals(null, Convertible.toString(null));
 		testSomethingToStringImpl("12", 12L, "num");
@@ -312,7 +305,7 @@ public class ConvertibleTest {
 	}
 
 	private void testSomethingToStringImpl(String expected, Object toConvert, String propertyName)
-	        throws ConversionException {
+	        throws ConversionException, ExecuteScriptException {
 		assertEquals(expected, Convertible.toString(toConvert));
 		// the result of Convertible.toString(Xyz) must be a valid input to Convertible.getXyz()
 		assertEquals(toConvert, convertible(expected).getProperty(propertyName));

@@ -99,7 +99,12 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	/** Shortcut for node.map.node(id).value. */
 	public Object V(String id) {
 		final NodeRO n = N(id);
-		return n == null ? null : n.getValue();
+		try {
+	        return n == null ? null : n.getValue();
+        }
+        catch (ExecuteScriptException e) {
+        	return null;
+        }
 	}
 
 	/** returns valueIfNull if value is null and value otherwise. */

@@ -28,12 +28,17 @@ class FormulaTextTransformer implements ITextTransformer {
 			return text;
 		}
 		// starting a new ScriptContext in evalIfScript
-		final Object result = FormulaUtils.evalIfScript(nodeModel, null, plainText);
-		if (result == null) {
-			throw new ExecuteScriptException("got null result from evaluating " + nodeModel.getID() + ", text='"
-			        + plainText.substring(1) + "'");
-		}
-		return result.toString();
+		try {
+	        final Object result = FormulaUtils.evalIfScript(nodeModel, null, plainText);
+	        if (result == null) {
+	        	throw new ExecuteScriptException("got null result from evaluating " + nodeModel.getID() + ", text='"
+	        	        + plainText.substring(1) + "'");
+	        }
+	        return result.toString();
+        }
+        catch (ExecuteScriptException e) {
+	        throw new RuntimeException(e);
+        }
 	}
 
 	public EditNodeBase createEditNodeBase(NodeModel nodeModel, String text, IEditControl editControl, KeyEvent firstEvent,

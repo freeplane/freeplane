@@ -20,8 +20,9 @@ public class FormulaUtils {
 	    .getBooleanProperty("formula_disable_caching");
 
 	/** evaluate text as a script if it starts with '='.
-	 * @return the evaluation result for script and the original text otherwise */
-	public static Object evalIfScript(final NodeModel nodeModel, ScriptContext scriptContext, final String text) {
+	 * @return the evaluation result for script and the original text otherwise 
+	 * @throws ExecuteScriptException */
+	public static Object evalIfScript(final NodeModel nodeModel, ScriptContext scriptContext, final String text) throws ExecuteScriptException{
 		if (containsFormula(text)) {
 			scriptContext = (scriptContext == null) ? new ScriptContext() : scriptContext;
 			return eval(nodeModel, scriptContext, text.substring(1));
@@ -36,8 +37,9 @@ public class FormulaUtils {
     }
 
 	/** evaluate text as a script.
-	 * @return the evaluation result. */
-	public static Object eval(final NodeModel nodeModel, final ScriptContext scriptContext, final String text) {
+	 * @return the evaluation result. 
+	 * @throws ExecuteScriptException */
+	public static Object eval(final NodeModel nodeModel, final ScriptContext scriptContext, final String text) throws ExecuteScriptException {
 //		System.err.println(nodeModel.getID() + ": " + text);
 		if (!scriptContext.push(nodeModel, text))
 			throw new StackOverflowError(TextUtils.format("formula.error.circularReference", scriptContext.getStackFront()
@@ -48,8 +50,14 @@ public class FormulaUtils {
 				Object value = formulaCache.get(nodeModel, text);
 				if (value == null) {
 					//				System.out.println("eval(" + text + ")");
-					value = ScriptingEngine.executeScript(nodeModel, text, scriptContext);
-					formulaCache.put(nodeModel, text, value);
+					try {
+	                    value = ScriptingEngine.executeScript(nodeModel, text, scriptContext);
+	                    formulaCache.put(nodeModel, text, value);
+                    }
+                    catch (ExecuteScriptException e) {
+	                    formulaCache.put(nodeModel, text, e);
+	                    throw e;
+                    }
 				}
 				else {
 					scriptContext.accessNode(nodeModel);

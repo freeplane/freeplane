@@ -17,6 +17,7 @@ import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.styles.IStyle;
+import org.freeplane.plugin.script.ExecuteScriptException;
 
 public interface Proxy {
 	interface AttributesRO {
@@ -402,9 +403,10 @@ public interface Proxy {
 		 *   // or use it just like a string
 		 *   assert val.startsWith("1")
 		 * </pre>
+		 * @throws ExecuteScriptException 
 		 * @since 1.2
 		 */
-		Convertible getAt(String attributeName);
+		Convertible getAt(String attributeName) throws ExecuteScriptException;
 
 		/** returns the index (0..) of this node in the (by Y coordinate sorted)
 		 * list of this node's children. Returns -1 if childNode is not a child
@@ -443,12 +445,14 @@ public interface Proxy {
 		 * result of Convertible.getText().
 		 * @return Convertible getString(), getText() and toString() will return plain text instead of the HTML.
 		 *         Use {@link #getNoteText()} to get the HTML text.
+		 * @throws ExecuteScriptException 
 		 * @since 1.2
 		 */
-		Convertible getNote();
+		Convertible getNote() throws ExecuteScriptException;
 		
-		/** Returns the HTML text of the node. (Notes always contain HTML text.) */
-		String getNoteText();
+		/** Returns the HTML text of the node. (Notes always contain HTML text.) 
+		 * @throws ExecuteScriptException */
+		String getNoteText() throws ExecuteScriptException;
 
 		/** @since 1.2 */
 		Node getParent();
@@ -478,12 +482,14 @@ public interface Proxy {
 		 * </dl>
 		 * Note that parse errors result in {@link ConversionException}s.
 		 * @return ConvertibleObject
+		 * @throws ExecuteScriptException 
 		 * @since 1.2
 		 */
-		Convertible getTo();
+		Convertible getTo() throws ExecuteScriptException;
 
-		/** an alias for {@link #getTo()}. @since 1.2 */
-		Convertible getValue();
+		/** an alias for {@link #getTo()}. @since 1.2 
+		 * @throws ExecuteScriptException */
+		Convertible getValue() throws ExecuteScriptException;
 
 		/** returns true if p is a parent, or grandparent, ... of this node, or if it <em>is equal<em>
 		 * to this node; returns false otherwise. */
