@@ -46,7 +46,7 @@ import org.freeplane.view.swing.map.NodeView;
  */
 abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel 
 		implements IAttributeTableModel,
-        TableModelListener, ChangeListener, INodeView{
+        TableModelListener, ChangeListener{
 	/**
 	 * 
 	 */
@@ -68,7 +68,6 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	private void addListeners() {
 		getNodeAttributeModel().addTableModelListener(this);
 		getAttributeRegistry().addChangeListener(this);
-		getNodeAttributeModel().getNode().addViewer(this);
 	}
 
 	/**
@@ -116,7 +115,6 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	private void removeListeners() {
 		getNodeAttributeModel().removeTableModelListener(this);
 		getAttributeRegistry().removeChangeListener(this);
-		getNodeAttributeModel().getNode().removeViewer(this);
 	}
 
 	public void setAttributeRegistry(final AttributeRegistry attributeRegistry) {
@@ -160,30 +158,4 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 			cacheTransformedValue(row);
 		}
 	}
-
-	public void mapChanged(MapChangeEvent event) {
-    }
-
-	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
-    }
-
-	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-    }
-
-	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-    }
-
-	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-    }
-
-	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
-    }
-
-	public void nodeChanged(NodeChangeEvent event) {
-		if(ITextTransformer.class.equals(event.getProperty())){
-			cacheTransformedValues(0, getRowCount()-1);
-		}
-	}
-	
-	
 }
