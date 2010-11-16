@@ -49,7 +49,7 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition {
 
 	public NodeMatchesRegexpCondition(String nodeItem, final String searchPattern, final boolean ignoreCase) {
 		super();
-		int flags = 0;
+		int flags = Pattern.DOTALL;
 		if (ignoreCase) {
 			flags |= Pattern.CASE_INSENSITIVE;
 		}

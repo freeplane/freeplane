@@ -50,12 +50,12 @@ public class NodeContainsCondition extends ASelectableCondition {
 	}
 
 	private boolean checkText(final String plainTextContent) {
-		return plainTextContent.indexOf(value) > -1;
+		return plainTextContent != null && plainTextContent.indexOf(value) > -1;
 	}
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = TextUtils.getText(TextController.FILTER_NODE);
+		final String nodeCondition = TextUtils.getText(nodeItem);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false);
 	}
