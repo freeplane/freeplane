@@ -155,23 +155,4 @@ public class ExportToOoWriter extends ExportAction {
 			zipout.close();
 		}
 	}
-
-	public void transForm(final Source xmlSource, final InputStream xsltStream, final File resultFile,
-	                      final String areaCode) {
-		final Source xsltSource = new StreamSource(xsltStream);
-		final Result result = new StreamResult(resultFile);
-		try {
-			final TransformerFactory transFact = TransformerFactory.newInstance();
-			final Transformer trans = transFact.newTransformer(xsltSource);
-			trans.setParameter("destination_dir", resultFile.getName() + "_files/");
-			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", ResourceController.getResourceController().getProperty(
-			    "html_export_folding"));
-			trans.transform(xmlSource, result);
-		}
-		catch (final Exception e) {
-			LogTool.severe(e);
-		};
-		return;
-	}
 }
