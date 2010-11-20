@@ -378,7 +378,7 @@ public abstract class MainView extends JLabel {
 		}
 		if (isHtml) {
 			if (nodeText.indexOf("<img") >= 0 && nodeText.indexOf("<base ") < 0) {
-				nodeText = "<html><base href=\"" + map.getModel().getURL() + "\">" + nodeText.substring(6);
+				nodeText = "<html><base href=\"" + map.getModel().getURL() + "\"/>" + nodeText.substring(6);
 			}
 			final String htmlLongNodeHead = ResourceController.getResourceController().getProperty(
 			    "html_long_node_head");
