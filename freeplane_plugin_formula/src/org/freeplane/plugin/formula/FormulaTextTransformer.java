@@ -55,7 +55,7 @@ class FormulaTextTransformer implements ITextTransformer {
 			JEditorPane textEditor = new JEditorPane();
 			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 			scrollPane.setMinimumSize(new Dimension(0, 60));
-			final EditNodeDialog editNodeDialog = new EditNodeDialog(nodeModel, text, firstEvent, editControl, false, textEditor);
+			final EditNodeDialog editNodeDialog = new FormulaEditor(nodeModel, text, firstEvent, editControl, false, textEditor);
 			editNodeDialog.setTitle(TextUtils.getText("formula_editor"));
 			textEditor.setContentType("text/groovy");
 			return editNodeDialog;

@@ -292,6 +292,7 @@ public class EditNodeDialog extends EditNodeBase {
 	/** Private variable to hold the last value of the "Enter confirms" state. */
 	final private KeyEvent firstEvent;
 	private String title;
+	private boolean isModal;
 
 	public EditNodeDialog(final NodeModel node, final String text, final KeyEvent firstEvent,
 	                      final IEditControl editControl, boolean enableSplit) {
@@ -311,6 +312,7 @@ public class EditNodeDialog extends EditNodeBase {
 			title = TextUtils.getText("edit_long_node");
 		}
 		final EditDialog dialog = new LongNodeDialog(frame, title);
+		dialog.setModal(isModal);
 		dialog.pack();
 		Controller.getCurrentModeController().getController().getViewController().scrollNodeToVisible(node);
 		if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
@@ -338,5 +340,9 @@ public class EditNodeDialog extends EditNodeBase {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	protected void setModal(boolean isModal) {
+		this.isModal = isModal;
 	}
 }
