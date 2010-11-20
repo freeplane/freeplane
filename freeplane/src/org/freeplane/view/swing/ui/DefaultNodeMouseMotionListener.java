@@ -78,6 +78,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 // 	final private ModeController mc;
 	final private ControllerPopupMenuListener popupListener;
 	private Timer timerForDelayedSelection;
+	private boolean wasFocused;
 
 	public DefaultNodeMouseMotionListener() {
 //		mc = modeController;
@@ -114,7 +115,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mouseClicked(final MouseEvent e) {
-		if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
+		if (wasFocused() && e.getModifiers() == InputEvent.BUTTON1_MASK) {
 			ModeController mc = Controller.getCurrentController().getModeController();
 			/* perform action only if one selected node. */
 			final MapController mapController = mc.getMapController();
@@ -181,17 +182,18 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	public void mousePressed(final MouseEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final Component selectedComponent = controller.getViewController().getSelectedComponent();
-		final boolean isFocused = SwingUtilities.isDescendingFrom(e.getComponent(), selectedComponent);
-		if(isFocused) showPopupMenu(e);
+		wasFocused = SwingUtilities.isDescendingFrom(e.getComponent(), selectedComponent);
+		if(wasFocused) showPopupMenu(e);
+		extendSelection(e);
 	}
+
+	protected boolean wasFocused() {
+    	return wasFocused;
+    }
 
 	public void mouseReleased(final MouseEvent e) {
 		stopTimerForDelayedSelection();
-		final Controller controller = Controller.getCurrentController();
-		final Component selectedComponent = controller.getViewController().getSelectedComponent();
-		final boolean isFocused = SwingUtilities.isDescendingFrom(e.getComponent(), selectedComponent);
-		extendSelection(e);
-		if(isFocused) showPopupMenu(e);
+		if(wasFocused) showPopupMenu(e);
 	}
 
 	public void showPopupMenu(final MouseEvent e) {

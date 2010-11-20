@@ -171,7 +171,7 @@ public class MModeControllerFactory {
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		userInputListenerFactory.setNodeMouseMotionListener(new DelayedMouseListener( new DefaultNodeMouseMotionListener() {
 			public void mouseClicked(final MouseEvent e) {
-				if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
+				if (wasFocused() && e.getModifiers() == InputEvent.BUTTON1_MASK) {
 					/* perform action only if one selected node. */
 					final MapController mapController = modeController.getMapController();
 					if (mapController.getSelectedNodes().size() != 1) {
