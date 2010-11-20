@@ -38,7 +38,7 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 		return new NodeTextCompareCondition(
 			element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE), 
 			element.getAttribute(NodeTextCompareCondition.VALUE, null), 
-			TreeXmlReader.xmlToBoolean(element.getAttribute(CompareConditionAdapter.IGNORE_CASE, null)), 
+			TreeXmlReader.xmlToBoolean(element.getAttribute(CompareConditionAdapter.MATCH_CASE, null)), 
 			Integer.parseInt(element.getAttribute(NodeTextCompareCondition.COMPARATION_RESULT, null)), 
 			TreeXmlReader.xmlToBoolean(element.getAttribute(NodeTextCompareCondition.SUCCEED, null)));
 	}
@@ -47,9 +47,9 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 	final private boolean succeed;
 	final private String nodeItem;
 
-	NodeTextCompareCondition(String nodeItem, final String value, final boolean ignoreCase, final int comparationResult,
+	NodeTextCompareCondition(String nodeItem, final String value, final boolean matchCase, final int comparationResult,
 	                     final boolean succeed) {
-		super(value, ignoreCase);
+		super(value, matchCase);
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
 		this.nodeItem=nodeItem;

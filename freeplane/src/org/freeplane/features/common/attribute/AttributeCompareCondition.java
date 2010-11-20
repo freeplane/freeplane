@@ -38,7 +38,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	static ASelectableCondition load(final XMLElement element) {
 		return new AttributeCompareCondition(element.getAttribute(AttributeCompareCondition.ATTRIBUTE, null), element
 		    .getAttribute(CompareConditionAdapter.VALUE, null), TreeXmlReader.xmlToBoolean(element.getAttribute(
-		    CompareConditionAdapter.IGNORE_CASE, null)), Integer.parseInt(element.getAttribute(
+		    CompareConditionAdapter.MATCH_CASE, null)), Integer.parseInt(element.getAttribute(
 		    AttributeCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader.xmlToBoolean(element.getAttribute(
 		    AttributeCompareCondition.SUCCEED, null)));
 	}
@@ -49,9 +49,9 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 
 	/**
 	 */
-	public AttributeCompareCondition(final String attribute, final String value, final boolean ignoreCase,
+	public AttributeCompareCondition(final String attribute, final String value, final boolean MatchCase,
 	                                 final int comparationResult, final boolean succeed) {
-		super(value, ignoreCase);
+		super(value, MatchCase);
 		this.attribute = attribute;
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;

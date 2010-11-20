@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
-
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -42,7 +41,6 @@ import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
 import javax.swing.UIManager;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
@@ -425,8 +423,8 @@ class ApplicationViewController extends ViewController {
 
 	@Override
 	protected void viewNumberChanged(final int number) {
-		navigationPreviousMap.setEnabled(number > 0);
-		navigationNextMap.setEnabled(number > 0);
+		navigationPreviousMap.setEnabled(number > 1);
+		navigationNextMap.setEnabled(number > 1);
 	}
 
 	public void initFrame(final JFrame frame) {

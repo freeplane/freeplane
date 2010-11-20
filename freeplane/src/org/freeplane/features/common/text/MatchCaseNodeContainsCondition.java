@@ -25,23 +25,23 @@ import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class IgnoreCaseNodeContainsCondition extends ASelectableCondition {
-	static final String NAME = "ignore_case_node_contains_condition";
+public class MatchCaseNodeContainsCondition extends ASelectableCondition {
+	static final String NAME = "match_case_node_contains_condition";
 	static final String VALUE = "VALUE";
 
 	static ASelectableCondition load(final XMLElement element) {
-		return new IgnoreCaseNodeContainsCondition(
+		return new MatchCaseNodeContainsCondition(
 			element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE), 
-			element.getAttribute(IgnoreCaseNodeContainsCondition.VALUE, null)
+			element.getAttribute(MatchCaseNodeContainsCondition.VALUE, null)
 );
 	}
 
 	final private String value;
 	final private String nodeItem;
 
-	IgnoreCaseNodeContainsCondition(String nodeItem, final String value) {
+	MatchCaseNodeContainsCondition(String nodeItem, final String value) {
 		super();
-		this.value = value.toLowerCase();
+		this.value = value;
 		this.nodeItem = nodeItem;
 	}
 
@@ -51,7 +51,7 @@ public class IgnoreCaseNodeContainsCondition extends ASelectableCondition {
 	}
 
 	private boolean checkText(final String plainTextContent) {
-		return plainTextContent.toLowerCase().indexOf(value) > -1;
+		return plainTextContent.indexOf(value) > -1;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class IgnoreCaseNodeContainsCondition extends ASelectableCondition {
 
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
-		child.setAttribute(IgnoreCaseNodeContainsCondition.VALUE, value);
+		child.setAttribute(MatchCaseNodeContainsCondition.VALUE, value);
 		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem);
 	}
 

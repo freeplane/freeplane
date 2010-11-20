@@ -31,18 +31,18 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 public abstract class ConnectorLabelCondition extends ASelectableCondition {
 	static final String TEXT = "TEXT";
-	static final String IGNORE_CASE = "IGNORE_CASE";
+	static final String MATCH_CASE = "MATCH_CASE";
 	final private String text;
-	final private boolean ignoreCase;
+	final private boolean matchCase;
 
-	protected boolean ignoreCase() {
-		return ignoreCase;
+	protected boolean matchCase() {
+		return matchCase;
 	}
 
-	public ConnectorLabelCondition(final String text, final boolean ignoreCase) {
+	public ConnectorLabelCondition(final String text, final boolean matchCase) {
 		super();
-		this.ignoreCase = ignoreCase;
-		this.text = ignoreCase ? text.toLowerCase() : text;
+		this.matchCase = matchCase;
+		this.text = matchCase ? text : text.toLowerCase();
 	}
 
 	public String getText() {
@@ -91,6 +91,6 @@ public abstract class ConnectorLabelCondition extends ASelectableCondition {
 
 	protected void fillXML(final XMLElement child) {
 		child.setAttribute(TEXT, text);
-		child.setAttribute(IGNORE_CASE, Boolean.toString(ignoreCase));
+		child.setAttribute(MATCH_CASE, Boolean.toString(matchCase));
 	}
 }

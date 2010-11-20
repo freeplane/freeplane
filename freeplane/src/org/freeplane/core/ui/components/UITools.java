@@ -281,13 +281,19 @@ public class UITools {
 		UITools.setBounds(dialog, location.x, location.y, dialog.getWidth(), dialog.getHeight());
 	}
 
+public static int showConfirmDialog( final NodeModel node, final Object message,
+            final String title, final int optionType,final int messageType) {
+final Controller controller = Controller.getCurrentController();
+final ViewController viewController = controller.getViewController();
+viewController.scrollNodeToVisible(node);
+final Component parentComponent = viewController.getComponent(node);
+
+return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType, messageType);
+}
+
 	public static int showConfirmDialog( final NodeModel node, final Object message,
 	                                    final String title, final int optionType) {
-		final Controller controller = Controller.getCurrentController();
-		final ViewController viewController = controller.getViewController();
-		viewController.scrollNodeToVisible(node);
-		final Component parentComponent = viewController.getComponent(node);
-		return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType);
+		return showConfirmDialog( node, message, title, optionType, JOptionPane.QUESTION_MESSAGE);
 	}
 
 	public static String showInputDialog( final NodeModel node, final String text,

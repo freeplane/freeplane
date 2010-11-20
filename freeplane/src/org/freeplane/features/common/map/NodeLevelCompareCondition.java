@@ -35,7 +35,7 @@ class NodeLevelCompareCondition extends CompareConditionAdapter {
 
 	static ASelectableCondition load(final XMLElement element) {
 		return new NodeLevelCompareCondition(element.getAttribute(NodeLevelCompareCondition.VALUE, null), TreeXmlReader
-		    .xmlToBoolean(element.getAttribute(CompareConditionAdapter.IGNORE_CASE, null)), Integer.parseInt(element
+		    .xmlToBoolean(element.getAttribute(CompareConditionAdapter.MATCH_CASE, null)), Integer.parseInt(element
 		    .getAttribute(NodeLevelCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader.xmlToBoolean(element
 		    .getAttribute(NodeLevelCompareCondition.SUCCEED, null)));
 	}
@@ -55,6 +55,7 @@ class NodeLevelCompareCondition extends CompareConditionAdapter {
 		return succeed == (compareTo(level) == comparationResult);
 	}
 
+	@SuppressWarnings("unused")
 	private boolean checkLevel(final int level) {
 		return succeed == (compareTo(level) == comparationResult);
 	}
