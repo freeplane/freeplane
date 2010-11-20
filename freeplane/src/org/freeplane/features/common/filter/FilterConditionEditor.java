@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.ref.WeakReference;
@@ -113,44 +114,44 @@ public class FilterConditionEditor extends JComponent {
 		super();
 		setLayout(new GridBagLayout());
 		final GridBagConstraints gridBagConstraints = new GridBagConstraints();
+		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 0;
 		gridBagConstraints.anchor = GridBagConstraints.NORTH;
+		final int borderWidth = 5;
+		gridBagConstraints.insets = new Insets(0, borderWidth, 0, borderWidth);
 		this.filterController = filterController;
 		//Basic layout
-		final int borderWidth = 5;
-		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(borderWidth, borderWidth, borderWidth, borderWidth)));
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(borderWidth, 0, borderWidth, 0)));
 		//Item to search for
 		filteredPropertiesComponent = new JComboBox();
 		filteredPropertiesModel = new ExtendedComboBoxModel();
 		filteredPropertiesComponent.setModel(filteredPropertiesModel);
 		filteredPropertiesComponent.addItemListener(new FilteredPropertyChangeListener());
 		add(Box.createHorizontalGlue(), gridBagConstraints);
+		gridBagConstraints.gridx++;
 		filteredPropertiesComponent.setAlignmentY(Component.TOP_ALIGNMENT);
 		add(filteredPropertiesComponent, gridBagConstraints);
-		add(Box.createRigidArea(new Dimension(borderWidth,0)), gridBagConstraints);
+		gridBagConstraints.gridx++;
 		filteredPropertiesComponent.setRenderer(filterController.getConditionRenderer());
 		//Search condition
 		elementaryConditions = new JComboBox();
 		elementaryConditions.addItemListener(new ElementaryConditionChangeListener());
 		elementaryConditions.setAlignmentY(Component.TOP_ALIGNMENT);
 		add(elementaryConditions, gridBagConstraints);
-		add(Box.createRigidArea(new Dimension(borderWidth,0)), gridBagConstraints);
+		gridBagConstraints.gridx++;
 		elementaryConditions.setRenderer(filterController.getConditionRenderer());
 		//Search value
-		Box valueBox = Box.createVerticalBox();
 		values = new JComboBox();
 		values.setPreferredSize(new Dimension(280,20));
-		valueBox.add(values);
+		gridBagConstraints.anchor = GridBagConstraints.WEST;
+		add(values, gridBagConstraints);
+		gridBagConstraints.gridy++;
 		values.setRenderer(filterController.getConditionRenderer());
 		values.setEditable(true);
-		values.setAlignmentX(Component.LEFT_ALIGNMENT);
-		valueBox.add(Box.createRigidArea(new Dimension(0,borderWidth)));		
 		// Ignore case checkbox
 		caseSensitive = new JCheckBox();
-		caseSensitive.setAlignmentX(Component.LEFT_ALIGNMENT);
-		valueBox.add(caseSensitive);
-		valueBox.setAlignmentY(Component.TOP_ALIGNMENT);
-		add(valueBox, gridBagConstraints);
+		add(caseSensitive, gridBagConstraints);
+		gridBagConstraints.gridx++;
 		MenuBuilder.setLabelAndMnemonic(caseSensitive,TextUtils.getText(PROPERTY_FILTER_MATCH_CASE));
 		caseSensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
 		    PROPERTY_FILTER_MATCH_CASE));
