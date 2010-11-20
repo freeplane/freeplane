@@ -85,6 +85,7 @@ class FormulaEditor extends EditNodeDialog {
 	        	case 2:
 					final String id = model.getID();
 	    	        textEditor.replaceSelection(id);
+	    	        textEditor.requestFocus();
 	        		break;
 	        }
 	    }
