@@ -47,7 +47,7 @@
 
 <!-- fc, 20.10.2004: The following parameter is set by freeplane. -->
 <xsl:param name="destination_dir">./</xsl:param>
-<xsl:param name="area_code"></xsl:param>
+<xsl:param name="title">Mind Map</xsl:param><xsl:param name="area_code"></xsl:param>
 <xsl:param name="folding_type">html_export_no_folding</xsl:param>
 	<!-- possible values: 
 		html_export_fold_all, 
@@ -318,28 +318,7 @@
 	</xsl:call-template>
 </xsl:template> <!-- xsl:template name="textnode" -->
 
-<xsl:template name="output-title">
-	<!-- look if there is any node inside the map (there should never be
-		none, but who knows?) and take its text as the title -->
-	<xsl:choose>
-	<xsl:when test="/map/node/@TEXT">
-		<xsl:value-of select="/map/node/@TEXT" />
-	</xsl:when>
-	<xsl:when test="/map/node/richcontent[@TYPE='NODE']">
-		<xsl:apply-templates select="/map/node/richcontent[@TYPE='NODE']/html/body" mode="strip-tags" />
-	</xsl:when>
-	<xsl:otherwise>
-		<xsl:text>Freeplane2HTML Mindmap</xsl:text>
-	</xsl:otherwise>
-	</xsl:choose>
-</xsl:template>
-
-	
-	<xsl:template match="text()|@*"  mode="strip-tags">
-		  <xsl:value-of select="string(.)"/>
-	</xsl:template>
-
-	
+	<xsl:template name="output-title">		<!-- look if there is any node inside the map (there should never be			none, but who knows?) and take its text as the title -->		<xsl:choose>		<xsl:when test="/map/node/@TEXT">			<xsl:value-of select="normalize-space(/map/node/@TEXT)" />		</xsl:when>		<xsl:when test="/map/node/richcontent[@TYPE='NODE']">			<xsl:variable name="t">				<xsl:apply-templates select="/map/node/richcontent[@TYPE='NODE']/html/body" mode="strip-tags" />						</xsl:variable>			<xsl:value-of select="normalize-space($t)" />		</xsl:when>		<xsl:otherwise>			<xsl:text>Mind Map</xsl:text>		</xsl:otherwise>		</xsl:choose>	</xsl:template>		<xsl:template match="text()|@*"  mode="strip-tags">		  <xsl:value-of select="string(.)"/>	</xsl:template>
 <!-- replace ASCII line breaks through HTML line breaks (br) -->
 <xsl:template name="format_text">
 	<xsl:param name="nodetext" />

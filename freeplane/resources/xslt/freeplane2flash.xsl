@@ -105,21 +105,24 @@
 
 <!-- from toxhtml.xsl -->
 
-<xsl:template name="output-title">
-	<!-- look if there is any node inside the map (there should never be
-		none, but who knows?) and take its text as the title -->
-	<xsl:choose>
-	<xsl:when test="/map/node/@TEXT">
-		<xsl:value-of select="/map/node/@TEXT" />
-	</xsl:when>
-	<xsl:when test="/map/node/richcontent[@TYPE='NODE']">
-		<xsl:apply-templates select="/map/node/richcontent[@TYPE='NODE']/html/body" mode="strip-tags" />
-	</xsl:when>
-	<xsl:otherwise>
-		<xsl:text>Freeplane2HTML Mindmap</xsl:text>
-	</xsl:otherwise>
-	</xsl:choose>
-</xsl:template>
+	<xsl:template name="output-title">
+		<!-- look if there is any node inside the map (there should never be
+			none, but who knows?) and take its text as the title -->
+		<xsl:choose>
+		<xsl:when test="/map/node/@TEXT">
+			<xsl:value-of select="normalize-space(/map/node/@TEXT)" />
+		</xsl:when>
+		<xsl:when test="/map/node/richcontent[@TYPE='NODE']">
+			<xsl:variable name="t">
+				<xsl:apply-templates select="/map/node/richcontent[@TYPE='NODE']/html/body" mode="strip-tags" />			
+			</xsl:variable>
+			<xsl:value-of select="normalize-space($t)" />
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:text>Mind Map</xsl:text>
+		</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 
 	
 	<xsl:template match="text()|@*"  mode="strip-tags">

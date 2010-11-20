@@ -46,14 +46,7 @@
       <head>
         <!-- look if there is any node inside the map (there should never be none, but who knows?) 
              and take its text as the title -->
-        <xsl:choose>
-          <xsl:when test="/map/node">
-            <title><xsl:value-of select="/map/node/@TEXT" /></title>
-          </xsl:when>
-          <xsl:otherwise>
-            <title>Freeplane2HTML Mindmap</title>
-          </xsl:otherwise>
-        </xsl:choose>
+        <title><xsl:call-template name="output-title" /></title>
           <style type="text/css">
 /*<![CDATA[*/
 body { margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom:0px; height:100% }
@@ -78,6 +71,30 @@ html { height:100% }
    		</body>
     </html>
   </xsl:template>
+
+	<xsl:template name="output-title">
+		<!-- look if there is any node inside the map (there should never be
+			none, but who knows?) and take its text as the title -->
+		<xsl:choose>
+		<xsl:when test="/map/node/@TEXT">
+			<xsl:value-of select="normalize-space(/map/node/@TEXT)" />
+		</xsl:when>
+		<xsl:when test="/map/node/richcontent[@TYPE='NODE']">
+			<xsl:variable name="t">
+				<xsl:apply-templates select="/map/node/richcontent[@TYPE='NODE']/html/body" mode="strip-tags" />			
+			</xsl:variable>
+			<xsl:value-of select="normalize-space($t)" />
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:text>Mind Map</xsl:text>
+		</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	
+	<xsl:template match="text()|@*"  mode="strip-tags">
+		  <xsl:value-of select="string(.)"/>
+	</xsl:template>
 
 
 </xsl:stylesheet>
