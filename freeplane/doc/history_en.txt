@@ -17,6 +17,7 @@ Formula plugin ("spreadsheet plugin")
 Single backup directory
 Node tool tips with copy and scroll bar
 Script and formula editor JSyntaxPane from http://code.google.com/p/jsyntaxpane/
+When Formula Editor is visible, double click on node inserts node ID, single click folds/unfolds. 
 
 Bug fixes:
 630]: Language not sorted alphabetically
