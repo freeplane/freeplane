@@ -64,7 +64,7 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition {
 	}
 
 	boolean checkText(final String text) {
-		return searchPattern.matcher(text).matches();
+		return searchPattern.matcher(text).find();
 	}
 
 	@Override
