@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mindmapmode.time;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -40,6 +41,7 @@ import java.util.EventListener;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -57,14 +59,18 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.text.JTextComponent;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
@@ -161,10 +167,40 @@ class NodeList {
 		}
 	}
 
-	final private class FilterTextDocumentListener implements ChangeListener, ActionListener {
+	final private class FilterTextDocumentListener implements DocumentListener,  ChangeListener, ActionListener {
+		private Timer mTypeDelayTimer = null;
+
+		private synchronized void delayedChange() {
+			stopTimer();
+			mTypeDelayTimer = new Timer(500, new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					change();
+				}
+			});
+			mTypeDelayTimer.start();
+		}
+		public void stopTimer() {
+	        if (mTypeDelayTimer != null) {
+				mTypeDelayTimer.stop();
+				mTypeDelayTimer = null;
+			}
+        }
+		public void changedUpdate(final DocumentEvent event) {
+			delayedChange();
+		}
+
+		public void insertUpdate(final DocumentEvent event) {
+			delayedChange();
+		}
+
+		public void removeUpdate(final DocumentEvent event) {
+			delayedChange();
+		}
 
 		private synchronized void change() {
-			mFlatNodeTableFilterModel.setFilter((String) mFilterTextSearchField.getSelectedItem(), ignoreCase.isSelected(),
+			stopTimer();
+			final Object selectedItem = mFilterTextSearchField.getEditor().getItem();
+			mFlatNodeTableFilterModel.setFilter((String) selectedItem, ignoreCase.isSelected(),
 			    useRegexInFind.isSelected());
 		}
 
@@ -516,6 +552,8 @@ class NodeList {
 		mFilterTextSearchField.setEditable(true);
 		final FilterTextDocumentListener listener = new FilterTextDocumentListener();
 		mFilterTextSearchField.addActionListener(listener);
+		final JTextComponent editorComponent = (JTextComponent) mFilterTextSearchField.getEditor().getEditorComponent();
+		editorComponent.getDocument().addDocumentListener(listener);
 		mFilterTextSearchField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(final KeyEvent pEvent) {
