@@ -30,6 +30,7 @@ import java.io.Writer;
 import java.security.AccessControlException;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -136,6 +137,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private final ButtonModel showDescendants;
 	private final ButtonModel unfold;
 	private JComboBox activeFilterConditionComboBox;
+	private FilterConditionEditor quickEditor;
 
 	public FilterController() {
 		Controller controller = Controller.getCurrentController();
@@ -154,27 +156,20 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.getMapViewManager().addMapSelectionListener(this);
 		final AFreeplaneAction showFilterToolbar = new ToggleToolbarAction("ShowFilterToolbarAction",
 		    "/filter_toolbar");
+		quickEditor = new FilterConditionEditor(this, 0, true);
+		quickEditor.setBorder(BorderFactory.createEtchedBorder());
 		controller.addAction(showFilterToolbar);
-		final UnfoldFilteredAncestorsAction unfoldFilteredAncestors = new UnfoldFilteredAncestorsAction(this);
-		controller.addAction(unfoldFilteredAncestors);
-		final ApplyNoFilteringAction applyNoFiltering = new ApplyNoFilteringAction(this);
-		controller.addAction(applyNoFiltering);
-		final ApplySelectedViewConditionAction applySelectedViewCondition = new ApplySelectedViewConditionAction(this);
-		controller.addAction(applySelectedViewCondition);
-		final EditFilterAction editFilter = new EditFilterAction(this);
-		controller.addAction(editFilter);
-		final UndoFilterAction undoFilter = new UndoFilterAction(this);
-		controller.addAction(undoFilter);
-		final RedoFilterAction redoFilter = new RedoFilterAction(this);
-		controller.addAction(redoFilter);
-		final ReapplyFilterAction reapplyFilter = new ReapplyFilterAction(this);
-		controller.addAction(reapplyFilter);
-		final ShowAncestorsAction showAncestorsAction = new ShowAncestorsAction(this);
-		controller.addAction(showAncestorsAction);
-		final ShowDescendantsAction showDescendantsAction = new ShowDescendantsAction(this);
-		controller.addAction(showDescendantsAction);
-		final ApplyToVisibleAction applyToVisibleAction = new ApplyToVisibleAction(this);
-		controller.addAction(applyToVisibleAction);
+		controller.addAction(new UnfoldFilteredAncestorsAction(this));
+		controller.addAction(new ApplyNoFilteringAction(this));
+		controller.addAction(new ApplySelectedViewConditionAction(this));
+		controller.addAction(new EditFilterAction(this));
+		controller.addAction(new UndoFilterAction(this));
+		controller.addAction(new RedoFilterAction(this));
+		controller.addAction(new ReapplyFilterAction(this));
+		controller.addAction(new ShowAncestorsAction(this));
+		controller.addAction(new ShowDescendantsAction(this));
+		controller.addAction(new ApplyToVisibleAction(this));
+		controller.addAction(new ApplyQuickFilterAction(this, quickEditor));
 		pathToFilterFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
 		        + "auto." + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
 		final FindAction find = new FindAction();
@@ -204,6 +199,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		if (newMap != null) {
 			filterToolbar.setEnabled(true);
 			activeFilterConditionComboBox.setEnabled(true);
+			quickEditor.mapChanged(newMap);
 			final Filter filter = newMap.getFilter();
 			updateSettingsFromFilter(filter);
 		}
@@ -218,7 +214,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	void applyFilter(final boolean force) {
-		final Filter filter = createFilter();
+		final ASelectableCondition selectedCondition = getSelectedCondition();
+		final Filter filter = createFilter(selectedCondition);
 		filter.applyFilter(Controller.getCurrentController().getMap(), force);
 		final boolean isActive = filter.getCondition() != null;
 		applyToVisibleNodeOnly.setSelected(isActive);
@@ -241,8 +238,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
-	private Filter createFilter() {
-		final ASelectableCondition selectedCondition = getSelectedCondition();
+	private Filter createFilter(final ASelectableCondition selectedCondition) {
+			
 		final ASelectableCondition filterCondition;
 		if (selectedCondition == null || selectedCondition.equals(NO_FILTERING)) {
 			filterCondition = null;
@@ -291,6 +288,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JButton applyBtn = new JButton(controller.getAction("ReapplyFilterAction"));
 		final JButton filterSelectedBtn = new JButton(controller.getAction("ApplySelectedViewConditionAction"));
 		final JButton noFilteringBtn = new JButton(controller.getAction("ApplyNoFilteringAction"));
+		final JButton applyQuickFilterBtn = new JButton(controller.getAction("ApplyQuickFilterAction"));
+
 		filterToolbar.addSeparator();
 		filterToolbar.add(undoBtn);
 		filterToolbar.add(redoBtn);
@@ -303,6 +302,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.add(filterSelectedBtn);
 		filterToolbar.add(noFilteringBtn);
 		filterToolbar.add(btnEdit);
+		filterToolbar.addSeparator();
+		filterToolbar.add(quickEditor);
+		filterToolbar.add(applyQuickFilterBtn);
 		activeFilterConditionComboBox.setRenderer(this.getConditionRenderer());
 		return filterToolbar;
 	}

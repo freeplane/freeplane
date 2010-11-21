@@ -109,19 +109,19 @@ public class FilterConditionEditor extends JComponent {
 	final private ExtendedComboBoxModel filteredPropertiesModel;
 	private WeakReference<MapModel> lastMap;
 	final private JComboBox values;
-
 	public FilterConditionEditor(final FilterController filterController) {
+		this(filterController, 5, false);
+	}
+	public FilterConditionEditor(final FilterController filterController, final int borderWidth, final boolean horizontal) {
 		super();
 		setLayout(new GridBagLayout());
 		final GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 0;
 		gridBagConstraints.anchor = GridBagConstraints.NORTH;
-		final int borderWidth = 5;
 		gridBagConstraints.insets = new Insets(0, borderWidth, 0, borderWidth);
 		this.filterController = filterController;
 		//Basic layout
-		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(borderWidth, 0, borderWidth, 0)));
 		//Item to search for
 		filteredPropertiesComponent = new JComboBox();
 		filteredPropertiesModel = new ExtendedComboBoxModel();
@@ -145,7 +145,12 @@ public class FilterConditionEditor extends JComponent {
 		values.setPreferredSize(new Dimension(280,20));
 		gridBagConstraints.anchor = GridBagConstraints.WEST;
 		add(values, gridBagConstraints);
-		gridBagConstraints.gridy++;
+		if(horizontal){
+			gridBagConstraints.gridx++;
+		}
+		else{
+			gridBagConstraints.gridy++;
+		}
 		values.setRenderer(filterController.getConditionRenderer());
 		values.setEditable(true);
 		// Ignore case checkbox
@@ -172,7 +177,13 @@ public class FilterConditionEditor extends JComponent {
 
 	public ASelectableCondition getCondition() {
 		ASelectableCondition newCond;
-		Object value = values.getSelectedItem();
+		Object value;
+		if(values.isEditable()){
+			value = values.getEditor().getItem();
+		}
+		else{
+			value = values.getSelectedItem();
+		}
 		if (value == null) {
 			value = "";
 		}
@@ -182,10 +193,9 @@ public class FilterConditionEditor extends JComponent {
 		final Object selectedItem = filteredPropertiesComponent.getSelectedItem();
 		newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value, matchCase);
 		if (values.isEditable()) {
-			final Object item = values.getSelectedItem();
-			if (item != null && !item.equals("")) {
-				values.removeItem(item);
-				values.insertItemAt(item, 0);
+			if (!value.equals("")) {
+				values.removeItem(value);
+				values.insertItemAt(value, 0);
 				values.setSelectedIndex(0);
 				if (values.getItemCount() >= 10) {
 					values.removeItemAt(9);
@@ -213,7 +223,7 @@ public class FilterConditionEditor extends JComponent {
 		}
 		else {
 			values.setSelectedIndex(-1);
-			filteredPropertiesComponent.setSelectedIndex(0);
+			filteredPropertiesComponent.setSelectedIndex(-1);
 			filteredPropertiesModel.setExtensionList(null);
 		}
 		lastMap = new WeakReference<MapModel>(newMap);

@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.event.AncestorEvent;
@@ -87,6 +88,8 @@ class FindAction extends AFreeplaneAction {
 		final NodeModel start = selection.getSelected();
 		if (editor == null) {
 			editor = new FilterConditionEditor(FilterController.getCurrentFilterController());
+			editor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(5, 0, 5, 0)));
+
 		}
 		else {
 			editor.mapChanged(start.getMap());

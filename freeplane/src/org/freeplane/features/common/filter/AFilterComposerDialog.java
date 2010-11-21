@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Collection;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -395,6 +396,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		super(Controller.getCurrentController().getViewController().getFrame(), title, modal);
 		filterController = FilterController.getCurrentFilterController();
 		editor = new FilterConditionEditor(filterController);
+		editor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(5, 0, 5, 0)));
 //		this.controller = controller;
 		getContentPane().add(editor, BorderLayout.NORTH);
 		final Box conditionButtonBox = Box.createVerticalBox();
