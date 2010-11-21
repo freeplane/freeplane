@@ -142,7 +142,7 @@ public class FilterConditionEditor extends JComponent {
 		elementaryConditions.setRenderer(filterController.getConditionRenderer());
 		//Search value
 		values = new JComboBox();
-		values.setPreferredSize(new Dimension(280,20));
+		values.setPreferredSize(new Dimension(240,20));
 		gridBagConstraints.anchor = GridBagConstraints.WEST;
 		add(values, gridBagConstraints);
 		if(horizontal){

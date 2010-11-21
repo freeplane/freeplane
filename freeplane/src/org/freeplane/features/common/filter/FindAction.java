@@ -116,14 +116,19 @@ class FindAction extends AFreeplaneAction {
 		if (run != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final FindNodeList info = FindNodeList.create(Controller.getCurrentController().getMap());
-		info.condition = editor.getCondition();
+		final ASelectableCondition condition = editor.getCondition();
+		findFirst(condition);
+	}
+
+	void findFirst(final ASelectableCondition condition) {
+	    final FindNodeList info = FindNodeList.create(Controller.getCurrentController().getMap());
+		info.condition = condition;
 		if (info.condition == null) {
 			return;
 		}
 		info.rootID = Controller.getCurrentController().getSelection().getSelected().createID();
 		findNext();
-	}
+    }
 
 	void findNext() {
 		final MapModel map = Controller.getCurrentController().getMap();

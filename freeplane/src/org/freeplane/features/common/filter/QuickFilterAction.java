@@ -28,7 +28,7 @@ import org.freeplane.features.common.filter.condition.ASelectableCondition;
  * @author Dimitry Polivaev
  * Mar 30, 2009
  */
-final class ApplyQuickFilterAction extends AFreeplaneAction {
+final class QuickFilterAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
@@ -43,8 +43,8 @@ final class ApplyQuickFilterAction extends AFreeplaneAction {
 	 * @param filterController
 	 * @param quickEditor 
 	 */
-	ApplyQuickFilterAction(final FilterController filterController, FilterConditionEditor quickEditor) {
-		super("ApplyQuickFilterAction");
+	QuickFilterAction(final FilterController filterController, FilterConditionEditor quickEditor) {
+		super("QuickFilterAction");
 		this.filterController = filterController;
 		this.filterEditor = quickEditor;
 	}

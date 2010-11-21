@@ -169,12 +169,14 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.addAction(new ShowAncestorsAction(this));
 		controller.addAction(new ShowDescendantsAction(this));
 		controller.addAction(new ApplyToVisibleAction(this));
-		controller.addAction(new ApplyQuickFilterAction(this, quickEditor));
-		pathToFilterFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
-		        + "auto." + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
+		controller.addAction(new QuickFilterAction(this, quickEditor));
 		final FindAction find = new FindAction();
 		controller.addAction(find);
 		controller.addAction(new FindNextAction(find));
+		controller.addAction(new QuickFindAction(this, quickEditor, Direction.BACK));
+		controller.addAction(new QuickFindAction(this, quickEditor, Direction.FORWARD));
+		pathToFilterFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
+		        + "auto." + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
 	}
 
 	private void addStandardConditions() {
@@ -288,8 +290,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JButton applyBtn = new JButton(controller.getAction("ReapplyFilterAction"));
 		final JButton filterSelectedBtn = new JButton(controller.getAction("ApplySelectedViewConditionAction"));
 		final JButton noFilteringBtn = new JButton(controller.getAction("ApplyNoFilteringAction"));
-		final JButton applyQuickFilterBtn = new JButton(controller.getAction("ApplyQuickFilterAction"));
-
+		final JButton applyFindPreviousBtn = new JButton(controller.getAction("QuickFindAction.BACK"));
+		final JButton applyFindNextBtn = new JButton(controller.getAction("QuickFindAction.FORWARD"));
+		final JButton applyQuickFilterBtn = new JButton(controller.getAction("QuickFilterAction"));
+		
 		filterToolbar.addSeparator();
 		filterToolbar.add(undoBtn);
 		filterToolbar.add(redoBtn);
@@ -304,6 +308,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.add(btnEdit);
 		filterToolbar.addSeparator();
 		filterToolbar.add(quickEditor);
+		filterToolbar.add(applyFindPreviousBtn);
+		filterToolbar.add(applyFindNextBtn);
 		filterToolbar.add(applyQuickFilterBtn);
 		activeFilterConditionComboBox.setRenderer(this.getConditionRenderer());
 		return filterToolbar;
