@@ -1,9 +1,9 @@
 package groovy.runtime.metaclass.java.lang;
 
-import org.freeplane.plugin.script.proxy.Convertible;
-
 import groovy.lang.DelegatingMetaClass;
 import groovy.lang.MetaClass;
+
+import org.freeplane.plugin.script.proxy.Convertible;
 
 /** Make Convertible known to class String and let String handle Convertibles as if they were Strings
  * (via Convertible.getText(). */

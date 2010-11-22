@@ -22,22 +22,17 @@ package org.freeplane.plugin.formula;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Frame;
-import java.awt.MenuBar;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
-import javax.swing.JRootPane;
 import javax.swing.JScrollBar;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
-import javax.swing.text.Document;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.DelayedMouseListener;
@@ -45,7 +40,6 @@ import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.text.EditNodeDialog;
-import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 

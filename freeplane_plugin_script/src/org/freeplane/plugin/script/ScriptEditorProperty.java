@@ -29,6 +29,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.PropertyBean;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 class ScriptEditorProperty extends PropertyBean implements IPropertyControl, ActionListener {
