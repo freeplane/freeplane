@@ -119,7 +119,7 @@ class ScriptEditor extends AFreeplaneAction {
 			}
 		}
 
-		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) throws ExecuteScriptException {
+		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			final String script = getScript(pIndex).getScript();
 			ScriptingEngine.setNoUserPermissionRequired(true);
 			ModeController mMindMapController = Controller.getCurrentModeController();

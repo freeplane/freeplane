@@ -3,7 +3,6 @@ package org.freeplane.plugin.script.proxy;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.note.NoteModel;
-import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.FormulaUtils;
 import org.freeplane.plugin.script.ScriptContext;
 
@@ -11,7 +10,7 @@ import org.freeplane.plugin.script.ScriptContext;
 public class ConvertibleNoteText extends Convertible {
 	private final NodeModel nodeModel;
 
-	public ConvertibleNoteText(final NodeModel nodeModel, final ScriptContext scriptContext) throws ExecuteScriptException {
+	public ConvertibleNoteText(final NodeModel nodeModel, final ScriptContext scriptContext) {
 		super(FormulaUtils.evalIfScript(nodeModel, scriptContext, htmlToPlain(nodeModel)));
 		this.nodeModel = nodeModel;
 	}

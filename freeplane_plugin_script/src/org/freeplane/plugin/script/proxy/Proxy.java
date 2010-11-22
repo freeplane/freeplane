@@ -406,7 +406,7 @@ public interface Proxy {
 		 * @throws ExecuteScriptException 
 		 * @since 1.2
 		 */
-		Convertible getAt(String attributeName) throws ExecuteScriptException;
+		Convertible getAt(String attributeName);
 
 		/** returns the index (0..) of this node in the (by Y coordinate sorted)
 		 * list of this node's children. Returns -1 if childNode is not a child
@@ -448,11 +448,11 @@ public interface Proxy {
 		 * @throws ExecuteScriptException 
 		 * @since 1.2
 		 */
-		Convertible getNote() throws ExecuteScriptException;
+		Convertible getNote();
 		
 		/** Returns the HTML text of the node. (Notes always contain HTML text.) 
 		 * @throws ExecuteScriptException */
-		String getNoteText() throws ExecuteScriptException;
+		String getNoteText();
 
 		/** @since 1.2 */
 		Node getParent();
@@ -485,11 +485,11 @@ public interface Proxy {
 		 * @throws ExecuteScriptException 
 		 * @since 1.2
 		 */
-		Convertible getTo() throws ExecuteScriptException;
+		Convertible getTo();
 
 		/** an alias for {@link #getTo()}. @since 1.2 
 		 * @throws ExecuteScriptException */
-		Convertible getValue() throws ExecuteScriptException;
+		Convertible getValue();
 
 		/** returns true if p is a parent, or grandparent, ... of this node, or if it <em>is equal<em>
 		 * to this node; returns false otherwise. */

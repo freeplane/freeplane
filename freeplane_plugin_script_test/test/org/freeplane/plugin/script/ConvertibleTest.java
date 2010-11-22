@@ -24,8 +24,7 @@ import org.junit.Test;
 public class ConvertibleTest {
 	/** provides an easy mean to create a Convertible with a null text. */
 	public static final class TestConvertible extends Convertible {
-		public TestConvertible(NodeModel nodeModel, String text) throws ExecuteScriptException {
-			// some eval method that allows to directly hand in the text
+		public TestConvertible(NodeModel nodeModel, String text) {
 			super(FormulaUtils.evalIfScript(nodeModel, null, text));
 		}
 	}
@@ -77,7 +76,7 @@ public class ConvertibleTest {
 		assertEquals(new Long(0), convertible("2010-08-16 22:31:55.123+0530").getNum0());
 	}
 
-	private Convertible convertible(String text) throws ExecuteScriptException {
+	private Convertible convertible(String text) {
 		NodeModel nodeModel = new NodeModel(null);
 		return new TestConvertible(nodeModel, text);
 	}
@@ -235,7 +234,7 @@ public class ConvertibleTest {
 		assertGetStringAndToStringEqualsInputText("");
 	}
 
-	private void assertGetStringAndToStringEqualsInputText(String text) throws ExecuteScriptException {
+	private void assertGetStringAndToStringEqualsInputText(String text) {
 		assertEquals(text, convertible(text).toString());
 		assertEquals(text, convertible(text).getString());
 		assertEquals(text, convertible(text).getText());

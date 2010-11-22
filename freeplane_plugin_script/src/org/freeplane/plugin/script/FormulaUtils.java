@@ -22,7 +22,7 @@ public class FormulaUtils {
 	/** evaluate text as a script if it starts with '='.
 	 * @return the evaluation result for script and the original text otherwise 
 	 * @throws ExecuteScriptException */
-	public static Object evalIfScript(final NodeModel nodeModel, ScriptContext scriptContext, final String text) throws ExecuteScriptException{
+	public static Object evalIfScript(final NodeModel nodeModel, ScriptContext scriptContext, final String text){
 		if (containsFormula(text)) {
 			scriptContext = (scriptContext == null) ? new ScriptContext() : scriptContext;
 			return eval(nodeModel, scriptContext, text.substring(1));
@@ -39,7 +39,7 @@ public class FormulaUtils {
 	/** evaluate text as a script.
 	 * @return the evaluation result. 
 	 * @throws ExecuteScriptException */
-	public static Object eval(final NodeModel nodeModel, final ScriptContext scriptContext, final String text) throws ExecuteScriptException {
+	public static Object eval(final NodeModel nodeModel, final ScriptContext scriptContext, final String text) {
 //		System.err.println(nodeModel.getID() + ": " + text);
 		if (!scriptContext.push(nodeModel, text))
 			throw new StackOverflowError(TextUtils.format("formula.error.circularReference", scriptContext.getStackFront()

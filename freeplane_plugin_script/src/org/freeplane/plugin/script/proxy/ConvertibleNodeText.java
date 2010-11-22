@@ -14,7 +14,7 @@ public class ConvertibleNodeText extends Convertible {
 	 * will result in a NullPointerException. So there's nothing to check here.
 	 * @throws ExecuteScriptException 
 	 */
-	public ConvertibleNodeText(NodeModel nodeModel, ScriptContext scriptContext) throws ExecuteScriptException {
+	public ConvertibleNodeText(NodeModel nodeModel, ScriptContext scriptContext) {
 		super(FormulaUtils.evalIfScript(nodeModel, scriptContext, HtmlUtils.htmlToPlain(nodeModel.getText(), true)));
 	}
 }

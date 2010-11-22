@@ -107,8 +107,7 @@ class ScriptEditorPanel extends JDialog {
 
 		void endDialog(boolean pIsCanceled);
 
-		Object executeScript(int pIndex, PrintStream outStream, IErrorHandler pErrorHandler)
-		        throws ExecuteScriptException;
+		Object executeScript(int pIndex, PrintStream outStream, IErrorHandler pErrorHandler);
 
 		int getAmountOfScripts();
 

@@ -18,7 +18,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.filter.Filter;
 import org.freeplane.features.common.text.NodeContainsCondition;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
@@ -759,7 +758,7 @@ public class ScriptApiTest {
 		// doesn't make sense to extent the API for that), right?
 	}
 
-	public void test_NodeRO_getNote_getPlain() throws ExecuteScriptException{
+	public void test_NodeRO_getNote_getPlain(){
 		map = c.newMap();
 		final Node rootNode = map.getRoot();
 		final String plainText = " xx\nx ";
@@ -777,7 +776,7 @@ public class ScriptApiTest {
 		assertEquals("", "zzzzz", rootNode.getNote().getPlain());
 	}
 
-	public void test_NodeRO_getNote()  throws ExecuteScriptException{
+	public void test_NodeRO_getNote() {
 		map = c.newMap();
 		final Node root = map.getRoot();
 		root.setNote(" xxx ");

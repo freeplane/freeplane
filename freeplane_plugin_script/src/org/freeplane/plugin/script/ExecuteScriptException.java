@@ -1,6 +1,6 @@
 package org.freeplane.plugin.script;
 
-public class ExecuteScriptException extends Exception {
+public class ExecuteScriptException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public ExecuteScriptException(String message, Throwable e) {

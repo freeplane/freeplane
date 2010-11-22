@@ -88,7 +88,7 @@ public class ScriptingEngine {
 	 */
 	static Object executeScript(final NodeModel node, String script, final IErrorHandler pErrorHandler,
 	                            final PrintStream pOutStream, final ScriptContext scriptContext)
-	        throws ExecuteScriptException {
+	        {
 		if (!noUserPermissionRequired) {
 			final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
 			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
@@ -257,15 +257,15 @@ public class ScriptingEngine {
 		return lineNumber;
 	}
 
-	public static Object executeScript(final NodeModel node, final String script) throws ExecuteScriptException {
+	public static Object executeScript(final NodeModel node, final String script) {
 		return ScriptingEngine.executeScript(node, script, null);
 	}
 	
-	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext) throws ExecuteScriptException {
+	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext) {
 		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out, scriptContext);
 	}
 
-	static Object executeScriptRecursive(final NodeModel node, final String script) throws ExecuteScriptException {
+	static Object executeScriptRecursive(final NodeModel node, final String script) {
 		ModeController modeController = Controller.getCurrentModeController();
 		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
 			executeScriptRecursive(iter.next(), script);
@@ -273,7 +273,7 @@ public class ScriptingEngine {
 		return executeScript(node, script);
 	}
 
-	static void performScriptOperationRecursive(final NodeModel node) throws ExecuteScriptException {
+	static void performScriptOperationRecursive(final NodeModel node) {
 		ModeController modeController = Controller.getCurrentModeController();
 		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
 			final NodeModel child = iter.next();
@@ -282,7 +282,7 @@ public class ScriptingEngine {
 		performScriptOperation(node);
 	}
 
-	static void performScriptOperation(final NodeModel node) throws ExecuteScriptException {
+	static void performScriptOperation(final NodeModel node) {
 		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		if (attributes == null) {
 			return;
