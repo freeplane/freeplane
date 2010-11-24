@@ -730,7 +730,7 @@ public class NodeView extends JComponent implements INodeView {
 		else {
 			baseComponent = getVisibleParentView();
 		}
-		final int ownY = baseComponent.getMainView().getY() + baseComponent.getMainView().getHeight() / 2;
+		final int ownY = baseComponent.getContent().getY() + baseComponent.getContent().getHeight() / 2;
 		NodeView newSelected = null;
 		for (int i = 0; i < getComponentCount(); i++) {
 			final Component c = getComponent(i);
@@ -747,8 +747,8 @@ public class NodeView extends JComponent implements INodeView {
 					continue;
 				}
 			}
-			final Point childPoint = new Point(0, childView.getMainView().getHeight() / 2);
-			UITools.convertPointToAncestor(childView.getMainView(), childPoint, baseComponent);
+			final Point childPoint = new Point(0, childView.getContent().getHeight() / 2);
+			UITools.convertPointToAncestor(childView.getContent(), childPoint, baseComponent);
 			if (getUpper) {
 				return childView;
 			}
