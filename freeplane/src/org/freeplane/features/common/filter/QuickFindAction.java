@@ -25,6 +25,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController.Direction;
 
@@ -65,6 +66,8 @@ final class QuickFindAction extends AFreeplaneAction {
 		final NodeModel selected = selection.getSelected();
 		final NodeModel next = filterController.findNext(selected, null, direction, condition);
 		if(next != null){
+			final MapController mapController = Controller.getCurrentModeController().getMapController();
+			mapController.displayNode(next);
 			selection.selectAsTheOnlyOneSelected(next);
 		}
 	}
