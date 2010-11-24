@@ -37,10 +37,12 @@ public class NodeContainsCondition extends ASelectableCondition {
 
 	final private String value;
 	final private String nodeItem;
+	final private String valueLowerCase;
 
 	public NodeContainsCondition(String nodeItem, final String value) {
 		super();
 		this.value = value;
+		this.valueLowerCase = value.toLowerCase();
 		this.nodeItem = nodeItem;
 	}
 
@@ -50,7 +52,7 @@ public class NodeContainsCondition extends ASelectableCondition {
 	}
 
 	private boolean checkText(final String plainTextContent) {
-		return plainTextContent != null && plainTextContent.indexOf(value) > -1;
+		return plainTextContent != null && plainTextContent.toLowerCase().indexOf(valueLowerCase) > -1;
 	}
 
 	@Override
