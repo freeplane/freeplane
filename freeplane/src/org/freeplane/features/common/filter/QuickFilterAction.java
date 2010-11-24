@@ -51,6 +51,9 @@ final class QuickFilterAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ASelectableCondition condition = filterEditor.getCondition();
+		if(condition == null){
+			return;
+		}
 		filterController.getFilterConditions().setSelectedItem(condition);
 	}
 }

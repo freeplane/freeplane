@@ -58,6 +58,9 @@ final class QuickFindAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ASelectableCondition condition = filterEditor.getCondition();
+		if(condition == null){
+			return;
+		}
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		final NodeModel selected = selection.getSelected();
 		final NodeModel next = filterController.findNext(selected, null, direction, condition);
