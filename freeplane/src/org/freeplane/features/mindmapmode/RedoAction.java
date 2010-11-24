@@ -26,15 +26,20 @@ import javax.swing.Action;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.features.common.map.INodeChangeListener;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.NodeChangeEvent;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.map.MMapModel;
 
-class RedoAction extends AFreeplaneAction {
+class RedoAction extends AFreeplaneAction implements INodeChangeListener{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private Action undo;
+	private NodeModel lastChangedNode;
 
 	public RedoAction() {
 		super("RedoAction");
@@ -42,11 +47,24 @@ class RedoAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = Controller.getCurrentController().getMap();
+		final Controller controller = Controller.getCurrentController();
+		final MapModel map = controller.getMap();
 		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
+		mapController.addNodeChangeListener(this);
+		try{
 		undoHandler.getRedoAction().actionPerformed(e);
+		if(lastChangedNode != null){
+			controller.getSelection().selectAsTheOnlyOneSelected(lastChangedNode);
+			lastChangedNode = null;
+		}
 		undo.setEnabled(undoHandler.canUndo());
 		setEnabled(undoHandler.canRedo());
+		}
+		finally{
+			mapController.removeNodeChangeListener(this);
+		}
+		
 	}
 
 	public void reset() {
@@ -59,5 +77,9 @@ class RedoAction extends AFreeplaneAction {
 	public void setUndo(final Action undo) {
 		this.undo = undo;
 	}
-	public void afterMapChange(final Object newMap) {};
+	public void afterMapChange(final Object newMap) {}
+
+	public void nodeChanged(NodeChangeEvent event) {
+		lastChangedNode = event.getNode();
+    };
 }

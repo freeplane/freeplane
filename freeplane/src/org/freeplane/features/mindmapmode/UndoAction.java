@@ -29,16 +29,21 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.features.common.map.INodeChangeListener;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.NodeChangeEvent;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.map.MMapModel;
 
-class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
+class UndoAction extends AFreeplaneAction implements IMapSelectionListener, INodeChangeListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private Action redo;
 	private final ChangeListener changeListener;
+	private NodeModel lastChangedNode;
 
 	public UndoAction() {
 		super("UndoAction");
@@ -62,9 +67,23 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = Controller.getCurrentController().getMap();
+
+		final Controller controller = Controller.getCurrentController();
+		final MapModel map = controller.getMap();
 		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
-		undoHandler.getUndoAction().actionPerformed(e);
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
+		mapController.addNodeChangeListener(this);
+		try{
+			undoHandler.getUndoAction().actionPerformed(e);
+		if(lastChangedNode != null){
+			controller.getSelection().selectAsTheOnlyOneSelected(lastChangedNode);
+			lastChangedNode = null;
+		}
+		}
+		finally{
+			mapController.removeNodeChangeListener(this);
+		}
+		
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
@@ -101,5 +120,7 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
 		this.redo = redo;
 	}
 	
-	
+	public void nodeChanged(NodeChangeEvent event) {
+		lastChangedNode = event.getNode();
+    };
 }
