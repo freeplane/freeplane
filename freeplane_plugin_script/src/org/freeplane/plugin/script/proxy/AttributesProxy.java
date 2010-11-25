@@ -87,13 +87,11 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 
 	public int findFirst(final String name) {
 		final List<String> attributeNames = getAttributeNames();
-		int i = 0;
-		for (final String a : attributeNames) {
-			if (a.equals(name)) {
+		for (int i = 0; i < attributeNames.size(); i++) {
+			if (attributeNames.get(i).equals(name)) {
 				return i;
 			}
-			i++;
-		}
+        }
 		return -1;
 	}
 
