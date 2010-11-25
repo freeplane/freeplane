@@ -189,13 +189,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public String getPlainText() {
-		return TextController.getController().getPlainTextContent(getDelegate());
+		return HtmlUtils.htmlToPlain(getDelegate().getText());
 	}
 
 	// NodeRO: R
 	@Deprecated
 	public String getPlainTextContent() {
-		return TextController.getController().getPlainTextContent(getDelegate());
+		return getPlainText();
 	}
 
 	// NodeRO: R
