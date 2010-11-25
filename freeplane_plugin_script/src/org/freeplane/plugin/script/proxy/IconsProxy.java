@@ -19,8 +19,13 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 		super(delegate, scriptContext);
 	}
 
-	public void addIcon(final String name) {
+	public void add(final String name) {
 		getIconController().addIcon(getDelegate(), IconStoreFactory.create().getMindIcon(name));
+	}
+
+	@Deprecated
+	public void addIcon(final String name) {
+		add(name);
 	}
 
 	private int findIcon(final String iconID) {
@@ -29,11 +34,11 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 			if (icons.get(i).getName().equals(iconID)) {
 				return i;
 			}
-        }
+		}
 		return -1;
 	}
 
-	MIconController getIconController() {
+	private MIconController getIconController() {
 		return (MIconController) IconController.getController();
 	}
 
@@ -50,12 +55,17 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 		return list;
 	}
 
-	public boolean removeIcon(final String iconID) {
+	public boolean remove(final String iconID) {
 		final int index = findIcon(iconID);
 		if (index == -1) {
 			return false;
 		}
 		getIconController().removeIcon(getDelegate(), index);
 		return true;
+	}
+
+	@Deprecated
+	public boolean removeIcon(final String iconID) {
+		return remove(iconID);
 	}
 }

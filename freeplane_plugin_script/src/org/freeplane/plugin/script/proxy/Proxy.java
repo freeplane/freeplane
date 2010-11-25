@@ -330,10 +330,14 @@ public interface Proxy {
 		 *   node.icons.addIcon("button_ok")
 		 * </pre>
 		 * @see FreeplaneIconUtils */
+		void add(String name);
+		/** @deprecated since 1.2 - use {@link #add(String)} instead. */
 		void addIcon(String name);
 
 		/** deletes first occurence of icon with the given name, returns true if
 		 * success (icon existed); */
+		boolean remove(String name);
+		/** @deprecated since 1.2 - use {@link #remove(String)} instead. */
 		boolean removeIcon(String name);
 	}
 
@@ -462,13 +466,14 @@ public interface Proxy {
 
 		NodeStyle getStyle();
 
-		/** use this method to remove all tags from an HTML node. @since 1.2 */
+		/** use this method to remove all tags from an HTML node. Formulas are not evaluated. @since 1.2 */
 		String getPlainText();
 
 		/** use this method to remove all tags from an HTML node.
 		 * @deprecated since 1.2 - use getPlainText() or getTo().getPlain() instead. */
 		String getPlainTextContent();
 
+		/** The raw text of this node. Use {@link #getPlainText()} to remove HTML. @since 1.2 */
 		String getText();
 
 		/**
