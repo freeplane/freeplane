@@ -36,6 +36,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -59,7 +60,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	final private Map<Integer, JButton[]> buttons;
 	private int lastModifiers = -1;
 	private int nextModifiers = 0;
-	private Window ownWindowAncestor;
+	private JFrame ownWindowAncestor;
 	final private Timer timer = new Timer(500, new ActionListener() {
 		public void actionPerformed(final ActionEvent e) {
 			onModifierChangeImpl();
@@ -143,13 +144,13 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 
 	public boolean dispatchKeyEvent(final KeyEvent e) {
 		if (ownWindowAncestor == null) {
-			ownWindowAncestor = SwingUtilities.getWindowAncestor(this);
+			ownWindowAncestor = (JFrame) SwingUtilities.getWindowAncestor(this);
 			if (ownWindowAncestor != null) {
 				ownWindowAncestor.addWindowFocusListener(this);
 			}
 		}
 		final Window windowAncestor = SwingUtilities.getWindowAncestor(e.getComponent());
-		if (windowAncestor == ownWindowAncestor) {
+		if (windowAncestor == ownWindowAncestor && ownWindowAncestor.getJMenuBar().isEnabled()) {
 			processDispatchedKeyEvent(e);
 		}
 		else {
