@@ -120,12 +120,6 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 
 	@Override
 	public void paint(final Graphics g) {
-		if(borderColor != null){
-			final Color color = g.getColor();
-			g.setColor(borderColor);
-			g.drawRect(0, 0, getWidth()-1, getHeight()-1);
-			g.setColor(color);
-		}
 		final Graphics2D g2 = (Graphics2D) g;
 		if (zoom != 1F) {
 			zoom *= AttributeTableCellRenderer.ZOOM_CORRECTION_FACTOR;
@@ -138,6 +132,12 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		}
 		else {
 			super.paint(g);
+		}
+		if(borderColor != null){
+			final Color color = g.getColor();
+			g.setColor(borderColor);
+			g.drawRect(0, 0, getWidth()-1, getHeight()-1);
+			g.setColor(color);
 		}
 	}
 }
