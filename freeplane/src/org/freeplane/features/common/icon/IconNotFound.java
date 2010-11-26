@@ -9,7 +9,7 @@ public class IconNotFound extends MindIcon {
 	}
 
 	@Override
-	public String getDefaultImagePath() {
+	public String getImagePath() {
 		return DEFAULT_IMAGE_PATH;
 	}
 

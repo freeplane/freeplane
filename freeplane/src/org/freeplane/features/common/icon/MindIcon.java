@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.common.icon;
 
+import java.io.File;
+
 /**
  * MindIcon class is used in the nodes of MindMaps.
  *
@@ -28,21 +30,36 @@ package org.freeplane.features.common.icon;
 public class MindIcon extends UIIcon {
 	private static final String DEFAULT_IMAGE_PATH = "/images/icons";
 	private static final String SHORTCUT_KEY = "IconAction.%s.shortcut";
+	private final String imagePath;
 	
 	public MindIcon(final String name) {
 		this(name, name + ".png", "");
 	}
+
+	/** this constructor expects an absolute path. It extracts name, filename and imagePath. */
+	public MindIcon(final File file) {
+		this(extractName(file), file.getName(), "", file.getParent().replace("\\", SEPARATOR));
+	}
+
+	private static String extractName(File file) {
+	    return file.getName().replaceFirst("\\.png$", "");
+    }
 
 	public MindIcon(final String name, final String fileName) {
 		this(name, fileName, "");
 	}
 	
 	public MindIcon(final String name, final String fileName, final String description) {
+		this(name, fileName, description, DEFAULT_IMAGE_PATH);
+	}
+	
+	public MindIcon(final String name, final String fileName, final String description, final String imagePath) {
 		super(name, fileName, description, String.format(SHORTCUT_KEY, name));
+		this.imagePath = imagePath;
 	}
 
 	@Override
-	public String getDefaultImagePath() {
-		return DEFAULT_IMAGE_PATH;
+	public String getImagePath() {
+		return imagePath == null ? DEFAULT_IMAGE_PATH : imagePath;
 	}
 }

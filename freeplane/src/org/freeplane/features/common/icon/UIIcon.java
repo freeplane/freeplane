@@ -95,7 +95,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return null; // as in MindIcon TODO ask?
 	}
 
-	public String getDefaultImagePath() {
+	public String getImagePath() {
 		return DEFAULT_IMAGE_PATH;
 	}
 
@@ -111,7 +111,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	public String getPath() {
 		StringBuilder builder = new StringBuilder();
 		builder = new StringBuilder();
-		builder.append(this.getDefaultImagePath());
+		builder.append(this.getImagePath());
 		builder.append(SEPARATOR);
 		builder.append(fileName);
 		final String path = builder.toString();
