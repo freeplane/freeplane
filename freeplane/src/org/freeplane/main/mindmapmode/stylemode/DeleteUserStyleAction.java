@@ -22,7 +22,6 @@ package org.freeplane.main.mindmapmode.stylemode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
@@ -31,6 +30,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.styles.StyleNamedObject;
 import org.freeplane.features.mindmapmode.map.MMapController;
 
 /**
@@ -55,7 +55,7 @@ public class DeleteUserStyleAction extends AFreeplaneAction {
 			UITools.errorMessage(TextUtils.getText("can_not_delete_style_group"));
 			return;
 		}
-		if (selected.getUserObject() instanceof NamedObject) {
+		if (selected.getUserObject() instanceof StyleNamedObject) {
 			UITools.errorMessage(TextUtils.getText("can_not_delete_predefined_style"));
 			return;
 		}
