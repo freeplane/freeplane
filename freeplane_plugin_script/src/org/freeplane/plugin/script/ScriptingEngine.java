@@ -311,6 +311,7 @@ public class ScriptingEngine {
 		if (ScriptingEngine.classpath != null)
 			throw new SecurityException("reset of script classpath is forbidden.");
 		ScriptingEngine.classpath = Collections.unmodifiableList(classpath);
-		LogUtils.info("extending script's classpath by " + classpath);
+		if (!classpath.isEmpty())
+			LogUtils.info("extending script's classpath by " + classpath);
     }
 }
