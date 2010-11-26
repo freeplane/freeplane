@@ -312,8 +312,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.add(quickEditor);
 		filterToolbar.add(applyFindPreviousBtn);
 		filterToolbar.add(applyFindNextBtn);
-		filterToolbar.add(applyQuickFilterBtn);
 		filterToolbar.add(applyQuickSelectBtn);
+		filterToolbar.add(applyQuickFilterBtn);
 		activeFilterConditionComboBox.setRenderer(this.getConditionRenderer());
 		return filterToolbar;
 	}
