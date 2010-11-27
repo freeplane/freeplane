@@ -20,6 +20,7 @@
 package org.freeplane.features.common.icon;
 
 import java.net.URL;
+import java.util.regex.Pattern;
 
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
@@ -38,6 +39,8 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	protected static final String SEPARATOR = "/";
 	protected static final String THEME_FOLDER_KEY = "icon.theme.folder";
 	protected static final ResourceController RESOURCE_CONTROLLER = ResourceController.getResourceController();
+	private static final Pattern parentDirPattern = Pattern.compile(SEPARATOR + "[^" + SEPARATOR + ".]+" + SEPARATOR
+	        + "\\.\\." + SEPARATOR);
 	private final String name;
 	private final String fileName;
 	private final String description;
@@ -114,7 +117,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		builder.append(this.getImagePath());
 		builder.append(SEPARATOR);
 		builder.append(fileName);
-		final String path = builder.toString();
+		final String path = parentDirPattern.matcher(builder.toString()).replaceFirst(SEPARATOR);
 		return path;
 	}
 

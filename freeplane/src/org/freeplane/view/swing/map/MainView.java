@@ -71,6 +71,7 @@ import org.freeplane.features.common.text.TextController;
  * Base class for all node views.
  */
 public abstract class MainView extends ZoomableLabel {
+	private static final String MENUITEM_ICON = "icons/button.png";
 	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty(
 	    "executable_icon");
 	private static final String MAIL_ICON = ResourceController.getResourceController().getProperty("mail_icon");
@@ -306,7 +307,10 @@ public abstract class MainView extends ZoomableLabel {
 				iconPath = EXECUTABLE_ICON;
 			}
 			else if (LinkController.isMenuItemLink(link)) {
-				iconPath = "icons/button.png";
+				// nodes with menu item link contain the image from the menu if available
+				if (!model.getIcons().isEmpty())
+					return;
+				iconPath = MENUITEM_ICON;
 			}
 			else if (isExecutable(linkText)) {
 				iconPath = "Executable.png";
