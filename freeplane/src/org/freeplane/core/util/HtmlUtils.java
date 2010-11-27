@@ -82,7 +82,7 @@ public class HtmlUtils {
 
 	private static final Pattern FIND_TAGS_PATTERN = Pattern.compile("([^<]*)(<[^>]+>)");
 	private static final Pattern HTML_PATTERN = Pattern.compile("(?s)^\\s*<\\s*html.*?>.*");
-	private static Pattern[] PATTERNS;
+	private static Pattern[] HTML_PATTERNS;
 	private static HtmlUtils sInstance = new HtmlUtils();
 	private static final Pattern SLASHED_TAGS_PATTERN = Pattern.compile("<((" + "br|area|base|basefont|"
 	        + "bgsound|button|col|colgroup|embed|hr" + "|img|input|isindex|keygen|link|meta"
@@ -96,44 +96,58 @@ public class HtmlUtils {
 	public static String htmlToPlain(final String text) {
 		return HtmlUtils.htmlToPlain(text, /* strictHTMLOnly= */true);
 	}
-
+	
 	public static String htmlToPlain(final String text, final boolean strictHTMLOnly) {
 		if (strictHTMLOnly && !HtmlUtils.isHtmlNode(text)) {
 			return text;
 		}
-		if (PATTERNS == null) {
-			PATTERNS = new Pattern[] { Pattern.compile("(?ims)[\n\t]"), Pattern.compile("(?ims) +"),
-			        Pattern.compile("(?ims)<br.*?>"), Pattern.compile("(?ims)<p.*?>"),
-			        Pattern.compile("(?ims)<div.*?>"), Pattern.compile("(?ims)<tr.*?>"),
-			        Pattern.compile("(?ims)<dt.*?>"), Pattern.compile("(?ims)<dd.*?>"),
-			        Pattern.compile("(?ims)<td.*?>"), Pattern.compile("(?ims)<[uo]l.*?>"),
-			        Pattern.compile("(?ims)<li.*?>"), Pattern.compile("(?ims) *</[^>]*>"),
-			        Pattern.compile("(?ims)<[^/][^>]*> *"), Pattern.compile("^\n+"), Pattern.compile("(?ims)&lt;"),
-			        Pattern.compile("(?ims)&gt;"), Pattern.compile("(?ims)&quot;"), Pattern.compile("(?ims)&nbsp;"),
-			        Pattern.compile("(?ims)&amp;") };
+		if (HTML_PATTERNS == null) {
+			HTML_PATTERNS = new Pattern[] { 
+					Pattern.compile("(?ims)>[\n\t]+"), 
+					Pattern.compile("(?ims)[\n\t ]+"), 
+			        Pattern.compile("(?ims)<br.*?>"), 
+			        Pattern.compile("(?ims)<p.*?>\\s+"),
+			        Pattern.compile("(?ims)<div.*?>\\s+"), 
+			        Pattern.compile("(?ims)<tr.*?>\\s+"),
+			        Pattern.compile("(?ims)<dt.*?>"), 
+			        Pattern.compile("(?ims)<dd.*?>"),
+			        Pattern.compile("(?ims)<td.*?>"), 
+			        Pattern.compile("(?ims)<[uo]l.*?>"),
+			        Pattern.compile("(?ims)<li.*?>"), 
+			        Pattern.compile("(?ims) *</[^>]*>"),
+			        Pattern.compile("(?ims)<[^/][^>]*> *"), 
+			        Pattern.compile("^\n+"), 
+			        Pattern.compile("(?ims)&lt;"),
+			        Pattern.compile("(?ims)&gt;"), 
+			        Pattern.compile("(?ims)&quot;"), 
+			        Pattern.compile("(?ims)&nbsp;"),
+			        Pattern.compile("(?ims)&amp;"),
+			        Pattern.compile("(?ims)[ \t]+\n") };
 		}
 		String intermediate = text;
-		intermediate = PATTERNS[0].matcher(intermediate).replaceAll("");
-		intermediate = PATTERNS[1].matcher(intermediate).replaceAll(" ");
-		intermediate = PATTERNS[2].matcher(intermediate).replaceAll("\n");
-		intermediate = PATTERNS[3].matcher(intermediate).replaceAll("\n\n");
-		intermediate = PATTERNS[4].matcher(intermediate).replaceAll("\n");
-		intermediate = PATTERNS[5].matcher(intermediate).replaceAll("\n");
-		intermediate = PATTERNS[6].matcher(intermediate).replaceAll("\n");
-		intermediate = PATTERNS[7].matcher(intermediate).replaceAll("\n   ");
-		intermediate = PATTERNS[8].matcher(intermediate).replaceAll(" ");
-		intermediate = PATTERNS[9].matcher(intermediate).replaceAll("\n");
-		intermediate = PATTERNS[10].matcher(intermediate).replaceAll("\n   * ");
-		intermediate = PATTERNS[11].matcher(intermediate).replaceAll("");
-		intermediate = PATTERNS[12].matcher(intermediate).replaceAll("");
-		intermediate = PATTERNS[13].matcher(intermediate).replaceAll("");
+		int i = 0;
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll(">");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll(" ");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("\n");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("\n");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("\n");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("\n");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("\n");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("\n   ");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll(" ");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("\n");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("\n   * ");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("");
 		intermediate = intermediate.trim();
 		intermediate = HtmlUtils.unescapeHTMLUnicodeEntity(intermediate);
-		intermediate = PATTERNS[14].matcher(intermediate).replaceAll("<");
-		intermediate = PATTERNS[15].matcher(intermediate).replaceAll(">");
-		intermediate = PATTERNS[16].matcher(intermediate).replaceAll("\"");
-		intermediate = PATTERNS[17].matcher(intermediate).replaceAll(" ");
-		intermediate = PATTERNS[18].matcher(intermediate).replaceAll("&");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("<");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll(">");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("\"");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll(" ");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("&");
+		intermediate = HTML_PATTERNS[i++].matcher(intermediate).replaceAll("\n");
 		return intermediate;
 	}
 
@@ -180,12 +194,13 @@ public class HtmlUtils {
 					}
 					break;
 				case '\n':
-					result.append("<br>");
+					result.append("</p>\n<p>");
 					break;
 				default:
 					result.append(myChar);
 			}
 		}
+		result.append("</p></body></html>");
 		return result.toString();
 	}
 

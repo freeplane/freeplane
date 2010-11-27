@@ -74,7 +74,8 @@ import com.lightdev.app.shtm.TextResources;
  */
 public class MTextController extends TextController {
 	private EditNodeBase mCurrentEditDialog = null;
-	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES = "remind_use_rich_text_in_new_long_nodes";
+	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_NODES = "remind_use_rich_text_in_new_nodes";
+	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_EXISTING_NODES = "remind_use_rich_text_in_existing_nodes";
 
 	static public SHTMLPanel createSHTMLPanel() {
 		SHTMLPanel.setResources(new TextResources() {
@@ -294,13 +295,13 @@ public class MTextController extends TextController {
 		setNodeText(lowerNode, newLowerContent);
 	}
 
-	public boolean useRichTextInNewNodes() {
+	public boolean useRichTextInEditor(String key) {
 		final int showResult = OptionalDontShowMeAgainDialog.show(
-		    "edit.edit_rich_text", "edit.decision", MTextController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES,
+			"OptionPanel." + key, "edit.decision", key,
 		    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
-		final String useRichTextInNewLongNodes = (showResult == JOptionPane.OK_OPTION) ? "true" : "false";
-		return useRichTextInNewLongNodes.equals("true");
+		return showResult == JOptionPane.OK_OPTION;
 	}
+
 	public void editDetails(NodeModel model) {
 		final EditDetailsAction action = (EditDetailsAction) Controller.getCurrentModeController().getAction("EditDetailsAction");
 		action.edit(model);
@@ -466,12 +467,13 @@ public class MTextController extends TextController {
 				mCurrentEditDialog = null;
 			}
 
-			public void ok(String text) {
-				if(HtmlUtils.isHtmlNode(text)){
-					text = HTML_HEAD.matcher(text).replaceFirst("");
+			public void ok(final String text) {
+				String processedText = text;
+				if(HtmlUtils.isHtmlNode(processedText)){
+					processedText = HTML_HEAD.matcher(processedText).replaceFirst("");
 				}
-				text = text.replaceFirst("\\s+$", "");
-				setNodeText(nodeModel, text);
+				processedText = processedText.replaceFirst("\\s+$", "");
+				setNodeText(nodeModel, processedText);
 				stop();
 			}
 
@@ -496,7 +498,9 @@ public class MTextController extends TextController {
 		}
 		final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
 		final boolean isHtmlNode = HtmlUtils.isHtmlNode(text);
-		final boolean editHtml = isHtmlNode || isNewNode && useRichTextInNewNodes();
+		final boolean editHtml = isHtmlNode 
+		|| isNewNode && useRichTextInEditor(MTextController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_NODES) 
+		|| !isNewNode && useRichTextInEditor(MTextController.RESOURCES_REMIND_USE_RICH_TEXT_IN_EXISTING_NODES);
 		final boolean editInternalWysiwyg = editHtml && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
 		final boolean editExternal = editHtml && StringUtils.equals(htmlEditingOption, "external");
 		if (editHtml && !isHtmlNode) {

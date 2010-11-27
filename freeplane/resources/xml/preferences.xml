@@ -214,7 +214,8 @@
             <boolean name="il__enter_confirms_by_default" />
         </separator>
         <separator name="notifications">
-            <remind_value name="remind_use_rich_text_in_new_long_nodes"/>
+            <remind_value name="remind_use_rich_text_in_new_nodes"/>
+            <remind_value name="remind_use_rich_text_in_existing_nodes"/>
             <boolean name="delete_nodes_without_question"/>
             <boolean name="cut_nodes_without_question"/>
             <boolean name="remove_notes_without_question"/>
