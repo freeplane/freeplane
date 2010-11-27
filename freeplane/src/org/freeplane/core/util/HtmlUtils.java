@@ -24,7 +24,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -81,7 +80,7 @@ public class HtmlUtils {
 	}
 
 	private static final Pattern FIND_TAGS_PATTERN = Pattern.compile("([^<]*)(<[^>]+>)");
-	private static final Pattern HTML_PATTERN = Pattern.compile("(?s)^\\s*<\\s*html.*?>.*");
+	private static final Pattern HTML_PATTERN = Pattern.compile("(?s)^\\s*<\\s*html.*?>.*", Pattern.CASE_INSENSITIVE);
 	private static Pattern[] PATTERNS;
 	private static HtmlUtils sInstance = new HtmlUtils();
 	private static final Pattern SLASHED_TAGS_PATTERN = Pattern.compile("<((" + "br|area|base|basefont|"
@@ -149,7 +148,7 @@ public class HtmlUtils {
 				return false;
 			}
 		}
-		return HtmlUtils.HTML_PATTERN.matcher(text.toLowerCase(Locale.ENGLISH)).matches();
+		return HtmlUtils.HTML_PATTERN.matcher(text).matches();
 	}
 
 	public static String plainToHTML(final String text) {
