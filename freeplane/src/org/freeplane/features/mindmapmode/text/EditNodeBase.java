@@ -24,7 +24,6 @@ import java.awt.Frame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -43,7 +42,6 @@ import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 

@@ -37,7 +37,6 @@ import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;

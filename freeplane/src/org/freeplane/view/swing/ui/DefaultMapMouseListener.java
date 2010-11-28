@@ -24,7 +24,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.core.ui.IMouseListener;

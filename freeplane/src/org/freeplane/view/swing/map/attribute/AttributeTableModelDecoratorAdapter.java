@@ -19,8 +19,6 @@
  */
 package org.freeplane.view.swing.map.attribute;
 
-import java.util.ArrayList;
-
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -31,13 +29,8 @@ import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
-import org.freeplane.features.common.map.INodeChangeListener;
-import org.freeplane.features.common.map.INodeView;
-import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.view.swing.map.NodeView;
 

@@ -29,7 +29,6 @@ import java.awt.event.ItemListener;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;

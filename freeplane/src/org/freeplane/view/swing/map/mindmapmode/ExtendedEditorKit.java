@@ -22,7 +22,6 @@ package org.freeplane.view.swing.map.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JEditorPane;
-import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
 import com.lightdev.app.shtm.SHTMLEditorKit;
