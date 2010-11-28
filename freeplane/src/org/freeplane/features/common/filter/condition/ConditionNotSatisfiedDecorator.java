@@ -39,6 +39,9 @@ public class ConditionNotSatisfiedDecorator extends ASelectableCondition impleme
 	static ASelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
 		final Vector<XMLElement> children = element.getChildren();
 		final ASelectableCondition cond = conditionFactory.loadCondition(children.get(0));
+		if(cond == null){
+			return null;
+		}
 		return new ConditionNotSatisfiedDecorator(cond);
 	}
 

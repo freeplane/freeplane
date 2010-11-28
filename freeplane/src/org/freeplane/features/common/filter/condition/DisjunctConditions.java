@@ -40,7 +40,11 @@ public class DisjunctConditions extends ASelectableCondition implements ICombine
 		final Vector<XMLElement> children = element.getChildren();
 		final ASelectableCondition[] conditions = new ASelectableCondition[children.size()];
 		for (int i = 0; i < conditions.length; i++) {
-			conditions[i] = conditionFactory.loadCondition(children.get(i));
+			final ASelectableCondition condition = conditionFactory.loadCondition(children.get(i));
+			if(condition == null){
+				return null;
+			}
+			conditions[i] = condition;
 		}
 		return new DisjunctConditions(conditions);
 	}

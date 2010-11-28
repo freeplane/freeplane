@@ -402,7 +402,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			final XMLElement loader = (XMLElement) parser.parse();
 			final Vector<XMLElement> conditions = loader.getChildren();
 			for (int i = 0; i < conditions.size(); i++) {
-				filterConditionModel.addElement(getConditionFactory().loadCondition(conditions.get(i)));
+				final ASelectableCondition condition = getConditionFactory().loadCondition(conditions.get(i));
+				if(condition != null){
+					filterConditionModel.addElement(condition);
+				}
 			}
 		}
 		catch (final FileNotFoundException e) {

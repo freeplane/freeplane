@@ -222,7 +222,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			}
 			final XMLElement conditionElement = styleElement.getChildAtIndex(0);
 			final ASelectableCondition condition = conditionFactory.loadCondition(conditionElement);
-			conditionalStyleModel.addCondition(isActive, condition, style, isLast);
+			if(condition != null){
+				conditionalStyleModel.addCondition(isActive, condition, style, isLast);
+			}
 		}
     }
 	private void saveConditinalStyles(ConditionalStyleModel conditionalStyleModel, XMLElement parent) {
