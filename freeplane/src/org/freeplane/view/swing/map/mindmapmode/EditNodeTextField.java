@@ -136,7 +136,12 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		else {
 			preferredSize.width = Math.max(maxWidth, preferredSize.width); 
 		}
-		preferredSize.height = Math.max(preferredSize.height, lastHeight);
+		if(preferredSize.width < maxWidth){
+			preferredSize.height = lastHeight;
+		}
+		else{
+			preferredSize.height = Math.max(preferredSize.height, lastHeight);
+		}
 		if (preferredSize.width == lastWidth && preferredSize.height == lastHeight) {
 			textfield.repaint();
 			return;
