@@ -22,7 +22,7 @@ public class ZoomableLabel extends JLabel {
 		fmg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 	}
 
-	protected int getIconWidth() {
+	public int getIconWidth() {
 		final Icon icon = getIcon();
 		if (icon == null) {
 			return 0;

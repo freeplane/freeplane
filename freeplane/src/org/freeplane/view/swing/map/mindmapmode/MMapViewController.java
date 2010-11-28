@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.map;
+package org.freeplane.view.swing.map.mindmapmode;
 
 import java.awt.event.KeyEvent;
 
@@ -25,6 +25,7 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
 import org.freeplane.features.mindmapmode.text.INodeTextFieldCreator;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
+import org.freeplane.view.swing.map.MapViewController;
 
 /**
  * @author Dimitry Polivaev

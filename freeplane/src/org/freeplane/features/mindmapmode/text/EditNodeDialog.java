@@ -185,7 +185,7 @@ public class EditNodeDialog extends EditNodeBase {
 			textComponent.addMouseListener(new MouseListener() {
 				private void conditionallyShowPopup(final MouseEvent e) {
 					if (e.isPopupTrigger()) {
-						final JPopupMenu popupMenu = new EditPopupMenu(textComponent);
+						final JPopupMenu popupMenu = createPopupMenu();
 						popupMenu.show(e.getComponent(), e.getX(), e.getY());
 						e.consume();
 					}

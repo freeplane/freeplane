@@ -335,7 +335,7 @@ public abstract class MainView extends ZoomableLabel {
 		return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
 	}
 
-	protected void updateText(NodeModel nodeModel) {
+	public void updateText(NodeModel nodeModel) {
 		final ModeController modeController = getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);
 		final String originalText = textController.getText(nodeModel);

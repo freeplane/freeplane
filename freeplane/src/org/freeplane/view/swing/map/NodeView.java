@@ -850,7 +850,7 @@ public class NodeView extends JComponent implements INodeView {
 	/**
 	 * @return returns the color that should used to select the node.
 	 */
-	Color getSelectedColor() {
+	public Color getSelectedColor() {
 		return MapView.standardSelectColor;
 	}
 

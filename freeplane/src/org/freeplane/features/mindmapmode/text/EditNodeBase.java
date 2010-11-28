@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.Point;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -33,10 +34,12 @@ import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.WindowConstants;
+import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.util.TextUtils;
@@ -48,26 +51,6 @@ import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
  * @author foltin
  */
 abstract public class EditNodeBase {
-	protected class EditCopyAction extends AbstractAction {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-		final private JTextComponent textComponent;
-
-		public EditCopyAction(final JTextComponent textComponent) {
-			super(TextUtils.getText("CopyAction.text"));
-			this.textComponent = textComponent;
-		}
-
-		public void actionPerformed(final ActionEvent e) {
-			final String selection = textComponent.getSelectedText();
-			if (selection != null) {
-				ClipboardController.getController().setClipboardContents(new StringSelection(selection));
-			}
-		}
-	}
-
 	abstract static class EditDialog extends JDialog {
 		class CancelAction extends AbstractAction {
 			/**
@@ -193,16 +176,19 @@ abstract public class EditNodeBase {
 		}
 	}
 
-	public class EditPopupMenu extends JPopupMenu {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public EditPopupMenu(final JTextComponent textComponent) {
-			this.add(new EditCopyAction(textComponent));
-			SpellCheckerController.getController().addSpellCheckerMenu(this);
-		}
+	protected JPopupMenu createPopupMenu(){
+		JPopupMenu menu = new JPopupMenu();
+		final DefaultEditorKit.CopyAction copyAction = new DefaultEditorKit.CopyAction();
+		copyAction.putValue(Action.NAME, TextUtils.getText("CopyAction.text"));
+		menu.add(copyAction);
+		final DefaultEditorKit.CutAction cutAction = new DefaultEditorKit.CutAction();
+		cutAction.putValue(Action.NAME, TextUtils.getText("CutAction.text"));
+		menu.add(cutAction);
+		final DefaultEditorKit.PasteAction pasteAction = new DefaultEditorKit.PasteAction();
+		pasteAction.putValue(Action.NAME, TextUtils.getText("PasteAction.text"));
+		menu.add(pasteAction);
+		SpellCheckerController.getController().addSpellCheckerMenu(menu);
+		return menu;
 	}
 
 	public interface IEditControl {
@@ -221,7 +207,6 @@ abstract public class EditNodeBase {
 	protected NodeModel node;
 	protected String text;
 	protected FocusListener textFieldListener = null;
-
 	protected EditNodeBase(final NodeModel node, final String text,
 	                       final IEditControl editControl) {
 //		this.modeController = modeController;
@@ -294,7 +279,7 @@ abstract public class EditNodeBase {
 		if (firstKeyEvent.getKeyChar() == KeyEvent.CHAR_UNDEFINED) {
 			switch (firstKeyEvent.getKeyCode()) {
 				case KeyEvent.VK_HOME:
-					textComponent.setCaretPosition(0);
+					textComponent.setCaretPosition(textComponent.viewToModel(new Point(0, 0)));
 					//					firstKeyEvent.consume();
 					break;
 				case KeyEvent.VK_END:

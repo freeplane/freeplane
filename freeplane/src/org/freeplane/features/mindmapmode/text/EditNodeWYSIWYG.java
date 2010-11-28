@@ -230,9 +230,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			final Color nodeTextColor = viewController.getTextColor(node);
 			ruleBuilder.append("color: ").append(ColorUtils.colorToString(nodeTextColor)).append(";");
 			ruleBuilder.append("}\n");
-			ruleBuilder.append("p {");
-			ruleBuilder.append("margin-top:0;");
-			ruleBuilder.append("}\n");
+			ruleBuilder.append("p {margin-top:0;}\n");
 			final HTMLDocument document = htmlEditorPanel.getDocument();
 			final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
 			editorPane.setForeground(nodeTextColor);

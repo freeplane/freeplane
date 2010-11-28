@@ -70,6 +70,7 @@ import org.freeplane.n3.nanoxml.XMLException;
  * @author Dimitry Polivaev
  */
 public class MClipboardController extends ClipboardController {
+	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_NODES = "remind_use_rich_text_in_new_nodes";
 	private class DirectHtmlFlavorHandler implements IDataFlavorHandler {
 		private String textFromClipboard;
 
@@ -483,7 +484,7 @@ public class MClipboardController extends ClipboardController {
 					if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 						final MTextController textController = (MTextController) TextController
 						    .getController();
-						final boolean richText = textController.useRichTextInEditor(MTextController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_NODES);
+						final boolean richText = textController.useRichTextInEditor(RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_NODES);
 						if (richText) {
 							final boolean structuredHtmlImport = resourceController
 							    .getBooleanProperty("structured_html_import");

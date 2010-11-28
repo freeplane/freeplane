@@ -28,6 +28,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
@@ -74,8 +75,6 @@ import com.lightdev.app.shtm.TextResources;
  */
 public class MTextController extends TextController {
 	private EditNodeBase mCurrentEditDialog = null;
-	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_NODES = "remind_use_rich_text_in_new_nodes";
-	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_EXISTING_NODES = "remind_use_rich_text_in_existing_nodes";
 
 	static public SHTMLPanel createSHTMLPanel() {
 		SHTMLPanel.setResources(new TextResources() {
@@ -428,6 +427,16 @@ public class MTextController extends TextController {
 		}
 	}
 
+	private static Pattern FORMATTING_PATTERN = null;
+	
+	public boolean containsFormatting(final String text){
+		if(FORMATTING_PATTERN == null){
+			FORMATTING_PATTERN = Pattern.compile("<(?!/|html>|head|body|p/?>|!--|style type=\"text/css\">)", Pattern.CASE_INSENSITIVE);
+		}
+		final Matcher matcher = FORMATTING_PATTERN.matcher(text);
+		return matcher.find();
+	}
+
 	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final KeyEvent firstEvent,
 	          final boolean isNewNode, final boolean parentFolded, final boolean editLong) {
 		if (nodeModel == null || mCurrentEditDialog != null) {
@@ -471,6 +480,9 @@ public class MTextController extends TextController {
 				String processedText = text;
 				if(HtmlUtils.isHtmlNode(processedText)){
 					processedText = HTML_HEAD.matcher(processedText).replaceFirst("");
+					if(! containsFormatting(processedText)){
+						processedText = HtmlUtils.htmlToPlain(processedText);
+					}
 				}
 				processedText = processedText.replaceFirst("\\s+$", "");
 				setNodeText(nodeModel, processedText);
@@ -497,13 +509,9 @@ public class MTextController extends TextController {
 			return base;
 		}
 		final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
-		final boolean isHtmlNode = HtmlUtils.isHtmlNode(text);
-		final boolean editHtml = isHtmlNode 
-		|| isNewNode && useRichTextInEditor(MTextController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_NODES) 
-		|| !isNewNode && useRichTextInEditor(MTextController.RESOURCES_REMIND_USE_RICH_TEXT_IN_EXISTING_NODES);
-		final boolean editInternalWysiwyg = editHtml && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
-		final boolean editExternal = editHtml && StringUtils.equals(htmlEditingOption, "external");
-		if (editHtml && !isHtmlNode) {
+		final boolean editInternalWysiwyg = editLong && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
+		final boolean editExternal = editLong && StringUtils.equals(htmlEditingOption, "external");
+		if(! HtmlUtils.isHtmlNode(text)){
 			text = HtmlUtils.plainToHTML(text);
 		}
 		if (editInternalWysiwyg) {
@@ -511,9 +519,6 @@ public class MTextController extends TextController {
 		}
 		else if (editExternal) {
 			return new EditNodeExternalApplication(nodeModel, text, firstEvent, editControl);
-		}
-		else if (editLong) {
-			return new EditNodeDialog(nodeModel, text, firstEvent, editControl, true);
 		}
 		else {
 			final INodeTextFieldCreator textFieldCreator = (INodeTextFieldCreator) Controller.getCurrentController().getMapViewManager();
