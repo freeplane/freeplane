@@ -114,9 +114,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final int lastWidth = textfield.getWidth();
 		final int lastHeight = textfield.getHeight();
 		final boolean lineWrap = lastWidth == maxWidth;
-		Dimension preferredSize;
+		Dimension preferredSize = textfield.getPreferredSize();
 		if (!lineWrap) {
-			preferredSize = textfield.getPreferredSize();
 			preferredSize.width ++;
 			if (preferredSize.width > maxWidth) {
 				setLineWrap();
@@ -132,14 +131,12 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 						setLineWrap();
 					}
 				}
-				preferredSize.height = Math.max(preferredSize.height, lastHeight);
 			}
 		}
 		else {
-			final Dimension preferredScrollableViewportSize = textfield.getPreferredScrollableViewportSize();
-			preferredSize = new Dimension(Math.max(maxWidth, preferredScrollableViewportSize.width), 
-				Math.max(lastHeight, preferredScrollableViewportSize.height));
+			preferredSize.width = Math.max(maxWidth, preferredSize.width); 
 		}
+		preferredSize.height = Math.max(preferredSize.height, lastHeight);
 		if (preferredSize.width == lastWidth && preferredSize.height == lastHeight) {
 			textfield.repaint();
 			return;
