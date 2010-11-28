@@ -24,6 +24,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -43,8 +45,8 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.MenuUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.MenuUtils.MenuEntry;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.icon.factory.MindIconFactory;
 import org.freeplane.features.common.map.NodeModel;
@@ -62,7 +64,7 @@ class SelectMenuItemDialog extends JDialog {
 	private static final Dimension DIALOG_DIMENSION = new Dimension(350, 350);
 	private JButton btnOK;
 	private final JTree tree;
-	private String menuItemKey;
+	private MenuEntry menuItem;
 
 	private class CloseAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
@@ -72,7 +74,7 @@ class SelectMenuItemDialog extends JDialog {
 				    .getLastSelectedPathComponent();
 				// this condition actually has to be true due to the TreeSelectionListener
 				if (selectedNode != null && selectedNode.isLeaf()) {
-					menuItemKey = ((MenuEntry) selectedNode.getUserObject()).getKey();
+					menuItem = (MenuEntry) selectedNode.getUserObject();
 					dispose();
 				}
 			}
@@ -125,8 +127,8 @@ class SelectMenuItemDialog extends JDialog {
 		setVisible(true);
 	}
 
-	public String getMenuItemKey() {
-		return menuItemKey;
+	public MenuEntry getMenuItem() {
+		return menuItem;
 	}
 
 	private Box createButtonBar() {
@@ -167,6 +169,15 @@ class SelectMenuItemDialog extends JDialog {
 				btnOK.setEnabled(node != null && node.isLeaf());
 			}
 		});
+		jTree.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() >= 2) {
+					if (btnOK.isEnabled())
+						btnOK.doClick();
+				}
+			}
+		});
+
 		return jTree;
 	}
 }

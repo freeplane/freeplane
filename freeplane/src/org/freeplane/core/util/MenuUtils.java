@@ -20,7 +20,6 @@
 package org.freeplane.core.util;
 
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +35,6 @@ import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.features.common.icon.IconNotFound;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
@@ -90,7 +88,7 @@ public class MenuUtils {
 				// but only for a few of these Icons are available
 				return null;
 			}
-			return new MindIcon(new File(resource));
+			return new MindIcon(resource.replaceAll("/images/(.*).png", "../$1"));
 		}
 
 		@Override
@@ -220,7 +218,8 @@ public class MenuUtils {
 		}
 		if (menuEntry.getIconKey() != null) {
 			final MindIcon mindIcon = menuEntry.createMindIcon();
-			newNodeModel.addIcon(mindIcon != null ? mindIcon : IconNotFound.instance());
+			if (mindIcon != null)
+				newNodeModel.addIcon(mindIcon);
 		}
 		nodeModel.insert(newNodeModel);
 		return newNodeModel;
