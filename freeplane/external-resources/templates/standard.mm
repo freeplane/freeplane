@@ -7,7 +7,6 @@
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
 <stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<edge STYLE="bezier" COLOR="#808080" WIDTH="1"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.ok">
 <icon BUILTIN="button_ok"/>
@@ -99,5 +98,6 @@
 </stylenode>
 </map_styles>
 </hook>
+<hook NAME="AutomaticEdgeColor"/>
 </node>
 </map>

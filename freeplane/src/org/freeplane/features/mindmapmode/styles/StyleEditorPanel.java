@@ -51,8 +51,12 @@ import org.freeplane.core.resources.components.FontProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.core.resources.components.NextLineProperty;
+import org.freeplane.core.resources.components.NumberProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
+import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.core.util.XmlUtils;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeController;
@@ -69,6 +73,7 @@ import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
+import org.freeplane.features.mindmapmode.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
@@ -212,8 +217,7 @@ public class StyleEditorPanel extends JPanel {
 			final MEdgeController styleController = (MEdgeController) Controller
 			.getCurrentModeController().getExtension(
 					EdgeController.class);
-			styleController.setWidth(node, enabled ? getEdgeWidthTransformation().get(mEdgeWidth.getValue())
-			        : EdgeModel.DEFAULT_WIDTH);
+			styleController.setWidth(node, enabled ? Integer.parseInt(mEdgeWidth.getValue()): EdgeModel.DEFAULT_WIDTH);
 		}
 	}
 
@@ -321,8 +325,6 @@ public class StyleEditorPanel extends JPanel {
 	private static final String[] EDGE_STYLES = StyleEditorPanel.initializeEdgeStyles();
 	private static final String[] CLOUD_SHAPES = StyleEditorPanel.initializeCloudShapes();
 	private static final String EDGE_WIDTH = "edgewidth";
-	private static final String[] EDGE_WIDTHS = new String[] { "EdgeWidth_thin", "EdgeWidth_1", "EdgeWidth_2",
-	        "EdgeWidth_4", "EdgeWidth_8" };
 //	private static final String ICON = "icon";
 	private static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
 	private static final String NODE_COLOR = "nodecolor";
@@ -362,7 +364,7 @@ public class StyleEditorPanel extends JPanel {
 	private List<IPropertyControl> mControls;
 	private ColorProperty mEdgeColor;
 	private ComboProperty mEdgeStyle;
-	private ComboProperty mEdgeWidth;
+	private NumberProperty mEdgeWidth;
 // 	private final ModeController mMindMapController;
 	private ColorProperty mNodeBackgroundColor;
 	private ColorProperty mNodeColor;
@@ -434,8 +436,7 @@ public class StyleEditorPanel extends JPanel {
 	private void addEdgeColorControl(final List<IPropertyControl> controls) {
 		mSetEdgeColor = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetEdgeColor);
-		mEdgeColor = new ColorProperty(StyleEditorPanel.EDGE_COLOR, ResourceController.getResourceController()
-		    .getDefaultProperty(EdgeController.RESOURCES_EDGE_COLOR));
+		mEdgeColor = new ColorProperty(StyleEditorPanel.EDGE_COLOR, ColorUtils.colorToString(EdgeController.STANDARD_EDGE_COLOR));
 		controls.add(mEdgeColor);
 		final EdgeColorChangeListener listener = new EdgeColorChangeListener(mSetEdgeColor, mEdgeColor);
 		mSetEdgeColor.addPropertyChangeListener(listener);
@@ -463,7 +464,7 @@ public class StyleEditorPanel extends JPanel {
 	private void addEdgeWidthControl(final List<IPropertyControl> controls) {
 		mSetEdgeWidth = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetEdgeWidth);
-		mEdgeWidth = new ComboProperty(StyleEditorPanel.EDGE_WIDTH, EDGE_WIDTHS);
+		mEdgeWidth = new NumberProperty(StyleEditorPanel.EDGE_WIDTH, 0, 100, 1);
 		controls.add(mEdgeWidth);
 		final EdgeWidthChangeListener listener = new EdgeWidthChangeListener(mSetEdgeWidth, mEdgeWidth);
 		mSetEdgeWidth.addPropertyChangeListener(listener);
@@ -549,16 +550,6 @@ public class StyleEditorPanel extends JPanel {
 		return controls;
 	}
 
-	private HashMap<String, Integer> getEdgeWidthTransformation() {
-		final HashMap<String, Integer> transformator = new HashMap<String, Integer>(StyleEditorPanel.EDGE_WIDTHS.length);
-		int i = 0;
-		transformator.put(StyleEditorPanel.EDGE_WIDTHS[i++], EdgeModel.WIDTH_THIN);
-		transformator.put(StyleEditorPanel.EDGE_WIDTHS[i++], 1);
-		transformator.put(StyleEditorPanel.EDGE_WIDTHS[i++], 2);
-		transformator.put(StyleEditorPanel.EDGE_WIDTHS[i++], 4);
-		transformator.put(StyleEditorPanel.EDGE_WIDTHS[i++], 8);
-		return transformator;
-	}
 
 	/**
 	 * Creates all controls and adds them to the frame.
@@ -596,8 +587,10 @@ public class StyleEditorPanel extends JPanel {
     }
 
 	private JCheckBox mAutomaticLayoutCheckBox;
+	private JCheckBox mAutomaticEdgeColorCheckBox;
 	private Container mStyleBox;
 	private void addAutomaticLayout(final DefaultFormBuilder rightBuilder) {
+		{
 		if(mAutomaticLayoutCheckBox == null){
 			 mAutomaticLayoutCheckBox = new JCheckBox();
 			 mAutomaticLayoutCheckBox.addActionListener(new ActionListener() {
@@ -611,6 +604,22 @@ public class StyleEditorPanel extends JPanel {
 	    final String label = TextUtils.removeMnemonic(TextUtils.getText("AutomaticLayoutAction.text"));
 	    rightBuilder.append(new JLabel(label), 5);
 	    rightBuilder.append(mAutomaticLayoutCheckBox);
+		}
+		{
+			if(mAutomaticEdgeColorCheckBox == null){
+				mAutomaticEdgeColorCheckBox = new JCheckBox();
+				mAutomaticEdgeColorCheckBox.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						final ModeController modeController = Controller.getCurrentModeController();
+						AutomaticEdgeColorHook al = (AutomaticEdgeColorHook) modeController.getExtension(AutomaticEdgeColorHook.class);
+						al.undoableToggleHook(Controller.getCurrentController().getMap().getRootNode(), al);
+					}
+				});
+			}
+			final String label = TextUtils.removeMnemonic(TextUtils.getText("AutomaticEdgeColorHookAction.text"));
+			rightBuilder.append(new JLabel(label), 5);
+			rightBuilder.append(mAutomaticEdgeColorCheckBox);
+		}
 	}
 
 	private void setFont(Container c, float size) {
@@ -673,7 +682,7 @@ public class StyleEditorPanel extends JPanel {
 				final int width = edgeModel != null ? edgeModel.getWidth() : EdgeModel.DEFAULT_WIDTH;
 				final int viewWidth = edgeController.getWidth(node);
 				mSetEdgeWidth.setValue(width != EdgeModel.DEFAULT_WIDTH);
-				mEdgeWidth.setValue(transformEdgeWidth(viewWidth));
+				mEdgeWidth.setValue(Integer.toString(viewWidth));
 				mEdgeWidth.setEnabled(mSetEdgeWidth.getBooleanValue());
 			}
 			{
@@ -721,25 +730,17 @@ public class StyleEditorPanel extends JPanel {
 				AutomaticLayout al = (AutomaticLayout) modeController.getExtension(AutomaticLayout.class);
 				mAutomaticLayoutCheckBox.setSelected(al.isActive(node));
 			}
+			if(mAutomaticEdgeColorCheckBox != null){
+				final ModeController modeController = Controller.getCurrentModeController();
+				AutomaticEdgeColorHook al = (AutomaticEdgeColorHook) modeController.getExtension(AutomaticEdgeColorHook.class);
+				mAutomaticEdgeColorCheckBox.setSelected(al.isActive(node));
+			}
 		}
 		finally {
 			internalChange = false;
 		}
 	}
 
-	private String transformEdgeWidth(final int edgeWidth) {
-		if (edgeWidth == EdgeModel.DEFAULT_WIDTH) {
-			return null;
-		}
-		final HashMap<String, Integer> transformator = getEdgeWidthTransformation();
-		for (final Entry<String, Integer> transformatorEntry : transformator.entrySet()) {
-			final Integer width = transformatorEntry.getValue();
-			if (edgeWidth == width.intValue()) {
-				return transformatorEntry.getKey();
-			}
-		}
-		return null;
-	}
 
 	private void addListeners() {
 		final Controller controller = Controller.getCurrentController();

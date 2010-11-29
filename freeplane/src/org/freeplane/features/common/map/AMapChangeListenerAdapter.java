@@ -1,6 +1,8 @@
 package org.freeplane.features.common.map;
 
-abstract public class AModelChangeListenerAdapter implements IMapChangeListener, INodeChangeListener {
+import org.freeplane.core.controller.IMapLifeCycleListener;
+
+abstract public class AMapChangeListenerAdapter implements IMapChangeListener, INodeChangeListener, IMapLifeCycleListener {
 	public void mapChanged(MapChangeEvent event) {
 	}
 
@@ -21,4 +23,12 @@ abstract public class AModelChangeListenerAdapter implements IMapChangeListener,
 
 	public void nodeChanged(NodeChangeEvent event) {
 	}
+
+	public void onCreate(MapModel map) {
+    }
+
+	public void onRemove(MapModel map) {
+    }
+	
+	
 }

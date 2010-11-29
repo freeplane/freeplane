@@ -50,6 +50,11 @@ public class MapStyleModel implements IExtension {
 	private Map<IStyle, NodeModel> styleNodes;
 	private MapModel styleMap;
 	private ConditionalStyleModel conditionalStyleModel;
+	final private Map<String, String> properties;
+
+	Map<String, String> getProperties() {
+    	return properties;
+    }
 
 	public static MapStyleModel getExtension(final MapModel map) {
 		return MapStyleModel.getExtension(map.getRootNode());
@@ -68,6 +73,7 @@ public class MapStyleModel implements IExtension {
 	public MapStyleModel() {
 		conditionalStyleModel = new ConditionalStyleModel();
 		styleNodes = new LinkedHashMap<IStyle, NodeModel>();
+		properties = new LinkedHashMap<String, String>();
 	}
 
 	public ConditionalStyleModel getConditionalStyleModel() {
@@ -217,5 +223,13 @@ public class MapStyleModel implements IExtension {
 			maxNodeWidth = source.maxNodeWidth;
 		}
     }
+	
+	public void setProperty(String key, String value){
+		properties.put(key, value);
+	}
+	
+	public String getProperty(String key){
+		return properties.get(key);
+	}
 
 }

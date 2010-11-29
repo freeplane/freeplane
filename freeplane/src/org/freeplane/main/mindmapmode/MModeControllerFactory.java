@@ -64,6 +64,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
+import org.freeplane.features.mindmapmode.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 import org.freeplane.features.mindmapmode.encrypt.EncryptedMap;
 import org.freeplane.features.mindmapmode.export.ExportController;
@@ -134,6 +135,7 @@ public class MModeControllerFactory {
 		new BlinkingNodeHook();
 		new CreationModificationPlugin();
 		new ReminderHook();
+		new AutomaticEdgeColorHook();
 		new ViewerController();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		final StyleEditorPanel panel = new StyleEditorPanel(uiFactory, true);

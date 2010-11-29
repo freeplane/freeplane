@@ -103,14 +103,16 @@ public class UserPropertiesUpdater {
 		nodeStyleModel.setItalic(nodeStyleController.isItalic(styleNode));
 		nodeStyleModel.setShape(nodeStyleController.getShape(styleNode));
 
-		final EdgeController edgeController = EdgeController.getController(modeController);
-		final EdgeModel edgeModel = new EdgeModel();
-		edgeModel.setColor(edgeController.getColor(styleNode));
-		edgeModel.setStyle(edgeController.getStyle(styleNode));
-		edgeModel.setWidth(edgeController.getWidth(styleNode));
-
 		styleNode.addExtension(nodeStyleModel);
-		styleNode.addExtension(edgeModel);
+
+		final EdgeModel standardEdgeModel = EdgeModel.getModel(styleNode);
+		if(standardEdgeModel != null){
+			final EdgeModel edgeModel = new EdgeModel();
+			edgeModel.setColor(standardEdgeModel.getColor());
+			edgeModel.setStyle(standardEdgeModel.getStyle());
+			edgeModel.setWidth(standardEdgeModel.getWidth());
+			styleNode.addExtension(edgeModel);
+		}
 
         try {
 	        fm.writeToFile(defaultStyleMap, userDefault);

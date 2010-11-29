@@ -131,12 +131,12 @@ class ForkMainView extends MainView {
 		final EdgeController edgeController = EdgeController.getController(modeController);
 		int edgeWidth = edgeController.getWidth(model);
 		final EdgeStyle style = edgeController.getStyle(model);
-		edgeWidth = style.getNodeLineWidth(edgeWidth);
+		edgeWidth = nodeView.getMap().getZoomed(style.getNodeLineWidth(edgeWidth));
 		final Stroke oldStroke = g.getStroke();
 		g.setStroke(new BasicStroke(edgeWidth));
 		final Color oldColor = g.getColor();
 		g.setColor(edgeController.getColor(model));
-		Point leftLinePoint = new Point(0, getHeight() + edgeWidth / 2 - 1);
+		Point leftLinePoint = getLeftPoint();
 		UITools.convertPointToAncestor(this, leftLinePoint, nodeView);
 		g.drawLine(leftLinePoint.x, leftLinePoint.y, leftLinePoint.x + getWidth(), leftLinePoint.y);
 		g.setColor(oldColor);

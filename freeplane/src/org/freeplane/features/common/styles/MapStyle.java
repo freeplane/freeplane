@@ -23,6 +23,9 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Vector;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
@@ -158,8 +161,21 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 
 		@Override
-        public void endElement(Object parent, String tag, Object userObject, XMLElement lastBuiltElement) {
+        public void endElement(Object parent, String tag, Object userObject, XMLElement xml) {
+			NodeModel node = (NodeModel) userObject;
+			loadMapStyleProperties(MapStyleModel.getExtension(node), xml);
        }
+
+		private void loadMapStyleProperties(MapStyleModel model, XMLElement xml) {
+			final Vector<XMLElement> propertyXml = xml.getChildrenNamed("properties");
+			if(propertyXml.size() >= 1){
+				final Map<String, String> properties = model.getProperties();
+				final Properties attributes = propertyXml.get(0).getAttributes();
+				for(Entry<Object, Object> attribute:attributes.entrySet()){
+					properties.put(attribute.getKey().toString(), attribute.getValue().toString());
+				}
+			}
+        }
 		
 	}
 
@@ -227,7 +243,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			}
 		}
     }
-	private void saveConditinalStyles(ConditionalStyleModel conditionalStyleModel, XMLElement parent) {
+	private void saveConditionalStyles(ConditionalStyleModel conditionalStyleModel, XMLElement parent) {
 		final int styleCount = conditionalStyleModel.getStyleCount();
 		if(styleCount == 0){
 			return;
@@ -346,9 +362,21 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			element.setAttribute("layout", layout.toString());
 		}
 		element.setAttribute("max_node_width", Integer.toString(mapStyleModel.getMaxNodeWidth()));
-		saveConditinalStyles(mapStyleModel.getConditionalStyleModel(), element);
+		saveConditionalStyles(mapStyleModel.getConditionalStyleModel(), element);
+		saveProperties(mapStyleModel.getProperties(), element);
 	}
 	
+	private void saveProperties(Map<String, String> properties, XMLElement element) {
+		if(properties.isEmpty()){
+			return;
+		}
+	    final XMLElement xmlElement = new XMLElement("properties");
+	    for (Entry<String, String>  entry: properties.entrySet()){
+	    	xmlElement.setAttribute(entry.getKey(), entry.getValue());
+	    }
+	    element.addChild(xmlElement);
+    }
+
 	public void setZoom(final MapModel map, final float zoom) {
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
 		if (zoom == mapStyleModel.getZoom()) {
