@@ -1092,7 +1092,7 @@ public class NodeView extends JComponent implements INodeView {
 				case ALL:
 					g2.setStroke(BubbleMainView.DEF_STROKE);
 					modeController.getController().getViewController().setEdgesRenderingHint(g2);
-					paintFoldingMark(g2);
+					paintDecoration(g2);
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
 		}
@@ -1135,7 +1135,8 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
-	void paintFoldingMark(final Graphics2D g) {
+	void paintDecoration(final Graphics2D g) {
+		mainView.paintDecoration(this, g);
 		FoldingMarkType markType = foldingMarkType(getMap().getModeController().getMapController(), getModel());
 		if (!markType.equals(FoldingMarkType.UNFOLDED)) {
 			final Point out = getMainViewOutPoint(null, null);

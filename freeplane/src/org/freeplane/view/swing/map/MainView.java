@@ -220,6 +220,8 @@ public abstract class MainView extends ZoomableLabel {
 		g.drawOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		g.setColor(color);
 	}
+	
+	void paintDecoration(final NodeView nodeView, final Graphics2D g) {}
 
 	public void paintBackgound(final Graphics2D graphics) {
 		if (getNodeView().useSelectionColors()) {

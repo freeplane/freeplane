@@ -27,6 +27,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.map.ModeController;
@@ -63,7 +64,7 @@ class ForkMainView extends MainView {
 		int edgeWidth = edgeController.getWidth(model);
 		final EdgeStyle style = edgeController.getStyle(model);
 		edgeWidth = style.getNodeLineWidth(edgeWidth);
-		final Point in = new Point(0, getHeight() - edgeWidth / 2 - 1);
+		final Point in = new Point(0, getHeight() + edgeWidth / 2 - 1);
 		return in;
 	}
 
@@ -97,7 +98,7 @@ class ForkMainView extends MainView {
 		int edgeWidth = edgeController.getWidth(model);
 		final EdgeStyle style = edgeController.getStyle(model);
 		edgeWidth = style.getNodeLineWidth(edgeWidth);
-		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2 - 1);
+		final Point in = new Point(getWidth() - 1, getHeight() + edgeWidth / 2 - 1);
 		return in;
 	}
 
@@ -118,10 +119,15 @@ class ForkMainView extends MainView {
 		if (model == null) {
 			return;
 		}
-		final ModeController modeController = getNodeView().getMap().getModeController();
-		final Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
 		paintBackgound(g);
 		paintDragOver(g);
+		super.paint(g);
+	}
+
+	@Override
+	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
+	    final ModeController modeController = getNodeView().getMap().getModeController();
+		final NodeModel model = nodeView.getModel();
 		final EdgeController edgeController = EdgeController.getController(modeController);
 		int edgeWidth = edgeController.getWidth(model);
 		final EdgeStyle style = edgeController.getStyle(model);
@@ -130,13 +136,13 @@ class ForkMainView extends MainView {
 		g.setStroke(new BasicStroke(edgeWidth));
 		final Color oldColor = g.getColor();
 		g.setColor(edgeController.getColor(model));
-		g.drawLine(0, getHeight() - edgeWidth / 2 - 1, getWidth(), getHeight() - edgeWidth / 2 - 1);
+		Point leftLinePoint = new Point(0, getHeight() + edgeWidth / 2 - 1);
+		UITools.convertPointToAncestor(this, leftLinePoint, nodeView);
+		g.drawLine(leftLinePoint.x, leftLinePoint.y, leftLinePoint.x + getWidth(), leftLinePoint.y);
 		g.setColor(oldColor);
 		g.setStroke(oldStroke);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-		super.paint(g);
-	}
-
+    }
+	
 	@Override
 	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, boolean itself) {
 		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
