@@ -37,4 +37,9 @@ public class MMapViewController extends MapViewController implements INodeTextFi
 	                                                     final IEditControl editControl) {
 		return new EditNodeTextField(node, text, firstEvent,editControl);
 	}
+
+	public MMapViewController() {
+		createNodeTextField(null, null, null, null);
+    }
+	
 }
