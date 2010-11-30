@@ -136,8 +136,13 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		else {
 			preferredSize.width = Math.max(maxWidth, preferredSize.width); 
 		}
-		if(preferredSize.width < maxWidth){
+		if(preferredSize.width != lastWidth){
 			preferredSize.height = lastHeight;
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					layout();
+				}
+			});
 		}
 		else{
 			preferredSize.height = Math.max(preferredSize.height, lastHeight);
