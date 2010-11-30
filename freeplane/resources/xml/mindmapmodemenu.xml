@@ -227,6 +227,7 @@
             <menu_category name="manage">
                 <menu_action action="EditStylesAction" />
                 <menu_action action="RedefineStyleAction" />
+                <menu_action action="NewUserStyleAction" />
                 <menu_action action="ManageConditionalStylesAction" />
                 <menu_action action="CopyMapStylesAction" />  
             </menu_category>

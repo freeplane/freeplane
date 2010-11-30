@@ -183,6 +183,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		modeController.getMapController().addNodeChangeListener(new StyleRemover());
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		modeController.addAction(new RedefineStyleAction());
+		modeController.addAction(new NewUserStyleAction());
 		modeController.addAction(new ManageConditionalStylesAction());
 		actions = new LinkedList<AssignStyleAction>();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
