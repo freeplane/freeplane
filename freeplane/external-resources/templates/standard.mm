@@ -20,11 +20,9 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.topic" COLOR="#18898b" STYLE="fork">
 <font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
-<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.subtopic" COLOR="#cc3300" STYLE="fork">
 <font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
-<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.subsubtopic" COLOR="#669900">
 <font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
@@ -63,7 +61,6 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.quotation" COLOR="#338800" STYLE="fork">
 <font NAME="Liberation Sans" SIZE="12" BOLD="false" ITALIC="false"/>
-<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.definition" COLOR="#666600">
 <font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
@@ -81,11 +78,9 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,1" COLOR="#0033ff">
 <font SIZE="18"/>
-<edge WIDTH="8"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,2" COLOR="#00b439">
 <font SIZE="16"/>
-<edge STYLE="bezier" WIDTH="thin"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,3" COLOR="#990000">
 <font SIZE="14"/>
