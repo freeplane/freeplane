@@ -31,11 +31,13 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.IStyle;
+import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.styles.StyleFactory;
 import org.freeplane.features.mindmapmode.icon.MIconController.Keys;
 import org.freeplane.features.mindmapmode.map.MMapController;
+import org.freeplane.features.mindmapmode.styles.MLogicalStyleController;
 
 /**
  * @author Dimitry Polivaev
@@ -70,7 +72,8 @@ public class DuplicateUserStyleAction extends AFreeplaneAction {
 		newNode.setUserObject(style);
 		Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, newNode);
 		Controller.getCurrentModeController().copyExtensions(Keys.ICONS, selectedNode, newNode);
-		mapController.insertNode(newNode, getUserStyleParentNode(map), false, false, true);
+		final LogicalStyleController styleController = LogicalStyleController.getController();
+		mapController.insertNode(newNode, styleController.getUserStyleParentNode(map), false, false, true);
 		mapController.select(newNode);
 		final IActor actor = new IActor() {
 			public void undo() {
@@ -86,9 +89,5 @@ public class DuplicateUserStyleAction extends AFreeplaneAction {
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, map);
-	}
-
-	private NodeModel getUserStyleParentNode(final MapModel map) {
-		return (NodeModel) map.getRootNode().getChildAt(2);
 	}
 }

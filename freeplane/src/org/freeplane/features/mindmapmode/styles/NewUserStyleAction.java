@@ -21,10 +21,12 @@ package org.freeplane.features.mindmapmode.styles;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
@@ -36,6 +38,7 @@ import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.styles.StyleFactory;
+import org.freeplane.features.common.styles.StyleNamedObject;
 import org.freeplane.features.mindmapmode.icon.MIconController.Keys;
 import org.freeplane.features.mindmapmode.map.MMapController;
 
@@ -72,23 +75,24 @@ public class NewUserStyleAction extends AFreeplaneAction {
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel newNode = new NodeModel(styleMap);
 		newNode.setUserObject(newStyle);
-		final ArrayList<IStyle> styles = new ArrayList<IStyle>(LogicalStyleController.getController().getStyles(selectedNode));
+		final LogicalStyleController styleController = LogicalStyleController.getController();
+		final ArrayList<IStyle> styles = new ArrayList<IStyle>(styleController.getStyles(selectedNode));
 		for(int i = styles.size() - 1; i >= 0; i--){
 			IStyle style = styles.get(i);
 			if(MapStyleModel.DEFAULT_STYLE.equals(style)){
 				continue;
 			}
 			final NodeModel styleNode = styleModel.getStyleNode(style);
-			Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, styleNode);
+			Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, styleNode);
 		}
-		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, newNode);
-		Controller.getCurrentModeController().undoableCopyExtensions(Keys.ICONS, selectedNode, newNode);
-		mapController.insertNode(newNode, getUserStyleParentNode(styleMap), false, false, true);
+		Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, newNode);
+		Controller.getCurrentModeController().copyExtensions(Keys.ICONS, selectedNode, newNode);
+		mapController.insertNode(newNode, styleController.getUserStyleParentNode(styleMap), false, false, true);
 		mapController.select(newNode);
 		final IActor actor = new IActor() {
 			public void undo() {
 				styleModel.removeStyleNode(newNode);
-				LogicalStyleController.getController().refreshMap(map);
+				styleController.refreshMap(map);
 			}
 
 			public String getDescription() {
@@ -97,13 +101,10 @@ public class NewUserStyleAction extends AFreeplaneAction {
 
 			public void act() {
 				styleModel.addStyleNode(newNode);
-				LogicalStyleController.getController().refreshMap(map);
+				styleController.refreshMap(map);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, styleMap);
 	}
 
-	private NodeModel getUserStyleParentNode(final MapModel map) {
-		return (NodeModel) map.getRootNode().getChildAt(2);
-	}
 }

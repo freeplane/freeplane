@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.freeplane.core.controller.CombinedPropertyChain;
 import org.freeplane.core.controller.Controller;
@@ -281,5 +282,17 @@ public class LogicalStyleController implements IExtension {
 		return styleHandlers.addGetter(key, getter);
 	}
 
-
+	   
+	public NodeModel getUserStyleParentNode(final MapModel styleMap) {
+		final NodeModel rootNode = styleMap.getRootNode();
+		final int childCount = rootNode.getChildCount();
+		for(int i = 0; i < childCount; i++){
+			final NodeModel childNode = (NodeModel) rootNode.getChildAt(i);
+			final StyleNamedObject userObject = (StyleNamedObject) childNode.getUserObject();
+			if(userObject.getObject().equals("styles.user-defined")){
+				return childNode;
+			}
+		}
+		throw new NoSuchElementException();
+	}
 }
