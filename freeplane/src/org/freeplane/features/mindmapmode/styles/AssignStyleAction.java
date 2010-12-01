@@ -30,6 +30,7 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
+import org.freeplane.features.common.styles.StyleNamedObject;
 
 /**
  * @author Dimitry Polivaev
@@ -40,7 +41,7 @@ public class AssignStyleAction extends AMultipleNodeAction {
 	final private IStyle style;
 
 	public AssignStyleAction(final IStyle style, final String title, final ImageIcon icon) {
-		super("AssignStyleAction." + NamedObject.toKeyString(style), title, icon);
+		super("AssignStyleAction." + StyleNamedObject.toKeyString(style), title, icon);
 		this.style = style;
 	}
 

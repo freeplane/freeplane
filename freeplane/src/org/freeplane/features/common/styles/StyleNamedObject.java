@@ -42,4 +42,11 @@ public class StyleNamedObject implements IStyle {
 	public Object getObject() {
 	    return namedObject.getObject();
     }
+
+	public static String toKeyString(IStyle style) {
+		if(style instanceof StyleNamedObject){
+			return ((StyleNamedObject)style).getObject().toString();
+		}
+		return style.toString();
+    }
 }

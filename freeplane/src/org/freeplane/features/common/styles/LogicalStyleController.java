@@ -150,12 +150,12 @@ public class LogicalStyleController implements IExtension {
 				if (extension == null) {
 					return;
 				}
-				final Object style = extension.getStyle();
+				final IStyle style = extension.getStyle();
 				if (style == null) {
 					return;
 				}
-				final String value = NamedObject.toKeyString(style);
-				if (style instanceof NamedObject) {
+				final String value = StyleNamedObject.toKeyString(style);
+				if (style instanceof StyleNamedObject) {
 					writer.addAttribute("LOCALIZED_STYLE_REF", value);
 				}
 				else {

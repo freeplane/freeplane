@@ -1,6 +1,5 @@
 package org.freeplane.features.common.styles;
 
-import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
@@ -22,8 +21,8 @@ public class StyleCondition extends ASelectableCondition {
 		if (value instanceof String) {
 			child.setAttribute("TEXT", (String) value);
 		}
-		else if (value instanceof NamedObject) {
-			child.setAttribute("LOCALIZED_TEXT", ((NamedObject) value).getObject().toString());
+		else if (value instanceof StyleNamedObject) {
+			child.setAttribute("LOCALIZED_TEXT", ((StyleNamedObject) value).getObject().toString());
 		}
 	}
 
@@ -34,7 +33,7 @@ public class StyleCondition extends ASelectableCondition {
 		}
 		final String name = element.getAttribute("LOCALIZED_TEXT", null);
 		if (name != null) {
-			return new StyleCondition(new NamedObject(name));
+			return new StyleCondition(new StyleNamedObject(name));
 		}
 		return null;
 	}
