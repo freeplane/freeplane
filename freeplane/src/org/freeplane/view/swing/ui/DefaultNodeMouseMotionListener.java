@@ -182,8 +182,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	public void mousePressed(final MouseEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final Component selectedComponent = controller.getViewController().getSelectedComponent();
-		wasFocused = SwingUtilities.isDescendingFrom(e.getComponent(), selectedComponent);
-		if(wasFocused) showPopupMenu(e);
+		final MainView component = (MainView) e.getComponent();
+		wasFocused = SwingUtilities.isDescendingFrom(component, selectedComponent);
+		showPopupMenu(e);
 		extendSelection(e);
 	}
 
@@ -193,17 +194,20 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 
 	public void mouseReleased(final MouseEvent e) {
 		stopTimerForDelayedSelection();
-		if(wasFocused) showPopupMenu(e);
+		showPopupMenu(e);
 	}
 
 	public void showPopupMenu(final MouseEvent e) {
 		if (e.isPopupTrigger()) {
-			ModeController mc = Controller.getCurrentController().getModeController();
-			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
-			if (popupmenu != null) {
-				popupmenu.addPopupMenuListener(popupListener);
-				popupmenu.show(e.getComponent(), e.getX(), e.getY());
-				e.consume();
+			final MainView component = (MainView) e.getComponent();
+			if(component.getNodeView().isSelected()){ 
+				ModeController mc = Controller.getCurrentController().getModeController();
+				final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
+				if (popupmenu != null) {
+					popupmenu.addPopupMenuListener(popupListener);
+					popupmenu.show(e.getComponent(), e.getX(), e.getY());
+					e.consume();
+				}
 			}
 		}
 	}
