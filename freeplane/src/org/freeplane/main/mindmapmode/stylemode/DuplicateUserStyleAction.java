@@ -37,7 +37,6 @@ import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.styles.StyleFactory;
 import org.freeplane.features.mindmapmode.icon.MIconController.Keys;
 import org.freeplane.features.mindmapmode.map.MMapController;
-import org.freeplane.features.mindmapmode.styles.MLogicalStyleController;
 
 /**
  * @author Dimitry Polivaev

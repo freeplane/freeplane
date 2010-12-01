@@ -28,7 +28,6 @@ import java.util.Properties;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
