@@ -35,22 +35,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.pde.PluginNature</nature>
 	</natures>
-	<filteredResources>
-		<filter>
-			<id>1289645462384</id>
-			<name>build</name>
-			<type>30</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.andFilterMatcher</id>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1289645446993</id>
-			<name>dist</name>
-			<type>30</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.andFilterMatcher</id>
-			</matcher>
-		</filter>
-	</filteredResources>
 </projectDescription>
