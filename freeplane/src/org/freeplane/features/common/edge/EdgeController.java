@@ -69,12 +69,17 @@ public class EdgeController implements IExtension {
 			}
 		});
 		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node, final Color currentValue) {
-				final NodeModel parentNode = node.getParentNode();
-				if (parentNode == null) {
-					return STANDARD_EDGE_COLOR;
+			public Color getProperty(NodeModel node, final Color currentValue) {
+				for(node = node.getParentNode();node != null; node = node.getParentNode()){
+					final EdgeModel edgeModel = EdgeModel.getModel(node);
+					if(edgeModel != null) {
+						final Color color = edgeModel.getColor();
+						if (color  != null){
+							return color;
+						}
+					}
 				}
-				return getColor(parentNode);
+				return STANDARD_EDGE_COLOR;
 			}
 		});
 		addStyleGetter(IPropertyHandler.STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {
@@ -83,12 +88,17 @@ public class EdgeController implements IExtension {
 			}
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<EdgeStyle, NodeModel>() {
-			public EdgeStyle getProperty(final NodeModel node, final EdgeStyle currentValue) {
-				final NodeModel parentNode = node.getParentNode();
-				if (parentNode == null) {
-					return STANDARD_EDGE_STYLE;
+			public EdgeStyle getProperty(NodeModel node, final EdgeStyle currentValue) {
+				for(node = node.getParentNode();node != null; node = node.getParentNode()){
+					final EdgeModel edgeModel = EdgeModel.getModel(node);
+					if(edgeModel != null) {
+						final EdgeStyle style = edgeModel.getStyle();
+						if (style  != null){
+							return style;
+						}
+					}
 				}
-				return getStyle(parentNode);
+				return STANDARD_EDGE_STYLE;
 			}
 		});
 		addWidthGetter(IPropertyHandler.STYLE, new IPropertyHandler<Integer, NodeModel>() {
@@ -98,12 +108,17 @@ public class EdgeController implements IExtension {
 		});
 		
 		addWidthGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Integer, NodeModel>() {
-			public Integer getProperty(final NodeModel node, final Integer currentValue) {
-				final NodeModel parentNode = node.getParentNode();
-				if (parentNode == null) {
-					return new Integer(EdgeModel.WIDTH_THIN);
+			public Integer getProperty(NodeModel node, final Integer currentValue) {
+				for(node =  node.getParentNode();node != null;node = node.getParentNode()){
+					final EdgeModel edgeModel = EdgeModel.getModel(node);
+					if(edgeModel != null) {
+						final int width = edgeModel.getWidth();
+						if (width  != EdgeModel.DEFAULT_WIDTH){
+							return width;
+						}
+					}
 				}
-				return getWidth(parentNode);
+				return new Integer(EdgeModel.WIDTH_THIN);
 			}
 		});
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
