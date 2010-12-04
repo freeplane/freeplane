@@ -94,43 +94,20 @@
                 <choice value="org.freeplane.plugin.bugreport.ask"/>
             </combo>
         </separator>
-                
     </tab>
-    <tab name="Defaults">
-        <separator name="default_styles">
-            <combo name="standardnodeshape">
-                <choice value="fork"/>
-                <choice value="bubble"/>
-                <choice value="as_parent"/>
-                <choice value="combined"/>
-            </combo>
-            <combo name="standardrootnodeshape">
-                <choice value="fork"/>
-                <choice value="bubble"/>
-                <choice value="combined"/>
-            </combo>
-        </separator>
-         <separator name="default_colors">
-            <color name="standardnodetextcolor"/>
-            <color name="standardlinkcolor"/>
-            <color name="standardbackgroundcolor"/>
-            <color name="revision_color"/>
-            <boolean name="printonwhitebackground"/>
-            <color name="standardcloudcolor"/>
-         </separator>
-        <separator name="default_fonts">
-            <font name="defaultfont"/>
-            <number name="defaultfontsize" min="4" max="272"/>
-            <number name="defaultfontstyle" min="0" max="3"/>
-            <boolean name="resources_use_default_font_for_notes_too"/>
-            <boolean name="resources_use_margin_top_zero_for_notes"/>
-         </separator>
-     </tab>
     <tab name="Appearance">
         <separator name="look_and_feel">
             <group name="lookandfeel"/>
             <boolean name="use_tabbed_pane"/>
+            <boolean name="resources_use_default_font_for_notes_too"/>
+            <boolean name="resources_use_margin_top_zero_for_notes"/>
         </separator>
+         <separator name="default_colors">
+            <color name="standardlinkcolor"/>
+            <color name="revision_color"/>
+            <boolean name="printonwhitebackground"/>
+            <color name="standardcloudcolor"/>
+         </separator>
         <separator name="selection_colors">        
             <boolean name="standarddrawrectangleforselection"/>
             <color name="standardselectednoderectanglecolor"/>
