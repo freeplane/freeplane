@@ -161,8 +161,7 @@ public class TaskUtils {
 				if (!matchEolStyle(separator, lineSep)) {
 					eolStyleMatches = false;
 				}
-				if (match.length() > 0)
-					resultList.add(match);
+				resultList.add(match);
 				index = matcher.end();
 			}
 		}

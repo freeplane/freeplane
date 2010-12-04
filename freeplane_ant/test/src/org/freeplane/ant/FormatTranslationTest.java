@@ -74,35 +74,65 @@ public class FormatTranslationTest {
 		final String input = "one\r\ntwo\n\rthree\\\nthree.one\n\nfour";
 		ArrayList<String> resultList = new ArrayList<String>();
 		assertFalse("not unique unix", TaskUtils.checkEolStyleAndReadLines(input, resultList, unix));
-		assertEquals("a trailing backslash escapes a new line", 4, resultList.size());
+		assertEquals("a trailing backslash escapes a new line", 6, resultList.size());
 		assertFalse("not unique mac", TaskUtils.checkEolStyleAndReadLines(input, resultList, mac));
-		assertEquals(4, resultList.size());
+		assertEquals(6, resultList.size());
 		assertFalse("not unique win", TaskUtils.checkEolStyleAndReadLines(input, resultList, win));
-		assertEquals(4, resultList.size());
+		assertEquals(6, resultList.size());
 		//
 		String unixInput = input.replaceAll("\r\n|\n|\r", unix);
 		System.out.println("unixInput='" + f(unixInput) + "'");
 		assertTrue("unique unix", TaskUtils.checkEolStyleAndReadLines(unixInput, resultList, unix));
 		assertFalse("not mac", TaskUtils.checkEolStyleAndReadLines(unixInput, resultList, mac));
 		assertFalse("not win", TaskUtils.checkEolStyleAndReadLines(unixInput, resultList, win));
-		assertEquals("a trailing backslash escapes a new line", 4, resultList.size());
+		assertEquals("a trailing backslash escapes a new line", 6, resultList.size());
 		//
 		String macInput = input.replaceAll("\r\n|\n|\r", mac);
 		System.out.println("macInput='" + f(macInput) + "'");
 		assertTrue("unique mac", TaskUtils.checkEolStyleAndReadLines(macInput, resultList, mac));
 		assertFalse("not unix", TaskUtils.checkEolStyleAndReadLines(macInput, resultList, unix));
 		assertFalse("not win", TaskUtils.checkEolStyleAndReadLines(macInput, resultList, win));
-		assertEquals("a trailing backslash escapes a new line", 4, resultList.size());
+		assertEquals("a trailing backslash escapes a new line", 6, resultList.size());
 		//
 		String winInput = input.replaceAll("\r\n|\n|\r", win);
 		System.out.println("winInput='" + f(winInput) + "'");
 		assertTrue("unique win", TaskUtils.checkEolStyleAndReadLines(winInput, resultList, win));
 		assertFalse("not unix", TaskUtils.checkEolStyleAndReadLines(winInput, resultList, unix));
 		assertFalse("not mac", TaskUtils.checkEolStyleAndReadLines(winInput, resultList, mac));
-		assertEquals("a trailing backslash escapes a new line", 4, resultList.size());
+		assertEquals("a trailing backslash escapes a new line", 6, resultList.size());
 		//
 		String resource = TaskUtils.readFile(new File(TRANSLATIONS_SOURCE_DIR, "Resources_de.properties"));
 		assertTrue("not unix", TaskUtils.checkEolStyleAndReadLines(resource, resultList, unix));
+	}
+
+	@Test
+	public void testRemoveEmptyLines() throws Exception {
+		final String msgConserved = "empty lines should be conserved";
+		final String msgRemoved = "empty lines should be removed";
+		final FormatTranslation formatTranslation = new FormatTranslation();
+		String input;
+		ArrayList<String> lines = new ArrayList<String>();
+		//
+		input = "\n \nx=y\n\n";
+		assertTrue("unique unix", TaskUtils.checkEolStyleAndReadLines(input, lines, unix));
+		assertEquals(msgConserved, 4, lines.size());
+		assertEquals(msgRemoved, 1, formatTranslation.processLines("a_file", new ArrayList<String>(lines)).size());
+		//
+		input = "\n";
+		assertTrue("unique unix", TaskUtils.checkEolStyleAndReadLines(input, lines, unix));
+		assertEquals(msgConserved, 1, lines.size());
+		assertEquals(msgRemoved, 0, formatTranslation.processLines("a_file", new ArrayList<String>(lines)).size());
+		//
+		input = "  \n";
+		assertTrue("unique unix", TaskUtils.checkEolStyleAndReadLines(input, lines, unix));
+		assertEquals(msgConserved, 1, lines.size());
+		assertEquals(msgRemoved, 0, formatTranslation.processLines("a_file", new ArrayList<String>(lines)).size());
+		//
+		input = "x=y";
+		assertTrue("unique unix", TaskUtils.checkEolStyleAndReadLines(input, lines, unix));
+		assertEquals(msgConserved, 1, lines.size());
+		assertEquals(msgRemoved, 1, formatTranslation.processLines("a_file", new ArrayList<String>(lines)).size());
+		//
 	}
 
 	private String f(String input) {

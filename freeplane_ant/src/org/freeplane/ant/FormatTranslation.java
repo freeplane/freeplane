@@ -144,7 +144,7 @@ public class FormatTranslation extends Task {
 				final String input = TaskUtils.readFile(inputFile);
 				final ArrayList<String> lines = new ArrayList<String>(2048);
 				boolean eolStyleMatches = TaskUtils.checkEolStyleAndReadLines(input, lines, lineSeparator);
-				final ArrayList<String> sortedLines = processLines(inputFile, new ArrayList<String>(lines));
+				final ArrayList<String> sortedLines = processLines(inputFile.getName(), new ArrayList<String>(lines));
 				final boolean contentChanged = !lines.equals(sortedLines);
 				final boolean formattingRequired = !eolStyleMatches || contentChanged;
 				if (formattingRequired) {
@@ -184,7 +184,7 @@ public class FormatTranslation extends Task {
 			throw new BuildException("cannot create output directory '" + outputDir + "'");
 	}
 
-	private ArrayList<String> processLines(File inputFile, ArrayList<String> lines) {
+	ArrayList<String> processLines(final String filename, ArrayList<String> lines) {
 		Collections.sort(lines, KEY_COMPARATOR);
 		ArrayList<String> result = new ArrayList<String>(lines.size());
 		String lastKey = null;
@@ -195,38 +195,38 @@ public class FormatTranslation extends Task {
 			final String[] keyValue = line.split("\\s*=\\s*", 2);
 			if (keyValue.length != 2 || keyValue[0].length() == 0) {
 				// broken line: no '=' sign or empty key (we had " = ======")
-				warn(inputFile.getName() + ": no key/val: " + line);
+				warn(filename + ": no key/val: " + line);
 				continue;
 			}
 			if (keyValue[1].matches("(\\[auto\\]|\\[translate me\\])?")) {
-				warn(inputFile.getName() + ": empty translation: " + line);
+				warn(filename + ": empty translation: " + line);
 			}
 			final String thisKey = keyValue[0];
 			final String thisValue = keyValue[1];
 			if (lastKey != null && thisKey.equals(lastKey)) {
 				if (quality(thisValue) < quality(lastValue)) {
-					log(inputFile.getName() + ": drop " + TaskUtils.toLine(lastKey, thisValue));
+					log(filename + ": drop " + TaskUtils.toLine(lastKey, thisValue));
 					continue;
 				}
 				else if (quality(thisValue) == quality(lastValue)) {
 					if (thisValue.equals(lastValue)) {
-						log(inputFile.getName() + ": drop duplicate " + TaskUtils.toLine(lastKey, thisValue));
+						log(filename + ": drop duplicate " + TaskUtils.toLine(lastKey, thisValue));
 					}
 					else if (quality(thisValue) == QUALITY_MANUALLY_TRANSLATED) {
-						warn(inputFile.getName() //
+						warn(filename //
 						        + ": drop one of two of equal quality (revisit!):keep: "
 						        + TaskUtils.toLine(lastKey, lastValue));
-						warn(inputFile.getName() //
+						warn(filename //
 						        + ": drop one of two of equal quality (revisit!):drop: "
 						        + TaskUtils.toLine(thisKey, thisValue));
 					}
 					else {
-						log(inputFile.getName() + ": drop " + TaskUtils.toLine(lastKey, thisValue));
+						log(filename + ": drop " + TaskUtils.toLine(lastKey, thisValue));
 					}
 					continue;
 				}
 				else {
-					log(inputFile.getName() + ": drop " + TaskUtils.toLine(lastKey, lastValue));
+					log(filename + ": drop " + TaskUtils.toLine(lastKey, lastValue));
 				}
 				lastValue = thisValue;
 			}
