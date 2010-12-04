@@ -28,7 +28,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.LogUtils;
+
 import org.freeplane.features.mindmapmode.MModeController;
 
 import com.apple.eawt.Application;
@@ -92,11 +93,11 @@ public class MacChanges extends ApplicationAdapter  {
 				System.setProperty("org.freeplane.param" + loadedMapCounter, event.getFilename());				
 			} else {
 				// Direct loading
-				getModeController().getMapController().newMap(Compat.fileToUrl(new File(event.getFilename())));
+				getModeController().getMapController().newMap(Compat.fileToUrl(new File(event.getFilename())), false);
 			}
 			event.setHandled(true);
 		} catch (Exception e) {
-			LogTool.warn(e);
+			LogUtils.warn(e);
 		}
 	}
 	
