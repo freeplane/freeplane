@@ -22,11 +22,14 @@ package org.freeplane.features.mindmapmode.edge;
 import java.awt.Color;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.ActionLocationDescriptor;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.map.AMapChangeListenerAdapter;
@@ -62,6 +65,13 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 				controller.setColor(child, null);
 				controller.setWidth(child, EdgeModel.DEFAULT_WIDTH);
 				controller.setStyle(child, null);
+				final boolean edgeStylesEquals = controller.getColor(child).equals(controller.getColor(parent))
+				&& controller.getStyle(child).equals(controller.getStyle(parent))
+				&& controller.getWidth(child) == controller.getWidth(parent);
+				if(! edgeStylesEquals){
+					final int showResult = OptionalDontShowMeAgainDialog.show("edge_is_formatted_by_style", "confirmation",
+					    "ignore_edge_format_by_style", OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_SHOWN);
+				}
 			}
 	    }
 

@@ -50,6 +50,7 @@ import org.freeplane.features.common.map.NodeModel;
 public class OptionalDontShowMeAgainDialog {
 	public final static int BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED = 1;
 	public final static int ONLY_OK_SELECTION_IS_STORED = 0;
+	public final static int ONLY_OK_SELECTION_IS_SHOWN = 2;
 
 	static public int show( final String pMessageId, final String pTitleId,
 	                       final String pPropertyName, final int pMessageType) {
@@ -166,14 +167,21 @@ public class OptionalDontShowMeAgainDialog {
 		    new JLabel(TextUtils.getText(mMessageId)),
 		    new GridBagConstraints(1, 0, 1, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
-		final ImageIcon questionMark = new ImageIcon(ResourceController.getResourceController().getResource(
+		final ImageIcon questionMark;
+		if(mMessageType == ONLY_OK_SELECTION_IS_SHOWN){
+			questionMark = new ImageIcon(ResourceController.getResourceController().getResource(
+		    "/images/icons/messagebox_warning.png"));
+		}
+		else{
+			questionMark = new ImageIcon(ResourceController.getResourceController().getResource(
 		    "/images/icons/help.png"));
+		}
 		mDialog.getContentPane().add(
 		    new JLabel(questionMark),
 		    new GridBagConstraints(0, 0, 1, 2, 1.0, 2.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
 		String boxString;
-		if (mMessageType == OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED) {
+		if (mMessageType != OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED) {
 			boxString = "OptionalDontShowMeAgainDialog.dontShowAgain";
 		}
 		else {
@@ -185,20 +193,29 @@ public class OptionalDontShowMeAgainDialog {
 		    mDontShowAgainBox,
 		    new GridBagConstraints(0, 2, 3, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
-		final JButton okButton = new JButton(TextUtils.getText("OptionalDontShowMeAgainDialog.ok"));
+		final String okText;
+		if(mMessageType == ONLY_OK_SELECTION_IS_SHOWN){
+			okText = TextUtils.getText("ok");
+		}
+		else{
+			okText = TextUtils.getText("OptionalDontShowMeAgainDialog.ok");
+		}
+		final JButton okButton = new JButton(okText);
 		MenuBuilder.setLabelAndMnemonic(okButton, null);
 		okButton.addActionListener(okAction);
 		mDialog.getContentPane().add(
 		    okButton,
 		    new GridBagConstraints(2, 3, 1, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
-		final JButton cancelButton = new JButton(TextUtils.getText("OptionalDontShowMeAgainDialog.cancel"));
-		MenuBuilder.setLabelAndMnemonic(cancelButton, null);
-		cancelButton.addActionListener(cancelAction);
-		mDialog.getContentPane().add(
-		    cancelButton,
-		    new GridBagConstraints(3, 3, 1, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
-		        5, 5, 0, 0), 0, 0));
+		if(mMessageType != ONLY_OK_SELECTION_IS_SHOWN){
+			final JButton cancelButton = new JButton(TextUtils.getText("OptionalDontShowMeAgainDialog.cancel"));
+			MenuBuilder.setLabelAndMnemonic(cancelButton, null);
+			cancelButton.addActionListener(cancelAction);
+			mDialog.getContentPane().add(
+				cancelButton,
+				new GridBagConstraints(3, 3, 1, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
+					5, 5, 0, 0), 0, 0));
+		}
 		mDialog.getRootPane().setDefaultButton(okButton);
 		mDialog.pack();
 		if (mNode != null) {
