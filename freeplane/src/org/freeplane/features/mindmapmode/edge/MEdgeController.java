@@ -60,7 +60,7 @@ public class MEdgeController extends EdgeController {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
 			}
-			from.removeExtension(NodeStyleModel.class);
+			from.removeExtension(EdgeModel.class);
 		}
 
 		public void remove(final Object key, final NodeModel from, final NodeModel which) {

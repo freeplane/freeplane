@@ -153,7 +153,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			if (!key.equals(LogicalStyleKeys.LOGICAL_STYLE)) {
 				return;
 			}
-			from.removeExtension(CloudModel.class);
+			from.removeExtension(LogicalStyleModel.class);
 		}
 
 		public void remove(final Object key, final NodeModel from, final NodeModel which) {
