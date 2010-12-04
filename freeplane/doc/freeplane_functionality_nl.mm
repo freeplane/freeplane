@@ -1,7 +1,7 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node TEXT="Oerknoop" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1288535659718">
-<hook NAME="MapStyle" zoom="0.7757135" max_node_width="600"/>
+<node TEXT="Basisknoop" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1289422553667">
+<hook NAME="MapStyle" zoom="0.75" max_node_width="600"/>
 <node TEXT="links van oerknoop" POSITION="left" ID="ID_1772025129" CREATED="1288536311727" MODIFIED="1288647119607" STYLE="bubble" HGAP="21" VSHIFT="21">
 <node TEXT="knoop in wolk" ID="ID_646958243" CREATED="1288541742338" MODIFIED="1288647144255" HGAP="50" VSHIFT="-22">
 <cloud WIDTH="0"/>
@@ -253,8 +253,7 @@
       tak versus verbinding
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <arrowlink DESTINATION="ID_1109258357" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="Tak" ID="ID_888638974" CREATED="1286638234353" MODIFIED="1288798709827">
 <node TEXT="van" ID="ID_1442469647" CREATED="1286638265773" MODIFIED="1286638354428">
