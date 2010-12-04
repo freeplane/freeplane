@@ -106,6 +106,7 @@
 	
 	<target name="buildmac" if="isMacOs">
 		<ant antfile="ant/build.xml" target="build" dir="${workspace}/freeplane_mac" inheritall="false" />
+		<echo>Run freeplane_mac ant dist manually, if required!</echo>
 	</target>	
 
 	<target name="osgi_jar" depends="jar, osgi_build">
