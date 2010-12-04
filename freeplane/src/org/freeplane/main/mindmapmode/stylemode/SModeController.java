@@ -105,7 +105,7 @@ class SModeController extends MModeController {
 	    if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
 	    	return;
 	    }
-	    setStatus(returnVal);
+	    setStatus(returnVal == JOptionPane.YES_OPTION ? JOptionPane.OK_OPTION : JOptionPane.CANCEL_OPTION);
 	    dialog.setVisible(false);
     }
 
