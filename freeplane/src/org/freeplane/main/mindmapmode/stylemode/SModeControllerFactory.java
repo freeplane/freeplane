@@ -91,7 +91,7 @@ public class SModeControllerFactory {
 		controller.addAction(new ShowSelectionAsRectangleAction());
 		modeController = new SModeController(controller);
 		controller.selectModeForBuild(modeController);
-		modeController.addAction(new DuplicateUserStyleAction());
+		modeController.addAction(new NewUserStyleAction());
 		modeController.addAction(new DeleteUserStyleAction());
 		modeController.addAction(new NewLevelStyleAction());
 		modeController.addAction(new DeleteLevelStyleAction());

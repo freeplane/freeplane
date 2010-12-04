@@ -42,9 +42,9 @@ import org.freeplane.features.mindmapmode.map.MMapController;
  * @author Dimitry Polivaev
  * 02.10.2009
  */
-public class DuplicateUserStyleAction extends AFreeplaneAction {
-	public DuplicateUserStyleAction() {
-		super("DuplicateUserStyleAction");
+public class NewUserStyleAction extends AFreeplaneAction {
+	public NewUserStyleAction() {
+		super("NewUserStyleAction");
 	}
 
 	/**
