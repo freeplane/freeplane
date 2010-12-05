@@ -531,7 +531,9 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.repaint();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				textfield.requestFocus();
+				if(textfield != null){
+					textfield.requestFocus();
+				}
 			}
 		});
 	}
