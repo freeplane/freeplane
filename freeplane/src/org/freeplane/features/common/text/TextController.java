@@ -124,6 +124,8 @@ public class TextController implements IExtension {
 		return shortened != null;
 	}
 
+	// FIXME: This should be getPlainTransformedText() since getText() does not transform too
+	/** returns transformed text converted to plain text. */
 	public String getPlainTextContent(NodeModel nodeModel) {
 		final String text = getTransformedTextNoThrow(nodeModel.getText(), nodeModel);
 		return HtmlUtils.htmlToPlain(text);    
