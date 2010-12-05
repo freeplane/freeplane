@@ -34,6 +34,7 @@ import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.map.AMapChangeListenerAdapter;
 import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -44,9 +45,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 @NodeHookDescriptor(hookName = "AutomaticEdgeColor")
 @ActionLocationDescriptor(locations = "/menu_bar/format/edges")
-public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExtension {
+public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExtension{
 	private class Listener extends AMapChangeListenerAdapter{
-		private Random random = new Random(); 
 		@Override
 	    public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
 			if(!isActive(child)){
@@ -56,7 +56,8 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 				final EdgeModel edgeModel = EdgeModel.createEdgeModel(child);
 				if(null == edgeModel.getColor()){
 					final MEdgeController controller = (MEdgeController) EdgeController.getController();
-					controller.setColor(child, randomColor());
+					final AutomaticEdgeColor model = (AutomaticEdgeColor) getMapHook();
+					controller.setColor(child, model.nextColor());
 					controller.setWidth(child, 3);
 				}
 			}
@@ -69,28 +70,66 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 				&& controller.getStyle(child).equals(controller.getStyle(parent))
 				&& controller.getWidth(child) == controller.getWidth(parent);
 				if(! edgeStylesEquals){
-					final int showResult = OptionalDontShowMeAgainDialog.show("edge_is_formatted_by_style", "confirmation",
+					OptionalDontShowMeAgainDialog.show("edge_is_formatted_by_style", "confirmation",
 					    "ignore_edge_format_by_style", OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_SHOWN);
 				}
 			}
 	    }
-
-		private Color randomColor() {
-			return new Color (random.nextInt(255), random.nextInt(255), random.nextInt(255)); 
-	    }
+		
 	}
 
 	public AutomaticEdgeColorHook() {
 	    super();
 		final Listener listener = new Listener();
-		final MapController mapController = Controller.getCurrentModeController().getMapController();
+		final ModeController modeController = Controller.getCurrentModeController();
+		modeController.addExtension(AutomaticEdgeColorHook.class, this);
+		final MapController mapController = modeController.getMapController();
 		mapController.addMapChangeListener(listener);
     }
 
 	@Override
+    protected Class<? extends IExtension> getExtensionClass() {
+	    return AutomaticEdgeColor.class;
+    }
+
+	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
-		return this;
+		final int colorCount;
+		if(element == null){
+			colorCount = 0;
+		}
+		else{
+			colorCount = element.getAttribute("COUNTER", 0);
+		}
+		
+		return new AutomaticEdgeColor(colorCount);
 	}
 
+	@Override
+    protected void saveExtension(IExtension extension, XMLElement element) {
+	    super.saveExtension(extension, element);
+	    final int colorCount = ((AutomaticEdgeColor)extension).getColorCount();
+		element.setAttribute("COUNTER", Integer.toString(colorCount));
+    }
+}
+
+class AutomaticEdgeColor implements IExtension{
+	private int colorCount; 
+	int getColorCount() {
+    	return colorCount;
+    }
+	public AutomaticEdgeColor(int colorCount) {
+	    super();
+	    this.colorCount = colorCount;
+    }
+	private static final Color[] COLORS = new Color[]{
+		Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA, Color.CYAN, Color.YELLOW, 
+		Color.RED.darker().darker(), Color.BLUE.darker().darker(), Color.GREEN.darker().darker(), Color.MAGENTA.darker().darker(), Color.CYAN.darker().darker(), Color.YELLOW.darker().darker()};
+	Color nextColor() {
+		if(colorCount >= COLORS.length){
+			colorCount = 0;
+		}
+		return COLORS[colorCount++]; 
+    }
 }
 

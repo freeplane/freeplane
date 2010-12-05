@@ -607,7 +607,7 @@ public class StyleEditorPanel extends JPanel {
 					public void actionPerformed(ActionEvent e) {
 						final ModeController modeController = Controller.getCurrentModeController();
 						AutomaticEdgeColorHook al = (AutomaticEdgeColorHook) modeController.getExtension(AutomaticEdgeColorHook.class);
-						al.undoableToggleHook(Controller.getCurrentController().getMap().getRootNode(), al);
+						al.undoableToggleHook(Controller.getCurrentController().getMap().getRootNode());
 					}
 				});
 			}
