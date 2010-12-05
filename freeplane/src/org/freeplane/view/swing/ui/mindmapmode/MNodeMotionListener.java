@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.map.MapController;
@@ -133,6 +134,7 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 			final NodeView nodeV = getNodeView(e);
 			final MapView mapView = nodeV.getMap();
 			final Point point = e.getPoint();
+			findGridPoint(point);
 			UITools.convertPointToAncestor(motionListenerView, point, JScrollPane.class);
 			if (!isActive()) {
 				setDragStartingPoint(point, nodeV.getModel());
@@ -168,6 +170,15 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 			});
 		}
 	}
+
+	private void findGridPoint(Point point) {
+	    final int gridSize = ResourceController.getResourceController().getIntProperty("grid_size");
+	    if(gridSize <= 2){
+	    	return;
+	    }
+	    point.x  -= point.x % gridSize;
+	    point.y  -= point.y % gridSize;
+    }
 
 	@Override
 	public void mouseEntered(final MouseEvent e) {

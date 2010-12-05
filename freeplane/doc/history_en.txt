@@ -20,6 +20,7 @@ Script and formula editor JSyntaxPane from http://code.google.com/p/jsyntaxpane/
 When Formula Editor is visible, double click on node inserts node ID, single click folds/unfolds.
 Inline editor supports some HTML formatting, use pop-up menu->format or hot keys
 Automatic Edge Color 
+"Grid" for moving of nodes (Preferences->Behaviour->Grid gap size)
 
 Bug fixes:
 630]: Language not sorted alphabetically
