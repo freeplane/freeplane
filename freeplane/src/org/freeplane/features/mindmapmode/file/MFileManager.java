@@ -391,11 +391,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				else {
 					throw new SkipException(file);
 				}
-				if (!file.equals(newerFileRevisionsFoundDialog.getSelectedFile())) {
-					LogUtils.info("opening " + newerFileRevisionsFoundDialog.getSelectedFile() + " instead of " + file);
-					System.out.println("opening " + newerFileRevisionsFoundDialog.getSelectedFile() + " instead of "
-					        + file);
-					alternativeFile = newerFileRevisionsFoundDialog.getSelectedFile();
+				final File selectedFile = newerFileRevisionsFoundDialog.getSelectedFile();
+				if (selectedFile != null && !file.equals(selectedFile)) {
+					LogUtils.info("opening " + selectedFile + " instead of " + file);
+					alternativeFile = selectedFile;
 				}
 			}
 			try {
