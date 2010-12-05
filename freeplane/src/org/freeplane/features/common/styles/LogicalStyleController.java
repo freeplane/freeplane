@@ -141,7 +141,7 @@ public class LogicalStyleController implements IExtension {
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, "LOCALIZED_STYLE_REF", new IAttributeHandler() {
 			public void setAttribute(final Object node, final String value) {
 				final LogicalStyleModel extension = LogicalStyleModel.createExtension((NodeModel) node);
-				extension.setStyle(StyleFactory.create(NamedObject.formatText(value)));
+				extension.setStyle(StyleFactory.create(NamedObject.format(value)));
 			}
 		});
 		final WriteManager writeManager = mapController.getWriteManager();

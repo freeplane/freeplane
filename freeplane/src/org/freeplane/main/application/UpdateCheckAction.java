@@ -115,7 +115,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 				continue;
 			}
 			ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
-			final String updateAvailable = TextUtils.formatText("new_version_available", lastVersion.toString());
+			final String updateAvailable = TextUtils.format("new_version_available", lastVersion.toString());
 			putValue(SHORT_DESCRIPTION, updateAvailable);
 			putValue(LONG_DESCRIPTION, updateAvailable);
 			if (menuBuilder.get(UPDATE_BUTTON_PATH) == null) {
@@ -252,7 +252,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		final Box messagePane = Box.createVerticalBox();
 		final JLabel messageLabel;
 		if (newVersion != null) {
-			messageLabel = new JLabel(TextUtils.formatText(info, newVersion.toString()));
+			messageLabel = new JLabel(TextUtils.format(info, newVersion.toString()));
 		}
 		else {
 			messageLabel = new JLabel(TextUtils.getText(info));

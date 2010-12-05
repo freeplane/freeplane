@@ -111,13 +111,13 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
-				node.setUserObject(StyleFactory.create(NamedObject.formatText(value)));
+				node.setUserObject(StyleFactory.create(NamedObject.format(value)));
 			}
 		});
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
-				node.setUserObject(StyleFactory.create(NamedObject.formatText(value)));
+				node.setUserObject(StyleFactory.create(NamedObject.format(value)));
 			}
 		});
 	}

@@ -59,7 +59,7 @@ public class DeleteLevelStyleAction extends AFreeplaneAction {
 			return;
 		}
 		final String styleName = "AutomaticLayout.level," + childNumber;
-		final IStyle styleObject = StyleFactory.create(NamedObject.formatText(styleName));
+		final IStyle styleObject = StyleFactory.create(NamedObject.format(styleName));
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		final NodeModel node = styleModel.getStyleNode(styleObject);

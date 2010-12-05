@@ -231,7 +231,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			String styleText = styleElement.getAttribute("LOCALIZED_STYLE_REF", null);
 			final IStyle style;
 			if(styleText != null){
-				style = StyleFactory.create(NamedObject.formatText((String) styleText));
+				style = StyleFactory.create(NamedObject.format((String) styleText));
 			}
 			else {
 				style = StyleFactory.create(styleElement.getAttribute("STYLE_REF", null));

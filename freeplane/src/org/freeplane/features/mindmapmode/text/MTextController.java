@@ -228,7 +228,7 @@ public class MTextController extends TextController {
 		if(! input.exists()){
 			uri = LinkController.toRelativeURI(map.getFile(), input);
 			if(uri == null || ! "http".equals(uri.getScheme())){
-				UITools.errorMessage(TextUtils.formatText("file_not_found", input.toString()));
+				UITools.errorMessage(TextUtils.format("file_not_found", input.toString()));
 				return;
 			}
 		}

@@ -1,59 +1,18 @@
 package org.freeplane.core.util;
 
 import java.text.MessageFormat;
-import java.util.regex.Matcher;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 
 public class TextUtils {
-	/**
-	 * Example: expandPlaceholders("Hello $1.","Dolly"); => "Hello Dolly."
-	 * @deprecated use {} style with {@link #format(String, Object...)} instead!
-	 */
-	static String expandPlaceholders(final String message, final String s1) {
-		String result = message;
-		if (s1 != null) {
-			result = result.replaceAll("\\$1", Matcher.quoteReplacement(s1));
-		}
-		return result;
-	}
-
-	/** @deprecated use {} style with {@link #format(String, Object...)} instead! */
-	static String expandPlaceholders(final String message, final String s1, final String s2) {
-		String result = message;
-		if (s1 != null) {
-			result = result.replaceAll("\\$1", Matcher.quoteReplacement(s1));
-		}
-		if (s2 != null) {
-			result = result.replaceAll("\\$2", Matcher.quoteReplacement(s2));
-		}
-		return result;
-	}
-
 	public static String format(final String resourceKey, final Object... messageArguments) {
-		final MessageFormat formatter = new MessageFormat(TextUtils.getText(resourceKey));
-		final String stringResult = formatter.format(messageArguments);
-		return stringResult;
-	}
-
-	/** @deprecated use {} style with {@link #format(String, Object...)} instead! */
-	public static String formatText(final String key, final String s1) {
-		final String format = TextUtils.getText(key);
-		if (format == null) {
+		final String text = TextUtils.getText(resourceKey);
+		if (text == null)
 			return null;
-		}
-		return TextUtils.expandPlaceholders(format, s1);
-	}
-
-	/** @deprecated use {} style with {@link #format(String, Object...)} instead! */
-	public static String formatText(final String key, final String s1, final String s2) {
-		final String format = TextUtils.getText(key);
-		if (format == null) {
-			return null;
-		}
-		return TextUtils.expandPlaceholders(format, s1, s2);
+		final MessageFormat formatter = new MessageFormat(text);
+		return formatter.format(messageArguments);
 	}
 
 	public static String getOptionalText(final String string) {

@@ -48,7 +48,7 @@ public class NewLevelStyleAction extends AFreeplaneAction {
 		final MapModel map = Controller.getCurrentController().getMap();
 		final NodeModel levelStyleParentNode = getLevelStyleParentNode(map);
 		final String styleName = "AutomaticLayout.level," + levelStyleParentNode.getChildCount();
-		final NamedObject styleObject = NamedObject.formatText(styleName);
+		final NamedObject styleObject = NamedObject.format(styleName);
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node = new NodeModel(map);

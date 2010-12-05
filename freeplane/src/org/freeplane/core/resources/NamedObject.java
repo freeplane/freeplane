@@ -84,14 +84,14 @@ public class NamedObject {
 		return obj.toString();
 	}
 
-	public static NamedObject formatText(final String value) {
+	public static NamedObject format(final String value) {
 		final int separatorPos = value.indexOf(',');
 		if (separatorPos == -1) {
 			return new NamedObject(value);
 		}
 		final String key = value.substring(0, separatorPos);
 		final String s1 = value.substring(separatorPos + 1);
-		final String text = TextUtils.formatText(key, s1);
+		final String text = TextUtils.format(key, s1);
 		return new NamedObject(value, text);
 	}
 }

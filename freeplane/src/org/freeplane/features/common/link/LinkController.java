@@ -234,7 +234,7 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		catch (final URISyntaxException e1) {
 			LogUtils.warn(e1);
-			UITools.errorMessage(TextUtils.formatText("link_error", link));
+			UITools.errorMessage(TextUtils.format("link_error", link));
 			return;
 		}
 	}

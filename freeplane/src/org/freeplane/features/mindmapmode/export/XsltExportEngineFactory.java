@@ -109,7 +109,7 @@ class XsltExportEngineFactory {
 			final Matcher m = COMPILED_FILE_NAME_PATTERN.matcher(xsltFile.getName());
 			if (m.matches()) { // if it does
 				final String extension = m.group(1);
-				final String description = TextUtils.formatText("exported_file", extension);
+				final String description = TextUtils.format("exported_file", extension);
 				addXsltFile(new String[] { extension }, description, xsltFile);
 			}
 		}

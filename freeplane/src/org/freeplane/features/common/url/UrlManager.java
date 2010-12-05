@@ -154,7 +154,7 @@ public class UrlManager implements IExtension {
 		}
 		catch (final Exception ex) {
 			final String message = ex.getMessage();
-			UITools.errorMessage(TextUtils.formatText("update_failed", String.valueOf(message)));
+			UITools.errorMessage(TextUtils.format("update_failed", String.valueOf(message)));
 			LogUtils.warn(ex);
 			final InputStream input = new BufferedInputStream(new FileInputStream(file));
 			return UrlManager.getActualReader(input);
@@ -299,7 +299,7 @@ public class UrlManager implements IExtension {
 			}
 			catch (final Exception e) {
 				LogUtils.warn("link " + target + " not found", e);
-				UITools.errorMessage(TextUtils.formatText("link_not_found", target));
+				UITools.errorMessage(TextUtils.format("link_not_found", target));
 			}
 			return;
 		}
@@ -324,13 +324,13 @@ public class UrlManager implements IExtension {
 			}
 			catch (final Exception e) {
 				LogUtils.warn("link " + uri + " not found", e);
-				UITools.errorMessage(TextUtils.formatText("link_not_found", uri.toString()));
+				UITools.errorMessage(TextUtils.format("link_not_found", uri.toString()));
 			}
 			return;
 		}
 		catch (final MalformedURLException ex) {
 			LogUtils.warn("URL " + uriString + " not found", ex);
-			UITools.errorMessage(TextUtils.formatText("link_not_found", uriString));
+			UITools.errorMessage(TextUtils.format("link_not_found", uriString));
 		}
 	}
 

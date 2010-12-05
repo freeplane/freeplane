@@ -66,7 +66,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IExtension {
 		final MapModel map = node.getMap();
 		final MapStyleModel extension = MapStyleModel.getExtension(map);
 		final String name = depth == 0 ? "AutomaticLayout.level.root" : "AutomaticLayout.level," + depth;
-		final NamedObject obj = NamedObject.formatText(name);
+		final NamedObject obj = NamedObject.format(name);
 		final IStyle style = StyleFactory.create(obj);
 		if (extension.getStyleNode(style) != null) {
 			return style;

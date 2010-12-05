@@ -372,7 +372,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final File file = Compat.urlToFile(url);
 		File alternativeFile = null;
 		if (!file.exists()) {
-			throw new FileNotFoundException(TextUtils.formatText("file_not_found", file.getPath()));
+			throw new FileNotFoundException(TextUtils.format("file_not_found", file.getPath()));
 		}
 		if (!file.canWrite()) {
 			((MMapModel) map).setReadOnly(true);
@@ -401,7 +401,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
 					UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
-					    TextUtils.formatText("map_locked_by_open", file.getName(), lockingUser));
+					    TextUtils.format("map_locked_by_open", file.getName(), lockingUser));
 					((MMapModel) map).setReadOnly(true);
 				}
 				else {
@@ -411,7 +411,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			catch (final Exception e) {
 				LogUtils.severe(e);
 				UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
-				    TextUtils.formatText("locking_failed_by_open", file.getName()));
+				    TextUtils.format("locking_failed_by_open", file.getName()));
 				((MMapModel) map).setReadOnly(true);
 			}
 		}
@@ -649,13 +649,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final String lockingUser = tryToLock(map, file);
 			if (lockingUser != null) {
 				UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
-				    TextUtils.formatText("map_locked_by_save_as", file.getName(), lockingUser));
+				    TextUtils.format("map_locked_by_save_as", file.getName(), lockingUser));
 				return false;
 			}
 		}
 		catch (final Exception e) {
 			UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
-			    TextUtils.formatText("locking_failed_by_save_as", file.getName()));
+			    TextUtils.format("locking_failed_by_save_as", file.getName()));
 			return false;
 		}
 		final URL urlBefore = map.getURL();
@@ -740,7 +740,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			return true;
 		}
 		catch (final IOException e) {
-			final String message = TextUtils.formatText("save_failed", file.getName());
+			final String message = TextUtils.format("save_failed", file.getName());
 			if (!isInternal) {
 				UITools.errorMessage(message);
 			}
@@ -797,7 +797,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
 			UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
-			    TextUtils.formatText("locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
+			    TextUtils.format("locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
 		}
 		if (lockingUser == null) {
 			((MMapModel) map).setReadOnly(false);
