@@ -138,7 +138,7 @@ class MindMapHTMLWriter {
 		final Color color = nodeStyleController.getColor(model);
 		fontStyle += "color: " + ColorUtils.colorToString(color) + ";";
 		final int fontSize = nodeStyleController.getFontSize(model);
-		final int defaultFontSize = Integer.parseInt(getProperty("defaultfontsize"));
+		final int defaultFontSize = 12;
 		final int procentSize = (int) (fontSize * 100 / defaultFontSize);
 		if (procentSize != 100) {
 			fontStyle += "font-size: " + procentSize + "%;";
