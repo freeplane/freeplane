@@ -24,7 +24,6 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.regex.Matcher;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -38,8 +37,8 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
+import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController.Direction;
@@ -196,10 +195,8 @@ class FindAction extends AFreeplaneAction {
 	}
 
 	private void displayNotFoundMessage(final NodeModel start, final ICondition condition) {
-		final String messageText = TextUtils.getText("no_more_found_from");
-		UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(), messageText.replaceAll("\\$1",
-		    Matcher.quoteReplacement(condition.toString())).replaceAll("\\$2",
-		    Matcher.quoteReplacement(getFindFromText(start))));
+		final String message = TextUtils.format("no_more_found_from", condition.toString(), getFindFromText(start));
+		UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(), message);
 	}
 
 	public String getFindFromText(final NodeModel node) {
