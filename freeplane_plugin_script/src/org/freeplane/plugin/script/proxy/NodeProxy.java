@@ -20,6 +20,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
+import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
@@ -106,6 +107,12 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		}
 	}
 
+	// Node: RW
+	public void setDetails(Object details) {
+		final MTextController textController = (MTextController) TextController.getController();
+		textController.setDetails(getDelegate(), Convertible.toString(details));
+    }
+
 	// NodeRO: R
 	public int getChildPosition(final Proxy.Node childNode) {
 		final NodeModel childNodeModel = ((NodeProxy) childNode).getDelegate();
@@ -126,6 +133,10 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public Collection<Proxy.Connector> getConnectorsOut() {
 		return new ConnectorOutListProxy(this);
 	}
+
+	public String getDetails() {
+		return DetailTextModel.getDetailTextText(getDelegate());
+    }
 
 	// NodeRO: R
 	public Proxy.ExternalObject getExternalObject() {

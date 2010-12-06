@@ -424,6 +424,8 @@ public interface Proxy {
 
 		Collection<Connector> getConnectorsOut();
 
+		String getDetails();
+
 		ExternalObject getExternalObject();
 
 		Icons getIcons();
@@ -550,6 +552,15 @@ public interface Proxy {
 
 		/** as above, using String nodeId instead of Node object to establish the connector*/
 		void removeConnector(Connector connectorToBeRemoved);
+
+		/**
+		 * A node's text is String valued. This methods provides automatic conversion to String in the same way as
+		 * for {@link #setText(Object)}, that is special conversion is provided for dates and calendars, other
+		 * types are converted via value.toString():
+		 * @param value An object for conversion to String. Use null to unset the details. Works well for all types
+		 *        that {@link Convertible} handles, particularly {@link Convertible}s itself.
+		 */
+		void setDetails(Object details);
 
 		void setFolded(boolean folded);
 
