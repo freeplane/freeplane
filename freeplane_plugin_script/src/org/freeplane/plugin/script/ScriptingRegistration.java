@@ -27,6 +27,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
@@ -168,10 +169,15 @@ class ScriptingRegistration {
 		registerScripts(menuBuilder, configuration);
 	}
 
-	private void registerScripts( final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {
+	private void registerScripts(final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {
 		final String scriptsParentLocation = MENU_BAR_SCRIPTING_LOCATION;
 		final String scriptsLocation = scriptsParentLocation + "/scripts";
 		addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));
+		if (configuration.getNameScriptMap().isEmpty()) {
+			final String message = "<html><body><em>" + TextUtils.getText("ExecuteScripts.noScriptsAvailable")
+			        + "</em></body></html>";
+			menuBuilder.addMenuItem(scriptsLocation, new JMenuItem(message), "no key", 0);
+		}
 		for (final Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
 			final String scriptName = entry.getKey();
 			final String location = scriptsLocation + "/" + scriptName;
@@ -180,8 +186,7 @@ class ScriptingRegistration {
 			// in the worst case three actions will cache a script - should not matter that much since it's unlikely
 			// that one script is used in multiple modes by the same user
 			for (final ExecutionMode executionMode : scriptMetaData.getExecutionModes()) {
-				addMenuItem(menuBuilder, location, entry, executionMode, scriptMetaData
-				    .cacheContent());
+				addMenuItem(menuBuilder, location, entry, executionMode, scriptMetaData.cacheContent());
 			}
 		}
 	}
