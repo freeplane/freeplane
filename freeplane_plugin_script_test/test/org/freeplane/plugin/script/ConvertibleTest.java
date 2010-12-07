@@ -16,7 +16,7 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.plugin.script.proxy.ConversionException;
 import org.freeplane.plugin.script.proxy.Convertible;
-import org.freeplane.plugin.script.proxy.ConvertibleAttributeValue;
+import org.freeplane.plugin.script.proxy.ConvertibleText;
 import org.freeplane.plugin.script.proxy.ConvertibleNoteText;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -280,7 +280,7 @@ public class ConvertibleTest {
 
 	@Test
 	public void testConvertibleAttributeValuesMayBeNull() throws ConversionException, ExecuteScriptException {
-		new ConvertibleAttributeValue(new NodeModel(null), null, null);
+		new ConvertibleText(new NodeModel(null), null, null);
 	}
 
 	@Test

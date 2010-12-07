@@ -424,8 +424,12 @@ public interface Proxy {
 
 		Collection<Connector> getConnectorsOut();
 
-		String getDetails();
+		/** returns the raw HTML text of the details if there is any or null otherwise. @since 1.2 */
+		String getDetailsText();
 
+		/** returns the text of the details as a Convertible like {@link #getNote()} for notes. @since 1.2 */
+		Convertible getDetails();
+		
 		ExternalObject getExternalObject();
 
 		Icons getIcons();
@@ -556,9 +560,13 @@ public interface Proxy {
 		/**
 		 * A node's text is String valued. This methods provides automatic conversion to String in the same way as
 		 * for {@link #setText(Object)}, that is special conversion is provided for dates and calendars, other
-		 * types are converted via value.toString():
+		 * types are converted via value.toString().
+		 * 
+		 * If the conversion result is not valid HTML it will be automatically converted to HTML.
+		 * 
 		 * @param value An object for conversion to String. Use null to unset the details. Works well for all types
 		 *        that {@link Convertible} handles, particularly {@link Convertible}s itself.
+		 * @since 1.2
 		 */
 		void setDetails(Object details);
 

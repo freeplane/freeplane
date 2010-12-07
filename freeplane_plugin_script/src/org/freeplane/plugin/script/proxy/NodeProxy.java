@@ -78,8 +78,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
-	public ConvertibleAttributeValue getAt(String attributeName) {
-		return new ConvertibleAttributeValue(getDelegate(), getScriptContext(), getAttributes().getFirst(attributeName));
+	public ConvertibleText getAt(String attributeName) {
+		return new ConvertibleText(getDelegate(), getScriptContext(), getAttributes().getFirst(attributeName));
 	}
 
 	// Node: R/W
@@ -107,11 +107,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		}
 	}
 
-	// Node: RW
+	// Node: R/W
 	public void setDetails(Object details) {
 		final MTextController textController = (MTextController) TextController.getController();
-		textController.setDetails(getDelegate(), Convertible.toString(details));
-    }
+		textController.setDetails(getDelegate(), convertConvertibleToHtml(details));
+	}
 
 	// NodeRO: R
 	public int getChildPosition(final Proxy.Node childNode) {
@@ -134,9 +134,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return new ConnectorOutListProxy(this);
 	}
 
-	public String getDetails() {
+	public Convertible getDetails() {
+		return new ConvertibleText(getDelegate(), getScriptContext(),
+		    DetailTextModel.getDetailTextText(getDelegate()));
+	}
+	
+	public String getDetailsText() {
 		return DetailTextModel.getDetailTextText(getDelegate());
-    }
+	}
 
 	// NodeRO: R
 	public Proxy.ExternalObject getExternalObject() {
