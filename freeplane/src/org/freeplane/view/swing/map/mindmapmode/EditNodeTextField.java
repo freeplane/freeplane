@@ -34,6 +34,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.io.Writer;
+
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -47,7 +50,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
 import javax.swing.text.StyledEditorKit.BoldAction;
 import javax.swing.text.StyledEditorKit.ForegroundAction;
@@ -55,12 +61,16 @@ import javax.swing.text.StyledEditorKit.ItalicAction;
 import javax.swing.text.StyledEditorKit.StyledTextAction;
 import javax.swing.text.StyledEditorKit.UnderlineAction;
 import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.HTMLWriter;
+import javax.swing.text.html.MinimalHTMLWriter;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -72,6 +82,8 @@ import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
+
+import com.lightdev.app.shtm.SHTMLWriter;
 
 /**
  * @author foltin
@@ -167,7 +179,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 	    final HTMLDocument document = (HTMLDocument) textfield.getDocument();
 	    document.getStyleSheet().addRule("body { width: " + (maxWidth - 1) + "}");
-	    textfield.setText(textfield.getText());
+	    textfield.setText(getNewText());
 	    textfield.putClientProperty("EditNodeTextField.linewrap", true);
     }
 
@@ -213,7 +225,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 
 		private void submitText() {
-	        submitText(textfield.getText());
+	        submitText(getNewText());
         }
 
 		private void submitText(final String output) {
@@ -244,7 +256,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 						break;
 					}
 				}
-				final String output = textfield.getText();
+				final String output = getNewText();
 				e.consume();
 				eventSource = CANCEL;
 				hideMe();
@@ -324,6 +336,17 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		removeFormattingAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control T"));
 	}
 
+	public String getNewText() {
+		final SHTMLWriter shtmlWriter = new SHTMLWriter((HTMLDocument) textfield.getDocument());
+		try {
+	        shtmlWriter.write();
+        }
+        catch (Exception e) {
+	        LogUtils.severe(e);
+        }
+		return shtmlWriter.toString();
+    }
+
 	private void hideMe() {
 		if (textfield == null) {
 			return;
@@ -379,7 +402,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	/* (non-Javadoc)
 	 * @see org.freeplane.view.swing.map.INodeTextField#show()
 	 */
-	@Override
+	@SuppressWarnings("serial")
+    @Override
 	public void show(final Frame frame) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final ViewController viewController = modeController.getController().getViewController();
@@ -408,7 +432,19 @@ class EditNodeTextField extends AbstractEditNodeTextField {
             }
 			
 		};
-		textfield.setContentType("text/html");
+		textfield.setEditorKit(new HTMLEditorKit(){
+
+			@Override
+            public void write(Writer out, Document doc, int pos, int len) throws IOException, BadLocationException {
+	            if (doc instanceof HTMLDocument) {
+                    HTMLWriter w = new SHTMLWriter(out, (HTMLDocument)doc, pos, len);
+                    w.write();
+                } else {
+                    super.write(out, doc, pos, len);
+                }
+            }
+			
+		});
 
 		final InputMap inputMap = textfield.getInputMap();
 		final ActionMap actionMap = textfield.getActionMap();
