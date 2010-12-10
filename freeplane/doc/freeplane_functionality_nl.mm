@@ -1,10 +1,107 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node TEXT="Basisknoop" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1289422553667">
-<hook NAME="MapStyle" zoom="0.75" max_node_width="600"/>
-<node TEXT="links van oerknoop" POSITION="left" ID="ID_1772025129" CREATED="1288536311727" MODIFIED="1288647119607" STYLE="bubble" HGAP="21" VSHIFT="21">
+<node TEXT="Basisknoop" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1291736329835">
+<hook NAME="MapStyle" zoom="0.74711066" max_node_width="600">
+<map_styles>
+<stylenode LOCALIZED_TEXT="styles.root_node">
+<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
+<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.ok">
+<icon BUILTIN="button_ok"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.needs_action">
+<icon BUILTIN="messagebox_warning"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.floating_node">
+<cloud COLOR="#ffffff" SHAPE="ARC"/>
+<edge STYLE="hide_edge"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.topic" COLOR="#18898b" STYLE="fork">
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.subtopic" COLOR="#cc3300" STYLE="fork">
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.subsubtopic" COLOR="#669900">
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.connection" COLOR="#606060" STYLE="fork">
+<font NAME="Arial" SIZE="10" BOLD="false"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.important" COLOR="#ff0000">
+<icon BUILTIN="yes"/>
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.question">
+<icon BUILTIN="help"/>
+<font NAME="Aharoni" SIZE="12"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.key" COLOR="#996600">
+<icon BUILTIN="password"/>
+<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.idea">
+<icon BUILTIN="idea"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.note" COLOR="#990000">
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.date" COLOR="#0033ff">
+<icon BUILTIN="calendar"/>
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.website" COLOR="#006633">
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.list" COLOR="#cc6600">
+<icon BUILTIN="list"/>
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.quotation" COLOR="#338800" STYLE="fork">
+<font NAME="Liberation Sans" SIZE="12" BOLD="false" ITALIC="false"/>
+<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.definition" COLOR="#666600">
+<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.description" COLOR="#996600">
+<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.pending" COLOR="#b3b95c">
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
+<font SIZE="20"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,1" COLOR="#0033ff">
+<font SIZE="18"/>
+<edge WIDTH="8"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,2" COLOR="#00b439">
+<font SIZE="16"/>
+<edge STYLE="bezier" WIDTH="thin"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,3" COLOR="#990000">
+<font SIZE="14"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,4" COLOR="#111111">
+<font SIZE="12"/>
+</stylenode>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right"/>
+</stylenode>
+</map_styles>
+</hook>
+<font BOLD="true"/>
+<node TEXT="links van basisknoop" POSITION="left" ID="ID_1772025129" CREATED="1288536311727" MODIFIED="1291736349616" STYLE="bubble" HGAP="21" VSHIFT="21">
 <node TEXT="knoop in wolk" ID="ID_646958243" CREATED="1288541742338" MODIFIED="1288647144255" HGAP="50" VSHIFT="-22">
-<cloud WIDTH="0"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="in wolk" ID="ID_1388178346" CREATED="1288541758195" MODIFIED="1288541766090"/>
 <node TEXT="in wolk" ID="ID_504032805" CREATED="1288541802273" MODIFIED="1288541807141"/>
 </node>
@@ -14,7 +111,7 @@
 <edge STYLE="hide_edge"/>
 <hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
 </node>
-<node TEXT="rechts van oerknoop" POSITION="right" ID="ID_441663322" CREATED="1288536353356" MODIFIED="1288548782940" STYLE="bubble" HGAP="19" VSHIFT="-13">
+<node TEXT="rechts van basisknoop" POSITION="right" ID="ID_441663322" CREATED="1288536353356" MODIFIED="1291736358976" STYLE="bubble" HGAP="19" VSHIFT="-13">
 <node ID="ID_1863548649" CREATED="1288536207761" MODIFIED="1288541701053" HGAP="37" VSHIFT="-13" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
@@ -28,11 +125,14 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="knoop a" ID="ID_1119041406" CREATED="1288535672221" MODIFIED="1288647438347" STYLE="bubble" HGAP="53" VSHIFT="7">
+<node TEXT="knoop a" ID="ID_1119041406" CREATED="1288535672221" MODIFIED="1291736448161" STYLE="bubble" HGAP="53" VSHIFT="7">
 <arrowlink DESTINATION="ID_268922755" SOURCE_LABEL="ouder (=label)" TARGET_LABEL="kleinkind" MIDDLE_LABEL="verbindingslijn" STARTINCLINATION="-11;64;" ENDINCLINATION="11;87;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+<arrowlink DESTINATION="ID_1863548649" STARTINCLINATION="48;0;" ENDINCLINATION="48;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="knoop b" ID="ID_1908863616" CREATED="1288535688688" MODIFIED="1288536436333">
 <edge STYLE="bezier"/>
-<node TEXT="knoop c" ID="ID_268922755" CREATED="1288535699522" MODIFIED="1288536443275"/>
+<node TEXT="knoop c" ID="ID_268922755" CREATED="1288535699522" MODIFIED="1291736448161">
+<arrowlink DESTINATION="ID_1863548649" STARTINCLINATION="161;0;" ENDINCLINATION="161;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
 </node>
 </node>
 <node TEXT="onder a" ID="ID_975219834" CREATED="1288536218798" MODIFIED="1288541704704" HGAP="27" VSHIFT="34" STYLE="bubble"/>
@@ -88,10 +188,7 @@
 </node>
 </node>
 <node TEXT="knooptekst" POSITION="left" ID="ID_1649509090" CREATED="1288646145389" MODIFIED="1288647096098" VSHIFT="-1" STYLE="bubble">
-<node TEXT="Knoop met&#xa;Eenvoudige tekstopmaak" ID="ID_1520586986" CREATED="1288646162992" MODIFIED="1288646550372">
-<font ITALIC="true"/>
-</node>
-<node ID="ID_1058901454" CREATED="1288541856163" MODIFIED="1288646891395" HGAP="21" VSHIFT="-6">
+<node ID="ID_1520586986" CREATED="1288646162992" MODIFIED="1291735798155">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -99,13 +196,111 @@
   </head>
   <body>
     <p>
-      <i><font size="3">Knoop met:</font></i><font size="5">&#160; </font>
-    </p>
-    <p>
-      <font size="5">Uitgebreide</font><font color="#ff0066">&#160;<i>tekst</i></font><b>opmaak</b>
+      <font color="#ff0000">Knoop</font><b>tekst</b>
     </p>
   </body>
 </html></richcontent>
+<font ITALIC="true"/>
+<node ID="ID_1286225916" CREATED="1288646162992" MODIFIED="1291821762551">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">Knoop</font><b>tekst</b>
+    </p>
+  </body>
+</html></richcontent>
+<font ITALIC="true"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bijlagetekst
+    </p>
+  </body>
+</html></richcontent>
+<edge COLOR="#cc0000"/>
+<node ID="ID_477486683" CREATED="1288646162992" MODIFIED="1291759009764">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">Knoop</font><b>tekst</b>
+    </p>
+  </body>
+</html></richcontent>
+<font ITALIC="true"/>
+<richcontent TYPE="NOTE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Notitietekst
+    </p>
+  </body>
+</html></richcontent>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bijlagetekst
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_1010722858" CREATED="1288646162992" MODIFIED="1291753449908">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">Knoop</font><b>tekst</b>
+    </p>
+  </body>
+</html></richcontent>
+<font ITALIC="false"/>
+<richcontent TYPE="NOTE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Notitietekst
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="a1" VALUE="waarde1"/>
+<attribute NAME="a2" VALUE="waarde2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bijlage en<i><b>&#160;attributen</b></i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
 </node>
 <node ID="ID_970392949" CREATED="1286737367993" MODIFIED="1289121393025" COLOR="#000000">
 <richcontent TYPE="NODE">
@@ -122,7 +317,7 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_344410157" CREATED="1270892460698" MODIFIED="1271976459361">
+<node ID="ID_344410157" CREATED="1270892460698" MODIFIED="1291735887964">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -182,19 +377,6 @@
 <node TEXT="Knipperen" ID="ID_1280590016" CREATED="1288548004325" MODIFIED="1288646884531" VSHIFT="-3">
 <hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
 </node>
-<node TEXT="knoop met notitie" ID="ID_817370954" CREATED="1288646262270" MODIFIED="1289121358830" HGAP="22" VSHIFT="2">
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Dit is de notitie bij een knoop
-    </p>
-  </body>
-</html></richcontent>
-</node>
 <node TEXT="LaTex" ID="ID_1643428065" CREATED="1271097206186" MODIFIED="1288767745673" STYLE="bubble">
 <hook EQUATION="\begin{array}{l}&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\end{array}" NAME="plugins/latex/LatexNodeHook.properties"/>
 </node>
@@ -205,9 +387,6 @@
 </hook>
 </node>
 <node TEXT="knoop met Beveiliging" ENCRYPTED_CONTENT="t/NS/HPSppU= VbQIDGWIdFE=" POSITION="left" ID="ID_36040841" CREATED="1288542236861" MODIFIED="1288647028691" VSHIFT="20"/>
-<node TEXT="knoop met Attributen" POSITION="left" ID="ID_1811929182" CREATED="1288542302701" MODIFIED="1288647036756" HGAP="22" VSHIFT="9">
-<attribute NAME="x" VALUE="25"/>
-</node>
 <node TEXT="knoop met Snelkoppeling" POSITION="left" ID="ID_1519332680" CREATED="1288542452827" MODIFIED="1288647049142" LINK="#ID_784697063" HGAP="21" VSHIFT="8"/>
 <node TEXT="knoop met Hyperlink" POSITION="left" ID="ID_1537075496" CREATED="1288542605210" MODIFIED="1288647056287" LINK="http://kioo.nl/" HGAP="21" VSHIFT="17"/>
 <node TEXT="knoop met Pictogrammen" POSITION="left" ID="ID_233656995" CREATED="1288542843639" MODIFIED="1288647069126" HGAP="21" VSHIFT="13">

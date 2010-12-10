@@ -14,7 +14,7 @@
   </body>
 </html></richcontent>
 <font NAME="Dialog" SIZE="18" BOLD="true"/>
-<hook NAME="MapStyle" max_node_width="600">
+<hook NAME="MapStyle" zoom="1.5" max_node_width="600">
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
@@ -131,24 +131,26 @@
 <font BOLD="true"/>
 <edge STYLE="hide_edge"/>
 </node>
-<node POSITION="left" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1291325127846" COLOR="#006699" HGAP="29">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Installeren
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Installeren" POSITION="left" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1291839212459" COLOR="#006699" HGAP="29">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Freeplane&apos;s homepagina" ID="ID_916980386" CREATED="1270892460631" MODIFIED="1291324213770" LINK="http://freeplane.sourceforge.net" COLOR="#006699" HGAP="24" VSHIFT="-2">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>
-<node TEXT="De volgende acties gebeuren meestal automatisch als je Freeplane download van Freeplane&apos;s homepagina" ID="ID_241920394" CREATED="1289029210967" MODIFIED="1289029579717" BACKGROUND_COLOR="#ffff00"/>
+<node TEXT="Nederlandse spellingcontrole" ID="ID_1547931043" CREATED="1291617322249" MODIFIED="1291617450818">
+<icon BUILTIN="pencil"/>
+<node TEXT="Deze moet apart worden geladen en geinstalleerd:" ID="ID_784840032" CREATED="1291617374112" MODIFIED="1291758778626"/>
+<node TEXT="Downlooad dictionary_nl.ortho: klik op rode pijl" ID="ID_1752568658" CREATED="1291758758798" MODIFIED="1291822198923" LINK="https://sourceforge.net/projects/freeplane/files/spell_check_dictionaries/dictionary_nl.ortho/download">
+<icon BUILTIN="full-1"/>
+</node>
+<node TEXT="Bewaar het bestand dictionary_nl.ortho in Freeplane/ortho" ID="ID_1606055060" CREATED="1291758795091" MODIFIED="1291758851704">
+<icon BUILTIN="full-2"/>
+</node>
+</node>
+<node TEXT="Pictogrammen toevoegen" ID="ID_993666367" CREATED="1291839224463" MODIFIED="1291839236710">
+<node TEXT="Om eigen pictogrammen aan de Pictogrammenbalk toe te voegen:&#xa;- plaats het pictogrambestand, bijvoorbeeld mijnpictogram.png, in de Freeplane gebruikersmap als ~/.freeplane/icons/mijnpictogram.png" ID="ID_537134358" CREATED="1270892460676" MODIFIED="1291839109694"/>
+</node>
 <node TEXT="Installatie op Windows platform" ID="_Freeplane_Link_139664576" CREATED="1270892460640" MODIFIED="1289029681967">
+<node TEXT="De volgende acties gebeuren meestal automatisch als je Freeplane download van Freeplane&apos;s homepagina" ID="ID_241920394" CREATED="1289029210967" MODIFIED="1289029579717" BACKGROUND_COLOR="#ffff00"/>
 <node TEXT="Download de Java Runtime Environment (at least J2RE1.5)" ID="ID_1620747952" CREATED="1270892460639" MODIFIED="1289029209271" LINK="http://java.sun.com/javase/downloads/index.jsp">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
@@ -159,7 +161,7 @@
 </node>
 </node>
 <node TEXT="Installatie op Linux platform" ID="ID_839470339" CREATED="1289029709910" MODIFIED="1289029725192">
-<node TEXT="To install Freeplane on Linux, download the Java Runtime Environment and the Freeplane application itself. First install Java, then unpack Freeplane. To run Freeplane, execute freeplane.sh." ID="_Freeplane_Link_1380352758" CREATED="1270892460641" MODIFIED="1271863219743"/>
+<node TEXT="Om Freeplane op Linux te installeren, download the Java Runtime Environment en de Freeplane applicatie. Installeer eerstl Java en pak dan Freeplane uit. Om Freeplane uit te voeren: kies freeplane.sh." ID="_Freeplane_Link_1380352758" CREATED="1270892460641" MODIFIED="1291822399033"/>
 </node>
 <node TEXT="Installatie op MAC platform" ID="ID_1956173686" CREATED="1289029737710" MODIFIED="1289029753303">
 <node TEXT="To install Freeplane on Mac OS X first use the built in Software Update feature to ensure that you have all the latest available updates, especially Java. Software Update is located under the Apple logo menu in the top left-hand corner of the screen. &#xa;&#xa;Then download a Mac-specific version of Freeplane. The .dmg version is easiest to install, though a .zip version may also be available. When the download is complete, the file may be automatically mounted (or un-zipped) depending on your Web browser settings. Otherwise either double-click on the downloaded .dmg file to &quot;mount&quot; it, or double-click on the downloaded .zip file to un-zip it. &#xa;&#xa;Now you should see a Freeplane application icon, which you can drag to your Applications folder. Then you may optionally create an alias (shortcut) on the Desktop, and/or on the Dock. To run Freeplane, either double-click on its application icon (in the Applications folder) or on its Desktop shortcut, or click once on its icon in the Dock. The Freeplane Wiki has Macintosh page with more information." ID="_Freeplane_Link_1808511462" CREATED="1270892460641" MODIFIED="1271864546275"/>
@@ -182,19 +184,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1073721425" CREATED="1271177847312" MODIFIED="1289028259137">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Standaard wordt elke minuut eeen .autosave back-up gemaakt en worden de laatse tien autosave bestanden bewaard voor het geval er Freeplane onbedoeld eindigt., bijvoorbeeld doordat de computer wordt afgesloten.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="Standaard wordt elke minuut eeen .autosave back-up gemaakt en worden de laatse tien autosave bestanden bewaard voor het geval Freeplane onbedoeld eindigt, bijvoorbeeld doordat de computer wordt afgesloten." ID="ID_1073721425" CREATED="1271177847312" MODIFIED="1291822540088"/>
 <node ID="ID_206842943" CREATED="1271178201859" MODIFIED="1289028586122">
 <richcontent TYPE="NODE">
 <html>
@@ -208,7 +198,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_3064437" CREATED="1271178347062" MODIFIED="1289565924388" LINK="#ID_1327160915">
+<node ID="ID_3064437" CREATED="1271178347062" MODIFIED="1291755825812" LINK="#ID_1327160915">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -219,13 +209,13 @@
       Het autosave gedrag en het aantal backup's kan worden ingesteld via:
     </p>
     <p>
-      - Kies&#160; <i>Extra &gt; Instellingen &gt; Omgeving &gt; Automatisch opslaan in b</i>alk Hoofdmenu
+      - Kies&#160; <i>Extra &gt; Instellingen &gt; Omgeving &gt; Automatisch opslaan in </i>Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Sneltoetsen instellen" ID="_Freeplane_Link_1091417446" CREATED="1270892460634" MODIFIED="1291325837195" COLOR="#006699" LINK="#ID_82273720" HGAP="22" VSHIFT="2">
+<node TEXT="Sneltoetsen" ID="_Freeplane_Link_1091417446" CREATED="1270892460634" MODIFIED="1291389822810" COLOR="#006699" LINK="#ID_82273720" HGAP="22" VSHIFT="2">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node ID="ID_1818761339" CREATED="1286915483579" MODIFIED="1289732285691">
 <richcontent TYPE="NODE">
@@ -243,7 +233,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1823288862" CREATED="1270895079510" MODIFIED="1291301769146" LINK="#ID_764902206">
+<node ID="ID_1823288862" CREATED="1270895079510" MODIFIED="1291822597512" LINK="#ID_764902206">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -254,10 +244,10 @@
       Om een sneltoets toe te kennen aan een menu item:
     </p>
     <p>
-      - kies &#160; <i>Extra &gt; Toewijzen sneltoets</i>&#160;in<i>&#160;</i>balk Hoofdmenu
+      - kies &#160; <i>Extra &gt; Toewijzen sneltoets</i>&#160;in<i>&#160;</i>Hoofdmenu
     </p>
     <p>
-      - kies menuoptie, bijvoorbeeld Stijlen<i>&#160;&gt; Knoopprofiel toepassen &gt; een profiek, bijvoorbeeld &quot;Te Doen&quot; </i>
+      - kies menuoptie, bijvoorbeeld Stijlen<i>&#160;&gt; Knoopprofiel toepassen &gt; een profiel, bijvoorbeeld &quot;Te Doen&quot; </i>
     </p>
     <p>
       - kies toets, toetscombinatie of F-toets
@@ -289,7 +279,7 @@
 </node>
 <node TEXT="F-toetsen" ID="ID_435839537" CREATED="1289732578947" MODIFIED="1289733282595" COLOR="#006699" HGAP="23">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1370229846" CREATED="1289732294497" MODIFIED="1291301903057">
+<node ID="ID_1370229846" CREATED="1289732294497" MODIFIED="1291822631442">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -297,21 +287,21 @@
   </head>
   <body>
     <p>
-      F-toetsen zijn ook sneltoetsen. Om functies toe te wijzen aan Balk Functietoetsen:
+      F-toetsen zijn ook sneltoetsen. Om functies toe te wijzen aan Functietoetsen:
     </p>
     <p>
       - ken F1 t/m 12 toe als sneltoets (zie boven); en
     </p>
     <p>
-      - kies<i>&#160;Extra &gt; Sneltoetsenset &gt; Opslaan sneltoetsen</i>&#160;in balk Hoofdmenu
+      - kies<i>&#160;Extra &gt; Sneltoetsenset &gt; Opslaan sneltoetsen</i>&#160;in Hoofdmenu
     </p>
     <p>
-      Voor verschillende situaties kan zo een eigen balk met functietoetsen worden gemaakt.
+      Voor verschillende situaties kan zo een eigen set met functietoetsen worden gemaakt.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1385187695" CREATED="1289732931429" MODIFIED="1291301880593">
+<node ID="ID_1385187695" CREATED="1289732931429" MODIFIED="1291822669007">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -319,7 +309,7 @@
   </head>
   <body>
     <p>
-      Om een eerder bewaarde set met sneltoetsen (ook: F-toetsen) te kiezen:
+      Om een eerder opgeslagen set met sneltoetsen (ook: F-toetsen) te kiezen:
     </p>
     <p>
       - kies <i>Extra</i> <i>&gt; Sneltoetsenset &gt; </i>naam van de set
@@ -329,6 +319,7 @@
 </node>
 </node>
 </node>
+<node TEXT="Voorkeuren" ID="ID_488698400" CREATED="1291389794807" MODIFIED="1291389801984">
 <node ID="ID_1974913930" CREATED="1286825354367" MODIFIED="1291325892646">
 <richcontent TYPE="NODE">
 <html>
@@ -349,19 +340,24 @@
       Sommige instellingen treden pas in werking na het opnieuw opstarten van Freeplane.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
-<node TEXT="Overzicht sneltoetsen" POSITION="left" ID="ID_537136607" CREATED="1291142331388" MODIFIED="1291326121209" HGAP="30" VSHIFT="-2" BACKGROUND_COLOR="#ffffff">
-<icon BUILTIN="pencil"/>
+<node TEXT="Gebruikerstijlen" ID="ID_789751845" CREATED="1291389830289" MODIFIED="1291822693109" LINK="#ID_643671716"/>
+<node TEXT="Mindmapstijlen" ID="ID_1153159867" CREATED="1291550298859" MODIFIED="1291823009672" LINK="#ID_1778719162"/>
+<node TEXT="Taal wijzigen" ID="ID_172050805" CREATED="1271856103992" MODIFIED="1291875126214" COLOR="#006699">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Om de taal te veranderen:&#xa;- kies Extra &gt; Instellingren &gt; Omgeving&#xa;- kies een taal en herstart Freeplane" ID="ID_1132291765" CREATED="1291874606053" MODIFIED="1291874961914"/>
+</node>
+</node>
+<node TEXT="Overzicht sneltoetsen" POSITION="left" ID="ID_537136607" CREATED="1291142331388" MODIFIED="1291823046051" HGAP="30" VSHIFT="-2" BACKGROUND_COLOR="#ffffff">
 <node TEXT="Overzicht sneltoetsen" ID="ID_1478076706" CREATED="1291142331388" MODIFIED="1291142331388">
 <node ID="ID_1300166718" CREATED="1291142331529" MODIFIED="1291142331529">
 <richcontent TYPE="NODE">
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!<!<!
+      <!--<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!
         h3 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 0 }
         h2 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 0 }
         h1 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 0 }
@@ -1483,47 +1479,10 @@
 <node TEXT="Overzicht van menu&apos;s: Shift+F1" ID="ID_279206246" CREATED="1291142331544" MODIFIED="1291142331544"/>
 </node>
 </node>
-<node TEXT="Groovy scripts" POSITION="left" ID="ID_1046070222" CREATED="1271021863642" MODIFIED="1291325931341" COLOR="#006699" HGAP="28" VSHIFT="-7">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Informatie over scripting staat op de Freeplane Wiki." ID="ID_476511397" CREATED="1271022540079" MODIFIED="1288857806288" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting" BACKGROUND_COLOR="#ffcc00">
-<node TEXT="Groovy scripts can access the mindmap by means of a Scripting API." ID="ID_893034881" CREATED="1271022419501" MODIFIED="1271022439407"/>
-<node TEXT="Scripts can use some Freeplane utility classes that are provided by Freeplane, e.g. UITools, LogTool or HtmlTools." ID="ID_670788358" CREATED="1271022419501" MODIFIED="1271022442735"/>
-<node TEXT="Scripts can use some of the functionality provided by libraries which are included in Freeplane." ID="ID_21879568" CREATED="1271022419501" MODIFIED="1271022447860"/>
-</node>
-<node TEXT="Alleen voor specialisten" ID="ID_1916933814" CREATED="1271022419501" MODIFIED="1288857733061">
-<node ID="ID_905639720" CREATED="1271022419501" MODIFIED="1288857657822">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Grooy scripts die extern zijn gedefinieerd. </b>Deze kunnnen worden toegepast door Freeplane te vertellen waar deze zich bevinden. Daarna kunnen ze worden toegepast als elke andere functie in Freeplane.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1457942941" CREATED="1271022419501" MODIFIED="1288857700379">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Physical styles/Patterns may contain scripts for formatting purposes. They are automatically applied to any node when the given pattern is assigned.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Map local scripts may be defined within a map as attributes of some node. These scripts are embedded within a map, so they can be easily shipped as part of the map. A special, built in editor is used for editing map local scripts." ID="ID_1545994363" CREATED="1271022419501" MODIFIED="1272011807552"/>
-</node>
-</node>
-<node TEXT="Importeren/Exporteren" POSITION="left" ID="ID_1619208320" CREATED="1291324841663" MODIFIED="1291325956372" HGAP="29" VSHIFT="-1">
+<node TEXT="Importeren en Exporteren" POSITION="left" ID="ID_1619208320" CREATED="1291324841663" MODIFIED="1291827160647" HGAP="29" VSHIFT="-1">
 <node TEXT="Exporteren" ID="ID_1017741956" CREATED="1289031043654" MODIFIED="1291324302558" COLOR="#006699" LINK="#ID_857930802" HGAP="27" VSHIFT="-1">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1138233100" CREATED="1270892460691" MODIFIED="1289572275008" LINK="#ID_857930802">
+<node ID="ID_1138233100" CREATED="1270892460691" MODIFIED="1291755825859" LINK="#ID_857930802">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -1534,7 +1493,7 @@
       Om een mindmap te exporteren:
     </p>
     <p>
-      - kies&#160; <i>Bestand &gt; Exporteren </i>in<i>&#160;</i>balk Hoofdmenu
+      - kies&#160; <i>Bestand &gt; Exporteren </i>in<i>&#160;</i>Hoofdmenu
     </p>
   </body>
 </html></richcontent>
@@ -1570,8 +1529,11 @@
 </html></richcontent>
 </node>
 </node>
+<node TEXT="Beperking paatjes in mindmap" ID="ID_1129596420" CREATED="1291548053248" MODIFIED="1291548976536" LINK="#ID_708662328">
+<node TEXT="Plaatjes worden niet automatisch mee geexporteerd.&#xa;Zorg dat plaatjes bij het maken van de mindmap in dezelfde map staan als waarin de mindmap (xx.mm)&#xa;staat en kopieer plaatjes na het exporteren handmatig naar de map waarin de freeplane viewer staat.&#xa;Bij java Apllets is dit: xx.html_files" ID="ID_1694121821" CREATED="1291548063474" MODIFIED="1291827027165" BACKGROUND_COLOR="#ffff00"/>
+</node>
 <node TEXT="HTML exporteren" ID="ID_503239149" CREATED="1290784686285" MODIFIED="1290784721549">
-<node ID="ID_1019767330" CREATED="1290784721550" MODIFIED="1290784840773">
+<node ID="ID_1019767330" CREATED="1290784721550" MODIFIED="1291755825859">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -1582,7 +1544,7 @@
       Er kunnen extra opties worden ingesteld:
     </p>
     <p>
-      kies Balk hoofdmenu: <i>Extra &gt;Instellingen . HTML</i>
+      kies hoofdmenu: <i>Extra &gt;Instellingen . HTML</i>
     </p>
   </body>
 </html></richcontent>
@@ -1591,7 +1553,7 @@
 </node>
 <node TEXT="Importeren" ID="ID_1155373089" CREATED="1271022654767" MODIFIED="1291324298861" COLOR="#006699" LINK="#ID_1330799923" HGAP="27" VSHIFT="3">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_141591900" CREATED="1270892460691" MODIFIED="1289571850848">
+<node ID="ID_141591900" CREATED="1270892460691" MODIFIED="1291755825875">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -1602,13 +1564,13 @@
       Om een mindmap te importeren:
     </p>
     <p>
-      - kies&#160; <i>Bestand &gt; Importeren</i>&#160;in balk Hoofdmenu
+      - kies&#160; <i>Bestand &gt; Importeren</i>&#160;in Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 </node>
 <node TEXT="HTML importeren" ID="ID_723828512" CREATED="1290784686285" MODIFIED="1290784879290">
-<node ID="ID_1427858042" CREATED="1290784721550" MODIFIED="1290784840773">
+<node ID="ID_1427858042" CREATED="1290784721550" MODIFIED="1291755825875">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -1619,7 +1581,7 @@
       Er kunnen extra opties worden ingesteld:
     </p>
     <p>
-      kies Balk hoofdmenu: <i>Extra &gt;Instellingen . HTML</i>
+      kies hoofdmenu: <i>Extra &gt;Instellingen . HTML</i>
     </p>
   </body>
 </html></richcontent>
@@ -1627,7 +1589,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Wat is Freeplane ?" POSITION="right" ID="ID_1892332867" CREATED="1286913743738" MODIFIED="1291324610776" BACKGROUND_COLOR="#ffff00" STYLE="bubble" HGAP="35" VSHIFT="85">
+<node TEXT="Wat is Freeplane ?" POSITION="right" ID="ID_1892332867" CREATED="1286913743738" MODIFIED="1291389957103" BACKGROUND_COLOR="#ffff00" STYLE="bubble" HGAP="16" VSHIFT="85">
 <icon BUILTIN="gohome"/>
 <font BOLD="true"/>
 <edge STYLE="hide_edge"/>
@@ -1650,36 +1612,16 @@
 <edge STYLE="bezier"/>
 </node>
 </node>
-<node POSITION="right" ID="ID_147712495" CREATED="1288549229612" MODIFIED="1289504510489" LINK="freeplane_functionality_nl.jpg" COLOR="#006699" HGAP="23" VSHIFT="3">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Basismogelijkheden (plaatje)
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Basismogelijkheden mm" POSITION="right" ID="ID_1444754090" CREATED="1289121848352" MODIFIED="1291876405561" LINK="freeplane_functionality_nl.mm" HGAP="26">
+<node TEXT="Basismogelijkheden (plaatje)" ID="ID_147712495" CREATED="1288549229612" MODIFIED="1291837473415" LINK="freeplane_functionality_nl.jpg" COLOR="#006699" HGAP="23" VSHIFT="3">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Idem mindmap" ID="ID_1444754090" CREATED="1289121848352" MODIFIED="1289121909372" LINK="freeplane_functionality_nl.mm"/>
+<node TEXT="(Klik op het rode pijltje om het plaatje respectievelijk de mindmap te openen.)" ID="ID_1295796813" CREATED="1291837423869" MODIFIED="1291837469078"/>
 </node>
-<node POSITION="right" ID="ID_689355813" CREATED="1286912474338" MODIFIED="1289121105338" HGAP="40" VSHIFT="1" COLOR="#006699">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Basisbegrippen
-    </p>
-  </body>
-</html></richcontent>
+</node>
+<node TEXT="Basisbegrippen" POSITION="right" ID="ID_689355813" CREATED="1286912474338" MODIFIED="1291754280817" HGAP="40" VSHIFT="1" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Knoop" ID="ID_1134143931" CREATED="1288986433297" MODIFIED="1288990287236" HGAP="19" VSHIFT="-9">
-<node ID="ID_1859916476" CREATED="1288985786692" MODIFIED="1291305856445" HGAP="28" VSHIFT="7" LINK="#_Freeplane_Link_1709752669">
+<node ID="ID_1859916476" CREATED="1288985786692" MODIFIED="1291754353170" HGAP="28" VSHIFT="7" LINK="#_Freeplane_Link_1709752669" BACKGROUND_COLOR="#ffff33" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -1692,6 +1634,73 @@
   </body>
 </html></richcontent>
 </node>
+<node TEXT="Inhoud knoop" ID="ID_1791342474" CREATED="1291753245064" MODIFIED="1291835971772">
+<node ID="ID_1546528464" CREATED="1291835986334" MODIFIED="1291836688617" STYLE="bubble">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een knoop heeft 4 tekstgebieden, te noemen basistekst, bijlage, attributen en notitie. Deze tekstgebieden zijn alleen zichtbaar als deze tekst bevatten &#233;n zijn ingeschakeld. Zie hiervoor:
+    </p>
+    <p>
+      - <i>Beeld &gt; Verbergen bijlage, attributen en notitie</i> (niet aangevinkt);
+    </p>
+    <p>
+      - <i>Beeld &gt; Tonen attributen</i>;
+    </p>
+    <p>
+      - <i>Beeld &gt; Tonen notities bij knopen</i>.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Voorbeeld" ID="ID_1149649282" CREATED="1291836804157" MODIFIED="1291836810991">
+<node ID="ID_1010722858" CREATED="1288646162992" MODIFIED="1291754514640">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Basistekst</b>
+    </p>
+  </body>
+</html></richcontent>
+<font ITALIC="false"/>
+<richcontent TYPE="NOTE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Notitietekst
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="a1" VALUE="waarde1"/>
+<attribute NAME="a2" VALUE="waarde2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bijlage en hieronder
+    </p>
+    <p>
+      <i><b>attributen</b></i>:
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
 <node TEXT="Omlijning knoop" ID="ID_1926775464" CREATED="1288536586615" MODIFIED="1289051588688" HGAP="21" VSHIFT="-5">
 <node TEXT="zonder omlijning" ID="ID_433807760" CREATED="1288536619429" MODIFIED="1288646950940"/>
 <node TEXT="met omlijning" ID="ID_1794331644" CREATED="1288536624648" MODIFIED="1288646942532" STYLE="bubble"/>
@@ -1702,7 +1711,7 @@
 </node>
 </node>
 <node TEXT="Pictogram" ID="ID_306655855" CREATED="1288991474812" MODIFIED="1288991485350">
-<node ID="ID_1663966222" CREATED="1288991485351" MODIFIED="1289049978673" HGAP="49" VSHIFT="-1" LINK="#Freeplane_Link_1044397139">
+<node ID="ID_1663966222" CREATED="1288991485351" MODIFIED="1291836775181" HGAP="13" VSHIFT="1" LINK="#Freeplane_Link_1044397139">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -1834,8 +1843,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Vorm" ID="ID_68274920" CREATED="1291306069080" MODIFIED="1291319252593">
-<icon BUILTIN="pencil"/>
+<node TEXT="Vorm" ID="ID_68274920" CREATED="1291306069080" MODIFIED="1291836858415">
 <node TEXT="boog" ID="ID_1145623348" CREATED="1291306087730" MODIFIED="1291306168999">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
@@ -1890,8 +1898,7 @@
 <node TEXT="eindknoop" ID="ID_1975334004" CREATED="1270893138577" MODIFIED="1286638659775" HGAP="26" VSHIFT="-26"/>
 </node>
 </node>
-<node TEXT="Stijl" ID="ID_1265358251" CREATED="1291305304499" MODIFIED="1291319155576" BACKGROUND_COLOR="#ffffff">
-<icon BUILTIN="pencil"/>
+<node TEXT="Stijl" ID="ID_1265358251" CREATED="1291305304499" MODIFIED="1291836904544" BACKGROUND_COLOR="#ffffff">
 <node TEXT="Een verzameling vormeigenschappen waarmee een knoop in &#xe9;&#xe9;n keer kan worden opgemaakt." ID="ID_1775866146" CREATED="1291305338376" MODIFIED="1291305409262"/>
 <node TEXT="Voorbeeld" LOCALIZED_STYLE_REF="AutomaticLayout.level,1" ID="ID_874424939" CREATED="1291305410190" MODIFIED="1291305569420"/>
 </node>
@@ -1972,7 +1979,7 @@
 </node>
 </node>
 <node TEXT="Notitie" ID="ID_391322847" CREATED="1288971070247" MODIFIED="1288971093046">
-<node TEXT="Een notitie is een tekst die bij een knoop hoort maar die in een apart venster wordt getoond als de knoop wordt geslelecteerd. De notitie wordt ook getoond in het venster waarin de activiteiten van de Agenda worden getoond." ID="ID_871040111" CREATED="1288971093047" MODIFIED="1289050103270" STYLE="bubble" HGAP="63" VSHIFT="-1" LINK="#ID_1542554542"/>
+<node TEXT="Een notitie is een tekst die bij een knoop hoort maar die bij een knoop en/of in een apart venster wordt getoond wordt als de knoop wordt geslelecteerd. De notitie wordt ook getoond in het venster waarin de activiteiten van de Agenda worden getoond." ID="ID_871040111" CREATED="1288971093047" MODIFIED="1291837099342" STYLE="bubble" HGAP="21" VSHIFT="6" LINK="#ID_1542554542"/>
 <node TEXT="Voorbeeld" ID="ID_1389860743" CREATED="1289051630129" MODIFIED="1289051636151">
 <node TEXT="knoop met notitie" ID="ID_817370954" CREATED="1288646262270" MODIFIED="1288646895311" HGAP="22" VSHIFT="2">
 <richcontent TYPE="NOTE">
@@ -2004,14 +2011,12 @@
 </html></richcontent>
 </node>
 <node TEXT="Voorbeeld" ID="ID_1601597975" CREATED="1289047766671" MODIFIED="1289047774799">
-<node TEXT="knoop met Attributen" ID="ID_1811929182" CREATED="1288542302701" MODIFIED="1288647036756" HGAP="22" VSHIFT="9">
+<node TEXT="knoop met atribuut x=25" ID="ID_1811929182" CREATED="1288542302701" MODIFIED="1291837124708" HGAP="22" VSHIFT="9">
 <attribute NAME="x" VALUE="25"/>
 </node>
 </node>
 </node>
-<node TEXT="Formule" ID="ID_906917161" CREATED="1291305622483" MODIFIED="1291319550397" BACKGROUND_COLOR="#ffffff">
-<icon BUILTIN="pencil"/>
-<icon BUILTIN="messagebox_warning"/>
+<node TEXT="Formule" ID="ID_906917161" CREATED="1291305622483" MODIFIED="1291837129871" BACKGROUND_COLOR="#ffffff">
 <node TEXT="Een wiskundige formule die aan een knoop is gekoppeld en die kan worden uitgevoerd" ID="ID_700280123" CREATED="1291305629402" MODIFIED="1291305678105"/>
 </node>
 <node TEXT="Beveiligen" ID="ID_596564529" CREATED="1289048117709" MODIFIED="1289052167424">
@@ -2050,7 +2055,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Een hele mindmap kan worden beschermd tegen overschrijven door een andere gebruiker. Deze functie is experimenteel." ID="ID_47605586" CREATED="1286826107047" MODIFIED="1289505013508" STYLE="bubble"/>
-<node ID="ID_1792715924" CREATED="1270892460703" MODIFIED="1289565960003">
+<node ID="ID_1792715924" CREATED="1270892460703" MODIFIED="1291755825875">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -2061,7 +2066,7 @@
       Om te voorkomen dat een mindmap wordt veranderd:
     </p>
     <p>
-      - kies<i>&#160;Bestand &gt; Beveiligen mindmap </i>balk Hoofdmenu
+      - kies<i>&#160;Bestand &gt; Beveiligen mindmap </i>Hoofdmenu
     </p>
   </body>
 </html></richcontent>
@@ -2069,7 +2074,7 @@
 </node>
 <node TEXT="Functies en menu&apos;s" POSITION="right" ID="ID_777714483" CREATED="1286740573662" MODIFIED="1291211062551" HGAP="40" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_164253080" CREATED="1286910994642" MODIFIED="1291154324466" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node ID="ID_164253080" CREATED="1286910994642" MODIFIED="1291755825890" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -2077,7 +2082,7 @@
   </head>
   <body>
     <p>
-      Een menu is een lijst functies waaruit je kunt kiezen. De balk <i>Hoofdmenu</i>&#160;bevat alle functies van Freeplane.
+      Een menu is een lijst functies waaruit je kunt kiezen. De <i>Hoofdmenu</i>&#160;bevat alle functies van Freeplane.
     </p>
     <p>
       Een aantal andere menubalken bevatten selecties uit het hoofdmenu die vaak worden gebruikt. Je kunt kiezen of deze menubalken continu zichbaar moeten zijn of niet. Daarnaast zijn er <i>Context menu's</i>&#160;die alleen zichtbaar zijn als een een bepaald object is geselecteerd zoals en knoop of lijn en die alleen functies bevatten die gelden voor dit object.
@@ -2087,7 +2092,7 @@
 </node>
 <node TEXT="Waar bevinden zich de menubalken en hoe heten ze ?" ID="ID_1527109093" CREATED="1287139381881" MODIFIED="1291211080569" LINK="freeplane_menuposition_nl.jpg"/>
 <node TEXT="Welke functies bevatten de menu&apos;s ?" ID="ID_602915987" CREATED="1286909912487" MODIFIED="1288766849411">
-<node TEXT="Balk Hoofdmenu" ID="ID_1676223674" CREATED="1286741018708" MODIFIED="1288430685634">
+<node TEXT="Hoofdmenu" ID="ID_1676223674" CREATED="1286741018708" MODIFIED="1291755825890">
 <node TEXT="Bestand" ID="ID_726273295" CREATED="1266240579156" MODIFIED="1287067346521" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node ID="ID_368992923" CREATED="1266240728734" MODIFIED="1288473955677" COLOR="#663300">
@@ -2174,7 +2179,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Terug naar opgeslagen versie" ID="ID_1689665561" CREATED="1266240740062" MODIFIED="1291145746074" COLOR="#663300">
+<node TEXT="Teruggaan naar opgeslagen versie" ID="ID_1689665561" CREATED="1266240740062" MODIFIED="1291663535165" COLOR="#663300">
 <node ID="ID_1182324893" CREATED="1266240906265" MODIFIED="1288730331644" COLOR="#000000">
 <richcontent TYPE="NODE">
 <html>
@@ -2609,7 +2614,7 @@
 <node TEXT="Zonder afbeeldingen, pictorammen, notities" ID="ID_1521028791" CREATED="1289571895986" MODIFIED="1289571935720"/>
 </node>
 </node>
-<node TEXT="Paginainstelling..." ID="ID_1523958734" CREATED="1266240796750" MODIFIED="1288557951344" COLOR="#663300">
+<node TEXT="Paginainstellingen..." ID="ID_1523958734" CREATED="1266240796750" MODIFIED="1291663605412" COLOR="#663300">
 <node ID="ID_1308065378" CREATED="1266589198351" MODIFIED="1288557943853">
 <richcontent TYPE="NODE">
 <html>
@@ -2636,18 +2641,7 @@
 </node>
 </node>
 </node>
-<node ID="ID_886137869" CREATED="1266240808359" MODIFIED="1290715011677" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Afdrukken...
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Afdrukken..." ID="ID_886137869" CREATED="1266240808359" MODIFIED="1291663620481" COLOR="#663300">
 <node ID="ID_1728241471" CREATED="1266589832304" MODIFIED="1288558001099">
 <richcontent TYPE="NODE">
 <html>
@@ -2842,7 +2836,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Tekst bewerken binnen knoop" ID="ID_1162372089" CREATED="1266247401765" MODIFIED="1291211127697" COLOR="#663300">
+<node TEXT="Bewerken knooptekst" ID="ID_1162372089" CREATED="1266247401765" MODIFIED="1291821842096" COLOR="#663300">
 <node ID="ID_500343761" CREATED="1266259247359" MODIFIED="1290716064094">
 <richcontent TYPE="NODE">
 <html>
@@ -2857,7 +2851,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Tekst bewerken in opmaakvenster" ID="ID_1542197841" CREATED="1266244681296" MODIFIED="1291211141315" COLOR="#663300">
+<node TEXT="Bewerken knooptekst in hulpvenster" ID="ID_1542197841" CREATED="1266244681296" MODIFIED="1291821867337" COLOR="#663300">
 <node ID="ID_669267737" CREATED="1266248543843" MODIFIED="1290716165338" COLOR="#000000">
 <richcontent TYPE="NODE">
 <html>
@@ -2872,7 +2866,21 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Bewerken knoopdetails" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1291299396422" BACKGROUND_COLOR="#99ff66"/>
+<node TEXT="Bewerken knoopbijlage" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1291663716687" COLOR="#663300">
+<node ID="ID_1571583355" CREATED="1291616743871" MODIFIED="1291616855326">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opent venster voor het invoeren en opmaken van tekst die onder een knoop getoond wordt als <i>Beeld &gt; Tonen knoopbijlage</i>&#160;is geselecteerd.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
 <node ID="ID_984784283" CREATED="1266244687437" MODIFIED="1288422917966" COLOR="#663300">
 <richcontent TYPE="NODE">
 <html>
@@ -2899,18 +2907,7 @@
 </html></richcontent>
 </node>
 </node>
-<node ID="ID_924676619" CREATED="1266255695750" MODIFIED="1288422989992" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bewerken knoop en notitie
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Bewerken notitie" ID="ID_924676619" CREATED="1266255695750" MODIFIED="1291663734627" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node ID="ID_1338064532" CREATED="1266596080085" MODIFIED="1290716498945">
 <richcontent TYPE="NODE">
@@ -3019,18 +3016,7 @@
 </html></richcontent>
 </node>
 </node>
-<node ID="ID_100634645" CREATED="1266247064718" MODIFIED="1288558409816" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Zoeken en Vervangen in alle mindmaps.
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Zoeken en vervangen in alle mindmaps." ID="ID_100634645" CREATED="1266247064718" MODIFIED="1291663764001" COLOR="#663300">
 <node ID="ID_264652060" CREATED="1266591545695" MODIFIED="1290716810337">
 <richcontent TYPE="NODE">
 <html>
@@ -3059,7 +3045,7 @@
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Balk Hoofdmenu" ID="ID_926021846" CREATED="1266247097703" MODIFIED="1291322464646" COLOR="#663300">
+<node TEXT="Tonen hoofdmenu" ID="ID_926021846" CREATED="1266247097703" MODIFIED="1291663808134" COLOR="#663300">
 <node ID="ID_641371847" CREATED="1266591746476" MODIFIED="1290717048050">
 <richcontent TYPE="NODE">
 <html>
@@ -3074,24 +3060,13 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Balk Werkmenu" ID="ID_1777795790" CREATED="1288423137527" MODIFIED="1291322464662" COLOR="#663300">
+<node TEXT="Tonen werkmenu" ID="ID_1777795790" CREATED="1288423137527" MODIFIED="1291663828757" COLOR="#663300">
 <node TEXT="Wisslet tussen wel/niet tonen Werkmenu." ID="ID_973346128" CREATED="1290716943164" MODIFIED="1290717081013"/>
 </node>
-<node TEXT="Balk Filtermenu" ID="ID_850553052" CREATED="1288423176425" MODIFIED="1291322464662" COLOR="#663300">
+<node TEXT="Tonen filtermenu" ID="ID_850553052" CREATED="1288423176425" MODIFIED="1291663841331" COLOR="#663300">
 <node TEXT="Wisselt tussen wel/niet tonen Filtermenu." ID="ID_1243815639" CREATED="1290716970424" MODIFIED="1290717117470"/>
 </node>
-<node ID="ID_664958295" CREATED="1266247102156" MODIFIED="1291322464662" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Balk Functietoetsen
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Tonen functietoetsen" ID="ID_664958295" CREATED="1266247102156" MODIFIED="1291663860222" COLOR="#663300">
 <node ID="ID_646554422" CREATED="1266591755992" MODIFIED="1290717159435">
 <richcontent TYPE="NODE">
 <html>
@@ -3106,18 +3081,7 @@
 </html></richcontent>
 </node>
 </node>
-<node ID="ID_1263742214" CREATED="1266247112156" MODIFIED="1291322464662" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Balk Pictogrammen
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Tonen pictogrammenbalk" ID="ID_1263742214" CREATED="1266247112156" MODIFIED="1291663882811" COLOR="#663300">
 <node ID="ID_106976439" CREATED="1266593121570" MODIFIED="1290717198294">
 <richcontent TYPE="NODE">
 <html>
@@ -3132,7 +3096,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Volledig scherm" ID="ID_1560330236" CREATED="1266247120765" MODIFIED="1291322464662" COLOR="#663300">
+<node TEXT="Tonen volledig scherm" ID="ID_1560330236" CREATED="1266247120765" MODIFIED="1291663897865" COLOR="#663300">
 <node ID="ID_1467881326" CREATED="1266247143359" MODIFIED="1290717383810" COLOR="#000000">
 <richcontent TYPE="NODE">
 <html>
@@ -3147,16 +3111,17 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Opmaakpaneel" ID="ID_1783882978" CREATED="1291154608643" MODIFIED="1291322464662" COLOR="#663300">
+<node TEXT="Tonen opmaakpaneel" ID="ID_1783882978" CREATED="1291154608643" MODIFIED="1291663910517" COLOR="#663300">
 <node TEXT="Toont/verbergt een venster waarin alle vormelementen van een knoop worden getoond en in &#xe9;&#xe9;n keer kunnen worden bewerkt." ID="ID_1802564803" CREATED="1291154670380" MODIFIED="1291155038604"/>
 </node>
-<node TEXT="Verkorte knoopinhoud" ID="ID_787093188" CREATED="1291155413971" MODIFIED="1291322464662" COLOR="#663300">
+<node TEXT="Verbergen bijlage, attributen en notitie" ID="ID_787093188" CREATED="1291155413971" MODIFIED="1291664153292" COLOR="#663300">
 <icon BUILTIN="pencil"/>
 <icon BUILTIN="messagebox_warning"/>
+<node TEXT="Voor zover deze bestaan dan worden bijlage, attributen en notitie van/bij de geselecteerde knoop verborgen." ID="ID_1977628080" CREATED="1291664153292" MODIFIED="1291664236394"/>
 </node>
-<node TEXT="Wisselen details" ID="ID_734978433" CREATED="1291155323140" MODIFIED="1291322464662" COLOR="#663300">
+<node TEXT="Tonen knoopbijlage" ID="ID_734978433" CREATED="1291155323140" MODIFIED="1291617240163" COLOR="#663300">
 <icon BUILTIN="pencil"/>
-<icon BUILTIN="messagebox_warning"/>
+<node TEXT="Wisselt tussen opnen/sluiten van het bijlagevenster onder een knoop. Alternatief: klik op het verticael pijltje in de knoop." ID="ID_1006458466" CREATED="1291616743871" MODIFIED="1291617234063"/>
 </node>
 <node ID="ID_1851007191" CREATED="1266247206859" MODIFIED="1291322464662" COLOR="#663300">
 <richcontent TYPE="NODE">
@@ -3723,46 +3688,12 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Opent een dialoogvenster met de wijzigbare standaardinstellingen voor ompaak." ID="ID_190148481" CREATED="1266251269890" MODIFIED="1287761944939" COLOR="#000000"/>
 </node>
-<node ID="ID_601879583" CREATED="1266251602796" MODIFIED="1288558790819" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Uitgebreide</b>&#160;tekst<i>opmaak.</i>..
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1427224313" CREATED="1266256310578" MODIFIED="1290720120755">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Stelt alle geselecteerde knopen in op Uitgebreide opmaak (Rich Text Format). Dit betekent dat verschillende letters/woorden een verschillende opmaak kunnen hebben.
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Uitgebreide&#xa0;tekstopmaak" ID="ID_601879583" CREATED="1266251602796" MODIFIED="1291647976351" COLOR="#663300">
+<node TEXT="Stelt alle geselecteerde knopen in op Uitgebreide tekstopmaak (Rich Text Format)." ID="ID_1427224313" CREATED="1266256310578" MODIFIED="1291648311065"/>
 </node>
-</node>
-<node ID="ID_421682408" CREATED="1266251609187" MODIFIED="1288424060291" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Eenvoudige tekstopmaak
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Platte tekstopmaak" ID="ID_421682408" CREATED="1266251609187" MODIFIED="1291667569575" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1473717210" CREATED="1266256336093" MODIFIED="1290720168538">
+<node ID="ID_1473717210" CREATED="1266256336093" MODIFIED="1291647926275">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -3770,7 +3701,7 @@
   </head>
   <body>
     <p>
-      Stelt alle geselecteerde knopen in op <i>Eenvoudige opmaak</i>. Dit betekent dat alle letters/woorden een andere opmaak kunnen hebben. Dit maakt het effect van <i>Opmaak &gt; Uitgebreide opmaak..</i>. ongedaan.
+      Alleen voor geautomatisseerde verwerking; bedoeld voor systemen die geen HTML kennen. Maakt van alle tekst in geselecteerde knopen &quot;platte tekst&quot; zonder HTML code. Dit maakt het effect van <i>Opmaak &gt; Uitgebreide tekstopmaak (RTF)..</i>. ongedaan.
     </p>
   </body>
 </html></richcontent>
@@ -4165,29 +4096,37 @@
 </node>
 </node>
 </node>
-<node TEXT="Automatische takkleur ??? translate" ID="ID_1587417548" CREATED="1291194199529" MODIFIED="1291194303052" BACKGROUND_COLOR="#99ff00"/>
+<node TEXT="Automatische takkleur" ID="ID_1587417548" CREATED="1291194199529" MODIFIED="1291583005310" COLOR="#663300">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Wisselt tussen wel/niet automatische takkleur. Bij automatische takkleur krijgt elke nieuwe tak die begint in de basisknoop een andere kleur." ID="ID_551944676" CREATED="1291583011182" MODIFIED="1291583207775"/>
 </node>
-<node TEXT="Stijlen" ID="ID_1778719162" CREATED="1291143603918" MODIFIED="1291322550992" COLOR="#407000">
-<icon BUILTIN="pencil"/>
+</node>
+<node TEXT="Stijlen" ID="ID_1778719162" CREATED="1291143603918" MODIFIED="1291822947841" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Bewerken knoopstijlen" ID="ID_1277682010" CREATED="1291196100290" MODIFIED="1291197667544">
 <node TEXT="Bewerken van stijlen voor knoopprofielen, automatisch-opmaken en door de gebruiker gedefineerde profielen." ID="ID_76121142" CREATED="1291199488912" MODIFIED="1291199925777"/>
+<node TEXT="Om een knoopstijl toe te passen:&#xa;- bewaar Default stijl als gebruikerstijl&#xa;- pas de gebruikerstijl aan" ID="ID_57918459" CREATED="1291550105793" MODIFIED="1291550164028"/>
 </node>
-<node TEXT="Andere knoopstijl toepassen" ID="ID_1559299046" CREATED="1291196112325" MODIFIED="1291197683378">
-<node TEXT="??" ID="ID_34506463" CREATED="1291200984656" MODIFIED="1291201005249"/>
+<node TEXT="Tot standaard knoopstijl maken" ID="ID_1559299046" CREATED="1291196112325" MODIFIED="1291580423849">
+<node TEXT="De standaard knoopstijl wizigen in die van de geselecteerde knoop." ID="ID_34506463" CREATED="1291200984656" MODIFIED="1291579879720"/>
+</node>
+<node TEXT="Selectie opslaan als gebruikerstijl" ID="ID_643671716" CREATED="1291389456052" MODIFIED="1291822938216">
+<node TEXT="Vraagt om een naam waaronder de knoopstijl wordt opgeslagen." ID="ID_213996497" CREATED="1291389545635" MODIFIED="1291389590018"/>
+<node TEXT="Alternatief: zie Bewerken knoopstijlen" ID="ID_1448207265" CREATED="1291550072776" MODIFIED="1291550103430"/>
 </node>
 <node TEXT="Beheren conditionele knoopstijlen" ID="ID_1169167186" CREATED="1291196254933" MODIFIED="1291197722175">
 <node TEXT="Opent een dialoogvesnter waarin condities kunnen worden aangegeven voor het automatisch toepassen van een bepaalde opmaakstijl." ID="ID_687509993" CREATED="1291196273443" MODIFIED="1291196326171"/>
 </node>
-<node TEXT="Mindmapstijl gebruiken..." ID="ID_13843990" CREATED="1291196992351" MODIFIED="1291197317471">
+<node TEXT="Mindmapstijl toepassen..." ID="ID_13843990" CREATED="1291196992351" MODIFIED="1291391592317">
 <node TEXT="Opent een dialoogvenster met een lijst met stijlen waaruit de gebruiker kan kiezen. De stijlen zijn mindmaps en Freeplane neemt de stijl over van de gekozen mindmap (en niet de inhoud)." ID="ID_529633081" CREATED="1291200611277" MODIFIED="1291200714035"/>
 </node>
 <node TEXT="Knoopprofiel toepassen" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1291200766248">
 <node TEXT="Opent een lijst met profielen waaruit een keuze gemaakt kan worden. Past het gekozen profiel toe op de geselecteerde knoop/knopen." ID="ID_1448933286" CREATED="1291200774757" MODIFIED="1291200849045"/>
 </node>
-<node TEXT="Niveau atomatisch-opmaken" ID="ID_1679194345" CREATED="1291199318553" MODIFIED="1291217199997">
+<node TEXT="Knoopniveaustijl toepassen" ID="ID_1679194345" CREATED="1291199318553" MODIFIED="1291391545767">
 <node TEXT="Opent een lijst met 5 profielen voor automatisch opmaken. Past het gekozen profiel toe op de geselecteerde knoop/knopen, ongeacht het werkelijke niveau van de knoop." ID="ID_1651751206" CREATED="1291200854247" MODIFIED="1291200958924"/>
 </node>
+<node TEXT="Gebruikerstijl toepassen" ID="ID_948529232" CREATED="1291550475365" MODIFIED="1291550492214"/>
 </node>
 <node TEXT="Navigeren" ID="ID_1496009393" CREATED="1266240686343" MODIFIED="1287950939842" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
@@ -4698,8 +4637,8 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Balk Filtermenu" ID="ID_319707937" CREATED="1266256024515" MODIFIED="1288425600098" COLOR="#663300">
-<node TEXT="Toont of verbergt Balk Filtermenu." ID="ID_101445395" CREATED="1267719720078" MODIFIED="1290764432911">
+<node TEXT="Filtermenu" ID="ID_319707937" CREATED="1266256024515" MODIFIED="1291755825890" COLOR="#663300">
+<node TEXT="Toont of verbergt Filtermenu." ID="ID_101445395" CREATED="1267719720078" MODIFIED="1291755825890">
 <font ITALIC="true"/>
 </node>
 </node>
@@ -5541,6 +5480,7 @@
 </node>
 <node TEXT="Hulp vragen" ID="ID_1043826397" CREATED="1271856103992" MODIFIED="1288559731849" COLOR="#663300">
 <node TEXT="Opens a Web browser window to Freeplane&apos;s Open Discussion Forum. A confirmation dialog alerts you to the fact that this function requires that you log in to SourceForge.net where you can easily create a free account. After logging in, you may check for information related to your question by using the Search function, located under the Forums menu heading. If you then want to ask your own question, scroll down toward the bottom of the page to find the Add a Topic heading, type a short title in the line labeled &quot;Enter topic title&quot;, then enter your message in the larger text box below." ID="ID_1149460141" CREATED="1271856114238" MODIFIED="1271856837230"/>
+<node TEXT="Om te weten wat de Engelse termen zijn voor Nederlandstalige menuitems:&#xa;- kies Extra &gt; Instellingren &gt; Omgeving&#xa;- kies als taal: Engels en herstart Freeplane&#xa;Het mernu is nu in het Engels. Volg dezelfde procedure om terug te wisselen naar het Nederlands; kies hierbij als taal: default." ID="ID_912368195" CREATED="1291874606053" MODIFIED="1291874799089"/>
 </node>
 <node TEXT="Licentie" ID="ID_1881309718" CREATED="1271857117445" MODIFIED="1288430543299" COLOR="#663300">
 <node TEXT="Opens a window displaying a short summary of Freeplane&apos;s copyright and licensing information, including information about where to find full copies of the GNU General Public License." ID="ID_1830436655" CREATED="1271857123250" MODIFIED="1271857252582"/>
@@ -5553,7 +5493,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Balk Werkmenu" ID="ID_1060899431" CREATED="1286909230469" MODIFIED="1288430693044">
+<node TEXT="Werkmenu" ID="ID_1060899431" CREATED="1286909230469" MODIFIED="1291755825890">
 <node TEXT="Vorige mindmmap" ID="ID_753208116" CREATED="1291223662970" MODIFIED="1291223689428"/>
 <node TEXT="Volgende mindmap" ID="ID_946653022" CREATED="1291223695387" MODIFIED="1291223711315"/>
 <node TEXT="Zoomfactor" ID="ID_888819112" CREATED="1291223711993" MODIFIED="1291223727110"/>
@@ -5582,22 +5522,38 @@
 <node TEXT="E&#xe9;n niveau openvouwen" ID="ID_962927730" CREATED="1291228057665" MODIFIED="1291228081082"/>
 <node TEXT="E&#xe9;n niveau dichtvouwen" ID="ID_594928853" CREATED="1291228086252" MODIFIED="1291228114895"/>
 </node>
-<node TEXT="Balk Filtermenu" ID="ID_306841975" CREATED="1286909239353" MODIFIED="1288430702513"/>
-<node TEXT="Balk Functietoetsen" ID="ID_1106639419" CREATED="1286909260593" MODIFIED="1288430710750"/>
-<node TEXT="Balk Pictogrammen" ID="ID_68755539" CREATED="1286909275233" MODIFIED="1288430719142"/>
+<node TEXT="Filtermenu" ID="ID_306841975" CREATED="1286909239353" MODIFIED="1291755825890">
+<node TEXT="Ongedaan maken" ID="ID_313636143" CREATED="1291789481685" MODIFIED="1291789487894"/>
+<node TEXT="Opnieuw" ID="ID_561952384" CREATED="1291789488494" MODIFIED="1291789494485"/>
+<node TEXT="Tonen voorouders" ID="ID_142054512" CREATED="1291789504305" MODIFIED="1291789513556"/>
+<node TEXT="Openvouwen gefilterde knopen" ID="ID_58930715" CREATED="1291789607522" MODIFIED="1291789618069"/>
+<node TEXT="Toepassen op gefilterde knopen" ID="ID_347632737" CREATED="1291789517994" MODIFIED="1291789551940"/>
+<node TEXT="Geen filter (filter modus)" ID="ID_738173422" CREATED="1291789567843" MODIFIED="1291789606236"/>
+<node TEXT="Opnieuw toepassen" ID="ID_1908400921" CREATED="1291789632677" MODIFIED="1291789660727"/>
+<node TEXT="Filteren geselecteerde knopen" ID="ID_1980024389" CREATED="1291789661405" MODIFIED="1291789672029"/>
+<node TEXT="Niet filteren" ID="ID_1291115911" CREATED="1291789674501" MODIFIED="1291789686327"/>
+<node TEXT="Filterbeheer" ID="ID_1263327296" CREATED="1291789686848" MODIFIED="1291789701279"/>
+<node TEXT="Filterelement (Knooptekst)" ID="ID_347030826" CREATED="1291789702082" MODIFIED="1291789850330"/>
+<node TEXT="Filteroperator (bevat)" ID="ID_384668739" CREATED="1291789851117" MODIFIED="1291789898565"/>
+<node TEXT="Fiterinhoud (leeg)" ID="ID_1640605945" CREATED="1291789899258" MODIFIED="1291789913206"/>
+<node TEXT="Hoodlettergevoelig (niet)" ID="ID_624006528" CREATED="1291789920217" MODIFIED="1291789940030"/>
+<node TEXT="Vorige zoeken" ID="ID_1821436195" CREATED="1291789940739" MODIFIED="1291789946902"/>
+<node TEXT="Volgende zoeken" ID="ID_1077748166" CREATED="1291789947611" MODIFIED="1291789953150"/>
+<node TEXT="Al het passende selecteren" ID="ID_1407131071" CREATED="1291789963156" MODIFIED="1291790045681"/>
+<node TEXT="Snelfilter" ID="ID_1446016858" CREATED="1291790046452" MODIFIED="1291790087778"/>
+</node>
+<node TEXT="Functietoetsen" ID="ID_1106639419" CREATED="1286909260593" MODIFIED="1291755825890">
+<node TEXT="F1" ID="ID_415054360" CREATED="1291790098408" MODIFIED="1291790105530">
+<node TEXT="Handleiding" ID="ID_1814168617" CREATED="1291790105531" MODIFIED="1291790112972"/>
+</node>
+<node TEXT="F2 Tekst bewerken binnen knoop" ID="ID_563462404" CREATED="1291790113993" MODIFIED="1291790166363"/>
+<node TEXT="F3 - F12" ID="ID_1660230290" CREATED="1291790167555" MODIFIED="1291790175379">
+<node TEXT="zelf instellen" ID="ID_1023564928" CREATED="1291790175380" MODIFIED="1291790190106"/>
+</node>
+</node>
+<node TEXT="Pictogrammen" ID="ID_68755539" CREATED="1286909275233" MODIFIED="1291755825890"/>
 <node TEXT="Open Mindmapsmenu" ID="ID_1867988170" CREATED="1286909294242" MODIFIED="1286910404905"/>
-<node ID="ID_1307368830" CREATED="1286741065695" MODIFIED="1286909839245">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Context menu's
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Context menu&apos;s" ID="ID_1307368830" CREATED="1286741065695" MODIFIED="1291788926730">
 <node ID="ID_1015909973" CREATED="1286910742044" MODIFIED="1288800434204" BACKGROUND_COLOR="#ffff00">
 <richcontent TYPE="NODE">
 <html>
@@ -5619,16 +5575,23 @@
 </node>
 <node TEXT="Hoofdvenster" ID="ID_1188943196" CREATED="1289156407471" MODIFIED="1289156420622">
 <node TEXT="Lijst open mindmaps" ID="ID_593848002" CREATED="1289156463989" MODIFIED="1289156481150"/>
-<node TEXT="Balk Hoofdmenu" ID="ID_282169046" CREATED="1289156481952" MODIFIED="1289156503684"/>
-<node TEXT="Balk Werkmenu" ID="ID_1890239068" CREATED="1286909230469" MODIFIED="1288430693044"/>
-<node TEXT="Balk Filtermenu" ID="ID_625835471" CREATED="1286909239353" MODIFIED="1288430702513"/>
-<node TEXT="Balk Functietoetsen" ID="ID_547570617" CREATED="1286909260593" MODIFIED="1288430710750"/>
-<node TEXT="Balk Pictogrammen" ID="ID_1263221388" CREATED="1286909275233" MODIFIED="1288430719142"/>
+<node TEXT="Tonen hoofdmenu" ID="ID_282169046" CREATED="1289156481952" MODIFIED="1291788308688"/>
+<node TEXT="Tonene werkmenu" ID="ID_1890239068" CREATED="1286909230469" MODIFIED="1291788294773"/>
+<node TEXT="Tonen filtertoetsen" ID="ID_625835471" CREATED="1286909239353" MODIFIED="1291788284945"/>
+<node TEXT="Tonene functietoetsen" ID="ID_547570617" CREATED="1286909260593" MODIFIED="1291788326316"/>
+<node TEXT="Tonen pictogrammenbalk" ID="ID_1263221388" CREATED="1286909275233" MODIFIED="1291788346986"/>
+<node TEXT="Tonen volledig scherm" ID="ID_1112994504" CREATED="1291788366914" MODIFIED="1291788377071"/>
+<node TEXT="Tonen notitiehupvenster" ID="ID_1993086900" CREATED="1291788377858" MODIFIED="1291788412085"/>
+<node TEXT="Tonen opmaakpaneel" ID="ID_1855760029" CREATED="1291788412794" MODIFIED="1291788424838"/>
 </node>
 <node TEXT="Knoop" ID="ID_346564760" CREATED="1286909339568" MODIFIED="1286909344280">
-<node TEXT="Bewerken eenvoudige tekstopmaak" ID="ID_1544856363" CREATED="1286909379278" MODIFIED="1289156630754"/>
-<node TEXT="Bewerken uitgebreide tekstopmaak" ID="ID_1683399005" CREATED="1286909390595" MODIFIED="1289156653499"/>
-<node TEXT="Bewerken attributen" ID="ID_17658022" CREATED="1289156667203" MODIFIED="1289156689231"/>
+<node TEXT="Tekst bewerken binnen knoop" ID="ID_1544856363" CREATED="1286909379278" MODIFIED="1291788473729"/>
+<node TEXT="Tekst bewerken in hulpvenster" ID="ID_1683399005" CREATED="1286909390595" MODIFIED="1291788491560"/>
+<node TEXT="Bewerken knoopbijlage" ID="ID_422688336" CREATED="1291788504265" MODIFIED="1291788514999"/>
+<node TEXT="Verbergen bijlage, attributen, notites" ID="ID_1268111084" CREATED="1291788515926" MODIFIED="1291788536768"/>
+<node TEXT="Tonen knoopbijlage" ID="ID_218637558" CREATED="1291788559224" MODIFIED="1291788574107"/>
+<node TEXT="Verwijderen knoopbijlage" ID="ID_259463251" CREATED="1291788591773" MODIFIED="1291788604239"/>
+<node TEXT="Bewerken knoopattributen" ID="ID_17658022" CREATED="1289156667203" MODIFIED="1291788704297"/>
 <node TEXT="Knippen" ID="ID_1789837162" CREATED="1289156695478" MODIFIED="1289156713715"/>
 <node ID="ID_1048158519" CREATED="1289156714861" MODIFIED="1289156875035">
 <richcontent TYPE="NODE">
@@ -5672,16 +5635,17 @@
 <node TEXT="Plakken" ID="ID_680397245" CREATED="1289156969438" MODIFIED="1289156974197"/>
 <node TEXT="Nieuwe kindknoop" ID="ID_985048621" CREATED="1289156975670" MODIFIED="1289157015357"/>
 <node TEXT="Nieuwe knoop onder" ID="ID_790620096" CREATED="1289157025691" MODIFIED="1289157033321"/>
+<node TEXT="Nieuwe knoop boven" ID="ID_251384236" CREATED="1291788728890" MODIFIED="1291788738453"/>
 <node TEXT="Verwijderen knoop" ID="ID_594542224" CREATED="1289157055877" MODIFIED="1289157065519"/>
 <node TEXT="Knoop naar boven" ID="ID_1266875477" CREATED="1289157066259" MODIFIED="1289157072781"/>
 <node TEXT="Knoop naar beneden" ID="ID_951133799" CREATED="1289157073583" MODIFIED="1289157083288"/>
 <node TEXT="Open/dichtvouwen" ID="ID_1371737510" CREATED="1289157094963" MODIFIED="1289157105385"/>
 <node TEXT="Pictogram" ID="ID_1912552384" CREATED="1289157107295" MODIFIED="1289157117732"/>
-<node TEXT="Exporteren" ID="ID_32153133" CREATED="1289157126210" MODIFIED="1289157132794"/>
+<node TEXT="Stijlen" ID="ID_32153133" CREATED="1289157126210" MODIFIED="1291788794067"/>
+<node TEXT="Opmaken" ID="ID_614518066" CREATED="1291788807927" MODIFIED="1291788821687"/>
 <node TEXT="Invoegen" ID="ID_789835792" CREATED="1289157153732" MODIFIED="1289157163778"/>
-<node TEXT="Standaard opmaakpatronen" ID="ID_1075467877" CREATED="1289157164503" MODIFIED="1289157175299"/>
 </node>
-<node TEXT="Bewerkingsvenster eenvoudige tekstopmaak" ID="ID_422572742" CREATED="1289156217033" MODIFIED="1289157672012">
+<node TEXT="Bewerkingsvenster binnen knoop" ID="ID_422572742" CREATED="1289156217033" MODIFIED="1291788885764">
 <node ID="ID_1323499908" CREATED="1289157213463" MODIFIED="1289157234813">
 <richcontent TYPE="NODE">
 <html>
@@ -5695,12 +5659,15 @@
   </body>
 </html></richcontent>
 </node>
+<node TEXT="Knippen" ID="ID_1139663809" CREATED="1291788937361" MODIFIED="1291788943648"/>
+<node TEXT="Plakken" ID="ID_102956131" CREATED="1291788898399" MODIFIED="1291788904750"/>
 <node TEXT="Spelling" ID="ID_613628744" CREATED="1289157237316" MODIFIED="1289157243682"/>
 <node TEXT="Talen" ID="ID_123433633" CREATED="1289157244656" MODIFIED="1289157259305">
 <node TEXT="Taal voor de spellingscheck" ID="ID_1097913029" CREATED="1289157538201" MODIFIED="1289157550745"/>
 </node>
+<node TEXT="Opmaken" ID="ID_65465707" CREATED="1291788891543" MODIFIED="1291788948547"/>
 </node>
-<node TEXT="Bewerkingsvenster uitgebreide opmaak" ID="ID_1089029453" CREATED="1289159066674" MODIFIED="1289159082921">
+<node TEXT="Hulpvenster knoop, bijlage, notitie" ID="ID_1089029453" CREATED="1289159066674" MODIFIED="1291788988046">
 <node TEXT="Ongedaan maken" ID="ID_869841842" CREATED="1289159170180" MODIFIED="1289159216785"/>
 <node TEXT="Opnieuw" ID="ID_1610609818" CREATED="1289159177036" MODIFIED="1289159222979"/>
 <node TEXT="Knippen" ID="ID_1490237077" CREATED="1289159183221" MODIFIED="1289159235287"/>
@@ -5734,26 +5701,6 @@
 <node TEXT="Pijl terug" ID="ID_419344950" CREATED="1289158074647" MODIFIED="1289158080514"/>
 <node TEXT="Pijl tweezijdig" ID="ID_1356424534" CREATED="1289158081706" MODIFIED="1289158121737"/>
 </node>
-<node TEXT="Notitievenster" ID="ID_440686898" CREATED="1286909345737" MODIFIED="1286909364178">
-<node TEXT="Ongedaan maken" ID="ID_898324733" CREATED="1289159170180" MODIFIED="1289159216785"/>
-<node TEXT="Opnieuw" ID="ID_309465521" CREATED="1289159177036" MODIFIED="1289159222979"/>
-<node TEXT="Knippen" ID="ID_1976726936" CREATED="1289159183221" MODIFIED="1289159235287"/>
-<node ID="ID_231850006" CREATED="1289156714861" MODIFIED="1289156875035">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p class="MsoNormal">
-      Kopi&#235;ren
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Plakken" ID="ID_386200142" CREATED="1289159276806" MODIFIED="1289159282937"/>
-<node TEXT="Talen" ID="ID_1477877203" CREATED="1289159460870" MODIFIED="1289159470699"/>
-</node>
 </node>
 </node>
 <node ID="ID_1945244112" CREATED="1286909981056" MODIFIED="1288535264377">
@@ -5768,8 +5715,8 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Een menubalk welke niet nodig is kan worden verborgen" ID="ID_1478227826" CREATED="1286911112640" MODIFIED="1288800552640" BACKGROUND_COLOR="#ffff00" STYLE="bubble"/>
-<node ID="ID_287883226" CREATED="1286910057037" MODIFIED="1288800182766">
+<node TEXT="Een menu welke niet nodig is kan worden verborgen" ID="ID_1478227826" CREATED="1286911112640" MODIFIED="1291837191507" BACKGROUND_COLOR="#ffff00" STYLE="bubble"/>
+<node ID="ID_287883226" CREATED="1286910057037" MODIFIED="1291837235546">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -5783,16 +5730,16 @@
       - Klik rechter muisknop op een vrije plek op de achtergrond en kies <i>Volledig scherm; </i>of
     </p>
     <p>
-      <i>-</i>&#160;Kies in het Hoofdmenu: <i>Beeld &gt; Volledig scherm</i>&#160;.....
+      <i>-</i>&#160;Kies in het Hoofdmenu: <i>Beeld &gt; Volledig scherm</i>&#160;...
     </p>
     <p>
       
     </p>
     <p>
-      Om &#233;&#233;n bepaalde menubalk te tonen of verbergen:
+      Om &#233;&#233;n bepaalde menu te tonen of verbergen:
     </p>
     <p>
-      <i>-</i>&#160;Kies in balk Hoofdmenu: <i>Beeld </i>&#160;en klik&#160;op de menubalk die je wilt tonen of verbergen.
+      <i>-</i>&#160;Kies in Hoofdmenu: <i>Beeld </i>&#160;en klik&#160;op het menu dat je wilt tonen of verbergen.
     </p>
   </body>
 </html></richcontent>
@@ -5923,7 +5870,7 @@
 </node>
 <node TEXT="Opties selecteren" POSITION="right" ID="ID_1473860848" CREATED="1289509916695" MODIFIED="1291324539983" COLOR="#006699" HGAP="40" VSHIFT="-1">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Functies zijn toegankelijk via de balk Hoofmenu, de andere menubalken en de Contextmenu&apos;s. Het is een persoonlijke keuze welke manier je kiest." ID="ID_1761169918" CREATED="1289509941695" MODIFIED="1289510547180" BACKGROUND_COLOR="#ffff00"/>
+<node TEXT="Functies zijn toegankelijk via het Hoofmenu, de andere menubalken en de Contextmenu&apos;s. Het is een persoonlijke keuze welk menu je gebruikt." ID="ID_1761169918" CREATED="1289509941695" MODIFIED="1291837360658" BACKGROUND_COLOR="#ffff00"/>
 <node ID="ID_840811150" CREATED="1289566310292" MODIFIED="1291295384901" LINK="#ID_1945244112">
 <richcontent TYPE="NODE">
 <html>
@@ -5959,7 +5906,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_232123733" CREATED="1289510317571" MODIFIED="1291295529396">
+<node ID="ID_232123733" CREATED="1289510317571" MODIFIED="1291837373559">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -5979,7 +5926,7 @@
       - klik met de linker muisknop op een getoonde functie.
     </p>
     <p>
-      Let op waar je rechtsklikt, er zijn verschillende contextmenu's: voor de omlijning van een object, binnen de omlijning en voor de inhoud. Het contextmenu om binnen een knoop tekst op te maken verschijnt alleenn als tenminste &#233;&#233;n karakter van de knooptekst is geselecteerd.
+      Let op waar je rechtsklikt, er zijn verschillende contextmenu's: voor de omlijning van een object, binnen de omlijning en voor de inhoud. Het contextmenu om binnen een knoop tekst op te maken, verschijnt alleen als tenminste &#233;&#233;n karakter van de knooptekst is geselecteerd.
     </p>
   </body>
 </html></richcontent>
@@ -5987,6 +5934,7 @@
 </node>
 <node TEXT="Voorbeelden en instructievideo op Internet" POSITION="right" ID="ID_208137441" CREATED="1289027071603" MODIFIED="1289572431664" LINK="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch" HGAP="24" VSHIFT="3" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Klik op het rode pijltje om naar Internet te gaan." ID="ID_1596597703" CREATED="1291837388433" MODIFIED="1291837409088"/>
 </node>
 <node POSITION="right" ID="ID_51218940" CREATED="1286913595764" MODIFIED="1291324610776" HGAP="16" VSHIFT="31" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
 <icon BUILTIN="wizard"/>
@@ -6036,7 +5984,7 @@
 </node>
 <node TEXT="De selectie vasthouden" ID="ID_624522517" CREATED="1289508830388" MODIFIED="1289508980297" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1225264830" CREATED="1289508851300" MODIFIED="1289508927194">
+<node ID="ID_1225264830" CREATED="1289508851300" MODIFIED="1291837592381">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6047,7 +5995,7 @@
       Om te zorgen dat een knoop geselecteerd blijft als de cursor over andere knopen wordt bewogen:
     </p>
     <p>
-      - Houd <i>Shift </i>ingedrukt.
+      - Houd <i>Shift </i>ingedrukt.bij het verplaatsen van de muiscursor.
     </p>
   </body>
 </html></richcontent>
@@ -6134,7 +6082,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Uitvoeren, tonen en navigeren" POSITION="right" ID="ID_1233270983" CREATED="1272091279810" MODIFIED="1291326269441" COLOR="#006699" VGAP="0" HGAP="35" VSHIFT="1">
+<node TEXT="Tonen, navigeren en uitvoeren" POSITION="right" ID="ID_1233270983" CREATED="1272091279810" MODIFIED="1291758232803" COLOR="#006699" VGAP="0" HGAP="35" VSHIFT="1">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node ID="Freeplane_Link_913137192" CREATED="1270892460689" MODIFIED="1289510801156" COLOR="#407000">
 <richcontent TYPE="NODE">
@@ -6148,7 +6096,7 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_1270232158" CREATED="1272007214049" MODIFIED="1289552153191">
+<node ID="ID_1270232158" CREATED="1272007214049" MODIFIED="1291755825906">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6159,12 +6107,12 @@
       Om het beeld groter te maken:
     </p>
     <p>
-      - kies <i>Beeld &gt; Inzoomen </i>in balk Hoofdmenu
+      - kies <i>Beeld &gt; Inzoomen </i>in Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_173079242" CREATED="1286529528486" MODIFIED="1289552127242">
+<node ID="ID_173079242" CREATED="1286529528486" MODIFIED="1291755825906">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6175,12 +6123,12 @@
       Om het beeld kleiner te maken:
     </p>
     <p>
-      - kies <i>Beeld&#160;&gt; Uitzoomen</i>&#160;in de balk Hoofdmenu .
+      - kies <i>Beeld&#160;&gt; Uitzoomen</i>&#160;in de Hoofdmenu .
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1128495236" CREATED="1286529777751" MODIFIED="1289552220435">
+<node ID="ID_1128495236" CREATED="1286529777751" MODIFIED="1291755825906">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6188,7 +6136,7 @@
   </head>
   <body>
     <p>
-      Om het beeld tot een bepaald percentage te vergroten of verkleinen:<br/>- kies <i>percentage</i>&#160;&#160;in balk Werkmenu.
+      Om het beeld tot een bepaald percentage te vergroten of verkleinen:<br/>- kies <i>percentage</i>&#160;&#160;in Werkmenu.
     </p>
   </body>
 </html></richcontent>
@@ -6249,7 +6197,7 @@
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1842381103" CREATED="1286528674732" MODIFIED="1286544746451">
+<node ID="ID_1842381103" CREATED="1286528674732" MODIFIED="1291755825922">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6263,12 +6211,12 @@
       - rol het muiswieltje; of
     </p>
     <p>
-      - verschuif de balk rechts van het scherm.
+      - verschuif de rechts van het scherm.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1426998549" CREATED="1286528674732" MODIFIED="1286543988432">
+<node ID="ID_1426998549" CREATED="1286528674732" MODIFIED="1291755825922">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6282,7 +6230,7 @@
       - rol het muiswieltje met <i>Shift</i>&#160;&#160;ingedrukt (of op sommige computers het appel-teken); of
     </p>
     <p>
-      - verschuif de balk onderin het scherm.
+      - verschuif de onderin het scherm.
     </p>
   </body>
 </html></richcontent>
@@ -6354,7 +6302,7 @@
 </html></richcontent>
 <font ITALIC="false"/>
 </node>
-<node ID="ID_380593497" CREATED="1271026015708" MODIFIED="1289552634458">
+<node ID="ID_380593497" CREATED="1271026015708" MODIFIED="1291755825922">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6365,10 +6313,10 @@
       Om naar een knoop te navigeren die je eerder hebt bezocht:
     </p>
     <p>
-      - kies <i>Navigeren &#160;&gt; Vorige knoop</i>&#160;in balk Hoofdmenu; of
+      - kies <i>Navigeren &#160;&gt; Vorige knoop</i>&#160;in Hoofdmenu; of
     </p>
     <p>
-      <i>-</i>&#160;kies pictogram<i>&#160;blauwe Pijl-naar-links</i>&#160;in balk Werkmenu<i>; of </i>
+      <i>-</i>&#160;kies pictogram<i>&#160;blauwe Pijl-naar-links</i>&#160;in Werkmenu<i>; of </i>
     </p>
     <p>
       <i>- </i>druk op <i>Alt + Pijllinks</i>.
@@ -6381,10 +6329,10 @@
       Om weer terug te gaan kies:
     </p>
     <p>
-      -&#160;kies&#160; <i>Navigeren &#160;&gt; Volgende knoop</i>&#160;in balk Hoofdmenu; of
+      -&#160;kies&#160; <i>Navigeren &#160;&gt; Volgende knoop</i>&#160;in Hoofdmenu; of
     </p>
     <p>
-      - kies pictogram blauwe <i>Pijl-naar-rechts</i>&#160;in balk Werkmenu; of
+      - kies pictogram blauwe <i>Pijl-naar-rechts</i>&#160;in Werkmenu; of
     </p>
     <p>
       - druk op <i>Alt + Pijlrechts</i>
@@ -6392,7 +6340,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1006152714" CREATED="1271176654062" MODIFIED="1289552740912">
+<node ID="ID_1006152714" CREATED="1271176654062" MODIFIED="1291755825922">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6403,7 +6351,7 @@
       Om alle knopen &#233;&#233;n voor een te bezoeken, kies:
     </p>
     <p>
-      - <i>Navigeren &gt; Volgende knoop</i>&#160;in balk Hoofdmenu; of
+      - <i>Navigeren &gt; Volgende knoop</i>&#160;in Hoofdmenu; of
     </p>
     <p>
       <i>- Ctrl + Alt + Pijlrechts);</i>&#160;
@@ -6415,7 +6363,7 @@
       En de andere kan t op:
     </p>
     <p>
-      - <i>Navigeren &gt; Vorige knoop</i>&#160;in balk Hoofdmenu; of
+      - <i>Navigeren &gt; Vorige knoop</i>&#160;in Hoofdmenu; of
     </p>
     <p>
       - <i>Ctrl + Alt + Pijllinks</i>.
@@ -6423,7 +6371,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_261764750" CREATED="1271177016593" MODIFIED="1289552822079">
+<node ID="ID_261764750" CREATED="1271177016593" MODIFIED="1291755825937">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6434,13 +6382,13 @@
       Om een knoop na bekijken in te vouwen:
     </p>
     <p>
-      - kies <i>Navigeren &gt; Volgende knoop (dichtvouwen) </i>in balk Hoofdmenu<i>;</i>&#160;of
+      - kies <i>Navigeren &gt; Volgende knoop (dichtvouwen) </i>in Hoofdmenu<i>;</i>&#160;of
     </p>
     <p>
       - druk op<i>&#160;Ctrl + Shift +Pijlrechts;</i>&#160;of
     </p>
     <p>
-      - kies <i>Navigeren &gt; Vorige knoop (dichtvouwen)</i>&#160;in balk Hoofdmenu; of
+      - kies <i>Navigeren &gt; Vorige knoop (dichtvouwen)</i>&#160;in Hoofdmenu; of
     </p>
     <p>
       - druk <i>Ctrl + Alt + Shift + Pijllinks</i>.
@@ -6463,7 +6411,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1439689412" CREATED="1270892460688" MODIFIED="1289553087972">
+<node ID="ID_1439689412" CREATED="1270892460688" MODIFIED="1291837639353">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6474,7 +6422,7 @@
       Om een knoop dicht te vouwen
     </p>
     <p>
-      - kies&#160; <i>Navigeren &gt; Open/dichtvouwen</i>&#160;in balk Hoofdmenu;of
+      - kies&#160; <i>Navigeren &gt; Open/dichtvouwen</i>&#160;in Hoofdmenu; of
     </p>
     <p>
       - druk op<i>&#160;Spatie</i>.
@@ -6482,7 +6430,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_643756713" CREATED="1270892460688" MODIFIED="1289553128470">
+<node ID="ID_643756713" CREATED="1270892460688" MODIFIED="1291837661177">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6490,10 +6438,10 @@
   </head>
   <body>
     <p>
-      Om een geselekteerde knoop open te vouwen:
+      Om een geselecteerde knoop open te vouwen:
     </p>
     <p>
-      - kies&#160; <i>Navigeren &gt; Open/dichtvouwen </i>in balk Hoofdmenu<i>;</i>&#160;of
+      - kies&#160; <i>Navigeren &gt; Open/dichtvouwen </i>in Hoofdmenu<i>;</i>&#160;of
     </p>
     <p>
       - druk op <i>Spatie;</i>&#160;of
@@ -6504,7 +6452,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_926272054" CREATED="1270892460688" MODIFIED="1289494480931">
+<node ID="ID_926272054" CREATED="1270892460688" MODIFIED="1291837681675">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6515,15 +6463,15 @@
       Om alle knopen vanaf een bepaald niveau open of dicht te vouwen:
     </p>
     <p>
-      - houd <i>Alt</i>&#160;&#160;ingedrukt bij het rollen van het muiswiel;
+      - houd <i>Alt</i>&#160;&#160;ingedrukt bij het rollen van het muiswiel; of
     </p>
     <p>
-      - of druk <i>Alt </i>+ <i>PgUp </i>of<i>&#160;&#160;PgDn</i>.
+      - druk <i>Alt </i>+ <i>PgUp </i>of<i>&#160;&#160;PgDn</i>.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1233324949" CREATED="1270892460688" MODIFIED="1289553214473">
+<node ID="ID_1233324949" CREATED="1270892460688" MODIFIED="1291837720535">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6534,10 +6482,10 @@
       Om alle knopen open te vouwen:
     </p>
     <p>
-      - kies <i>Navigeren &gt; Alle knopen openvouwen </i>in balk Hoofdmenu <i>;</i>&#160;&#160;of
+      - kies <i>Navigeren &gt; Alle knopen openvouwen </i>in Hoofdmenu <i>;</i>&#160;&#160;of
     </p>
     <p>
-      - druk in de menubalk op de cirkel met rode plusteken; of
+      - druk in het Werkmenu op de cirkel met rode plusteken; of
     </p>
     <p>
       - druk op <i>Alt + End</i>.
@@ -6545,7 +6493,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1337518584" CREATED="1270892460688" MODIFIED="1289553237935">
+<node ID="ID_1337518584" CREATED="1270892460688" MODIFIED="1291837797989">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6556,10 +6504,10 @@
       Om alle knopen dicht te vouwen:
     </p>
     <p>
-      - kies <i>Navigeren &gt; Alles dichtvouwen </i>in balk Hoofdmenu<i>;</i>&#160;&#160;of
+      - kies <i>Navigeren &gt; Alles dichtvouwen </i>in Hoofdmenu<i>;</i>&#160;&#160;of
     </p>
     <p>
-      - klik in de menubalk op de cirkel met rode minteken-; of
+      - klik in het Werkmenu op de cirkel met rode minteken; of
     </p>
     <p>
       - druk op <i>Alt + Home.</i>
@@ -6600,7 +6548,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_966700848" CREATED="1270892460681" MODIFIED="1289553269806">
+<node ID="ID_966700848" CREATED="1270892460681" MODIFIED="1291755825953">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6611,7 +6559,7 @@
       Om informatie in een knoop en alle onderliggende knopen te zoeken:
     </p>
     <p>
-      - kies&#160; <i>Bewerken &gt; Zoeken </i>in balk Hoofdmenu<i>;</i>&#160;of
+      - kies&#160; <i>Bewerken &gt; Zoeken </i>in Hoofdmenu<i>;</i>&#160;of
     </p>
     <p>
       - druk op <i>Ctrl + F.</i>
@@ -6620,7 +6568,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1646223708" CREATED="1270892460681" MODIFIED="1289553332440">
+<node ID="ID_1646223708" CREATED="1270892460681" MODIFIED="1291755825953">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6631,7 +6579,7 @@
       Om nogmaals&#160;hetzelfde item te zoeken:
     </p>
     <p>
-      - kies <i>Bewerken &gt; Volgende zoeken </i>in balk Hoofdmenu <i>;</i>&#160;of
+      - kies <i>Bewerken &gt; Volgende zoeken </i>in Hoofdmenu <i>;</i>&#160;of
     </p>
     <p>
       - <i>druk Ctrl + G.</i>
@@ -6640,7 +6588,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1761633870" CREATED="1271096970387" MODIFIED="1289553359319">
+<node ID="ID_1761633870" CREATED="1271096970387" MODIFIED="1291755825953">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6651,12 +6599,12 @@
       Om in een mindmap in alle knopen alle items met een bepaalde inhoud te vervangen:
     </p>
     <p>
-      - kies&#160; <i>Bewerken &gt; Zoeken en vervangen </i>in balk Hoofdmenu.
+      - kies&#160; <i>Bewerken &gt; Zoeken en vervangen </i>in Hoofdmenu.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_733411071" CREATED="1286531946884" MODIFIED="1289553383234">
+<node ID="ID_733411071" CREATED="1286531946884" MODIFIED="1291755825953">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6667,12 +6615,12 @@
       Om in alle geopende mindmaps in alle knopen alle items met een bepaalde inhoud te vervangen:
     </p>
     <p>
-      - kies <i>Bewerken &gt; Zoek en vervang in alle mappen </i>in balk Hoofdmenu <i>.</i>
+      - kies <i>Bewerken &gt; Zoek en vervang in alle mappen </i>in Hoofdmenu <i>.</i>
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1773253238" CREATED="1270897010863" MODIFIED="1289570700386">
+<node ID="ID_1773253238" CREATED="1270897010863" MODIFIED="1291837853791">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6683,18 +6631,56 @@
       Om alleen knopen met een bepaalde inhoud te tonen, maak een filter:
     </p>
     <p>
-      - kies <i>Filteren</i>&#160;&#160;in balk Hoofdmenu; of
+      - kies <i>Filteren</i>&#160;&#160;in Hoofdmenu; of
     </p>
     <p>
-      - Open de werkbalk voor filters:&#160;&#160;kies <i>&#160;Beeld &gt;&#160;&#160;Balk Filtermenu </i>in balk Hoofdmenu.
+      - Open het filtermenu:&#160;&#160;kies <i>&#160;Beeld &gt;&#160;&#160;Filtermenu </i>in Hoofdmenu.
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Toepassen van formules" ID="ID_1294954771" CREATED="1291325570824" MODIFIED="1291325625565" COLOR="#407000">
-<icon BUILTIN="pencil"/>
-<icon BUILTIN="messagebox_warning"/>
+<node TEXT="Formules uitvoeren" ID="ID_1414134990" CREATED="1291211215610" MODIFIED="1291838270990" COLOR="#407000">
+<node TEXT="Formules zijn voor gevorderde gebruikers. Voor het gebruik van formules, ga naar Internet." ID="ID_1161094229" CREATED="1291754737435" MODIFIED="1291826852421" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
+<node ID="ID_1483572235" CREATED="1291211225228" MODIFIED="1291838170214" HGAP="19" VSHIFT="-6">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om formules uit te voeren:
+    </p>
+    <p>
+      - kies <i>Extra &gt; Formules</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Groovy scripts uitvoeren" ID="ID_1611654192" CREATED="1291754914764" MODIFIED="1291838264001" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Script zijn bedoeld voor gevorderde gebruikes.Ga naar Internet voor informatie over scripts." ID="ID_155830016" CREATED="1291754964115" MODIFIED="1291826860440" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
+<node ID="ID_125539178" CREATED="1291755108015" MODIFIED="1291755373529">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om Groovy scripts uit te voeren:
+    </p>
+    <p>
+      - kies <i>Extra &gt; Uitvoeren alle scripts</i> in Hoofdmenu; of
+    </p>
+    <p>
+      - kies <i>Extra &gt; Uitvoeren scripts in geselecteerde knopen</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
 </node>
 <node TEXT="Overschakelen naar andere mindmap" ID="Freeplane_Link_516331171" CREATED="1270892460688" MODIFIED="1286535225619" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
@@ -6714,7 +6700,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_233995891" CREATED="1271000255265" MODIFIED="1289553493120">
+<node ID="ID_233995891" CREATED="1271000255265" MODIFIED="1291837938834">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6722,19 +6708,19 @@
   </head>
   <body>
     <p>
-      Om te schakelen tussen opeenvolgend geopende mappen:
+      Om te wisselen tussen opeenvolgend geopende mappen:
     </p>
     <p>
-      - klik in balk Hoofdmenu in het blauwe cirkeltje met pijllinks of pijlrechts; of
+      - klik in Hoofdmenu in het blauwe cirkeltje met pijllinks of pijlrechts; of
     </p>
     <p>
-      - kies <i>Navigeren &gt; Vorige map</i>&#160;in balk Hoofdmenu; of
+      - kies <i>Navigeren &gt; Vorige map</i>&#160;in Hoofdmenu; of
     </p>
     <p>
       - druk <i>Shif + Alt + Pijllinks;</i>&#160;of
     </p>
     <p>
-      - kies <i>Navigeren &gt; Volgende map</i>&#160;in balk Hoofdmenu; of
+      - kies <i>Navigeren &gt; Volgende map</i>&#160;in Hoofdmenu; of
     </p>
     <p>
       -&#160;druk <i>Shift + Alt + Pijlrechts</i>.
@@ -6742,7 +6728,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_213892338" CREATED="1270892460689" MODIFIED="1289553560661">
+<node ID="ID_213892338" CREATED="1270892460689" MODIFIED="1291838024182">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6750,10 +6736,10 @@
   </head>
   <body>
     <p>
-      Om naar een willekeurige eerder geopende mindmap te gaan:
+      Om naar een willekeurige, eerder geopende mindmap te gaan:
     </p>
     <p>
-      - kies <i>Mindmap</i>&#160;in balk Hoofdmenu&#160;en kies uit de lijst van open mindmaps de bestandsnaam; of
+      - kies <i>Mindmap</i>&#160;in Hoofdmenu&#160;en kies uit de lijst van open mindmaps de bestandsnaam; of
     </p>
     <p>
       - klik met de rechter muisknop op de achtergrond en kies de naam van de mindmap&#160;&#160;in het Contextmenu; of
@@ -6768,7 +6754,7 @@
 </node>
 <node TEXT="Agenda gebruiken" ID="ID_1857793378" CREATED="1289027425406" MODIFIED="1289027506663" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_77223280" CREATED="1288907062597" MODIFIED="1289570965241">
+<node ID="ID_77223280" CREATED="1288907062597" MODIFIED="1291755825968">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6779,12 +6765,12 @@
       Om de datum te bepalen:
     </p>
     <p>
-      - kies <i>Extra &gt; Agenda</i>&#160;&#160;in&#160;balk Hoofdmenu<i>&#160;</i>
+      - kies <i>Extra &gt; Agenda</i>&#160;&#160;in&#160;Hoofdmenu<i>&#160;</i>
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1114399870" CREATED="1288907062597" MODIFIED="1289553605948">
+<node ID="ID_1114399870" CREATED="1288907062597" MODIFIED="1291755825968">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6795,12 +6781,12 @@
       Om alle activiteiten en notitites te bekijken:
     </p>
     <p>
-      - kies <i>Extra &gt; Activiteiten... </i>in<i>&#160;</i>balk Hoofdmenu<i>&#160;</i>
+      - kies <i>Extra &gt; Activiteiten... </i>in<i>&#160;</i>Hoofdmenu<i>&#160;</i>
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_26533930" CREATED="1289570843304" MODIFIED="1289571734863">
+<node ID="ID_26533930" CREATED="1289570843304" MODIFIED="1291755825968">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6811,7 +6797,7 @@
       Om een actieve signalering te be&#235;indigen:
     </p>
     <p>
-      - kies <i>Extra &gt; Agenda</i>&#160;&#160;in&#160;balk Hoofdmenu;
+      - kies <i>Extra &gt; Agenda</i>&#160;&#160;in&#160;Hoofdmenu;
     </p>
     <p>
       - kies Verwijderen activiteit.
@@ -6822,7 +6808,7 @@
 </node>
 <node TEXT="Beveiligen knoop" ID="ID_1883292588" CREATED="1289052221017" MODIFIED="1289052305586" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1458128776" CREATED="1289052232586" MODIFIED="1289553625760">
+<node ID="ID_1458128776" CREATED="1289052232586" MODIFIED="1291755825984">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6833,25 +6819,14 @@
       Om een knoop te beveiligen:
     </p>
     <p>
-      - kies <i>Extra &gt; Beveiligen </i>in<i>&#160;</i>balk Hoofdmenu
+      - kies <i>Extra &gt; Beveiligen </i>in<i>&#160;</i>Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 </node>
-<node POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1291212565988" HGAP="37" VSHIFT="1">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Inhoud toevoegen
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Inhoud toevoegen" POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1291842101716" HGAP="37" VSHIFT="1">
 <node ID="_Freeplane_Link_1709752669" CREATED="1270892460670" MODIFIED="1286543144811" COLOR="#407000">
 <richcontent TYPE="NODE">
 <html>
@@ -6864,7 +6839,7 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_847485935" CREATED="1270892460670" MODIFIED="1289553683387">
+<node ID="ID_847485935" CREATED="1270892460670" MODIFIED="1291838373295">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6878,7 +6853,7 @@
       - druk <i>Ins(ert)</i>&#160;&#160;&#160;(op MAC OS, druk op TAB); of
     </p>
     <p>
-      - kies pictogram <i>lampje</i>&#160;in balk Wekmenu.
+      - kies pictogram <i>lampje</i>&#160;in Werkmenu.
     </p>
   </body>
 </html></richcontent>
@@ -6886,7 +6861,7 @@
 <hook URI="Lamp-256.png" SIZE="0.0703125" NAME="ExternalObject"/>
 </node>
 </node>
-<node ID="ID_719677235" CREATED="1270892460671" MODIFIED="1289548527242">
+<node ID="ID_719677235" CREATED="1270892460671" MODIFIED="1291838412155">
 <icon BUILTIN="idea"/>
 <richcontent TYPE="NODE">
 <html>
@@ -6901,7 +6876,7 @@
       - druk op <i>Ins; </i>of
     </p>
     <p>
-      - druk op pictogram <i>Lampje</i>&#160;in balk Werkemenu
+      - druk op pictogram <i>Lampje</i>&#160;in Werkmenu
     </p>
   </body>
 </html></richcontent>
@@ -6938,7 +6913,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1638437345" CREATED="1270892460671" MODIFIED="1289551933529">
+<node ID="ID_1638437345" CREATED="1270892460671" MODIFIED="1291755825984">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6952,12 +6927,12 @@
       - druk <i>Del(ete); </i>of
     </p>
     <p>
-      - kies&#160; <i>Verwijderen knoop </i>in balk Hoofdmenu of in Contextmenu
+      - kies&#160; <i>Verwijderen knoop </i>in Hoofdmenu of in Contextmenu
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1718916776" CREATED="1270892460671" MODIFIED="1289551964621">
+<node ID="ID_1718916776" CREATED="1270892460671" MODIFIED="1291838460234">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6965,19 +6940,19 @@
   </head>
   <body>
     <p>
-      Om een geselecteerde knoop te knippen (verwijderen) om deze later te kunnen plakken:<br/>- klik in de werkbalk op het pictogram van een schaar; of<br/>- klik met de rechter muisknop&#160;(bij MAC kies Ctr +klik) en kies in het Contextmenu <i>Knippen</i>; of<br/>- druk <i>Ctrl + X; </i>of
+      Om een geselecteerde knoop te knippen (verwijderen) om deze later te kunnen plakken:<br/>- klik in het Werkmenu op het pictogram van een schaar; of<br/>- klik met de rechter muisknop&#160;(bij MAC kies Ctr +klik) en kies in het Contextmenu <i>Knippen</i>; of<br/>- druk <i>Ctrl + X; </i>of
     </p>
     <p>
-      - kies <i>Bewerken &gt; Knippen </i>in balk Hoofdmenu of in Contextmenu <i>.</i>
+      - kies <i>Bewerken &gt; Knippen </i>in Hoofdmenu of in Contextmenu <i>.</i>
     </p>
   </body>
 </html></richcontent>
 <arrowlink DESTINATION="ID_1718916776" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
-<node TEXT="Bewerken tekst van een knoop" ID="Freeplane_Link_1700974092" CREATED="1270892460671" MODIFIED="1286550308489" COLOR="#407000">
+<node TEXT="Bewerken basistekst van een knoop" ID="Freeplane_Link_1700974092" CREATED="1270892460671" MODIFIED="1291755666365" COLOR="#407000">
 <node TEXT="Soorten knopen" ID="ID_834662337" CREATED="1286650916551" MODIFIED="1286650926552">
-<node ID="ID_1492174446" CREATED="1286545534701" MODIFIED="1291211022100" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node ID="ID_1492174446" CREATED="1286545534701" MODIFIED="1291838528375" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6989,14 +6964,14 @@
     </p>
     <ol>
       <li>
-        <b>binnen de knoop</b>. De bewerkingsmenu's bevinden zich op twee plaatsen. De eerste plaats is in de werkbalk bovenin het scherm. Deze werkbalk kan worden geopend door in het Hoofdmenu <i>Beeld &gt; Balk Werkmenu</i>&#160;te kiezen. De tweede plaats is het Contextmenu bij het bewerkingsvenster dat open wanneer met de rechter muisknop op de knooptekts wordt geklikt. Maar let op: dit venster opent alleen als tenminste &#233;&#233;n letter in de knoop is geselecteerd.
+        <b>binnen de knoop</b>. De bewerkingsmenu's bevinden zich op twee plaatsen. De eerste plaats is in de het werkmenu bovenin het scherm. Dit werkmenu kan worden geopend door in het Hoofdmenu <i>Beeld &gt; Werkmenu</i>&#160;te kiezen. De tweede plaats is het Contextmenu dat opent wanneer met de rechter muisknop op de knooptekts wordt geklikt. Maar let op: dit venster opent alleen als tenminste &#233;&#233;n letter in de knoop is geselecteerd.
       </li>
       <li>
-        <b>in een afzonderlijk opmaakvenster. </b>Dit venster heeft eigen knoppen voor Bewerken, Opmaak, Tabel en Help.
+        <b>in een hulpvenster. </b>Dit venster heeft eigen knoppen voor Bewerken, Opmaak, Tabel en Help.
       </li>
     </ol>
     <p>
-      Standaard kiest Freeplane voor het bewerken van tekst binnen de knoop.
+      Standaard kiest Freeplane voor het bewerken van tekst binnen de knoop. ( Let op, hiernaast kan tekst in een bijlagevenster, het attribuutvenster, of het notitievenster worden ingevoerd. )
     </p>
   </body>
 </html></richcontent>
@@ -7021,10 +6996,8 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Tekst bewerken binnen knoop" ID="ID_1916991834" CREATED="1286650397903" MODIFIED="1291319713761" BACKGROUND_COLOR="#ffffff">
-<icon BUILTIN="pencil"/>
-<icon BUILTIN="messagebox_warning"/>
-<node ID="ID_714309616" CREATED="1291210223004" MODIFIED="1291210447208" BACKGROUND_COLOR="#ffff33" STYLE="bubble">
+<node TEXT="Tekst bewerken binnen knoop" ID="ID_1916991834" CREATED="1286650397903" MODIFIED="1291755858479" BACKGROUND_COLOR="#ffffff">
+<node ID="ID_714309616" CREATED="1291210223004" MODIFIED="1291838609838" BACKGROUND_COLOR="#ffff33" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7032,12 +7005,12 @@
   </head>
   <body>
     <p>
-      Dit is de snelste manier om tektst aan een knoop toe te voegen. Voor meer uitgebreide mogelijkheden: kies <i>Tekst bewerken in opmaakvenster </i>in balk<i> Hoofdmenu &gt; Bewerken</i>
+      Dit is de snelste manier om tektst aan een knoop toe te voegen. Voor meer uitgebreide mogelijkheden: kies Bewerken &gt; <i>Tekst bewerken in hulpvenster </i>in Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_473657585" CREATED="1270892460671" MODIFIED="1291320538355">
+<node ID="ID_473657585" CREATED="1270892460671" MODIFIED="1291838628620">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7054,13 +7027,13 @@
       - druk <i>F2</i>; of &#160;<i>Home</i>&#160;of <i>End</i>; of
     </p>
     <p>
-      - kies <i>Bewerken in knoop </i>in Balk Hoofdmenu of in het Contextmenu.<br/>
+      - kies <i>Bewerken knooptekst </i>in Hoofdmenu of in het Contextmenu.<br/>
     </p>
     <p>
       en:
     </p>
     <p>
-      - klik zonodig op de plaats waar de volgende letter moet komen (verplaats de invoercursor);
+      - klik zonodig op de plaats waar de volgende letter moet komen (verplaats de invoercursor); en
     </p>
     <p>
       - type de tekst;
@@ -7087,19 +7060,7 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="_Freeplane_Link_1445647544" CREATED="1270892460672" MODIFIED="1286650271075">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Enter eindigt standaard het bewerkingsproces van de korte knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="Enter eindigt standaard het bewerkingsproces binnen de knoop." ID="_Freeplane_Link_1445647544" CREATED="1270892460672" MODIFIED="1291838667059"/>
 </node>
 <node ID="ID_863139933" CREATED="1291203166414" MODIFIED="1291205408711">
 <richcontent TYPE="NODE">
@@ -7123,9 +7084,9 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Om alle tekst van de geselekteerde knoop te verwijderen:&#xa;- selecteer de knoop en begin met typen." ID="ID_673531040" CREATED="1270892460671" MODIFIED="1291205489425"/>
+<node TEXT="Om alle tekst van de geselecteerde knoop te verwijderen:&#xa;- selecteer de knoop en begin met typen." ID="ID_673531040" CREATED="1270892460671" MODIFIED="1291838716885"/>
 <node TEXT="Om het bewerken te eindigen:&#xa;- druk Enter; of&#xa;- klik met de muisknop buiten de knoop." ID="ID_1373800660" CREATED="1291205543183" MODIFIED="1291205744923"/>
-<node ID="ID_1491068549" CREATED="1291205875143" MODIFIED="1291210203855" BACKGROUND_COLOR="#ffff33">
+<node ID="ID_1491068549" CREATED="1291205875143" MODIFIED="1291755804893" BACKGROUND_COLOR="#ffff33">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7133,14 +7094,14 @@
   </head>
   <body>
     <p>
-      Mocht het bewerken niet lukken, schakel dan over naar <i>Tekst bewerken in opmaakvenster</i>
+      Mocht het bewerken niet lukken, schakel dan over naar <i>Tekst bewerken in hulpvenster</i>
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Tekst bewerken in venster" ID="ID_1775583940" CREATED="1286650453228" MODIFIED="1291319755413">
-<node ID="ID_1386037184" CREATED="1270892460672" MODIFIED="1291206646066">
+<node TEXT="Tekst bewerken in hulpvenster" ID="ID_1775583940" CREATED="1286650453228" MODIFIED="1291756694204" COLOR="#006699">
+<node ID="ID_1386037184" CREATED="1270892460672" MODIFIED="1291756278135">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7151,15 +7112,15 @@
       Om te zorgen dat Freeplane dit venster kiest, selecteer een knoop en
     </p>
     <p>
-      - kies <i>Bewerken &gt; Bewerken in venster</i>&#160;in balk Hoofdmenu of Contextmenu; of
+      - kies <i>Bewerken &gt; Bewerken in hulpvenster</i>&#160;in Hoofdmenu of Contextmenu; of
     </p>
     <p>
-      - druk <i>Alt + Enter</i>.
+      - druk <i>Alt + Enter </i>( <font color="#ff0000">ALLEEN als de knoop geslecteerd is, NIET als de invoercursor zichtbaar is</font> )
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_328110224" CREATED="1270892460672" MODIFIED="1291206682929">
+<node ID="ID_328110224" CREATED="1270892460672" MODIFIED="1291838751830">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7170,13 +7131,13 @@
       Om een tekst in een knoop op te delen in twee knopen:
     </p>
     <p>
-      - kies <i>Bewerken in venster</i> in Balk Hoofdmenu;
+      - kies <i>Bewerken in hulpvenster</i> in Hoofdmenu;
     </p>
     <p>
       - selecteer de tekst die bij de te splitsen knoop moet blijven en
     </p>
     <p>
-      - druk in&#160;&#160;het bewerkingsvenster op de knop<i>&#160;Splitsen</i>; of
+      - druk in&#160;&#160;het hulpvenster op de knop<i>&#160;Splitsen</i>; of
     </p>
     <p>
       - druk <i>Alt + S</i>.
@@ -7184,7 +7145,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_471748709" CREATED="1270892460672" MODIFIED="1291206609172">
+<node ID="ID_471748709" CREATED="1270892460672" MODIFIED="1291838928812">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7192,13 +7153,13 @@
   </head>
   <body>
     <p>
-      Om een deel van de tekst het bewerkingsvenster naar het klembord te kopieren, om deze later te kunnen plakken:
+      Om een deel van de tekst in het hulpvenster naar het klembord te kopi&#235;ren, om deze later te kunnen plakken:
     </p>
     <p>
-      - selecteer de te kopieren tekst en kies in de&#160;menubalk&#160;van het bewerkingsvenster:
+      - selecteer de te kopi&#235;ren tekst en in de&#160;menubalk&#160;van het hulpvenster:
     </p>
     <p>
-      - kies <i>Bewerken &gt; kopieren</i>; of
+      - kies <i>Bewerken &gt; kopi&#235;ren</i>; of
     </p>
     <p>
       - kies het betreffende pictogram
@@ -7206,7 +7167,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Om een een speciaal symbool zoals &#xa9; in te voegen, type het in uw favoriete tekstverwerker zoals Word, kopieer het symbool en plak het in het&#xa0;&#xa0;bewerkingsvenster." ID="ID_128741512" CREATED="1270892460672" MODIFIED="1291206416777"/>
+<node TEXT="Om een een speciaal symbool zoals &#xa9; in te voegen, type het in uw favoriete tekstverwerker zoals Word, kopieer het symbool en plak het in het&#xa0;&#xa0;hulpvenster." ID="ID_128741512" CREATED="1270892460672" MODIFIED="1291756402452"/>
 <node ID="ID_1608665009" CREATED="1270996862392" MODIFIED="1286549915490" LINK="#Freeplane_Link_1318678369">
 <richcontent TYPE="NODE">
 <html>
@@ -7221,9 +7182,8 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Spellingscontrole" ID="ID_1122067470" CREATED="1271096284570" MODIFIED="1291320609943" COLOR="#000000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_784188803" CREATED="1271096294667" MODIFIED="1288681986565">
+<node TEXT="Spellingscontrole" ID="ID_1122067470" CREATED="1271096284570" MODIFIED="1291756716496" COLOR="#0000cc">
+<node ID="ID_784188803" CREATED="1271096294667" MODIFIED="1291756446928">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7231,10 +7191,10 @@
   </head>
   <body>
     <p>
-      Om de spellingscontrole vanuit een bewerkingsvenster aan of uit te zetten:
+      Om de spellingscontrole aan of uit te zetten:
     </p>
     <p>
-      - klik met de rechtermuisknop en kies<i>&#160;Talen</i>.
+      - klik met de rechtermuisknop op een woord en kies<i>&#160;Talen</i>.
     </p>
   </body>
 </html></richcontent>
@@ -7254,10 +7214,17 @@
 </node>
 </node>
 </node>
-<node TEXT="Verslepen en verplaatsen knoop of tak" ID="Freeplane_Link_1024903226" CREATED="1270892460682" MODIFIED="1291320693747" COLOR="#407000">
+<node TEXT="Pictogram" ID="Freeplane_Link_1044397139" CREATED="1270892460676" MODIFIED="1291320906172" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
-<node ID="ID_926620656" CREATED="1270892460682" MODIFIED="1289553958487">
+<node TEXT=" Een pictogram is een kleine afbeelding die aan een knoop kan worden gekoppeld." ID="ID_1983709741" CREATED="1270892460676" MODIFIED="1288817593013" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<icon BUILTIN="help"/>
+<icon BUILTIN="yes"/>
+<icon BUILTIN="messagebox_warning"/>
+<icon BUILTIN="button_ok"/>
+</node>
+<node TEXT="Vind pictogram" ID="ID_1869499817" CREATED="1286699808207" MODIFIED="1288817872043">
+<node ID="ID_1000521100" CREATED="1286697831695" MODIFIED="1291838964723">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7265,7 +7232,255 @@
   </head>
   <body>
     <p>
-      Om een knoop op het scherm <b>versplaatsen</b>&#160;met<b>&#160;klik&#160;(ingedrukt houden) en sleep</b>:
+      De beschikbare pictogrammen staan in de Pictogrammenbalk. Als deze niet zichtbaar is:
+    </p>
+    <p>
+      - kies <i>Beeld &gt; Pictogrammenbalk </i>in Hoofdmenu<i>&#160;</i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <i>De pictogrammen zijn ook als volgt te vinden en te kiezen: </i>
+    </p>
+    <p>
+      - kies&#160; <i>Pictogram</i>&#160;in Hoofdmenu<i>;&#160;</i>of
+    </p>
+    <p>
+      - kies <i>&#160;Pictogrammen</i>&#160;in het Contextmenu<i>&#160;</i>; of
+    </p>
+    <p>
+      - druk op <i>Ctrl + F2.</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node ID="ID_1126175660" CREATED="1270892460676" MODIFIED="1291839005595">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een icoon aan een knoop toe te voegen:
+    </p>
+    <p>
+      - selecteer de knoop waarin het pictogram moet komen (houd daarna <i>Ctrl</i>&#160; ingedrukt om te zorgen dat knoop geselekteerd blijft);
+    </p>
+    <p>
+      - kies <i>Pictogram</i>&#160;in Hoofdmenu;
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1703076068" CREATED="1270892460676" MODIFIED="1291839382773">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een pictogram te verwijderen:
+    </p>
+    <p>
+      - selecteer de knoop waarin het pictogram moet komen (houd daarna <i>Ctrl</i>&#160; ingedrukt om te zorgen dat knoop geselecteerd blijft);
+    </p>
+    <p>
+      - kies <i>Pictogram</i>&#160;in Hoofdmenu of ga naar de Pictogrammenbalk;
+    </p>
+    <p>
+      -&#160;kies eerste of tweede pictogram met het rode kruisje (verwideren pictogram);
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Om alle pictogrammen te verwijderen:&#xa;- kies in de Pictogrammenbalk de vuilnisbak." ID="ID_1240276527" CREATED="1270892460676" MODIFIED="1291839047949"/>
+<node ID="ID_26845444" CREATED="1271096826323" MODIFIED="1291839152719">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om alle knopen met pictogrammen hi&#235;rarchisch te tonen:
+    </p>
+    <p>
+      - kies <i>Opmaak &gt; Pictogrammen hi&#235;rarchie </i>in Hoofdmenu .
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Bewerken tekst in knoopbijlage" ID="ID_1237483271" CREATED="1291616540782" MODIFIED="1291756829073" COLOR="#407000">
+<node ID="ID_1890676101" CREATED="1291756829074" MODIFIED="1291757737526">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Als bij basistekst met hulpvenster (zie boven);
+    </p>
+    <p>
+      - kies <i>Bewerken &gt; Bewerken knoopbijlage</i> in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_345051640" CREATED="1291757478884" MODIFIED="1291757642241">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een knoopbijlage te verwijderen:
+    </p>
+    <p>
+      - kies <i>Extra &gt; Verwijderen knoopbijlage</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Bewerken attributen" ID="ID_540307688" CREATED="1270896851973" MODIFIED="1291757301294" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Een knoop kan attributen hebben, bijvoorbeeld:" ID="ID_1293545211" CREATED="1270893318566" MODIFIED="1289570201405" STYLE="bubble">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<attribute_layout NAME_WIDTH="40" VALUE_WIDTH="49"/>
+<attribute NAME="jan" VALUE="10"/>
+<attribute NAME="piet" VALUE="20"/>
+</node>
+<node TEXT="Attributen die zijn gebruikt binnen een mindmap komen terug als keuzeopties bij andere knopen.&#xa;Attribuutwaarden kunnen worde gebruikt om knopen wel/niet te tonen, zie Filteren." ID="ID_1827145511" CREATED="1289570137569" MODIFIED="1289570435296"/>
+<node ID="ID_541565942" CREATED="1270896865255" MODIFIED="1291755826109">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om attributen van een enkele knoop te bewerken:
+    </p>
+    <p>
+      - kies <i>Bewerken &gt; Bewerken attributen </i>in Hoofdmenu; of
+    </p>
+    <p>
+      - kies <i>Bewerken attributen</i>&#160;in Contextmenu (rechtsklik knoop); of
+    </p>
+    <p>
+      <i>- </i>druk<i>&#160;Alt + F9.</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1213222306" CREATED="1270896956119" MODIFIED="1291839542579">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om tegelijkertijd meerdere attributen van meerdere knopen te bewerken:
+    </p>
+    <p>
+      - kies<i>&#160;Extra &gt; Attribuutwaarden beheren</i>&#160;in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_686245498" CREATED="1291757348243" MODIFIED="1291839623543">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om attributen te verwijderen:
+    </p>
+    <p>
+      - kies <i>Extra &gt; Attribuutwaarden beheren</i>;
+    </p>
+    <p>
+      - kies alle waarden wissen.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Bewerken tekst in notitievenster" ID="ID_307063579" CREATED="1291616540782" MODIFIED="1291756998240" COLOR="#407000">
+<node ID="ID_1702667012" CREATED="1291757028480" MODIFIED="1291757702254" STYLE="bubble">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een knoopnotitie kan in een afzonderlijk hulpvenster worden getoond of bij de knoop, zie:
+    </p>
+    <p>
+      - <i>Beeld &gt; Tonen notities bij knopen</i> in Hoofdmenu;
+    </p>
+    <p>
+      - <i>Beeld &gt; Tonen notitiehulpvenster</i> in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1408896252" CREATED="1291756829074" MODIFIED="1291756924234">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Als bij basistekst met hulpvenster;
+    </p>
+    <p>
+      - kies <i>Bewerken &gt; Bewerken knoopbijlage</i> in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_958969692" CREATED="1291757560652" MODIFIED="1291757621118">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een notitie te verwijderen:
+    </p>
+    <p>
+      - kies <i>Extra &gt; Verwijderen notitie</i> in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Verslepen en verplaatsen knoop of tak" ID="Freeplane_Link_1024903226" CREATED="1270892460682" MODIFIED="1291320693747" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<edge WIDTH="thin"/>
+<node ID="ID_926620656" CREATED="1270892460682" MODIFIED="1291839767126">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een knoop op het scherm te <b>versplaatsen</b>&#160;met<b>&#160;klik&#160;(ingedrukt houden) en sleep</b>:
     </p>
     <p>
       - selecteer de knoop door de linker muisknop in te drukken,
@@ -7363,7 +7578,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_356858969" CREATED="1270892460683" MODIFIED="1289554169705">
+<node ID="ID_356858969" CREATED="1270892460683" MODIFIED="1291839821305">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7374,7 +7589,7 @@
       Als je meerdere knopen tegelijk wilt verplaatsen en/of kopieren:
     </p>
     <p>
-      - selekteer alle knopen met&#160;&#160;<i>Shift</i>&#160;ingedrukt,
+      - selecteer alle knopen met&#160;&#160;<i>Shift</i>&#160;ingedrukt,
     </p>
     <p>
       - klik en sleep .
@@ -7438,7 +7653,7 @@
 </node>
 <node TEXT="Kopi&#xeb;ren en plakken" ID="Freeplane_Link_958781924" CREATED="1270892460683" MODIFIED="1291211196087" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_889978608" CREATED="1270892460684" MODIFIED="1289554467561">
+<node ID="ID_889978608" CREATED="1270892460684" MODIFIED="1291839880363">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7449,10 +7664,10 @@
       Om een knoop (en knoopketen) te kopi&#235;ren:
     </p>
     <p>
-      - selekteer de knoop (er verschijnt een kader om de knoop);
+      - selecteer de knoop (er verschijnt een kader om de knoop);
     </p>
     <p>
-      -&#160;&#160;kies <i>Bewerken &gt; Kopi</i>&#235;<i>ren </i>in balk Hoofdmenu of
+      -&#160;&#160;kies <i>Bewerken &gt; Kopi</i>&#235;<i>ren </i>in Hoofdmenu of
     </p>
     <p>
       -&#160; <i>Kopi</i>&#235;<i>ren in het</i>&#160;Contextmenu<i>&#160;</i>
@@ -7464,10 +7679,7 @@
       Om de kindknopen niet mee te kopi&#235;ren:
     </p>
     <p>
-      -&#160;kies <i>Bewerken &gt; Kopieer zonder zijtakken </i>in balk Hoofdmenu <i>; </i>of
-    </p>
-    <p>
-      - kies <i>Kopieer zonder zijtakken </i>het Contextmen<i>;</i>&#160;of
+      -&#160;kies <i>Bewerken &gt; Kopieer zonder zijtakken </i>in Hoofdmenu<i> </i>of-Contextmen<i>;</i>&#160;of
     </p>
     <p>
       <i>- </i>druk<i>&#160;Ctrl + Shift + C</i>.
@@ -7476,7 +7688,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_932066814" CREATED="1286649503405" MODIFIED="1289554588145">
+<node ID="ID_932066814" CREATED="1286649503405" MODIFIED="1291839940143">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7487,13 +7699,10 @@
       Om een gekopieerde knoop te plakken:
     </p>
     <p>
-      - selekteer de knoop waaraan de knoop moet worden vastgemaak;
+      - selecteer de knoop waaraan de knoop moet worden vastgemaakt;
     </p>
     <p>
-      - kies <i>Bewerken &gt; Plakken </i>in balk Hoofdmenu;
-    </p>
-    <p>
-      <i>-</i>&#160;kies<i>&#160;Plakken</i>&#160;in het Contextmenu;of
+      - kies <i>Bewerken &gt; Plakken </i>in Hoofdmenu of Contextmenu;of
     </p>
     <p>
       - kies het pictogram voor Plakken.
@@ -7501,7 +7710,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_277512717" CREATED="1286646785709" MODIFIED="1289554682868">
+<node ID="ID_277512717" CREATED="1286646785709" MODIFIED="1291840026208">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7512,13 +7721,13 @@
       Om in &#233;&#233;n handeling een nieuwe knoop te maken en te vullen met een gekopieerde tekstregel:
     </p>
     <p>
-      - ga naar het bestand met de tekst en selekteer en kopieer de tekst;
+      - ga naar het bestand met de tekst en selecteer en kopieer de tekst;
     </p>
     <p>
-      - ga naar de mindmap en selekteer de knoop waaronder de nieuwe knoop als kindknoop moet komen;
+      - ga naar de mindmap en selecteer de knoop waaronder de nieuwe knoop als kindknoop moet komen;
     </p>
     <p>
-      - plak de knoop: kies&#160; <i>Bewerken &gt; Plakken</i>&#160;in balk Hoofdmenu; of
+      - plak de knoop: kies&#160; <i>Bewerken &gt; Plakken</i>&#160;in Hoofdmenu; of
     </p>
     <p>
       - kies <i>Plakken</i>&#160;in het Contextmenu; of kies het pictogram voor Plakken.
@@ -7578,7 +7787,7 @@
 </html></richcontent>
 </node>
 <node TEXT="HTML" ID="ID_129646169" CREATED="1286653681301" MODIFIED="1286653697183">
-<node ID="ID_780592545" CREATED="1270892460685" MODIFIED="1288816517773">
+<node ID="ID_780592545" CREATED="1270892460685" MODIFIED="1291840061277">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7586,10 +7795,10 @@
   </head>
   <body>
     <p>
-      Als de gekopieerde tekst HTML-code bevat, dan kan deze als enkele knoop of als hierarchie worden geplakt:
+      Als de gekopieerde tekst HTML-code bevat, dan kan deze als enkele knoop of als hi&#235;rarchie worden geplakt:
     </p>
     <p>
-      - kies in balk Hoofdmenu <i>Bewerken &gt; Plakken als..</i>.
+      - kies in Hoofdmenu <i>Bewerken &gt; Plakken als..</i>.
     </p>
   </body>
 </html></richcontent>
@@ -7798,18 +8007,7 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_318113193" CREATED="1270892460686" MODIFIED="1286653046093">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Als een knoop wordt gekopieerde en in een gewone tekstverwerker wordt geplakt, wordt de structuur van de onderliggende tak getoond door inspringen. Hyperlinks worden tussen haken getoond. Voorbeeld:
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Als een knoop wordt gekopieerd en in een gewone tekstverwerker wordt geplakt, wordt de structuur van de onderliggende tak getoond door inspringen. Hyperlinks worden tussen haken getoond. Voorbeeld:" ID="ID_318113193" CREATED="1270892460686" MODIFIED="1291840082509">
 <node TEXT="Boom" ID="ID_251141855" CREATED="1270892460686" MODIFIED="1286653059010" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="Eik" ID="ID_1467889610" CREATED="1270892460686" MODIFIED="1286653068182" COLOR="#996600">
@@ -7851,24 +8049,12 @@
 </node>
 </node>
 </node>
-<node ID="ID_411576634" CREATED="1270892460687" MODIFIED="1286654234542">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Editors die RTF begrijpen omvatten Microsoft Word, Wordpad and Outlook. Bij plakken in deze editors worden ook font en kleur overgenomen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="Bewerkers die RTF-formaat aankunnen zijn o.a. Microsoft Word, Wordpad en Outlook. Bij plakken in deze bewerkers worden ook teksttype en kleur overgenomen." ID="ID_411576634" CREATED="1270892460687" MODIFIED="1291840199353"/>
 </node>
 </node>
 <node TEXT="Snelkoppeling tussen knopen maken" ID="ID_342404639" CREATED="1289551103373" MODIFIED="1289551407918" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1561159352" CREATED="1289551169759" MODIFIED="1289551392349">
+<node ID="ID_1561159352" CREATED="1289551169759" MODIFIED="1291840239008">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7876,7 +8062,7 @@
   </head>
   <body>
     <p>
-      Om een selkoppeling tussen twee knopen te maken, of te veranderen:
+      Om een snelkoppeling tussen twee knopen te maken, of te veranderen:
     </p>
     <p>
       - selecteer de knoop waar de snelkoppeling moet komen;
@@ -7885,12 +8071,12 @@
       - houd<i>&#160;Shift </i>ingedrukt en selecteer de knoop waarheen de snelkoppeling moet leiden;
     </p>
     <p>
-      - kies<i>&#160;Invoegen &gt; Snelkoppeling tussen knopen</i>&#160;in balk Hoofdmenu of het Contectmenu.
+      - kies<i>&#160;Invoegen &gt; Snelkoppeling tussen knopen</i>&#160;in Hoofdmenu of het Contextmenu.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_953613682" CREATED="1289550333175" MODIFIED="1289554765486">
+<node ID="ID_953613682" CREATED="1289550333175" MODIFIED="1291840317284">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7904,10 +8090,7 @@
       - selecteer knoop met snelkoppeling;
     </p>
     <p>
-      - kies <i>Invoegen &gt; Hyperlink intypen</i>... in balk Hoofdmenu; of
-    </p>
-    <p>
-      - kies <i>Hyperlink intypen</i>... in het Contextmenu; of
+      - kies <i>Invoegen &gt; Hyperlink intypen</i>... in Hoofdmenu of Contextmenu; of
     </p>
     <p>
       - druk op Ctrl + K
@@ -7920,7 +8103,7 @@
 </node>
 </node>
 <node TEXT="Hyperlink maken" ID="Freeplane_Link_203858515" CREATED="1270892460675" MODIFIED="1289550968972" COLOR="#407000">
-<node ID="ID_440145113" CREATED="1288457268442" MODIFIED="1289551083164" BACKGROUND_COLOR="#ffff00" STYLE="bubble" HGAP="24" VSHIFT="9">
+<node ID="ID_440145113" CREATED="1288457268442" MODIFIED="1291840492426" BACKGROUND_COLOR="#ffff00" STYLE="bubble" HGAP="24" VSHIFT="9">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7928,19 +8111,10 @@
   </head>
   <body>
     <p>
-      <b><i>Hyperlink toevoegen aan knoop met eenvoudige opmaak</i></b>
+      <i><b>Hyperlink toevoegen</b></i>
     </p>
     <p>
-      De balk Hoofdmenu biedt onder <i>Invoegen</i>&#160;verschillende mogelijkheden om een&#160;hyperlink&#160;toe te voegen. Makkelijker is het echter om de locatie (het adres) van een webpagina, bestand of applicatie te kopi&#235;ren en vervolgens te plakken via <i>Bewerken &gt; Plakken </i>in<i>&#160;</i>balk Hoofdmenu of in het Contextmenu. Er wordt dan automatisch een kindknoop aangemaakt en hierin wordt de hyperlink geplaatst. De&#160;&#160;kindnoop krijgt hierbij automatisch als tekst het adres van de hyperlink. Deze tekst is echter niet nodig en kan worden vervangen door een andere tekst zonder dat&#160;&#160;de hyperlink verandert.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b><i>Hyperlink toevoegen aan knoop met uitgebreide opmaak</i></b>
-    </p>
-    <p>
-      Het invoegen van een hyperlink bij een knoop met uitgebreide opmaak gebeurt op dezelfde manier als bij eenvoudige opmaak, met &#233;&#233;n verschil. Het verschil is dat de <b>eigen menu's </b>van het venster voor uitgebreide opmaak worden gebruikt om het gekopieerde hyperlink-adres te plakken.
+      De Hoofdmenu biedt onder <i>Invoegen</i>&#160;verschillende mogelijkheden om een&#160;hyperlink&#160;toe te voegen. Makkelijker is het echter om de locatie (het adres) van een webpagina, bestand of applicatie te kopi&#235;ren en vervolgens te plakken via <i>Bewerken &gt; Plakken </i>in<i>&#160;</i>Hoofdmenu of in het Contextmenu. Er wordt dan automatisch een kindknoop aangemaakt en hierin wordt de hyperlink geplaatst. De&#160;&#160;kindnoop krijgt hierbij automatisch als tekst het adres van de hyperlink. Deze tekst is echter niet nodig en kan worden vervangen door een andere tekst zonder dat&#160;&#160;de hyperlink verandert. Bij gebruik van het hulpvenster moet voor het plakken de plafuctie van het hulpvester worden gebruikt.
     </p>
   </body>
 </html></richcontent>
@@ -7979,7 +8153,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_640110372" CREATED="1286651969385" MODIFIED="1289554860267">
+<node ID="ID_640110372" CREATED="1286651969385" MODIFIED="1291840586489">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7987,25 +8161,19 @@
   </head>
   <body>
     <p>
-      Om in een keer een lijst van hyperlinks&#160;&#160;naar een aantal bestanden te maken:
+      Om in &#233;&#233;n keer een lijst van hyperlinks&#160;&#160;naar een aantal bestanden te maken:
     </p>
     <p>
-      - ga bijvoorbeeld naar Verkenner en selekteer en kopieer de groep bestanden;
+      - ga bijvoorbeeld naar Verkenner en selecteer en kopieer de groep bestanden;
     </p>
     <p>
       - ga naar de mindmap en selekteer een knoop;
     </p>
     <p>
-      - kies <i>Bewerken &gt; Plakken </i>in balk Hoofdmenu; of
+      - kies <i>Bewerken &gt; Plakken </i>in Hoofdmenu of Contextmenu; of klik op het pictogram voor Plakken.
     </p>
     <p>
-      - kies <i>Plakken&#160; </i>in het Contextmenu; of klik op het pictogram voor Plakken.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Elke hyperlink komt in een aparte knoop
+      Elke hyperlink komt in een aparte knoop.
     </p>
   </body>
 </html></richcontent>
@@ -8023,7 +8191,7 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_1159570525" CREATED="1270894120878" MODIFIED="1289554894930">
+<node ID="ID_1159570525" CREATED="1270894120878" MODIFIED="1291840624646">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8034,10 +8202,10 @@
       Om een koppeling naar een bestand in te voegen:
     </p>
     <p>
-      - selekteer knoop;
+      - selecteer de knoop;
     </p>
     <p>
-      - kies <i>Invoegen &gt; Hyperlink kiezen uit bestandenlijst </i>&#160;in balk Hoofdmenu; of
+      - kies <i>Invoegen &gt; Hyperlink kiezen uit bestandenlijst </i>&#160;in Hoofdmenu; of
     </p>
     <p>
       druk <i>Ctrl + Shift + K.</i>
@@ -8058,7 +8226,7 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_745700749" CREATED="1270892460675" MODIFIED="1288817347936">
+<node ID="ID_745700749" CREATED="1270892460675" MODIFIED="1291840641806">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8069,7 +8237,7 @@
       Om een hyperlink in een knoop op te nemen:
     </p>
     <p>
-      - selekteer de knoop;
+      - selecteer de knoop;
     </p>
     <p>
       - kies<i>&#160;Invoegen&#160;&#160;&gt; Hyperlink typen</i>; of druk op <i>Ctrl + K</i>; en
@@ -8093,7 +8261,7 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_1795785910" CREATED="1289550333175" MODIFIED="1289551619929">
+<node ID="ID_1795785910" CREATED="1289550333175" MODIFIED="1291840661213">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8104,10 +8272,10 @@
       Om een hyperlink te verwijderen zonder de knoop te verwijderen:
     </p>
     <p>
-      - selecteer knoop met snelkoppeling;
+      - selecteer de knoop met snelkoppeling;
     </p>
     <p>
-      - kies <i>Invoegen &gt; Hyperlink intypen</i>... in balk Hoofdmenu of het Contextmenu; of
+      - kies <i>Invoegen &gt; Hyperlink intypen</i>... in Hoofdmenu of het Contextmenu; of
     </p>
     <p>
       - druk op Ctrl + K
@@ -8135,7 +8303,7 @@
 </node>
 <node TEXT="E-mail koppeling maken" ID="ID_609655514" CREATED="1289567011406" MODIFIED="1289567370300" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_869144882" CREATED="1270892460675" MODIFIED="1289567732237" LINK="mailto:%20jokro@freeplane.nl">
+<node ID="ID_869144882" CREATED="1270892460675" MODIFIED="1291840873557" LINK="mailto:%20jokro@freeplane.nl">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8146,7 +8314,7 @@
       Om een e-mail adres in een knoop op te nemen:
     </p>
     <p>
-      - selekteer de knoop;
+      - selecteer de knoop;
     </p>
     <p>
       - kies<i>&#160;Invoegen&#160;&#160;&gt; Hyperlink typen</i>; of druk op <i>Ctrl + K</i>; en
@@ -8158,31 +8326,16 @@
       - type het adres
     </p>
     <p>
-      Voorbeeld: maito:jokro@freeplane.nl
+      Voorbeeld: mailto:jokro@freeplane.nl
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1116507628" CREATED="1270892460676" MODIFIED="1286656399024">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om aan een email een onderwerp toe te voegen, pas het adres aan, bijvoorbeeld:
-    </p>
-    <p>
-      - mailto:don.bonton@supermail.com?subject=Last phone call.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="Om aan een email een onderwerp toe te voegen, pas het adres aan, bijvoorbeeld:&#xa;- mailto:jokro@freeplane.nl?subject=laatste telefoongesprek." ID="ID_1116507628" CREATED="1270892460676" MODIFIED="1291840923602"/>
 </node>
 <node TEXT="Afbeelding" ID="Freeplane_Link_271176250" CREATED="1270892460699" MODIFIED="1289561474013" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_1044142128" CREATED="1286741509257" MODIFIED="1289561366155" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node ID="ID_1044142128" CREATED="1286741509257" MODIFIED="1291841042084" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8193,7 +8346,7 @@
       In / bij knopen kunnen plaatjes worden getoond van de typen<b>&#160;png, jpeg, gif, </b>en<b>&#160;svg</b>. Een plaatje kan binnen een knoop worden ingevoegd en heeft dan een vaste grootte. Of het plaatje kan onder de knoop worden geplaatst en dan is de grootte instelbaar.
     </p>
     <p>
-      De getoonde plaatjes worden <u>niet</u>&#160;opgenomen in het mindmap bestand. Bij het kopi&#235;eren en verplaatsen van een mindmap bestand moeten de plaatjes dus ook meegekopieerd worden om te zorgen dat de mindmap goed werkt. Hetzelfde gedt voor het exporteren van een mindmap: de plaatjes worden niet automatisch meegexporteerd.
+      De getoonde plaatjes worden <u>niet</u>&#160;opgenomen in het mindmap bestand. Bij het kopi&#235;ren en verplaatsen van een mindmap bestand moeten de plaatjes dus ook meegekopieerd worden om te zorgen dat de mindmap goed werkt. Hetzelfde geldt voor het exporteren van een mindmap: de plaatjes worden niet automatisch meege&#235;xporteerd.
     </p>
   </body>
 </html></richcontent>
@@ -8210,7 +8363,7 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_692449557" CREATED="1271527733841" MODIFIED="1289560785418">
+<node ID="ID_692449557" CREATED="1271527733841" MODIFIED="1291841098135">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8221,13 +8374,10 @@
       Om onder een knoop een plaatje te tonen dat in grootte kan worden aangepast en waarbij de knoop ook tekst kan bevatten:
     </p>
     <p>
-      - kies&#160; <i>Invoegen &gt; Schaalbare afbeelding</i>&#160;in balk Hoofdmenu; of
+      - kies&#160; <i>Invoegen &gt; Schaalbare afbeelding</i>&#160;in Hoofdmenu of Contextmenu (rechtsklik knoop); en
     </p>
     <p>
-      - kies &#160;<i>Schaalbare afbeelding</i>&#160;in<i>&#160;</i>Contextmenu (rechtsklik knoop); en
-    </p>
-    <p>
-      - zoek en selekteer het plaatje;
+      - zoek en selecteer het plaatje;
     </p>
     <p>
       <br/>
@@ -8237,7 +8387,7 @@
       Om de grootte aan te passen:
     </p>
     <p>
-      - beweeg de linker muisknop over een hoekpunt van het plaatje totdat de cursor verander in een diagonaal lijntje; en
+      - beweeg de linker muisknop over een hoekpunt van het plaatje totdat de cursor verandert in een diagonaal lijntje; en
     </p>
     <p>
       - klik en sleep naar het juiste formaat.
@@ -8248,7 +8398,7 @@
 </node>
 </node>
 <node TEXT="Vast plaatje zonder tekst" ID="ID_95494296" CREATED="1286806940607" MODIFIED="1286806960670">
-<node ID="ID_1950962853" CREATED="1270892460699" MODIFIED="1289560760115" HGAP="22" VSHIFT="24">
+<node ID="ID_1950962853" CREATED="1270892460699" MODIFIED="1291841160956" HGAP="22" VSHIFT="24">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8259,10 +8409,7 @@
       Om binnen een knoop een plaatje (geen svg !) met vaste grootte in te voegen:
     </p>
     <p>
-      - kies <i>Invoegen &gt; Afbeelding&#160;uit bestandenlijst of hyperlink in </i>balk Hoofdmenu; of
-    </p>
-    <p>
-      - kies <i>Afbeelding&#160;uit bestandenlijst of hyperlink</i>&#160;in Contextmenu&#160;(rechtsklik knoop);&#160;of
+      - kies <i>Invoegen &gt; Afbeelding&#160;uit bestandenlijst of hyperlink in </i>Hoofdmenu of Contextmenu&#160;(rechtsklik knoop);&#160;of
     </p>
     <p>
       - druk <i>Alt + Shift + K</i>.
@@ -8286,32 +8433,12 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_890405454" CREATED="1270892460700" MODIFIED="1289561118648">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een hyperlinkd naar een plaatje in te voegen:
-    </p>
-    <p>
-      - kopieer het adres van het plaatje;
-    </p>
-    <p>
-      - plak het adres &quot;op&quot; de knoop: er wordt automatisch een kindknoop aangemaakt met de hyperlink.
-    </p>
-    <p>
-      Dit werkt ook met meerdere geelekteerde plaatjes-bestanden tegelijk.
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Om een hyperlink naar een plaatje in te voegen:&#xa;- kopieer het adres van het plaatje;&#xa;- plak het adres &quot;op&quot; de knoop: er wordt automatisch een kindknoop aangemaakt met de hyperlink.&#xa;Dit werkt ook met meerdere geelekteerde plaatjesbestanden tegelijk." ID="ID_890405454" CREATED="1270892460700" MODIFIED="1291841212686">
 <node TEXT="SintEnPiet.JPG" ID="ID_1275791527" CREATED="1286808154863" MODIFIED="1286808154863" LINK="../Documents/My%20Dropbox/MindMap/Plaatjes/SintEnPiet.JPG"/>
 </node>
 </node>
 <node TEXT="Plaatje van snelkoppeling" ID="ID_1576666245" CREATED="1286807975568" MODIFIED="1286807988290">
-<node ID="ID_24021694" CREATED="1286807988291" MODIFIED="1289561259953">
+<node ID="ID_24021694" CREATED="1286807988291" MODIFIED="1291841320404">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8322,16 +8449,13 @@
       Om bovenstaande hyperlink te vervangen door het plaatje zelf:
     </p>
     <p>
-      - kies <i>Invoegen &gt; Afbeelding&#160;uit bestandenlijst of hyperlink in </i>balk Hoofdmenu; of
-    </p>
-    <p>
-      - kies<i>&#160;Afbeelding&#160;uit bestandenlijst of hyperlink </i>in Contextmenu (rechtsklik op knoop);&#160;of
+      - kies <i>Invoegen &gt; Afbeelding&#160;uit bestandenlijst of hyperlink in </i>Hoofdmenu of Contextmenu (rechtsklik op knoop);&#160;of
     </p>
     <p>
       - druk <i>Alt + Shift + K</i>.
     </p>
     <p>
-      Werkt ook met meerdere geselekteerde knopen/links tegelijk.
+      Werkt ook met meerdere geselecteerde knopen/links tegelijk.
     </p>
   </body>
 </html></richcontent>
@@ -8351,10 +8475,10 @@
 </node>
 </node>
 <node TEXT="Plaatje via HTML-code" ID="ID_1100890918" CREATED="1286808673817" MODIFIED="1286808693848">
-<node TEXT="A more technical and not so user-friendly way to insert an image follows. It is possible to include HTML in nodes. You have to start the node content with the tag &lt;html&gt;. This way, you can have pictures in the nodes." ID="ID_1512479346" CREATED="1270892460700" MODIFIED="1271964655456" COLOR="#000000">
+<node TEXT="In een hulpvenster kan met HTML-code een plaatje worden opgenomen" ID="ID_1512479346" CREATED="1270892460700" MODIFIED="1291841465734">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_258073366" CREATED="1270892460700" MODIFIED="1289561443281">
+<node ID="ID_258073366" CREATED="1270892460700" MODIFIED="1291841341885">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8362,148 +8486,17 @@
   </head>
   <body>
     <p>
-      Voorbeeld:<br/>&#160;&#160;&lt;html&gt;&lt;img src=&quot;linked/Apple.png&quot;&gt;<br/>&#160;&#160;&lt;html&gt;&lt;img src=&quot;file://C:/Users/My Documents/Mind Maps/Linked/Apple.png&quot;&gt;<br/>De relatieve link op de eerste regel verwijst naar een afbeeldingsbetsand in een submap (subdirectory) binnen (onder) de map waarin de mindmap staat.
+      Voorbeeld:<br/>&#160;&#160;&lt;html&gt;&lt;img src=&quot;linked/Apple.png&quot;&gt;<br/>&#160;&#160;&lt;html&gt;&lt;img src=&quot;file://C:/Users/My Documents/Mind Maps/Linked/Apple.png&quot;&gt;<br/>De relatieve link op de eerste regel verwijst naar een afbeeldingsbestand in een submap (subdirectory) binnen (onder) de map waarin de mindmap staat.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-</node>
-</node>
-<node TEXT="Pictogram" ID="Freeplane_Link_1044397139" CREATED="1270892460676" MODIFIED="1291320906172" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT=" Een pictogram is een kleine afbeelding die aan een knoop kan worden gekoppeld." ID="ID_1983709741" CREATED="1270892460676" MODIFIED="1288817593013" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<icon BUILTIN="help"/>
-<icon BUILTIN="yes"/>
-<icon BUILTIN="messagebox_warning"/>
-<icon BUILTIN="button_ok"/>
-</node>
-<node TEXT="Vind pictogram" ID="ID_1869499817" CREATED="1286699808207" MODIFIED="1288817872043">
-<node ID="ID_1000521100" CREATED="1286697831695" MODIFIED="1289558438657">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De beschikbare pictogrammen staan in de balk Pictogrammen. Als deze niet zichtbaar is:
-    </p>
-    <p>
-      - kies <i>Beeld &gt; Balk Pictogrammen </i>in balk Hoofdmenu<i>&#160;</i>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <i>De pictogrammen zijn ook als volgt te vinden en te kiezen: </i>
-    </p>
-    <p>
-      - kies&#160; <i>Pictogram</i>&#160;in balk Hoofdmenu<i>;&#160;</i>of
-    </p>
-    <p>
-      - kies <i>&#160;Pictogrammen</i>&#160;in het Contextmenu<i>&#160;</i>; of
-    </p>
-    <p>
-      - druk op <i>Ctrl + F2.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node ID="ID_1126175660" CREATED="1270892460676" MODIFIED="1289558877546">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een icoon aan een knoop toe te voegen:
-    </p>
-    <p>
-      - selekteer de knoop waarin het icoon moet komen (houd daarna <i>Ctrl</i>&#160; ingedrukt om te zorgen dat knoop geselekteerd blijft);
-    </p>
-    <p>
-      - kies <i>Pictogram</i>&#160;in balk Hoofdmenu;
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1703076068" CREATED="1270892460676" MODIFIED="1289559028143">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een pictogram te verwijderen:
-    </p>
-    <p>
-      - selekteer de knoop waarin het pictogram moet komen (houd daarna <i>Ctrl</i>&#160; ingedrukt om te zorgen dat knoop geselecteerd blijft);
-    </p>
-    <p>
-      - kies <i>Pictogram</i>&#160;in balk Hoofdmenu of ga naar de balk Pictogrammen;
-    </p>
-    <p>
-      -&#160;kies eerste of tweede pictogram met het rode kruisje;
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1240276527" CREATED="1270892460676" MODIFIED="1288818059703">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle pictogrammen te verwijderen:
-    </p>
-    <p>
-      - kies in balk Pictogrammen de vuilnisbak.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_537134358" CREATED="1270892460676" MODIFIED="1288818189636">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om eigen pictogrammen aan de balk Pictogrammen toe te voegen:
-    </p>
-    <p>
-      - plaats het pictogrambestand, bijvoorbeeld mijnpictogram.png, in de Freeplane gebruikersmap als ~/.freeplane/icons/mijnpictogram.png
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_26845444" CREATED="1271096826323" MODIFIED="1289559086825">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle knopen met pictogrammen hierarchisch te tonen:
-    </p>
-    <p>
-      - kies <i>Opmaak &gt; Pictogrammen hierarchie </i>in balk Hoofdmenu .
-    </p>
-  </body>
-</html></richcontent>
 </node>
 </node>
 <node TEXT="Verbindingslijn" ID="_Freeplane_Link_1996597932" CREATED="1270892460679" MODIFIED="1291320923722" COLOR="#407000">
-<node ID="ID_1468846146" CREATED="1286733104547" MODIFIED="1286735958267">
+<node TEXT="Maken verbinding" ID="ID_1468846146" CREATED="1286733104547" MODIFIED="1291757860540">
+<node ID="ID_1564001222" CREATED="1270892460679" MODIFIED="1291841569599">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8511,28 +8504,16 @@
   </head>
   <body>
     <p>
-      Maak verbinding
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1564001222" CREATED="1270892460679" MODIFIED="1289559799704">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een verbindingslijn (connector) tussen twee knopen te maken:
+      Om een verbindingslijn tussen twee knopen te maken:
     </p>
     <p>
-      - selekteer de knoop waar de verbinding begint;
+      - selecteer de knoop waar de verbinding begint;
     </p>
     <p>
-      - houd<i>&#160;Ctrl</i>&#160;ingedrukt en selekteer de knoop waar de verbinding eindigt;
+      - houd<i>&#160;Ctrl</i>&#160;ingedrukt en selecteer de knoop waar de verbinding eindigt;
     </p>
     <p>
-      - kies <i>Invoegen &gt; Verbindingslijn</i>&#160;in balk Hoofdmenu; of
+      - kies <i>Invoegen &gt; Verbindingslijn</i>&#160;in Hoofdmenu; of
     </p>
     <p>
       - druk op <i>Ctrl + L</i>.
@@ -8540,7 +8521,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1349903691" CREATED="1291294657798" MODIFIED="1291294859094">
+<node ID="ID_1349903691" CREATED="1291294657798" MODIFIED="1291755826109">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8557,7 +8538,7 @@
       - selecteer als laatste de knoop waar de verbindingslijn moet eindigen;
     </p>
     <p>
-      - kies<i>&#160;Invoegen &gt; Verbindiingslijn</i>&#160;in balk Hoofdmenu.
+      - kies<i>&#160;Invoegen &gt; Verbindiingslijn</i>&#160;in Hoofdmenu.
     </p>
   </body>
 </html></richcontent>
@@ -8570,7 +8551,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Verwijder verbinding" ID="ID_1819154867" CREATED="1286733944185" MODIFIED="1286733956432">
+<node TEXT="Verwijderen verbinding" ID="ID_1819154867" CREATED="1286733944185" MODIFIED="1291757877045">
 <node ID="ID_1970882825" CREATED="1270892460679" MODIFIED="1289559542157">
 <richcontent TYPE="NODE">
 <html>
@@ -8618,7 +8599,7 @@
 </node>
 </node>
 <node TEXT="Kleur van de verbinding" ID="ID_436722393" CREATED="1286733165707" MODIFIED="1291295101378">
-<node ID="_Freeplane_Link_208378337" CREATED="1270892460679" MODIFIED="1289559962796">
+<node ID="_Freeplane_Link_208378337" CREATED="1270892460679" MODIFIED="1291755826109">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8629,7 +8610,7 @@
       Om de kleur van de verbinding in te stellen:
     </p>
     <p>
-      - kies<i>&#160;Kleur verbindingslijn </i>in balk Contextmenu (rechtsklik op lijn);
+      - kies<i>&#160;Kleur verbindingslijn </i>in Contextmenu (rechtsklik op lijn);
     </p>
     <p>
       (Bij MAC OS; druk op&#160;Control + klik.)
@@ -8720,18 +8701,11 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Voorbeelden" ID="ID_205629459" CREATED="1286735722027" MODIFIED="1286735779030"/>
 </node>
-<node TEXT="Attribuut" ID="ID_540307688" CREATED="1270896851973" MODIFIED="1291320935079" COLOR="#407000">
+<node TEXT="Activiteit" ID="ID_1542554542" CREATED="1288472782852" MODIFIED="1291757989926" HGAP="21" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Een knoop kan attributen hebben, bijvoorbeeld:" ID="ID_1293545211" CREATED="1270893318566" MODIFIED="1289570201405" STYLE="bubble">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<attribute_layout NAME_WIDTH="40" VALUE_WIDTH="49"/>
-<attribute NAME="jan" VALUE="10"/>
-<attribute NAME="piet" VALUE="20"/>
-</node>
-<node TEXT="Attributen die zijn gebruikt binnen een mindmap komen terug als keuzeopties bij andere knopen.&#xa;Attribuutwaarden kunnen worde gebruikt om knopen wel/niet te tonen, zie Filteren." ID="ID_1827145511" CREATED="1289570137569" MODIFIED="1289570435296"/>
-<node ID="ID_541565942" CREATED="1270896865255" MODIFIED="1289560280432">
+<node TEXT="Een activiteit is een gebeurtenis welke is gekoppeld aan een knoop. Op het herinneringsmoment &#xa0;knippert een klokje in de betreffende knoop en verschijnt een rood uitroepteken in de hoofdknoop. Zie hieronder voor het bekijken van de activiteit. Personen of zaken die van toepassing zijn op de activiteit kunnen behalve in de basistekst, bijlagetekst en notitietekst, ook worden opgenomen in de attributen van de knoop." ID="ID_14055764" CREATED="1267746640914" MODIFIED="1291841683502" BACKGROUND_COLOR="#ffff33"/>
+<node ID="ID_539989636" CREATED="1288983926867" MODIFIED="1291755826124">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8739,64 +8713,7 @@
   </head>
   <body>
     <p>
-      Om attributen van een enkele knoop te bewerken:
-    </p>
-    <p>
-      - kies <i>Bewerken &gt; Bewerken attributen </i>in balk Hoofdmenu; of
-    </p>
-    <p>
-      - kies <i>Bewerken attributen</i>&#160;in Contextmenu (rechtsklik knoop); of
-    </p>
-    <p>
-      <i>- </i>druk<i>&#160;Alt + F9.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1213222306" CREATED="1270896956119" MODIFIED="1289560440931">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om tegelijkertijd attributen van meerdere knopen te bewerken:
-    </p>
-    <p>
-      - kies<i>&#160;Extra &gt; Bewerken attributen</i>&#160;in balk Hoofdmenu; of
-    </p>
-    <p>
-      - kies <i>Bewerken attributen</i>&#160;in Contextmenu (rechtsklik knoop)
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Activiteit en notitie" ID="ID_1542554542" CREATED="1288472782852" MODIFIED="1291320950414" HGAP="21" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_14055764" CREATED="1267746640914" MODIFIED="1289569960073" BACKGROUND_COLOR="#ffff33">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een activiteit is een activiteit welke is gekoppeld aan een knoop. Op het herinneringsmoment &#160;knippert een klokje in de betreffende knoop en verschijnt een rood uitroepteken in de hoofdknoop. Zie hieronder voor het bekijken van de activiteit. Personen of zaken die van toepassing zijn op de activiteit kunnen behalve in de knooptekst en notitietekst, ook worden opgenomen in de attributen van een knoop. Denk hierbij aan betrokken personen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_539989636" CREATED="1288983926867" MODIFIED="1289561507241">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een datum in een knoop te plaatsen:<br/>- kies&#160; <i>Extra &gt; Agenda in </i>balk Hoofdmenu; en
+      Om een datum in een knoop te plaatsen:<br/>- kies&#160; <i>Extra &gt; Agenda in </i>Hoofdmenu; en
     </p>
     <p>
       - kies de datum.
@@ -8804,7 +8721,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1295895929" CREATED="1288906343373" MODIFIED="1289561542139">
+<node ID="ID_1295895929" CREATED="1288906343373" MODIFIED="1291755826124">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8815,7 +8732,7 @@
       Om een activiteit toe te voegen:
     </p>
     <p>
-      - kies&#160; <i>Extra &gt; Agenda... in </i>balk Hoofdmenu;
+      - kies&#160; <i>Extra &gt; Agenda... in </i>Hoofdmenu;
     </p>
     <p>
       <i>- </i>Stel een datum en tijd in en&#160;kies<i>&#160;Activiteit</i>
@@ -8823,7 +8740,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1375492151" CREATED="1288907062597" MODIFIED="1289561569095">
+<node ID="ID_1375492151" CREATED="1288907062597" MODIFIED="1291755826124">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8834,12 +8751,17 @@
       Om alle activiteiten te bekijken:
     </p>
     <p>
-      - kies<i>&#160;Extra &gt; Activiteiten..</i>.in<i>&#160;</i>balk Hoofdmenu
+      - kies<i>&#160;Extra &gt; Activiteiten..</i>.in<i>&#160;</i>Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_354261689" CREATED="1288906708874" MODIFIED="1289561599063">
+<node TEXT="Zie Beweren basistekst, bijlage, notitie en attributen voor het opnemen van een beschrijving van de activiteit." ID="ID_354261689" CREATED="1288906708874" MODIFIED="1291758109298"/>
+</node>
+<node TEXT="Groovy scripts" ID="ID_1603082351" CREATED="1291754914764" MODIFIED="1291755613496" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Script zijn bedoeld voor gevorderde gebruikes.Ga naar Internet voor informatie over scripts." ID="ID_84273607" CREATED="1291754964115" MODIFIED="1291826860440" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
+<node ID="ID_985643604" CREATED="1271022419501" MODIFIED="1291823959768" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8847,19 +8769,81 @@
   </head>
   <body>
     <p>
-      Om een notitie toe te voegen:<br/>- kies&#160; <i>Beeld &gt; Notitievenster in </i>balk Hoofdmenu<i>; </i>en
+      Er zijn interne en externe scripts.<b> </b>Externe scripts zijn geen onderdeel van de mindmap. Ze kunnen worden toegepast nadat is aangegeven waar deze zich bevinden. Locale scripts zijn onderdeel van een knoop en dus van de mindmap.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_972686609" CREATED="1291755375049" MODIFIED="1291826471466">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om Groovy scripts te maken en te bewerken:
     </p>
     <p>
-      - voer de tekst in in het venster.
+      - Kies <i>Extra &gt; Groovy scripts bewerken</i> in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_486136910" CREATED="1291755108015" MODIFIED="1291755373529">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om Groovy scripts uit te voeren:
+    </p>
+    <p>
+      - kies <i>Extra &gt; Uitvoeren alle scripts</i> in Hoofdmenu; of
+    </p>
+    <p>
+      - kies <i>Extra &gt; Uitvoeren scripts in geselecteerde knopen</i>
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Formule" ID="ID_146041488" CREATED="1291211215610" MODIFIED="1291320998540" COLOR="#407000">
-<icon BUILTIN="pencil"/>
-<icon BUILTIN="messagebox_warning"/>
-<node TEXT="??" ID="ID_343120912" CREATED="1291211225228" MODIFIED="1291211229206"/>
+<node TEXT="Formule" ID="ID_146041488" CREATED="1291211215610" MODIFIED="1291754855121" COLOR="#407000">
+<node TEXT="Formules zijn voor gevorderde gebruikers. Voor het gebruik van formules, ga naar Internet." ID="ID_1097547484" CREATED="1291754737435" MODIFIED="1291826852421" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
+<node ID="ID_309231718" CREATED="1291755375049" MODIFIED="1291755512502">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om formules te bewerken:
+    </p>
+    <p>
+      - Kies <i>Extra &gt; Groovy scripts bewerken</i> in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_343120912" CREATED="1291211225228" MODIFIED="1291754849829">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om formules uit te voeren:
+    </p>
+    <p>
+      - kies <i>Extra &gt; Formules</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
 </node>
 <node ID="Freeplane_Link_1318678369" CREATED="1270892460689" MODIFIED="1286810388054" COLOR="#407000">
 <richcontent TYPE="NODE">
@@ -8874,7 +8858,7 @@
   </body>
 </html></richcontent>
 <node TEXT="Ongedaan maken" ID="ID_352318332" CREATED="1286809973310" MODIFIED="1286809984206">
-<node ID="ID_1798716482" CREATED="1286809984208" MODIFIED="1289561682741">
+<node ID="ID_1798716482" CREATED="1286809984208" MODIFIED="1291841765278">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8882,17 +8866,17 @@
   </head>
   <body>
     <p>
-      - kies <i>Bewerken &gt; ongedaan maken </i>in balk Hoofdmenu; of
+      - kies <i>Bewerken &gt; Ongedaan maken </i>in Hoofdmenu; of
     </p>
     <p>
-      - kies het groene pijlpictogram in balk Werkmenu;<br/>- druk <i>Ctrl + Z.</i>
+      - kies het groene pijlpictogram in het Werkmenu;<br/>- druk <i>Ctrl + Z.</i>
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 <node TEXT="Opnieuw" ID="ID_515694331" CREATED="1286810089297" MODIFIED="1286810107316">
-<node ID="ID_678923671" CREATED="1286809984208" MODIFIED="1289561728278">
+<node ID="ID_678923671" CREATED="1286809984208" MODIFIED="1291758171963">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8900,17 +8884,17 @@
   </head>
   <body>
     <p>
-      - kies <i>Bewerken &gt; Opnieuw in balk Hoofdmenu;</i>&#160;of
+      - kies <i>Bewerken &gt; Opnieuw in Hoofdmenu;</i>&#160;of
     </p>
     <p>
-      - kies het groene pijlpictogram in balk Werkemenu; of<br/>- druk <i>Ctrl + Y.</i>
+      - kies het groene pijlpictogram in Werkmenu; of<br/>- druk <i>Ctrl + Y.</i>
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 <node TEXT="Instelling" ID="ID_1608555123" CREATED="1286810198247" MODIFIED="1286810205681">
-<node ID="ID_1547983300" CREATED="1286810205682" MODIFIED="1289561758979">
+<node ID="ID_1547983300" CREATED="1286810205682" MODIFIED="1291758182712">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8918,10 +8902,10 @@
   </head>
   <body>
     <p>
-      Om het aantal onthouden stappen in te stellen:
+      Om het aantal te onthouden stappen in te stellen:
     </p>
     <p>
-      - kies <i>Extra &gt; Instellingen &gt; Gedrag </i>in balk Hoofdmenu.
+      - kies <i>Extra &gt; Instellingen &gt; Gedrag </i>in Hoofdmenu.
     </p>
   </body>
 </html></richcontent>
@@ -8930,7 +8914,7 @@
 </node>
 <node TEXT="Revisies bijhouden" ID="ID_1379295356" CREATED="1289050859222" MODIFIED="1289050894775" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1121958455" CREATED="1289050969069" MODIFIED="1289561788041" LINK="#ID_974319465">
+<node ID="ID_1121958455" CREATED="1289050969069" MODIFIED="1291755826124" LINK="#ID_974319465">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -8938,7 +8922,7 @@
   </head>
   <body>
     <p>
-      Om revisies wel/niet bij te houden:<br/>- kies <i>Extra &gt; Tonen revisies </i>in balk Hoofdmenu.
+      Om revisies wel/niet bij te houden:<br/>- kies <i>Extra &gt; Tonen revisies </i>in Hoofdmenu.
     </p>
   </body>
 </html></richcontent>
@@ -8948,6 +8932,63 @@
 <node TEXT="Inhoud verwijderen" POSITION="right" ID="ID_254258847" CREATED="1289512457366" MODIFIED="1289549994563" HGAP="35" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Verwijderen knoop" ID="ID_126408841" CREATED="1289512497052" MODIFIED="1289549098920" LINK="#ID_1638437345"/>
+<node TEXT="Verwijderen knoopbijlage" ID="ID_1584388528" CREATED="1291841859790" MODIFIED="1291841878682">
+<node ID="ID_1440514386" CREATED="1291757478884" MODIFIED="1291757642241">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een knoopbijlage te verwijderen:
+    </p>
+    <p>
+      - kies <i>Extra &gt; Verwijderen knoopbijlage</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Verwijderen knoopattributen" ID="ID_238203193" CREATED="1291841879485" MODIFIED="1291842310990">
+<node ID="ID_720658447" CREATED="1291757348243" MODIFIED="1291839623543">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om attributen te verwijderen:
+    </p>
+    <p>
+      - kies <i>Extra &gt; Attribuutwaarden beheren</i>;
+    </p>
+    <p>
+      - kies alle waarden wissen.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Verwijderen notitie" ID="ID_1211083782" CREATED="1291842270577" MODIFIED="1291842280266">
+<node ID="ID_887799420" CREATED="1291757560652" MODIFIED="1291757621118">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een notitie te verwijderen:
+    </p>
+    <p>
+      - kies <i>Extra &gt; Verwijderen notitie</i> in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
 <node TEXT="Verwijderen wolk" ID="ID_899019730" CREATED="1289512513635" MODIFIED="1289549331695" LINK="#ID_1853723333"/>
 <node TEXT="Verwijderen tak" ID="ID_250032053" CREATED="1289512538073" MODIFIED="1289512561723">
 <node ID="ID_1762585242" CREATED="1289549463833" MODIFIED="1289549965937" LINK="#ID_992635233">
@@ -8980,7 +9021,7 @@
 </html></richcontent>
 <node TEXT="Verwijder knoop met snelkoppeling/hyperlink; of" ID="ID_891865392" CREATED="1289550057726" MODIFIED="1289551659897" LINK="#_Freeplane_Link_1709752669"/>
 <node TEXT="Verwijder snelkoppeling uit knoop" ID="ID_702605338" CREATED="1289550069730" MODIFIED="1289551811116" LINK="#ID_953613682"/>
-<node TEXT="Verwijder hyperlink uit knoop" ID="ID_1977112147" CREATED="1289550069730" MODIFIED="1289551846871" LINK="#ID_1795785910"/>
+<node TEXT="Verwijderen hyperlink uit knoop" ID="ID_1977112147" CREATED="1289550069730" MODIFIED="1291841858457" LINK="#ID_1795785910"/>
 <node TEXT="Verwijder e-mail uit knoop" ID="ID_1533011367" CREATED="1289550069730" MODIFIED="1289567856226" LINK="#ID_1795785910"/>
 </node>
 <node TEXT="Verwijderen pictogram" ID="ID_843447223" CREATED="1289558800144" MODIFIED="1289558857896" LINK="#ID_1703076068"/>
@@ -8998,10 +9039,9 @@
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Knoopstijlen" ID="ID_108677312" CREATED="1291228908372" MODIFIED="1291321118738" COLOR="#407000">
-<icon BUILTIN="pencil"/>
+<node TEXT="Knoopstijlen" ID="ID_108677312" CREATED="1291228908372" MODIFIED="1291842399411" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_925068390" CREATED="1291228280218" MODIFIED="1291307858775" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node ID="ID_925068390" CREATED="1291228280218" MODIFIED="1291842644363" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9021,10 +9061,10 @@
       - <b>knoopniveaustijlen</b>&#160;voor knopen op verschillende afstanden (niveaus's) van de basisknoop en die automatisch kunnen worden toegepast;
     </p>
     <p>
-      - <b>gebruikerstijlen</b>&#160;welke door de gebruker zijn gemaakt.
+      - <b>gebruikerstijlen</b>, knoopstijlen&#160;welke door de gebruiker zijn gemaakt.
     </p>
     <p>
-      Het is mogelijk condities aan te geven waarin een knoop automatisch een bepaalde stijl krijgt. Condities zijn de aanwezigeid van beppaalde knooptekst, pictogrammen, knoopniveau of attribuutwaarden. Stijlen kunnen ook per geval worden gekozen in het afrolmenu in de werkbalk (standaard knoopstijl) of via het menu <i>Stijlen</i>&#160;in Balk Hoofdmenu. De stijlen zelf kunnen door de gebruiker worden aangepast en worden bewaard in een mindmapstijl. Deze mindmapstijl kan vervolgens in andere mindmaps worden toegepast.
+      Het is mogelijk condities aan te geven waarin een knoop automatisch een bepaalde stijl krijgt. Condities zijn de aanwezigeid van beppaalde knooptekst, pictogrammen, knoopniveau of attribuutwaarden. Stijlen kunnen ook per geval worden gekozen in het afrolmenu in het Werkmenu (standaard knoopstijl) of via het menu <i>Stijlen</i>&#160;in Hoofdmenu. De stijlen zelf kunnen door de gebruiker worden aangepast en worden bewaard in een mindmapstijl. Deze mindmapstijl kan vervolgens in andere mindmaps worden toegepast.
     </p>
   </body>
 </html></richcontent>
@@ -9034,7 +9074,7 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <edge COLOR="#ffffff"/>
 <node TEXT="Er zijn kant en klare stijlen (knoopprofielen) voor veelgebruikte dingen." ID="ID_447365403" CREATED="1289568136870" MODIFIED="1291211457824" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
-<node ID="ID_1264184673" CREATED="1289568543350" MODIFIED="1291212758461">
+<node ID="ID_1264184673" CREATED="1289568543350" MODIFIED="1291755826140">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9045,10 +9085,10 @@
       Om een knoopprofiel te kiezen:
     </p>
     <p>
-      - kies een van de functietoetsen F3 t/m F11 in de Balk F-toetsen; of
+      - kies een van de functietoetsen F3 t/m F11 in de F-toetsen; of
     </p>
     <p>
-      - kies <i>Stijlen &gt; Knoopprofiel toepassen...</i> in Balk Hoofdemenu; en
+      - kies <i>Stijlen &gt; Knoopprofiel toepassen...</i> in Hoofdemenu; en
     </p>
     <p>
       - kies een knoopprofiel uit de lijst.
@@ -9087,7 +9127,7 @@
 <font NAME="Liberation Sans" SIZE="12"/>
 </node>
 <node TEXT="enz." ID="ID_924408462" CREATED="1291212760168" MODIFIED="1291212764912"/>
-<node ID="ID_799438674" CREATED="1289568672526" MODIFIED="1291211772383">
+<node ID="ID_799438674" CREATED="1289568672526" MODIFIED="1291755826140">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9095,7 +9135,7 @@
   </head>
   <body>
     <p>
-      Om een knoopprofiel te wijzigen:<br/>- kies <i>Stijlen &gt;&#160;&#160;Bewerken knoopstijlen... </i>&#160;in balk Hoofdmenu
+      Om een knoopprofiel te wijzigen:<br/>- kies <i>Stijlen &gt;&#160;&#160;Bewerken knoopstijlen... </i>&#160;in Hoofdmenu
     </p>
     <p>
       - selecteer een knoopprofiel; en
@@ -9108,7 +9148,7 @@
 </node>
 </node>
 <node TEXT="Knoopniveaustijl" ID="ID_1974356445" CREATED="1291232398959" MODIFIED="1291232423214">
-<node ID="ID_1918157552" CREATED="1291229974383" MODIFIED="1291231676598">
+<node ID="ID_1918157552" CREATED="1291229974383" MODIFIED="1291843313898">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9119,20 +9159,44 @@
       Om een knoop de stijl van een bepaald knoopniveau te geven (ongeacht of de knoop zich op dit niveau bevindt):
     </p>
     <p>
-      - kies <i>Stijlen &gt; Niveau atomatisch toepassen </i>in Balk hoofdmenu;
+      - kies <i>Stijlen &gt; Knoopniveaustijl toepassen </i>in hoofdmenu;
     </p>
     <p>
-      - kies het knoopniveau.
+      - kies het knoopniveastijl
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 <node TEXT="Gebruikerstijl" ID="ID_1663989636" CREATED="1291232445822" MODIFIED="1291232456699">
-<node TEXT="??" ID="ID_540248859" CREATED="1291232456704" MODIFIED="1291232461308"/>
+<node ID="ID_540248859" CREATED="1291232456704" MODIFIED="1291843337626">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een gebruikerstijl te maken:
+    </p>
+    <p>
+      - kies Stijlen &gt; Bewerken knoopstijlen;
+    </p>
+    <p>
+      - selecteer de standaard knoopstijl;
+    </p>
+    <p>
+      - rechtsklik en kies <i>Selectie opslaan als gebruikerstijl </i>en sla op;
+    </p>
+    <p>
+      - wijzig de kenmerken van de stijl in het opmaakpaneel (als laatste !)
+    </p>
+  </body>
+</html></richcontent>
+</node>
 </node>
 <node TEXT="Mindmapstijl" ID="ID_557499043" CREATED="1291232483145" MODIFIED="1291232498120">
-<node ID="ID_809420765" CREATED="1291230961605" MODIFIED="1291231041277">
+<node ID="ID_809420765" CREATED="1291230961605" MODIFIED="1291843356939">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9143,14 +9207,14 @@
       Om een opgeslagen mindmapstijl toe te passen:
     </p>
     <p>
-      - kies <i>Stijlen &gt; Mindmapstijl gebruiken</i>&#160;te kiezen in Balk Hoofdmenu.
+      - kies <i>Stijlen &gt; Mindmapstijl toepassen</i> in Hoofdmenu.
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 <node TEXT="Automatische toepassing" ID="ID_939802336" CREATED="1291232513559" MODIFIED="1291232526617">
-<node ID="ID_1834241067" CREATED="1291232554777" MODIFIED="1291232814068">
+<node ID="ID_1834241067" CREATED="1291232554777" MODIFIED="1291755826140">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9161,12 +9225,12 @@
       Om een knoop van een bepaald <b>knoopniveau</b> automtisch de knoopniveaustijl te geven:
     </p>
     <p>
-      - kies <i>Opmaken &gt; Automatisch opmaken per niveau</i>&#160;in Balk Hoofdmenu
+      - kies <i>Opmaken &gt; Automatisch opmaken per niveau</i>&#160;in Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1399290454" CREATED="1291231689260" MODIFIED="1291232773970">
+<node ID="ID_1399290454" CREATED="1291231689260" MODIFIED="1291843479617">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9180,17 +9244,16 @@
       - kies <i>Stijlen &gt; Beheren conditionele knoopstijlen </i>
     </p>
     <p>
-      <i>- ??</i>
+      <i>- </i>kies Nieuw en stel een filter in
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 </node>
-<node TEXT="Mindmapstijlen" ID="ID_749365763" CREATED="1291308300619" MODIFIED="1291321110033" COLOR="#407000">
-<icon BUILTIN="pencil"/>
+<node TEXT="Mindmapstijlen" ID="ID_749365763" CREATED="1291308300619" MODIFIED="1291842404419" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_110966814" CREATED="1291308311806" MODIFIED="1291318660509" LINK="#ID_1224589686">
+<node ID="ID_110966814" CREATED="1291308311806" MODIFIED="1291843510412" LINK="#ID_1224589686">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9201,15 +9264,15 @@
       Om nieuwe mindmap te maken met als basis de knopen en stijlen van een andere mindmap:
     </p>
     <p>
-      - kies <i>Bestand &gt; Nieuwe mindmap met stijl..</i>. in Balk Hoofdmenu; of
+      - kies <i>Bestand &gt; Nieuwe mindmap met stijl..</i>. in Hoofdmenu; of
     </p>
     <p>
-      - kies <i>Stijlen &gt; Mindmapstijl gebruiken</i> in balk Hoofdmenu.
+      - kies <i>Stijlen &gt; Mindmapstijl toepassen</i> in Hoofdmenu.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_9675934" CREATED="1291308853188" MODIFIED="1291317495667">
+<node ID="ID_9675934" CREATED="1291308853188" MODIFIED="1291843659579">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9217,13 +9280,13 @@
   </head>
   <body>
     <p>
-      Om een mindmap op te slaan als mapstijl:
+      Om een mindmap op te slaan als mindmapstijl:
     </p>
     <p>
-      - kies <i>Bestand &gt; Bewaren als...</i>&#160;in Balk Hoofdmenu<br/>
+      - kies <i>Bestand &gt; Bewaren als...</i>&#160;in Hoofdmenu<br/>
     </p>
     <p>
-      - kies in het dialoogvesnter in plaats van Mindmaps:&#160; <i>Door de gebruiker gedefinieerde mindmapstijl</i>
+      - kies in het dialoogvesnter in plaats van Mindmaps:&#160; <i>Door de gebruiker gedefinieerde mindmapstijlen</i>
     </p>
     <p>
       - vul een naam in voor de mapstijl;
@@ -9270,7 +9333,7 @@
 </html></richcontent>
 </node>
 <node TEXT="Standaardweergave" ID="ID_517407555" CREATED="1286817888235" MODIFIED="1291292880722">
-<node ID="ID_878821001" CREATED="1286817978481" MODIFIED="1289562327105">
+<node ID="ID_878821001" CREATED="1286817978481" MODIFIED="1291755826156">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9281,14 +9344,14 @@
       Om als mindmap weer te geven:
     </p>
     <p>
-      - kies<i>&#160;Beeld &gt; Overzichtsweergave</i>&#160;in balk Hoofdmenu
+      - kies<i>&#160;Beeld &gt; Overzichtsweergave</i>&#160;in Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 <node TEXT="Overzichtweergave" ID="ID_4662169" CREATED="1286817916447" MODIFIED="1291292920175">
-<node ID="ID_739926791" CREATED="1286817978481" MODIFIED="1291292951749">
+<node ID="ID_739926791" CREATED="1286817978481" MODIFIED="1291755826156">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9299,7 +9362,7 @@
       Om in overzichtweergave weer te geven, bijvoorbeeld om af te drukken:
     </p>
     <p>
-      - kies <i>Beeld &gt; Overzichtsweergave </i>in&#160;balk Hoofdmenu
+      - kies <i>Beeld &gt; Overzichtsweergave </i>in&#160;Hoofdmenu
     </p>
   </body>
 </html></richcontent>
@@ -9310,7 +9373,7 @@
 <node TEXT="De volgende functies hebben effect op de hele knoop." ID="ID_1545556259" CREATED="1291293335158" MODIFIED="1291293405304" BACKGROUND_COLOR="#ffff00" STYLE="bubble"/>
 <node TEXT="Vet" ID="ID_1614710012" CREATED="1286818269341" MODIFIED="1286818531990">
 <font BOLD="true"/>
-<node ID="ID_406396321" CREATED="1286818276354" MODIFIED="1291293036223">
+<node ID="ID_406396321" CREATED="1286818276354" MODIFIED="1291755826156">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9321,10 +9384,10 @@
       Om de hele tekst van een knoop <b>vet</b>&#160;te maken:
     </p>
     <p>
-      - kies <i>&#160;pictogram </i><b>B </b>in balk Werkmenu; of
+      - kies <i>&#160;pictogram </i><b>B </b>in Werkmenu; of
     </p>
     <p>
-      - kies<b><i>&#160;</i></b><i>Opmaken &gt; Vet </i>in balk Hoofdmenu;&#160;of
+      - kies<i><b>&#160;</b>Opmaken &gt; Vet </i>in Hoofdmenu;&#160;of
     </p>
     <p>
       - druk <i>Ctrl + B</i>.
@@ -9335,7 +9398,7 @@
 </node>
 <node TEXT="Schuin" ID="ID_867716564" CREATED="1286818546255" MODIFIED="1291293443134">
 <font ITALIC="true"/>
-<node ID="ID_1404012515" CREATED="1286818559492" MODIFIED="1291293500979">
+<node ID="ID_1404012515" CREATED="1286818559492" MODIFIED="1291755826156">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9346,10 +9409,10 @@
       Om de hele tekst van een knoop <i>schuin</i> te maken:
     </p>
     <p>
-      - kies&#160;<i>&#160;</i>pictogram<i>&#160;I&#160; </i>in<i>&#160;</i>balk Werkmenu; of
+      - kies&#160;<i>&#160;</i>pictogram<i>&#160;I&#160; </i>in<i>&#160;</i>Werkmenu; of
     </p>
     <p>
-      - kies<b><i>&#160;</i></b><i>Opmaken &gt; Schuin </i>in balk Hoofdmenu; of
+      - kies<i><b>&#160;</b>Opmaken &gt; Schuin </i>in Hoofdmenu; of
     </p>
     <p>
       - druk <i>Ctrl + I</i>
@@ -9370,7 +9433,7 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_1630491596" CREATED="1286818874244" MODIFIED="1291293182021">
+<node ID="ID_1630491596" CREATED="1286818874244" MODIFIED="1291755826156">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9381,7 +9444,7 @@
       Om de hele tekst van een knoop een kleur te geven:
     </p>
     <p align="left">
-      - kies <i>Opmaken &gt; Tekstkleur </i>in balk Hoofdmenu;&#160;of
+      - kies <i>Opmaken &gt; Tekstkleur </i>in Hoofdmenu;&#160;of
     </p>
     <p align="left">
       - druk <i>Alt + Shift + F</i>.
@@ -9391,7 +9454,7 @@
 </node>
 </node>
 <node TEXT="Achtergrond kleur" ID="ID_1170435264" CREATED="1286819032661" MODIFIED="1286819247099" BACKGROUND_COLOR="#00ffff">
-<node ID="ID_732981346" CREATED="1286819046024" MODIFIED="1291293224874">
+<node ID="ID_732981346" CREATED="1286819046024" MODIFIED="1291755826156">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9402,7 +9465,7 @@
       Om de hele achtergrond van een knoop een kleur te geven:
     </p>
     <p>
-      - kies <i>Opmaken&#160;&gt;&#160;Knoopkleur</i>&#160;in<i>&#160;</i>balk Hoofdmenu
+      - kies <i>Opmaken&#160;&gt;&#160;Knoopkleur</i>&#160;in<i>&#160;</i>Hoofdmenu
     </p>
   </body>
 </html></richcontent>
@@ -9410,7 +9473,7 @@
 </node>
 <node TEXT="Tekstgrootte" ID="ID_553031568" CREATED="1286819274921" MODIFIED="1286819516925">
 <font SIZE="14"/>
-<node ID="ID_444952912" CREATED="1286819285210" MODIFIED="1291293566733">
+<node ID="ID_444952912" CREATED="1286819285210" MODIFIED="1291755826171">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9421,7 +9484,7 @@
       Om alle tekst van een knoop groter te maken:
     </p>
     <p>
-      - Kies <i>Opmaken &gt; Letterttype vergroten</i>&#160;in balk Hoofdmenu; of
+      - Kies <i>Opmaken &gt; Letterttype vergroten</i>&#160;in Hoofdmenu; of
     </p>
     <p>
       - Kies Opmaken &gt; <i>Letterttype vergroten in het Contextmenu</i>; of
@@ -9432,7 +9495,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1435829653" CREATED="1286819285210" MODIFIED="1291293292251">
+<node ID="ID_1435829653" CREATED="1286819285210" MODIFIED="1291755826171">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9443,7 +9506,7 @@
       Om de hele tekst van een knoop kleiner te maken:
     </p>
     <p>
-      - kies in balk Hoofdmenu <i>Opmaak &gt; Letterttype verkleinen</i>; of
+      - kies in Hoofdmenu <i>Opmaak &gt; Letterttype verkleinen</i>; of
     </p>
     <p>
       - klik rechter muisknop en kies in het Contextmenu <i>Opmaak &gt; Letterttype verkleinen.</i>
@@ -9456,11 +9519,11 @@
 </node>
 </node>
 <node TEXT="Lettertype" ID="ID_1041069286" CREATED="1286820089718" MODIFIED="1286820104327">
-<node TEXT="Om voor de hele knoop het lettertype in te stellen:&#xa;- kies in balk Werkmenu het lettertype (standaarD SansSerif)." ID="ID_623591246" CREATED="1286820104328" MODIFIED="1291293613112"/>
+<node TEXT="Om voor de hele knoop het lettertype in te stellen:&#xa;- kies in Werkmenu het lettertype (standaarD SansSerif)." ID="ID_623591246" CREATED="1286820104328" MODIFIED="1291755826171"/>
 </node>
 <node TEXT="Knipperen" ID="ID_1835168454" CREATED="1288548004325" MODIFIED="1289051789514" VSHIFT="-3">
 <hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
-<node ID="ID_427410995" CREATED="1289051845783" MODIFIED="1289562311301">
+<node ID="ID_427410995" CREATED="1289051845783" MODIFIED="1291755826171">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9471,13 +9534,13 @@
       Om een knoop te laten kipperen:
     </p>
     <p>
-      - kies <i>Opmaken &gt; Knipperende knoop </i>&#160;balk Hoofdmenu
+      - kies <i>Opmaken &gt; Knipperende knoop </i>&#160;Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node ID="ID_1792015488" CREATED="1291214538930" MODIFIED="1291293644858">
+<node ID="ID_1792015488" CREATED="1291214538930" MODIFIED="1291843781962">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9488,20 +9551,20 @@
       De opmaak van tekst kan ook worden aangepast in het <b>Opmaakpaneel</b>:
     </p>
     <p>
-      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;in Balk Hoofdmenu om het opmaakpaneel te openen;
+      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;in Hoofdmenu om het opmaakpaneel te openen;
     </p>
     <p>
-      - Stel onder<i>&#160;Takken</i>&#160;de kenmerken voor het lettertype in;
+      - Stel de gewenste kenmerken in;
     </p>
     <p>
-      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;in Balk Hoofdmenu om het opmaakpaneel te sluiten.
+      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;in Hoofdmenu om het opmaakpaneel te sluiten.
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 <node TEXT="Kopi&#xeb;ren en plakken opmaak" ID="ID_1156809838" CREATED="1286820246498" MODIFIED="1291293749145" COLOR="#407000">
-<node ID="ID_1575812829" CREATED="1286820264151" MODIFIED="1291293727492">
+<node ID="ID_1575812829" CREATED="1286820264151" MODIFIED="1291755826171">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9515,7 +9578,7 @@
       - Selecteer knoop;
     </p>
     <p>
-      - Kies <i>Opmaken &gt; Kopi&#235;ren opmaak</i>&#160;in balk Hoofdmenu; of
+      - Kies <i>Opmaken &gt; Kopi&#235;ren opmaak</i>&#160;in Hoofdmenu; of
     </p>
     <p>
       - Druk <i>Alt + Shift + C.</i>
@@ -9523,7 +9586,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1138394530" CREATED="1286820495623" MODIFIED="1291213191214">
+<node ID="ID_1138394530" CREATED="1286820495623" MODIFIED="1291843842770">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9537,7 +9600,7 @@
       - Selecteer knoop;
     </p>
     <p>
-      - Kies<i>&#160;Opmaken &gt; Plakken opmaak </i>&#160;in balk Hoofdmenuk; of
+      - Kies<i>&#160;Opmaken &gt; Plakken opmaak </i>&#160;in Hoofdmenu; of
     </p>
     <p>
       - druk<i>&#160;Alt + Shift + V</i>.
@@ -9579,7 +9642,7 @@
 </html></richcontent>
 <node TEXT="Voorbeeld" ID="ID_1321164102" CREATED="1286822280963" MODIFIED="1286822706346"/>
 </node>
-<node ID="ID_171466211" CREATED="1270896067862" MODIFIED="1291293834009">
+<node ID="ID_171466211" CREATED="1270896067862" MODIFIED="1291755826171">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9593,7 +9656,7 @@
       - selecteer de knoop;
     </p>
     <p>
-      - kies<i>&#160;&#160;Opmaken &gt; Vorm tak </i>in balk Hoofdmenu; of
+      - kies<i>&#160;&#160;Opmaken &gt; Vorm tak </i>in Hoofdmenu; of
     </p>
     <p>
       - kies <i>Vorm tak</i>&#160;in Contextmenu (rechtsklik tak); en
@@ -9604,7 +9667,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1315374239" CREATED="1270896067862" MODIFIED="1289565021739">
+<node ID="ID_1315374239" CREATED="1270896067862" MODIFIED="1291755826187">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9618,7 +9681,7 @@
       - selecteer de knoop;
     </p>
     <p>
-      - kies<i>&#160;&#160;Opmaken &gt; Dikte tak </i>in balk Hoofdmenu; of
+      - kies<i>&#160;&#160;Opmaken &gt; Dikte tak </i>in Hoofdmenu; of
     </p>
     <p>
       - kies Dikte<i>&#160;tak</i>&#160;in Contextmenu (rechtsklik tak); en
@@ -9629,7 +9692,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_591679600" CREATED="1270896067862" MODIFIED="1289565096644">
+<node ID="ID_591679600" CREATED="1270896067862" MODIFIED="1291755826187">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9643,7 +9706,7 @@
       - selecteer de knoop;
     </p>
     <p>
-      - kies<i>&#160;&#160;Opmaken &gt; Kleur tak </i>in balk Hoofdmenu; of
+      - kies<i>&#160;&#160;Opmaken &gt; Kleur tak </i>in Hoofdmenu; of
     </p>
     <p>
       - kies Kleur<i>&#160;tak</i>&#160;in Contextmenu (rechtsklik tak); en
@@ -9654,7 +9717,23 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_992635233" CREATED="1270896067862" MODIFIED="1289565172326">
+<node ID="ID_317775893" CREATED="1270896067862" MODIFIED="1291843847513">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om elke tak automatisch een andere kleur te geven:
+    </p>
+    <p>
+      - kies<i>&#160;&#160;Opmaken &gt; Automatische takkleur </i>in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_992635233" CREATED="1270896067862" MODIFIED="1291843908447">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9668,15 +9747,12 @@
       - selecteer de knoop;
     </p>
     <p>
-      - kies<i>&#160;&#160;Opmaken &gt; Vorm tak &gt;Tak verbergen </i>in balk Hoofdmenu; of
-    </p>
-    <p>
-      - <i>Vorm tak &gt;Tak verbergen</i>&#160;in Contextmenu (rechtsklik tak)
+      - kies<i>&#160;&#160;Opmaken &gt; Vorm tak &gt;Tak verbergen </i>in Hoofdmenu of in Contextmenu (rechtsklik tak)
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1402493775" CREATED="1291214538930" MODIFIED="1291214868326">
+<node ID="ID_1402493775" CREATED="1291214538930" MODIFIED="1291843952907">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9687,13 +9763,13 @@
       Een tak kan ook worden aangepast in het <b>Opmaakpaneel</b>:
     </p>
     <p>
-      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;in Balk Hoofdmenu om het opmaakpaneel te openen;
+      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;in Hoofdmenu om het opmaakpaneel te openen;
     </p>
     <p>
-      - Stel onder<i>&#160;Afstammingslijnen</i>&#160;de kenmerken <i>Dikte tak, Vorm tak</i>&#160;en <i>Kleur tak</i>&#160;in;
+      - Stel onder<i>&#160;Takken</i>&#160;de kenmerken <i>Dikte tak, Vorm tak</i>&#160;en <i>Kleur tak</i>&#160;in;
     </p>
     <p>
-      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;in Balk Hoofdmenu om het opmaakpaneel te sluiten.
+      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;in Hoofdmenu om het opmaakpaneel te sluiten.
     </p>
   </body>
 </html></richcontent>
@@ -9717,7 +9793,7 @@
 <cloud COLOR="#33ff00" SHAPE="ARC"/>
 </node>
 </node>
-<node ID="ID_1853723333" CREATED="1286824447576" MODIFIED="1289565465668">
+<node ID="ID_1853723333" CREATED="1286824447576" MODIFIED="1291755826187">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9731,7 +9807,7 @@
       - selekteer een knoop;
     </p>
     <p>
-      - kies <i>Invoegen &gt; Wolk</i>&#160;in<i>&#160;</i>balk Hoofdmenu of in Contextmenu; of
+      - kies <i>Invoegen &gt; Wolk</i>&#160;in<i>&#160;</i>Hoofdmenu of in Contextmenu; of
     </p>
     <p>
       - druk <i>Ctrl + Shift + B.</i>
@@ -9739,8 +9815,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Om een zevende wolk (verborgen tak) toe te voegen:&#xa;- kies het rolmenu voor knoopstijl in Balk werkmenu;&#xa;- kies zwevende knoop." ID="ID_1512518340" CREATED="1291294193050" MODIFIED="1291294332640"/>
-<node ID="ID_1481615351" CREATED="1286824575013" MODIFIED="1291294191639">
+<node TEXT="Om een zevende wolk (verborgen tak) toe te voegen:&#xa;- kies het rolmenu voor knoopstijl in werkmenu;&#xa;- kies zwevende knoop." ID="ID_1512518340" CREATED="1291294193050" MODIFIED="1291755826187"/>
+<node ID="ID_1481615351" CREATED="1286824575013" MODIFIED="1291755826187">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9751,7 +9827,7 @@
       Om de kleur van een wolk te wijzigen:
     </p>
     <p>
-      - kies Opmaken<i> &gt; Kleur wolk </i>in<i> </i>balk Hoofdmenu of Contextmenu
+      - kies Opmaken<i> &gt; Kleur wolk </i>in<i> </i>Hoofdmenu of Contextmenu
     </p>
   </body>
 </html></richcontent>
@@ -9790,7 +9866,7 @@
 </node>
 </node>
 <node TEXT="Invoegen LaTex" ID="ID_1984504101" CREATED="1286809212166" MODIFIED="1286809224366">
-<node ID="ID_1042304226" CREATED="1271097123195" MODIFIED="1289565561327">
+<node ID="ID_1042304226" CREATED="1271097123195" MODIFIED="1291755826202">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9801,14 +9877,14 @@
       Om LaTex in te voegen:
     </p>
     <p>
-      - kies&#160; <i>Invoegen &gt; Latex </i>in<i>&#160;</i>balk Hoofdmenu
+      - kies&#160; <i>Invoegen &gt; Latex </i>in<i>&#160;</i>Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Bewerken LaTex" ID="ID_925344572" CREATED="1286809241237" MODIFIED="1286809249022">
-<node ID="ID_21055085" CREATED="1271097312474" MODIFIED="1289565609828">
+<node TEXT="Bewerken of verwijderen LaTex" ID="ID_925344572" CREATED="1286809241237" MODIFIED="1291844208930">
+<node ID="ID_21055085" CREATED="1271097312474" MODIFIED="1291755826202">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9819,28 +9895,7 @@
       Om LaTex te bewerken:
     </p>
     <p>
-      - klik <i>&#160;Invoegen &gt; LaTex in </i>balk Hoofdmenu of Contextmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Verwijderen LaTex" ID="ID_762831577" CREATED="1286809259309" MODIFIED="1286809271135">
-<node ID="ID_1638605492" CREATED="1271097172667" MODIFIED="1289565641418">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om LaTex te verwijderen:
-    </p>
-    <p>
-      - selekteer knoop met LaTex;
-    </p>
-    <p>
-      - kies<i>&#160;&#160;Invoegen &gt; Latex </i>in<i>&#160;</i>balk Hoofdmenu
+      - klik <i>&#160;Invoegen &gt; LaTex in </i>Hoofdmenu of Contextmenu
     </p>
   </body>
 </html></richcontent>
@@ -9850,7 +9905,7 @@
 <node TEXT="Opdelen mindmap" ID="ID_199519747" CREATED="1289569084498" MODIFIED="1289569593722" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Als een mindmap te groot wordt, kan deze over twee mindmaps worden verdeeld met hyperlinks tussen de mindmaps om eenvoudig heen en weer te kunnen navigeren." ID="ID_1100773429" CREATED="1289572046923" MODIFIED="1289572124121" BACKGROUND_COLOR="#ffff00"/>
-<node ID="ID_1489185912" CREATED="1289569095443" MODIFIED="1289572181388">
+<node ID="ID_1489185912" CREATED="1289569095443" MODIFIED="1291755826202">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9864,7 +9919,7 @@
       - selecteer de knoop wiens (klein)kinderen je in een aparte mindmap wilt onderbrengen;
     </p>
     <p>
-      - kies <i>Bestand &gt; Exporteren &gt; Exporteren tak als nieuwe mindmap</i>&#160;in balk Hoofdmenu.
+      - kies <i>Bestand &gt; Exporteren &gt; Exporteren tak als nieuwe mindmap</i>&#160;in Hoofdmenu.
     </p>
     <p>
       - Geef de naam op waaronder de nieuwe mindmap bewaard moet worden.
@@ -9875,6 +9930,9 @@
   </body>
 </html></richcontent>
 </node>
+</node>
+<node TEXT="Eigen opmaakstijlen toevoegen" ID="ID_1378240582" CREATED="1291550224112" MODIFIED="1291842425214" LINK="#Freeplane_Link_1822195277" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>
 </node>
 <node TEXT="Printen en publiceren" POSITION="right" ID="ID_467939642" CREATED="1288473008474" MODIFIED="1289510744918" HGAP="36" VSHIFT="-121" COLOR="#006699">
@@ -9893,7 +9951,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Vanuit Freeplane" ID="ID_1231722792" CREATED="1286827044720" MODIFIED="1286827053941">
-<node ID="ID_1331208092" CREATED="1286826594657" MODIFIED="1289565681971" STYLE="bubble" HGAP="60" VSHIFT="-10">
+<node ID="ID_1331208092" CREATED="1286826594657" MODIFIED="1291844289940" STYLE="bubble" HGAP="60" VSHIFT="-10">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9901,17 +9959,17 @@
   </head>
   <body>
     <p>
-      Om een mindmap op &#233;&#233;n pagina, of&#160;&#160;verdeeld over meerdere pagina's te printen:
+      Om een mindmap op &#233;&#233;n pagina, of&#160;&#160;verdeeld over meerdere pagina's af te drukken:
     </p>
     <p>
-      - kies<i>&#160;Bestand &gt; Paginainstelling </i>in balk Hoofdmenu
+      - kies<i>&#160;Bestand &gt; Paginainstelling </i>in Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 <node TEXT="Via andere programma&apos;s" ID="ID_1332421765" CREATED="1286827062871" MODIFIED="1288857067790">
-<node ID="ID_209381010" CREATED="1270892460698" MODIFIED="1288992959663" STYLE="bubble">
+<node ID="ID_209381010" CREATED="1270892460698" MODIFIED="1291844415942" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9919,17 +9977,17 @@
   </head>
   <body>
     <p>
-      Er zijn vele printmogelijkheden:
+      Er zijn vele afdrukmogelijkheden:
     </p>
     <ol>
       <li>
-        Je kunt de mindpap kopieren en in MSWord of Openoffice plakken en van daaruit printen. Alvorens te printen kun je de stijl aanpassen aan je persoonlijke wensen.
+        Je kunt de mindpap kopieren en in MSWord of Openoffice plakken en van daaruit afdrukken. Alvorens af te drukken kun je de stijl aanpassen aan je persoonlijke wensen.
       </li>
       <li>
-        Als je de mindmap naar HTML exporteert kun je deze vervolgens openen in je webbrowser en van daaruit printen.
+        Als je de mindmap naar HTML exporteert kun je deze vervolgens openen in je webbrowser en van daaruit afdrukken.
       </li>
       <li>
-        Als je de mindmap met koppen exporteert naar HTML kun je deze kopieren en om MSWord of OpenOrffice plakken en van daaruit printen.
+        Als je de mindmap met koppen exporteert naar HTML kun je deze kopi&#235;ren en in MSWord of OpenOrffice plakken en van daaruit afdrukken.
       </li>
     </ol>
   </body>
@@ -9940,9 +9998,9 @@
 </node>
 <node TEXT="Mindmap voor een computer waarop geen Freeplane is geinstalleerd" ID="ID_1648912117" CREATED="1290683497381" MODIFIED="1290683553455" HGAP="45" VSHIFT="1" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Zorg er voor dal de mindmap en de plaatjes die de mindmap gebruikt in &#xe9;&#xe9;n map staan." ID="ID_1979562616" CREATED="1290683938037" MODIFIED="1290683983334"/>
+<node TEXT="Zorg er voor dat de mindmap en de plaatjes die de mindmap gebruikt in &#xe9;&#xe9;n map staan." ID="ID_1979562616" CREATED="1290683938037" MODIFIED="1291844441510"/>
 <node TEXT="Vouw de mindmap open/dicht, zoals je hem wilt laten starten" ID="ID_784869898" CREATED="1290684612071" MODIFIED="1290684655798"/>
-<node ID="ID_1060354988" CREATED="1270892460644" MODIFIED="1290683747626" COLOR="#000000" STYLE="bubble">
+<node ID="ID_1060354988" CREATED="1270892460644" MODIFIED="1291844453132" COLOR="#000000" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9950,13 +10008,13 @@
   </head>
   <body>
     <p>
-      - kies&#160; <i>Bestand &gt; Export &gt; Als Java Applet </i>in balk Hoofdmenu
+      - kies&#160; <i>Bestand &gt; Exporteren &gt; Als Java Applet </i>in Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node ID="ID_1126350803" CREATED="1290683845327" MODIFIED="1290683919109">
+<node ID="ID_1126350803" CREATED="1290683845327" MODIFIED="1291844471026">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9964,12 +10022,12 @@
   </head>
   <body>
     <p>
-      Als je plaatjes gebruikt, copieer deze dan ook in <i>mijnMindmap.html_files</i>
+      Als je plaatjes gebruikt, kopieer deze dan ook in <i>mijnMindmap.html_files</i>
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1181810459" CREATED="1290683181726" MODIFIED="1290684140561">
+<node ID="ID_1181810459" CREATED="1290683181726" MODIFIED="1291844515064">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9977,7 +10035,7 @@
   </head>
   <body>
     <p>
-      Bij het exporteren wordt een bestand (<i>mijnMindmap.html</i>&#160;)<br/>en een map (<i>mijnMindmap.html_files)</i>&#160;gemaakt.<br/>Beide moeten naar dezelfde map op de andere computer worden gecopieerd.<br/>Je kunt de mindmap (Java applet) op de andere computer openen door <i>mijnMindmap.html</i>&#160;&#160;te openen.
+      Bij het exporteren wordt een bestand (<i>mijnMindmap.html</i>&#160;)<br/>en een map (<i>mijnMindmap.html_files)</i>&#160;gemaakt.<br/>Beide moeten naar dezelfde map op de andere computer worden gekopieerd.<br/>Je kunt de mindmap (Java applet) op de andere computer openen door <i>mijnMindmap.html</i>&#160;&#160;te openen.
     </p>
   </body>
 </html></richcontent>
@@ -10028,9 +10086,9 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Zorg er voor dal de mindmap en de plaatjes die de mindmap gebruikt in &#xe9;&#xe9;n map staan." ID="ID_708662328" CREATED="1290683938037" MODIFIED="1290683983334"/>
+<node TEXT="Zorg er voor dal de mindmap en de plaatjes die je in de mindmap gebruikt in &#xe9;&#xe9;n map staan." ID="ID_708662328" CREATED="1290683938037" MODIFIED="1291548942153"/>
 <node TEXT="Vouw de mindmap open/dicht, zoals je hem wilt laten starten" ID="ID_1620626811" CREATED="1290684612071" MODIFIED="1290684655798"/>
-<node ID="ID_885091125" CREATED="1270892460644" MODIFIED="1289565728343" COLOR="#000000" STYLE="bubble">
+<node ID="ID_885091125" CREATED="1270892460644" MODIFIED="1291844523036" COLOR="#000000" STYLE="fork">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -10041,13 +10099,13 @@
       Om een bestand te maken voor gebruik op een website:
     </p>
     <p>
-      - kies&#160; <i>Bestand &gt; Export &gt; Als Java Applet </i>in balk Hoofdmenu
+      - kies&#160; <i>Bestand &gt; Exporteren &gt; Als Java Applet </i>in Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node ID="ID_1740652072" CREATED="1290683845327" MODIFIED="1290683919109">
+<node ID="ID_1740652072" CREATED="1290683845327" MODIFIED="1291844554423">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -10055,7 +10113,7 @@
   </head>
   <body>
     <p>
-      Als je plaatjes gebruikt, copieer deze dan ook in <i>mijnMindmap.html_files</i>
+      Als je plaatjes gebruikt, kopieer deze dan ook in <i>mijnMindmap.html_files</i>
     </p>
   </body>
 </html></richcontent>
@@ -10095,7 +10153,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1671343388" CREATED="1270892460644" MODIFIED="1289565740136" COLOR="#000000" STYLE="bubble" HGAP="55" VSHIFT="8">
+<node ID="ID_1671343388" CREATED="1270892460644" MODIFIED="1291755826202" COLOR="#000000" STYLE="bubble" HGAP="55" VSHIFT="8">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -10106,7 +10164,7 @@
       Om een bestand te maken voor gebruik op een website:
     </p>
     <p>
-      - kies&#160; <i>Bestand &gt; Export &gt; Als Flash...</i>in balk Hoofdmenu
+      - kies&#160; <i>Bestand &gt; Export &gt; Als Flash...</i>in Hoofdmenu
     </p>
   </body>
 </html></richcontent>
@@ -10118,20 +10176,10 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>
 </node>
-<node POSITION="left" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1289154797115" COLOR="#006699" HGAP="27" VSHIFT="-32">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Versie en bijdragen
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Versie en bijdragen" POSITION="left" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1291617659749" COLOR="#006699" HGAP="27" VSHIFT="-32">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Freeplane auteurs" ID="Freeplane_Link_415458128" CREATED="1270892460646" MODIFIED="1289155078995" COLOR="#000000">
+<node TEXT="Freeplane auteurs" ID="Freeplane_Link_415458128" CREATED="1270892460646" MODIFIED="1291875204854" COLOR="#006699">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Oorspronkelijk team" ID="ID_520732826" CREATED="1289155004244" MODIFIED="1289155015070">
 <node TEXT="Joerg Mueller" ID="_Freeplane_Link_1896457660" CREATED="1270892460646" MODIFIED="1270896496444" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
@@ -10161,7 +10209,7 @@
 <edge WIDTH="thin"/>
 </node>
 </node>
-<node TEXT="Huidig team" ID="ID_1090487344" CREATED="1271097427203" MODIFIED="1289155097528" COLOR="#000000">
+<node TEXT="Huidig team" ID="ID_1090487344" CREATED="1271097427203" MODIFIED="1291875230422" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <edge WIDTH="thin"/>
 <node TEXT="Release 1.1.x" ID="ID_1795869028" CREATED="1271097443907" MODIFIED="1271097685189" COLOR="#407000">
@@ -10177,7 +10225,7 @@
 </node>
 <node TEXT="Handleiding" ID="ID_577923166" CREATED="1289155126738" MODIFIED="1289155139017">
 <node TEXT="Versie Freeplane 1.1.2" ID="ID_605038742" CREATED="1289133018961" MODIFIED="1289731078001"/>
-<node TEXT="Datum laatste wijziging in handleiding: 2010-11-14" ID="ID_21798827" CREATED="1289730911791" MODIFIED="1289731053400"/>
+<node TEXT="Datum laatste wijziging in handleiding: 2010-12-08" ID="ID_21798827" CREATED="1289730911791" MODIFIED="1291827135570"/>
 <node TEXT="NL vertaling en bewerking" ID="ID_136822724" CREATED="1286311222217" MODIFIED="1286374607543">
 <node TEXT="Jokro" ID="ID_1128010246" CREATED="1286311242349" MODIFIED="1289574575677" LINK="mailto:jokro@users.sourceforge.net?subject%20=%20handleiding">
 <node TEXT="Eerste versie: 2010-11-14" ID="ID_52670674" CREATED="1289731003743" MODIFIED="1289731020686"/>
