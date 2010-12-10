@@ -543,18 +543,13 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			iconWidth += mapView.getZoomed(mainView.getIconTextGap());
 			horizontalSpace -= iconWidth;
 		}
+
 		final int x = (horizontalSpace + 1) / 2;
 		final int y = (verticalSpace + 1) / 2;
-		if (nodeView.isLeft() && !nodeView.isRoot()) {
-			textfield.setBounds(x, y, textFieldSize.width, textFieldSize.height);
-			mainView.setText("");
-			mainView.setHorizontalAlignment(JLabel.RIGHT);
-		}
-		else {
-			textfield.setBounds(x + iconWidth, y, textFieldSize.width, textFieldSize.height);
-			mainView.setText("");
-			mainView.setHorizontalAlignment(JLabel.LEFT);
-		}
+		textfield.setBounds(x + iconWidth, y, textFieldSize.width, textFieldSize.height);
+		mainView.setText("");
+		mainView.setHorizontalAlignment(JLabel.LEFT);
+
 		mainView.add(textfield, 0);
 		textfield.setCaretPosition(document.getLength());
 		if (firstEvent != null) {
