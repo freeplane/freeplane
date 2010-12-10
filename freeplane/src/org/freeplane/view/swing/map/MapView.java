@@ -346,7 +346,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private float anchorHorizontalPoint;
 	private float anchorVerticalPoint;
 	private ParentListener parentListener;
-	protected NodeView nodeToBeCentered;
+	private NodeView nodeToBeCentered;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
