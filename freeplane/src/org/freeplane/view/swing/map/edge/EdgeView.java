@@ -65,7 +65,14 @@ public abstract class EdgeView {
 	protected void createStart() {
 		start = source.getMainViewOutPoint(getTarget(), end);
 		UITools.convertPointToAncestor(source.getMainView(), start, source);
+		align(start, end);
 	}
+
+	protected void align(Point start, Point end) {
+		if(1 == Math.abs(start.y - end.y)){
+			end.y = start.y; 
+		}
+    }
 
 	public Color getColor() {
 		if (color == null) {

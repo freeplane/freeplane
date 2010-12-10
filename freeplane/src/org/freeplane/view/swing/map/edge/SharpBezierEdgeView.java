@@ -82,6 +82,7 @@ public class SharpBezierEdgeView extends EdgeView {
 			deltaX = 0;
 			deltaY = delta;
 		}
+		align(start, end);
 	}
 
 	@Override
