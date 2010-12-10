@@ -543,6 +543,9 @@ public class MapController extends SelectionController {
 	}
 
 	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent, final int index) {
+		if(parent.getParent() != null){
+			newNode.setLeft(parent.isLeft());
+		}
 		parent.insert(newNode, index);
 		fireNodeInserted(parent, newNode, index);
 	}

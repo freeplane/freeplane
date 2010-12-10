@@ -418,6 +418,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		NodeModel root = null;
 		if (alternativeFile == null) {
 			root = loadTree(map, file);
+			setFile(map, file);
 			map.setSaved(true);
 		}
 		else {
@@ -446,9 +447,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final NodeModel result = new NodeModel(map);
 			result.setText(errorMessage);
 			return result;
-		}
-		finally {
-			setFile(map, file);
 		}
 	}
 

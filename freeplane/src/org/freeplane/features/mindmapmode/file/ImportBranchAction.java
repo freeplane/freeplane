@@ -20,6 +20,7 @@
 package org.freeplane.features.mindmapmode.file;
 
 import java.awt.event.ActionEvent;
+import java.net.URL;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -55,8 +56,10 @@ class ImportBranchAction extends AFreeplaneAction {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				final MapModel map = parent.getMap();
+				final URL url = map.getURL();
 				final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).loadTree(map, chooser
 				    .getSelectedFile());
+				map.setURL(url);
 				((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, parent);
 			}
 			catch (final Exception ex) {
