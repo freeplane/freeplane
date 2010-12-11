@@ -10,6 +10,8 @@
 			inheritAll="false" />
 	</target>
 	<target name="format-translation">
+		<ant antfile="JOrtho_0.4_freeplane/build.xml"  target="format-translation"
+			inheritAll="false" />
 		<ant antfile="freeplane_framework/ant/build.xml"  target="format-translation"
 			inheritAll="false" />
 	</target>
