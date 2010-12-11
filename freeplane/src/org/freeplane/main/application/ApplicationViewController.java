@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -48,6 +49,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.mindmapmode.file.FileOpener;
 
 class ApplicationViewController extends ViewController {
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
@@ -101,6 +103,8 @@ class ApplicationViewController extends ViewController {
 		}
 		else {
 			getContentPane().add(mContentComponent, BorderLayout.CENTER);
+			final FileOpener fileOpener = new FileOpener();
+			new DropTarget(mContentComponent, fileOpener);
 		}
 		initFrame(frame);
 	}

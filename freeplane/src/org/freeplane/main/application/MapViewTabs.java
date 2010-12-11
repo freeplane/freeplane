@@ -22,6 +22,7 @@ package org.freeplane.main.application;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Insets;
+import java.awt.dnd.DropTarget;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
@@ -43,6 +44,7 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.ViewController;
+import org.freeplane.features.mindmapmode.file.FileOpener;
 
 class MapViewTabs implements IMapViewChangeListener {
 // // 	final private Controller controller;
@@ -68,6 +70,9 @@ class MapViewTabs implements IMapViewChangeListener {
 				tabSelectionChanged();
 			}
 		});
+		final FileOpener fileOpener = new FileOpener();
+		new DropTarget(mTabbedPane, fileOpener);
+
 		final Controller controller = Controller.getCurrentController();
 		controller.getMapViewManager().addMapViewChangeListener(this);
 		fm.getContentPane().add(mTabbedPane, BorderLayout.CENTER);

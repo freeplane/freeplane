@@ -39,8 +39,9 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.mindmapmode.MModeController;
 
-class FileOpener implements DropTargetListener {
+public class FileOpener implements DropTargetListener {
 	/**
 	 *
 	 */
@@ -49,7 +50,7 @@ class FileOpener implements DropTargetListener {
 	/**
 	 * @param modeController
 	 */
-	FileOpener() {
+	public FileOpener() {
 //		this.modeController = modeController;
 	}
 
@@ -80,6 +81,7 @@ class FileOpener implements DropTargetListener {
 		dtde.acceptDrop(DnDConstants.ACTION_COPY);
 		try {
 			final Transferable transferable = dtde.getTransferable();
+			Controller.getCurrentController().selectMode(MModeController.MODENAME);
 			ModeController modeController = Controller.getCurrentModeController();
 			if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 				final List<File> list = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
