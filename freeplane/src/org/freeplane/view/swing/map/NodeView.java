@@ -99,7 +99,6 @@ public class NodeView extends JComponent implements INodeView {
 	private static final long serialVersionUID = 1L;
 	public final static int SHIFT = -2;
 	static final int SPACE_AROUND = 50;
-	private static final int SHORTENER_VIEWER_POSITION = 0;
 	private static final int MAIN_VIEWER_POSITION = 1;
 	private static final int DETAIL_VIEWER_POSITION = 2;
 	private static final int NOTE_VIEWER_POSITION = 10;
@@ -1099,6 +1098,7 @@ public class NodeView extends JComponent implements INodeView {
 		else {
 			super.paint(g);
 		}
+// g.drawRect(0, 0, getWidth(), getHeight());		
 	}
 
 	private void paintCloud(final Graphics g) {

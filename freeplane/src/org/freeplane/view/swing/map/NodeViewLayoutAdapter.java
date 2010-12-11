@@ -115,7 +115,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 				if (childShift < 0 || i == 0) {
 					shift += childShift;
 				}
-				shift -= (child.getContent().getY() - getSpaceAround());
+				final int contentShift = child.getContent().getY() - getSpaceAround();
+				shift -= contentShift;
 			}
 		}
 		return shift;
@@ -231,7 +232,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 			final int shiftY = child.getShift();
 			final int childHGap = child.getContent().isVisible() ? child.getHGap() : 0;
 			final int x = baseX + childHGap - child.getContent().getX();
-			if (shiftY < 0) {
+			if(i == 0){
+				child.setLocation(x, y);
+			}
+			else if (shiftY < 0) {
 				child.setLocation(x, y);
 				y -= shiftY;
 			}
