@@ -90,13 +90,13 @@ public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 			rightChildVerticalShift += (contentPreferredSize.height - rightContentHeight) / 2;
 			leftChildVerticalShift += (contentPreferredSize.height - leftContentHeight) / 2;
 			final int childVerticalShift = Math.min(rightChildVerticalShift, leftChildVerticalShift);
-			final int y = Math.max(getSpaceAround(), -childVerticalShift);
+			final int y = getSpaceAround() + Math.max(0, -childVerticalShift);
 			getContent().setBounds(x, y, contentPreferredSize.width, contentPreferredSize.height);
 		}
 		else {
 			getContent().setVisible(false);
 			final int childVerticalShift = Math.min(rightChildVerticalShift, leftChildVerticalShift);
-			final int y = Math.max(getSpaceAround(), -childVerticalShift);
+			final int y = getSpaceAround() + Math.max(0,  -childVerticalShift);
 			getContent().setBounds(x, y, 0, contentHeight);
 		}
 		placeLeftChildren(leftChildVerticalShift);

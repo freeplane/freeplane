@@ -59,12 +59,12 @@ public class LeftNodeViewLayout extends NodeViewLayoutAdapter {
 			getContent().setVisible(true);
 			final Dimension contentPreferredSize = getContent().getPreferredSize();
 			childVerticalShift += (contentPreferredSize.height - contentHeight) / 2;
-			final int y = Math.max(getSpaceAround(), -childVerticalShift);
+			final int y = getSpaceAround() + Math.max(0,  -childVerticalShift);
 			getContent().setBounds(x, y, contentPreferredSize.width, contentPreferredSize.height);
 		}
 		else {
 			getContent().setVisible(false);
-			final int y = Math.max(getSpaceAround(), -childVerticalShift);
+			final int y = getSpaceAround() + Math.max(0, -childVerticalShift);
 			getContent().setBounds(x, y, 0, contentHeight);
 		}
 		placeLeftChildren(childVerticalShift);

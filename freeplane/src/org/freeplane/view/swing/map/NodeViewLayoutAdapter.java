@@ -118,7 +118,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 				shift -= (child.getContent().getY() - getSpaceAround());
 			}
 		}
-		return shift - getSpaceAround();
+		return shift;
 	}
 
 	/**
@@ -177,7 +177,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 
 	protected void placeLeftChildren(final int childVerticalShift) {
 		final int baseX = getContent().getX();
-		int y = getContent().getY() + childVerticalShift;
+		int y = getContent().getY() - getSpaceAround() + childVerticalShift;
 		int right = baseX + getContent().getWidth() + getSpaceAround();
 		NodeView child = null;
 		for (int i = 0; i < getChildCount(); i++) {
@@ -217,7 +217,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 
 	protected void placeRightChildren(final int childVerticalShift) {
 		final int baseX = getContent().getX() + getContent().getWidth();
-		int y = getContent().getY() + childVerticalShift;
+		int y = getContent().getY() - getSpaceAround() + childVerticalShift;
 		int right = baseX + getSpaceAround();;
 		NodeView child = null;
 		for (int i = 0; i < getChildCount(); i++) {
