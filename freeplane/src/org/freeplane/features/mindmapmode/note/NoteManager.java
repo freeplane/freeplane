@@ -121,6 +121,7 @@ final class NoteManager implements INodeSelectionListener {
 		}
 		catch (final Exception e) {
 		}
+		noteController.setDefaultFont();
 		final String note = node != null ? NoteModel.getNoteText(node) : null;
 		if (note != null) {
 			noteViewerComponent.setCurrentDocumentContent(note);

@@ -35,18 +35,17 @@ import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JEditorPane;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
-import org.freeplane.core.frame.IMapViewChangeListener;
-import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogUtils;
@@ -121,10 +120,8 @@ public class MNoteController extends NoteController {
 	 * content. The typical content will be empty, so this state is saved here.
 	 */
 	private boolean mLastContentEmpty = true;
-	private JSplitPane mSplitPane = null;
 	private NoteManager noteManager;
 	private SHTMLPanel noteViewerComponent;
-	private Integer positionToRecover = null;
 
 	/**
 	 * @param modeController
@@ -188,30 +185,10 @@ public class MNoteController extends NoteController {
 		return noteViewerComponent;
 	}
 
-	Integer getPositionToRecover() {
-		return positionToRecover;
-	}
-
-	JSplitPane getSplitPane() {
-		return mSplitPane;
-	}
-
-	JSplitPane getSplitPaneToScreen() {
-		JSplitPane splitPane;
-		splitPane = getSplitPane();
-		if (splitPane == null) {
-			showNotesPanel(true);
-			splitPane = getSplitPane();
-			ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
-		}
-		return splitPane;
-	}
-
 	void hideNotesPanel() {
 		noteManager.saveNote();
 		noteViewerComponent.setVisible(false);
 		Controller.getCurrentModeController().getController().getViewController().removeSplitPane();
-		mSplitPane = null;
 	}
 
 	boolean isLastContentEmpty() {
@@ -272,10 +249,6 @@ public class MNoteController extends NoteController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	void setPositionToRecover(final Integer sPositionToRecover) {
-		positionToRecover = sPositionToRecover;
-	}
-
 	private boolean shouldUseSplitPane() {
 		return "true".equals(ResourceController.getResourceController().getProperty(
 		    MNoteController.RESOURCES_USE_SPLIT_PANE));
@@ -288,32 +261,7 @@ public class MNoteController extends NoteController {
 		}
 		final SouthPanel southPanel = new SouthPanel();
 		southPanel.add(noteViewerComponent, BorderLayout.CENTER);
-		if (ResourceController.getResourceController().getBooleanProperty(
-		    MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
-			// set default font for notes:
-			final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-			    NodeStyleController.class);
-			final Font defaultFont = style.getDefaultFont(Controller.getCurrentModeController().getController().getMap());
-			String rule = "body {";
-			rule += "font-family: " + defaultFont.getFamily() + ";";
-			rule += "font-size: " + defaultFont.getSize() + "pt;";
-			rule += "}\n";
-			if (ResourceController.getResourceController().getBooleanProperty(
-			    MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
-				/* this is used for paragraph spacing. I put it here, too, as
-				 * the tooltip display uses the same spacing. But it is to be discussed.
-				 * fc, 23.3.2009.
-				 */
-				rule += "p {";
-				rule += "margin-top:0;";
-				rule += "}\n";
-			}
-			final StyleSheet styleSheet = noteViewerComponent.getDocument().getStyleSheet();
-			styleSheet.removeStyle("body");
-			styleSheet.removeStyle("p");
-			styleSheet.addRule(rule);
-			// done setting default font.
-		}
+//		setDefaultFont();
 		noteViewerComponent.setOpenHyperlinkHandler(new ActionListener() {
 			public void actionPerformed(final ActionEvent pE) {
 				try {
@@ -326,7 +274,7 @@ public class MNoteController extends NoteController {
 			}
 		});
 		noteViewerComponent.setVisible(true);
-		mSplitPane = Controller.getCurrentModeController().getController().getViewController().insertComponentIntoSplitPane(southPanel);
+		Controller.getCurrentModeController().getController().getViewController().insertComponentIntoSplitPane(southPanel);
 		if (requestFocus) {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
 			EventQueue.invokeLater(new Runnable() {
@@ -343,16 +291,44 @@ public class MNoteController extends NoteController {
 		southPanel.revalidate();
 	}
 
+	void setDefaultFont() {
+		final StyleSheet styleSheet = noteViewerComponent.getDocument().getStyleSheet();
+		styleSheet.removeStyle("body");
+		styleSheet.removeStyle("p");
+		final Font defaultFont;
+		if (ResourceController.getResourceController().getBooleanProperty(
+				MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
+			// set default font for notes:
+			final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
+					NodeStyleController.class);
+			MapModel map = Controller.getCurrentModeController().getController().getMap();
+			if(map != null){
+				defaultFont = style.getDefaultFont(map);
+				String rule = "body {";
+				rule += "font-family: " + defaultFont.getFamily() + ";";
+				rule += "font-size: " + defaultFont.getSize() + "pt;";
+				rule += "}\n";
+				styleSheet.addRule(rule);
+			}
+		}
+		if (ResourceController.getResourceController().getBooleanProperty(
+				MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
+			/* this is used for paragraph spacing. I put it here, too, as
+			 * the tooltip display uses the same spacing. But it is to be discussed.
+			 * fc, 23.3.2009.
+			 */
+			String rule = "p {";
+			rule += "margin-top:0;";
+			rule += "}\n";
+		}
+	}
+
 	boolean isEditing() {
 		return SwingUtilities.isDescendingFrom(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
 		    noteViewerComponent);
 	}
 
 	void setFocusToMap() {
-		if (getPositionToRecover() != null) {
-			mSplitPane.setDividerLocation(getPositionToRecover().intValue());
-			setPositionToRecover(null);
-		}
 		final Controller controller = Controller.getCurrentModeController().getController();
 		final NodeModel node = controller.getSelection().getSelected();
 		controller.getViewController().getComponent(node).requestFocus();
@@ -374,41 +350,14 @@ public class MNoteController extends NoteController {
 		final ModeController modeController = Controller.getCurrentModeController();
 		noteManager = new NoteManager(this);
 		if (shouldUseSplitPane()) {
-			final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
-			mapViewManager.addMapViewChangeListener(new IMapViewChangeListener() {
-				boolean called = false;
-
-				public void beforeViewChange(final Component oldView, final Component newView) {
-				}
-
-				public void afterViewCreated(final Component mapView) {
-				}
-
-				public void afterViewClose(final Component oldView) {
-				}
-
-				public void afterViewChange(final Component oldView, final Component newView) {
-					if (called) {
-						return;
-					}
-					if (newView != null && modeController.equals(modeController.getController().getModeController())) {
-						showNotesPanel(false);
-						called = true;
-						EventQueue.invokeLater(new Runnable() {
-							public void run() {
-								removeViewListener();
-							}
-						});
-					}
-				}
-
-				private void removeViewListener() {
-					mapViewManager.removeMapViewChangeListener(this);
-				}
-			});
+			showNotesPanel(false);
 		}
 		modeController.getMapController().addNodeSelectionListener(noteManager);
 		noteManager.mNoteDocumentListener = new NoteDocumentListener();
+	}
+
+	boolean isNoteEditorShowing() {
+		return noteViewerComponent != null && noteViewerComponent.isShowing();
 	}
 
 }

@@ -90,7 +90,7 @@ class DialogController extends ViewController {
 	}
 
 	@Override
-	public JSplitPane insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
+	public void insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
 		throw new UnsupportedOperationException();
 	}
 

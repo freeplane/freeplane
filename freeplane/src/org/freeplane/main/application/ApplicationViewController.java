@@ -48,6 +48,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.mindmapmode.note.MNoteController;
 
 class ApplicationViewController extends ViewController {
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
@@ -160,33 +161,36 @@ class ApplicationViewController extends ViewController {
 	}
 
 	@Override
-	public JSplitPane insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
+	public void insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
 		if (mSplitPane != null) {
-			return mSplitPane;
+			return;
 		}
+		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
 		removeContentComponent();
 		// --- Save the Component --
 		mMindMapComponent = pMindMapComponent;
 		// --- Devider position variables --
 		int splitPanePosition = -1;
 		int lastSplitPanePosition = -1;
+		final JScrollPane scrollPane = getScrollPane();
+		scrollPane.setVisible(true);
 		if ("right".equals(mLocationPreferenceValue)) {
-			mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, getScrollPane(), pMindMapComponent);
+			mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, pMindMapComponent);
 			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_RIGHT_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_RIGHT_POSITION, -1);
 		}
 		else if ("left".equals(mLocationPreferenceValue)) {
-			mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pMindMapComponent, getScrollPane());
+			mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pMindMapComponent, scrollPane);
 			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LEFT_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_LEFT_POSITION, -1);
 		}
 		else if ("top".equals(mLocationPreferenceValue)) {
-			mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pMindMapComponent, getScrollPane());
+			mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pMindMapComponent, scrollPane);
 			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_TOP_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_TOP_POSITION, -1);
 		}
 		else if ("bottom".equals(mLocationPreferenceValue)) {
-			mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, getScrollPane(), pMindMapComponent);
+			mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPane, pMindMapComponent);
 			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_POSITION, -1);
 		}
@@ -215,7 +219,6 @@ class ApplicationViewController extends ViewController {
 				}
 			});
 		}
-		return mSplitPane;
 	}
 
 	@Override
