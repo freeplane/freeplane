@@ -84,7 +84,7 @@ public abstract class PersistentNodeHook {
 		}
 
 		public void act() {
-			toggle(node, extension);
+			extension = toggle(node, extension);
 		}
 
 		public String getDescription() {
@@ -328,7 +328,7 @@ public abstract class PersistentNodeHook {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	protected void toggle(NodeModel node, IExtension extension) {
+	protected IExtension toggle(NodeModel node, IExtension extension) {
 	    if (extension != null && node.containsExtension(extension.getClass())) {
 	    	remove(node, extension);
 	    }
@@ -340,6 +340,7 @@ public abstract class PersistentNodeHook {
 	    		add(node, extension);
 	    	}
 	    }
-		Controller.getCurrentModeController().getMapController().nodeChanged(node);	    
+		Controller.getCurrentModeController().getMapController().nodeChanged(node);	  
+		return extension;
     }
 }
