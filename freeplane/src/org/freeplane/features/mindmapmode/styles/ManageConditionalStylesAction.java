@@ -39,8 +39,8 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 		final Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 		Component pane = createConditionalStylePane(map);
+		Controller.getCurrentModeController().startTransaction();
 		try{
-			Controller.getCurrentModeController().startTransaction();
 			final int confirmed = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(), pane, "", JOptionPane.OK_CANCEL_OPTION);
 			if(JOptionPane.OK_OPTION == confirmed){
 				LogicalStyleController.getController().refreshMap(map);
@@ -51,7 +51,8 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 
 			}
 		}
-		catch(Exception ex){
+		catch(RuntimeException ex){
+			ex.printStackTrace();
 			Controller.getCurrentModeController().rollback();
 		}
 	}
