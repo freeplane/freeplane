@@ -93,7 +93,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 								return;
 							}
 							final Component container = ((NodeView)nodeView).getMainView();
-							if (!container.isVisible()) {
+							if (container == null || !container.isVisible()) {
 								return;
 							}
 							final Color col = container.getForeground();
