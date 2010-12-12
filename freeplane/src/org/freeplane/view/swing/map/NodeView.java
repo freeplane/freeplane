@@ -1488,7 +1488,10 @@ public class NodeView extends JComponent implements INodeView {
 		final Container contentPane = getContentPane();
 		for (int i = 0; i < contentPane.getComponentCount(); i++) {
 			JComponent content = (JComponent) contentPane.getComponent(i);
-			if (pos < (Integer) content.getClientProperty("NODE_VIEW_CONTENT_POSITION")) {
+if(content == null) throw new RuntimeException("component " + i + "is null");			
+			final Object clientProperty = content.getClientProperty("NODE_VIEW_CONTENT_POSITION");
+if(clientProperty == null) throw new RuntimeException("NODE_VIEW_CONTENT_POSITION not set on component" + content);			
+			if (pos < (Integer) clientProperty) {
 				contentPane.add(component, i);
 				return;
 			}
