@@ -424,7 +424,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		});
 	}
 
-	abstract public JSplitPane insertComponentIntoSplitPane(JComponent noteViewerComponent);
+	abstract public void insertComponentIntoSplitPane(JComponent noteViewerComponent);
 
 	abstract public boolean isApplet();
 

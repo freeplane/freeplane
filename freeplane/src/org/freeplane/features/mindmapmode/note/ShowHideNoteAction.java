@@ -48,8 +48,8 @@ class ShowHideNoteAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if (noteController.getSplitPane() == null) {
-			noteController.getSplitPaneToScreen();
+		if (! noteController.isNoteEditorShowing()) {
+			noteController.showNotesPanel(true);
 		}
 		else {
 			(noteController).hideNotesPanel();
@@ -69,6 +69,6 @@ class ShowHideNoteAction extends AFreeplaneAction {
 
 	@Override
 	public void setSelected() {
-		setSelected(noteController.getSplitPane() != null);
+		setSelected(noteController.isNoteEditorShowing());
 	}
 }

@@ -134,15 +134,14 @@ class AppletViewController extends ViewController {
 	}
 
 	@Override
-	public JSplitPane insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
+	public void insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
 		if (mComponentInSplitPane == pMindMapComponent) {
-			return null;
+			return;
 		}
 		removeSplitPane();
 		mComponentInSplitPane = pMindMapComponent;
 		mapContentBox.add(pMindMapComponent, BorderLayout.SOUTH);
 		mapContentBox.revalidate();
-		return null;
 	}
 
 	@Override

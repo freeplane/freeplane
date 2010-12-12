@@ -56,9 +56,6 @@ class SelectNoteAction extends AFreeplaneAction {
 			noteController.setFocusToMap();
 			return;
 		}
-		final JSplitPane splitPane = noteController.getSplitPaneToScreen();
-		final int oldSize = splitPane.getDividerLocation();
-		noteController.setPositionToRecover(new Integer(oldSize));
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
