@@ -657,12 +657,12 @@ class NodeList {
 			final NodeHolder nodeHolder = info.getNodeHolderAt(i);
 			final String text = nodeHolder.node.getText();
 			final String replaceResult;
+			final String literalReplacement = useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement);
 			if (HtmlUtils.isHtmlNode(text)) {
-				replaceResult = NodeList.replace(p, text, 
-					useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement));
+				replaceResult = NodeList.replace(p, text,literalReplacement);
 			}
 			else {
-				replaceResult = p.matcher(text).replaceAll(replacement);
+				replaceResult = p.matcher(text).replaceAll(literalReplacement);
 			}
 			if (!StringUtils.equals(text, replaceResult)) {
 				info.changeString(nodeHolder, replaceResult);
