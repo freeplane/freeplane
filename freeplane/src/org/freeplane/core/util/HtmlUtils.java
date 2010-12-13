@@ -147,6 +147,7 @@ public class HtmlUtils {
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(" ");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("&");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
+		intermediate = intermediate.replace('\u00a0', ' ');
 		return intermediate;
 	}
 
