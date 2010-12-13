@@ -198,7 +198,7 @@ class NodeList {
 		private synchronized void change() {
 			stopTimer();
 			final Object selectedItem = mFilterTextSearchField.getEditor().getItem();
-			mFlatNodeTableFilterModel.setFilter((String) selectedItem, ignoreCase.isSelected(),
+			mFlatNodeTableFilterModel.setFilter((String) selectedItem, matchCase.isSelected(),
 			    useRegexInFind.isSelected());
 		}
 
@@ -533,7 +533,7 @@ class NodeList {
 	private final boolean searchInAllMaps;
 	private final JCheckBox useRegexInReplace;
 	private final JCheckBox useRegexInFind;
-	private final JCheckBox ignoreCase;
+	private final JCheckBox matchCase;
 	final private boolean modal;
 
 	public NodeList(  final boolean showAllNodes, final boolean searchInAllMaps) {
@@ -576,8 +576,8 @@ class NodeList {
 		useRegexInReplace = new JCheckBox();
 		useRegexInFind = new JCheckBox();
 		useRegexInFind.addChangeListener(listener);
-		ignoreCase = new JCheckBox();
-		ignoreCase.addChangeListener(listener);
+		matchCase = new JCheckBox();
+		matchCase.addChangeListener(listener);
 		final MapChangeListener mapChangeListener = new MapChangeListener();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
@@ -645,7 +645,7 @@ class NodeList {
 		Pattern p;
 		try {
 			p = Pattern.compile(useRegexInFind.isSelected() ? searchString : Pattern.quote(searchString),
-					Pattern.CASE_INSENSITIVE);
+					matchCase.isSelected() ? 0 : Pattern.CASE_INSENSITIVE);
 		}
 		catch (final PatternSyntaxException e) {
 			UITools.errorMessage(TextUtils.format("wrong_regexp", searchString, e.getMessage()));
@@ -763,9 +763,9 @@ class NodeList {
 		layoutConstraints.gridx++;
 		contentPane.add(Box.createHorizontalStrut(40), layoutConstraints);
 		layoutConstraints.gridx++;
-		contentPane.add(new JLabel(TextUtils.getText("filter_ignore_case")), layoutConstraints);
+		contentPane.add(new JLabel(TextUtils.removeMnemonic(TextUtils.getText("filter_match_case"))), layoutConstraints);
 		layoutConstraints.gridx++;
-		contentPane.add(ignoreCase, layoutConstraints);
+		contentPane.add(matchCase, layoutConstraints);
 		layoutConstraints.gridx++;
 		contentPane.add(Box.createHorizontalStrut(40), layoutConstraints);
 		layoutConstraints.gridx++;
@@ -948,8 +948,8 @@ class NodeList {
 				column++;
 			}
 		}
-		mFlatNodeTableFilterModel.setFilter((String)mFilterTextSearchField.getSelectedItem(), ignoreCase.isSelected(), useRegexInFind
-		    .isSelected());
+		mFlatNodeTableFilterModel.setFilter((String)mFilterTextSearchField.getSelectedItem(), 
+			matchCase.isSelected(), useRegexInFind.isSelected());
 		dialog.setVisible(true);
 	}
 

@@ -52,7 +52,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	 */
 	final private int mNodeTextColumn;
 	final private TableModel mTableModel;
-	private boolean ignoreCase;
+	private boolean matchCase;
 
 	/**
 	 * @param node_text_column
@@ -107,21 +107,21 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 		setFilter(null, false, false);
 	}
 
-	public void setFilter(final String filterRegexp, boolean ignoreCase, boolean useRegex) {
+	public void setFilter(final String filterRegexp, boolean matchCase, boolean useRegex) {
 		if(filterRegexp == null || "".equals(filterRegexp)){
 			mFilterRegexp = null;
 		}
 		else{
-			mFilterRegexp = ignoreCase ? filterRegexp.toLowerCase() : filterRegexp;
+			mFilterRegexp = matchCase ? filterRegexp : filterRegexp.toLowerCase();
 		}
-		this.ignoreCase = ignoreCase;
+		this.matchCase = matchCase;
 		//		System.out.println("Setting filter to '" + mFilterRegexp + "'");
 		try {
 			if(! useRegex || mFilterRegexp == null){
 				mPattern = null;
 			}
 			else{
-				mPattern = Pattern.compile(mFilterRegexp, ignoreCase ? Pattern.CASE_INSENSITIVE : 0);
+				mPattern = Pattern.compile(mFilterRegexp, matchCase ? 0 : Pattern.CASE_INSENSITIVE);
 			}
 			updateIndexArray();
 			fireTableDataChanged();
@@ -139,13 +139,13 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 				continue;
 			}
 			if(mPattern == null){
-				if(ignoreCase){
-					if(nodeContent.toString().toLowerCase().contains(mFilterRegexp)){
+				if(matchCase){
+					if(nodeContent.toString().contains(mFilterRegexp)){
 						newIndexArray.add(new Integer(i));
 					}
 				}
 				else{
-					if(nodeContent.toString().contains(mFilterRegexp)){
+					if(nodeContent.toString().toLowerCase().contains(mFilterRegexp)){
 						newIndexArray.add(new Integer(i));
 					}
 				}
