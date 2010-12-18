@@ -108,19 +108,18 @@ public class IconStore {
 	 * @return MindIcon with given name
 	 */
 	public MindIcon getMindIcon(final String name) {
-		MindIcon result;
+		if(name == null){
+			return IconNotFound.instance();
+		}
 		if (mindIcons.containsKey(name)) {
-			result = mindIcons.get(name);
+			return mindIcons.get(name);
 		}
-		else {
-			// icons in directory /image are not registered
-			final MindIcon mindIcon = MindIconFactory.create(name);
-			if (ResourceController.getResourceController().getResource(mindIcon.getPath()) != null) {
-				return mindIcon;
-			}
-			result = IconNotFound.instance();
+		// icons in directory /image are not registered
+		final MindIcon mindIcon = MindIconFactory.create(name);
+		if (ResourceController.getResourceController().getResource(mindIcon.getPath()) != null) {
+			return mindIcon;
 		}
-		return result;
+		return IconNotFound.instance();
 	}
 
 	/**
