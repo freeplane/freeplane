@@ -45,6 +45,7 @@ import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -84,6 +85,8 @@ import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
+
+import sun.security.action.GetBooleanAction;
 
 import com.lightdev.app.shtm.SHTMLWriter;
 
@@ -223,7 +226,12 @@ class EditNodeTextField extends EditNodeBase {
 			if (e.isTemporary() && e.getOppositeComponent() == null) {
 				return;
 			}
-			submitText();
+			if(textfield.isShowing()){
+				submitText();
+			}
+			else{
+				getEditControl().cancel();
+			}
 			hideMe();
 		}
 

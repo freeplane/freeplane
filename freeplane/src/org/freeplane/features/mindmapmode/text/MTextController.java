@@ -455,7 +455,7 @@ public class MTextController extends TextController {
 		stopEditing();
 		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
 			public void cancel() {
-				if (isNewNode) {
+				if (isNewNode && nodeModel.getMap().equals(controller.getMap())) {
 					controller.getSelection().selectAsTheOnlyOneSelected(nodeModel);
 					((MModeController) Controller.getCurrentModeController()).undo();
 					final MapController mapController = Controller.getCurrentModeController().getMapController();
