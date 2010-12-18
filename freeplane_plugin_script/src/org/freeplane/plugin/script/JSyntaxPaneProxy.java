@@ -26,6 +26,7 @@ import java.net.URLClassLoader;
 
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.osgi.framework.BundleContext;
@@ -42,39 +43,55 @@ public class JSyntaxPaneProxy {
 	private static Method setCaretPositionMethod;
 
 	static void init(BundleContext context) {
-		if(loader != null){
+		if (loader != null) {
 			return;
 		}
 		URL jar;
-        try {
-	        final URL pluginUrl = context.getBundle().getEntry("/");
-	        if(Compat.isLowerJdk(Compat.VERSION_1_6_0)){
-	        	jar =  new URL(pluginUrl, "lib/jsyntaxpane/jsyntaxpane-jdk5.jar"); 
-	        }
-	        else{
-	        	jar =  new URL(pluginUrl, "lib/jsyntaxpane/jsyntaxpane.jar");
-	        }
-        }
-        catch (MalformedURLException e1) {
-	        e1.printStackTrace();
-	        return;
-        }
-		loader = new URLClassLoader(new URL[]{jar});
-		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		try {
-	        editorKit = loader.loadClass("jsyntaxpane.DefaultSyntaxKit");
-	        Thread.currentThread().setContextClassLoader(loader);
-	        editorKit.getMethod("initKit").invoke(null);
-	        actionUtils = loader.loadClass("jsyntaxpane.actions.ActionUtils");
-        }
-        catch (Exception e) {
-        	LogUtils.severe(e);
-        	throw new RuntimeException(e);
-        }
-        finally{
-	        Thread.currentThread().setContextClassLoader(contextClassLoader);
-        }
-    }
+			final URL pluginUrl = context.getBundle().getEntry("/");
+			if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
+				jar = new URL(pluginUrl, "lib/jsyntaxpane/jsyntaxpane-jdk5.jar");
+			}
+			else {
+				jar = new URL(pluginUrl, "lib/jsyntaxpane/jsyntaxpane.jar");
+			}
+		}
+		catch (MalformedURLException e1) {
+			e1.printStackTrace();
+			return;
+		}
+		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+		System.err.println("hi, in JSyntaxPaneProxy: " + Controller.class.getClassLoader());
+//		loader = new URLClassLoader(new URL[] { jar }, contextClassLoader);
+		loader = new URLClassLoader(new URL[] { jar, JSyntaxPaneProxy.class.getResource("/") , Controller.class.getResource("/") });
+		try {
+			editorKit = loader.loadClass("jsyntaxpane.DefaultSyntaxKit");
+			Thread.currentThread().setContextClassLoader(loader);
+			editorKit.getMethod("initKit").invoke(null);
+			actionUtils = loader.loadClass("jsyntaxpane.actions.ActionUtils");
+			final Class<?> groovySyntaxKit = loader.loadClass("jsyntaxpane.syntaxkits.GroovySyntaxKit");
+			final Method setPropertyMethod = editorKit.getMethod("setProperty", Class.class, String.class, String.class);
+			System.err.println("hi, now set components");
+			setPropertyMethod.invoke(null, groovySyntaxKit, "Components", "jsyntaxpane.components.PairsMarker" //
+			        + ", jsyntaxpane.components.LineNumbersRuler" //
+			        + ", jsyntaxpane.components.TokenMarker" //
+			        + ", org.freeplane.plugin.script.NodeIdHighLighter");
+//			+ ", " + NodeIdHighLighter.class.getName());
+			System.err.println("hi, have set components");
+//			final Class<?> controllerClass = loader.loadClass(Controller.class.getName());
+//			System.err.println("hi, loaded Controller from: " + controllerClass.getClassLoader());
+//			final Method setCurrentController = controllerClass.getMethod(
+//			    "setCurrentController", controllerClass);
+//			setCurrentController.invoke(null, Controller.getCurrentController());
+		}
+		catch (Throwable e) {
+			LogUtils.severe(e);
+			throw new RuntimeException(e);
+		}
+		finally {
+			Thread.currentThread().setContextClassLoader(contextClassLoader);
+		}
+	}
 
 	public static int getLineOfOffset(JTextComponent mScriptTextField, int caretPosition) {
 		try {

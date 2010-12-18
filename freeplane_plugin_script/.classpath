@@ -6,5 +6,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="lib/jsyntaxpane"/>
 	<classpathentry kind="lib" path="/freeplane/lib/forms-1.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/jsyntaxpane/jsyntaxpane-jdk5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

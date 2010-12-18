@@ -323,7 +323,7 @@ public class MapController extends SelectionController {
 	 * Display a node in the display (used by find and the goto action by arrow
 	 * link actions).
 	 */
-	private void displayNode(final NodeModel node, final ArrayList<NodeModel> nodesUnfoldedByDisplay) {
+	public void displayNode(final NodeModel node, final ArrayList<NodeModel> nodesUnfoldedByDisplay) {
 		if (!node.isVisible()) {
 			node.getFilterInfo().reset();
 			nodeRefresh(node);
