@@ -71,6 +71,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
@@ -928,7 +929,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		if (property.equals(MapStyle.MAP_STYLES) && event.getMap().equals(model)
 		        || property.equals(NodeStyleController.RESOURCES_NODE_TEXT_COLOR)
-		        || property.equals(MapStyle.MAX_NODE_WIDTH)) {
+		        || property.equals(MapStyle.MAX_NODE_WIDTH)
+		        || property.equals(ModelessAttributeController.ATTRIBUTE_VIEW_TYPE)) {
 			setBackground(requiredBackground());
 			getRoot().updateAll();
 			return;

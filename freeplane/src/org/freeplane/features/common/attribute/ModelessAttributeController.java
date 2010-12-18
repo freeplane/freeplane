@@ -23,12 +23,15 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapModel;
 
 /**
  * @author Dimitry Polivaev
  */
 public class ModelessAttributeController implements IExtension {
+	public static final String ATTRIBUTE_VIEW_TYPE = "AttributeViewType";
+
 	public static ModelessAttributeController getController() {
 		Controller controller = Controller.getCurrentController();
 		return (ModelessAttributeController) controller.getExtension(ModelessAttributeController.class);
@@ -60,6 +63,8 @@ public class ModelessAttributeController implements IExtension {
 		if (attributeViewType != null && attributeViewType != type) {
 			final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 			attributes.setAttributeViewType(type);
+			final MapChangeEvent mapChangeEvent = new MapChangeEvent(this, map, ATTRIBUTE_VIEW_TYPE, attributeViewType, type);
+			Controller.getCurrentModeController().getMapController().fireMapChanged(mapChangeEvent);
 		}
 	}
 
