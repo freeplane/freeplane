@@ -66,7 +66,7 @@ class EditDetailsAction extends AFreeplaneAction {
 			text = "";
 		}
 		KeyEvent firstEvent= null;
-		final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(nodeModel, text, firstEvent, new EditNodeBase.IEditControl() {
+		final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(DetailTextModel.EDITING_PURPOSE, nodeModel, text, firstEvent, new EditNodeBase.IEditControl() {
 			public void cancel() {
 				Controller.getCurrentModeController().setBlocked(false);
 				mCurrentEditDialog = null;

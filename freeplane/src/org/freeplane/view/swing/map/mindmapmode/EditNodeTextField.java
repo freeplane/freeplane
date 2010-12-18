@@ -28,6 +28,7 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -51,9 +52,11 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.DefaultEditorKit.PasteAction;
 import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
 import javax.swing.text.StyledEditorKit.BoldAction;
 import javax.swing.text.StyledEditorKit.ForegroundAction;
@@ -63,7 +66,6 @@ import javax.swing.text.StyledEditorKit.UnderlineAction;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLWriter;
-import javax.swing.text.html.MinimalHTMLWriter;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.controller.Controller;
@@ -76,9 +78,9 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.text.TextController;
-
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
-import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
+import org.freeplane.features.mindmapmode.text.EditNodeBase;
+import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -88,7 +90,7 @@ import com.lightdev.app.shtm.SHTMLWriter;
 /**
  * @author foltin
  */
-class EditNodeTextField extends AbstractEditNodeTextField {
+class EditNodeTextField extends EditNodeBase {
 	private int extraWidth;
 
 	private final class MyDocumentListener implements DocumentListener {
@@ -194,9 +196,10 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 
 		private void conditionallyShowPopup(final MouseEvent e) {
 			if (e.isPopupTrigger()) {
-				final JPopupMenu popupMenu = createPopupMenu();
+				final Component component = e.getComponent();
+				final JPopupMenu popupMenu = createPopupMenu(component);
 				popupShown = true;
-				popupMenu.show(e.getComponent(), e.getX(), e.getY());
+				popupMenu.show(component, e.getX(), e.getY());
 				e.consume();
 			}
 		}
@@ -300,11 +303,33 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	private final DocumentListener documentListener;
 	private int maxWidth;
 
-	public EditNodeTextField(final NodeModel node, final String text, final KeyEvent firstEvent,
+	@SuppressWarnings("serial")
+    public EditNodeTextField(final NodeModel node, final String text, final KeyEvent firstEvent,
 	                         final IEditControl editControl) {
 		super(node, text, editControl);
 		this.firstEvent = firstEvent;
 		documentListener = new MyDocumentListener();
+
+		pasteAction = new DefaultEditorKit.PasteAction(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JTextComponent target = getTextComponent(e);
+				if (target == null) {
+					return;
+				}
+				final Transferable contents = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(this);
+				if(contents.isDataFlavorSupported(DataFlavor.stringFlavor)){
+					try {
+						String text = (String) contents.getTransferData(DataFlavor.stringFlavor);
+						target.replaceSelection(text);
+					}
+					catch (Exception ex) {
+					}
+				}
+			}
+		};
+		
 		boldAction = new StyledEditorKit.BoldAction();
 		boldAction.putValue(Action.NAME, TextUtils.getText("BoldAction.text"));
 		boldAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control B"));
@@ -368,6 +393,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	private int iconWidth;
 	private int horizontalSpace;
 	private int verticalSpace;
+	private final PasteAction pasteAction;
 	private final BoldAction boldAction;
 	private final ItalicAction italicAction;
 	private final UnderlineAction underlineAction;
@@ -379,8 +405,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	private StyledTextAction removeFormattingAction;
 
 	@Override
-    protected JPopupMenu createPopupMenu() {
-		JPopupMenu menu = super.createPopupMenu();
+    protected JPopupMenu createPopupMenu(Component component) {
+		JPopupMenu menu = super.createPopupMenu(component);
 	    JMenu formatMenu = new JMenu(TextUtils.getText("simplyhtml.formatLabel")); 
 	    menu.add(formatMenu);
 		if (textfield.getSelectionStart() == textfield.getSelectionEnd()){
@@ -407,7 +433,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	public void show(final Frame frame) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final ViewController viewController = modeController.getController().getViewController();
-		final TextController textController = TextController.getController(modeController);
+		final MTextController textController = (MTextController) TextController.getController(modeController);
 		final Component component = viewController.getComponent(getNode());
 		nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
 		font = nodeView.getTextFont();
@@ -416,22 +442,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			final float fontSize = (int) (Math.rint(font.getSize() * zoom));
 			font = font.deriveFont(fontSize);
 		}
-		textfield = new JEditorPane(){
-
-			@Override
-            public void paste() {
-				final Transferable contents = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(this);
-				if(contents.isDataFlavorSupported(DataFlavor.stringFlavor)){
-					try {
-	                    String text = (String) contents.getTransferData(DataFlavor.stringFlavor);
-	                    replaceSelection(text);
-                    }
-                    catch (Exception e) {
-                    }
-				}
-            }
-			
-		};
+		textfield = textController.createEditorPane(MTextController.NODE_TEXT);
 		textfield.setEditorKit(new HTMLEditorKit(){
 
 			@Override
@@ -448,6 +459,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 
 		final InputMap inputMap = textfield.getInputMap();
 		final ActionMap actionMap = textfield.getActionMap();
+		actionMap.put(DefaultEditorKit.pasteAction, pasteAction);
 		
 		inputMap.put((KeyStroke) boldAction.getValue(Action.ACCELERATOR_KEY), "boldAction");
 		actionMap.put("boldAction",boldAction);

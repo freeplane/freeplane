@@ -26,6 +26,7 @@ import org.freeplane.features.common.map.NodeModel;
  * @author Dimitry Polivaev
  */
 public class DetailTextModel extends RichTextModel implements IExtension {
+	public static final String EDITING_PURPOSE = "DetailText";
 	private boolean hidden = false;
 	public DetailTextModel(boolean hidden) {
 	    this.hidden = hidden;

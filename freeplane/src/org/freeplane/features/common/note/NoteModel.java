@@ -27,6 +27,8 @@ import org.freeplane.features.common.text.RichTextModel;
  * @author Dimitry Polivaev
  */
 public class NoteModel extends RichTextModel implements IExtension {
+	public static final String EDITING_PURPOSE = "Note";
+
 	public static NoteModel createNote(final NodeModel node) {
 		NoteModel note = NoteModel.getNote(node);
 		if (note == null) {

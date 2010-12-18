@@ -20,6 +20,7 @@
 package org.freeplane.features.mindmapmode.text;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -34,6 +35,7 @@ import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -174,17 +176,21 @@ abstract public class EditNodeBase {
 		}
 	}
 
-	protected JPopupMenu createPopupMenu(){
+	protected JPopupMenu createPopupMenu(Component component){
 		JPopupMenu menu = new JPopupMenu();
-		final DefaultEditorKit.CopyAction copyAction = new DefaultEditorKit.CopyAction();
-		copyAction.putValue(Action.NAME, TextUtils.getText("CopyAction.text"));
-		menu.add(copyAction);
-		final DefaultEditorKit.CutAction cutAction = new DefaultEditorKit.CutAction();
-		cutAction.putValue(Action.NAME, TextUtils.getText("CutAction.text"));
-		menu.add(cutAction);
-		final DefaultEditorKit.PasteAction pasteAction = new DefaultEditorKit.PasteAction();
-		pasteAction.putValue(Action.NAME, TextUtils.getText("PasteAction.text"));
-		menu.add(pasteAction);
+		if(! (component instanceof JTextComponent)){
+			return menu;
+		}
+		final ActionMap actionMap = ((JTextComponent)component).getActionMap();
+		final Action copyAction = actionMap.get(DefaultEditorKit.copyAction);
+		if(copyAction != null)
+			menu.add(TextUtils.getText("CopyAction.text")).addActionListener(copyAction);
+		final Action cutAction = actionMap.get(DefaultEditorKit.cutAction);
+		if(cutAction != null)
+			menu.add(TextUtils.getText("CutAction.text")).addActionListener(cutAction);
+		final Action pasteAction = actionMap.get(DefaultEditorKit.pasteAction);
+		if(pasteAction != null)
+			menu.add(TextUtils.getText("PasteAction.text")).addActionListener(pasteAction);
 		SpellCheckerController.getController().addSpellCheckerMenu(menu);
 		return menu;
 	}

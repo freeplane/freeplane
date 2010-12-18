@@ -22,7 +22,7 @@ package org.freeplane.view.swing.map.mindmapmode;
 import java.awt.event.KeyEvent;
 
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
+import org.freeplane.features.mindmapmode.text.EditNodeBase;
 import org.freeplane.features.mindmapmode.text.INodeTextFieldCreator;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 import org.freeplane.view.swing.map.MapViewController;
@@ -32,7 +32,7 @@ import org.freeplane.view.swing.map.MapViewController;
  * Jan 31, 2009
  */
 public class MMapViewController extends MapViewController implements INodeTextFieldCreator {
-	public AbstractEditNodeTextField createNodeTextField(final NodeModel node, final String text,
+	public EditNodeBase createNodeTextField(final NodeModel node, final String text,
 	                                                     final KeyEvent firstEvent,
 	                                                     final IEditControl editControl) {
 		return new EditNodeTextField(node, text, firstEvent,editControl);

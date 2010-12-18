@@ -27,10 +27,13 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
@@ -70,28 +73,22 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.TextResources;
 
+
 /**
  * @author Dimitry Polivaev
  */
 public class MTextController extends TextController {
+	public static final String NODE_TEXT = "NodeText";
 	private EditNodeBase mCurrentEditDialog = null;
+	final private Collection<IEditorPaneListener> editorPaneListeners;
 
-	static public SHTMLPanel createSHTMLPanel() {
-		SHTMLPanel.setResources(new TextResources() {
-			public String getString(String pKey) {
-				pKey = "simplyhtml." + pKey;
-				String resourceString = ResourceController.getResourceController().getText(pKey, null);
-				if (resourceString == null) {
-					resourceString = ResourceController.getResourceController().getProperty(pKey);
-				}
-				return resourceString;
-			}
-		});
-		return SHTMLPanel.createSHTMLPanel();
+	public static MTextController getController() {
+		return (MTextController) TextController.getController();
 	}
 
 	public MTextController(ModeController modeController) {
 		super(modeController);
+		editorPaneListeners = new LinkedList<IEditorPaneListener>();
 		createActions();
 	}
 
@@ -500,7 +497,7 @@ public class MTextController extends TextController {
 		mCurrentEditDialog.show(frame);
 	}
 
-	public EditNodeBase createEditor(final NodeModel nodeModel, final EditNodeBase.IEditControl editControl,
+	private EditNodeBase createEditor(final NodeModel nodeModel, final EditNodeBase.IEditControl editControl,
                              final KeyEvent firstEvent, final boolean isNewNode, final boolean editLong, boolean internal) {
 	    Controller.getCurrentModeController().setBlocked(true);
 		String text = nodeModel.getText();
@@ -515,14 +512,14 @@ public class MTextController extends TextController {
 			text = HtmlUtils.plainToHTML(text);
 		}
 		if (editInternalWysiwyg) {
-			return new EditNodeWYSIWYG(nodeModel, text, firstEvent, editControl, true);
+			return new EditNodeWYSIWYG(NODE_TEXT, nodeModel, text, firstEvent, editControl, true);
 		}
 		else if (editExternal) {
 			return new EditNodeExternalApplication(nodeModel, text, firstEvent, editControl);
 		}
 		else {
 			final INodeTextFieldCreator textFieldCreator = (INodeTextFieldCreator) Controller.getCurrentController().getMapViewManager();
-			final AbstractEditNodeTextField textfield = textFieldCreator.createNodeTextField(nodeModel, text,
+			final EditNodeBase textfield = textFieldCreator.createNodeTextField(nodeModel, text,
 			    firstEvent, editControl);
 			return textfield;
 		}
@@ -547,4 +544,41 @@ public class MTextController extends TextController {
 			mCurrentEditDialog = null;
 		}
 	}
+	public void addEditorPaneListener(IEditorPaneListener l){
+		editorPaneListeners.add(l);
+	}
+	
+	public void removeEditorPaneListener(IEditorPaneListener l){
+		editorPaneListeners.remove(l);
+	}
+	
+	private void fireEditorPaneCreated(JEditorPane editor, Object purpose){
+		for(IEditorPaneListener l :editorPaneListeners){
+			l.editorPaneCreated(editor, purpose);
+		}
+	}
+
+	public SHTMLPanel createSHTMLPanel(String purpose) {
+    	SHTMLPanel.setResources(new TextResources() {
+    		public String getString(String pKey) {
+    			pKey = "simplyhtml." + pKey;
+    			String resourceString = ResourceController.getResourceController().getText(pKey, null);
+    			if (resourceString == null) {
+    				resourceString = ResourceController.getResourceController().getProperty(pKey);
+    			}
+    			return resourceString;
+    		}
+    	});
+    	final SHTMLPanel shtmlPanel = SHTMLPanel.createSHTMLPanel();
+    	final JEditorPane editorPane = shtmlPanel.getEditorPane();
+    	fireEditorPaneCreated(editorPane, purpose);
+		return shtmlPanel;
+    }
+
+	public JEditorPane createEditorPane(Object purpose) {
+     	final JEditorPane editorPane = new JEditorPane();
+    	fireEditorPaneCreated(editorPane, purpose);
+		return editorPane;
+    }
+
 }

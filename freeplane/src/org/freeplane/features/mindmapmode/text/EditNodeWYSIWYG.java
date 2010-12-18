@@ -64,9 +64,9 @@ class EditNodeWYSIWYG extends EditNodeBase {
 		private SHTMLPanel htmlEditorPanel;
 		private JButton splitButton;
 
-		HTMLDialog(final EditNodeBase base, final String title, final Frame frame) throws Exception {
+		HTMLDialog(final EditNodeBase base, final String title, String purpose, final Frame frame) throws Exception {
 			super(base, title, frame);
-			createEditorPanel();
+			createEditorPanel(purpose);
 			getContentPane().add(htmlEditorPanel, BorderLayout.CENTER);
 			UITools.addEscapeActionToDialog(this, new CancelAction());
 			final JButton okButton = new JButton();
@@ -117,9 +117,9 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			super.cancel();
 		}
 
-		private SHTMLPanel createEditorPanel() throws Exception {
+		private SHTMLPanel createEditorPanel(String purpose) throws Exception {
 			if (htmlEditorPanel == null) {
-				htmlEditorPanel = MTextController.createSHTMLPanel();
+				htmlEditorPanel = MTextController.getController().createSHTMLPanel(purpose);
 				final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
 				final SpellCheckerController spellCheckerController = SpellCheckerController.getController();
 				spellCheckerController.enableAutoSpell(editorPane, true);
@@ -191,17 +191,19 @@ class EditNodeWYSIWYG extends EditNodeBase {
 	private static HTMLDialog htmlEditorWindow;
 	final private KeyEvent firstEvent;
 	final private boolean enableSplit;
+	final private String purpose;
 
-	public EditNodeWYSIWYG(final NodeModel node, final String text, final KeyEvent firstEvent, final IEditControl editControl, boolean enableSplit) {
+	public EditNodeWYSIWYG(String purpose, final NodeModel node, final String text, final KeyEvent firstEvent, final IEditControl editControl, boolean enableSplit) {
 		super(node, text, editControl);
 		this.firstEvent = firstEvent;
 		this.enableSplit = enableSplit;
+		this.purpose = purpose;
 	}
 
 	public void show(final Frame frame) {
 		try {
 			if (EditNodeWYSIWYG.htmlEditorWindow == null) {
-				EditNodeWYSIWYG.htmlEditorWindow = new HTMLDialog(this, "", frame);
+				EditNodeWYSIWYG.htmlEditorWindow = new HTMLDialog(this, "", purpose, frame);
 			}
 			EditNodeWYSIWYG.htmlEditorWindow.setBase(this);
 			final String title;

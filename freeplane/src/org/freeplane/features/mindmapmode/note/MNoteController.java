@@ -141,7 +141,7 @@ public class MNoteController extends NoteController {
 		if (htmlEditorPanel != null) {
 			return htmlEditorPanel;
 		}
-		htmlEditorPanel = MTextController.createSHTMLPanel();
+		htmlEditorPanel = MTextController.getController().createSHTMLPanel(NoteModel.EDITING_PURPOSE);
 		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
 		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
 
