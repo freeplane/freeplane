@@ -29,7 +29,6 @@ import java.net.URL;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 

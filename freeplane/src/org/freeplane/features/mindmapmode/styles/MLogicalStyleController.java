@@ -32,7 +32,6 @@ import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;

@@ -31,7 +31,6 @@ import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev

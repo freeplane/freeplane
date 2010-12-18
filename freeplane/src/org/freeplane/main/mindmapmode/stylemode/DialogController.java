@@ -30,7 +30,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-import javax.swing.JSplitPane;
 import javax.swing.RootPaneContainer;
 
 import org.freeplane.core.controller.Controller;

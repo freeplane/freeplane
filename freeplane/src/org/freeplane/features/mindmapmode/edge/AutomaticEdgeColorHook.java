@@ -20,10 +20,6 @@
 package org.freeplane.features.mindmapmode.edge;
 
 import java.awt.Color;
-import java.util.Random;
-
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
