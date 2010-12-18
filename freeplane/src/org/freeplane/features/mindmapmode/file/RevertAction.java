@@ -81,6 +81,9 @@ class RevertAction extends AFreeplaneAction {
 					mapController.newMap(Compat.fileToUrl(tempFile), false);
 				}
 			}
+			catch (final SkipException e) {
+				LogUtils.warn(e);
+			}
 			catch (final Exception e) {
 				LogUtils.severe(e);
 			}
