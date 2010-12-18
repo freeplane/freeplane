@@ -279,7 +279,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 
 	protected void setUp(final Container c) {
 		final NodeView localView = (NodeView) c;
-		localView.syncronizeAttributeView();
 		final int localChildCount = localView.getComponentCount() - 1;
 		for (int i = 0; i < localChildCount; i++) {
 			final Component component = localView.getComponent(i);

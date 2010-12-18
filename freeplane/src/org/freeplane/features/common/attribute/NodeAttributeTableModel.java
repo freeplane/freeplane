@@ -330,10 +330,11 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 			node.setToolTip(ATTRIBUTE_TOOLTIP, new ITooltipProvider() {
 				public String getTooltip() {
 					final AttributeRegistry registry = AttributeRegistry.getRegistry(node.getMap());
-					if (registry.getAttributeViewType().equals(AttributeTableLayoutModel.SHOW_ALL)) {
+					final TextController textController = TextController.getController();
+					if (registry.getAttributeViewType().equals(AttributeTableLayoutModel.SHOW_ALL)
+							&& ! textController.getIsShortened(getNode())) {
 						return null;
 					}
-					final TextController textController = TextController.getController();
 					final StringBuilder tooltip = new StringBuilder();
 					tooltip.append("<html><body><table  border=\"1\">");
 					final int currentRowCount = getRowCount();

@@ -154,7 +154,6 @@ public class NodeView extends JComponent implements INodeView {
 		this.map = map;
 		final TreeNode parentNode = model.getParent();
 		final int index = parentNode == null ? 0 : parentNode.getIndex(model);
-		createAttributeView();
 		parent.add(this, index);
 		if (!model.isRoot()) {
 			motionListenerView = new NodeMotionListenerView(this);
@@ -346,6 +345,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (attributeView == null && NodeAttributeTableModel.getModel(model).getNode() != null) {
 			attributeView = new AttributeView(this);
 		}
+		syncronizeAttributeView();
 	}
 
 	public boolean focused() {
