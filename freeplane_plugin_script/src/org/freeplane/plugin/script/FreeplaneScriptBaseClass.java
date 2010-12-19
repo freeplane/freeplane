@@ -80,7 +80,12 @@ public abstract class FreeplaneScriptBaseClass extends Script {
             return super.invokeMethod(methodName, args);
         }
         catch (MissingMethodException mme) {
-        	return nodeMetaClass.invokeMethod(node, methodName, args);
+            try {
+                return nodeMetaClass.invokeMethod(node, methodName, args);
+            }
+            catch (MissingMethodException e) {
+            	throw e;
+            }
         }
     }
 
