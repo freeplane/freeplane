@@ -333,7 +333,7 @@
 <node TEXT="To find the next match of your previous search, use Edit &gt; Find Next or press Ctrl + G." ID="ID_1646223708" CREATED="1270892460681" MODIFIED="1272493190054">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="The search is a breadth-first search. In other words, the deeper a node, the later it will be found." ID="ID_829330412" CREATED="1270892460681" MODIFIED="1271991558922"/>
+<node TEXT="The search is a depth-first search." ID="ID_829330412" CREATED="1270892460681" MODIFIED="1271991558922"/>
 <node TEXT="This search method currently works only on the currently-selected node and its descendants. In the future there may be an option to continue the search through the rest of the map." ID="ID_779591913" CREATED="1270892460681" MODIFIED="1271992057566"/>
 <node TEXT="To search the entire map for all occurrences of matching text, with an optional to supply replacement text, use &quot;Edit &gt; Find and Replace...&quot; A similar method can be used across all currently-open maps by choosing &quot;Edit &gt;Find and Replace in all maps.&quot;" ID="ID_1761633870" CREATED="1271096970387" MODIFIED="1271992556423"/>
 <node TEXT="You can build filters to see only a subset of map nodes. Use the Filter Toolbar or the Filter Menu." ID="ID_1773253238" CREATED="1270897010863" MODIFIED="1271992588658"/>
