@@ -69,19 +69,25 @@ public class JSyntaxPaneProxy {
 			editorKit.getMethod("initKit").invoke(null);
 			actionUtils = loader.loadClass("jsyntaxpane.actions.ActionUtils");
 			final Class<?> groovySyntaxKit = loader.loadClass("jsyntaxpane.syntaxkits.GroovySyntaxKit");
-			if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
-				final Method setPropertyMethod = editorKit.getMethod("setProperty", Class.class, String.class, String.class);
-				setPropertyMethod.invoke(null, groovySyntaxKit, "Components", "jsyntaxpane.components.PairsMarker" //
-					+ ", jsyntaxpane.components.LineNumbersRuler" //
-					+ ", jsyntaxpane.components.TokenMarker" //
-					+ ", org.freeplane.plugin.script.NodeIdHighLighter");
+			try{
+				loader.loadClass("org.freeplane.plugin.script.NodeIdHighLighter");
+				if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
+					final Method setPropertyMethod = editorKit.getMethod("setProperty", Class.class, String.class, String.class);
+					setPropertyMethod.invoke(null, groovySyntaxKit, "Components", "jsyntaxpane.components.PairsMarker" //
+						+ ", jsyntaxpane.components.LineNumbersRuler" //
+						+ ", jsyntaxpane.components.TokenMarker" //
+						+ ", org.freeplane.plugin.script.NodeIdHighLighter");
+				}
+				else{
+					final Method setPropertyMethod = editorKit.getMethod("setProperty", String.class, String.class);
+					setPropertyMethod.invoke(groovySyntaxKit.newInstance(), "Components", "jsyntaxpane.components.PairsMarker" //
+						+ ", jsyntaxpane.components.LineNumbersRuler" //
+						+ ", jsyntaxpane.components.TokenMarker" //
+						+ ", org.freeplane.plugin.script.NodeIdHighLighter");
+				}
 			}
-			else{
-				final Method setPropertyMethod = editorKit.getMethod("setProperty", String.class, String.class);
-				setPropertyMethod.invoke(groovySyntaxKit.newInstance(), "Components", "jsyntaxpane.components.PairsMarker" //
-					+ ", jsyntaxpane.components.LineNumbersRuler" //
-					+ ", jsyntaxpane.components.TokenMarker" //
-					+ ", org.freeplane.plugin.script.NodeIdHighLighter");
+			catch (Exception e){
+				LogUtils.warn(e);
 			}
 		}
 		catch (Throwable e) {
