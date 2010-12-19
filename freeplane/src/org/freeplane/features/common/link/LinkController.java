@@ -410,23 +410,22 @@ public class LinkController extends SelectionController implements IExtension {
 	 * Compared to <code>mailto:abc@somewhere.com</code> a "_" is added to prevent the rest being parsed
 	 * as a regular path. (Menu item keys start with "/").
 	 */
-	public static String createMenuItemLink(final String menuItemKey) {
-		return MENUITEM_SCHEME + ":_" + menuItemKey;
+	public static URI createMenuItemLink(final String menuItemKey) {
+		try {
+			return new URI(MENUITEM_SCHEME, "_" + menuItemKey, null);
+		}
+		catch (URISyntaxException e) {
+			throw new RuntimeException("huh? URI should have escaped illegal characters", e);
+		}
 	}
 
 	public static boolean isMenuItemLink(final URI uri) {
-		return String.valueOf(uri.toString()).startsWith(MENUITEM_SCHEME + ":_");
+		final String scheme = uri.getScheme();
+		return scheme != null && scheme.equals(MENUITEM_SCHEME);
 	}
 
-	public static String parseMenuItemLink(final String link) {
-		if (link == null || !link.startsWith(MENUITEM_SCHEME + ":_")) {
-			throw new IllegalArgumentException("not a menu item link: " + link);
-		}
-		return link.substring((MENUITEM_SCHEME + ":_").length());
-	}
-
+	// this will fail badly for non-menuitem uris!
 	public static String parseMenuItemLink(final URI uri) {
-		return LinkController.parseMenuItemLink(uri.toString());
+		return uri.getSchemeSpecificPart().substring(1);
 	}
-
 }
