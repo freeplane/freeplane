@@ -110,8 +110,8 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.registerExtensionCopier(new StyleCopier());
 		modeController.addAction(new BoldAction());
 		modeController.addAction(new ItalicAction());
-		modeController.addAction(new FormatCopy());
-		modeController.addAction(new FormatPaste());
+		modeController.addAction(new CopyFormat());
+		modeController.addAction(new PasteFormat());
 		modeController.addAction(new RemoveFormatAction());
 		final AMultipleNodeAction increaseNodeFont = new AMultipleNodeAction("IncreaseNodeFontAction") {
 			/**

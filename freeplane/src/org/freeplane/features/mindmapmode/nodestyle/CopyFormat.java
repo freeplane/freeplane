@@ -32,7 +32,7 @@ import org.freeplane.features.common.styles.LogicalStyleKeys;
 /**
  * @author foltin
  */
-class FormatCopy extends AFreeplaneAction {
+class CopyFormat extends AFreeplaneAction {
 	private static NodeModel pattern = null;
 	/**
 	 * 
@@ -43,7 +43,7 @@ class FormatCopy extends AFreeplaneAction {
 		return pattern;
 	}
 
-	public FormatCopy() {
+	public CopyFormat() {
 		super("FormatCopy");
 	}
 
@@ -54,7 +54,7 @@ class FormatCopy extends AFreeplaneAction {
 	/**
 	 */
 	private void copyFormat(final NodeModel node) {
-		FormatCopy.pattern = new NodeModel(null);
+		CopyFormat.pattern = new NodeModel(null);
 		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, pattern);
 		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, node, pattern);
 	}
@@ -65,13 +65,13 @@ class FormatCopy extends AFreeplaneAction {
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" }, //
 accelerator = "alt shift V")
-class FormatPaste extends AMultipleNodeAction {
+class PasteFormat extends AMultipleNodeAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public FormatPaste() {
+	public PasteFormat() {
 		super("FormatPaste");
 	}
 
@@ -83,7 +83,7 @@ class FormatPaste extends AMultipleNodeAction {
 	/**
 	 */
 	private void pasteFormat(final NodeModel node) {
-		final NodeModel pattern = FormatCopy.getPattern();
+		final NodeModel pattern = CopyFormat.getPattern();
 		if (pattern == null) {
 			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(), TextUtils
 			    .getText("no_format_copy_before_format_paste"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
