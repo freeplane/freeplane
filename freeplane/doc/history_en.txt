@@ -21,6 +21,7 @@ When Formula Editor is visible, double click on node inserts node ID, single cli
 Inline editor supports some HTML formatting, use pop-up menu->format or hot keys
 Automatic Edge Color 
 "Grid" for moving of nodes (Preferences->Behaviour->Grid gap size)
+Copy and paste attributes
 
 Bug fixes:
 630]: Language not sorted alphabetically
