@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
+import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
@@ -63,8 +63,7 @@ class CopyFormat extends AFreeplaneAction {
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" }, //
-accelerator = "alt shift V")
+@EnabledAction(checkOnPopup = true)
 class PasteFormat extends AMultipleNodeAction {
 	/**
 	 * 
@@ -92,4 +91,9 @@ class PasteFormat extends AMultipleNodeAction {
 		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, pattern, node);
 		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, pattern, node);
 	}
+
+	@Override
+    public void setEnabled() {
+		setEnabled(CopyFormat.getPattern() != null);
+    }
 }

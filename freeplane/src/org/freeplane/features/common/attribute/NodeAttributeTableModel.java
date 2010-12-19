@@ -20,6 +20,7 @@
 package org.freeplane.features.common.attribute;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
@@ -108,7 +109,8 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		if (listeners == null) {
 			return;
 		}
-		for (final TableModelListener listener : listeners) {
+		final ArrayList<TableModelListener> arrayList = new ArrayList<TableModelListener>(listeners);
+		for (final TableModelListener listener : arrayList) {
 			listener.tableChanged(e);
 		}
 	}

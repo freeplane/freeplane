@@ -59,6 +59,8 @@
   				<menu_action action="CopyIDAction" />
 				<menu_action action="PasteAction" accelerator="control V" />
 				<menu_action action="SelectedPasteAction" />
+            	<menu_action action="CopyAttributes" />
+            	<menu_action action="PasteAttributes" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="edit">
@@ -381,6 +383,8 @@
 			<menu_action action="CopySingleAction" />
 			<menu_action action="CopyIDAction" />
 			<menu_action action="PasteAction" />
+           	<menu_action action="CopyAttributes" />
+           	<menu_action action="PasteAttributes" />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="new_nodes">

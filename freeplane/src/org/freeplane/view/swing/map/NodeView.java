@@ -57,6 +57,7 @@ import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.icon.HierarchicalIcons;
+import org.freeplane.features.common.map.HistoryInformationModel;
 import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
@@ -995,6 +996,10 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		if (property.equals(NodeModel.NOTE_TEXT)) {
 			updateNoteViewer();
+			return;
+		}
+		if (property.equals(HistoryInformationModel.class)) {
+			updateToolTip();
 			return;
 		}
 		update();

@@ -36,6 +36,10 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
 public class MAttributeController extends AttributeController {
+	
+	static public MAttributeController getController(){
+		return (MAttributeController) AttributeController.getController();
+	}
 	private class AttributeChanger implements IVisitor {
 		final private Object name;
 		final private Object newValue;
@@ -527,6 +531,8 @@ public class MAttributeController extends AttributeController {
 		ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new AssignAttributesAction());
 		modeController.addAction(new ShowAttributeDialogAction());
+		modeController.addAction(new CopyAttributes());
+		modeController.addAction(new PasteAttributes());
 	}
 
 	public int editAttribute(final NodeModel pNode, final String pName, final String pNewValue) {
