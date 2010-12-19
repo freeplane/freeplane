@@ -24,6 +24,7 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -65,10 +66,15 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	 */
 	public boolean checkNode(final NodeModel node) {
 		final IAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
+		final TextController textController = TextController.getController();
 		for (int i = 0; i < attributes.getRowCount(); i++) {
 			try {
-				if (attributes.getValueAt(i, 0).equals(attribute)
-				        && succeed == (compareTo(attributes.getValueAt(i, 1).toString()) == comparationResult)) {
+				if(! attributes.getValueAt(i, 0).equals(attribute)) {
+					continue;
+				}
+			    final String originalText = attributes.getValueAt(i, 1).toString();
+				final String text = textController.getTransformedText(originalText, node);
+				if( succeed == (compareTo(text) == comparationResult)) {
 					return true;
 				}
 			}
