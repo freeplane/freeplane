@@ -31,7 +31,6 @@ import javax.swing.JOptionPane;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
@@ -58,21 +57,9 @@ public class MMapController extends MapController {
 	@Deprecated //remove the action field, move its methods to this class.
 	private NewChildAction newChild;
 	public static final String RESOURCES_CONVERT_TO_CURRENT_VERSION = "convert_to_current_version";
-	private static IFreeplanePropertyListener sSaveIdPropertyChangeListener;
 
 	public MMapController() {
 		super();
-		if (sSaveIdPropertyChangeListener == null) {
-			sSaveIdPropertyChangeListener = new IFreeplanePropertyListener() {
-				public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-					if (propertyName.equals("save_only_intrisically_needed_ids")) {
-						MapController.setSaveOnlyIntrinsicallyNeededIds(Boolean.valueOf(newValue).booleanValue());
-					}
-				}
-			};
-			ResourceController.getResourceController().addPropertyChangeListenerAndPropagate(
-			    sSaveIdPropertyChangeListener);
-		}
 		createActions();
 		if (ResourceController.getResourceController().getBooleanProperty("display_node_id")) {
 			addNodeSelectionListener(new INodeSelectionListener() {

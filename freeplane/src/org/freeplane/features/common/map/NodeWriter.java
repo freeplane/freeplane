@@ -99,7 +99,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		if (parentNode != null && parentNode.isRoot()) {
 			writer.addAttribute("POSITION", node.isLeft() ? "left" : "right");
 		}
-		final boolean saveID = !mode.equals(Mode.STYLE) && !MapController.saveOnlyIntrinsicallyNeededIds();
+		final boolean saveID = !mode.equals(Mode.STYLE);
 		if (saveID) {
 			final String id = node.createID();
 			writer.addAttribute("ID", id);

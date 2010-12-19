@@ -204,17 +204,7 @@ public class MapController extends SelectionController {
 		}
 	}
 
-	private static boolean saveOnlyIntrinsicallyNeededIds = false;
-
-	public static boolean saveOnlyIntrinsicallyNeededIds() {
-		return saveOnlyIntrinsicallyNeededIds;
-	}
-
-	public static void setSaveOnlyIntrinsicallyNeededIds(final boolean saveOnlyIntrinsicallyNeededIds) {
-		MapController.saveOnlyIntrinsicallyNeededIds = saveOnlyIntrinsicallyNeededIds;
-	}
-
-// // 	final private Controller controller;
+// 	final private Controller controller;
 	protected final Collection<IMapChangeListener> mapChangeListeners;
 	final private Collection<IMapLifeCycleListener> mapLifeCycleListeners;
 	final private MapReader mapReader;
