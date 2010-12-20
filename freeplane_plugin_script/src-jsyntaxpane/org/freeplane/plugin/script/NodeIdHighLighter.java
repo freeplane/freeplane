@@ -59,7 +59,6 @@ public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
 		final Matcher matcher = nodeIdPattern.matcher(token.getText(doc));
 		if (matcher.matches()) {
 			String id = matcher.group(1);
-			System.err.println("hi, in NodeIdHighLighter: " + Controller.class.getClassLoader() + ", controller=" + Controller.getCurrentController());
 			final NodeModel node = Controller.getCurrentController().getMap().getNodeForID(id);
 			if (node != null) {
 				final MapController mapController = Controller.getCurrentModeController().getMapController();
