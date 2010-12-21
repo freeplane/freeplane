@@ -19,6 +19,7 @@ import jsyntaxpane.components.SyntaxComponent;
 import jsyntaxpane.util.Configuration;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 
@@ -73,7 +74,8 @@ public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
 				return true;
 			}
 			else {
-				pane.setToolTipText("<html><body bgcolor='#CC0000'>Node " + id + " is not defined</body></html>");
+				pane.setToolTipText("<html><body bgcolor='#CC0000'>" //
+					+ TextUtils.format(getResourceKey("node_is_not_defined"), id) + "</body></html>");
 			}
 		}
 		return false;
@@ -139,8 +141,12 @@ public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
 			pane.removeCaretListener(this);
 			if (status.equals(Status.INSTALLING)) {
 				pane.addCaretListener(this);
-//				deHighlight();
+				deHighlight();
 			}
 		}
+	}
+
+	public String getResourceKey(final String key) {
+		return "org.freeplane.plugin.script.NodeIdHighlighter." + key;
 	}
 }
