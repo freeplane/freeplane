@@ -1424,9 +1424,11 @@ public class NodeView extends JComponent implements INodeView {
 	 * Updates the tool tip of the node.
 	 */
 	private void updateToolTip() {
-		final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(
-		    NodeView.RESOURCES_SHOW_NODE_TOOLTIPS);
-		updateToolTip(areTooltipsDisplayed);
+		if(mainView != null){
+			final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(
+				NodeView.RESOURCES_SHOW_NODE_TOOLTIPS);
+			updateToolTip(areTooltipsDisplayed);
+		}
 	}
 
 	private void updateToolTip(final boolean areTooltipsDisplayed) {
