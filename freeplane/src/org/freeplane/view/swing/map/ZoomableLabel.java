@@ -129,7 +129,7 @@ public class ZoomableLabel extends JLabel {
 		else if (isLong) {
 			String text = HtmlUtils.plainToHTML(nodeText);
 			if (widthMustBeRestricted) {
-				text = text.replaceFirst("(?i)<p>", "<p width=\"" + map.getMaxNodeWidth() + "\">");
+				text = text.replaceFirst("(?i)<body>", "<body width=\"" + map.getMaxNodeWidth() + "\">");
 			}
 			setText(text);
 		}
