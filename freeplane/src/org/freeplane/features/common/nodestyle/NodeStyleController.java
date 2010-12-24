@@ -45,10 +45,7 @@ import org.freeplane.features.common.styles.MapStyleModel;
  * @author Dimitry Polivaev
  */
 public class NodeStyleController implements IExtension {
-	public static final String RESOURCES_NODE_SHAPE = "standardnodeshape";
-	public static final String RESOURCES_NODE_TEXT_COLOR = "standardnodetextcolor";
-	public static final String RESOURCES_ROOT_NODE_SHAPE = "standardrootnodeshape";
-	public static Color standardNodeTextColor;
+	public static Color standardNodeTextColor = Color.BLACK;
 
 	public static NodeStyleController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -122,18 +119,10 @@ public class NodeStyleController implements IExtension {
 				final String returnedString;
 				final NodeModel parentNode = node.getParentNode();
 				if (parentNode == null) {
-					returnedString = ResourceController.getResourceController().getProperty(
-					    NodeStyleController.RESOURCES_ROOT_NODE_SHAPE);
+					returnedString = "fork";
 				}
 				else {
-					final String stdstyle = ResourceController.getResourceController().getProperty(
-					    NodeStyleController.RESOURCES_NODE_SHAPE);
-					if (stdstyle.equals(NodeStyleModel.SHAPE_AS_PARENT)) {
-						returnedString = getShape(node.getParentNode());
-					}
-					else {
-						returnedString = stdstyle;
-					}
+					returnedString = getShape(node.getParentNode());
 				}
 				return returnedString;
 			}
@@ -143,12 +132,6 @@ public class NodeStyleController implements IExtension {
 		final WriteManager writeManager = mapController.getWriteManager();
 		final NodeStyleBuilder styleBuilder = new NodeStyleBuilder(this);
 		styleBuilder.registerBy(readManager, writeManager);
-		if (standardNodeTextColor == null) {
-			final String stdcolor = ResourceController.getResourceController().getProperty(
-			    NodeStyleController.RESOURCES_NODE_TEXT_COLOR);
-			standardNodeTextColor = ColorUtils.stringToColor(stdcolor);
-			createPropertyChangeListener();
-		}
 	}
 
 	public IPropertyHandler<Color, NodeModel> addBackgroundColorGetter(final Integer key,
@@ -169,21 +152,6 @@ public class NodeStyleController implements IExtension {
 	public IPropertyHandler<String, NodeModel> addShapeGetter(final Integer key,
 	                                                          final IPropertyHandler<String, NodeModel> getter) {
 		return shapeHandlers.addGetter(key, getter);
-	}
-
-	private void createPropertyChangeListener() {
-		final IFreeplanePropertyListener propertyChangeListener = new IFreeplanePropertyListener() {
-			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-				if (propertyName.equals(NodeStyleController.RESOURCES_NODE_TEXT_COLOR)) {
-					standardNodeTextColor = ColorUtils.stringToColor(newValue);
-					final MapChangeEvent event = new MapChangeEvent(NodeStyleController.this,
-					    NodeStyleController.RESOURCES_NODE_TEXT_COLOR, ColorUtils.stringToColor(oldValue),
-					    standardNodeTextColor);
-					Controller.getCurrentModeController().getMapController().fireMapChanged(event);
-				}
-			}
-		};
-		ResourceController.getResourceController().addPropertyChangeListener(propertyChangeListener);
 	}
 
 	public Color getBackgroundColor(final NodeModel node) {
