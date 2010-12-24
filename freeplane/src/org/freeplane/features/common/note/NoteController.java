@@ -45,7 +45,7 @@ public class NoteController implements IExtension {
 	public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
 	private static UIIcon noteIcon;
 	public static final String RESOURCES_DON_T_SHOW_NOTE_ICONS = "don_t_show_note_icons";
-	private static final Integer NODE_TOOLTIP = 7;
+	private static final Integer NODE_TOOLTIP = 9;
 
 	public static NoteController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
