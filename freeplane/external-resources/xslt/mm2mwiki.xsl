@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
     <!--
-	MINDMAPEXPORTFILTER mwiki Mediawiki
+	MINDMAPEXPORTFILTER mwiki %xslt_export.mediawiki
         (c) by Stephen Fitch, 2005 
         (c) by Dimitry Polivaev, 2010 
         This file is licensed under the GPL.

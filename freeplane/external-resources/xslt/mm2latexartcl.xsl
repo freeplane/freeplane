@@ -2,7 +2,7 @@
 
 
 	<!--
-		MINDMAPEXPORTFILTER tex latex 
+		MINDMAPEXPORTFILTER tex %xslt_export.latex
 		
 		: This code	released under the GPL. 
 		: (http://www.gnu.org/copyleft/gpl.html) 

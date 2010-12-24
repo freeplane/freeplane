@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 	<!--
-		MINDMAPEXPORTFILTER xls;xml Excel (2003 and above) XML format
+		MINDMAPEXPORTFILTER xls;xml %xslt_export.ms_excel
 		
 		(c) by Naoki Nose, Eric Lavarde 2006 This code is licensed under the GPL.
 		(http://www.gnu.org/copyleft/gpl.html) 2006-12-10: added support for

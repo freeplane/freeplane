@@ -94,7 +94,10 @@ class XsltExportEngineFactory {
 				if (m.matches()) { // if it does
 					keyFound = true;
 					final String[] extensions = m.group(1).split("\\s*;\\s*");
-					final String description = m.group(2).trim();
+					String description = m.group(2).trim();
+					if(description.startsWith("%")){
+						description = TextUtils.getText(description.substring(1));
+					}
 					addXsltFile(extensions, description, xsltFile);
 					// we want to allow for more than one filter line per XSLT file
 					// so we don't exit once we've found one and even account for

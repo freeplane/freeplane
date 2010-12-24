@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 	<!--
-		MINDMAPEXPORTFILTER xml MS Project (2003 and above) XML format 
+		MINDMAPEXPORTFILTER xml %xslt_export.ms_project
 		
 		(c) by Naoki Nose, 2006, and Eric Lavarde, 2008 This code is licensed under
 		the GPLv2 or later. (http://www.gnu.org/copyleft/gpl.html) Check

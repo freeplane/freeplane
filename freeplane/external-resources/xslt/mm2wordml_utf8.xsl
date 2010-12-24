@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 	<!--
 
-		MINDMAPEXPORTFILTER doc;xml Word (2003 and above) XML format 
+		MINDMAPEXPORTFILTER doc;xml %xslt_export.ms_word 
 		
 		(c) by Naoki Nose, 2006, and Eric Lavarde, 2008 This code is licensed under
 		the GPLv2 or later. (http://www.gnu.org/copyleft/gpl.html) Check

@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 
 	<!--
-		MINDMAPEXPORTFILTER txt latex 
+		MINDMAPEXPORTFILTER txt %xslt_export.latexbook
 		
 		: This code released under the GPL. :
 		(http://www.gnu.org/copyleft/gpl.html) Document : mm2latexarticl.xsl

@@ -2,7 +2,7 @@
 
 	<!--
 	
-			MINDMAPEXPORTFILTER txt text
+			MINDMAPEXPORTFILTER txt %xslt_export.text
 	
 		: This code released under the GPL. :
 		(http://www.gnu.org/copyleft/gpl.html) Document : mm2text.xsl Created

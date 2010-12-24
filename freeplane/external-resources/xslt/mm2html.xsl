@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 	<!--
-		MINDMAPEXPORTFILTER html;htm html 
+		MINDMAPEXPORTFILTER html;htm %xslt_export.html
 		
 		: This code released under the GPL.
 		: (http://www.gnu.org/copyleft/gpl.html) Document : mindmap2html.xsl
