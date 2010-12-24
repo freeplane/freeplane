@@ -5,6 +5,7 @@ package org.freeplane.plugin.script.proxy;
 
 import java.awt.Color;
 
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.styles.IStyle;
@@ -29,6 +30,10 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		return getStyleController().getBackgroundColor(getDelegate());
 	}
 
+	public String getBackgroundColorCode() {
+		return ColorUtils.colorToString(getBackgroundColor());
+	}
+
 	public Proxy.Edge getEdge() {
 		return new EdgeProxy(getDelegate(), getScriptContext());
 	}
@@ -37,8 +42,17 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		return new FontProxy(getDelegate(), getScriptContext());
 	}
 
-	public Color getNodeTextColor() {
+	public Color getTextColor() {
 		return getStyleController().getColor(getDelegate());
+	}
+
+	@Deprecated
+	public Color getNodeTextColor() {
+		return getTextColor();
+	}
+
+	public String getTextColorCode() {
+		return ColorUtils.colorToString(getTextColor());
 	}
 
 	private MLogicalStyleController getLogicalStyleController() {
@@ -53,8 +67,21 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		getStyleController().setBackgroundColor(getDelegate(), color);
 	}
 
-	public void setNodeTextColor(final Color color) {
+	public void setBackgroundColorCode(final String rgbString) {
+		setBackgroundColor(ColorUtils.stringToColor(rgbString));
+	}
+
+	public void setTextColor(final Color color) {
 		getStyleController().setColor(getDelegate(), color);
+	}
+
+	@Deprecated
+	public void setNodeTextColor(final Color color) {
+		setTextColor(color);
+	}
+
+	public void setTextColorCode(final String rgbString) {
+		setTextColor(ColorUtils.stringToColor(rgbString));
 	}
 
 	public IStyle getStyle() {

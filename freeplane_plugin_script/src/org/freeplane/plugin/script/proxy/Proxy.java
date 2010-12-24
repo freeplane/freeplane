@@ -104,6 +104,8 @@ public interface Proxy {
 	interface ConnectorRO {
 		Color getColor();
 
+		String getColorCode();
+
 		ArrowType getEndArrow();
 
 		String getMiddleLabel();
@@ -126,6 +128,10 @@ public interface Proxy {
 	interface Connector extends ConnectorRO {
 		void setColor(Color color);
 
+		/** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
+		 *  @since 1.2 */
+		void setColorCode(String rgbString);
+		
 		void setEndArrow(ArrowType arrowType);
 
 		void setMiddleLabel(String label);
@@ -251,6 +257,8 @@ public interface Proxy {
 	interface EdgeRO {
 		Color getColor();
 
+		String getColorCode();
+
 		EdgeStyle getType();
 
 		int getWidth();
@@ -259,6 +267,10 @@ public interface Proxy {
 	interface Edge extends EdgeRO {
 		void setColor(Color color);
 
+		/** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
+		 *  @since 1.2 */
+		void setColorCode(String rgbString);
+		
 		void setType(EdgeStyle type);
 
 		/** can be -1 for default, 0 for thin, >0 */
@@ -703,11 +715,21 @@ public interface Proxy {
 
 		Color getBackgroundColor();
 
+		/** returns HTML color spec like #ff0000 (red) or #222222 (darkgray).
+		 *  @since 1.2 */
+		String getBackgroundColorCode();
+
 		Edge getEdge();
 
 		Font getFont();
 
+		/** @deprecated since 1.2 - use {@link #getTextColor()} instead. */
 		Color getNodeTextColor();
+
+		/** @since 1.2 */
+		Color getTextColor();
+
+		String getTextColorCode();
 	}
 
 	interface NodeStyle extends NodeStyleRO {
@@ -715,6 +737,18 @@ public interface Proxy {
 
 		void setBackgroundColor(Color color);
 
+		/** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
+		 *  @since 1.2 */
+		void setBackgroundColorCode(String rgbString);
+
+		/** @deprecated since 1.2 - use {@link #setTextColor(Color)} instead. */
 		void setNodeTextColor(Color color);
+
+		/** @since 1.2 */
+		void setTextColor(Color color);
+		
+		/** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
+		 *  @since 1.2 */
+		void setTextColorCode(String rgbString);
 	}
 }
