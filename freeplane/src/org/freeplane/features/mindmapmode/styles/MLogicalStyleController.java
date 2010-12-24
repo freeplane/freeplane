@@ -47,6 +47,7 @@ import org.freeplane.features.common.styles.LogicalStyleKeys;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.styles.StyleNamedObject;
 import org.freeplane.features.common.styles.ConditionalStyleModel.Item;
 
 /**
@@ -260,7 +261,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		for (final NodeModel child : children) {
 			final IStyle style = (IStyle) child.getUserObject();
 			if (child.hasChildren()) {
-				final String newCategory = category + '/' + style;
+				final String newCategory = category + '/' + StyleNamedObject.toKeyString(style);
 				menuBuilder.addMenuItem(category, new JMenu(style.toString()), newCategory, MenuBuilder.AS_CHILD);
 				addStyleMenu(menuBuilder, newCategory, child, extension);
 			}
