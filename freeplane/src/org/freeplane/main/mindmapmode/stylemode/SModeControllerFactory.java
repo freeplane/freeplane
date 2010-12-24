@@ -42,12 +42,16 @@ import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.map.INodeChangeListener;
+import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyle;
+import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
@@ -159,10 +163,22 @@ public class SModeControllerFactory {
 					}
 				});
 			}
+			
 
 			public void onDeselect(final NodeModel node) {
 			}
 		});
+		
+		mapController.addNodeChangeListener(new INodeChangeListener() {
+			public void nodeChanged(NodeChangeEvent event) {
+				final NodeModel node = event.getNode();
+				if(node.getUserObject().equals(MapStyleModel.DEFAULT_STYLE)){
+					mapController.fireMapChanged(new MapChangeEvent(this, node.getMap(), MapStyle.MAP_STYLES, null, null));
+				}
+			}
+		});
+		
+		
 		final JScrollPane styleScrollPane = new JScrollPane(styleEditorPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		UITools.setScrollbarIncrement(styleScrollPane);

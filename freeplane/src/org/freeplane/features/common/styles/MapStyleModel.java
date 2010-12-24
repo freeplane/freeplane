@@ -88,9 +88,7 @@ public class MapStyleModel implements IExtension {
 		styleMap.setReadOnly(false);
 		styleMap.putExtension(IUndoHandler.class, map.getExtension(IUndoHandler.class));
 		final MapStyleModel defaultStyleModel = new MapStyleModel();
-		final NodeModel defaultStyleNode = new NodeModel(styleMap);
-		defaultStyleNode.setUserObject(DEFAULT_STYLE);
-		defaultStyleModel.addStyleNode(defaultStyleNode);
+		defaultStyleModel.styleNodes = styleNodes;
 		rootNode.putExtension(defaultStyleModel);
 	}
 	
