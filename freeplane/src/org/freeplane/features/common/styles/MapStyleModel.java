@@ -225,7 +225,12 @@ public class MapStyleModel implements IExtension {
     }
 	
 	public void setProperty(String key, String value){
-		properties.put(key, value);
+		if (value != null){ 
+			properties.put(key, value);
+		}
+		else{
+			properties.remove(key);
+		}
 	}
 	
 	public String getProperty(String key){

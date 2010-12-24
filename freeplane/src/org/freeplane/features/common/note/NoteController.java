@@ -33,6 +33,8 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.text.TextController;
 
 /**
  * @author Dimitry Polivaev
@@ -46,12 +48,17 @@ public class NoteController implements IExtension {
 	private static UIIcon noteIcon;
 	public static final String RESOURCES_DON_T_SHOW_NOTE_ICONS = "don_t_show_note_icons";
 	private static final Integer NODE_TOOLTIP = 9;
+	public static final String SHOW_NOTES_IN_MAP = "show_notes_in_map";
 
 	public static NoteController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
-		return (NoteController) modeController.getExtension(NoteController.class);
+		return getController(modeController);
 	}
 
+	public static NoteController getController(ModeController modeController) {
+		return (NoteController) modeController.getExtension(NoteController.class);
+    }
+	
 	public static void install() {
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(6,
 		    new NoteConditionController());
@@ -98,7 +105,7 @@ public class NoteController implements IExtension {
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
 		boolean showIcon = enabled;
 		if (ResourceController.getResourceController().getBooleanProperty(
-		    NoteController.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
+			NoteController.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
 			showIcon = false;
 		}
 		node.setStateIcon(NoteController.NODE_NOTE_ICON, (showIcon) ? noteIcon : null, true);
@@ -106,26 +113,35 @@ public class NoteController implements IExtension {
 	}
 
 	void setNoteTooltip(final NodeModel node, final boolean enabled) {
-	    if (enabled) {
-			final String noteText = NoteModel.getNoteText(node);
-			if (noteText != null) {
-				(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, new ITooltipProvider() {
-					public String getTooltip() {
-						final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-						    NodeStyleController.class);
-						final Font defaultFont = style.getDefaultFont(node.getMap());
-						final StringBuilder rule = new StringBuilder();
-						rule.append("font-family: " + defaultFont.getFamily() + ";");
-						rule.append("font-size: " + defaultFont.getSize() + "pt;");
-						rule.append("margin-top:0;");
-						final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
-						    .replaceFirst("</body>", "</div></body>");
-						return tooltipText;
-					}
-				});
-			}
+		if (!enabled) {
+			(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, null);
 			return;
 		}
-		(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, null);
-    }
+		final String noteText = NoteModel.getNoteText(node);
+		if (noteText == null) 
+			return;
+		(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, new ITooltipProvider() {
+			public String getTooltip() {
+				if(showNotesInMap(node.getMap()) && ! TextController.getController().getIsShortened(node)){
+					return null;
+				}
+				final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
+					NodeStyleController.class);
+				final Font defaultFont = style.getDefaultFont(node.getMap());
+				final StringBuilder rule = new StringBuilder();
+				rule.append("font-family: " + defaultFont.getFamily() + ";");
+				rule.append("font-size: " + defaultFont.getSize() + "pt;");
+				rule.append("margin-top:0;");
+				final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
+				.replaceFirst("</body>", "</div></body>");
+				return tooltipText;
+			}
+		});
+	}
+
+	public boolean showNotesInMap(MapModel model) {
+		final String property = MapStyleModel.getExtension(model).getProperty(NoteController.SHOW_NOTES_IN_MAP);
+		return Boolean.parseBoolean(property);
+	}
+
 }

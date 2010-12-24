@@ -328,14 +328,16 @@ public class NodeModel implements MutableTreeNode {
 			if (value == null) {
 				continue;
 			}
-			tooltipSet = true;
 			value = value.replaceFirst("<html>", "<div>");
 			value = value.replaceFirst("<body>", "");
 			value = value.replaceFirst("</body>", "");
 			value = value.replaceFirst("</html>", "</div>");
-			text.append("<tr><td><hr>");
+			text.append("<tr><td>");
+			if(tooltipSet)
+				text.append("<hr>");
 			text.append(value);
 			text.append("</td></tr>");
+			tooltipSet = true;
 		}
 		if(tooltipSet){
 			text.append("</table></html>");

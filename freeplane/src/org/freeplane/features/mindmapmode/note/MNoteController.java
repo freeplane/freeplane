@@ -54,6 +54,8 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
+import org.freeplane.features.common.styles.MapStyle;
+import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
@@ -358,4 +360,7 @@ public class MNoteController extends NoteController {
 		return noteViewerComponent != null && noteViewerComponent.isShowing();
 	}
 
+	public void setShowNotesInMap(final MapModel model, final boolean show) {
+		MapStyle.getController().setProperty(model, SHOW_NOTES_IN_MAP, Boolean.toString(show));
+	}
 }

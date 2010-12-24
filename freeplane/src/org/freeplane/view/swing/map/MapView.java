@@ -85,6 +85,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.styles.MapViewLayout;
@@ -138,13 +139,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		this.layoutType = layoutType;
 	}
 	
-	private boolean showNotes = false;
+	private boolean showNotes;
 
 	boolean showNotes() {
 		return showNotes;
 	}
 
-	void setShowNotes(boolean showNotes) {
+	private void setShowNotes() {
+		final boolean showNotes= NoteController.getController(getModeController()).showNotesInMap(getModel());
 		if(this.showNotes == showNotes){
 			return;
 		}
@@ -375,6 +377,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		this.setLayout(new MindMapLayout());
 		initRoot();
 		setBackground(requiredBackground());
+		showNotes= NoteController.getController(getModeController()).showNotesInMap(getModel());
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(model);
 		zoom = mapStyleModel.getZoom();
 		layoutType = mapStyleModel.getMapViewLayout();
@@ -936,6 +939,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			getRoot().updateAll();
 			return;
 		}
+		if(property.equals(NoteController.SHOW_NOTES_IN_MAP))
+			setShowNotes();
 	}
 
 	public void move(final KeyEvent e) {

@@ -434,4 +434,39 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		};
 		Controller.getCurrentModeController().execute(actor, Controller.getCurrentController().getMap());
 	}
+
+	public static  MapStyle getController(final ModeController modeController) {
+        return (MapStyle) modeController.getExtension(MapStyle.class);
+    }
+
+	public static MapStyle getController() {
+		return (MapStyle) getController(Controller.getCurrentModeController());
+    }
+
+	public void setProperty(final MapModel model, final String key, final String newValue) {
+		final MapStyleModel styleModel = MapStyleModel.getExtension(model);
+		final String oldValue = styleModel.getProperty(key);
+		if(oldValue == newValue || oldValue != null && oldValue.equals(newValue))
+			return;
+		IActor actor = new  IActor() {
+			public void undo() {
+				setPropertyWithoutUndo(model, key, oldValue);
+			}
+			
+			public String getDescription() {
+				return "set map style property";
+			}
+			
+			public void act() {
+				setPropertyWithoutUndo(model, key, newValue);
+			}
+
+			private void setPropertyWithoutUndo(final MapModel model, final String key, final String newValue) {
+				styleModel.setProperty(key, newValue);
+	    		Controller.getCurrentModeController().getMapController().fireMapChanged(
+	    		    new MapChangeEvent(MapStyle.this, model, key, oldValue, newValue));
+            }
+		};
+		Controller.getCurrentModeController().execute(actor, model);
+    }
 }
