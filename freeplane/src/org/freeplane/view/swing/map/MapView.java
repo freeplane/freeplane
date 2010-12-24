@@ -376,7 +376,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		this.setLayout(new MindMapLayout());
 		initRoot();
 		setBackground(requiredBackground());
-		showNotes= NoteController.getController(getModeController()).showNotesInMap(getModel());
+		final NoteController noteController = NoteController.getController(getModeController());
+		showNotes= noteController != null && noteController.showNotesInMap(getModel());
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(model);
 		zoom = mapStyleModel.getZoom();
 		layoutType = mapStyleModel.getMapViewLayout();
