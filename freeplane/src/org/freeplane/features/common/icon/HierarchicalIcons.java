@@ -45,7 +45,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Foltin
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons.properties")
-@ActionLocationDescriptor(locations = { "/menu_bar/format/nodes/automaticLayout2" })
+@ActionLocationDescriptor(locations = { "/menu_bar/icons/automaticLayout2" })
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener, IExtension {
 	public static final String ICONS = "hierarchical_icons";

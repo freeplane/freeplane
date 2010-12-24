@@ -150,6 +150,7 @@
 		</menu_submenu>
 		<menu_submenu name="icons" name_ref="icon_menu">
 			<menu_category name="actions" />
+			<menu_category name="automaticLayout2"/>
 			<menu_separator />
 			<menu_category name="icons" />
 		</menu_submenu>
@@ -191,7 +192,6 @@
 				<menu_category name="position">
 					<menu_action action="ResetNodeLocationAction" />
 				</menu_category>
-				<menu_category name="automaticLayout2"></menu_category>
 				<menu_separator />
 			</menu_category>
 			<menu_category name="clouds">
@@ -412,6 +412,7 @@
 		</menu_category>
 		<menu_separator />
 		<menu_submenu name="icons" name_ref="icon_menu">
+			<menu_category name="actions" />
 			<menu_category name="icons" />
 		</menu_submenu>
 		<menu_submenu name="styles" name_ref="styles">
