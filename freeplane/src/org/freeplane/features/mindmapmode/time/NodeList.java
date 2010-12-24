@@ -291,7 +291,7 @@ class NodeList {
 		List<MindIcon> icons = new ArrayList<MindIcon>();
 
 		public IconsHolder(final NodeModel node) {
-			icons.addAll(IconController.getIcons(node));
+			icons.addAll(IconController.getController().getIcons(node));
 			if (icons.size() > 0) {
 				final List<MindIcon> toSort = new ArrayList<MindIcon>(icons);
 				Collections.sort(toSort);

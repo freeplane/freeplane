@@ -102,7 +102,7 @@ public class IconController implements IExtension {
 	}
 
 
-	public static Collection<MindIcon> getIcons(final NodeModel node) {
+	public Collection<MindIcon> getIcons(final NodeModel node) {
 		final IconController iconController = IconController.getController();
 		final Collection<MindIcon> icons = iconController.iconHandlers.getProperty(node, new LinkedList<MindIcon>());
 		return icons;

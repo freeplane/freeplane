@@ -55,7 +55,6 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapStyle;
-import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 

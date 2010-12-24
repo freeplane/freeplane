@@ -69,7 +69,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
     }
 
 	public boolean checkNode(final NodeModel node) {
-		final Collection<MindIcon> icons = IconController.getIcons(node);
+		final Collection<MindIcon> icons = IconController.getController().getIcons(node);
 		for (final MindIcon icon : icons) {
 			final String iconName = icon.getFileName();
 			if (iconName.length() != 10) {

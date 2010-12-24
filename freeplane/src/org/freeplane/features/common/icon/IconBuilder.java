@@ -81,7 +81,7 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 	public void writeContent(final ITreeWriter writer, final Object element, final String tag) throws IOException {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
 		final NodeModel node = (NodeModel) element;
-		final Collection<MindIcon> icons = forceFormatting ? IconController.getIcons(node) : node.getIcons();
+		final Collection<MindIcon> icons = forceFormatting ? IconController.getController().getIcons(node) : node.getIcons();
 		for (MindIcon icon : icons) {
 			final XMLElement iconElement = new XMLElement();
 			iconElement.setName("icon");
