@@ -5,6 +5,7 @@ package org.freeplane.plugin.script.proxy;
 
 import java.awt.Color;
 
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
@@ -19,6 +20,10 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 
 	public Color getColor() {
 		return getLinkController().getColor(getConnector());
+	}
+	
+	public String getColorCode() {
+		return ColorUtils.colorToString(getColor());
 	}
 
 	public ConnectorModel getConnector() {
@@ -59,6 +64,10 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 
 	public void setColor(final Color color) {
 		getLinkController().setArrowLinkColor(getConnector(), color);
+	}
+
+	public void setColorCode(final String rgbString) {
+		setColor(ColorUtils.stringToColor(rgbString));
 	}
 
 	public void setEndArrow(final ArrowType arrowType) {

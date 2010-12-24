@@ -5,6 +5,7 @@ package org.freeplane.plugin.script.proxy;
 
 import java.awt.Color;
 
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.map.NodeModel;
@@ -18,6 +19,10 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 
 	public Color getColor() {
 		return getEdgeController().getColor(getDelegate());
+	}
+	
+	public String getColorCode() {
+		return ColorUtils.colorToString(getColor());
 	}
 
 	private MEdgeController getEdgeController() {
@@ -34,6 +39,10 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 
 	public void setColor(final Color color) {
 		getEdgeController().setColor(getDelegate(), color);
+	}
+
+	public void setColorCode(final String rgbString) {
+		setColor(ColorUtils.stringToColor(rgbString));
 	}
 
 	public void setType(final EdgeStyle type) {

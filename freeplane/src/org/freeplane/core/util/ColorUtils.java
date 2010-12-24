@@ -14,19 +14,7 @@ public class ColorUtils {
 		if (col == null) {
 			return null;
 		}
-		String red = Integer.toHexString(col.getRed());
-		if (col.getRed() < 16) {
-			red = "0" + red;
-		}
-		String green = Integer.toHexString(col.getGreen());
-		if (col.getGreen() < 16) {
-			green = "0" + green;
-		}
-		String blue = Integer.toHexString(col.getBlue());
-		if (col.getBlue() < 16) {
-			blue = "0" + blue;
-		}
-		return "#" + red + green + blue;
+		return String.format("#%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
 	}
 
 	public static Color stringToColor(final String str) {
