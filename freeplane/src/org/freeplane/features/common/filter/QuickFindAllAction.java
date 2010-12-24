@@ -67,11 +67,15 @@ final class QuickFindAllAction extends AFreeplaneAction {
 		if(nodeFound){
 			selection.selectAsTheOnlyOneSelected(selected);
 		}
-		NodeModel next = selected;
+		final NodeModel rootNode = selected.getMap().getRootNode();
+		NodeModel next = rootNode;
 		for(;;){
-			next = filterController.findNext(next, selected, Direction.FORWARD, condition);
+			next = filterController.findNext(next, rootNode, Direction.FORWARD, condition);
 			if(next == null){
 				return;
+			}
+			if(next.equals(selected)){
+				continue;
 			}
 			mapController.displayNode(next);
 			if(nodeFound){
