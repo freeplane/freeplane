@@ -284,6 +284,11 @@
 			<menu_action action="ShowAncestorsAction" />
 			<menu_action action="ShowDescendantsAction" />
 			<menu_separator />
+			<menu_action action="QuickFindAction.BACK" />
+			<menu_action action="QuickFindAction.FORWARD" />
+			<menu_action action="QuickFilterAction" />
+			<menu_action action="QuickFindAllAction" />
+			<menu_separator />
 			<menu_action action="ShowFilterToolbarAction" />
 			<menu_action action="EditFilterAction" />
 		</menu_submenu>
