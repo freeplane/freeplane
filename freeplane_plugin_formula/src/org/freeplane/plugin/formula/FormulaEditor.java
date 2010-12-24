@@ -132,7 +132,10 @@ class FormulaEditor extends EditNodeDialog {
 	    			container,
 	    			containerPoint.x,
 	    			containerPoint.y);
-	    	return component;
+	    	if(component instanceof MainView){
+		    	return component;
+	    	}
+	    	return SwingUtilities.getAncestorOfClass(MapView.class, component);
 	    }
 		    public void redispatchMouseEvent(MouseEvent e, final Component component) {
 	        final Component glassPane = e.getComponent();
@@ -170,6 +173,7 @@ class FormulaEditor extends EditNodeDialog {
 				glassPane.removeMouseListener(mouseListener);
 				glassPane.removeMouseMotionListener(mouseListener);
 				glassPane.setVisible(false);
+				jframe.setFocusableWindowState(true);
 			}
 			
 			public void ancestorMoved(AncestorEvent event) {
@@ -181,6 +185,7 @@ class FormulaEditor extends EditNodeDialog {
 				glassPane.addMouseListener(mouseListener);
 				glassPane.addMouseMotionListener(mouseListener);
 				glassPane.setVisible(true);
+				jframe.setFocusableWindowState(false);
 			}
 		});
 	    

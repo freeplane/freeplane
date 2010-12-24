@@ -3,12 +3,15 @@ package org.freeplane.plugin.script;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JEditorPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
@@ -26,7 +29,7 @@ public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
 	private final Pattern nodeIdPattern = Pattern.compile("(ID_\\d+)|(\"ID_\\d+\")");
 	private JEditorPane pane;
 	private Status status;
-	private ArrayList<NodeModel> nodesOriginallyFolded = new ArrayList<NodeModel>();
+	private ArrayList<NodeModel> nodesOriginallyFolded = new ArrayList<NodeModel>(50);
 	private NodeModel originallySelectedNode = null;
 
 	/** remove as soon as SyntaxComponent has it in the JDK5 version. */
@@ -62,35 +65,44 @@ public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
 			final NodeModel node = Controller.getCurrentController().getMap().getNodeForID(id);
 			if (node != null) {
 				final MapController mapController = Controller.getCurrentModeController().getMapController();
+				final NodeModel selectedNode = mapController.getSelectedNode();
+				if(node.equals(selectedNode)){
+					return true;
+				}
+				NodeModel originallySelectedNode = this.originallySelectedNode;
 				if (originallySelectedNode == null)
 					originallySelectedNode = mapController.getSelectedNode();
-				else
-					foldOriginallyFolded(mapController);
+				else{
+					deHighlight();
+				}
+				this.originallySelectedNode = originallySelectedNode;
 				mapController.displayNode(node, nodesOriginallyFolded);
 				mapController.select(node);
 				pane.setToolTipText(node.getText());
-				pane.requestFocus();
 				return true;
 			}
 			else {
 				pane.setToolTipText("<html><body bgcolor='#CC0000'>Node " + id + " is not defined</body></html>");
 			}
 		}
+		else{
+			 deHighlight();
+		}
 		return false;
 	}
 
 	public void deHighlight() {
+		if (originallySelectedNode == null) 
+			return;
 		final Controller controller = Controller.getCurrentController();
 		if (controller == null)
 			return;
 		final MapController mapController = controller.getModeController().getMapController();
+		mapController.displayNode(originallySelectedNode);
+		mapController.select(originallySelectedNode);
 		foldOriginallyFolded(mapController);
-		if (originallySelectedNode != null) {
-			mapController.select(originallySelectedNode);
-			originallySelectedNode = null;
-			pane.setToolTipText(null);
-			pane.requestFocus();
-		}
+		originallySelectedNode = null;
+		pane.setToolTipText(null);
 	}
 
 	private void foldOriginallyFolded(final MapController mapController) {
@@ -110,23 +122,39 @@ public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
 		pane.addCaretListener(this);
 		handle(editor.getCaretPosition());
 		status = Status.INSTALLING;
-		addFocusListener();
+		addWindowListener();
+//		addFocusListener();
+	}
+	private void addWindowListener() {
+		pane.addFocusListener(new FocusAdapter() {
+			@Override
+            public void focusGained(FocusEvent e) {
+				e.getComponent().removeFocusListener(this);
+				SwingUtilities.getWindowAncestor(pane).addWindowListener(new WindowAdapter(){
+					@Override
+		            public void windowClosed(WindowEvent e) {
+						e.getWindow().removeWindowListener(this);
+						deHighlight();
+		            }
+				});
+            }
+		});
 	}
 
-	private void addFocusListener() {
-		class NodeIdHighLightFocusListener extends FocusAdapter {
-			public void focusLost(FocusEvent e) {
-				deHighlight();
-			}
-		}
-		final FocusListener[] focusListeners = pane.getFocusListeners();
-		for (int i = 0; i < focusListeners.length; i++) {
-			if (focusListeners[i] instanceof NodeIdHighLightFocusListener) {
-				return;
-			}
-		}
-		pane.addFocusListener(new NodeIdHighLightFocusListener());
-	}
+//	private void addFocusListener() {
+//		class NodeIdHighLightFocusListener extends FocusAdapter {
+//			public void focusLost(FocusEvent e) {
+//				deHighlight();
+//			}
+//		}
+//		final FocusListener[] focusListeners = pane.getFocusListeners();
+//		for (int i = 0; i < focusListeners.length; i++) {
+//			if (focusListeners[i] instanceof NodeIdHighLightFocusListener) {
+//				return;
+//			}
+//		}
+//		pane.addFocusListener(new NodeIdHighLightFocusListener());
+//	}
 
 	public void deinstall(JEditorPane editor) {
 		status = Status.DEINSTALLING;

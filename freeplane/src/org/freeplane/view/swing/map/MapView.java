@@ -59,6 +59,7 @@ import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
@@ -1552,7 +1553,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (focussedNodeView == null) {
 			focussedNodeView = getRoot();
 		}
-		focussedNodeView.requestFocus();
+		scrollNodeToVisible(focussedNodeView);
 	}
 
 	/*
