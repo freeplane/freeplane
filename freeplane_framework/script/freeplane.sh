@@ -142,6 +142,14 @@ then # if we have 'readlink' we can use it to get an absolute path
 else
 	freefile="$0"
 fi
+
+if [ "`echo $OSTYPE | cut -b1-6`" == "darwin" ]
+then
+	xdockname='-Xdock:name=Freeplane'
+else
+	xdockname=""
+fi
+
 freepath="$(dirname "${freefile}")"
 
 # we try different possibilities to find framework.jar
@@ -190,6 +198,7 @@ _debug "Calling: "\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
  "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\
  $defines\
+ $xdockname\
  -jar "${freedir}/framework.jar"\
  -xargs "${freedir}/props.xargs"\
  -xargs "${freedir}/init.xargs"
@@ -203,6 +212,7 @@ _debug "Calling: "\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
  "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\
  $defines\
+ $xdockname\
  -jar "${freedir}/framework.jar"\
  -xargs "${freedir}/props.xargs"\
  -xargs "${freedir}/init.xargs"
