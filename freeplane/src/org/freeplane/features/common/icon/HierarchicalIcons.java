@@ -33,9 +33,12 @@ import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
+import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.LogicalStyleModel;
+import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -113,6 +116,20 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	}
 
 	public void mapChanged(final MapChangeEvent event) {
+		final MapModel map = event.getMap();
+		if(map == null){
+			return;
+		}
+		final NodeModel rootNode = map.getRootNode();
+		if (!isActive(rootNode)) {
+			return;
+		}
+		final Object property = event.getProperty();
+		if(! property.equals(MapStyle.MAP_STYLES)){
+			return;
+		}
+		gatherLeavesAndSetStyle(rootNode);
+		gatherLeavesAndSetParentsStyle(rootNode);
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
@@ -120,7 +137,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		if (!isActive(node)) {
 			return;
 		}
-		if (!event.getProperty().equals("icon")) {
+		final Object property = event.getProperty();
+		if (!(property.equals("icon") || property.equals(LogicalStyleModel.class))) {
 			return;
 		}
 		setStyle(node);
