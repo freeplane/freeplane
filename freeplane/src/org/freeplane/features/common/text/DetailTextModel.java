@@ -41,12 +41,12 @@ public class DetailTextModel extends RichTextModel implements IExtension {
     }
 
 	public static DetailTextModel createDetailText(final NodeModel node) {
-		DetailTextModel note = DetailTextModel.getDetailText(node);
-		if (note == null) {
-			note = new DetailTextModel(false);
-			node.addExtension(note);
+		DetailTextModel details = DetailTextModel.getDetailText(node);
+		if (details == null) {
+			details = new DetailTextModel(false);
+			node.addExtension(details);
 		}
-		return note;
+		return details;
 	}
 
 	public static DetailTextModel getDetailText(final NodeModel node) {
