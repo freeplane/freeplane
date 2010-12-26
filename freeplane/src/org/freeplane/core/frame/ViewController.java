@@ -274,7 +274,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 	}
 
-	public void changeNoteWindowLocation(final boolean b) {
+	public void changeNoteWindowLocation() {
 	}
 
 	public void err(final String msg) {

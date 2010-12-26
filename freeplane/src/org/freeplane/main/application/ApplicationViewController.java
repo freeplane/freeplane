@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.LayoutManager;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -95,7 +96,7 @@ class ApplicationViewController extends ViewController {
 			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		}
 		mSplitPane = new JSplitPane();
-		mSplitPane.setLayout(new SplitPaneLayoutManagerDecorator(mSplitPane.getLayout()));
+		setSplitPaneLayoutManager();
 		final JScrollPane contentComponent = getScrollPane();
 		mSplitPane.setLeftComponent(contentComponent);
 		mSplitPane.setRightComponent(null);
@@ -116,19 +117,9 @@ class ApplicationViewController extends ViewController {
 	 * Called from the Controller, when the Location of the Note Window is changed on the Menu->View->Note Window Location 
 	 */
 	@Override
-	public void changeNoteWindowLocation(final boolean isSplitWindowOnorOff) {
-		// -- Remove Note Window from old location -- 
-		if (isSplitWindowOnorOff == true) {
-			// --- Remove and put it back in the new location the Note Window --
-			removeSplitPane();
-		}
-		// --- Get the new location --
+	public void changeNoteWindowLocation() {
 		mLocationPreferenceValue = resourceController.getProperty("note_location");
-		// -- Display Note Window in the new location --
-		if (isSplitWindowOnorOff == true) {
-			// --- Place the Note Window in the new place --
-			insertComponentIntoSplitPane(mMindMapComponent);
-		}
+		insertComponentIntoSplitPane(mMindMapComponent);
 	}
 
 	public String getAdjustableProperty(final String label) {
@@ -206,6 +197,7 @@ class ApplicationViewController extends ViewController {
 		}
 		mSplitPane.setContinuousLayout(true);
 		mSplitPane.setOneTouchExpandable(false);
+		setSplitPaneLayoutManager();
 		/*
 		 * This means that the mind map area gets all the space that results
 		 * from resizing the window.
@@ -343,7 +335,16 @@ class ApplicationViewController extends ViewController {
 		mSplitPane.setLeftComponent(null);
 		mSplitPane.setRightComponent(null);
 		mSplitPane.setLeftComponent(scrollPane);
+		setSplitPaneLayoutManager();
 	}
+
+	private void setSplitPaneLayoutManager() {
+	    final LayoutManager layout = mSplitPane.getLayout();
+	    if(layout instanceof SplitPaneLayoutManagerDecorator){
+	    	return;
+	    }
+		mSplitPane.setLayout(new SplitPaneLayoutManagerDecorator(layout));
+    }
 
 	@Override
 	public void saveProperties() {

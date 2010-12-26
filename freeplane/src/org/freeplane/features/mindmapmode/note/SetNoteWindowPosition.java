@@ -26,9 +26,7 @@ class SetNoteWindowPosition extends AFreeplaneAction {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		resourceController.setProperty("note_location", position);
 		final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
-		final String useSplitPaneProp = resourceController.getProperty(MNoteController.RESOURCES_USE_SPLIT_PANE);
-		final boolean useSplitPane = useSplitPaneProp == null ? false : Boolean.parseBoolean(useSplitPaneProp);
-		viewController.changeNoteWindowLocation(useSplitPane);
+		viewController.changeNoteWindowLocation();
 	}
 
 	@Override
