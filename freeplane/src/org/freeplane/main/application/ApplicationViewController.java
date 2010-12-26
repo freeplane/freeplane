@@ -64,13 +64,11 @@ class ApplicationViewController extends ViewController {
 	private static final String SPLIT_PANE_TOP_POSITION = "split_pane_top_position";
 // // 	final private Controller controller;
 	final private JFrame frame;
-	private MapViewTabs mapViewManager;
-	private JComponent mContentComponent = null;
 	/** Contains the value where the Note Window should be displayed (right, left, top, bottom) */
 	private String mLocationPreferenceValue;
 	/** Contains the Note Window Component */
 	private JComponent mMindMapComponent;
-	private JSplitPane mSplitPane;
+	final private JSplitPane mSplitPane;
 	final private NavigationNextMapAction navigationNextMap;
 	final private NavigationPreviousMapAction navigationPreviousMap;
 	final private ResourceController resourceController;
@@ -96,16 +94,20 @@ class ApplicationViewController extends ViewController {
 			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		}
-		mContentComponent = getScrollPane();
+		mSplitPane = new JSplitPane();
+		mSplitPane.setLayout(new SplitPaneLayoutManagerDecorator(mSplitPane.getLayout()));
+		final JScrollPane contentComponent = getScrollPane();
+		mSplitPane.setLeftComponent(contentComponent);
+		mSplitPane.setRightComponent(null);
 		final boolean shouldUseTabbedPane = ResourceController.getResourceController().getBooleanProperty(
 		    ApplicationViewController.RESOURCES_USE_TABBED_PANE);
 		if (shouldUseTabbedPane) {
-			mapViewManager = new MapViewTabs(this, mContentComponent);
+			new MapViewTabs(this, mSplitPane);
 		}
 		else {
-			getContentPane().add(mContentComponent, BorderLayout.CENTER);
+			getContentPane().add(mSplitPane, BorderLayout.CENTER);
 			final FileOpener fileOpener = new FileOpener();
-			new DropTarget(mContentComponent, fileOpener);
+			new DropTarget(mSplitPane, fileOpener);
 		}
 		initFrame(frame);
 	}
@@ -166,11 +168,7 @@ class ApplicationViewController extends ViewController {
 
 	@Override
 	public void insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
-		if (mSplitPane != null) {
-			return;
-		}
 		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
-		removeContentComponent();
 		// --- Save the Component --
 		mMindMapComponent = pMindMapComponent;
 		// --- Devider position variables --
@@ -179,22 +177,30 @@ class ApplicationViewController extends ViewController {
 		final JScrollPane scrollPane = getScrollPane();
 		scrollPane.setVisible(true);
 		if ("right".equals(mLocationPreferenceValue)) {
-			mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, pMindMapComponent);
+			mSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+			mSplitPane.setLeftComponent(scrollPane);
+			mSplitPane.setRightComponent(pMindMapComponent);
 			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_RIGHT_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_RIGHT_POSITION, -1);
 		}
 		else if ("left".equals(mLocationPreferenceValue)) {
-			mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pMindMapComponent, scrollPane);
+			mSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+			mSplitPane.setLeftComponent(pMindMapComponent);
+			mSplitPane.setRightComponent(scrollPane);
 			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LEFT_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_LEFT_POSITION, -1);
 		}
 		else if ("top".equals(mLocationPreferenceValue)) {
-			mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pMindMapComponent, scrollPane);
+			mSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+			mSplitPane.setLeftComponent(pMindMapComponent);
+			mSplitPane.setRightComponent(scrollPane);
 			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_TOP_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_TOP_POSITION, -1);
 		}
 		else if ("bottom".equals(mLocationPreferenceValue)) {
-			mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPane, pMindMapComponent);
+			mSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+			mSplitPane.setLeftComponent(scrollPane);
+			mSplitPane.setRightComponent(pMindMapComponent);
 			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_POSITION, -1);
 		}
@@ -210,8 +216,6 @@ class ApplicationViewController extends ViewController {
 		final KeyStroke keyStrokeF8 = KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0);
 		map.remove(keyStrokeF6);
 		map.remove(keyStrokeF8);
-		mContentComponent = mSplitPane;
-		setContentComponent();
 		if (splitPanePosition != -1 && lastSplitPanePosition != -1) {
 			mSplitPane.setDividerLocation(splitPanePosition);
 			mSplitPane.setLastDividerLocation(lastSplitPanePosition);
@@ -332,26 +336,13 @@ class ApplicationViewController extends ViewController {
 		return true;
 	}
 
-	private void removeContentComponent() {
-		if (mapViewManager != null) {
-			mapViewManager.removeContentComponent();
-		}
-		else {
-			getContentPane().remove(mContentComponent);
-			frame.getRootPane().revalidate();
-		}
-	}
-
 	@Override
 	public void removeSplitPane() {
-		if (mSplitPane == null) {
-			return;
-		}
 		saveSplitPanePosition();
-		removeContentComponent();
-		mContentComponent = getScrollPane();
-		setContentComponent();
-		mSplitPane = null;
+		final JScrollPane scrollPane = getScrollPane();
+		mSplitPane.setLeftComponent(null);
+		mSplitPane.setRightComponent(null);
+		mSplitPane.setLeftComponent(scrollPane);
 	}
 
 	@Override
@@ -389,16 +380,6 @@ class ApplicationViewController extends ViewController {
 		else { // "bottom".equals(mLocationPreferenceValue) also covered
 			resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
 			resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
-		}
-	}
-
-	private void setContentComponent() {
-		if (mapViewManager != null) {
-			mapViewManager.setContentComponent(mContentComponent);
-		}
-		else {
-			getContentPane().add(mContentComponent, BorderLayout.CENTER);
-			frame.getRootPane().revalidate();
 		}
 	}
 
