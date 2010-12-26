@@ -347,7 +347,7 @@ public class MTextController extends TextController {
 
 	public void setDetailsHidden(final NodeModel node, final boolean isHidden) {
 		DetailTextModel details = (DetailTextModel) node.getExtension(DetailTextModel.class);
-		if (details == null && isHidden == false || details.isHidden() == isHidden) {
+		if (details == null || details.isHidden() == isHidden) {
 			return;
 		}
 		final IActor actor = new IActor() {
