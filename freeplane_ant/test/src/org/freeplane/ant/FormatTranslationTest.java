@@ -140,6 +140,19 @@ public class FormatTranslationTest {
 	}
 
 	@Test
+	public void testPlaceholderCheck() throws Exception {
+		final FormatTranslation formatTranslation = new FormatTranslation();
+		String input;
+		ArrayList<String> lines = new ArrayList<String>();
+		//
+		input = "x = a {1} without a 0\n" //
+			+ "y = a $1 instead of a {0}";
+		// no actual test as long as those tests are not treated as failures
+		TaskUtils.checkEolStyleAndReadLines(input, lines, unix);
+		formatTranslation.processLines("a_file", new ArrayList<String>(lines));
+	}
+
+	@Test
 	public void testFormatTranslation() {
 		final FormatTranslation formatTranslation = new FormatTranslation();
 		final Project project = TaskUtils.createProject(formatTranslation);
@@ -149,7 +162,6 @@ public class FormatTranslationTest {
 		assertNotNull("system property TRANSLATIONS_SOURCE_DIR not set", TRANSLATIONS_SOURCE_DIR);
 		formatTranslation.setDir(TRANSLATIONS_SOURCE_DIR);
 		formatTranslation.setIncludes("Resources_*.properties");
-		//		formatTranslation.setOutputDir(FREEPLANE_BASE_DIR + "/freeplane/resources/translations/sorted");
 		formatTranslation.execute();
 		System.out.println("done");
 	}
