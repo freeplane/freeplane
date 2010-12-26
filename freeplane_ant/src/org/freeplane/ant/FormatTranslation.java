@@ -201,8 +201,11 @@ public class FormatTranslation extends Task {
 			if (keyValue[1].matches("(\\[auto\\]|\\[translate me\\])?")) {
 				warn(filename + ": empty translation: " + line);
 			}
-			else if (keyValue[1].indexOf("{1}") != -1 && keyValue[1].indexOf("{0}") == -1) {
+			if (keyValue[1].indexOf("{1}") != -1 && keyValue[1].indexOf("{0}") == -1) {
 				warn(filename + ": errorneous placeholders usage: {1} used without {0}: " + line);
+			}
+			if (keyValue[1].matches("\\$\\d")) {
+				warn(filename + ": use '{0}' instead of '$1' as placeholder (same for $2...): " + line);
 			}
 			final String thisKey = keyValue[0];
 			final String thisValue = keyValue[1];
