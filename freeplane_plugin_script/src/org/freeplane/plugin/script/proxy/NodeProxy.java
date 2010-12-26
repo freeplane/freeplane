@@ -110,7 +110,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// Node: R/W
 	public void setDetails(Object details) {
 		final MTextController textController = (MTextController) TextController.getController();
-		textController.setDetails(getDelegate(), convertConvertibleToHtml(details));
+		if (details == null) {
+			textController.setDetailsHidden(getDelegate(), false);
+			textController.setDetails(getDelegate(), null);
+		}
+		else{
+			textController.setDetails(getDelegate(), convertConvertibleToHtml(details));
+		}
 	}
 
 	// Node: R/W
