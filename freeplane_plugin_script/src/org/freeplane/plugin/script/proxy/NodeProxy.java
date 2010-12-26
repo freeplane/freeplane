@@ -113,6 +113,12 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		textController.setDetails(getDelegate(), convertConvertibleToHtml(details));
 	}
 
+	// Node: R/W
+	public void setHideDetails(boolean hide) {
+		MTextController controller = (MTextController) MTextController.getController();
+		controller.setDetailsHidden(getDelegate(), hide);
+    }
+
 	// NodeRO: R
 	public int getChildPosition(final Proxy.Node childNode) {
 		final NodeModel childNodeModel = ((NodeProxy) childNode).getDelegate();
@@ -134,14 +140,22 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return new ConnectorOutListProxy(this);
 	}
 
+	// NodeRO: R
 	public Convertible getDetails() {
 		return new ConvertibleText(getDelegate(), getScriptContext(),
 		    DetailTextModel.getDetailTextText(getDelegate()));
 	}
 	
+	// NodeRO: R
 	public String getDetailsText() {
 		return DetailTextModel.getDetailTextText(getDelegate());
 	}
+
+	// NodeRO: R
+	public boolean getHideDetails() {
+		final DetailTextModel detailText = DetailTextModel.getDetailText(getDelegate());
+		return detailText != null && detailText.isHidden();
+    }
 
 	// NodeRO: R
 	public Proxy.ExternalObject getExternalObject() {

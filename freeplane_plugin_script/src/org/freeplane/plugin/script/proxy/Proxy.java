@@ -439,9 +439,14 @@ public interface Proxy {
 		/** returns the raw HTML text of the details if there is any or null otherwise. @since 1.2 */
 		String getDetailsText();
 
-		/** returns the text of the details as a Convertible like {@link #getNote()} for notes. @since 1.2 */
+		/** returns the text of the details as a Convertible like {@link #getNote()} for notes.
+		 * @since 1.2 */
 		Convertible getDetails();
-		
+
+		/** returns true if node details are hidden.
+		 * @since 1.2 */
+		boolean getHideDetails();
+
 		ExternalObject getExternalObject();
 
 		Icons getIcons();
@@ -581,6 +586,10 @@ public interface Proxy {
 		 * @since 1.2
 		 */
 		void setDetails(Object details);
+
+		/** use node.hideDetails = true/false to control visibility of details.
+		 * @since 1.2 */
+		void setHideDetails(boolean hide);
 
 		void setFolded(boolean folded);
 
