@@ -42,29 +42,32 @@ final class SplitPaneLayoutManagerDecorator implements LayoutManager {
     }
 
     public Dimension preferredLayoutSize(Container parent) {
-    	setDividerVisible(parent);
-    	return lm.preferredLayoutSize(parent);
+	    final JSplitPane splitPane = (JSplitPane) parent;
+    	if(isDividerRequired(splitPane))
+    		return lm.preferredLayoutSize(parent);
+    	return splitPane.getLeftComponent().getPreferredSize();  		
     }
 
     public Dimension minimumLayoutSize(Container parent) {
-    	return lm.minimumLayoutSize(parent);
+	    final JSplitPane splitPane = (JSplitPane) parent;
+    	if(isDividerRequired(splitPane))
+    		return lm.minimumLayoutSize(parent);
+    	return splitPane.getLeftComponent().getMinimumSize();  		
     }
 
     public void layoutContainer(Container parent) {
-    	setDividerVisible(parent);
-    	lm.layoutContainer(parent);
+	    final JSplitPane splitPane = (JSplitPane) parent;
+    	if(isDividerRequired(splitPane)){
+        	lm.layoutContainer(parent);
+        	return;
+    	}
+    	splitPane.getLeftComponent().setBounds(0, 0, splitPane.getWidth(), splitPane.getHeight());  		
     }
 
-    private void setDividerVisible(Container parent) {
-    	final JSplitPane splitPane = (JSplitPane) parent;
-        final Component leftComponent = splitPane.getLeftComponent();
+	private boolean isDividerRequired(final JSplitPane splitPane) {
         final Component rightComponent = splitPane.getRightComponent();
-    	final boolean bothComponentsVisible = rightComponent != null&& rightComponent.isVisible();
-    	for(int i = 0; i < splitPane.getComponentCount(); i++){
-    		final Component c = splitPane.getComponent(i);
-    		if(c != leftComponent && c.isVisible() != bothComponentsVisible)
-    			c.setVisible(bothComponentsVisible);
-    	}
+    	final boolean rightComponentVisible = rightComponent != null&& rightComponent.isVisible();
+    	return rightComponentVisible;
     }
 
     public void addLayoutComponent(String name, Component comp) {
