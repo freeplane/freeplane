@@ -58,10 +58,15 @@ class SelectNoteAction extends AFreeplaneAction {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				final SHTMLPanel htmlEditorPanel = noteController.getHtmlEditorPanel();
-				htmlEditorPanel.getMostRecentFocusOwner().requestFocus();
-				if (ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")) {
-					final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
-					editorPane.setCaretPosition(editorPane.getDocument().getLength());
+				if (! noteController.isNoteEditorShowing()) {
+					noteController.showNotesPanel(true);
+				}
+				else {
+					htmlEditorPanel.getMostRecentFocusOwner().requestFocus();
+					if (ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")) {
+						final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
+						editorPane.setCaretPosition(editorPane.getDocument().getLength());
+					}
 				}
 			}
 		});
