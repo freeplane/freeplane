@@ -981,7 +981,7 @@ public class NodeView extends JComponent implements INodeView {
 	public void nodeChanged(final NodeChangeEvent event) {
 		final NodeModel node = event.getNode();
 		// is node is deleted, skip the rest.
-		if (!node.isRoot() && node.getParent() == null) {
+		if (!node.isRoot() && node.getParent() == null || mainView == null) {
 			return;
 		}
 		final Object property = event.getProperty();
