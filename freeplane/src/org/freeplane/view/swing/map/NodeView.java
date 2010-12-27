@@ -981,12 +981,16 @@ public class NodeView extends JComponent implements INodeView {
 	public void nodeChanged(final NodeChangeEvent event) {
 		final NodeModel node = event.getNode();
 		// is node is deleted, skip the rest.
-		if (!node.isRoot() && node.getParent() == null || mainView == null) {
+		if (!node.isRoot() && node.getParent() == null) {
 			return;
 		}
 		final Object property = event.getProperty();
 		if (property == NodeChangeType.FOLDING) {
 			treeStructureChanged();
+			return;
+		}
+		// is node is not fully initialized, skip the rest.
+		if (mainView == null) {
 			return;
 		}
 		if (property.equals(NodeModel.NODE_ICON) || property.equals(HierarchicalIcons.ICONS)) {
