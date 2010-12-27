@@ -69,7 +69,7 @@ public abstract class ASelectableCondition  implements ICondition{
     }
 
 	@Override
-    public String toString() {
+    final public String toString() {
     	if (description == null) {
     		description = createDesctiption();
     	}

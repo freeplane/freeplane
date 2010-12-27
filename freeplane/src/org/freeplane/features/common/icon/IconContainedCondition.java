@@ -99,13 +99,8 @@ public class IconContainedCondition extends ASelectableCondition {
 	}
 
 	@Override
-	public String toString() {
-		return TextUtils.getText("filter_icon") + " \"" + getIconName() + "\"";
-	}
-
-	@Override
     protected String createDesctiption() {
-	    return NAME;
+		return TextUtils.getText("filter_icon") + " \"" + getIconName() + "\"";
     }
 
 	@Override

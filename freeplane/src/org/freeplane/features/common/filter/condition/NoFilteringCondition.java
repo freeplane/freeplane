@@ -46,16 +46,11 @@ public class NoFilteringCondition extends ASelectableCondition {
 	}
 
 	@Override
-	public String toString() {
+    protected String createDesctiption() {
 		if (NoFilteringCondition.description == null) {
 			NoFilteringCondition.description = TextUtils.getText("filter_no_filtering");
 		}
 		return NoFilteringCondition.description;
-	}
-
-	@Override
-    protected String createDesctiption() {
-	    return NAME;
     }
 
 	@Override
