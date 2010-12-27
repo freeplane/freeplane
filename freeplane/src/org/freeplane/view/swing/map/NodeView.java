@@ -187,7 +187,7 @@ public class NodeView extends JComponent implements INodeView {
 	    }
     }
 
-	static private class ArrowIcon implements Icon{
+	private class ArrowIcon implements Icon{
 		final private boolean down;
 		final private Color color;
 		final private static int ARROW_HEIGTH = 5;
@@ -227,9 +227,12 @@ public class NodeView extends JComponent implements INodeView {
 			}
 			final Color oldColor = g.getColor();
 			g.setColor(color);
+			Graphics2D g2= (Graphics2D) g;
+			final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+			ModeController modeController = getMap().getModeController();
+			modeController.getController().getViewController().setEdgesRenderingHint(g2);
 			g.drawPolygon(xs, ys, 3); 
-			// Little trick to make the arrows of equal size
-			g.fillPolygon(xs, ys, 3);
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			g.setColor(oldColor);
         }
 		
