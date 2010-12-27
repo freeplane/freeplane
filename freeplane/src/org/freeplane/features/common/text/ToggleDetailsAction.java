@@ -29,7 +29,6 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 @SelectableAction(checkOnNodeChange=true)
-@EnabledAction(checkOnNodeChange=true)
 class ToggleDetailsAction extends AMultipleNodeAction {
 	/**
 	 * 
@@ -53,7 +52,7 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 			return false;
 		}
 		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
-		return detailText != null && detailText.isHidden();
+		return detailText != null ? detailText.isHidden() : isHidden;
     }
 
 	@Override
@@ -69,11 +68,5 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 	@Override
 	public void setSelected() {
 		setSelected(!isHidden());
-	}
-	
-	@Override
-	public void setEnabled() {
-		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		setEnabled(node != null && DetailTextModel.getDetailText(node) != null);
 	}
 }
