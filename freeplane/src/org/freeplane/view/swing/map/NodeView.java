@@ -81,6 +81,8 @@ import org.freeplane.view.swing.map.edge.EdgeViewFactory;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DefaultMapMouseReceiver;
 
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
+
 /**
  * This class represents a single Node of a MindMap (in analogy to
  * TreeCellRenderer).
@@ -189,17 +191,15 @@ public class NodeView extends JComponent implements INodeView {
 
 	private class ArrowIcon implements Icon{
 		final private boolean down;
-		final private Color color;
 		final private static int ARROW_HEIGTH = 5;
 		final private static int ARROW_HALF_WIDTH = 4;
 		final private static int ICON_HEIGTH = ARROW_HEIGTH + 2;
 		final private static int ICON_WIDTH = 1 + ARROW_HALF_WIDTH * 2 + 1;
 		
 
-		public ArrowIcon(Color color, boolean down) {
+		public ArrowIcon(boolean down) {
 	        super();
 	        this.down = down;
-	        this.color = color;
         }
 
 		public int getIconHeight() {
@@ -226,6 +226,7 @@ public class NodeView extends JComponent implements INodeView {
 				ys[1] = ys[2] = 1 + ARROW_HEIGTH;
 			}
 			final Color oldColor = g.getColor();
+			final Color color = EdgeController.getController(getMap().getModeController()).getColor(model);
 			g.setColor(color);
 			Graphics2D g2= (Graphics2D) g;
 			final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
@@ -249,24 +250,18 @@ public class NodeView extends JComponent implements INodeView {
 			detailContent = createDetailView();
 			addContent(detailContent, DETAIL_VIEWER_POSITION);
 		}
-		Color arrowColor = getArrowColor();
-		if (detailText.isHidden()) {
+			if (detailText.isHidden()) {
 			detailContent.updateText("");
-			detailContent.setIcon(new ArrowIcon(arrowColor, true));
+			detailContent.setIcon(new ArrowIcon(true));
 		}
 		else {
 			detailContent.updateText(detailText.getHtml());
 			detailContent.setFont(mainView.getFont());
 			detailContent.setForeground(mainView.getForeground());
 			detailContent.setBackground(mainView.getBackground());
-			detailContent.setIcon(new ArrowIcon(arrowColor, false));
+			detailContent.setIcon(new ArrowIcon(false));
 		}
 	}
-
-	private Color getArrowColor() {
-		final Color backgroundColor = getBackgroundColor();
-	    return UITools.getTextColorForBackground(backgroundColor);
-    }
 
 	private DetailsView createDetailView() {
 	    DetailsView detailContent =  new DetailsView();
