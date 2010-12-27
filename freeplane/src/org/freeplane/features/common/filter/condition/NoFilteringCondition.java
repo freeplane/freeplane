@@ -46,7 +46,7 @@ public class NoFilteringCondition extends ASelectableCondition {
 	}
 
 	@Override
-    protected String createDesctiption() {
+    protected String createDescription() {
 		if (NoFilteringCondition.description == null) {
 			NoFilteringCondition.description = TextUtils.getText("filter_no_filtering");
 		}

@@ -61,7 +61,7 @@ class NodeLevelCompareCondition extends CompareConditionAdapter {
 	}
 
 	@Override
-	protected String createDesctiption() {
+	protected String createDescription() {
 		final String nodeCondition = TextUtils.getText(NodeLevelConditionController.FILTER_LEVEL);
 		return super.createDescription(nodeCondition, comparationResult, succeed);
 	}

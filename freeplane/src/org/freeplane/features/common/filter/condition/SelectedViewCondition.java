@@ -49,7 +49,7 @@ public class SelectedViewCondition extends ASelectableCondition {
 	}
 
 	@Override
-    protected String createDesctiption() {
+    protected String createDescription() {
 		if (SelectedViewCondition.description == null) {
 			SelectedViewCondition.description = TextUtils.getText("filter_selected_node_view");
 		}

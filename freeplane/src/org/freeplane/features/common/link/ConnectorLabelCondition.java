@@ -85,7 +85,7 @@ public abstract class ConnectorLabelCondition extends ASelectableCondition {
 		return false;
 	}
 
-	abstract protected String createDesctiption();
+	abstract protected String createDescription();
 
 	protected abstract String getName();
 

@@ -41,7 +41,7 @@ public class HyperLinkContainsCondition extends HyperLinkCondition {
 	}
 
 	@Override
-	protected String createDesctiption() {
+	protected String createDescription() {
 		final String condition = TextUtils.getText(LinkConditionController.FILTER_LINK);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), false);

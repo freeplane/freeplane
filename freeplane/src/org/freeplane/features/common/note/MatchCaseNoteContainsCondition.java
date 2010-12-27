@@ -50,11 +50,11 @@ public class MatchCaseNoteContainsCondition extends ASelectableCondition {
 	}
 
 	@Override
-	protected String createDesctiption() {
-		return createDesctiption(true);
+	protected String createDescription() {
+		return createDescription(true);
 	}
 
-	protected String createDesctiption(final boolean matchCase) {
+	protected String createDescription(final boolean matchCase) {
 		final String nodeCondition = TextUtils.getText(NoteConditionController.FILTER_NOTE);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, matchCase);

@@ -34,14 +34,14 @@ public class ScriptCondition extends ASelectableCondition {
         }
 		System.out.println(this + ": got '" + result + "' for " + node);
 		if (result == null || !(result instanceof Boolean)) {
-			throw new RuntimeException(TextUtils.format(SCRIPT_FILTER_ERROR_RESOURCE, createDesctiption(),
+			throw new RuntimeException(TextUtils.format(SCRIPT_FILTER_ERROR_RESOURCE, createDescription(),
 			    node.toString(), String.valueOf(result)));
 		}
 		return (Boolean) result;
 	}
 
 	@Override
-	protected String createDesctiption() {
+	protected String createDescription() {
 		return TextUtils.format(SCRIPT_FILTER_DESCRIPTION_RESOURCE, script);
 	}
 

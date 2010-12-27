@@ -42,7 +42,7 @@ public class TimeConditionCreatedAfter extends TimeConditionCreatedBefore {
 	}
 
 	@Override
-	protected String createDesctiption() {
+	protected String createDescription() {
 		final String filterTime = TextUtils.getText(TimeConditionController.FILTER_TIME);
 		final String dateAsString = TimeCondition.format(getDate());
 		final String before = TextUtils.getText(FILTER_CREATED_AFTER);

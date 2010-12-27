@@ -47,7 +47,7 @@ public class SelectedViewSnapshotCondition extends ASelectableCondition {
 	}
 
 	@Override
-    protected String createDesctiption() {
+    protected String createDescription() {
 		if (SelectedViewSnapshotCondition.description == null) {
 			SelectedViewSnapshotCondition.description = TextUtils.getText("filter_selected_node_view_snapshot");
 		}

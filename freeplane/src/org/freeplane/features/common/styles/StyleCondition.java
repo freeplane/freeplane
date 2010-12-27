@@ -38,7 +38,7 @@ public class StyleCondition extends ASelectableCondition {
 		return null;
 	}
 
-	protected String createDesctiption() {
+	protected String createDescription() {
 		final String filterStyle = TextUtils.getText(LogicalStyleFilterController.FILTER_STYLE);
 		return filterStyle + " '" + value.toString() + '\'';
 	}

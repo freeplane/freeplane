@@ -62,7 +62,7 @@ public class AttributeExistsCondition extends ASelectableCondition {
 	}
 
 	@Override
-	protected String createDesctiption() {
+	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_EXIST);
 		return ConditionFactory.createDescription(attribute, simpleCondition, null, false);
 	}

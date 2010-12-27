@@ -85,7 +85,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	}
 
 	@Override
-	protected String createDesctiption() {
+	protected String createDescription() {
 		return super.createDescription(attribute, comparationResult, succeed);
 	}
 
