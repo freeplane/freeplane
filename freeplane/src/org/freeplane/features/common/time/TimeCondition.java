@@ -58,7 +58,7 @@ public abstract class TimeCondition extends ASelectableCondition {
 		this.date = date;
 	}
 
-	abstract protected String createDesctiption();
+	abstract protected String createDescription();
 
 	public Date getDate() {
 		return date;

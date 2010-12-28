@@ -89,7 +89,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 	}
 
 	@Override
-	protected String createDesctiption() {
+	protected String createDescription() {
 		final String priorityCondition = TextUtils.getText(PriorityConditionController.FILTER_PRIORITY);
 		return super.createDescription(priorityCondition, comparationResult, succeed);
 	}

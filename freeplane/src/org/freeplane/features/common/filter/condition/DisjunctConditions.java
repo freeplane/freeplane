@@ -104,7 +104,7 @@ public class DisjunctConditions extends ASelectableCondition implements ICombine
 	}
 
 	@Override
-    protected String createDesctiption() {
+    protected String createDescription() {
 	    return NAME;
     }
 

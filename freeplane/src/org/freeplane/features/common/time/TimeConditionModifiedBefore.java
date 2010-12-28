@@ -44,7 +44,7 @@ public class TimeConditionModifiedBefore extends TimeCondition {
 	}
 
 	@Override
-	protected String createDesctiption() {
+	protected String createDescription() {
 		final String filterTime = TextUtils.getText(TimeConditionController.FILTER_TIME);
 		final String dateAsString = TimeCondition.format(getDate());
 		final String before = TextUtils.getText(FILTER_MODIFIED_BEFORE);

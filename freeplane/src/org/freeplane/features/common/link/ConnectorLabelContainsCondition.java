@@ -61,7 +61,7 @@ public class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 	}
 
 	@Override
-	protected String createDesctiption() {
+	protected String createDescription() {
 		final String condition = TextUtils.getText(LinkConditionController.CONNECTOR_LABEL);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(condition, simpleCondition, getText(), matchCase());

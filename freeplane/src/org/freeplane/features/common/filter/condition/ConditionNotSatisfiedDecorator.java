@@ -88,7 +88,7 @@ public class ConditionNotSatisfiedDecorator extends ASelectableCondition impleme
 	}
 
 	@Override
-    protected String createDesctiption() {
+    protected String createDescription() {
 	    return NAME;
     }
 

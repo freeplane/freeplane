@@ -40,7 +40,7 @@ public class ConnectorExistsCondition extends ConnectorLabelCondition {
 	}
 
 	@Override
-	protected String createDesctiption() {
+	protected String createDescription() {
 		final String condition = TextUtils.getText(LinkConditionController.CONNECTOR);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_EXIST);
 		return ConditionFactory.createDescription(condition, simpleCondition, getText(), matchCase());

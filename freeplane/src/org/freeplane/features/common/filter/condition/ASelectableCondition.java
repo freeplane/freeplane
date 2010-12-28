@@ -59,7 +59,7 @@ public abstract class ASelectableCondition  implements ICondition{
 	        return super.equals(obj);
         }
     }
-	protected abstract String createDesctiption();
+	protected abstract String createDescription();
 	
 	final public JComponent getListCellRendererComponent() {
 		if (renderer == null) {
@@ -81,7 +81,7 @@ public abstract class ASelectableCondition  implements ICondition{
 	@Override
     final public String toString() {
     	if (description == null) {
-    		description = createDesctiption();
+    		description = createDescription();
     	}
     	return description;
     }

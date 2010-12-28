@@ -20,7 +20,7 @@ public class RootCondition extends ASelectableCondition {
     }
 
 	@Override
-    protected String createDesctiption() {
+    protected String createDescription() {
 	    return TextUtils.getText(NodeLevelConditionController.FILTER_ROOT);
     }
 }

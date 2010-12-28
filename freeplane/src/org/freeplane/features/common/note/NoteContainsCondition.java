@@ -37,8 +37,8 @@ public class NoteContainsCondition extends MatchCaseNoteContainsCondition {
 	}
 
 	@Override
-	protected String createDesctiption() {
-		return createDesctiption(false);
+	protected String createDescription() {
+		return createDescription(false);
 	}
 
 	@Override

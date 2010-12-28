@@ -41,7 +41,7 @@ public class PeriodicLevelCondition extends ASelectableCondition {
 	}
 
 	@Override
-    protected String createDesctiption() {
+    protected String createDescription() {
 	    return TextUtils.format("periodic_formula", period, remainder);
     }
 

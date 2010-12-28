@@ -70,7 +70,7 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 	}
 
 	@Override
-	protected String createDesctiption() {
+	protected String createDescription() {
 		final String nodeCondition = TextUtils.getText(nodeItem);
 		return super.createDescription(nodeCondition, comparationResult, succeed);
 	}
