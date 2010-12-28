@@ -77,7 +77,8 @@ public class ConditionNotSatisfiedDecorator extends ASelectableCondition impleme
 		final String not = TextUtils.removeMnemonic(TextUtils.getText("filter_not"));
 		final String text = not + ' ';
 		component.add(new JLabel(text));
-		final JComponent renderer = originalCondition.createRendererComponent();
+		originalCondition.getUserName();
+		final JComponent renderer = originalCondition.createShortRendererComponent();
 		component.add(renderer);
 		return component;
 	}

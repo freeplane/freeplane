@@ -79,11 +79,11 @@ public class DisjunctConditions extends ASelectableCondition implements ICombine
 	 * freeplane.controller.filter.condition.Condition#getListCellRendererComponent
 	 * ()
 	 */
-	public JComponent createRendererComponent() {
+	protected JComponent createRendererComponent() {
 		final JCondition component = new JCondition();
 		component.add(new JLabel("("));
 		ASelectableCondition cond = conditions[0];
-		JComponent rendererComponent = cond.createRendererComponent();
+		JComponent rendererComponent = cond.createShortRendererComponent();
 		component.add(rendererComponent);
 		for (int i = 1; i < conditions.length; i++) {
 			final String or = TextUtils.removeMnemonic(TextUtils.getText("filter_or"));

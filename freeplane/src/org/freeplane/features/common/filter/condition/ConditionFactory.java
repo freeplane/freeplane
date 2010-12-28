@@ -94,7 +94,14 @@ public class ConditionFactory {
 	}
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
-		if (element.getName().equalsIgnoreCase(ConditionNotSatisfiedDecorator.NAME)) {
+		final ASelectableCondition condition = loadCondition2(element);
+		final String userName = element.getAttribute("user_name", null);
+		condition.setUserName(userName);
+		return condition;
+	}
+
+	private ASelectableCondition loadCondition2(final XMLElement element) {
+	    if (element.getName().equalsIgnoreCase(ConditionNotSatisfiedDecorator.NAME)) {
 			return ConditionNotSatisfiedDecorator.load(this, element);
 		}
 		if (element.getName().equalsIgnoreCase(ConjunctConditions.NAME)) {
@@ -111,7 +118,7 @@ public class ConditionFactory {
 			}
 		}
 		return null;
-	}
+    }
 
 	public IElementaryConditionController removeConditionController(final int position,
 	                                                                final IElementaryConditionController controller) {

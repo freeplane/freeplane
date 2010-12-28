@@ -1,8 +1,11 @@
 package org.freeplane.features.common.filter.condition;
 
+import java.awt.Font;
 import java.lang.reflect.Method;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -10,6 +13,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public abstract class ASelectableCondition  implements ICondition{
 	transient private String description;
 	transient private JComponent renderer;
+	private String userName;
 	private static Method EQUALS;
 	private static Method HASH;
 	static{
@@ -60,6 +64,12 @@ public abstract class ASelectableCondition  implements ICondition{
 	final public JComponent getListCellRendererComponent() {
 		if (renderer == null) {
 			renderer = createRendererComponent();
+			if(userName != null){
+				final JCondition jCondition = new JCondition();
+				jCondition.add(new JLabel(userName + " : "));
+				jCondition.add(renderer);
+				renderer = jCondition;
+			}
 		}
 		return renderer;
 	}
@@ -79,6 +89,9 @@ public abstract class ASelectableCondition  implements ICondition{
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(getName());
+		if(userName != null){
+			child.setAttribute("user_name", userName);
+		}
 		fillXML(child);
 		element.addChild(child);
 	}
@@ -86,5 +99,27 @@ public abstract class ASelectableCondition  implements ICondition{
 	protected void fillXML(XMLElement element){}
 
 	abstract protected String getName();
+
+
+	public void setUserName(String userName) {
+		if(userName == this.userName || userName != null && userName.equals(this.userName))
+			return;
+	    this.userName = userName;
+	    renderer = null;
+    }
+
+
+	public String getUserName() {
+	    return userName;
+    }
+
+
+	protected JComponent createShortRendererComponent() {
+		if(userName == null){
+			return createRendererComponent();
+		}
+		final JLabel label = new JLabel('"' + userName + '"');
+		return label;
+    }
 
 }
