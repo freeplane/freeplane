@@ -200,7 +200,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		add(scrollPane);
 		add(createQuestion());
 		add(createButtonBar());
-		getRootPane().setDefaultButton(btnSkip);
+		getRootPane().setDefaultButton(btnOpen);
 		pack();
 		setLocationRelativeTo(UITools.getFrame());
 		setVisible(true);
