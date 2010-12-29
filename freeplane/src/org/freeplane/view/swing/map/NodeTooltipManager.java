@@ -9,6 +9,10 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -100,18 +104,15 @@ public class NodeTooltipManager{
 		if (insideComponent == null || !insideComponent.isShowing())
 			return;
 		tip = insideComponent.createToolTip();
-		tip.addAncestorListener(new AncestorListener() {
-			public void ancestorRemoved(AncestorEvent event) {
-			}
-			
-			public void ancestorMoved(AncestorEvent event) {
-			}
-			
-			public void ancestorAdded(AncestorEvent event) {
-				final NodeTooltip component = (NodeTooltip) event.getComponent();
+		tip.addComponentListener(new ComponentAdapter() {
+
+			@Override
+            public void componentResized(ComponentEvent e) {
+				final NodeTooltip component = (NodeTooltip) e.getComponent();
 				component.scrollUp();
-				component.removeAncestorListener(this);
-			}
+				component.removeComponentListener(this);
+            }
+			
 		});
 //	    InputMap inputMap = tip.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 //	    ActionMap actionMap = tip.getActionMap();
