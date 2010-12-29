@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.common.filter.condition;
 
-import javax.swing.JComponent;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -28,7 +27,6 @@ public class NoFilteringCondition extends ASelectableCondition {
 	private static final String NAME = "no_filtering_condition";
 	private static NoFilteringCondition condition;
 	private static String description;
-	private static JComponent renderer;
 
 	public static ASelectableCondition createCondition() {
 		if (NoFilteringCondition.condition == null) {

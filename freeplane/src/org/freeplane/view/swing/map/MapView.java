@@ -83,7 +83,6 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapStyleModel;

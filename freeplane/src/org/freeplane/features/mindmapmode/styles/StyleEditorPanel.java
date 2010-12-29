@@ -258,10 +258,7 @@ public class StyleEditorPanel extends JPanel {
 
 	private class StyleChangeListener implements PropertyChangeListener{
 
-		final private Container styleBox;
-
-		public StyleChangeListener(Container styleBox) {
-	        this.styleBox = styleBox;
+		public StyleChangeListener() {
         }
 
 		public void propertyChange(PropertyChangeEvent evt) {
@@ -573,7 +570,7 @@ public class StyleEditorPanel extends JPanel {
 	    mStyleBox = uiFactory.createStyleBox();
 	    rightBuilder.nextLine();
 	    mSetStyle = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
-		final StyleChangeListener listener = new StyleChangeListener(mStyleBox);
+		final StyleChangeListener listener = new StyleChangeListener();
 		mSetStyle.addPropertyChangeListener(listener);
 		mSetStyle.layout(rightBuilder);
 	    rightBuilder.append(new JLabel(TextUtils.getText("style")));

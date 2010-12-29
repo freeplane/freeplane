@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.common.filter.condition;
 
-import javax.swing.JComponent;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.util.TextUtils;
@@ -30,7 +28,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class SelectedViewCondition extends ASelectableCondition {
 	private static final String NAME = "selected_view_condition";
 	private static String description;
-	private static JComponent renderer;
 
 	public static ASelectableCondition CreateCondition() {
 		return new SelectedViewCondition();

@@ -81,8 +81,6 @@ import org.freeplane.view.swing.map.edge.EdgeViewFactory;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DefaultMapMouseReceiver;
 
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
-
 /**
  * This class represents a single Node of a MindMap (in analogy to
  * TreeCellRenderer).

@@ -1,9 +1,7 @@
 package org.freeplane.features.common.filter.condition;
 
-import java.awt.Font;
 import java.lang.reflect.Method;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 

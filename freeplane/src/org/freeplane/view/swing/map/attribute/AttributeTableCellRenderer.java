@@ -19,7 +19,6 @@
  */
 package org.freeplane.view.swing.map.attribute;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -37,7 +36,6 @@ import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.text.TextController;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
-	private static final BasicStroke AUTO_TEXT_STROKE = new  BasicStroke(2);
 	/**
 	 * 
 	 */

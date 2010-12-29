@@ -55,7 +55,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.features.common.filter.condition.ConjunctConditions;
 import org.freeplane.features.common.filter.condition.DisjunctConditions;

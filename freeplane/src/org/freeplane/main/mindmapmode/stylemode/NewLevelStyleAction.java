@@ -30,7 +30,6 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.styles.StyleFactory;
-import org.freeplane.features.common.styles.StyleNamedObject;
 import org.freeplane.features.mindmapmode.map.MMapController;
 
 /**

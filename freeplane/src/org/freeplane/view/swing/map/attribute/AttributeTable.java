@@ -19,7 +19,6 @@
  */
 package org.freeplane.view.swing.map.attribute;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -189,7 +188,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	final private AttributeView attributeView;
 	private int highRowIndex = 0;
 	private static DefaultCellEditor dce;
-	private static final Color mediumGreen = new Color(0, 210, 0);
 
 	AttributeTable(final AttributeView attributeView) {
 		super();
