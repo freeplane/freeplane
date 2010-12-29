@@ -29,7 +29,6 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.browsemode.BModeController;
-import org.freeplane.features.browsemode.BNodeNoteViewer;
 import org.freeplane.features.browsemode.BToolbarContributor;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
@@ -82,7 +81,6 @@ public class BModeControllerFactory {
 		}
 		LocationController.install(new LocationController());
 		new MapStyle(true);
-		modeController.getMapController().addNodeSelectionListener(new BNodeNoteViewer());
 		final BToolbarContributor toolbarContributor = new BToolbarContributor();
 		modeController.addMenuContributor(toolbarContributor);
 		controller.getMapViewManager().addMapViewChangeListener(toolbarContributor);
