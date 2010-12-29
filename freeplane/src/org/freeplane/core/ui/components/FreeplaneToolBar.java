@@ -22,6 +22,7 @@ package org.freeplane.core.ui.components;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.LayoutManager;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
 
@@ -47,7 +48,7 @@ public class FreeplaneToolBar extends JToolBar {
 		setFloatable(false);
 		setRollover(true);
 		if (orientation == HORIZONTAL) {
-			setLayout(ToolbarLayout.getInstance());
+			super.setLayout(ToolbarLayout.getInstance());
 			addHierarchyBoundsListener(new HierarchyBoundsListener() {
 				public void ancestorResized(final HierarchyEvent e) {
 					revalidate();
@@ -59,6 +60,16 @@ public class FreeplaneToolBar extends JToolBar {
 			});
 		}
 	}
+	
+	
+
+	@Override
+    public void setLayout(LayoutManager mgr) {
+		if (getOrientation() != HORIZONTAL)
+			super.setLayout(mgr);
+    }
+
+
 
 	@Override
 	public Component add(final Component comp) {

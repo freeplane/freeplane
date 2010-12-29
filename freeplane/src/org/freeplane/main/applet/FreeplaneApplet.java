@@ -67,22 +67,23 @@ public class FreeplaneApplet extends JApplet {
 
 		@Override
         protected void processMouseEvent(MouseEvent e) {
-			if (e.getID() == MouseEvent.MOUSE_CLICKED){ 
-				Controller currentController = Controller.getCurrentController();
-				if( controller != currentController ){
-					if(! appletLock.tryLock()){
-						return;
-					}
-					Controller.setCurrentController(controller);
-					appletLock.unlock();
-					JOptionPane.getFrameForComponent(this).getMostRecentFocusOwner().requestFocus();
-					if(currentController != null){
-						currentController.getViewController().getRootPaneContainer().getGlassPane().setVisible(true);
-					}
-				}
-				setVisible(false);
+			if (e.getID() == MouseEvent.MOUSE_EXITED){
+				return;
 			}
-        }
+			Controller currentController = Controller.getCurrentController();
+			if( controller != currentController ){
+				if(! appletLock.tryLock()){
+					return;
+				}
+				Controller.setCurrentController(controller);
+				appletLock.unlock();
+				JOptionPane.getFrameForComponent(this).getMostRecentFocusOwner().requestFocus();
+				if(currentController != null){
+					currentController.getViewController().getRootPaneContainer().getGlassPane().setVisible(true);
+				}
+			}
+			setVisible(false);
+		}
 	}
 	
 	private AppletResourceController appletResourceController;
