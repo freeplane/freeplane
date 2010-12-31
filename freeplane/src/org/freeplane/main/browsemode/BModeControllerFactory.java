@@ -64,7 +64,7 @@ public class BModeControllerFactory {
 		controller.selectModeForBuild(modeController);
 		modeController.setMapController(new MapController());
 		UrlManager.install(new UrlManager());
-		AttributeController.install(new AttributeController());
+		AttributeController.install(new AttributeController(modeController));
 		LinkController.install(new LinkController());
 		IconController.install(new IconController(modeController));
 		NodeStyleController.install(new NodeStyleController(modeController));

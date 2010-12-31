@@ -316,15 +316,16 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	/**
+	 * @param modeController 
 	 */
-	public String getToolTip() {
+	public String getToolTip(final ModeController modeController) {
 		if (toolTip == null) {
 			return null;
 		}
 		final StringBuilder text = new StringBuilder("<html><table>");
 		boolean tooltipSet = false;
 		for (ITooltipProvider provider : toolTip.values()) {
-			String value = provider.getTooltip();
+			String value = provider.getTooltip(modeController);
 			if (value == null) {
 				continue;
 			}

@@ -126,7 +126,7 @@ class ZoomableLabelUI extends BasicLabelUI {
 	    try {
 	        super.propertyChange(e);
         }
-        catch (AccessControlException e1) {
+        catch (Exception e1) {
 	        e1.printStackTrace();
         }
 		GlyphPainterMetricResetter.resetPainter();

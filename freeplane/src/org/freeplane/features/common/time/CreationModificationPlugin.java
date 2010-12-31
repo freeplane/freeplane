@@ -33,6 +33,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.HistoryInformationModel;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.ITooltipProvider;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -148,7 +149,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 		final ITooltipProvider tooltipProvider;
 		if (value != null) {
 			tooltipProvider = new ITooltipProvider() {
-				public String getTooltip() {
+				public String getTooltip(ModeController modeController) {
 					return value;
 				}
 			};

@@ -150,7 +150,7 @@ public class MAttributeController extends AttributeController {
 		}
 	}
 
-	private static class InsertAttributeActor implements IActor {
+	private class InsertAttributeActor implements IActor {
 		private final NodeAttributeTableModel model;
 		private final String name;
 		private final int row;
@@ -167,7 +167,7 @@ public class MAttributeController extends AttributeController {
 		public void act() {
 			final Attribute newAttribute = new Attribute(name, value);
 			model.getAttributes().add(row, newAttribute);
-			model.setStateIcon();
+			setStateIcon(model);
 			model.fireTableRowsInserted(row, row);
 		}
 
@@ -177,7 +177,7 @@ public class MAttributeController extends AttributeController {
 
 		public void undo() {
 			model.getAttributes().remove(row);
-			model.setStateIcon();
+			setStateIcon(model);
 			model.fireTableRowsDeleted(row, row);
 		}
 	}
@@ -268,7 +268,7 @@ public class MAttributeController extends AttributeController {
 		}
 	}
 
-	private static class RemoveAttributeActor implements IActor {
+	private class RemoveAttributeActor implements IActor {
 		final private InsertAttributeActor insertActor;
 
 		private RemoveAttributeActor(final NodeAttributeTableModel model, final int row) {
@@ -508,11 +508,9 @@ public class MAttributeController extends AttributeController {
 	}
 
 	InsertAttributeActor insertAttributeActor;
-// 	final private ModeController modeController;
 
-	public MAttributeController() {
-		super();
-//		this.modeController = modeController;
+	public MAttributeController(final ModeController modeController) {
+		super(modeController);
 		createActions();
 	}
 

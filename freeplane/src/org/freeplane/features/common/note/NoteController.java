@@ -121,7 +121,7 @@ public class NoteController implements IExtension {
 		if (noteText == null) 
 			return;
 		(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip() {
+			public String getTooltip(ModeController modeController) {
 				if(showNotesInMap(node.getMap()) && ! TextController.getController().getIsShortened(node)){
 					return null;
 				}

@@ -24,16 +24,28 @@ import org.freeplane.core.controller.IMapLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.icon.UIIcon;
+import org.freeplane.features.common.icon.factory.IconStoreFactory;
+import org.freeplane.features.common.map.ITooltipProvider;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 
 /**
  * @author Dimitry Polivaev 22.11.2008
  */
 public class AttributeController implements IExtension {
+	private static final Integer ATTRIBUTE_TOOLTIP = 7;
+	static private UIIcon attributeIcon = null;
+	private static final String STATE_ICON = "AttributeExist";
+	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
+	    .getBooleanProperty("formula_dont_mark_formulas");;
 	public static AttributeController getController() {
 		return getController(Controller.getCurrentModeController());
 	}
@@ -46,10 +58,10 @@ public class AttributeController implements IExtension {
 		Controller.getCurrentModeController().addExtension(AttributeController.class, attributeController);
 	}
 
-// 	final private ModeController modeController;
+ 	final private ModeController modeController;
 
-	public AttributeController() {
-//		this.modeController = modeController;
+	public AttributeController(final ModeController modeController) {
+		this.modeController = modeController;
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -137,4 +149,75 @@ public class AttributeController implements IExtension {
 	public void performSetVisibility(final int index, final boolean isVisible) {
 		throw new UnsupportedOperationException();
 	}
+
+	public void setStateIcon(NodeAttributeTableModel attributes) {
+		final NodeModel node = attributes.getNode();
+		final boolean showIcon = ResourceController.getResourceController().getBooleanProperty(
+		    "show_icon_for_attributes");
+		if (showIcon && attributes.getRowCount() == 0) {
+			node.removeStateIcons(STATE_ICON);
+		}
+		if (showIcon && attributes.getRowCount() == 1) {
+			if (attributeIcon == null) {
+				attributeIcon = IconStoreFactory.create().getUIIcon("showAttributes.png");
+			}
+			node.setStateIcon(STATE_ICON, attributeIcon, true);
+		}
+		setTooltip(attributes);
+	}
+
+	// FIXME: isn't this view logic?
+	protected void setTooltip(final NodeAttributeTableModel attributes) {
+		final NodeModel node = attributes.getNode();
+		final int rowCount = attributes.getRowCount();
+		if (rowCount == 0) {
+			node.setToolTip(ATTRIBUTE_TOOLTIP, null);
+			return;
+		}
+		if (rowCount == 1) {
+			node.setToolTip(ATTRIBUTE_TOOLTIP, new ITooltipProvider() {
+				public String getTooltip(ModeController modeController) {
+					final AttributeRegistry registry = AttributeRegistry.getRegistry(node.getMap());
+					final TextController textController = TextController.getController(modeController);
+					if (registry.getAttributeViewType().equals(AttributeTableLayoutModel.SHOW_ALL)
+							&& ! textController.getIsShortened(node)) {
+						return null;
+					}
+					final StringBuilder tooltip = new StringBuilder();
+					tooltip.append("<html><body><table  border=\"1\">");
+					final int currentRowCount = attributes.getRowCount();
+					for (int i = 0; i < currentRowCount; i++) {
+						tooltip.append("<tr><td>");
+						tooltip.append(attributes.getValueAt(i, 0));
+						tooltip.append("</td><td>");
+						tooltip.append(getTransformedValue(textController, String.valueOf(attributes.getValueAt(i, 1))));
+						tooltip.append("</td></tr>");
+					}
+					tooltip.append("</table></body></html>");
+					return tooltip.toString();
+				}
+
+				private String getTransformedValue(final TextController textController, final String originalText) {
+					try {
+						final String text = textController.getTransformedText(originalText, node);
+						if (!DONT_MARK_FORMULAS && text != originalText)
+							return colorize(text, "green");
+						else
+							return text;
+					}
+					catch (Throwable e) {
+						LogUtils.warn(e.getMessage(), e);
+						return colorize(
+						    TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
+						        .replace("\n", "<br>"), "red");
+					}
+				}
+
+				private String colorize(final String text, String color) {
+					return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";
+				}
+			});
+		}
+	}
+
 }

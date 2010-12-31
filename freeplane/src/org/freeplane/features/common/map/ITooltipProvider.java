@@ -24,5 +24,5 @@ package org.freeplane.features.common.map;
  * 06.06.2009
  */
 public interface ITooltipProvider {
-	String getTooltip();
+	String getTooltip(ModeController modeController);
 }

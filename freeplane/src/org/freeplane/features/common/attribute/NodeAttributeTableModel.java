@@ -29,30 +29,17 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.icon.UIIcon;
-import org.freeplane.features.common.icon.factory.IconStoreFactory;
-import org.freeplane.features.common.map.ITooltipProvider;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  */
 public class NodeAttributeTableModel implements IExtension, IAttributeTableModel, TableModel {
-	private static final Integer ATTRIBUTE_TOOLTIP = 7;
 	private static final int CAPACITY_INCREMENT = 10;
 	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(null);
-	static private UIIcon attributeIcon = null;
-	private static final String STATE_ICON = "AttributeExist";
-	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
-	    .getBooleanProperty("formula_dont_mark_formulas");;
 
 	public static NodeAttributeTableModel getModel(final NodeModel node) {
 		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) node
@@ -81,7 +68,6 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		final AttributeRegistry registry = AttributeRegistry.getRegistry(node.getMap());
 		registry.registry(newAttribute);
 		attributes.add(newAttribute);
-		setStateIcon();
 		fireTableRowsInserted(index, index);
 	}
 
@@ -304,74 +290,6 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		final Attribute attr = attributes.get(row);
 		attr.setName(newName.toString());
 		fireTableRowsUpdated(row, row);
-	}
-
-	public void setStateIcon() {
-		final boolean showIcon = ResourceController.getResourceController().getBooleanProperty(
-		    "show_icon_for_attributes");
-		if (showIcon && getRowCount() == 0) {
-			node.removeStateIcons(NodeAttributeTableModel.STATE_ICON);
-		}
-		if (showIcon && getRowCount() == 1) {
-			if (NodeAttributeTableModel.attributeIcon == null) {
-				NodeAttributeTableModel.attributeIcon = IconStoreFactory.create().getUIIcon("showAttributes.png");
-			}
-			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.attributeIcon, true);
-		}
-		setTooltip();
-	}
-
-	// FIXME: isn't this view logic?
-	protected void setTooltip() {
-		final int rowCount = getRowCount();
-		if (rowCount == 0) {
-			node.setToolTip(ATTRIBUTE_TOOLTIP, null);
-			return;
-		}
-		if (rowCount == 1) {
-			node.setToolTip(ATTRIBUTE_TOOLTIP, new ITooltipProvider() {
-				public String getTooltip() {
-					final AttributeRegistry registry = AttributeRegistry.getRegistry(node.getMap());
-					final TextController textController = TextController.getController();
-					if (registry.getAttributeViewType().equals(AttributeTableLayoutModel.SHOW_ALL)
-							&& ! textController.getIsShortened(getNode())) {
-						return null;
-					}
-					final StringBuilder tooltip = new StringBuilder();
-					tooltip.append("<html><body><table  border=\"1\">");
-					final int currentRowCount = getRowCount();
-					for (int i = 0; i < currentRowCount; i++) {
-						tooltip.append("<tr><td>");
-						tooltip.append(getValueAt(i, 0));
-						tooltip.append("</td><td>");
-						tooltip.append(getTransformedValue(textController, String.valueOf(getValueAt(i, 1))));
-						tooltip.append("</td></tr>");
-					}
-					tooltip.append("</table></body></html>");
-					return tooltip.toString();
-				}
-
-				private String getTransformedValue(final TextController textController, final String originalText) {
-					try {
-						final String text = textController.getTransformedText(originalText, node);
-						if (!DONT_MARK_FORMULAS && text != originalText)
-							return colorize(text, "green");
-						else
-							return text;
-					}
-					catch (Throwable e) {
-						LogUtils.warn(e.getMessage(), e);
-						return colorize(
-						    TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
-						        .replace("\n", "<br>"), "red");
-					}
-				}
-
-				private String colorize(final String text, String color) {
-					return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";
-				}
-			});
-		}
 	}
 
 	public void setValue(final int row, final Object newValue) {

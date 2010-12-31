@@ -36,6 +36,7 @@ import org.freeplane.features.common.icon.IconStore;
 import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.ITooltipProvider;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -253,7 +254,7 @@ public class ReminderHook extends PersistentNodeHook {
 
 	private void setToolTip(final NodeModel node, final String value) {
 		(Controller.getCurrentModeController().getMapController()).setToolTip(node, REMINDER_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip() {
+			public String getTooltip(ModeController modeController) {
 				return value;
 			}
 		});

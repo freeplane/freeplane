@@ -1437,23 +1437,7 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		final NodeModel nodeModel = getModel();
-		mainView.setToolTipText(getTransformedText(nodeModel, nodeModel.getToolTip()));
-	}
-
-	private String getTransformedText(final NodeModel node, final String originalText) {
-		final TextController textController = TextController.getController();
-		try {
-			final String text = textController.getTransformedText(originalText, node);
-			if (!DONT_MARK_FORMULAS && text != originalText)
-				return colorize(text, "green");
-			else
-				return text;
-		}
-		catch (Exception e) {
-			LogUtils.warn(e.getMessage(), e);
-			return colorize(TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
-			    .replace("\n", "<br>"), "red");
-		}
+		mainView.setToolTipText(nodeModel.getToolTip(getMap().getModeController()));
 	}
 
 	private String colorize(final String text, String color) {

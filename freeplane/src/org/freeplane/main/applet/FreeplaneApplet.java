@@ -147,7 +147,11 @@ public class FreeplaneApplet extends JApplet {
 
 	@Override
 	public void start() {
-		appletViewController.start();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				appletViewController.start();
+			}
+		});
 	}
 
 	@Override

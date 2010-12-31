@@ -47,14 +47,16 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	final private AttributeController attributeController;
 	private AttributeRegistry attributeRegistry;
 	private NodeAttributeTableModel nodeAttributeModel;
+	final private TextController textController;
 
 	public AttributeTableModelDecoratorAdapter(final AttributeView attrView) {
 		super();
+		final ModeController modeController = attrView.getMapView().getModeController();
+		attributeController = AttributeController.getController(modeController);
+		textController = TextController.getController(modeController);
 		setNodeAttributeModel(attrView.getAttributes());
 		setAttributeRegistry(attrView.getAttributeRegistry());
 		getNodeAttributeModel().getNode();
-		final ModeController modeController = attrView.getMapView().getModeController();
-		attributeController = AttributeController.getController(modeController);
 		addListeners();
 	}
 
@@ -125,7 +127,6 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	}
 
 	private void cacheTransformedValue(int row) {
-			final TextController textController = TextController.getController();
 			final String originalText = nodeAttributeModel.getValueAt(row, 1).toString();
 			try {
 	            textController.getTransformedText(originalText, getNode());

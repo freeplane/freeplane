@@ -45,8 +45,11 @@ public class IconController implements IExtension {
 
 	public static IconController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
-		return (IconController) modeController.getExtension(IconController.class);
+		return getController(modeController);
 	}
+	public static IconController getController(ModeController modeController) {
+		return (IconController) modeController.getExtension(IconController.class);
+    }
 
 	public static void install() {
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(1,
@@ -103,8 +106,8 @@ public class IconController implements IExtension {
 
 
 	public Collection<MindIcon> getIcons(final NodeModel node) {
-		final IconController iconController = IconController.getController();
-		final Collection<MindIcon> icons = iconController.iconHandlers.getProperty(node, new LinkedList<MindIcon>());
+		final Collection<MindIcon> icons = iconHandlers.getProperty(node, new LinkedList<MindIcon>());
 		return icons;
 	}
+
 }

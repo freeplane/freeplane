@@ -146,12 +146,11 @@ public class TextController implements IExtension {
 		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
 		if (detailText != null) {
 			(Controller.getCurrentModeController().getMapController()).setToolTip(node, DETAILS_TOOLTIP, new ITooltipProvider() {
-				public String getTooltip() {
+				public String getTooltip(ModeController modeController) {
 					 if (! (detailText.isHidden() || ShortenedTextModel.isShortened(node)) ){
 						 return null;
 					 }
-					final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-					    NodeStyleController.class);
+					final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
 					final Font font = style.getFont(node);
 					final StringBuilder rule = new StringBuilder();
 					rule.append("font-family: " + font.getFamily() + ";");
@@ -170,12 +169,11 @@ public class TextController implements IExtension {
 
 	protected void setNodeTextTooltip(final NodeModel node) {
 		(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, new ITooltipProvider() {
-			    public String getTooltip() {
+			    public String getTooltip(final ModeController modeController) {
 				    if (!ShortenedTextModel.isShortened(node)) {
 					    return null;
 				    }
-				    final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController()
-				        .getExtension(NodeStyleController.class);
+				    final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
 				    final Font font = style.getFont(node);
 				    final StringBuilder rule = new StringBuilder();
 				    rule.append("font-family: " + font.getFamily() + ";");

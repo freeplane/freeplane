@@ -234,7 +234,7 @@ public class MModeControllerFactory {
 		LocationController.install(new MLocationController());
 		LogicalStyleController.install(new MLogicalStyleController());
 		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener());
-		AttributeController.install(new MAttributeController());
+		AttributeController.install(new MAttributeController(modeController));
 		modeController.addAction(new EditAttributesAction());
 		SpellCheckerController.install();
 		ExportController.install(new ExportController("/xml/ExportWithXSLT.xml"));
