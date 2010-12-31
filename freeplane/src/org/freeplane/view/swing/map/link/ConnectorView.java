@@ -48,9 +48,21 @@ public class ConnectorView extends AConnectorView{
 	private static final int LABEL_SHIFT = 4;
 	private static final double PRECISION = 2;
 	private CubicCurve2D arrowLinkCurve;
+	final private Color color;
+	final private BasicStroke stroke;
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target) {
 		super(connectorModel, source, target);
+		color = LinkController.getController(getModeController()).getColor(connectorModel);
+		final int width = LinkController.getController(getModeController()).getWidth(connectorModel);
+		if (!isSourceVisible() || !isTargetVisible()) {
+			stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 0,
+			        3, 0, 3 }, 0);
+		}
+		else{
+			stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		}
+
 	}
 
 	/**
@@ -179,11 +191,6 @@ public class ConnectorView extends AConnectorView{
 		return length / 2;
 	}
 
-	Color getColor() {
-		final ConnectorModel model = getModel();
-		return LinkController.getController(getModeController()).getColor(model);
-	}
-
 	private ModeController getModeController() {
 		NodeView nodeView = source;
 		if (source == null) {
@@ -198,27 +205,6 @@ public class ConnectorView extends AConnectorView{
 	 */
 	public ConnectorModel getModel() {
 		return connectorModel;
-	}
-
-	/**
-	 * Get the width in pixels rather than in width constant (like -1)
-	 */
-	int getRealWidth() {
-		final int width = getWidth();
-		return (width < 1) ? 1 : width;
-	}
-
-	Stroke getStroke() {
-		final int width = getWidth();
-		if (width < 1) {
-			return ConnectorView.DEF_STROKE;
-		}
-		return new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
-	}
-
-	int getWidth() {
-		final NodeLinkModel model = getModel();
-		return LinkController.getController(getModeController()).getWidth(model);
 	}
 
 
@@ -285,13 +271,9 @@ public class ConnectorView extends AConnectorView{
 		boolean targetIsLeft = false;
 		boolean sourceIsLeft = false;
 		final Graphics2D g = (Graphics2D) graphics.create();
-		g.setColor(getColor());
+		g.setColor(color);
 		/* set stroke. */
-		g.setStroke(getStroke());
-		if (!isSourceVisible() || !isTargetVisible()) {
-			g.setStroke(new BasicStroke(getWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 0,
-			        3, 0, 3 }, 0));
-		}
+		g.setStroke(stroke);
 		if (isSourceVisible()) {
 			p1 = source.getLinkPoint(connectorModel.getStartInclination());
 			sourceIsLeft = source.isLeft();
@@ -341,9 +323,11 @@ public class ConnectorView extends AConnectorView{
 		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
 			paintArrow(p2, p4, g, getZoom() * 10);
 		}
-		if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
-			g.setStroke(new BasicStroke(getWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 0,
+		if (connectorModel.getShowControlPointsFlag()) {
+			g.setStroke(new BasicStroke(stroke.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 0,
 			        3, 0, 3 }, 0));
+		}
+		if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
 			if (p1 != null) {
 				g.drawLine(p1.x, p1.y, p3.x, p3.y);
 			}

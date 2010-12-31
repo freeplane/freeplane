@@ -54,7 +54,8 @@ class LinkBuilder implements IElementHandler, IReadCompletionListener, IExtensio
 	}
 
 	protected NodeLinkModel createArrowLink(final NodeModel source, final String targetID) {
-		return new ConnectorModel(source, targetID);
+		return new ConnectorModel(source, targetID, linkController.getStandardConnectorColor(),
+		    linkController.getStandardConnectorWidth());
 	}
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {

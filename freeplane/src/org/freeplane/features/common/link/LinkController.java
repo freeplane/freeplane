@@ -37,15 +37,12 @@ import javax.swing.JPopupMenu;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.ExclusivePropertyChain;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.controller.INodeSelectionListener;
-import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.controller.SelectionController;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
@@ -62,19 +59,9 @@ import org.freeplane.features.common.url.UrlManager;
  * @author Dimitry Polivaev
  */
 public class LinkController extends SelectionController implements IExtension {
-	private static class ArrowLinkListener implements IFreeplanePropertyListener {
-		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-			if (propertyName.equals(LinkController.RESOURCES_LINK_COLOR)) {
-				standardColor = ColorUtils.stringToColor(newValue);
-			}
-		}
-	}
-
-	private static ArrowLinkListener listener = null;
-	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
-	public static final int STANDARD_WIDTH = 2;
 	public static final String MENUITEM_SCHEME = "menuitem";
-	static Color standardColor = null;
+
+	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
 
 	public static LinkController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -107,38 +94,16 @@ public class LinkController extends SelectionController implements IExtension {
 		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(listener);
 	}
 
-	final private ExclusivePropertyChain<Color, ConnectorModel> colorHandlers;
 // 	final private ModeController modeController;
 
 	public LinkController() {
 //		this.modeController = modeController;
-		updateStandards();
-		colorHandlers = new ExclusivePropertyChain<Color, ConnectorModel>();
-		if (listener == null) {
-			listener = new ArrowLinkListener();
-			ResourceController.getResourceController().addPropertyChangeListener(listener);
-		}
-		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, ConnectorModel>() {
-			public Color getProperty(final ConnectorModel model, final Color currentValue) {
-				return model.getColor();
-			}
-		});
-		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, ConnectorModel>() {
-			public Color getProperty(final ConnectorModel model, final Color currentValue) {
-				return standardColor;
-			}
-		});
 		createActions();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		new LinkBuilder(this).registerBy(readManager, writeManager);
-	}
-
-	public IPropertyHandler<Color, ConnectorModel> addColorGetter(final Integer key,
-	                                                              final IPropertyHandler<Color, ConnectorModel> getter) {
-		return colorHandlers.addGetter(key, getter);
 	}
 
 	private void addLinks(final JPopupMenu arrowLinkPopup, final NodeModel source) {
@@ -164,7 +129,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public Color getColor(final ConnectorModel model) {
-		return colorHandlers.getProperty(model);
+		return model.getColor();
 	}
 
 	public String getLinkShortText(final NodeModel node) {
@@ -213,6 +178,7 @@ public class LinkController extends SelectionController implements IExtension {
 		return null;
 	}
 
+	public static final int STANDARD_WIDTH = 2;
 	public int getWidth(final NodeLinkModel model) {
 		return STANDARD_WIDTH;
 	}
@@ -273,26 +239,6 @@ public class LinkController extends SelectionController implements IExtension {
 	private UrlManager getURLManager() {
 		ModeController modeController = Controller.getCurrentModeController();
 		return (UrlManager) modeController.getExtension(UrlManager.class);
-	}
-
-	public IPropertyHandler<Color, ConnectorModel> removeColorGetter(final Integer key) {
-		return colorHandlers.removeGetter(key);
-	}
-
-	/**
-	 * @param modeController
-	 */
-	private void updateStandards() {
-		if (standardColor == null) {
-			final String stdColor = ResourceController.getResourceController().getProperty(
-			    LinkController.RESOURCES_LINK_COLOR);
-			if (stdColor != null && stdColor.length() == 7) {
-				standardColor = ColorUtils.stringToColor(stdColor);
-			}
-			else {
-				standardColor = Color.RED;
-			}
-		}
 	}
 
 	public static URI toRelativeURI(final File map, final File input) {
@@ -427,5 +373,19 @@ public class LinkController extends SelectionController implements IExtension {
 	// this will fail badly for non-menuitem uris!
 	public static String parseMenuItemLink(final URI uri) {
 		return uri.getSchemeSpecificPart().substring(1);
+	}
+	public int getStandardConnectorWidth() {
+        return STANDARD_WIDTH;
+    }
+
+	public Color getStandardConnectorColor() {
+        final String standardColor = ResourceController.getResourceController().getProperty(RESOURCES_LINK_COLOR);
+		final Color color = ColorUtils.stringToColor(standardColor);
+        return color;
+    }
+
+	public void setStandardConnectorColor(final Color color) {
+		String value = ColorUtils.colorToString(color);
+		ResourceController.getResourceController().setProperty(RESOURCES_LINK_COLOR, value);
 	}
 }

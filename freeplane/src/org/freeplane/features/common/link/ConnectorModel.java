@@ -29,7 +29,6 @@ public class ConnectorModel extends NodeLinkModel {
 	private ArrowType endArrow;
 	private Point endInclination;
 	private String middleLabel;
-	private boolean showControlPointsFlag;
 	private String sourceLabel;
 	private ArrowType startArrow;
 	private Point startInclination;
@@ -45,8 +44,10 @@ public class ConnectorModel extends NodeLinkModel {
 		this.edgeLike = edgeLike;
 	}
 
-	public ConnectorModel(final NodeModel source, final String targetID) {
+	public ConnectorModel(final NodeModel source, final String targetID, final Color color, final int width) {
 		super(source, targetID);
+		this.color = color;
+		this.width = width;
 		startArrow = ArrowType.NONE;
 		endArrow = ArrowType.DEFAULT;
 	}
@@ -95,10 +96,6 @@ public class ConnectorModel extends NodeLinkModel {
 		return middleLabel;
 	}
 
-	public boolean getShowControlPointsFlag() {
-		return showControlPointsFlag;
-	}
-
 	public String getSourceLabel() {
 		return sourceLabel;
 	}
@@ -138,6 +135,10 @@ public class ConnectorModel extends NodeLinkModel {
 		this.middleLabel = empty2null(middleLabel);
 	}
 
+	private boolean showControlPointsFlag;
+	public boolean getShowControlPointsFlag() {
+		return showControlPointsFlag;
+	}
 	public void setShowControlPoints(final boolean bShowControlPointsFlag) {
 		showControlPointsFlag = bShowControlPointsFlag;
 	}
