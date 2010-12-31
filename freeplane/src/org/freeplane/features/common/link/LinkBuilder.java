@@ -106,6 +106,18 @@ class LinkBuilder implements IElementHandler, IReadCompletionListener, IExtensio
 				arrowLink.setColor(ColorUtils.stringToColor(value.toString()));
 			}
 		});
+		reader.addAttributeHandler("arrowlink", "DASH", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
+				final String[] split = value.split(" ");
+				int[] dash = new int[split.length];
+				int i = 0;
+				for(String s : split){
+					dash[i++] = Integer.parseInt(s);
+				}
+				arrowLink.setDash(dash);
+			}
+		});
 		reader.addAttributeHandler("arrowlink", "DESTINATION", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
@@ -187,6 +199,22 @@ class LinkBuilder implements IElementHandler, IReadCompletionListener, IExtensio
 		final Color color = model.getColor();
 		if (color != null) {
 			arrowLink.setAttribute("COLOR", ColorUtils.colorToString(color));
+		}
+		final int[]dash = model.getDash();
+		if (dash != null) {
+			StringBuilder sb = null;
+			for(int i : dash){
+				if(sb == null){
+					sb = new StringBuilder(dash.length * 4);
+				}
+				else{
+					sb.append(' ');
+				}
+				sb.append(i);
+			}
+			if(sb != null){
+				arrowLink.setAttribute("DASH", sb.toString());				
+			}
 		}
 		final String destinationLabel = target.createID();
 		if (destinationLabel != null) {

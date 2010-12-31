@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -383,5 +384,21 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
 				component.removeAncestorListener(this);
 			}
 		});
+    }
+
+	public static BasicStroke createStroke(int width, final int[] dash) {
+        final float[] fdash;
+    	if(dash  != null){
+    		fdash = new float[dash.length];
+    		int i = 0;
+    		for(float d : dash){
+    			fdash[i++] = d;
+    		}
+    	}
+    	else{
+    		fdash = null;
+    	}
+    	final BasicStroke stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1f, fdash, 0f);
+        return stroke;
     }
 }

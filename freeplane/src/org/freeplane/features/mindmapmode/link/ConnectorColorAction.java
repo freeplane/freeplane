@@ -27,10 +27,8 @@ import javax.swing.Action;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.map.NodeModel;
 
 class ConnectorColorAction extends AFreeplaneAction {
 	/**
@@ -46,34 +44,10 @@ class ConnectorColorAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
-		final Color selectedColor = LinkController.getController().getColor(arrowLink);
+		final MLinkController linkController = (MLinkController) LinkController.getController();
+		final Color selectedColor = linkController.getColor(arrowLink);
 		final Color color = ColorTracker.showCommonJColorChooserDialog(controller.getSelection()
 		    .getSelected(), (String) this.getValue(Action.NAME), selectedColor);
-		setArrowLinkColor(arrowLink, color);
-	}
-
-	public void setArrowLinkColor(final ConnectorModel arrowLink, final Color color) {
-		final Color oldColor = arrowLink.getColor();
-		if (color == oldColor || color != null && color.equals(oldColor)) {
-			return;
-		}
-		final IActor actor = new IActor() {
-			public void act() {
-				arrowLink.setColor(color);
-				final NodeModel node = arrowLink.getSource();
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
-			}
-
-			public String getDescription() {
-				return "setArrowLinkColor";
-			}
-
-			public void undo() {
-				arrowLink.setColor(oldColor);
-				final NodeModel node = arrowLink.getSource();
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
-			}
-		};
-		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
+		linkController.setConnectorColor(arrowLink, color);
 	}
 }

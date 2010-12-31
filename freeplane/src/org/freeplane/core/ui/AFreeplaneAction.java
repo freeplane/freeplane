@@ -23,6 +23,7 @@ import java.net.URL;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
@@ -115,7 +116,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	//		this();
 	//	}
 	//
-	public AFreeplaneAction(final String key, final String title, final ImageIcon icon) {
+	public AFreeplaneAction(final String key, final String title, final Icon icon) {
 //		this.controller = controller;
 		putValue(SMALL_ICON, icon);
 		if (title != null && !title.equals("")) {

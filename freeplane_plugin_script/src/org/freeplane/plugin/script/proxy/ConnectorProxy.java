@@ -63,7 +63,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public void setColor(final Color color) {
-		getLinkController().setArrowLinkColor(getConnector(), color);
+		getLinkController().setConnectorColor(getConnector(), color);
 	}
 
 	public void setColorCode(final String rgbString) {

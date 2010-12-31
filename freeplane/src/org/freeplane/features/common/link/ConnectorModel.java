@@ -27,6 +27,8 @@ import org.freeplane.features.common.map.NodeModel;
 public class ConnectorModel extends NodeLinkModel {
 	private Color color;
 	private ArrowType endArrow;
+	private int[] dash;
+
 	private Point endInclination;
 	private String middleLabel;
 	private String sourceLabel;
@@ -44,6 +46,14 @@ public class ConnectorModel extends NodeLinkModel {
 		this.edgeLike = edgeLike;
 	}
 
+	public int[] getDash() {
+    	return dash;
+    }
+
+	public void setDash(int[] dash) {
+    	this.dash = dash;
+    }
+	
 	public ConnectorModel(final NodeModel source, final String targetID, final Color color, final int width) {
 		super(source, targetID);
 		this.color = color;

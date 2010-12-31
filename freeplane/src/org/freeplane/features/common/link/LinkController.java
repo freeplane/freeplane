@@ -132,6 +132,10 @@ public class LinkController extends SelectionController implements IExtension {
 		return model.getColor();
 	}
 
+	public int[] getDash(final ConnectorModel model) {
+		return model.getDash();
+	}
+
 	public String getLinkShortText(final NodeModel node) {
 		final URI uri = NodeLinks.getLink(node);
 		if (uri == null) {

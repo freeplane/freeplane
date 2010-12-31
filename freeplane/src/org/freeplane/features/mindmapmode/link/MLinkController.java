@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
@@ -448,23 +449,51 @@ public class MLinkController extends LinkController {
 			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 			}
 		});
+		
+		final JMenu connectorArrows = new JMenu(TextUtils.getText("connector_arrows"));
 		final ChangeConnectorArrowsAction actionNN = new ChangeConnectorArrowsAction(this, "none", link,
 		    ArrowType.NONE, ArrowType.NONE);
 		final JRadioButtonMenuItem itemnn = new JAutoRadioButtonMenuItem(actionNN);
-		arrowLinkPopup.add(itemnn);
+		connectorArrows.add(itemnn);
 		final ChangeConnectorArrowsAction actionNT = new ChangeConnectorArrowsAction(this, "forward", link,
 		    ArrowType.NONE, ArrowType.DEFAULT);
 		final JRadioButtonMenuItem itemnt = new JAutoRadioButtonMenuItem(actionNT);
-		arrowLinkPopup.add(itemnt);
+		connectorArrows.add(itemnt);
 		final ChangeConnectorArrowsAction actionTN = new ChangeConnectorArrowsAction(this, "backward", link,
 		    ArrowType.DEFAULT, ArrowType.NONE);
 		final JRadioButtonMenuItem itemtn = new JAutoRadioButtonMenuItem(actionTN);
-		arrowLinkPopup.add(itemtn);
+		connectorArrows.add(itemtn);
 		final ChangeConnectorArrowsAction actionTT = new ChangeConnectorArrowsAction(this, "both", link,
 		    ArrowType.DEFAULT, ArrowType.DEFAULT);
 		final JRadioButtonMenuItem itemtt = new JAutoRadioButtonMenuItem(actionTT);
-		arrowLinkPopup.add(itemtt);
-	}
+		connectorArrows.add(itemtt);
+		arrowLinkPopup.add(connectorArrows);
+
+	
+		final JMenu connectorDashes = new JMenu(TextUtils.getText("connector_lines"));
+
+		final ChangeConnectorDashAction actionD1 = new ChangeConnectorDashAction(this, link, null); 
+		final JRadioButtonMenuItem itemD1 = new JAutoRadioButtonMenuItem(actionD1);
+		connectorDashes.add(itemD1);
+
+		final ChangeConnectorDashAction actionD2 = new ChangeConnectorDashAction(this, link, new int[]{3, 3}); 
+		final JRadioButtonMenuItem itemD2 = new JAutoRadioButtonMenuItem(actionD2);
+		connectorDashes.add(itemD2);
+
+		final ChangeConnectorDashAction actionD3 = new ChangeConnectorDashAction(this, link, new int[]{7, 7}); 
+		final JRadioButtonMenuItem itemD3 = new JAutoRadioButtonMenuItem(actionD3);
+		connectorDashes.add(itemD3);
+
+		final ChangeConnectorDashAction actionD4 = new ChangeConnectorDashAction(this, link, new int[]{2, 7}); 
+		final JRadioButtonMenuItem itemD4 = new JAutoRadioButtonMenuItem(actionD4);
+		connectorDashes.add(itemD4);
+
+		final ChangeConnectorDashAction actionD5 = new ChangeConnectorDashAction(this, link, new int[]{2, 7, 7, 7}); 
+		final JRadioButtonMenuItem itemD5 = new JAutoRadioButtonMenuItem(actionD5);
+		connectorDashes.add(itemD5);
+
+		arrowLinkPopup.add(connectorDashes);
+}
 
 	static final private Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s()'\",;|<>{}]+");
 	static private Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
@@ -492,8 +521,54 @@ public class MLinkController extends LinkController {
 		return null;
 	}
 
-	public void setArrowLinkColor(final ConnectorModel arrowLink, final Color color) {
-		colorArrowLinkAction.setArrowLinkColor(arrowLink, color);
+	public void setConnectorColor(final ConnectorModel arrowLink, final Color color) {
+		final Color oldColor = arrowLink.getColor();
+		if (color == oldColor || color != null && color.equals(oldColor)) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				arrowLink.setColor(color);
+				final NodeModel node = arrowLink.getSource();
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setConnectorColor";
+			}
+
+			public void undo() {
+				arrowLink.setColor(oldColor);
+				final NodeModel node = arrowLink.getSource();
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
+	}
+
+	public void setConnectorDash(final ConnectorModel arrowLink, final int[] dash) {
+		final int[] oldDash = arrowLink.getDash();
+		if (dash == oldDash || dash != null && dash.equals(oldDash)) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				arrowLink.setDash(dash);
+				final NodeModel node = arrowLink.getSource();
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setConnectorDash";
+			}
+
+			public void undo() {
+				arrowLink.setDash(oldDash);
+				final NodeModel node = arrowLink.getSource();
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
 	}
 
 	public void setArrowLinkEndPoints(final ConnectorModel link, final Point startPoint, final Point endPoint) {
