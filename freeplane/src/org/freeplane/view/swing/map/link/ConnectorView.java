@@ -44,6 +44,7 @@ import org.freeplane.view.swing.map.NodeView;
  * This class represents a ArrowLink around a node.
  */
 public class ConnectorView extends AConnectorView{
+	private static final float[] DOTTED_DASH = new float[] { 2, 7};
 	static final Stroke DEF_STROKE = new BasicStroke(1);
 	private static final int LABEL_SHIFT = 4;
 	private static final double PRECISION = 2;
@@ -56,14 +57,23 @@ public class ConnectorView extends AConnectorView{
 		color = LinkController.getController(getModeController()).getColor(connectorModel);
 		final int width = LinkController.getController(getModeController()).getWidth(connectorModel);
 		if (!isSourceVisible() || !isTargetVisible()) {
-			stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 0,
-			        3, 0, 3 }, 0);
+			float[] dash = zoomDash(DOTTED_DASH);
+			stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, dash, 0);
 		}
 		else{
 			stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		}
 
 	}
+
+	public float[] zoomDash(float[] dash) {
+		float[] result = dash.clone();
+	    final double zoom = getZoom();
+	    for(float f : result){
+	    	f *= zoom;
+	    }
+	    return result;
+    }
 
 	/**
 	 */
@@ -324,8 +334,7 @@ public class ConnectorView extends AConnectorView{
 			paintArrow(p2, p4, g, getZoom() * 10);
 		}
 		if (connectorModel.getShowControlPointsFlag()) {
-			g.setStroke(new BasicStroke(stroke.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 0,
-			        3, 0, 3 }, 0));
+			g.setStroke(new BasicStroke(stroke.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, DOTTED_DASH, 0));
 		}
 		if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
 			if (p1 != null) {
