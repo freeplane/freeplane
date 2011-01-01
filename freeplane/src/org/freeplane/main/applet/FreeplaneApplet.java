@@ -24,6 +24,7 @@ import java.awt.Container;
 import java.awt.HeadlessException;
 
 import javax.swing.JApplet;
+import javax.swing.text.html.parser.ParserDelegator;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
@@ -63,12 +64,18 @@ public class FreeplaneApplet extends JApplet {
 		controller.shutdown();
 	}
 
-	@Override
+	@SuppressWarnings("serial")
+    @Override
 	public void init() {
 		synchronized (FreeplaneApplet.class){
 			if (appletResourceController == null) {
 				appletResourceController = new AppletResourceController(this);
 			}
+			new ParserDelegator(){
+				{
+					setDefaultDTD();
+				}
+			};
 			updateLookAndFeel();
 			createRootPane();
 			controller = new Controller();
