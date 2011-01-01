@@ -40,7 +40,7 @@ class NoteBuilder implements IElementContentHandler {
 			return null;
 		}
 		final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
-		if (typeAttribute == null || NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
+		if (! NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE.equals(typeAttribute)) {
 			return null;
 		}
 		return parent;
