@@ -34,6 +34,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JApplet;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.text.html.parser.ParserDelegator;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
@@ -103,11 +104,21 @@ public class FreeplaneApplet extends JApplet {
 	@Override
 	public void destroy() {
 	}
-	@Override
+	
+	@SuppressWarnings("serial")
+    @Override
 	public void init() {
 		try{
 			appletLock.lock();
 			appletResourceController = new AppletResourceController(this);
+			if (appletResourceController == null) {
+				appletResourceController = new AppletResourceController(this);
+			}
+			new ParserDelegator(){
+				{
+					setDefaultDTD();
+				}
+			};
 			updateLookAndFeel();
 			createRootPane();
 			controller = new Controller(appletResourceController);
