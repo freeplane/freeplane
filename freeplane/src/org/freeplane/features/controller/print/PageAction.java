@@ -19,46 +19,31 @@
  */
 package org.freeplane.features.controller.print;
 
-import java.awt.Frame;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 
 class PageAction extends AbstractPrintAction {
-	private final class ActionListenerImplementation implements ActionListener {
-		private final JDialog dialog;
-		private int eventSource;
-
-		private ActionListenerImplementation(final JDialog dialog) {
-			this.dialog = dialog;
-		}
-
-		public void actionPerformed(final ActionEvent e) {
-			eventSource = 1;
-			dialog.dispose();
-		}
-
-		public int getEventSource() {
-			return eventSource;
-		}
-	}
 
 	static final String NAME = "page";
 	/**
@@ -74,76 +59,99 @@ class PageAction extends AbstractPrintAction {
 		if (!getPrintController().acquirePrinterJobAndPageFormat(false)) {
 			return;
 		}
-		final Frame frame = Controller.getCurrentController().getViewController().getFrame();
-		final JDialog dialog = new JDialog(frame, TextUtils.getText("printing_settings"), /* modal=*/
-		true);
+		//define controls
+		//ButtonGroup
 		final ButtonGroup fitButtons = new ButtonGroup();
-		final FitMap fitMap = FitMap.valueOf();
-		final JRadioButton fitToPage = new JRadioButton(TextUtils.getText("fit_map_to_page"), fitMap == FitMap.PAGE);
+		//Fit to page
+		final JRadioButton fitToPage = new JRadioButton();
+		MenuBuilder.setLabelAndMnemonic(fitToPage, TextUtils.getText("fit_map_to_page"));
 		fitButtons.add(fitToPage);
-		final JRadioButton fitToWidth = new JRadioButton(TextUtils.getText("fit_map_to_page_width"),
-		    fitMap == FitMap.WIDTH);
+		//Fit width
+		final JRadioButton fitToWidth = new JRadioButton();
+		MenuBuilder.setLabelAndMnemonic(fitToWidth,TextUtils.getText("fit_map_to_page_width")) ;
 		fitButtons.add(fitToWidth);
-		final JRadioButton fitToHeighth = new JRadioButton(TextUtils.getText("fit_map_to_page_height"),
-		    fitMap == FitMap.HEIGHT);
+		//Fit to heighth
+		final JRadioButton fitToHeighth = new JRadioButton();
+		MenuBuilder.setLabelAndMnemonic(fitToHeighth,TextUtils.getText("fit_map_to_page_height")) ;
 		fitButtons.add(fitToHeighth);
-		final JRadioButton userDefaultScale = new JRadioButton(TextUtils.getText("user_defined_scale"),
-		    fitMap == FitMap.USER_DEFINED);
+		//User defined
+		final JRadioButton userDefaultScale = new JRadioButton();
+		MenuBuilder.setLabelAndMnemonic(userDefaultScale,TextUtils.getText("user_defined_scale")) ;
 		fitButtons.add(userDefaultScale);
+		//User defined label
 		final JLabel userZoomL = new JLabel(TextUtils.getText("user_zoom"));
-		final JTextField userZoom = new JTextField(ResourceController.getResourceController().getProperty("user_zoom"),
-		    3);
+		//User defined input field
+		final JTextField userZoom = new JTextField(ResourceController.getResourceController().getProperty("user_zoom"),3);
 		userZoom.setEditable(userDefaultScale.isSelected());
-		final JButton okButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getText("ok"));
+		//Set up dialog content
 		final JPanel panel = new JPanel();
+		panel.setPreferredSize(new Dimension (270,150));
 		final GridBagLayout gridbag = new GridBagLayout();
-		final ActionListenerImplementation aListener = new ActionListenerImplementation(dialog);
-		okButton.addActionListener(aListener);
+		panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(10, 0, 10, 0)));
+		//Action listener if user defined zoom is selected/ deselected
 		userDefaultScale.addItemListener(new ItemListener() {
 			public void itemStateChanged(final ItemEvent e) {
-				userZoom.setEditable(e.getStateChange() == ItemEvent.SELECTED);
+				if (e.getStateChange() == ItemEvent.SELECTED){
+					userZoom.setEditable(true);
+					userZoom.setEnabled(true);
+					userZoom.grabFocus();
+				}
+				else {
+					userZoom.setEditable(false);
+					userZoom.setEnabled(false);
+				}
 			}
 		});
+		//GridbagLayout
 		final GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
-		c.gridwidth = 2;
+		c.gridwidth = 3;
+		c.ipady = 5;
+		c.ipadx=5;
 		c.anchor = GridBagConstraints.LINE_START;
+		//fit to page
 		gridbag.setConstraints(fitToPage, c);
 		panel.add(fitToPage);
 		c.gridy++;
+		//fit to width
 		gridbag.setConstraints(fitToWidth, c);
 		panel.add(fitToWidth);
 		c.gridy++;
+		//fit to heigth
 		gridbag.setConstraints(fitToHeighth, c);
 		panel.add(fitToHeighth);
 		c.gridy++;
+		//user defined
 		gridbag.setConstraints(userDefaultScale, c);
 		panel.add(userDefaultScale);
 		c.gridy++;
-		c.gridwidth = 1;
+		c.ipady=0;
+		c.gridx=0;
+		c.gridwidth=1;
+		//spacer
+		Component b = Box.createRigidArea(new Dimension(15,1));
+		gridbag.setConstraints(b,c);
+		panel.add(b);
+		c.gridx= 1;
+		c.gridwidth=1;
+		//Label
 		gridbag.setConstraints(userZoomL, c);
 		panel.add(userZoomL);
-		c.gridx = 1;
-		c.gridwidth = 1;
+		c.gridx = 2;
+		c.gridwidth= 1;
+		//input field
 		gridbag.setConstraints(userZoom, c);
 		panel.add(userZoom);
-		c.gridy++;
-		c.gridx = 0;
-		c.gridwidth = 3;
-		c.insets = new Insets(10, 0, 0, 0);
-		c.anchor = GridBagConstraints.CENTER;
-		gridbag.setConstraints(okButton, c);
-		panel.add(okButton);
 		panel.setLayout(gridbag);
-		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		dialog.setContentPane(panel);
-		dialog.setLocationRelativeTo(frame);
-		dialog.getRootPane().setDefaultButton(okButton);
-		dialog.pack();
-		dialog.setVisible(true);
-		if (aListener.getEventSource() == 1) {
+		fitToPage.setSelected(true);
+		userZoom.setEditable(false);
+		userZoom.setEnabled(false);
+		//show dialog
+		final int result = UITools.showConfirmDialog(null, panel, TextUtils.getText("printing_settings"), 
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		//evaluate result
+		if (result == JOptionPane.OK_OPTION) {
 			ResourceController.getResourceController().setProperty("user_zoom", userZoom.getText());
 			final FitMap fitMapDecision;
 			if (fitToPage.isSelected()) {

@@ -22,6 +22,8 @@ package org.freeplane.features.common.url;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,10 +40,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -195,12 +201,25 @@ public class UrlManager implements IExtension {
 		final JFileChooser chooser = new JFileChooser(){
  			@Override
             protected JDialog createDialog(Component parent) throws HeadlessException {
-	            final JDialog dialog = super.createDialog(parent);
+ 				final JDialog dialog = super.createDialog(parent);
 	            final JComponent selector = createDirectorySelector(this);
+	           
+	            //Close dialog when escape is pressed
+	            InputMap in = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+	            in.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "escape");
+	            ActionMap aMap = dialog.getRootPane().getActionMap();
+	            aMap.put("escape", new AbstractAction()
+	            		{ 
+	            		public void actionPerformed (ActionEvent e)
+	            		{
+	            			dialog.dispose();
+	            		}
+	            });
 	            if(selector != null){
 	            	dialog.getContentPane().add(selector, BorderLayout.NORTH);
 	            	dialog.pack();
 	            }
+	            
 				return dialog;
             }
 
