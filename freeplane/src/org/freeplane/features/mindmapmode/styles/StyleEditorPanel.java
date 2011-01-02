@@ -50,6 +50,7 @@ import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.core.resources.components.NextLineProperty;
 import org.freeplane.core.resources.components.NumberProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
+import org.freeplane.core.resources.components.StringProperty;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.cloud.CloudController;
@@ -256,6 +257,32 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
+	private class NodeNumberingChangeListener extends ChangeListener {
+		public NodeNumberingChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MNodeStyleController styleController = (MNodeStyleController) Controller.getCurrentModeController()
+			    .getExtension(NodeStyleController.class);
+			styleController.setNodeNumbering(node, enabled ? mNodeNumbering.getBooleanValue() : null);
+		}
+	}
+	
+	private class NodeTextTemplateChangeListener extends ChangeListener {
+		public NodeTextTemplateChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MNodeStyleController styleController = (MNodeStyleController) Controller.getCurrentModeController()
+			    .getExtension(NodeStyleController.class);
+			styleController.setNodeTextTemplate(node, enabled ? mNodeTextTemplate.getValue() : null);
+		}
+	}
+
 	private class StyleChangeListener implements PropertyChangeListener{
 
 		public StyleChangeListener() {
@@ -324,8 +351,10 @@ public class StyleEditorPanel extends JPanel {
 	private static final String NODE_FONT_ITALIC = "nodefontitalic";
 	private static final String NODE_FONT_NAME = "nodefontname";
 	private static final String NODE_FONT_SIZE = "nodefontsize";
+	private static final String NODE_NUMBERING = "nodenumbering";
 	private static final String NODE_SHAPE = "nodeshape";
 	private static final String NODE_TEXT_COLOR = "standardnodetextcolor";
+	private static final String NODE_TEXT_TEMPLATE = "nodetexttemplate";
 	/**
 	* 
 	*/
@@ -364,7 +393,9 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mNodeFontItalic;
 	private FontProperty mNodeFontName;
 	private ComboProperty mNodeFontSize;
+	private BooleanProperty mNodeNumbering;
 	private ComboProperty mNodeShape;
+	private StringProperty mNodeTextTemplate;
 	private BooleanProperty mSetCloud;
 	private BooleanProperty mSetEdgeColor;
 	private BooleanProperty mSetEdgeStyle;
@@ -375,7 +406,9 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetNodeFontItalic;
 	private BooleanProperty mSetNodeFontName;
 	private BooleanProperty mSetNodeFontSize;
+	private BooleanProperty mSetNodeNumbering;
 	private BooleanProperty mSetNodeShape;
+	private BooleanProperty mSetNodeTextTemplate;
 	private BooleanProperty mSetStyle;
 	final private String[] sizes = new String[] { "2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24",
 	        "30", "36", "48", "72" };
@@ -401,6 +434,26 @@ public class StyleEditorPanel extends JPanel {
 		final BgColorChangeListener listener = new BgColorChangeListener(mSetNodeBackgroundColor, mNodeBackgroundColor);
 		mSetNodeBackgroundColor.addPropertyChangeListener(listener);
 		mNodeBackgroundColor.addPropertyChangeListener(listener);
+	}
+
+	private void addTemplateControl(final List<IPropertyControl> controls) {
+		mSetNodeTextTemplate = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetNodeTextTemplate);
+		mNodeTextTemplate = new StringProperty(StyleEditorPanel.NODE_TEXT_TEMPLATE);
+		controls.add(mNodeTextTemplate);
+		final NodeTextTemplateChangeListener listener = new NodeTextTemplateChangeListener(mSetNodeTextTemplate, mNodeTextTemplate);
+		mSetNodeTextTemplate.addPropertyChangeListener(listener);
+		mNodeTextTemplate.addPropertyChangeListener(listener);
+	}
+	
+	private void addNodeNumberingControl(final List<IPropertyControl> controls) {
+		mSetNodeNumbering = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetNodeNumbering);
+		mNodeNumbering = new BooleanProperty(StyleEditorPanel.NODE_NUMBERING);
+		controls.add(mNodeNumbering);
+		final NodeNumberingChangeListener listener = new NodeNumberingChangeListener(mSetNodeNumbering, mNodeNumbering);
+		mSetNodeNumbering.addPropertyChangeListener(listener);
+		mNodeNumbering.addPropertyChangeListener(listener);
 	}
 
 	private void addCloudColorControl(final List<IPropertyControl> controls) {
@@ -520,6 +573,9 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeColors"));
 		addColorControl(controls);
 		addBgColorControl(controls);
+		controls.add(new SeparatorProperty("OptionPanel.separator.NodeText"));
+		addTemplateControl(controls);
+		addNodeNumberingControl(controls);
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeShape"));
 		addNodeShapeControl(controls);
 		controls.add(new NextLineProperty());
@@ -541,7 +597,6 @@ public class StyleEditorPanel extends JPanel {
 		addCloudShapeControl(controls);
 		return controls;
 	}
-
 
 	/**
 	 * Creates all controls and adds them to the frame.
@@ -716,6 +771,20 @@ public class StyleEditorPanel extends JPanel {
 				mSetNodeFontItalic.setValue(italic != null);
 				mNodeFontItalic.setValue(viewitalic);
 				mNodeFontItalic.setEnabled(mSetNodeFontItalic.getBooleanValue());
+			}
+			{
+				final Boolean nodeNumbering = NodeStyleModel.getNodeNumbering(node);
+				final Boolean viewNodeNumbering = styleController.getNodeNumbering(node);
+				mSetNodeNumbering.setValue(nodeNumbering != null);
+				mNodeNumbering.setValue(viewNodeNumbering);
+				mNodeNumbering.setEnabled(mSetNodeNumbering.getBooleanValue());
+			}
+			{
+				final String nodeTextTemplate = NodeStyleModel.getNodeTextTemplate(node);
+				final String viewNodeTextTemplate = styleController.getNodeTextTemplate(node);
+				mSetNodeTextTemplate.setValue(nodeTextTemplate != null);
+				mNodeTextTemplate.setValue(nodeTextTemplate);
+				mNodeTextTemplate.setEnabled(mSetNodeTextTemplate.getBooleanValue());
 			}
 			if(mAutomaticLayoutCheckBox != null){
 				final ModeController modeController = Controller.getCurrentModeController();

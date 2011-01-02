@@ -368,4 +368,16 @@ public class NodeStyleController implements IExtension {
 		return shapeHandlers.removeGetter(key);
 	}
 
+	public Boolean getNodeNumbering(NodeModel node) {
+		final NodeStyleModel style = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		if (style == null)
+			return false;
+		final Boolean nodeNumbering = style.getNodeNumbering();
+		return nodeNumbering == null ? false : nodeNumbering.booleanValue();
+	}
+
+	public String getNodeTextTemplate(NodeModel node) {
+		final NodeStyleModel style = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return style == null ? null : style.getNodeTextTemplate();
+	}
 }

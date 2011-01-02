@@ -20,6 +20,7 @@
 package org.freeplane.features.common.text;
 
 import java.awt.Font;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -84,11 +85,14 @@ public class TextController implements IExtension {
 
 		modeController.addAction(new ToggleDetailsAction());
 		modeController.addAction(new SetShortenerStateAction());
+//		modeController.addAction(new ToggleNodeNumberingAction());
 	}
 
 	public void addTextTransformer(ITextTransformer textTransformer) {
 	    textTransformers.add(textTransformer);
+	    Collections.sort(textTransformers);
     }
+
 	public List<ITextTransformer> getTextTransformers() {
 	    return textTransformers;
 	}

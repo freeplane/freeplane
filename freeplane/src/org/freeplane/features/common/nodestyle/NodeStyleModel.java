@@ -69,6 +69,16 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return styleModel;
 	}
 
+	public static Boolean getNodeNumbering(NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getNodeNumbering();
+    }
+
+	public static String getNodeTextTemplate(final NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getNodeTextTemplate();
+	}
+
 	public static String getShape(final NodeModel node) {
 		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.getShape();
@@ -94,6 +104,16 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		styleModel.setColor(color);
 	}
 
+	public static void setNodeNumbering(NodeModel node, Boolean enableNodeNumbering) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setNodeNumbering(enableNodeNumbering);
+    }
+
+	public static void setNodeTextTemplate(final NodeModel node, final String nodeTextTemplate) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setNodeTextTemplate(nodeTextTemplate);
+	}
+
 	public static void setShape(final NodeModel node, final String shape) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShape(shape);
@@ -106,19 +126,26 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	private Boolean isBold = null;
 	private Boolean isItalic = null;
 	private String shape;
+	private Boolean nodeNumbering = null;
+	private String nodeTextTemplate = null;
 
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		final NodeStyleModel nodeStyleModel = new NodeStyleModel();
-		nodeStyleModel.setColor(color);
+	protected NodeStyleModel clone() {
+		return copyTo(new NodeStyleModel());
+	}
+
+	public NodeStyleModel copyTo(final NodeStyleModel nodeStyleModel) {
+	    nodeStyleModel.setColor(color);
 		nodeStyleModel.setBackgroundColor(backgroundColor);
 		nodeStyleModel.setBold(isBold);
 		nodeStyleModel.setFontFamilyName(fontFamilyName);
 		nodeStyleModel.setFontSize(fontSize);
 		nodeStyleModel.setItalic(isItalic);
 		nodeStyleModel.setShape(shape);
+		nodeStyleModel.setNodeTextTemplate(nodeTextTemplate);
+		nodeStyleModel.setNodeNumbering(nodeNumbering);
 		return nodeStyleModel;
-	}
+    }
 
 	public Color getBackgroundColor() {
 		return backgroundColor;
@@ -135,6 +162,14 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public Integer getFontSize() {
 		return fontSize;
 	}
+	
+	public Boolean getNodeNumbering() {
+		return nodeNumbering;
+	}
+
+	public String getNodeTextTemplate() {
+	    return nodeTextTemplate;
+    }
 
 	public String getShape() {
 		return shape;
@@ -171,6 +206,14 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public void setItalic(final Boolean isItalic) {
 		this.isItalic = isItalic;
 	}
+
+	public void setNodeNumbering(Boolean enableNodeNumbering) {
+		this.nodeNumbering = enableNodeNumbering;
+    }
+
+	public void setNodeTextTemplate(String nodeTextTemplate) {
+		this.nodeTextTemplate = nodeTextTemplate;
+    }
 
 	public void setShape(final String shape) {
 		this.shape = shape;

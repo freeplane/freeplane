@@ -207,7 +207,6 @@ public class MModeControllerFactory {
 		UrlManager.install(fileManager);
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
 		IconController.install(new MIconController(modeController));
-		NodeStyleController.install(new MNodeStyleController(modeController));
 		final MapController mapController = modeController.getMapController();
 		uiFactory = new MUIFactory();
 		mapController.addNodeChangeListener(uiFactory);
@@ -228,6 +227,7 @@ public class MModeControllerFactory {
 				textController.edit(e, addNew, editLong);
 			}
 		}));
+		NodeStyleController.install(new MNodeStyleController(modeController));
 		ClipboardController.install(new MClipboardController());
 		userInputListenerFactory.setNodeDragListener(new MNodeDragListener());
 		userInputListenerFactory.setNodeDropTargetListener(new MNodeDropListener());
