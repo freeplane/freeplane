@@ -128,7 +128,7 @@
         </separator>
         <separator name="connectors">
             <color name="standardlinkcolor"/>
-            <number name="connector_alpha" text="edit_transparency_label" min="0" max="255" />
+            <number name="connector_alpha" text="edit_transparency_label" min="20" max="255" />
             <combo name = "connector_shape" text="connector_shapes">
                 <choice value="LINE" text="ChangeConnectorShapeAction.LINE.text"/>
                 <choice value="LINEAR_PATH" text="ChangeConnectorShapeAction.LINEAR_PATH.text"/>
