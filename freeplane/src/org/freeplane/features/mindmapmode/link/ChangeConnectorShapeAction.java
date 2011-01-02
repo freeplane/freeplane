@@ -23,22 +23,27 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.common.link.ConnectorModel.Shape;
 import org.freeplane.features.common.link.LinkController;
 
-class EdgeLikeConnectorAction extends AFreeplaneAction {
+class ChangeConnectorShapeAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	ConnectorModel arrowLink;
+	final private Shape shape;
 
-	public EdgeLikeConnectorAction(final MLinkController linkController, final ConnectorModel arrowLink) {
-		super("EdgeLikeLinkAction");
+	public ChangeConnectorShapeAction(final MLinkController linkController, final ConnectorModel arrowLink, final Shape shape) {
+		super("ChangeConnectorShapeAction." + shape.toString());
 		this.arrowLink = arrowLink;
+		this.shape = shape;
+		final boolean selected = shape.equals(arrowLink.getShape());
+		setSelected(selected);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MLinkController linkController = (MLinkController) LinkController.getController();
-		linkController.setEdgeLike(arrowLink, !arrowLink.isEdgeLike());
+		linkController.setShape(arrowLink, shape);
 	}
 }

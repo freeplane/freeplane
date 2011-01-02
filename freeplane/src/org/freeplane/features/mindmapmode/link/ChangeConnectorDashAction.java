@@ -67,7 +67,7 @@ class ChangeConnectorDashAction extends AFreeplaneAction {
 				Graphics2D g2 = (Graphics2D) g;
 				Stroke oldStroke = g2.getStroke();
 				g2.setStroke(stroke);
-				g2.drawLine(0, ICON_HEIGHT / 2, ICON_WIDTH, ICON_HEIGHT / 2);
+				g2.drawLine(x, y+ICON_HEIGHT / 2, x+ICON_WIDTH, y+ICON_HEIGHT / 2);
 				g2.setStroke(oldStroke);
 			}
 			

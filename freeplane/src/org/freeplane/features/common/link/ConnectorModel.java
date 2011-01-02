@@ -25,10 +25,14 @@ import java.awt.Point;
 import org.freeplane.features.common.map.NodeModel;
 
 public class ConnectorModel extends NodeLinkModel {
+	public static enum Shape {
+		LINE, LINEAR_PATH, CUBIC_CURVE, EDGE_LIKE
+	};
+
 	private Color color;
+	private int alpha;
 	private ArrowType endArrow;
 	private int[] dash;
-
 	private Point endInclination;
 	private String middleLabel;
 	private String sourceLabel;
@@ -36,28 +40,31 @@ public class ConnectorModel extends NodeLinkModel {
 	private Point startInclination;
 	private String targetLabel;
 	private int width;
-	private boolean edgeLike;
+	private Shape shape;
 
-	public boolean isEdgeLike() {
-		return edgeLike;
+	public Shape getShape() {
+		return shape;
 	}
 
-	public void setEdgeLike(final boolean edgeLike) {
-		this.edgeLike = edgeLike;
+	public void setShape(final Shape shape) {
+		this.shape = shape;
 	}
 
 	public int[] getDash() {
-    	return dash;
-    }
+		return dash;
+	}
 
 	public void setDash(int[] dash) {
-    	this.dash = dash;
-    }
-	
-	public ConnectorModel(final NodeModel source, final String targetID, final Color color, final int width) {
+		this.dash = dash;
+	}
+
+	public ConnectorModel(final NodeModel source, final String targetID, final Color color,
+	                      final int alpha, final Shape shape, final int width) {
 		super(source, targetID);
 		this.color = color;
+		this.setAlpha(alpha);
 		this.width = width;
+		this.shape = shape;
 		startArrow = ArrowType.NONE;
 		endArrow = ArrowType.DEFAULT;
 	}
@@ -146,9 +153,11 @@ public class ConnectorModel extends NodeLinkModel {
 	}
 
 	private boolean showControlPointsFlag;
+
 	public boolean getShowControlPointsFlag() {
 		return showControlPointsFlag;
 	}
+
 	public void setShowControlPoints(final boolean bShowControlPointsFlag) {
 		showControlPointsFlag = bShowControlPointsFlag;
 	}
@@ -172,4 +181,12 @@ public class ConnectorModel extends NodeLinkModel {
 	public void setWidth(final int width) {
 		this.width = width;
 	}
+
+	public void setAlpha(int alpha) {
+	    this.alpha = alpha;
+    }
+
+	public int getAlpha() {
+	    return alpha;
+    }
 }

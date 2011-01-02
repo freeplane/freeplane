@@ -39,6 +39,7 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.link.ConnectorModel.Shape;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -54,7 +55,10 @@ class LinkBuilder implements IElementHandler, IReadCompletionListener, IExtensio
 	}
 
 	protected NodeLinkModel createArrowLink(final NodeModel source, final String targetID) {
-		return new ConnectorModel(source, targetID, linkController.getStandardConnectorColor(),
+		return new ConnectorModel(source, targetID, 
+			linkController.getStandardConnectorColor(),
+			linkController.getStandardAlpha(),
+			linkController.getStandardConnectorShape(),
 		    linkController.getStandardConnectorWidth());
 	}
 
@@ -97,13 +101,25 @@ class LinkBuilder implements IElementHandler, IReadCompletionListener, IExtensio
 		reader.addAttributeHandler("arrowlink", "EDGE_LIKE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setEdgeLike(Boolean.TRUE.toString().equals(value));
+				arrowLink.setShape(Shape.EDGE_LIKE);
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "SHAPE", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
+				arrowLink.setShape(Shape.valueOf(value));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "COLOR", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setColor(ColorUtils.stringToColor(value.toString()));
+				arrowLink.setColor(ColorUtils.stringToColor(value));
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "TRANSPARENCY", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
+				arrowLink.setAlpha(Integer.parseInt(value));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "DASH", new IAttributeHandler() {
@@ -192,14 +208,14 @@ class LinkBuilder implements IElementHandler, IReadCompletionListener, IExtensio
 		}
 		final XMLElement arrowLink = new XMLElement();
 		arrowLink.setName("arrowlink");
-		final boolean isEdgeLike = model.isEdgeLike();
-		if (isEdgeLike) {
-			arrowLink.setAttribute("EDGE_LIKE", Boolean.TRUE.toString());
-		}
+		final Shape shape = model.getShape();
+		arrowLink.setAttribute("SHAPE", shape.toString());
 		final Color color = model.getColor();
-		if (color != null) {
-			arrowLink.setAttribute("COLOR", ColorUtils.colorToString(color));
-		}
+		arrowLink.setAttribute("COLOR", ColorUtils.colorToString(color));
+		final int width = model.getWidth();
+		arrowLink.setAttribute("WIDTH", Integer.toString(width));
+		final int alpha = model.getAlpha();
+		arrowLink.setAttribute("TRANSPARENCY", Integer.toString(alpha));
 		final int[]dash = model.getDash();
 		if (dash != null) {
 			StringBuilder sb = null;

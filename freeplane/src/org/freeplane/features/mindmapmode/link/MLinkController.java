@@ -34,12 +34,18 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSlider;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -49,6 +55,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.common.link.ConnectorModel.Shape;
 import org.freeplane.features.common.link.HyperTextLinkModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
@@ -86,7 +93,9 @@ public class MLinkController extends LinkController {
 				nodeLinks = new NodeLinks();
 				source.addExtension(nodeLinks);
 			}
-			arrowLink = new ConnectorModel(source, targetID, getStandardConnectorColor(), getStandardConnectorWidth());
+			arrowLink = new ConnectorModel(source, targetID, 
+				getStandardConnectorColor(), getStandardAlpha(),
+				getStandardConnectorShape(), getStandardConnectorWidth());
 			nodeLinks.addArrowlink(arrowLink);
 			Controller.getCurrentModeController().getMapController().nodeChanged(source);
 		}
@@ -346,7 +355,6 @@ public class MLinkController extends LinkController {
 	}
 
 	static private ConnectorColorAction colorArrowLinkAction;
-	static private EdgeLikeConnectorAction edgeLikeLinkAction;
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
 
@@ -394,11 +402,6 @@ public class MLinkController extends LinkController {
 		modeController.addAction(setLinkByFileChooser);
 		final AddConnectorAction addArrowLinkAction = new AddConnectorAction();
 		modeController.addAction(addArrowLinkAction);
-		modeController.addAction(new RemoveConnectorAction(this, null));
-		colorArrowLinkAction = new ConnectorColorAction(this, null);
-		modeController.addAction(colorArrowLinkAction);
-		edgeLikeLinkAction = new EdgeLikeConnectorAction(this, null);
-		modeController.addAction(edgeLikeLinkAction);
 		setLinkByTextField = new SetLinkByTextFieldAction();
 		modeController.addAction(setLinkByTextField);
 		modeController.addAction(new AddLocalLinkAction());
@@ -409,66 +412,69 @@ public class MLinkController extends LinkController {
 	@Override
 	protected void createArrowLinkPopup(final ConnectorModel link, final JPopupMenu arrowLinkPopup) {
 		super.createArrowLinkPopup(link, arrowLinkPopup);
-		((RemoveConnectorAction) Controller.getCurrentModeController().getAction("RemoveConnectorAction")).setArrowLink(link);
 		arrowLinkPopup.add(new RemoveConnectorAction(this, link));
-		arrowLinkPopup.add(new ConnectorColorAction(this, link));
-		final EdgeLikeConnectorAction action = new EdgeLikeConnectorAction(this, link);
-		final JCheckBoxMenuItem menuItem = new JCheckBoxMenuItem(action);
-		menuItem.setSelected(link.isEdgeLike());
-		arrowLinkPopup.add(menuItem);
-		arrowLinkPopup.addSeparator();
-		arrowLinkPopup.add(new JLabel(TextUtils.getText("edit_source_label")));
-		final PopupEditorKeyListener enterListener = new PopupEditorKeyListener(arrowLinkPopup);
-		final JTextField sourceLabelEditor = new JTextField(link.getSourceLabel());
-		sourceLabelEditor.addKeyListener(enterListener);
-		arrowLinkPopup.add(sourceLabelEditor);
-		arrowLinkPopup.addSeparator();
-		arrowLinkPopup.add(new JLabel(TextUtils.getText("edit_middle_label")));
-		final JTextField middleLabelEditor = new JTextField(link.getMiddleLabel());
-		middleLabelEditor.addKeyListener(enterListener);
-		arrowLinkPopup.add(middleLabelEditor);
-		arrowLinkPopup.addSeparator();
-		arrowLinkPopup.add(new JLabel(TextUtils.getText("edit_target_label")));
-		final JTextField targetLabelEditor = new JTextField(link.getTargetLabel());
-		targetLabelEditor.addKeyListener(enterListener);
-		arrowLinkPopup.add(targetLabelEditor);
-		arrowLinkPopup.addSeparator();
-		arrowLinkPopup.addPopupMenuListener(new PopupMenuListener() {
-			public void popupMenuCanceled(final PopupMenuEvent e) {
-			}
-
-			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-				if (enterListener.isCanceled()) {
-					return;
-				}
-				setSourceLabel(link, sourceLabelEditor.getText());
-				setMiddleLabel(link, middleLabelEditor.getText());
-				setTargetLabel(link, targetLabelEditor.getText());
-			}
-
-			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-			}
-		});
 		
+		arrowLinkPopup.addSeparator();
+		arrowLinkPopup.add(new ConnectorColorAction(this, link));
+
+		final JSlider transparencySlider = new JSlider(0, 255, link.getAlpha());
+		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_transparency_label"), transparencySlider);
+		
+		arrowLinkPopup.addSeparator();
+
 		final JMenu connectorArrows = new JMenu(TextUtils.getText("connector_arrows"));
+		final ButtonGroup arrowsGroup = new ButtonGroup();
+		
 		final ChangeConnectorArrowsAction actionNN = new ChangeConnectorArrowsAction(this, "none", link,
 		    ArrowType.NONE, ArrowType.NONE);
 		final JRadioButtonMenuItem itemnn = new JAutoRadioButtonMenuItem(actionNN);
 		connectorArrows.add(itemnn);
+		arrowsGroup.add(itemnn);
+		
 		final ChangeConnectorArrowsAction actionNT = new ChangeConnectorArrowsAction(this, "forward", link,
 		    ArrowType.NONE, ArrowType.DEFAULT);
 		final JRadioButtonMenuItem itemnt = new JAutoRadioButtonMenuItem(actionNT);
 		connectorArrows.add(itemnt);
+		arrowsGroup.add(itemnt);
+		
 		final ChangeConnectorArrowsAction actionTN = new ChangeConnectorArrowsAction(this, "backward", link,
 		    ArrowType.DEFAULT, ArrowType.NONE);
 		final JRadioButtonMenuItem itemtn = new JAutoRadioButtonMenuItem(actionTN);
 		connectorArrows.add(itemtn);
+		arrowsGroup.add(itemtn);
+		
 		final ChangeConnectorArrowsAction actionTT = new ChangeConnectorArrowsAction(this, "both", link,
 		    ArrowType.DEFAULT, ArrowType.DEFAULT);
 		final JRadioButtonMenuItem itemtt = new JAutoRadioButtonMenuItem(actionTT);
 		connectorArrows.add(itemtt);
+		arrowsGroup.add(itemtt);
+		
 		arrowLinkPopup.add(connectorArrows);
-
+		
+		final JMenu connectorShapes = new JMenu(TextUtils.getText("connector_shapes"));
+		final ButtonGroup shapeGroup = new ButtonGroup();
+		
+		final ChangeConnectorShapeAction actionCubic = new ChangeConnectorShapeAction(this, link,Shape.CUBIC_CURVE);
+		final JRadioButtonMenuItem itemCubic = new JAutoRadioButtonMenuItem(actionCubic);
+		connectorShapes.add(itemCubic);
+		shapeGroup.add(itemCubic);
+		
+		final ChangeConnectorShapeAction actionLinear = new ChangeConnectorShapeAction(this, link,Shape.LINE);
+		final JRadioButtonMenuItem itemLinear = new JAutoRadioButtonMenuItem(actionLinear);
+		connectorShapes.add(itemLinear);
+		shapeGroup.add(itemLinear);
+		
+		final ChangeConnectorShapeAction actionLinearPath = new ChangeConnectorShapeAction(this, link,Shape.LINEAR_PATH);
+		final JRadioButtonMenuItem itemLinearPath = new JAutoRadioButtonMenuItem(actionLinearPath);
+		connectorShapes.add(itemLinearPath);
+		shapeGroup.add(itemLinearPath);
+		
+		final ChangeConnectorShapeAction actionEdgeLike = new ChangeConnectorShapeAction(this, link,Shape.EDGE_LIKE);
+		final JRadioButtonMenuItem itemEdgeLike = new JAutoRadioButtonMenuItem(actionEdgeLike);
+		connectorShapes.add(itemEdgeLike);
+		shapeGroup.add(itemEdgeLike);
+		
+		arrowLinkPopup.add(connectorShapes);
 	
 		final JMenu connectorDashes = new JMenu(TextUtils.getText("connector_lines"));
 
@@ -493,7 +499,55 @@ public class MLinkController extends LinkController {
 		connectorDashes.add(itemD5);
 
 		arrowLinkPopup.add(connectorDashes);
-}
+
+		final SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(link.getWidth(),1, 32, 1);
+		final JSpinner widthSpinner = new JSpinner(spinnerNumberModel);
+		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_width_label"), widthSpinner);
+		
+		arrowLinkPopup.addSeparator();
+
+		final PopupEditorKeyListener enterListener = new PopupEditorKeyListener(arrowLinkPopup);
+		final JTextField sourceLabelEditor = new JTextField(link.getSourceLabel());
+		sourceLabelEditor.addKeyListener(enterListener);
+		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_source_label"), sourceLabelEditor);
+
+		final JTextField middleLabelEditor = new JTextField(link.getMiddleLabel());
+		middleLabelEditor.addKeyListener(enterListener);
+		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_middle_label"), middleLabelEditor);
+
+		final JTextField targetLabelEditor = new JTextField(link.getTargetLabel());
+		targetLabelEditor.addKeyListener(enterListener);
+		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_target_label"), targetLabelEditor);
+		
+		arrowLinkPopup.addPopupMenuListener(new PopupMenuListener() {
+			public void popupMenuCanceled(final PopupMenuEvent e) {
+			}
+
+			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+				if (enterListener.isCanceled()) {
+					return;
+				}
+				setSourceLabel(link, sourceLabelEditor.getText());
+				setMiddleLabel(link, middleLabelEditor.getText());
+				setTargetLabel(link, targetLabelEditor.getText());
+				setAlpha(link, transparencySlider.getValue());
+				setWidth(link, spinnerNumberModel.getNumber().intValue());
+			}
+
+			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+			}
+		});
+		
+	}
+
+	private void addPopupComponent(final JPopupMenu arrowLinkPopup, final String label, final JComponent component) {
+	    final Box componentBox = Box.createHorizontalBox();
+		componentBox.add(Box.createHorizontalStrut(20));
+		componentBox.add(new JLabel(label));
+		componentBox.add(Box.createHorizontalStrut(10));
+		componentBox.add(component);
+		arrowLinkPopup.add(componentBox);
+    }
 
 	static final private Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s()'\",;|<>{}]+");
 	static private Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
@@ -739,24 +793,74 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
 	}
 
-	public void setEdgeLike(final ConnectorModel connector, final boolean edgeLike) {
-		final boolean alreadyEdgeLike = connector.isEdgeLike();
-		if (alreadyEdgeLike == edgeLike) {
+	public void setShape(final ConnectorModel connector, final Shape shape) {
+		final Shape oldShape = connector.getShape();
+		if (oldShape.equals(shape)) {
 			return;
 		}
 		final IActor actor = new IActor() {
 			public void act() {
-				connector.setEdgeLike(edgeLike);
+				connector.setShape(shape);
 				final NodeModel node = connector.getSource();
 				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
-				return "setEdgeLike";
+				return "setConnectorShape";
 			}
 
 			public void undo() {
-				connector.setEdgeLike(alreadyEdgeLike);
+				connector.setShape(oldShape);
+				final NodeModel node = connector.getSource();
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
+	}
+
+	public void setWidth(final ConnectorModel connector, final int width) {
+		final int oldWidth = connector.getWidth();
+		if (oldWidth == width) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				connector.setWidth(width);
+				final NodeModel node = connector.getSource();
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setConnectorWidth";
+			}
+
+			public void undo() {
+				connector.setWidth(oldWidth);
+				final NodeModel node = connector.getSource();
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
+	}
+
+	public void setAlpha(final ConnectorModel connector, final int alpha) {
+		final int oldAlpha = connector.getAlpha();
+		if (oldAlpha == alpha) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				connector.setAlpha(alpha);
+				final NodeModel node = connector.getSource();
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setConnectorAlpha";
+			}
+
+			public void undo() {
+				connector.setAlpha(oldAlpha);
 				final NodeModel node = connector.getSource();
 				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}

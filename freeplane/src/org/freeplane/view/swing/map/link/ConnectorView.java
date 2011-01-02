@@ -30,10 +30,13 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.CubicCurve2D;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
@@ -51,13 +54,17 @@ public class ConnectorView extends AConnectorView{
 	private static final int LABEL_SHIFT = 4;
 	private static final double PRECISION = 2;
 	private Shape arrowLinkCurve;
+	final private Color textColor;
 	final private Color color;
 	final private BasicStroke stroke;
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target) {
 		super(connectorModel, source, target);
 		final LinkController linkController = LinkController.getController(getModeController());
-		color = linkController.getColor(connectorModel);
+		textColor = linkController.getColor(connectorModel);
+		final int alpha = linkController.getAlpha(connectorModel);
+		color =  ColorUtils.createColor(textColor, alpha);
+
 		final int width = linkController.getWidth(connectorModel);
 		if (!isSourceVisible() || !isTargetVisible()) {
 			float[] dash = zoomDash(DOTTED_DASH);
@@ -309,36 +316,59 @@ public class ConnectorView extends AConnectorView{
 				p2 = target.getLinkPoint(connectorModel.getEndInclination());
 			}
 		}
-		{
-			final CubicCurve2D arrowLinkCurve = new CubicCurve2D.Double();
-			if (p1 != null) {
-				p3 = new Point(p1);
-				p3.translate(((sourceIsLeft) ? -1 : 1) * getMap().getZoomed(connectorModel.getStartInclination().x),
-					getMap().getZoomed(connectorModel.getStartInclination().y));
-				if (p2 == null) {
-					arrowLinkCurve.setCurve(p1, p3, p1, p3);
-				}
-			}
-			if (p2 != null) {
-				p4 = new Point(p2);
-				p4.translate(((targetIsLeft) ? -1 : 1) * getMap().getZoomed(connectorModel.getEndInclination().x), getMap()
-					.getZoomed(connectorModel.getEndInclination().y));
-				if (p1 == null) {
-					arrowLinkCurve.setCurve(p2, p4, p2, p4);
-				}
-			}
-			if (p1 != null && p2 != null) {
-				arrowLinkCurve.setCurve(p1, p3, p4, p2);
-			}
-			this.arrowLinkCurve = arrowLinkCurve;
+		if (p1 != null) {
+			p3 = new Point(p1);
+			p3.translate(((sourceIsLeft) ? -1 : 1) * getMap().getZoomed(connectorModel.getStartInclination().x),
+				getMap().getZoomed(connectorModel.getStartInclination().y));
+
 		}
+		if (p2 != null) {
+			p4 = new Point(p2);
+			p4.translate(((targetIsLeft) ? -1 : 1) * getMap().getZoomed(connectorModel.getEndInclination().x), getMap()
+				.getZoomed(connectorModel.getEndInclination().y));
+		}
+		paintCurve(g, p1, p2, p3, p4);
+		drawLabels(g, p1, p2, p3, p4);
+	}
+
+	private Shape createLine(Point p1, Point p2, Point p3, Point p4) {
+	    return new Line2D.Float(p1, p2);
+    }
+
+	private Shape createLinearPath(Point p1, Point p2, Point p3, Point p4) {
+	    final GeneralPath generalPath = new GeneralPath(GeneralPath.WIND_NON_ZERO, 4);
+	    generalPath.moveTo(p1.x, p1.y);
+	    generalPath.lineTo(p3.x, p3.y);
+	    generalPath.lineTo(p4.x, p4.y);
+	    generalPath.lineTo(p2.x, p2.y);
+		return generalPath;
+    }
+
+	private void paintCurve(final Graphics2D g, Point p1, Point p2, Point p3, Point p4) {
+		final boolean isLine = ConnectorModel.Shape.LINE.equals(connectorModel.getShape());
 		if (p1 != null && p2 != null) {
+			if(isLine)
+				arrowLinkCurve = createLine(p1, p2, p3, p4);
+			else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
+				arrowLinkCurve = createLinearPath(p1, p2, p3, p4);
+			else
+				arrowLinkCurve = createCubicCurve2D(p1, p2, p3, p4);
+		}
+		else
+			arrowLinkCurve = null;
+	    if (arrowLinkCurve != null) {
 			g.draw(arrowLinkCurve);
 		}
 		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
-			paintArrow(p1, p3, g, getZoom() * 10);
+			if(isLine && p2 != null)
+				paintArrow(p1, p2, g, getZoom() * 10);
+			else
+				paintArrow(p1, p3, g, getZoom() * 10);
 		}
 		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
+			if(isLine && p1 != null)
+				paintArrow(p2, p1, g, getZoom() * 10);
+			else
 			paintArrow(p2, p4, g, getZoom() * 10);
 		}
 		if (connectorModel.getShowControlPointsFlag()) {
@@ -352,9 +382,13 @@ public class ConnectorView extends AConnectorView{
 				g.drawLine(p2.x, p2.y, p4.x, p4.y);
 			}
 		}
-		final String sourceLabel = connectorModel.getSourceLabel();
+    }
+
+	private void drawLabels(final Graphics2D g, Point p1, Point p2, Point p3, Point p4) {
+	    final String sourceLabel = connectorModel.getSourceLabel();
 		final String middleLabel = connectorModel.getMiddleLabel();
 		final String targetLabel = connectorModel.getTargetLabel();
+		g.setColor(textColor);
 		if (p1 != null) {
 			drawEndPointText(g, sourceLabel, p1, p3);
 			if (p2 == null) {
@@ -370,7 +404,21 @@ public class ConnectorView extends AConnectorView{
 		if (p1 != null && p2 != null) {
 			drawMiddleLabel(g, middleLabel);
 		}
-	}
+    }
+
+	private CubicCurve2D createCubicCurve2D(Point p1, Point p2, Point p3, Point p4) {
+	    final CubicCurve2D arrowLinkCurve = new CubicCurve2D.Double();
+		if (p1 != null && p2 != null) {
+			arrowLinkCurve.setCurve(p1, p3, p4, p2);
+		}
+		else if (p1 != null) {
+			arrowLinkCurve.setCurve(p1, p3, p1, p3);
+		}
+		else if (p2 != null) {
+			arrowLinkCurve.setCurve(p2, p4, p2, p4);
+		}
+	    return arrowLinkCurve;
+    }
 
 	/* (non-Javadoc)
 	 * @see org.freeplane.view.swing.map.link.ILinkView#increaseBounds(java.awt.Rectangle)

@@ -73,6 +73,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.common.link.ConnectorModel.Shape;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.NodeLinks;
@@ -1036,7 +1037,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					final NodeView targetView = getNodeView(target);
 					final ILinkView arrowLink;
 					if (sourceView != null && targetView != null
-					        && (ref.isEdgeLike() || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE)
+					        && (Shape.EDGE_LIKE.equals(ref.getShape()) || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE)
 					        && source.isVisible() && target.isVisible()) {
 						arrowLink = new EdgeLinkView(ref, getModeController(), sourceView, targetView);
 					}

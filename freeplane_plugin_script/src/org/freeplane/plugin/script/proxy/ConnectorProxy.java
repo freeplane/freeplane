@@ -8,6 +8,7 @@ import java.awt.Color;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.common.link.ConnectorModel.Shape;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.plugin.script.ScriptContext;
@@ -97,6 +98,6 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public boolean simulatesEdge() {
-		return getConnector().isEdgeLike();
+		return Shape.EDGE_LIKE.equals(getConnector().getShape());
 	}
 }

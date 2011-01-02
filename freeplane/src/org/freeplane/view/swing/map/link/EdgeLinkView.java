@@ -25,8 +25,10 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.common.link.ConnectorModel.Shape;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.styles.MapViewLayout;
@@ -51,13 +53,15 @@ public class EdgeLinkView extends AConnectorView {
 			edgeView = EdgeViewFactory.getInstance().getEdge(source, target);
 		}
 		Color color;
-		if (model.isEdgeLike()) {
+		if (Shape.EDGE_LIKE.equals(model.getShape())) {
 			color = edgeView.getColor().darker();
 		}
 		else {
-			final LinkController controller = LinkController.getController(modeController);
-			color = controller.getColor(model);
-			final int width = controller.getWidth(model);
+			final LinkController linkController = LinkController.getController(modeController);
+			color = linkController.getColor(connectorModel);
+			final int alpha = linkController.getAlpha(connectorModel);
+			color =  ColorUtils.createColor(color, alpha);
+			final int width = linkController.getWidth(model);
 			edgeView.setWidth(width);
 		}
 		edgeView.setColor(color);
@@ -86,7 +90,7 @@ public class EdgeLinkView extends AConnectorView {
 
 	public void paint(final Graphics graphics) {
 		edgeView.paint((Graphics2D) graphics);
-		if(connectorModel.isEdgeLike()){
+		if(Shape.EDGE_LIKE.equals(connectorModel.getShape())){
 			return;
 		}
 		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {

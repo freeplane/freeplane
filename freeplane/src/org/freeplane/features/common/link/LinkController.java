@@ -50,6 +50,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.link.ConnectorModel.Shape;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -60,9 +61,6 @@ import org.freeplane.features.common.url.UrlManager;
  */
 public class LinkController extends SelectionController implements IExtension {
 	public static final String MENUITEM_SCHEME = "menuitem";
-
-	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
-
 	public static LinkController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return getController(modeController);
@@ -182,9 +180,13 @@ public class LinkController extends SelectionController implements IExtension {
 		return null;
 	}
 
-	public static final int STANDARD_WIDTH = 2;
-	public int getWidth(final NodeLinkModel model) {
-		return STANDARD_WIDTH;
+	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
+	private static final String RESOURCES_LINK_SHAPE = "link_shape";
+	private static final String RESOURCES_LINK_COLOR_ALPHA = "link_alpha";
+	private static final String RESOURCES_LINK_WIDTH = "link_width";
+	
+	public int getWidth(final ConnectorModel model) {
+		return model.getWidth();
 	}
 
 	void loadLink(final NodeModel node, String link) {
@@ -378,9 +380,17 @@ public class LinkController extends SelectionController implements IExtension {
 	public static String parseMenuItemLink(final URI uri) {
 		return uri.getSchemeSpecificPart().substring(1);
 	}
+	
 	public int getStandardConnectorWidth() {
-        return STANDARD_WIDTH;
-    }
+		final String standardWidth = ResourceController.getResourceController().getProperty(RESOURCES_LINK_WIDTH);
+		final int width = Integer.valueOf(standardWidth);
+		return width;
+	}
+	
+	public void setStandardConnectorWidth(final int width) {
+		final String value = Integer.toString(width);
+		ResourceController.getResourceController().setProperty(RESOURCES_LINK_WIDTH, value);
+	}
 
 	public Color getStandardConnectorColor() {
         final String standardColor = ResourceController.getResourceController().getProperty(RESOURCES_LINK_COLOR);
@@ -392,4 +402,32 @@ public class LinkController extends SelectionController implements IExtension {
 		String value = ColorUtils.colorToString(color);
 		ResourceController.getResourceController().setProperty(RESOURCES_LINK_COLOR, value);
 	}
+
+	public Shape getStandardConnectorShape() {
+		final String standardShape = ResourceController.getResourceController().getProperty(RESOURCES_LINK_SHAPE);
+		final Shape shape = Shape.valueOf(standardShape);
+		return shape;
+	}
+	
+	public void setStandardConnectorShape(final Shape shape) {
+		String value = shape.toString();
+		ResourceController.getResourceController().setProperty(RESOURCES_LINK_SHAPE, value);
+	}
+
+
+	public int getStandardAlpha() {
+		final String standardAlpha = ResourceController.getResourceController().getProperty(RESOURCES_LINK_COLOR_ALPHA);
+		final int alpha = Integer.valueOf(standardAlpha);
+		return alpha;
+	}
+	
+	public void setStandardAlpha(final int alpha) {
+		final String value = Integer.toString(alpha);
+		ResourceController.getResourceController().setProperty(RESOURCES_LINK_COLOR_ALPHA, value);
+	}
+
+	public int getAlpha(ConnectorModel connectorModel) {
+		return connectorModel.getAlpha();
+    }
+
 }
