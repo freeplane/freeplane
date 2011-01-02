@@ -41,7 +41,7 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean ignoreCase) {
-		return new StyleCondition(value);
+		return new StyleCondition((IStyle) value);
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object property) {
