@@ -415,7 +415,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 
-	public int getStandardAlpha() {
+	public int getStandardConnectorAlpha() {
 		final String standardAlpha = ResourceController.getResourceController().getProperty(RESOURCES_LINK_COLOR_ALPHA);
 		final int alpha = Integer.valueOf(standardAlpha);
 		return alpha;

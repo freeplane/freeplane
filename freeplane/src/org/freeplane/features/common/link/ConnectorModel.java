@@ -47,6 +47,7 @@ public class ConnectorModel extends NodeLinkModel {
 	}
 
 	public void setShape(final Shape shape) {
+		assert shape != null;
 		this.shape = shape;
 	}
 
@@ -61,6 +62,9 @@ public class ConnectorModel extends NodeLinkModel {
 	public ConnectorModel(final NodeModel source, final String targetID, final Color color,
 	                      final int alpha, final Shape shape, final int width) {
 		super(source, targetID);
+		assert source != null;
+		assert color != null;
+		assert shape != null;
 		this.color = color;
 		this.setAlpha(alpha);
 		this.width = width;
@@ -137,14 +141,17 @@ public class ConnectorModel extends NodeLinkModel {
 	}
 
 	public void setColor(final Color color) {
+		assert color != null;
 		this.color = color;
 	}
 
 	public void setEndArrow(final ArrowType endArrow) {
+		assert endArrow != null;
 		this.endArrow = endArrow;
 	}
 
 	public void setEndInclination(final Point endInclination) {
+		assert endInclination != null;
 		this.endInclination = endInclination;
 	}
 
@@ -167,6 +174,7 @@ public class ConnectorModel extends NodeLinkModel {
 	}
 
 	public void setStartArrow(final ArrowType startArrow) {
+		assert startArrow != null;
 		this.startArrow = startArrow;
 	}
 

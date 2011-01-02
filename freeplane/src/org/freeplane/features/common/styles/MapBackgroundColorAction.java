@@ -64,7 +64,7 @@ class MapBackgroundColorAction extends AFreeplaneAction {
 			oldBackgroundColor = ColorUtils.stringToColor(colorPropertyString);
 		}
 		final Color actionColor = ColorTracker.showCommonJColorChooserDialog(controller.getSelection()
-		    .getSelected(), TextUtils.getText("choose_map_background_color"), oldBackgroundColor);
+		    .getSelected(), TextUtils.getText("choose_map_background_color"), oldBackgroundColor, null);
 		mapStyle.setBackgroundColor(model, actionColor);
 	}
 }

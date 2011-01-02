@@ -94,7 +94,7 @@ public class MLinkController extends LinkController {
 				source.addExtension(nodeLinks);
 			}
 			arrowLink = new ConnectorModel(source, targetID, 
-				getStandardConnectorColor(), getStandardAlpha(),
+				getStandardConnectorColor(), getStandardConnectorAlpha(),
 				getStandardConnectorShape(), getStandardConnectorWidth());
 			nodeLinks.addArrowlink(arrowLink);
 			Controller.getCurrentModeController().getMapController().nodeChanged(source);

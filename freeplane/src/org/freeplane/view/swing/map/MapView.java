@@ -991,20 +991,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
 	public void paintChildren(final Graphics graphics) {
-		final boolean paintLinksBehind = ResourceController.getResourceController().getBooleanProperty(
-		    "paint_connectors_behind");
-		if (paintLinksBehind) {
-			paintingMode = PaintingMode.CLOUDS;
-			super.paintChildren(graphics);
-			paintLinks((Graphics2D) graphics);
-			paintingMode = PaintingMode.NODES;
-			super.paintChildren(graphics);
-		}
-		else {
-			paintingMode = PaintingMode.ALL;
-			super.paintChildren(graphics);
-			paintLinks((Graphics2D) graphics);
-		}
+		paintingMode = PaintingMode.ALL;
+		super.paintChildren(graphics);
+		paintLinks((Graphics2D) graphics);
 		paintSelecteds((Graphics2D) graphics);
 	}
 

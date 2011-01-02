@@ -47,7 +47,9 @@ class ConnectorColorAction extends AFreeplaneAction {
 		final MLinkController linkController = (MLinkController) LinkController.getController();
 		final Color selectedColor = linkController.getColor(arrowLink);
 		final Color color = ColorTracker.showCommonJColorChooserDialog(controller.getSelection()
-		    .getSelected(), (String) this.getValue(Action.NAME), selectedColor);
-		linkController.setConnectorColor(arrowLink, color);
+		    .getSelected(), (String) this.getValue(Action.NAME), selectedColor, linkController.getStandardConnectorColor());
+		if(color != null){
+			linkController.setConnectorColor(arrowLink, color);
+		}
 	}
 }
