@@ -55,16 +55,17 @@ class MapBackgroundColorAction extends AFreeplaneAction {
 		final Controller controller = Controller.getCurrentController();
 		final MapStyleModel model = (MapStyleModel) mapStyle.getMapHook();
 		final Color oldBackgroundColor;
+		final String colorPropertyString = ResourceController.getResourceController().getProperty(
+		    MapStyle.RESOURCES_BACKGROUND_COLOR);
+		final Color defaultBgColor = ColorUtils.stringToColor(colorPropertyString);
 		if (model != null) {
 			oldBackgroundColor = model.getBackgroundColor();
 		}
 		else {
-			final String colorPropertyString = ResourceController.getResourceController().getProperty(
-			    MapStyle.RESOURCES_BACKGROUND_COLOR);
-			oldBackgroundColor = ColorUtils.stringToColor(colorPropertyString);
+			oldBackgroundColor = defaultBgColor;
 		}
 		final Color actionColor = ColorTracker.showCommonJColorChooserDialog(controller.getSelection()
-		    .getSelected(), TextUtils.getText("choose_map_background_color"), oldBackgroundColor, null);
+		    .getSelected(), TextUtils.getText("choose_map_background_color"), oldBackgroundColor, defaultBgColor);
 		mapStyle.setBackgroundColor(model, actionColor);
 	}
 }

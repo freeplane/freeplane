@@ -44,8 +44,10 @@ class NodeColorAction extends AMultipleNodeAction {
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		actionColor = ColorTracker.showCommonJColorChooserDialog(Controller.getCurrentController().getSelection()
-		    .getSelected(), TextUtils.getText("choose_node_color"), NodeStyleModel.getColor(Controller.getCurrentModeController()
-		    .getMapController().getSelectedNode()), null);
+		    .getSelected(), 
+		    TextUtils.getText("choose_node_color"), 
+		    NodeStyleModel.getColor(Controller.getCurrentModeController().getMapController().getSelectedNode()), 
+		    NodeStyleController.standardNodeTextColor);
 		super.actionPerformed(e);
 	}
 

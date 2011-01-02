@@ -54,7 +54,7 @@ class CloudColorAction extends AMultipleNodeAction {
 			selectedColor = cloudController.getColor(selected);
 		}
 		actionColor = ColorTracker.showCommonJColorChooserDialog(controller.getController()
-		    .getSelection().getSelected(), TextUtils.getText("choose_cloud_color"), selectedColor, null);
+		    .getSelection().getSelected(), TextUtils.getText("choose_cloud_color"), selectedColor, CloudController.getStandardColor());
 		super.actionPerformed(e);
 	}
 

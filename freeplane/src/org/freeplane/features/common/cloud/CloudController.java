@@ -60,7 +60,7 @@ public class CloudController implements IExtension {
 	public static final String RESOURCES_CLOUD_COLOR = "standardcloudcolor";
 	private static Color standardColor = null;
 
-	protected static Color getStandardColor() {
+	public static Color getStandardColor() {
 		return standardColor;
 	}
 
