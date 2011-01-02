@@ -418,6 +418,10 @@ public class MLinkController extends LinkController {
 		arrowLinkPopup.add(new ConnectorColorAction(this, link));
 
 		final JSlider transparencySlider = new JSlider(0, 255, link.getAlpha());
+		transparencySlider.setMinorTickSpacing(20);
+		transparencySlider.setPaintTicks(true);
+		transparencySlider.setSnapToTicks(true);
+		transparencySlider.setPaintTrack(true);
 		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_transparency_label"), transparencySlider);
 		
 		arrowLinkPopup.addSeparator();
