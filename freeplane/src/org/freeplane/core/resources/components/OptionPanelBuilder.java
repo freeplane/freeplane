@@ -73,9 +73,11 @@ public class OptionPanelBuilder {
 			// sort according to current locale
 			final TreeMap<String, String> inverseMap = new TreeMap<String, String>(Collator.getInstance());
 			for (int i = 0; i < childrenCount; i++) {
-				final String choice = data.getChildAtIndex(i).getAttribute("value", null);
+				final XMLElement element = data.getChildAtIndex(i);
+				final String choice = element.getAttribute("value", null);
 				choices.add(choice);
-				final String translation = TextUtils.getOptionalText("OptionPanel." + choice);
+				final String translationKey = element.getAttribute("text", "OptionPanel." + choice);
+				final String translation = TextUtils.getOptionalText(translationKey);
 				translations.add(translation);
 				inverseMap.put(translation, choice);
 			}
@@ -213,7 +215,22 @@ public class OptionPanelBuilder {
 			final DefaultMutableTreeNode treeNode = tree.get(path.path);
 			if (treeNode.getUserObject() == this) {
 				final IPropertyControlCreator creator = getCreator(name, lastBuiltElement);
-				treeNode.setUserObject(creator);
+				final String text = lastBuiltElement.getAttribute("text", null);
+				if(text == null){
+					treeNode.setUserObject(creator);
+				}
+				else{
+					treeNode.setUserObject(new IPropertyControlCreator(){
+						public IPropertyControl createControl() {
+							final IPropertyControl control = creator.createControl();
+							if( control instanceof PropertyAdapter){
+								final PropertyAdapter control2 = (PropertyAdapter) control;
+								control2.setLabel(text);
+							}
+							return control;
+                        }});
+				}
+				
 			}
 		}
 

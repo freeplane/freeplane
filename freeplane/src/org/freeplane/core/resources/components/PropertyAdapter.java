@@ -33,7 +33,11 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  */
 public class PropertyAdapter {
 	private String description;
-	private final String label;
+	private String label;
+	void setLabel(String label) {
+    	this.label = label;
+    }
+
 	private final String name;
 
 	public PropertyAdapter(final String name) {

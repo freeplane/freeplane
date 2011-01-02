@@ -80,8 +80,12 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 		getLinkController().setMiddleLabel(getConnector(), label);
 	}
 
+	@Deprecated
 	public void setSimulatesEdge(final boolean simulatesEdge) {
-		getLinkController().setEdgeLike(getConnector(), simulatesEdge);
+		if(simulatesEdge)
+			getLinkController().setShape(getConnector(), Shape.EDGE_LIKE);
+		else
+			getLinkController().setShape(getConnector(), Shape.CUBIC_CURVE);
 	}
 
 	public void setSourceLabel(final String label) {

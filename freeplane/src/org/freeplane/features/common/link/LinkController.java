@@ -181,9 +181,9 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
-	private static final String RESOURCES_LINK_SHAPE = "link_shape";
-	private static final String RESOURCES_LINK_COLOR_ALPHA = "link_alpha";
-	private static final String RESOURCES_LINK_WIDTH = "link_width";
+	private static final String RESOURCES_CONNECTOR_SHAPE = "connector_shape";
+	private static final String RESOURCES_CONNECTOR_COLOR_ALPHA = "connector_alpha";
+	private static final String RESOURCES_CONNECTOR_WIDTH = "connector_width";
 	
 	public int getWidth(final ConnectorModel model) {
 		return model.getWidth();
@@ -382,14 +382,14 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 	
 	public int getStandardConnectorWidth() {
-		final String standardWidth = ResourceController.getResourceController().getProperty(RESOURCES_LINK_WIDTH);
+		final String standardWidth = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_WIDTH);
 		final int width = Integer.valueOf(standardWidth);
 		return width;
 	}
 	
 	public void setStandardConnectorWidth(final int width) {
 		final String value = Integer.toString(width);
-		ResourceController.getResourceController().setProperty(RESOURCES_LINK_WIDTH, value);
+		ResourceController.getResourceController().setProperty(RESOURCES_CONNECTOR_WIDTH, value);
 	}
 
 	public Color getStandardConnectorColor() {
@@ -404,26 +404,26 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public Shape getStandardConnectorShape() {
-		final String standardShape = ResourceController.getResourceController().getProperty(RESOURCES_LINK_SHAPE);
+		final String standardShape = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_SHAPE);
 		final Shape shape = Shape.valueOf(standardShape);
 		return shape;
 	}
 	
 	public void setStandardConnectorShape(final Shape shape) {
 		String value = shape.toString();
-		ResourceController.getResourceController().setProperty(RESOURCES_LINK_SHAPE, value);
+		ResourceController.getResourceController().setProperty(RESOURCES_CONNECTOR_SHAPE, value);
 	}
 
 
 	public int getStandardConnectorAlpha() {
-		final String standardAlpha = ResourceController.getResourceController().getProperty(RESOURCES_LINK_COLOR_ALPHA);
+		final String standardAlpha = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_COLOR_ALPHA);
 		final int alpha = Integer.valueOf(standardAlpha);
 		return alpha;
 	}
 	
 	public void setStandardAlpha(final int alpha) {
 		final String value = Integer.toString(alpha);
-		ResourceController.getResourceController().setProperty(RESOURCES_LINK_COLOR_ALPHA, value);
+		ResourceController.getResourceController().setProperty(RESOURCES_CONNECTOR_COLOR_ALPHA, value);
 	}
 
 	public int getAlpha(ConnectorModel connectorModel) {
