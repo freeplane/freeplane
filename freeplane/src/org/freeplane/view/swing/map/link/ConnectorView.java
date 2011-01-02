@@ -68,7 +68,7 @@ public class ConnectorView extends AConnectorView{
 		final int width = linkController.getWidth(connectorModel);
 		if (!isSourceVisible() || !isTargetVisible()) {
 			float[] dash = zoomDash(DOTTED_DASH);
-			stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, dash, 0);
+			stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0, dash, 0);
 		}
 		else{
 			stroke = UITools.createStroke(width, linkController.getDash(connectorModel));
@@ -291,6 +291,7 @@ public class ConnectorView extends AConnectorView{
 		boolean targetIsLeft = false;
 		boolean sourceIsLeft = false;
 		final Graphics2D g = (Graphics2D) graphics.create();
+		final Color oldColor = g.getColor();
 		g.setColor(color);
 		/* set stroke. */
 		g.setStroke(stroke);
@@ -329,6 +330,7 @@ public class ConnectorView extends AConnectorView{
 		}
 		paintCurve(g, p1, p2, p3, p4);
 		drawLabels(g, p1, p2, p3, p4);
+		g.setColor(oldColor);
 	}
 
 	private Shape createLine(Point p1, Point p2, Point p3, Point p4) {
@@ -361,17 +363,18 @@ public class ConnectorView extends AConnectorView{
 		}
 		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
 			if(isLine && p2 != null)
-				paintArrow(p1, p2, g, getZoom() * 10);
+				paintArrow(g, p1, p2);
 			else
-				paintArrow(p1, p3, g, getZoom() * 10);
+				paintArrow(g, p1, p3);
 		}
 		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
 			if(isLine && p1 != null)
-				paintArrow(p2, p1, g, getZoom() * 10);
+				paintArrow(g, p2, p1);
 			else
-			paintArrow(p2, p4, g, getZoom() * 10);
+			paintArrow(g, p2, p4);
 		}
 		if (connectorModel.getShowControlPointsFlag()) {
+			g.setColor(textColor);
 			g.setStroke(new BasicStroke(stroke.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, DOTTED_DASH, 0));
 		}
 		if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
@@ -382,6 +385,10 @@ public class ConnectorView extends AConnectorView{
 				g.drawLine(p2.x, p2.y, p4.x, p4.y);
 			}
 		}
+    }
+
+	private void paintArrow(final Graphics2D g, Point p1, Point p2) {
+	    paintArrow(p1, p2, g, getZoom() * 10, (int) Math.ceil(0.5 + stroke.getLineWidth() / 4));
     }
 
 	private void drawLabels(final Graphics2D g, Point p1, Point p2, Point p3, Point p4) {

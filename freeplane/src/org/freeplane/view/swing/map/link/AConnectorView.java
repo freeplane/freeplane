@@ -50,21 +50,22 @@ abstract class AConnectorView  implements ILinkView {
      *            is the another point indicating the direction of the arrow.
      * @param d 
      */
-    protected void paintArrow(final Point p1, final Point p2, final Graphics2D g, final double zoomFactor) {
+    protected void paintArrow(final Point p1, final Point p2, final Graphics2D g, final double zoomFactor, final int width ) {
     	
     	double dx, dy, dxn, dyn;
     	dx = p2.x - p1.x; /* direction of p1 -> p3 */
     	dy = p2.y - p1.y;
     	final double length = Math.sqrt(dx * dx + dy * dy) / zoomFactor;
-    	dxn = dx / length; /* normalized direction of p1 -> p3 */
-    	dyn = dy / length;
-    	final double width = .5f;
+    	dxn = width * dx / length; /* normalized direction of p1 -> p3 */
+    	dyn = width * dy / length;
+    	final double arrowWidth = .5f;
     	final Polygon p = new Polygon();
     	p.addPoint((p1.x), (p1.y));
-    	p.addPoint((int) (p1.x + dxn + width * dyn), (int) (p1.y + dyn - width * dxn));
-    	p.addPoint((int) (p1.x + dxn - width * dyn), (int) (p1.y + dyn + width * dxn));
+    	p.addPoint((int) (p1.x + dxn + arrowWidth * dyn), (int) (p1.y + dyn - arrowWidth * dxn));
+    	p.addPoint((int) (p1.x + dxn - arrowWidth * dyn), (int) (p1.y + dyn + arrowWidth * dxn));
     	p.addPoint((p1.x), (p1.y));
     	g.fillPolygon(p);
+    	g.drawPolygon(p);
     }
 
 	NodeView getSource() {

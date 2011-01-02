@@ -398,7 +398,7 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
     	else{
     		fdash = null;
     	}
-    	final BasicStroke stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1f, fdash, 0f);
+    	final BasicStroke stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 1f, fdash, 0f);
         return stroke;
     }
 }
