@@ -20,6 +20,7 @@
 package org.freeplane.main.application;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Frame;
@@ -50,6 +51,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.file.FileOpener;
 import org.freeplane.features.mindmapmode.note.MNoteController;
 
@@ -126,7 +128,9 @@ class ApplicationViewController extends ViewController {
 	@Override
 	public void changeNoteWindowLocation() {
 		mLocationPreferenceValue = resourceController.getProperty("note_location");
-		insertComponentIntoSplitPane(mMindMapComponent);
+		if(mMindMapComponent != null){
+			insertComponentIntoSplitPane(mMindMapComponent);
+		}
 	}
 
 	public String getAdjustableProperty(final String label) {
@@ -174,6 +178,8 @@ class ApplicationViewController extends ViewController {
 		int lastSplitPanePosition = -1;
 		final JScrollPane scrollPane = getScrollPane();
 		scrollPane.setVisible(true);
+		mSplitPane.setLeftComponent(null);
+		mSplitPane.setRightComponent(null);
 		if ("right".equals(mLocationPreferenceValue)) {
 			mSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 			mSplitPane.setLeftComponent(scrollPane);
@@ -210,11 +216,6 @@ class ApplicationViewController extends ViewController {
 		 * from resizing the window.
 		 */
 		mSplitPane.setResizeWeight(1.0d);
-		final InputMap map = (InputMap) UIManager.get("SplitPane.ancestorInputMap");
-		final KeyStroke keyStrokeF6 = KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0);
-		final KeyStroke keyStrokeF8 = KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0);
-		map.remove(keyStrokeF6);
-		map.remove(keyStrokeF8);
 		if (splitPanePosition != -1 && lastSplitPanePosition != -1) {
 			mSplitPane.setDividerLocation(splitPanePosition);
 			mSplitPane.setLastDividerLocation(lastSplitPanePosition);
@@ -339,10 +340,21 @@ class ApplicationViewController extends ViewController {
 	public void removeSplitPane() {
 		saveSplitPanePosition();
 		final JScrollPane scrollPane = getScrollPane();
+		mMindMapComponent = null;
 		mSplitPane.setLeftComponent(null);
 		mSplitPane.setRightComponent(null);
 		mSplitPane.setLeftComponent(scrollPane);
 		setSplitPaneLayoutManager();
+		final Controller controller = Controller.getCurrentModeController().getController();
+		final NodeModel node = controller.getSelection().getSelected();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				final Component component = controller.getViewController().getComponent(node);
+				if (component != null) {
+					component.requestFocus();
+				}
+			}
+		});
 	}
 
 	private void setSplitPaneLayoutManager() {

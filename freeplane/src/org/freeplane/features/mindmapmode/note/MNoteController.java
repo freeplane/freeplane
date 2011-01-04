@@ -188,6 +188,7 @@ public class MNoteController extends NoteController {
 		noteManager.saveNote();
 		noteViewerComponent.setVisible(false);
 		Controller.getCurrentModeController().getController().getViewController().removeSplitPane();
+		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "false");
 	}
 
 	boolean isLastContentEmpty() {
@@ -273,6 +274,7 @@ public class MNoteController extends NoteController {
 			}
 		});
 		noteViewerComponent.setVisible(true);
+		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
 		Controller.getCurrentModeController().getController().getViewController().insertComponentIntoSplitPane(southPanel);
 		if (requestFocus) {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
@@ -356,7 +358,8 @@ public class MNoteController extends NoteController {
 	}
 
 	boolean isNoteEditorShowing() {
-		return noteViewerComponent != null && noteViewerComponent.isShowing();
+		return ResourceController.getResourceController().getBooleanProperty(
+		    MNoteController.RESOURCES_USE_SPLIT_PANE);
 	}
 
 	public void setShowNotesInMap(final MapModel model, final boolean show) {

@@ -53,17 +53,6 @@ class ShowHideNoteAction extends AFreeplaneAction {
 		}
 		else {
 			(noteController).hideNotesPanel();
-			final Controller controller = Controller.getCurrentModeController().getController();
-			final NodeModel node = controller.getSelection().getSelected();
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					final Component component = controller.getViewController().getComponent(node);
-					if (component != null) {
-						component.requestFocus();
-					}
-				}
-			});
-			ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "false");
 		}
 	}
 
