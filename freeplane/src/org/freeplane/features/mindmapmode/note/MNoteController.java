@@ -113,7 +113,7 @@ public class MNoteController extends NoteController {
 	public static final String RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION = "remove_notes_without_question";
 	public static final String RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO = "resources_use_default_font_for_notes_too";
 	public static final String RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES = "resources_use_margin_top_zero_for_notes";
-	public static final String RESOURCES_USE_SPLIT_PANE = "use_split_pane";
+	static final String RESOURCES_USE_SPLIT_PANE = "use_split_pane";
 	/**
 	 * Indicates, whether or not the main panel has to be refreshed with new
 	 * content. The typical content will be empty, so this state is saved here.

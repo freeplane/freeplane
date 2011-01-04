@@ -170,7 +170,6 @@ class ApplicationViewController extends ViewController {
 
 	@Override
 	public void insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
-		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
 		// --- Save the Component --
 		mMindMapComponent = pMindMapComponent;
 		// --- Devider position variables --
