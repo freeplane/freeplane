@@ -13,8 +13,105 @@
   </body>
 </html></richcontent>
 <font NAME="Dialog" SIZE="18" BOLD="true"/>
-<hook NAME="MapStyle" max_node_width="600"/>
-<node FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1272502789896" HGAP="-94" VSHIFT="-27">
+<hook NAME="MapStyle" max_node_width="600">
+<map_styles>
+<stylenode LOCALIZED_TEXT="styles.root_node">
+<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
+<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.ok">
+<icon BUILTIN="button_ok"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.needs_action">
+<icon BUILTIN="messagebox_warning"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.floating_node">
+<cloud COLOR="#ffffff" SHAPE="ARC"/>
+<edge STYLE="hide_edge"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.topic" COLOR="#18898b" STYLE="fork">
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.subtopic" COLOR="#cc3300" STYLE="fork">
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.subsubtopic" COLOR="#669900">
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.connection" COLOR="#606060" STYLE="fork">
+<font NAME="Arial" SIZE="10" BOLD="false"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.important" COLOR="#ff0000">
+<icon BUILTIN="yes"/>
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.question">
+<icon BUILTIN="help"/>
+<font NAME="Aharoni" SIZE="12"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.key" COLOR="#996600">
+<icon BUILTIN="password"/>
+<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.idea">
+<icon BUILTIN="idea"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.note" COLOR="#990000">
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.date" COLOR="#0033ff">
+<icon BUILTIN="calendar"/>
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.website" COLOR="#006633">
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.list" COLOR="#cc6600">
+<icon BUILTIN="list"/>
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.quotation" COLOR="#338800" STYLE="fork">
+<font NAME="Liberation Sans" SIZE="12" BOLD="false" ITALIC="false"/>
+<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.definition" COLOR="#666600">
+<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.description" COLOR="#996600">
+<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.pending" COLOR="#b3b95c">
+<font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
+<font SIZE="20"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,1" COLOR="#0033ff">
+<font SIZE="18"/>
+<edge WIDTH="8"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,2" COLOR="#00b439">
+<font SIZE="16"/>
+<edge STYLE="bezier" WIDTH="thin"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,3" COLOR="#990000">
+<font SIZE="14"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,4" COLOR="#111111">
+<font SIZE="12"/>
+</stylenode>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right"/>
+</stylenode>
+</map_styles>
+</hook>
+<node POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1272502789896" HGAP="-94" VSHIFT="-27">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -38,11 +135,11 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Press the left arrow key to unfold nodes located to the left of the central &quot;root&quot; node" ID="ID_1776790765" CREATED="1271002221874" MODIFIED="1271973207142"/>
 </node>
-<node TEXT="Demonstration of some features" FOLDED="true" POSITION="right" ID="_Freeplane_Link_706084071" CREATED="1270892460656" MODIFIED="1272092184765" COLOR="#006666">
+<node TEXT="Demonstration of some features" POSITION="right" ID="_Freeplane_Link_706084071" CREATED="1270892460656" MODIFIED="1272092184765" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Appearance" FOLDED="true" ID="_Freeplane_Link_735193624" CREATED="1270892460656" MODIFIED="1270892460656" COLOR="#669900">
+<node TEXT="Appearance" ID="_Freeplane_Link_735193624" CREATED="1270892460656" MODIFIED="1270892460656" COLOR="#669900">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Nodes can have different colors" FOLDED="true" ID="ID_291185043" CREATED="1270892460656" MODIFIED="1271973387644">
+<node TEXT="Nodes can have different colors" ID="ID_291185043" CREATED="1270892460656" MODIFIED="1271973387644">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="Red" ID="ID_73698498" CREATED="1270892460656" MODIFIED="1270892460656" COLOR="#ff0000">
 <font NAME="SansSerif" SIZE="12"/>
@@ -54,11 +151,11 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="Node can have various background colors" FOLDED="true" ID="_" CREATED="1270892460657" MODIFIED="1270892460657">
+<node TEXT="Node can have various background colors" ID="_" CREATED="1270892460657" MODIFIED="1270892460657">
 <node TEXT="Pink" ID="_Freeplane_Link_1358611533" CREATED="1270892460657" MODIFIED="1271973346309" BACKGROUND_COLOR="#ffcccc"/>
 <node TEXT="Cyan" ID="_Freeplane_Link_1317973766" CREATED="1270892460657" MODIFIED="1271973353486" BACKGROUND_COLOR="#ccffff"/>
 </node>
-<node TEXT="Nodes can have different font styles" FOLDED="true" ID="ID_1923181646" CREATED="1270892460657" MODIFIED="1271522735034">
+<node TEXT="Nodes can have different font styles" ID="ID_1923181646" CREATED="1270892460657" MODIFIED="1271522735034">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="Bold" ID="ID_1824894496" CREATED="1270892460657" MODIFIED="1270892460657">
 <font NAME="Dialog" SIZE="12" BOLD="true"/>
@@ -70,7 +167,7 @@
 <font NAME="Dialog" SIZE="12" BOLD="true" ITALIC="true"/>
 </node>
 </node>
-<node TEXT="The font used in a node can one of several sizes" FOLDED="true" ID="ID_1148481435" CREATED="1270892460658" MODIFIED="1271973492762">
+<node TEXT="The font used in a node can one of several sizes" ID="ID_1148481435" CREATED="1270892460658" MODIFIED="1271973492762">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="small" ID="ID_409039647" CREATED="1270892460658" MODIFIED="1270892460658">
 <font NAME="SansSerif" SIZE="11"/>
@@ -81,14 +178,14 @@
 <node TEXT="bigger" ID="ID_285885166" CREATED="1270892460658" MODIFIED="1270892460658">
 <font NAME="SansSerif" SIZE="15"/>
 </node>
-<node TEXT="Large" FOLDED="true" ID="ID_925591695" CREATED="1270892460659" MODIFIED="1270892460659">
+<node TEXT="Large" ID="ID_925591695" CREATED="1270892460659" MODIFIED="1270892460659">
 <font NAME="SansSerif" SIZE="20"/>
 <node TEXT="OOh" ID="ID_612411777" CREATED="1270892460659" MODIFIED="1270892460659">
 <font NAME="SansSerif" SIZE="123"/>
 </node>
 </node>
 </node>
-<node TEXT="Different font families may be used" FOLDED="true" ID="ID_1844753395" CREATED="1270892460659" MODIFIED="1270892460659">
+<node TEXT="Different font families may be used" ID="ID_1844753395" CREATED="1270892460659" MODIFIED="1270892460659">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="Times New Roman" ID="ID_471048226" CREATED="1270892460659" MODIFIED="1271973714732">
 <font NAME="Times New Roman" SIZE="16"/>
@@ -100,26 +197,26 @@
 <font NAME="Dialog" SIZE="21"/>
 </node>
 </node>
-<node TEXT="Different node styles can be used" FOLDED="true" ID="_Freeplane_Link_1193071041" CREATED="1270892460660" MODIFIED="1270892460660">
-<node TEXT="Fork" FOLDED="true" ID="_Freeplane_Link_1979277285" CREATED="1270892460660" MODIFIED="1270892460660">
+<node TEXT="Different node styles can be used" ID="_Freeplane_Link_1193071041" CREATED="1270892460660" MODIFIED="1270892460660">
+<node TEXT="Fork" ID="_Freeplane_Link_1979277285" CREATED="1270892460660" MODIFIED="1270892460660">
 <node TEXT="Fork" ID="_Freeplane_Link_89124429" CREATED="1270892460660" MODIFIED="1270892460660"/>
 <node TEXT="Fork" ID="_Freeplane_Link_173850525" CREATED="1270892460660" MODIFIED="1270892460660"/>
 </node>
-<node TEXT="Bubbled" FOLDED="true" ID="_Freeplane_Link_1001811541" CREATED="1270892460660" MODIFIED="1270892460660" STYLE="bubble">
+<node TEXT="Bubbled" ID="_Freeplane_Link_1001811541" CREATED="1270892460660" MODIFIED="1270892460660" STYLE="bubble">
 <node TEXT="Bubbled" ID="_Freeplane_Link_1677737286" CREATED="1270892460660" MODIFIED="1270892460660" STYLE="bubble"/>
 <node TEXT="Bubbled" ID="_Freeplane_Link_978246353" CREATED="1270892460660" MODIFIED="1270892460660" STYLE="bubble"/>
 </node>
 </node>
 </node>
-<node TEXT="Nodes can be folded" FOLDED="true" ID="ID_1623634168" CREATED="1270892460660" MODIFIED="1270892460660" COLOR="#669900">
+<node TEXT="Nodes can be folded" ID="ID_1623634168" CREATED="1270892460660" MODIFIED="1270892460660" COLOR="#669900">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Fold" FOLDED="true" ID="_Freeplane_Link_307016912" CREATED="1270892460660" MODIFIED="1270892460660">
+<node TEXT="Fold" ID="_Freeplane_Link_307016912" CREATED="1270892460660" MODIFIED="1270892460660">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="Hidden" ID="ID_710559854" CREATED="1270892460660" MODIFIED="1270892460660">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="Tree" FOLDED="true" ID="_Freeplane_Link_1488567837" CREATED="1270892460661" MODIFIED="1270991928052">
+<node TEXT="Tree" ID="_Freeplane_Link_1488567837" CREATED="1270892460661" MODIFIED="1270991928052">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="Oak" ID="ID_117856753" CREATED="1270892460661" MODIFIED="1270892460661">
 <font NAME="SansSerif" SIZE="12"/>
@@ -132,9 +229,9 @@
 </node>
 </node>
 </node>
-<node TEXT="Nodes can contain followable links to ... " FOLDED="true" ID="ID_1091027669" CREATED="1270892460661" MODIFIED="1270892460661" COLOR="#669900">
+<node TEXT="Nodes can contain followable links to ... " ID="ID_1091027669" CREATED="1270892460661" MODIFIED="1270892460661" COLOR="#669900">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Web pages" FOLDED="true" ID="ID_1291101161" CREATED="1270892460661" MODIFIED="1270892460661" COLOR="#006699">
+<node TEXT="Web pages" ID="ID_1291101161" CREATED="1270892460661" MODIFIED="1270892460661" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="http://www.google.com/" ID="ID_1272005179" CREATED="1270892460662" MODIFIED="1270892460662" LINK="http://www.google.com/">
 <font NAME="SansSerif" SIZE="12"/>
@@ -143,7 +240,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="Local folders" FOLDED="true" ID="ID_819664033" CREATED="1270892460662" MODIFIED="1270892460662" COLOR="#006699">
+<node TEXT="Local folders" ID="ID_819664033" CREATED="1270892460662" MODIFIED="1270892460662" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="C:/Program Files/ (Windows)" ID="ID_33602690" CREATED="1270892460662" MODIFIED="1271973897739" LINK="file:/C:/Program%20Files/">
 <font NAME="SansSerif" SIZE="12"/>
@@ -153,7 +250,7 @@
 </node>
 <node TEXT="/Users (Mac OS X)" ID="ID_1305958070" CREATED="1271973910165" MODIFIED="1271973960770" LINK="/Users"/>
 </node>
-<node TEXT="Executables" FOLDED="true" ID="ID_1829360247" CREATED="1270892460663" MODIFIED="1270892460663" COLOR="#006699">
+<node TEXT="Executables" ID="ID_1829360247" CREATED="1270892460663" MODIFIED="1270892460663" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="C:\WINNT\regedit.exe" ID="ID_1773112429" CREATED="1270892460663" MODIFIED="1270991928052" LINK="file:/C:/WINNT/regedit.exe">
 <font NAME="SansSerif" SIZE="12"/>
@@ -165,49 +262,49 @@
 </node>
 <node TEXT="Depending on the platform (Windows/Unix/...) different icons may indicate the type of link." ID="ID_1145751539" CREATED="1270991844130" MODIFIED="1271522880114"/>
 </node>
-<node TEXT="To follow a link click on the link icon." FOLDED="true" ID="ID_709498088" CREATED="1271029724866" MODIFIED="1271029822772" COLOR="#669900">
+<node TEXT="To follow a link click on the link icon." ID="ID_709498088" CREATED="1271029724866" MODIFIED="1271029822772" COLOR="#669900">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="A green arrow indicates a local link (within the same map)" ID="ID_1382213647" CREATED="1271974215092" MODIFIED="1271974304208"/>
 <node TEXT="A Red arrow is used for external links (outside the current map)" ID="ID_1268065166" CREATED="1271974306669" MODIFIED="1271974354471"/>
 </node>
-<node TEXT="Multi-line nodes" FOLDED="true" ID="_Freeplane_Link_839677176" CREATED="1270892460663" MODIFIED="1271974448796" COLOR="#669900">
+<node TEXT="Multi-line nodes" ID="_Freeplane_Link_839677176" CREATED="1270892460663" MODIFIED="1271974448796" COLOR="#669900">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="Multi-line nodes appear as one or more paragraphs. Instead of having a plain text file to store a set of notes, you can use one short node with many multi-line nodes as its children." ID="_Freeplane_Link_1423568963" CREATED="1270892460664" MODIFIED="1271974567866"/>
-<node TEXT="Short multi-line nodes with newlines" FOLDED="true" ID="ID_1324715896" CREATED="1270892460664" MODIFIED="1271974830817" COLOR="#669900">
+<node TEXT="Short multi-line nodes with newlines" ID="ID_1324715896" CREATED="1270892460664" MODIFIED="1271974830817" COLOR="#669900">
 <node TEXT="Line,&#xa;and second,&#xa;&#xa;and yet another will do,&#xa;so what do you think of that?" ID="_Freeplane_Link_1957797574" CREATED="1270892460664" MODIFIED="1270892460664"/>
 </node>
 </node>
-<node TEXT="An edge may be labeled" FOLDED="true" ID="ID_929122537" CREATED="1270892460664" MODIFIED="1271974778509" COLOR="#669900">
-<node TEXT="Tree" FOLDED="true" ID="ID_1430553317" CREATED="1270892460664" MODIFIED="1270892460664">
+<node TEXT="An edge may be labeled" ID="ID_929122537" CREATED="1270892460664" MODIFIED="1271974778509" COLOR="#669900">
+<node TEXT="Tree" ID="ID_1430553317" CREATED="1270892460664" MODIFIED="1270892460664">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="is an" FOLDED="true" ID="ID_976763673" CREATED="1270892460664" MODIFIED="1271523019798" COLOR="#999999">
+<node TEXT="is an" ID="ID_976763673" CREATED="1270892460664" MODIFIED="1271523019798" COLOR="#999999">
 <font NAME="Dialog" SIZE="10"/>
 <node TEXT="Oak" ID="ID_848417183" CREATED="1270892460664" MODIFIED="1270892460664">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="is a" FOLDED="true" ID="ID_54522784" CREATED="1270892460665" MODIFIED="1270991928052" COLOR="#999999">
+<node TEXT="is a" ID="ID_54522784" CREATED="1270892460665" MODIFIED="1270991928052" COLOR="#999999">
 <font NAME="Dialog" SIZE="10"/>
 <node TEXT="Beech" ID="ID_625768370" CREATED="1270892460665" MODIFIED="1270892460665">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="is an" FOLDED="true" ID="ID_20190770" CREATED="1270892460665" MODIFIED="1271523013498" COLOR="#999999">
+<node TEXT="is an" ID="ID_20190770" CREATED="1270892460665" MODIFIED="1271523013498" COLOR="#999999">
 <font NAME="Dialog" SIZE="10"/>
 <node TEXT="Elm" ID="ID_42771538" CREATED="1270892460665" MODIFIED="1270892460665">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
 </node>
-<node TEXT="Tree" FOLDED="true" ID="ID_1249902286" CREATED="1270892460665" MODIFIED="1270892460665">
+<node TEXT="Tree" ID="ID_1249902286" CREATED="1270892460665" MODIFIED="1270892460665">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="&lt;&gt;" FOLDED="true" ID="ID_1994219362" CREATED="1270892460665" MODIFIED="1270991928052" COLOR="#999999">
+<node TEXT="&lt;&gt;" ID="ID_1994219362" CREATED="1270892460665" MODIFIED="1270991928052" COLOR="#999999">
 <font NAME="Dialog" SIZE="10"/>
 <node TEXT="Leaf" ID="ID_1632637474" CREATED="1270892460666" MODIFIED="1270892460666">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="&lt;&gt;" FOLDED="true" ID="ID_1583422438" CREATED="1270892460666" MODIFIED="1270991928052" COLOR="#999999">
+<node TEXT="&lt;&gt;" ID="ID_1583422438" CREATED="1270892460666" MODIFIED="1270991928052" COLOR="#999999">
 <font NAME="Dialog" SIZE="10"/>
 <node TEXT="Trunk" ID="ID_1648811846" CREATED="1270892460666" MODIFIED="1270892460666">
 <font NAME="SansSerif" SIZE="12"/>
@@ -222,44 +319,44 @@
 <icon BUILTIN="button_ok"/>
 <icon BUILTIN="back"/>
 </node>
-<node TEXT="You can enclose nodes with clouds" FOLDED="true" ID="_Freeplane_Link_318937820" CREATED="1270892460667" MODIFIED="1271974956327" COLOR="#407000">
-<cloud WIDTH="0"/>
+<node TEXT="You can enclose nodes with clouds" ID="_Freeplane_Link_318937820" CREATED="1270892460667" MODIFIED="1271974956327" COLOR="#407000">
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="with custom colors" ID="ID_1714895943" CREATED="1270892460668" MODIFIED="1271974992283">
-<cloud COLOR="#ccccff" WIDTH="0"/>
+<cloud COLOR="#ccccff" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="You can have graphical node connectors" FOLDED="true" ID="_Freeplane_Link_1750585847" CREATED="1270892460668" MODIFIED="1270893224353" COLOR="#407000" HGAP="22" VSHIFT="-24">
+<node TEXT="You can have graphical node connectors" ID="_Freeplane_Link_1750585847" CREATED="1270892460668" MODIFIED="1270893224353" COLOR="#407000" HGAP="22" VSHIFT="-24">
 <node TEXT="Connecting node" ID="_Freeplane_Link_1212380407" CREATED="1270892460668" MODIFIED="1270892460668">
-<arrowlink DESTINATION="_Freeplane_Link_1249400461" STARTINCLINATION="41;0;" ENDINCLINATION="41;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="_Freeplane_Link_1249400461" STARTINCLINATION="41;0;" ENDINCLINATION="41;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="To another" ID="_Freeplane_Link_1249400461" CREATED="1270892460669" MODIFIED="1270892460669">
-<arrowlink COLOR="#6600ff" DESTINATION="_Freeplane_Link_880551392" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#6600ff" WIDTH="2" TRANSPARENCY="255" DESTINATION="_Freeplane_Link_880551392" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="With different color" ID="_Freeplane_Link_880551392" CREATED="1270892460670" MODIFIED="1270892460670">
-<arrowlink DESTINATION="_Freeplane_Link_1789233193" STARTINCLINATION="82;44;" ENDINCLINATION="82;44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="_Freeplane_Link_1789233193" STARTINCLINATION="82;44;" ENDINCLINATION="82;44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="different routing" ID="_Freeplane_Link_1789233193" CREATED="1270892460670" MODIFIED="1270893004693"/>
 </node>
-<node TEXT="Connectors can have labels" FOLDED="true" ID="ID_237593792" CREATED="1270893118534" MODIFIED="1271975121662" VGAP="89" COLOR="#407000">
+<node TEXT="Connectors can have labels" ID="ID_237593792" CREATED="1270893118534" MODIFIED="1271975121662" VGAP="89" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Source node" ID="ID_1709139591" CREATED="1270893130918" MODIFIED="1270893235794">
-<arrowlink COLOR="#000000" DESTINATION="ID_1741403088" SOURCE_LABEL="SOURCE LABEL" TARGET_LABEL="TARGET LABEL" MIDDLE_LABEL="MIDDLE LABEL" STARTINCLINATION="115;27;" ENDINCLINATION="202;36;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="255" DESTINATION="ID_1741403088" SOURCE_LABEL="SOURCE LABEL" TARGET_LABEL="TARGET LABEL" MIDDLE_LABEL="MIDDLE LABEL" STARTINCLINATION="115;27;" ENDINCLINATION="202;36;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Target node" ID="ID_1741403088" CREATED="1270893138577" MODIFIED="1270893141282"/>
 </node>
-<node TEXT="Connectors can be formatted to look like edges" FOLDED="true" ID="ID_589013013" CREATED="1270893418086" MODIFIED="1271975182714" COLOR="#407000" VGAP="20" HGAP="19" VSHIFT="66">
+<node TEXT="Connectors can be formatted to look like edges" ID="ID_589013013" CREATED="1270893418086" MODIFIED="1271975182714" COLOR="#407000" VGAP="20" HGAP="19" VSHIFT="66">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="1" ID="ID_822615789" CREATED="1270893450078" MODIFIED="1270893469956">
-<arrowlink EDGE_LIKE="true" DESTINATION="ID_659652940" STARTINCLINATION="46;0;" ENDINCLINATION="46;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="EDGE_LIKE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="ID_659652940" STARTINCLINATION="46;0;" ENDINCLINATION="46;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node TEXT="2" FOLDED="true" ID="ID_1931813528" CREATED="1270893453278" MODIFIED="1270991928052">
+<node TEXT="2" ID="ID_1931813528" CREATED="1270893453278" MODIFIED="1270991928052">
 <node TEXT="22" ID="ID_659652940" CREATED="1270893459959" MODIFIED="1270893460779"/>
 </node>
 <node TEXT="3" ID="ID_961774571" CREATED="1270893454198" MODIFIED="1270893480379">
-<arrowlink EDGE_LIKE="true" DESTINATION="ID_659652940" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="EDGE_LIKE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="ID_659652940" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
-<node TEXT="Edges may be hidden" FOLDED="true" ID="ID_1539062144" CREATED="1270893550070" MODIFIED="1271975215993" COLOR="#407000">
+<node TEXT="Edges may be hidden" ID="ID_1539062144" CREATED="1270893550070" MODIFIED="1271975215993" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="A node with a hidden edge" ID="ID_936535846" CREATED="1270893561062" MODIFIED="1270893623697" STYLE="bubble">
 <edge STYLE="hide_edge"/>
@@ -271,14 +368,14 @@
 <attribute NAME="x" VALUE="10"/>
 <attribute NAME="y" VALUE="20"/>
 </node>
-<node TEXT="Nodes can be positioned freely" FOLDED="true" ID="_Freeplane_Link_127668276" CREATED="1270892460670" MODIFIED="1270893267755" COLOR="#407000" HGAP="25" VSHIFT="36">
+<node TEXT="Nodes can be positioned freely" ID="_Freeplane_Link_127668276" CREATED="1270892460670" MODIFIED="1270893267755" COLOR="#407000" HGAP="25" VSHIFT="36">
 <node TEXT="One" ID="_Freeplane_Link_894936766" CREATED="1270892460670" MODIFIED="1270893258705" HGAP="-1" VSHIFT="-27"/>
 <node TEXT="Another" ID="_Freeplane_Link_1942481455" CREATED="1270892460670" MODIFIED="1270893254738" HGAP="123" VSHIFT="43"/>
 </node>
 </node>
-<node TEXT="Navigation" FOLDED="true" POSITION="right" ID="ID_1233270983" CREATED="1272091279810" MODIFIED="1272092212344" COLOR="#006666">
+<node TEXT="Navigation" POSITION="right" ID="ID_1233270983" CREATED="1272091279810" MODIFIED="1272092212344" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Navigation in Map" FOLDED="true" ID="_Freeplane_Link_1540212684" CREATED="1270892460687" MODIFIED="1271097939214" COLOR="#407000">
+<node TEXT="Navigation in Map" ID="_Freeplane_Link_1540212684" CREATED="1270892460687" MODIFIED="1271097939214" COLOR="#407000">
 <node TEXT="To move the cursor up, down, left or right, use arrow keys." ID="ID_990469408" CREATED="1270892460687" MODIFIED="1270892460687"/>
 <node TEXT="To move to the top of the current subtree, press PageUp." ID="ID_991946266" CREATED="1270892460687" MODIFIED="1270892460687"/>
 <node TEXT="To move to the bottom of the current subtree, press PageDown." ID="ID_697637157" CREATED="1270892460688" MODIFIED="1270892460688"/>
@@ -290,7 +387,7 @@
 <node TEXT="This can be changed via Tools &gt; Preferences &gt; Behaviour &gt; Selection Method" ID="ID_1399586050" CREATED="1271003344288" MODIFIED="1271003686538"/>
 <node TEXT="Available selection methods are &quot;By Click&quot;, &quot;Direct&quot;, and &quot;Delayed&quot; (default)" ID="ID_676805584" CREATED="1271003687538" MODIFIED="1271006910934"/>
 </node>
-<node TEXT="Selecting multiple nodes" FOLDED="true" ID="Freeplane_Link_653540280" CREATED="1270892460681" MODIFIED="1270892460681" COLOR="#407000">
+<node TEXT="Selecting multiple nodes" ID="Freeplane_Link_653540280" CREATED="1270892460681" MODIFIED="1270892460681" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="To select multiple nodes, hold Ctrl or Shift while clicking." ID="ID_1435652978" CREATED="1270892460681" MODIFIED="1272493053481">
 <font NAME="SansSerif" SIZE="12"/>
@@ -304,7 +401,7 @@
 <node TEXT="To select a complete subtree, use Ctrl + Shift + A,  or hold Shift while moving with arrow keys from a node to its parent, or hold Alt Gr while clicking." ID="ID_350782537" CREATED="1270892460682" MODIFIED="1272493086268"/>
 <node TEXT="To cancel the selection of multiple nodes, click on the map background or on an unselected node." ID="ID_451303534" CREATED="1270892460682" MODIFIED="1272003070882"/>
 </node>
-<node TEXT="Folding and unfolding" FOLDED="true" ID="Freeplane_Link_4727471" CREATED="1270892460688" MODIFIED="1271097940654" COLOR="#407000">
+<node TEXT="Folding and unfolding" ID="Freeplane_Link_4727471" CREATED="1270892460688" MODIFIED="1271097940654" COLOR="#407000">
 <node TEXT="A folded node is marked with a small circle attached in the direction farthest from the root node." ID="ID_1622399561" CREATED="1270892460688" MODIFIED="1272006260711"/>
 <node TEXT="To fold a node use Toggle &gt; Folded or press the Space bar." ID="ID_1439689412" CREATED="1270892460688" MODIFIED="1272006435049"/>
 <node TEXT="To unfold a node use Toggle &gt; Folded, or press the Space bar, or press the arrow key in the direction of unfolding." ID="ID_643756713" CREATED="1270892460688" MODIFIED="1272006501051"/>
@@ -312,19 +409,19 @@
 <node TEXT="To unfold all nodes use Navigate &gt; Unfold All, or press the circled plus button in the main toolbar, or press Alt + End." ID="ID_1233324949" CREATED="1270892460688" MODIFIED="1272006731309"/>
 <node TEXT="To fold all nodes use Navigate &gt; Fold All, or click the circled minus button in the main toolbar, or press Alt + Home." ID="ID_1337518584" CREATED="1270892460688" MODIFIED="1272006720983"/>
 </node>
-<node TEXT="Scrolling the map" FOLDED="true" ID="Freeplane_Link_467411537" CREATED="1270892460689" MODIFIED="1270892460689" COLOR="#407000">
+<node TEXT="Scrolling the map" ID="Freeplane_Link_467411537" CREATED="1270892460689" MODIFIED="1270892460689" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="To scroll the map, drag the background and move it around, or use the mouse wheel. To scroll horizontally with mouse wheel, hold the Shift key or, on some operating systems, hold one of the mouse buttons." ID="ID_1291243282" CREATED="1270892460689" MODIFIED="1272007135173">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="Zooming" FOLDED="true" ID="Freeplane_Link_913137192" CREATED="1270892460689" MODIFIED="1270892460689" COLOR="#407000">
+<node TEXT="Zooming" ID="Freeplane_Link_913137192" CREATED="1270892460689" MODIFIED="1270892460689" COLOR="#407000">
 <node TEXT="The View menu includes the commands Zoom In, Zoom Out, and Zoom to Fit to Page." ID="ID_1270232158" CREATED="1272007214049" MODIFIED="1272007381056"/>
 <node TEXT="The main toolbar contains a zoom control field in with presets for various percentages. These settings may also be chosen by pressing Alt + up or down arrow." ID="ID_1692671423" CREATED="1272007458262" MODIFIED="1272007861269"/>
 <node TEXT="On some operating systems you may zoom by using the mouse wheel while holding the Ctrl key." ID="ID_961139916" CREATED="1270892460689" MODIFIED="1272493152779"/>
 </node>
-<node TEXT="Searching and Filtering" FOLDED="true" ID="Freeplane_Link_423038022" CREATED="1270892460681" MODIFIED="1270902628944" COLOR="#407000">
+<node TEXT="Searching and Filtering" ID="Freeplane_Link_423038022" CREATED="1270892460681" MODIFIED="1270902628944" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="You can search and filter nodes based on its text, icons, creation/modification time, position, priority, connectors, hyperlinks, notes and attributes." ID="ID_1565729150" CREATED="1270896350974" MODIFIED="1271992110624"/>
 <node TEXT="To find text or other criteria in a node and all its descendant nodes, use Edit &gt; Find... or press Ctrl + F." ID="ID_966700848" CREATED="1270892460681" MODIFIED="1272493172097">
@@ -338,7 +435,7 @@
 <node TEXT="To search the entire map for all occurrences of matching text, with an optional to supply replacement text, use &quot;Edit &gt; Find and Replace...&quot; A similar method can be used across all currently-open maps by choosing &quot;Edit &gt;Find and Replace in all maps.&quot;" ID="ID_1761633870" CREATED="1271096970387" MODIFIED="1271992556423"/>
 <node TEXT="You can build filters to see only a subset of map nodes. Use the Filter Toolbar or the Filter Menu." ID="ID_1773253238" CREATED="1270897010863" MODIFIED="1271992588658"/>
 </node>
-<node TEXT="Changing to a different mind map" FOLDED="true" ID="Freeplane_Link_516331171" CREATED="1270892460688" MODIFIED="1270892460688" COLOR="#407000">
+<node TEXT="Changing to a different mind map" ID="Freeplane_Link_516331171" CREATED="1270892460688" MODIFIED="1270892460688" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="To change to another mind map which is already open, pull down the Maps menu and choose the corresponding filename, or right click on the background and select a different map from the context menu." ID="ID_213892338" CREATED="1270892460689" MODIFIED="1272006924275">
 <font NAME="SansSerif" SIZE="12"/>
@@ -349,7 +446,7 @@
 </node>
 <node TEXT="Editing map content" POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1272092212339" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Creating and deleting nodes" FOLDED="true" ID="_Freeplane_Link_1709752669" CREATED="1270892460670" MODIFIED="1270892460670" COLOR="#407000">
+<node TEXT="Creating and deleting nodes" ID="_Freeplane_Link_1709752669" CREATED="1270892460670" MODIFIED="1270892460670" COLOR="#407000">
 <node TEXT="To create a child node, press Insert (On Mac OS use TAB)." ID="ID_847485935" CREATED="1270892460670" MODIFIED="1271975334093"/>
 <node TEXT="To create a child node while editing another node, press Insert while editing." ID="ID_719677235" CREATED="1270892460671" MODIFIED="1270892460671"/>
 <node TEXT="To create a sibling node below, press Enter." ID="ID_1715555696" CREATED="1270892460671" MODIFIED="1270892460671"/>
@@ -358,26 +455,26 @@
 <node TEXT="To delete (cut) a node while keeping a copy for pasting, press Ctrl + X." ID="ID_1718916776" CREATED="1270892460671" MODIFIED="1272493203885"/>
 <node TEXT="Alternatively, use the node context menu, by right-clicking a node (on Mac OS X use Control + click)." ID="ID_86882063" CREATED="1270892460671" MODIFIED="1272002166588"/>
 </node>
-<node TEXT="Editing node text" FOLDED="true" ID="Freeplane_Link_1700974092" CREATED="1270892460671" MODIFIED="1270895775578" COLOR="#407000">
+<node TEXT="Editing node text" ID="Freeplane_Link_1700974092" CREATED="1270892460671" MODIFIED="1270895775578" COLOR="#407000">
 <node TEXT="To edit a node, press F2, HOME or END key, or in node context menu use Edit. To finish editing a node, press ENTER." ID="_Freeplane_Link_519923426" CREATED="1270892460671" MODIFIED="1270892460671">
-<arrowlink DESTINATION="_Freeplane_Link_519923426" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="_Freeplane_Link_519923426" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="To replace all the text of the currently-selected node, simply start typing." ID="ID_673531040" CREATED="1270892460671" MODIFIED="1271975710799"/>
 <node TEXT="To force use of the Long Node Editor for a short node, use Edit &gt; Edit Long Node..., or press Alt + Enter." ID="ID_1386037184" CREATED="1270892460672" MODIFIED="1271975857639"/>
 <node TEXT="To split a long node, use the Long Node Editor and either click the Split button, or press Alt + S." ID="ID_328110224" CREATED="1270892460672" MODIFIED="1271975964567"/>
-<node TEXT="To insert a newline, press Shift + Enter." FOLDED="true" ID="ID_785582356" CREATED="1270892460672" MODIFIED="1270991928052">
+<node TEXT="To insert a newline, press Shift + Enter." ID="ID_785582356" CREATED="1270892460672" MODIFIED="1270991928052">
 <node TEXT="By default, Enter finishes editing of a long node, and Alt + Enter inserts a newline. There is an option to reverse this." ID="_Freeplane_Link_1445647544" CREATED="1270892460672" MODIFIED="1271976027523"/>
 </node>
 <node TEXT="To copy a selection to the clipboard while editing a long node, open the context menu and choose Copy." ID="ID_471748709" CREATED="1270892460672" MODIFIED="1271976091035"/>
 <node TEXT="To insert a special symbol like &#xa9;, insert it into your favorite text editor such as OpenOffice Writer or Microsoft Word first, Copy the symbol there and then Paste it into Freeplane." ID="ID_128741512" CREATED="1270892460672" MODIFIED="1271976213650"/>
 <node TEXT="Freeplane has Undo support for all edit operations." ID="ID_1608665009" CREATED="1270996862392" MODIFIED="1271976229666" LINK="#Freeplane_Link_1318678369"/>
-<node TEXT="Spell checker" FOLDED="true" ID="ID_1122067470" CREATED="1271096284570" MODIFIED="1271096686092" COLOR="#996600">
+<node TEXT="Spell checker" ID="ID_1122067470" CREATED="1271096284570" MODIFIED="1271096686092" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="The Spellchecker can be enabled and disabled from item &quot;Languages&quot; in the context menu, when editing a node or a note." ID="ID_784188803" CREATED="1271096294667" MODIFIED="1271976321903"/>
 <node TEXT="Dictionaries for many languages are available on the Freeplane web site." ID="ID_1341966636" CREATED="1271096394315" MODIFIED="1271096534986" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries"/>
 </node>
 </node>
-<node TEXT="Dragging and dropping" FOLDED="true" ID="Freeplane_Link_1024903226" CREATED="1270892460682" MODIFIED="1270892460682" COLOR="#407000">
+<node TEXT="Dragging and dropping" ID="Freeplane_Link_1024903226" CREATED="1270892460682" MODIFIED="1270892460682" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 <node TEXT="You can move nodes around using drag and drop." ID="ID_926620656" CREATED="1270892460682" MODIFIED="1270892460682">
@@ -400,23 +497,23 @@
 </node>
 <node TEXT="You can drop data from external applications, like files or text fragments." ID="ID_1101346302" CREATED="1270892460683" MODIFIED="1272003586346"/>
 </node>
-<node TEXT="Free positioning" FOLDED="true" ID="ID_1293447241" CREATED="1270997738611" MODIFIED="1270998217392" COLOR="#407000">
+<node TEXT="Free positioning" ID="ID_1293447241" CREATED="1270997738611" MODIFIED="1270998217392" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="To position a node freely, drag it by its invisible handle. This is located on the side of the node facing toward the root node, and becomes visible as an oval shape when the mouse is hovered above it." ID="_Freeplane_Link_97763226" CREATED="1270892460688" MODIFIED="1272005333514"/>
 <node TEXT="Positioning of nodes only changes the visual appearance of a map but not its structure." ID="ID_505978546" CREATED="1270997770751" MODIFIED="1270998081361"/>
 <node TEXT="Even if a &quot;right-hand node&quot; is re-positioned to the left of the root node, it remains structurally on the right. The node&apos;s edge, and its invisible handle remain on the left side of the node." ID="ID_1457898208" CREATED="1270997857923" MODIFIED="1272005534216"/>
 <node TEXT="To change the left / right structure of a node, move it using drag and drop instead of free positioning." ID="ID_846513064" CREATED="1270998153408" MODIFIED="1272005673371"/>
 </node>
-<node TEXT="Copying and pasting" FOLDED="true" ID="Freeplane_Link_958781924" CREATED="1270892460683" MODIFIED="1270892460683" COLOR="#407000">
+<node TEXT="Copying and pasting" ID="Freeplane_Link_958781924" CREATED="1270892460683" MODIFIED="1270892460683" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="You can copy and paste (multiple) nodes between mindmaps as expected. In addition, you can paste normal text or HTML from other applications." ID="ID_889978608" CREATED="1270892460684" MODIFIED="1270892460684">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="If you paste plain text, multiple lines are pasted as multiple nodes, with their depth determined by the number of leading spaces in the text. An example follows." ID="ID_997163480" CREATED="1270892460684" MODIFIED="1270892460684"/>
-<node TEXT="Tree&#xa;     Oak&#xa;     Beech&#xa;     " FOLDED="true" ID="ID_794791780" CREATED="1270892460684" MODIFIED="1270892460684" COLOR="#996600">
-<node TEXT="is pasted as" FOLDED="true" ID="ID_1133286475" CREATED="1270892460684" MODIFIED="1270892460684">
+<node TEXT="Tree&#xa;     Oak&#xa;     Beech&#xa;     " ID="ID_794791780" CREATED="1270892460684" MODIFIED="1270892460684" COLOR="#996600">
+<node TEXT="is pasted as" ID="ID_1133286475" CREATED="1270892460684" MODIFIED="1270892460684">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Tree" FOLDED="true" ID="ID_824598946" CREATED="1270892460684" MODIFIED="1270892460684" COLOR="#996600">
+<node TEXT="Tree" ID="ID_824598946" CREATED="1270892460684" MODIFIED="1270892460684" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="Oak" ID="ID_1550275731" CREATED="1270892460684" MODIFIED="1270892460684" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
@@ -427,12 +524,12 @@
 </node>
 </node>
 </node>
-<node TEXT="If you paste HTML, it can be pasted as a single node or as a structured hierarchy." FOLDED="true" ID="ID_780592545" CREATED="1270892460685" MODIFIED="1272003780981">
+<node TEXT="If you paste HTML, it can be pasted as a single node or as a structured hierarchy." ID="ID_780592545" CREATED="1270892460685" MODIFIED="1272003780981">
 <node TEXT="Use Edit &gt; Paste as..." ID="ID_659936" CREATED="1270894512678" MODIFIED="1271992994829"/>
 </node>
-<node TEXT="Example result after pasting:" FOLDED="true" ID="ID_637512189" CREATED="1270892460685" MODIFIED="1270892460685">
+<node TEXT="Example result after pasting:" ID="ID_637512189" CREATED="1270892460685" MODIFIED="1270892460685">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Single node" FOLDED="true" ID="ID_1806025194" CREATED="1270894542238" MODIFIED="1270894546547">
+<node TEXT="Single node" ID="ID_1806025194" CREATED="1270894542238" MODIFIED="1270894546547">
 <node ID="ID_669110345" CREATED="1270894698475" MODIFIED="1270894698475">
 <richcontent TYPE="NODE">
 <html>
@@ -487,7 +584,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Structured hierarchy" FOLDED="true" ID="ID_541043985" CREATED="1270894548254" MODIFIED="1272004023803">
+<node TEXT="Structured hierarchy" ID="ID_541043985" CREATED="1270894548254" MODIFIED="1272004023803">
 <node ID="ID_232672532" CREATED="1270894712253" MODIFIED="1270894712253">
 <richcontent TYPE="NODE">
 <html>
@@ -514,7 +611,7 @@
   </body>
 </html></richcontent>
 </node>
-<node FOLDED="true" ID="ID_1571069768" CREATED="1270894712263" MODIFIED="1270894712263">
+<node ID="ID_1571069768" CREATED="1270894712263" MODIFIED="1270894712263">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -526,7 +623,7 @@
     </h1>
   </body>
 </html></richcontent>
-<node FOLDED="true" ID="ID_1003296305" CREATED="1270894712271" MODIFIED="1270894712271" LINK="http://freemind.sourceforge.net/">
+<node ID="ID_1003296305" CREATED="1270894712271" MODIFIED="1270894712271" LINK="http://freemind.sourceforge.net/">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -612,14 +709,14 @@
 </node>
 <node TEXT="If you paste a file list selected in Explorer in Microsoft Windows, it is pasted as a set of links to the files." ID="ID_513393084" CREATED="1270892460686" MODIFIED="1272004076236"/>
 <node TEXT="If in Freeplane you copy a branch and paste it into a plain text editor, the tree structure is shown by indentation. Hyperlinks are pasted in &lt;&gt; brackets. An example follows." ID="ID_318113193" CREATED="1270892460686" MODIFIED="1270892460686"/>
-<node TEXT="Tree" FOLDED="true" ID="ID_251141855" CREATED="1270892460686" MODIFIED="1270892460686" COLOR="#996600">
+<node TEXT="Tree" ID="ID_251141855" CREATED="1270892460686" MODIFIED="1270892460686" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="Oak" ID="ID_1467889610" CREATED="1270892460686" MODIFIED="1270892460686" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="Beech" FOLDED="true" ID="ID_930301051" CREATED="1270892460686" MODIFIED="1270892460686" COLOR="#996600">
+<node TEXT="Beech" ID="ID_930301051" CREATED="1270892460686" MODIFIED="1270892460686" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="is pasted as" FOLDED="true" ID="ID_239368773" CREATED="1270892460686" MODIFIED="1270892460686">
+<node TEXT="is pasted as" ID="ID_239368773" CREATED="1270892460686" MODIFIED="1270892460686">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="Tree&#xa;     Oak&#xa;     Beech&#xa;     Google &lt;http://www.google.com/&gt;&#xa;" ID="ID_1775330013" CREATED="1270892460687" MODIFIED="1270892460687" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
@@ -633,7 +730,7 @@
 <node TEXT="If in Freeplane you copy a branch and paste it into an editor that understands Rich Text Format (RTF), the formatting including color and font is pasted too. Editors that understand RTF include Microsoft Word, Wordpad and Outlook, some tabbed notebooks in Linux, and TextEdit in Mac OS X." ID="ID_411576634" CREATED="1270892460687" MODIFIED="1272004922587"/>
 <node TEXT="To copy a node without its descendants, use Edit &gt; Copy Single or press Ctrl + Shift + C." ID="ID_620029478" CREATED="1270892460687" MODIFIED="1272494935882"/>
 </node>
-<node TEXT="Adding hyperlinks" FOLDED="true" ID="Freeplane_Link_203858515" CREATED="1270892460675" MODIFIED="1270896647956" COLOR="#407000">
+<node TEXT="Adding hyperlinks" ID="Freeplane_Link_203858515" CREATED="1270892460675" MODIFIED="1270896647956" COLOR="#407000">
 <node TEXT="Hyperlinks can link to web pages, e-mail addresses, local files, or other nodes" ID="ID_959010942" CREATED="1270892460676" MODIFIED="1271979068159"/>
 <node TEXT="To add a hyperlink to a node, use Insert &gt; Hyperlink (Text Field)... or press Ctrl + K." ID="ID_745700749" CREATED="1270892460675" MODIFIED="1272493356026"/>
 <node TEXT="To remove a hyperlink, clear its contents in the dialog after choosing Insert &gt; Hyperlink (Text Field)..." ID="ID_1001948679" CREATED="1270892460675" MODIFIED="1271978808409"/>
@@ -645,7 +742,7 @@
 <node TEXT="To add a link to file use Insert &gt; Hyperlink (File Chooser)... or press Ctrl + Shift + K." ID="ID_1159570525" CREATED="1270894120878" MODIFIED="1272493377302"/>
 <node TEXT="To link to another node first select the node you want to link from, then press Shift and select the node you want to link to, then choose Insert &gt; Add Local Hyperlink." ID="ID_1153372393" CREATED="1271979133506" MODIFIED="1271979244916"/>
 </node>
-<node TEXT="Adding Icons" FOLDED="true" ID="Freeplane_Link_1044397139" CREATED="1270892460676" MODIFIED="1270892460676" COLOR="#407000">
+<node TEXT="Adding Icons" ID="Freeplane_Link_1044397139" CREATED="1270892460676" MODIFIED="1270892460676" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 <node TEXT=" A node can have several icons. " ID="ID_1983709741" CREATED="1270892460676" MODIFIED="1270892460676"/>
@@ -691,7 +788,7 @@
 </node>
 <node TEXT="The menu choice Format &gt; Show Icons Hierarchically automatically displays all node icons on all their ancestor nodes up to the root." ID="ID_26845444" CREATED="1271096826323" MODIFIED="1271992954423"/>
 </node>
-<node TEXT="Adding notes" FOLDED="true" ID="ID_774913271" CREATED="1271096054547" MODIFIED="1271096204652" COLOR="#407000">
+<node TEXT="Adding notes" ID="ID_774913271" CREATED="1271096054547" MODIFIED="1271096204652" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="A node can have a rich text note attached." ID="ID_1515176011" CREATED="1271096065323" MODIFIED="1271096262463">
 <richcontent TYPE="NOTE">
@@ -710,9 +807,9 @@
 <node TEXT="Use Edit &gt; Note Edit Switch or press Ctrl + &lt; to switch between the map and the note." ID="ID_510313925" CREATED="1271096117483" MODIFIED="1272493474233"/>
 <node TEXT="The note editor can be placed on any side of the map window using View &gt; Note Position." ID="ID_1710319301" CREATED="1271096150723" MODIFIED="1271979785294"/>
 </node>
-<node TEXT="Adding connectors" FOLDED="true" ID="_Freeplane_Link_1996597932" CREATED="1270892460679" MODIFIED="1270896807234" COLOR="#407000">
+<node TEXT="Adding connectors" ID="_Freeplane_Link_1996597932" CREATED="1270892460679" MODIFIED="1270896807234" COLOR="#407000">
 <node TEXT="To create a graphical connector between two nodes, drag a node and drop it onto another node holding both Shift and Ctrl keys; release the mouse button before releasing Shift and Ctrl keys." ID="ID_985897417" CREATED="1270892460679" MODIFIED="1272493497893">
-<arrowlink DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="255;0;" ENDINCLINATION="255;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="255;0;" ENDINCLINATION="255;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Alternatively, you can select two nodes using the Ctrl key and then choose &quot;Add connector&quot; from the &quot;Insert&quot; menu, or the shortcut Ctrl + L" ID="ID_1564001222" CREATED="1270892460679" MODIFIED="1272493517907"/>
 <node TEXT="To change the color of the link, use the link&apos;s context menu by right-clicking the graphical link (or use Control + click on Mac OS X)." ID="_Freeplane_Link_208378337" CREATED="1270892460679" MODIFIED="1272002232959"/>
@@ -721,18 +818,18 @@
 <node TEXT="To delete a link, use the link&apos;s context menu," ID="ID_1970882825" CREATED="1270892460679" MODIFIED="1271981702477"/>
 <node TEXT="To navigate to one of the end nodes of the link, use the link&apos;s context menu." ID="_Freeplane_Link_266716332" CREATED="1270892460679" MODIFIED="1271981720760"/>
 <node TEXT="To change the routing of an arrow link, drag it and move it." ID="_Freeplane_Link_1015289745" CREATED="1270892460679" MODIFIED="1270892460679">
-<arrowlink DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="244;32;" ENDINCLINATION="256;22;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="244;32;" ENDINCLINATION="256;22;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="The next node contains examples of the use of connectors." ID="ID_1276534365" CREATED="1271981886951" MODIFIED="1271981979214"/>
-<node TEXT="Example of using connectors" FOLDED="true" ID="ID_46167995" CREATED="1270892460680" MODIFIED="1271981793437" COLOR="#996600">
+<node TEXT="Example of using connectors" ID="ID_46167995" CREATED="1270892460680" MODIFIED="1271981793437" COLOR="#996600">
 <node TEXT="Link to another part" ID="_Freeplane_Link_1170112929" CREATED="1270892460680" MODIFIED="1270894254881" COLOR="#996600">
-<arrowlink COLOR="#9999ff" DESTINATION="_Freeplane_Link_1492563156" TARGET_LABEL="Link LABEL" STARTINCLINATION="30;0;" ENDINCLINATION="117;-45;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#9999ff" WIDTH="2" TRANSPARENCY="255" DESTINATION="_Freeplane_Link_1492563156" TARGET_LABEL="Link LABEL" STARTINCLINATION="30;0;" ENDINCLINATION="117;-45;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 </node>
-<node TEXT="Node with folded subnode" FOLDED="true" ID="ID_521887084" CREATED="1270892460680" MODIFIED="1270896807230" COLOR="#996600">
+<node TEXT="Node with folded subnode" ID="ID_521887084" CREATED="1270892460680" MODIFIED="1270896807230" COLOR="#996600">
 <node TEXT="Subnode" ID="_Freeplane_Link_1492563156" CREATED="1270892460680" MODIFIED="1270894251961" HGAP="25" VSHIFT="7"/>
 </node>
 <node TEXT="Another link" ID="_Freeplane_Link_1370577235" CREATED="1270892460680" MODIFIED="1270896728425" COLOR="#996600">
-<arrowlink DESTINATION="_Freeplane_Link_1170112929" SOURCE_LABEL="Another link label" STARTINCLINATION="56;22;" ENDINCLINATION="61;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="_Freeplane_Link_1170112929" SOURCE_LABEL="Another link label" STARTINCLINATION="56;22;" ENDINCLINATION="61;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
 </node>
@@ -750,7 +847,7 @@
 <node TEXT="Use the context menu of an attribute to delete it." ID="ID_403610288" CREATED="1282804659500" MODIFIED="1282805237468"/>
 <node TEXT="Use Tools &gt; Assign Attributes... for assigning / changing attribute for multiple nodes" ID="ID_1213222306" CREATED="1270896956119" MODIFIED="1271982291797"/>
 </node>
-<node TEXT="Using rich text by means of HTML in nodes" FOLDED="true" ID="Freeplane_Link_841140408" CREATED="1270892460698" MODIFIED="1270895987526" COLOR="#407000">
+<node TEXT="Using rich text by means of HTML in nodes" ID="Freeplane_Link_841140408" CREATED="1270892460698" MODIFIED="1270895987526" COLOR="#407000">
 <node TEXT="You can use HTML in nodes." ID="ID_1253480988" CREATED="1270892460698" MODIFIED="1270895849552"/>
 <node ID="ID_159304805" CREATED="1270892460698" MODIFIED="1271976459361">
 <richcontent TYPE="NODE">
@@ -813,7 +910,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="Using pictures in nodes" FOLDED="true" ID="Freeplane_Link_271176250" CREATED="1270892460699" MODIFIED="1270896807236" COLOR="#407000">
+<node TEXT="Using pictures in nodes" ID="Freeplane_Link_271176250" CREATED="1270892460699" MODIFIED="1270896807236" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="The first way to insert a picture into Freeplane is to use &quot;Insert &gt; Image (File Chooser or Link)...&quot; in either the main menu or the node context menu, or press Alt + Shift + K. This method of inserting a picture has some limitations: it supports only the PNG, JPEG and GIF image formats; any text present in the node will be lost; images inserted in this way are not correctly pasted outside Freeplane; and the images will not be included when using Export." ID="ID_1950962853" CREATED="1270892460699" MODIFIED="1272494818935" HGAP="22" VSHIFT="24"/>
 <node TEXT="A new method is also supported in which text is not lost and SVG is supported, but still these images can not be Exported. Use Insert &gt; External Object in the main menu. Images can be resized by using the handle on the bottom right of the picture." ID="ID_692449557" CREATED="1271527733841" MODIFIED="1271984742644"/>
@@ -824,7 +921,7 @@
 <node TEXT="For example:&#xa;  &lt;html&gt;&lt;img src=&quot;linked/Apple.png&quot;&gt;&#xa;  &lt;html&gt;&lt;img src=&quot;file://C:/Users/My Documents/Mind Maps/Linked/Apple.png&quot;&gt;&#xa;The relative link in the first example above refers to an image file in a subdirectory, located under the directory which contains the map file." ID="ID_258073366" CREATED="1270892460700" MODIFIED="1271988858259">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="Example of pictures, working on some Windows distributions:" FOLDED="true" ID="Freeplane_Link_1825247742" CREATED="1270892460700" MODIFIED="1271988967734" COLOR="#996600">
+<node TEXT="Example of pictures, working on some Windows distributions:" ID="Freeplane_Link_1825247742" CREATED="1270892460700" MODIFIED="1271988967734" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12" BOLD="true"/>
 <node ID="ID_305515055" CREATED="1124560950732" MODIFIED="1124560950732">
 <richcontent TYPE="NODE">
@@ -848,7 +945,7 @@
   </body>
 </html></richcontent>
 </node>
-<node FOLDED="true" ID="ID_1475913288" CREATED="1124560950732" MODIFIED="1124560950732">
+<node ID="ID_1475913288" CREATED="1124560950732" MODIFIED="1124560950732">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -870,7 +967,7 @@
 </html></richcontent>
 </node>
 </node>
-<node FOLDED="true" ID="ID_769058522" CREATED="1124560950732" MODIFIED="1124560950732">
+<node ID="ID_769058522" CREATED="1124560950732" MODIFIED="1124560950732">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -880,7 +977,7 @@
     <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACRICEPR.GIF"/>
   </body>
 </html></richcontent>
-<node FOLDED="true" ID="ID_1291538035" CREATED="1124560950732" MODIFIED="1124560950732">
+<node ID="ID_1291538035" CREATED="1124560950732" MODIFIED="1124560950732">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -907,7 +1004,7 @@
 <node TEXT="STONE.BMP" ID="ID_1510093809" CREATED="1270892460703" MODIFIED="1270892460703" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/STONE.BMP"/>
 </node>
 </node>
-<node TEXT="Using LaTeX in nodes" FOLDED="true" ID="ID_1060978136" CREATED="1271097112611" MODIFIED="1271528329415" COLOR="#407000">
+<node TEXT="Using LaTeX in nodes" ID="ID_1060978136" CREATED="1271097112611" MODIFIED="1271528329415" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Example: multiline LaTeX attached to node" ID="ID_651820837" CREATED="1271097206186" MODIFIED="1271528287221">
 <hook EQUATION="\begin{array}{l}&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\end{array}" NAME="plugins/latex/LatexNodeHook.properties"/>
@@ -915,22 +1012,190 @@
 <node TEXT="To attach LaTeX to node use Insert &gt; Latex." ID="ID_1042304226" CREATED="1271097123195" MODIFIED="1271989017759"/>
 <node TEXT="To edit, click on the rendered image which is displayed under the node." ID="ID_21055085" CREATED="1271097312474" MODIFIED="1271989076711"/>
 <node TEXT="To remove the attached LaTeX, select the node and click again on Insert &gt; Latex." ID="ID_1638605492" CREATED="1271097172667" MODIFIED="1271989157243"/>
+<node ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1294179023609">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      Guide to LaTeX in Freeplane
+    </p>
+  </body>
+</html>
+</richcontent>
+<font SIZE="12"/>
+<node TEXT="Freeplane uses the JLatexMath &#xa;component to render equations" ID="ID_1080309098" CREATED="1289947959250" MODIFIED="1290461410312">
+<node TEXT="http://forge.scilab.org/index.php/p/jlatexmath/" ID="ID_659280406" CREATED="1289948021359" MODIFIED="1289948069515" LINK="http://forge.scilab.org/index.php/p/jlatexmath/"/>
 </node>
-<node TEXT="Using undo" FOLDED="true" ID="Freeplane_Link_1318678369" CREATED="1270892460689" MODIFIED="1270892460689" COLOR="#407000">
+<node TEXT="A detailed description&#xa;can be found on the internet" ID="ID_120576425" CREATED="1289948087203" MODIFIED="1289948120328">
+<node TEXT="http://en.wikibooks.org/wiki/LaTeX/Mathematics (english)" ID="ID_430922798" CREATED="1289948122750" MODIFIED="1289948162968" LINK="http://en.wikibooks.org/wiki/LaTeX/Mathematics"/>
+<node TEXT="http://de.wikipedia.org/wiki/Hilfe:TeX (deutsch)" ID="ID_1680494824" CREATED="1289948180703" MODIFIED="1289952450843" LINK="http://de.wikipedia.org/wiki/Hilfe:TeX"/>
+<node TEXT="http://ftp.fernuni-hagen.de/ftp-dir/pub/mirrors/www.ctan.org/macros/latex/required/amslatex/math/amsldoc.pdf (english)" ID="ID_1404474098" CREATED="1290364201609" MODIFIED="1290364225843" LINK="http://ftp.fernuni-hagen.de/ftp-dir/pub/mirrors/www.ctan.org/macros/latex/required/amslatex/math/amsldoc.pdf"/>
+</node>
+<node TEXT="Examples (taken from &#xa;http://en.wikibooks.org/wiki/LaTeX/Mathematics)" ID="ID_1058316992" CREATED="1289990809546" MODIFIED="1290021713251">
+<node TEXT="Limes" ID="ID_1864216888" CREATED="1290021668094" MODIFIED="1290021671938">
+<hook EQUATION="\lim_{x \to \infty} \exp(-x) = 0" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Fractions" ID="ID_136570750" CREATED="1290021775423" MODIFIED="1290021779533">
+<hook EQUATION=" \frac{n!}{k!(n-k)!} = \binom{n}{k}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Roots" ID="ID_792588810" CREATED="1290021832424" MODIFIED="1290021835580">
+<hook EQUATION="\sqrt[n]{1+x+x^2+x^3+\ldots}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Sum" ID="ID_1304861695" CREATED="1290021938629" MODIFIED="1290021970207">
+<hook EQUATION=" \sum_{\substack{&#xa;   0&lt;i&lt;m \\&#xa;   0&lt;j&lt;n&#xa;  }}&#xa; P(i,j)" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Integtral" ID="ID_308113122" CREATED="1290021961394" MODIFIED="1290021972285">
+<hook EQUATION=" \int_0^\infty e^{-x}\,dx" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Matrix" ID="ID_481316229" CREATED="1290022032176" MODIFIED="1290022036551">
+<hook EQUATION=" A_{m,n} =&#xa; \begin{pmatrix}&#xa;  a_{1,1} &amp; a_{1,2} &amp; \cdots &amp; a_{1,n} \\&#xa;  a_{2,1} &amp; a_{2,2} &amp; \cdots &amp; a_{2,n} \\&#xa;  \vdots  &amp; \vdots  &amp; \ddots &amp; \vdots  \\&#xa;  a_{m,1} &amp; a_{m,2} &amp; \cdots &amp; a_{m,n}&#xa; \end{pmatrix}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Chemistry" ID="ID_154100943" CREATED="1290022408560" MODIFIED="1290022413326">
+<hook EQUATION="6CO_2+6H_2O\longrightarrow C_6H_{12}O_6+6O_2" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="The LaTex component of Freeplane is not meant to render text&#xa;but to render all kinds of formulas. You can see this at a few points." ID="ID_1812349488" CREATED="1289952485671" MODIFIED="1289952568281">
+<node TEXT="Spaces in the text are ignored" ID="ID_225196172" CREATED="1289952929140" MODIFIED="1290022634788"/>
+<node TEXT="You have a special font (e.g. see the f)" ID="ID_333740268" CREATED="1289953035375" MODIFIED="1290021513357">
+<hook EQUATION="\text{f is displayed as } f" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="To enter Text in Formulas you can use the \text - command" ID="ID_1913667411" CREATED="1289953049421" MODIFIED="1289953076875"/>
+</node>
+<node TEXT="Common principals" ID="ID_1234055901" CREATED="1289953080093" MODIFIED="1289953091703">
+<node TEXT="LaTex is build on commands to render text or formulas.&#xa;A command starts with a backslash (\)  is followed by &#xa;a keyword and has none, one or more arguments" ID="ID_773721389" CREATED="1289953093515" MODIFIED="1290013752562"/>
+<node TEXT="Arguments are enclosed in {} unless it&apos;s only one letter" ID="ID_302895849" CREATED="1289953198015" MODIFIED="1289953223156"/>
+<node TEXT="Arguments can contain commands" ID="ID_21274500" CREATED="1289989048921" MODIFIED="1289989069421"/>
+</node>
+<node TEXT="Entering real text in formulas" ID="ID_1073839296" CREATED="1289953380156" MODIFIED="1290460422484">
+<node TEXT="For entering real text in formulas you can use the \text-command&#xa;with various variations for text-formatting" ID="ID_1500126516" CREATED="1289953401875" MODIFIED="1289953455484">
+<hook EQUATION="\begin{align}&#xa;&amp;\text{\backslash\\text is for normal text}  \\&#xa; &amp;\textbf {\backslash\\textbf displays bold text} \\&#xa;&amp;\textit{\backslash\\textit formats text italics}&#xa;\end{align}&#xa;" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="Some symbols" ID="ID_1528359489" CREATED="1289989312265" MODIFIED="1289990182156">
+<node TEXT="Latin characters and&#xa;arabic numbers" ID="ID_76669942" CREATED="1289989873015" MODIFIED="1290022789776">
+<node TEXT="Latin letters and arabic numbers &#xa;are supported by just typing them" ID="ID_1729735339" CREATED="1290022684336" MODIFIED="1290022815058">
+<hook EQUATION="a,b,c,d,e,A,B,C,D,E,&#xf6;,&#xc4;,&#xfc;,1,2,3,4" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="Greek characters" ID="ID_1645227792" CREATED="1290001434593" MODIFIED="1290001442500">
+<node TEXT="small greek characters" ID="ID_604493801" CREATED="1289989882406" MODIFIED="1290001468078">
+<hook EQUATION="\begin{align}&#xa;&amp;\backslash alpha \quad  \alpha &amp;&amp;\backslash beta \quad \beta &amp;&amp;\backslash gamma \quad  \gamma  \\ &#xa;&amp;\backslash delta \quad  \delta &amp;&amp;\backslash epsilon \quad  \epsilon &amp; &amp;\backslash zeta \quad \zeta \\&#xa;&amp;\backslash eta \quad  \eta  &amp;&amp;\backslash theta \quad  \theta&#xa;&amp;&amp;\backslash iota \quad  \iota  \\&#xa;&amp;\backslash kappa \quad  \kappa &amp;&amp;\backslash lambda \quad  \lambda  &amp;&amp;\backslash mu \quad  \mu \\&#xa;&amp;\backslash nu \quad  \nu  &amp;&amp; \backslash xi \quad  \xi&#xa;&amp;&amp;\backslash pi \quad  \pi  \\&#xa;&amp;\backslash rho \quad  \rho  &amp;&amp;\backslash sigma \quad  \sigma&#xa;&amp;&amp;\backslash tau \quad  \tau  \\&#xa;&amp;\backslash upsilon \quad  \upsilon  &amp;&amp;\backslash phi \quad  \phi&#xa;&amp;&amp;\backslash chi \quad  \chi  \\&#xa;&amp;\backslash psi \quad  \psi  &amp;&amp;\backslash omega \quad  \omega &amp;&amp; \\&#xa;&amp;\text{Variations: } &amp;&amp;\backslash vartheta \quad \vartheta &amp;&amp;\backslash varphi \quad \varphi &#xa;\end{align}&#xa;" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Big greek characters" ID="ID_500167083" CREATED="1289989882406" MODIFIED="1290001461781">
+<hook EQUATION="\begin{align}&#xa;&amp;\backslash Alpha \quad  \Alpha &amp;&amp;\backslash Beta \quad \Beta &amp;&amp;\backslash Gamma \quad  \Gamma  \\ &#xa;&amp;\backslash Delta \quad  \Delta &amp;&amp;\backslash Epsilon \quad  \Epsilon &amp; &amp;\backslash Zeta \quad \Zeta \\&#xa;&amp;\backslash Eta \quad  \Eta  &amp;&amp;\backslash Theta \quad  \Theta&#xa;&amp;&amp;\backslash Iota \quad  \Iota  \\&#xa;&amp;\backslash Kappa \quad  \Kappa &amp;&amp;\backslash Lambda \quad  \Lambda  &amp;&amp;\backslash Mu \quad  \Mu \\&#xa;&amp;\backslash Nu \quad  \Nu  &amp;&amp; \backslash Xi \quad  \Xi&#xa;&amp;&amp;\backslash Pi \quad  \Pi  \\&#xa;&amp;\backslash Rho \quad  \Rho  &amp;&amp;\backslash Sigma \quad  \Sigma&#xa;&amp;&amp;\backslash Tau \quad  \Tau  \\&#xa;&amp;\backslash Upsilon \quad  \Upsilon  &amp;&amp;\backslash Phi \quad  \Phi&#xa;&amp;&amp;\backslash Chi \quad  \Chi  \\&#xa;&amp;\backslash Psi \quad  \Psi  &amp;&amp;\backslash Omega \quad  \Omega &amp;&amp; \\ &#xa;\end{align}&#xa;" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="Arrows" ID="ID_1300783866" CREATED="1290013635906" MODIFIED="1290083397671">
+<node TEXT="Left-/ right-/ leftright-/ up- and downarrows" ID="ID_18404879" CREATED="1290005074703" MODIFIED="1290083394406">
+<hook EQUATION="\begin{align}&#xa;&amp;\text{\backslash\,leftarrow} \quad \leftarrow &amp;&amp;\text{\backslash\,Lleftarrow}  \quad \Lleftarrow &amp;&amp;\text{\backslash\,longleftarrow}  \quad \longleftarrow \\&#xa;&amp;\text{\backslash\,rightarrow} \quad \rightarrow &amp;&amp;\text{\backslash\,Rrightarrow}  \quad \Rrightarrow &amp;&amp;\text{\backslash\,longrightarrow}  \quad \longrightarrow \\&#xa;&amp;\text{\backslash\,leftrightarrow} \quad \leftrightarrow &amp;&amp;\text{\backslash\,Leftrightarrow}  \quad \Leftrightarrow &amp;&amp;\text{\backslash\,longleftrightarrow}  \quad \longleftrightarrow \\&#xa;&amp;\text{\backslash\,uparrow} \quad \uparrow &amp;&amp;\text{\backslash\,Uparrow}  \quad \Uparrow &amp;&amp;\text{\backslash\,upuparrows}  \quad \upuparrows \\&#xa;&amp;\text{\backslash\,downarrow} \quad \downarrow &amp;&amp;\text{\backslash\,Downarrow}  \quad \Downarrow &amp;&amp;\text{\backslash\,downdownarrows}  \quad \downdownarrows&#xa;\end{align}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="Mathematical symbols" ID="ID_1564070908" CREATED="1289990127687" MODIFIED="1290029883468">
+<node TEXT="Mathematical Symbols&#xa;(+,-,*,/,=,&lt;,&gt; are applicabel for JLatexMath)" ID="ID_1695588830" CREATED="1290014070356" MODIFIED="1290029888984">
+<hook EQUATION="\begin{align}&#xa;&amp;\text{\backslash\,forall} \quad \forall &amp;&amp;\text{\backslash\,exists}  \quad \exists &amp;&amp;\text{\backslash\,nexists}  \quad \nexists \\&#xa;&amp;\text{\backslash\,infty} \quad \infty &amp;&amp;\text{\backslash\,angle}  \angle  &amp;&amp;\text{\backslash\,pm}  \quad \pm \\&#xa;&amp;\text{\backslash\,approx} \quad \approx &amp;&amp;\text{\backslash\,geq}  \quad \geq &amp;&amp;\text{\backslash\,leq}  \quad \leq \\&#xa;&amp;\text{\backslash\,ll} \quad \ll &amp;&amp;\text{\backslash\,gg}  \quad \gg &amp;&amp;\text{\backslash\,neq}  \quad \neq \\&#xa;&amp;\text{\backslash\,in} \quad \in &amp;&amp;\text{\backslash\,ni}  \quad \ni &amp;&amp;\text{\backslash\,notin}  \quad \notin&#xa;\end{align}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="Various Symbols" ID="ID_1506036201" CREATED="1290094312781" MODIFIED="1290094317656">
+<node TEXT="Various Symbols" ID="ID_1967536917" CREATED="1290094319609" MODIFIED="1290094327375">
+<hook EQUATION="\begin{align}&#xa;&amp;\text{\backslash\,ldots} \quad \ldots &amp;&amp;\text{\backslash\,cdots}  \quad \cdots &amp;&amp;\text{\backslash\,vdots}  \quad \vdots \\&#xa;&amp;\text{\backslash\,ddots} \quad \ddots &amp;&amp;\text{\backslash\,backslash}  \quad \backslash &amp;&amp;&#xa;\end{align}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+</node>
+<node TEXT="Powers, indices and accents" ID="ID_1549974506" CREATED="1290023091468" MODIFIED="1290023239142">
+<node TEXT="You can add powers, indices and accents&#xa;to letters" ID="ID_1980992598" CREATED="1290023242283" MODIFIED="1290023277080">
+<hook EQUATION="\begin{align}&#xa;&amp;a^\wedge 2 \qquad a^2 &amp;&amp;a_-2 \qquad a_2 \\&#xa;&amp;\backslash dot\{a\}  \quad \dot{a} &amp;&amp;\backslash ddot\{a\} \quad \ddot{a}\\&#xa;&amp;\backslash bar\{a\} \quad \bar {a} &amp;&amp;\backslash vec \{a\} \quad \vec{a} \\&#xa;&amp;\text{use apostroph(s)} \\ &amp;\text{for linear accents}  &amp;&amp; \quad a&apos; \quad a&apos;&apos; \quad a&apos;&apos;&apos; &#xa;\end{align}&#xa;" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="Brackets" ID="ID_263968757" CREATED="1290121831062" MODIFIED="1290121839187">
+<node TEXT="You can use most brackets by just typing them&#xa;on the keyboard. The exception are the curly brackets {}.&#xa;As they have a special meaning they must be escaped with&#xa;a backslash (\) to be drawn." ID="ID_1786107166" CREATED="1290123767593" MODIFIED="1290124024140"/>
+<node TEXT="Automaticaly adjusting the size of the brackets to the equation&#xa;is done by putting a \left and a \right before them. These two commands&#xa;must always appear both. If you want to omit one you can use the&#xa;empty &quot;bracket&quot; a dot. e.g. \left . will paint no bracket." ID="ID_735692826" CREATED="1290124009937" MODIFIED="1290124106718"/>
+<node TEXT="Examples" ID="ID_1290635085" CREATED="1290124117593" MODIFIED="1290124122468">
+<hook EQUATION="\begin{align}&#xa;&amp;\text {()[]\backslash\{\backslash\} \backslash\,langle \backslash\,rangle} &amp;&amp; ()[]\{\}\langle \rangle \\&#xa;&amp;\text{Without autosize (\backslash\,frac\{a\}\{b\} )} &amp;&amp; ( \frac{a}{b} ) \\&#xa;&amp;\text{With autosizing \backslash\,left(\backslash\,frac\{a\}\{b\}\backslash\,right )} &amp;&amp; \left( \frac{a}{b} \right)\\&#xa;&amp;\text{Without left bracket \backslash\,left.\backslash\,frac\{a\}\{b\}\backslash\,right \}} &amp;&amp; \left. \frac{a}{b} \right\}&#xa;\end{align}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="Mathematical commands" ID="ID_1829993578" CREATED="1290013846031" MODIFIED="1290083468125">
+<node TEXT="Limes" ID="ID_1562446473" CREATED="1290022968232" MODIFIED="1290080357375">
+<node TEXT="Limes ist supported with the lim{start \to end} command." ID="ID_1993799256" CREATED="1290110586875" MODIFIED="1290110641718">
+<hook EQUATION="\begin{align}&#xa;\text{\backslash\,lim\{n \backslash\,to \backslash\,infty\}\backslash\,frac\{1\}\{n\}}&#xa;&amp;&amp;\lim_{n \to \infty} \frac{1}{n}&#xa;\end{align}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="Fractions" ID="ID_1710430114" CREATED="1290022974045" MODIFIED="1290022978217">
+<node TEXT="There are diffrent commands to build a fraction.The most common&#xa;is probably the \frac {numerator}{denominator} command. For simple&#xa;but asthetical fractions you can use powers and indices. For continued&#xa;fractions it is adivisable to use the \cfrac {numerator}{denomintator}&#xa;command because it keeps the sub fractions at the same size." ID="ID_184448364" CREATED="1290108177484" MODIFIED="1290109610578">
+<hook EQUATION="\begin{align}&#xa;&amp;\text{\backslash\,frac\{a\}\{b\}} &amp;&amp; \frac {a}{b}\\&#xa;&amp;{\{\}^\wedge1/_- 2} &amp;&amp; {}^1/_2 \\&#xa;&amp;\text{\backslash\,cfrac\{1+a\}\{\backslash\,cfrac\{1\}\{2\}\}} &amp;&amp; \cfrac{1+a}{\cfrac{1}{2}}\\&#xa;\end{align}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="Roots" ID="ID_162987163" CREATED="1290083479859" MODIFIED="1290083482171">
+<node TEXT="Roots are set up with the \sqrt[]{} command. It has two parameters.&#xa;The first optional parameter is the radix and the second the&#xa;number. The size of the root is adapted to the equation." ID="ID_1313412705" CREATED="1290023000077" MODIFIED="1290082308406">
+<hook EQUATION="\begin{align}&#xa;&amp;\text {\backslash\,sqrt\,\{2\}} &amp;&amp;\sqrt {2}  \\&#xa;&amp;\text {\backslash\,sqrt\,[3]\{8\}}   &amp;&amp;\sqrt[3] {8} \\&#xa;&amp;\text {\backslash\,sqrt \{\backslash\,frac\,\{2\}\{3\}+5 \}} &amp;&amp;\sqrt {\frac {2}{3} +5}&#xa;\end{align}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="Sum" ID="ID_272983008" CREATED="1290022979248" MODIFIED="1290022981920">
+<node TEXT="To render sums use \sum \limits_{begin value}^{end value}. With&#xa;\substack{} you can put multiple conditions under/ over the sum sign." ID="ID_197326354" CREATED="1290115845218" MODIFIED="1290118053125">
+<hook EQUATION="\begin{align}&#xa;&amp;\text{\backslash\,sum \backslash\,limits_\{i=1\}^\wedge\{10\}}  &amp;&amp;\sum \limits_{i=1}^{10} i\\&#xa;&amp;\text{\backslash\,sum_\{\backslash\,substack\{1\,&lt;\,i\,&lt;\,m \backslash\,\backslash 0\,&lt;\,j\,&lt;\,n\}\}} &amp;&amp;\sum_{\substack{1 &lt; i &lt; m \\  0 &lt; j &lt; n}} \\&#xa;&amp;\text{\backslash\,sum^\wedge\{\backslash\,substack\{1\,&lt;\,i\,&lt;\,m \backslash\,\backslash 0\,&lt;\,j\,&lt;\,n\}\}} &amp;&amp;\sum^{\substack{1 &lt; i &lt; m \\  0 &lt; j &lt; n}}&#xa;\end{align}&#xa;" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="Integral" ID="ID_1424436342" CREATED="1290023003108" MODIFIED="1290023007889">
+<node TEXT="Like in sum you can use \limit to add limits to&#xa;the \int command" ID="ID_1700984423" CREATED="1290118956625" MODIFIED="1290119000718">
+<hook EQUATION="\text{\backslash\,int \backslash\,limits _0^\wedge\,3 x^\wedge2dx} \qquad \int \limits_0^3 x^2dx" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+</node>
+<node TEXT="Sizing and horizontal spacing" ID="ID_316853492" CREATED="1290029980312" MODIFIED="1290031923046">
+<node TEXT="By default LaTex lays out the&#xa;size himself, but you can influence it" ID="ID_1350694531" CREATED="1290029986531" MODIFIED="1290030112078">
+<hook EQUATION="\begin{align}&#xa;&amp;\tiny{\backslash tiny\{\}}  &amp;&amp;\small{\backslash small\{\}} \\&#xa;&amp;\normalsize {\backslash normalsize\{\}} &amp;&amp;\large {\backslash large\{\}} \\&#xa;&amp;\Large {\backslash Large\{\}} &amp;&amp;\LARGE{\backslash LARGE\{\}} \\&#xa;&amp;\huge {\backslash huge\{\}} &amp;&amp;\Huge {\backslash Huge\{\}}&#xa;\end{align}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="In math mode LaTex ignores any spaces in the equation. \quad adds a horizontal&#xa;space that is equal to the current font size. \qquad is a double quad.&#xa;\, is a 3/18 of quad, \: is 4/18 of quad and \; is 5/18 of quad" ID="ID_88475716" CREATED="1290032346937" MODIFIED="1290032623781">
+<hook EQUATION="\begin{align}&#xa;\backslash, \, &amp;space \\&#xa;\backslash: \: &amp;space \\&#xa;\backslash; \; &amp;space \\&#xa;\backslash quad \quad &amp;space \\&#xa;\backslash qqad \qquad &amp;space &#xa;\end{align}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="Alignment and multiline" ID="ID_629420174" CREATED="1289990778093" MODIFIED="1290125270000">
+<node TEXT="To display multiple lines in an equation you can use so called enviroments." ID="ID_1483653386" CREATED="1290462372968" MODIFIED="1290462410906"/>
+<node TEXT="An enviroment starts with \begin{enviromentname} and ends with&#xa;\end{enviromentname}" ID="ID_430369769" CREATED="1290462424421" MODIFIED="1290462489171"/>
+<node ID="ID_827402949" CREATED="1290462529312" MODIFIED="1290462714218">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A powerful yet simple enviroment is the align enviroment.
+    </p>
+    <ul>
+      <li>
+        \\ starts a new line
+      </li>
+      <li>
+        &amp; aligns the character after this sign. The first &amp; aligns left the second aligns right, the fourth again left...
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Example" ID="ID_504548083" CREATED="1290462739718" MODIFIED="1290462745359">
+<hook EQUATION="\begin{align}&#xa;&amp;\text{\backslash\,begin\{\,align\} starts the alging enviroment}\\&#xa;&amp;\text{ a double backslash starts a new line \backslash\,\backslash} \\&#xa;&amp;\text{the ampersand aligns} &amp;&amp;\text{\&amp;left}&amp;\text{\&amp;\&amp;right} \backslash\,\backslash \\&#xa;&amp;\text{line with the same} &amp;&amp;\text{\&amp;alignment}&amp;\text{\&amp;\&amp;alignment} \backslash\,\backslash \\&#xa;&amp;\text{\backslash\,end\{\,align\} ends the algin enviroment}&#xa;\end{align}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Using undo" ID="Freeplane_Link_1318678369" CREATED="1270892460689" MODIFIED="1270892460689" COLOR="#407000">
 <node TEXT="To undo, use Edit &gt; Undo or press Ctrl + Z." ID="ID_1877729417" CREATED="1270892460690" MODIFIED="1272493559789"/>
 <node TEXT="To redo, use Edit &gt; Redo or press Ctrl + Y." ID="ID_1501637074" CREATED="1270892460690" MODIFIED="1272493598705"/>
 <node TEXT="To set the number of steps kept for undoing, use Tools &gt; Preferences and click on Behavior." ID="ID_139456632" CREATED="1270892460690" MODIFIED="1272008138944"/>
 </node>
 </node>
-<node TEXT="Formatting" FOLDED="true" POSITION="right" ID="ID_326068339" CREATED="1272091260034" MODIFIED="1272092212333" COLOR="#006666">
+<node TEXT="Formatting" POSITION="right" ID="ID_326068339" CREATED="1272091260034" MODIFIED="1272092212333" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Map layout" FOLDED="true" ID="ID_710714991" CREATED="1271095870732" MODIFIED="1271095876945" COLOR="#407000">
+<node TEXT="Map layout" ID="ID_710714991" CREATED="1271095870732" MODIFIED="1271095876945" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="The map can be displayed in two layouts: as a mind map and as an outline view." ID="ID_1920188221" CREATED="1271095880163" MODIFIED="1271095919233"/>
 <node TEXT="You can switch between the layouts via View &gt; Outline view" ID="ID_353099197" CREATED="1271095880163" MODIFIED="1271992916515"/>
 <node TEXT="The outline view is better for printing large maps." ID="ID_823999289" CREATED="1271095978107" MODIFIED="1271096007386"/>
 </node>
-<node TEXT="Formatting a node" FOLDED="true" ID="Freeplane_Link_1660149394" CREATED="1270892460672" MODIFIED="1270896430199" COLOR="#407000">
+<node TEXT="Formatting a node" ID="Freeplane_Link_1660149394" CREATED="1270892460672" MODIFIED="1270896430199" COLOR="#407000">
 <node TEXT="To make a node bold, use Format &gt; Bold or press Ctrl + B." ID="ID_896067797" CREATED="1270892460672" MODIFIED="1272493615110">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
@@ -954,22 +1219,22 @@
 </node>
 <node TEXT="All the functions listed above are also available from the node context menu, under Format." ID="ID_817931500" CREATED="1271977602378" MODIFIED="1271977673529"/>
 <node TEXT="To change the font family, use the font name selector in the main toolbar." ID="ID_975697332" CREATED="1270892460674" MODIFIED="1271977713995"/>
-<node TEXT="To copy all the formatting of a node, use Edit &gt; Copy Format or press Alt + Shift + C" FOLDED="true" ID="ID_880893737" CREATED="1270892460674" MODIFIED="1271977870886">
+<node TEXT="To copy all the formatting of a node, use Edit &gt; Copy Format or press Alt + Shift + C" ID="ID_880893737" CREATED="1270892460674" MODIFIED="1271977870886">
 <node TEXT="To apply the copied formatting to another node, use Edit &gt; Paste Format or press Alt + Shift + V." ID="ID_52099291" CREATED="1270892460674" MODIFIED="1271977827882"/>
 </node>
 </node>
-<node TEXT="Formatting node edges" FOLDED="true" ID="ID_1797063061" CREATED="1270896049950" MODIFIED="1270896308350" COLOR="#407000">
+<node TEXT="Formatting node edges" ID="ID_1797063061" CREATED="1270896049950" MODIFIED="1270896308350" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="There are different types of node edge styles" ID="ID_171466211" CREATED="1270896067862" MODIFIED="1270896086595"/>
 <node TEXT="You can also change colors and widths or even make edges invisible" ID="ID_147950395" CREATED="1270896109110" MODIFIED="1271524387108"/>
 <node TEXT="Choices in Format menu include Edge Color..., Edge Style, and Edge Widths" ID="ID_835600675" CREATED="1270896191326" MODIFIED="1271978011393"/>
-<node TEXT="Example 1" FOLDED="true" ID="ID_1959289213" CREATED="1270896156486" MODIFIED="1270995006977">
+<node TEXT="Example 1" ID="ID_1959289213" CREATED="1270896156486" MODIFIED="1270995006977">
 <edge STYLE="horizontal" COLOR="#ff0033"/>
 <node TEXT="There are different types of node edge styles" ID="ID_213610345" CREATED="1270896067862" MODIFIED="1270896086595"/>
 <node TEXT="You can also change colors and widths" ID="ID_525537821" CREATED="1270896096758" MODIFIED="1271524452632"/>
 <node TEXT="or even make edges invisible" ID="ID_994729391" CREATED="1270896109110" MODIFIED="1270896120971"/>
 </node>
-<node TEXT="Example 2" FOLDED="true" ID="ID_563742809" CREATED="1270896156486" MODIFIED="1270995006977">
+<node TEXT="Example 2" ID="ID_563742809" CREATED="1270896156486" MODIFIED="1270995006977">
 <edge STYLE="sharp_bezier" WIDTH="4"/>
 <node TEXT="There are different types of node edge styles" ID="ID_1621067344" CREATED="1270896067862" MODIFIED="1270896086595"/>
 <node TEXT="You can also change colors and widths" ID="ID_22717831" CREATED="1270896096758" MODIFIED="1271524493137"/>
@@ -978,23 +1243,23 @@
 </node>
 </node>
 </node>
-<node TEXT="Using physical styles" FOLDED="true" ID="Freeplane_Link_526328879" CREATED="1270892460674" MODIFIED="1270892460674" COLOR="#407000">
+<node TEXT="Using physical styles" ID="Freeplane_Link_526328879" CREATED="1270892460674" MODIFIED="1270892460674" COLOR="#407000">
 <node TEXT="To apply a physical style, pick your choice of style from Format &gt; Physical Style. This is also available in the node context menu. To speed up applying physical styles, use keyboard shortcuts as shown in the menu." ID="ID_284671582" CREATED="1270892460674" MODIFIED="1271978217930"/>
 <node TEXT="To add or edit your own physical style use Physical Style &gt;  Manage Patterns..." ID="ID_58326768" CREATED="1270892460674" MODIFIED="1271992938629"/>
 </node>
-<node TEXT="Automatic formatting" FOLDED="true" ID="ID_1561765534" CREATED="1271096555907" MODIFIED="1271096586780" COLOR="#407000">
+<node TEXT="Automatic formatting" ID="ID_1561765534" CREATED="1271096555907" MODIFIED="1271096586780" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Nodes can be automatically formatted depending on their hierarchy relative to the root node." ID="ID_287999249" CREATED="1271096587963" MODIFIED="1271978326513"/>
 <node TEXT="This feature is called &quot;Automatic Layout&quot; and is available from the Format menu." ID="ID_495596648" CREATED="1271096619675" MODIFIED="1271978382515"/>
 </node>
-<node TEXT="Highlighting nodes with clouds" FOLDED="true" ID="Freeplane_Link_1697687428" CREATED="1270892460674" MODIFIED="1270892460674" COLOR="#407000">
+<node TEXT="Highlighting nodes with clouds" ID="Freeplane_Link_1697687428" CREATED="1270892460674" MODIFIED="1270892460674" COLOR="#407000">
 <node TEXT="Clouds are well-suited to highlighting a region. The node and all its descendants are highlighted." ID="ID_1689467777" CREATED="1270892460675" MODIFIED="1271978399511"/>
 <node TEXT="To add a cloud use use Insert &gt; Cloud or press Ctrl + Shift + B." ID="ID_1388258473" CREATED="1270892460675" MODIFIED="1272493669767"/>
 <node TEXT="To change the cloud color use Format &gt; Cloud Color..." ID="ID_238365883" CREATED="1270892460675" MODIFIED="1271978529781"/>
-<node TEXT="Clouds can have various background colors like green ..." FOLDED="true" ID="ID_703286001" CREATED="1270892460675" MODIFIED="1270892460675">
-<cloud COLOR="#e1f2e1" WIDTH="0"/>
+<node TEXT="Clouds can have various background colors like green ..." ID="ID_703286001" CREATED="1270892460675" MODIFIED="1270892460675">
+<cloud COLOR="#e1f2e1" SHAPE="ARC"/>
 <node TEXT="... or brown." ID="ID_1207851558" CREATED="1270892460675" MODIFIED="1270892460675">
-<cloud COLOR="#ede5d5" WIDTH="0"/>
+<cloud COLOR="#ede5d5" SHAPE="ARC"/>
 </node>
 </node>
 </node>
@@ -1007,12 +1272,12 @@
 <node TEXT="To assign a hot key to a menu item, use &quot;Tools &gt; Assign short cut.&quot; Then click on the desired menu item, and enter a new hot key combination for the short cut. Prompts will allow you to override an existing assignment if your new short cut is already in use." ID="ID_1823288862" CREATED="1270895079510" MODIFIED="1272008653739"/>
 <node TEXT="The F-Bar is just a visual representation of hot key assignments for the function keys. These assignments are changed via &quot;Tools &gt; Assign short cut&quot; too. If you assign a function key to a menu item, then the F-Bar will be updated immediately afterwards." ID="ID_1116899046" CREATED="1279645009156" MODIFIED="1279645964609"/>
 </node>
-<node TEXT="Using file locking" FOLDED="true" ID="ID_1594926210" CREATED="1270892460703" MODIFIED="1272092384758" COLOR="#407000">
+<node TEXT="Using file locking" ID="ID_1594926210" CREATED="1270892460703" MODIFIED="1272092384758" COLOR="#407000">
 <node TEXT="File locking makes sure that other users do not edit the same map at the same time, preventing them from accidentally overwriting each others&apos; information." ID="ID_1859037836" CREATED="1270892460703" MODIFIED="1271530808349"/>
 <node TEXT="The current version of Freeplane has experimental file locking disabled by default. The current implementation does not perfectly prevent rare conditions, but it should be fine for most practical purposes." ID="ID_60090824" CREATED="1270892460703" MODIFIED="1271530895172"/>
 <node TEXT="To enable experimental file locking use Tools &gt; Preferences." ID="ID_1792715924" CREATED="1270892460703" MODIFIED="1272011886895"/>
 </node>
-<node TEXT="Printing" FOLDED="true" ID="Freeplane_Link_1528828442" CREATED="1270892460697" MODIFIED="1270892460697" COLOR="#407000">
+<node TEXT="Printing" ID="Freeplane_Link_1528828442" CREATED="1270892460697" MODIFIED="1270892460697" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="You can print either by fitting the whole map into one page, or by printing the map to several sheets of paper. This choice you can set in menu: File &gt; Page Setup..." ID="ID_1681186639" CREATED="1270892460697" MODIFIED="1272008793711"/>
 <node TEXT="To make better use of space, choose landscape mode when printing." ID="ID_741420393" CREATED="1270892460698" MODIFIED="1272008865821">
@@ -1022,33 +1287,33 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="Scripting" FOLDED="true" ID="ID_1046070222" CREATED="1271021863642" MODIFIED="1271022630845" COLOR="#407000">
+<node TEXT="Scripting" ID="ID_1046070222" CREATED="1271021863642" MODIFIED="1271022630845" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Freeplane&apos;s built in functionality can be extended by Groovy scripts." FOLDED="true" ID="ID_871333484" CREATED="1271022419501" MODIFIED="1271530281330">
+<node TEXT="Freeplane&apos;s built in functionality can be extended by Groovy scripts." ID="ID_871333484" CREATED="1271022419501" MODIFIED="1271530281330">
 <node TEXT="Groovy scripts can access the mindmap by means of a Scripting API." ID="ID_893034881" CREATED="1271022419501" MODIFIED="1271022439407"/>
 <node TEXT="Scripts can use some Freeplane utility classes that are provided by Freeplane, e.g. UITools, LogTool or HtmlTools." ID="ID_670788358" CREATED="1271022419501" MODIFIED="1271022442735"/>
 <node TEXT="Scripts can use some of the functionality provided by libraries which are included in Freeplane." ID="ID_21879568" CREATED="1271022419501" MODIFIED="1271022447860"/>
 </node>
-<node TEXT="Scripts can be defined in three ways." FOLDED="true" ID="ID_1916933814" CREATED="1271022419501" MODIFIED="1271022615564">
+<node TEXT="Scripts can be defined in three ways." ID="ID_1916933814" CREATED="1271022419501" MODIFIED="1271022615564">
 <node TEXT="External Groovy scripts can be integrated simply by telling Freeplane where they are. Such scripts can be used like any other built in function of Freeplane." ID="ID_905639720" CREATED="1271022419501" MODIFIED="1271530299711"/>
 <node TEXT="Physical styles/Patterns may contain scripts for formatting purposes. They are automatically applied to any node when the given pattern is assigned." ID="ID_1457942941" CREATED="1271022419501" MODIFIED="1272011736760"/>
 <node TEXT="Map local scripts may be defined within a map as attributes of some node. These scripts are embedded within a map, so they can be easily shipped as part of the map. A special, built in editor is used for editing map local scripts." ID="ID_1545994363" CREATED="1271022419501" MODIFIED="1272011807552"/>
 </node>
 <node TEXT="The Freeplane Wiki provides extensive information on scripting." ID="ID_476511397" CREATED="1271022540079" MODIFIED="1271022610939" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting"/>
 </node>
-<node TEXT="Import, Export and Integration" FOLDED="true" ID="ID_1155373089" CREATED="1271022654767" MODIFIED="1271024008314" COLOR="#407000">
+<node TEXT="Import, Export and Integration" ID="ID_1155373089" CREATED="1271022654767" MODIFIED="1271024008314" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Exporting to HTML" FOLDED="true" ID="Freeplane_Link_22510332" CREATED="1270892460690" MODIFIED="1270892460690" COLOR="#407000">
+<node TEXT="Exporting to HTML" ID="Freeplane_Link_22510332" CREATED="1270892460690" MODIFIED="1270892460690" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="To export a branch to HTML starting from the currently-selected node, choose File &gt; Export Branch as HTML. The exported HTML page may contain folding support, depending on the settings in Preferences." ID="ID_1502864159" CREATED="1270892460690" MODIFIED="1272009194034"/>
 <node TEXT="To use other exporting options, use the options in the menu File &gt; Export." ID="ID_1838606785" CREATED="1270892460690" MODIFIED="1272009213789"/>
 </node>
-<node TEXT="Exporting as bitmap or vector picture" FOLDED="true" ID="Freeplane_Link_1908686168" CREATED="1270892460690" MODIFIED="1270902568318" COLOR="#407000">
+<node TEXT="Exporting as bitmap or vector picture" ID="Freeplane_Link_1908686168" CREATED="1270892460690" MODIFIED="1270902568318" COLOR="#407000">
 <node TEXT="To export the map as a PNG or JPEG bitmap use File &gt; Export &gt; As PNG... or As JPEG.., respectively." ID="ID_216678851" CREATED="1270892460690" MODIFIED="1272009464731"/>
 <node TEXT="To export the map as a Scalable Vector Graphic use File &gt; Export &gt; As SVG..." ID="ID_160100374" CREATED="1270892460691" MODIFIED="1272009495065"/>
 </node>
-<node TEXT="Exporting to other XML formats" FOLDED="true" ID="Freeplane_Link_329770204" CREATED="1270892460691" MODIFIED="1270897284295" COLOR="#407000">
-<node TEXT="To export the map to another XML format for which you have an XSLT transformation sheet, use File &gt; Export &gt; Using XSLT." FOLDED="true" ID="ID_1483460074" CREATED="1270892460691" MODIFIED="1272009539144" COLOR="#996600">
+<node TEXT="Exporting to other XML formats" ID="Freeplane_Link_329770204" CREATED="1270892460691" MODIFIED="1270897284295" COLOR="#407000">
+<node TEXT="To export the map to another XML format for which you have an XSLT transformation sheet, use File &gt; Export &gt; Using XSLT." ID="ID_1483460074" CREATED="1270892460691" MODIFIED="1272009539144" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="The Export Using XSLT function applies an XSL Transformation to the Freeplane mindmap, to create a new file." ID="ID_1796935486" CREATED="1270897200986" MODIFIED="1270897200986"/>
 <node TEXT="In the Freeplane Export using XSLT dialog box, the &quot;File Format:&quot; or &quot;Files of type:&quot; combo is populated with the list of available XSL Transform files." ID="ID_1457131583" CREATED="1270897200986" MODIFIED="1272009768256"/>
@@ -1058,18 +1323,18 @@
 </node>
 <node TEXT="To export the map to an OpenOffice 1.4 Writer document, in the pull-down menu use File &gt; Export &gt; As OpenOffice Writer Document." ID="ID_1185345026" CREATED="1270892460691" MODIFIED="1271529939035"/>
 </node>
-<node TEXT="Importing folder structure" FOLDED="true" ID="Freeplane_Link_1841136119" CREATED="1270892460691" MODIFIED="1270892460691" COLOR="#407000">
+<node TEXT="Importing folder structure" ID="Freeplane_Link_1841136119" CREATED="1270892460691" MODIFIED="1270892460691" COLOR="#407000">
 <font NAME="Dialog" SIZE="12"/>
 <node TEXT="To import a folder structure, use File &gt; Import &gt; Folder Structure. You will be asked for the folder whose structure you want to import. By structure we mean the tree of all (not necessarily direct) subfolders which, after being imported, will contain links to the files in each subfolders. An example of an inserted structure follows." ID="ID_141591900" CREATED="1270892460691" MODIFIED="1272010112610"/>
-<node TEXT="Example" FOLDED="true" ID="ID_1229069993" CREATED="1270892460691" MODIFIED="1270892460691" COLOR="#996600">
+<node TEXT="Example" ID="ID_1229069993" CREATED="1270892460691" MODIFIED="1270892460691" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Selected folder" FOLDED="true" ID="ID_1900948226" CREATED="1270892460692" MODIFIED="1270892460692" COLOR="#996600">
+<node TEXT="Selected folder" ID="ID_1900948226" CREATED="1270892460692" MODIFIED="1270892460692" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="C:\Program Files\Microsoft Office\Office\Bitmaps" ID="ID_1047051948" CREATED="1270892460692" MODIFIED="1270892460692" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node TEXT="Dbwiz" FOLDED="true" ID="ID_498299897" CREATED="1270892460692" MODIFIED="1270892460692" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/">
+<node TEXT="Dbwiz" ID="ID_498299897" CREATED="1270892460692" MODIFIED="1270892460692" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/">
 <node TEXT="ASSETS.GIF" ID="ID_1996138069" CREATED="1270892460692" MODIFIED="1270892460692" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/ASSETS.GIF"/>
 <node TEXT="CONTACTS.GIF" ID="ID_798262045" CREATED="1270892460692" MODIFIED="1270892460692" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/CONTACTS.GIF"/>
 <node TEXT="EVTMGMT.GIF" ID="ID_709145536" CREATED="1270892460692" MODIFIED="1270892460692" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/EVTMGMT.GIF"/>
@@ -1081,7 +1346,7 @@
 <node TEXT="SERVICE.GIF" ID="ID_573955224" CREATED="1270892460693" MODIFIED="1270892460693" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/SERVICE.GIF"/>
 <node TEXT="TIMEBILL.GIF" ID="ID_1318950239" CREATED="1270892460693" MODIFIED="1270892460693" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Dbwiz/TIMEBILL.GIF"/>
 </node>
-<node TEXT="Styles" FOLDED="true" ID="ID_1361256480" CREATED="1270892460693" MODIFIED="1270892460693" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/">
+<node TEXT="Styles" ID="ID_1361256480" CREATED="1270892460693" MODIFIED="1270892460693" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/">
 <node TEXT="ACBLENDS.GIF" ID="ID_1744076397" CREATED="1270892460694" MODIFIED="1270892460694" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACBLENDS.GIF"/>
 <node TEXT="ACBLUPRT.GIF" ID="ID_212838780" CREATED="1270892460694" MODIFIED="1270892460694" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACBLUPRT.GIF"/>
 <node TEXT="ACEXPDTN.GIF" ID="ID_1366106507" CREATED="1270892460694" MODIFIED="1270892460694" LINK="file:/C:/Program%20Files/Microsoft%20Office/Office/Bitmaps/Styles/ACEXPDTN.GIF"/>
@@ -1094,15 +1359,15 @@
 </node>
 </node>
 </node>
-<node TEXT="Importing Internet Explorer favorites" FOLDED="true" ID="Freeplane_Link_269203785" CREATED="1270892460695" MODIFIED="1270892460695" COLOR="#407000">
+<node TEXT="Importing Internet Explorer favorites" ID="Freeplane_Link_269203785" CREATED="1270892460695" MODIFIED="1270892460695" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 <node TEXT="To import Internet Explorer favorites into Freeplane, use File &gt; Import &gt; Explorer Favorites. You&apos;ll be asked to enter the path to the folder where the favorites are stored. The folder&apos;s name is &quot;Favorites&quot; and you can find on it your disk. On some versions of Windows the path is C:\Documents and Settings\&lt;user&gt;\Favorites." ID="Freeplane_Link_260446736" CREATED="1270892460695" MODIFIED="1272010191090"/>
 </node>
-<node TEXT="Importing MindManager X5 mind map" FOLDED="true" ID="Freeplane_Link_1709974530" CREATED="1270892460696" MODIFIED="1270892460696" COLOR="#407000">
+<node TEXT="Importing MindManager X5 mind map" ID="Freeplane_Link_1709974530" CREATED="1270892460696" MODIFIED="1270892460696" COLOR="#407000">
 <node TEXT="To import a MindManager X5 mind map, use File &gt; Import &gt; MindManager X5 Map..." ID="ID_75598516" CREATED="1270892460696" MODIFIED="1272010253947"/>
 </node>
-<node TEXT="Integration with Word Processors and E-mail Programs" FOLDED="true" ID="Freeplane_Link_913645795" CREATED="1270892460696" MODIFIED="1272010515438" COLOR="#407000">
+<node TEXT="Integration with Word Processors and E-mail Programs" ID="Freeplane_Link_913645795" CREATED="1270892460696" MODIFIED="1272010515438" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="You can paste maps or branches into word processing programs such as Microsoft Word or Wordpad, and into most e-mail programs. In general, you can paste it into any application that understands Rich Text Format. The text formatting and links are pasted too." ID="ID_30933864" CREATED="1270892460696" MODIFIED="1272010631909">
 <font NAME="SansSerif" SIZE="12"/>
@@ -1114,14 +1379,14 @@
 <node TEXT="An alternative way of pasting a mind map into Microsoft Word is by exporting it to HTML based on headings, copying the HTML, and pasting that into Word." ID="ID_210363254" CREATED="1270892460697" MODIFIED="1272010730606"/>
 </node>
 </node>
-<node TEXT="Browsing the files on your computer" FOLDED="true" ID="_Freeplane_Link_353522063" CREATED="1270892460641" MODIFIED="1271020314337" COLOR="#407000">
+<node TEXT="Browsing the files on your computer" ID="_Freeplane_Link_353522063" CREATED="1270892460641" MODIFIED="1271020314337" COLOR="#407000">
 <node TEXT="To browse files on your computer, switch to File mode in pull-down menu using Maps &gt; File Explorer." ID="ID_580394018" CREATED="1270892460642" MODIFIED="1271993093904"/>
 <node TEXT="You browse the file tree as if it was a mind map." ID="ID_752002115" CREATED="1270892460642" MODIFIED="1270892460642"/>
 <node TEXT="To open another File Explorer tab with the selected node at its center, use View &gt; Center Selected Node or, in the node context menu use Center." ID="ID_9876074" CREATED="1270892460642" MODIFIED="1271967396054"/>
 <node TEXT="To view, edit or execute a file, follow the link of its node." ID="ID_355560243" CREATED="1270892460643" MODIFIED="1270892460643"/>
 <node TEXT="This File mode is mainly a demonstration of browsing data from sources other than a mind map. It is also possible for software developers to write other &quot;modes&quot; using additional data sources." ID="_Freeplane_Link_279880616" CREATED="1270892460643" MODIFIED="1271968440585"/>
 </node>
-<node TEXT="Automatic backup" FOLDED="true" ID="ID_1283343603" CREATED="1271096741387" MODIFIED="1271096748636" COLOR="#407000">
+<node TEXT="Automatic backup" ID="ID_1283343603" CREATED="1271096741387" MODIFIED="1271096748636" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Freeplane creates a subfolder named .backup in each folder which contains edited maps. Old map versions  are saved there, along with automatically-saved copies of edited maps. These copies are named with the file extension &quot;.autosave&quot;." ID="ID_1590067344" CREATED="1271096749626" MODIFIED="1272011348446"/>
 <node TEXT="By default, an automatic save happens every minute, and the last 10 autosave files are kept as protection against accidental termination of Freeplane, e.g. on computer shutdown." ID="ID_1073721425" CREATED="1271177847312" MODIFIED="1272011455133"/>
@@ -1136,8 +1401,8 @@
 <node TEXT="Freeplane menu reference  is available as a separate document" POSITION="left" ID="ID_640122712" CREATED="1272090985328" MODIFIED="1272091110005" LINK="FP_MenuReference.mm" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>
-<node TEXT="Installation" FOLDED="true" POSITION="left" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1270892460638" COLOR="#006633">
-<node TEXT="Links" FOLDED="true" ID="_Freeplane_Link_1911559485" CREATED="1270892460638" MODIFIED="1270892460638" COLOR="#006699">
+<node TEXT="Installation" POSITION="left" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1270892460638" COLOR="#006633">
+<node TEXT="Links" ID="_Freeplane_Link_1911559485" CREATED="1270892460638" MODIFIED="1270892460638" COLOR="#006699">
 <node TEXT="Download the Java Runtime Environment (at least J2RE1.5)" ID="ID_1620747952" CREATED="1270892460639" MODIFIED="1270895438071" LINK="http://java.sun.com/javase/downloads/index.jsp">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
@@ -1151,33 +1416,33 @@
 <node TEXT="To install Freeplane on Linux, download the Java Runtime Environment and the Freeplane application itself. First install Java, then unpack Freeplane. To run Freeplane, execute freeplane.sh." ID="_Freeplane_Link_1380352758" CREATED="1270892460641" MODIFIED="1271863219743"/>
 <node TEXT="To install Freeplane on Mac OS X first use the built in Software Update feature to ensure that you have all the latest available updates, especially Java. Software Update is located under the Apple logo menu in the top left-hand corner of the screen. &#xa;&#xa;Then download a Mac-specific version of Freeplane. The .dmg version is easiest to install, though a .zip version may also be available. When the download is complete, the file may be automatically mounted (or un-zipped) depending on your Web browser settings. Otherwise either double-click on the downloaded .dmg file to &quot;mount&quot; it, or double-click on the downloaded .zip file to un-zip it. &#xa;&#xa;Now you should see a Freeplane application icon, which you can drag to your Applications folder. Then you may optionally create an alias (shortcut) on the Desktop, and/or on the Dock. To run Freeplane, either double-click on its application icon (in the Applications folder) or on its Desktop shortcut, or click once on its icon in the Dock. The Freeplane Wiki has Macintosh page with more information." ID="_Freeplane_Link_1808511462" CREATED="1270892460641" MODIFIED="1271864546275"/>
 </node>
-<node TEXT="Macintosh Usage Notes" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1530607683" CREATED="1270892460643" MODIFIED="1272092559460" COLOR="#006666">
+<node TEXT="Macintosh Usage Notes" POSITION="left" ID="_Freeplane_Link_1530607683" CREATED="1270892460643" MODIFIED="1272092559460" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Freeplane recently added full support for Apple&apos;s Mac OS X operating system. Some of the documentation is still oriented toward PC users running Windows or Linux. Mac users will be able to follow along by keeping some differences in mind, listed below." FOLDED="true" ID="ID_752234886" CREATED="1270892460643" MODIFIED="1272034409877">
-<node TEXT="Command key versus the Ctrl (control) key" FOLDED="true" ID="ID_274373799" CREATED="1272034412047" MODIFIED="1272500980501">
+<node TEXT="Freeplane recently added full support for Apple&apos;s Mac OS X operating system. Some of the documentation is still oriented toward PC users running Windows or Linux. Mac users will be able to follow along by keeping some differences in mind, listed below." ID="ID_752234886" CREATED="1270892460643" MODIFIED="1272034409877">
+<node TEXT="Command key versus the Ctrl (control) key" ID="ID_274373799" CREATED="1272034412047" MODIFIED="1272500980501">
 <node TEXT="When Freeplane runs under Mac OS X, you generally will use the Apple Command key rather than the &quot;control&quot; key, which is labeled Ctrl on a PC. The Command key is marked with a cloverleaf &#x2318; symbol, and may also be captioned as &quot;command&quot; or &quot;cmd&quot;, or be marked with an Apple logo." ID="ID_395674676" CREATED="1272029514331" MODIFIED="1272502497708"/>
 <node TEXT="When you see the Ctrl key mentioned in Freeplane&apos;s documentation, in most cases you should use the Command key instead." ID="ID_124270811" CREATED="1272034546855" MODIFIED="1272501133669"/>
 <node TEXT="In a very few cases, even on your Mac, Freeplane actually requires using the &quot;control&quot; key rather than the Command key. In these cases, this document refers to the key explicitly as Control, for emphasis. In other cases, if the documentation refers to the Ctrl key, yet the Command key fails to work as a substitute on your Mac, try the &quot;control&quot; key instead." ID="ID_1031450682" CREATED="1272034546807" MODIFIED="1272502562154"/>
 </node>
-<node TEXT="Mice, Right Clicks and Context Menus" FOLDED="true" ID="ID_1326732850" CREATED="1272034661406" MODIFIED="1272034719554">
+<node TEXT="Mice, Right Clicks and Context Menus" ID="ID_1326732850" CREATED="1272034661406" MODIFIED="1272034719554">
 <node TEXT="Many Apple-branded mice and trackpads have only one clickable &quot;button.&quot; To bring up a context-sensitive menu (or &quot;context menu&quot;), Mac users can hold down the Control key while clicking the mouse (abbreviated as &quot;Control + click&quot;). Yes, use the Control key here, rather than the Command key, because this function is built into Mac OS X so Freeplane cannot change it. Apple makes Control + click equivalent to the &quot;right click&quot; which is available on mice with two buttons." ID="ID_1259415390" CREATED="1272030826942" MODIFIED="1272034317363"/>
 </node>
-<node TEXT="Menu Differences" FOLDED="true" ID="ID_1110596300" CREATED="1272475775170" MODIFIED="1272475793114">
+<node TEXT="Menu Differences" ID="ID_1110596300" CREATED="1272475775170" MODIFIED="1272475793114">
 <node TEXT="A few menu items are relocated in accordance with Mac OS X standards. These are listed below." ID="ID_1853446063" CREATED="1272475795702" MODIFIED="1272475981316"/>
 <node TEXT="Help &gt; About is moved to the Freeplane application menu &gt; About Freeplane." ID="ID_1154800735" CREATED="1272475988527" MODIFIED="1272490731402"/>
 <node TEXT="Tools &gt; Preferences is moved to the Freeplane application menu &gt; Preferences." ID="ID_1860427078" CREATED="1272490956135" MODIFIED="1272491068596"/>
 <node TEXT="File &gt; Quit is moved to the Freeplane application menu &gt; Quit Freeplane." ID="ID_1745832189" CREATED="1272491194401" MODIFIED="1272491228343"/>
 </node>
-<node TEXT="Zooming" FOLDED="true" ID="ID_590901264" CREATED="1272034779740" MODIFIED="1272034791305">
+<node TEXT="Zooming" ID="ID_590901264" CREATED="1272034779740" MODIFIED="1272034791305">
 <node TEXT="Mac OS X provides a means to zoom in on (magnify) part of the screen, by holding down the Control key while turning the mouse wheel forward. This facility is built into the Mac operating system, so the function is unavailable for Freeplane to use for control of its own Zoom function. So Mac users must use one of the alternate means which Freeplane provides to adjust its zoom level. " ID="ID_1955741602" CREATED="1272031370038" MODIFIED="1272034875880"/>
 <node TEXT="If you are unfamiliar with OS X&apos;s Control + mouse wheel function, be aware that some mouse functions become awkward to use, or even unusable, while zoomed in. To return the screen to normal, hold down the Conrol key and turn the mouse wheel backward to zoom back out all the way." ID="ID_842528755" CREATED="1272034875909" MODIFIED="1272034875910"/>
 </node>
-<node TEXT="Freeplane Wiki" FOLDED="true" ID="ID_1142057644" CREATED="1272034993198" MODIFIED="1272035003988">
+<node TEXT="Freeplane Wiki" ID="ID_1142057644" CREATED="1272034993198" MODIFIED="1272035003988">
 <node TEXT="Visit the Macintosh page on Freeplane&apos;s online Wiki to learn more about running Freeplane on a Mac." ID="ID_275313424" CREATED="1272035005736" MODIFIED="1272035180163" LINK="http://freeplane.sourceforge.net/wiki/index.php/Macintosh"/>
 </node>
 </node>
 </node>
-<node TEXT="Using the Freeplane applet on your web site" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1525986009" CREATED="1270892460644" MODIFIED="1272092559455" COLOR="#006666">
+<node TEXT="Using the Freeplane applet on your web site" POSITION="left" ID="_Freeplane_Link_1525986009" CREATED="1270892460644" MODIFIED="1272092559455" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Use File &gt; Export &gt; As Java Applet... to create a set of files for your web site" ID="ID_885091125" CREATED="1270892460644" MODIFIED="1271020276571" COLOR="#000000">
 <font NAME="Dialog" SIZE="12"/>
@@ -1188,9 +1453,9 @@
 <node TEXT="Small maps can also use Export as Flash which also offers limited browsing functionality." ID="ID_814739863" CREATED="1270895588942" MODIFIED="1271972873339"/>
 <node TEXT="LaTeX and SVG images are not displayed in the Freeplane Applet nor in the Flash browser." ID="ID_1798905971" CREATED="1271097701298" MODIFIED="1271972899678"/>
 </node>
-<node TEXT="Credits" FOLDED="true" POSITION="left" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1272092559448" COLOR="#006666">
+<node TEXT="Credits" POSITION="left" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1272092559448" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Original Authors" FOLDED="true" ID="Freeplane_Link_415458128" CREATED="1270892460646" MODIFIED="1271973034428" COLOR="#006699">
+<node TEXT="Original Authors" ID="Freeplane_Link_415458128" CREATED="1270892460646" MODIFIED="1271973034428" COLOR="#006699">
 <node TEXT="Joerg Mueller" ID="_Freeplane_Link_1896457660" CREATED="1270892460646" MODIFIED="1270896496444" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
@@ -1203,7 +1468,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 </node>
-<node TEXT="Christian Foltin" FOLDED="true" ID="_Freeplane_Link_875814410" CREATED="1270892460647" MODIFIED="1270896519401" COLOR="#996600">
+<node TEXT="Christian Foltin" ID="_Freeplane_Link_875814410" CREATED="1270892460647" MODIFIED="1270896519401" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 <node TEXT="christian.foltin@gmx.de" ID="ID_923137164" CREATED="1270892460648" MODIFIED="1270892460648" COLOR="#558000" LINK="mailto:christian.foltin@gmx.de">
@@ -1219,10 +1484,10 @@
 <edge WIDTH="thin"/>
 </node>
 </node>
-<node TEXT="Current Team" FOLDED="true" ID="ID_1090487344" CREATED="1271097427203" MODIFIED="1271973049041" COLOR="#006699">
+<node TEXT="Current Team" ID="ID_1090487344" CREATED="1271097427203" MODIFIED="1271973049041" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <edge WIDTH="thin"/>
-<node TEXT="Release 1.1.x" FOLDED="true" ID="ID_1795869028" CREATED="1271097443907" MODIFIED="1271097685189" COLOR="#407000">
+<node TEXT="Release 1.1.x" ID="ID_1795869028" CREATED="1271097443907" MODIFIED="1271097685189" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Dimitry Polivaev" ID="ID_809494025" CREATED="1271097633119" MODIFIED="1271097633119"/>
 <node TEXT="Volker Boerchers" ID="ID_548414191" CREATED="1271097633119" MODIFIED="1271097633119"/>
