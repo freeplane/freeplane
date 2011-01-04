@@ -74,7 +74,8 @@ class ApplicationViewController extends ViewController {
 	final private NavigationPreviousMapAction navigationPreviousMap;
 	final private ResourceController resourceController;
 
-	public ApplicationViewController( Controller controller, final IMapViewManager mapViewController,
+	@SuppressWarnings("serial")
+    public ApplicationViewController( Controller controller, final IMapViewManager mapViewController,
 	                                 final JFrame frame) {
 		super(controller, mapViewController, "");
 //		this.controller = controller;
@@ -95,7 +96,12 @@ class ApplicationViewController extends ViewController {
 			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		}
-		mSplitPane = new JSplitPane();
+		mSplitPane = new JSplitPane(){
+			@Override
+			protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed){
+				return false;
+			}
+		};
 		setSplitPaneLayoutManager();
 		final JScrollPane contentComponent = getScrollPane();
 		mSplitPane.setLeftComponent(contentComponent);
