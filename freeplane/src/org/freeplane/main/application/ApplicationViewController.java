@@ -96,6 +96,7 @@ class ApplicationViewController extends ViewController {
 			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		}
+		// disable all hotkeys for JSplitPane
 		mSplitPane = new JSplitPane(){
 			@Override
 			protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed){
