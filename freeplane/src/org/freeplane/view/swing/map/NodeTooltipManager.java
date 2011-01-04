@@ -125,10 +125,17 @@ public class NodeTooltipManager{
 
 		tip.setTipText(toolTipText);
 		PopupFactory popupFactory = PopupFactory.getSharedInstance();
-		final Point locationOnScreen = insideComponent.getLocationOnScreen();
-		final int height = insideComponent.getHeight();
+		final JComponent nearComponent;
+		if (insideComponent instanceof MainView) {
+			nearComponent = ((MainView)insideComponent).getNodeView().getContent();
+		}
+		else{
+			nearComponent = insideComponent;
+		}
+		final Point locationOnScreen = nearComponent.getLocationOnScreen();
+		final int height = nearComponent.getHeight();
 		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-		final Insets screenInsets = defaultToolkit.getScreenInsets(insideComponent.getGraphicsConfiguration());
+		final Insets screenInsets = defaultToolkit.getScreenInsets(nearComponent.getGraphicsConfiguration());
 		final Dimension screenSize = defaultToolkit.getScreenSize();
 		final int minX = screenInsets.left;
 		final int maxX = screenSize.width - screenInsets.right;
@@ -156,7 +163,7 @@ public class NodeTooltipManager{
 				}
 			}
 		}
-		tipPopup = popupFactory.getPopup(insideComponent, tip, x, y);
+		tipPopup = popupFactory.getPopup(nearComponent, tip, x, y);
 		tipPopup.show();
 	}
 
