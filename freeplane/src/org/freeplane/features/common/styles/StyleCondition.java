@@ -9,17 +9,18 @@ public class StyleCondition extends ASelectableCondition {
 	static final String NAME = "style_equals_condition";
 	final private Object value;
 
-	public StyleCondition(final Object value) {
+	public StyleCondition(final IStyle value) {
 		this.value = value;
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		return LogicalStyleController.getController().getFirstStyle(node).equals(value);
+		IStyle firstStyle = LogicalStyleController.getController().getFirstStyle(node);
+		return firstStyle.equals(value);
 	}
 
 	public void fillXML(final XMLElement child) {
-		if (value instanceof String) {
-			child.setAttribute("TEXT", (String) value);
+		if (value instanceof StyleString) {
+			child.setAttribute("TEXT", value.toString());
 		}
 		else if (value instanceof StyleNamedObject) {
 			child.setAttribute("LOCALIZED_TEXT", ((StyleNamedObject) value).getObject().toString());
@@ -29,7 +30,7 @@ public class StyleCondition extends ASelectableCondition {
 	public static ASelectableCondition load(final XMLElement element) {
 		final String text = element.getAttribute("TEXT", null);
 		if (text != null) {
-			return new StyleCondition(text);
+			return new StyleCondition(new StyleString(text));
 		}
 		final String name = element.getAttribute("LOCALIZED_TEXT", null);
 		if (name != null) {
