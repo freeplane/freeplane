@@ -330,6 +330,8 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			final String userName = condition.getUserName();
 			final String newUserName = JOptionPane.showInputDialog(AFilterComposerDialog.this,
 			    TextUtils.getText("enter_condition_name"), userName == null ? "" : userName);
+			if(newUserName == null)
+				return;
 			XMLElement xmlCondition = new XMLElement();
 			condition.toXml(xmlCondition);
 			ASelectableCondition newCondition = filterController.getConditionFactory().loadCondition(xmlCondition.getChildAtIndex(0));
