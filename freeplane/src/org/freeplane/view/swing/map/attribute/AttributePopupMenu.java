@@ -170,7 +170,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 *
 	 */
 	private void make() {
-		final String attributeViewType = table.getAttributeView().getViewType();
+		final String attributeViewType = table.getViewType();
 		final IAttributeTableModel model = table.getAttributeTableModel();
 		final int rowCount = model.getRowCount();
 		if (attributeViewType.equals(AttributeTableLayoutModel.SHOW_ALL)) {

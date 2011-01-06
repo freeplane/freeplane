@@ -21,15 +21,12 @@ package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.EventObject;
 
@@ -42,7 +39,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -59,6 +55,7 @@ import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.IColumnWidthChangeListener;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
@@ -73,105 +70,10 @@ import org.freeplane.view.swing.map.NodeView;
 class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final String EDITING_STOPPED = AttributeTable.class.getName() + ".editingStopped";
 
-	static private class HeaderMouseListener extends MouseAdapter {
-		@Override
-		public void mouseReleased(final MouseEvent e) {
-			final JTableHeader header = (JTableHeader) e.getSource();
-			final AttributeTable table = (AttributeTable) header.getTable();
-			final float zoom = table.attributeView.getMapView().getZoom();
-			final Dimension preferredScrollableViewportSize = table.getPreferredScrollableViewportSize();
-			final JViewport port = (JViewport) table.getParent();
-			final Dimension extentSize = port.getExtentSize();
-			if (preferredScrollableViewportSize.width != extentSize.width) {
-				final AttributeTableModelDecoratorAdapter model = (AttributeTableModelDecoratorAdapter) table
-				    .getModel();
-				for (int col = 0; col < table.getColumnCount(); col++) {
-					final int modelColumnWidth = model.getColumnWidth(col);
-					final int currentColumnWidth = (int) (table.getColumnModel().getColumn(col).getWidth() / zoom);
-					if (modelColumnWidth != currentColumnWidth) {
-						model.setColumnWidth(col, currentColumnWidth);
-					}
-				}
-			}
-		}
-	}
-
-	static private class MyFocusListener implements FocusListener {
-		private AttributeTable focusedTable;
-
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
-		 */
-		public void focusGained(final FocusEvent event) {
-			final Component source = (Component) event.getSource();
-			event.getOppositeComponent();
-			if (source instanceof AttributeTable) {
-				focusedTable = (AttributeTable) source;
-			}
-			else {
-				focusedTable = (AttributeTable) SwingUtilities.getAncestorOfClass(AttributeTable.class, source);
-			}
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					if (focusedTable != null) {
-						final Component newNodeViewInFocus = SwingUtilities.getAncestorOfClass(NodeView.class,
-						    focusedTable);
-						if (newNodeViewInFocus != null) {
-							final NodeView viewer = (NodeView) newNodeViewInFocus;
-							if (viewer != viewer.getMap().getSelected()) {
-								viewer.getMap().selectAsTheOnlyOneSelected(viewer, false);
-							}
-						}
-					}
-				}
-			});
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
-		 */
-		public void focusLost(final FocusEvent event) {
-			if (event.isTemporary()) {
-				return;
-			}
-			final Component oppositeComponent = event.getOppositeComponent();
-			final Component newTable;
-			if (oppositeComponent instanceof AttributeTable) {
-				newTable = oppositeComponent;
-			}
-			else {
-				newTable = SwingUtilities.getAncestorOfClass(AttributeTable.class, oppositeComponent);
-			}
-			if (focusedTable == null) {
-				return;
-			}
-			if (focusedTable != newTable) {
-				if (focusedTable.isEditing()) {
-					focusedTable.getCellEditor().stopCellEditing();
-				}
-				if (!focusedTable.attributeView.isPopupShown()) {
-					final AttributeView attributeView = focusedTable.getAttributeView();
-					final String currentAttributeViewType = AttributeRegistry.getRegistry(
-					    attributeView.getNode().getMap()).getAttributeViewType();
-					if (attributeView.getViewType() != currentAttributeViewType) {
-						attributeView.stateChanged(null);
-					}
-				}
-				focusedTable = null;
-				return;
-			}
-		}
-	}
-
-	static private MouseListener componentListener = new HeaderMouseListener();
+	static private MouseListener componentListener = new AttributeTableHeaderMouseListener();
 	static private ComboBoxModel defaultComboBoxModel = null;
 	static private AttributeTableCellRenderer dtcr = new AttributeTableCellRenderer();
 	private static final int EXTRA_HEIGHT = 4;
-	static private MyFocusListener focusListener = new MyFocusListener();
 	private static final int MAX_HEIGTH = 300;
 	private static final int MAX_WIDTH = 600;
 	private static final Dimension prefHeaderSize = new Dimension(1, 8);
@@ -185,30 +87,47 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		return AttributeTable.defaultComboBoxModel;
 	}
 
-	final private AttributeView attributeView;
 	private int highRowIndex = 0;
+	final private ModeController modeController;
+	final private NodeModel node;
+
+	private static AttributePopupMenu tablePopupMenu;
 	private static DefaultCellEditor dce;
 
-	AttributeTable(final AttributeView attributeView) {
+	AttributeTable(final ModeController modeController, final NodeModel nodeModel, final TableModel dataModel) {
 		super();
-		this.attributeView = attributeView;
-		addFocusListener(AttributeTable.focusListener);
-		if (attributeView.getMapView().getModeController().canEdit()) {
+		if (AttributeTable.tablePopupMenu == null) {
+			AttributeTable.tablePopupMenu = new AttributePopupMenu();
+		}
+		this.modeController = modeController;
+		this.node = nodeModel;
+		addFocusListener(AttributeTableFocusListener.focusListener);
+		if (modeController.canEdit()) {
 			getTableHeader().addMouseListener(AttributeTable.componentListener);
 		}
 		else {
 			getTableHeader().setResizingAllowed(false);
 		}
-		setModel(attributeView.getCurrentAttributeTableModel());
-		updateFontSize(this, 1F);
-		updateColumnWidths();
+		setModel(dataModel);
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
+		setRowSelectionAllowed(false);
 		getTableHeader().setReorderingAllowed(false);
 		getTableHeader().setPreferredSize(AttributeTable.prefHeaderSize);
-		getRowHeight();
-		updateRowHeights();
-		setRowSelectionAllowed(false);
-		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
+		addMouseListener(AttributeTable.tablePopupMenu);
+		tableHeader.addMouseListener(AttributeTable.tablePopupMenu);
+		addComponentListener(new ComponentAdapter() {
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+				updateFontSize(AttributeTable.this, 1F);
+				updateColumnWidths();
+				getRowHeight();
+				updateRowHeights();
+				removeComponentListener(this);
+			}
+			
+		});
 	}
 
 	private void changeSelectedRowHeight(final int rowIndex) {
@@ -244,9 +163,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		final AttributeTableLayoutModel layoutModel = (AttributeTableLayoutModel) event.getSource();
 		final int width = layoutModel.getColumnWidth(col);
 		getColumnModel().getColumn(col).setPreferredWidth((int) (width * zoom));
-		final MapView map = attributeView.getMapView();
-		final NodeModel node = attributeView.getNode();
-		map.getModeController().getMapController().nodeChanged(node);
+		modeController.getMapController().nodeChanged(node);
 	}
 
 	/**
@@ -255,12 +172,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	public AttributeTableModelDecoratorAdapter getAttributeTableModel() {
 		return (AttributeTableModelDecoratorAdapter) getModel();
 	}
-
-	public AttributeView getAttributeView() {
-		return attributeView;
-	}
-	
-	
 
 	@Override
     public boolean editCellAt(int row, int column, EventObject e) {
@@ -362,8 +273,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		final JComboBox comboBox;
 		if (dce == null) {
 			comboBox = new JComboBox();
-			comboBox.addFocusListener(AttributeTable.focusListener);
-			comboBox.getEditor().getEditorComponent().addFocusListener(AttributeTable.focusListener);
+			comboBox.addFocusListener(AttributeTableFocusListener.focusListener);
+			comboBox.getEditor().getEditorComponent().addFocusListener(AttributeTableFocusListener.focusListener);
 			dce = new DefaultCellEditor(comboBox);
 		}
 		return dce;
@@ -376,7 +287,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	private float getFontSize() {
-		return AttributeRegistry.getRegistry(attributeView.getNode().getMap()).getFontSize();
+		return AttributeRegistry.getRegistry(node.getMap()).getFontSize();
 	}
 
 	@Override
@@ -398,7 +309,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	float getZoom() {
-		return attributeView.getMapView().getZoom();
+		MapView mapView = (MapView)SwingUtilities.getAncestorOfClass(MapView.class, this);
+		if(mapView != null) return mapView.getZoom();
+		return 1f;
 	}
 
 	/**
@@ -416,10 +329,33 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			}
 		}
 	}
+	public String getViewType() {
+		if(getModel() instanceof ReducedAttributeTableModelDecorator) 
+			return getAttributeRegistry().getAttributeViewType(); 
+		return AttributeTableLayoutModel.SHOW_ALL;
+	}
 
+	private AttributeRegistry getAttributeRegistry() {
+		return AttributeRegistry.getRegistry(node.getMap());
+	}
+
+	/**
+	 */
+	public boolean areAttributesVisible() {
+		final String viewType = getViewType();
+		return viewType != AttributeTableLayoutModel.HIDE_ALL
+		        && (((AttributeTableModelDecoratorAdapter)getModel()).areAttributesVisible() 
+		        		|| viewType != getAttributeRegistry().getAttributeViewType());
+	}
+
+	boolean isPopupShown() {
+		return AttributeTable.tablePopupMenu != null
+		        && (AttributeTable.tablePopupMenu.getTable() == this);
+	}
+	
 	@Override
 	public boolean isVisible() {
-		return super.isVisible() && attributeView.areAttributesVisible();
+		return super.isVisible() && areAttributesVisible();
 	}
 
 	/**
@@ -482,7 +418,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			return true;
 		}
 		if (ks.getKeyCode() == KeyEvent.VK_ESCAPE && e.getModifiers() == 0 && pressed) {
-			attributeView.getNodeView().requestFocus();
+			NodeView nodeView = (NodeView)SwingUtilities.getAncestorOfClass(NodeView.class, this);
+			if(nodeView != null){
+				nodeView.requestFocus();
+			}
 			return true;
 		}
 		boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
@@ -604,8 +543,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					}
 			}
 		getParent().getParent().invalidate();
-		final NodeModel node = attributeView.getNode();
-		MapController mapController = attributeView.getMapView().getModeController().getMapController();
+		MapController mapController = modeController.getMapController();
 		mapController.nodeChanged(node, NodeAttributeTableModel.class, null, null);
 	}
 
@@ -659,6 +597,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	public void viewRemoved(NodeView nodeView) {
 		getModel().removeTableModelListener(this);
+		removeMouseListener(AttributeTable.tablePopupMenu);
+		tableHeader.removeMouseListener(AttributeTable.tablePopupMenu);
 	}
 
 	@Override
