@@ -115,7 +115,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		getTableHeader().setReorderingAllowed(false);
 		getTableHeader().setPreferredSize(AttributeTable.prefHeaderSize);
 		addMouseListener(AttributeTable.tablePopupMenu);
-		tableHeader.addMouseListener(AttributeTable.tablePopupMenu);
+		getTableHeader().addMouseListener(AttributeTable.tablePopupMenu);
 		addComponentListener(new ComponentAdapter() {
 
 			@Override
@@ -598,7 +598,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	public void viewRemoved(NodeView nodeView) {
 		getModel().removeTableModelListener(this);
 		removeMouseListener(AttributeTable.tablePopupMenu);
-		tableHeader.removeMouseListener(AttributeTable.tablePopupMenu);
+		getTableHeader().removeMouseListener(AttributeTable.tablePopupMenu);
 	}
 
 	@Override
