@@ -35,7 +35,6 @@ import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
 import javax.swing.ImageIcon;
-import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -43,7 +42,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
-import javax.swing.UIManager;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
@@ -53,7 +51,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.file.FileOpener;
-import org.freeplane.features.mindmapmode.note.MNoteController;
 
 class ApplicationViewController extends ViewController {
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";

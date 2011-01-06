@@ -25,8 +25,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 

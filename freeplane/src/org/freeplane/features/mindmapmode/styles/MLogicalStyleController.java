@@ -185,6 +185,10 @@ public class MLogicalStyleController extends LogicalStyleController {
 		modeController.addAction(new RedefineStyleAction());
 		modeController.addAction(new NewUserStyleAction());
 		modeController.addAction(new ManageConditionalStylesAction());
+		if (modeController.getModeName().equals("MindMap")) {
+			modeController.addAction(new MapBackgroundColorAction());
+			modeController.addAction(new CopyMapStylesAction());
+		}
 		actions = new LinkedList<AssignStyleAction>();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {

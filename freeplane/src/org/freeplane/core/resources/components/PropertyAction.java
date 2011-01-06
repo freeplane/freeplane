@@ -58,7 +58,7 @@ public class PropertyAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final JDialog dialog = new JDialog(Controller.getCurrentController().getViewController().getFrame(), true /* modal */);
+		final JDialog dialog = new JDialog(UITools.getFrame(), true /* modal */);
 		dialog.setResizable(true);
 		dialog.setUndecorated(false);
 		final OptionPanel options = new OptionPanel(dialog, new IOptionPanelFeedback() {

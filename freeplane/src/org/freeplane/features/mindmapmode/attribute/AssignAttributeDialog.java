@@ -59,6 +59,7 @@ import org.freeplane.features.common.attribute.Attribute;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
+import org.freeplane.features.common.attribute.IAttributesListener;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;

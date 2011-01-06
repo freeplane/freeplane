@@ -30,7 +30,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.plaf.basic.BasicButtonUI;
 
-import org.freeplane.core.frame.ColorTracker;
+import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;

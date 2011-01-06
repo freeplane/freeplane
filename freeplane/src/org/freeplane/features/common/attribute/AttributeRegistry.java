@@ -37,7 +37,6 @@ import org.freeplane.core.util.collection.SortedMapVector;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.attribute.IAttributesListener;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

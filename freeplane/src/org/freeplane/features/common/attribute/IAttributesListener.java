@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.attribute;
+package org.freeplane.features.common.attribute;
 
 import java.util.EventListener;
 

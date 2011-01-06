@@ -89,7 +89,7 @@ public class AttributeController implements IExtension {
 		if (node.areViewsEmpty()) {
 			return attributeModel;
 		}
-		Controller.getCurrentModeController().getMapController().nodeRefresh(node);
+		modeController.getMapController().nodeRefresh(node);
 		return attributeModel;
 	}
 

@@ -30,6 +30,7 @@ import java.util.Arrays;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
@@ -37,6 +38,7 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
 
@@ -125,8 +127,7 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 				final String text = filenameField.getText();
 				if (text == null || text.length() == 0) {
 					filenameField.setText(path);
-					Controller.getCurrentController().getViewController()
-					    .err(TextUtils.getText("OptionPanel.path_property_may_not_be_empty"));
+					JOptionPane.showConfirmDialog(e.getComponent(), TextUtils.getText("OptionPanel.path_property_may_not_be_empty"), "", JOptionPane.WARNING_MESSAGE);
 				}
 				else {
 					path = text;

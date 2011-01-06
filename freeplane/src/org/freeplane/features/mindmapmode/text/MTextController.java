@@ -529,9 +529,11 @@ public class MTextController extends TextController {
                                 final KeyEvent firstEvent, final boolean isNewNode, final boolean editLong) {
 	    final List<ITextTransformer> textTransformers = getTextTransformers();
 		for(ITextTransformer t : textTransformers){
-			final EditNodeBase base = t.createEditNodeBase(nodeModel, text, editControl, firstEvent, isNewNode, editLong);
-			if(base != null){
-				return base;
+			if(t instanceof IEditBaseCreator){
+				final EditNodeBase base = ((IEditBaseCreator) t).createEditNodeBase(nodeModel, text, editControl, firstEvent, isNewNode, editLong);
+				if(base != null){
+					return base;
+				}
 			}
 		}
 		return null;

@@ -30,7 +30,6 @@ import java.util.Iterator;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
-import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.IExtensionAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.IReadCompletionListener;

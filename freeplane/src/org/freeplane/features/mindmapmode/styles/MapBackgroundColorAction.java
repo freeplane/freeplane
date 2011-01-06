@@ -17,17 +17,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.styles;
+package org.freeplane.features.mindmapmode.styles;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.styles.MapStyle;
+import org.freeplane.features.common.styles.MapStyleModel;
 
 /**
  * @author Dimitry Polivaev
@@ -38,21 +40,17 @@ class MapBackgroundColorAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	/**
-	 * 
-	 */
-	private final MapStyle mapStyle;
 
 	/**
 	 * @param mapStyle
 	 */
-	MapBackgroundColorAction(final MapStyle mapStyle) {
+	MapBackgroundColorAction() {
 		super("MapBackgroundColorAction");
-		this.mapStyle = mapStyle;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
+		MapStyle mapStyle = (MapStyle) controller.getModeController().getExtension(MapStyle.class);
 		final MapStyleModel model = (MapStyleModel) mapStyle.getMapHook();
 		final Color oldBackgroundColor;
 		final String colorPropertyString = ResourceController.getResourceController().getProperty(

@@ -25,7 +25,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.text.MTextController;
 
 @SelectableAction(checkOnNodeChange=true)
 class ToggleDetailsAction extends AMultipleNodeAction {
@@ -60,7 +59,7 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 		if(detailText == null){
 			return;
 		}
-		MTextController controller = (MTextController) MTextController.getController();
+		TextController controller = TextController.getController();
 		controller.setDetailsHidden(node, isHidden);
     }
 

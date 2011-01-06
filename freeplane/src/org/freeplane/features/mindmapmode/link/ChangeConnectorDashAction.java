@@ -27,11 +27,8 @@ import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 

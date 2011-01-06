@@ -112,10 +112,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 		}
 		modeController.getMapController().addMapLifeCycleListener(this);
-		if (modeController.getModeName().equals("MindMap")) {
-			modeController.addAction(new MapBackgroundColorAction(this));
-			modeController.addAction(new CopyMapStylesAction());
-		}
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapLifeCycleListener(this);
 		modeController.addAction(new MaxNodeWidthAction());

@@ -44,7 +44,6 @@ import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
 
 class DocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
@@ -107,7 +106,7 @@ class DocumentationAction extends AFreeplaneAction {
 
 	private void appendAcceleratableMenuEntries() {
 		// use the MModeController for the mindmap mode menu - the browse doesn't contain much entries!
-		final MenuBuilder menuBuilder = MModeController.getMModeController()
+		final MenuBuilder menuBuilder = Controller.getCurrentModeController()
 		    .getUserInputListenerFactory().getMenuBuilder();
 		final DefaultMutableTreeNode menuEntryTree = MenuUtils.createAcceleratebleMenuEntryTree(
 		    FreeplaneMenuBar.MENU_BAR_PREFIX, menuBuilder);

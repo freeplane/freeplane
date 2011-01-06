@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
 
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -354,7 +353,6 @@ public class MLinkController extends LinkController {
 		}
 	}
 
-	static private ConnectorColorAction colorArrowLinkAction;
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
 
