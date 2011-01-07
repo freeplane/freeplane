@@ -4,6 +4,8 @@
 		<menu_submenu name="file" name_ref="file">
 			<menu_category name="close">
 				<menu_action action="CloseAction" accelerator="control W" />
+			<menu_separator />
+				<menu_action action="FilePropertiesAction" />				
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="last" name_ref="most_recent_files"></menu_submenu>

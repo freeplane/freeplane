@@ -14,6 +14,8 @@
 				<menu_action action="CloseAction" accelerator="control W" />
 			</menu_category>
 			<menu_separator />
+			<menu_action action="FilePropertiesAction" />
+			<menu_separator />
 			<menu_submenu name="last" name_ref="most_recent_files"></menu_submenu>
 			<menu_category name="export">
 				<menu_action action="ExportBranchAction" accelerator="alt shift A" />

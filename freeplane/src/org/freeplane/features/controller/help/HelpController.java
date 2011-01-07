@@ -44,6 +44,7 @@ public class HelpController implements IExtension {
 		super();
 		Controller controller = Controller.getCurrentController();
 		controller.addAction(new AboutAction());
+		controller.addAction(new FilePropertiesAction());
 		final ResourceController resourceController = ResourceController.getResourceController();
 		controller.addAction(new OpenURLAction("OpenFreeplaneSiteAction",  resourceController
 		    .getProperty("webFreeplaneLocation")));
