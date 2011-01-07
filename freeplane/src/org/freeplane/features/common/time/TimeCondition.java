@@ -50,7 +50,7 @@ public abstract class TimeCondition extends ASelectableCondition {
 	}
 
 	public static String format(final Date date) {
-		return DateFormat.getDateInstance(DateFormat.MEDIUM).format(date);
+		return DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT).format(date);
 	}
 
 	final private Date date;

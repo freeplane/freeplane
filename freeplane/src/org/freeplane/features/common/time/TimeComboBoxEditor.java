@@ -31,6 +31,8 @@ import java.util.List;
 import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.features.common.time.swing.JCalendar;
 
@@ -54,22 +56,25 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	TimeComboBoxEditor() {
 		showEditorBtn = new JButton();
 		showEditorBtn.addActionListener(new ShowCalendarAction());
-		calenderComponent = new JCalendar();
+		calenderComponent = new JCalendar(null, null, true, true, true);
 		calenderComponent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
 				calendarPopupMenu.setVisible(false);
-				if (actionListeners.size() == 0) {
-					return;
-				}
-				date = calenderComponent.getDate();
-				final ActionEvent actionEvent = new ActionEvent(e.getSource(), 0, null);
-				for (final ActionListener l : actionListeners) {
-					l.actionPerformed(actionEvent);
-				}
 			}
 		});
 		calendarPopupMenu = calenderComponent.createPopupMenu();
+		calendarPopupMenu.addPopupMenuListener(new PopupMenuListener() {
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+			}
+			
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				updateDate(e.getSource());
+			}
+			
+			public void popupMenuCanceled(PopupMenuEvent e) {
+			}
+		});
 		actionListeners = new LinkedList<ActionListener>();
 	}
 
@@ -96,4 +101,15 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 		this.date = (Date) date;
 		showEditorBtn.setText(date == null ? "" : TimeCondition.format(this.date));
 	}
+
+	private void updateDate(Object source) {
+	    date = calenderComponent.getDate();
+	    if (actionListeners.size() == 0) {
+	    	return;
+	    }
+	    final ActionEvent actionEvent = new ActionEvent(source, 0, null);
+	    for (final ActionListener l : actionListeners) {
+	    	l.actionPerformed(actionEvent);
+	    }
+    }
 }

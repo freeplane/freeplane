@@ -105,7 +105,7 @@ class JTripleCalendar extends JPanel implements PropertyChangeListener {
 		leftPanel = createInfoPanel();
 		rightPanel = createInfoPanel();
 		add(leftPanel);
-		calendarWidget = new JCalendar();
+		calendarWidget = new JCalendar(null, null, true, true, true);
 		calendarWidget.addPropertyChangeListener(this);
 		add(calendarWidget);
 		add(rightPanel);

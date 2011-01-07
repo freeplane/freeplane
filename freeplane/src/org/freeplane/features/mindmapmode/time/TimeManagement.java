@@ -92,9 +92,6 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	private JTripleCalendar calendar;
 // // 	final private Controller controller;
 	private JDialog dialog;
-	private JTextField hourField;
-// 	private ModeController mController;
-	private JTextField minuteField;
 // 	final private ModeController modeController;
 	private final ReminderHook reminderHook;
 	private JPanel timePanel;
@@ -157,17 +154,6 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	 */
 	private Date getCalendarDate() {
 		final Calendar cal = calendar.getCalendar();
-		try {
-			int value = 0;
-			value = Integer.parseInt(hourField.getText());
-			cal.set(Calendar.HOUR_OF_DAY, value);
-			value = Integer.parseInt(minuteField.getText());
-			cal.set(Calendar.MINUTE, value);
-			cal.set(Calendar.SECOND, 0);
-		}
-		catch (final Exception e) {
-			LogUtils.warn(e);
-		}
 		return cal.getTime();
 	}
 
@@ -179,51 +165,6 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		return TextUtils.getText(string);
 	}
 
-	/**
-	 */
-	private JPanel getTimePanel() {
-		if (timePanel == null) {
-			timePanel = new JPanel();
-			timePanel.setLayout(new GridBagLayout());
-			{
-				final GridBagConstraints gb2 = new GridBagConstraints();
-				gb2.gridx = 0;
-				gb2.gridy = 0;
-				gb2.fill = GridBagConstraints.HORIZONTAL;
-				timePanel.add(new JLabel(getResourceString("plugins/TimeManagement.xml_hour")), gb2);
-			}
-			{
-				final GridBagConstraints gb2 = new GridBagConstraints();
-				gb2.gridx = 1;
-				gb2.gridy = 0;
-				gb2.fill = GridBagConstraints.HORIZONTAL;
-				hourField = new JTextField(2);
-				hourField.setText(new Integer(calendar.getCalendar().get(Calendar.HOUR_OF_DAY)).toString());
-				timePanel.add(hourField, gb2);
-			}
-			{
-				final GridBagConstraints gb2 = new GridBagConstraints();
-				gb2.gridx = 2;
-				gb2.gridy = 0;
-				gb2.fill = GridBagConstraints.HORIZONTAL;
-				timePanel.add(new JLabel(getResourceString("plugins/TimeManagement.xml_minute")), gb2);
-			}
-			{
-				final GridBagConstraints gb2 = new GridBagConstraints();
-				gb2.gridx = 3;
-				gb2.gridy = 0;
-				gb2.fill = GridBagConstraints.HORIZONTAL;
-				minuteField = new JTextField(2);
-				String minuteString = new Integer(calendar.getCalendar().get(Calendar.MINUTE)).toString();
-				if (minuteString.length() < 2) {
-					minuteString = "0" + minuteString;
-				}
-				minuteField.setText(minuteString);
-				timePanel.add(minuteField, gb2);
-			}
-		}
-		return timePanel;
-	}
 
 	public void propertyChange(final PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(JDayChooser.DAY_PROPERTY)) {
@@ -257,6 +198,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		};
 		UITools.addEscapeActionToDialog(dialog, action);
 		calendar = new JTripleCalendar();
+		setCurrentTime();
 		final Container contentPane = dialog.getContentPane();
 		contentPane.setLayout(new GridBagLayout());
 		final GridBagConstraints gb1 = new GridBagConstraints();
@@ -267,14 +209,6 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		gb1.gridy = 0;
 		calendar.getDayChooser().addPropertyChangeListener(this);
 		contentPane.add(calendar, gb1);
-		{
-			final GridBagConstraints gb2 = new GridBagConstraints();
-			gb2.gridx = 0;
-			gb2.gridy = 1;
-			gb2.gridwidth = 4;
-			gb2.fill = GridBagConstraints.HORIZONTAL;
-			contentPane.add(getTimePanel(), gb2);
-		}
 		{
 			final GridBagConstraints gb2 = new GridBagConstraints();
 			gb2.gridx = 0;
@@ -345,7 +279,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			final JButton todayButton = new JButton(getResourceString("plugins/TimeManagement.xml_todayButton"));
 			todayButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
-					calendar.setCalendar(Calendar.getInstance());
+					setCurrentTime();
 				}
 			});
 			contentPane.add(todayButton, gb2);
@@ -371,4 +305,10 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		calendar.getDayChooser().setFocus();
 		dialog.setVisible(true);
 	}
+
+	private void setCurrentTime() {
+	    final Calendar calender = Calendar.getInstance();
+	    calender.set(Calendar.SECOND, 0);
+	    calendar.setCalendar(calender);
+    }
 }
