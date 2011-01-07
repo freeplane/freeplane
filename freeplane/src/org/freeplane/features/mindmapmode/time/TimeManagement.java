@@ -222,12 +222,14 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			calendarComponent = calendar;
 		}
 		setCurrentTime();
-	    contentPane.setLayout(new BorderLayout());
+	    contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		calendar.getDayChooser().addPropertyChangeListener(this);
-		contentPane.add(calendarComponent, BorderLayout.CENTER);
+		calendarComponent.setAlignmentX(0.5f);
+		contentPane.add(calendarComponent);
 		
 		Box buttons = new Box(axis);
-		contentPane.add(buttons, BorderLayout.SOUTH);
+		buttons.setAlignmentX(0.5f);
+		contentPane.add(buttons);
 		{
 			final JButton appendButton = new JButton(getResourceString("plugins/TimeManagement.xml_appendButton"));
 			appendButton.addActionListener(new ActionListener() {

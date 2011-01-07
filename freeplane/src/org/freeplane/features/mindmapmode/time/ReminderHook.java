@@ -27,6 +27,7 @@ import java.util.TimerTask;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
@@ -35,6 +36,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.icon.IconStore;
 import org.freeplane.features.common.icon.UIIcon;
@@ -133,7 +135,10 @@ public class ReminderHook extends PersistentNodeHook {
 		final JPanel timePanel = new JPanel();
 		new TimeManagement(this).init(timePanel, false, BoxLayout.Y_AXIS);
 		final JComponent tabs = Controller.getCurrentModeController().getUserInputListenerFactory().getToolBar("/format");
-		tabs.add(TextUtils.getText("calendar_panel"), timePanel);
+		final JScrollPane timeScrollPane = new JScrollPane(timePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		UITools.setScrollbarIncrement(timeScrollPane);
+		tabs.add(TextUtils.getText("calendar_panel"), timeScrollPane);
 
 		registerAction(new TimeManagementAction(this));
 		registerAction(new TimeListAction());
