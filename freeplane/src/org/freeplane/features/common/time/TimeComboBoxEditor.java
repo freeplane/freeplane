@@ -56,7 +56,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	TimeComboBoxEditor() {
 		showEditorBtn = new JButton();
 		showEditorBtn.addActionListener(new ShowCalendarAction());
-		calenderComponent = new JCalendar(null, null, true, true, true);
+		calenderComponent = new JCalendar();
 		calenderComponent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {

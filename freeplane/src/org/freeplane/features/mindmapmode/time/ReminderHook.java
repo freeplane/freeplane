@@ -24,6 +24,10 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.TimerTask;
 
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
@@ -108,7 +112,7 @@ public class ReminderHook extends PersistentNodeHook {
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			timeManagement.startup();
+			timeManagement.showDialog();
 		}
 	}
 
@@ -126,6 +130,11 @@ public class ReminderHook extends PersistentNodeHook {
 	 */
 	public ReminderHook() {
 		super();
+		final JPanel timePanel = new JPanel();
+		new TimeManagement(this).init(timePanel, false, BoxLayout.Y_AXIS);
+		final JComponent tabs = Controller.getCurrentModeController().getUserInputListenerFactory().getToolBar("/format");
+		tabs.add(TextUtils.getText("calendar_panel"), timePanel);
+
 		registerAction(new TimeManagementAction(this));
 		registerAction(new TimeListAction());
 		registerAction(new NodeListAction());

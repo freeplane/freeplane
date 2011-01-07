@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mindmapmode.time;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
@@ -37,7 +38,10 @@ import java.util.Date;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -56,6 +60,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.common.time.swing.JCalendar;
 import org.freeplane.features.common.time.swing.JDayChooser;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
@@ -89,7 +94,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	private static Date lastDate = null;
 	public final static String REMINDER_HOOK_NAME = "plugins/TimeManagementReminder.xml";
 	private static TimeManagement sCurrentlyOpenTimeManagement = null;
-	private JTripleCalendar calendar;
+	private JCalendar calendar;
 // // 	final private Controller controller;
 	private JDialog dialog;
 // 	final private ModeController modeController;
@@ -171,7 +176,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		}
 	}
 
-	public void startup() {
+	void showDialog() {
 		if (TimeManagement.sCurrentlyOpenTimeManagement != null) {
 			TimeManagement.sCurrentlyOpenTimeManagement.dialog.getContentPane().setVisible(true);
 			return;
@@ -197,34 +202,46 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			}
 		};
 		UITools.addEscapeActionToDialog(dialog, action);
-		calendar = new JTripleCalendar();
-		setCurrentTime();
 		final Container contentPane = dialog.getContentPane();
-		contentPane.setLayout(new GridBagLayout());
-		final GridBagConstraints gb1 = new GridBagConstraints();
-		gb1.gridx = 0;
-		gb1.gridwidth = 4;
-		gb1.fill = GridBagConstraints.BOTH;
-		gb1.weighty = 1;
-		gb1.gridy = 0;
+		init(contentPane, true, BoxLayout.X_AXIS);
+		dialog.pack();
+		UITools.setBounds(dialog, -1, -1, dialog.getWidth(), dialog.getHeight());
+		calendar.getDayChooser().setFocus();
+		dialog.setVisible(true);
+	}
+
+	public void init(final Container contentPane, boolean useTripple, int axis) {
+		final JComponent calendarComponent;
+		if(useTripple){
+			final JTripleCalendar trippleCalendar = new JTripleCalendar();
+			calendar = trippleCalendar.getCalendar();
+			calendarComponent = trippleCalendar;
+		}
+		else{
+			calendar = new JCalendar();
+			calendarComponent = calendar;
+		}
+		setCurrentTime();
+	    contentPane.setLayout(new BorderLayout());
 		calendar.getDayChooser().addPropertyChangeListener(this);
-		contentPane.add(calendar, gb1);
+		contentPane.add(calendarComponent, BorderLayout.CENTER);
+		
+		Box buttons = new Box(axis);
+		contentPane.add(buttons, BorderLayout.SOUTH);
 		{
-			final GridBagConstraints gb2 = new GridBagConstraints();
-			gb2.gridx = 0;
-			gb2.gridy = 2;
-			gb2.fill = GridBagConstraints.HORIZONTAL;
 			final JButton appendButton = new JButton(getResourceString("plugins/TimeManagement.xml_appendButton"));
 			appendButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
 					final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
 					final String dateAsString = df.format(getCalendarDate());
-					final Window parentWindow = (Window) dialog.getParent();
-					final Component mostRecentFocusOwner = parentWindow.getMostRecentFocusOwner();
-					if (mostRecentFocusOwner instanceof JTextComponent) {
-						final JTextComponent text = (JTextComponent) mostRecentFocusOwner;
-						text.replaceSelection(dateAsString);
-						return;
+					if(dialog != null){
+						final Window parentWindow = (Window) dialog.getParent();
+						final Component mostRecentFocusOwner = parentWindow.getMostRecentFocusOwner();
+						if (mostRecentFocusOwner instanceof JTextComponent) {
+							final JTextComponent text = (JTextComponent) mostRecentFocusOwner;
+							text.replaceSelection(dateAsString);
+							return;
+						}
 					}
 					ModeController mController  = Controller.getCurrentModeController();
 					for (final NodeModel element : mController .getMapController().getSelectedNodes()) {
@@ -248,63 +265,48 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 					}
 				}
 			});
-			contentPane.add(appendButton, gb2);
+			appendButton.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
+			buttons.add(appendButton);
 		}
 		{
-			final GridBagConstraints gb2 = new GridBagConstraints();
-			gb2.gridx = 1;
-			gb2.gridy = 2;
-			gb2.fill = GridBagConstraints.HORIZONTAL;
 			final JButton reminderButton = new JButton(getResourceString("plugins/TimeManagement.xml_reminderButton"));
 			reminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_reminderButton_tooltip"));
 			reminderButton.addActionListener(this);
-			contentPane.add(reminderButton, gb2);
+			reminderButton.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
+			buttons.add(reminderButton);
 		}
 		{
-			final GridBagConstraints gb2 = new GridBagConstraints();
-			gb2.gridx = 2;
-			gb2.gridy = 2;
-			gb2.fill = GridBagConstraints.HORIZONTAL;
 			final JButton reminderButton = new JButton(
 			    getResourceString("plugins/TimeManagement.xml_removeReminderButton"));
 			reminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_removeReminderButton_tooltip"));
 			reminderButton.addActionListener(new RemoveReminders(this));
-			contentPane.add(reminderButton, gb2);
+			reminderButton.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
+			buttons.add(reminderButton);
 		}
 		{
-			final GridBagConstraints gb2 = new GridBagConstraints();
-			gb2.gridx = 3;
-			gb2.gridy = 2;
-			gb2.fill = GridBagConstraints.HORIZONTAL;
 			final JButton todayButton = new JButton(getResourceString("plugins/TimeManagement.xml_todayButton"));
 			todayButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
 					setCurrentTime();
 				}
 			});
-			contentPane.add(todayButton, gb2);
+			todayButton.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
+			buttons.add(todayButton);
 		}
 		{
-			final GridBagConstraints gb2 = new GridBagConstraints();
-			gb2.gridx = 4;
-			gb2.gridy = 2;
-			gb2.fill = GridBagConstraints.HORIZONTAL;
 			final JButton cancelButton = new JButton(getResourceString("plugins/TimeManagement.xml_closeButton"));
 			cancelButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
 					disposeDialog();
 				}
 			});
-			contentPane.add(cancelButton, gb2);
+			cancelButton.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
+			buttons.add(cancelButton);
 		}
 		if (TimeManagement.lastDate != null) {
 			calendar.setDate(TimeManagement.lastDate);
 		}
-		dialog.pack();
-		UITools.setBounds(dialog, -1, -1, dialog.getWidth(), dialog.getHeight());
-		calendar.getDayChooser().setFocus();
-		dialog.setVisible(true);
-	}
+    }
 
 	private void setCurrentTime() {
 	    final Calendar calender = Calendar.getInstance();
