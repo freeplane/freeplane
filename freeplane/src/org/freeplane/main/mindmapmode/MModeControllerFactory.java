@@ -24,8 +24,10 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -40,6 +42,7 @@ import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.cloud.CloudController;
@@ -130,6 +133,13 @@ public class MModeControllerFactory {
 	private MUIFactory uiFactory;
 
 	private void createAddIns() {
+		final StyleEditorPanel panel = new StyleEditorPanel(uiFactory, true);
+		panel.init();
+		final JScrollPane styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		UITools.setScrollbarIncrement(styleScrollPane);
+		final JComponent tabs = modeController.getUserInputListenerFactory().getToolBar("/format");
+		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
 		new HierarchicalIcons();
 		new AutomaticLayout();
 		new BlinkingNodeHook();
@@ -138,13 +148,6 @@ public class MModeControllerFactory {
 		new AutomaticEdgeColorHook();
 		new ViewerController();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		final StyleEditorPanel panel = new StyleEditorPanel(uiFactory, true);
-		panel.init();
-		final JScrollPane styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		styleScrollPane.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "styleScrollPaneVisible");
-		UITools.setScrollbarIncrement(styleScrollPane);
-		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, styleScrollPane);
 		menuBuilder.addAnnotatedAction(new ShowFormatPanelAction());
 		menuBuilder.addAnnotatedAction(new FitToPage());
 		menuBuilder.addAnnotatedAction(new EncryptedMap());
@@ -248,6 +251,9 @@ public class MModeControllerFactory {
 		    controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
+		final JTabbedPane tabs = new JTabbedPane();
+		tabs.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "styleScrollPaneVisible");
+		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, tabs);
 		final FButtonBar fButtonToolBar = new FButtonBar();
 		fButtonToolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "fbarVisible");
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
