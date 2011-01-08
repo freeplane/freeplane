@@ -41,6 +41,7 @@ import java.util.Map.Entry;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -306,8 +307,13 @@ public class MenuBuilder extends UIBuilder {
 				if (!contains(menuPath.path)) {
 					if (tag.equals("menu_submenu")) {
 						final JMenu menuItem = new JMenu();
-						MenuBuilder.setLabelAndMnemonic(menuItem, TextUtils.getText(attributes.getAttribute("name_ref",
-						    null)));
+						final String nameRef = attributes.getAttribute("name_ref", null);
+						final String iconResource = ResourceController.getResourceController().getProperty(nameRef + ".icon", null);
+						MenuBuilder.setLabelAndMnemonic(menuItem, TextUtils.getText(nameRef));
+						if(iconResource != null){
+							final URL url = ResourceController.getResourceController().getResource(iconResource);
+							menuItem.setIcon(new ImageIcon(url));
+						}
 						addMenuItem(menuPath.parentPath, menuItem, menuPath.path, MenuBuilder.AS_CHILD);
 					}
 					else {
