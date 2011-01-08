@@ -132,8 +132,14 @@ public class NoteController implements IExtension {
 				rule.append("font-family: " + defaultFont.getFamily() + ";");
 				rule.append("font-size: " + defaultFont.getSize() + "pt;");
 				rule.append("margin-top:0;");
-				final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
-				.replaceFirst("</body>", "</div></body>");
+				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");
+				tooltipBodyBegin.append(rule);
+				tooltipBodyBegin.append("\">");
+				tooltipBodyBegin.append("<img src =\"");
+				tooltipBodyBegin.append(noteIcon.getUrl().toString());
+				tooltipBodyBegin.append("\">");
+				final String tooltipText = noteText.replaceFirst("<body>", 
+					tooltipBodyBegin.toString()).replaceFirst("</body>", "</div></body>");
 				return tooltipText;
 			}
 		});
