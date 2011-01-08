@@ -63,7 +63,7 @@ class FilePropertiesAction extends AFreeplaneAction {
 		//variables for informations to be displayed
 		String fileNamePath, fileSavedDateTime, fileSize;
 		int fileChangesSinceSave, nodeMainBranches, nodeTotalNodeCount, nodeTotalLeafCount;
-		int nodeRelativeNodeCount, nodeRelativeChildCount, nodeRelativeLeafCount;
+		int nodeRelativeNodeCount = 0, nodeRelativeChildCount = 0, nodeRelativeLeafCount = 0, nodeSelectedNodeCount;
 		//get informations
 		//if file has been saved once
 		if (Controller.getCurrentController().getMap().getFile() != null) {
@@ -92,11 +92,24 @@ class FilePropertiesAction extends AFreeplaneAction {
 		nodeMainBranches = Controller.getCurrentController().getMap().getRootNode().getChildCount();
 		nodeTotalNodeCount = getNodeCount(Controller.getCurrentController().getMap().getRootNode(), false).size();
 		nodeTotalLeafCount = getNodeCount(Controller.getCurrentController().getMap().getRootNode(), true).size();
-		nodeRelativeChildCount = Controller.getCurrentController().getSelection().getSelected().getChildCount();
-		nodeRelativeNodeCount = getNodeCount(Controller.getCurrentController().getSelection().getSelected(), false)
-		    .size();
-		nodeRelativeLeafCount = getNodeCount(Controller.getCurrentController().getSelection().getSelected(), true)
-		    .size();
+		//Multiple nodes may be selected
+		final List<NodeModel> Nodes = Controller.getCurrentController().getSelection().getSelection();
+		boolean isDescendant = false;
+		for (final NodeModel n : Nodes) {
+			nodeRelativeChildCount += n.getChildCount();
+			isDescendant = false;
+			//Nodes and leaf nodes are only counted once per branch
+			for (int i = 0; i < Nodes.size(); i++) {
+				if (n.isDescendantOf(Nodes.get(i))) {
+					isDescendant = true;
+				}
+			}
+			if (!isDescendant) {
+				nodeRelativeNodeCount += getNodeCount(n, false).size();
+				nodeRelativeLeafCount += getNodeCount(n, true).size();
+			}
+		}
+		nodeSelectedNodeCount = Controller.getCurrentController().getSelection().getSelection().size();
 		//build component
 		final JPanel panel = new JPanel();
 		final GridBagLayout gridbag = new GridBagLayout();
@@ -256,6 +269,16 @@ class FilePropertiesAction extends AFreeplaneAction {
 		final JLabel nodeRelativeChildCountLabel = new JLabel(String.valueOf(nodeRelativeChildCount));
 		gridbag.setConstraints(nodeRelativeChildCountLabel, c);
 		panel.add(nodeRelativeChildCountLabel);
+		//nodeSelectedNodeCount
+		c.gridy++;
+		c.gridx = 1;
+		final JLabel nodeSelectedNodeCountText = new JLabel(TextUtils.getText("FileProperties_NodeSelectionCount"));
+		gridbag.setConstraints(nodeSelectedNodeCountText, c);
+		panel.add(nodeSelectedNodeCountText);
+		c.gridx = 2;
+		final JLabel nodeSelectedNodeCountLabel = new JLabel(String.valueOf(nodeSelectedNodeCount));
+		gridbag.setConstraints(nodeSelectedNodeCountLabel, c);
+		panel.add(nodeSelectedNodeCountLabel);
 		//Show dialog
 		JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getViewport(), panel,
 		    TextUtils.removeMnemonic(TextUtils.getText("FilePropertiesAction.text")), JOptionPane.PLAIN_MESSAGE);
