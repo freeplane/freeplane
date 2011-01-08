@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -112,7 +113,6 @@ class PageAction extends AbstractPrintAction {
 		}
 		//Set up dialog content
 		final JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(270, 150));
 		final GridBagLayout gridbag = new GridBagLayout();
 		panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
 		    BorderFactory.createEmptyBorder(10, 0, 10, 0)));
@@ -135,9 +135,10 @@ class PageAction extends AbstractPrintAction {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 3;
-		c.ipady = 6;
-		c.ipadx = 5;
+		c.ipady = 10;
+		c.ipadx = 4;
 		c.anchor = GridBagConstraints.LINE_START;
+		c.insets = new Insets(0, 10, 0, 10);
 		//fit to page
 		gridbag.setConstraints(fitToPage, c);
 		panel.add(fitToPage);
@@ -157,10 +158,12 @@ class PageAction extends AbstractPrintAction {
 		c.ipady = 1;
 		c.gridx = 0;
 		c.gridwidth = 1;
+		c.insets = new Insets(0, 0, 0, 0);
 		//spacer
-		final Component b = Box.createRigidArea(new Dimension(15, 1));
+		final Component b = Box.createRigidArea(new Dimension(25, 1));
 		gridbag.setConstraints(b, c);
 		panel.add(b);
+		c.ipadx = 4;
 		c.gridx = 1;
 		c.gridwidth = 1;
 		//Label
@@ -168,6 +171,8 @@ class PageAction extends AbstractPrintAction {
 		panel.add(userZoomL);
 		c.gridx = 2;
 		c.gridwidth = 1;
+		c.ipadx = 10;
+		c.insets = new Insets(0, 0, 0, 10);
 		//input field
 		gridbag.setConstraints(userZoom, c);
 		panel.add(userZoom);
