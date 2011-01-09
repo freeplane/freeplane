@@ -99,8 +99,8 @@ class JTripleCalendar extends JPanel implements PropertyChangeListener {
 
 	public JTripleCalendar() {
 		this.setName("JTripleCalendar");
-		final GridLayout gridLayout = new GridLayout(3, 1);
-		gridLayout.setHgap(50);
+		final GridLayout gridLayout = new GridLayout(1, 3);
+		gridLayout.setVgap(10);
 		setLayout(gridLayout);
 		leftPanel = createInfoPanel();
 		rightPanel = createInfoPanel();

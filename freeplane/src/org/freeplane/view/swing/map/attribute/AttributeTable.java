@@ -130,10 +130,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		 * java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
 		 */
 		public void focusLost(final FocusEvent event) {
-			if (event.isTemporary()|| focusedTable!= null && focusedTable.isEditing()) {
+			if (event.isTemporary()) {
 				return;
 			}
 			final Component oppositeComponent = event.getOppositeComponent();
+			if (oppositeComponent == null) {
+				return;
+			}
 			final Component newTable;
 			if (oppositeComponent instanceof AttributeTable) {
 				newTable = oppositeComponent;

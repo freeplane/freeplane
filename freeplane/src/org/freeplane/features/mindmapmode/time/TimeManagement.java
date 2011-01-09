@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode.time;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Window;
@@ -220,15 +221,17 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			calendar = new JCalendar();
 			calendarComponent = calendar;
 		}
+		calendar.setMaximumSize(calendar.getPreferredSize());
 		setCurrentTime();
 	    contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		calendar.getDayChooser().addPropertyChangeListener(this);
 		calendarComponent.setAlignmentX(0.5f);
 		contentPane.add(calendarComponent);
 		
-		Box buttons = new Box(axis);
-		buttons.setAlignmentX(0.5f);
-		contentPane.add(buttons);
+		Box buttonBox = new Box(axis);
+		buttonBox.setAlignmentX(0.5f);
+		contentPane.add(buttonBox);
+		final Dimension btnSize = new Dimension();
 		{
 			final JButton appendButton = new JButton(getResourceString("plugins/TimeManagement.xml_appendButton"));
 			appendButton.addActionListener(new ActionListener() {
@@ -266,23 +269,23 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 					}
 				}
 			});
-			appendButton.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-			buttons.add(appendButton);
+			increaseSize(btnSize, appendButton);
+			buttonBox.add(appendButton);
 		}
 		{
 			final JButton reminderButton = new JButton(getResourceString("plugins/TimeManagement.xml_reminderButton"));
 			reminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_reminderButton_tooltip"));
 			reminderButton.addActionListener(this);
-			reminderButton.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-			buttons.add(reminderButton);
+			increaseSize(btnSize, reminderButton);
+			buttonBox.add(reminderButton);
 		}
 		{
 			final JButton reminderButton = new JButton(
 			    getResourceString("plugins/TimeManagement.xml_removeReminderButton"));
 			reminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_removeReminderButton_tooltip"));
 			reminderButton.addActionListener(new RemoveReminders(this));
-			reminderButton.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-			buttons.add(reminderButton);
+			increaseSize(btnSize, reminderButton);
+			buttonBox.add(reminderButton);
 		}
 		{
 			final JButton todayButton = new JButton(getResourceString("plugins/TimeManagement.xml_todayButton"));
@@ -291,8 +294,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 					setCurrentTime();
 				}
 			});
-			todayButton.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-			buttons.add(todayButton);
+			increaseSize(btnSize, todayButton);
+			buttonBox.add(todayButton);
 		}
 		{
 			final JButton cancelButton = new JButton(getResourceString("plugins/TimeManagement.xml_closeButton"));
@@ -301,12 +304,21 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 					disposeDialog();
 				}
 			});
-			cancelButton.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-			buttons.add(cancelButton);
+			increaseSize(btnSize, cancelButton);
+			buttonBox.add(cancelButton);
+		}
+		for(int i = 0; i < buttonBox.getComponentCount(); i++){
+			buttonBox.getComponent(i).setMaximumSize(btnSize);
 		}
 		if (TimeManagement.lastDate != null) {
 			calendar.setDate(TimeManagement.lastDate);
 		}
+    }
+
+	private void increaseSize(final Dimension btnSize, final JButton btn) {
+	    final Dimension preferredSize = btn.getPreferredSize();
+	    btnSize.width =  Math.max(btnSize.width, preferredSize.width);
+	    btnSize.height =  Math.max(btnSize.height, preferredSize.height);
     }
 
  void setCurrentTime() {
