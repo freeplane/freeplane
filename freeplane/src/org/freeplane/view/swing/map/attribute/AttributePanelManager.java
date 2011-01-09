@@ -20,7 +20,9 @@
 package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Component;
+import java.awt.Container;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -66,7 +68,7 @@ public class AttributePanelManager{
 				return;
 			AttributeController.getController(modeController).createAttributeTableModel(node);
 			attributeView = new AttributeView(nodeView, false);
-			Component c  = attributeView.getComponent();
+			JComponent c  = attributeView.getContainer();
 			tablePanel.add(c);
 			tablePanel.revalidate();
 			tablePanel.repaint();
@@ -80,6 +82,7 @@ public class AttributePanelManager{
 		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format");
 		final JScrollPane tableScrollPane = new JScrollPane(tablePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		tableScrollPane.getViewport().setAlignmentX(Component.LEFT_ALIGNMENT);
 		UITools.setScrollbarIncrement(tableScrollPane);
 		tabs.add(TextUtils.getText("attributes_attribute"), tableScrollPane);
 	}

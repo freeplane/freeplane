@@ -21,8 +21,10 @@ package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.EventQueue;
 
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.event.AncestorEvent;
@@ -296,7 +298,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 		}
 	}
 
-	Component getComponent() {
+	JComponent getContainer() {
 		if(attributeViewScrollPane == null){
 			provideAttributeTable();
 		}

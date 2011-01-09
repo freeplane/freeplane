@@ -79,18 +79,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final JTableHeader header = (JTableHeader) e.getSource();
 			final AttributeTable table = (AttributeTable) header.getTable();
 			final float zoom = table.attributeView.getMapView().getZoom();
-			final Dimension preferredScrollableViewportSize = table.getPreferredScrollableViewportSize();
-			final JViewport port = (JViewport) table.getParent();
-			final Dimension extentSize = port.getExtentSize();
-			if (preferredScrollableViewportSize.width != extentSize.width) {
-				final AttributeTableModelDecoratorAdapter model = (AttributeTableModelDecoratorAdapter) table
-				    .getModel();
-				for (int col = 0; col < table.getColumnCount(); col++) {
-					final int modelColumnWidth = model.getColumnWidth(col);
-					final int currentColumnWidth = (int) (table.getColumnModel().getColumn(col).getWidth() / zoom);
-					if (modelColumnWidth != currentColumnWidth) {
-						model.setColumnWidth(col, currentColumnWidth);
-					}
+			final AttributeTableModelDecoratorAdapter model = (AttributeTableModelDecoratorAdapter) table
+			.getModel();
+			for (int col = 0; col < table.getColumnCount(); col++) {
+				final int modelColumnWidth = model.getColumnWidth(col);
+				final int currentColumnWidth = (int) (table.getColumnModel().getColumn(col).getWidth() / zoom);
+				if (modelColumnWidth != currentColumnWidth) {
+					model.setColumnWidth(col, currentColumnWidth);
 				}
 			}
 		}
@@ -135,7 +130,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		 * java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
 		 */
 		public void focusLost(final FocusEvent event) {
-			if (event.isTemporary()) {
+			if (event.isTemporary()|| focusedTable!= null && focusedTable.isEditing()) {
 				return;
 			}
 			final Component oppositeComponent = event.getOppositeComponent();
