@@ -20,6 +20,8 @@
 package org.freeplane.features.mindmapmode.time;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.TimerTask;
@@ -28,6 +30,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
@@ -133,12 +138,20 @@ public class ReminderHook extends PersistentNodeHook {
 	public ReminderHook() {
 		super();
 		final JPanel timePanel = new JPanel();
-		new TimeManagement(this).init(timePanel, false, BoxLayout.Y_AXIS);
-		final JComponent tabs = Controller.getCurrentModeController().getUserInputListenerFactory().getToolBar("/format");
+		final TimeManagement timeManagement = new TimeManagement(this);
+		timeManagement.init(timePanel, false, BoxLayout.Y_AXIS);
+		final JTabbedPane tabs = (JTabbedPane) Controller.getCurrentModeController().getUserInputListenerFactory().getToolBar("/format");
 		final JScrollPane timeScrollPane = new JScrollPane(timePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		UITools.setScrollbarIncrement(timeScrollPane);
 		tabs.add(TextUtils.getText("calendar_panel"), timeScrollPane);
+		tabs.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if(timeScrollPane.equals(tabs.getSelectedComponent())){
+					timeManagement.setCurrentTime();
+				}
+			}
+		});
 
 		registerAction(new TimeManagementAction(this));
 		registerAction(new TimeListAction());

@@ -99,7 +99,6 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	private JDialog dialog;
 // 	final private ModeController modeController;
 	private final ReminderHook reminderHook;
-	private JPanel timePanel;
 
 	public TimeManagement( final ReminderHook reminderHook) {
 //		this.modeController = modeController;
@@ -310,7 +309,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		}
     }
 
-	private void setCurrentTime() {
+ void setCurrentTime() {
 	    final Calendar calender = Calendar.getInstance();
 	    calender.set(Calendar.SECOND, 0);
 	    calendar.setCalendar(calender);
