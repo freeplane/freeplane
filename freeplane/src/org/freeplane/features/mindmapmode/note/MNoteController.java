@@ -129,6 +129,7 @@ public class MNoteController extends NoteController {
 		super();
 		modeController.addAction(new SelectNoteAction(this));
 		modeController.addAction(new ShowHideNoteAction(this));
+		modeController.addAction(new EditNoteInDialogAction());
 		modeController.addAction(new SetNoteWindowPosition("top"));
 		modeController.addAction(new SetNoteWindowPosition( "left"));
 		modeController.addAction(new SetNoteWindowPosition("right"));

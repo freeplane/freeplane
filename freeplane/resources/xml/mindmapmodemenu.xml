@@ -69,6 +69,7 @@
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
 				<menu_action action="EditDetailsAction" accelerator="shift F2" />
+				<menu_action action="EditNoteInDialogAction" />
 				<menu_action action="EditAttributesAction" accelerator="alt F9" />
 				<menu_action action="SelectNoteAction" accelerator="control LESS"/> <!-- goto -->
 				<menu_separator />
@@ -372,6 +373,7 @@
 			<menu_action action="EditAction" />
 			<menu_action action="EditLongAction" />
 			<menu_action action="EditDetailsAction"/>
+			<menu_action action="EditNoteInDialogAction" />
 			<menu_action action="SetShortenerStateAction" />
 			<menu_action action="ToggleDetailsAction"/>
 			<menu_action action="DeleteDetailsAction"/>

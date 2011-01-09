@@ -512,7 +512,7 @@ public class MTextController extends TextController {
 			text = HtmlUtils.plainToHTML(text);
 		}
 		if (editInternalWysiwyg) {
-			return new EditNodeWYSIWYG(NODE_TEXT, nodeModel, text, firstEvent, editControl, true);
+			return new EditNodeWYSIWYG("edit_long_node", nodeModel, text, firstEvent, editControl, true);
 		}
 		else if (editExternal) {
 			return new EditNodeExternalApplication(nodeModel, text, firstEvent, editControl);

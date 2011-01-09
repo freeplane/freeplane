@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.text;
+package org.freeplane.features.mindmapmode.note;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -28,9 +28,13 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.DetailTextModel;
+import org.freeplane.features.mindmapmode.text.EditNodeBase;
+import org.freeplane.features.mindmapmode.text.EditNodeWYSIWYG;
+import org.freeplane.features.mindmapmode.text.MTextController;
 
-class EditDetailsAction extends AFreeplaneAction {
+class EditNoteInDialogAction extends AFreeplaneAction {
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 	/**
 	 * 
@@ -38,8 +42,8 @@ class EditDetailsAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private EditNodeBase mCurrentEditDialog = null;
 
-	public EditDetailsAction() {
-		super("EditDetailsAction");
+	public EditNoteInDialogAction() {
+		super("EditNoteInDialogAction");
 	}
 
 	/*
@@ -61,12 +65,12 @@ class EditDetailsAction extends AFreeplaneAction {
 		final Controller controller = Controller.getCurrentController();
 	    stopEditing();
 		Controller.getCurrentModeController().setBlocked(true);
-		String text = DetailTextModel.getDetailTextText(nodeModel);
+		String text = NoteModel.getNoteText(nodeModel);
 		if(text ==  null){
 			text = "";
 		}
 		KeyEvent firstEvent= null;
-		final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG("edit_details", nodeModel, text, firstEvent, new EditNodeBase.IEditControl() {
+		final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG("EditNoteInDialogAction.text", nodeModel, text, firstEvent, new EditNodeBase.IEditControl() {
 			public void cancel() {
 				Controller.getCurrentModeController().setBlocked(false);
 				mCurrentEditDialog = null;
@@ -86,9 +90,9 @@ class EditDetailsAction extends AFreeplaneAction {
 
 
 	private void setHtmlText(final NodeModel node, final String newText) {
-		final String body = EditDetailsAction.HTML_HEAD.matcher(newText).replaceFirst("");
-		final MTextController textController = (MTextController) MTextController.getController();
-        textController.setDetails(node, body.replaceFirst("\\s+$", ""));
+		final String body = EditNoteInDialogAction.HTML_HEAD.matcher(newText).replaceFirst("");
+		final MNoteController noteController = (MNoteController) MNoteController.getController();
+		noteController.setNoteText(node, body.replaceFirst("\\s+$", ""));
 	}
 
 	private void stopEditing() {

@@ -55,7 +55,7 @@ import com.lightdev.app.shtm.SHTMLPanel;
 /**
  * @author Daniel Polansky
  */
-class EditNodeWYSIWYG extends EditNodeBase {
+public class EditNodeWYSIWYG extends EditNodeBase {
 	private static class HTMLDialog extends EditDialog {
 		/**
 		 * 
@@ -203,16 +203,11 @@ class EditNodeWYSIWYG extends EditNodeBase {
 	public void show(final Frame frame) {
 		try {
 			if (EditNodeWYSIWYG.htmlEditorWindow == null) {
-				EditNodeWYSIWYG.htmlEditorWindow = new HTMLDialog(this, "", purpose, frame);
+				EditNodeWYSIWYG.htmlEditorWindow = new HTMLDialog(this, "", "", frame);
 			}
 			EditNodeWYSIWYG.htmlEditorWindow.setBase(this);
 			final String title;
-			if(enableSplit){
-				title = TextUtils.getText("edit_long_node");
-			}
-			else{
-				title = TextUtils.getText("edit_details");
-			}
+			title = TextUtils.getText(purpose);
 			EditNodeWYSIWYG.htmlEditorWindow.setTitle(title);
 			htmlEditorWindow.setSplitEnabled(enableSplit);
 			final SHTMLPanel htmlEditorPanel = (EditNodeWYSIWYG.htmlEditorWindow).getHtmlEditorPanel();
