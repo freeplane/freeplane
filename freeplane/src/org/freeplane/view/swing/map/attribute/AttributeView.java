@@ -46,6 +46,7 @@ import org.freeplane.view.swing.map.NodeView;
  */
 public class AttributeView implements ChangeListener, TableModelListener {
 	private static final Color HEADER_BACKGROUND = UIManager.getColor("TableHeader.background");
+	static private AttributePopupMenu tablePopupMenu;
 	private AttributeTable attributeTable;
 	private JScrollPane attributeViewScrollPane;
 	private AttributeTableModelDecoratorAdapter currentAttributeTableModel;
@@ -80,7 +81,12 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			return;
 		}
 		if (attributeTable != null) {
+			if (AttributeView.tablePopupMenu == null) {
+				AttributeView.tablePopupMenu = new AttributePopupMenu();
+			}
 			getAttributes().getLayout().addColumnWidthChangeListener(attributeTable);
+			attributeTable.addMouseListener(AttributeView.tablePopupMenu);
+			tableHeader.addMouseListener(AttributeView.tablePopupMenu);
 		}
 		else {
 			getAttributes().addTableModelListener(this);
@@ -93,6 +99,15 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	 * AncestorEvent)
 	 */
 	public void ancestorMoved(final AncestorEvent event) {
+	}
+
+	/**
+	 */
+	public boolean areAttributesVisible() {
+		final String viewType = getViewType();
+		return viewType != AttributeTableLayoutModel.HIDE_ALL
+		        && (currentAttributeTableModel.areAttributesVisible() || viewType != getAttributeRegistry()
+		            .getAttributeViewType());
 	}
 
 	AttributeRegistry getAttributeRegistry() {
@@ -135,21 +150,28 @@ public class AttributeView implements ChangeListener, TableModelListener {
 		return nodeView;
 	}
 
+	public String getViewType() {
+		return currentAttributeTableModel == reducedAttributeTableModel ? getAttributeRegistry().getAttributeViewType()
+		        : AttributeTableLayoutModel.SHOW_ALL;
+	}
+
+	boolean isPopupShown() {
+		return attributeTable != null && AttributeView.tablePopupMenu != null
+		        && (AttributeView.tablePopupMenu.getTable() == attributeTable);
+	}
+	
 	static private int VIEWER_POSITION = 3; 
 
 	private void provideAttributeTable() {
 		if (attributeTable == null) {
 			getAttributes().removeTableModelListener(this);
-			attributeTable = new AttributeTable(getMapView().getModeController(), getNode(), getCurrentAttributeTableModel());
+			attributeTable = new AttributeTable(this);
 			tableHeader = attributeTable.getTableHeader();
 			tableHeader.setBackground(AttributeView.HEADER_BACKGROUND);
 			addTableModelListeners();
+			attributeViewScrollPane = new AttributeViewScrollPane(attributeTable);
 			if(addToNodeView()){
-				attributeViewScrollPane = new AttributeViewScrollPane(attributeTable);
 				getNodeView().addContent(attributeViewScrollPane, VIEWER_POSITION);
-			}
-			else{
-				attributeViewScrollPane = new JScrollPane(attributeTable);
 			}
 			setViewType(getAttributeRegistry().getAttributeViewType());
 		}
@@ -168,6 +190,9 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			getAttributes().getLayout().removeColumnWidthChangeListener(attributeTable);
 			attributeTable.getParent().remove(attributeTable);
 			attributeTable.getModel().removeTableModelListener(attributeTable);
+			attributeTable.removeMouseListener(AttributeView.tablePopupMenu);
+			tableHeader.removeMouseListener(AttributeView.tablePopupMenu);
+			AttributeView.tablePopupMenu = null;
 		}
 		else {
 			getAttributes().removeTableModelListener(this);
@@ -227,7 +252,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			attributeTable.getCellEditor().stopCellEditing();
 		}
 		final String registryAttributeViewType = getAttributeRegistry().getAttributeViewType();
-		if (registryAttributeViewType != attributeTable.getViewType()) {
+		if (registryAttributeViewType != getViewType()) {
 			setViewType(registryAttributeViewType);
 		}
 		getNodeView().requestFocus();
