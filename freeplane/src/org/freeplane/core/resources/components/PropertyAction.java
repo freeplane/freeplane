@@ -31,7 +31,6 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanel.IOptionPanelFeedback;
 import org.freeplane.core.ui.AFreeplaneAction;

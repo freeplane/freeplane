@@ -20,7 +20,6 @@
 package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Component;
-import java.awt.Container;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;

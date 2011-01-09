@@ -20,14 +20,11 @@
 package org.freeplane.features.mindmapmode.time;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.TimerTask;
 
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;

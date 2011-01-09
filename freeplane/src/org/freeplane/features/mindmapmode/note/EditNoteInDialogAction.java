@@ -29,10 +29,8 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.note.NoteModel;
-import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
 import org.freeplane.features.mindmapmode.text.EditNodeWYSIWYG;
-import org.freeplane.features.mindmapmode.text.MTextController;
 
 class EditNoteInDialogAction extends AFreeplaneAction {
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);

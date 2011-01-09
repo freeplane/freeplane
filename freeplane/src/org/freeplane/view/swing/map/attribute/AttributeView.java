@@ -20,8 +20,6 @@
 package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.EventQueue;
 
 import javax.swing.JComponent;
