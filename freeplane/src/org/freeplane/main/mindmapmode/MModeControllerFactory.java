@@ -101,6 +101,7 @@ import org.freeplane.view.swing.addins.filepreview.ViewerController;
 import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.ShowNotesInMapAction;
+import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DefaultNodeKeyListener;
@@ -140,6 +141,7 @@ public class MModeControllerFactory {
 		UITools.setScrollbarIncrement(styleScrollPane);
 		final JComponent tabs = modeController.getUserInputListenerFactory().getToolBar("/format");
 		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
+		new AttributePanelManager(modeController);
 		new HierarchicalIcons();
 		new AutomaticLayout();
 		new BlinkingNodeHook();

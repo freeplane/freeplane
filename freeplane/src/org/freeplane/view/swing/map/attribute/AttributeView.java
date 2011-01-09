@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JScrollPane;
@@ -53,11 +54,18 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	final private ReducedAttributeTableModelDecorator reducedAttributeTableModel;
 	private JTableHeader tableHeader;
 
-	public AttributeView(final NodeView nodeView) {
+	public AttributeView(final NodeView nodeView, final boolean addToNodeView) {
 		super();
 		this.nodeView = nodeView;
-		reducedAttributeTableModel = new ReducedAttributeTableModelDecorator(this);
-		currentAttributeTableModel = reducedAttributeTableModel;
+		if(addToNodeView){
+			reducedAttributeTableModel = new ReducedAttributeTableModelDecorator(this);
+			currentAttributeTableModel = reducedAttributeTableModel;
+		}
+		else{
+			reducedAttributeTableModel = null;
+			currentAttributeTableModel = extendedAttributeTableModel = new ExtendedAttributeTableModelDecorator(this);
+			
+		}
 		setViewType(getAttributeRegistry().getAttributeViewType());
 		addListeners();
 	}
@@ -131,16 +139,25 @@ public class AttributeView implements ChangeListener, TableModelListener {
 
 	private void provideAttributeTable() {
 		if (attributeTable == null) {
+			getAttributes().removeTableModelListener(this);
 			attributeTable = new AttributeTable(getMapView().getModeController(), getNode(), getCurrentAttributeTableModel());
 			tableHeader = attributeTable.getTableHeader();
 			tableHeader.setBackground(AttributeView.HEADER_BACKGROUND);
 			addTableModelListeners();
-			attributeViewScrollPane = new AttributeViewScrollPane(attributeTable);
-			getNodeView().addContent(attributeViewScrollPane, VIEWER_POSITION);
-			getAttributes().removeTableModelListener(this);
+			if(addToNodeView()){
+				attributeViewScrollPane = new AttributeViewScrollPane(attributeTable);
+				getNodeView().addContent(attributeViewScrollPane, VIEWER_POSITION);
+			}
+			else{
+				attributeViewScrollPane = new JScrollPane(attributeTable);
+			}
 			setViewType(getAttributeRegistry().getAttributeViewType());
 		}
 	}
+
+	boolean addToNodeView() {
+	    return reducedAttributeTableModel != null;
+    }
 
 	private void removeListeners() {
 		getAttributeRegistry().removeChangeListener(this);
@@ -159,7 +176,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 
 	private void setViewType(final String viewType) {
 		JTableHeader currentColumnHeaderView = null;
-		if (viewType == AttributeTableLayoutModel.SHOW_ALL) {
+		if (viewType == AttributeTableLayoutModel.SHOW_ALL || ! addToNodeView()) {
 			currentAttributeTableModel = getExtendedAttributeTableModel();
 			currentColumnHeaderView = tableHeader;
 		}
@@ -199,8 +216,10 @@ public class AttributeView implements ChangeListener, TableModelListener {
 
 	public void stateChanged(final ChangeEvent event) {
 		setViewType(getAttributeRegistry().getAttributeViewType());
-		reducedAttributeTableModel.stateChanged(null);
-		getNodeView().revalidate();
+		if(addToNodeView()){
+			reducedAttributeTableModel.stateChanged(null);
+		}
+		attributeTable.revalidate();
 	}
 
 	public void stopEditing() {
@@ -241,7 +260,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	 */
 	public void viewRemoved() {
 		removeListeners();
-		if (reducedAttributeTableModel != null) {
+		if (addToNodeView()) {
 			reducedAttributeTableModel.viewRemoved(nodeView);
 		}
 		if (extendedAttributeTableModel != null) {
@@ -251,4 +270,11 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			attributeTable.viewRemoved(nodeView);
 		}
 	}
+
+	Component getComponent() {
+		if(attributeViewScrollPane == null){
+			provideAttributeTable();
+		}
+	    return attributeViewScrollPane;
+    }
 }

@@ -35,9 +35,11 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 	 */
 	private static final long serialVersionUID = 1L;
 	int newRow;
+	final private AttributeView attributeView;
 
 	public ExtendedAttributeTableModelDecorator(final AttributeView attrView) {
 		super(attrView);
+		this.attributeView = attrView;
 		newRow = ExtendedAttributeTableModelDecorator.AFTER_LAST_ROW;
 	}
 
@@ -49,7 +51,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 	 */
 	@Override
 	public boolean areAttributesVisible() {
-		return getRowCount() != 0;
+		return getRowCount() != 0 || ! attributeView.addToNodeView();
 	}
 
 	@Override

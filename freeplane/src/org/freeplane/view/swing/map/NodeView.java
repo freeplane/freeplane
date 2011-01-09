@@ -339,7 +339,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	public void createAttributeView() {
 		if (attributeView == null && NodeAttributeTableModel.getModel(model).getNode() != null) {
-			attributeView = new AttributeView(this);
+			attributeView = new AttributeView(this, true);
 		}
 		syncronizeAttributeView();
 	}
@@ -353,7 +353,7 @@ public class NodeView extends JComponent implements INodeView {
 	public AttributeView getAttributeView() {
 		if (attributeView == null) {
 			AttributeController.getController(getMap().getModeController()).createAttributeTableModel(model);
-			attributeView = new AttributeView(this);
+			attributeView = new AttributeView(this, true);
 		}
 		return attributeView;
 	}
