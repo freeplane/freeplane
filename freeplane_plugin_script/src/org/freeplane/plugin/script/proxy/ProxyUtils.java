@@ -32,7 +32,11 @@ public class ProxyUtils {
 	}
 
 	static List<Node> find(final ICondition condition, final NodeModel node, final ScriptContext scriptContext) {
-		return ProxyUtils.createNodeList(ProxyUtils.findImpl(condition, node), scriptContext);
+		return ProxyUtils.createNodeList(ProxyUtils.findImpl(condition, node, true), scriptContext);
+	}
+	
+	static List<Node> findAll(final NodeModel node, final ScriptContext scriptContext, boolean breadthFirst) {
+		return ProxyUtils.createNodeList(ProxyUtils.findImpl(null, node, breadthFirst), scriptContext);
 	}
 
 	static List<Node> find(final Closure closure, final NodeModel node, final ScriptContext scriptContext) {
@@ -55,22 +59,26 @@ public class ProxyUtils {
 		return ProxyUtils.find(condition, node, scriptContext);
 	}
 
-	/** finds from any node downwards. */
+	/** finds from any node downwards.
+	 * @param condition if null every node will match. */
 	@SuppressWarnings("unchecked")
-	private static List<NodeModel> findImpl(final ICondition condition,
-	                                        final NodeModel node) {
+	private static List<NodeModel> findImpl(final ICondition condition, final NodeModel node, boolean breadthFirst) {
+		final boolean nodeMatches = condition == null || condition.checkNode(node);
 		// a shortcut for non-matching leaves
-		if (node.isLeaf() && !condition.checkNode(node)) {
+		if (node.isLeaf() && !nodeMatches) {
 			return Collections.EMPTY_LIST;
 		}
 		final List<NodeModel> matches = new ArrayList<NodeModel>();
-		if (condition.checkNode(node)) {
+		if (nodeMatches && breadthFirst) {
 			matches.add(node);
 		}
 		final Enumeration<NodeModel> children = node.children();
 		while (children.hasMoreElements()) {
 			final NodeModel child = children.nextElement();
-			matches.addAll(ProxyUtils.findImpl(condition, child));
+			matches.addAll(ProxyUtils.findImpl(condition, child, breadthFirst));
+		}
+		if (nodeMatches && !breadthFirst) {
+			matches.add(node);
 		}
 		return matches;
 	}

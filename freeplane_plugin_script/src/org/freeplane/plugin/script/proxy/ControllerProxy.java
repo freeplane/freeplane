@@ -145,6 +145,20 @@ class ControllerProxy implements Proxy.Controller {
 		return ProxyUtils.find(closure, Controller.getCurrentController().getMap().getRootNode(), scriptContext);
 	}
 
+	// NodeRO: R
+	public List<Node> findAll() {
+		if (scriptContext != null)
+			scriptContext.accessAll();
+		return ProxyUtils.findAll(Controller.getCurrentController().getMap().getRootNode(), scriptContext, true);
+    }
+
+	// NodeRO: R
+	public List<Node> findAllDepthFirst() {
+		if (scriptContext != null)
+			scriptContext.accessAll();
+		return ProxyUtils.findAll(Controller.getCurrentController().getMap().getRootNode(), scriptContext, false);
+    }
+
 	public Map newMap() {
 		final MapModel newMap = Controller.getCurrentModeController().getMapController().newMap(((NodeModel) null));
 		return new MapProxy(newMap, scriptContext);

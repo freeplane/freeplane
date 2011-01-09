@@ -182,8 +182,8 @@ public interface Proxy {
 		List<Node> find(ICondition condition);
 
 		/**
-		 * Starting from the root node, recursively searches for nodes for which <code>closure.call(node)</code>
-		 * returns true.
+		 * Starting from the root node, recursively searches for nodes (in breadth-first sequence) for which
+		 * <code>closure.call(node)</code> returns true.
 		 * <p>
 		 * A find method that uses a Groovy closure ("block") for simple custom searches. As this closure
 		 * will be called with a node as an argument (to be referenced by <code>it</code>) the search can
@@ -203,6 +203,36 @@ public interface Proxy {
 		 * @see Node.find(Closure) for searches on subtrees
 		 */
 		List<Node> find(Closure closure);
+
+		/**
+		 * Returns all nodes of the map in breadth-first order, that is, for the following map,
+		 * <pre>
+		 *  1
+		 *    1.1
+		 *      1.1.1
+		 *      1.1.2
+		 *    1.2
+		 *  2
+		 * </pre>
+		 * [1, 1.1, 1.1.1, 1.1.2, 1.2, 2] is returned.
+		 * @see Node.find(Closure) for searches on subtrees
+		 * @since 1.2 */
+		List<Node> findAll();
+
+		/**
+		 * Returns all nodes of the map in depth-first order, that is, for the following map,
+		 * <pre>
+		 *  1
+		 *    1.1
+		 *      1.1.1
+		 *      1.1.2
+		 *    1.2
+		 *  2
+		 * </pre>
+		 * [1.1.1, 1.1.2, 1.1, 1.2, 1, 2] is returned.
+		 * @see Node.find() for subtrees
+		 * @since 1.2 */
+		List<Node> findAllDepthFirst();
 	}
 
 	interface Controller extends ControllerRO {
@@ -584,6 +614,16 @@ public interface Proxy {
 		/** Starting from this node, recursively searches for nodes for which <code>closure.call(node)</code>
 		 * returns true. See {@link Controller#find(Closure)} for details. */
 		List<Node> find(Closure closure);
+
+		/** Returns all nodes of the map in breadth-first order.
+		 * @see Controller.findAll() for subtrees
+		 * @since 1.2 */
+		List<Node> findAll();
+		
+		/** Returns all nodes of the map in depth-first order.
+		 * @see Controller.findAllDepthFirst() for subtrees.
+		 * @since 1.2 */
+		List<Node> findAllDepthFirst();
 
 		Date getLastModifiedAt();
 
