@@ -57,6 +57,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		mapController.insertNode(newNodeModel, getDelegate());
 		return new NodeProxy(newNodeModel, getScriptContext());
 	}
+	
+	// Node: R/W
+	public Proxy.Node createChild(final String text) {
+		final Node child = createChild();
+		child.setText(text);
+		return child;
+	}
 
 	// Node: R/W
 	public Proxy.Node createChild(final int position) {
@@ -179,12 +186,12 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
-	@Deprecated
 	public String getId() {
 		return getDelegate().createID();
 	}
 
 	// NodeRO: R
+	@Deprecated
 	public String getNodeID() {
 		return getId();
 	}
@@ -370,6 +377,22 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 			getScriptContext().accessBranch(delegate);
 		return ProxyUtils.find(closure, delegate, getScriptContext());
 	}
+
+	// NodeRO: R
+	public List<Node> findAll() {
+		final NodeModel delegate = getDelegate();
+		if (getScriptContext() != null)
+			getScriptContext().accessBranch(delegate);
+		return ProxyUtils.findAll(delegate, getScriptContext(), true);
+    }
+
+	// NodeRO: R
+	public List<Node> findAllDepthFirst() {
+		final NodeModel delegate = getDelegate();
+		if (getScriptContext() != null)
+			getScriptContext().accessBranch(delegate);
+		return ProxyUtils.findAll(delegate, getScriptContext(), false);
+    }
 
 	// NodeRO: R
 	public Date getLastModifiedAt() {

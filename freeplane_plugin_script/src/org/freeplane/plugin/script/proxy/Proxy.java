@@ -642,6 +642,10 @@ public interface Proxy {
 		 * internal stuff inserts as last child. */
 		Node createChild();
 
+		/** same as {@link #createChild()} but sets the node text to the given text.
+		 * @since 1.2 */
+		Node createChild(String text);
+
 		/** inserts *new* node as child, takes care of all construction work and
 		 * internal stuff */
 		Node createChild(int position);
