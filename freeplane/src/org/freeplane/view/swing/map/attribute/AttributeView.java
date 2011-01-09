@@ -246,7 +246,8 @@ public class AttributeView implements ChangeListener, TableModelListener {
 		if(addToNodeView()){
 			reducedAttributeTableModel.stateChanged(null);
 		}
-		attributeTable.revalidate();
+		if(attributeTable != null)
+			attributeTable.revalidate();
 	}
 
 	public void stopEditing() {
