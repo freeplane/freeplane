@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.script.proxy.Proxy.NodeRO;
 
 public abstract class FreeplaneScriptBaseClass extends Script {
@@ -33,8 +35,14 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 
 	@Override
     public void setBinding(Binding binding) {
-	    super.setBinding(binding);
+	    super.setBinding(addStaticBindings(binding));
 	    initBinding();
+    }
+
+	private Binding addStaticBindings(Binding binding) {
+		binding.setProperty("logger", new LogUtils());
+		binding.setProperty("ui", new UITools());
+	    return binding;
     }
 
 	/** <ul>
