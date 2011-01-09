@@ -4,6 +4,7 @@ import groovy.lang.Closure;
 
 import java.awt.Color;
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
@@ -57,7 +58,7 @@ public interface Proxy {
 		 * For searches for <em>all</em> attributes with a given name <code>getAttributeNames()</code>
 		 * must be used. @since 1.2*/
 		int findFirst(final String name);
-		
+
 		/** the number of attributes. It is <code>size() == getAttributeNames().size()</code>. */
 		int size();
 	}
@@ -131,7 +132,7 @@ public interface Proxy {
 		/** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
 		 *  @since 1.2 */
 		void setColorCode(String rgbString);
-		
+
 		void setEndArrow(ArrowType arrowType);
 
 		void setMiddleLabel(String label);
@@ -243,7 +244,7 @@ public interface Proxy {
 		 * @see FreeplaneIconUtils
 		 * @since 1.2 */
 		void setStatusInfo(String infoPanelKey, String info, String iconKey);
-		
+
 		/** @deprecated since 1.2 - use {@link #setStatusInfo(String, String, String)} */
 		void setStatusInfo(String infoPanelKey, Icon icon);
 
@@ -270,7 +271,7 @@ public interface Proxy {
 		/** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
 		 *  @since 1.2 */
 		void setColorCode(String rgbString);
-		
+
 		void setType(EdgeStyle type);
 
 		/** can be -1 for default, 0 for thin, >0 */
@@ -343,24 +344,66 @@ public interface Proxy {
 		 * </pre>
 		 * @see FreeplaneIconUtils */
 		void add(String name);
+
 		/** @deprecated since 1.2 - use {@link #add(String)} instead. */
 		void addIcon(String name);
 
 		/** deletes first occurence of icon with the given name, returns true if
 		 * success (icon existed); */
 		boolean remove(String name);
+
 		/** @deprecated since 1.2 - use {@link #remove(String)} instead. */
 		boolean removeIcon(String name);
 	}
 
+	/** None of the getters will throw an exception, even if you call, e.g. getNode() on a File link.
+	 * Instead they will return null. To check the link type evaluate getUri().getScheme() or the result
+	 * of the special getters.*/
 	interface LinkRO {
+		/** returns the link text, a stringified URI, if a link is defined and null otherwise.
+		 * @since 1.2 */
+		String getText();
+
+		/** returns the link as URI if defined and null otherwise. Won't throw an exception.
+		 * @since 1.2 */
+		URI getUri();
+
+		/** returns the link as File if defined and if the link target is a valid File URI and null otherwise.
+		 * @see {@link File(URI)}.
+		 * @since 1.2 */
+		File getFile();
+
+		/** returns the link as Node if defined and if the link target is a valid local link to a node and null otherwise.
+		 * @since 1.2 */
+		Node getNode();
+
+		/** @deprecated since 1.2 - use {@link #getTarget()} instead. */
 		String get();
 	}
 
 	interface Link extends LinkRO {
-		/** target is a URI.
-		 * An empty String will remove the link.
-		 * To get a local link (i.e. to another node) target should be: "#" + nodeId */
+		/** target is a stringified URI. Removes any link if uri is null.
+		 * To get a local link (i.e. to another node) target should be: "#" + nodeId or better use setNode(Node).
+		 * @throws IllegalArgumentException if target is not convertible into a {@link URI}.
+		 * @since 1.2 */
+		void setText(String target);
+
+		/** sets target to uri. Removes any link if uri is null.
+		 * @since 1.2 */
+		void setUri(URI uri);
+
+		/** sets target to file. Removes any link if file is null.
+		 * @since 1.2 */
+		void setFile(File file);
+
+		/** target is a node of the same map. Shortcut for setTarget("#" + node.nodeId)
+		 * Removes any link if node is null.
+		 * @throws IllegalArgumentException if node belongs to another map.
+		 * @since 1.2 */
+		void setNode(Node node);
+
+		/** @deprecated since 1.2 - use {@link #setTarget(String)} instead.
+		 * @return true if target could be converted to an URI and false otherwise. */
 		boolean set(String target);
 	}
 
@@ -476,7 +519,7 @@ public interface Proxy {
 		 * @since 1.2
 		 */
 		Convertible getNote();
-		
+
 		/** Returns the HTML text of the node. (Notes always contain HTML text.) 
 		 * @throws ExecuteScriptException */
 		String getNoteText();
@@ -755,7 +798,7 @@ public interface Proxy {
 
 		/** @since 1.2 */
 		void setTextColor(Color color);
-		
+
 		/** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
 		 *  @since 1.2 */
 		void setTextColorCode(String rgbString);
