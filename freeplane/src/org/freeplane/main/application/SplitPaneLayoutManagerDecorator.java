@@ -61,7 +61,16 @@ final class SplitPaneLayoutManagerDecorator implements LayoutManager {
         	lm.layoutContainer(parent);
         	return;
     	}
-    	splitPane.getLeftComponent().setBounds(0, 0, splitPane.getWidth(), splitPane.getHeight());  		
+    	final Component leftComponent = splitPane.getLeftComponent();
+    	for(int i = 0; i < splitPane.getComponentCount(); i++){
+    		final Component component = splitPane.getComponent(i);
+    		if(component.equals(leftComponent)){
+    			component.setBounds(0, 0, splitPane.getWidth(), splitPane.getHeight());
+    		}
+    		else{
+    			component.setBounds(0, 0, 0, 0);
+    		}
+    	}
     }
 
 	private boolean isDividerRequired(final JSplitPane splitPane) {
