@@ -238,6 +238,14 @@ public interface Proxy {
 	interface Controller extends ControllerRO {
 		void centerOnNode(Node center);
 
+		/** Starts editing node, normally in the inline editor. Does not block until edit has finished.
+		 * @since 1.2.2 */
+		void edit(Node node);
+
+		/** opens the appropriate popup text editor. Does not block until edit has finished.
+		 * @since 1.2.2 */
+		void editInPopup(Node node);
+
 		void select(Node toSelect);
 
 		/** selects branchRoot and all children */

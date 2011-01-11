@@ -21,8 +21,10 @@ import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.map.MMapModel;
+import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
@@ -38,6 +40,20 @@ class ControllerProxy implements Proxy.Controller {
 		final NodeModel nodeModel = ((NodeProxy) center).getDelegate();
 		Controller.getCurrentController().getSelection().centerNode(nodeModel);
 	}
+
+	public void edit(Node node) {
+		editImpl(node, true);
+	}
+
+	public void editInPopup(Node node) {
+		editImpl(node, false);
+	}
+
+	private void editImpl(Node node, boolean editInline) {
+	    final NodeModel nodeModel = ((NodeProxy) node).getDelegate();
+		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeModel);
+		((MTextController) TextController.getController()).edit(null, false, !editInline);
+    }
 
 	public Node getSelected() {
 		if (scriptContext != null)
