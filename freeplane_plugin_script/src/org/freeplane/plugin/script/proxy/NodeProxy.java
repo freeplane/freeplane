@@ -59,9 +59,9 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 	
 	// Node: R/W
-	public Proxy.Node createChild(final String text) {
+	public Proxy.Node createChild(final Object value) {
 		final Node child = createChild();
-		child.setText(text);
+		child.setText(value);
 		return child;
 	}
 
