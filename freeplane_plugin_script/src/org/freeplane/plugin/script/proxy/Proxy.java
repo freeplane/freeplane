@@ -22,12 +22,13 @@ import org.freeplane.plugin.script.ExecuteScriptException;
 
 public interface Proxy {
 	interface AttributesRO {
-		/** alias for {@link #getFirst(int)}.
-		 * @deprecated before 1.1 - use {@link #get(int)}, {@link #getFirst(int)} or {@link #getAll(String)} instead. */
+		/** alias for {@link #getFirst(String)}.
+		 * @deprecated before 1.1 - use {@link #get(int)}, {@link #getFirst(String)} or {@link #getAll(String)} instead. */
 		@Deprecated
 		String get(final String name);
 
-		/** returns the <em>first</em> value of an attribute with the given name or null otherwise. @since 1.2 */
+		/** returns the <em>first</em> value of an attribute with the given name or null otherwise.
+		 * @since 1.2 */
 		String getFirst(final String name);
 
 		/** returns all values for the attribute name. */
@@ -56,7 +57,8 @@ public interface Proxy {
 
 		/** returns the index of the first attribute with the given name if one exists or -1 otherwise.
 		 * For searches for <em>all</em> attributes with a given name <code>getAttributeNames()</code>
-		 * must be used. @since 1.2*/
+		 * must be used.
+		 * @since 1.2*/
 		int findFirst(final String name);
 
 		/** the number of attributes. It is <code>size() == getAttributeNames().size()</code>. */
@@ -77,13 +79,13 @@ public interface Proxy {
 		void set(final int index, final String name, final String value);
 
 		/** removes the <em>first</em> attribute with this name.
-		 * @returns true on removal of an existing attribute and false otherwise.
+		 * @return true on removal of an existing attribute and false otherwise.
 		 * @deprecated before 1.1 - use {@link #remove(int)} or {@link #removeAll(String)} instead. */
 		@Deprecated
 		boolean remove(final String name);
 
 		/** removes <em>all</em> attributes with this name.
-		 * @returns true on removal of an existing attribute and false otherwise. */
+		 * @return true on removal of an existing attribute and false otherwise. */
 		boolean removeAll(final String name);
 
 		/** removes the attribute at the given index.
@@ -98,7 +100,8 @@ public interface Proxy {
 		/** adds an attribute no matter if an attribute with the given name already exists. */
 		void add(final String name, final String value);
 
-		/** removes all attributes. @since 1.2 */
+		/** removes all attributes.
+		 * @since 1.2 */
 		void clear();
 	}
 
@@ -177,7 +180,7 @@ public interface Proxy {
 
 		/** Starting from the root node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
-		 * @see Node.find(ICondition) for searches on subtrees
+		 * @see Node#find(ICondition) for searches on subtrees
 		 * @deprecated since 1.2 use {@link #find(Closure)} instead. */
 		List<Node> find(ICondition condition);
 
@@ -200,7 +203,7 @@ public interface Proxy {
 		 * @param closure a Groovy closure that returns a boolean value. The closure will receive
 		 *        a NodeModel as an argument which can be tested for a match.
 		 * @return all nodes for which <code>closure.call(NodeModel)</code> returns true.
-		 * @see Node.find(Closure) for searches on subtrees
+		 * @see Node#find(Closure) for searches on subtrees
 		 */
 		List<Node> find(Closure closure);
 
@@ -215,7 +218,7 @@ public interface Proxy {
 		 *  2
 		 * </pre>
 		 * [1, 1.1, 1.1.1, 1.1.2, 1.2, 2] is returned.
-		 * @see Node.find(Closure) for searches on subtrees
+		 * @see Node#find(Closure) for searches on subtrees
 		 * @since 1.2 */
 		List<Node> findAll();
 
@@ -230,7 +233,7 @@ public interface Proxy {
 		 *  2
 		 * </pre>
 		 * [1.1.1, 1.1.2, 1.1, 1.2, 1, 2] is returned.
-		 * @see Node.find() for subtrees
+		 * @see Node#findAllDepthFirst() for subtrees
 		 * @since 1.2 */
 		List<Node> findAllDepthFirst();
 	}
@@ -257,17 +260,19 @@ public interface Proxy {
 		/** reset undo / redo lists and deactivate Undo for current script */
 		void deactivateUndo();
 
-		/** invokes undo once - for testing purposes mainly. @since 1.2 */
+		/** invokes undo once - for testing purposes mainly.
+		 * @since 1.2 */
 		void undo();
 
-		/** invokes redo once - for testing purposes mainly. @since 1.2 */
+		/** invokes redo once - for testing purposes mainly.
+		 * @since 1.2 */
 		void redo();
 
 		/** The main info for the status line with key="standard", use null to remove. Removes icon if there is one. */
 		void setStatusInfo(String info);
 
 		/** Info for status line, null to remove. Removes icon if there is one.
-		 * @see {@link #setStatusInfo(String, String, String)} */
+		 * @see #setStatusInfo(String, String, String) */
 		void setStatusInfo(String infoPanelKey, String info);
 
 		/** Info for status line - text and icon - null stands for "remove" (text or icon)
@@ -286,10 +291,12 @@ public interface Proxy {
 		/** @deprecated since 1.2 - use {@link #setStatusInfo(String, String, String)} */
 		void setStatusInfo(String infoPanelKey, Icon icon);
 
-		/** opens a new map with a default name in the foreground. @since 1.2 */
+		/** opens a new map with a default name in the foreground.
+		 * @since 1.2 */
 		Map newMap();
 
-		/** opens a new map for url in the foreground if it isn't opened already. @since 1.2 */
+		/** opens a new map for url in the foreground if it isn't opened already.
+		 * @since 1.2 */
 		Map newMap(URL url);
 	}
 
@@ -407,7 +414,7 @@ public interface Proxy {
 		URI getUri();
 
 		/** returns the link as File if defined and if the link target is a valid File URI and null otherwise.
-		 * @see {@link File(URI)}.
+		 * @see File#File(URI).
 		 * @since 1.2 */
 		File getFile();
 
@@ -415,7 +422,7 @@ public interface Proxy {
 		 * @since 1.2 */
 		Node getNode();
 
-		/** @deprecated since 1.2 - use {@link #getTarget()} instead. */
+		/** @deprecated since 1.2 - use {@link #getText()} instead. */
 		String get();
 	}
 
@@ -440,7 +447,7 @@ public interface Proxy {
 		 * @since 1.2 */
 		void setNode(Node node);
 
-		/** @deprecated since 1.2 - use {@link #setTarget(String)} instead.
+		/** @deprecated since 1.2 - use {@link #setText(String)} instead.
 		 * @return true if target could be converted to an URI and false otherwise. */
 		boolean set(String target);
 	}
@@ -458,14 +465,15 @@ public interface Proxy {
 		/** returns the physical location of the map if available or null otherwise. */
 		File getFile();
 
-		/** returns the title of the MapView. @since 1.2 */
+		/** returns the title of the MapView.
+		 * @since 1.2 */
 		String getName();
 	}
 
 	interface Map extends MapRO {
 		/**
 		 * closes a map. Note that there is no undo for this method.
-		 * @param close map even if there are unsaved changes.
+		 * @param force close map even if there are unsaved changes.
 		 * @param allowInteraction if (allowInteraction && ! force) a saveAs dialog will be opened if there are
 		 *        unsaved changes.
 		 * @return false if the saveAs was cancelled by the user and true otherwise.
@@ -517,7 +525,8 @@ public interface Proxy {
 
 		Collection<Connector> getConnectorsOut();
 
-		/** returns the raw HTML text of the details if there is any or null otherwise. @since 1.2 */
+		/** returns the raw HTML text of the details if there is any or null otherwise.
+		 * @since 1.2 */
 		String getDetailsText();
 
 		/** returns the text of the details as a Convertible like {@link #getNote()} for notes.
@@ -570,14 +579,16 @@ public interface Proxy {
 
 		NodeStyle getStyle();
 
-		/** use this method to remove all tags from an HTML node. Formulas are not evaluated. @since 1.2 */
+		/** use this method to remove all tags from an HTML node. Formulas are not evaluated.
+		 * @since 1.2 */
 		String getPlainText();
 
 		/** use this method to remove all tags from an HTML node.
 		 * @deprecated since 1.2 - use getPlainText() or getTo().getPlain() instead. */
 		String getPlainTextContent();
 
-		/** The raw text of this node. Use {@link #getPlainText()} to remove HTML. @since 1.2 */
+		/** The raw text of this node. Use {@link #getPlainText()} to remove HTML.
+		 * @since 1.2 */
 		String getText();
 
 		/**
@@ -596,8 +607,9 @@ public interface Proxy {
 		 */
 		Convertible getTo();
 
-		/** an alias for {@link #getTo()}. @since 1.2 
-		 * @throws ExecuteScriptException */
+		/** an alias for {@link #getTo()}.
+		 * @throws ExecuteScriptException
+		 * @since 1.2 */
 		Convertible getValue();
 
 		/** returns true if p is a parent, or grandparent, ... of this node, or if it <em>is equal<em>
@@ -624,12 +636,12 @@ public interface Proxy {
 		List<Node> find(Closure closure);
 
 		/** Returns all nodes of the map in breadth-first order.
-		 * @see Controller.findAll() for subtrees
+		 * @see Controller#findAll() for subtrees
 		 * @since 1.2 */
 		List<Node> findAll();
 		
 		/** Returns all nodes of the map in depth-first order.
-		 * @see Controller.findAllDepthFirst() for subtrees.
+		 * @see Controller#findAllDepthFirst() for subtrees.
 		 * @since 1.2 */
 		List<Node> findAllDepthFirst();
 
@@ -676,7 +688,7 @@ public interface Proxy {
 		 * 
 		 * If the conversion result is not valid HTML it will be automatically converted to HTML.
 		 * 
-		 * @param value An object for conversion to String. Use null to unset the details. Works well for all types
+		 * @param details An object for conversion to String. Use null to unset the details. Works well for all types
 		 *        that {@link Convertible} handles, particularly {@link Convertible}s itself.
 		 * @since 1.2
 		 */
@@ -725,7 +737,7 @@ public interface Proxy {
 		 */
 		void setNote(Object value);
 
-		/** @deprecated since 1.2 - use {@link #setNote()} instead. */
+		/** @deprecated since 1.2 - use {@link #setNote(Object)} instead. */
 		void setNoteText(String text);
 
 		/**
