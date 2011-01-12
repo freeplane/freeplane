@@ -24,10 +24,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
@@ -36,9 +36,9 @@ import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
+import org.freeplane.features.common.map.MapWriter.Mode;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.map.MapWriter.Mode;
 
 /**
  * @author Dimitry Polivaev
@@ -165,7 +165,7 @@ public class MapStyleModel implements IExtension {
 		this.backgroundColor = backgroundColor;
 	}
 
-	public Collection<IStyle> getStyles() {
+	public Set<IStyle> getStyles() {
 		return styleNodes.keySet();
 	}
 

@@ -815,6 +815,12 @@ public interface Proxy {
 	interface NodeStyleRO {
 		IStyle getStyle();
 
+		/** Returns the name of the node's style if set or null otherwise. For styles with translated names the
+		 * translation key is returned to make the process robust against language setting changes.
+		 * It's guaranteed that <code>node.style.name = node.style.name</code> does not change the style.
+		 * @since 1.2.2 */
+		String getName();
+		
 		Node getStyleNode();
 
 		Color getBackgroundColor();
@@ -837,7 +843,17 @@ public interface Proxy {
 	}
 
 	interface NodeStyle extends NodeStyleRO {
-		void setStyle(IStyle key);
+		void setStyle(IStyle style);
+
+		/** Selects a style by name, see menu Styles -> Pre/Userdefined styles for valid style names or use
+		 * {@link #getName()} to display the name of a node's style.
+		 * It's guaranteed that <code>node.style.name = node.style.name</code> does not change the style.
+		 * @param styleName can be the name visible in the style menu or its translation key as returned by
+		 *        {@link #getName()}. (Names of predefined styles are subject to translation.)
+		 *        Only translation keys will continue to work if the language setting is changed.
+		 * @throws IllegalArgumentException if the style does not exist.
+		 * @since 1.2.2 */
+		void setName(String styleName);
 
 		void setBackgroundColor(Color color);
 
