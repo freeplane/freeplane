@@ -20,7 +20,27 @@ import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.plugin.script.ExecuteScriptException;
 
+/**
+ * This interface alone defines the api for accessing the internal state of the Freeplane. All read-write methods
+ * and properties (with rare, documented exceptions in {@link Controller} and {@link Map}) support undo and
+ * rollback on exceptions.
+ * <p>
+ * Every Proxy subinterface comes in two variants:
+ * <ul>
+ * <li>A read-only interface, like {@link NodeRO}. This collects only the methods that don't change the
+ *     underlying object (in case of <code>NodeRO</code> this would be <code>NodeModel</code>.
+ * <li>A read-write interface, like {@link Node}. This inherits from the respective read-only interface all its
+ *     methods and properties and adds write access to the underlying object.
+ * </ul>
+ * The main point of this distinction are formulas: <em>Only the methods defined in the read-only interfaces are
+ * supported in Formulas!</em>. Changing values in a Formula are against the Formula concept and lead to corruption
+ * of the caching mechanism for Formulas.
+ */
 public interface Proxy {
+	/** Node's attribute table: <code>node.attributes</code> - read-only.
+	 * <p>
+	 * Attributes are name - value pairs assigned to a node. A node may have multiple attributes
+	 * with the same name. */
 	interface AttributesRO {
 		/** alias for {@link #getFirst(String)}.
 		 * @deprecated before 1.1 - use {@link #get(int)}, {@link #getFirst(String)} or {@link #getAll(String)} instead. */
@@ -65,8 +85,7 @@ public interface Proxy {
 		int size();
 	}
 
-	/** Attributes are name - value pairs assigned to a node. A node may have multiple attributes
-	 * with the same name. */
+	/** Node's attribute table: <code>node.attributes</code> - read-write. */
 	interface Attributes extends AttributesRO {
 		/** sets the value of the attribute at an index. This method will not create new attributes.
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
@@ -105,6 +124,8 @@ public interface Proxy {
 		void clear();
 	}
 
+	/** Graphical connector between nodes:<code>node.connectorsIn</code> / <code>node.connectorsOut</code>
+	 * - read-only. */
 	interface ConnectorRO {
 		Color getColor();
 
@@ -129,6 +150,8 @@ public interface Proxy {
 		boolean simulatesEdge();
 	}
 
+	/** Graphical connector between nodes:<code>node.connectorsIn</code> / <code>node.connectorsOut</code>
+	 * - read-write. */
 	interface Connector extends ConnectorRO {
 		void setColor(Color color);
 
@@ -149,6 +172,7 @@ public interface Proxy {
 		void setTargetLabel(String label);
 	}
 
+	/** Access to global state: <code>c</code> - read-only. */
 	interface ControllerRO {
 		/** if multiple nodes are selected returns one (arbitrarily chosen)
 		 * selected node or the selected node for a single node selection. */
@@ -238,6 +262,7 @@ public interface Proxy {
 		List<Node> findAllDepthFirst();
 	}
 
+	/** Access to global state: <code>c</code> - read-write. */
 	interface Controller extends ControllerRO {
 		void centerOnNode(Node center);
 
@@ -300,6 +325,7 @@ public interface Proxy {
 		Map newMap(URL url);
 	}
 
+	/** Edge to parent node: <code>node.style.edge</code> - read-only. */
 	interface EdgeRO {
 		Color getColor();
 
@@ -310,6 +336,7 @@ public interface Proxy {
 		int getWidth();
 	}
 
+	/** Edge to parent node: <code>node.style.edge</code> - read-write. */
 	interface Edge extends EdgeRO {
 		void setColor(Color color);
 
@@ -323,6 +350,7 @@ public interface Proxy {
 		void setWidth(int width);
 	}
 
+	/** External object: <code>node.externalObject</code> - read-only. */
 	interface ExternalObjectRO {
 		/** returns the object's uri if set or null otherwise.
 		 * @since 1.2 */
@@ -331,22 +359,24 @@ public interface Proxy {
 		/** returns the current zoom level as ratio, i.e. 1.0 is returned for 100%.
 		 * If there is no external object 1.0 is returned. */
 		float getZoom();
-
+		
 		/** @deprecated since 1.2 - use {@link #getUri()} instead. */
 		String getURI();
 	}
 
+	/** External object: <code>node.externalObject</code> - read-write. */
 	interface ExternalObject extends ExternalObjectRO {
 		/** setting null uri means remove external object. */
 		void setUri(String uri);
-
+		
 		/** set to 1.0 to set it to 100%. If the node has no object assigned this method does nothing. */
 		void setZoom(float zoom);
-
+		
 		/** @deprecated since 1.2 - use {@link #setUri(String)} instead. */
 		void setURI(String uri);
 	}
 
+	/** Node's font: <code>node.style.font</code> - read-only. */
 	interface FontRO {
 		String getName();
 
@@ -365,6 +395,7 @@ public interface Proxy {
 		boolean isSizeSet();
 	}
 
+	/** Node's font: <code>node.style.font</code> - read-write. */
 	interface Font extends FontRO {
 		void resetBold();
 
@@ -383,12 +414,14 @@ public interface Proxy {
 		void setSize(int size);
 	}
 
+	/** Node's icons: <code>node.icons</code> - read-only. */
 	interface IconsRO {
 		/** returns List<Node> of Strings (corresponding to iconID above);
 		 * iconID is one of "Idea","Question","Important", etc. */
 		List<String> getIcons();
 	}
 
+	/** Node's icons: <code>node.icons</code> - read-write. */
 	interface Icons extends IconsRO {
 		/**
 		 * adds an icon to a node if an icon for the given key can be found. The same icon can be added multiple
@@ -411,7 +444,9 @@ public interface Proxy {
 		boolean removeIcon(String name);
 	}
 
-	/** None of the getters will throw an exception, even if you call, e.g. getNode() on a File link.
+	/** Node's link: <code>node.link</code> - read-only.
+	 * <p>
+	 * None of the getters will throw an exception, even if you call, e.g. getNode() on a File link.
 	 * Instead they will return null. To check the link type evaluate getUri().getScheme() or the result
 	 * of the special getters.*/
 	interface LinkRO {
@@ -436,6 +471,7 @@ public interface Proxy {
 		String get();
 	}
 
+	/** Node's link: <code>node.link</code> - read-write. */
 	interface Link extends LinkRO {
 		/** target is a stringified URI. Removes any link if uri is null.
 		 * To get a local link (i.e. to another node) target should be: "#" + nodeId or better use setNode(Node).
@@ -462,6 +498,7 @@ public interface Proxy {
 		boolean set(String target);
 	}
 
+	/** The map a node belongs to: <code>node.map</code> - read-only. */
 	interface MapRO {
 		/** @since 1.2 */
 		Node getRoot();
@@ -480,9 +517,10 @@ public interface Proxy {
 		String getName();
 	}
 
+	/** The map a node belongs to: <code>node.map</code> - read-write. */
 	interface Map extends MapRO {
 		/**
-		 * closes a map. Note that there is no undo for this method.
+		 * closes a map. Note that there is <em>no undo</em> for this method!
 		 * @param force close map even if there are unsaved changes.
 		 * @param allowInteraction if (allowInteraction && ! force) a saveAs dialog will be opened if there are
 		 *        unsaved changes.
@@ -493,7 +531,7 @@ public interface Proxy {
 		boolean close(boolean force, boolean allowInteraction);
 
 		/**
-		 * saves the map to disk. Note that there is no undo for this method.
+		 * saves the map to disk. Note that there is <em>no undo</em> for this method.
 		 * @param allowInteraction if a saveAs dialog should be opened if the map has no assigned URL so far.
 		 * @return false if the saveAs was cancelled by the user and true otherwise.
 		 * @throws RuntimeException if the map has no assigned URL and parameter allowInteraction is false.
@@ -502,6 +540,7 @@ public interface Proxy {
 		boolean save(boolean allowInteraction);
 	}
 
+	/** The currently selected node: <code>node</code> - read-only. */
 	interface NodeRO {
 		Attributes getAttributes();
 
@@ -610,9 +649,9 @@ public interface Proxy {
 		 * <dt>node.to.text <dd>an alias for getString(), see {@link Convertible#getText()}.
 		 * <dt>node.to.object <dd>returns what fits best, see {@link Convertible#getObject()}.
 		 * </dl>
-		 * Note that parse errors result in {@link ConversionException}s.
 		 * @return ConvertibleObject
-		 * @throws ExecuteScriptException 
+		 * @throws ExecuteScriptException on formula evaluation errors
+		 * @throws ConversionException on parse errors, e.g. if to.date is invoked on "0.25"
 		 * @since 1.2
 		 */
 		Convertible getTo();
@@ -660,6 +699,7 @@ public interface Proxy {
 		Date getCreatedAt();
 	}
 
+	/** The currently selected node: <code>node</code> - read-write. */
 	interface Node extends NodeRO {
 		Connector addConnectorTo(Node target);
 
@@ -834,6 +874,7 @@ public interface Proxy {
 		void setAttributes(java.util.Map<String, Object> attributes);
 	}
 
+	/** Node's style: <code>node.style</code> - read-only. */
 	interface NodeStyleRO {
 		IStyle getStyle();
 
@@ -864,6 +905,7 @@ public interface Proxy {
 		String getTextColorCode();
 	}
 
+	/** Node's style: <code>node.style</code> - read-write. */
 	interface NodeStyle extends NodeStyleRO {
 		void setStyle(IStyle style);
 

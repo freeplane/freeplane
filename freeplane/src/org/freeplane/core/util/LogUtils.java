@@ -32,6 +32,18 @@ import java.util.logging.Logger;
 import org.freeplane.core.resources.ResourceController;
 
 /**
+ * Utilities for logging to the standard logfile.
+ * <p>
+ * In scripts this class can be accessed via the "global" variable <code>logger</code>,
+ * so this is the way to log in scripts:
+ * <pre>
+ *  try {
+ *      logger.info("this node as date: " + node.to.date)
+ *  } catch (Exception ex) {
+ *      logger.severe('error on conversion of "' + node.text + '" to date', ex)
+ *  }
+ * </pre>
+ * 
  * @author foltin
  */
 public class LogUtils {
