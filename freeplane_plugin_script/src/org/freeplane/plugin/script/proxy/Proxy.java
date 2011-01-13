@@ -135,14 +135,12 @@ public interface Proxy {
 
 		String getMiddleLabel();
 
-		// FIXME: beware!
 		Node getSource();
 
 		String getSourceLabel();
 
 		ArrowType getStartArrow();
 
-		// FIXME: beware!
 		Node getTarget();
 
 		String getTargetLabel();

@@ -144,7 +144,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
-	public Collection<Connector> getConnectorsIn() {
+	public Collection<Proxy.Connector> getConnectorsIn() {
 		return new ConnectorInListProxy(this);
 	}
 
