@@ -20,14 +20,35 @@ import org.freeplane.features.common.link.ArrowType;
 import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.plugin.script.ExecuteScriptException;
 
+/**
+ * This interface alone defines the api for accessing the internal state of the Freeplane. All read-write methods
+ * and properties (with rare, documented exceptions in {@link Controller} and {@link Map}) support undo and
+ * rollback on exceptions.
+ * <p>
+ * Every Proxy subinterface comes in two variants:
+ * <ul>
+ * <li>A read-only interface, like {@link NodeRO}. This collects only the methods that don't change the
+ *     underlying object (in case of <code>NodeRO</code> this would be <code>NodeModel</code>.
+ * <li>A read-write interface, like {@link Node}. This inherits from the respective read-only interface all its
+ *     methods and properties and adds write access to the underlying object.
+ * </ul>
+ * The main point of this distinction are formulas: <em>Only the methods defined in the read-only interfaces are
+ * supported in Formulas!</em>. Changing values in a Formula are against the Formula concept and lead to corruption
+ * of the caching mechanism for Formulas.
+ */
 public interface Proxy {
+	/** Node's attribute table: <code>node.attributes</code> - read-only.
+	 * <p>
+	 * Attributes are name - value pairs assigned to a node. A node may have multiple attributes
+	 * with the same name. */
 	interface AttributesRO {
-		/** alias for {@link #getFirst(int)}.
-		 * @deprecated before 1.1 - use {@link #get(int)}, {@link #getFirst(int)} or {@link #getAll(String)} instead. */
+		/** alias for {@link #getFirst(String)}.
+		 * @deprecated before 1.1 - use {@link #get(int)}, {@link #getFirst(String)} or {@link #getAll(String)} instead. */
 		@Deprecated
 		String get(final String name);
 
-		/** returns the <em>first</em> value of an attribute with the given name or null otherwise. @since 1.2 */
+		/** returns the <em>first</em> value of an attribute with the given name or null otherwise.
+		 * @since 1.2 */
 		String getFirst(final String name);
 
 		/** returns all values for the attribute name. */
@@ -56,15 +77,15 @@ public interface Proxy {
 
 		/** returns the index of the first attribute with the given name if one exists or -1 otherwise.
 		 * For searches for <em>all</em> attributes with a given name <code>getAttributeNames()</code>
-		 * must be used. @since 1.2*/
+		 * must be used.
+		 * @since 1.2*/
 		int findFirst(final String name);
 
 		/** the number of attributes. It is <code>size() == getAttributeNames().size()</code>. */
 		int size();
 	}
 
-	/** Attributes are name - value pairs assigned to a node. A node may have multiple attributes
-	 * with the same name. */
+	/** Node's attribute table: <code>node.attributes</code> - read-write. */
 	interface Attributes extends AttributesRO {
 		/** sets the value of the attribute at an index. This method will not create new attributes.
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
@@ -77,13 +98,13 @@ public interface Proxy {
 		void set(final int index, final String name, final String value);
 
 		/** removes the <em>first</em> attribute with this name.
-		 * @returns true on removal of an existing attribute and false otherwise.
+		 * @return true on removal of an existing attribute and false otherwise.
 		 * @deprecated before 1.1 - use {@link #remove(int)} or {@link #removeAll(String)} instead. */
 		@Deprecated
 		boolean remove(final String name);
 
 		/** removes <em>all</em> attributes with this name.
-		 * @returns true on removal of an existing attribute and false otherwise. */
+		 * @return true on removal of an existing attribute and false otherwise. */
 		boolean removeAll(final String name);
 
 		/** removes the attribute at the given index.
@@ -98,10 +119,13 @@ public interface Proxy {
 		/** adds an attribute no matter if an attribute with the given name already exists. */
 		void add(final String name, final String value);
 
-		/** removes all attributes. @since 1.2 */
+		/** removes all attributes.
+		 * @since 1.2 */
 		void clear();
 	}
 
+	/** Graphical connector between nodes:<code>node.connectorsIn</code> / <code>node.connectorsOut</code>
+	 * - read-only. */
 	interface ConnectorRO {
 		Color getColor();
 
@@ -126,6 +150,8 @@ public interface Proxy {
 		boolean simulatesEdge();
 	}
 
+	/** Graphical connector between nodes:<code>node.connectorsIn</code> / <code>node.connectorsOut</code>
+	 * - read-write. */
 	interface Connector extends ConnectorRO {
 		void setColor(Color color);
 
@@ -146,6 +172,7 @@ public interface Proxy {
 		void setTargetLabel(String label);
 	}
 
+	/** Access to global state: <code>c</code> - read-only. */
 	interface ControllerRO {
 		/** if multiple nodes are selected returns one (arbitrarily chosen)
 		 * selected node or the selected node for a single node selection. */
@@ -177,7 +204,7 @@ public interface Proxy {
 
 		/** Starting from the root node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
-		 * @see Node.find(ICondition) for searches on subtrees
+		 * @see Node#find(ICondition) for searches on subtrees
 		 * @deprecated since 1.2 use {@link #find(Closure)} instead. */
 		List<Node> find(ICondition condition);
 
@@ -200,7 +227,7 @@ public interface Proxy {
 		 * @param closure a Groovy closure that returns a boolean value. The closure will receive
 		 *        a NodeModel as an argument which can be tested for a match.
 		 * @return all nodes for which <code>closure.call(NodeModel)</code> returns true.
-		 * @see Node.find(Closure) for searches on subtrees
+		 * @see Node#find(Closure) for searches on subtrees
 		 */
 		List<Node> find(Closure closure);
 
@@ -215,7 +242,7 @@ public interface Proxy {
 		 *  2
 		 * </pre>
 		 * [1, 1.1, 1.1.1, 1.1.2, 1.2, 2] is returned.
-		 * @see Node.find(Closure) for searches on subtrees
+		 * @see Node#find(Closure) for searches on subtrees
 		 * @since 1.2 */
 		List<Node> findAll();
 
@@ -230,13 +257,22 @@ public interface Proxy {
 		 *  2
 		 * </pre>
 		 * [1.1.1, 1.1.2, 1.1, 1.2, 1, 2] is returned.
-		 * @see Node.find() for subtrees
+		 * @see Node#findAllDepthFirst() for subtrees
 		 * @since 1.2 */
 		List<Node> findAllDepthFirst();
 	}
 
+	/** Access to global state: <code>c</code> - read-write. */
 	interface Controller extends ControllerRO {
 		void centerOnNode(Node center);
+
+		/** Starts editing node, normally in the inline editor. Does not block until edit has finished.
+		 * @since 1.2.2 */
+		void edit(Node node);
+
+		/** opens the appropriate popup text editor. Does not block until edit has finished.
+		 * @since 1.2.2 */
+		void editInPopup(Node node);
 
 		void select(Node toSelect);
 
@@ -249,17 +285,19 @@ public interface Proxy {
 		/** reset undo / redo lists and deactivate Undo for current script */
 		void deactivateUndo();
 
-		/** invokes undo once - for testing purposes mainly. @since 1.2 */
+		/** invokes undo once - for testing purposes mainly.
+		 * @since 1.2 */
 		void undo();
 
-		/** invokes redo once - for testing purposes mainly. @since 1.2 */
+		/** invokes redo once - for testing purposes mainly.
+		 * @since 1.2 */
 		void redo();
 
 		/** The main info for the status line with key="standard", use null to remove. Removes icon if there is one. */
 		void setStatusInfo(String info);
 
 		/** Info for status line, null to remove. Removes icon if there is one.
-		 * @see {@link #setStatusInfo(String, String, String)} */
+		 * @see #setStatusInfo(String, String, String) */
 		void setStatusInfo(String infoPanelKey, String info);
 
 		/** Info for status line - text and icon - null stands for "remove" (text or icon)
@@ -278,13 +316,16 @@ public interface Proxy {
 		/** @deprecated since 1.2 - use {@link #setStatusInfo(String, String, String)} */
 		void setStatusInfo(String infoPanelKey, Icon icon);
 
-		/** opens a new map with a default name in the foreground. @since 1.2 */
+		/** opens a new map with a default name in the foreground.
+		 * @since 1.2 */
 		Map newMap();
 
-		/** opens a new map for url in the foreground if it isn't opened already. @since 1.2 */
+		/** opens a new map for url in the foreground if it isn't opened already.
+		 * @since 1.2 */
 		Map newMap(URL url);
 	}
 
+	/** Edge to parent node: <code>node.style.edge</code> - read-only. */
 	interface EdgeRO {
 		Color getColor();
 
@@ -295,6 +336,7 @@ public interface Proxy {
 		int getWidth();
 	}
 
+	/** Edge to parent node: <code>node.style.edge</code> - read-write. */
 	interface Edge extends EdgeRO {
 		void setColor(Color color);
 
@@ -308,20 +350,33 @@ public interface Proxy {
 		void setWidth(int width);
 	}
 
+	/** External object: <code>node.externalObject</code> - read-only. */
 	interface ExternalObjectRO {
-		/** empty string means that there's no external object */
-		String getURI();
+		/** returns the object's uri if set or null otherwise.
+		 * @since 1.2 */
+		String getUri();
 
+		/** returns the current zoom level as ratio, i.e. 1.0 is returned for 100%.
+		 * If there is no external object 1.0 is returned. */
 		float getZoom();
+		
+		/** @deprecated since 1.2 - use {@link #getUri()} instead. */
+		String getURI();
 	}
 
+	/** External object: <code>node.externalObject</code> - read-write. */
 	interface ExternalObject extends ExternalObjectRO {
-		/** setting empty String uri means remove external object (as for Links); */
-		void setURI(String uri);
-
+		/** setting null uri means remove external object. */
+		void setUri(String uri);
+		
+		/** set to 1.0 to set it to 100%. If the node has no object assigned this method does nothing. */
 		void setZoom(float zoom);
+		
+		/** @deprecated since 1.2 - use {@link #setUri(String)} instead. */
+		void setURI(String uri);
 	}
 
+	/** Node's font: <code>node.style.font</code> - read-only. */
 	interface FontRO {
 		String getName();
 
@@ -340,6 +395,7 @@ public interface Proxy {
 		boolean isSizeSet();
 	}
 
+	/** Node's font: <code>node.style.font</code> - read-write. */
 	interface Font extends FontRO {
 		void resetBold();
 
@@ -358,12 +414,14 @@ public interface Proxy {
 		void setSize(int size);
 	}
 
+	/** Node's icons: <code>node.icons</code> - read-only. */
 	interface IconsRO {
 		/** returns List<Node> of Strings (corresponding to iconID above);
 		 * iconID is one of "Idea","Question","Important", etc. */
 		List<String> getIcons();
 	}
 
+	/** Node's icons: <code>node.icons</code> - read-write. */
 	interface Icons extends IconsRO {
 		/**
 		 * adds an icon to a node if an icon for the given key can be found. The same icon can be added multiple
@@ -386,7 +444,9 @@ public interface Proxy {
 		boolean removeIcon(String name);
 	}
 
-	/** None of the getters will throw an exception, even if you call, e.g. getNode() on a File link.
+	/** Node's link: <code>node.link</code> - read-only.
+	 * <p>
+	 * None of the getters will throw an exception, even if you call, e.g. getNode() on a File link.
 	 * Instead they will return null. To check the link type evaluate getUri().getScheme() or the result
 	 * of the special getters.*/
 	interface LinkRO {
@@ -399,7 +459,7 @@ public interface Proxy {
 		URI getUri();
 
 		/** returns the link as File if defined and if the link target is a valid File URI and null otherwise.
-		 * @see {@link File(URI)}.
+		 * @see File#File(URI).
 		 * @since 1.2 */
 		File getFile();
 
@@ -407,10 +467,11 @@ public interface Proxy {
 		 * @since 1.2 */
 		Node getNode();
 
-		/** @deprecated since 1.2 - use {@link #getTarget()} instead. */
+		/** @deprecated since 1.2 - use {@link #getText()} instead. */
 		String get();
 	}
 
+	/** Node's link: <code>node.link</code> - read-write. */
 	interface Link extends LinkRO {
 		/** target is a stringified URI. Removes any link if uri is null.
 		 * To get a local link (i.e. to another node) target should be: "#" + nodeId or better use setNode(Node).
@@ -432,11 +493,12 @@ public interface Proxy {
 		 * @since 1.2 */
 		void setNode(Node node);
 
-		/** @deprecated since 1.2 - use {@link #setTarget(String)} instead.
+		/** @deprecated since 1.2 - use {@link #setText(String)} instead.
 		 * @return true if target could be converted to an URI and false otherwise. */
 		boolean set(String target);
 	}
 
+	/** The map a node belongs to: <code>node.map</code> - read-only. */
 	interface MapRO {
 		/** @since 1.2 */
 		Node getRoot();
@@ -450,14 +512,16 @@ public interface Proxy {
 		/** returns the physical location of the map if available or null otherwise. */
 		File getFile();
 
-		/** returns the title of the MapView. @since 1.2 */
+		/** returns the title of the MapView.
+		 * @since 1.2 */
 		String getName();
 	}
 
+	/** The map a node belongs to: <code>node.map</code> - read-write. */
 	interface Map extends MapRO {
 		/**
-		 * closes a map. Note that there is no undo for this method.
-		 * @param close map even if there are unsaved changes.
+		 * closes a map. Note that there is <em>no undo</em> for this method!
+		 * @param force close map even if there are unsaved changes.
 		 * @param allowInteraction if (allowInteraction && ! force) a saveAs dialog will be opened if there are
 		 *        unsaved changes.
 		 * @return false if the saveAs was cancelled by the user and true otherwise.
@@ -467,7 +531,7 @@ public interface Proxy {
 		boolean close(boolean force, boolean allowInteraction);
 
 		/**
-		 * saves the map to disk. Note that there is no undo for this method.
+		 * saves the map to disk. Note that there is <em>no undo</em> for this method.
 		 * @param allowInteraction if a saveAs dialog should be opened if the map has no assigned URL so far.
 		 * @return false if the saveAs was cancelled by the user and true otherwise.
 		 * @throws RuntimeException if the map has no assigned URL and parameter allowInteraction is false.
@@ -476,6 +540,7 @@ public interface Proxy {
 		boolean save(boolean allowInteraction);
 	}
 
+	/** The currently selected node: <code>node</code> - read-only. */
 	interface NodeRO {
 		Attributes getAttributes();
 
@@ -509,7 +574,8 @@ public interface Proxy {
 
 		Collection<Connector> getConnectorsOut();
 
-		/** returns the raw HTML text of the details if there is any or null otherwise. @since 1.2 */
+		/** returns the raw HTML text of the details if there is any or null otherwise.
+		 * @since 1.2 */
 		String getDetailsText();
 
 		/** returns the text of the details as a Convertible like {@link #getNote()} for notes.
@@ -562,14 +628,16 @@ public interface Proxy {
 
 		NodeStyle getStyle();
 
-		/** use this method to remove all tags from an HTML node. Formulas are not evaluated. @since 1.2 */
+		/** use this method to remove all tags from an HTML node. Formulas are not evaluated.
+		 * @since 1.2 */
 		String getPlainText();
 
 		/** use this method to remove all tags from an HTML node.
 		 * @deprecated since 1.2 - use getPlainText() or getTo().getPlain() instead. */
 		String getPlainTextContent();
 
-		/** The raw text of this node. Use {@link #getPlainText()} to remove HTML. @since 1.2 */
+		/** The raw text of this node. Use {@link #getPlainText()} to remove HTML.
+		 * @since 1.2 */
 		String getText();
 
 		/**
@@ -581,15 +649,16 @@ public interface Proxy {
 		 * <dt>node.to.text <dd>an alias for getString(), see {@link Convertible#getText()}.
 		 * <dt>node.to.object <dd>returns what fits best, see {@link Convertible#getObject()}.
 		 * </dl>
-		 * Note that parse errors result in {@link ConversionException}s.
 		 * @return ConvertibleObject
-		 * @throws ExecuteScriptException 
+		 * @throws ExecuteScriptException on formula evaluation errors
+		 * @throws ConversionException on parse errors, e.g. if to.date is invoked on "0.25"
 		 * @since 1.2
 		 */
 		Convertible getTo();
 
-		/** an alias for {@link #getTo()}. @since 1.2 
-		 * @throws ExecuteScriptException */
+		/** an alias for {@link #getTo()}.
+		 * @throws ExecuteScriptException
+		 * @since 1.2 */
 		Convertible getValue();
 
 		/** returns true if p is a parent, or grandparent, ... of this node, or if it <em>is equal<em>
@@ -616,12 +685,12 @@ public interface Proxy {
 		List<Node> find(Closure closure);
 
 		/** Returns all nodes of the map in breadth-first order.
-		 * @see Controller.findAll() for subtrees
+		 * @see Controller#findAll() for subtrees
 		 * @since 1.2 */
 		List<Node> findAll();
 		
 		/** Returns all nodes of the map in depth-first order.
-		 * @see Controller.findAllDepthFirst() for subtrees.
+		 * @see Controller#findAllDepthFirst() for subtrees.
 		 * @since 1.2 */
 		List<Node> findAllDepthFirst();
 
@@ -630,6 +699,7 @@ public interface Proxy {
 		Date getCreatedAt();
 	}
 
+	/** The currently selected node: <code>node</code> - read-write. */
 	interface Node extends NodeRO {
 		Connector addConnectorTo(Node target);
 
@@ -644,7 +714,7 @@ public interface Proxy {
 
 		/** same as {@link #createChild()} but sets the node text to the given text.
 		 * @since 1.2 */
-		Node createChild(String text);
+		Node createChild(Object value);
 
 		/** inserts *new* node as child, takes care of all construction work and
 		 * internal stuff */
@@ -668,7 +738,7 @@ public interface Proxy {
 		 * 
 		 * If the conversion result is not valid HTML it will be automatically converted to HTML.
 		 * 
-		 * @param value An object for conversion to String. Use null to unset the details. Works well for all types
+		 * @param details An object for conversion to String. Use null to unset the details. Works well for all types
 		 *        that {@link Convertible} handles, particularly {@link Convertible}s itself.
 		 * @since 1.2
 		 */
@@ -717,7 +787,7 @@ public interface Proxy {
 		 */
 		void setNote(Object value);
 
-		/** @deprecated since 1.2 - use {@link #setNote()} instead. */
+		/** @deprecated since 1.2 - use {@link #setNote(Object)} instead. */
 		void setNoteText(String text);
 
 		/**
@@ -804,9 +874,16 @@ public interface Proxy {
 		void setAttributes(java.util.Map<String, Object> attributes);
 	}
 
+	/** Node's style: <code>node.style</code> - read-only. */
 	interface NodeStyleRO {
 		IStyle getStyle();
 
+		/** Returns the name of the node's style if set or null otherwise. For styles with translated names the
+		 * translation key is returned to make the process robust against language setting changes.
+		 * It's guaranteed that <code>node.style.name = node.style.name</code> does not change the style.
+		 * @since 1.2.2 */
+		String getName();
+		
 		Node getStyleNode();
 
 		Color getBackgroundColor();
@@ -828,8 +905,19 @@ public interface Proxy {
 		String getTextColorCode();
 	}
 
+	/** Node's style: <code>node.style</code> - read-write. */
 	interface NodeStyle extends NodeStyleRO {
-		void setStyle(IStyle key);
+		void setStyle(IStyle style);
+
+		/** Selects a style by name, see menu Styles -> Pre/Userdefined styles for valid style names or use
+		 * {@link #getName()} to display the name of a node's style.
+		 * It's guaranteed that <code>node.style.name = node.style.name</code> does not change the style.
+		 * @param styleName can be the name visible in the style menu or its translation key as returned by
+		 *        {@link #getName()}. (Names of predefined styles are subject to translation.)
+		 *        Only translation keys will continue to work if the language setting is changed.
+		 * @throws IllegalArgumentException if the style does not exist.
+		 * @since 1.2.2 */
+		void setName(String styleName);
 
 		void setBackgroundColor(Color color);
 

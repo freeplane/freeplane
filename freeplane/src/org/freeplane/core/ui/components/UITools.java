@@ -36,7 +36,6 @@ import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -52,17 +51,23 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
+ * Utilities for accessing the GUI, creating dialogs etc.
+ * <p>
+ * In scripts this class can be accessed via the "global" variable <code>ui</code>,
+ * so this would be a simple way of opening a info popup:
+ * <pre>
+ * ui.informationMessage("Hello World!")
+ * ui.informationMessage(ui.frame, "Hello World!") // longer version, equivalent
+ * </pre>
+ * 
  * @author Dimitry Polivaev
- * 29.12.2008
+ * @since 29.12.2008
  */
 public class UITools {
 	public static final String MAIN_FREEPLANE_FRAME = "mainFreeplaneFrame";
 
 	public static void addEscapeActionToDialog(final JDialog dialog) {
 		class EscapeAction extends AbstractAction {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent e) {
@@ -352,20 +357,21 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
 
 	public static final Dimension MAX_BUTTON_DIMENSION = new Dimension(1000, 1000);
 
-	public static Controller getController(Component c) {
-		if(c == null){
-			return null;
-		}
-	    final JRootPane rootPane = SwingUtilities.getRootPane(c);
-		if(rootPane == null){
-			return null;
-		}
-	    Controller controller = (Controller) rootPane.getClientProperty(Controller.class);
-	    if(controller != null){
-	    	return controller;
-	    }
-	    return getController(JOptionPane.getFrameForComponent(rootPane));
-    }
+// FIXME: not used - can we remove it? -- Volker
+//	public static Controller getController(Component c) {
+//		if(c == null){
+//			return null;
+//		}
+//	    final JRootPane rootPane = SwingUtilities.getRootPane(c);
+//		if(rootPane == null){
+//			return null;
+//		}
+//	    Controller controller = (Controller) rootPane.getClientProperty(Controller.class);
+//	    if(controller != null){
+//	    	return controller;
+//	    }
+//	    return getController(JOptionPane.getFrameForComponent(rootPane));
+//    }
 
 	public static void focusOn(JComponent component) {
 		component.addAncestorListener(new AncestorListener() {

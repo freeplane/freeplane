@@ -4,7 +4,9 @@
 package org.freeplane.plugin.script.proxy;
 
 import java.awt.Color;
+import java.util.Set;
 
+import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -12,6 +14,8 @@ import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleModel;
 import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.styles.StyleFactory;
+import org.freeplane.features.common.styles.StyleNamedObject;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.styles.MLogicalStyleController;
 import org.freeplane.plugin.script.ScriptContext;
@@ -22,8 +26,18 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		super(delegate, scriptContext);
 	}
 
-	public void setStyle(final IStyle key) {
-		getLogicalStyleController().setStyle(getDelegate(), key);
+	public IStyle getStyle() {
+		return LogicalStyleModel.getStyle(getDelegate());
+	}
+
+	public String getName() {
+	    final IStyle style = getStyle();
+		return style == null ? null : StyleNamedObject.toKeyString(style);
+    }
+
+	public Node getStyleNode() {
+		final NodeModel styleNode = MapStyleModel.getExtension(getDelegate().getMap()).getStyleNode(getStyle());
+		return new NodeProxy(styleNode, getScriptContext());
 	}
 
 	public Color getBackgroundColor() {
@@ -63,6 +77,41 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		return (MNodeStyleController) NodeStyleController.getController();
 	}
 
+	public void setStyle(final IStyle key) {
+		getLogicalStyleController().setStyle(getDelegate(), key);
+	}
+
+	public void setName(String styleName) {
+		if (styleName == null) {
+			setStyle(null);
+		}
+		else {
+			final MapStyleModel mapStyleModel = MapStyleModel.getExtension(getDelegate().getMap());
+			// actually styles is a HashSet so lookup is fast
+			final Set<IStyle> styles = mapStyleModel.getStyles();
+			// search for user defined styles
+			final IStyle styleString = StyleFactory.create(styleName);
+			if (styles.contains(styleString)) {
+				setStyle(styleString);
+				return;
+			}
+			// search for predefined styles by key
+			final IStyle styleNamedObject = StyleFactory.create(new NamedObject(styleName));
+			if (styles.contains(styleNamedObject)) {
+				setStyle(styleNamedObject);
+				return;
+			}
+			// search for predefined styles by their translated name (style.toString())
+			for (IStyle style : styles) {
+				if (style.toString().equals(styleName)) {
+					setStyle(style);
+					return;
+				}
+			}
+			throw new IllegalArgumentException("style '" + styleName + "' not found");
+		}
+	}
+
 	public void setBackgroundColor(final Color color) {
 		getStyleController().setBackgroundColor(getDelegate(), color);
 	}
@@ -82,14 +131,5 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 
 	public void setTextColorCode(final String rgbString) {
 		setTextColor(ColorUtils.stringToColor(rgbString));
-	}
-
-	public IStyle getStyle() {
-		return LogicalStyleModel.getStyle(getDelegate());
-	}
-
-	public Node getStyleNode() {
-		final NodeModel styleNode = MapStyleModel.getExtension(getDelegate().getMap()).getStyleNode(getStyle());
-		return new NodeProxy(styleNode, getScriptContext());
 	}
 }
