@@ -20,10 +20,16 @@ class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.Exte
 	private ExternalResource getExternalObjectModel() {
 		return (ExternalResource) getDelegate().getExtension(ExternalResource.class);
 	}
-
-	public String getURI() {
+	
+	public String getUri() {
 		final ExternalResource externalObject = getExternalObjectModel();
-		return externalObject.getUri().toString();
+		final URI uri = externalObject == null ? null : externalObject.getUri();
+		return uri == null ? null : uri.toString();
+	}
+	
+	@Deprecated
+	public String getURI() {
+		return getUri();
 	}
 
 	private ViewerController getViewerController() {
@@ -32,26 +38,37 @@ class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.Exte
 
 	public float getZoom() {
 		final ExternalResource externalObject = getExternalObjectModel();
-		return externalObject.getZoom();
+		return externalObject == null ? 1f : externalObject.getZoom();
 	}
 
-	public void setURI(final String uri) {
+	public void setUri(final String uri) {
+		ExternalResource externalObject = getExternalObjectModel();
 		try {
-			ExternalResource externalObject = getExternalObjectModel();
 			if (externalObject != null) {
+				if (uri == null) {
+					// remove object
+					getViewerController().undoableToggleHook(getDelegate(), null);
+					return;
+				}
+				getViewerController().undoableToggleHook(getDelegate(), externalObject);
+				externalObject = new ExternalResource();
+				externalObject.setUri(new URI(uri));
 				getViewerController().undoableToggleHook(getDelegate(), externalObject);
 			}
-			externalObject = new ExternalResource();
-			externalObject.setUri(new URI(uri));
-			getViewerController().undoableToggleHook(getDelegate(), externalObject);
 		}
 		catch (final URISyntaxException e) {
 			LogUtils.warn(e);
 		}
 	}
+	
+	@Deprecated
+	public void setURI(final String uri) {
+		setUri(uri);
+	}
 
 	public void setZoom(final float zoom) {
 		final ExternalResource externalObject = getExternalObjectModel();
-		getViewerController().setZoom(getModeController(), getDelegate().getMap(), externalObject, zoom);
+		if (externalObject != null)
+			getViewerController().setZoom(getModeController(), getDelegate().getMap(), externalObject, zoom);
 	}
 }

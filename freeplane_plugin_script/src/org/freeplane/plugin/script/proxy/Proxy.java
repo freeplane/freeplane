@@ -324,17 +324,27 @@ public interface Proxy {
 	}
 
 	interface ExternalObjectRO {
-		/** empty string means that there's no external object */
-		String getURI();
+		/** returns the object's uri if set or null otherwise.
+		 * @since 1.2 */
+		String getUri();
 
+		/** returns the current zoom level as ratio, i.e. 1.0 is returned for 100%.
+		 * If there is no external object 1.0 is returned. */
 		float getZoom();
+
+		/** @deprecated since 1.2 - use {@link #getUri()} instead. */
+		String getURI();
 	}
 
 	interface ExternalObject extends ExternalObjectRO {
-		/** setting empty String uri means remove external object (as for Links); */
-		void setURI(String uri);
+		/** setting null uri means remove external object. */
+		void setUri(String uri);
 
+		/** set to 1.0 to set it to 100%. If the node has no object assigned this method does nothing. */
 		void setZoom(float zoom);
+
+		/** @deprecated since 1.2 - use {@link #setUri(String)} instead. */
+		void setURI(String uri);
 	}
 
 	interface FontRO {
