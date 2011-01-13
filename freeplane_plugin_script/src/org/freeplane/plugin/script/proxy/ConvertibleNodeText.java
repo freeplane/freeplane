@@ -6,6 +6,11 @@ import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.FormulaUtils;
 import org.freeplane.plugin.script.ScriptContext;
 
+/**
+ * A {@link Convertible} subclass as return type of {@link Node#getTo()}. Note that the nodeModel is only
+ * accessible for formula evaluation; Node.text is only read on construction, therefore text and nodeModel
+ * are not synchronized.
+ */
 public class ConvertibleNodeText extends Convertible {
 	/**
 	 * Uses the text or, in case of HTML nodes, plain text of the node as a basis.

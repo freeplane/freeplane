@@ -18,9 +18,7 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.util.HtmlUtils;
 
 /** Utility class that is used to convert node texts to different types.
- * <p>
- * <em>Warning:</em> The nodeModel is used for script invocation ({@link #getTo()}), not
- *          for accessing its properties. Therefore text and nodeModel are not synchronized */
+ * It's especially important for Formulas. */
 // Unfortunately it seems impossible to implement Comparable<Object> since in this case
 // TypeTransformation.compareToWithEqualityCheck() is called and will return false for
 //   assert new Comparable(2) == "2"
