@@ -70,14 +70,9 @@ public class EdgeController implements IExtension {
 		});
 		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(NodeModel node, final Color currentValue) {
-				for(node = node.getParentNode();node != null; node = node.getParentNode()){
-					final EdgeModel edgeModel = EdgeModel.getModel(node);
-					if(edgeModel != null) {
-						final Color color = edgeModel.getColor();
-						if (color  != null){
-							return color;
-						}
-					}
+				final NodeModel parentNode = node.getParentNode();
+				if(parentNode != null){
+					return getColor(parentNode);
 				}
 				return STANDARD_EDGE_COLOR;
 			}
@@ -89,14 +84,9 @@ public class EdgeController implements IExtension {
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<EdgeStyle, NodeModel>() {
 			public EdgeStyle getProperty(NodeModel node, final EdgeStyle currentValue) {
-				for(node = node.getParentNode();node != null; node = node.getParentNode()){
-					final EdgeModel edgeModel = EdgeModel.getModel(node);
-					if(edgeModel != null) {
-						final EdgeStyle style = edgeModel.getStyle();
-						if (style  != null){
-							return style;
-						}
-					}
+				final NodeModel parentNode = node.getParentNode();
+				if(parentNode != null){
+					return getStyle(parentNode);
 				}
 				return STANDARD_EDGE_STYLE;
 			}
@@ -109,14 +99,9 @@ public class EdgeController implements IExtension {
 		
 		addWidthGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Integer, NodeModel>() {
 			public Integer getProperty(NodeModel node, final Integer currentValue) {
-				for(node =  node.getParentNode();node != null;node = node.getParentNode()){
-					final EdgeModel edgeModel = EdgeModel.getModel(node);
-					if(edgeModel != null) {
-						final int width = edgeModel.getWidth();
-						if (width  != EdgeModel.DEFAULT_WIDTH){
-							return width;
-						}
-					}
+				final NodeModel parentNode = node.getParentNode();
+				if(parentNode != null){
+					return getWidth(parentNode);
 				}
 				return new Integer(EdgeModel.WIDTH_THIN);
 			}
