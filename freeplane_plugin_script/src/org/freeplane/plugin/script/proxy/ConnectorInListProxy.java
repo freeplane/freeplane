@@ -4,6 +4,7 @@
 package org.freeplane.plugin.script.proxy;
 
 import java.util.AbstractCollection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -22,7 +23,8 @@ class ConnectorInListProxy extends AbstractCollection<Proxy.Connector> {
 	}
 
 	Set<LinkModel> getConnectorSet() {
-		return MapLinks.getLinks(node.getMap()).get(node.getID());
+		final Set<LinkModel> connectors = MapLinks.getLinks(node.getMap()).get(node.getID());
+		return connectors == null ? Collections.<LinkModel> emptySet() : connectors;
 	}
 
 	@Override
