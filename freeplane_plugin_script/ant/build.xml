@@ -65,6 +65,7 @@
 				<fileset dir="${workspace}/freeplane">
 					<include name="**/UITools.java" />
 					<include name="**/LogUtils.java" />
+					<include name="**/HtmlUtils.java" />
 					<include name="**/FreeplaneVersion.java" />
 				</fileset>
 			</sourcefiles>
