@@ -123,6 +123,7 @@
         <mkdir dir="${build.doc}" />
         <copy todir="${build.doc}">
             <fileset dir="${workspace}/freeplane/dist/doc" />
+            <fileset dir="${workspace}/freeplane_plugin_script/dist/doc" />
         </copy>
 
 	</target>
