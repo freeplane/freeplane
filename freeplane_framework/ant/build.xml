@@ -156,8 +156,6 @@
             failifexecutionfails="false" failonerror="false" logError="true">
             <arg value="info"/>
         </exec>
-		<fixcrlf srcdir="${build}"
-		         includes="bzrinfo.txt" eol="asis" />
 	</target>
 
 	<target name="binzip" depends="build, mkdistdir">
