@@ -87,13 +87,8 @@ public class ConnectorView extends AConnectorView{
 
 	/**
 	 */
-	private Point calcInclination(final NodeView node, final double dellength) {
-		/*
-		 * int w = node.getWidth(); int h = node.getHeight(); double r =
-		 * Math.sqrt(ww+hh); double wr = dellength w / r; double hr = dellength
-		 * h / r; return new Point((int)wr, (int)hr);
-		 */
-		return new Point((int) dellength, 0);
+	private Point calcInclination(final NodeView node, final int dellength) {
+		return new Point(dellength, 0);
 	}
 
 	/* (non-Javadoc)
@@ -304,7 +299,7 @@ public class ConnectorView extends AConnectorView{
 			targetIsLeft = target.isLeft();
 		}
 		if (connectorModel.getEndInclination() == null || connectorModel.getStartInclination() == null) {
-			final double dellength = isSourceVisible() && isTargetVisible() ? p1.distance(p2) / getZoom() : 30;
+			final int dellength = isSourceVisible() && isTargetVisible() ? Math.max(40, (int)(p1.distance(p2) / getZoom())) : 40;
 			if (isSourceVisible() && connectorModel.getStartInclination() == null) {
 				final Point incl = calcInclination(source, dellength);
 				connectorModel.setStartInclination(incl);
