@@ -51,10 +51,9 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 
 /**
- * Utilities for accessing the GUI, creating dialogs etc.
+ * Utilities for accessing the GUI, creating dialogs etc.: In scripts available as "global variable" <code>ui</code>.
  * <p>
- * In scripts this class can be accessed via the "global" variable <code>ui</code>,
- * so this would be a simple way of opening a info popup:
+ * In scripts this would be a simple way of opening a info popup:
  * <pre>
  * ui.informationMessage("Hello World!")
  * ui.informationMessage(ui.frame, "Hello World!") // longer version, equivalent

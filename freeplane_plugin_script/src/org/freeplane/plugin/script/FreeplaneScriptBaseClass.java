@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.script.proxy.Proxy.NodeRO;
 
@@ -42,6 +43,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	private Binding addStaticBindings(Binding binding) {
 		binding.setProperty("logger", new LogUtils());
 		binding.setProperty("ui", new UITools());
+		binding.setProperty("htmlUtils", HtmlUtils.getInstance());
 	    return binding;
     }
 

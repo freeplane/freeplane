@@ -1300,6 +1300,7 @@
 <node TEXT="Map local scripts may be defined within a map as attributes of some node. These scripts are embedded within a map, so they can be easily shipped as part of the map. A special, built in editor is used for editing map local scripts." ID="ID_1545994363" CREATED="1271022419501" MODIFIED="1272011807552"/>
 </node>
 <node TEXT="The Freeplane Wiki provides extensive information on scripting." ID="ID_476511397" CREATED="1271022540079" MODIFIED="1271022610939" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting"/>
+<node TEXT="Local JavaDoc API documentation" ID="ID_65277627" CREATED="1294959605777" MODIFIED="1294959700918" LINK="api/index.html"/>^M
 </node>
 <node TEXT="Import, Export and Integration" ID="ID_1155373089" CREATED="1271022654767" MODIFIED="1271024008314" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>

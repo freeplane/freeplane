@@ -13,6 +13,7 @@
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
 	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}:${jsyntaxpane.jar}"/>
+	<property name="apidocdir" value="dist/doc/api" />
 
 	<target name="build">
 		<mkdir dir="build" />
@@ -33,7 +34,7 @@
 		</jar>
 	</target>
 
-	<target name="dist" depends="build, prepare-nodehighlighter">
+	<target name="dist" depends="build, prepare-nodehighlighter, api">
 		<jar jarfile="lib/plugin.jar">
 			<fileset dir="build"/>
 			<fileset dir="src">
@@ -51,6 +52,24 @@
 		<mkdir dir="${dist.osgi.dir}/META-INF" />
 		<copyfile dest="${dist.osgi.dir}/META-INF/MANIFEST.MF" src="${osgimanifest}"/>
 		<delete file="lib/plugin.jar" quiet="true"/>
+	</target>
+
+	<target name="api">
+		<mkdir dir="${apidocdir}" />
+		<javadoc destdir="${apidocdir}" access="public" classpath="${classpath}:build">
+			<sourcefiles>
+				<fileset dir="${root}">
+					<include name="**/Proxy.java" />
+					<include name="**/Convertible.java" />
+				</fileset>
+				<fileset dir="${workspace}/freeplane">
+					<include name="**/UITools.java" />
+					<include name="**/LogUtils.java" />
+					<include name="**/HtmlUtils.java" />
+					<include name="**/FreeplaneVersion.java" />
+				</fileset>
+			</sourcefiles>
+		</javadoc>
 	</target>
 
 	<target name="osgi_dist_as_jar" depends="dist">
