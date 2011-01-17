@@ -413,8 +413,7 @@ public abstract class MainView extends ZoomableLabel {
     public void setToolTipText(String text) {
         String oldText = getToolTipText();
         putClientProperty(TOOL_TIP_TEXT_KEY, text);
-        NodeTooltipManager toolTipManager = NodeTooltipManager.getSharedInstance();
-//        ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
+        NodeTooltipManager toolTipManager = NodeTooltipManager.getSharedInstance(getMap().getModeController());
         if (text != null) {
 	    if (oldText == null) {
                 toolTipManager.registerComponent(this);

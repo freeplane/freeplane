@@ -21,13 +21,18 @@ import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.common.map.AMapChangeListenerAdapter;
+import org.freeplane.features.common.map.IMapChangeListener;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
 
-public class NodeTooltipManager{
+public class NodeTooltipManager implements IExtension{
 	private static final String TOOL_TIP_MANAGER = "toolTipManager.";
 	private static final String TOOL_TIP_MANAGER_INITIAL_DELAY = "toolTipManager.initialDelay";
-	private static NodeTooltipManager instance;
 	private Timer enterTimer;
 	private Timer exitTimer;
 	private String toolTipText;
@@ -41,24 +46,49 @@ public class NodeTooltipManager{
 	private JToolTip tip;
 	final private ComponentMouseListener componentMouseListener;
 
-	public static NodeTooltipManager getSharedInstance(){
-		if(instance == null){
-			instance = new NodeTooltipManager();
-			final int maxWidth = ResourceController.getResourceController().getIntProperty(
-			    "toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
-			NodeTooltip.setMaximumWidth(maxWidth);
-			setTooltipDelays();
-			ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
-				public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-					if (propertyName.startsWith(TOOL_TIP_MANAGER)) {
-						setTooltipDelays();
-					}
-				}
-			});
+	public static NodeTooltipManager getSharedInstance(ModeController modeController){
+		{
+			final NodeTooltipManager instance = (NodeTooltipManager) modeController.getExtension(NodeTooltipManager.class);
+			if(instance != null){
+				return instance;
+			}
 		}
+		final NodeTooltipManager instance = new NodeTooltipManager();
+		final int maxWidth = ResourceController.getResourceController().getIntProperty(
+			"toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
+		NodeTooltip.setMaximumWidth(maxWidth);
+		setTooltipDelays(instance);
+		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+				if (propertyName.startsWith(TOOL_TIP_MANAGER)) {
+					setTooltipDelays(instance);
+				}
+			}
+		});
+		IMapChangeListener mapChangeListener = new AMapChangeListenerAdapter() {
+
+			@Override
+            public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+				instance.hideTipWindow();
+            }
+
+			@Override
+            public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+				instance.hideTipWindow();
+            }
+
+			@Override
+            public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child,
+                                    int newIndex) {
+				instance.hideTipWindow();
+            }
+			
+		};
+		modeController.getMapController().addMapChangeListener(mapChangeListener);
+		modeController.addExtension(NodeTooltipManager.class, instance);
 		return instance;
 	}
-	private static void setTooltipDelays() {
+	private static void setTooltipDelays(NodeTooltipManager instance) {
 		final int initialDelay = ResourceController.getResourceController().getIntProperty(
 		    TOOL_TIP_MANAGER_INITIAL_DELAY, 0);
 		instance.setInitialDelay(initialDelay);
