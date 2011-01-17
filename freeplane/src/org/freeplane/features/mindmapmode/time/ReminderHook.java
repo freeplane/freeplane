@@ -19,12 +19,16 @@
  */
 package org.freeplane.features.mindmapmode.time;
 
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.TimerTask;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -47,6 +51,7 @@ import org.freeplane.features.common.map.ITooltipProvider;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 
 /**
  * @author foltin
@@ -134,21 +139,17 @@ public class ReminderHook extends PersistentNodeHook {
 	 */
 	public ReminderHook() {
 		super();
-		final JPanel timePanel = new JPanel();
 		final TimeManagement timeManagement = new TimeManagement(this);
-		timeManagement.init(timePanel, false, BoxLayout.Y_AXIS);
+		final JComponent timePanel = timeManagement.createTimePanel(null, false, BoxLayout.Y_AXIS);
+		timePanel.setBorder(BorderFactory.createTitledBorder(TextUtils.getText("calendar_panel")));
+		final JPanel tablePanel = new AttributePanelManager(Controller.getCurrentModeController()).getTablePanel();
+		tablePanel.setBorder(BorderFactory.createTitledBorder(TextUtils.getText("attributes_attribute")));
+		timePanel.add(tablePanel);
 		final JTabbedPane tabs = (JTabbedPane) Controller.getCurrentModeController().getUserInputListenerFactory().getToolBar("/format");
 		final JScrollPane timeScrollPane = new JScrollPane(timePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		UITools.setScrollbarIncrement(timeScrollPane);
-		tabs.add(TextUtils.getText("calendar_panel"), timeScrollPane);
-		tabs.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if(timeScrollPane.equals(tabs.getSelectedComponent())){
-					timeManagement.setCurrentTime();
-				}
-			}
-		});
+		tabs.add(TextUtils.getText("calendar_attributes_panel"), timeScrollPane);
 
 		registerAction(new TimeManagementAction(this));
 		registerAction(new TimeListAction());

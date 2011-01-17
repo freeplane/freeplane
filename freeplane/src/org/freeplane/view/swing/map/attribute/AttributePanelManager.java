@@ -78,11 +78,8 @@ public class AttributePanelManager{
 		this.modeController = modeController;
 		tablePanel = new JPanel();
 		modeController.getMapController().addNodeSelectionListener(new TableCreator());
-		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format");
-		final JScrollPane tableScrollPane = new JScrollPane(tablePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		tableScrollPane.getViewport().setAlignmentX(Component.LEFT_ALIGNMENT);
-		UITools.setScrollbarIncrement(tableScrollPane);
-		tabs.add(TextUtils.getText("attributes_attribute"), tableScrollPane);
 	}
+	public JPanel getTablePanel() {
+    	return tablePanel;
+    }
 }

@@ -21,10 +21,13 @@ package org.freeplane.features.mindmapmode.time;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -42,6 +45,8 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.text.JTextComponent;
 
@@ -85,10 +90,9 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		}
 	}
 
-	private static Date lastDate = null;
+	private Calendar calendar;
 	public final static String REMINDER_HOOK_NAME = "plugins/TimeManagementReminder.xml";
 	private static TimeManagement sCurrentlyOpenTimeManagement = null;
-	private JCalendar calendar;
 // // 	final private Controller controller;
 	private JDialog dialog;
 // 	final private ModeController modeController;
@@ -144,15 +148,13 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		dialog.setVisible(false);
 		dialog.dispose();
 		dialog = null;
-		TimeManagement.lastDate = getCalendarDate();
 		TimeManagement.sCurrentlyOpenTimeManagement = null;
 	}
 
 	/**
 	 */
 	private Date getCalendarDate() {
-		final Calendar cal = calendar.getCalendar();
-		return cal.getTime();
+		return calendar.getTime();
 	}
 
 	private ModeController getMindMapController() {
@@ -195,16 +197,17 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			}
 		};
 		UITools.addEscapeActionToDialog(dialog, action);
-		final Container contentPane = dialog.getContentPane();
-		init(contentPane, true, BoxLayout.X_AXIS);
+		final Container contentPane =createTimePanel(dialog, true, BoxLayout.X_AXIS);
+		dialog.setContentPane(contentPane);
 		dialog.pack();
 		UITools.setBounds(dialog, -1, -1, dialog.getWidth(), dialog.getHeight());
-		calendar.getDayChooser().setFocus();
 		dialog.setVisible(true);
 	}
-
-	public void init(final Container contentPane, boolean useTripple, int axis) {
+	
+	public JComponent createTimePanel(final Dialog dialog , boolean useTripple, int axis) {
+		JComponent contentPane = new JPanel();
 		final JComponent calendarComponent;
+		final JCalendar calendar;
 		if(useTripple){
 			final JTripleCalendar trippleCalendar = new JTripleCalendar();
 			calendar = trippleCalendar.getCalendar();
@@ -214,8 +217,20 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			calendar = new JCalendar();
 			calendarComponent = calendar;
 		}
+		if(this.calendar == null){
+			this.calendar = Calendar.getInstance();
+			this.calendar.set(Calendar.SECOND, 0);
+		}
+		if(dialog != null){
+			dialog.addWindowFocusListener(new WindowAdapter() {
+				@Override
+                public void windowGainedFocus(WindowEvent e) {
+					calendar.getDayChooser().requestFocus();
+                }
+			});
+		}
 		calendar.setMaximumSize(calendar.getPreferredSize());
-		setCurrentTime();
+		
 	    contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		calendar.getDayChooser().addPropertyChangeListener(this);
 		calendarComponent.setAlignmentX(0.5f);
@@ -235,8 +250,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 						final Window parentWindow = (Window) dialog.getParent();
 						final Component mostRecentFocusOwner = parentWindow.getMostRecentFocusOwner();
 						if (mostRecentFocusOwner instanceof JTextComponent) {
-							final JTextComponent text = (JTextComponent) mostRecentFocusOwner;
-							text.replaceSelection(dateAsString);
+							final JTextComponent textComponent = (JTextComponent) mostRecentFocusOwner;
+							textComponent.replaceSelection(dateAsString);
 							return;
 						}
 					}
@@ -284,13 +299,16 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			final JButton todayButton = new JButton(getResourceString("plugins/TimeManagement.xml_todayButton"));
 			todayButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
-					setCurrentTime();
+				    final Calendar currentTime = Calendar.getInstance();
+				    currentTime.set(Calendar.SECOND, 0);
+				    TimeManagement.this.calendar.setTimeInMillis(currentTime.getTimeInMillis());
+				    calendar.setCalendar(TimeManagement.this.calendar);
 				}
 			});
 			increaseSize(btnSize, todayButton);
 			buttonBox.add(todayButton);
 		}
-		{
+		if(dialog != null){
 			final JButton cancelButton = new JButton(getResourceString("plugins/TimeManagement.xml_closeButton"));
 			cancelButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
@@ -300,12 +318,11 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			increaseSize(btnSize, cancelButton);
 			buttonBox.add(cancelButton);
 		}
+		
 		for(int i = 0; i < buttonBox.getComponentCount(); i++){
 			buttonBox.getComponent(i).setMaximumSize(btnSize);
 		}
-		if (TimeManagement.lastDate != null) {
-			calendar.setDate(TimeManagement.lastDate);
-		}
+		return contentPane;
     }
 
 	private void increaseSize(final Dimension btnSize, final JButton btn) {
@@ -314,9 +331,4 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	    btnSize.height =  Math.max(btnSize.height, preferredSize.height);
     }
 
- void setCurrentTime() {
-	    final Calendar calender = Calendar.getInstance();
-	    calender.set(Calendar.SECOND, 0);
-	    calendar.setCalendar(calender);
-    }
 }
