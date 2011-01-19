@@ -1271,6 +1271,8 @@ public class NodeView extends JComponent implements INodeView {
 			add(newMainView);
 		}
 		mainView = newMainView;
+		if(contentPane != null)
+			mainView.putClientProperty("NODE_VIEW_CONTENT_POSITION", MAIN_VIEWER_POSITION);
 		final IUserInputListenerFactory userInputListenerFactory = getMap().getModeController()
 		    .getUserInputListenerFactory();
 		mainView.addMouseListener(userInputListenerFactory.getNodeMouseMotionListener());
@@ -1478,9 +1480,11 @@ public class NodeView extends JComponent implements INodeView {
 		final Container contentPane = getContentPane();
 		for (int i = 0; i < contentPane.getComponentCount(); i++) {
 			JComponent content = (JComponent) contentPane.getComponent(i);
-if(content == null) throw new RuntimeException("component " + i + "is null");			
+if(content == null) 
+	throw new RuntimeException("component " + i + "is null");			
 			final Object clientProperty = content.getClientProperty("NODE_VIEW_CONTENT_POSITION");
-if(clientProperty == null) throw new RuntimeException("NODE_VIEW_CONTENT_POSITION not set on component " + content.toString() 
+if(clientProperty == null) 
+	throw new RuntimeException("NODE_VIEW_CONTENT_POSITION not set on component " + content.toString() 
 	+ i + "/" + contentPane.getComponentCount());			
 			if (pos < (Integer) clientProperty) {
 				contentPane.add(component, i);
