@@ -20,6 +20,7 @@
  */
 package org.freeplane.plugin.script;
 
+import java.io.File;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -167,6 +169,16 @@ class ScriptingRegistration {
 		final ScriptingConfiguration configuration = new ScriptingConfiguration();
 		ScriptingEngine.setClasspath(configuration.getClasspath());
 		registerScripts(menuBuilder, configuration);
+		createUserScriptsDirectory();
+	}
+
+	private void createUserScriptsDirectory() {
+		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
+		final File scriptDir = new File(userDir, ScriptingConfiguration.USER_SCRIPTS_DIR);
+		if (!scriptDir.exists()) {
+			LogUtils.info("creating user scripts directory " + scriptDir);
+			scriptDir.mkdirs();
+		}
 	}
 
 	private void registerScripts(final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {

@@ -94,6 +94,8 @@ class ScriptingConfiguration {
 
 	private static final String SCRIPT_REGEX = ".*\\.groovy$";
 	private static final String JAR_REGEX = ".*\\.jar$";
+	// or use property script_directories?
+	static final String USER_SCRIPTS_DIR = "scripts";
 	private final TreeMap<String, String> nameScriptMap = new TreeMap<String, String>();
 	private final TreeMap<String, ScriptMetaData> nameScriptMetaDataMap = new TreeMap<String, ScriptMetaData>();
 	private ArrayList<String> classpath;
