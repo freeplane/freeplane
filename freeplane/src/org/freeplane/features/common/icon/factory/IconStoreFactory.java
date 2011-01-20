@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.icon.IconGroup;
 import org.freeplane.features.common.icon.IconNotFound;
@@ -108,13 +109,15 @@ public class IconStoreFactory {
 			return Collections.emptyList();
 		}
 		final File iconDir = new File(resourceController.getFreeplaneUserDirectory(), "icons");
+		if (!iconDir.exists()) {
+			LogUtils.info("creating user icons directory " + iconDir);
+			iconDir.mkdirs();
+			return Collections.emptyList();
+		}
 		return IconStoreFactory.getUserIcons(iconDir, "");
 	}
 
 	private static List<MindIcon> getUserIcons(final File iconDir, final String dir) {
-		if (!iconDir.exists()) {
-			return Collections.emptyList();
-		}
 		final String[] userIconArray = iconDir.list(new FilenameFilter() {
 			public boolean accept(final File dir, final String name) {
 				return name.endsWith(".png") || new File(dir, name).isDirectory();
