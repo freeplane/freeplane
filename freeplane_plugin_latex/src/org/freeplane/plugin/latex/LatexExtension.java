@@ -34,7 +34,7 @@ class LatexExtension implements IExtension {
 	final private Set<NodeView> viewers;
 
 	public LatexExtension() {
-		equation = "\\mbox{I}^\\fgcolor{ff0000}{\\heartsuit}\\mbox{\\JLaTeXMath}";
+		equation = "";
 		viewers = new LinkedHashSet<NodeView>();
 	}
 
@@ -47,7 +47,7 @@ class LatexExtension implements IExtension {
 	}
 
 	void removeViewers() {
-		for (NodeView nodeView : viewers) {
+		for (final NodeView nodeView : viewers) {
 			nodeView.removeContent(LatexNodeHook.VIEWER_POSITION);
 		}
 		viewers.clear();
@@ -55,8 +55,8 @@ class LatexExtension implements IExtension {
 
 	public void setEquation(final String equation) {
 		this.equation = equation;
-		for (NodeView nodeView : viewers) {
-			JLatexViewer comp = (JLatexViewer) nodeView.getContent(LatexNodeHook.VIEWER_POSITION);
+		for (final NodeView nodeView : viewers) {
+			final LatexViewer comp = (LatexViewer) nodeView.getContent(LatexNodeHook.VIEWER_POSITION);
 			comp.setModel(this);
 		}
 	}

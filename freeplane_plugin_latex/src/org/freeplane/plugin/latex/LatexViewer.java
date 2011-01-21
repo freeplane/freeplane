@@ -10,21 +10,16 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 
-class JLatexViewer extends JComponent {
+class LatexViewer extends JComponent {
 	private static final int DEFAULT_FONT_SIZE = 16;
 	static String editorTitle = null;
 	/**
@@ -32,47 +27,31 @@ class JLatexViewer extends JComponent {
 	 */
 	private static final long serialVersionUID = 1L;
 	private float zoom = 0f;
-	final private LatexNodeHook latexController;
+	@SuppressWarnings("unused")
+    final private LatexNodeHook nodeHook;
 	private LatexExtension model;
 	private TeXFormula teXFormula;
 
-	JLatexViewer(final LatexNodeHook latexController, final LatexExtension latexExtension) {
-		this.latexController = latexController;
+	LatexViewer(final LatexNodeHook nodeHook, final LatexExtension latexExtension) {
+		this.nodeHook = nodeHook;
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setModel(latexExtension);
-		if (JLatexViewer.editorTitle == null) {
-			JLatexViewer.editorTitle = TextUtils.getText("plugins/latex/LatexNodeHook.editorTitle");
+		if (LatexViewer.editorTitle == null) {
+			LatexViewer.editorTitle = TextUtils.getText("plugins/latex/LatexNodeHook.editorTitle");
 		}
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON1) {
-					edit();
-					SwingUtilities.getAncestorOfClass(NodeView.class, JLatexViewer.this).requestFocus();
+				if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2
+				        && Controller.getCurrentModeController().getModeName() == "MindMap") {
+					//edit();
+					LatexEditor.showEditor(nodeHook, latexExtension);
+					SwingUtilities.getAncestorOfClass(NodeView.class, LatexViewer.this).requestFocus();
 					e.consume();
 					return;
 				}
 			}
 		});
-	}
-
-	private void edit() {
-		final JTextArea textArea = new JTextArea(model.getEquation());
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		final JScrollPane editorScrollPane = new JScrollPane(textArea);
-		editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		editorScrollPane.setPreferredSize(new Dimension(500, 160));
-		final JOptionPane editPane = new JOptionPane(editorScrollPane, JOptionPane.PLAIN_MESSAGE,
-		    JOptionPane.OK_CANCEL_OPTION);
-		final JDialog edit = editPane.createDialog(JOptionPane.getFrameForComponent(this), JLatexViewer.editorTitle);
-		edit.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		edit.setLocationRelativeTo(this);
-		edit.setVisible(true);
-		if (editPane.getValue().equals(JOptionPane.OK_OPTION)) {
-			final String eq = textArea.getText();
-			latexController.setEquationUndoable(model, eq);
-		}
 	}
 
 	private void calculateSize() {
@@ -84,9 +63,8 @@ class JLatexViewer extends JComponent {
 		zoom = mapZoom;
 		final Icon latexIcon = teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE * zoom);
 		final Insets insets = getInsets();
-		final Dimension dimension = new Dimension(latexIcon.getIconWidth() + insets.left + insets.right, latexIcon
-		    .getIconHeight()
-		        + insets.top + insets.bottom);
+		final Dimension dimension = new Dimension(latexIcon.getIconWidth() + insets.left + insets.right,
+		    latexIcon.getIconHeight() + insets.top + insets.bottom);
 		setPreferredSize(dimension);
 	}
 

@@ -72,10 +72,12 @@
 				<menu_action action="EditNoteInDialogAction" />
 				<menu_action action="EditAttributesAction" accelerator="alt F9" />
 				<menu_action action="SelectNoteAction" accelerator="control LESS"/> <!-- goto -->
+			</menu_category>
 				<menu_separator />
+			<menu_category name="delete">
 				<menu_action action="DeleteAction" accelerator="DELETE" />
 				<!-- <menu_action action="remove" /> -->
-			</menu_category>
+			</menu_category>	
 			<menu_separator />
 			<menu_category name="find">
 				<menu_action action="FindAction" accelerator="control F" />

@@ -56,9 +56,9 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 	}
 
 	@Override
-	protected void add(final NodeModel node, final IExtension extension) {
+	public void add(final NodeModel node, final IExtension extension) {
 		final LatexExtension latexExtension = (LatexExtension) extension;
-		for (INodeView iNodeView : node.getViewers()) {
+		for (final INodeView iNodeView : node.getViewers()) {
 			final NodeView view = (NodeView) iNodeView;
 			createViewer(latexExtension, view);
 		}
@@ -69,19 +69,20 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		final LatexExtension latexExtension = new LatexExtension();
 		if (element != null) {
-			String equation = element.getAttribute("EQUATION");
-			if(equation == null){
+			final String equation = element.getAttribute("EQUATION", null);
+			if (equation == null) {
 				// error: do not create anything
 				return null;
 			}
 			latexExtension.setEquation(equation);
-			Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			Controller.getCurrentModeController().getMapController()
+			    .nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 		}
 		return latexExtension;
 	}
 
 	void createViewer(final LatexExtension model, final NodeView view) {
-		final JLatexViewer comp = new JLatexViewer(this, model);
+		final LatexViewer comp = new LatexViewer(this, model);
 		final Set<NodeView> viewers = model.getViewers();
 		viewers.add(view);
 		view.addContent(comp, VIEWER_POSITION);
@@ -89,7 +90,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 
 	void deleteViewer(final LatexExtension model, final NodeView nodeView) {
 		final Set<NodeView> viewers = model.getViewers();
-		if(! viewers.contains(nodeView)){
+		if (!viewers.contains(nodeView)) {
 			return;
 		}
 		nodeView.removeContent(VIEWER_POSITION);
@@ -155,6 +156,26 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 				model.setEquation(oldEquation);
 			}
 		};
-		Controller.getCurrentModeController().execute(actor, Controller.getCurrentModeController().getController().getMap());
+		Controller.getCurrentModeController().execute(actor,
+		    Controller.getCurrentModeController().getController().getMap());
+	}
+
+	@Override
+	protected IExtension toggle(final NodeModel node, IExtension extension) {
+		if (extension != null && node.containsExtension(extension.getClass())) {
+			remove(node, extension);
+		}
+		else {
+			if (extension == null) {
+				extension = createExtension(node);
+			}
+			if (extension != null) {
+				add(node, extension);
+			}
+			LatexEditor.showEditor(this, (LatexExtension) extension);
+		}
+		Controller.getCurrentModeController().getMapController()
+		    .nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
+		return extension;
 	}
 }
