@@ -21,8 +21,10 @@ package org.freeplane.core.addins;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
@@ -40,6 +42,12 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class PersistentNodeHook {
+	
+	static private Set<Class<? extends IExtension>> mapExtensionClasses = new  HashSet<Class<? extends IExtension>>();
+	public static boolean isMapExtension(Class<? extends IExtension> clazz){
+		return mapExtensionClasses.contains(clazz);
+	}
+	
 	public abstract class HookAction extends AFreeplaneAction {
 		private static final long serialVersionUID = 1L;
 
@@ -151,6 +159,8 @@ public abstract class PersistentNodeHook {
 	@SuppressWarnings("unchecked")
 	public PersistentNodeHook() {
 		super();
+		if(getHookAnnotation().onceForMap())
+			mapExtensionClasses.add(getExtensionClass());
 //		this.modeController = modeController;
 //		controller = modeController.getController();
 		final ModeController modeController = Controller.getCurrentModeController();

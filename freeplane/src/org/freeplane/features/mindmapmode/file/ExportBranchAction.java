@@ -23,12 +23,16 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.util.Collection;
+import java.util.Map;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -141,9 +145,20 @@ class ExportBranchAction extends AFreeplaneAction {
 				Controller.getCurrentModeController().execute(actor, parentMap);
 			}
 			final MapModel map = existingNode.getMap();
-			final MapStyleModel styleExtension = MapStyleModel.getExtension(parentMap);
-			existingNode.removeExtension(MapStyleModel.class);
-			existingNode.addExtension(styleExtension);
+			IExtension[] oldExtensions = map.getRootNode().getExtensions().values().toArray(new IExtension[]{});
+			for(final IExtension extension : oldExtensions){
+				final Class<? extends IExtension> clazz = extension.getClass();
+				if(PersistentNodeHook.isMapExtension(clazz)){
+					existingNode.removeExtension(clazz);
+				}
+			}
+			final Collection<IExtension> newExtensions = parentMap.getRootNode().getExtensions().values();
+			for(final IExtension extension : newExtensions){
+				final Class<? extends IExtension> clazz = extension.getClass();
+				if(PersistentNodeHook.isMapExtension(clazz)){
+					existingNode.addExtension(extension);
+				}
+			}
 			((MFileManager) UrlManager.getController()).save(map, chosenFile);
 			final NodeModel newNode = mMapController.addNewNode(parent, nodePosition, existingNode.isLeft());
 			((MTextController) TextController.getController()).setNodeText(newNode, existingNode
