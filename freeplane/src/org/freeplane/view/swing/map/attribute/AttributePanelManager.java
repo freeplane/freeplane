@@ -19,17 +19,10 @@
  */
 package org.freeplane.view.swing.map.attribute;
 
-import java.awt.Component;
-
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;

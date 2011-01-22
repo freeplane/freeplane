@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.mindmapmode.time;
 
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -28,13 +27,9 @@ import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;

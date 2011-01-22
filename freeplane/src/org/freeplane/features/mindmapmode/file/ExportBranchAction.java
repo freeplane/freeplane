@@ -39,7 +39,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
