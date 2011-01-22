@@ -210,6 +210,10 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		JComponent contentPane = new JPanel();
 		final JComponent calendarComponent;
 		final JCalendar calendar;
+		if(this.calendar == null){
+			this.calendar = Calendar.getInstance();
+			this.calendar.set(Calendar.SECOND, 0);
+		}
 		if(useTripple){
 			final JTripleCalendar trippleCalendar = new JTripleCalendar();
 			calendar = trippleCalendar.getCalendar();
@@ -219,10 +223,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			calendar = new JCalendar();
 			calendarComponent = calendar;
 		}
-		if(this.calendar == null){
-			this.calendar = Calendar.getInstance();
-			this.calendar.set(Calendar.SECOND, 0);
-		}
+		calendar.setCalendar(this.calendar);
 		if(dialog != null){
 			dialog.addWindowFocusListener(new WindowAdapter() {
 				@Override
