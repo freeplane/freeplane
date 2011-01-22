@@ -39,6 +39,8 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.MapStyle;
+import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -59,16 +61,17 @@ class ExportBranchAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel existingNode = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		final Controller controller = Controller.getCurrentController();
-		if (controller.getMap() == null || existingNode == null || existingNode.isRoot()) {
+		final MapModel parentMap = controller.getMap();
+		if (parentMap == null || existingNode == null || existingNode.isRoot()) {
 			controller.getViewController().err("Could not export branch.");
 			return;
 		}
-		if (controller.getMap().getFile() == null) {
+		if (parentMap.getFile() == null) {
 			controller.getViewController().out("You must save the current map first!");
 			((MModeController) Controller.getCurrentModeController()).save();
 		}
 		JFileChooser chooser;
-		final File file = controller.getMap().getFile();
+		final File file = parentMap.getFile();
 		if (file == null) {
 			return;
 		}
@@ -107,7 +110,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			 * to the new Map.
 			 */
 			final NodeModel parent = existingNode.getParentNode();
-			final File oldFile = existingNode.getMap().getFile();
+			final File oldFile = parentMap.getFile();
 			final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
 			    "relative");
 			final URI newUri = useRelativeUri ? LinkController.toRelativeURI(oldFile, chosenFile) : chosenFile.toURI();
@@ -117,7 +120,6 @@ class ExportBranchAction extends AFreeplaneAction {
 			final int nodePosition = parent.getChildPosition(existingNode);
 			final MMapController mMapController = (MMapController) Controller.getCurrentModeController().getMapController();
 			mMapController.deleteNode(existingNode);
-			final MapModel parentMap = parent.getMap();
 			{
 				final IActor actor = new IActor() {
 					private final boolean wasFolded = existingNode.isFolded();
@@ -140,6 +142,9 @@ class ExportBranchAction extends AFreeplaneAction {
 				Controller.getCurrentModeController().execute(actor, parentMap);
 			}
 			final MapModel map = existingNode.getMap();
+			final MapStyleModel styleExtension = MapStyleModel.getExtension(parentMap);
+			existingNode.removeExtension(MapStyleModel.class);
+			existingNode.addExtension(styleExtension);
 			((MFileManager) UrlManager.getController()).save(map, chosenFile);
 			final NodeModel newNode = mMapController.addNewNode(parent, nodePosition, existingNode.isLeft());
 			((MTextController) TextController.getController()).setNodeText(newNode, existingNode
