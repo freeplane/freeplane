@@ -64,7 +64,8 @@ public class ExternalResource implements IExtension {
 
 	public void setZoom(final float r) {
 		zoom = r;
-		for (final JComponent viewer : viewers) {
+		for (final NodeView nodeView : viewers) {
+			final JComponent viewer = nodeView.getContent(ViewerController.VIEWER_POSITION);
 			final IViewerFactory factory = (IViewerFactory) viewer.getClientProperty(IViewerFactory.class);
 			final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, viewer);
 			final Dimension preferredSize = factory.getOriginalSize(viewer);

@@ -257,8 +257,12 @@ public class MapViewController implements IMapViewManager {
 	 * @see org.freeplane.core.frame.IMapViewController#getComponent(org.freeplane.core.model.NodeModel)
 	 */
 	public Component getComponent(final NodeModel node) {
+		if(mapView == null)
+			return null;
 		final NodeView nodeView = mapView.getNodeView(node);
-		return nodeView != null ? nodeView.getMainView() : null;
+		if(nodeView == null)
+			return null;
+		return nodeView.getMainView();
 	}
 
 	/* (non-Javadoc)
