@@ -154,14 +154,7 @@ class NodeViewFactory {
 		if(nodeView.getMainView() != null){
 			return;
 		}
-	    final NodeModel model = nodeView.getModel();
-		if (model.isRoot()) {
-			final MainView mainView = new RootMainView();
-			nodeView.setMainView(mainView);
-		}
-		else {
-			nodeView.setMainView(newMainView(nodeView));
-		}
+		nodeView.setMainView(newMainView(nodeView));
 		nodeView.updateNoteViewer();
 		nodeView.update();
 		fireNodeViewCreated(nodeView);
