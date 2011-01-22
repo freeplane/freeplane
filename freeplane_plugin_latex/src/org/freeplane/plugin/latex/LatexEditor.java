@@ -17,11 +17,12 @@ import javax.swing.WindowConstants;
 public class LatexEditor {
 	/**
 	 * This method shows the Latex editor and sets the equation to be rendered from Latex
+	 * @param oldEquation TODO
 	 * 
 	 * @param nodeHook: reference to the node
 	 * @param latexExtension: the latexExtension
 	 */
-	public static void showEditor(final LatexNodeHook nodeHook, final LatexExtension latexExtension) {
+	public static String editLatex(String oldEquation) {
 		final JEditorPane textArea = new JEditorPane();
 		final JScrollPane editorScrollPane = new JScrollPane(textArea);
 		editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -39,12 +40,13 @@ public class LatexEditor {
 		edit.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		// set content and rendering for textArea
 		textArea.setContentType("text/groovy"); /* text/groovy is from JSyntaxPane */
-		textArea.setText(latexExtension.getEquation());
+		textArea.setText(oldEquation);
 		editorScrollPane.requestFocusInWindow();
 		edit.setVisible(true);
 		if (editPane.getValue().equals(JOptionPane.OK_OPTION)) {
 			final String eq = textArea.getText();
-			nodeHook.setEquationUndoable(latexExtension, eq);
+			return eq;
 		}
+		return null;
 	}
 }

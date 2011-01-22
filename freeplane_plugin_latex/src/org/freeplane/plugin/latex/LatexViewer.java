@@ -1,6 +1,7 @@
 package org.freeplane.plugin.latex;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -14,6 +15,7 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.scilab.forge.jlatexmath.TeXConstants;
@@ -45,8 +47,10 @@ class LatexViewer extends JComponent {
 				if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2
 				        && Controller.getCurrentModeController().getModeName() == "MindMap") {
 					//edit();
-					LatexEditor.showEditor(nodeHook, latexExtension);
-					SwingUtilities.getAncestorOfClass(NodeView.class, LatexViewer.this).requestFocus();
+					final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+					final Container nodeView = SwingUtilities.getAncestorOfClass(NodeView.class, LatexViewer.this);
+                    nodeHook.editLatexInEditor(node);
+					nodeView.requestFocus();
 					e.consume();
 					return;
 				}

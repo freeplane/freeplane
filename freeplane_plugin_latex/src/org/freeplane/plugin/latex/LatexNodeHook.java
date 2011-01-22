@@ -161,21 +161,43 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 	}
 
 	@Override
-	protected IExtension toggle(final NodeModel node, IExtension extension) {
-		if (extension != null && node.containsExtension(extension.getClass())) {
-			remove(node, extension);
+    public void undoableToggleHook(NodeModel node, IExtension extension) {
+		if(extension != null){
+		    super.undoableToggleHook(node, extension);
+		    return;
 		}
-		else {
-			if (extension == null) {
-				extension = createExtension(node);
-			}
-			if (extension != null) {
-				add(node, extension);
-			}
-			LatexEditor.showEditor(this, (LatexExtension) extension);
-		}
-		Controller.getCurrentModeController().getMapController()
-		    .nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
-		return extension;
-	}
+		final String equation = LatexEditor.editLatex("");
+		if(equation == null ||  "".equals(equation.trim()))
+			return;
+	    super.undoableToggleHook(node, null);
+	    final LatexExtension latexExtension = (LatexExtension) node.getExtension(LatexExtension.class);
+	    setEquationUndoable(latexExtension, equation);
+    }
+
+	void editLatexInEditor(final NodeModel node) {
+	    LatexExtension latexExtension = (LatexExtension) node.getExtension(LatexExtension.class);
+    	final String equation;
+    	//if no LaTeX is attached, create one
+    	if (latexExtension == null) {
+    		equation = LatexEditor.editLatex("");
+    	}
+    	//if LaTeX is present edit it
+    	else {
+    		equation = LatexEditor.editLatex(latexExtension.getEquation());
+    	}
+    	// return on cancel
+    	if(equation == null)
+    		return;
+    	if(! "".equals(equation.trim())){
+    		if(latexExtension == null){
+    			latexExtension = new LatexExtension();
+    			add(node, latexExtension);
+    		}
+    		setEquationUndoable(latexExtension, equation);
+    	}
+    	else if(latexExtension != null){
+    		undoableDeactivateHook(node);
+    	}
+    }
+
 }

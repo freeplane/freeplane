@@ -43,7 +43,7 @@ class LatexRegistration {
 		if (modeController.getModeName() == "MindMap") {
 			//Edit only visible in mindmap mode
 			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-			menuBuilder.addAnnotatedAction(new EditLatex(nodeHook));
+			menuBuilder.addAnnotatedAction(new EditLatexAction(nodeHook));
 		}
 	}
 }

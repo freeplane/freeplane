@@ -14,27 +14,17 @@ import org.freeplane.features.common.map.NodeModel;
  *This class is called when a Latex formula is edited
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/edit/edit", "/node_popup/EditAction" })
-public class EditLatex extends AFreeplaneAction {
+public class EditLatexAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final LatexNodeHook nodeHook;
 
-	public EditLatex(final LatexNodeHook nodeHook) {
+	public EditLatexAction(final LatexNodeHook nodeHook) {
 		super("LatexEditLatexAction");
 		this.nodeHook = nodeHook;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		final LatexExtension latexExtension = (LatexExtension) node.getExtension(LatexExtension.class);
-		//if no LaTeX is attached, create one
-		if (latexExtension == null) {
-			final LatexExtension extension = new LatexExtension();
-			nodeHook.add(node, extension);
-			LatexEditor.showEditor(nodeHook, extension);
-		}
-		//if LaTeX is present edit it
-		else {
-			LatexEditor.showEditor(nodeHook, latexExtension);
-		}
+        nodeHook.editLatexInEditor(node);
 	}
 }
