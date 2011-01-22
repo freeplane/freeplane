@@ -245,18 +245,25 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		final Dimension btnSize = new Dimension();
 		{
 			final JButton appendButton = new JButton(getResourceString("plugins/TimeManagement.xml_appendButton"));
+			if(dialog == null){
+				appendButton.setFocusable(false);
+			}
 			appendButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
 					final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
 					final String dateAsString = df.format(getCalendarDate());
+					final Window parentWindow;
 					if(dialog != null){
-						final Window parentWindow = (Window) dialog.getParent();
-						final Component mostRecentFocusOwner = parentWindow.getMostRecentFocusOwner();
-						if (mostRecentFocusOwner instanceof JTextComponent) {
-							final JTextComponent textComponent = (JTextComponent) mostRecentFocusOwner;
-							textComponent.replaceSelection(dateAsString);
-							return;
-						}
+						 parentWindow = (Window) dialog.getParent();
+					}
+					else{
+						parentWindow = SwingUtilities.getWindowAncestor(appendButton);
+					}
+					final Component mostRecentFocusOwner = parentWindow.getMostRecentFocusOwner();
+					if (mostRecentFocusOwner instanceof JTextComponent) {
+						final JTextComponent textComponent = (JTextComponent) mostRecentFocusOwner;
+						textComponent.replaceSelection(dateAsString);
+						return;
 					}
 					ModeController mController  = Controller.getCurrentModeController();
 					for (final NodeModel element : mController .getMapController().getSelectedNodes()) {
