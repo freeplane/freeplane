@@ -46,4 +46,7 @@ class ToggleMenubarAction extends AFreeplaneAction {
 	public void setSelected() {
 		setSelected(controller.isMenubarVisible());
 	}
+	@Override
+	public void afterMapChange(final Object newMap) {
+	}
 }

@@ -51,6 +51,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.file.FileOpener;
+import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class ApplicationViewController extends ViewController {
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
@@ -115,6 +116,7 @@ class ApplicationViewController extends ViewController {
 			getContentPane().add(mSplitPane, BorderLayout.CENTER);
 			final FileOpener fileOpener = new FileOpener();
 			new DropTarget(mSplitPane, fileOpener);
+			mSplitPane.addMouseListener(new DefaultMapMouseListener(null));
 		}
 		initFrame(frame);
 	}
