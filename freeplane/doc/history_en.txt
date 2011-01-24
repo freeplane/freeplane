@@ -9,14 +9,14 @@ Keyboard shortcut documentation: Map and HTML table generation added for the doc
 Check for newer auto save files on opening of a map
 343] Single instance mode: open files in existing program instance instead of opening a new one
 Node level dependent filters
-Improvement in search and replace functions
+Improvements in search and replace functions
 Different shapes for clouds
 Node details
 Shortened node view
 Formula plugin ("spreadsheet plugin")
 Extended scripting API
 Single backup directory
-Node tool tips with copy and scroll bar
+Improved node tool tips with copy and scroll bar
 Script and formula editor JSyntaxPane from http://code.google.com/p/jsyntaxpane/
 When Formula Editor is visible, double click on node inserts node ID, single click folds/unfolds.
 Inline editor supports some HTML formatting, use pop-up menu->format or hot keys
@@ -25,6 +25,11 @@ Automatic Edge Color
 Copy and paste attributes
 Named filter conditions
 Different shapes, line types, width and transparency for connectors
+Resize-able style, calendar and attribute panels
+Copy and paste attributes between nodes
+Syntax coloring for latex
+Time in date filters
+Date comparison for nodes and attributes
 
 Bug fixes:
 630]: Language not sorted alphabetically
