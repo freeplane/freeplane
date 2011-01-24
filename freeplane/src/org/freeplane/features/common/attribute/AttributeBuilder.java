@@ -189,8 +189,6 @@ class AttributeBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "SHOW_ATTRIBUTES",
 		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
-				    ModelessAttributeController.getController().setAttributeViewType(getMap(),
-				        value.toString());
 					final AttributeRegistry attributes = AttributeRegistry.getRegistry(getMap());
 					if(attributes != null)
 						attributes.setAttributeViewType(value);
