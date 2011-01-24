@@ -74,7 +74,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 				}
 			    final String originalText = attributes.getValueAt(i, 1).toString();
 				final String text = textController.getTransformedText(originalText, node);
-				if( succeed == (compareTo(text) == comparationResult)) {
+				if( succeed == (signOfcompareTo(text) == comparationResult)) {
 					return true;
 				}
 			}

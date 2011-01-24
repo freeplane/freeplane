@@ -12,7 +12,18 @@ public class TextUtils {
 		if (text == null)
 			return null;
 		final MessageFormat formatter = new MessageFormat(text);
-		return formatter.format(messageArguments);
+		final Object[] processedArguments;
+		if(text.startsWith("<html>")){
+			processedArguments = new String[messageArguments.length];
+			int i = 0;
+			for(Object s : messageArguments){
+				processedArguments[i++] = HtmlUtils.toXMLEscapedText(s.toString());
+			}
+		}
+		else{
+			processedArguments = messageArguments;
+		}
+		return formatter.format(processedArguments);
 	}
 
 	public static String getOptionalText(final String string) {
