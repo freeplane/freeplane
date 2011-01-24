@@ -24,6 +24,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -41,7 +42,9 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.components.JResizer;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
@@ -137,9 +140,9 @@ public class MModeControllerFactory {
 		final StyleEditorPanel panel = new StyleEditorPanel(uiFactory, true);
 		panel.init();
 		final JScrollPane styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		UITools.setScrollbarIncrement(styleScrollPane);
-		final JComponent tabs = modeController.getUserInputListenerFactory().getToolBar("/format");
+		final JComponent tabs = (JComponent) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
 		new AttributePanelManager(modeController);
 		new HierarchicalIcons();
@@ -254,8 +257,11 @@ public class MModeControllerFactory {
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
 		final JTabbedPane tabs = new JTabbedPane();
-		tabs.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "styleScrollPaneVisible");
-		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, tabs);
+		Box resisableTabs = Box.createHorizontalBox();
+		resisableTabs.add(new JResizer(Direction.RIGHT));
+		resisableTabs.add(tabs);
+		resisableTabs.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "styleScrollPaneVisible");
+		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, resisableTabs);
 		final FButtonBar fButtonToolBar = new FButtonBar();
 		fButtonToolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "fbarVisible");
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));

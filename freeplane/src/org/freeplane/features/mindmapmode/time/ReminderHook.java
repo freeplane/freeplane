@@ -140,9 +140,9 @@ public class ReminderHook extends PersistentNodeHook {
 		final JPanel tablePanel = new AttributePanelManager(Controller.getCurrentModeController()).getTablePanel();
 		tablePanel.setBorder(BorderFactory.createTitledBorder(TextUtils.getText("attributes_attribute")));
 		timePanel.add(tablePanel);
-		final JTabbedPane tabs = (JTabbedPane) Controller.getCurrentModeController().getUserInputListenerFactory().getToolBar("/format");
+		final JTabbedPane tabs = (JTabbedPane) Controller.getCurrentModeController().getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		final JScrollPane timeScrollPane = new JScrollPane(timePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		UITools.setScrollbarIncrement(timeScrollPane);
 		tabs.add(TextUtils.getText("calendar_attributes_panel"), timeScrollPane);
 
