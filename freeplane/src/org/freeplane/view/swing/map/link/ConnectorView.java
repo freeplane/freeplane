@@ -282,7 +282,7 @@ public class ConnectorView extends AConnectorView{
 		if (!isSourceVisible() && !isTargetVisible()) {
 			return;
 		}
-		Point p1 = null, p2 = null, p3 = null, p4 = null;
+		Point startPoint = null, endPoint = null, startPoint2 = null, endPoint2 = null;
 		boolean targetIsLeft = false;
 		boolean sourceIsLeft = false;
 		final Graphics2D g = (Graphics2D) graphics.create();
@@ -291,65 +291,65 @@ public class ConnectorView extends AConnectorView{
 		/* set stroke. */
 		g.setStroke(stroke);
 		if (isSourceVisible()) {
-			p1 = source.getLinkPoint(connectorModel.getStartInclination());
+			startPoint = source.getLinkPoint(connectorModel.getStartInclination());
 			sourceIsLeft = source.isLeft();
 		}
 		if (isTargetVisible()) {
-			p2 = target.getLinkPoint(connectorModel.getEndInclination());
+			endPoint = target.getLinkPoint(connectorModel.getEndInclination());
 			targetIsLeft = target.isLeft();
 		}
 		if (connectorModel.getEndInclination() == null || connectorModel.getStartInclination() == null) {
-			final int dellength = isSourceVisible() && isTargetVisible() ? Math.max(40, (int)(p1.distance(p2) / getZoom())) : 40;
+			final int dellength = isSourceVisible() && isTargetVisible() ? Math.max(40, (int)(startPoint.distance(endPoint) / getZoom())) : 40;
 			if (isSourceVisible() && connectorModel.getStartInclination() == null) {
 				final Point incl = calcInclination(source, dellength);
 				connectorModel.setStartInclination(incl);
-				p1 = source.getLinkPoint(connectorModel.getStartInclination());
+				startPoint = source.getLinkPoint(connectorModel.getStartInclination());
 			}
 			if (isTargetVisible() && connectorModel.getEndInclination() == null) {
 				final Point incl = calcInclination(target, dellength);
 				incl.y = -incl.y;
 				connectorModel.setEndInclination(incl);
-				p2 = target.getLinkPoint(connectorModel.getEndInclination());
+				endPoint = target.getLinkPoint(connectorModel.getEndInclination());
 			}
 		}
-		if (p1 != null) {
-			p3 = new Point(p1);
-			p3.translate(((sourceIsLeft) ? -1 : 1) * getMap().getZoomed(connectorModel.getStartInclination().x),
+		if (startPoint != null) {
+			startPoint2 = new Point(startPoint);
+			startPoint2.translate(((sourceIsLeft) ? -1 : 1) * getMap().getZoomed(connectorModel.getStartInclination().x),
 				getMap().getZoomed(connectorModel.getStartInclination().y));
 
 		}
-		if (p2 != null) {
-			p4 = new Point(p2);
-			p4.translate(((targetIsLeft) ? -1 : 1) * getMap().getZoomed(connectorModel.getEndInclination().x), getMap()
+		if (endPoint != null) {
+			endPoint2 = new Point(endPoint);
+			endPoint2.translate(((targetIsLeft) ? -1 : 1) * getMap().getZoomed(connectorModel.getEndInclination().x), getMap()
 				.getZoomed(connectorModel.getEndInclination().y));
 		}
-		paintCurve(g, p1, p2, p3, p4);
-		drawLabels(g, p1, p2, p3, p4);
+		paintCurve(g, startPoint, startPoint2, endPoint2, endPoint);
+		drawLabels(g, startPoint, startPoint2, endPoint2, endPoint);
 		g.setColor(oldColor);
 	}
 
-	private Shape createLine(Point p1, Point p2, Point p3, Point p4) {
+	private Shape createLine(Point p1, Point p2) {
 	    return new Line2D.Float(p1, p2);
     }
 
-	private Shape createLinearPath(Point p1, Point p2, Point p3, Point p4) {
+	private Shape createLinearPath(Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
 	    final GeneralPath generalPath = new GeneralPath(GeneralPath.WIND_NON_ZERO, 4);
-	    generalPath.moveTo(p1.x, p1.y);
-	    generalPath.lineTo(p3.x, p3.y);
-	    generalPath.lineTo(p4.x, p4.y);
-	    generalPath.lineTo(p2.x, p2.y);
+	    generalPath.moveTo(startPoint.x, startPoint.y);
+	    generalPath.lineTo(startPoint2.x, startPoint2.y);
+	    generalPath.lineTo(endPoint2.x, endPoint2.y);
+	    generalPath.lineTo(endPoint.x, endPoint.y);
 		return generalPath;
     }
 
-	private void paintCurve(final Graphics2D g, Point p1, Point p2, Point p3, Point p4) {
+	private void paintCurve(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
 		final boolean isLine = ConnectorModel.Shape.LINE.equals(connectorModel.getShape());
-		if (p1 != null && p2 != null) {
+		if (startPoint != null && endPoint != null) {
 			if(isLine)
-				arrowLinkCurve = createLine(p1, p2, p3, p4);
+				arrowLinkCurve = createLine(startPoint, endPoint);
 			else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
-				arrowLinkCurve = createLinearPath(p1, p2, p3, p4);
+				arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
 			else
-				arrowLinkCurve = createCubicCurve2D(p1, p2, p3, p4);
+				arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
 		}
 		else
 			arrowLinkCurve = null;
@@ -357,67 +357,73 @@ public class ConnectorView extends AConnectorView{
 			g.draw(arrowLinkCurve);
 		}
 		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
-			if(isLine && p2 != null)
-				paintArrow(g, p1, p2);
+			if(isLine && endPoint != null)
+				paintArrow(g, startPoint, endPoint);
 			else
-				paintArrow(g, p1, p3);
+				paintArrow(g, startPoint, startPoint2);
 		}
 		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
-			if(isLine && p1 != null)
-				paintArrow(g, p2, p1);
+			if(isLine && startPoint != null)
+				paintArrow(g, endPoint, startPoint);
 			else
-			paintArrow(g, p2, p4);
+			paintArrow(g, endPoint, endPoint2);
 		}
 		if (connectorModel.getShowControlPointsFlag()) {
 			g.setColor(textColor);
 			g.setStroke(new BasicStroke(stroke.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, DOTTED_DASH, 0));
 		}
 		if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
-			if (p1 != null) {
-				g.drawLine(p1.x, p1.y, p3.x, p3.y);
+			if (startPoint != null) {
+				g.drawLine(startPoint.x, startPoint.y, startPoint2.x, startPoint2.y);
+			    if (arrowLinkCurve == null) {
+			    	arrowLinkCurve = createLine(startPoint, startPoint2);
+				}
 			}
-			if (p2 != null) {
-				g.drawLine(p2.x, p2.y, p4.x, p4.y);
+			if (endPoint != null) {
+				g.drawLine(endPoint.x, endPoint.y, endPoint2.x, endPoint2.y);
+			    if (arrowLinkCurve == null) {
+			    	arrowLinkCurve = createLine(endPoint, endPoint2);
+				}
 			}
 		}
     }
 
-	private void paintArrow(final Graphics2D g, Point p1, Point p2) {
-	    paintArrow(p1, p2, g, getZoom() * 10, (int) Math.ceil(0.5 + stroke.getLineWidth() / 4));
+	private void paintArrow(final Graphics2D g, Point startPoint, Point endPoint) {
+	    paintArrow(startPoint, endPoint, g, getZoom() * 10, (int) Math.ceil(0.5 + stroke.getLineWidth() / 4));
     }
 
-	private void drawLabels(final Graphics2D g, Point p1, Point p2, Point p3, Point p4) {
+	private void drawLabels(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
 	    final String sourceLabel = connectorModel.getSourceLabel();
 		final String middleLabel = connectorModel.getMiddleLabel();
 		final String targetLabel = connectorModel.getTargetLabel();
 		g.setColor(textColor);
-		if (p1 != null) {
-			drawEndPointText(g, sourceLabel, p1, p3);
-			if (p2 == null) {
-				drawEndPointText(g, middleLabel, p3, p1);
+		if (startPoint != null) {
+			drawEndPointText(g, sourceLabel, startPoint, startPoint2);
+			if (endPoint == null) {
+				drawEndPointText(g, middleLabel, startPoint2, startPoint);
 			}
 		}
-		if (p2 != null) {
-			drawEndPointText(g, targetLabel, p2, p4);
-			if (p1 == null) {
-				drawEndPointText(g, middleLabel, p4, p2);
+		if (endPoint != null) {
+			drawEndPointText(g, targetLabel, endPoint, endPoint2);
+			if (startPoint == null) {
+				drawEndPointText(g, middleLabel, endPoint2, endPoint);
 			}
 		}
-		if (p1 != null && p2 != null) {
+		if (startPoint != null && endPoint != null) {
 			drawMiddleLabel(g, middleLabel);
 		}
     }
 
-	private CubicCurve2D createCubicCurve2D(Point p1, Point p2, Point p3, Point p4) {
+	private CubicCurve2D createCubicCurve2D(Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
 	    final CubicCurve2D arrowLinkCurve = new CubicCurve2D.Double();
-		if (p1 != null && p2 != null) {
-			arrowLinkCurve.setCurve(p1, p3, p4, p2);
+		if (startPoint != null && endPoint != null) {
+			arrowLinkCurve.setCurve(startPoint, startPoint2, endPoint2, endPoint);
 		}
-		else if (p1 != null) {
-			arrowLinkCurve.setCurve(p1, p3, p1, p3);
+		else if (startPoint != null) {
+			arrowLinkCurve.setCurve(startPoint, startPoint2, startPoint, startPoint2);
 		}
-		else if (p2 != null) {
-			arrowLinkCurve.setCurve(p2, p4, p2, p4);
+		else if (endPoint != null) {
+			arrowLinkCurve.setCurve(endPoint, endPoint2, endPoint, endPoint2);
 		}
 	    return arrowLinkCurve;
     }
