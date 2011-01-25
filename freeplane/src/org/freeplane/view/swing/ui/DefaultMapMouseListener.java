@@ -75,7 +75,10 @@ public class DefaultMapMouseListener implements IMouseListener {
 	}
 
 	public void mouseClicked(final MouseEvent e) {
-		final MapView map = (MapView) e.getSource();
+		final Object source = e.getSource();
+		if(! (source instanceof MapView))
+			return;
+		final MapView map = (MapView) source;
 		final Controller controller = map.getModeController().getController();
 		final IMapSelection selection = controller.getSelection();
 		selection.selectAsTheOnlyOneSelected(selection.getSelected());
