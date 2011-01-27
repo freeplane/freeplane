@@ -77,9 +77,6 @@ public class BitmapImagePreview extends JComponent implements PropertyChangeList
 			remove(0);
 		}
 		repaint();
-		if (file == null) {
-			return;
-		}
 		try {
 			updateView(file);
 		}
