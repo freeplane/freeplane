@@ -68,10 +68,7 @@ class LatexViewer extends JComponent {
 					if (e.getSource().getClass() == LatexViewer.class) {
 						final LatexViewer lv = (LatexViewer) e.getSource();
 						for (int i = 0; i < lv.getParent().getComponentCount(); i++) {
-							if (lv.getParent().getComponent(i).getClass().isInstance(MainView.class)) {
-								;
-							}
-							{
+							if (lv.getParent().getComponent(i) instanceof MainView) {
 								final MainView mv = (MainView) lv.getParent().getComponent(i);
 								node = mv.getNodeView().getModel();
 								break;
