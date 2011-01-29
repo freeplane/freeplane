@@ -246,8 +246,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			}
 			appendButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
-					final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
-					final String dateAsString = df.format(getCalendarDate());
+					final String dateAsString = TextUtils.toString(getCalendarDate());
 					final Window parentWindow;
 					if(dialog != null){
 						 parentWindow = (Window) dialog.getParent();

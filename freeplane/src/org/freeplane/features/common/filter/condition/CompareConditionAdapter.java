@@ -46,7 +46,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			return;
 		}
 		if(resourceController.getBooleanProperty("compare_as_date") ){
-			final Date date = TextUtils.toDateLocal(value);
+			final Date date = TextUtils.toDate(value);
 			if(date != null){
 				conditionValue = date;
 				return;
@@ -82,7 +82,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			return 0;
 		}
 		if (conditionValue instanceof Date) {
-			final Date date = TextUtils.toDateLocal(nodeValue);
+			final Date date = TextUtils.toDate(nodeValue);
 			if(date != null)
 				return compareTo(date);
 			error = true;
@@ -133,7 +133,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 
 	private String valueAsString() {
 		if(conditionValue instanceof Date)
-			return TextUtils.toStringLocal((Date)conditionValue);
+			return TextUtils.toString((Date)conditionValue);
 	    return conditionValue.toString();
     }
 

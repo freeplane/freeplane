@@ -100,6 +100,40 @@ public class TextUtils {
 		}
 		return NumberUtils.isNumber(text);
     }
+	
+	public static Date toDate(String text){
+		final String dateFormat = ResourceController.getResourceController().getProperty("date_format");
+		if("date_local".equals(dateFormat)){
+			return toDateLocal(text);
+		}
+		if("date_iso".equals(dateFormat)){
+			return toDateISO(text);
+		}
+		return null;
+	}
+	
+	public static String toString(Date date){
+		final String dateFormat = ResourceController.getResourceController().getProperty("date_format");
+		if("date_local".equals(dateFormat)){
+			return toStringLocal(date);
+		}
+		if("date_iso".equals(dateFormat)){
+			return toStringISO(date);
+		}
+		return null;
+	}
+	
+	public static boolean isDate(String text){
+		final String dateFormat = ResourceController.getResourceController().getProperty("date_format");
+		if("date_local".equals(dateFormat)){
+			return isDateLocal(text);
+		}
+		if("date_iso".equals(dateFormat)){
+			return isDateISO(text);
+		}
+		return false;
+	}
+	
 	public static final Pattern DATE_REGEXP_PATTERN = Pattern.compile("\\d{4}(-?)\\d{2}(-?)\\d{2}" //
         + "(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?");
 	public static Date toDateISO(String text){
