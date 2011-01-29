@@ -17,11 +17,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.freeplane.plugin.latex;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -36,8 +34,8 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 
@@ -50,7 +48,7 @@ class LatexViewer extends JComponent {
 	private static final long serialVersionUID = 1L;
 	private float zoom = 0f;
 	@SuppressWarnings("unused")
-    final private LatexNodeHook nodeHook;
+	final private LatexNodeHook nodeHook;
 	private LatexExtension model;
 	private TeXFormula teXFormula;
 
@@ -66,13 +64,23 @@ class LatexViewer extends JComponent {
 			public void mouseClicked(final MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2
 				        && Controller.getCurrentModeController().getModeName() == "MindMap") {
-					//edit();
-					final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-					final Container nodeView = SwingUtilities.getAncestorOfClass(NodeView.class, LatexViewer.this);
-                    nodeHook.editLatexInEditor(node);
-					nodeView.requestFocus();
-					e.consume();
-					return;
+					NodeModel node = null;
+					if (e.getSource().getClass() == LatexViewer.class) {
+						final LatexViewer lv = (LatexViewer) e.getSource();
+						for (int i = 0; i < lv.getParent().getComponentCount(); i++) {
+							if (lv.getParent().getComponent(i) instanceof MainView) {
+								final MainView mv = (MainView) lv.getParent().getComponent(i);
+								node = mv.getNodeView().getModel();
+								break;
+							}
+						}
+						if (node == null) {
+							node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+						}
+						nodeHook.editLatexInEditor(node);
+						e.consume();
+						return;
+					}
 				}
 			}
 		});
