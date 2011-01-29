@@ -43,6 +43,10 @@
                 <choice value="zh_TW"/>
                 <choice value="zh_CN"/>
             </combo>
+         	<combo name="date_format">
+                <choice value="date_local"/>
+                <choice value="date_iso"/>
+        	</combo>
         </separator>
         <separator name = "files">
             <number name = "last_opened_list_length" min="1" max="50"/> 
@@ -191,6 +195,10 @@
             <boolean name="delete_nodes_without_question"/>
             <boolean name="cut_nodes_without_question"/>
             <boolean name="remove_notes_without_question"/>
+        </separator>
+        <separator name="search">
+        	<boolean name="compare_as_number"/>
+        	<boolean name="compare_as_date"/>
         </separator>
         <separator name="selection_method">
             <combo name="selection_method">

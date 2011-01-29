@@ -62,7 +62,8 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 
 	private boolean checkText(final String plainTextContent) {
 		try {
-			return succeed == (signOfcompareTo(plainTextContent) == comparationResult);
+			compareTo(plainTextContent);
+			return isComparisonOK() &&  succeed == (getComparisonResult() == comparationResult);
 		}
 		catch (final NumberFormatException e) {
 			return false;

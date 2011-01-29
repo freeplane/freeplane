@@ -146,6 +146,10 @@ public class ResourceBundles extends ResourceBundle {
 		return resource;
 	}
 
+	public String putResourceString(final String key, final String resource) {
+		return languageResources.put(key, resource);
+	}
+	
 	@Override
 	protected Object handleGetObject(final String key) {
 		try {

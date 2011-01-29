@@ -3,19 +3,15 @@ package org.freeplane.plugin.script.proxy;
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.MissingMethodException;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
 
 /** Utility class that is used to convert node texts to different types.
  * It's especially important for Formulas. */
@@ -24,8 +20,6 @@ import org.freeplane.core.util.HtmlUtils;
 //   assert new Comparable(2) == "2"
 // instead of just calling equals, which is correctly defined
 public class Convertible extends GroovyObjectSupport /*implements Comparable<Object>*/ {
-	private static final Pattern DATE_REGEXP_PATTERN = Pattern.compile("\\d{4}(-?)\\d{2}(-?)\\d{2}" //
-	        + "(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?");
 	private final String text;
 
 	/** doesn't evaluate formulas since this would require a calculation rule or NodeModel. */
@@ -46,12 +40,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	 */
 	public Number getNum() throws ConversionException {
 		try {
-			try {
-				return text == null ? null : text.length() == 0 ? 0 : Long.decode(text);
-			}
-			catch (NumberFormatException e) {
-				return Double.valueOf(text);
-			}
+			return TextUtils.toNumber(text);
 		}
 		catch (NumberFormatException e) {
 			throw new ConversionException("not a number: '" + text + "'", e);
@@ -97,42 +86,9 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	}
 
 	private static Date parseDate(String text) throws ConversionException {
-		//        1         2         34            5         6   7        8           9
-		// \\d{4}(-?)\\d{2}(-?)\\d{2}(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?
-		final Matcher matcher = DATE_REGEXP_PATTERN.matcher(text);
-		if (matcher.matches()) {
-			StringBuilder builder = new StringBuilder("yyyy");
-			builder.append(matcher.group(1));
-			builder.append("MM");
-			builder.append(matcher.group(2));
-			builder.append("dd");
-			if (matcher.group(3) != null) {
-				if (matcher.group(4) != null) {
-					builder.append('\'');
-					builder.append(matcher.group(4));
-					builder.append('\'');
-				}
-				builder.append("HH");
-				builder.append(matcher.group(5));
-				builder.append("mm");
-				if (matcher.group(7) != null) {
-					builder.append(matcher.group(6));
-					builder.append("ss");
-				}
-				if (matcher.group(8) != null) {
-					builder.append(".SSS");
-				}
-				if (matcher.group(9) != null) {
-					builder.append("Z");
-				}
-			}
-			SimpleDateFormat parser = new SimpleDateFormat(builder.toString());
-			ParsePosition pos = new ParsePosition(0);
-			Date date = parser.parse(text, pos);
-			if (date != null && pos.getIndex() == text.length()) {
-				return date;
-			}
-		}
+		final Date date = TextUtils.toDateISO(text);
+		if(date != null)
+			return date;
 		throw new ConversionException("not a date: " + text);
 	}
 
@@ -184,15 +140,12 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	/** returns true if the text is convertible to number. */
 	public boolean isNum() {
 		// handles null -> false
-		return NumberUtils.isNumber(text);
+		return TextUtils.isNumber(text);
 	}
 
 	/** returns true if the text is convertible to date. */
 	public boolean isDate() {
-		if (text == null)
-			return false;
-		final Matcher matcher = DATE_REGEXP_PATTERN.matcher(text);
-		return matcher.matches();
+		return TextUtils.isDateISO(text);
 	}
 
 	/** pretend we are a String if we don't provide a property for ourselves. */
@@ -241,17 +194,13 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 		else if (value.getClass().equals(String.class))
 			return (String) value;
 		else if (value instanceof Date)
-			return Convertible.dateToString(((Date) value));
+			return TextUtils.toStringISO(((Date) value));
 		else if (value instanceof Calendar)
-			return Convertible.dateToString(((Calendar) value).getTime());
+			return TextUtils.toStringISO(((Calendar) value).getTime());
 		else
 			return value.toString();
 	}
 
-	private static String dateToString(Date date) {
-		return DateFormatUtils.formatUTC(date, "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-	}
-	
 	// Unfortunately it seems impossible to implement Comparable<Object> since in this case
 	// TypeTransformation.compareToWithEqualityCheck() is called and will return false for
 	//   assert new Comparable(2) == "2"

@@ -19,45 +19,39 @@
  */
 package org.freeplane.features.common.filter.condition;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.ParsePosition;
 import java.util.Date;
 
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 abstract public class CompareConditionAdapter extends ASelectableCondition {
 	public static final String MATCH_CASE = "MATCH_CASE";
 	public static final String VALUE = "VALUE";
-	public static final DateFormat shortDateFormat;
-	static {
-		shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
-		shortDateFormat.setLenient(true);
-	}
 	private Comparable<?> conditionValue;
 	final private boolean matchCase;
+	private int comparisonResult;
+	private boolean error;
 
 	protected CompareConditionAdapter(final String value, final boolean matchCase) {
 		super();
 		this.matchCase = matchCase;
-		try {
-			conditionValue = Integer.valueOf(value);
+		final ResourceController resourceController = ResourceController.getResourceController();
+		if(resourceController.getBooleanProperty("compare_as_number") && TextUtils.isNumber(value)) {
+			Number number = TextUtils.toNumber(value);
+			if(number instanceof Comparable<?>){
+				conditionValue = (Comparable<?>) number;
+			}
 			return;
 		}
-		catch (final NumberFormatException fne) {
-		};
-		try {
-			conditionValue = Double.valueOf(value);
-			return;
+		if(resourceController.getBooleanProperty("compare_as_date") ){
+			final Date date = TextUtils.toDateLocal(value);
+			if(date != null){
+				conditionValue = date;
+				return;
+			}
 		}
-		catch (final NumberFormatException fne) {
-		};
-		final ParsePosition parsePosition = new ParsePosition(0);
-		conditionValue = shortDateFormat.parse(value, parsePosition);
-		if(parsePosition.getErrorIndex() == -1 && parsePosition.getIndex() == value.length())
-			return;
 		conditionValue = value;
 	}
 
@@ -68,46 +62,53 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 		child.setAttribute(CompareConditionAdapter.MATCH_CASE, TreeXmlWriter.BooleanToXml(matchCase));
 	}
 
-	protected int signOfcompareTo(final String nodeValue) throws NumberFormatException {
-		return Integer.signum(compareTo(nodeValue));
+	protected void compareTo(final String nodeValue) throws NumberFormatException {
+		error = false;
+		comparisonResult = Integer.signum(compareToData(nodeValue));
 	}
 
-	private int compareTo(final String nodeValue) {
-	    if (conditionValue instanceof Integer) {
-			try {
-				final Integer value = Integer.valueOf(nodeValue);
-				return compareTo(value);
-			}
-			catch (final NumberFormatException fne) {
-			};
-		}
+	private int compareToData(final String nodeValue) {
 		if (conditionValue instanceof Number) {
 			try {
-				final Double value = Double.valueOf(nodeValue);
-				return compareTo(value);
+				Number number = TextUtils.toNumber(nodeValue); 
+				if(number instanceof Long)
+					return compareTo((Long)number);
+				if(number instanceof Double)
+					return compareTo((Double)number);
 			}
 			catch (final NumberFormatException fne) {
 			};
+			error = true;
+			return 0;
 		}
 		if (conditionValue instanceof Date) {
-			final ParsePosition parsePosition = new ParsePosition(0);
-			final Date value =  shortDateFormat.parse(nodeValue, parsePosition);
-			if(parsePosition.getErrorIndex() == -1 && parsePosition.getIndex() == nodeValue.length())
-				return compareTo(value);;
+			final Date date = TextUtils.toDateLocal(nodeValue);
+			if(date != null)
+				return compareTo(date);
+			error = true;
+			return 0;
 		}
 		return matchCase ? nodeValue.compareTo(valueAsString()) : nodeValue
 		    .compareToIgnoreCase(valueAsString());
     }
 
-	protected int compareTo(final Double value) {
+	protected int getComparisonResult() {
+    	return comparisonResult;
+    }
+
+	protected boolean isComparisonOK() {
+    	return ! error;
+    }
+
+	private int compareTo(final Double value) {
 	    return value.compareTo(((Number) conditionValue).doubleValue());
     }
 
-	protected int compareTo(final Integer value) {
-	    return value.compareTo((Integer) conditionValue);
+	protected int compareTo(final Long value) {
+	    return value.compareTo((Long) conditionValue);
     }
 
-	protected int compareTo(final Date value) {
+	private int compareTo(final Date value) {
 	    return value.compareTo((Date) conditionValue);
     }
 
@@ -132,7 +133,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 
 	private String valueAsString() {
 		if(conditionValue instanceof Date)
-			return shortDateFormat.format((Date)conditionValue);
+			return TextUtils.toStringLocal((Date)conditionValue);
 	    return conditionValue.toString();
     }
 

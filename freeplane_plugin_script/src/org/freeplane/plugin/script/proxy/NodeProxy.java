@@ -28,7 +28,6 @@ import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Attributes;
-import org.freeplane.plugin.script.proxy.Proxy.Connector;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeProxy extends AbstractProxy<NodeModel> implements Node {
