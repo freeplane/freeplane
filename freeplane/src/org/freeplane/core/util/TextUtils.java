@@ -95,9 +95,6 @@ public class TextUtils {
 	}
 
 	public static boolean isNumber(String text) {
-		if(text == null || text.length() == 0 || Character.isWhitespace(text.charAt(0))) {
-			return false;
-		}
 		return NumberUtils.isNumber(text);
     }
 	
