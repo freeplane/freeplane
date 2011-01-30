@@ -48,9 +48,14 @@ public class ConvertibleTest {
 		assertEquals(new Long(-31), convertible("-#1f").getNum());
 		assertEquals(new Long(23), convertible("027").getNum());
 		assertEquals(new Long(-23), convertible("-027").getNum());
-		// parse error
-		boolean caughtException = false;
-		final String notANumber = "xyz";
+		assertThrowsConversionException(""); // FIXME: changed on 2011-01-30
+		assertThrowsConversionException("xyz");
+		assertThrowsConversionException(" 12");
+	}
+
+	private void assertThrowsConversionException(String string) {
+	    boolean caughtException = false;
+		final String notANumber = string;
 		try {
 			convertible(notANumber).getNum();
 		}
@@ -58,7 +63,7 @@ public class ConvertibleTest {
 			caughtException = true;
 		}
 		assertTrue("not a number: " + notANumber, caughtException);
-	}
+    }
 	
 	@Test
 	public void testGetNum0() throws ConversionException, ExecuteScriptException {
