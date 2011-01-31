@@ -68,13 +68,18 @@
 			<menu_category name="edit">
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
-				<menu_action action="EditDetailsAction" accelerator="shift F2" />
-				<menu_action action="EditNoteInDialogAction" />
-				<menu_action action="EditAttributesAction" accelerator="alt F9" />
+				<menu_submenu name="EditNodeExtensions" name_ref="NodeExtensions.EditNodeExtensions">
+					<menu_action action="EditDetailsAction"/>
+					<menu_action action="EditNoteInDialogAction" />
+				<menu_action action="EditAttributesAction" />							
+				</menu_submenu>
 				<menu_action action="SelectNoteAction" accelerator="control LESS"/> <!-- goto -->
 			</menu_category>
-				<menu_separator />
+				<menu_separator />				
 			<menu_category name="delete">
+			<menu_submenu name="RemoveNodeExtensions" name_ref="NodeExtensions.RemoveNodeExtensions">
+				<menu_action action="DeleteDetailsAction"/>			
+			</menu_submenu>
 				<menu_action action="DeleteAction" accelerator="DELETE" />
 				<!-- <menu_action action="remove" /> -->
 			</menu_category>	
@@ -150,6 +155,7 @@
 			<menu_category name="clouds">
 				<menu_action action="CloudAction" accelerator="control shift B" />
 			</menu_category>
+			<menu_separator/>
 			<menu_category name="other">
 			</menu_category>
 		</menu_submenu>
@@ -311,7 +317,6 @@
 						<menu_action action="RevisionPluginAction" />
 					</menu_category>
 				</menu_category>
-				<menu_action action="DeleteDetailsAction"/>
 				<menu_action action="RemoveNoteAction" />
 				<menu_separator />
 				<menu_action action="ShowAttributeDialogAction" />
@@ -371,23 +376,6 @@
 		</menu_category>
 	</menu_category>
 	<menu_category name="node_popup">
-		<menu_category name="EditAction">
-			<menu_action action="EditAction" />
-			<menu_action action="EditLongAction" />
-			<menu_action action="EditDetailsAction"/>
-			<menu_action action="EditNoteInDialogAction" />
-			<menu_action action="SetShortenerStateAction" />
-			<menu_action action="ToggleDetailsAction"/>
-			<menu_action action="DeleteDetailsAction"/>
-			
-			<menu_action action="EditAttributesAction" />
-			<!--
-				<menu_action action="UseRichFormattingAction" /> <menu_action
-				name="UsePlainTextAction" action="usePlainText" />
-			-->
-			<!-- <menu_action action="remove" /> -->
-		</menu_category>
-		<menu_separator />
 		<menu_category name="PasteAction">
 			<menu_action action="CutAction" />
 			<menu_action action="CopyAction" />
@@ -398,23 +386,36 @@
            	<menu_action action="PasteAttributes" />
 		</menu_category>
 		<menu_separator />
+		<menu_category name="EditAction">
+			<menu_action action="EditAction" />
+			<menu_action action="EditLongAction" />
+			<menu_submenu name="EditNodeExtensions" name_ref="NodeExtensions.EditNodeExtensions">
+							<menu_action action="EditDetailsAction"/>
+							<menu_action action="EditNoteInDialogAction" />
+							<menu_action action="EditAttributesAction" />							
+			</menu_submenu>
+			<menu_separator />
+			<menu_action action="SetShortenerStateAction" />
+			<menu_action action="ToggleDetailsAction"/>
+		</menu_category>
+		<menu_separator />
 		<menu_category name="new_nodes">
-			<!--
-				<menu_action action="NewChildAction"
-				/>
-			-->
 			<menu_action action="NewChildAction" />
 			<menu_action action="NewSiblingAction" />
 			<menu_action action="NewPreviousSiblingAction" />
+		</menu_category>
+		<menu_separator/>
+		<menu_category name="remove">
 			<menu_action action="DeleteAction" />
+			<menu_submenu name="RemoveNodeExtensions" name_ref="NodeExtensions.RemoveNodeExtensions">
+				<menu_action action="DeleteDetailsAction"/>			
+			</menu_submenu>
 		</menu_category>
 		<menu_separator />
-
 		<menu_category name="navigate_nodes">
 			<menu_action action="NodeUpAction" />
 			<menu_action action="NodeDownAction" />
 		</menu_category>
-
 		<menu_separator />
 		<menu_category name="folding">
 			<menu_action action="ToggleFoldedAction" />

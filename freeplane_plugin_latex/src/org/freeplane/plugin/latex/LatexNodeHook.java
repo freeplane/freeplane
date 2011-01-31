@@ -27,7 +27,6 @@ import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeViewLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapModel;
@@ -43,7 +42,6 @@ import org.freeplane.view.swing.map.NodeView;
  */
 @NodeHookDescriptor(hookName = "plugins/latex/LatexNodeHook.properties", //
 onceForMap = false)
-@ActionLocationDescriptor(locations = "/menu_bar/insert/other")
 class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleListener {
 	static final int VIEWER_POSITION = 4;
 

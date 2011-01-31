@@ -13,7 +13,7 @@ import org.freeplane.features.common.map.NodeModel;
  *
  *This class is called when a Latex formula is edited
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/edit/edit", "/node_popup/EditAction" })
+@ActionLocationDescriptor(locations = { "/menu_bar/edit/edit/EditNodeExtensions", "/node_popup/EditAction/EditNodeExtensions" })
 public class EditLatexAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final LatexNodeHook nodeHook;

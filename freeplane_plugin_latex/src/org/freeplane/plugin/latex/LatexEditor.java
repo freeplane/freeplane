@@ -46,7 +46,9 @@ import org.freeplane.features.common.map.NodeModel;
 public class LatexEditor {
 	/**
 	 * This method shows the Latex editor and sets the equation to be rendered from Latex
+	 * 
 	 * @param oldEquation: previous equation
+	 * @param node: the node that is edited (is used to position editor window)
 	 * 
 	 */
 	public static String editLatex(final String oldEquation, final NodeModel node) {
