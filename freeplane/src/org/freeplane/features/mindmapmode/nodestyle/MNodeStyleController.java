@@ -33,7 +33,6 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
-import org.freeplane.features.common.text.TemplateTextTransformer;
 import org.freeplane.features.common.text.TextController;
 
 /**
@@ -136,7 +135,6 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new NodeBackgroundColorAction());
 		modeController.addAction(new NodeShapeAction(NodeStyleModel.STYLE_FORK));
 		modeController.addAction(new NodeShapeAction(NodeStyleModel.STYLE_BUBBLE));
-		TextController.getController(modeController).addTextTransformer(new TemplateTextTransformer(50));
 	}
 
 	public void copyStyle(final NodeModel source, final NodeModel target) {

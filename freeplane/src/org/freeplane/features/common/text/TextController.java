@@ -20,6 +20,7 @@
 package org.freeplane.features.common.text;
 
 import java.awt.Font;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,12 +32,17 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.map.ITooltipProvider;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.styles.IStyle;
+import org.freeplane.features.common.styles.LogicalStyleController;
+import org.freeplane.features.common.styles.MapStyleModel;
 
 
 /**
@@ -52,6 +58,7 @@ public class TextController implements IExtension {
 	private static final Integer NODE_TOOLTIP = 1;
 	private static final Integer DETAILS_TOOLTIP = 2;
 	private final List<ITextTransformer> textTransformers;
+	private final ModeController modeController;
 
 	public static TextController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -75,6 +82,7 @@ public class TextController implements IExtension {
 	public TextController(final ModeController modeController) {
 		super();
 		textTransformers = new LinkedList<ITextTransformer>();
+		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -86,6 +94,7 @@ public class TextController implements IExtension {
 		modeController.addAction(new ToggleDetailsAction());
 		modeController.addAction(new SetShortenerStateAction());
 //		modeController.addAction(new ToggleNodeNumberingAction());
+		addTextTransformer(new TemplateTextTransformer(this, 50));
 	}
 
 	public void addTextTransformer(ITextTransformer textTransformer) {
@@ -219,5 +228,37 @@ public class TextController implements IExtension {
 
 	public void toggleShortened(NodeModel node) {
 		setIsShortened(node, ! getIsShortened(node)); 
+    }
+
+	public String getNodeTextTemplate(NodeModel node) {
+		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
+		final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+		for(IStyle styleKey : collection){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final String template = NodeStyleModel.getNodeTextTemplate(styleNode);
+			if (template != null) {
+				return template;
+			}
+		}
+		return null;
+    }
+
+	public boolean getNodeNumbering(NodeModel node) {
+		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
+		final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+		for(IStyle styleKey : collection){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final Boolean numbering = NodeStyleModel.getNodeNumbering(styleNode);
+			if (numbering != null) {
+				return numbering;
+			}
+		}
+		return false;
     }
 }
