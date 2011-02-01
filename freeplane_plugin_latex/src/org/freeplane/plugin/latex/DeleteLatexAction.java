@@ -50,6 +50,8 @@ public class DeleteLatexAction extends AMultipleNodeAction {
 		final LatexExtension latexExtension = (LatexExtension) node.getExtension(LatexExtension.class);
 		if (latexExtension != null) {
 			nodeHook.undoableDeactivateHook(node);
+			Controller.getCurrentModeController().getMapController()
+			    .nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 			return;
 		}
 	}

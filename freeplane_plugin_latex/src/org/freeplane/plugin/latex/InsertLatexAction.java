@@ -50,6 +50,8 @@ public class InsertLatexAction extends AFreeplaneAction {
 		final LatexExtension latexExtension = (LatexExtension) node.getExtension(LatexExtension.class);
 		if (latexExtension == null) {
 			nodeHook.editLatexInEditor(node);
+			Controller.getCurrentModeController().getMapController()
+			    .nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 			return;
 		}
 	}
