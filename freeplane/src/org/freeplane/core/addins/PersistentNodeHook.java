@@ -42,12 +42,12 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class PersistentNodeHook {
-	
-	static private Set<Class<? extends IExtension>> mapExtensionClasses = new  HashSet<Class<? extends IExtension>>();
-	public static boolean isMapExtension(Class<? extends IExtension> clazz){
+	static private Set<Class<? extends IExtension>> mapExtensionClasses = new HashSet<Class<? extends IExtension>>();
+
+	public static boolean isMapExtension(final Class<? extends IExtension> clazz) {
 		return mapExtensionClasses.contains(clazz);
 	}
-	
+
 	public abstract class HookAction extends AFreeplaneAction {
 		private static final long serialVersionUID = 1L;
 
@@ -128,7 +128,7 @@ public abstract class PersistentNodeHook {
 				return;
 			}
 			final IExtension extension = createExtension(node, lastBuiltElement);
-			if(extension == null){
+			if (extension == null) {
 				return;
 			}
 			add(node, extension);
@@ -140,29 +140,30 @@ public abstract class PersistentNodeHook {
 
 	protected class XmlWriter implements IExtensionElementWriter {
 		public void writeContent(final ITreeWriter writer, final Object object, final IExtension extension)
-		throws IOException {
+		        throws IOException {
 			final XMLElement element = new XMLElement("hook");
-			try{
+			try {
 				saveExtension(extension, element);
 				writer.addElement(null, element);
 			}
-			catch(Exception e){
+			catch (final Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-// // 	final private Controller controller;
-// 	private final ModeController modeController;
+	// // 	final private Controller controller;
+	// 	private final ModeController modeController;
 	private final HookAction selectableHookAction;
 
 	@SuppressWarnings("unchecked")
 	public PersistentNodeHook() {
 		super();
-		if(getHookAnnotation().onceForMap())
+		if (getHookAnnotation().onceForMap()) {
 			mapExtensionClasses.add(getExtensionClass());
-//		this.modeController = modeController;
-//		controller = modeController.getController();
+		}
+		//		this.modeController = modeController;
+		//		controller = modeController.getController();
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (modeController.getModeName().equals("MindMap")) {
 			final ActionLocationDescriptor actionAnnotation = getActionAnnotation();
@@ -221,7 +222,7 @@ public abstract class PersistentNodeHook {
 	}
 
 	@SuppressWarnings("unchecked")
-    protected Class<? extends IExtension> getExtensionClass() {
+	protected Class<? extends IExtension> getExtensionClass() {
 		return (Class<? extends IExtension>) getClass();
 	}
 
@@ -288,7 +289,8 @@ public abstract class PersistentNodeHook {
 
 	protected void registerAction(final AFreeplaneAction action, final ActionLocationDescriptor actionAnnotation) {
 		Controller.getCurrentModeController().addAction(action);
-		Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder().addAction(action, actionAnnotation);
+		Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder()
+		    .addAction(action, actionAnnotation);
 	}
 
 	protected void remove(final NodeModel node, final IExtension extension) {
@@ -339,19 +341,20 @@ public abstract class PersistentNodeHook {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	protected IExtension toggle(NodeModel node, IExtension extension) {
-	    if (extension != null && node.containsExtension(extension.getClass())) {
-	    	remove(node, extension);
-	    }
-	    else {
-	    	if (extension == null) {
-	    		extension = createExtension(node);
-	    	}
-	    	if (extension != null) {
-	    		add(node, extension);
-	    	}
-	    }
-		Controller.getCurrentModeController().getMapController().nodeChanged(node);	  
+	protected IExtension toggle(final NodeModel node, IExtension extension) {
+		if (extension != null && node.containsExtension(extension.getClass())) {
+			remove(node, extension);
+		}
+		else {
+			if (extension == null) {
+				extension = createExtension(node);
+			}
+			if (extension != null) {
+				add(node, extension);
+			}
+		}
+		Controller.getCurrentModeController().getMapController()
+		    .nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 		return extension;
-    }
+	}
 }
