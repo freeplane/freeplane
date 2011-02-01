@@ -14,6 +14,8 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 
+/** utilities for translations, conversions to/from number and dates etc.
+ * In scripts available as "global variable" <code>textUtils</code>. */
 public class TextUtils {
 	public static String format(final String resourceKey, final Object... messageArguments) {
 		final String text = TextUtils.getText(resourceKey);
