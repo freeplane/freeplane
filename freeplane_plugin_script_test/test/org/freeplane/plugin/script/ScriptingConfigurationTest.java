@@ -19,49 +19,93 @@
  */
 package org.freeplane.plugin.script;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class ScriptingConfigurationTest {
+	private String scriptName = "TestScript";
+
 	@Test
-	public void testAnalyseScriptContent() {
-		//		ScriptingConfiguration config = new ScriptingConfiguration();
-		final String scriptName = "TestScript";
+	public void testAnalyseScriptContent1() {
 		// it's case insensitive
 		// it's tolerant on white space
-		// it doesn't mind 
-		String content = "// some comment"
-		        + "\n//@ExecutionModes (\t{\n  ExecutionMode.ON_selECTED_NODE,\n \tON_SelECTED_NODE_RECURSIVELY } )"
-		        + "\n//  @CacheScriptContent ( true\t ) " //
+		String content = "// some comment" //
+		        + "//@ExecutionModes (\t{  ExecutionMode.ON_selECTED_NODE" //
+		        + ", \tON_SelECTED_NODE_RECURSIVELY = \"/menu_bar/help\" } )" //
+		        + "//  @CacheScriptContent ( true\t ) " //
+		        + " def test() {}";
+		ScriptMetaData metaData = new ScriptingConfiguration().analyseScriptContent(content, scriptName);
+		assertEquals("expected only modes set in the script", 2, metaData.getExecutionModes().size());
+		assertTrue("ON_SELECTED_NODE was set", metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE));
+		assertEquals("menu location for ON_SELECTED_NODE should be default",
+		    ScriptingConfiguration.getScriptsLocation() + "/" + scriptName,
+		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE));
+		assertTrue("ON_SELECTED_NODE_RECURSIVELY was set",
+		    metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
+		assertEquals("menu location for ON_SELECTED_NODE_RECURSIVELY was set explicitely", "/menu_bar/help",
+		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
+		assertTrue("CacheScriptContent was set to true", metaData.cacheContent());
+	}
+
+	@Test
+	public void testAnalyseScriptContentWithTitleKey() {
+		// it's case insensitive
+		// it's tolerant on white space
+		String content = "// some comment" //
+		        + "\n//@ExecutionModes (\t{\n  ExecutionMode.ON_selECTED_NODE=\"/menu_bar/help[icon_button_ok]\"" //
+		        + ",\n \tON_SelECTED_NODE_RECURSIVELY = \"/menu_bar/help[Test_Script]\" } )" //
 		        + "\n def test() {}\n";
-		ScriptMetaData metaData = new ScriptMetaData(scriptName);
-		ScriptingConfiguration.analyseScriptContent(content, metaData);
-		Assert.assertEquals("expected only modes set in the script", 2, metaData.getExecutionModes().size());
-		Assert.assertTrue("ON_SELECTED_NODE was set", metaData.getExecutionModes().contains(
-		    ExecutionMode.ON_SELECTED_NODE));
-		Assert.assertTrue("ON_SELECTED_NODE_RECURSIVELY was set", metaData.getExecutionModes().contains(
-		    ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
-		Assert.assertTrue("CacheScriptContent was set to true", metaData.cacheContent());
-		content = "// some comment"
+		ScriptMetaData metaData = new ScriptingConfiguration().analyseScriptContent(content, scriptName);
+		assertEquals("expected only modes set in the script", 2, metaData.getExecutionModes().size());
+		assertTrue("ON_SELECTED_NODE was set", metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE));
+		assertEquals("wrong menu location", "/menu_bar/help", metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE));
+		assertEquals("wrong title key", "icon_button_ok", metaData.getTitleKey(ExecutionMode.ON_SELECTED_NODE));
+		assertTrue("ON_SELECTED_NODE_RECURSIVELY was set",
+		    metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
+		assertEquals("wrong menu location", "/menu_bar/help",
+		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
+		assertEquals("wrong title key", "Test_Script", metaData.getTitleKey(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
+	}
+
+	@Test
+	public void testAnalyseScriptContentRemoveDuplicates() {
+		String content = "// some comment"
 		        + "\n//   @ExecutionModes (\t{\n  ExecutionMode.ON_selECTED_NODE_recursively,\n \tON_SelECTED_NODE_RECURSIVELY } )";
-		metaData = new ScriptingConfiguration.ScriptMetaData(scriptName);
-		ScriptingConfiguration.analyseScriptContent(content, metaData);
-		Assert.assertEquals("duplicated modes should not matter", 1, metaData.getExecutionModes().size());
-		Assert.assertTrue("ON_SELECTED_NODE_RECURSIVELY was set", metaData.getExecutionModes().contains(
-		    ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
-		Assert.assertTrue("CacheScriptContent=false is the default", !metaData.cacheContent());
-		content = "=\"blabla\"" + "\n//   @CacheScriptContent ( true\t ) ";
-		metaData = new ScriptingConfiguration.ScriptMetaData(scriptName);
-		ScriptingConfiguration.analyseScriptContent(content, metaData);
-		Assert.assertEquals("single node mode should be removed for '=' scripts", 2, metaData.getExecutionModes()
-		    .size());
-		Assert.assertTrue("ON_SELECTED_NODE shouldn't been removed", metaData.getExecutionModes().contains(
-		    ExecutionMode.ON_SELECTED_NODE));
-		Assert.assertTrue("ON_SELECTED_NODE_RECURSIVELY shouldn't been removed", metaData.getExecutionModes().contains(
-		    ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
-		Assert.assertTrue("CacheScriptContent was set to true", metaData.cacheContent());
+		ScriptMetaData metaData = new ScriptingConfiguration().analyseScriptContent(content, scriptName);
+		assertEquals("duplicated modes should not matter", 1, metaData.getExecutionModes().size());
+		assertTrue("ON_SELECTED_NODE_RECURSIVELY was set",
+		    metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
+		assertTrue("CacheScriptContent=false is the default", !metaData.cacheContent());
+	}
+
+	@Test
+	public void testAnalyseScriptContentForFormula() {
+		String content = "=\"blabla\"" //
+		        + "\n//   @CacheScriptContent ( true\t ) ";
+		ScriptMetaData metaData = new ScriptingConfiguration().analyseScriptContent(content, scriptName);
+		assertEquals("single node mode should be removed for '=' scripts", 2, metaData.getExecutionModes().size());
+		assertTrue("ON_SELECTED_NODE shouldn't been removed",
+		    metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE));
+		assertTrue("ON_SELECTED_NODE_RECURSIVELY shouldn't been removed",
+		    metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
+		assertTrue("CacheScriptContent was set to true", metaData.cacheContent());
 		// assert that duplicate entries do no harm
+	}
+
+	@Test
+	public void testParseExecutionModes() throws Exception {
+		ScriptMetaData metaData = new ScriptMetaData("test");
+		ScriptingConfiguration.setExecutionModes(
+		    "@ExecutionModes({on_selected_node=\"/menu/bla/blupp\",on_single_node=\"/menu/hi/ho\"})", metaData);
+		ScriptingConfiguration.setExecutionModes(
+		    "@ExecutionModes({on_selected_node=\"/menu/bla/blupp\"on_single_node=\"/menu/hi/ho\"})", metaData);
+		ScriptingConfiguration.setExecutionModes("@ExecutionModes({on_single_node=\"/menu/hi/ho\"})", metaData);
+		ScriptingConfiguration.setExecutionModes("@ExecutionModes({on_single_node})", metaData);
+		ScriptingConfiguration.setExecutionModes("@ExecutionModes({\"/menu/hi/ho\"})", metaData);
+		ScriptingConfiguration.setExecutionModes("@ExecutionModes({})", metaData);
 	}
 }

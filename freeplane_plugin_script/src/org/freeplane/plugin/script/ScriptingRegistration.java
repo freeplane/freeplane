@@ -23,7 +23,9 @@ package org.freeplane.plugin.script;
 import java.io.File;
 import java.io.PrintStream;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Properties;
 
@@ -47,10 +49,6 @@ import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
 class ScriptingRegistration {
-	/** create scripts submenu if there are more scripts than this number. */
-	private static final String MENU_BAR_SCRIPTING_PARENT_LOCATION = "/menu_bar/extras/first";
-	static final String MENU_BAR_SCRIPTING_LOCATION = MENU_BAR_SCRIPTING_PARENT_LOCATION + "/scripting";
-
 	final private class PatternScriptModel implements IScriptModel {
 		final private String mOriginalScript;
 		private String mScript;
@@ -78,7 +76,7 @@ class ScriptingRegistration {
 		}
 
 		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
-			ModeController modeController = Controller.getCurrentModeController();
+			final ModeController modeController = Controller.getCurrentModeController();
 			 return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
 					pErrorHandler, pOutStream, null);
 		}
@@ -182,9 +180,11 @@ class ScriptingRegistration {
 	}
 
 	private void registerScripts(final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {
-		final String scriptsParentLocation = MENU_BAR_SCRIPTING_LOCATION;
-		final String scriptsLocation = scriptsParentLocation + "/scripts";
+		final HashSet<String> registeredLocations = new HashSet<String>();
+		final String scriptsParentLocation = ScriptingConfiguration.getScriptsParentLocation();
+		final String scriptsLocation = ScriptingConfiguration.getScriptsLocation();
 		addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));
+		registeredLocations.add(scriptsLocation);
 		if (configuration.getNameScriptMap().isEmpty()) {
 			final String message = "<html><body><em>" + TextUtils.getText("ExecuteScripts.noScriptsAvailable")
 			        + "</em></body></html>";
@@ -192,31 +192,44 @@ class ScriptingRegistration {
 		}
 		for (final Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
 			final String scriptName = entry.getKey();
-			final String location = scriptsLocation + "/" + scriptName;
-			addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
 			final ScriptMetaData scriptMetaData = configuration.getNameScriptMetaDataMap().get(scriptName);
 			// in the worst case three actions will cache a script - should not matter that much since it's unlikely
 			// that one script is used in multiple modes by the same user
 			for (final ExecutionMode executionMode : scriptMetaData.getExecutionModes()) {
-				addMenuItem(menuBuilder, location, entry, executionMode, scriptMetaData.cacheContent());
+				final String location = scriptMetaData.getMenuLocation(executionMode);
+				if (!registeredLocations.contains(location)) {
+					addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
+					registeredLocations.add(location);
+				}
+				addMenuItem(menuBuilder, location, entry, executionMode, scriptMetaData.cacheContent(),
+				    scriptMetaData.getTitleKey(executionMode));
 			}
 		}
 	}
 
 	private void addSubMenu(final MenuBuilder menuBuilder, final String scriptsParentLocation,
 	                        final String scriptsLocation, final String name) {
+		if (menuBuilder.get(scriptsLocation) != null) {
+//			System.err.println("hi, location " + scriptsLocation + " already registered");
+			return;
+		}
 		final JMenu menuItem = new JMenu();
-		MenuBuilder.setLabelAndMnemonic(menuItem, name);
+		MenuBuilder.setLabelAndMnemonic(menuItem, pimpScriptName(name));
 		menuBuilder.addMenuItem(scriptsParentLocation, menuItem, scriptsLocation, MenuBuilder.AS_CHILD);
 	}
+	
+	private String pimpScriptName(final String scriptName) {
+		// convert CamelCase to Camel Case
+		return scriptName.replaceAll("([a-z])([A-Z])", "$1 $2");
+	}
 
-	private void addMenuItem( final MenuBuilder menuBuilder,
-	                         final String location, final Entry<String, String> entry,
-	                         final ExecutionMode executionMode, final boolean cacheContent) {
+	private void addMenuItem(final MenuBuilder menuBuilder, final String location, final Entry<String, String> entry,
+	                         final ExecutionMode executionMode, final boolean cacheContent, final String titleKey) {
 		final String scriptName = entry.getKey();
-		final String key = ExecuteScriptAction.getExecutionModeKey(executionMode);
-		final String menuName = TextUtils.format(key, scriptName);
-		menuBuilder.addAction(location, new ExecuteScriptAction(scriptName, menuName, entry.getValue(),
-		    executionMode, cacheContent), MenuBuilder.AS_CHILD);
+		final String translation = TextUtils.getText(titleKey, titleKey.replace('_', ' '));
+		final String menuName = translation.contains("{0}") ? MessageFormat.format(translation,
+		    pimpScriptName(scriptName)) : translation;
+		menuBuilder.addAction(location, new ExecuteScriptAction(scriptName, menuName, entry.getValue(), executionMode,
+		    cacheContent), MenuBuilder.AS_CHILD);
 	}
 }
