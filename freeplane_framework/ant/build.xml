@@ -17,6 +17,7 @@
 	<property name="readme_src" value="readme.txt" />
     <property name="build.resources" value="${build}/resources" />
     <property name="build.doc" value="${build}/doc" />
+    <property name="build.scripts" value="${build}/scripts" />
 	<property name="script" value="${root}/script" />
 
 	<!-- Mac OS X -->
@@ -124,6 +125,10 @@
         <copy todir="${build.doc}">
             <fileset dir="${workspace}/freeplane/dist/doc" />
             <fileset dir="${workspace}/freeplane_plugin_script/dist/doc" />
+        </copy>
+        <mkdir dir="${build.scripts}" />
+        <copy todir="${build.scripts}">
+            <fileset dir="${workspace}/freeplane_plugin_script/scripts" />
         </copy>
 
 	</target>

@@ -49,6 +49,11 @@
 				<include name="lib/**"/>
 			</fileset>
 		</copy>
+		<copy todir="dist/scripts">
+			<fileset dir="${root}/scripts">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
 		<mkdir dir="${dist.osgi.dir}/META-INF" />
 		<copyfile dest="${dist.osgi.dir}/META-INF/MANIFEST.MF" src="${osgimanifest}"/>
 		<delete file="lib/plugin.jar" quiet="true"/>
