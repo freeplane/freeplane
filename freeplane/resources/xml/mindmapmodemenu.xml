@@ -337,6 +337,7 @@
 						<menu_category name="save" />
 					</menu_submenu>
 				</menu_category>
+				<menu_action action="OpenUserDirAction" />
 			</menu_category>
 			<menu_category name="last"></menu_category>
 		</menu_submenu>
