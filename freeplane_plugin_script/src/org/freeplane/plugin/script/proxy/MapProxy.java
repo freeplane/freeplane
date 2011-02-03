@@ -3,6 +3,7 @@ package org.freeplane.plugin.script.proxy;
 import java.io.File;
 import java.util.Map.Entry;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
@@ -24,7 +25,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 		final NodeModel rootNode = getDelegate().getRootNode();
 		return new NodeProxy(rootNode, getScriptContext());
 	}
-	
+
 	@Deprecated
 	public Node getRootNode() {
 		return getRoot();
@@ -39,9 +40,13 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 		for (Entry<String, MapModel> map : mapViewManager.getMaps().entrySet()) {
 			if (map.getValue().equals(getDelegate()))
 				return map.getKey();
-        }
+		}
 		return null;
-    }
+	}
+
+	public boolean isSaved() {
+		return getDelegate().isSaved();
+	}
 
 	public boolean close(boolean force, boolean allowInteraction) {
 		if (!getDelegate().isSaved() && !force && !allowInteraction)
@@ -76,5 +81,14 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 			throw new RuntimeException("no url set for map " + getDelegate());
 		changeToThisMap(getMapViewManager());
 		return getModeController().save();
+	}
+
+	public void setName(final String title) {
+		changeToThisMap(getMapViewManager());
+		Controller.getCurrentController().getMapViewManager().getMapViewComponent().setName(title);
+	}
+
+	public void setSaved(final boolean isSaved) {
+		Controller.getCurrentModeController().getMapController().setSaved(getDelegate(), isSaved);
 	}
 }

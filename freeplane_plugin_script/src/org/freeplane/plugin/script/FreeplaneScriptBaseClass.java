@@ -12,6 +12,7 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.script.proxy.Proxy.NodeRO;
 
 public abstract class FreeplaneScriptBaseClass extends Script {
@@ -44,6 +45,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 		binding.setProperty("logger", new LogUtils());
 		binding.setProperty("ui", new UITools());
 		binding.setProperty("htmlUtils", HtmlUtils.getInstance());
+		binding.setProperty("textUtils", new TextUtils());
 	    return binding;
     }
 

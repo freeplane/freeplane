@@ -20,3 +20,4 @@ backups
 ./freeplane_ant/test/freeplane_plugin_*
 ./freeplane_plugin_script/build-nodehighlighter
 ./freeplane_plugin_script/lib/jsyntaxpane/nodehighlighter.jar
+./freeplane_framework/temp

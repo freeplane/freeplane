@@ -26,13 +26,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ConfigurationUtils;
@@ -47,36 +48,44 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
  */
 class ScriptingConfiguration {
 	static class ScriptMetaData {
-		private final TreeSet<ExecutionMode> executionModes;
+		private final TreeMap<ExecutionMode, String> executionModeLocationMap = new TreeMap<ExecutionMode, String>();
+		private final TreeMap<ExecutionMode, String> executionModeTitleKeyMap = new TreeMap<ExecutionMode, String>();
 		private boolean cacheContent = false;
 		private final String scriptName;
 
 		ScriptMetaData(final String scriptName) {
 			this.scriptName = scriptName;
-			executionModes = new TreeSet<ExecutionMode>();
-			executionModes.add(ExecutionMode.ON_SINGLE_NODE);
-			executionModes.add(ExecutionMode.ON_SELECTED_NODE);
-			executionModes.add(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY);
+			executionModeLocationMap.put(ExecutionMode.ON_SINGLE_NODE, null);
+			executionModeLocationMap.put(ExecutionMode.ON_SELECTED_NODE, null);
+			executionModeLocationMap.put(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY, null);
 		}
 
-		public TreeSet<ExecutionMode> getExecutionModes() {
-			return executionModes;
+		public Set<ExecutionMode> getExecutionModes() {
+			return executionModeLocationMap.keySet();
 		}
 
-		public void addExecutionMode(final ExecutionMode executionMode) {
-			executionModes.add(executionMode);
+		public void addExecutionMode(final ExecutionMode executionMode, final String location, final String titleKey) {
+			executionModeLocationMap.put(executionMode, location);
+			if (titleKey != null)
+				executionModeTitleKeyMap.put(executionMode, titleKey);
 		}
 
 		public void removeExecutionMode(final ExecutionMode executionMode) {
-			executionModes.remove(executionMode);
+			executionModeLocationMap.remove(executionMode);
 		}
 
 		public void removeAllExecutionModes() {
-			executionModes.clear();
+			executionModeLocationMap.clear();
 		}
 
-		public String getMenuLocation() {
-			return ScriptingRegistration.MENU_BAR_SCRIPTING_LOCATION + "/" + scriptName;
+		public String getMenuLocation(ExecutionMode executionMode) {
+			final String specialLocation = executionModeLocationMap.get(executionMode);
+			return specialLocation == null ? MENU_BAR_SCRIPTS_LOCATION + "/" + scriptName : specialLocation;
+		}
+
+		public String getTitleKey(final ExecutionMode executionMode) {
+			final String key = executionModeTitleKeyMap.get(executionMode);
+			return key == null ? getExecutionModeKey(executionMode) : key;
 		}
 
 		public boolean cacheContent() {
@@ -92,6 +101,8 @@ class ScriptingConfiguration {
 		}
 	}
 
+	private static final String MENU_BAR_SCRIPTS_PARENT_LOCATION = "/menu_bar/extras/first/scripting";
+	private static final String MENU_BAR_SCRIPTS_LOCATION = MENU_BAR_SCRIPTS_PARENT_LOCATION + "/scripts";
 	private static final String SCRIPT_REGEX = ".*\\.groovy$";
 	private static final String JAR_REGEX = ".*\\.jar$";
 	// or use property script_directories?
@@ -114,14 +125,21 @@ class ScriptingConfiguration {
 	}
 
 	private void initNameScriptMap() {
+		for (String dir : getScriptDirs()) {
+			addScripts(createFile(dir));
+		}
+	}
+
+	private TreeSet<String> getScriptDirs() {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		final String dirsString = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES);
+		final TreeSet<String> dirs = new TreeSet<String>(); // remove duplicates -> Set
 		if (dirsString != null) {
-			final List<String> dirs = ConfigurationUtils.decodeListValue(dirsString, false);
-			for (String dir : dirs) {
-				addScripts(createFile(dir));
-            }
+			dirs.addAll(ConfigurationUtils.decodeListValue(dirsString, false));
 		}
+		final String rootDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParent();
+		dirs.add(new File(rootDir, "scripts").getPath());
+		return dirs;
 	}
 
 	/**
@@ -149,13 +167,13 @@ class ScriptingConfiguration {
 	}
 
 	private FilenameFilter createFilenameFilter(final String regexp) {
-	    final FilenameFilter filter = new FilenameFilter() {
-	    	public boolean accept(final File dir, final String name) {
+		final FilenameFilter filter = new FilenameFilter() {
+			public boolean accept(final File dir, final String name) {
 				return name.matches(regexp);
-	    	}
-	    };
-	    return filter;
-    }
+			}
+		};
+		return filter;
+	}
 
 	private void addScript(final File file) {
 		String name = getScriptName(file);
@@ -175,24 +193,25 @@ class ScriptingConfiguration {
 	}
 
 	private void addMetaData(final File file, final String name) throws IOException {
-		final ScriptMetaData metaData = new ScriptMetaData(name);
 		final String content = FileUtils.slurpFile(file);
-		ScriptingConfiguration.analyseScriptContent(content, metaData);
+		final ScriptMetaData metaData = analyseScriptContent(content, name);
 		nameScriptMetaDataMap.put(name, metaData);
 		// TODO: read optionpanel stuff
 	}
 
-	// static + not private to enable tests
-	static void analyseScriptContent(final String content, final ScriptMetaData metaData) {
+	// not private to enable tests
+	ScriptMetaData analyseScriptContent(final String content, String scriptName) {
+		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
 		if (ScriptingConfiguration.firstCharIsEquals(content)) {
 			// would make no sense
 			metaData.removeExecutionMode(ExecutionMode.ON_SINGLE_NODE);
 		}
-		ScriptingConfiguration.setExecutionModes(content, metaData);
-		ScriptingConfiguration.setCacheMode(content, metaData);
+		setExecutionModes(content, metaData);
+		setCacheMode(content, metaData);
+		return metaData;
 	}
 
-	private static void setCacheMode(final String content, final ScriptMetaData metaData) {
+	private void setCacheMode(final String content, final ScriptMetaData metaData) {
 		final Pattern cacheScriptPattern = ScriptingConfiguration
 		    .makeCaseInsensitivePattern("@CacheScriptContent\\s*\\(\\s*(true|false)\\s*\\)");
 		final Matcher matcher = cacheScriptPattern.matcher(content);
@@ -201,32 +220,29 @@ class ScriptingConfiguration {
 		}
 	}
 
-	private static void setExecutionModes(final String content, final ScriptMetaData metaData) {
-		final Pattern executionModePattern = ScriptingConfiguration
-		    .makeCaseInsensitivePattern("@ExecutionModes\\s*\\(\\s*\\{([^}]+)\\}\\s*\\)");
-		final Matcher matcher = executionModePattern.matcher(content);
-		if (matcher.find()) {
-			metaData.removeAllExecutionModes();
-			final Pattern onSingleNodePattern = ScriptingConfiguration
-			    .makeCaseInsensitivePattern("\\bON_SINGLE_NODE\\b");
-			final Pattern onSelectedNodesPattern = ScriptingConfiguration
-			    .makeCaseInsensitivePattern("\\bON_SELECTED_NODE\\b");
-			final Pattern onSelectedNodesRecursivelyPattern = ScriptingConfiguration
-			    .makeCaseInsensitivePattern("\\bON_SELECTED_NODE_RECURSIVELY\\b");
-			final String[] split = matcher.group(1).split("\\s*,\\s*");
-			for (final String mode : split) {
-				if (onSingleNodePattern.matcher(mode).find()) {
-					metaData.addExecutionMode(ExecutionMode.ON_SINGLE_NODE);
-				}
-				else if (onSelectedNodesPattern.matcher(mode).find()) {
-					metaData.addExecutionMode(ExecutionMode.ON_SELECTED_NODE);
-				}
-				else if (onSelectedNodesRecursivelyPattern.matcher(mode).find()) {
-					metaData.addExecutionMode(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY);
-				}
-				else {
-					LogUtils.warn(metaData.getScriptName() + ": ignoring unknown ExecutionMode '" + mode + "'");
-				}
+	public static void setExecutionModes(final String content, final ScriptMetaData metaData) {
+		final String modeName = StringUtils.join(ExecutionMode.values(), "|");
+		final String modeDef = "(?:ExecutionMode\\.)?(" + modeName + ")(?:=\"([^]\"]+)(?:\\[([^]\"]+)\\])?\")?";
+		final String modeDefs = "(?:" + modeDef + ",?)+";
+		final Pattern pOuter = makeCaseInsensitivePattern("@ExecutionModes\\(\\{(" + modeDefs + ")\\}\\)");
+		final Matcher mOuter = pOuter.matcher(content.replaceAll("\\s+", ""));
+		if (!mOuter.find()) {
+//			System.err.println(metaData.getScriptName() + ": '" + pOuter + "' did not match "
+//			        + content.replaceAll("\\s+", ""));
+			return;
+		}
+		metaData.removeAllExecutionModes();
+		final Pattern pattern = makeCaseInsensitivePattern(modeDef);
+		final String[] locations = mOuter.group(1).split(",");
+		for (String match : locations) {
+			final Matcher m = pattern.matcher(match);
+			if (m.matches()) {
+//				System.err.println(metaData.getScriptName() + ":" + m.group(1) + "->" + m.group(2) + "->" + m.group(3));
+				metaData.addExecutionMode(ExecutionMode.valueOf(m.group(1).toUpperCase()), m.group(2), m.group(3));
+			}
+			else {
+				LogUtils.severe("script " + metaData.getScriptName() + ": not a menu location: '" + match + "'");
+				continue;
 			}
 		}
 	}
@@ -282,5 +298,26 @@ class ScriptingConfiguration {
 
 	ArrayList<String> getClasspath() {
 		return classpath;
+	}
+
+	static String getExecutionModeKey(final ExecuteScriptAction.ExecutionMode executionMode) {
+		switch (executionMode) {
+			case ON_SINGLE_NODE:
+				return "ExecuteScriptOnSingleNode.text";
+			case ON_SELECTED_NODE:
+				return "ExecuteScriptOnSelectedNode.text";
+			case ON_SELECTED_NODE_RECURSIVELY:
+				return "ExecuteScriptOnSelectedNodeRecursively.text";
+			default:
+				throw new AssertionError("unknown ExecutionMode " + executionMode);
+		}
+	}
+
+	public static String getScriptsParentLocation() {
+		return MENU_BAR_SCRIPTS_PARENT_LOCATION;
+	}
+
+	public static String getScriptsLocation() {
+		return MENU_BAR_SCRIPTS_LOCATION;
 	}
 }

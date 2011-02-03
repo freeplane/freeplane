@@ -5,6 +5,7 @@ package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;
@@ -148,6 +150,10 @@ class ControllerProxy implements Proxy.Controller {
 		return FreeplaneVersion.getVersion();
 	}
 
+	public File getUserDirectory() {
+	    return new File(ResourceController.getResourceController().getFreeplaneUserDirectory());
+    }
+
 	@Deprecated
 	public List<Node> find(final ICondition condition) {
 		if (scriptContext != null)
@@ -176,22 +182,37 @@ class ControllerProxy implements Proxy.Controller {
     }
 
 	public Map newMap() {
+		commitTransaction(Controller.getCurrentController().getMap());
 		final MapModel newMap = Controller.getCurrentModeController().getMapController().newMap(((NodeModel) null));
+		startTransaction(newMap);
 		return new MapProxy(newMap, scriptContext);
 	}
 
 	public Map newMap(URL url) {
 		try {
+			commitTransaction(Controller.getCurrentController().getMap());
 			Controller.getCurrentModeController().getMapController().newMap(url, false);
 			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final String key = mapViewManager.checkIfFileIsAlreadyOpened(url);
 			// make the map the current map even if it was already opened
 			if (key == null || !mapViewManager.tryToChangeToMapView(key))
 				throw new RuntimeException("map " + url + " does not seem to be opened");
-			return new MapProxy(mapViewManager.getModel(), scriptContext);
+			final MapModel newMap = mapViewManager.getModel();
+			startTransaction(newMap);
+			return new MapProxy(newMap, scriptContext);
 		}
 		catch (Exception e) {
 			throw new RuntimeException("error on newMap", e);
 		}
+	}
+
+	private void commitTransaction(final MapModel map) {
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+		undoHandler.commit();
+    }
+	
+	private void startTransaction(final MapModel map) {
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+		undoHandler.startTransaction();
 	}
 }

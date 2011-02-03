@@ -127,17 +127,4 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		}
 		return content;
 	}
-
-	static String getExecutionModeKey(final ExecutionMode executionMode) {
-		switch (executionMode) {
-			case ON_SINGLE_NODE:
-				return "ExecuteScriptOnSingleNode.text";
-			case ON_SELECTED_NODE:
-				return "ExecuteScriptOnSelectedNode.text";
-			case ON_SELECTED_NODE_RECURSIVELY:
-				return "ExecuteScriptOnSelectedNodeRecursively.text";
-			default:
-				throw new AssertionError("unknown ExecutionMode " + executionMode);
-		}
-	}
 }

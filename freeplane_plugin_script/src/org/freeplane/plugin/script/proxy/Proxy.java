@@ -200,6 +200,10 @@ public interface Proxy {
 		 */
 		FreeplaneVersion getFreeplaneVersion();
 
+		/** returns the directory where user settings, logfiles, templates etc. are stored.
+		 * @since 1.2 */
+		File getUserDirectory();
+
 		/** Starting from the root node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
 		 * @see Node#find(ICondition) for searches on subtrees
@@ -513,6 +517,9 @@ public interface Proxy {
 		/** returns the title of the MapView.
 		 * @since 1.2 */
 		String getName();
+
+		/** @since 1.2 */
+		boolean isSaved();
 	}
 
 	/** The map a node belongs to: <code>node.map</code> - read-write. */
@@ -536,6 +543,13 @@ public interface Proxy {
 		 * @since 1.2
 		 */
 		boolean save(boolean allowInteraction);
+
+		/** @since 1.2 */
+		void setSaved(boolean isSaved);
+
+		/** Sets the map (frame/tab) title. Note that there is <em>no undo</em> for this method!
+		 * @since 1.2 */
+		void setName(String title);
 	}
 
 	/** The currently selected node: <code>node</code> - read-only. */
