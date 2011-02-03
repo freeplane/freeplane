@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -36,8 +37,10 @@ import javax.swing.SwingUtilities;
  */
 @SuppressWarnings("serial")
 public class JResizer extends JComponent{
+	private Point point;
+	private int index;
 	public enum Direction {RIGHT, LEFT, UP, DOWN}
-	
+
 	public JResizer(final Direction d) {
 		setOpaque(true);
 		final int w;
@@ -64,15 +67,20 @@ public class JResizer extends JComponent{
 		}
 		
 		setPreferredSize(new Dimension(w, h));
-		addMouseMotionListener(new MouseAdapter() {
-			private Point point;
-			private int index;
+		addMouseListener(new MouseAdapter() {
+
 			@Override
             public void mousePressed(MouseEvent e) {
-				point = e.getPoint();
-				SwingUtilities.convertPointToScreen(point, e.getComponent());
-				index = getIndex();
+				point = null;
             }
+
+			@Override
+            public void mouseReleased(MouseEvent e) {
+				point = null;
+            }
+			
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
 
 			private int getIndex() {
 				final Container parent = getParent();
@@ -95,17 +103,7 @@ public class JResizer extends JComponent{
 				return -1;
             }
 
-			@Override
-            public void mouseReleased(MouseEvent e) {
-				point = null;
-            }
 
-			@Override
-            public void mouseExited(MouseEvent e) {
-				point = null;
-            }
-
-			@Override
             public void mouseDragged(MouseEvent e) {
 				final Point point2 = e.getPoint();
 				SwingUtilities.convertPointToScreen(point2, e.getComponent());
