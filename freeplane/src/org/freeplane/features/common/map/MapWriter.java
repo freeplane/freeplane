@@ -38,6 +38,10 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * 07.12.2008
  */
 public class MapWriter implements IElementWriter, IAttributeWriter {
+	private static final String USAGE_COMMENT = "<!--To view this file,"
+	        + " download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->"
+	        + System.getProperty("line.separator");
+
 	public enum Hint {
 		MODE
 	};
@@ -71,8 +75,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object node, final String tag) throws IOException {
-		writer
-		    .addElementContent("<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->\n");
+		writer.addElementContent(USAGE_COMMENT);
 		final MapModel map = (MapModel) node;
 		writer.addExtensionNodes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[] {})));
 		final NodeModel rootNode = map.getRootNode();
