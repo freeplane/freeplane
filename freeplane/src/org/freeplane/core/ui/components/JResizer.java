@@ -6,7 +6,7 @@
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
+ *  the Free Software Foundation, either version CONTROL_SIZE of the License, or
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
@@ -37,6 +37,7 @@ import javax.swing.SwingUtilities;
  */
 @SuppressWarnings("serial")
 public class JResizer extends JComponent{
+	private static final int CONTROL_SIZE = 5;
 	private Point point;
 	private int index;
 	public enum Direction {RIGHT, LEFT, UP, DOWN}
@@ -46,28 +47,30 @@ public class JResizer extends JComponent{
 		final int w;
 		final int h;
 		if(d.equals(Direction.RIGHT)){
-			w = 2;
+			w = CONTROL_SIZE;
 			h = 0;
 			setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
 		}
 		else if(d.equals(Direction.LEFT)){
-			h = 2;
+			h = CONTROL_SIZE;
 			w = 0;
 			setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
 		}
 		else if(d.equals(Direction.UP)){
 			h = 0;
-			w = 2;
+			w = CONTROL_SIZE;
 			setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
 		}
 		else /*Direction.DOWN*/ {
 			h = 0;
-			w = 2;
+			w = CONTROL_SIZE;
 			setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
 		}
 		
 		setPreferredSize(new Dimension(w, h));
 		addMouseListener(new MouseAdapter() {
+
+
 
 			@Override
             public void mousePressed(MouseEvent e) {
@@ -132,7 +135,6 @@ public class JResizer extends JComponent{
 				}
 				point = point2;
             }
-			
 		});
     }
 	
