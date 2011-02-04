@@ -184,6 +184,7 @@
 					<include name="freeplane/**" />
 					<include name="freeplane_plugin*/**" />
 					<include name="freeplane_ant/**" />
+					<include name="freeplane_mac/**" />
 					<include name="freeplane_framework/**" />
 					<include name="JOrtho_0.4_freeplane/**" />
 					<include name="build.xml" />
