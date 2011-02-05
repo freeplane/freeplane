@@ -171,7 +171,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	static private MyFocusListener focusListener = new MyFocusListener();
 	private static final int MAX_HEIGTH = 300;
 	private static final int MAX_WIDTH = 600;
-	private static final Dimension prefHeaderSize = new Dimension(1, 8);
 	private static final long serialVersionUID = 1L;
 	private static final float TABLE_ROW_HEIGHT = 4;
 
@@ -185,23 +184,28 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	final private AttributeView attributeView;
 	private int highRowIndex = 0;
 	private static DefaultCellEditor dce;
+	private static Font headerFont;
 
 	AttributeTable(final AttributeView attributeView) {
 		super();
 		this.attributeView = attributeView;
 		addFocusListener(AttributeTable.focusListener);
+		final JTableHeader tableHeader = getTableHeader();
+		if(headerFont == null)
+			headerFont = tableHeader.getFont().deriveFont(4f);
+		tableHeader.setFont(headerFont);
+		setTableHeader(tableHeader);
 		if (attributeView.getMapView().getModeController().canEdit()) {
-			getTableHeader().addMouseListener(AttributeTable.componentListener);
+			tableHeader.addMouseListener(AttributeTable.componentListener);
 		}
 		else {
-			getTableHeader().setResizingAllowed(false);
+			tableHeader.setResizingAllowed(false);
 		}
 		setModel(attributeView.getCurrentAttributeTableModel());
 		updateFontSize(this, 1F);
 		updateColumnWidths();
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		getTableHeader().setReorderingAllowed(false);
-		getTableHeader().setPreferredSize(AttributeTable.prefHeaderSize);
 		getRowHeight();
 		updateRowHeights();
 		setRowSelectionAllowed(false);

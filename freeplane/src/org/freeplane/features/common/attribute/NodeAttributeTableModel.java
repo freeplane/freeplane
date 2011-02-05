@@ -180,7 +180,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	}
 
 	public String getColumnName(final int col) {
-		return "";
+		return " ";
 	}
 
 	public int getColumnWidth(final int col) {
