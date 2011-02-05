@@ -266,6 +266,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		modeController.addAction(new ImportExplorerFavoritesAction());
 		modeController.addAction(new ImportFolderStructureAction());
 		modeController.addAction(new RevertAction());
+		modeController.addAction(new OpenUserDirAction());
 	}
 
 	public JFileChooser getFileChooser(boolean useDirectorySelector) {

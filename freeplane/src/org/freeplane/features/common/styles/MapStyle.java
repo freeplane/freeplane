@@ -122,12 +122,14 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		        throws IOException {
 			final MapStyleModel mapStyleModel = (MapStyleModel) extension;
 			final MapModel styleMap = mapStyleModel.getStyleMap();
+			final String el = System.getProperty("line.separator");
 			if (styleMap == null) {
 				return;
 			}
 			final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
 			final StringWriter sw = new StringWriter();
-			sw.append("<map_styles>\n");
+			sw.append("<map_styles>");
+			sw.append(el);
 			final NodeModel rootNode = styleMap.getRootNode();
 			try {
 				mapWriter.writeNodeAsXml(sw, rootNode, Mode.STYLE, true, true);
@@ -135,7 +137,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			catch (final IOException e) {
 				e.printStackTrace();
 			}
-			sw.append("</map_styles>\n");
+			sw.append("</map_styles>");
+			sw.append(el);
 			final XMLElement element = new XMLElement("hook");
 			saveExtension(extension, element);
 			writer.addElement(sw.toString(), element);
