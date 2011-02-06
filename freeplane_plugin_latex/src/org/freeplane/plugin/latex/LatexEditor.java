@@ -20,15 +20,18 @@
 package org.freeplane.plugin.latex;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
@@ -44,7 +47,8 @@ import org.freeplane.features.common.map.NodeModel;
  * This class has only one static method to show the editor for Latex-fomulas
  */
 public class LatexEditor {
-	private static final class DialogCloser extends KeyAdapter {
+	@SuppressWarnings("serial")
+    private static final class DialogCloser extends AbstractAction {
 	    private JDialog dialog;
 	    private boolean closed = false;
 
@@ -56,13 +60,10 @@ public class LatexEditor {
 	        this.dialog = dialog;
         }
 
-		@Override
-	    public void keyPressed(final KeyEvent e) {
-			if (e.getModifiers() == KeyEvent.ALT_MASK && e.getKeyChar() == KeyEvent.VK_ENTER) {
-				closed = true;
-				dialog.dispose();
-			}
-	    }
+		public void actionPerformed(ActionEvent e) {
+			closed = true;
+			dialog.dispose();
+        }
     }
 
 	/**
@@ -94,7 +95,8 @@ public class LatexEditor {
 		textArea.setText(oldEquation);
 		//make Alt+ Enter confirm the dialog
 		final DialogCloser dialogCloser = new DialogCloser(edit);
-		textArea.addKeyListener(dialogCloser);
+		textArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.ALT_MASK, false), dialogCloser);
+		textArea.getActionMap().put(dialogCloser, dialogCloser);
 		//position editor below node
 		Controller.getCurrentModeController().getController().getViewController().scrollNodeToVisible(node);
 		if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
