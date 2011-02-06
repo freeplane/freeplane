@@ -174,9 +174,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		final IAttributeTableModel model = table.getAttributeTableModel();
 		final int rowCount = model.getRowCount();
 		if (attributeViewType.equals(AttributeTableLayoutModel.SHOW_ALL)) {
-			if (rowCount != 0) {
-				add(getOptimalWidth());
-			}
+			add(getOptimalWidth());
 			add(getInsert());
 			if (row != -1) {
 				add(getDelete());
@@ -189,9 +187,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 			}
 		}
 		else {
-			if (rowCount != 0) {
-				add(getOptimalWidth());
-			}
+			add(getOptimalWidth());
 		}
 	}
 

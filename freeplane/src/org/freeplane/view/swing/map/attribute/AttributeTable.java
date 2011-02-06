@@ -170,7 +170,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final int EXTRA_HEIGHT = 4;
 	static private MyFocusListener focusListener = new MyFocusListener();
 	private static final int MAX_HEIGTH = 300;
-	private static final int MAX_WIDTH = 600;
+	private static final int MAX_WIDTH = 300;
 	private static final long serialVersionUID = 1L;
 	private static final float TABLE_ROW_HEIGHT = 4;
 
@@ -385,11 +385,16 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if (!isValid()) {
 			validate();
 		}
-		final float zoom = getZoom();
 		final Dimension dimension = super.getPreferredSize();
-		dimension.width = Math.min((int) (AttributeTable.MAX_WIDTH * zoom), dimension.width);
-		dimension.height = Math
-		    .min((int) (AttributeTable.MAX_HEIGTH * zoom) - getTableHeaderHeight(), dimension.height);
+		MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+		if(map != null){
+			dimension.width = Math.min(map.getZoomed(map.getMaxNodeWidth()), dimension.width);
+			dimension.height = Math.min(map.getZoomed(AttributeTable.MAX_HEIGTH) - getTableHeaderHeight(), dimension.height);
+		}
+		else{
+			dimension.width = Math.min(MAX_WIDTH, dimension.width);
+			dimension.height = Math.min(MAX_HEIGTH, dimension.height);
+		}
 		return dimension;
 	}
 
