@@ -44,6 +44,27 @@ import org.freeplane.features.common.map.NodeModel;
  * This class has only one static method to show the editor for Latex-fomulas
  */
 public class LatexEditor {
+	private static final class DialogCloser extends KeyAdapter {
+	    private JDialog dialog;
+	    private boolean closed = false;
+
+		boolean isClosed() {
+        	return closed;
+        }
+
+		public DialogCloser(JDialog dialog) {
+	        this.dialog = dialog;
+        }
+
+		@Override
+	    public void keyPressed(final KeyEvent e) {
+			if (e.getModifiers() == KeyEvent.ALT_MASK && e.getKeyChar() == KeyEvent.VK_ENTER) {
+				closed = true;
+				dialog.dispose();
+			}
+	    }
+    }
+
 	/**
 	 * This method shows the Latex editor and sets the equation to be rendered from Latex
 	 * 
@@ -71,25 +92,16 @@ public class LatexEditor {
 		// set content and rendering for textArea
 		textArea.setContentType("text/groovy"); /* text/groovy is from JSyntaxPane */
 		textArea.setText(oldEquation);
-		//bt is the OK button
-		final JPanel jp = (JPanel) editPane.getComponent(3);
-		final JButton bt = (JButton) jp.getComponent(0);
 		//make Alt+ Enter confirm the dialog
-		textArea.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (e.getModifiers() == KeyEvent.ALT_MASK && e.getKeyChar() == KeyEvent.VK_ENTER) {
-					bt.doClick();
-				}
-			}
-		});
+		final DialogCloser dialogCloser = new DialogCloser(edit);
+		textArea.addKeyListener(dialogCloser);
 		//position editor below node
 		Controller.getCurrentModeController().getController().getViewController().scrollNodeToVisible(node);
 		if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
 			UITools.setDialogLocationUnder(edit, node);
 		}
 		edit.setVisible(true);
-		if (editPane.getValue().equals(JOptionPane.OK_OPTION)) {
+		if (dialogCloser.isClosed() || editPane.getValue().equals(JOptionPane.OK_OPTION)) {
 			final String eq = textArea.getText();
 			return eq;
 		}
