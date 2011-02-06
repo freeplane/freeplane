@@ -19,9 +19,7 @@
  */
 package org.freeplane.features.mindmapmode;
 
-import java.text.DateFormat;
 import java.util.Date;
-import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.UIManager;

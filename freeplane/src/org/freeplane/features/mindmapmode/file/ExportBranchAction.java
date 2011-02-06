@@ -24,8 +24,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Collection;
-import java.util.Map;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -43,7 +41,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.MModeController;
