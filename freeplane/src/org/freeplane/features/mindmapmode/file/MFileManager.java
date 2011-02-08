@@ -625,7 +625,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public boolean save(final MapModel map) {
-		if (map.isSaved()) {
+		if (map == null || map.isSaved()) {
 			return true;
 		}
 		if (map.getURL() == null || map.isReadOnly()) {
