@@ -531,6 +531,7 @@ public class MAttributeController extends AttributeController {
 		modeController.addAction(new ShowAttributeDialogAction());
 		modeController.addAction(new CopyAttributes());
 		modeController.addAction(new PasteAttributes());
+		modeController.addAction(new AddStyleAttributes());
 	}
 
 	public int editAttribute(final NodeModel pNode, final String pName, final String pNewValue) {

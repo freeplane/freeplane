@@ -341,7 +341,7 @@ public class MapController extends SelectionController {
 		}
 	}
 
-	protected void fireMapCreated(final MapModel map) {
+	public void fireMapCreated(final MapModel map) {
 		final Iterator<IMapLifeCycleListener> iterator = mapLifeCycleListeners.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().onCreate(map);

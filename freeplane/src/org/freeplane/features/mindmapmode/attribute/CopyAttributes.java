@@ -29,6 +29,9 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.Attribute;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.IStyle;
+import org.freeplane.features.common.styles.LogicalStyleController;
+import org.freeplane.features.common.styles.MapStyleModel;
 
 @EnabledAction(checkOnNodeChange=true)
 class CopyAttributes extends AFreeplaneAction {
@@ -112,4 +115,58 @@ class PasteAttributes extends AMultipleNodeAction {
     public void setEnabled() {
 		setEnabled(CopyAttributes.getAttributes() != null);
     }
+}
+
+@EnabledAction(checkOnPopup = true)
+class AddStyleAttributes extends AMultipleNodeAction {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public AddStyleAttributes() {
+		super("AddStyleAttributes");
+	}
+
+	@Override
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
+		pasteAttributes(node);
+	}
+
+	/**
+	 */
+	private void pasteAttributes(final NodeModel node) {
+		final NodeAttributeTableModel model = getAttributes(node);
+		if(model == null){
+			return;
+		}
+		final MAttributeController controller = MAttributeController.getController();
+		final int attributeTableLength = model.getAttributeTableLength();
+		for(int i = 0; i < attributeTableLength; i++){
+			final Attribute attribute = model.getAttribute(i);
+			controller.addAttribute(node, new Attribute(attribute.getName(), attribute.getValue()));
+		}
+	}
+
+	private NodeAttributeTableModel getAttributes(final NodeModel node) {
+		final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
+		final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
+		final NodeModel styleNode = extension.getStyleNode(style);
+		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(styleNode);
+		if (model.getRowCount() > 0)
+			return model;
+		return null;
+    }
+	
+	@Override
+    public void setEnabled() {
+		for (final NodeModel selected : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
+			if(getAttributes(selected) != null){
+				setEnabled(true);
+				return;
+			}
+		}
+		setEnabled(false);
+    }
+
 }

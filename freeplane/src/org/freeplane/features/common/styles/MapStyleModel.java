@@ -33,7 +33,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.MapWriter.Mode;
@@ -46,7 +46,6 @@ import org.freeplane.features.common.map.NodeModel;
  */
 public class MapStyleModel implements IExtension {
 	public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
-	private static final String STYLES = "styles";
 	private Map<IStyle, NodeModel> styleNodes;
 	private MapModel styleMap;
 	private ConditionalStyleModel conditionalStyleModel;
@@ -99,13 +98,9 @@ public class MapStyleModel implements IExtension {
     }
 
 	void createStyleMap(final MapModel parentMap, MapStyleModel mapStyleModel, final String styleMapStr) {
-		MapModel styleMap = new MapModel(null) {
-			@Override
-			public String getTitle() {
-				return TextUtils.removeMnemonic(TextUtils.getText(STYLES));
-			}
-		};
 		final ModeController modeController = Controller.getCurrentModeController();
+		MapModel styleMap = new StyleMapModel(null);
+		modeController.getMapController().fireMapCreated(styleMap);
 		final MapReader mapReader = modeController.getMapController().getMapReader();
 		final Reader styleReader = new StringReader(styleMapStr);
 		NodeModel root;
