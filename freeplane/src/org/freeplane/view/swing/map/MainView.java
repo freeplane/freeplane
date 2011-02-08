@@ -343,7 +343,10 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public void updateText(NodeModel nodeModel) {
-		final ModeController modeController = getMap().getModeController();
+		final NodeView nodeView = getNodeView();
+		if(nodeView == null)
+			return;
+		final ModeController modeController = nodeView.getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);
 		final String originalText = textController.getText(nodeModel);
 		String text = originalText;
