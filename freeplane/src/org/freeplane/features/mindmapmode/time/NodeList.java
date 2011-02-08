@@ -641,6 +641,8 @@ class NodeList {
 
 	private void replace(final IReplaceInputInformation info) {
 		final String searchString = (String) mFilterTextSearchField.getSelectedItem();
+		if(searchString == null)
+			return;
 		final String replaceString = (String) mFilterTextReplaceField.getSelectedItem();
 		Pattern p;
 		try {
