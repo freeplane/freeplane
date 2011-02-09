@@ -157,15 +157,9 @@ public class ScriptApiTest {
 
 	private Map createTestMap() {
 		map = c.newMap();
-		addChild(map.getRoot(), "first node");
-		addChild(map.getRoot(), "second node");
+		map.getRoot().createChild("first node");
+		map.getRoot().createChild("second node");
 		return map;
-	}
-
-	private Node addChild(Node aNode, String text) {
-		final Node child = aNode.createChild();
-		child.setText(text);
-		return child;
 	}
 
 	private Node firstChild(final Node node) {
@@ -380,8 +374,8 @@ public class ScriptApiTest {
 	public void test_ControllerRO_getSelected() {
 		map = c.newMap();
 		assertEquals("new root node should be selected", map.getRoot(), c.getSelected());
-		final Node firstChild = addChild(map.getRoot(), "child 1");
-		final Node secondChild = addChild(map.getRoot(), "child 2");
+		final Node firstChild = map.getRoot().createChild("child 1");
+		final Node secondChild = map.getRoot().createChild("child 2");
 		// FIXME: why aren't the new node selected?
 		assertEquals("root node should still be selected after adding nodes", map.getRoot(), c.getSelected());
 		c.selectMultipleNodes(list(firstChild, secondChild));
@@ -392,8 +386,8 @@ public class ScriptApiTest {
 	public void test_ControllerRO_getSelecteds() {
 		map = c.newMap();
 		assertEquals("new root node should be selected", map.getRoot(), c.getSelected());
-		final Node firstChild = addChild(map.getRoot(), "child 1");
-		final Node secondChild = addChild(map.getRoot(), "child 2");
+		final Node firstChild = map.getRoot().createChild("child 1");
+		final Node secondChild = map.getRoot().createChild("child 2");
 		assertEquals("root node should still be selected after adding nodes", set(map.getRoot()), set(c
 		    .getSelecteds()));
 		c.selectMultipleNodes(list(firstChild, secondChild));
@@ -409,8 +403,8 @@ public class ScriptApiTest {
     public void test_ControllerRO_find_ICondition_condition() {
 		map = c.newMap();
 		@SuppressWarnings("unused")
-		final Node firstChild = addChild(map.getRoot(), "child 1");
-		final Node secondChild = addChild(map.getRoot(), "child 2");
+		final Node firstChild = map.getRoot().createChild("child 1");
+		final Node secondChild = map.getRoot().createChild("child 2");
 		final List<Node> found = c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 2"));
 		assertEquals("one matching node should be found", list(secondChild), found);
 	}
@@ -421,16 +415,16 @@ public class ScriptApiTest {
 
 	public void test_Controller_centerOnNode_Node_center() {
 		map = c.newMap();
-		final Node firstChild = addChild(map.getRoot(), "child 1");
+		final Node firstChild = map.getRoot().createChild("child 1");
 		// no actual test
 		c.centerOnNode(firstChild);
 	}
 
 	public void test_Controller_select_Node_toSelect() {
 		map = c.newMap();
-		final Node firstChild = addChild(map.getRoot(), "child 1");
-		final Node secondChild = addChild(map.getRoot(), "child 2");
-		final Node thirdChild = addChild(map.getRoot(), "child 3");
+		final Node firstChild = map.getRoot().createChild("child 1");
+		final Node secondChild = map.getRoot().createChild("child 2");
+		final Node thirdChild = map.getRoot().createChild("child 3");
 		c.select(secondChild);
 		final Set<Node> set = set(secondChild);
 		final Set<Node> selected = set(c.getSelecteds());
@@ -443,11 +437,11 @@ public class ScriptApiTest {
 
 	public void test_Controller_selectBranch_Node_branchRoot() {
 		map = c.newMap();
-		final Node child1 = addChild(map.getRoot(), "child 1");
-		final Node child2 = addChild(map.getRoot(), "child 2");
-		final Node grandchild1 = addChild(child1, "child 1.1");
-		final Node grandchild2 = addChild(child1, "child 1.2");
-		final Node grandGrandChild = addChild(child1, "child 1.1.1");
+		final Node child1 = map.getRoot().createChild("child 1");
+		final Node child2 = map.getRoot().createChild("child 2");
+		final Node grandchild1 = child1.createChild("child 1.1");
+		final Node grandchild2 = child1.createChild("child 1.2");
+		final Node grandGrandChild = child1.createChild("child 1.1.1");
 		c.selectBranch(child1);
 		assertEquals("all node of the branch should be selected",
 		    set(child1, grandchild1, grandchild2, grandGrandChild), set(c.getSelecteds()));
@@ -462,7 +456,7 @@ public class ScriptApiTest {
 	@SuppressWarnings("deprecation")
 	public void test_Controller_undo_redo_stuff() {
 		map = c.newMap();
-		addChild(map.getRoot(), "child 1");
+		map.getRoot().createChild("child 1");
 		assertFalse("node should be there before undo", c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 1")).isEmpty());
 		c.undo();
 		assertTrue("node should be away after undo", c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 1")).isEmpty());
@@ -647,7 +641,7 @@ public class ScriptApiTest {
 
 	public void test_MapRO_node_String_id() {
 		map = c.newMap();
-		final Node firstChild = addChild(map.getRoot(), "child 1");
+		final Node firstChild = map.getRoot().createChild("child 1");
 		final String id = firstChild.getId();
 		assertEquals("get by id returned wrong node", firstChild, map.node(id));
 	}
@@ -660,7 +654,7 @@ public class ScriptApiTest {
 	public void test_Map_close() {
 		Map originalMap = node.getMap();
 		map = c.newMap();
-		addChild(map.getRoot(), "child 1");
+		map.getRoot().createChild("child 1");
 		assertFalse("a new map should have been opened", originalMap.equals(map));
 		map.close(true, false);
 		assertEquals("the original map should be selected again", originalMap.getName(), c.getSelected().getMap()
@@ -681,16 +675,16 @@ public class ScriptApiTest {
 
 	public void test_NodeRO_getChildPosition_Node_childNode() {
 		map = c.newMap();
-		final Node child1 = addChild(map.getRoot(), "child 1");
-		final Node child2 = addChild(map.getRoot(), "child 2");
+		final Node child1 = map.getRoot().createChild("child 1");
+		final Node child2 = map.getRoot().createChild("child 2");
 		assertEquals("wrong position", 0, map.getRoot().getChildPosition(child1));
 		assertEquals("wrong position", 1, map.getRoot().getChildPosition(child2));
 	}
 
 	public void test_NodeRO_getChildren() {
 		map = c.newMap();
-		final Node child1 = addChild(map.getRoot(), "child 1");
-		final Node child2 = addChild(map.getRoot(), "child 2");
+		final Node child1 = map.getRoot().createChild("child 1");
+		final Node child2 = map.getRoot().createChild("child 2");
 		final List<Node> children = map.getRoot().getChildren();
 		assertEquals("wrong children count", 2, children.size());
 		assertEquals("wrong order", child1, children.get(0));
@@ -713,17 +707,17 @@ public class ScriptApiTest {
 		map = c.newMap();
 		final Node root = map.getRoot();
 		assertTrue("by default a node has no icons", root.getIcons().getIcons().isEmpty());
-		root.getIcons().addIcon("bee");
+		root.getIcons().add("bee");
 		assertEquals("one icon added", 1, root.getIcons().getIcons().size());
 	}
 
 	public void test_NodeRO_getLink() {
 		map = c.newMap();
 		final Node root = map.getRoot();
-		assertEquals("by default a node has no links", null, root.getLink().get());
+		assertEquals("by default a node has no links", null, root.getLink().getText());
 		final String url = "file://blabla.txt";
-		root.getLink().set(url);
-		assertEquals("a link should have been added", url, root.getLink().get());
+		root.getLink().setText(url);
+		assertEquals("a link should have been added", url, root.getLink().getText());
 	}
 
 	public void test_NodeRO_getMap() {
@@ -846,7 +840,7 @@ public class ScriptApiTest {
 		createTestMap();
 		final Node root = map.getRoot();
 		final Node child = firstChild();
-		final Node grandchild = addChild(child, "grandchild");
+		final Node grandchild = child.createChild("grandchild");
 		assertFalse("initially nothing should be folded", root.isFolded());
 		assertFalse("initially nothing should be folded", child.isFolded());
 		root.setFolded(true);
@@ -859,7 +853,7 @@ public class ScriptApiTest {
 		grandchild.setFolded(true);
 		assertFalse("a node without children is not foldable", grandchild.isFolded());
 		// test undo of folding - give the new node a child first to make it foldable
-		addChild(grandchild, "grandgrandchild");
+		grandchild.createChild("grandgrandchild");
 		grandchild.setFolded(true);
 		assertTrue("node should be folded now", grandchild.isFolded());
 		c.undo();
@@ -870,10 +864,10 @@ public class ScriptApiTest {
 		map = c.newMap();
 		final Node root = map.getRoot();
 		assertTrue("even root is a leaf, if single", root.isLeaf());
-		addChild(root, "child");
+		root.createChild("child");
 		assertFalse("root is never a leaf, even without children", root.isLeaf());
 		assertTrue("child without children should be leaf", firstChild(root).isLeaf());
-		addChild(firstChild(root), "grandchild");
+		firstChild(root).createChild("grandchild");
 		assertFalse("child with children is not a leaf", firstChild(root).isLeaf());
 	}
 
@@ -889,8 +883,8 @@ public class ScriptApiTest {
 
 	public void test_NodeRO_isVisible() {
 		map = c.newMap();
-		addChild(map.getRoot(), "first node");
-		addChild(map.getRoot(), "second node");
+		map.getRoot().createChild("first node");
+		map.getRoot().createChild("second node");
 		assertTrue("initially all nodes should be visible", firstChild().isVisible());
 		new Filter(new NodeContainsCondition(TextController.FILTER_NODE, "first"), true, true, true, true).applyFilter(Controller
 		    .getCurrentController().getMap(), true);
@@ -904,8 +898,8 @@ public class ScriptApiTest {
 	public void test_NodeRO_find_ICondition_condition() {
 		map = c.newMap();
 		@SuppressWarnings("unused")
-		final Node firstChild = addChild(map.getRoot(), "child 1");
-		final Node secondChild = addChild(map.getRoot(), "child 2");
+		final Node firstChild = map.getRoot().createChild("child 1");
+		final Node secondChild = map.getRoot().createChild("child 2");
 		final List<Node> found = c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 2"));
 		assertEquals("one matching node should be found", list(secondChild), found);
 	}
@@ -915,7 +909,7 @@ public class ScriptApiTest {
 	//	}
 	public void test_NodeRO_getLastModifiedAt() {
 		map = c.newMap();
-		final Node child = addChild(map.getRoot(), "a node");
+		final Node child = map.getRoot().createChild("a node");
 		final Date initialLastModifiedAt = child.getLastModifiedAt();
 		long diff = System.currentTimeMillis() - initialLastModifiedAt.getTime();
 		// one second should be enough
@@ -936,7 +930,7 @@ public class ScriptApiTest {
 
 	public void test_NodeRO_getCreatedAt() {
 		map = c.newMap();
-		final Node child = addChild(map.getRoot(), "a node");
+		final Node child = map.getRoot().createChild("a node");
 		final Date initialCreatedAt = child.getCreatedAt();
 		final long diff = System.currentTimeMillis() - initialCreatedAt.getTime();
 		// one second should be enough
@@ -966,8 +960,8 @@ public class ScriptApiTest {
 	public void test_Node_createChild_int_position() {
 		map = c.newMap();
 		final Node root = map.getRoot();
-		final Node child1 = addChild(root, "child 1");
-		final Node child2 = addChild(root, "child 2");
+		final Node child1 = root.createChild("child 1");
+		final Node child2 = root.createChild("child 2");
 		assertEquals("wrong position", 0, root.getChildPosition(child1));
 		assertEquals("wrong position", 1, root.getChildPosition(child2));
 		final Node child3 = root.createChild(0);
@@ -995,8 +989,8 @@ public class ScriptApiTest {
 	public void test_Node_delete() {
 		map = c.newMap();
 		final Node root = map.getRoot();
-		final Node child1 = addChild(root, "child 1");
-		final Node child2 = addChild(root, "child 2");
+		final Node child1 = root.createChild("child 1");
+		final Node child2 = root.createChild("child 2");
 		assertEquals("", 2, root.getChildren().size());
 		child1.delete();
 		assertEquals("deletion failed", 1, root.getChildren().size());
@@ -1006,9 +1000,9 @@ public class ScriptApiTest {
 	public void test_Node_moveTo_Node_parentNode() {
 		map = c.newMap();
 		final Node root = map.getRoot();
-		final Node child1 = addChild(root, "child 1");
-		final Node child2 = addChild(root, "child 2");
-		final Node grandchild = addChild(child1, "grandchild");
+		final Node child1 = root.createChild("child 1");
+		final Node child2 = root.createChild("child 2");
+		final Node grandchild = child1.createChild("grandchild");
 		assertEquals("child2 should have no children", 0, child2.getChildren().size());
 		grandchild.moveTo(child2);
 		assertEquals("grandchild should be a child of child2 now", child2, grandchild.getParent());
@@ -1017,9 +1011,9 @@ public class ScriptApiTest {
 	public void test_Node_moveTo_Node_parentNode_int_position() {
 		map = c.newMap();
 		final Node root = map.getRoot();
-		final Node child1 = addChild(root, "child 1");
-		final Node child2 = addChild(root, "child 2");
-		final Node grandchild = addChild(child1, "grandchild");
+		final Node child1 = root.createChild("child 1");
+		final Node child2 = root.createChild("child 2");
+		final Node grandchild = child1.createChild("grandchild");
 		assertEquals("wrong count of children", 2, root.getChildren().size());
 		grandchild.moveTo(root, 1);
 		assertEquals("wrong position", child1, root.getChildren().get(0));
@@ -1035,7 +1029,7 @@ public class ScriptApiTest {
 	public void test_Node_setFolded_boolean_folded() {
 		createTestMap();
 		final Node child = firstChild();
-		addChild(child, "grandchild");
+		child.createChild("grandchild");
 		child.setFolded(true);
 		assertTrue("node should be folded now", child.isFolded());
 		child.setFolded(false);
