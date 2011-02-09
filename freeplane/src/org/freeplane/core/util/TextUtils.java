@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,8 @@ import org.freeplane.core.resources.ResourceController;
 /** utilities for translations, conversions to/from number and dates etc.
  * In scripts available as "global variable" <code>textUtils</code>. */
 public class TextUtils {
+	private static HashMap<String, DateFormat> dateFormatCache = new HashMap<String, DateFormat>();
+
 	public static String format(final String resourceKey, final Object... messageArguments) {
 		final String text = TextUtils.getText(resourceKey);
 		if (text == null)
@@ -135,45 +138,51 @@ public class TextUtils {
 	
 	public static final Pattern DATE_REGEXP_PATTERN = Pattern.compile("\\d{4}(-?)\\d{2}(-?)\\d{2}" //
         + "(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?");
-	public static Date toDateISO(String text){
-        //        1         2         34            5         6   7        8           9
-    	// \\d{4}(-?)\\d{2}(-?)\\d{2}(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?
-    	final Matcher matcher = DATE_REGEXP_PATTERN.matcher(text);
-    	if (matcher.matches()) {
-    		StringBuilder builder = new StringBuilder("yyyy");
-    		builder.append(matcher.group(1));
-    		builder.append("MM");
-    		builder.append(matcher.group(2));
-    		builder.append("dd");
-    		if (matcher.group(3) != null) {
-    			if (matcher.group(4) != null) {
-    				builder.append('\'');
-    				builder.append(matcher.group(4));
-    				builder.append('\'');
-    			}
-    			builder.append("HH");
-    			builder.append(matcher.group(5));
-    			builder.append("mm");
-    			if (matcher.group(7) != null) {
-    				builder.append(matcher.group(6));
-    				builder.append("ss");
-    			}
-    			if (matcher.group(8) != null) {
-    				builder.append(".SSS");
-    			}
-    			if (matcher.group(9) != null) {
-    				builder.append("Z");
-    			}
-    		}
-    		SimpleDateFormat parser = new SimpleDateFormat(builder.toString());
-    		ParsePosition pos = new ParsePosition(0);
-    		Date date = parser.parse(text, pos);
-    		if (date != null && pos.getIndex() == text.length()) {
-    			return date;
-    		}
-    	}
+
+	public static Date toDateISO(String text) {
+		//        1         2         34            5         6   7        8           9
+		// \\d{4}(-?)\\d{2}(-?)\\d{2}(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?
+		final Matcher matcher = DATE_REGEXP_PATTERN.matcher(text);
+		if (matcher.matches()) {
+			StringBuilder builder = new StringBuilder("yyyy");
+			builder.append(matcher.group(1));
+			builder.append("MM");
+			builder.append(matcher.group(2));
+			builder.append("dd");
+			if (matcher.group(3) != null) {
+				if (matcher.group(4) != null) {
+					builder.append('\'');
+					builder.append(matcher.group(4));
+					builder.append('\'');
+				}
+				builder.append("HH");
+				builder.append(matcher.group(5));
+				builder.append("mm");
+				if (matcher.group(7) != null) {
+					builder.append(matcher.group(6));
+					builder.append("ss");
+				}
+				if (matcher.group(8) != null) {
+					builder.append(".SSS");
+				}
+				if (matcher.group(9) != null) {
+					builder.append("Z");
+				}
+			}
+			final String pattern = builder.toString();
+			DateFormat parser = dateFormatCache.get(pattern);
+			if (parser == null) {
+				parser = new SimpleDateFormat(pattern);
+				dateFormatCache .put(pattern, parser);
+			}
+			ParsePosition pos = new ParsePosition(0);
+			Date date = parser.parse(text, pos);
+			if (date != null && pos.getIndex() == text.length()) {
+				return date;
+			}
+		}
 		return null;
-    }
+	}
 
 	public static boolean isDateISO(String text) {
 		if (text == null)
