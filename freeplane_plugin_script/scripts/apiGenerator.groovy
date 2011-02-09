@@ -72,7 +72,7 @@ def makeApi(node, clazz, apiBase) {
     for(i in 0..<methods.size()){
         newChildNode(child, methods[i]);
     }
-    child.createChild(0).text = 'Package: ' + clazz.package.name
+    child.createChild(0).text = 'Package: ' + clazz.getPackage().name
     child.folded = true
 }
 
