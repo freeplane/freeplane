@@ -4,13 +4,14 @@
 		
 		(c) by Naoki Nose, 2006, and Eric Lavarde, 2008 This code is licensed under
 		the GPLv2 or later. (http://www.gnu.org/copyleft/gpl.html) Check
-		'mm2msp_utf8_TEMPLATE.mm' for detailed instructions on how to use this
-		sheet.
+		'mm2msp_utf8_TEMPLATE.mm' for detailed instructions on how to use this sheet.
+		
+		(c) by Max Bukovskiy, 2011.
+		This code is licensed under the GPLv2 or later. (http://www.gnu.org/copyleft/gpl.html)
 	-->
 <xsl:stylesheet version="1.0"
-	xmlns="http://schemas.microsoft.com/project" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:output method="xml" indent="yes" encoding="UTF-8"
-		standalone="yes" />
+	xmlns="http://schemas.microsoft.com/project"; xmlns:xsl="http://www.w3.org/1999/XSL/Transform">;
+	<xsl:output method="xml" indent="yes" encoding="UTF-8"	standalone="yes" />
 
 	<xsl:key name="deps" match="arrowlink" use="@DESTINATION" />
 
@@ -39,26 +40,39 @@
 				<xsl:if test="$level > 0">
 					<xsl:number level="any" count="//map/node//node" format="1" />
 				</xsl:if>
-				<xsl:if test="$level = 0">
-					0
-				</xsl:if>
+				<xsl:if test="$level = 0">0</xsl:if>
 			</UID>
+			<ID>1</ID>
+		    <Type>1</Type>
+			<IsNull>0</IsNull>
+			<OutlineNumber>1</OutlineNumber>
+			<OutlineLevel><xsl:value-of select="$level" /></OutlineLevel>
 			<xsl:call-template name="output-node-text-as-name" />
 			<xsl:call-template name="output-note-text-as-notes" />
-			<OutlineLevel>
-				<xsl:value-of select="$level" />
-			</OutlineLevel>
 			<xsl:if test="not(attribute[@NAME = 'tsk-FixedCostAccrual'])">
 				<FixedCostAccrual>1</FixedCostAccrual>
 			</xsl:if>
-			<xsl:apply-templates select="attribute">
-				<xsl:with-param name="prefix" select="'tsk'" />
-			</xsl:apply-templates>
+			<xsl:if test="not(attribute[@NAME = 'h'])">
+				<RemainingDuration>PT8H0M0S</RemainingDuration>
+				<Estimated>1</Estimated>
+			</xsl:if>
+			<xsl:if test="attribute[@NAME = 'h']">
+				<RemainingDuration>PT<xsl:apply-templates select="attribute">
+				<xsl:with-param name="prefix" select="'h'" />
+			</xsl:apply-templates>H0M0S</RemainingDuration>
+			</xsl:if>
+			<PercentComplete>0</PercentComplete>
+			
+			<Priority><xsl:apply-templates select="icon">
+				<xsl:with-param name="prefix" select="'full'" />
+			</xsl:apply-templates></Priority>
+			
 			<xsl:for-each select="key('deps',@ID)">
 				<xsl:call-template name="output-arrow-as-predecessor">
 					<xsl:with-param name="level" select="$level" />
 				</xsl:call-template>
 			</xsl:for-each>
+			
 		</Task>
 		<xsl:apply-templates mode="tasks">
 			<xsl:with-param name="level" select="$level + 1" />
@@ -97,30 +111,20 @@
 				<xsl:if test="$level > 0">
 					<xsl:number level="any" count="//map/node//node" format="1" />
 				</xsl:if>
-				<xsl:if test="$level = 0">
-					0
-				</xsl:if>
+				<xsl:if test="$level = 0">0</xsl:if>
 			</PredecessorUID>
 			<Type>
 				<xsl:choose>
 					<xsl:when test="@ENDARROW = 'Default'">
 						<xsl:choose>
-							<xsl:when test="@STARTARROW = 'Default'">
-								3
-							</xsl:when>
-							<xsl:otherwise>
-								1
-							</xsl:otherwise>
+							<xsl:when test="@STARTARROW = 'Default'">3</xsl:when>
+							<xsl:otherwise>1</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:choose>
-							<xsl:when test="@STARTARROW = 'Default'">
-								2
-							</xsl:when>
-							<xsl:otherwise>
-								0
-							</xsl:otherwise>
+							<xsl:when test="@STARTARROW = 'Default'">2</xsl:when>
+							<xsl:otherwise></xsl:otherwise>
 						</xsl:choose>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -130,10 +134,15 @@
 
 	<xsl:template match="attribute">
 		<xsl:param name="prefix" />
-		<xsl:if test="starts-with(@NAME,concat($prefix,'-'))">
-			<xsl:element name="{substring-after(@NAME,concat($prefix,'-'))}">
+		<xsl:if test="starts-with(@NAME,$prefix)">
 				<xsl:value-of select="@VALUE" />
-			</xsl:element>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="icon">
+		<xsl:param name="prefix" />
+		<xsl:if test="starts-with(@BUILTIN,$prefix)">
+				<xsl:value-of select="substring(@BUILTIN,6)" />
 		</xsl:if>
 	</xsl:template>
 
@@ -141,5 +150,3 @@
 	<xsl:template match="*" mode="tasks"></xsl:template>
 
 </xsl:stylesheet>
-
- 	  	 
