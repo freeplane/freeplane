@@ -44,6 +44,7 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
+import org.freeplane.view.swing.addins.filepreview.ViewerController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -128,8 +129,11 @@ public class MNodeDropListener implements DropTargetListener {
 			dtde.acceptDrop(dtde.getDropAction());
 			final boolean isLeft = mainView.dropPosition(dtde.getLocation().getX());
 			if (!dtde.isLocalTransfer()) {
-				((MClipboardController) ClipboardController.getController()).paste(t, targetNode,
-				    dropAsSibling, isLeft);
+				ViewerController viewerController = ((ViewerController)modeController.getExtension(ViewerController.class));
+				if(! viewerController.paste(t, targetNode)){
+					((MClipboardController) ClipboardController.getController()).paste(t, targetNode,
+						dropAsSibling, isLeft);
+				}
 				dtde.dropComplete(true);
 				return;
 			}

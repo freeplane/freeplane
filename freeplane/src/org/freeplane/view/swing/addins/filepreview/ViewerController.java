@@ -5,6 +5,10 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.KeyboardFocusManager;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -13,8 +17,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -33,8 +41,10 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapModel;
@@ -535,4 +545,63 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	public void removeFactory(final IViewerFactory factory) {
 		factories.remove(factory);
 	}
+
+
+	public boolean paste(Transferable t, NodeModel targetNode) {
+		if(targetNode.containsExtension(ExternalResource.class)){
+			return false;
+		}
+		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
+				List<File> fileList;
+                try {
+	                fileList = (List<File>) (t.getTransferData(MindMapNodesSelection.fileListFlavor));
+                }
+                catch (Exception e) {
+                	return false;
+                }
+				if(fileList.size() != 1){
+					return false;
+				}
+				File file = fileList.get(0);
+				return paste(file, targetNode);
+		}
+		if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+			try {
+				final String text = t.getTransferData(DataFlavor.stringFlavor).toString();
+				if(! text.startsWith("file://")){
+					return false;
+				}
+				URL url = new URL(text);
+				File file = Compat.urlToFile(url);
+				return paste(file, targetNode);
+			}
+            catch (Exception e) {
+            	return false;
+            }
+		}
+		return false;
+	}
+
+	private boolean paste(File file, NodeModel targetNode) {
+	    if(! file.exists()){
+	    	return false;
+	    }
+	    URI uri = file.toURI();
+	    if (uri == null) {
+	    	return false;
+	    }
+	    final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
+	    final File mapFile = targetNode.getMap().getFile();
+	    if (mapFile == null && useRelativeUri) {
+	    	JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), TextUtils
+	    		.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+	    	return false;
+	    }				if (useRelativeUri) {
+	    	uri = LinkController.toRelativeURI(mapFile, file);
+	    }
+	    final ExternalResource preview = new ExternalResource();
+	    preview.setUri(uri);
+	    undoableToggleHook(targetNode, preview);
+	    return true;
+    }
 }
