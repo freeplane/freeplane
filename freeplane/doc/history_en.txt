@@ -1,4 +1,11 @@
 ===============================
+1.2.3 alpha
+===============================
+Date comparison for nodes and attributes
+Attributes in node styles
+Insert "external images" on drag and drop to a node
+
+===============================
 1.2.2 alpha
 ===============================
 New features:
@@ -6,7 +13,6 @@ Different shapes, line types, width and transparency for connectors
 Resize-able style, calendar and attribute panels
 Syntax coloring for latex
 Time in date filters
-Date comparison for nodes and attributes
 
 Bug fixes
 
