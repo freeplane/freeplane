@@ -72,7 +72,7 @@ import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 import org.freeplane.features.mindmapmode.cloud.MCloudController;
 import org.freeplane.features.mindmapmode.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
-import org.freeplane.features.mindmapmode.encrypt.EncryptedMap;
+import org.freeplane.features.mindmapmode.encrypt.MEncryptionController;
 import org.freeplane.features.mindmapmode.export.ExportController;
 import org.freeplane.features.mindmapmode.export.ImportMindmanagerFiles;
 import org.freeplane.features.mindmapmode.file.MFileManager;
@@ -155,8 +155,7 @@ public class MModeControllerFactory {
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.addAnnotatedAction(new ShowFormatPanelAction());
 		menuBuilder.addAnnotatedAction(new FitToPage());
-		menuBuilder.addAnnotatedAction(new EncryptedMap());
-		menuBuilder.addAnnotatedAction(new EnterPassword());
+		MEncryptionController.install(new MEncryptionController());
 		menuBuilder.addAnnotatedAction(new IconSelectionPlugin());
 		menuBuilder.addAnnotatedAction(new NewParentNode());
 		menuBuilder.addAnnotatedAction(new SaveAll());

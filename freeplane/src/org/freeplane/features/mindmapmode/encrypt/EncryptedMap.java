@@ -30,13 +30,13 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/file/open" })
-public class EncryptedMap extends AFreeplaneAction {
+class EncryptedMap extends AFreeplaneAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public EncryptedMap() {
+	EncryptedMap() {
 		super("EncryptedMap");
 	}
 

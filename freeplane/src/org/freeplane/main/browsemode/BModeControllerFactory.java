@@ -34,6 +34,7 @@ import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.encrypt.EncryptionController;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
@@ -97,6 +98,7 @@ public class BModeControllerFactory {
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
 		new ViewerController();
+		EncryptionController.install(new EncryptionController());
 //		NodeHistory.install(modeController);
 		return modeController;
 	}
