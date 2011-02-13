@@ -50,7 +50,6 @@ import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
-import org.freeplane.features.common.encrypt.EnterPassword;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.icon.HierarchicalIcons;
 import org.freeplane.features.common.icon.IconController;

@@ -20,11 +20,9 @@ package org.freeplane.features.mindmapmode.encrypt;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.features.common.encrypt.EncryptionController;
 import org.freeplane.features.common.map.EncryptionModel;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;

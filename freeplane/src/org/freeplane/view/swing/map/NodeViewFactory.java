@@ -37,7 +37,6 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.features.common.edge.EdgeController;
-import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;

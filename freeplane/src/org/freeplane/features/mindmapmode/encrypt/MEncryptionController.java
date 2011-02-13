@@ -23,7 +23,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.encrypt.EncryptionController;
-import org.freeplane.features.common.encrypt.EnterPassword;
 import org.freeplane.features.common.map.EncryptionModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
