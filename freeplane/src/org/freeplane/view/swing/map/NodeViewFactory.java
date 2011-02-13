@@ -19,18 +19,29 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
+import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.note.NoteController;
 
 class NodeViewFactory {
 	private static class ContentPane extends JComponent {
@@ -160,9 +171,58 @@ class NodeViewFactory {
 		fireNodeViewCreated(nodeView);
     }
 
+	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
+	private Icon coloredIcon = createColoredIcon();
+	
 	public ZoomableLabel createNoteViewer() {
-		ZoomableLabel label = new ZoomableLabel();
-		label.setIcon(IconStoreFactory.create().getUIIcon("knotes.png").getIcon());
+		final ZoomableLabel label = new ZoomableLabel();
+		label.setIcon(coloredIcon);
 		return label;
 	}
+
+	private Icon createColoredIcon() {
+		return new Icon() {
+			public void paintIcon(Component c, Graphics g, int x, int y) {
+				NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, c);
+				if(nodeView == null)
+					return;
+				final Color iconColor = EdgeController.getController(nodeView.getMap().getModeController()).getColor(nodeView.getModel());
+				createColoredIcon(iconColor).paintIcon(c, g, x, y);
+			}
+			
+			public int getIconWidth() {
+				return createColoredIcon(Color.BLACK).getIconWidth();
+			}
+			
+			public int getIconHeight() {
+				return createColoredIcon(Color.BLACK).getIconHeight();
+			}
+		};
+    }
+
+	private Icon createColoredIcon(Color iconColor) {
+	    Icon icon = coloredNoteIcons.get(iconColor);
+		if(icon == null){
+			final BufferedImage img;
+			try {
+				img = ImageIO.read(NoteController.bwNoteIconUrl);
+				final int oldRGB = 0xffffff & Color.BLACK.getRGB();
+				final int newRGB = 0xffffff & iconColor.getRGB();
+				if(oldRGB != newRGB){
+					for (int x = 0; x < img.getWidth(); x++) {
+						for (int y = 0; y < img.getHeight(); y++) {
+							final int rgb =  img.getRGB(x, y);
+							if ((0xffffff &rgb) == oldRGB)
+								img.setRGB(x, y, 0xff000000 & rgb| newRGB);
+						}
+					}
+				}
+				icon = new ImageIcon(img);
+				coloredNoteIcons.put(iconColor, icon);
+			}
+			catch (IOException e) {
+			}
+		}
+	    return icon;
+    }
 }

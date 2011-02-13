@@ -47,7 +47,7 @@ public class NoteController implements IExtension {
 	 */
 	public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
 	private static UIIcon noteIcon;
-	private static URL bwNoteIconUrl;
+	public static URL bwNoteIconUrl;
 	public static final String RESOURCES_DON_T_SHOW_NOTE_ICONS = "don_t_show_note_icons";
 	private static final Integer NODE_TOOLTIP = 9;
 	public static final String SHOW_NOTES_IN_MAP = "show_notes_in_map";
