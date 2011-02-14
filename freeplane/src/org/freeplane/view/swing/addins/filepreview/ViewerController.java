@@ -544,9 +544,6 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 
 	public boolean paste(Transferable t, NodeModel targetNode) {
-		if(targetNode.containsExtension(ExternalResource.class)){
-			return false;
-		}
 		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
 				List<File> fileList;
                 try {
@@ -583,7 +580,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	    	return false;
 	    }
 	    URI uri = file.toURI();
-	    if (uri == null) {
+	    if (uri == null || getViewerFactory(uri) == null) {
 	    	return false;
 	    }
 	    final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
@@ -597,7 +594,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	    }
 	    final ExternalResource preview = new ExternalResource();
 	    preview.setUri(uri);
-	    undoableToggleHook(targetNode, preview);
+	    undoableDeactivateHook(targetNode);
+	    undoableActivateHook(targetNode, preview);
 	    return true;
     }
 }
