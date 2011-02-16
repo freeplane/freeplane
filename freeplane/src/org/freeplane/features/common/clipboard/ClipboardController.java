@@ -404,7 +404,7 @@ public class ClipboardController implements IExtension {
 	}
 
 	public void writeTXT(final NodeModel mindMapNodeModel, final Writer fileout, final int depth) throws IOException {
-		final String plainTextContent = TextController.getController().getPlainTextContent(mindMapNodeModel);
+		final String plainTextContent = TextController.getController().getPlainTextContent(mindMapNodeModel).replace('\n', ' ');
 		for (int i = 0; i < depth; ++i) {
 			fileout.write("    ");
 		}
