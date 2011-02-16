@@ -21,6 +21,8 @@ package org.freeplane.features.mindmapmode.text;
 
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -453,6 +455,26 @@ public class MTextController extends TextController {
 		}
 		node.requestFocus();
 		stopEditing();
+		if(isNewNode && firstEvent == null){
+			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+				public boolean dispatchKeyEvent(KeyEvent e) {
+					if(e.getID() == KeyEvent.KEY_RELEASED)
+						return false;
+					switch(e.getKeyCode()){
+						case KeyEvent.VK_SHIFT:
+						case KeyEvent.VK_CONTROL:
+						case KeyEvent.VK_CAPS_LOCK:
+						case KeyEvent.VK_ALT:
+						case KeyEvent.VK_ALT_GRAPH:
+							return false;
+					}
+					KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(this);
+					edit(nodeModel, prevSelectedModel, e, isNewNode, parentFolded, editLong);
+					return true;
+				}
+			});
+			return;
+		};
 		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
 			public void cancel() {
 				if (isNewNode && nodeModel.getMap().equals(controller.getMap())) {
