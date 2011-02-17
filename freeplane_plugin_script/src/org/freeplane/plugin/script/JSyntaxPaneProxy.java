@@ -115,7 +115,7 @@ public class JSyntaxPaneProxy {
 	public static void gotoPosition(JTextComponent mScriptTextField, int line, int col) {
 		try {
 			if(setCaretPositionMethod == null){
-				setCaretPositionMethod = actionUtils.getMethod("setCaretPosition", JTextComponent.class, int.class);
+				setCaretPositionMethod = actionUtils.getMethod("setCaretPosition", JTextComponent.class, int.class, int.class);
 			}
 			setCaretPositionMethod.invoke(null, mScriptTextField, line, col);
 		}
