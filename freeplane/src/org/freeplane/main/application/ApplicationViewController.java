@@ -43,6 +43,7 @@ import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
@@ -344,7 +345,11 @@ class ApplicationViewController extends ViewController {
 		mSplitPane.setLeftComponent(scrollPane);
 		setSplitPaneLayoutManager();
 		final Controller controller = Controller.getCurrentModeController().getController();
-		final NodeModel node = controller.getSelection().getSelected();
+		final IMapSelection selection = controller.getSelection();
+		if(selection == null){
+			return;
+		}
+		final NodeModel node = selection.getSelected();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				final Component component = controller.getViewController().getComponent(node);
