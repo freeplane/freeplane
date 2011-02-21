@@ -1319,6 +1319,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (requestFocus) {
 			newSelected.requestFocus();
 		}
+		scrollNodeToVisible(newSelected);
 		if(selection.size() == 1 && getSelected().equals(newSelected)){
 			return;
 		}
@@ -1328,7 +1329,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (newSelected.getModel().getParentNode() != null) {
 			((NodeView) newSelected.getParent()).setPreferredChild(newSelected);
 		}
-		scrollNodeToVisible(newSelected);
 		newSelected.repaintSelected();
 		for (final NodeView oldSelected : oldSelecteds) {
 			if (oldSelected != null) {
