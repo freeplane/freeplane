@@ -297,7 +297,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 						}
 						else {
 							newText.append(text);
-							newText.append(" ");
+							if (text.length() > 0 && !Character.isWhitespace(text.charAt(text.length() - 1)))
+								newText.append(" ");
 							newText.append(dateAsString);
 						}
 						((MTextController) TextController.getController()).setNodeText(element, newText.toString());
