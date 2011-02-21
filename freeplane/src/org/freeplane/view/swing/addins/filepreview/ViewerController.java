@@ -542,7 +542,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		factories.remove(factory);
 	}
 
-
+	@SuppressWarnings("unchecked")
 	public boolean paste(Transferable t, NodeModel targetNode) {
 		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
 				List<File> fileList;
