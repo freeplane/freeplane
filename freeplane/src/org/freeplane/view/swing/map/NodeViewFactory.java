@@ -34,6 +34,7 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.features.common.edge.EdgeController;
@@ -176,6 +177,7 @@ class NodeViewFactory {
 	public ZoomableLabel createNoteViewer() {
 		final ZoomableLabel label = new ZoomableLabel();
 		label.setIcon(coloredIcon);
+		label.setVerticalTextPosition(JLabel.TOP);
 		return label;
 	}
 
