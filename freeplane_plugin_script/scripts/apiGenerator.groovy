@@ -1,6 +1,4 @@
 // @ExecutionModes({on_single_node="/menu_bar/help[scripting_api_generator_title]"})
-// @CacheScriptContent(true)
-//
 // Copyright (C) 2009-2011 Dave (Dke211, initial author), Volker Boerchers (adaptation for Freeplane)
 //
 // This program is free software: you can redistribute it and/or modify
@@ -76,21 +74,35 @@ def makeApi(node, clazz, apiBase) {
     child.folded = true
 }
 
+def initHeading(node) {
+    node.style.font.bold = true
+}
+
+def createChild(parent, text, link) {
+    def result = parent.createChild(text)
+    result.link.text = link
+    return result
+}
+
 // == MAIN ==
 def MAP_NAME = textUtils.getText('scripting_api_generator_title')
 def PROXY_NODE = textUtils.getText('scripting_api_generator_proxy')
 def UTILITES_NODE = textUtils.getText('scripting_api_generator_utilities')
+def WEB_NODE = textUtils.getText('scripting_api_generator_web')
 c.deactivateUndo()
 def apiBase = 'file:/devel/freeplane-bazaar-repo/trunk/freeplane_framework/build/doc/api'
 def newMap = c.newMap()
 def oldName = newMap.name
 newMap.name = MAP_NAME
 newMap.root.text = MAP_NAME
+newMap.root.style.font.bold = true
 newMap.root.link.text = apiBase + '/index.html'
+initHeading(newMap.root)
+
 
 // Proxy
-def proxy = newMap.root.createChild(PROXY_NODE)
-proxy.link.text = apiBase + '/org/freeplane/plugin/script/proxy/Proxy.html'
+def proxy = createChild(newMap.root, PROXY_NODE, apiBase + '/org/freeplane/plugin/script/proxy/Proxy.html')
+initHeading(proxy)
 makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Attributes'), apiBase)
 makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Connector'), apiBase)
 makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Controller'), apiBase)
@@ -102,12 +114,23 @@ makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Link'), ap
 makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Map'), apiBase)
 makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Node'), apiBase)
 makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$NodeStyle'), apiBase)
-def utils = newMap.root.createChild(UTILITES_NODE)
+makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Convertible'), apiBase)
+makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.FreeplaneScriptBaseClass'), apiBase)
+
+def utils = createChild(newMap.root, UTILITES_NODE, null)
+initHeading(utils)
 makeApi(utils, Class.forName('org.freeplane.core.ui.components.UITools'), apiBase)
 makeApi(utils, Class.forName('org.freeplane.core.util.TextUtils'), apiBase)
 makeApi(utils, Class.forName('org.freeplane.core.util.FreeplaneVersion'), apiBase)
 makeApi(utils, Class.forName('org.freeplane.core.util.HtmlUtils'), apiBase)
 makeApi(utils, Class.forName('org.freeplane.core.util.LogUtils'), apiBase)
+
+def web = createChild(newMap.root, WEB_NODE, 'http://freeplane.sourceforge.net/wiki/index.php/Scripting')
+initHeading(web)
+createChild(web, 'Groovy tutorials (Codehaus)', 'http://groovy.codehaus.org/Beginners+Tutorial')
+createChild(web, 'Groovy presentation (Paul King)', 'http://www.asert.com/pubs/Groovy/Groovy.pdf')
+createChild(web, 'Example scripts', 'http://freeplane.sourceforge.net/wiki/index.php/Scripting:_Example_scripts')
+createChild(web, 'Scripting API changes', 'http://freeplane.sourceforge.net/wiki/index.php/Scripting:_API_Changes')
 
 c.deactivateUndo()
 newMap.saved = true

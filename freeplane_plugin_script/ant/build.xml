@@ -66,6 +66,7 @@
 				<fileset dir="${root}">
 					<include name="**/Proxy.java" />
 					<include name="**/Convertible.java" />
+					<include name="**/FreeplaneScriptBaseClass.java" />
 				</fileset>
 				<fileset dir="${workspace}/freeplane">
 					<include name="**/UITools.java" />
