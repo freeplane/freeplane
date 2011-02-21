@@ -213,6 +213,10 @@ public class XMLWriter {
 		writer.flush();
 	}
 
+	public void addRawContent(final String comment) {
+		writer.write(comment);
+    }
+
 	/**
 	 * Writes a string encoding reserved characters.
 	 * 
