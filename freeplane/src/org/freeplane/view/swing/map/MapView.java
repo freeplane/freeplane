@@ -1315,14 +1315,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		setSiblingMaxLevel(newSelected.getModel().getNodeLevel(false));
 	}
 
-	public void selectAsTheOnlyOneSelected(final NodeView node, final boolean requestFocus) {
-		final NodeView newSelected = node;
-		final Collection<NodeView> oldSelecteds = cloneSelection();
-		selection.clear();
-		selection.add(newSelected);
+	public void selectAsTheOnlyOneSelected(final NodeView newSelected, final boolean requestFocus) {
 		if (requestFocus) {
 			newSelected.requestFocus();
 		}
+		if(selection.size() == 1 && getSelected().equals(newSelected)){
+			return;
+		}
+		final Collection<NodeView> oldSelecteds = cloneSelection();
+		selection.clear();
+		selection.add(newSelected);
 		if (newSelected.getModel().getParentNode() != null) {
 			((NodeView) newSelected.getParent()).setPreferredChild(newSelected);
 		}
