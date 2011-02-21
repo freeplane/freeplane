@@ -4,13 +4,14 @@
 Date comparison for nodes and attributes
 Attributes in node styles
 Insert "external images" on drag and drop to a node
+Date format selection in calendar and attribute panel
 
 ===============================
 1.2.2 alpha
 ===============================
 New features:
 Different shapes, line types, width and transparency for connectors
-Resize-able style, calendar and attribute panels
+Resize-able style, calendar and attribute panel
 Syntax coloring for latex
 Time in date filters
 

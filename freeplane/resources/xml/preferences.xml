@@ -43,10 +43,6 @@
                 <choice value="zh_TW"/>
                 <choice value="zh_CN"/>
             </combo>
-         	<combo name="date_format">
-                <choice value="date_local"/>
-                <choice value="date_iso"/>
-        	</combo>
         </separator>
         <separator name = "files">
             <number name = "last_opened_list_length" min="1" max="50"/> 

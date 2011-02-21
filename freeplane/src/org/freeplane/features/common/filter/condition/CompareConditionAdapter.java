@@ -128,14 +128,18 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			default:
 				throw new IllegalArgumentException();
 		}
-		return ConditionFactory.createDescription(attribute, simpleCondition, valueAsString(), matchCase);
+		return ConditionFactory.createDescription(attribute, simpleCondition, valueDescription(), matchCase);
 	}
 
 	private String valueAsString() {
-		if(conditionValue instanceof Date)
-			return TextUtils.toString((Date)conditionValue);
-	    return conditionValue.toString();
-    }
+		if (conditionValue instanceof Date)
+			return TextUtils.toStringISO((Date) conditionValue);
+		return conditionValue.toString();
+	}
+
+	private String valueDescription() {
+		return conditionValue.toString();
+	}
 
 	public Comparable<?> getConditionValue() {
 		return conditionValue;

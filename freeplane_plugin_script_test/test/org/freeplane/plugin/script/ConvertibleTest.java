@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.main.application.FreeplaneStarter;
@@ -48,7 +49,7 @@ public class ConvertibleTest {
 		assertEquals(new Long(-31), convertible("-#1f").getNum());
 		assertEquals(new Long(23), convertible("027").getNum());
 		assertEquals(new Long(-23), convertible("-027").getNum());
-		assertThrowsConversionException(""); // FIXME: changed on 2011-01-30
+		assertThrowsConversionException("");
 		assertThrowsConversionException("xyz");
 		assertThrowsConversionException(" 12");
 	}
@@ -62,7 +63,7 @@ public class ConvertibleTest {
 		catch (ConversionException e) {
 			caughtException = true;
 		}
-		assertTrue("not a number: " + notANumber, caughtException);
+		assertTrue("should have been detected as not-a-number: \"" + notANumber + '"', caughtException);
     }
 	
 	@Test
@@ -125,8 +126,10 @@ public class ConvertibleTest {
 		assertTrue("not a date: " + notADate, caughtException);
 	}
 
-	private void testOneDatePattern(String expected, String testInput) throws ConversionException, ExecuteScriptException {
-		assertEquals(date(expected), convertible(testInput).getDate());
+	private void testOneDatePattern(String expected, String testInput) throws ConversionException,
+	        ExecuteScriptException {
+		assertEquals("expected: " + Convertible.toString(date(expected)) + "!=" + Convertible.toString(convertible(testInput).getDate()),
+		    date(expected), convertible(testInput).getDate());
 		assertEquals(calendar(expected), convertible(testInput).getCalendar());
 	}
 
@@ -153,8 +156,8 @@ public class ConvertibleTest {
 	}
 
 	private String getLocalTimeZoneOffsetString() {
-		final Calendar calendar = Calendar.getInstance();
-		int offsetMinutes = (calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) / 60000;
+		final TimeZone timeZone = TimeZone.getDefault();
+		int offsetMinutes = (timeZone.getRawOffset() + timeZone.getDSTSavings()) / 60000;
 		return String.format("%+03d%02d", offsetMinutes / 60, offsetMinutes % 60);
 	}
 
@@ -305,7 +308,8 @@ public class ConvertibleTest {
 		assertEquals(null, Convertible.toString(null));
 		testSomethingToStringImpl("12", 12L, "num");
 		testSomethingToStringImpl("1.2", 1.2d, "num");
-		testSomethingToStringImpl("2010-08-16T22:31:55.123+0000", date("2010-08-16 22:31:55.123+0000"), "date");
+		final String Z = getLocalTimeZoneOffsetString();
+		testSomethingToStringImpl("2010-08-16T22:31:55.123" + Z, date("2010-08-16 22:31:55.123" + Z), "date");
 	}
 
 	private void testSomethingToStringImpl(String expected, Object toConvert, String propertyName)

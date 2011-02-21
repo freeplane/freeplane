@@ -3,7 +3,6 @@ package org.freeplane.plugin.script.proxy;
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.MissingMethodException;
 
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -182,8 +181,8 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	/** has special conversions for
 	 * <ul>
 	 * <li>Date and Calendar are converted by
-	 *     org.apache.commons.lang.time.DateFormatUtils.formatUTC(date, "yyyy-MM-dd'T'HH:mm:ss.SSSZ"), i.e. to
-	 *     GMT timestamps, e.g.: "2010-08-16 22:31:55.123+0000".
+	 *     org.apache.commons.lang.time.DateFormatUtils.format(date, "yyyy-MM-dd'T'HH:mm:ss.SSSZ"), i.e. to
+	 *     GMT timestamps, e.g.: "2010-08-16T22:31:55.123+0000".
 	 * <li>null is "converted" to null
 	 * </ul>
 	 * All other types are converted via value.toString().
@@ -194,9 +193,9 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 		else if (value.getClass().equals(String.class))
 			return (String) value;
 		else if (value instanceof Date)
-			return TextUtils.toString(((Date) value));
+			return TextUtils.toStringISO(((Date) value));
 		else if (value instanceof Calendar)
-			return TextUtils.toString(((Calendar) value).getTime());
+			return TextUtils.toStringISO(((Calendar) value).getTime());
 		else
 			return value.toString();
 	}

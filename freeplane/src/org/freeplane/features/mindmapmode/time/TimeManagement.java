@@ -26,6 +26,8 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -33,12 +35,15 @@ import java.beans.PropertyChangeListener;
 import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -49,9 +54,12 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapSelectionListener;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.format.FormatController;
+import org.freeplane.features.common.format.PatternFormat;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -94,6 +102,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	private JDialog dialog;
 // 	final private ModeController modeController;
 	private final ReminderHook reminderHook;
+	private PatternFormat dateFormat;
 
 	public TimeManagement( final ReminderHook reminderHook) {
 //		this.modeController = modeController;
@@ -148,8 +157,6 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		TimeManagement.sCurrentlyOpenTimeManagement = null;
 	}
 
-	/**
-	 */
 	private Date getCalendarDate() {
 		return calendar.getTime();
 	}
@@ -201,56 +208,73 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		dialog.setVisible(true);
 	}
 	
-	public JComponent createTimePanel(final Dialog dialog , boolean useTripple, int axis) {
+	public JComponent createTimePanel(final Dialog dialog, boolean useTriple, int axis) {
 		JComponent contentPane = new JPanel();
 		final JComponent calendarComponent;
 		final JCalendar calendar;
-		if(this.calendar == null){
+		if (this.calendar == null) {
 			this.calendar = Calendar.getInstance();
 			this.calendar.set(Calendar.SECOND, 0);
+			this.calendar.set(Calendar.MILLISECOND, 0);
 		}
-		if(useTripple){
+		if (useTriple) {
 			final JTripleCalendar trippleCalendar = new JTripleCalendar();
 			calendar = trippleCalendar.getCalendar();
 			calendarComponent = trippleCalendar;
 		}
-		else{
+		else {
 			calendar = new JCalendar();
 			calendarComponent = calendar;
 		}
 		calendar.setCalendar(this.calendar);
-		if(dialog != null){
+		if (dialog != null) {
 			dialog.addWindowFocusListener(new WindowAdapter() {
 				@Override
-                public void windowGainedFocus(WindowEvent e) {
+				public void windowGainedFocus(WindowEvent e) {
 					calendar.getDayChooser().setFocus();
-                }
+				}
 			});
 		}
 		calendar.setMaximumSize(calendar.getPreferredSize());
-		
-	    contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		calendar.getDayChooser().addPropertyChangeListener(this);
 		calendarComponent.setAlignmentX(0.5f);
 		contentPane.add(calendarComponent);
-		
 		Box buttonBox = new Box(axis);
 		buttonBox.setAlignmentX(0.5f);
 		contentPane.add(buttonBox);
 		final Dimension btnSize = new Dimension();
 		{
+			final JButton todayButton = new JButton(getResourceString("plugins/TimeManagement.xml_todayButton"));
+			todayButton.addActionListener(new ActionListener() {
+				public void actionPerformed(final ActionEvent arg0) {
+					final Calendar currentTime = Calendar.getInstance();
+					currentTime.set(Calendar.SECOND, 0);
+					TimeManagement.this.calendar.setTimeInMillis(currentTime.getTimeInMillis());
+					calendar.setCalendar(TimeManagement.this.calendar);
+				}
+			});
+			increaseSize(btnSize, todayButton);
+			buttonBox.add(todayButton);
+		}
+		{
+			final JComboBox dateFormatChooser = createDateFormatChooser();
+			increaseSize(btnSize, dateFormatChooser);
+			buttonBox.add(dateFormatChooser);
+		}
+		{
 			final JButton appendButton = new JButton(getResourceString("plugins/TimeManagement.xml_appendButton"));
-			if(dialog == null){
+			if (dialog == null) {
 				appendButton.setFocusable(false);
 			}
 			appendButton.addActionListener(new ActionListener() {
-				public void actionPerformed(final ActionEvent arg0) {
-					final String dateAsString = TextUtils.toString(getCalendarDate());
+				public void actionPerformed(final ActionEvent ignored) {
+					final String dateAsString = dateToString();
 					final Window parentWindow;
-					if(dialog != null){
-						 parentWindow = (Window) dialog.getParent();
+					if (dialog != null) {
+						parentWindow = (Window) dialog.getParent();
 					}
-					else{
+					else {
 						parentWindow = SwingUtilities.getWindowAncestor(appendButton);
 					}
 					final Component mostRecentFocusOwner = parentWindow.getMostRecentFocusOwner();
@@ -259,8 +283,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 						textComponent.replaceSelection(dateAsString);
 						return;
 					}
-					ModeController mController  = Controller.getCurrentModeController();
-					for (final NodeModel element : mController .getMapController().getSelectedNodes()) {
+					ModeController mController = Controller.getCurrentModeController();
+					for (final NodeModel element : mController.getMapController().getSelectedNodes()) {
 						final String text = element.getText();
 						final StringBuilder newText = new StringBuilder();
 						if (HtmlUtils.isHtmlNode(text)) {
@@ -276,8 +300,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 							newText.append(" ");
 							newText.append(dateAsString);
 						}
-						((MTextController) TextController.getController()).setNodeText(element, newText
-						    .toString());
+						((MTextController) TextController.getController()).setNodeText(element, newText.toString());
 					}
 				}
 			});
@@ -299,20 +322,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			increaseSize(btnSize, reminderButton);
 			buttonBox.add(reminderButton);
 		}
-		{
-			final JButton todayButton = new JButton(getResourceString("plugins/TimeManagement.xml_todayButton"));
-			todayButton.addActionListener(new ActionListener() {
-				public void actionPerformed(final ActionEvent arg0) {
-				    final Calendar currentTime = Calendar.getInstance();
-				    currentTime.set(Calendar.SECOND, 0);
-				    TimeManagement.this.calendar.setTimeInMillis(currentTime.getTimeInMillis());
-				    calendar.setCalendar(TimeManagement.this.calendar);
-				}
-			});
-			increaseSize(btnSize, todayButton);
-			buttonBox.add(todayButton);
-		}
-		if(dialog != null){
+		if (dialog != null) {
 			final JButton cancelButton = new JButton(getResourceString("plugins/TimeManagement.xml_closeButton"));
 			cancelButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
@@ -322,17 +332,66 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			increaseSize(btnSize, cancelButton);
 			buttonBox.add(cancelButton);
 		}
-		
-		for(int i = 0; i < buttonBox.getComponentCount(); i++){
+		for (int i = 0; i < buttonBox.getComponentCount(); i++) {
 			buttonBox.getComponent(i).setMaximumSize(btnSize);
 		}
 		return contentPane;
-    }
+	}
 
-	private void increaseSize(final Dimension btnSize, final JButton btn) {
-	    final Dimension preferredSize = btn.getPreferredSize();
+	private JComboBox createDateFormatChooser() {
+		class DateFormatComboBoxElement {
+			private final PatternFormat dateFormat;
+
+			DateFormatComboBoxElement(PatternFormat dateFormat) {
+				this.dateFormat = dateFormat;
+			}
+
+			PatternFormat getDateFormat() {
+				return dateFormat;
+			}
+
+			public String toString() {
+				//final Date sampleDate = new GregorianCalendar(1999, 11, 31, 23, 59, 59).getTime();
+				return dateFormat.format(getCalendarDate());
+			}
+		}
+		final String dateFormatPattern = ResourceController.getResourceController().getProperty(
+		    "OptionPanel.date_format");
+		final Vector<DateFormatComboBoxElement> values = new Vector<DateFormatComboBoxElement>();
+		final List<PatternFormat> dateFormats = new FormatController().getDateFormats();
+		int selectedIndex = 0;
+		for (int i = 0; i < dateFormats.size(); ++i) {
+			PatternFormat patternFormat = dateFormats.get(i);
+			values.add(new DateFormatComboBoxElement(patternFormat));
+			if (patternFormat.getPattern().equals(dateFormatPattern)) {
+				dateFormat = patternFormat;
+				selectedIndex = i;
+			}
+		}
+		final JComboBox dateFormatChooser = new JComboBox(values);
+		if (!dateFormats.isEmpty())
+			dateFormatChooser.setSelectedIndex(selectedIndex);
+		dateFormatChooser.addItemListener(new ItemListener() {
+			public void itemStateChanged(final ItemEvent e) {
+				dateFormat = ((DateFormatComboBoxElement) e.getItem()).getDateFormat();
+				ResourceController.getResourceController().setProperty("OptionPanel.date_format",
+				    dateFormat.getPattern());
+			}
+		});
+		dateFormatChooser.setAlignmentX(Component.LEFT_ALIGNMENT);
+		dateFormatChooser.setToolTipText(TextUtils.format("plugins/TimeManagement.xml_format_chooser_tooltip",
+		    TextUtils.toStringShortISO(getCalendarDate())));
+		return dateFormatChooser;
+	}
+
+	private void increaseSize(final Dimension btnSize, final JComponent comp) {
+	    final Dimension preferredSize = comp.getPreferredSize();
 	    btnSize.width =  Math.max(btnSize.width, preferredSize.width);
 	    btnSize.height =  Math.max(btnSize.height, preferredSize.height);
     }
 
+	private String dateToString() {
+	    Date date = getCalendarDate();
+        return dateFormat.format(date);
+    }
 }

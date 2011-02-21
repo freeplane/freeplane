@@ -19,14 +19,12 @@
  */
 package org.freeplane.features.mindmapmode;
 
-import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.resources.components.PropertyAction;
@@ -104,16 +102,6 @@ public class MModeController extends ModeController {
 	private void createOptionPanelControls() {
 		optionPanelBuilder = new OptionPanelBuilder();
 		final ResourceController resourceController = ResourceController.getResourceController();		
-		final ResourceBundles i18n = (ResourceBundles) resourceController.getResources();
-
-		final Date date = new Date();
-		final String stringLocal = TextUtils.toStringLocal(date);
-		final String formattedLocalDate = TextUtils.format("date_local", stringLocal);
-		i18n.putResourceString("OptionPanel.date_local", formattedLocalDate);
-		final String stringISO = TextUtils.toStringISO(date);
-		final String formattedISODate = TextUtils.format("date_iso", stringISO);
-		i18n.putResourceString("OptionPanel.date_iso", formattedISODate);
-		
 		optionPanelBuilder.load(resourceController.getResource("/xml/preferences.xml"));
 		final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
 		final Vector<String> lafNames = new Vector<String>(lafInfo.length + 1);
