@@ -13,8 +13,11 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.plugin.script.proxy.Convertible;
 import org.freeplane.plugin.script.proxy.Proxy.NodeRO;
 
+/** All methods of this class are available as "global" methods in every script.
+ * Only documented methods are meant to be used in scripts. */
 public abstract class FreeplaneScriptBaseClass extends Script {
 	private final Pattern nodeIdPattern = Pattern.compile("ID_\\d+");
 	private final MetaClass nodeMetaClass;
@@ -49,10 +52,11 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	    return binding;
     }
 
-	/** <ul>
+	/* <ul>
 	 * <li> translate raw node ids to nodes.
 	 * <li> "imports" node's methods into the script's namespace
-	 * </ul> */
+	 * </ul>
+	 */
 	public Object getProperty(String property) {
 		// shortcuts for the most usual cases
 		if (property.equals("node")) {
@@ -80,13 +84,9 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 		}
 	}
 
-	/**
-     * extends super class version by node instance methods.
-     *
-     * @param methodName method to call
-     * @param args arguments to pass to the method
-     * @return value
-     */
+	/*
+	 * extends super class version by node instance methods.
+	 */
     public Object invokeMethod(String methodName, Object args) {
         try {
             return super.invokeMethod(methodName, args);
@@ -128,7 +128,32 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	public Object ifNull(Object value, Object valueIfNull) {
 		return value == null ? valueIfNull : value;
 	}
+
+	/** rounds a number to integral type. */
+	public Long round(final Double d) {
+		if (d == null)
+			return null;
+		return Math.round(d);
+	}
 	
+	/** round to the given number of decimal places: <code>round(0.1234, 2) -> 0.12</code> */
+	public Double round(final Double d, final int precision) {
+		if (d == null)
+			return d;
+		double factor = 1;
+		for (int i = 0; i < precision; i++) {
+			factor *= 10.;
+		}
+		return Math.round(d * factor) / factor;
+	}
+
+	/** formats according to the internal standard, that is the conversion will be reversible
+	 * for types that are handled special by the scripting api namely Dates and Numbers.
+	 * @see Convertible#toString(Object) */
+	public String format(final Object o) {
+		return Convertible.toString(o);
+	}
+
 //	/** Shortcut for new {@link org.freeplane.plugin.script.proxy.Convertible}. */
 //	public Convertible convertible(String string) {
 //		return new Convertible(FormulaUtils.eval string, node.get);
