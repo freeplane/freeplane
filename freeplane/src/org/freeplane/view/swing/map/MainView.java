@@ -112,11 +112,14 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public boolean dropAsSibling(final double xCoord) {
-		return isInVerticalRegion(xCoord, 1. / 3);
+		if(dropLeft(xCoord))
+		return ! isInVerticalRegion(xCoord, 2. / 3);
+		else
+			return isInVerticalRegion(xCoord, 1. / 3);
 	}
 
 	/** @return true if should be on the left, false otherwise. */
-	public boolean dropPosition(final double xCoord) {
+	public boolean dropLeft(final double xCoord) {
 		/* here it is the same as me. */
 		return getNodeView().isLeft();
 	}

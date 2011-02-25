@@ -104,14 +104,13 @@ public class UITools {
 		UITools.convertPointToAncestor(source, point, destination);
 	}
 
-	public static void convertPointToAncestor(Component c, final Point p, final Component destination) {
+	public static void convertPointToAncestor(final Component from, final Point p, final Component destination) {
 		int x, y;
-		while (c != destination) {
+		for (Component c = from; c != destination;c = c.getParent()) {
 			x = c.getX();
 			y = c.getY();
 			p.x += x;
 			p.y += y;
-			c = c.getParent();
 		};
 	}
 

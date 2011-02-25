@@ -386,7 +386,9 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public JComponent getContent() {
-		return contentPane == null ? mainView : contentPane;
+		final JComponent c = contentPane == null ? mainView : contentPane;
+		assert(c.getParent() == this);
+		return c;
 	}
 
 	private Container getContentPane() {
@@ -1258,7 +1260,15 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void setMainView(final MainView newMainView) {
-		if (mainView != null) {
+		if(contentPane != null)
+		{
+			assert(contentPane.getParent() == this);
+			if (mainView != null) 
+				removeContent( MAIN_VIEWER_POSITION);
+			addContent(newMainView, MAIN_VIEWER_POSITION);
+			assert(contentPane.getParent() == this);
+		}
+		else if (mainView != null) {
 			final Container c = mainView.getParent();
 			int i;
 			for (i = c.getComponentCount() - 1; i >= 0 && mainView != c.getComponent(i); i--) {
@@ -1271,8 +1281,6 @@ public class NodeView extends JComponent implements INodeView {
 			add(newMainView);
 		}
 		mainView = newMainView;
-		if(contentPane != null)
-			mainView.putClientProperty("NODE_VIEW_CONTENT_POSITION", MAIN_VIEWER_POSITION);
 		final IUserInputListenerFactory userInputListenerFactory = getMap().getModeController()
 		    .getUserInputListenerFactory();
 		mainView.addMouseListener(userInputListenerFactory.getNodeMouseMotionListener());
@@ -1469,9 +1477,6 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	protected void validateTree() {
-		if(mainView == null){
-			NodeViewFactory.getInstance().initNodeView(this);
-		}
 		super.validateTree();
 	}
 

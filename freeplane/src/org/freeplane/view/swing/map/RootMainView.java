@@ -43,7 +43,7 @@ class RootMainView extends MainView {
 
 	/** @return true if should be on the left, false otherwise. */
 	@Override
-	public boolean dropPosition(final double xCoord) {
+	public boolean dropLeft(final double xCoord) {
 		return xCoord < getSize().width * 1 / 2;
 	}
 
@@ -132,7 +132,7 @@ class RootMainView extends MainView {
 
 	@Override
 	public void setDraggedOver(final Point p) {
-		setDraggedOver((dropPosition(p.getX())) ? NodeView.DRAGGED_OVER_SON_LEFT : NodeView.DRAGGED_OVER_SON);
+		setDraggedOver((dropLeft(p.getX())) ? NodeView.DRAGGED_OVER_SON_LEFT : NodeView.DRAGGED_OVER_SON);
 	}
 	
 }

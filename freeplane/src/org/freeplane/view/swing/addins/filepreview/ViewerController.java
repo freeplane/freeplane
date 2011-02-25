@@ -48,6 +48,8 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.mindmapmode.link.MLinkController;
+import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -543,7 +545,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean paste(Transferable t, NodeModel targetNode) {
+	public boolean paste(Transferable t, NodeModel targetNode, boolean dropAsSibling, boolean isLeft) {
 		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
 				List<File> fileList;
                 try {
@@ -556,7 +558,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 					return false;
 				}
 				File file = fileList.get(0);
-				return paste(file, targetNode);
+				return paste(file, targetNode, dropAsSibling, isLeft);
 		}
 		if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			try {
@@ -564,9 +566,10 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				if(! text.startsWith("file://")){
 					return false;
 				}
-				URL url = new URL(text);
+				URI uri = new URI(new URL(text).toString());
+				final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
 				File file = Compat.urlToFile(url);
-				return paste(file, targetNode);
+				return paste(file, targetNode, dropAsSibling, isLeft);
 			}
             catch (Exception e) {
             	return false;
@@ -575,7 +578,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		return false;
 	}
 
-	private boolean paste(File file, NodeModel targetNode) {
+	private boolean paste(File file, NodeModel targetNode, boolean asSibling, boolean isLeft) {
 	    if(! file.exists()){
 	    	return false;
 	    }
@@ -592,10 +595,20 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	    }				if (useRelativeUri) {
 	    	uri = LinkController.toRelativeURI(mapFile, file);
 	    }
+	    
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		final NodeModel node;
+		if(! asSibling){
+			node = mapController.newNode(file.getName(), targetNode.getMap());
+			mapController.insertNode(node, targetNode, asSibling, isLeft, isLeft);
+		}
+		else{
+			node = targetNode;
+		}
 	    final ExternalResource preview = new ExternalResource();
 	    preview.setUri(uri);
-	    undoableDeactivateHook(targetNode);
-	    undoableActivateHook(targetNode, preview);
+	    undoableDeactivateHook(node);
+	    undoableActivateHook(node, preview);
 	    return true;
     }
 }

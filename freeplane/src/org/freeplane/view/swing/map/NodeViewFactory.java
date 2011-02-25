@@ -158,18 +158,12 @@ class NodeViewFactory {
 		final NodeView newView = new NodeView(model, position, map, parent);
 		model.addViewer(newView);
 		newView.setLayout(SelectableLayout.getInstance());
+		newView.setMainView(newMainView(newView));
+        newView.updateNoteViewer();
+        newView.update();
+        fireNodeViewCreated(newView); 
 		return newView;
 	}
-
-	void initNodeView(final NodeView nodeView) {
-		if(nodeView.getMainView() != null){
-			return;
-		}
-		nodeView.setMainView(newMainView(nodeView));
-		nodeView.updateNoteViewer();
-		nodeView.update();
-		fireNodeViewCreated(nodeView);
-    }
 
 	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
 	private Icon coloredIcon = createColoredIcon();
