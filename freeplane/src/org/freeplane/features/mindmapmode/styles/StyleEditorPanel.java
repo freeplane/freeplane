@@ -613,7 +613,7 @@ public class StyleEditorPanel extends JPanel {
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.setBorder(Borders.DLU2_BORDER);
 		if (addStyleBox) {
-		    rightBuilder.appendSeparator(TextUtils.getText(""));
+		    rightBuilder.appendSeparator("");
 			addAutomaticLayout(rightBuilder);
 			addStyleBox(rightBuilder);
 		}
