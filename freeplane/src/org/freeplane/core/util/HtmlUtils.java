@@ -649,4 +649,14 @@ public class HtmlUtils {
 		}
 		return builder.toString();
 	}
+
+	public static String extractRawBody(final String text) {
+		final int start = text.indexOf("<body>");
+		if (start == -1)
+			return "";
+		final int end = text.indexOf("</body>", start + 7);
+		if (end == -1)
+			return "";
+		return text.substring(start + 7, end).trim();
+	}
 }

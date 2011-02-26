@@ -53,6 +53,7 @@ public class FormatController implements IExtension {
 	private String pathToFormatsFile;
 	private List<PatternFormat> dateFormats = new ArrayList<PatternFormat>();
 	private List<PatternFormat> numberFormats = new ArrayList<PatternFormat>();
+	private List<PatternFormat> stringFormats = new ArrayList<PatternFormat>();
 
 	public FormatController() {
 		pathToFormatsFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
@@ -63,7 +64,7 @@ public class FormatController implements IExtension {
 	private void initFormats() {
 		try {
 			loadFormats();
-			if (numberFormats.isEmpty() && dateFormats.isEmpty()) {
+			if (numberFormats.isEmpty() && dateFormats.isEmpty() && stringFormats.isEmpty()) {
 				addStandardFormats();
 				saveFormats();
 			}
@@ -115,6 +116,9 @@ public class FormatController implements IExtension {
 					else if (type.equals(PatternFormat.TYPE_NUMBER)) {
 						numberFormats.add(format);
 					}
+					else if (type.equals(PatternFormat.TYPE_STRING)) {
+						stringFormats.add(format);
+					}
 					else {
 						throw new RuntimeException("unknown type in " + pathToFormatsFile + ": type=" + type
 						        + ", style=" + style + ", element content=" + content);
@@ -144,6 +148,7 @@ public class FormatController implements IExtension {
 	public ArrayList<PatternFormat> getAllFormats() {
 	    final ArrayList<PatternFormat> formats = new ArrayList<PatternFormat>(numberFormats);
 	    formats.addAll(dateFormats);
+	    formats.addAll(stringFormats);
 	    return formats;
     }
 
@@ -173,4 +178,17 @@ public class FormatController implements IExtension {
 	public List<PatternFormat> getNumberFormats() {
 		return numberFormats;
 	}
+	
+	public List<PatternFormat> getStringFormats() {
+		return stringFormats;
+	}
+
+	public List<String> getAllPatterns() {
+		final ArrayList<PatternFormat> formats = getAllFormats();
+		ArrayList<String> result = new ArrayList<String>(formats.size());
+		for (PatternFormat patternFormat : formats) {
+			result.add(patternFormat.getPattern());
+        }
+	    return result;
+    }
 }

@@ -51,4 +51,9 @@ public abstract class PropertyBean extends PropertyAdapter implements IPropertyC
 	}
 
 	public abstract void setValue(String value);
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "(" + getName() + "->" + getValue() + ")";
+	}
 }

@@ -32,7 +32,9 @@ public class Activator implements BundleActivator {
 			    FORMULA_DISABLE_PLUGIN);
 			if (!disablePluginProperty) {
 				addMenuItems(modeController);
-				TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer());
+				TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer(1));
+				// to enable Formulas in text templates:
+				// TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer(100));
 				final FormulaUpdateChangeListener listener = new FormulaUpdateChangeListener();
 				modeController.getMapController().addNodeChangeListener(listener);
 				modeController.getMapController().addMapChangeListener(listener);

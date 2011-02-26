@@ -259,6 +259,12 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		}
 		{
 			final JComboBox dateFormatChooser = createDateFormatChooser();
+//			// doesn't work yet...
+//			calendar.addPropertyChangeListener(new PropertyChangeListener() {
+//				public void propertyChange(PropertyChangeEvent evt) {
+//					dateFormatChooser.revalidate();
+//				}
+//			});
 			increaseSize(btnSize, dateFormatChooser);
 			buttonBox.add(dateFormatChooser);
 		}
@@ -357,7 +363,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			}
 		}
 		final String dateFormatPattern = ResourceController.getResourceController().getProperty(
-		    "OptionPanel.date_format");
+		    "date_format");
 		final Vector<DateFormatComboBoxElement> values = new Vector<DateFormatComboBoxElement>();
 		final List<PatternFormat> dateFormats = new FormatController().getDateFormats();
 		int selectedIndex = 0;
@@ -375,7 +381,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		dateFormatChooser.addItemListener(new ItemListener() {
 			public void itemStateChanged(final ItemEvent e) {
 				dateFormat = ((DateFormatComboBoxElement) e.getItem()).getDateFormat();
-				ResourceController.getResourceController().setProperty("OptionPanel.date_format",
+				ResourceController.getResourceController().setProperty("date_format",
 				    dateFormat.getPattern());
 			}
 		});

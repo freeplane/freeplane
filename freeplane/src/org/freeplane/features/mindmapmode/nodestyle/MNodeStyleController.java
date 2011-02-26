@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.undo.IActor;
@@ -34,6 +33,7 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
+import org.freeplane.features.common.text.TextController;
 
 /**
  * @author Dimitry Polivaev
@@ -48,18 +48,11 @@ public class MNodeStyleController extends NodeStyleController {
 		}
 
 		public void copy(final NodeModel from, final NodeModel to) {
-			final IExtension fromStyle = from.getExtension(NodeStyleModel.class);
+			final NodeStyleModel fromStyle = (NodeStyleModel) from.getExtension(NodeStyleModel.class);
 			if (fromStyle == null) {
 				return;
 			}
-			final NodeStyleModel toStyle = NodeStyleModel.createNodeStyleModel(to);
-			toStyle.setBold(((NodeStyleModel) fromStyle).isBold());
-			toStyle.setItalic(((NodeStyleModel) fromStyle).isItalic());
-			toStyle.setFontFamilyName(((NodeStyleModel) fromStyle).getFontFamilyName());
-			toStyle.setFontSize(((NodeStyleModel) fromStyle).getFontSize());
-			toStyle.setShape(((NodeStyleModel) fromStyle).getShape());
-			toStyle.setColor(((NodeStyleModel) fromStyle).getColor());
-			toStyle.setBackgroundColor(((NodeStyleModel) fromStyle).getBackgroundColor());
+			fromStyle.copyTo(NodeStyleModel.createNodeStyleModel(to));
 		}
 
 		public void remove(final Object key, final NodeModel from) {
@@ -102,6 +95,12 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichStyle.getBackgroundColor()) {
 				fromStyle.setBackgroundColor(null);
 			}
+			if (null != whichStyle.getNodeTextTemplate()) {
+				fromStyle.setNodeTextTemplate(null);
+			}
+			if (null != whichStyle.getNodeNumbering()) {
+				fromStyle.setNodeNumbering(null);
+			}
 		}
 	}
 
@@ -114,9 +113,6 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new PasteFormat());
 		modeController.addAction(new RemoveFormatAction());
 		final AMultipleNodeAction increaseNodeFont = new AMultipleNodeAction("IncreaseNodeFontAction") {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -126,9 +122,6 @@ public class MNodeStyleController extends NodeStyleController {
 		};
 		modeController.addAction(increaseNodeFont);
 		final AMultipleNodeAction decreaseNodeFont = new AMultipleNodeAction("DecreaseNodeFontAction") {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -154,6 +147,8 @@ public class MNodeStyleController extends NodeStyleController {
 			setFontSize(target, sourceStyleModel.getFontSize());
 			setBold(target, sourceStyleModel.isBold());
 			setItalic(target, sourceStyleModel.isItalic());
+			setNodeTextTemplate(target, sourceStyleModel.getNodeTextTemplate());
+			setNodeNumbering(target, sourceStyleModel.getNodeNumbering());
 		}
 	}
 
@@ -372,6 +367,48 @@ public class MNodeStyleController extends NodeStyleController {
 		};
 		modeController.execute(actor, node.getMap());
 	}
+
+	public void setNodeNumbering(final NodeModel node, final Boolean enableNodeNumbering) {
+		final ModeController modeController = Controller.getCurrentModeController();
+		final Boolean oldValue = NodeStyleModel.getNodeNumbering(node);
+		final IActor actor = new IActor() {
+			public void act() {
+				NodeStyleModel.setNodeNumbering(node, enableNodeNumbering);
+				modeController.getMapController().nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setNodeNumbering";
+			}
+
+			public void undo() {
+				NodeStyleModel.setNodeNumbering(node, oldValue);
+				modeController.getMapController().nodeChanged(node);
+			}
+		};
+		modeController.execute(actor, node.getMap());
+    }
+
+	public void setNodeTextTemplate(final NodeModel node, final String template) {
+		final ModeController modeController = Controller.getCurrentModeController();
+		final String oldTemplate = NodeStyleModel.getNodeTextTemplate(node);
+		final IActor actor = new IActor() {
+			public void act() {
+				NodeStyleModel.setNodeTextTemplate(node, template);
+				modeController.getMapController().nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setNodeTextTemplate";
+			}
+
+			public void undo() {
+				NodeStyleModel.setNodeTextTemplate(node, oldTemplate);
+				modeController.getMapController().nodeChanged(node);
+			}
+		};
+		modeController.execute(actor, node.getMap());
+    }
 
 	public void setShape(final NodeModel node, final String shape) {
 		final ModeController modeController = Controller.getCurrentModeController();

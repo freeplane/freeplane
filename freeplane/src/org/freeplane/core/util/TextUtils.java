@@ -180,7 +180,7 @@ public class TextUtils {
     }
 	
 	public static Date toDateUser(String text) {
-		return parseDate(text, ResourceController.getResourceController().getProperty("OptionPanel.date_format"));
+		return parseDate(text, ResourceController.getResourceController().getProperty("date_format"));
 	}
 
 	public static boolean isDateUser(String text) {

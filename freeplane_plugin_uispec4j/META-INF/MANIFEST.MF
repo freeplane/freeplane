@@ -8,7 +8,8 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: junit.framework;version="3.8.2",
  org.osgi.framework;version="1.3.0"
-Require-Bundle: org.freeplane.core;bundle-version="1.0.1"
+Require-Bundle: org.freeplane.core;bundle-version="1.0.1",
+ org.junit
 Export-Package: org.freeplane.uispec4j.framework,
  org.uispec4j,
  org.uispec4j.assertion,
