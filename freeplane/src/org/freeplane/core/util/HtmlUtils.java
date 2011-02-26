@@ -654,9 +654,10 @@ public class HtmlUtils {
 		final int start = text.indexOf("<body>");
 		if (start == -1)
 			return "";
-		final int end = text.indexOf("</body>", start + 7);
+		final int textBegin = start + "<body>".length();
+		final int end = text.indexOf("</body>", textBegin);
 		if (end == -1)
 			return "";
-		return text.substring(start + 7, end).trim();
+		return text.substring(textBegin, end).trim();
 	}
 }
