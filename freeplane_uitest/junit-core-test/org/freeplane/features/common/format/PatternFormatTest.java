@@ -132,14 +132,25 @@ public class PatternFormatTest {
 		return "";
 	}
 
+	@Test
 	public void performanceTest() {
 		final int count = 20000;
-		final long t = System.currentTimeMillis();
-		for (int i = 0; i < count; ++i) {
-			String text = makeHtmlText("one\ntwo" + i);
-			//			assertEquals("one\n" + HTML_BODY_INDENT + "two" + i, HtmlUtils.extractRawBody(text));
-			assertEquals("one\n" + HTML_BODY_INDENT + "two" + i, extractRawBodyRegexp(text));
+		{
+			final long t = System.currentTimeMillis();
+			for (int i = 0; i < count; ++i) {
+				String text = makeHtmlText("one\ntwo" + i);
+				assertEquals("one\n" + HTML_BODY_INDENT + "two" + i, HtmlUtils.extractRawBody(text));
+				//			assertEquals("one\n" + HTML_BODY_INDENT + "two" + i, extractRawBodyRegexp(text));
+			}
+			System.err.println("HtmlUtils.extractRawBody(text): " + (System.currentTimeMillis() - t) / 1000.);
 		}
-		System.err.println((System.currentTimeMillis() - t) / 1000.);
+		{
+			final long t = System.currentTimeMillis();
+			for (int i = 0; i < count; ++i) {
+				String text = makeHtmlText("one\ntwo" + i);
+				assertEquals("one\n" + HTML_BODY_INDENT + "two" + i, extractRawBodyRegexp(text));
+			}
+			System.err.println("extractRawBodyRegexp(text): " + (System.currentTimeMillis() - t) / 1000.);
+		}
 	}
 }
