@@ -26,12 +26,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
-import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.styles.MapViewLayout;
@@ -60,7 +60,7 @@ class NodeUpAction extends AFreeplaneAction {
 			final TreeSet<Integer> range = new TreeSet<Integer>(comparator);
 			for (final NodeModel node : selecteds) {
 				if (node.getParent() != parent) {
-					Logger.global.warning("Not all selected nodes have the same parent.");
+					LogUtils.warn("Not all selected nodes have the same parent.");
 					return;
 				}
 				range.add(new Integer(sortedChildren.indexOf(node)));
@@ -68,7 +68,7 @@ class NodeUpAction extends AFreeplaneAction {
 			Integer last = range.iterator().next();
 			for (final Integer newInt : range) {
 				if (Math.abs(newInt.intValue() - last.intValue()) > 1) {
-					Logger.global.warning("Not adjacent nodes. Skipped. ");
+					LogUtils.warn("Not adjacent nodes. Skipped. ");
 					return;
 				}
 				last = newInt;

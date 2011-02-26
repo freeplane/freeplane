@@ -33,7 +33,6 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
-import org.freeplane.features.common.text.TextController;
 
 /**
  * @author Dimitry Polivaev

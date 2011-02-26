@@ -75,7 +75,7 @@ class DocumentationAction extends AFreeplaneAction {
 			file = new File(baseDir, document);
 		}
 		try {
-			final URL endUrl = file.toURL();
+			final URL endUrl = file.toURI().toURL();
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					try {

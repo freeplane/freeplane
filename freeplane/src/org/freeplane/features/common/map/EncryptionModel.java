@@ -171,7 +171,7 @@ public class EncryptionModel implements IExtension {
 
 	private void init(final NodeModel node) {
 		if (EncryptionModel.logger == null) {
-			EncryptionModel.logger = Logger.global;
+			EncryptionModel.logger = LogUtils.getLogger();
 		}
 		if (EncryptionModel.encryptedIcon == null) {
 			EncryptionModel.encryptedIcon = STORE.getUIIcon("lock.png");

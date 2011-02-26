@@ -122,7 +122,7 @@ public class SpellCheckerController implements IExtension {
 			availableLocales.append(",");
 		}
 		try {
-			SpellChecker.registerDictionaries(orthoDir.toURL(), availableLocales.toString(), null, ".ortho");
+			SpellChecker.registerDictionaries(orthoDir.toURI().toURL(), availableLocales.toString(), null, ".ortho");
 			spellCheckerEnabled = true;
 		}
 		catch (final MalformedURLException e) {

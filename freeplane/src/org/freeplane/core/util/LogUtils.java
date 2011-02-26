@@ -47,8 +47,7 @@ import org.freeplane.core.resources.ResourceController;
  * @author foltin
  */
 public class LogUtils {
-	//	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static final Logger LOGGER = Logger.global;
+	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	static private boolean loggerCreated = false;
 
 	public static void createLogger() {
@@ -133,4 +132,8 @@ public class LogUtils {
 	public static void warn(final Throwable e) {
 		LogUtils.warn("", e);
 	}
+
+	public static Logger getLogger() {
+	    return LOGGER;
+    }
 }

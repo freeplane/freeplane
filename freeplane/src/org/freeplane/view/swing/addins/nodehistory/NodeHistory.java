@@ -19,13 +19,13 @@ package org.freeplane.view.swing.addins.nodehistory;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -150,7 +150,7 @@ public class NodeHistory implements IExtension {
 			final IMapViewManager mapViewManager = controller.getMapViewManager();
 			final boolean res = mapViewManager.changeToMapView(newView);
 			if (!res) {
-				Logger.global.warning("Can't change to map mapView " + newView);
+				LogUtils.warn("Can't change to map mapView " + newView);
 				return;
 			}
 		}

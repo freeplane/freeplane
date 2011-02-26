@@ -76,7 +76,7 @@ public class UserPropertiesUpdater {
 		final File allUserTemplates = fm.defaultStandardTemplateDir();
 		final File standardTemplate = new File(allUserTemplates, fm.getStandardTemplateName());
 		try {
-			fm.loadImpl(standardTemplate.toURL(), defaultStyleMap);
+			fm.loadImpl(standardTemplate.toURI().toURL(), defaultStyleMap);
 		}
 		catch (Exception e) {
 			LogUtils.warn(e);

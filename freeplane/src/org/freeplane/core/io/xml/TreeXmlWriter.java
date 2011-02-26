@@ -29,7 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-import java.util.logging.Logger;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeWriter;
@@ -39,6 +38,7 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class TreeXmlWriter implements ITreeWriter {
@@ -99,7 +99,7 @@ public class TreeXmlWriter implements ITreeWriter {
 			throw new RuntimeException("elementStarted");
 		}
 		if (null != xmlElement.getAttribute(key, null)) {
-			Logger.global.warning("attribute \"" + key + "\" already exist with value \"" + value);
+			LogUtils.warn("attribute \"" + key + "\" already exist with value \"" + value);
 			return;
 		}
 		xmlElement.setAttribute(key, value);

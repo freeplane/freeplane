@@ -25,9 +25,10 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import org.freeplane.core.util.LogUtils;
 
 /**
  * @author Dimitry Polivaev
@@ -184,7 +185,7 @@ public class IndexedTree {
 	protected DefaultMutableTreeNode getNode(final Object key) {
 		final DefaultMutableTreeNode node = (string2Element.get(key));
 		if (node == null) {
-			Logger.global.warning(key + " not found");
+			LogUtils.warn(key + " not found");
 		}
 		return node;
 	}

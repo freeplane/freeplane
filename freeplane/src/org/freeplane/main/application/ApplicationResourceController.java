@@ -146,11 +146,11 @@ public class ApplicationResourceController extends ResourceController {
 			try {
 				final File try1 = new File(rootDir + "/plugins/org.freeplane.core/lib/freeplaneviewer.jar");
 				if (try1.exists()) {
-					return try1.toURL();
+					return try1.toURI().toURL();
 				}
 				final File try2 = new File(rootDir + "/lib/freeplaneviewer.jar");
 				if (try2.exists()) {
-					return try2.toURL();
+					return try2.toURI().toURL();
 				}
 			}
 			catch (final MalformedURLException e) {
