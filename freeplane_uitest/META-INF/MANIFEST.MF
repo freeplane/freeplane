@@ -7,5 +7,5 @@ Fragment-Host: org.freeplane.core;bundle-version="1.0.1"
 Import-Package: junit.framework;version="3.8.2",
  org.junit
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.freeplane.uispec4j;bundle-version="1.0.0"
+Require-Bundle: org.freeplane.uispec4j
 Export-Package: org.freeplane.uispec4j.core.testcases

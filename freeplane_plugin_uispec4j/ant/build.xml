@@ -2,7 +2,7 @@
 	<target name="buildext" >
 		<java fork="yes" dir="lib"
 			classname="org.uispec4j.extension.ExtensionGenerator"
-			classpath="ant/asm-3.1.jar:ant/asm-util-3.1.jar:lib/uispec4j-2.2-jdk16-extension-fix.jar"
+			classpath="ant/asm-3.1.jar:ant/asm-util-3.1.jar:lib/uispec4j-2.4-jdk16.jar"
 		>
 			<arg value="uispecjext.jar"/>
 			<arg value="Node:org.freeplane.uispec4j.framework.Node"/>

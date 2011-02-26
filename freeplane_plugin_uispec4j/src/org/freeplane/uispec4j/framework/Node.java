@@ -13,6 +13,7 @@ import junit.framework.Assert;
 
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
+import org.uispec4j.AbstractUIComponent;
 import org.uispec4j.ComponentAmbiguityException;
 import org.uispec4j.ItemNotFoundException;
 import org.uispec4j.Key;
@@ -25,7 +26,7 @@ import org.uispec4j.finder.ComponentFinder;
 
 public class Node extends TextBox {
 	public static final String TYPE_NAME = "node";
-//	public static final Class[] SWING_CLASSES = { MainView.class };
+	public static final Class[] SWING_CLASSES = { MainView.class };
 
 	private final static AttributeTableMatcher attributeTableMatcher = new AttributeTableMatcher();
 	private ComponentFinder finder;
@@ -146,8 +147,9 @@ public class Node extends TextBox {
 		return new Node(node.getMap().getSelected().getMainView());
 	}
 
-	public void pressKey(Key key) {
+	public AbstractUIComponent pressKey(Key key) {
 		pressKey(nodeMainView, key);
+		return this;
 	}
 	
 	private static void pressKey(final Component component, final Key key) {
