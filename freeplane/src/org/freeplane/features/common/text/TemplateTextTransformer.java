@@ -18,8 +18,6 @@ class TemplateTextTransformer extends AbstractTextTransformer {
 		if (text == null || text.length() == 0 || text.charAt(0) == '=')
 			return text;
 		final String template = textController.getNodeTextTemplate(node);
-		if (template == null)
-			return text;
 		final boolean nodeNumbering = textController.getNodeNumbering(node);
 		return expandTemplate(text, node, template, nodeNumbering);
 	}
