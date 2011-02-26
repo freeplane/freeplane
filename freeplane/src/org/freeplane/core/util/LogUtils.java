@@ -47,7 +47,8 @@ import org.freeplane.core.resources.ResourceController;
  * @author foltin
  */
 public class LogUtils {
-	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	@SuppressWarnings("deprecation")
+    private static final Logger LOGGER = Logger.global;
 	static private boolean loggerCreated = false;
 
 	public static void createLogger() {
