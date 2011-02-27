@@ -100,7 +100,7 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 					}
 					final String title = TextUtils.getText(key + ".text", propName);
 					final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
-					    prop.toURI().toURL(), key, title);
+					    prop.toURL(), key, title);
 					controller.addAction(loadAcceleratorPresetsAction);
 					menuBuilder.addAction("/menu_bar/extras/first/options/acceleratorPresets/new", key,
 					    loadAcceleratorPresetsAction, MenuBuilder.AS_CHILD);
@@ -174,7 +174,7 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 			}
 			final String title = TextUtils.getText(key + ".text", keyset);
 			final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
-			    keysetFile.toURI().toURL(), key, title);
+			    keysetFile.toURL(), key, title);
 			if (null == Controller.getCurrentController().getAction(loadAcceleratorPresetsAction.getKey())) {
 				Controller.getCurrentController().addAction(loadAcceleratorPresetsAction);
 				Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder().addAction(
