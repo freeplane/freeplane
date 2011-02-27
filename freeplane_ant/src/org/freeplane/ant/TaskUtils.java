@@ -85,7 +85,7 @@ public class TaskUtils {
 		}
 	}
 
-	// adapted from http://www.rgagnon.com/javadetails/java-0515.html, Réal Gagnon
+	// adapted from http://www.rgagnon.com/javadetails/java-0515.html, Real Gagnon
 	public static String wildcardToRegex(String wildcard) {
 		StringBuilder s = new StringBuilder(wildcard.length());
 		s.append('^');

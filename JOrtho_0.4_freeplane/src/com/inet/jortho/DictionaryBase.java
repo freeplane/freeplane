@@ -141,14 +141,14 @@ abstract class DictionaryBase {
 	}
 
 	/**
-	 * Es wird nach verschiedenen Regeln nach �hnlichen W�rtern gesucht.
-	 * Je nach Regel gibt es einen anderen diff. Jekleiner der diff desto �hnlicher.
+	 * Es wird nach verschiedenen Regeln nach aehnlichen Woertern gesucht.
+	 * Je nach Regel gibt es einen anderen diff. Jekleiner der diff desto aehnlicher.
 	 * Diese Methode ruft sich rekursiv auf.
-	 * @param list Kontainer f�r die gefundenen W�rter
+	 * @param list Kontainer fuer die gefundenen Woerter
 	 * @param chars bis zur charPosition bereits gemappte Buchstaben, danach noch zu mappende des orignal Wortes
 	 * @param charPosition Zeichenposition im char array
 	 * @param lastIdx Position im Suchindex der zur aktuellen Zeichenposition zeigt.
-	 * @param diff Die Un�hnlichkeit bis zur aktuellen Zeichenposition
+	 * @param diff Die Unaehnlichkeit bis zur aktuellen Zeichenposition
 	 */
 	private void searchSuggestions(final Suggestions list, final CharSequence chars, final int charPosition,
 	                               final int lastIdx, final int diff) {
