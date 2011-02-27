@@ -30,7 +30,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * 21.12.2008
  */
-// TODO rladstaetter 15.02.2009 extend this interface with another one, move methods referring to swing.* there
 public interface IElementaryConditionController {
 	boolean canEditValues(final Object property, final NamedObject simpleCond);
 

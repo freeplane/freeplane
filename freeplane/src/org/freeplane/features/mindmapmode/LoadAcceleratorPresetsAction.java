@@ -124,7 +124,6 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 			MenuBuilder.loadAcceleratorPresets(resource.openStream());
 		}
 		catch (final IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}

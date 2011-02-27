@@ -309,67 +309,67 @@ public class ScriptApiTest {
 
 	//
 	//	public void test_ConnectorRO_getColor() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_ConnectorRO_getEndArrow() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_ConnectorRO_getMiddleLabel() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_ConnectorRO_getSource() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_ConnectorRO_getSourceLabel() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_ConnectorRO_getStartArrow() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_ConnectorRO_getTarget() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_ConnectorRO_getTargetLabel() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_ConnectorRO_simulatesEdge() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Connector_setColor_Color_color() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Connector_setEndArrow_ArrowType_arrowType() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Connector_setMiddleLabel_String_label() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Connector_setSimulatesEdge_boolean_simulatesEdge() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Connector_setSourceLabel_String_label() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Connector_setStartArrow_ArrowType_arrowType() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Connector_setTargetLabel_String_label() {
-	//		// TODO
+	//		
 	//	}
 	public void test_ControllerRO_getSelected() {
 		map = c.newMap();
@@ -396,7 +396,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_ControllerRO_getSortedSelection_boolean_differentSubtrees() {
-		// TODO
+		
 	}
 
 	@SuppressWarnings("deprecation")
@@ -410,7 +410,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_ControllerRO_find_Closure_closure() {
-		// TODO
+		
 	}
 
 	public void test_Controller_centerOnNode_Node_center() {
@@ -512,127 +512,127 @@ public class ScriptApiTest {
 
 	//
 	//	public void test_EdgeRO_getColor() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_EdgeRO_getType() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_EdgeRO_getWidth() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Edge_setColor_Color_color() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Edge_setType_EdgeStyle_type() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Edge_setWidth_int_width() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_ExternalObjectRO_getURI() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_ExternalObjectRO_getZoom() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_ExternalObject_setURI_String_uri() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_ExternalObject_setZoom_float_zoom() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_FontRO_getName() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_FontRO_getSize() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_FontRO_isBold() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_FontRO_isBoldSet() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_FontRO_isItalic() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_FontRO_isItalicSet() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_FontRO_isNameSet() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_FontRO_isSizeSet() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Font_resetBold() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Font_resetItalic() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Font_resetName() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Font_resetSize() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Font_setBold_boolean_bold() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Font_setItalic_boolean_italic() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Font_setName_String_name() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Font_setSize_int_size() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_IconsRO_getIcons() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Icons_addIcon_String_name() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Icons_removeIcon_String_iconID() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_LinkRO_get() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Link_set_String_target() {
-	//		// TODO
+	//		
 	//	}
 	public void test_MapRO_getRoot() {
 		map = c.newMap();
@@ -664,7 +664,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_Map_save() {
-		// TODO
+		
 	}
 
 	public void test_NodeRO_getAttributes() {
@@ -693,15 +693,15 @@ public class ScriptApiTest {
 
 	//
 	//	public void test_NodeRO_getConnectorsIn() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_NodeRO_getConnectorsOut() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_NodeRO_getExternalObject() {
-	//		// TODO
+	//		
 	//	}
 	public void test_NodeRO_getIcons() {
 		map = c.newMap();
@@ -792,7 +792,7 @@ public class ScriptApiTest {
 	}
 
 	//	public void test_NodeRO_getStyle() {
-	//		// TODO
+	//		
 	//	}
 	//
 	public void test_NodeRO_getPlainText() {
@@ -873,7 +873,7 @@ public class ScriptApiTest {
 
 	//
 	//	public void test_NodeRO_isLeft() {
-	//		// TODO
+	//		
 	//	}
 	//
 	public void test_NodeRO_isRoot() {
@@ -905,7 +905,7 @@ public class ScriptApiTest {
 	}
 
 	//	public void test_NodeRO_find_Closure_closure() {
-	//		// TODO
+	//		
 	//	}
 	public void test_NodeRO_getLastModifiedAt() {
 		map = c.newMap();
@@ -944,11 +944,11 @@ public class ScriptApiTest {
 	}
 
 	//	public void test_Node_addConnectorTo_Node_target() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_Node_addConnectorTo_String_targetNodeID() {
-	//		// TODO
+	//		
 	//	}
 	public void test_Node_createChild() {
 		map = c.newMap();
@@ -1023,7 +1023,7 @@ public class ScriptApiTest {
 
 	//
 	//	public void test_Node_removeConnector_Connector_connectorToBeRemoved() {
-	//		// TODO
+	//		
 	//	}
 	//
 	public void test_Node_setFolded_boolean_folded() {
@@ -1056,38 +1056,38 @@ public class ScriptApiTest {
 		// see test_NodeRO_getCreatedAt()
 	}
 	//	public void test_NodeStyleRO_getStyle() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_NodeStyleRO_getStyleNode() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_NodeStyleRO_getBackgroundColor() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_NodeStyleRO_getEdge() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_NodeStyleRO_getFont() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_NodeStyleRO_getNodeTextColor() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_NodeStyle_setStyle_Object_key() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_NodeStyle_setBackgroundColor_Color_color() {
-	//		// TODO
+	//		
 	//	}
 	//
 	//	public void test_NodeStyle_setNodeTextColor_Color_color() {
-	//		// TODO
+	//		
 	//	}
 }

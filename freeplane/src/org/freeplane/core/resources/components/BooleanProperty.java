@@ -27,7 +27,6 @@ import javax.swing.JCheckBox;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class BooleanProperty extends PropertyBean implements IPropertyControl {
-	// TODO ARCH rladstaetter 28.02.2009 move JCheckbox out of here
 	JCheckBox mCheckBox = new JCheckBox();
 
 	/**

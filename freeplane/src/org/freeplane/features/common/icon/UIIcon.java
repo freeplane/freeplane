@@ -95,7 +95,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	}
 
 	public KeyStroke getKeyStroke() {
-		return null; // as in MindIcon TODO ask?
+		return null;
 	}
 
 	public String getImagePath() {

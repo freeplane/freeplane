@@ -216,7 +216,6 @@ public class LinkController extends SelectionController implements IExtension {
 		loadURL(modeController.getMapController().getSelectedNode(), new ActionEvent(e.getSource(), e.getID(), null));
 	}
 
-	// TODO: document why ActionEvent?
 	void loadURL(final NodeModel selectedNode, final ActionEvent e) {
 		final URI link = NodeLinks.getValidLink(selectedNode);
 		if (link != null) {
@@ -280,7 +279,6 @@ public class LinkController extends SelectionController implements IExtension {
 			return new URI(relativePath.toString());
 		}
 		catch (final URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

@@ -79,14 +79,11 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		return annotation.checkOnPopup();
 	}
 
-	// TODO ARCH rladstaetter 18.02.2009 actions should not have a dependency on the controller
-// // 	final private Controller controller;
 	final private String key;
 	private boolean selected = false;
 
 	public AFreeplaneAction(final String key) {
 		super();
-//		this.controller = controller;
 		this.key = key;
 		MenuBuilder.setLabelAndMnemonic(this, TextUtils.getText(getTextKey()));
 		final String iconResource = ResourceController.getResourceController().getProperty(getIconKey(), null);

@@ -318,7 +318,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	private void updateModeMenu() {
 		menuBuilder.removeChildElements(FreeplaneMenuBar.MODES_MENU);
-		// TODO: why a copy of the list - isn't it highly static?
 		Controller controller = Controller.getCurrentController();
 		for (final String key : new LinkedList<String>(controller.getModes())) {
 			final AFreeplaneAction modesMenuActionListener = new ModesMenuActionListener(key, controller);

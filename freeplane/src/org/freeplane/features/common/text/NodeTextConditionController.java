@@ -75,7 +75,6 @@ class NodeTextConditionController implements IElementaryConditionController {
 			if (value.equals("")) {
 				return null;
 			}
-			// TODO: make matchCase a parameter of NodeContainsCondition
 			return matchCase ? new MatchCaseNodeContainsCondition(item, value) : new NodeContainsCondition(item, value);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {

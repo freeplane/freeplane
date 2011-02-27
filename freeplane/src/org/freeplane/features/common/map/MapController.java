@@ -546,7 +546,8 @@ public class MapController extends SelectionController {
 
 	/** creates a new MapView for the url unless it is already opened.
 	 * @returns false if the map was already opened and true if it is newly created. 
-	 * @param untitled TODO*/
+	 * @param untitled
+	 */
 	public boolean newMap(final URL url, boolean untitled) throws FileNotFoundException, XMLParseException, IOException,
 	        URISyntaxException {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();

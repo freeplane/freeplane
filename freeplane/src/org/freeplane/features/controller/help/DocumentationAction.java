@@ -115,7 +115,6 @@ class DocumentationAction extends AFreeplaneAction {
 		final NodeModel newNode = mapController.newNode(TextUtils.getText("hot_keys"), rootNode.getMap());
 		newNode.setFolded(true);
 		newNode.setLeft(true);
-		// TODO: search for proper insert point?
 		final int HOT_KEYS_INDEX = 2;
 		mapController.insertNodeIntoWithoutUndo(newNode, rootNode, HOT_KEYS_INDEX);
 		insertAcceleratorHtmlTable(newNode, menuEntryTree);

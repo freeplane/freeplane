@@ -34,7 +34,6 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition {
 	static final String SEARCH_PATTERN = "SEARCH_PATTERN";
 
 	static ASelectableCondition load(final XMLElement element) {
-		//TODO: check if it should be "false" or "true"
 		final Boolean matchCase = Boolean.valueOf(element.getAttribute(NodeTextCompareCondition.MATCH_CASE, "false"));
 		final String searchPattern = element.getAttribute(SEARCH_PATTERN, null);
 		final String nodeItem = element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE);

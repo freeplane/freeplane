@@ -15,7 +15,6 @@ import com.lightdev.app.shtm.SHTMLPanel;
 public class FreeplaneWindow extends Window {
 	public FreeplaneWindow(JFrame frame) {
 		super(frame);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public JFrame getFreeMindFrame(){

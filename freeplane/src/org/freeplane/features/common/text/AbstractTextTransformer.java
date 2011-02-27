@@ -15,7 +15,6 @@ public abstract class AbstractTextTransformer implements ITextTransformer {
 
 	public EditNodeBase createEditNodeBase(NodeModel nodeModel, String text, IEditControl editControl,
 	                                       KeyEvent firstEvent, boolean isNewNode, boolean editLong) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

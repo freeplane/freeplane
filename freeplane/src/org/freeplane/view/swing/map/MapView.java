@@ -749,7 +749,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	/**
-	 * @param differentSubtrees TODO
+	 * @param differentSubtrees
 	 * @return an ArrayList of MindMapNode objects. If both ancestor and
 	 *         descandant node are selected, only the ancestor ist returned
 	 */
@@ -1526,7 +1526,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	/**
 	 * Add the node to the selection if it is not yet there, remove it
 	 * otherwise.
-	 * @param requestFocus TODO
+	 * @param requestFocus
 	 */
 	private void toggleSelected(final NodeView nodeView, final boolean requestFocus) {
 		final NodeView newSelected = nodeView;

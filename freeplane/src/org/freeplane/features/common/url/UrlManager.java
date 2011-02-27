@@ -190,7 +190,7 @@ public class UrlManager implements IExtension {
 
 	/**
 	 * Creates a file chooser with the last selected directory as default.
-	 * @param useDirectorySelector TODO
+	 * @param useDirectorySelector
 	 */
 	@SuppressWarnings("serial")
     public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector) {

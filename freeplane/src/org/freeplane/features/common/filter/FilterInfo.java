@@ -23,7 +23,6 @@ package org.freeplane.features.common.filter;
  * @author Dimitry Polivaev
  */
 public class FilterInfo {
-	// TODO rladstaetter 02.03.2009 create enum, move out of interface definition (defining constants in interfaces is considered 'old style')
 	public static final int FILTER_INITIAL_VALUE = 1;
 	public static final int FILTER_SHOW_ANCESTOR = 4;
 	public static final int FILTER_SHOW_DESCENDANT = 8;

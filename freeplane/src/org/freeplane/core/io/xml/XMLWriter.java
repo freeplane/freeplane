@@ -225,10 +225,6 @@ class XMLWriter {
 
 	/**
 	 * Writes a string encoding reserved characters.
-	 * 
-	 * @param str
-	 *            the string to write.
-	 * @param atributeValue TODO
 	 */
 	private void writeEncoded(final String str, final boolean atributeValue, final boolean xmlInclude) {
 		for (int i = 0; i < str.length(); i++) {
