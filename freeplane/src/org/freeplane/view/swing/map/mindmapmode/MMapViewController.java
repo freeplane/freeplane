@@ -25,21 +25,30 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
 import org.freeplane.features.mindmapmode.text.INodeTextFieldCreator;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapViewController;
+import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.map.ZoomableLabel;
 
 /**
  * @author Dimitry Polivaev
  * Jan 31, 2009
  */
 public class MMapViewController extends MapViewController implements INodeTextFieldCreator {
-	public EditNodeBase createNodeTextField(final NodeModel node, final String text,
+	public EditNodeBase createNodeTextField(final NodeModel node, final EditedComponent parent, final String text,
 	                                                     final KeyEvent firstEvent,
 	                                                     final IEditControl editControl) {
-		return new EditNodeTextField(node, text, firstEvent,editControl);
+		final ZoomableLabel parentComponent;
+		final MainView mainView = (MainView) getComponent(node);
+		if(EditedComponent.TEXT.equals(parent))
+			parentComponent = mainView;
+		else
+			parentComponent = null;
+		return new EditNodeTextField(node, (ZoomableLabel) parentComponent, text, firstEvent,editControl);
 	}
 
 	public MMapViewController() {
-		createNodeTextField(null, null, null, null);
+		createNodeTextField(null, null, null, null, null);
     }
 	
 }

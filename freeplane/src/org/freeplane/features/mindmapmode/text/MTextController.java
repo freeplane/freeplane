@@ -71,6 +71,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
+import org.freeplane.features.mindmapmode.text.INodeTextFieldCreator.EditedComponent;
 
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.TextResources;
@@ -541,7 +542,7 @@ public class MTextController extends TextController {
 		}
 		else {
 			final INodeTextFieldCreator textFieldCreator = (INodeTextFieldCreator) Controller.getCurrentController().getMapViewManager();
-			final EditNodeBase textfield = textFieldCreator.createNodeTextField(nodeModel, text,
+			final EditNodeBase textfield = textFieldCreator.createNodeTextField(nodeModel, EditedComponent.TEXT, text,
 			    firstEvent, editControl);
 			return textfield;
 		}

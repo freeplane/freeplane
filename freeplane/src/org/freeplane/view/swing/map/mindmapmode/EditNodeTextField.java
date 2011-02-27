@@ -84,6 +84,7 @@ import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.map.ZoomableLabel;
 
 import com.lightdev.app.shtm.SHTMLWriter;
 
@@ -309,10 +310,11 @@ class EditNodeTextField extends EditNodeBase {
 	private int maxWidth;
 
 	@SuppressWarnings("serial")
-    public EditNodeTextField(final NodeModel node, final String text, final KeyEvent firstEvent,
+    public EditNodeTextField(final NodeModel node, final ZoomableLabel parent, final String text, final KeyEvent firstEvent,
 	                         final IEditControl editControl) {
 		super(node, text, editControl);
 		this.firstEvent = firstEvent;
+		this.parent = parent;
 		documentListener = new MyDocumentListener();
 
 		pasteAction = new DefaultEditorKit.PasteAction(){
@@ -392,6 +394,7 @@ class EditNodeTextField extends EditNodeBase {
 		mainView.repaint();
 	}
 
+	private final ZoomableLabel parent;
 	private NodeView nodeView;
 	private Font font;
 	private float zoom;
@@ -439,8 +442,7 @@ class EditNodeTextField extends EditNodeBase {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final ViewController viewController = modeController.getController().getViewController();
 		final MTextController textController = (MTextController) TextController.getController(modeController);
-		final Component component = viewController.getComponent(getNode());
-		nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
+		nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, parent);
 		font = nodeView.getTextFont();
 		zoom = viewController.getZoom();
 		if (zoom != 1F) {
@@ -528,9 +530,8 @@ class EditNodeTextField extends EditNodeBase {
 		textfield.addMouseListener(textFieldListener);
 		SpellCheckerController.getController().enableAutoSpell(textfield, true);
 		mapView.scrollNodeToVisible(nodeView);
-		final MainView mainView = nodeView.getMainView();
-		final int nodeWidth = mainView.getWidth();
-		final int nodeHeight = mainView.getHeight();
+		final int nodeWidth = parent.getWidth();
+		final int nodeHeight = parent.getHeight();
 		final Dimension textFieldSize;
 		textfield.setBorder(new MatteBorder(2, 2, 2, 2, nodeView.getSelectedColor()));
 		textFieldSize = textfield.getPreferredSize();
@@ -553,21 +554,21 @@ class EditNodeTextField extends EditNodeBase {
 			verticalSpace = 0;
 		}
 		textfield.setSize(textFieldSize.width, textFieldSize.height);
-		mainView.setPreferredSize(new Dimension(textFieldSize.width + horizontalSpace, textFieldSize.height
+		parent.setPreferredSize(new Dimension(textFieldSize.width + horizontalSpace, textFieldSize.height
 		        + verticalSpace));
-		iconWidth = mainView.getIconWidth();
+		iconWidth = parent.getIconWidth();
 		if (iconWidth != 0) {
-			iconWidth += mapView.getZoomed(mainView.getIconTextGap());
+			iconWidth += mapView.getZoomed(parent.getIconTextGap());
 			horizontalSpace -= iconWidth;
 		}
 
 		final int x = (horizontalSpace + 1) / 2;
 		final int y = (verticalSpace + 1) / 2;
 		textfield.setBounds(x + iconWidth, y, textFieldSize.width, textFieldSize.height);
-		mainView.setText("");
-		mainView.setHorizontalAlignment(JLabel.LEFT);
+		parent.setText("");
+		parent.setHorizontalAlignment(JLabel.LEFT);
 
-		mainView.add(textfield, 0);
+		parent.add(textfield, 0);
 		textfield.setCaretPosition(document.getLength());
 		if (firstEvent != null) {
 			redispatchKeyEvents(textfield, firstEvent);
