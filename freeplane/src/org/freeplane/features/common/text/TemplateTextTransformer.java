@@ -39,7 +39,7 @@ class TemplateTextTransformer extends AbstractTextTransformer {
 		}
 		if (hasTemplate)
 			text = format(text, template);
-		if (nodeNumbering)
+		if (nodeNumbering && !node.isRoot())
 			text = getPathToRoot(node) + " " + text;
 		if (isHtml)
 			text = "<html><head></head><body>" + text + "</body></html>";
