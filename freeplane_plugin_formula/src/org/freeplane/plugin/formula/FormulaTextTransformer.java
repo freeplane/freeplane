@@ -13,10 +13,11 @@ import org.freeplane.features.common.text.AbstractTextTransformer;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 import org.freeplane.features.mindmapmode.text.EditNodeDialog;
+import org.freeplane.features.mindmapmode.text.IEditBaseCreator;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.FormulaUtils;
 
-class FormulaTextTransformer extends AbstractTextTransformer {
+class FormulaTextTransformer extends AbstractTextTransformer implements IEditBaseCreator{
 	FormulaTextTransformer(int priority) {
 		super(priority);
 	}
