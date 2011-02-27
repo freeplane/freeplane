@@ -19,6 +19,7 @@
  */
 package org.freeplane.plugin.script;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -94,4 +95,9 @@ class ScriptEditorProperty extends PropertyBean implements IPropertyControl, Act
 	public void setValue(final String value) {
 		setScriptValue(value);
 	}
+
+	@Override
+    protected Component[] getComponents() {
+	    return new Component[]{mButton};
+    }
 }
