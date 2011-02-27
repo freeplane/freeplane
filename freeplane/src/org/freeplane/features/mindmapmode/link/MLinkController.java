@@ -551,32 +551,6 @@ public class MLinkController extends LinkController {
 		arrowLinkPopup.add(componentBox);
     }
 
-	static final private Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s()'\",;|<>{}]+");
-	static private Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
-
-	public String findLink(final String text) {
-		final Matcher urlMatcher = urlPattern.matcher(text);
-		if (urlMatcher.find()) {
-			String link = urlMatcher.group();
-			try {
-				link = new URL(link).toURI().toString();
-				return link;
-			}
-			catch (final MalformedURLException e) {
-				return null;
-			}
-			catch (final URISyntaxException e) {
-				return null;
-			}
-		}
-		final Matcher mailMatcher = mailPattern.matcher(text);
-		if (mailMatcher.find()) {
-			final String link = "mailto:" + mailMatcher.group();
-			return link;
-		}
-		return null;
-	}
-
 	public void setConnectorColor(final ConnectorModel arrowLink, final Color color) {
 		final Color oldColor = arrowLink.getColor();
 		if (color == oldColor || color != null && color.equals(oldColor)) {

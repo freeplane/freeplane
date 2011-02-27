@@ -224,22 +224,7 @@ public class MClipboardController extends ClipboardController {
 					++depth;
 				}
 				final String visibleText = text.trim();
-				//				if (visibleText.matches("^http://(www\\.)?[^ ]*$")) {
-				//					visibleText = visibleText.replaceAll("^http://(www\\.)?", "").replaceAll("(/|\\.[^\\./\\?]*)$", "")
-				//					    .replaceAll("((\\.[^\\./]*\\?)|\\?)[^/]*$", " ? ...").replaceAll("_|%20", " ");
-				//					final String[] textParts = visibleText.split("/");
-				//					visibleText = "";
-				//					for (int textPartIdx = 0; textPartIdx < textParts.length; textPartIdx++) {
-				//						if (textPartIdx > 0) {
-				//							visibleText += " > ";
-				//						}
-				//						visibleText += textPartIdx == 0 ? textParts[textPartIdx] : PasteAction
-				//						    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
-				//					}
-				//				}
-				final MLinkController linkController = (MLinkController) LinkController
-				    .getController();
-				final String link = linkController.findLink(text);
+				final String link = LinkController.findLink(text);
 				if (!visibleText.equals("")) {
 					textFragments.add(new TextFragment(visibleText, link, depth));
 				}
@@ -264,9 +249,7 @@ public class MClipboardController extends ClipboardController {
 				new PasteHtmlWriter(out, element, doc, start, end - start).write();
 				final String string = out.toString();
 				if (!string.equals("")) {
-					final MLinkController linkController = (MLinkController) LinkController
-					    .getController();
-					final String link = linkController.findLink(string);
+					final String link = LinkController.findLink(string);
 					final TextFragment htmlFragment = new TextFragment(string, link, depth);
 					htmlFragments.add(htmlFragment);
 				}

@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.freeplane.core.controller.Controller;
@@ -24,6 +26,17 @@ public class Compat {
 	};
 
 	private static OS os = null;
+	public static final Set<String> executableExtensions = new HashSet<String>(Arrays.asList(new String[] { "exe",
+	        "com", "vbs", "bat", "lnk" }));
+
+	public static boolean isExecutable(final String linkText) {
+		if (linkText == null) {
+			return false;
+		}
+		final String osNameStart = System.getProperty("os.name").substring(0, 3);
+		return osNameStart.equals("Win")
+		        && executableExtensions.contains(FileUtils.getExtension(linkText.toLowerCase()));
+	}
 
 	public static URL fileToUrl(final File pFile) throws MalformedURLException {
 		return pFile.toURL();

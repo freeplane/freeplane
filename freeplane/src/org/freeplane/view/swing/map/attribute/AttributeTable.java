@@ -31,6 +31,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
@@ -38,6 +40,7 @@ import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -57,9 +60,12 @@ import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.IColumnWidthChangeListener;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
+import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 import org.freeplane.features.mindmapmode.text.MTextController;
@@ -267,6 +273,25 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
     public boolean editCellAt(int row, int column, EventObject e) {
 		if(isEditing() && getCellEditor() instanceof DialogTableCellEditor){
 			return false;
+		}
+		if(column == 1 && e instanceof MouseEvent){
+			final MouseEvent me = (MouseEvent) e;
+			final String value = getValueAt(row, column).toString();
+			final String link = LinkController.findLink(value);
+			if(link != null){
+				try {
+                    final URI uri = new URI(link);
+        			final Icon linkIcon = IconController.getLinkIcon(uri, null);
+					final int xmax = linkIcon.getIconWidth();
+        			final int x = me.getX() - getColumnModel().getColumn(0).getWidth();
+        			if(x < xmax){
+    					UrlManager.getController().loadURL(uri);
+                        return false;
+        				}
+        			}
+                catch (URISyntaxException e1) {
+                }
+            }
 		}
 		putClientProperty("AttributeTable.EditEvent", e);
 		try{

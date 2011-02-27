@@ -45,7 +45,7 @@ public class ExtractLinkFromTextAction extends AMultipleNodeAction {
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final MLinkController controller = (MLinkController) LinkController.getController();
-		final String link = controller.findLink(node.getText());
+		final String link = LinkController.findLink(node.getText());
 		if (link != null) {
 			controller.setLink(node, link, false);
 		}

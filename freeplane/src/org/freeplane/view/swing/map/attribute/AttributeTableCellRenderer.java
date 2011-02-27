@@ -24,7 +24,10 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.net.URI;
+import java.net.URISyntaxException;
 
+import javax.swing.Icon;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -33,6 +36,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
+import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.text.TextController;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
@@ -74,6 +79,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		final String originalText = value.toString();
 		String text = originalText;
 		borderColor = null;
+		Icon icon;
 		if (column == 1) {
 			try {
 				// evaluate values only
@@ -87,6 +93,24 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 				text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
 				borderColor = Color.RED;
 			}
+			final String link = LinkController.findLink(text);
+			if(link != null){
+				try {
+	                icon = IconController.getLinkIcon(new URI(link), null);
+                }
+                catch (URISyntaxException e) {
+                	icon = null;
+                }
+			}
+			else{
+				icon = null;
+			}
+		}
+		else{
+			icon = null;
+		}
+		if(icon != getIcon()){
+			setIcon(icon);
 		}
 		setText(text);
 		final int prefWidth = getPreferredSize().width;

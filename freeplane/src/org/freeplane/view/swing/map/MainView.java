@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
@@ -71,15 +72,6 @@ import org.freeplane.features.common.text.TextController;
  * Base class for all node views.
  */
 public abstract class MainView extends ZoomableLabel {
-	private static final String MENUITEM_ICON = "icons/button.png";
-	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty(
-	    "executable_icon");
-	private static final String MAIL_ICON = ResourceController.getResourceController().getProperty("mail_icon");
-	private static final String LINK_LOCAL_ICON = ResourceController.getResourceController().getProperty(
-	    "link_local_icon");
-	private static final String LINK_ICON = ResourceController.getResourceController().getProperty("link_icon");
-	public static final Set<String> executableExtensions = new HashSet<String>(Arrays.asList(new String[] { "exe",
-	        "com", "vbs", "bat", "lnk" }));
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	static Dimension minimumSize = new Dimension(0, 0);
 	/**
@@ -87,7 +79,6 @@ public abstract class MainView extends ZoomableLabel {
 	 */
 	private static final long serialVersionUID = 1L;
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
-	private static final IconStore STORE = IconStoreFactory.create();
 	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController()
 	    .getResourceController().getBooleanProperty("formula_dont_mark_formulas");;
 	private boolean isShortened;
@@ -296,43 +287,9 @@ public abstract class MainView extends ZoomableLabel {
 
 	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
 		final URI link = NodeLinks.getLink(model);
-		if (link != null) {
-			String iconPath = LINK_ICON;
-			final String linkText = link.toString();
-			if (linkText.startsWith("#")) {
-				final String id = linkText.substring(1);
-				if (model.getMap().getNodeForID(id) == null) {
-					return;
-				}
-				iconPath = LINK_LOCAL_ICON;
-			}
-			else if (linkText.startsWith("mailto:")) {
-				iconPath = MAIL_ICON;
-			}
-			else if (executableExtensions.contains(link)) {
-				iconPath = EXECUTABLE_ICON;
-			}
-			else if (LinkController.isMenuItemLink(link)) {
-				// nodes with menu item link contain the image from the menu if available
-				if (!model.getIcons().isEmpty())
-					return;
-				iconPath = MENUITEM_ICON;
-			}
-			else if (isExecutable(linkText)) {
-				iconPath = "Executable.png";
-			}
-			final UIIcon icon = STORE.getUIIcon(iconPath);
-			iconImages.addImage(icon.getIcon());
-		}
-	}
-
-	private boolean isExecutable(final String linkText) {
-		if (linkText == null) {
-			return false;
-		}
-		final String osNameStart = System.getProperty("os.name").substring(0, 3);
-		return osNameStart.equals("Win")
-		        && executableExtensions.contains(FileUtils.getExtension(linkText.toLowerCase()));
+			final Icon icon = IconController.getLinkIcon(link, model);
+			if(icon != null)
+				iconImages.addImage(icon);
 	}
 
 	void updateTextColor(final NodeView node) {

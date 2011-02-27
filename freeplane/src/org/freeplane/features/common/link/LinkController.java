@@ -23,8 +23,10 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -350,6 +352,32 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 			throw new URISyntaxException(inputValue, "This doesn't look like a valid link (URI, file, SMB or URL).");
 		}
+	}
+
+	static final private Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s()'\",;|<>{}]+");
+	static private Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
+
+	static public String findLink(final String text) {
+		final Matcher urlMatcher = urlPattern.matcher(text);
+		if (urlMatcher.find()) {
+			String link = urlMatcher.group();
+			try {
+				link = new URL(link).toURI().toString();
+				return link;
+			}
+			catch (final MalformedURLException e) {
+				return null;
+			}
+			catch (final URISyntaxException e) {
+				return null;
+			}
+		}
+		final Matcher mailMatcher = mailPattern.matcher(text);
+		if (mailMatcher.find()) {
+			final String link = "mailto:" + mailMatcher.group();
+			return link;
+		}
+		return null;
 	}
 
 	/** 
