@@ -1048,7 +1048,7 @@ public class NodeView extends JComponent implements INodeView {
 		while(! preferred.getModel().isVisible())
 			preferred = preferred.getParentView();
 		getMap().selectAsTheOnlyOneSelected(preferred);
-		structureChanged();
+		structureChanged(index);
 		revalidate();
 	}
 
@@ -1058,7 +1058,7 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		insert(child, index);
-		structureChanged();
+		structureChanged(index + 1);
 		revalidate();
 	}
 
@@ -1071,15 +1071,15 @@ public class NodeView extends JComponent implements INodeView {
 	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel child, final int oldIndex) {
 	}
 
-	private void structureChanged() {
+	// updates children, starting from firstChangedIndex, if necessary.
+	private void structureChanged(int firstChangedIndex) {
 		if (TextController.getController().getNodeNumbering(getModel())) {
-			update();
-			System.err.println("hi, updated " + this);
 			final Component[] components = getComponents();
-			for (int i = 0; i < components.length; i++) {
+			for (int i = firstChangedIndex; i < components.length; i++) {
 				if (components[i] instanceof NodeView) {
 					final NodeView view = (NodeView) components[i];
-					view.structureChanged();
+					view.update();
+					view.structureChanged(0);
 				}
 			}
 		}
