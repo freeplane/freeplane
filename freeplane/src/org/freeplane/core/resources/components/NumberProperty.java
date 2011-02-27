@@ -19,6 +19,8 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Component;
+
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
@@ -73,4 +75,9 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 		}
 		spinner.setValue(new Integer(intValue));
 	}
+
+	@Override
+    protected Component[] getComponents() {
+	    return spinner.getComponents();
+    }
 }

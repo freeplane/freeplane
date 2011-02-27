@@ -324,14 +324,15 @@ public class StyleEditorPanel extends JPanel {
 			final boolean enabled;
 			if (evt.getSource().equals(mSet)) {
 				enabled = mSet.getBooleanValue();
-				mProperty.setEnabled(enabled);
 			}
 			else {
 				assert evt.getSource().equals(mProperty);
 				enabled = true;
+				mSet.setValue(true);
 			}
 			final List<NodeModel> nodes = Controller.getCurrentController().getSelection().getSelection();
-			internalChange = true;
+			if (enabled )
+				internalChange = true;
 			for (final NodeModel node : nodes) {
 				applyValue(enabled, node, evt);
 			}
@@ -436,6 +437,7 @@ public class StyleEditorPanel extends JPanel {
 		final BgColorChangeListener listener = new BgColorChangeListener(mSetNodeBackgroundColor, mNodeBackgroundColor);
 		mSetNodeBackgroundColor.addPropertyChangeListener(listener);
 		mNodeBackgroundColor.addPropertyChangeListener(listener);
+		mNodeBackgroundColor.fireOnMouseClick();
 	}
 
 	private void addTemplateControl(final List<IPropertyControl> controls) {
@@ -449,6 +451,7 @@ public class StyleEditorPanel extends JPanel {
 		    mNodeTextTemplate);
 		mSetNodeTextTemplate.addPropertyChangeListener(listener);
 		mNodeTextTemplate.addPropertyChangeListener(listener);
+		mNodeTextTemplate.fireOnMouseClick();
 	}
 	
 	private void addNodeNumberingControl(final List<IPropertyControl> controls) {
@@ -459,6 +462,7 @@ public class StyleEditorPanel extends JPanel {
 		final NodeNumberingChangeListener listener = new NodeNumberingChangeListener(mSetNodeNumbering, mNodeNumbering);
 		mSetNodeNumbering.addPropertyChangeListener(listener);
 		mNodeNumbering.addPropertyChangeListener(listener);
+		mNodeNumbering.fireOnMouseClick();
 	}
 
 	private void addCloudColorControl(final List<IPropertyControl> controls) {
@@ -470,6 +474,7 @@ public class StyleEditorPanel extends JPanel {
 		final CloudColorChangeListener listener = new CloudColorChangeListener(mSetCloud, mCloudColor);
 		mSetCloud.addPropertyChangeListener(listener);
 		mCloudColor.addPropertyChangeListener(listener);
+		mCloudColor.fireOnMouseClick();
 	}
 
 	private void addColorControl(final List<IPropertyControl> controls) {
@@ -481,6 +486,7 @@ public class StyleEditorPanel extends JPanel {
 		final ColorChangeListener listener = new ColorChangeListener(mSetNodeColor, mNodeColor);
 		mSetNodeColor.addPropertyChangeListener(listener);
 		mNodeColor.addPropertyChangeListener(listener);
+		mNodeColor.fireOnMouseClick();
 	}
 
 	private void addEdgeColorControl(final List<IPropertyControl> controls) {
@@ -491,6 +497,7 @@ public class StyleEditorPanel extends JPanel {
 		final EdgeColorChangeListener listener = new EdgeColorChangeListener(mSetEdgeColor, mEdgeColor);
 		mSetEdgeColor.addPropertyChangeListener(listener);
 		mEdgeColor.addPropertyChangeListener(listener);
+		mEdgeColor.fireOnMouseClick();
 	}
 
 	private void addEdgeStyleControl(final List<IPropertyControl> controls) {
@@ -501,6 +508,7 @@ public class StyleEditorPanel extends JPanel {
 		final EdgeStyleChangeListener listener = new EdgeStyleChangeListener(mSetEdgeStyle, mEdgeStyle);
 		mSetEdgeStyle.addPropertyChangeListener(listener);
 		mEdgeStyle.addPropertyChangeListener(listener);
+		mEdgeStyle.fireOnMouseClick();
 	}
 
 	private void addCloudShapeControl(final List<IPropertyControl> controls) {
@@ -509,6 +517,7 @@ public class StyleEditorPanel extends JPanel {
 		final CloudShapeChangeListener listener = new CloudShapeChangeListener(mSetCloud, mCloudShape);
 		mSetCloud.addPropertyChangeListener(listener);
 		mCloudShape.addPropertyChangeListener(listener);
+		mCloudShape.fireOnMouseClick();
 	}
 
 	private void addEdgeWidthControl(final List<IPropertyControl> controls) {
@@ -519,6 +528,7 @@ public class StyleEditorPanel extends JPanel {
 		final EdgeWidthChangeListener listener = new EdgeWidthChangeListener(mSetEdgeWidth, mEdgeWidth);
 		mSetEdgeWidth.addPropertyChangeListener(listener);
 		mEdgeWidth.addPropertyChangeListener(listener);
+		mEdgeWidth.fireOnMouseClick();
 	}
 
 	private void addFontBoldControl(final List<IPropertyControl> controls) {
@@ -529,6 +539,7 @@ public class StyleEditorPanel extends JPanel {
 		final FontBoldChangeListener listener = new FontBoldChangeListener(mSetNodeFontBold, mNodeFontBold);
 		mSetNodeFontBold.addPropertyChangeListener(listener);
 		mNodeFontBold.addPropertyChangeListener(listener);
+		mNodeFontBold.fireOnMouseClick();
 	}
 
 	private void addFontItalicControl(final List<IPropertyControl> controls) {
@@ -539,6 +550,7 @@ public class StyleEditorPanel extends JPanel {
 		final FontItalicChangeListener listener = new FontItalicChangeListener(mSetNodeFontItalic, mNodeFontItalic);
 		mSetNodeFontItalic.addPropertyChangeListener(listener);
 		mNodeFontItalic.addPropertyChangeListener(listener);
+		mNodeFontItalic.fireOnMouseClick();
 	}
 
 	private void addFontNameControl(final List<IPropertyControl> controls) {
@@ -549,6 +561,7 @@ public class StyleEditorPanel extends JPanel {
 		final FontNameChangeListener listener = new FontNameChangeListener(mSetNodeFontName, mNodeFontName);
 		mSetNodeFontName.addPropertyChangeListener(listener);
 		mNodeFontName.addPropertyChangeListener(listener);
+		mNodeFontName.fireOnMouseClick();
 	}
 
 	private void addFontSizeControl(final List<IPropertyControl> controls) {
@@ -560,6 +573,7 @@ public class StyleEditorPanel extends JPanel {
 		final FontSizeChangeListener listener = new FontSizeChangeListener(mSetNodeFontSize, mNodeFontSize);
 		mSetNodeFontSize.addPropertyChangeListener(listener);
 		mNodeFontSize.addPropertyChangeListener(listener);
+		mNodeFontSize.fireOnMouseClick();
 	}
 
 	private void addNodeShapeControl(final List<IPropertyControl> controls) {
@@ -571,6 +585,7 @@ public class StyleEditorPanel extends JPanel {
 		final NodeShapeChangeListener listener = new NodeShapeChangeListener(mSetNodeShape, mNodeShape);
 		mSetNodeShape.addPropertyChangeListener(listener);
 		mNodeShape.addPropertyChangeListener(listener);
+		mNodeShape.fireOnMouseClick();
 	}
 
 	private List<IPropertyControl> getControls() {
@@ -697,7 +712,6 @@ public class StyleEditorPanel extends JPanel {
 				final Color viewNodeColor = styleController.getColor(node);
 				mSetNodeColor.setValue(nodeColor != null);
 				mNodeColor.setColorValue(viewNodeColor);
-				mNodeColor.setEnabled(mSetNodeColor.getBooleanValue());
 			}
 			{
 				final Color color = NodeStyleModel.getBackgroundColor(node);
@@ -705,14 +719,12 @@ public class StyleEditorPanel extends JPanel {
 				mSetNodeBackgroundColor.setValue(color != null);
 				mNodeBackgroundColor.setColorValue(viewColor != null ? viewColor : Controller.getCurrentController()
 				    .getMapViewManager().getBackgroundColor(node));
-				mNodeBackgroundColor.setEnabled(mSetNodeBackgroundColor.getBooleanValue());
 			}
 			{
 				final String shape = NodeStyleModel.getShape(node);
 				final String viewShape = styleController.getShapeEx(node);
 				mSetNodeShape.setValue(shape != null);
 				mNodeShape.setValue(viewShape);
-				mNodeShape.setEnabled(mSetNodeShape.getBooleanValue());
 			}
 			final EdgeController edgeController = EdgeController.getController();
 			final EdgeModel edgeModel = EdgeModel.getModel(node);
@@ -721,21 +733,18 @@ public class StyleEditorPanel extends JPanel {
 				final Color viewColor = edgeController.getColor(node);
 				mSetEdgeColor.setValue(edgeColor != null);
 				mEdgeColor.setColorValue(viewColor);
-				mEdgeColor.setEnabled(mSetEdgeColor.getBooleanValue());
 			}
 			{
 				final EdgeStyle style = edgeModel != null ? edgeModel.getStyle() : null;
 				final EdgeStyle viewStyle = edgeController.getStyle(node);
 				mSetEdgeStyle.setValue(style != null);
 				mEdgeStyle.setValue(viewStyle.toString());
-				mEdgeStyle.setEnabled(mSetEdgeStyle.getBooleanValue());
 			}
 			{
 				final int width = edgeModel != null ? edgeModel.getWidth() : EdgeModel.DEFAULT_WIDTH;
 				final int viewWidth = edgeController.getWidth(node);
 				mSetEdgeWidth.setValue(width != EdgeModel.DEFAULT_WIDTH);
 				mEdgeWidth.setValue(Integer.toString(viewWidth));
-				mEdgeWidth.setEnabled(mSetEdgeWidth.getBooleanValue());
 			}
 			{
 				final CloudController cloudController = CloudController.getController();
@@ -743,52 +752,44 @@ public class StyleEditorPanel extends JPanel {
 				final Color viewCloudColor = cloudController.getColor(node);
 				mSetCloud.setValue(cloudModel != null);
 				mCloudColor.setColorValue(viewCloudColor);
-				mCloudColor.setEnabled(mSetCloud.getBooleanValue());
 
 				final CloudModel.Shape viewCloudShape = cloudController.getShape(node);
 				mCloudShape.setValue(viewCloudShape != null ? viewCloudShape.toString() : CloudModel.Shape.ARC.toString());
-				mCloudShape.setEnabled(mSetCloud.getBooleanValue());
 			}
 			{
 				final String fontFamilyName = NodeStyleModel.getFontFamilyName(node);
 				final String viewFontFamilyName = styleController.getFontFamilyName(node);
 				mSetNodeFontName.setValue(fontFamilyName != null);
 				mNodeFontName.setValue(viewFontFamilyName);
-				mNodeFontName.setEnabled(mSetNodeFontName.getBooleanValue());
 			}
 			{
 				final Integer fontSize = NodeStyleModel.getFontSize(node);
 				final Integer viewfontSize = styleController.getFontSize(node);
 				mSetNodeFontSize.setValue(fontSize != null);
 				mNodeFontSize.setValue(viewfontSize.toString());
-				mNodeFontSize.setEnabled(mSetNodeFontSize.getBooleanValue());
 			}
 			{
 				final Boolean bold = NodeStyleModel.isBold(node);
 				final Boolean viewbold = styleController.isBold(node);
 				mSetNodeFontBold.setValue(bold != null);
 				mNodeFontBold.setValue(viewbold);
-				mNodeFontBold.setEnabled(mSetNodeFontBold.getBooleanValue());
 			}
 			{
 				final Boolean italic = NodeStyleModel.isItalic(node);
 				final Boolean viewitalic = styleController.isItalic(node);
 				mSetNodeFontItalic.setValue(italic != null);
 				mNodeFontItalic.setValue(viewitalic);
-				mNodeFontItalic.setEnabled(mSetNodeFontItalic.getBooleanValue());
 			}
 			{
 				final Boolean nodeNumbering = NodeStyleModel.getNodeNumbering(node);
 				final Boolean viewNodeNumbering = styleController.getNodeNumbering(node);
 				mSetNodeNumbering.setValue(nodeNumbering != null);
 				mNodeNumbering.setValue(viewNodeNumbering);
-				mNodeNumbering.setEnabled(mSetNodeNumbering.getBooleanValue());
 			}
 			{
 				final String nodeTextTemplate = NodeStyleModel.getNodeTextTemplate(node);
 				mSetNodeTextTemplate.setValue(nodeTextTemplate != null);
 				mNodeTextTemplate.setValue(nodeTextTemplate);
-				mNodeTextTemplate.setEnabled(mSetNodeTextTemplate.getBooleanValue());
 			}
 			if(mAutomaticLayoutCheckBox != null){
 				final ModeController modeController = Controller.getCurrentModeController();

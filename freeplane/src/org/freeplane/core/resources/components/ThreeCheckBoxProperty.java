@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -122,4 +123,9 @@ public class ThreeCheckBoxProperty extends PropertyBean implements IPropertyCont
 		}
 		return ThreeCheckBoxProperty.DON_T_TOUCH_VALUE_INT;
 	}
+
+	@Override
+    protected Component[] getComponents() {
+	    return new Component[]{mButton};
+    }
 }

@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -109,4 +110,9 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 	public void actionPerformed(final ActionEvent e) {
 		firePropertyChangeEvent();
 	}
+
+	@Override
+    protected Component[] getComponents() {
+	    return mComboBox.getComponents();
+    }
 }

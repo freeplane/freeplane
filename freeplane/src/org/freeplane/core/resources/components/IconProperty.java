@@ -102,4 +102,9 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 	public MindIcon getIcon() {
 		return mActualIcon;
 	}
+
+	@Override
+    protected Component[] getComponents() {
+	    return new Component[]{mButton};
+    }
 }

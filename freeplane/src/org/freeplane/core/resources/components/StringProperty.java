@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -59,4 +60,9 @@ public class StringProperty extends PropertyBean implements IPropertyControl {
 		mTextField.setText(value);
 		mTextField.selectAll();
 	}
+
+	@Override
+    protected Component[] getComponents() {
+	    return new Component[]{mTextField};
+    }
 }

@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -75,5 +76,10 @@ public class EditableComboProperty extends PropertyBean implements IPropertyCont
 
 	public void setToolTipText(String text) {
 	    comboBox.setToolTipText(text);
+    }
+
+	@Override
+    protected Component[] getComponents() {
+	    return comboBox.getComponents();
     }
 }

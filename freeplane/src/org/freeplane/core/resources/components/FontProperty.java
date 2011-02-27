@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -74,4 +75,9 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 			mFontComboBox.setSelectedIndex(0);
 		}
 	}
+
+	@Override
+    protected Component[] getComponents() {
+	    return mFontComboBox.getComponents();
+    }
 }

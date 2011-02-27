@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -66,4 +67,9 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 	public boolean getBooleanValue() {
 		return mCheckBox.isSelected();
 	}
+
+	@Override
+    protected Component[] getComponents() {
+	    return new Component[]{mCheckBox};
+    }
 }

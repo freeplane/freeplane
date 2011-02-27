@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -164,4 +165,9 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 		if (filenameField != null)
 			filenameField.setText(path);
 	}
+
+	@Override
+    protected Component[] getComponents() {
+	    return new Component[]{filenameField, selectButton};
+    }
 }
