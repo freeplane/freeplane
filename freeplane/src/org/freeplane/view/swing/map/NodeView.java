@@ -1040,7 +1040,7 @@ public class NodeView extends JComponent implements INodeView {
 				}
 			}
 		}
-		(node).remove();
+		node.remove();
 		NodeView preferred = getPreferredVisibleChild(false, preferredChildIsLeft);
 		if (preferred == null) {
 			preferred = this;
@@ -1048,6 +1048,7 @@ public class NodeView extends JComponent implements INodeView {
 		while(! preferred.getModel().isVisible())
 			preferred = preferred.getParentView();
 		getMap().selectAsTheOnlyOneSelected(preferred);
+		structureChanged();
 		revalidate();
 	}
 
@@ -1057,6 +1058,7 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		insert(child, index);
+		structureChanged();
 		revalidate();
 	}
 
@@ -1067,6 +1069,20 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel child, final int oldIndex) {
+	}
+
+	private void structureChanged() {
+		if (TextController.getController().getNodeNumbering(getModel())) {
+			update();
+			System.err.println("hi, updated " + this);
+			final Component[] components = getComponents();
+			for (int i = 0; i < components.length; i++) {
+				if (components[i] instanceof NodeView) {
+					final NodeView view = (NodeView) components[i];
+					view.structureChanged();
+				}
+			}
+		}
 	}
 
 	/*
