@@ -5,6 +5,8 @@ Date comparison for nodes and attributes
 Attributes in node styles
 Insert "external images" on drag and drop to a node
 Date format selection in calendar and attribute panel
+New style options format/template and node numbering
+Hyperlinks in attributes
 
 ===============================
 1.2.2 alpha
@@ -14,8 +16,6 @@ Different shapes, line types, width and transparency for connectors
 Resize-able style, calendar and attribute panel
 Syntax coloring for latex
 Time in date filters
-
-Bug fixes
 
 ===============================
 1.2.1 alpha
@@ -43,8 +43,6 @@ Automatic Edge Color
 "Grid" for moving of nodes (Preferences->Behaviour->Grid gap size)
 Copy and paste attributes between nodes
 Named filter conditions
-
-Bug fixes
 
 ===============================
 1.1.3, 2010-12-06
