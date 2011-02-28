@@ -81,7 +81,6 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
 import org.freeplane.features.mindmapmode.text.MTextController;
-import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
@@ -167,11 +166,10 @@ class EditNodeTextField extends EditNodeBase {
 			return;
 		}
 		textfield.setSize(preferredSize);
-		final JComponent mainView = (JComponent) textfield.getParent();
-		mainView.setPreferredSize(new Dimension(preferredSize.width + horizontalSpace + iconWidth, preferredSize.height
+		parent.setPreferredSize(new Dimension(preferredSize.width + horizontalSpace + iconWidth, preferredSize.height
 		        + verticalSpace));
 		textfield.revalidate();
-		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, mainView);
+		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, parent);
 		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, nodeView);
 		mapView.scrollNodeToVisible(nodeView);
 	}
@@ -366,6 +364,12 @@ class EditNodeTextField extends EditNodeBase {
 		
 		removeFormattingAction = new ExtendedEditorKit.RemoveStyleAttributeAction(null, TextUtils.getText("simplyhtml.clearFormatLabel"));
 		removeFormattingAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control T"));
+		
+		if(editControl != null ){
+			final ModeController modeController = Controller.getCurrentModeController();
+			final MTextController textController = (MTextController) TextController.getController(modeController);
+			textfield = textController.createEditorPane(MTextController.NODE_TEXT);
+		}
 	}
 
 	public String getNewText() {
@@ -384,14 +388,13 @@ class EditNodeTextField extends EditNodeBase {
 			return;
 		}
 		textfield.getDocument().removeDocumentListener(documentListener);
-		final MainView mainView = (MainView) textfield.getParent();
 		textfield = null;
-		mainView.setPreferredSize(null);
-		mainView.updateText(getNode());
-		mainView.setHorizontalAlignment(JLabel.CENTER);
-		mainView.remove(0);
-		mainView.revalidate();
-		mainView.repaint();
+		parent.setPreferredSize(null);
+		nodeView.update();
+		parent.setHorizontalAlignment(JLabel.CENTER);
+		parent.remove(0);
+		parent.revalidate();
+		parent.repaint();
 	}
 
 	private final ZoomableLabel parent;
@@ -449,7 +452,6 @@ class EditNodeTextField extends EditNodeBase {
 			final float fontSize = (int) (Math.rint(font.getSize() * zoom));
 			font = font.deriveFont(fontSize);
 		}
-		textfield = textController.createEditorPane(MTextController.NODE_TEXT);
 		textfield.setEditorKit(new HTMLEditorKit(){
 
 			@Override
@@ -496,9 +498,7 @@ class EditNodeTextField extends EditNodeBase {
 		actionMap.put("removeFormattingAction", removeFormattingAction);
 		
 		final Color nodeTextColor = nodeView.getTextColor();
-		final Color nodeTextBackground = nodeView.getTextBackground();
 		textfield.setCaretColor(nodeTextColor);
-		textfield.setBackground(nodeTextBackground);
 		final StringBuilder ruleBuilder = new StringBuilder(100);
 		ruleBuilder.append("body {");
 		ruleBuilder.append("font-family: ").append(font.getFamily()).append(";");
@@ -586,4 +586,8 @@ class EditNodeTextField extends EditNodeBase {
 			}
 		});
 	}
+
+	public void setBackground(final Color nodeTextBackground) {
+	    textfield.setBackground(nodeTextBackground);
+    }
 }

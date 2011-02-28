@@ -301,10 +301,49 @@ public class MTextController extends TextController {
 		return showResult == JOptionPane.OK_OPTION;
 	}
 
-	public void editDetails(NodeModel model) {
-		final EditDetailsAction action = (EditDetailsAction) Controller.getCurrentModeController().getAction("EditDetailsAction");
-		action.edit(model);
+	public void editDetails(final NodeModel nodeModel, final boolean editLong) {
+		final Controller controller = Controller.getCurrentController();
+	    stopEditing();
+		Controller.getCurrentModeController().setBlocked(true);
+		String text = DetailTextModel.getDetailTextText(nodeModel);
+		final boolean isNewNode = text ==  null;
+		if(isNewNode){
+			final MTextController textController = (MTextController) MTextController.getController();
+	        textController.setDetails(nodeModel, "<html>");
+	        text = "";
+		}
+		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
+			public void cancel() {
+				if (isNewNode) {
+					((MModeController) Controller.getCurrentModeController()).undo();
+				}
+				stop();
+			}
+
+			public void ok(final String newText) {
+				setDetailsHtmlText(nodeModel, newText);
+				stop();
+			}
+
+			public void split(final String newText, final int position) {
+			}
+			private void stop() {
+				Controller.getCurrentModeController().setBlocked(false);
+				mCurrentEditDialog = null;
+			}
+		};
+		mCurrentEditDialog = createEditor(nodeModel, EditedComponent.DETAIL, editControl, text, null, false, editLong, true);
+		final Frame frame = controller.getViewController().getFrame();
+		mCurrentEditDialog.show(frame);
     }
+
+
+	private void setDetailsHtmlText(final NodeModel node, final String newText) {
+		final String body = HTML_HEAD.matcher(newText).replaceFirst("");
+		final MTextController textController = (MTextController) MTextController.getController();
+        textController.setDetails(node, body.replaceFirst("\\s+$", ""));
+	}
+
 	public void setDetails(final NodeModel node, final String newText) {
 		final String oldText = DetailTextModel.getDetailTextText(node);
 		if (oldText == newText || null != oldText && oldText.equals(newText)) {
@@ -349,6 +388,7 @@ public class MTextController extends TextController {
 	}
 
 	public void setDetailsHidden(final NodeModel node, final boolean isHidden) {
+		stopEditing();
 		DetailTextModel details = (DetailTextModel) node.getExtension(DetailTextModel.class);
 		if (details == null || details.isHidden() == isHidden) {
 			return;
@@ -515,37 +555,50 @@ public class MTextController extends TextController {
 				stop();
 			}
 		};
-		mCurrentEditDialog = createEditor(nodeModel, editControl, firstEvent, isNewNode, editLong, true);
+		mCurrentEditDialog = createEditor(nodeModel, EditedComponent.TEXT, editControl, nodeModel.getText(), firstEvent, isNewNode, editLong, true);
 		final Frame frame = controller.getViewController().getFrame();
 		mCurrentEditDialog.show(frame);
 	}
 
-	private EditNodeBase createEditor(final NodeModel nodeModel, final EditNodeBase.IEditControl editControl,
-                             final KeyEvent firstEvent, final boolean isNewNode, final boolean editLong, boolean internal) {
+	private EditNodeBase createEditor(final NodeModel nodeModel, final EditedComponent editedComponent,
+                                      final EditNodeBase.IEditControl editControl, String text, final KeyEvent firstEvent,
+                                      final boolean isNewNode, final boolean editLong, boolean internal) {
 	    Controller.getCurrentModeController().setBlocked(true);
-		String text = nodeModel.getText();
 		EditNodeBase base = getEditNodeBase(nodeModel, text, editControl, firstEvent, isNewNode, editLong);
 		if(base != null || ! internal){
 			return base;
 		}
-		final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
+		return createEditor(nodeModel, editedComponent, editControl, text, firstEvent, editLong);
+    }
+
+	private EditNodeBase createEditor(final NodeModel nodeModel, final EditedComponent editedComponent,
+                             final EditNodeBase.IEditControl editControl, String text, final KeyEvent firstEvent,
+                             final boolean editLong) {
+	    final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
 		final boolean editInternalWysiwyg = editLong && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
 		final boolean editExternal = editLong && StringUtils.equals(htmlEditingOption, "external");
 		if(! HtmlUtils.isHtmlNode(text)){
 			text = HtmlUtils.plainToHTML(text);
 		}
 		if (editInternalWysiwyg) {
-			return new EditNodeWYSIWYG("edit_long_node", nodeModel, text, firstEvent, editControl, true);
+			final String title;
+			if(EditedComponent.TEXT.equals(editedComponent)) 
+				title = "edit_long_node";
+			else
+				title = "edit_details";
+			return new EditNodeWYSIWYG(title, nodeModel, text, firstEvent, editControl, true);
 		}
 		else if (editExternal) {
 			return new EditNodeExternalApplication(nodeModel, text, firstEvent, editControl);
 		}
 		else {
 			final INodeTextFieldCreator textFieldCreator = (INodeTextFieldCreator) Controller.getCurrentController().getMapViewManager();
-			final EditNodeBase textfield = textFieldCreator.createNodeTextField(nodeModel, EditedComponent.TEXT, text,
+			final EditNodeBase textfield = textFieldCreator.createNodeTextField(nodeModel, editedComponent, text,
 			    firstEvent, editControl);
-			return textfield;
+			if(textfield != null)
+				return textfield;
 		}
+		return createEditor(nodeModel, editedComponent, editControl, text, firstEvent, true);
     }
 
 	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, final EditNodeBase.IEditControl editControl,

@@ -19,7 +19,10 @@
  */
 package org.freeplane.view.swing.map.mindmapmode;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
+
+import javax.swing.JComponent;
 
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
@@ -40,15 +43,31 @@ public class MMapViewController extends MapViewController implements INodeTextFi
 	                                                     final IEditControl editControl) {
 		final ZoomableLabel parentComponent;
 		final MainView mainView = (MainView) getComponent(node);
+        final NodeView nodeView = mainView.getNodeView();
 		if(EditedComponent.TEXT.equals(parent))
 			parentComponent = mainView;
-		else
+		else if(EditedComponent.DETAIL.equals(parent)) {
+			final JComponent component = nodeView.getContent(NodeView.DETAIL_VIEWER_POSITION);
+	        if(component instanceof ZoomableLabel)
+	        	parentComponent = (ZoomableLabel) component;
+	        else
+	        	parentComponent = null;
+        }
+        else
 			parentComponent = null;
-		return new EditNodeTextField(node, (ZoomableLabel) parentComponent, text, firstEvent,editControl);
+		if(parentComponent == null || ! parentComponent.isVisible()){
+			return null;
+		}
+		final EditNodeTextField textField = new EditNodeTextField(node, (ZoomableLabel) parentComponent, text, firstEvent,editControl);
+		if(EditedComponent.TEXT.equals(parent))
+			textField.setBackground (nodeView.getTextBackground());
+		else if(EditedComponent.DETAIL.equals(parent))
+			textField.setBackground (nodeView.getBackgroundColor());
+		return textField;
 	}
 
 	public MMapViewController() {
-		createNodeTextField(null, null, null, null, null);
+		new EditNodeTextField(null, null, null, null, null);
     }
 	
 }

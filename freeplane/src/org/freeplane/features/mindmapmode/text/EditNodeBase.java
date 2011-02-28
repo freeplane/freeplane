@@ -300,12 +300,6 @@ abstract public class EditNodeBase {
 
 	/**
 	 */
-	public void setText(final String string) {
-		text = string;
-	}
-
-	/**
-	 */
 	public void setTextFieldListener(final FocusListener listener) {
 		textFieldListener = listener;
 	}

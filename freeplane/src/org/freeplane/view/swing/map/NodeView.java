@@ -99,9 +99,9 @@ public class NodeView extends JComponent implements INodeView {
 	private static final long serialVersionUID = 1L;
 	public final static int SHIFT = -2;
 	static final int SPACE_AROUND = 50;
-	private static final int MAIN_VIEWER_POSITION = 1;
-	private static final int DETAIL_VIEWER_POSITION = 2;
-	private static final int NOTE_VIEWER_POSITION = 10;
+	public static final int MAIN_VIEWER_POSITION = 1;
+	public static final int DETAIL_VIEWER_POSITION = 2;
+	public static final int NOTE_VIEWER_POSITION = 10;
 	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
 	    .getBooleanProperty("formula_dont_mark_formulas");;
 
@@ -281,15 +281,20 @@ public class NodeView extends JComponent implements INodeView {
 	        public void mouseClicked(MouseEvent e) {
 	    		final NodeModel model = NodeView.this.getModel();
 	    		TextController controller = TextController.getController();
-	    		switch(e.getClickCount()){
-	    			case 1:
-	    				controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
-	    				break;
-	    			case 2:
-	    				if(controller instanceof MTextController){
-	    					((MTextController) controller).editDetails(model);
-	    				}
-	    				break;
+	    		final ZoomableLabel component = (ZoomableLabel) e.getComponent();
+	    		if(e.getX() < component.getIconWidth())
+	    			controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
+	    		else if(controller instanceof MTextController){
+		    		switch(e.getClickCount()){
+		    			case 1:
+			    			((MTextController) controller).editDetails(model, false);
+		    				break;
+		    			case 2:
+		    				if(controller instanceof MTextController){
+		    	    			((MTextController) controller).editDetails(model, true);
+		    				}
+		    				break;
+		    		}
 	    		}
 	        }
 	    	
@@ -358,7 +363,7 @@ public class NodeView extends JComponent implements INodeView {
 		return attributeView;
 	}
 
-	private Color getBackgroundColor() {
+	public Color getBackgroundColor() {
 		final Color cloudColor = CloudController.getController(getMap().getModeController()).getColor(model);
 		if (cloudColor != null) {
 			return cloudColor;
@@ -1369,7 +1374,7 @@ public class NodeView extends JComponent implements INodeView {
 		revalidate();
 	}
 
-	void update() {
+	public void update() {
 		updateStyle();
 		if (!isContentVisible()) {
 			mainView.setVisible(false);
