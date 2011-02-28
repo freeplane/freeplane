@@ -43,6 +43,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
@@ -68,6 +69,7 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
+import org.freeplane.features.mindmapmode.text.IEditBaseCreator.EditedComponent;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -350,7 +352,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			if(editBase == null){
 				return;
 			}
-			final Frame frame = JOptionPane.getFrameForComponent(AttributeTable.this);
+			final JFrame frame = (JFrame) JOptionPane.getFrameForComponent(AttributeTable.this);
 			editBase.show(frame);
 		}
 
@@ -379,7 +381,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final IAttributeTableModel model = (IAttributeTableModel) getModel();
 			final String text = getValueAt(row, col).toString();
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
-			EditNodeBase base = textController.getEditNodeBase(model.getNode(), text, dialogTableCellEditor.getEditControl(), kev, false, false);
+			EditNodeBase base = textController.getEditNodeBase(model.getNode(), text, EditedComponent.TEXT, dialogTableCellEditor.getEditControl(), kev, false);
 			if(base != null){
 				dialogTableCellEditor.setEditBase(base);
 				return dialogTableCellEditor;

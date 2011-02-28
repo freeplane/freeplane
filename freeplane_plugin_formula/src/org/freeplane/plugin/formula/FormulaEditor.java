@@ -21,7 +21,6 @@ package org.freeplane.plugin.formula;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -192,7 +191,7 @@ class FormulaEditor extends EditNodeDialog {
     }
 
 	@Override
-    public void show(Frame frame) {
+    public void show(JFrame frame) {
 		jframe = (JFrame) frame;
 	    super.show(frame);
     }

@@ -83,7 +83,7 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 			}
 		}, false);
 		mCurrentEditDialog = editNodeWYSIWYG;
-		editNodeWYSIWYG.show(controller.getViewController().getFrame());
+		editNodeWYSIWYG.show(controller.getViewController().getJFrame());
     }
 
 

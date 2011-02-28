@@ -6,5 +6,9 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 
 public interface IEditBaseCreator{
-	EditNodeBase createEditNodeBase(NodeModel nodeModel, String text, IEditControl editControl, KeyEvent firstEvent, boolean isNewNode, boolean editLong);
+	public static enum EditedComponent{TEXT, DETAIL, NOTE}
+
+	public EditNodeBase createEditor(final NodeModel nodeModel, final EditedComponent editedComponent,
+	                                 final EditNodeBase.IEditControl editControl, String text, final KeyEvent firstEvent,
+	                                 final boolean  editLong);
 }

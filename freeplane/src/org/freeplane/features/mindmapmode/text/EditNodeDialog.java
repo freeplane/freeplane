@@ -38,6 +38,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -69,7 +70,7 @@ public class EditNodeDialog extends EditNodeBase {
 		 */
 		private static final long serialVersionUID = 1L;
 
-		public LongNodeDialog(final Frame frame, final String title) {
+		public LongNodeDialog(final Frame frame, final String title, final Color background) {
 			super(EditNodeDialog.this, title, frame);
 			final ViewController viewController = Controller.getCurrentModeController().getController()
 			    .getViewController();
@@ -86,8 +87,7 @@ public class EditNodeDialog extends EditNodeBase {
 				textComponent.setFont(nodeFont);
 				final Color nodeTextColor = viewController.getTextColor(getNode());
 				textComponent.setForeground(nodeTextColor);
-				final Color nodeTextBackground = viewController.getBackgroundColor(getNode());
-				textComponent.setBackground(nodeTextBackground);
+				textComponent.setBackground(background);
 				textComponent.setCaretColor(nodeTextColor);
 				editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 				int preferredHeight = viewController.getComponent(getNode()).getHeight();
@@ -308,11 +308,11 @@ public class EditNodeDialog extends EditNodeBase {
 		textComponent = textEditor;
 	}
 
-	public void show(final Frame frame) {
+	public void show(final JFrame frame) {
 		if (title == null) {
 			title = TextUtils.getText("edit_long_node");
 		}
-		final EditDialog dialog = new LongNodeDialog(frame, title);
+		final EditDialog dialog = new LongNodeDialog(frame, title, getBackground());
 		dialog.setModal(isModal);
 		dialog.pack();
 		Controller.getCurrentModeController().getController().getViewController().scrollNodeToVisible(node);

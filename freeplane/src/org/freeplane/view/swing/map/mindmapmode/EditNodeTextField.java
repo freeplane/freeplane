@@ -24,7 +24,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -43,6 +42,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
@@ -441,7 +441,7 @@ class EditNodeTextField extends EditNodeBase {
 	 */
 	@SuppressWarnings("serial")
     @Override
-	public void show(final Frame frame) {
+	public void show(final JFrame frame) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final ViewController viewController = modeController.getController().getViewController();
 		final MTextController textController = (MTextController) TextController.getController(modeController);
@@ -499,6 +499,7 @@ class EditNodeTextField extends EditNodeBase {
 		
 		final Color nodeTextColor = nodeView.getTextColor();
 		textfield.setCaretColor(nodeTextColor);
+	    textfield.setBackground(getBackground());
 		final StringBuilder ruleBuilder = new StringBuilder(100);
 		ruleBuilder.append("body {");
 		ruleBuilder.append("font-family: ").append(font.getFamily()).append(";");
@@ -586,8 +587,4 @@ class EditNodeTextField extends EditNodeBase {
 			}
 		});
 	}
-
-	public void setBackground(final Color nodeTextBackground) {
-	    textfield.setBackground(nodeTextBackground);
-    }
 }

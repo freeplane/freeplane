@@ -32,7 +32,9 @@ import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
@@ -188,7 +190,6 @@ public class EditNodeWYSIWYG extends EditNodeBase {
         }
 	}
 
-	private static HTMLDialog htmlEditorWindow;
 	final private KeyEvent firstEvent;
 	final private boolean enableSplit;
 	final private String purpose;
@@ -200,20 +201,17 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		this.purpose = purpose;
 	}
 
-	public void show(final Frame frame) {
+	public void show(final JFrame frame) {
 		try {
-			if (EditNodeWYSIWYG.htmlEditorWindow == null) {
-				EditNodeWYSIWYG.htmlEditorWindow = new HTMLDialog(this, "", "", frame);
-			}
-			EditNodeWYSIWYG.htmlEditorWindow.setBase(this);
+			HTMLDialog htmlEditorWindow = createHtmlEditor(frame);
+			htmlEditorWindow.setBase(this);
 			final String title;
 			title = TextUtils.getText(purpose);
-			EditNodeWYSIWYG.htmlEditorWindow.setTitle(title);
+			htmlEditorWindow.setTitle(title);
 			htmlEditorWindow.setSplitEnabled(enableSplit);
-			final SHTMLPanel htmlEditorPanel = (EditNodeWYSIWYG.htmlEditorWindow).getHtmlEditorPanel();
+			final SHTMLPanel htmlEditorPanel = (htmlEditorWindow).getHtmlEditorPanel();
 			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
 			final Font font = viewController.getFont(node);
-			final Color nodeTextBackground = viewController.getBackgroundColor(node);
 			final StringBuilder ruleBuilder = new StringBuilder(100);
 			ruleBuilder.append("body {");
 			ruleBuilder.append("font-family: ").append(font.getFamily()).append(";");
@@ -231,7 +229,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final HTMLDocument document = htmlEditorPanel.getDocument();
 			final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
 			editorPane.setForeground(nodeTextColor);
-			editorPane.setBackground(nodeTextBackground);
+			editorPane.setBackground(getBackground());
 			editorPane.setCaretColor(nodeTextColor);
 			final StyleSheet styleSheet = document.getStyleSheet();
 			styleSheet.removeStyle("p");
@@ -255,12 +253,12 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
 			    .getProperty("el__max_default_window_width")));
 			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth, preferredHeight));
-			EditNodeWYSIWYG.htmlEditorWindow.pack();
+			htmlEditorWindow.pack();
 			if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
-				UITools.setDialogLocationUnder(EditNodeWYSIWYG.htmlEditorWindow, node);
+				UITools.setDialogLocationUnder(htmlEditorWindow, node);
 			}
 			else {
-				UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, node);
+				UITools.setDialogLocationRelativeTo(htmlEditorWindow, node);
 			}
 			String content = text;
 			if (!HtmlUtils.isHtmlNode(content)) {
@@ -278,10 +276,20 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 				editorPane.setCaretPosition(htmlEditorPanel.getDocument().getLength());
 			}
 			htmlEditorPanel.getMostRecentFocusOwner().requestFocus();
-			EditNodeWYSIWYG.htmlEditorWindow.show();
+			htmlEditorWindow.show();
 		}
 		catch (final Exception ex) {
 			LogUtils.severe("Loading of WYSIWYG HTML editor failed. Use the other editors instead.", ex);
 		}
 	}
+
+	public HTMLDialog createHtmlEditor(final JFrame frame) throws Exception {
+		final JRootPane rootPane = frame.getRootPane();
+		HTMLDialog htmlEditorWindow = (HTMLDialog) rootPane.getClientProperty(HTMLDialog.class);
+	    if (htmlEditorWindow == null) {
+	    	htmlEditorWindow = new HTMLDialog(this, "", "", frame);
+	    	rootPane.putClientProperty(HTMLDialog.class, htmlEditorWindow);
+	    }
+	    return htmlEditorWindow;
+    }
 }

@@ -17,19 +17,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.text;
+package org.freeplane.view.swing.map.mindmapmode;
 
-import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.text.MessageFormat;
+
+import javax.swing.JFrame;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.mindmapmode.text.EditNodeBase;
+import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 
 /**
  * @author Daniel Polansky
@@ -46,7 +49,7 @@ class EditNodeExternalApplication extends EditNodeBase {
 		return firstEvent;
 	}
 
-	public void show(Frame frame) {
+	public void show(JFrame frame) {
 		new Thread() {
 			@Override
 			public void run() {

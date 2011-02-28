@@ -20,6 +20,7 @@
 package org.freeplane.features.mindmapmode.text;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.KeyEventDispatcher;
@@ -37,6 +38,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.WindowConstants;
@@ -210,6 +212,10 @@ abstract public class EditNodeBase {
 // 	final private ModeController modeController;
 	protected NodeModel node;
 	protected String text;
+	private Color background;
+	protected Color getBackground() {
+    	return background;
+    }
 	protected FocusListener textFieldListener = null;
 	protected EditNodeBase(final NodeModel node, final String text,
 	                       final IEditControl editControl) {
@@ -304,5 +310,9 @@ abstract public class EditNodeBase {
 		textFieldListener = listener;
 	}
 
-	abstract public void show(Frame frame);
+	abstract public void show(JFrame frame);
+	public void setBackground(Color background) {
+	    this.background = background;
+	    
+    }
 }

@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
@@ -71,7 +72,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
-import org.freeplane.features.mindmapmode.text.INodeTextFieldCreator.EditedComponent;
+import org.freeplane.features.mindmapmode.text.IEditBaseCreator.EditedComponent;
 
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.TextResources;
@@ -332,8 +333,8 @@ public class MTextController extends TextController {
 				mCurrentEditDialog = null;
 			}
 		};
-		mCurrentEditDialog = createEditor(nodeModel, EditedComponent.DETAIL, editControl, text, null, false, editLong, true);
-		final Frame frame = controller.getViewController().getFrame();
+		mCurrentEditDialog = createEditor(nodeModel, IEditBaseCreator.EditedComponent.DETAIL, editControl, text, null, false, editLong, true);
+		final JFrame frame = controller.getViewController().getJFrame();
 		mCurrentEditDialog.show(frame);
     }
 
@@ -555,8 +556,8 @@ public class MTextController extends TextController {
 				stop();
 			}
 		};
-		mCurrentEditDialog = createEditor(nodeModel, EditedComponent.TEXT, editControl, nodeModel.getText(), firstEvent, isNewNode, editLong, true);
-		final Frame frame = controller.getViewController().getFrame();
+		mCurrentEditDialog = createEditor(nodeModel, IEditBaseCreator.EditedComponent.TEXT, editControl, nodeModel.getText(), firstEvent, isNewNode, editLong, true);
+		final JFrame frame = controller.getViewController().getJFrame();
 		mCurrentEditDialog.show(frame);
 	}
 
@@ -564,49 +565,21 @@ public class MTextController extends TextController {
                                       final EditNodeBase.IEditControl editControl, String text, final KeyEvent firstEvent,
                                       final boolean isNewNode, final boolean editLong, boolean internal) {
 	    Controller.getCurrentModeController().setBlocked(true);
-		EditNodeBase base = getEditNodeBase(nodeModel, text, editControl, firstEvent, isNewNode, editLong);
+		EditNodeBase base = getEditNodeBase(nodeModel, text, editedComponent, editControl, firstEvent, editLong);
 		if(base != null || ! internal){
 			return base;
 		}
-		return createEditor(nodeModel, editedComponent, editControl, text, firstEvent, editLong);
+		final IEditBaseCreator textFieldCreator = (IEditBaseCreator) Controller.getCurrentController().getMapViewManager();
+		return textFieldCreator.createEditor(nodeModel, editedComponent, editControl, text, firstEvent, editLong);
     }
 
-	private EditNodeBase createEditor(final NodeModel nodeModel, final EditedComponent editedComponent,
-                             final EditNodeBase.IEditControl editControl, String text, final KeyEvent firstEvent,
-                             final boolean editLong) {
-	    final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
-		final boolean editInternalWysiwyg = editLong && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
-		final boolean editExternal = editLong && StringUtils.equals(htmlEditingOption, "external");
-		if(! HtmlUtils.isHtmlNode(text)){
-			text = HtmlUtils.plainToHTML(text);
-		}
-		if (editInternalWysiwyg) {
-			final String title;
-			if(EditedComponent.TEXT.equals(editedComponent)) 
-				title = "edit_long_node";
-			else
-				title = "edit_details";
-			return new EditNodeWYSIWYG(title, nodeModel, text, firstEvent, editControl, true);
-		}
-		else if (editExternal) {
-			return new EditNodeExternalApplication(nodeModel, text, firstEvent, editControl);
-		}
-		else {
-			final INodeTextFieldCreator textFieldCreator = (INodeTextFieldCreator) Controller.getCurrentController().getMapViewManager();
-			final EditNodeBase textfield = textFieldCreator.createNodeTextField(nodeModel, editedComponent, text,
-			    firstEvent, editControl);
-			if(textfield != null)
-				return textfield;
-		}
-		return createEditor(nodeModel, editedComponent, editControl, text, firstEvent, true);
-    }
 
-	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, final EditNodeBase.IEditControl editControl,
-                                final KeyEvent firstEvent, final boolean isNewNode, final boolean editLong) {
+	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, EditedComponent editedComponent, final EditNodeBase.IEditControl editControl,
+                                final KeyEvent firstEvent, final boolean editLong) {
 	    final List<ITextTransformer> textTransformers = getTextTransformers();
 		for(ITextTransformer t : textTransformers){
 			if(t instanceof IEditBaseCreator){
-				final EditNodeBase base = ((IEditBaseCreator) t).createEditNodeBase(nodeModel, text, editControl, firstEvent, isNewNode, editLong);
+				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, editedComponent, editControl, text, firstEvent, editLong);
 				if(base != null){
 					return base;
 				}

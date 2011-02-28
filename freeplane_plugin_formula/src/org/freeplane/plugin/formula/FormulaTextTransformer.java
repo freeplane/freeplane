@@ -11,7 +11,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.AbstractTextTransformer;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
-import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 import org.freeplane.features.mindmapmode.text.EditNodeDialog;
 import org.freeplane.features.mindmapmode.text.IEditBaseCreator;
 import org.freeplane.plugin.script.ExecuteScriptException;
@@ -39,8 +38,9 @@ class FormulaTextTransformer extends AbstractTextTransformer implements IEditBas
 		return result.toString();
 	}
 
-	public EditNodeBase createEditNodeBase(NodeModel nodeModel, String text, IEditControl editControl, KeyEvent firstEvent,
-	                                       boolean isNewNode, boolean editLong) {
+	public EditNodeBase createEditor(final NodeModel node, final EditedComponent editedComponent,
+	                                 final EditNodeBase.IEditControl editControl, String text, final KeyEvent firstEvent,
+	                                 final boolean editLong) {
 		if(firstEvent != null){
 			if (firstEvent.getKeyChar() == '='){
 				text = "=";
@@ -53,7 +53,7 @@ class FormulaTextTransformer extends AbstractTextTransformer implements IEditBas
 			JEditorPane textEditor = new JEditorPane();
 			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 			scrollPane.setMinimumSize(new Dimension(0, 60));
-			final EditNodeDialog editNodeDialog = new FormulaEditor(nodeModel, text, firstEvent, editControl, false, textEditor);
+			final EditNodeDialog editNodeDialog = new FormulaEditor(node, text, firstEvent, editControl, false, textEditor);
 			editNodeDialog.setTitle(TextUtils.getText("formula_editor"));
 			textEditor.setContentType("text/groovy");
 			return editNodeDialog;
