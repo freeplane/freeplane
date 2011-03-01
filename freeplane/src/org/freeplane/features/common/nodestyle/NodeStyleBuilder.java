@@ -118,21 +118,37 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		reader.addAttributeHandler("font", "NAME", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final FontProperties fp = (FontProperties) userObject;
-				fp.fontName = value.toString();
+				fp.fontName = value;
 			}
 		});
 		reader.addAttributeHandler("font", "BOLD", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final FontProperties fp = (FontProperties) userObject;
-				fp.isBold = value.toString().equals("true");
+				fp.isBold = value.equals("true");
 			}
 		});
 		reader.addAttributeHandler("font", "ITALIC", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final FontProperties fp = (FontProperties) userObject;
-				fp.isItalic = value.toString().equals("true");
+				fp.isItalic = value.equals("true");
 			}
 		});
+		final IAttributeHandler nodenumberingHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setNodeNumbering(node, value.equals("true"));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "NUMBERED", nodenumberingHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "NUMBERED", nodenumberingHandler);
+		final IAttributeHandler templateHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setNodeTextTemplate(node, value);
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEMPLATE", templateHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEMPLATE", templateHandler);
 	}
 
 	/**
@@ -180,6 +196,14 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final String shape = forceFormatting ? nsc.getShape(node) : style.getShape();
 		if (shape != null) {
 			writer.addAttribute("STYLE", shape);
+		}
+		final Boolean numbered = forceFormatting ? nsc.getNodeNumbering(node) : style.getNodeNumbering();
+		if (numbered != null && numbered) {
+			writer.addAttribute("NUMBERED", numbered.toString());
+		}
+		final String template = forceFormatting ? nsc.getNodeTextTemplate(node) : style.getNodeTextTemplate();
+		if (template != null) {
+			writer.addAttribute("TEMPLATE", template);
 		}
 	}
 
