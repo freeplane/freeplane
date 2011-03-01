@@ -86,6 +86,10 @@ public class FileOpener implements DropTargetListener {
 			if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 				final List<File> list = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 				for (final File file : list) {
+					String fileName = file.getName();
+					if (!fileName.substring(fileName.length() - 3).equalsIgnoreCase(".mm")) {
+						continue;
+					}
 					modeController.getMapController().newMap(Compat.fileToUrl(file), false);
 				}
 			}
