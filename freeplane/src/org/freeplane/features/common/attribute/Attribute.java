@@ -24,7 +24,7 @@ package org.freeplane.features.common.attribute;
  */
 public class Attribute {
 	private String name;
-	private String value;
+	private Object value;
 
 	/**
 	 * @param pAttribute
@@ -42,7 +42,7 @@ public class Attribute {
 		value = "";
 	}
 
-	public Attribute(final String name, final String value) {
+	public Attribute(final String name, final Object value) {
 		this.name = name;
 		this.value = value;
 	}
@@ -51,7 +51,7 @@ public class Attribute {
 		return name;
 	}
 
-	public String getValue() {
+	public Object getValue() {
 		return value;
 	}
 
@@ -59,7 +59,7 @@ public class Attribute {
 		this.name = name;
 	}
 
-	public void setValue(final String value) {
+	public void setValue(final Object value) {
 		this.value = value;
 	}
 

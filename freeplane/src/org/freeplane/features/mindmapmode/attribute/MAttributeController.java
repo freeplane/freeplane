@@ -154,10 +154,10 @@ public class MAttributeController extends AttributeController {
 		private final NodeAttributeTableModel model;
 		private final String name;
 		private final int row;
-		private final String value;
+		private final Object value;
 
 		private InsertAttributeActor(final NodeAttributeTableModel model, final int row, final String name,
-		                             final String value) {
+		                             final Object value) {
 			this.row = row;
 			this.name = name;
 			this.model = model;
@@ -248,9 +248,9 @@ public class MAttributeController extends AttributeController {
 
 	private static class RegistryAttributeValueActor implements IActor {
 		private final AttributeRegistryElement element;
-		private final String newValue;
+		private final Object newValue;
 
-		private RegistryAttributeValueActor(final AttributeRegistryElement element, final String newValue) {
+		private RegistryAttributeValueActor(final AttributeRegistryElement element, final Object newValue) {
 			this.element = element;
 			this.newValue = newValue;
 		}
@@ -274,7 +274,7 @@ public class MAttributeController extends AttributeController {
 		private RemoveAttributeActor(final NodeAttributeTableModel model, final int row) {
 			final Attribute attribute = model.getAttribute(row);
 			final String name = attribute.getName();
-			final String value = attribute.getValue();
+			final Object value = attribute.getValue();
 			insertActor = new InsertAttributeActor(model, row, name, value);
 		}
 
@@ -410,11 +410,11 @@ public class MAttributeController extends AttributeController {
 
 	private static final class SetAttributeValueActor implements IActor {
 		private final NodeAttributeTableModel model;
-		private final String newValue;
-		private final String oldValue;
+		private final Object newValue;
+		private final Object oldValue;
 		private final int row;
 
-		private SetAttributeValueActor(final NodeAttributeTableModel model, final int row, final String newValue) {
+		private SetAttributeValueActor(final NodeAttributeTableModel model, final int row, final Object newValue) {
 			this.row = row;
 			oldValue = model.getAttribute(row).getValue();
 			this.newValue = newValue;
@@ -556,7 +556,7 @@ public class MAttributeController extends AttributeController {
 	}
 
 	@Override
-	public void performInsertRow(final NodeAttributeTableModel model, final int row, final String name, String value) {
+	public void performInsertRow(final NodeAttributeTableModel model, final int row, final String name, Object value) {
 		final MapModel map = Controller.getCurrentModeController().getController().getMap();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		if (name.equals("")) {
@@ -583,7 +583,7 @@ public class MAttributeController extends AttributeController {
 			final IActor valueActor = new RegistryAttributeValueActor(element, value);
 			Controller.getCurrentModeController().execute(valueActor, map);
 		}
-		final String newValue = value;
+		final Object newValue = value;
 		final IActor actor = new InsertAttributeActor(model, row, name, newValue);
 		Controller.getCurrentModeController().execute(actor, map);
 	}
@@ -806,17 +806,16 @@ public class MAttributeController extends AttributeController {
 				break;
 			}
 			case 1: {
-				final String value = o.toString().trim();
-				if (attribute.getValue().equals(value)) {
+				if (attribute.getValue().equals(o)) {
 					return;
 				}
-				final IActor actor = new SetAttributeValueActor(model, row, value);
+				final IActor actor = new SetAttributeValueActor(model, row, o);
 				Controller.getCurrentModeController().execute(actor, map);
 				final String name = model.getValueAt(row, 0).toString();
 				final AttributeRegistryElement element = registry.getElement(name);
-				final int index = element.getValues().getIndexOf(value);
+				final int index = element.getValues().getIndexOf(o);
 				if (index == -1) {
-					final IActor registryActor = new RegistryAttributeValueActor(element, value);
+					final IActor registryActor = new RegistryAttributeValueActor(element, o);
 					Controller.getCurrentModeController().execute(registryActor, map);
 				}
 				break;

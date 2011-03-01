@@ -94,7 +94,7 @@ public class AttributeController implements IExtension {
 	}
 
 	public void performInsertRow(final NodeAttributeTableModel model, final int row, final String name,
-	                             final String value) {
+	                             final Object value) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -265,7 +265,10 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE);
 		final Attribute attr = attributes.get(i);
 		attributeElement.setAttribute("NAME", attr.getName());
-		attributeElement.setAttribute("VALUE", attr.getValue());
+		final Object value = attr.getValue();
+		attributeElement.setAttribute("VALUE", value.toString());
+		if(! (value  instanceof String))
+			attributeElement.setAttribute("TYPE", value.getClass().getName());
 		writer.addElement(attr, attributeElement);
 	}
 
@@ -294,7 +297,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 
 	public void setValue(final int row, final Object newValue) {
 		final Attribute attr = attributes.get(row);
-		attr.setValue(newValue.toString());
+		attr.setValue(newValue);
 		fireTableRowsUpdated(row, row);
 	}
 

@@ -93,14 +93,8 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 				text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
 				borderColor = Color.RED;
 			}
-			final String link = LinkController.findLink(text);
-			if(link != null){
-				try {
-	                icon = IconController.getLinkIcon(new URI(link), null);
-                }
-                catch (URISyntaxException e) {
-                	icon = null;
-                }
+			if(value instanceof URI){
+	                icon = IconController.getLinkIcon((URI)value, null);
 			}
 			else{
 				icon = null;

@@ -27,16 +27,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
+import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.mindmapmode.file.MFileManager;
 
 /**
  * @author Dimitry Polivaev
@@ -49,11 +59,14 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	private JMenuItem delete = null;
 	private JMenuItem down = null;
 	private JMenuItem insert = null;
+	private JMenuItem insertFileLink = null;
 	private boolean oldTable;
 	private JMenuItem optimalWidth = null;
 	private int row;
 	private AttributeTable table;
 	private JMenuItem up = null;
+	private int col;
+	private JMenuItem insertLink;
 
 	@Override
 	protected void firePopupMenuWillBecomeInvisible() {
@@ -131,6 +144,57 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		}
 		return insert;
 	}
+	/**
+	 * @return Returns the insert.
+	 */
+	private JMenuItem getInsertFileLink() {
+		if (insertFileLink == null) {
+			insertFileLink = new JMenuItem(TextUtils.getText("SetLinkByFileChooserAction.text"));
+			insertFileLink.addActionListener(new ActionListener() {
+				public void actionPerformed(final ActionEvent e) {
+					final AttributeTable table = AttributePopupMenu.this.table;
+					final URI relative = ((MFileManager) UrlManager.getController())
+				    .getLinkByFileChooser(Controller.getCurrentController().getMap());
+					if (relative != null) {
+						table.setValueAt(relative, row, col);
+					}
+				}
+			});
+		}
+		return insertFileLink;
+	}
+	/**
+	 * @return Returns the insert.
+	 */
+	private JMenuItem getInsertLink() {
+		if (insertLink == null) {
+			insertLink = new JMenuItem(TextUtils.getText("SetLinkByTextFieldAction.text"));
+			insertLink.addActionListener(new ActionListener() {
+				public void actionPerformed(final ActionEvent e) {
+					final AttributeTable table = AttributePopupMenu.this.table;
+					final Object oldValue = table.getValueAt(row, col);
+					final String inputValue = JOptionPane.showInputDialog(table, TextUtils.getText("edit_link_manually"), oldValue.toString());
+					if (inputValue != null && ! oldValue.equals(inputValue)) {
+						if (inputValue.toString().equals("")) {
+							table.setValueAt("", row, col);
+						}
+						try {
+							final URI link = LinkController.createURI(inputValue.trim());
+							if(! oldValue.equals(link))
+								table.setValueAt(link, row, col);
+						}
+						catch (final URISyntaxException e1) {
+							LogUtils.warn(e1);
+							UITools.errorMessage(TextUtils.format("invalid_uri", inputValue));
+							return;
+						}
+					}
+				}
+				
+			});
+		}
+		return insertLink;
+	}
 
 	/**
 	 * @return Returns the optimalWidth.
@@ -173,8 +237,12 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		final String attributeViewType = table.getAttributeView().getViewType();
 		final IAttributeTableModel model = table.getAttributeTableModel();
 		final int rowCount = model.getRowCount();
+		add(getOptimalWidth());
+		if(col == 1){
+			add(getInsertLink());
+			add(getInsertFileLink());
+		}
 		if (attributeViewType.equals(AttributeTableLayoutModel.SHOW_ALL)) {
-			add(getOptimalWidth());
 			add(getInsert());
 			if (row != -1) {
 				add(getDelete());
@@ -185,9 +253,6 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 					add(getDown());
 				}
 			}
-		}
-		else {
-			add(getOptimalWidth());
 		}
 	}
 
@@ -244,6 +309,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 			}
 			oldTable = false;
 			row = table.rowAtPoint(point);
+			col = table.columnAtPoint(point);
 			if (row >= 0) {
 				if (table.getValueAt(row, 0).equals("")) {
 					row--;
@@ -262,6 +328,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 			}
 			oldTable = false;
 			row = -1;
+			col = -1;
 			return;
 		}
 		throw new AssertionError();

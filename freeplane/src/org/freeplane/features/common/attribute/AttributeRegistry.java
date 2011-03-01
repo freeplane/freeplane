@@ -277,7 +277,7 @@ public class AttributeRegistry implements IExtension {
 		if (name.equals("")) {
 			return;
 		}
-		final String value = newAttribute.getValue();
+		final Object value = newAttribute.getValue();
 		try {
 			final AttributeRegistryElement elem = getElement(name);
 			elem.addValue(value);

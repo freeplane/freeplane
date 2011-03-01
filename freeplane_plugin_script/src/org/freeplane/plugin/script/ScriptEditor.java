@@ -133,7 +133,7 @@ class ScriptEditor extends AFreeplaneAction {
 
 		public ScriptHolder getScript(final int pIndex) {
 			final Attribute attribute = ((AttributeHolder) mScripts.get(pIndex)).mAttribute;
-			return new ScriptHolder(attribute.getName(), attribute.getValue());
+			return new ScriptHolder(attribute.getName(), attribute.getValue().toString());
 		}
 
 		public boolean isDirty() {

@@ -20,6 +20,7 @@
 package org.freeplane.features.common.attribute;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
@@ -29,6 +30,7 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.NodeModel;
@@ -36,8 +38,27 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 class AttributeBuilder implements IElementDOMHandler {
 	static class AttributeProperties {
+		Object parent;
+		public AttributeProperties(Object parent) {
+	        this.parent = parent;
+        }
 		String attributeName;
 		String attributeValue;
+		String attributeType;
+		public Object getValue() {
+			Object value;
+			if(attributeType == null)
+				value = attributeValue;
+            else
+                try {
+                    value = getClass().getClassLoader().loadClass(attributeType).getConstructor(String.class).newInstance(attributeValue);
+                }
+                catch (Exception e) {
+                	LogUtils.warn(e);
+                	value = attributeValue;
+                }
+                return value;
+        }
 	}
 
 	static class RegisteredAttributeProperties {
@@ -62,14 +83,14 @@ class AttributeBuilder implements IElementDOMHandler {
 	}
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
-		if (tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE)) {
-			return new AttributeProperties();
+		if (tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE) 
+				|| tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE)) {
+			return new AttributeProperties(parent);
 		}
 		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME)) {
 			return new RegisteredAttributeProperties();
 		}
-		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE)
-		        || tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY)) {
+		if (tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY)) {
 			return parent;
 		}
 		return null;
@@ -90,11 +111,18 @@ class AttributeBuilder implements IElementDOMHandler {
 			}
 			return;
 		}
+		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE)) {
+			final AttributeProperties ap = (AttributeProperties) userObject;
+			final RegisteredAttributeProperties rap = (RegisteredAttributeProperties) ap.parent;
+		    final Attribute attribute = new Attribute(rap.attributeName, ap.getValue());
+		    final AttributeRegistry r = AttributeRegistry.getRegistry(getMap());
+		    r.registry(attribute);
+		}
 		if (parent instanceof NodeModel) {
 			final NodeModel node = (NodeModel) parent;
 			if (tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE)) {
 				final AttributeProperties ap = (AttributeProperties) userObject;
-				final Attribute attribute = new Attribute(ap.attributeName, ap.attributeValue);
+				final Attribute attribute = new Attribute(ap.attributeName, ap.getValue());
 				attributeController.createAttributeTableModel(node);
 				final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
 				model.addRowNoUndo(attribute);
@@ -142,10 +170,15 @@ class AttributeBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE, "VALUE",
 		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
-				    final RegisteredAttributeProperties rap = (RegisteredAttributeProperties) userObject;
-				    final Attribute attribute = new Attribute(rap.attributeName, value);
-				    final AttributeRegistry r = AttributeRegistry.getRegistry(getMap());
-				    r.registry(attribute);
+				    final AttributeProperties ap = (AttributeProperties) userObject;
+				    ap.attributeValue = value;
+			    }
+		    });
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE, "TYPE",
+		    new IAttributeHandler() {
+			    public void setAttribute(final Object userObject, final String value) {
+				    final AttributeProperties ap = (AttributeProperties) userObject;
+				    ap.attributeType = value;
 			    }
 		    });
 		reader.addElementHandler(XML_NODE_ATTRIBUTE_LAYOUT, new IElementHandler() {
@@ -179,6 +212,12 @@ class AttributeBuilder implements IElementDOMHandler {
 			public void setAttribute(final Object userObject, final String value) {
 				final AttributeProperties ap = (AttributeProperties) userObject;
 				ap.attributeValue = value.toString();
+			}
+		});
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, "TYPE", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final AttributeProperties ap = (AttributeProperties) userObject;
+				ap.attributeType = value.toString();
 			}
 		});
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "RESTRICTED", new IAttributeHandler() {

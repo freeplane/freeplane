@@ -35,13 +35,13 @@ import org.freeplane.features.common.styles.MapStyleModel;
 
 @EnabledAction(checkOnNodeChange=true)
 class CopyAttributes extends AFreeplaneAction {
-	private static String[] attributes = null;
+	private static Object[] attributes = null;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static String[] getAttributes() {
+	public static Object[] getAttributes() {
 		return attributes;
 	}
 
@@ -63,7 +63,7 @@ class CopyAttributes extends AFreeplaneAction {
 			return;
 		}
 		final int attributeTableLength = model.getAttributeTableLength();
-		attributes = new String[attributeTableLength * 2];
+		attributes = new Object[attributeTableLength * 2];
 		for(int i = 0; i < attributeTableLength; i++){
 			final Attribute attribute = model.getAttribute(i);
 			attributes[2 * i] = attribute.getName();
@@ -97,7 +97,7 @@ class PasteAttributes extends AMultipleNodeAction {
 	/**
 	 */
 	private void pasteAttributes(final NodeModel node) {
-		String[] attributes = CopyAttributes.getAttributes();
+		Object[] attributes = CopyAttributes.getAttributes();
 		if (attributes == null) {
 			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(), TextUtils
 			    .getText("no_copy_attributes_before_paste_attributes"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
@@ -105,8 +105,8 @@ class PasteAttributes extends AMultipleNodeAction {
 		}
 		final MAttributeController controller = MAttributeController.getController();
 		for(int i = 0; i < attributes.length;){
-			final String name = attributes[i++];
-			final String value = attributes[i++];
+			final String name = attributes[i++].toString();
+			final Object value = attributes[i++];
 			controller.addAttribute(node, new Attribute(name, value));
 		}
 	}

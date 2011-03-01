@@ -85,7 +85,7 @@ public class AttributeRegistryElement {
 		restrictionModel = isRestricted;
 	}
 
-	public void addValue(final String s) {
+	public void addValue(final Object s) {
 		values._add(s);
 		registry.fireAttributesChanged();
 	}
@@ -123,7 +123,7 @@ public class AttributeRegistryElement {
 		registry.fireAttributesChanged();
 	}
 
-	public void removeValue(final String s) {
+	public void removeValue(final Object s) {
 		values._remove(s);
 		registry.fireAttributesChanged();
 	}
@@ -146,10 +146,13 @@ public class AttributeRegistryElement {
 		if (isRestricted()) {
 			element.setAttribute("RESTRICTED", "true");
 			for (int i = 0; i < values.getSize(); i++) {
-				final XMLElement value = new XMLElement();
-				value.setName(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE);
-				value.setAttribute("VALUE", values.getElementAt(i).toString());
-				element.addChild(value);
+				final XMLElement xmlValue = new XMLElement();
+				xmlValue.setName(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE);
+				final Object value = values.getElementAt(i);
+				xmlValue.setAttribute("VALUE", value.toString());
+				if(! (value  instanceof String))
+					xmlValue.setAttribute("TYPE", value.getClass().getName());
+				element.addChild(xmlValue);
 			}
 		}
 		element.setName(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME);

@@ -22,10 +22,12 @@ package org.freeplane.features.mindmapmode.attribute;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -44,6 +46,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -167,23 +170,40 @@ class ListDialog extends JDialog {
 
 	public static void showDialog(final Component frameComp, final Component locationComp, final String labelText,
 	                              final String title, final IListModel possibleValues, final String longValue) {
-		final Frame frame = JOptionPane.getFrameForComponent(frameComp);
-		ListDialog.dialog = new ListDialog(frame, locationComp, labelText, title, possibleValues, longValue);
+		final Window window = SwingUtilities.getWindowAncestor(frameComp);
+		if(window instanceof Frame)
+			ListDialog.dialog = new ListDialog((Frame)window, locationComp, labelText, title, possibleValues, longValue);
+		else if(window instanceof Dialog)
+			ListDialog.dialog = new ListDialog((Dialog )window, locationComp, labelText, title, possibleValues, longValue);
+		else{
+			final Frame frame = JOptionPane.getFrameForComponent(frameComp);
+			ListDialog.dialog = new ListDialog(frame, locationComp, labelText, title, possibleValues, longValue);
+		}
 		UITools.addEscapeActionToDialog(ListDialog.dialog);
 		ListDialog.dialog.show();
 	}
 
-	final private JButton addButton;
+	private JButton addButton;
 	private IListModel data = null;
-	final private JButton deleteButton;
-	final private JList list;
-	final private JButton renameButton;
-	final private JTextField textField;
+	private JButton deleteButton;
+	private JList list;
+	private JButton renameButton;
+	private JTextField textField;
 
 	private ListDialog(final Frame frame, final Component locationComp, final String labelText, final String title,
 	                   final IListModel data, final String longValue) {
 		super(frame, title, true);
-		this.data = data;
+		init(locationComp, labelText, data, longValue);
+	}
+
+	private ListDialog(final Dialog frame, final Component locationComp, final String labelText, final String title,
+	                   final IListModel data, final String longValue) {
+		super(frame, title, true);
+		init(locationComp, labelText, data, longValue);
+	}
+
+	public void init(final Component locationComp, final String labelText, final IListModel data, final String longValue) {
+	    this.data = data;
 		final JButton closeButton = new JButton();
 		MenuBuilder.setLabelAndMnemonic(closeButton, TextUtils.getText("CloseAction.text"));
 		closeButton.addActionListener(new CloseAction());
@@ -275,7 +295,7 @@ class ListDialog extends JDialog {
 		updateButtons();
 		pack();
 		setLocationRelativeTo(locationComp);
-	}
+    }
 
 	private String getCurrentText() {
 		final Document document = textField.getDocument();

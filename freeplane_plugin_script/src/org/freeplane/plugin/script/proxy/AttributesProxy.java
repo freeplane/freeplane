@@ -31,7 +31,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 			return null;
 		}
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		return nodeAttributeTableModel.getAttribute(index).getValue();
+		return nodeAttributeTableModel.getAttribute(index).getValue().toString();
 	}
 
 	public List<String> getAll(final String name) {
@@ -42,7 +42,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		final ArrayList<String> result = new ArrayList<String>();
 		for (final Attribute attribute : nodeAttributeTableModel.getAttributes()) {
 			if (attribute.getName().equals(name)) {
-				result.add(attribute.getValue());
+				result.add(attribute.getValue().toString());
 			}
 		}
 		return result;

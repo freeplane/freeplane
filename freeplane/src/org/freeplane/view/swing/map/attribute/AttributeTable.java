@@ -79,6 +79,7 @@ import org.freeplane.view.swing.map.NodeView;
  */
 class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final String EDITING_STOPPED = AttributeTable.class.getName() + ".editingStopped";
+	private static int CLICK_COUNT_TO_START = 2;
 
 	static private class HeaderMouseListener extends MouseAdapter {
 		@Override
@@ -278,22 +279,17 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		if(column == 1 && e instanceof MouseEvent){
 			final MouseEvent me = (MouseEvent) e;
-			final String value = getValueAt(row, column).toString();
-			final String link = LinkController.findLink(value);
-			if(link != null){
-				try {
-                    final URI uri = new URI(link);
-        			final Icon linkIcon = IconController.getLinkIcon(uri, null);
-					final int xmax = linkIcon.getIconWidth();
-        			final int x = me.getX() - getColumnModel().getColumn(0).getWidth();
-        			if(x < xmax){
-    					UrlManager.getController().loadURL(uri);
-                        return false;
-        				}
-        			}
-                catch (URISyntaxException e1) {
-                }
-            }
+			final Object value = getValueAt(row, column);
+			if(value instanceof URI){
+				final URI uri = (URI) value;
+				final Icon linkIcon = IconController.getLinkIcon(uri, null);
+				final int xmax = linkIcon.getIconWidth();
+				final int x = me.getX() - getColumnModel().getColumn(0).getWidth();
+				if(x < xmax){
+					UrlManager.getController().loadURL(uri);
+					return false;
+				}
+             }
 		}
 		putClientProperty("AttributeTable.EditEvent", e);
 		try{
@@ -356,6 +352,12 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			editBase.show(frame);
 		}
 
+		public boolean isCellEditable(EventObject anEvent) {
+			if (anEvent instanceof MouseEvent) { 
+				return ((MouseEvent)anEvent).getClickCount() >= CLICK_COUNT_TO_START;
+			}
+			return true;
+		}
 		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 	        return new AttributeTableCellRenderer().getTableCellRendererComponent(table, value, true, true, row, column);
         }
@@ -393,6 +395,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			comboBox.addFocusListener(AttributeTable.focusListener);
 			comboBox.getEditor().getEditorComponent().addFocusListener(AttributeTable.focusListener);
 			dce = new DefaultCellEditor(comboBox);
+			dce.setClickCountToStart(CLICK_COUNT_TO_START);
 		}
 		return dce;
 	}
