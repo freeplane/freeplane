@@ -20,6 +20,8 @@
 package org.freeplane.features.common.text;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
@@ -81,11 +83,56 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		}
 	}
 
+	static private class TypeReference{
+		Constructor<?> constructor;
+
+		public TypeReference(String typeReference) {
+            Constructor<?> constructor;
+            try {
+	            constructor = getClass().getClassLoader().loadClass(typeReference).getConstructor(String.class);
+	            this.constructor = constructor;
+            }
+            catch (Exception e) {
+            	this.constructor = null;
+	            e.printStackTrace();
+            }
+        }
+		Object create(String spec){
+			try {
+				return constructor.newInstance(spec);
+			}
+			catch (Exception e) {
+				LogUtils.warn(e);
+				return spec;
+			}
+		}
+	}
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
+				final Object nodeContent = node.getUserObject();
+				if(nodeContent instanceof TypeReference){
+					final Object newInstance = ((TypeReference) nodeContent).create(nodeContent.toString());
+					node.setUserObject(newInstance);
+					return;
+				}
 				node.setText(value);
+			}
+		});
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TYPE", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = ((NodeModel) userObject);
+				final Object nodeContent = node.getUserObject();
+				final TypeReference typeReference = new TypeReference(value);
+				if(nodeContent == null){
+					node.setUserObject(typeReference);
+					return;
+				}
+				if(nodeContent instanceof String){
+					final Object newInstance = typeReference.create(nodeContent.toString());
+					node.setUserObject(newInstance);
+				}
 			}
 		});
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT_SHORTENED, new IAttributeHandler() {
@@ -151,6 +198,9 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		final String text =  data.toString();
 		if (!HtmlUtils.isHtmlNode(text)) {
 			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
+		}
+		if(! (data instanceof String)){
+			writer.addAttribute("TYPE", data.getClass().getName());
 		}
 	}
 

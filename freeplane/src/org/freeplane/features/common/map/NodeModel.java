@@ -73,7 +73,7 @@ public class NodeModel implements MutableTreeNode {
 	private NodeModel parent;
 	private int position = NodeModel.UNKNOWN_POSITION;
 	private NodeModel preferredChild;
-	private Object userObject = "no text";
+	private Object userObject = null;
 
 	public Object getUserObject() {
 		return userObject;
@@ -81,7 +81,7 @@ public class NodeModel implements MutableTreeNode {
 
 	private Map<Integer, ITooltipProvider> toolTip = null;
 	private Collection<INodeView> views = null;
-	private String xmlText = "no text";
+	private String xmlText = null;
 
 	public NodeModel(final MapModel map) {
 		this("", map);
