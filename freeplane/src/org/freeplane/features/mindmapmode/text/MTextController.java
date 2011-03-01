@@ -23,7 +23,9 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -302,7 +304,7 @@ public class MTextController extends TextController {
 		return showResult == JOptionPane.OK_OPTION;
 	}
 
-	public void editDetails(final NodeModel nodeModel, final boolean editLong) {
+	public void editDetails(final NodeModel nodeModel, InputEvent e, final boolean editLong) {
 		final Controller controller = Controller.getCurrentController();
 	    stopEditing();
 		Controller.getCurrentModeController().setBlocked(true);
@@ -333,7 +335,7 @@ public class MTextController extends TextController {
 				mCurrentEditDialog = null;
 			}
 		};
-		mCurrentEditDialog = createEditor(nodeModel, IEditBaseCreator.EditedComponent.DETAIL, editControl, text, null, false, editLong, true);
+		mCurrentEditDialog = createEditor(nodeModel, IEditBaseCreator.EditedComponent.DETAIL, editControl, text, e, false, editLong, true);
 		final JFrame frame = controller.getViewController().getJFrame();
 		mCurrentEditDialog.show(frame);
     }
@@ -451,7 +453,7 @@ public class MTextController extends TextController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
+	public void edit(final InputEvent e, final boolean addNew, final boolean editLong) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel selectedNode = controller.getSelection().getSelected();
 		if (selectedNode != null) {
@@ -459,8 +461,12 @@ public class MTextController extends TextController {
 				edit(selectedNode, selectedNode, e, false, false, editLong);
 			}
 			else if (!Controller.getCurrentModeController().isBlocked()) {
-				((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(MMapController.NEW_SIBLING_BEHIND,
-				    e);
+				final KeyEvent firstKeyEvent; 
+				if(e instanceof KeyEvent)
+					firstKeyEvent = (KeyEvent) e;
+				else
+					firstKeyEvent = null;
+				((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(MMapController.NEW_SIBLING_BEHIND,firstKeyEvent);
 			}
 			if (e != null) {
 				e.consume();
@@ -478,7 +484,7 @@ public class MTextController extends TextController {
 		return matcher.find();
 	}
 
-	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final KeyEvent firstEvent,
+	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final InputEvent firstEvent,
 	          final boolean isNewNode, final boolean parentFolded, final boolean editLong) {
 		if (nodeModel == null || mCurrentEditDialog != null) {
 			return;
@@ -562,10 +568,15 @@ public class MTextController extends TextController {
 	}
 
 	private EditNodeBase createEditor(final NodeModel nodeModel, final EditedComponent editedComponent,
-                                      final EditNodeBase.IEditControl editControl, String text, final KeyEvent firstEvent,
+                                      final EditNodeBase.IEditControl editControl, String text, final InputEvent firstEvent,
                                       final boolean isNewNode, final boolean editLong, boolean internal) {
 	    Controller.getCurrentModeController().setBlocked(true);
-		EditNodeBase base = getEditNodeBase(nodeModel, text, editedComponent, editControl, firstEvent, editLong);
+		final KeyEvent firstKeyEvent; 
+		if(firstEvent instanceof KeyEvent)
+			firstKeyEvent = (KeyEvent) firstEvent;
+		else
+			firstKeyEvent = null;
+		EditNodeBase base = getEditNodeBase(nodeModel, text, editedComponent, editControl, firstKeyEvent, editLong);
 		if(base != null || ! internal){
 			return base;
 		}

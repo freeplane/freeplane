@@ -192,7 +192,7 @@ public class MModeControllerFactory {
 					else {
 						if (e.getClickCount() == 2 && !e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown()
 								&& !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1) {
-							((MTextController) TextController.getController()).edit(null, false, false);
+							((MTextController) TextController.getController()).edit(e, false, false);
 							return;
 						}
 						final Component selectedComponent = controller.getViewController().getSelectedComponent();

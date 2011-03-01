@@ -287,11 +287,11 @@ public class NodeView extends JComponent implements INodeView {
 	    		else if(controller instanceof MTextController){
 		    		switch(e.getClickCount()){
 		    			case 1:
-			    			((MTextController) controller).editDetails(model, false);
+			    			((MTextController) controller).editDetails(model, e, false);
 		    				break;
 		    			case 2:
 		    				if(controller instanceof MTextController){
-		    	    			((MTextController) controller).editDetails(model, true);
+		    	    			((MTextController) controller).editDetails(model, e, true);
 		    				}
 		    				break;
 		    		}

@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.map.mindmapmode;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileWriter;
@@ -38,15 +39,9 @@ import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
  * @author Daniel Polansky
  */
 class EditNodeExternalApplication extends EditNodeBase {
-	final private KeyEvent firstEvent;
 
-	public EditNodeExternalApplication(final NodeModel node, final String text, final KeyEvent firstEvent, final IEditControl editControl) {
+	public EditNodeExternalApplication(final NodeModel node, final String text, final InputEvent firstEvent, final IEditControl editControl) {
 		super(node, text, editControl);
-		this.firstEvent = firstEvent;
-	}
-
-	protected KeyEvent getFirstEvent() {
-		return firstEvent;
 	}
 
 	public void show(JFrame frame) {

@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.map.mindmapmode;
 
 import java.awt.Color;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JComponent;
@@ -45,7 +46,7 @@ import org.freeplane.view.swing.map.ZoomableLabel;
  */
 public class MMapViewController extends MapViewController implements IEditBaseCreator {
 	public EditNodeBase createEditor(final NodeModel node, final EditedComponent editedComponent,
-                             final EditNodeBase.IEditControl editControl, String text, final KeyEvent firstEvent,
+                             final EditNodeBase.IEditControl editControl, String text, final InputEvent firstEvent,
                              final boolean editLong) {
 	    final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
 		final boolean editInternalWysiwyg = editLong && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
@@ -80,7 +81,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
     }
 	
 	private EditNodeBase createEditor(final NodeModel node, final IEditBaseCreator.EditedComponent parent, final String text,
-	                                                     final KeyEvent firstEvent,
+	                                                     final InputEvent firstEvent,
 	                                                     final IEditControl editControl) {
 		final ZoomableLabel parentComponent;
 		final MainView mainView = (MainView) getComponent(node);

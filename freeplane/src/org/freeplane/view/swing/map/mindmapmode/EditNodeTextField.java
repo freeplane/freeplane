@@ -24,12 +24,14 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -302,13 +304,13 @@ class EditNodeTextField extends EditNodeBase {
 		}
 	}
 
-	final private KeyEvent firstEvent;
+	final private InputEvent firstEvent;
 	private JEditorPane textfield;
 	private final DocumentListener documentListener;
 	private int maxWidth;
 
 	@SuppressWarnings("serial")
-    public EditNodeTextField(final NodeModel node, final ZoomableLabel parent, final String text, final KeyEvent firstEvent,
+    public EditNodeTextField(final NodeModel node, final ZoomableLabel parent, final String text, final InputEvent firstEvent,
 	                         final IEditControl editControl) {
 		super(node, text, editControl);
 		this.firstEvent = firstEvent;
@@ -570,9 +572,17 @@ class EditNodeTextField extends EditNodeBase {
 		parent.setHorizontalAlignment(JLabel.LEFT);
 
 		parent.add(textfield, 0);
-		textfield.setCaretPosition(document.getLength());
-		if (firstEvent != null) {
-			redispatchKeyEvents(textfield, firstEvent);
+		if (firstEvent instanceof KeyEvent) {
+			redispatchKeyEvents(textfield, (KeyEvent) firstEvent);
+		}
+		if(firstEvent instanceof MouseEvent){
+			final Point point = ((MouseEvent) firstEvent).getPoint();
+			point.x -= x + iconWidth;
+			point.y -= y;
+			textfield.setCaretPosition(textfield.viewToModel(point));;
+		}
+		else{
+			textfield.setCaretPosition(document.getLength());
 		}
 		document.addDocumentListener(documentListener);
 		if(textController.getIsShortened(node)){

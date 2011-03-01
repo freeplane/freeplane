@@ -53,6 +53,6 @@ class EditDetailsAction extends AFreeplaneAction {
 		final Component node = viewController.getComponent(nodeModel);
 		node.requestFocus();
 		final MTextController textController = (MTextController) MTextController.getController();
-		textController.editDetails(nodeModel, true);
+		textController.editDetails(nodeModel, null, true);
 	}
 }

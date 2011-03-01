@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 
@@ -190,11 +191,11 @@ public class EditNodeWYSIWYG extends EditNodeBase {
         }
 	}
 
-	final private KeyEvent firstEvent;
+	final private InputEvent firstEvent;
 	final private boolean enableSplit;
 	final private String purpose;
 
-	public EditNodeWYSIWYG(String purpose, final NodeModel node, final String text, final KeyEvent firstEvent, final IEditControl editControl, boolean enableSplit) {
+	public EditNodeWYSIWYG(String purpose, final NodeModel node, final String text, final InputEvent firstEvent, final IEditControl editControl, boolean enableSplit) {
 		super(node, text, editControl);
 		this.firstEvent = firstEvent;
 		this.enableSplit = enableSplit;
@@ -266,7 +267,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			}
 			htmlEditorPanel.setCurrentDocumentContent(content);
 			if (firstEvent instanceof KeyEvent) {
-				final KeyEvent firstKeyEvent = firstEvent;
+				final KeyEvent firstKeyEvent = (KeyEvent) firstEvent;
 				final JTextComponent currentPane = htmlEditorPanel.getEditorPane();
 				if (currentPane == htmlEditorPanel.getMostRecentFocusOwner()) {
 					redispatchKeyEvents(currentPane, firstKeyEvent);

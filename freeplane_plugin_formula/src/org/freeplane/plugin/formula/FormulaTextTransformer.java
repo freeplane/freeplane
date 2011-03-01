@@ -1,6 +1,7 @@
 package org.freeplane.plugin.formula;
 
 import java.awt.Dimension;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JEditorPane;
@@ -39,10 +40,15 @@ class FormulaTextTransformer extends AbstractTextTransformer implements IEditBas
 	}
 
 	public EditNodeBase createEditor(final NodeModel node, final EditedComponent editedComponent,
-	                                 final EditNodeBase.IEditControl editControl, String text, final KeyEvent firstEvent,
+	                                 final EditNodeBase.IEditControl editControl, String text, final InputEvent firstEvent,
 	                                 final boolean editLong) {
-		if(firstEvent != null){
-			if (firstEvent.getKeyChar() == '='){
+		final KeyEvent firstKeyEvent; 
+		if(firstEvent instanceof KeyEvent)
+			firstKeyEvent = (KeyEvent) firstEvent;
+		else
+			firstKeyEvent = null;
+		if(firstKeyEvent != null){
+			if (firstKeyEvent.getKeyChar() == '='){
 				text = "=";
 			}
 			else{
@@ -53,7 +59,7 @@ class FormulaTextTransformer extends AbstractTextTransformer implements IEditBas
 			JEditorPane textEditor = new JEditorPane();
 			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 			scrollPane.setMinimumSize(new Dimension(0, 60));
-			final EditNodeDialog editNodeDialog = new FormulaEditor(node, text, firstEvent, editControl, false, textEditor);
+			final EditNodeDialog editNodeDialog = new FormulaEditor(node, text, firstKeyEvent, editControl, false, textEditor);
 			editNodeDialog.setTitle(TextUtils.getText("formula_editor"));
 			textEditor.setContentType("text/groovy");
 			return editNodeDialog;
