@@ -225,10 +225,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final NodeModel newlySelectedNodeView = ((MainView) e.getComponent()).getNodeView().getModel();
 		final boolean extend = e.isControlDown();
 		final boolean range = e.isShiftDown();
-		final boolean branch = e.isAltGraphDown() || e.isAltDown();
 		/* windows alt, linux altgraph .... */
 		boolean retValue = false;
-		if (extend || range || branch || !controller.getSelection().isSelected(newlySelectedNodeView)) {
+		if (extend || range || !controller.getSelection().isSelected(newlySelectedNodeView)) {
 			if (!range) {
 				if (extend) {
 					controller.getSelection().toggleSelected(newlySelectedNodeView);
@@ -240,10 +239,6 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			}
 			else {
 				controller.getSelection().selectContinuous(newlySelectedNodeView);
-				retValue = true;
-			}
-			if (branch) {
-				controller.getSelection().selectBranch(newlySelectedNodeView, extend);
 				retValue = true;
 			}
 		}

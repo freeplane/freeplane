@@ -179,7 +179,7 @@ public class MModeControllerFactory {
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		userInputListenerFactory.setNodeMouseMotionListener(new DelayedMouseListener( new DefaultNodeMouseMotionListener() {
 			public void mouseClicked(final MouseEvent e) {
-				if (wasFocused() && e.getModifiers() == InputEvent.BUTTON1_MASK) {
+				if (wasFocused() && (e.getModifiers() & ~ (InputEvent.ALT_DOWN_MASK | InputEvent.ALT_MASK)) == InputEvent.BUTTON1_MASK) {
 					/* perform action only if one selected node. */
 					final MapController mapController = modeController.getMapController();
 					if (mapController.getSelectedNodes().size() != 1) {
@@ -190,9 +190,9 @@ public class MModeControllerFactory {
 						LinkController.getController().loadURL(e);
 					}
 					else {
-						if (e.getClickCount() == 2 && !e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown()
+						if (e.getClickCount() == 2 && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown()
 								&& !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1) {
-							((MTextController) TextController.getController()).edit(e, false, false);
+							((MTextController) TextController.getController()).edit(e, false, e.isAltDown());
 							return;
 						}
 						final Component selectedComponent = controller.getViewController().getSelectedComponent();

@@ -284,17 +284,8 @@ public class NodeView extends JComponent implements INodeView {
 	    		final ZoomableLabel component = (ZoomableLabel) e.getComponent();
 	    		if(e.getX() < component.getIconWidth())
 	    			controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
-	    		else if(controller instanceof MTextController){
-		    		switch(e.getClickCount()){
-		    			case 1:
-			    			((MTextController) controller).editDetails(model, e, false);
-		    				break;
-		    			case 2:
-		    				if(controller instanceof MTextController){
-		    	    			((MTextController) controller).editDetails(model, e, true);
-		    				}
-		    				break;
-		    		}
+	    		else if(controller instanceof MTextController && e.getClickCount() == 2){
+	    			((MTextController) controller).editDetails(model, e, e.isAltDown());
 	    		}
 	        }
 	    	
