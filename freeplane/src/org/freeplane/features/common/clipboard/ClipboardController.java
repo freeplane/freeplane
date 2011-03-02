@@ -379,14 +379,15 @@ public class ClipboardController implements IExtension {
 		}
 		pre += "{}";
 		fileout.write("\\li" + depth * 350 + level + "{}");
-		if (mindMapNodeModel.getText().matches(" *")) {
+		final String nodeText = TextController.getController().getPlainTextContent(mindMapNodeModel);
+		if (nodeText.matches(" *")) {
 			fileout.write("o");
 		}
 		else {
-			final String text = rtfEscapeUnicodeAndSpecialCharacters(TextController.getController().getPlainTextContent(mindMapNodeModel));
+			final String text = rtfEscapeUnicodeAndSpecialCharacters(nodeText);
 			if (NodeLinks.getValidLink(mindMapNodeModel) != null) {
 				final String link = rtfEscapeUnicodeAndSpecialCharacters(NodeLinks.getLinkAsString(mindMapNodeModel));
-				if (link.equals(mindMapNodeModel.getText())) {
+				if (link.equals(nodeText)) {
 					fileout.write(pre + "<{\\ul\\cf1 " + link + "}>" + "}");
 				}
 				else {

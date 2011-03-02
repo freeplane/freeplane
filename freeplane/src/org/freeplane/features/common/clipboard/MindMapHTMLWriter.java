@@ -158,14 +158,6 @@ class MindMapHTMLWriter {
 		return ResourceController.getResourceController().getProperty(key);
 	}
 
-	boolean hasHtml(final NodeModel model) {
-		return model.getText().startsWith("<html>");
-	}
-
-	private boolean isHeading(final NodeModel model, final int depth) {
-		return basedOnHeadings && mapController.hasChildren(model) && depth <= 6 && !hasHtml(model);
-	}
-
 	private void writeBodyWithFolding(final NodeModel rootNodeOfBranch) throws IOException {
 		writeJavaScript();
 		fileout.write("<SPAN class=\"foldspecial\" onclick=\"fold_document()\">All +</SPAN>" + MindMapHTMLWriter.el);
@@ -237,7 +229,10 @@ class MindMapHTMLWriter {
 		if (getProperty("html_export_folding").equals("html_export_no_folding") || basedOnHeadings || isRoot) {
 			createFolding = false;
 		}
-		final boolean heading = isHeading(model, depth);
+		final TextController textController = TextController.getController();
+		final String text = textController.getTransformedText(textController.getText(model), model);
+		final boolean hasHtml = text.startsWith("<html>");
+		final boolean heading = basedOnHeadings && !hasHtml && mapController.hasChildren(model) && depth <= 6;
 		if (!treatAsParagraph && !basedOnHeadings) {
 			fileout.write("<li>");
 		}
@@ -245,7 +240,7 @@ class MindMapHTMLWriter {
 			if (heading) {
 				fileout.write("<h" + depth + ">");
 			}
-			else if (!hasHtml(model)) {
+			else if (!hasHtml) {
 				fileout.write("<p>");
 			}
 		}
@@ -269,8 +264,7 @@ class MindMapHTMLWriter {
 		if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
 			writeIcons(model);
 		}
-		final String string = model.getText();
-        writeModelContent(string);
+		writeModelContent(text);
         final String detailText = DetailTextModel.getDetailTextText(model);
         if(detailText != null){
         	writeModelContent(detailText);
