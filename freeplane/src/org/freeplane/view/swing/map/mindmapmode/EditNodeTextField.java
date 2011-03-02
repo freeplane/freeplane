@@ -574,7 +574,7 @@ class EditNodeTextField extends EditNodeBase {
 		if (firstEvent instanceof KeyEvent) {
 			redispatchKeyEvents(textfield, (KeyEvent) firstEvent);
 		}
-		if(firstEvent instanceof MouseEvent){
+		else if(firstEvent instanceof MouseEvent){
 			final Point point = ((MouseEvent) firstEvent).getPoint();
 			point.x -= x + iconWidth;
 			point.y -= y;
