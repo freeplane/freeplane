@@ -35,6 +35,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.features.common.text.TextController;
 
 /**
@@ -44,8 +45,6 @@ public class AttributeController implements IExtension {
 	private static final Integer ATTRIBUTE_TOOLTIP = 7;
 	static private UIIcon attributeIcon = null;
 	private static final String STATE_ICON = "AttributeExist";
-	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
-	    .getBooleanProperty("formula_dont_mark_formulas");;
 	public static AttributeController getController() {
 		return getController(Controller.getCurrentModeController());
 	}
@@ -200,7 +199,9 @@ public class AttributeController implements IExtension {
 				private String getTransformedValue(final TextController textController, final String originalText) {
 					try {
 						final String text = textController.getTransformedText(originalText, node);
-						if (!DONT_MARK_FORMULAS && text != originalText)
+						final boolean markTransformedText = !Controller.getCurrentController().getResourceController()
+						    .getBooleanProperty(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT);
+						if (markTransformedText && text != originalText)
 							return colorize(text, "green");
 						else
 							return text;

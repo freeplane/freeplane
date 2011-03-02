@@ -26,12 +26,15 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GradientPaint;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Map.Entry;
+
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JToolTip;
@@ -57,6 +60,7 @@ import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.features.common.text.TextController;
 
 
@@ -71,9 +75,8 @@ public abstract class MainView extends ZoomableLabel {
 	 */
 	private static final long serialVersionUID = 1L;
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
-	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController()
-	    .getResourceController().getBooleanProperty("formula_dont_mark_formulas");;
 	private boolean isShortened;
+	private TextModificationState textModified = TextModificationState.NONE;
 
 	boolean isShortened() {
     	return isShortened;
@@ -84,6 +87,7 @@ public abstract class MainView extends ZoomableLabel {
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalTextPosition(SwingConstants.TRAILING);
+		setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 	}
 
 	protected void convertPointFromMap(final Point p) {
@@ -293,6 +297,8 @@ public abstract class MainView extends ZoomableLabel {
 	public boolean isEdited() {
 		return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
 	}
+	
+	static enum TextModificationState{NONE, SUCCESS, FAILURE};
 
 	public void updateText(NodeModel nodeModel) {
 		final NodeView nodeView = getNodeView();
@@ -304,17 +310,12 @@ public abstract class MainView extends ZoomableLabel {
 		String text = originalText;
 		try {
 			text = textController.getTransformedText(text, nodeModel);
-			// FIXME: temporarily, to show evaluated formulas:
-			// note: test for identity is OK here
-			if (!DONT_MARK_FORMULAS && text != originalText)
-				setBorder(new LineBorder(Color.GREEN, 2));
-			else
-				setBorder(null);
+			textModified = text != originalText ? TextModificationState.SUCCESS : TextModificationState.NONE;
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);
 			text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
-			setBorder(new LineBorder(Color.RED, 2));
+			textModified = TextModificationState.FAILURE;
 		}
 		final boolean textShortened = textController.getIsShortened(nodeModel);
 		if(textShortened){
@@ -376,6 +377,27 @@ public abstract class MainView extends ZoomableLabel {
         } else {
             toolTipManager.unregisterComponent(this);
         }
+    }
+
+	@Override
+    protected void paintBorder(Graphics g) {
+	    super.paintBorder(g);
+		final boolean dontMarkTransformedText = Controller.getCurrentController().getResourceController()
+	    .getBooleanProperty(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT);
+		if(dontMarkTransformedText)
+			return;
+		final Color color = g.getColor();
+		if(TextModificationState.SUCCESS.equals(textModified)){
+			g.setColor(Color.GREEN);
+		}
+		else if(TextModificationState.FAILURE.equals(textModified)){
+			g.setColor(Color.RED);
+		}
+		else{
+			return;
+		}
+		g.drawRect(6, 6, getWidth()-12, getHeight()-12);
+		g.setColor(color);
     }
 
 

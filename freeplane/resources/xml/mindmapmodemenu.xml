@@ -131,6 +131,7 @@
 				<menu_radio_action action="HideAllAttributesAction" />
 			</menu_submenu>
 			<menu_action action="SetBooleanPropertyAction.show_node_tooltips" />
+			<menu_action action="SetBooleanPropertyAction.formula_dont_mark_formulas" />
 		</menu_submenu>
 		<menu_submenu name="insert" name_ref="menu_insert">
 			<menu_category name="nodes">
@@ -377,6 +378,7 @@
 			<menu_action action="ToggleFullScreenAction" />
 			<menu_action action="ShowHideNoteAction" />
 			<menu_action action="SetBooleanPropertyAction.show_node_tooltips" />
+			<menu_action action="SetBooleanPropertyAction.formula_dont_mark_formulas" />
 		</menu_category>
 	</menu_category>
 	<menu_category name="node_popup">

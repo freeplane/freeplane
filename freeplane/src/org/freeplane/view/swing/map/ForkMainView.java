@@ -62,7 +62,7 @@ class ForkMainView extends MainView {
 		final EdgeController edgeController = EdgeController.getController(nodeView.getMap().getModeController());
 		int edgeWidth = edgeController.getWidth(model);
 		final EdgeStyle style = edgeController.getStyle(model);
-		edgeWidth = style.getNodeLineWidth(edgeWidth);
+		edgeWidth = nodeView.getMap().getZoomed(style.getNodeLineWidth(edgeWidth));
 		final Point in = new Point(0, getHeight() + edgeWidth / 2 - 1);
 		return in;
 	}

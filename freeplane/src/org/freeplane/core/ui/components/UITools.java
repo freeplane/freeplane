@@ -49,6 +49,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * Utilities for accessing the GUI, creating dialogs etc.: In scripts available as "global variable" <code>ui</code>.
@@ -405,4 +406,17 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
     	final BasicStroke stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 1f, fdash, 0f);
         return stroke;
     }
+
+	public static void repaintAll(Container root) {
+		root.repaint();
+		for(int i = 0; i < root.getComponentCount(); i++){
+			final Component component = root.getComponent(i);
+			if(component instanceof Container){
+				repaintAll((Container) component);
+			}
+			else{
+				component.repaint();
+			}
+		}
+	}
 }

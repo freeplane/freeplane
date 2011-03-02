@@ -35,6 +35,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.features.common.text.TextController;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
@@ -43,8 +44,6 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	 */
 	private static final long serialVersionUID = 1L;
 	static final float ZOOM_CORRECTION_FACTOR = 0.97F;
-	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
-	.getBooleanProperty("formula_dont_mark_formulas");
 	private boolean isPainting;
 	private float zoom;
 	private Color borderColor;
@@ -82,7 +81,9 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 				// evaluate values only
 				final TextController textController = TextController.getController();
 				text = textController.getTransformedText(originalText, attributeTableModel.getNode());
-				if (!DONT_MARK_FORMULAS && text != originalText) {
+				final boolean markTransformedText = !Controller.getCurrentController().getResourceController()
+				    .getBooleanProperty(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT);
+				if (markTransformedText && text != originalText) {
 					borderColor = Color.GREEN;
 				}
 			}

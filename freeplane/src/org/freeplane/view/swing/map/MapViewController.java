@@ -40,6 +40,7 @@ import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
@@ -197,6 +198,7 @@ public class MapViewController implements IMapViewManager {
 		}
 		int index = mapViewVector.indexOf(mapView);
 		mapController.removeMapChangeListener(mapView);
+		ResourceController.getResourceController().removePropertyChangeListener(mapView);
 		mapViewVector.remove(mapView);
 		if (mapViewVector.isEmpty()) {
 			/* Keep the current running mode */
@@ -392,6 +394,7 @@ public class MapViewController implements IMapViewManager {
 		final MapView mapView = new MapView(map, modeController);
 		addToOrChangeInMapViews(mapView.getName(), mapView);
 		modeController.getMapController().addMapChangeListener(mapView);
+		ResourceController.getResourceController().addPropertyChangeListener(mapView);
 		mapViewChangeListeners.mapViewCreated(mapView);
 		changeToMapView(mapView);
 	}

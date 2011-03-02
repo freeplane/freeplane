@@ -45,6 +45,8 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -89,6 +91,7 @@ import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.styles.MapViewLayout;
+import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.features.controller.print.FitMap;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
@@ -98,7 +101,7 @@ import org.freeplane.view.swing.map.link.ILinkView;
  * This class represents the view of a whole MindMap (in analogy to class
  * JTree).
  */
-public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener {
+public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener, IFreeplanePropertyListener {
 	private final class ParentListener extends ComponentAdapter implements ContainerListener {
 		public void componentRemoved(final ContainerEvent e) {
 			if (e.getChild() == MapView.this) {
@@ -1603,4 +1606,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final JViewport vp = (JViewport) getParent();
 		repaint(vp.getViewRect());
 	}
+
+	public void propertyChanged(String propertyName, String newValue, String oldValue) {
+		if(propertyName.equals(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT))
+			UITools.repaintAll(getRoot());
+	}
+
 }
