@@ -53,6 +53,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
@@ -279,8 +280,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final Object value = getValueAt(row, column);
 			if(value instanceof URI){
 				final URI uri = (URI) value;
-				final Icon linkIcon = IconController.getLinkIcon(uri, null);
-				final int xmax = linkIcon.getIconWidth();
+				final Icon linkIcon = getLinkIcon(uri);
+				final int xmax = linkIcon != null ? linkIcon.getIconWidth() : 0;
 				final int x = me.getX() - getColumnModel().getColumn(0).getWidth();
 				if(x < xmax){
 					UrlManager.getController().loadURL(uri);
@@ -304,6 +305,17 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		finally{
 			putClientProperty("AttributeTable.EditEvent", null);
 		}
+    }
+
+	Icon getLinkIcon(final URI uri) {
+	    NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, this);
+	    final NodeModel nodeModel;
+	    if(nodeView != null)
+	    	nodeModel = nodeView.getModel();
+	    else
+	    	nodeModel = Controller.getCurrentController().getSelection().getSelected();
+	    final Icon linkIcon = IconController.getLinkIcon(uri, nodeModel);
+	    return linkIcon;
     }
 	
 	@SuppressWarnings("serial")

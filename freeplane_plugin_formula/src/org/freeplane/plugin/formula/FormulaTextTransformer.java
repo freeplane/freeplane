@@ -22,7 +22,7 @@ class FormulaTextTransformer extends AbstractTextTransformer implements IEditBas
 		super(priority);
 	}
 
-	public Object transformContent(final Object obj, final NodeModel node) {
+	public Object transformContent(final Object obj, final NodeModel node, Object transformedExtension) {
 		if (! (obj instanceof String)) {
 			return obj;
 		}

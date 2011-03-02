@@ -87,7 +87,7 @@ public abstract class MainView extends ZoomableLabel {
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalTextPosition(SwingConstants.TRAILING);
-		setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		setBorder(BorderFactory.createEmptyBorder(2, 2, 4, 2));
 	}
 
 	protected void convertPointFromMap(final Point p) {
@@ -312,7 +312,7 @@ public abstract class MainView extends ZoomableLabel {
 		try {
 			if(textShortened && (content instanceof String))
 				content = HtmlUtils.htmlToPlain((String) content);
-			text = textController.getTransformedText(content, nodeModel);
+			text = textController.getTransformedText(content, nodeModel, content);
 			textModified = text != content ? TextModificationState.SUCCESS : TextModificationState.NONE;
 		}
 		catch (Throwable e) {
@@ -384,12 +384,12 @@ public abstract class MainView extends ZoomableLabel {
 	@Override
     protected void paintBorder(Graphics g) {
 	    super.paintBorder(g);
-		final boolean dontMarkTransformedText = Controller.getCurrentController().getResourceController()
-	    .getBooleanProperty(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT);
-		if(dontMarkTransformedText)
-			return;
 		final Color color = g.getColor();
 		if(TextModificationState.SUCCESS.equals(textModified)){
+			final boolean dontMarkTransformedText = Controller.getCurrentController().getResourceController()
+		    .getBooleanProperty(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT);
+			if(dontMarkTransformedText)
+				return;
 			g.setColor(Color.GREEN);
 		}
 		else if(TextModificationState.FAILURE.equals(textModified)){
@@ -398,7 +398,7 @@ public abstract class MainView extends ZoomableLabel {
 		else{
 			return;
 		}
-		g.drawRect(4, 4, getWidth()-9, getHeight()-9);
+		g.drawRect(2, 2, getWidth()-5, getHeight()-5);
 		g.setColor(color);
     }
 

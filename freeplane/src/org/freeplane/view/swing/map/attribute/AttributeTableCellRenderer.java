@@ -21,12 +21,14 @@ package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.net.URI;
 import javax.swing.Icon;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -35,8 +37,10 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.view.swing.map.NodeView;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	/**
@@ -80,7 +84,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 			try {
 				// evaluate values only
 				final TextController textController = TextController.getController();
-				text = textController.getTransformedText(originalText, attributeTableModel.getNode());
+				text = textController.getTransformedText(originalText, attributeTableModel.getNode(), null);
 				final boolean markTransformedText = !Controller.getCurrentController().getResourceController()
 				    .getBooleanProperty(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT);
 				if (markTransformedText && text != originalText) {
@@ -92,7 +96,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 				borderColor = Color.RED;
 			}
 			if(value instanceof URI){
-	                icon = IconController.getLinkIcon((URI)value, null);
+	                icon = ((AttributeTable)table).getLinkIcon((URI) value);
 			}
 			else{
 				icon = null;

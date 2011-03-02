@@ -309,7 +309,7 @@ class AttributeBuilder implements IElementDOMHandler {
 		final Object value = attr.getValue();
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
-			attributeElement.setAttribute("VALUE", TextController.getController().getTransformedText(value, node));
+			attributeElement.setAttribute("VALUE", TextController.getController().getTransformedText(value, node, null));
 		}
 		else{
 			attributeElement.setAttribute("VALUE", TypeReference.toString(value));

@@ -230,7 +230,8 @@ class MindMapHTMLWriter {
 			createFolding = false;
 		}
 		final TextController textController = TextController.getController();
-		final String text = textController.getTransformedText(textController.getText(model), model);
+		final Object userObject = model.getUserObject();
+		final String text = textController.getTransformedText(userObject, model, userObject);
 		final boolean hasHtml = text.startsWith("<html>");
 		final boolean heading = basedOnHeadings && !hasHtml && mapController.hasChildren(model) && depth <= 6;
 		if (!treatAsParagraph && !basedOnHeadings) {

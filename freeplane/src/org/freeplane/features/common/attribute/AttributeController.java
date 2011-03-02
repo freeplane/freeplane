@@ -198,7 +198,7 @@ public class AttributeController implements IExtension {
 
 				private String getTransformedValue(final TextController textController, final String originalText) {
 					try {
-						final String text = textController.getTransformedText(originalText, node);
+						final String text = textController.getTransformedText(originalText, node, null);
 						final boolean markTransformedText = !Controller.getCurrentController().getResourceController()
 						    .getBooleanProperty(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT);
 						if (markTransformedText && text != originalText)

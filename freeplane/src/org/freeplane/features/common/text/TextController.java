@@ -113,21 +113,21 @@ public class TextController implements IExtension {
 	}
 	
 	/** @throws RuntimeException if something goes wrong. */
-	public String getTransformedText(Object text, final NodeModel nodeModel) {
+	public String getTransformedText(Object text, final NodeModel nodeModel, Object extension) {
 		for (ITextTransformer textTransformer : getTextTransformers()) {
-			text = textTransformer.transformContent(text, nodeModel);
+			text = textTransformer.transformContent(text, nodeModel, extension);
 		}
 		return text.toString();
 	}
 	
 	/** returns an error message instead of a normal result if something goes wrong. */
-	public String getTransformedTextNoThrow(String originalText, final NodeModel node) {
+	public String getTransformedTextNoThrow(Object data, final NodeModel node, Object extension) {
 		try {
-			return getTransformedText(originalText, node);
+			return getTransformedText(data, node, extension);
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);
-			    return TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
+			    return TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
 		}
 	}
 
@@ -139,7 +139,8 @@ public class TextController implements IExtension {
 	// FIXME: This should be getPlainTransformedText() since getText() does not transform too
 	/** returns transformed text converted to plain text. */
 	public String getPlainTextContent(NodeModel nodeModel) {
-		final String text = getTransformedTextNoThrow(nodeModel.getText(), nodeModel);
+		final Object userObject = nodeModel.getUserObject();
+		final String text = getTransformedTextNoThrow(userObject, nodeModel, userObject);
 		return HtmlUtils.htmlToPlain(text);    
 	}
 
@@ -191,13 +192,13 @@ public class TextController implements IExtension {
 				    rule.append("font-family: " + font.getFamily() + ";");
 				    rule.append("font-size: " + font.getSize() + "pt;");
 				    rule.append("margin-top:0;");
-				    final String originalText = node.getText();
+				    final Object data = node.getUserObject();
 				    String text;
 				    try {
-					    text = getTransformedText(originalText, node);
+					    text = getTransformedText(data, node, data);
 				    }
 				    catch (Exception e) {
-					    text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
+					    text = TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
 					    rule.append("color:red;");
 				    }
 				    if (!HtmlUtils.isHtmlNode(text)) {

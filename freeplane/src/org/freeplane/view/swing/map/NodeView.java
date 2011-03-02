@@ -1534,9 +1534,10 @@ public class NodeView extends JComponent implements INodeView {
 		String newText;
 		if (getMap().showNotes()) {
 			final TextController textController = TextController.getController();
-			final String originalText = NoteModel.getNoteText(model);
+			final NoteModel extension = NoteModel.getNote(model);
+			final String originalText = (extension != null ? extension.getHtml() : null);
 			try {
-				newText = textController.getTransformedTextNoThrow(originalText, model);
+				newText = textController.getTransformedTextNoThrow(originalText, model, extension);
 				if (!DONT_MARK_FORMULAS && newText != originalText)
 					newText = colorize(newText, "green");
 			}

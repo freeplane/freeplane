@@ -129,7 +129,7 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	private void cacheTransformedValue(int row) {
 			final String originalText = nodeAttributeModel.getValueAt(row, 1).toString();
 			try {
-	            textController.getTransformedText(originalText, getNode());
+	            textController.getTransformedText(originalText, getNode(), null);
             }
             catch (Exception e) {
             	LogUtils.warn(e);

@@ -17,8 +17,8 @@ class TemplateTextTransformer extends AbstractTextTransformer {
 		this.textController = textController;
 	}
 
-	public Object transformContent(Object obj, final NodeModel node) {
-		if (obj == null)
+	public Object transformContent(Object obj, final NodeModel node, Object transformedExtension) {
+		if (obj == null || node.getUserObject() != transformedExtension)
 			return obj;
 		final String text = obj.toString();
 		if ((obj instanceof String) && (text.length() == 0 || text.charAt(0) == '='))
