@@ -95,7 +95,6 @@ public class NodeView extends JComponent implements INodeView {
 	/** For RootNodeView. */
 	public final static int DRAGGED_OVER_SON_LEFT = 3;
 	static private int FOLDING_SYMBOL_WIDTH = -1;
-	public static final String RESOURCES_SHOW_NODE_TOOLTIPS = "show_node_tooltips";
 	private static final long serialVersionUID = 1L;
 	public final static int SHIFT = -2;
 	static final int SPACE_AROUND = 50;
@@ -1446,19 +1445,9 @@ public class NodeView extends JComponent implements INodeView {
 	 */
 	private void updateToolTip() {
 		if(mainView != null){
-			final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(
-				NodeView.RESOURCES_SHOW_NODE_TOOLTIPS);
-			updateToolTip(areTooltipsDisplayed);
+			final NodeModel nodeModel = getModel();
+			mainView.setToolTipText(nodeModel.getToolTip(getMap().getModeController()));
 		}
-	}
-
-	private void updateToolTip(final boolean areTooltipsDisplayed) {
-		if (!areTooltipsDisplayed) {
-			mainView.setToolTipText(null);
-			return;
-		}
-		final NodeModel nodeModel = getModel();
-		mainView.setToolTipText(nodeModel.getToolTip(getMap().getModeController()));
 	}
 
 	private String colorize(final String text, String color) {
@@ -1466,16 +1455,10 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void updateToolTipsRecursive() {
-		final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(
-		    NodeView.RESOURCES_SHOW_NODE_TOOLTIPS);
-		updateToolTipsRecursive(areTooltipsDisplayed);
-	}
-
-	private void updateToolTipsRecursive(final boolean areTooltipsDisplayed) {
-		updateToolTip(areTooltipsDisplayed);
+		updateToolTip();
 		invalidate();
 		for (final NodeView child : getChildrenViews()) {
-			child.updateToolTipsRecursive(areTooltipsDisplayed);
+			child.updateToolTipsRecursive();
 		}
 	}
 

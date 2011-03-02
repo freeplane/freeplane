@@ -60,6 +60,7 @@
 				<menu_radio_action action="HideAllAttributesAction"
 					 />
 			</menu_submenu>
+			<menu_action action="SetBooleanPropertyAction.show_node_tooltips" />
 		</menu_submenu>
 		<menu_submenu name="filter" name_ref="menu_filter">
 			<menu_action action="UndoFilterAction" />
@@ -136,6 +137,7 @@
 			<menu_action action="ToggleMenubarAction" />
 			<menu_action action="ToggleToolbarAction" />
 			<menu_action action="ShowFilterToolbarAction" />
+			<menu_action action="SetBooleanPropertyAction.show_node_tooltips" />
 		</menu_category>
 	</menu_category>
 	<menu_category name="node_popup">

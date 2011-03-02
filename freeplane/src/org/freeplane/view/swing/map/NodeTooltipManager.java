@@ -33,6 +33,7 @@ import org.freeplane.features.common.map.NodeModel;
 public class NodeTooltipManager implements IExtension{
 	private static final String TOOL_TIP_MANAGER = "toolTipManager.";
 	private static final String TOOL_TIP_MANAGER_INITIAL_DELAY = "toolTipManager.initialDelay";
+	private static final String RESOURCES_SHOW_NODE_TOOLTIPS = "show_node_tooltips";
 	private Timer enterTimer;
 	private Timer exitTimer;
 	private String toolTipText;
@@ -139,29 +140,16 @@ public class NodeTooltipManager implements IExtension{
             }
 			
 		});
-//	    InputMap inputMap = tip.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-//	    ActionMap actionMap = tip.getActionMap();
-//
-//	    if (inputMap != null && actionMap != null) {
-//	    	final KeyStroke hideTip = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0);
-//	    	final Action hideTipAction = new AbstractAction() {
-//				public void actionPerformed(ActionEvent e) {
-//					hideTipWindow();
-//				}
-//			};
-//	    	inputMap.put(hideTip, "hideTip");
-//	    	actionMap.put("hideTip", hideTipAction);
-//	    }
 
 		tip.setTipText(toolTipText);
 		PopupFactory popupFactory = PopupFactory.getSharedInstance();
 		final JComponent nearComponent;
-		if (insideComponent instanceof MainView) {
-			nearComponent = ((MainView)insideComponent).getNodeView().getContent();
-		}
-		else{
-			nearComponent = insideComponent;
-		}
+//		if (insideComponent instanceof MainView) {
+//			nearComponent = ((MainView)insideComponent).getNodeView().getContent();
+//		}
+//		else{
+		nearComponent = insideComponent;
+//		}
 		final Point locationOnScreen = nearComponent.getLocationOnScreen();
 		final int height = nearComponent.getHeight();
 		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
@@ -266,7 +254,8 @@ public class NodeTooltipManager implements IExtension{
 	hideTipWindow();
 	insideComponent = component;
 	mouseEvent = event;
-	enterTimer.restart();
+	if(ResourceController.getResourceController().getBooleanProperty(RESOURCES_SHOW_NODE_TOOLTIPS))
+		enterTimer.restart();
 }
 
 	private class insideTimerAction implements ActionListener {

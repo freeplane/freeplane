@@ -60,6 +60,7 @@ import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.SetBooleanPropertyAction;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
@@ -272,10 +273,17 @@ public class MenuBuilder extends UIBuilder {
 				}
 				try {
 					final ModeController modeController = Controller.getCurrentModeController();
-					final AFreeplaneAction theAction = modeController.getAction(action);
+					AFreeplaneAction theAction = modeController.getAction(action);
 					if (theAction == null) {
-						LogUtils.severe("action " + action + " not found");
-						return null;
+						if(action.startsWith("SetBooleanPropertyAction.")){
+							String propertyName = action.substring("SetBooleanPropertyAction.".length());
+							theAction = new SetBooleanPropertyAction(propertyName);
+							modeController.addAction(theAction);
+						}
+						else{
+							LogUtils.severe("action " + action + " not found");
+							return null;
+						}
 					}
 					if (tag.equals("menu_radio_action")) {
 						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) addRadioItem(menuPath.parentPath,

@@ -488,10 +488,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(newValue);
 					return;
 				}
-				if (propertyName.equals(NodeView.RESOURCES_SHOW_NODE_TOOLTIPS)) {
-					getRoot().updateToolTipsRecursive();
-					return;
-				}
 			}
 		};
 		ResourceController.getResourceController().addPropertyChangeListener(MapView.propertyChangeListener);
