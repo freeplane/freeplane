@@ -21,8 +21,6 @@ package org.freeplane.features.common.text;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
@@ -120,7 +118,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 				node.setText(value);
 			}
 		});
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TYPE", new IAttributeHandler() {
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, XML_NODE_XHTML_TYPE_TAG, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
 				final Object nodeContent = node.getUserObject();
@@ -200,7 +198,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 		}
 		if(! (data instanceof String)){
-			writer.addAttribute("TYPE", data.getClass().getName());
+			writer.addAttribute(XML_NODE_XHTML_TYPE_TAG, data.getClass().getName());
 		}
 	}
 

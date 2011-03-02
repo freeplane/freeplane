@@ -44,7 +44,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 

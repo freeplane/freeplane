@@ -21,14 +21,10 @@ package org.freeplane.features.mindmapmode.text;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.util.regex.Pattern;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.DetailTextModel;
 
 class EditDetailsAction extends AFreeplaneAction {
 	/**

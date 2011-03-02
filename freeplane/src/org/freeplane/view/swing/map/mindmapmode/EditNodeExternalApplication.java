@@ -20,7 +20,6 @@
 package org.freeplane.view.swing.map.mindmapmode;
 
 import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.text.MessageFormat;
@@ -33,7 +32,6 @@ import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
-import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 
 /**
  * @author Daniel Polansky

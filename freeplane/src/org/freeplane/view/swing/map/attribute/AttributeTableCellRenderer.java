@@ -25,8 +25,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.net.URI;
-import java.net.URISyntaxException;
-
 import javax.swing.Icon;
 import javax.swing.JTable;
 import javax.swing.UIManager;
@@ -37,7 +35,6 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.icon.IconController;
-import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.text.TextController;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {

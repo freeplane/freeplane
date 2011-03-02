@@ -20,10 +20,8 @@
 package org.freeplane.features.common.styles;
 
 import java.awt.Color;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
-import java.net.URL;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -134,14 +132,6 @@ public class MapStyleModel implements IExtension {
 	public void removeStyleNode(final NodeModel node) {
 		final Object userObject = node.getUserObject();
 		styleNodes.remove(userObject);
-	}
-
-	private NodeModel load(final URL url, final MapReader mapReader, final MapModel map) throws Exception {
-		InputStreamReader urlStreamReader = null;
-		urlStreamReader = new InputStreamReader(url.openStream());
-		final NodeModel root = mapReader.createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
-		urlStreamReader.close();
-		return root;
 	}
 
 	public NodeModel getStyleNode(final IStyle style) {

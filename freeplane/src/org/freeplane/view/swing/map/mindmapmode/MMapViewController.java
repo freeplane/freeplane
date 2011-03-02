@@ -19,21 +19,16 @@
  */
 package org.freeplane.view.swing.map.mindmapmode;
 
-import java.awt.Color;
 import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-
 import javax.swing.JComponent;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
 import org.freeplane.features.mindmapmode.text.EditNodeWYSIWYG;
 import org.freeplane.features.mindmapmode.text.IEditBaseCreator;
-import org.freeplane.features.mindmapmode.text.IEditBaseCreator.EditedComponent;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapViewController;

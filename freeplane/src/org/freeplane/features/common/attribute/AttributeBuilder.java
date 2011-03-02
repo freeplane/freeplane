@@ -20,8 +20,6 @@
 package org.freeplane.features.common.attribute;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
