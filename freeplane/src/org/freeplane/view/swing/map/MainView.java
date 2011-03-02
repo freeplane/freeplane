@@ -87,7 +87,7 @@ public abstract class MainView extends ZoomableLabel {
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalTextPosition(SwingConstants.TRAILING);
-		setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+		setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 	}
 
 	protected void convertPointFromMap(final Point p) {
@@ -306,18 +306,20 @@ public abstract class MainView extends ZoomableLabel {
 			return;
 		final ModeController modeController = nodeView.getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);
-		final String originalText = textController.getText(nodeModel);
-		String text = originalText;
+		final boolean textShortened = textController.getIsShortened(nodeModel);
+		Object content = nodeModel.getUserObject();
+		String text;
 		try {
-			text = textController.getTransformedText(text, nodeModel);
-			textModified = text != originalText ? TextModificationState.SUCCESS : TextModificationState.NONE;
+			if(textShortened && (content instanceof String))
+				content = HtmlUtils.htmlToPlain((String) content);
+			text = textController.getTransformedText(content, nodeModel);
+			textModified = text != content ? TextModificationState.SUCCESS : TextModificationState.NONE;
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);
-			text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
+			text = TextUtils.format("MainView.errorUpdateText", content.toString(), e.getLocalizedMessage());
 			textModified = TextModificationState.FAILURE;
 		}
-		final boolean textShortened = textController.getIsShortened(nodeModel);
 		if(textShortened){
 			text = shortenText(text);
 		}
@@ -396,7 +398,7 @@ public abstract class MainView extends ZoomableLabel {
 		else{
 			return;
 		}
-		g.drawRect(6, 6, getWidth()-12, getHeight()-12);
+		g.drawRect(4, 4, getWidth()-9, getHeight()-9);
 		g.setColor(color);
     }
 
