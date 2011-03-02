@@ -113,11 +113,11 @@ public class TextController implements IExtension {
 	}
 	
 	/** @throws RuntimeException if something goes wrong. */
-	public String getTransformedText(String text, final NodeModel nodeModel) {
+	public String getTransformedText(Object text, final NodeModel nodeModel) {
 		for (ITextTransformer textTransformer : getTextTransformers()) {
-			text = textTransformer.transformText(text, nodeModel);
+			text = textTransformer.transformContent(text, nodeModel);
 		}
-		return text;
+		return text.toString();
 	}
 	
 	/** returns an error message instead of a normal result if something goes wrong. */

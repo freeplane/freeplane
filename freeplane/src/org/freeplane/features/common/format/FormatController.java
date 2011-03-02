@@ -35,6 +35,7 @@ import org.apache.commons.lang.time.FastDateFormat;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.IXMLParser;
@@ -82,7 +83,7 @@ public class FormatController implements IExtension {
 		String dateType = PatternFormat.TYPE_DATE;
 		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd", PatternFormat.STYLE_DATE, dateType));
 		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd HH:mm:ss", PatternFormat.STYLE_DATE, dateType));
-		dateFormats.add(PatternFormat.createPatternFormat(TextUtils.ISO_DATE_TIME_FORMAT_PATTERN,
+		dateFormats.add(PatternFormat.createPatternFormat(FreeplaneDate.ISO_DATE_TIME_FORMAT_PATTERN,
 		    PatternFormat.STYLE_DATE, dateType));
 		final int style = FastDateFormat.MEDIUM;
 		final FastDateFormat localDate = FastDateFormat.getDateInstance(style, null, null);

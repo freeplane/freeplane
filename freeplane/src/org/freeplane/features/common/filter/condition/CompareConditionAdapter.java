@@ -23,6 +23,7 @@ import java.util.Date;
 
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -46,7 +47,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			return;
 		}
 		if(resourceController.getBooleanProperty("compare_as_date") ){
-			final Date date = TextUtils.toDate(value);
+			final Date date = FreeplaneDate.toDate(value);
 			if(date != null){
 				conditionValue = date;
 				return;
@@ -62,15 +63,15 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 		child.setAttribute(CompareConditionAdapter.MATCH_CASE, TreeXmlWriter.BooleanToXml(matchCase));
 	}
 
-	protected void compareTo(final String nodeValue) throws NumberFormatException {
+	protected void compareTo(Object nodeContent, final String nodeText) throws NumberFormatException {
 		error = false;
-		comparisonResult = Integer.signum(compareToData(nodeValue));
+		comparisonResult = Integer.signum(compareToData(nodeContent, nodeText));
 	}
 
-	private int compareToData(final String nodeValue) {
+	private int compareToData(Object content, final String text) {
 		if (conditionValue instanceof Number) {
 			try {
-				Number number = TextUtils.toNumber(nodeValue); 
+				Number number = TextUtils.toNumber(text); 
 				if(number instanceof Long)
 					return compareTo((Long)number);
 				if(number instanceof Double)
@@ -82,13 +83,16 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			return 0;
 		}
 		if (conditionValue instanceof Date) {
-			final Date date = TextUtils.toDate(nodeValue);
+			if(content instanceof Date){
+				return ((Date) content).compareTo((Date)content);
+			}
+			final Date date = FreeplaneDate.toDate(text);
 			if(date != null)
 				return compareTo(date);
 			error = true;
 			return 0;
 		}
-		return matchCase ? nodeValue.compareTo(valueAsString()) : nodeValue
+		return matchCase ? text.compareTo(valueAsString()) : text
 		    .compareToIgnoreCase(valueAsString());
     }
 
@@ -133,7 +137,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 
 	private String valueAsString() {
 		if (conditionValue instanceof Date)
-			return TextUtils.toStringISO((Date) conditionValue);
+			return FreeplaneDate.toStringISO((Date) conditionValue);
 		return conditionValue.toString();
 	}
 

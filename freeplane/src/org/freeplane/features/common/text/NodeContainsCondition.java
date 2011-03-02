@@ -47,7 +47,7 @@ public class NodeContainsCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final String text = NodeTextConditionController.getItemForComparison(nodeItem, node);
+		final String text = NodeTextConditionController.getItemForComparison(nodeItem, node).text;
 		return checkText(text);
 	}
 

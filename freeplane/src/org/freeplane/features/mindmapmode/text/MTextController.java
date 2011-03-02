@@ -51,6 +51,7 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.FixedHTMLWriter;
+import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -245,16 +246,33 @@ public class MTextController extends TextController {
 
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 
-	public void setNodeText(final NodeModel node, final String newText) {
-		final String oldText = node.getText();
-		if (oldText.equals(newText)) {
+	public void setGuessedNodeObject(final NodeModel node, final String newText) {
+		if(HtmlUtils.isHtmlNode(newText)){
+			setNodeObject(node, newText);
 			return;
 		}
+		final FreeplaneDate date = FreeplaneDate.toDate(newText.trim());
+		if(date != null)
+			setNodeObject(node, date);
+		else
+			setNodeObject(node, newText);
+	}
+
+	public void setNodeText(final NodeModel node, final String newText) {
+		setNodeObject(node, newText);
+	}
+
+	public void setNodeObject(final NodeModel node, final Object newObject) {
+		final Object oldText = node.getText();
+		if (oldText.equals(newObject)) {
+			return;
+		}
+		
 		final IActor actor = new IActor() {
 			public void act() {
-				if (!oldText.equals(newText)) {
-					node.setText(newText);
-					Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, oldText, newText);
+				if (!oldText.equals(newObject)) {
+					node.setUserObject(newObject);
+					Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, oldText, newObject);
 				}
 			}
 
@@ -263,9 +281,9 @@ public class MTextController extends TextController {
 			}
 
 			public void undo() {
-				if (!oldText.equals(newText)) {
-					node.setText(oldText);
-					Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, newText, oldText);
+				if (!oldText.equals(newObject)) {
+					node.setUserObject(oldText);
+					Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, newObject, oldText);
 				}
 			}
 		};
@@ -283,7 +301,7 @@ public class MTextController extends TextController {
 		}
 		final String newUpperContent = strings[0];
 		final String newLowerContent = strings[1];
-		setNodeText(node, newUpperContent);
+		setGuessedNodeObject(node, newUpperContent);
 		final NodeModel parent = node.getParentNode();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel lowerNode = ((MMapController) modeController.getMapController()).addNewNode(parent, parent
@@ -291,7 +309,7 @@ public class MTextController extends TextController {
 		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 		    .getController();
 		nodeStyleController.copyStyle(node, lowerNode);
-		setNodeText(lowerNode, newLowerContent);
+		setGuessedNodeObject(lowerNode, newLowerContent);
 	}
 
 	public boolean useRichTextInEditor(String key) {
@@ -549,7 +567,7 @@ public class MTextController extends TextController {
 					}
 				}
 				processedText = processedText.replaceFirst("\\s+$", "");
-				setNodeText(nodeModel, processedText);
+				setGuessedNodeObject(nodeModel, processedText);
 				stop();
 			}
 

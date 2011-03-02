@@ -22,18 +22,19 @@ class FormulaTextTransformer extends AbstractTextTransformer implements IEditBas
 		super(priority);
 	}
 
-	public String transformText(final String text, final NodeModel nodeModel) {
-		if (text == null) {
-			return text;
+	public Object transformContent(final Object obj, final NodeModel node) {
+		if (! (obj instanceof String)) {
+			return obj;
 		}
+		final String text = obj.toString();
 		final String plainText = HtmlUtils.htmlToPlain(text);
 		if (!FormulaUtils.containsFormula(plainText)) {
 			return text;
 		}
 		// starting a new ScriptContext in evalIfScript
-		final Object result = FormulaUtils.evalIfScript(nodeModel, null, plainText);
+		final Object result = FormulaUtils.evalIfScript(node, null, plainText);
 		if (result == null) {
-			throw new ExecuteScriptException("got null result from evaluating " + nodeModel.getID() + ", text='"
+			throw new ExecuteScriptException("got null result from evaluating " + node.getID() + ", text='"
 			        + plainText.substring(1) + "'");
 		}
 		return result.toString();

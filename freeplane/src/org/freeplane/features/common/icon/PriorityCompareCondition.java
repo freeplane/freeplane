@@ -81,7 +81,8 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 			if (iconName.charAt(5) < '0' || iconName.charAt(5) > '9') {
 				continue;
 			}
-			compareTo(iconName.substring(5, 6));
+			final String prio = iconName.substring(5, 6);
+			compareTo(prio, prio);
 			return isComparisonOK() &&  succeed == (getComparisonResult() == comparationResult);
 		}
 		return false;

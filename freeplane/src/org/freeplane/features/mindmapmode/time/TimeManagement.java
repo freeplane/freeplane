@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -48,6 +49,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.text.JTextComponent;
@@ -56,6 +58,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.format.FormatController;
@@ -63,9 +66,11 @@ import org.freeplane.features.common.format.PatternFormat;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.time.swing.JCalendar;
 import org.freeplane.features.common.time.swing.JDayChooser;
+import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 /**
@@ -157,8 +162,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		TimeManagement.sCurrentlyOpenTimeManagement = null;
 	}
 
-	private Date getCalendarDate() {
-		return calendar.getTime();
+	private FreeplaneDate getCalendarDate() {
+		return new FreeplaneDate(calendar.getTime());
 	}
 
 	private ModeController getMindMapController() {
@@ -275,7 +280,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			}
 			appendButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent ignored) {
-					final String dateAsString = dateToString();
+					FreeplaneDate date = getCalendarDate();
+					final String dateAsString = dateFormat.format(date);
 					final Window parentWindow;
 					if (dialog != null) {
 						parentWindow = (Window) dialog.getParent();
@@ -289,25 +295,45 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 						textComponent.replaceSelection(dateAsString);
 						return;
 					}
-					ModeController mController = Controller.getCurrentModeController();
-					for (final NodeModel element : mController.getMapController().getSelectedNodes()) {
-						final String text = element.getText();
-						final StringBuilder newText = new StringBuilder();
-						if (HtmlUtils.isHtmlNode(text)) {
-							final int bodyEndPos = HtmlUtils.endOfText(text);
-							newText.append(text.substring(0, bodyEndPos));
-							newText.append("<p>");
-							newText.append(dateAsString);
-							newText.append("</p>");
-							newText.append(text.substring(bodyEndPos));
+					final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+					if(focusOwner instanceof JTable){
+						JTable table = (JTable) focusOwner;
+						final int[] selectedRows = table.getSelectedRows();
+						final int[] selectedColumns = table.getSelectedColumns();
+						for(int r : selectedRows)
+							for(int c : selectedColumns)
+								table.setValueAt(date, r, c);
+					}
+					else{
+						ModeController mController = Controller.getCurrentModeController();
+						for (final NodeModel element : mController.getMapController().getSelectedNodes()) {
+							final String text = element.getText();
+							if (text.length() == 0){
+								final MTextController textController = (MTextController) TextController.getController();
+								textController.setNodeObject(element, date);
+								final MNodeStyleController styleController = (MNodeStyleController) Controller.getCurrentModeController()
+								.getExtension(NodeStyleController.class);
+								styleController.setNodeTextTemplate(element, dateFormat.getPattern());
+							}
+							else{
+								final StringBuilder newText = new StringBuilder();
+								if (HtmlUtils.isHtmlNode(text)) {
+									final int bodyEndPos = HtmlUtils.endOfText(text);
+									newText.append(text.substring(0, bodyEndPos));
+									newText.append("<p>");
+									newText.append(dateAsString);
+									newText.append("</p>");
+									newText.append(text.substring(bodyEndPos));
+								}
+								else {
+									newText.append(text);
+									if (text.length() > 0 && !Character.isWhitespace(text.charAt(text.length() - 1)))
+										newText.append(" ");
+									newText.append(dateAsString);
+								}
+								((MTextController) TextController.getController()).setNodeText(element, newText.toString());
+							}
 						}
-						else {
-							newText.append(text);
-							if (text.length() > 0 && !Character.isWhitespace(text.charAt(text.length() - 1)))
-								newText.append(" ");
-							newText.append(dateAsString);
-						}
-						((MTextController) TextController.getController()).setNodeText(element, newText.toString());
 					}
 				}
 			});
@@ -376,8 +402,10 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			}
 		}
 		final JComboBox dateFormatChooser = new JComboBox(values);
-		if (!dateFormats.isEmpty())
+		if (!dateFormats.isEmpty()){
 			dateFormatChooser.setSelectedIndex(selectedIndex);
+			dateFormat = ((DateFormatComboBoxElement) (dateFormatChooser.getSelectedItem())).getDateFormat();
+		}
 		dateFormatChooser.addItemListener(new ItemListener() {
 			public void itemStateChanged(final ItemEvent e) {
 				dateFormat = ((DateFormatComboBoxElement) e.getItem()).getDateFormat();
@@ -387,7 +415,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		});
 		dateFormatChooser.setAlignmentX(Component.LEFT_ALIGNMENT);
 		dateFormatChooser.setToolTipText(TextUtils.format("plugins/TimeManagement.xml_format_chooser_tooltip",
-		    TextUtils.toStringShortISO(getCalendarDate())));
+		    FreeplaneDate.toStringShortISO(getCalendarDate())));
 		return dateFormatChooser;
 	}
 
@@ -395,10 +423,5 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	    final Dimension preferredSize = comp.getPreferredSize();
 	    btnSize.width =  Math.max(btnSize.width, preferredSize.width);
 	    btnSize.height =  Math.max(btnSize.height, preferredSize.height);
-    }
-
-	private String dateToString() {
-	    Date date = getCalendarDate();
-        return dateFormat.format(date);
     }
 }

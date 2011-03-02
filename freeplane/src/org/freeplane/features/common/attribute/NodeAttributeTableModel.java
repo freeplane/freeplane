@@ -31,6 +31,7 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -266,7 +267,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		final Attribute attr = attributes.get(i);
 		attributeElement.setAttribute("NAME", attr.getName());
 		final Object value = attr.getValue();
-		attributeElement.setAttribute("VALUE", value.toString());
+		attributeElement.setAttribute("VALUE", TypeReference.toString(value));
 		if(! (value  instanceof String))
 			attributeElement.setAttribute("TYPE", value.getClass().getName());
 		writer.addElement(attr, attributeElement);

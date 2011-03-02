@@ -712,6 +712,11 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			putClientProperty(EDITING_STOPPED, null);
 		}
     }
+
+	@Override
+    public void setValueAt(Object aValue, int row, int column) {
+	    super.setValueAt(column == 0 ? aValue.toString() : aValue, row, column);
+    }
 	
 	
 }

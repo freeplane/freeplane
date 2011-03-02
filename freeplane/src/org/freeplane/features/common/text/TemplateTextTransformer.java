@@ -1,5 +1,6 @@
 package org.freeplane.features.common.text;
 
+import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -14,56 +15,60 @@ class TemplateTextTransformer extends AbstractTextTransformer {
 		this.textController = textController;
 	}
 
-	public String transformText(String text, final NodeModel node) {
-		if (text == null || text.length() == 0 || text.charAt(0) == '=')
+	public Object transformContent(Object obj, final NodeModel node) {
+		if (obj == null)
+			return obj;
+		final String text = obj.toString();
+		if ((obj instanceof String) && (text.length() == 0 || text.charAt(0) == '='))
 			return text;
 		final String template = textController.getNodeTextTemplate(node);
 		final boolean nodeNumbering = textController.getNodeNumbering(node);
-		return expandTemplate(text, node, template, nodeNumbering);
+		return expandTemplate(obj, node, template, nodeNumbering);
 	}
 
-	private String expandTemplate(String text, final NodeModel node, final String template, boolean nodeNumbering) {
-		final String originalText = text;
+	private String expandTemplate(Object obj, final NodeModel node, final String template, boolean nodeNumbering) {
 		final boolean hasTemplate = template != null && template.length() != 0;
-		if (!hasTemplate && !nodeNumbering)
+		if (!hasTemplate && !nodeNumbering){
+			final String originalText = obj.toString();
 			return originalText;
+		}
 		// - if html: strip html header
 		// - if number or date format: Convertible.toObject(text)
 		// - format/expand
 		// - if error: use original text
 		// - if nodeNumbering add 
 		// - if html: enclose in html tag
-		final boolean isHtml = HtmlUtils.isHtmlNode(text);
+		final boolean isHtml = (obj instanceof String) && HtmlUtils.isHtmlNode((String)obj);
 		if (isHtml) {
-			text = HtmlUtils.extractRawBody(text);
+			obj = HtmlUtils.extractRawBody((String)obj);
 		}
 		if (hasTemplate)
-			text = format(text, template);
+			obj = format(obj, template);
 		if (nodeNumbering && !node.isRoot())
-			text = getPathToRoot(node) + " " + text;
+			obj = getPathToRoot(node) + " " + obj;
 		if (isHtml)
-			text = "<html><head></head><body>" + text + "</body></html>";
-		return text;
+			obj = "<html><head></head><body>" + obj + "</body></html>";
+		return obj.toString();
 	}
 
-	private String format(final String text, final String template) {
+	private String format(final Object obj, final String template) {
 		try {
 			final PatternFormat format = PatternFormat.guessPatternFormat(template);
 			// logging for invalid pattern is done in guessPatternFormat()
 			if (format == null)
-				return text;
+				return obj.toString();
 			final Object toFormat;
 			if (format.acceptsDate())
-				toFormat = TextUtils.toDate(HtmlUtils.htmlToPlain(text));
+				toFormat = (obj instanceof FreeplaneDate) ? obj : FreeplaneDate.toDate(HtmlUtils.htmlToPlain(obj.toString()));
 			else if (format.acceptsNumber())
-				toFormat = TextUtils.toNumber(HtmlUtils.htmlToPlain(text));
+				toFormat = TextUtils.toNumber(HtmlUtils.htmlToPlain(obj.toString()));
 			else
-				toFormat = text;
-			return toFormat == null ? text : format.format(toFormat);
+				toFormat = obj.toString();
+			return toFormat == null ? obj.toString() : format.format(toFormat);
 		}
 		catch (Exception e) {
-			LogUtils.warn("cannot format " + text + " with " + template + ": " + e.getMessage());
-			return text;
+			LogUtils.warn("cannot format " + obj.toString() + " with " + template + ": " + e.getMessage());
+			return obj.toString();
 		}
 	}
 

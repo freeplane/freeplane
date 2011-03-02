@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.attribute;
 
+import org.freeplane.core.util.TypeReference;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -149,7 +150,7 @@ public class AttributeRegistryElement {
 				final XMLElement xmlValue = new XMLElement();
 				xmlValue.setName(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE);
 				final Object value = values.getElementAt(i);
-				xmlValue.setAttribute("VALUE", value.toString());
+				xmlValue.setAttribute("VALUE", TypeReference.toString(value));
 				if(! (value  instanceof String))
 					xmlValue.setAttribute("TYPE", value.getClass().getName());
 				element.addChild(xmlValue);

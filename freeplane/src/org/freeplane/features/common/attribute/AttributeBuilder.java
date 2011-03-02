@@ -29,6 +29,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.NodeModel;
@@ -49,7 +50,7 @@ class AttributeBuilder implements IElementDOMHandler {
 				value = attributeValue;
             else
                 try {
-                    value = getClass().getClassLoader().loadClass(attributeType).getConstructor(String.class).newInstance(attributeValue);
+                    value = new TypeReference(attributeType).create(attributeValue);
                 }
                 catch (Exception e) {
                 	LogUtils.warn(e);
@@ -203,19 +204,19 @@ class AttributeBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, "NAME", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final AttributeProperties ap = (AttributeProperties) userObject;
-				ap.attributeName = value.toString();
+				ap.attributeName = value;
 			}
 		});
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, "VALUE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final AttributeProperties ap = (AttributeProperties) userObject;
-				ap.attributeValue = value.toString();
+				ap.attributeValue = value;
 			}
 		});
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, "TYPE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final AttributeProperties ap = (AttributeProperties) userObject;
-				ap.attributeType = value.toString();
+				ap.attributeType = value;
 			}
 		});
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "RESTRICTED", new IAttributeHandler() {

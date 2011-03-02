@@ -153,23 +153,35 @@ class NodeTextConditionController implements IElementaryConditionController {
 		return null;
 	}
 
-	static String getItemForComparison(Object nodeItem, final NodeModel node) {
+	static class ItemForComparison{
+		final Object content;
+		final String text;
+		public ItemForComparison(Object content, String text) {
+	        super();
+	        this.content = content;
+	        this.text = text;
+        }
+	}
+	static ItemForComparison getItemForComparison(Object nodeItem, final NodeModel node) {
 		if(nodeItem.equals(TextController.FILTER_NODE)){
-			return TextController.getController().getPlainTextContent(node);
+			final String text = TextController.getController().getPlainTextContent(node);
+			return new ItemForComparison(node.getUserObject(), text);
 		}
 		if(nodeItem.equals(TextController.FILTER_PARENT)){
 			final NodeModel parentNode = node.getParentNode();
 			if(parentNode == null){
 				return null;
 			}
-			return TextController.getController().getPlainTextContent(parentNode);
+			final String text = TextController.getController().getPlainTextContent(parentNode);
+			return new ItemForComparison(node.getUserObject(), text);
 		}
 		if(nodeItem.equals(TextController.FILTER_DETAILS)){
 			final String html = DetailTextModel.getDetailTextText(node);
 			if(html == null){
 				return null;
 			}
-			return HtmlUtils.htmlToPlain(html);
+			final String text = HtmlUtils.htmlToPlain(html);
+			return new ItemForComparison(node.getUserObject(), text);
 		}
 		return null;
     }

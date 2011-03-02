@@ -58,7 +58,7 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final String text = NodeTextConditionController.getItemForComparison(nodeItem, node);
+		final String text = NodeTextConditionController.getItemForComparison(nodeItem, node).text;
 		return text != null && checkText(text);
 	}
 

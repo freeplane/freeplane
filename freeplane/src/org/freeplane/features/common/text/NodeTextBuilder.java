@@ -20,7 +20,6 @@
 package org.freeplane.features.common.text;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
@@ -34,6 +33,7 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.StyleFactory;
@@ -81,30 +81,6 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		}
 	}
 
-	static private class TypeReference{
-		Constructor<?> constructor;
-
-		public TypeReference(String typeReference) {
-            Constructor<?> constructor;
-            try {
-	            constructor = getClass().getClassLoader().loadClass(typeReference).getConstructor(String.class);
-	            this.constructor = constructor;
-            }
-            catch (Exception e) {
-            	this.constructor = null;
-	            e.printStackTrace();
-            }
-        }
-		Object create(String spec){
-			try {
-				return constructor.newInstance(spec);
-			}
-			catch (Exception e) {
-				LogUtils.warn(e);
-				return spec;
-			}
-		}
-	}
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
