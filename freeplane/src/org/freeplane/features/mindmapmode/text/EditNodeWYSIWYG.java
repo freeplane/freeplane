@@ -191,9 +191,39 @@ public class EditNodeWYSIWYG extends EditNodeBase {
         }
 	}
 
+	private static final Dimension PREFERRED_SIZE = new Dimension(600, 400);
+
 	final private InputEvent firstEvent;
 	final private boolean enableSplit;
 	final private String purpose;
+	
+	private Font font;
+	private Color textColor = Color.BLACK;
+	private Dimension preferredSize = PREFERRED_SIZE;
+
+	public Font getFont() {
+    	return font;
+    }
+
+	public void setFont(Font font) {
+    	this.font = font;
+    }
+
+	public Color getTextColor() {
+    	return textColor;
+    }
+
+	public void setTextColor(Color textColor) {
+    	this.textColor = textColor;
+    }
+
+	public Dimension getPreferredSize() {
+    	return preferredSize;
+    }
+
+	public void setPreferredSize(Dimension preferredSize) {
+    	this.preferredSize = preferredSize;
+    }
 
 	public EditNodeWYSIWYG(String purpose, final NodeModel node, final String text, final InputEvent firstEvent, final IEditControl editControl, boolean enableSplit) {
 		super(node, text, editControl);
@@ -211,27 +241,29 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			htmlEditorWindow.setTitle(title);
 			htmlEditorWindow.setSplitEnabled(enableSplit);
 			final SHTMLPanel htmlEditorPanel = (htmlEditorWindow).getHtmlEditorPanel();
-			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
-			final Font font = viewController.getFont(node);
 			final StringBuilder ruleBuilder = new StringBuilder(100);
 			ruleBuilder.append("body {");
-			ruleBuilder.append("font-family: ").append(font.getFamily()).append(";");
-			ruleBuilder.append("font-size: ").append(font.getSize()).append("pt;");
-			if (font.isItalic()) {
-				ruleBuilder.append("font-style: italic; ");
+			if(font != null){
+				ruleBuilder.append("font-family: ").append(font.getFamily()).append(";");
+				ruleBuilder.append("font-size: ").append(font.getSize()).append("pt;");
+				if (font.isItalic()) {
+					ruleBuilder.append("font-style: italic; ");
+				}
+				if (font.isBold()) {
+					ruleBuilder.append("font-weight: bold; ");
+				}
 			}
-			if (font.isBold()) {
-				ruleBuilder.append("font-weight: bold; ");
-			}
-			final Color nodeTextColor = viewController.getTextColor(node);
-			ruleBuilder.append("color: ").append(ColorUtils.colorToString(nodeTextColor)).append(";");
+			if(textColor != null)
+				ruleBuilder.append("color: ").append(ColorUtils.colorToString(textColor)).append(";");
 			ruleBuilder.append("}\n");
 			ruleBuilder.append("p {margin-top:0;}\n");
 			final HTMLDocument document = htmlEditorPanel.getDocument();
 			final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
-			editorPane.setForeground(nodeTextColor);
+			if(textColor != null){
+				editorPane.setForeground(textColor);
+				editorPane.setCaretColor(textColor);
+			}
 			editorPane.setBackground(getBackground());
-			editorPane.setCaretColor(nodeTextColor);
 			final StyleSheet styleSheet = document.getStyleSheet();
 			styleSheet.removeStyle("p");
 			styleSheet.removeStyle("body");
@@ -243,17 +275,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			else {
 				document.setBase(new URL("file: "));
 			}
-			int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
-			preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
-			    .getProperty("el__min_default_window_height")));
-			preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
-			    .getProperty("el__max_default_window_height")));
-			int preferredWidth = (int) (viewController.getComponent(node).getWidth() * 1.2);
-			preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
-			    .getProperty("el__min_default_window_width")));
-			preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
-			    .getProperty("el__max_default_window_width")));
-			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth, preferredHeight));
+			htmlEditorPanel.setContentPanePreferredSize(preferredSize);
 			htmlEditorWindow.pack();
 			if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
 				UITools.setDialogLocationUnder(htmlEditorWindow, node);

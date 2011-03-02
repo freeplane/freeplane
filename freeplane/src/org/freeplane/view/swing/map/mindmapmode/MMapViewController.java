@@ -19,10 +19,15 @@
  */
 package org.freeplane.view.swing.map.mindmapmode;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.InputEvent;
 import javax.swing.JComponent;
 
 import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.map.NodeModel;
@@ -56,6 +61,25 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			else
 				title = "edit_details";
 			final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(title, node, text, firstEvent, editControl, true);
+			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
+			final Font font = viewController.getFont(node);
+			editNodeWYSIWYG.setFont(font);
+			final Color nodeTextColor = viewController.getTextColor(node);
+			editNodeWYSIWYG.setTextColor(nodeTextColor);
+			if(IEditBaseCreator.EditedComponent.TEXT.equals(editedComponent)){ 
+				int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
+				preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
+					.getProperty("el__min_default_window_height")));
+				preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
+					.getProperty("el__max_default_window_height")));
+				int preferredWidth = (int) (viewController.getComponent(node).getWidth() * 1.2);
+				preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
+					.getProperty("el__min_default_window_width")));
+				preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
+					.getProperty("el__max_default_window_width")));
+				final Dimension preferredSize = new Dimension(preferredWidth, preferredHeight);
+				editNodeWYSIWYG.setPreferredSize(preferredSize);
+			}
 			final MainView mainView = (MainView) getComponent(node);
 	        final NodeView nodeView = mainView.getNodeView();
 			if(IEditBaseCreator.EditedComponent.TEXT.equals(editedComponent))

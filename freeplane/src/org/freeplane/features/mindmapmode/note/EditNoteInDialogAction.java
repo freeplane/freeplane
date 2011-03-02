@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mindmapmode.note;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -83,6 +84,7 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 			}
 		}, false);
 		mCurrentEditDialog = editNodeWYSIWYG;
+		editNodeWYSIWYG.setBackground(Color.WHITE);
 		editNodeWYSIWYG.show(controller.getViewController().getJFrame());
     }
 
