@@ -999,6 +999,8 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		update();
+		if(! isRoot())
+			getParentView().numberingChanged(node.getParent().getIndex(node) + 1);
 	}
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
@@ -1043,7 +1045,7 @@ public class NodeView extends JComponent implements INodeView {
 		while(! preferred.getModel().isVisible())
 			preferred = preferred.getParentView();
 		getMap().selectAsTheOnlyOneSelected(preferred);
-		structureChanged(index);
+		numberingChanged(index);
 		revalidate();
 	}
 
@@ -1053,7 +1055,7 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		insert(child, index);
-		structureChanged(index + 1);
+		numberingChanged(index + 1);
 		revalidate();
 	}
 
@@ -1067,14 +1069,15 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	// updates children, starting from firstChangedIndex, if necessary.
-	private void structureChanged(int firstChangedIndex) {
-		if (TextController.getController().getNodeNumbering(getModel())) {
+	private void numberingChanged(int firstChangedIndex) {
+		final TextController textController = TextController.getController(getMap().getModeController());
+		if (firstChangedIndex > 0 || textController.getNodeNumbering(getModel())) {
 			final Component[] components = getComponents();
 			for (int i = firstChangedIndex; i < components.length; i++) {
 				if (components[i] instanceof NodeView) {
 					final NodeView view = (NodeView) components[i];
 					view.update();
-					view.structureChanged(0);
+					view.numberingChanged(0);
 				}
 			}
 		}
@@ -1365,7 +1368,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void update() {
-		updateStyle();
+		updateShape();
 		if (!isContentVisible()) {
 			mainView.setVisible(false);
 			return;
@@ -1425,7 +1428,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
-	private void updateStyle() {
+	private void updateShape() {
 		final String shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
 		if (mainView != null && (model.isRoot() || mainView.getStyle().equals(shape))) {
 			return;

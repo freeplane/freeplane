@@ -1,5 +1,7 @@
 package org.freeplane.features.common.text;
 
+import java.util.List;
+
 import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -44,8 +46,11 @@ class TemplateTextTransformer extends AbstractTextTransformer {
 		}
 		if (hasTemplate)
 			obj = format(obj, template);
-		if (nodeNumbering && !node.isRoot())
-			obj = getPathToRoot(node) + " " + obj;
+		if (nodeNumbering && !node.isRoot()){
+			StringBuilder builder = new StringBuilder(node.getNodeLevel(true) * 2);
+			getPathToRoot(builder, node);
+			obj = builder.toString() + " " + obj;
+		}
 		if (isHtml)
 			obj = "<html><head></head><body>" + obj + "</body></html>";
 		return obj.toString();
@@ -72,18 +77,23 @@ class TemplateTextTransformer extends AbstractTextTransformer {
 		}
 	}
 
-	private String getPathToRoot(NodeModel node) {
-		final NodeModel[] pathToRoot = node.getPathToRoot();
-		if (pathToRoot.length < 2)
-			return "";
-		StringBuilder builder = new StringBuilder(pathToRoot.length * 2);
-		for (int i = 1; i < pathToRoot.length; i++) {
+	private void getPathToRoot(StringBuilder builder, NodeModel node) {
+		if(node.isRoot())
+			return;
+		final NodeModel parentNode = node.getParentNode();
+		if( textController.getNodeNumbering(parentNode)){
+			getPathToRoot(builder, parentNode);
 			if (builder.length() > 0)
 				builder.append('.');
-			builder.append(pathToRoot[i].getParentNode().getIndex(pathToRoot[i]) + 1);
 		}
-		if (pathToRoot.length == 1)
-			builder.append('.');
-		return builder.toString();
+		final List<NodeModel> children = parentNode.getChildren();
+		int counter = 1;
+		for (NodeModel child : children) {
+			if(child.equals(node))
+				break;
+			if(textController.getNodeNumbering(child))
+				counter++;
+		}
+		builder.append(counter);
 	}
 }
