@@ -233,14 +233,6 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		return null;
 	}
 
-	private XMLElement initializeNodeAttributeLayoutXMLElement(XMLElement attributeElement) {
-		if (attributeElement == null) {
-			attributeElement = new XMLElement();
-			attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT);
-		}
-		return attributeElement;
-	}
-
 	public boolean isCellEditable(final int arg0, final int arg1) {
 		return false;
 	}
@@ -250,44 +242,6 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 			return;
 		}
 		listeners.remove(listener);
-	}
-
-	void save(final ITreeWriter writer) throws IOException {
-		saveLayout(writer);
-		if (attributes != null) {
-			for (int i = 0; i < attributes.size(); i++) {
-				saveAttribute(writer, i);
-			}
-		}
-	}
-
-	private void saveAttribute(final ITreeWriter writer, final int i) throws IOException {
-		final XMLElement attributeElement = new XMLElement();
-		attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE);
-		final Attribute attr = attributes.get(i);
-		attributeElement.setAttribute("NAME", attr.getName());
-		final Object value = attr.getValue();
-		attributeElement.setAttribute("VALUE", TypeReference.toString(value));
-		if(! (value  instanceof String))
-			attributeElement.setAttribute("TYPE", value.getClass().getName());
-		writer.addElement(attr, attributeElement);
-	}
-
-	private void saveLayout(final ITreeWriter writer) throws IOException {
-		if (layout != null) {
-			XMLElement attributeElement = null;
-			if (layout.getColumnWidth(0) != AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH) {
-				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
-				attributeElement.setAttribute("NAME_WIDTH", Integer.toString(getColumnWidth(0)));
-			}
-			if (layout.getColumnWidth(1) != AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH) {
-				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
-				attributeElement.setAttribute("VALUE_WIDTH", Integer.toString(layout.getColumnWidth(1)));
-			}
-			if (attributeElement != null) {
-				writer.addElement(layout, attributeElement);
-			}
-		}
 	}
 
 	public void setName(final int row, final Object newName) {

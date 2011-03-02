@@ -20,6 +20,8 @@
 package org.freeplane.features.common.attribute;
 
 import java.io.IOException;
+import java.util.Vector;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -33,6 +35,8 @@ import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.MapStyle;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class AttributeBuilder implements IElementDOMHandler {
@@ -251,7 +255,7 @@ class AttributeBuilder implements IElementDOMHandler {
 			public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
 			        throws IOException {
 				final NodeAttributeTableModel attributes = (NodeAttributeTableModel) extension;
-				attributes.save(writer);
+				save((NodeModel)node, attributes, writer);
 			}
 		});
 		writer.addExtensionElementWriter(AttributeRegistry.class, new IExtensionElementWriter() {
@@ -262,6 +266,57 @@ class AttributeBuilder implements IElementDOMHandler {
 			}
 		});
 		registerAttributeHandlers(reader);
+	}
+
+	void save(NodeModel node, NodeAttributeTableModel table, final ITreeWriter writer) throws IOException {
+		saveLayout(table.getLayout(), writer);
+		if (table.getRowCount() > 0) {
+			final Vector<Attribute> attributes = table.getAttributes();
+			for (int i = 0; i < attributes.size(); i++) {
+				saveAttribute(node, writer, attributes.get(i));
+			}
+		}
+	}
+
+	private void saveLayout(AttributeTableLayoutModel layout, final ITreeWriter writer) throws IOException {
+		if (layout != null) {
+			XMLElement attributeElement = null;
+			if (layout.getColumnWidth(0) != AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH) {
+				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
+				attributeElement.setAttribute("NAME_WIDTH", Integer.toString(layout.getColumnWidth(0)));
+			}
+			if (layout.getColumnWidth(1) != AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH) {
+				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
+				attributeElement.setAttribute("VALUE_WIDTH", Integer.toString(layout.getColumnWidth(1)));
+			}
+			if (attributeElement != null) {
+				writer.addElement(layout, attributeElement);
+			}
+		}
+	}
+	private XMLElement initializeNodeAttributeLayoutXMLElement(XMLElement attributeElement) {
+		if (attributeElement == null) {
+			attributeElement = new XMLElement();
+			attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT);
+		}
+		return attributeElement;
+	}
+
+	private void saveAttribute(NodeModel node, final ITreeWriter writer, final Attribute attr) throws IOException {
+		final XMLElement attributeElement = new XMLElement();
+		attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE);
+		attributeElement.setAttribute("NAME", attr.getName());
+		final Object value = attr.getValue();
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		if (forceFormatting) {
+			attributeElement.setAttribute("VALUE", TextController.getController().getTransformedText(value, node));
+		}
+		else{
+			attributeElement.setAttribute("VALUE", TypeReference.toString(value));
+			if(! (value  instanceof String))
+				attributeElement.setAttribute("TYPE", value.getClass().getName());
+		}
+		writer.addElement(attr, attributeElement);
 	}
 
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {

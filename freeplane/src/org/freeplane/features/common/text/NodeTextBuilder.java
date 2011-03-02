@@ -36,6 +36,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.StyleFactory;
 import org.freeplane.features.common.styles.StyleNamedObject;
 import org.freeplane.features.common.styles.StyleString;
@@ -155,8 +156,17 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		writeManager.addAttributeWriter(NodeBuilder.XML_STYLENODE, this);
 	}
 
+	private static class TransformedXMLExtension implements IExtension{
+		final String xml;
+
+		public TransformedXMLExtension(String html) {
+	        super();
+	        this.xml = HtmlUtils.toXhtml(html);
+        }
+	}
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
-		final Object data = ((NodeModel) userObject).getUserObject();
+		final NodeModel node = (NodeModel) userObject;
+		final Object data = node.getUserObject();
 		final Class<? extends Object> dataClass = data.getClass();
 		if (dataClass.equals(StyleNamedObject.class)) {
 			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((StyleNamedObject) data).getObject().toString());
@@ -169,22 +179,41 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		if (!(dataClass.equals(StyleString.class) || dataClass.equals(String.class))) {
 			return;
 		}
-		final String text =  data.toString();
-		if (!HtmlUtils.isHtmlNode(text)) {
-			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		if (forceFormatting) {
+			final String text = TextController.getController().getTransformedText(data, node);
+			if (!HtmlUtils.isHtmlNode(text)) {
+				writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
+			}
+			else{
+				node.addExtension(new TransformedXMLExtension(text));
+			}
 		}
-		if(! (data instanceof String)){
-			writer.addAttribute(XML_NODE_XHTML_TYPE_TAG, data.getClass().getName());
+		else{
+			final String text =  data.toString();
+			if (!HtmlUtils.isHtmlNode(text)) {
+				writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
+			}
+			if(! (data instanceof String)){
+				writer.addAttribute(XML_NODE_XHTML_TYPE_TAG, data.getClass().getName());
+			}
 		}
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object element, final String tag) throws IOException {
 		final NodeModel node = (NodeModel) element;
-		if (HtmlUtils.isHtmlNode(node.getText())) {
+		final TransformedXMLExtension transformedXML = (TransformedXMLExtension) node.getExtension(TransformedXMLExtension.class);
+		if (transformedXML != null || HtmlUtils.isHtmlNode(node.getText())) {
 			final XMLElement htmlElement = new XMLElement();
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
 			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE);
-			final String xmlText = node.getXmlText();
+			final String xmlText;
+			if (transformedXML != null){
+				xmlText = transformedXML.xml;
+				node.removeExtension(transformedXML);
+			}
+			else
+				xmlText = node.getXmlText();
 			final String content = xmlText.replace('\0', ' ');
 			writer.addElement(content, htmlElement);
 		}
