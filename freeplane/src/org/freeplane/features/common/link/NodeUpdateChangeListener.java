@@ -19,8 +19,7 @@ public class NodeUpdateChangeListener implements INodeChangeListener, IMapChange
 		// Note: this doesn't mean that other properties are not interesting here (e.g. links, notes, ...)
 		// since all these could be referenced by formulas too. It's restricted to the properties that may
 		// contain formulas only to limit the number of updates.
-		if (NodeModel.NODE_TEXT.equals(property) || NodeAttributeTableModel.class.equals(property)
-		        || NodeModel.NOTE_TEXT.equals(property)) {
+		if (NodeModel.NODE_TEXT.equals(property)) {
 			nodeChangedImpl(false, event.getNode());
 		}
 	}
