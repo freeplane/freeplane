@@ -31,6 +31,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -44,8 +45,11 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.file.MFileManager;
+import org.freeplane.view.swing.ui.mindmapmode.INodeSelector;
+import org.freeplane.view.swing.ui.mindmapmode.NodeSelector;
 
 /**
  * @author Dimitry Polivaev
@@ -66,6 +70,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	private JMenuItem up = null;
 	private int col;
 	private JMenuItem insertLink;
+	private JMenuItem insertNodeLink;
 
 	@Override
 	protected void firePopupMenuWillBecomeInvisible() {
@@ -195,6 +200,37 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		return insertLink;
 	}
 
+	private JMenuItem getInsertNodeLink() {
+		if (insertNodeLink == null) {
+			insertNodeLink = new JMenuItem(TextUtils.getText("SetNodeLink.text"));
+			insertNodeLink.addActionListener(new ActionListener() {
+				public void actionPerformed(final ActionEvent e) {
+					final AttributeTable table = AttributePopupMenu.this.table;
+					final Object oldValue = table.getValueAt(row, col);
+					final NodeSelector nodeSelector = new NodeSelector();
+					nodeSelector.show(table, new INodeSelector() {
+						public void nodeSelected(NodeModel node) {
+							if(node == null)
+								return;
+							final String inputValue = "#" + node.getID();
+							try {
+								final URI link = LinkController.createURI(inputValue);
+								if(! oldValue.equals(link))
+									table.setValueAt(link, row, col);
+							}
+							catch (final URISyntaxException e1) {
+								LogUtils.severe(e1);
+								return;
+							}
+						}
+					});
+				}
+
+			});
+		}
+		return insertNodeLink;
+	}
+
 	/**
 	 * @return Returns the optimalWidth.
 	 */
@@ -240,6 +276,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		if(col == 1){
 			add(getInsertLink());
 			add(getInsertFileLink());
+			add(getInsertNodeLink());
 		}
 		if (attributeViewType.equals(AttributeTableLayoutModel.SHOW_ALL)) {
 			add(getInsert());

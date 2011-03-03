@@ -20,6 +20,7 @@
 package org.freeplane.core.ui;
 
 import java.awt.Event;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -35,6 +36,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.GrabKeyDialog;
 import org.freeplane.core.resources.components.IKeystrokeValidator;
@@ -56,7 +58,7 @@ public class AccelerateableAction implements IFreeplaneAction {
 	 */
 	private final MenuBuilder menuBuilder;
 	final private AFreeplaneAction originalAction;
-	public static JDialog setAcceleratorOnNextClickActionDialog;
+	private static JDialog setAcceleratorOnNextClickActionDialog;
 
 	static boolean isNewAcceleratorOnNextClickEnabled() {
 		return setAcceleratorOnNextClickActionDialog != null;
@@ -70,7 +72,8 @@ public class AccelerateableAction implements IFreeplaneAction {
 		}
 		final String titel = TextUtils.getText("SetAcceleratorOnNextClickAction.text");
 		final String text = TextUtils.getText(SET_ACCELERATOR_ON_NEXT_CLICK_ACTION);
-		UITools.createCancelDialog(titel, text);
+		final Frame frame = Controller.getCurrentController().getViewController().getFrame();
+		setAcceleratorOnNextClickActionDialog = UITools.createCancelDialog(frame, titel, text);
 		setAcceleratorOnNextClickActionDialog.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentHidden(final ComponentEvent e) {

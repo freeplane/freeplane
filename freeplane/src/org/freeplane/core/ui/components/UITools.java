@@ -421,12 +421,12 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
 		}
 	}
 
-	public static void createCancelDialog(final String titel, final String text) {
+	public static JDialog createCancelDialog(final Component component, final String titel, final String text) {
         final String[] options = { TextUtils.removeMnemonic(TextUtils.getText("cancel")) };
     	final JOptionPane infoPane = new JOptionPane(text, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null,
     	    options);
-    	final Controller controller = Controller.getCurrentController();
-    	AccelerateableAction.setAcceleratorOnNextClickActionDialog = infoPane.createDialog(controller.getViewController().getFrame(), titel);
-    	AccelerateableAction.setAcceleratorOnNextClickActionDialog.setModal(false);
+    	JDialog dialog = infoPane.createDialog(component, titel);
+    	dialog.setModal(false);
+    	return dialog;
     }
 }
