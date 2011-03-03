@@ -63,7 +63,7 @@ class ForkMainView extends MainView {
 		int edgeWidth = edgeController.getWidth(model);
 		final EdgeStyle style = edgeController.getStyle(model);
 		edgeWidth = nodeView.getMap().getZoomed(style.getNodeLineWidth(edgeWidth));
-		final Point in = new Point(0, getHeight() + edgeWidth / 2 - 1);
+		final Point in = new Point(0, getHeight() + edgeWidth / 2);
 		return in;
 	}
 
@@ -96,8 +96,8 @@ class ForkMainView extends MainView {
 		final EdgeController edgeController = EdgeController.getController(nodeView.getMap().getModeController());
 		int edgeWidth = edgeController.getWidth(model);
 		final EdgeStyle style = edgeController.getStyle(model);
-		edgeWidth = style.getNodeLineWidth(edgeWidth);
-		final Point in = new Point(getWidth() - 1, getHeight() + edgeWidth / 2 - 1);
+		edgeWidth = nodeView.getMap().getZoomed(style.getNodeLineWidth(edgeWidth));
+		final Point in = new Point(getWidth() - 1, getHeight() + edgeWidth / 2);
 		return in;
 	}
 
@@ -136,10 +136,10 @@ class ForkMainView extends MainView {
 		final Color oldColor = g.getColor();
 		g.setColor(edgeController.getColor(model));
 		Point leftLinePoint = getLeftPoint();
-		UITools.convertPointToAncestor(this, leftLinePoint, nodeView);
 		g.drawLine(leftLinePoint.x, leftLinePoint.y, leftLinePoint.x + getWidth(), leftLinePoint.y);
 		g.setColor(oldColor);
 		g.setStroke(oldStroke);
+		super.paintDecoration(nodeView, g);
     }
 	
 	@Override

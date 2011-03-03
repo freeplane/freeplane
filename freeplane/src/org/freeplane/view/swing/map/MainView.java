@@ -87,7 +87,6 @@ public abstract class MainView extends ZoomableLabel {
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalTextPosition(SwingConstants.TRAILING);
-		setBorder(BorderFactory.createEmptyBorder(2, 2, 4, 2));
 	}
 
 	protected void convertPointFromMap(final Point p) {
@@ -198,7 +197,6 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, boolean itself) {
-		UITools.convertPointToAncestor(this, p, nodeView);
 		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
 		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
 		final Color color = g.getColor();
@@ -211,7 +209,28 @@ public abstract class MainView extends ZoomableLabel {
 		g.setColor(color);
 	}
 	
-	void paintDecoration(final NodeView nodeView, final Graphics2D g) {}
+	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
+		drawModificationRect(g);
+	}
+
+    private void drawModificationRect(Graphics g) {
+		final Color color = g.getColor();
+		if(TextModificationState.SUCCESS.equals(textModified)){
+			final boolean dontMarkTransformedText = Controller.getCurrentController().getResourceController()
+		    .getBooleanProperty(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT);
+			if(dontMarkTransformedText)
+				return;
+			g.setColor(Color.GREEN);
+		}
+		else if(TextModificationState.FAILURE.equals(textModified)){
+			g.setColor(Color.RED);
+		}
+		else{
+			return;
+		}
+		g.drawRect(0, 0, getWidth(), getHeight());
+		g.setColor(color);
+    }
 
 	public void paintBackgound(final Graphics2D graphics) {
 		if (getNodeView().useSelectionColors()) {
@@ -380,27 +399,4 @@ public abstract class MainView extends ZoomableLabel {
             toolTipManager.unregisterComponent(this);
         }
     }
-
-	@Override
-    protected void paintBorder(Graphics g) {
-	    super.paintBorder(g);
-		final Color color = g.getColor();
-		if(TextModificationState.SUCCESS.equals(textModified)){
-			final boolean dontMarkTransformedText = Controller.getCurrentController().getResourceController()
-		    .getBooleanProperty(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT);
-			if(dontMarkTransformedText)
-				return;
-			g.setColor(Color.GREEN);
-		}
-		else if(TextModificationState.FAILURE.equals(textModified)){
-			g.setColor(Color.RED);
-		}
-		else{
-			return;
-		}
-		g.drawRect(2, 2, getWidth()-5, getHeight()-5);
-		g.setColor(color);
-    }
-
-
 }

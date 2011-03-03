@@ -1156,6 +1156,9 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void paintDecoration(final Graphics2D g) {
+		final Point origin = new Point();
+		UITools.convertPointToAncestor(mainView, origin, this);
+		g.translate(origin.x, origin.y);
 		mainView.paintDecoration(this, g);
 		FoldingMarkType markType = foldingMarkType(getMap().getModeController().getMapController(), getModel());
 		if (!markType.equals(FoldingMarkType.UNFOLDED)) {
@@ -1166,6 +1169,7 @@ public class NodeView extends JComponent implements INodeView {
 			final Point in = getMainViewInPoint();
 			mainView.paintFoldingMark(this, g, in, true);
 		}
+		g.translate(-origin.x, -origin.y);
 	}
 
 	private enum FoldingMarkType {
