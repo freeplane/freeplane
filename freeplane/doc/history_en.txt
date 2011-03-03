@@ -8,6 +8,7 @@ Date format selection in calendar and attribute panel
 New style options format/template and node numbering
 Hyperlinks in attributes
 Inline editor for Node Details (on single click)
+Links to nodes in attributes. Shortened content of the linked nodes is displayed.
 
 ===============================
 1.2.2 alpha
