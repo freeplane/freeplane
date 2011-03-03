@@ -176,9 +176,6 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((NamedObject) data).getObject().toString());
 			return;
 		}
-		if (!(dataClass.equals(StyleString.class) || dataClass.equals(String.class))) {
-			return;
-		}
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
 			final String text = TextController.getController().getTransformedText(data, node, data);
@@ -190,7 +187,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			}
 		}
 		else{
-			final String text =  data.toString();
+			final String text =  TypeReference.toString(data);
 			if (!HtmlUtils.isHtmlNode(text)) {
 				writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 			}

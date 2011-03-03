@@ -37,10 +37,11 @@ private AccessibleObject factory;
         try {
             final Class<?> clazz = getClass().getClassLoader().loadClass(typeReference);
             final FactoryMethod factoryAnnotation = clazz.getAnnotation(FactoryMethod.class);
-            if(factoryAnnotation != null){
+            if(factoryAnnotation != null)
             	constructor = clazz.getMethod(factoryAnnotation.value(), String.class);
-            }
-			constructor = clazz.getConstructor(String.class);
+            
+            else
+            	constructor = clazz.getConstructor(String.class);
             this.factory = constructor;
         }
         catch (Exception e) {
@@ -70,7 +71,7 @@ private AccessibleObject factory;
 			return obj.toString();
 		}
 		try {
-	        return clazz.getMethod(method.value(), String.class).invoke(obj).toString();
+	        return clazz.getMethod(method.value(), obj.getClass()).invoke(null, obj).toString();
         }
 		catch (Exception e) {
 			LogUtils.warn(e);

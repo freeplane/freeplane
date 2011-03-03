@@ -37,7 +37,7 @@ import org.freeplane.core.resources.ResourceController;
  */
 @SuppressWarnings("serial")
 @FactoryMethod("toObject")
-@SerializationMethod("toISOString")
+@SerializationMethod("toStringISO")
 public class FreeplaneDate extends Date {
 
 	private static HashMap<String, DateFormat> dateFormatCache = new HashMap<String, DateFormat>();
@@ -78,6 +78,9 @@ public class FreeplaneDate extends Date {
 		return getDefaultFormat().format(this);
     }
 
+	public static String toStringISO(final FreeplaneDate date) {
+    	return toStringISO((Date)date);
+    }
 	public static String toStringISO(final Date date) {
     	// use local timezone
     	return DateFormatUtils.format(date, ISO_DATE_TIME_FORMAT_PATTERN);
