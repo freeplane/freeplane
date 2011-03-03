@@ -81,16 +81,15 @@ public class FormatController implements IExtension {
 		numberFormats.add(PatternFormat.createPatternFormat("%.0f", PatternFormat.STYLE_FORMATTER, numberType));
 		numberFormats.add(PatternFormat.createPatternFormat("%.2f", PatternFormat.STYLE_FORMATTER, numberType));
 		String dateType = PatternFormat.TYPE_DATE;
-		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd", PatternFormat.STYLE_DATE, dateType));
-		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd HH:mm:ss", PatternFormat.STYLE_DATE, dateType));
-		dateFormats.add(PatternFormat.createPatternFormat(FreeplaneDate.ISO_DATE_TIME_FORMAT_PATTERN,
-		    PatternFormat.STYLE_DATE, dateType));
-		final int style = FastDateFormat.MEDIUM;
-		final FastDateFormat localDate = FastDateFormat.getDateInstance(style, null, null);
-		final FastDateFormat localDateTime = FastDateFormat.getDateTimeInstance(style, style, null, null);
+		final FastDateFormat localDate = FastDateFormat.getDateInstance(FastDateFormat.MEDIUM, null, null);
+		final FastDateFormat localDateTime = FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.SHORT, null, null);
 		dateFormats.add(PatternFormat.createPatternFormat(localDate.getPattern(), PatternFormat.STYLE_DATE, dateType));
 		dateFormats.add(PatternFormat.createPatternFormat(localDateTime.getPattern(), PatternFormat.STYLE_DATE,
 		    dateType));
+		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd", PatternFormat.STYLE_DATE, dateType));
+		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd HH:mm", PatternFormat.STYLE_DATE, dateType));
+		dateFormats.add(PatternFormat.createPatternFormat(FreeplaneDate.ISO_DATE_TIME_FORMAT_PATTERN,
+		    PatternFormat.STYLE_DATE, dateType));
 	}
 
 	void loadFormats() throws Exception {

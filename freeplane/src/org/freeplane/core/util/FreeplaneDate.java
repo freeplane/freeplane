@@ -42,7 +42,7 @@ public class FreeplaneDate extends Date {
 
 	private static HashMap<String, DateFormat> dateFormatCache = new HashMap<String, DateFormat>();
 	public static final String ISO_DATE_FORMAT_PATTERN = "yyyy-MM-dd";
-	public static final String ISO_DATE_TIME_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+	public static final String ISO_DATE_TIME_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mmZ";
 	public static final Pattern ISO_DATE_TIME_REGEXP_PATTERN = Pattern.compile("\\d{4}(-?)\\d{2}(-?)\\d{2}" //
     + "(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?");
 	
