@@ -224,10 +224,10 @@ public class MModeControllerFactory {
 		EdgeController.install(new MEdgeController(modeController));
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
-		LinkController.install(new MLinkController());
 		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(new MMouseMotionListener()));
 		final MTextController textController = new MTextController(modeController);
 		TextController.install(textController);
+		LinkController.install(new MLinkController());
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
 			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
 				textController.edit(e, addNew, editLong);

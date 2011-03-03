@@ -66,13 +66,13 @@ public class BModeControllerFactory {
 		modeController.setMapController(new MapController());
 		UrlManager.install(new UrlManager());
 		AttributeController.install(new AttributeController(modeController));
-		LinkController.install(new LinkController());
 		IconController.install(new IconController(modeController));
 		NodeStyleController.install(new NodeStyleController(modeController));
 		EdgeController.install(new EdgeController(modeController));
 		CloudController.install(new CloudController(modeController));
 		NoteController.install(new NoteController());
 		TextController.install(new TextController(modeController));
+		LinkController.install(new LinkController());
 		LogicalStyleController.install(new LogicalStyleController());
 		try {
 			ClipboardController.install(new ClipboardController());

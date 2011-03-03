@@ -27,6 +27,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 
 /** Follow a graphical link (AKA connector) action. */
 class GotoLinkNodeAction extends AFreeplaneAction {
@@ -42,7 +43,7 @@ class GotoLinkNodeAction extends AFreeplaneAction {
 		this.target = target;
 		this.linkController = linkController;
 		if (target != null) {
-			final String adaptedText = target.getShortText();
+			final String adaptedText = TextController.getController().getShortText(target);
 			putValue(Action.NAME, TextUtils.getText("follow_graphical_link") + adaptedText);
 			putValue(Action.SHORT_DESCRIPTION, target.toString());
 		}

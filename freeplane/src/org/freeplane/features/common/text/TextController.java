@@ -140,8 +140,21 @@ public class TextController implements IExtension {
 	/** returns transformed text converted to plain text. */
 	public String getPlainTextContent(NodeModel nodeModel) {
 		final Object userObject = nodeModel.getUserObject();
-		final String text = getTransformedTextNoThrow(userObject, nodeModel, userObject);
+		final Object input;
+		if(userObject instanceof String &&  HtmlUtils.isHtmlNode((String) userObject))
+			input = HtmlUtils.htmlToPlain((String) userObject);
+		else
+			input = userObject;
+		final String text = getTransformedTextNoThrow(input, nodeModel, userObject);
 		return HtmlUtils.htmlToPlain(text);    
+	}
+
+	public String getShortText(NodeModel nodeModel) {
+		String adaptedText = TextController.getController().getPlainTextContent(nodeModel);
+		if (adaptedText.length() > 40) {
+			adaptedText = adaptedText.substring(0, 40) + " ...";
+		}
+		return adaptedText;
 	}
 
 	public void setDetailsHidden(NodeModel node, boolean isHidden) {

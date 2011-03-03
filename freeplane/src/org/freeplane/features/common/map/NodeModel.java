@@ -295,14 +295,6 @@ public class NodeModel implements MutableTreeNode {
 		return path;
 	}
 
-	public String getShortText() {
-		String adaptedText = TextController.getController().getPlainTextContent(this);
-		if (adaptedText.length() > 40) {
-			adaptedText = adaptedText.substring(0, 40) + " ...";
-		}
-		return adaptedText;
-	}
-
 	public Map<String, UIIcon> getStateIcons() {
 		return icons.getStateIcons();
 	}

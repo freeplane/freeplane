@@ -56,6 +56,7 @@ import org.freeplane.features.common.link.ConnectorModel.Shape;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
 
 /**
@@ -104,6 +105,7 @@ public class LinkController extends SelectionController implements IExtension {
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		new LinkBuilder(this).registerBy(readManager, writeManager);
+		TextController.getController(modeController).addTextTransformer(new LinkTransformer(modeController, 10));
 	}
 
 	private void addLinks(final JPopupMenu arrowLinkPopup, final NodeModel source) {
@@ -146,7 +148,7 @@ public class LinkController extends SelectionController implements IExtension {
 			ModeController modeController = Controller.getCurrentModeController();
 			final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
 			if (dest != null) {
-				return dest.getShortText();
+				return TextController.getController().getShortText(dest);
 			}
 			return TextUtils.getText("link_not_available_any_more");
 		}

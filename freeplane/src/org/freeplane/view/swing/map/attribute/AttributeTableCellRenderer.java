@@ -84,7 +84,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 			try {
 				// evaluate values only
 				final TextController textController = TextController.getController();
-				text = textController.getTransformedText(originalText, attributeTableModel.getNode(), null);
+				text = textController.getTransformedText(value, attributeTableModel.getNode(), null);
 				final boolean markTransformedText = !Controller.getCurrentController().getResourceController()
 				    .getBooleanProperty(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT);
 				if (markTransformedText && text != originalText) {

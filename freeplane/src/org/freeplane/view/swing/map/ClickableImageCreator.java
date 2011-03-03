@@ -27,6 +27,7 @@ import javax.swing.JComponent;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 
 /** */
 class ClickableImageCreator {
@@ -72,8 +73,8 @@ class ClickableImageCreator {
 		final NodeView nodeView = mapView.getNodeView(node);
 		if (nodeView != null) {
 			final AreaHolder holder = new AreaHolder();
-			holder.title = node.getShortText();
-			holder.alt = node.getShortText();
+			holder.title = TextController.getController().getShortText(node);
+			holder.alt = TextController.getController().getShortText(node);
 			holder.href = node.createID();
 			final Point contentXY = mapView.getNodeContentLocation(nodeView);
 			final JComponent content = nodeView.getContent();
