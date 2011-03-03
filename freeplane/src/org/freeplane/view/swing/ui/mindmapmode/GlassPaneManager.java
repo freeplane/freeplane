@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.ui;
+package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.Component;
 
@@ -25,6 +25,9 @@ import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
+
+import org.freeplane.core.ui.DelayedMouseListener;
+import org.freeplane.core.ui.IMouseListener;
 
 
 /**

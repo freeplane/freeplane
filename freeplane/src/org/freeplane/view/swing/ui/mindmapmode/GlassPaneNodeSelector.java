@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.ui;
+package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -29,6 +29,7 @@ import javax.swing.JScrollBar;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.view.swing.map.MainView;

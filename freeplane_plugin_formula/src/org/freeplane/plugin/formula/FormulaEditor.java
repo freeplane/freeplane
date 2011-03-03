@@ -24,10 +24,10 @@ import java.awt.event.KeyEvent;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 
-import org.freeplane.core.ui.GlassPaneManager;
-import org.freeplane.core.ui.INodeSelector;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.text.EditNodeDialog;
+import org.freeplane.view.swing.ui.mindmapmode.GlassPaneManager;
+import org.freeplane.view.swing.ui.mindmapmode.INodeSelector;
 
 /**
  * @author Dimitry Polivaev
