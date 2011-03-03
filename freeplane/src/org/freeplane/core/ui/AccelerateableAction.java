@@ -35,7 +35,6 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.GrabKeyDialog;
 import org.freeplane.core.resources.components.IKeystrokeValidator;
@@ -49,7 +48,7 @@ import org.freeplane.core.util.TextUtils;
  * @author Dimitry Polivaev
  * 20.04.2009
  */
-class AccelerateableAction implements IFreeplaneAction {
+public class AccelerateableAction implements IFreeplaneAction {
 	private static final boolean DISABLE_KEY_TYPE = ResourceController.getResourceController().getBooleanProperty(
 	    "disable_key_type");
 	/**
@@ -57,7 +56,7 @@ class AccelerateableAction implements IFreeplaneAction {
 	 */
 	private final MenuBuilder menuBuilder;
 	final private AFreeplaneAction originalAction;
-	private static JDialog setAcceleratorOnNextClickActionDialog;
+	public static JDialog setAcceleratorOnNextClickActionDialog;
 
 	static boolean isNewAcceleratorOnNextClickEnabled() {
 		return setAcceleratorOnNextClickActionDialog != null;
@@ -71,12 +70,7 @@ class AccelerateableAction implements IFreeplaneAction {
 		}
 		final String titel = TextUtils.getText("SetAcceleratorOnNextClickAction.text");
 		final String text = TextUtils.getText(SET_ACCELERATOR_ON_NEXT_CLICK_ACTION);
-		final String[] options = { TextUtils.removeMnemonic(TextUtils.getText("cancel")) };
-		final JOptionPane infoPane = new JOptionPane(text, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null,
-		    options);
-		final Controller controller = Controller.getCurrentController();
-		setAcceleratorOnNextClickActionDialog = infoPane.createDialog(controller.getViewController().getFrame(), titel);
-		setAcceleratorOnNextClickActionDialog.setModal(false);
+		UITools.createCancelDialog(titel, text);
 		setAcceleratorOnNextClickActionDialog.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentHidden(final ComponentEvent e) {

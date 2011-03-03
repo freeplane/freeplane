@@ -46,6 +46,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AccelerateableAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
@@ -419,4 +420,13 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
 			}
 		}
 	}
+
+	public static void createCancelDialog(final String titel, final String text) {
+        final String[] options = { TextUtils.removeMnemonic(TextUtils.getText("cancel")) };
+    	final JOptionPane infoPane = new JOptionPane(text, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null,
+    	    options);
+    	final Controller controller = Controller.getCurrentController();
+    	AccelerateableAction.setAcceleratorOnNextClickActionDialog = infoPane.createDialog(controller.getViewController().getFrame(), titel);
+    	AccelerateableAction.setAcceleratorOnNextClickActionDialog.setModal(false);
+    }
 }
