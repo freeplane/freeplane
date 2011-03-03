@@ -308,12 +308,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
     }
 
 	Icon getLinkIcon(final URI uri) {
-	    NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, this);
-	    final NodeModel nodeModel;
-	    if(nodeView != null)
-	    	nodeModel = nodeView.getModel();
-	    else
-	    	nodeModel = Controller.getCurrentController().getSelection().getSelected();
+		NodeModel nodeModel = ((IAttributeTableModel)getModel()).getNode();
 	    final Icon linkIcon = IconController.getLinkIcon(uri, nodeModel);
 	    return linkIcon;
     }
