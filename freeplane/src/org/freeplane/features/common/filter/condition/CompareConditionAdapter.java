@@ -56,6 +56,18 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 		conditionValue = value;
 	}
 
+	protected CompareConditionAdapter(final Double value) {
+		super();
+		this.matchCase = false;
+		conditionValue = value;
+	}
+
+	protected CompareConditionAdapter(final Long value) {
+		super();
+		this.matchCase = false;
+		conditionValue = value;
+	}
+
 	@Override
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
