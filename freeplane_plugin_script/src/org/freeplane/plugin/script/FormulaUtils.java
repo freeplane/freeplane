@@ -3,7 +3,6 @@ package org.freeplane.plugin.script;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.WeakHashMap;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.TextUtils;
@@ -14,8 +13,6 @@ import org.freeplane.plugin.script.proxy.FormulaCache;
 public class FormulaUtils {
 	// don't let caching use too much memory - but currently there are little means to cope with unavailable
 	// dependency data. It has to be tested but it should "only" lead to some missing updates.
-	private static WeakHashMap<MapModel, FormulaCache> formulaCaches = new WeakHashMap<MapModel, FormulaCache>();
-	private static WeakHashMap<MapModel, EvaluationDependencies> evaluationDependencies = new WeakHashMap<MapModel, EvaluationDependencies>();
 	private static final boolean ENABLE_CACHING = !Controller.getCurrentController().getResourceController()
 	    .getBooleanProperty("formula_disable_caching");
 
@@ -92,19 +89,19 @@ public class FormulaUtils {
 	}
 
 	private static FormulaCache getFormulaCache(MapModel map) {
-		FormulaCache formulaCache = formulaCaches.get(map);
+		FormulaCache formulaCache = (FormulaCache) map.getExtension(FormulaCache.class);
 		if (formulaCache == null) {
 			formulaCache = new FormulaCache();
-			formulaCaches.put(map, formulaCache);
+			map.addExtension(formulaCache);
 		}
 		return formulaCache;
 	}
 
 	private static EvaluationDependencies getEvaluationDependencies(MapModel map) {
-		EvaluationDependencies dependencies = evaluationDependencies.get(map);
+		EvaluationDependencies dependencies = (EvaluationDependencies) map.getExtension(EvaluationDependencies.class);
 		if (dependencies == null) {
 			dependencies = new EvaluationDependencies();
-			evaluationDependencies.put(map, dependencies);
+			map.addExtension(dependencies);
 		}
 		return dependencies;
 	}
@@ -123,7 +120,7 @@ public class FormulaUtils {
 
 	public static void clearCache(MapModel map) {
 		//		System.out.println("clearing formula cache for " + map.getTitle());
-		evaluationDependencies.remove(map);
-		formulaCaches.remove(map);
+		map.removeExtension(FormulaCache.class);
+		map.removeExtension(EvaluationDependencies.class);
 	}
 }

@@ -3,10 +3,11 @@ package org.freeplane.plugin.script.proxy;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.plugin.script.ExecuteScriptException;
 
-public class FormulaCache {
+public class FormulaCache implements IExtension{
 	private HashMap<String, LinkedHashMap<String, Object>> cache = new HashMap<String, LinkedHashMap<String, Object>>();
 
 	public Object get(NodeModel nodeModel, String text) {

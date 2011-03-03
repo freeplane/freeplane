@@ -5,9 +5,10 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.common.map.NodeModel;
 
-public class EvaluationDependencies {
+public class EvaluationDependencies implements IExtension{
 	public enum Access {
 		NODE, BRANCH, ALL
 	}
