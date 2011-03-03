@@ -18,7 +18,7 @@ import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.plugin.script.FormulaUtils;
 
 /** cares for updating formula nodes on change of other nodes. */
-public class FormulaUpdateChangeListener implements INodeChangeListener, IMapChangeListener, IMapViewChangeListener {
+public class FormulaUpdateChangeListener implements INodeChangeListener, IMapChangeListener{
 	public void nodeChanged(NodeChangeEvent event) {
 		Object property = event.getProperty();
 		// Note: this doesn't mean that other properties are not interesting here (e.g. links, notes, ...)
@@ -70,20 +70,4 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 			    null, null);
 		}
 	}
-
-	public void afterViewChange(Component oldView, Component newView) {
-    }
-
-	public void afterViewClose(Component mapView) {
-		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		final MapModel map = mapViewManager.getModel(mapView);
-		FormulaUtils.clearCache(map);
-    }
-
-	public void afterViewCreated(Component mapView) {
-    }
-
-	public void beforeViewChange(Component oldView, Component newView) {
-		// initialize a singleton variable here???
-    }
 }

@@ -38,7 +38,6 @@ public class Activator implements BundleActivator {
 				final FormulaUpdateChangeListener listener = new FormulaUpdateChangeListener();
 				modeController.getMapController().addNodeChangeListener(listener);
 				modeController.getMapController().addMapChangeListener(listener);
-				Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(listener);
 				final boolean disableCacheProperty = ResourceController.getResourceController().getBooleanProperty(
 				    FORMULA_DISABLE_CACHING);
 				if (disableCacheProperty) {
