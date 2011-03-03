@@ -332,7 +332,7 @@ public abstract class MainView extends ZoomableLabel {
 			if(textShortened && (content instanceof String))
 				content = HtmlUtils.htmlToPlain((String) content);
 			text = textController.getTransformedText(content, nodeModel, content);
-			textModified = text != content ? TextModificationState.SUCCESS : TextModificationState.NONE;
+			textModified = text.equals(content.toString()) ? TextModificationState.NONE : TextModificationState.SUCCESS;
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);
