@@ -176,6 +176,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	static private AttributeTableCellRenderer dtcr = new AttributeTableCellRenderer();
 	private static final int EXTRA_HEIGHT = 4;
 	static private MyFocusListener focusListener = new MyFocusListener();
+	static private CursorUpdater cursorUpdater = new CursorUpdater();
 	private static final int MAX_HEIGTH = 300;
 	private static final int MAX_WIDTH = 300;
 	private static final long serialVersionUID = 1L;
@@ -197,6 +198,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		super();
 		this.attributeView = attributeView;
 		addFocusListener(AttributeTable.focusListener);
+		addMouseListener(AttributeTable.cursorUpdater);
+		addMouseMotionListener(AttributeTable.cursorUpdater);
 		final JTableHeader tableHeader = getTableHeader();
 		if(headerFont == null)
 			headerFont = tableHeader.getFont().deriveFont(4f);
