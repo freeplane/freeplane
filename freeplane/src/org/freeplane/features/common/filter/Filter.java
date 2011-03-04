@@ -29,6 +29,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
+import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -95,7 +96,7 @@ public class Filter {
 	 * @see
 	 * freeplane.controller.filter.Filter#applyFilter(freeplane.modes.MindMap)
 	 */
-	public void applyFilter( final MapModel map, final boolean force) {
+	public void applyFilter(Object source, final MapModel map, final boolean force) {
 		if (map == null) {
 			return;
 		}
@@ -113,9 +114,9 @@ public class Filter {
 			}
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			final NodeModel selected = selection.getSelected();
-			final NodeModel selectedVisible = getNearestVisibleParent(selected);
+			final NodeModel selectedVisible = selected.getVisibleAncestorOrSelf();
 			selection.keepNodePosition(selectedVisible, 0.5f, 0.5f);
-			refreshMap();
+			refreshMap(source, map);
 			selectVisibleNode();
 		}
 		finally {
@@ -196,13 +197,6 @@ public class Filter {
 		return condition;
 	}
 
-	private NodeModel getNearestVisibleParent(final NodeModel selectedNode) {
-		if (selectedNode.isVisible()) {
-			return selectedNode;
-		}
-		return getNearestVisibleParent(selectedNode.getParentNode());
-	}
-
 	public boolean isConditionStronger(final Filter oldFilter) {
 		return (!appliesToVisibleNodesOnly || appliesToVisibleNodesOnly == oldFilter.appliesToVisibleNodesOnly)
 		        && (condition != null && condition.equals(oldFilter.getCondition()) || condition == null
@@ -223,8 +217,8 @@ public class Filter {
 		        && ((options & filterResult & ~FilterInfo.FILTER_SHOW_ECLIPSED) != 0);
 	}
 
-	private void refreshMap() {
-		Controller.getCurrentModeController().getMapController().refreshMap();
+	private void refreshMap(Object source, MapModel map) {
+		Controller.getCurrentModeController().getMapController().fireMapChanged(new MapChangeEvent(source, map, Filter.class, null, this));
 	}
 
 	private void resetFilter(final NodeModel node) {
@@ -247,10 +241,9 @@ public class Filter {
 		}
 		NodeModel selected = mapSelection.getSelected();
 		if (!selected.isVisible()) {
-			selected = getNearestVisibleParent(selected);
-			mapSelection.selectAsTheOnlyOneSelected(selected);
+			mapSelection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf());
 		}
-		mapSelection.setSiblingMaxLevel(selected.getNodeLevel(false));
+		mapSelection.setSiblingMaxLevel(mapSelection.getSelected().getNodeLevel(false));
 	}
 
 	public boolean unfoldsInvisibleNodes() {

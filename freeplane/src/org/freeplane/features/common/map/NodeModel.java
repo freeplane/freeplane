@@ -620,4 +620,11 @@ public class NodeModel implements MutableTreeNode {
 	public void insert(final NodeModel newNodeModel) {
 		insert(newNodeModel, getChildCount());
 	}
+
+	public NodeModel getVisibleAncestorOrSelf() {
+		NodeModel node = this;
+		while(! node.isVisible())
+			node = node.getParentNode();
+		return node;
+    }
 }

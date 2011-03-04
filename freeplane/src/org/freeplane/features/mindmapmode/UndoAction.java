@@ -76,6 +76,7 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener, INod
 		try{
 			undoHandler.getUndoAction().actionPerformed(e);
 		if(lastChangedNode != null){
+			mapController.displayNode(lastChangedNode);
 			controller.getSelection().selectAsTheOnlyOneSelected(lastChangedNode);
 			lastChangedNode = null;
 		}

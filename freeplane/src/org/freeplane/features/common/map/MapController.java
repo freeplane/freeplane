@@ -50,6 +50,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.UnknownElementWriter;
 import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.filter.FilterController;
@@ -237,18 +238,20 @@ public class MapController extends SelectionController {
 		nodeChangeListeners = new LinkedList<INodeChangeListener>();
 	}
 
-	/**
-	 * Don't call me directly!!! The basic folding method. Without undo.
-	 */
-	public void _setFolded(final NodeModel node, final boolean folded) {
+	public void setFolded(final NodeModel node, final boolean folded) {
 		if (node == null) {
 			throw new IllegalArgumentException("setFolded was called with a null node.");
 		}
-		if (node.isRoot() && folded) {
+		if (node.getChildCount() == 0
+				|| node.isFolded() == folded
+				|| node.isRoot() && folded) 
 			return;
-		}
-		if (isFolded(node) != folded) {
-			node.setFolded(folded);
+		node.setFolded(folded);
+		final ResourceController resourceController = ResourceController.getResourceController();
+		if (resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
+		    NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
+			final MapModel map = node.getMap();
+			setSaved(map, false);
 		}
 	}
 
@@ -684,26 +687,6 @@ public class MapController extends SelectionController {
 		nodeSet.add(node);
 	}
 
-	public void refreshMap() {
-		final MapModel map = Controller.getCurrentController().getMap();
-		final NodeModel root = map.getRootNode();
-		refreshMapFrom(root);
-	}
-
-	private void refreshMap(final NodeModel node, final NodeChangeEvent event) {
-		final Iterator<NodeModel> iterator = node.getChildren().iterator();
-		while (iterator.hasNext()) {
-			final NodeModel child = iterator.next();
-			refreshMap(child, event);
-		}
-		fireNodeChanged(node, event);
-	}
-
-	public void refreshMapFrom(final NodeModel node) {
-		final NodeChangeEvent event = new NodeChangeEvent(node, NodeChangeType.REFRESH, null, null);
-		refreshMap(node, event);
-	}
-
 	public void removeMapChangeListener(final IMapChangeListener listener) {
 		mapChangeListeners.remove(listener);
 	}
@@ -777,19 +760,8 @@ public class MapController extends SelectionController {
 		Controller.getCurrentController().getViewController().obtainFocusForSelected();
 	}
 
-	public void setFolded(final NodeModel node, final boolean folded) {
-		if (node.getChildCount() == 0) {
-			return;
-		}
-		_setFolded(node, folded);
-	}
-
 	public void setSaved(final MapModel mapModel, final boolean saved) {
-		final boolean setTitle = saved != mapModel.isSaved();
 		mapModel.setSaved(saved);
-		if (setTitle) {
-			Controller.getCurrentModeController().getController().getViewController().setTitle();
-		}
 	}
 
 	/**

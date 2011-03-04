@@ -173,7 +173,6 @@
             <boolean name="draganddrop"/>
             <boolean name="unfold_on_paste"/>
             <boolean name="disable_cursor_move_paper"/>
-            <boolean name="enable_leaves_folding"/>
             <number name="foldingsymbolwidth"/>
             <number name="grid_size" min = "1"/>
             <boolean name="display_node_id"/>

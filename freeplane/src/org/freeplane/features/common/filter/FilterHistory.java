@@ -78,7 +78,7 @@ public class FilterHistory {
 		Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 		final Filter next = filters.next();
-		next.applyFilter(map, true);
+		next.applyFilter(this, map, true);
 	}
 
 	void undo() {
@@ -102,6 +102,6 @@ public class FilterHistory {
 		if (previous.appliesToVisibleNodesOnly()) {
 			undoImpl(map);
 		}
-		previous.applyFilter(map, true);
+		previous.applyFilter(this, map, true);
 	}
 }

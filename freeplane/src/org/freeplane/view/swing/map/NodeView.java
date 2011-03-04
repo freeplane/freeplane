@@ -1042,9 +1042,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (preferred == null) {
 			preferred = this;
 		}
-		while(! preferred.getModel().isVisible())
-			preferred = preferred.getParentView();
-		getMap().selectAsTheOnlyOneSelected(preferred);
+		getMap().selectVisibleAncestorOrSelf(preferred);
 		numberingChanged(index);
 		revalidate();
 	}

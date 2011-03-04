@@ -292,56 +292,12 @@ public class MMapController extends MapController {
 		return mindMapMapModel;
 	}
 
-	/**
-	 */
-	@Override
-	public void setFolded(final NodeModel node, final boolean folded) {
-		if (node.getChildCount() == 0) {
-			return;
+
+	public void setSaved(final MapModel mapModel, final boolean saved) {
+		final boolean setTitle = saved != mapModel.isSaved();
+		mapModel.setSaved(saved);
+		if (setTitle) {
+			Controller.getCurrentModeController().getController().getViewController().setTitle();
 		}
-		if (node.isFolded() == folded) {
-			return;
-		}
-		toggleFolded(node);
-	}
-
-	@Override
-	public void toggleFolded() {
-		toggleFolded(getSelectedNodes().listIterator());
-	}
-
-	@Override
-	public void toggleFolded(final ListIterator<NodeModel> listIterator) {
-		while (listIterator.hasNext()) {
-			toggleFolded(listIterator.next());
-		}
-	}
-
-	private void toggleFolded(final NodeModel node) {
-		if (!Controller.getCurrentModeController().getMapController().hasChildren(node)
-		        && !StringUtils.equals(ResourceController.getResourceController().getProperty("enable_leaves_folding"),
-		            "true")) {
-			return;
-		}
-		final IActor actor = new IActor() {
-			public void act() {
-				_setFolded(node, !node.isFolded());
-				final ResourceController resourceController = ResourceController.getResourceController();
-				if (resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
-				    NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
-					setSaved(node.getMap(), false);
-				}
-				nodeRefresh(node);
-			}
-
-			public String getDescription() {
-				return "toggleFolded";
-			}
-
-			public void undo() {
-				act();
-			}
-		};
-		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 }

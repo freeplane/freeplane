@@ -74,7 +74,9 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
+import org.freeplane.features.common.filter.Filter;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.ConnectorModel.Shape;
 import org.freeplane.features.common.link.LinkController;
@@ -232,6 +234,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		public void toggleSelected(final NodeModel node) {
 			MapView.this.toggleSelected(getNodeView(node), true);
 		}
+
 	}
 
 	private class Selection {
@@ -933,7 +936,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		if (property.equals(MapStyle.MAP_STYLES) && event.getMap().equals(model)
 		        || property.equals(MapStyle.MAX_NODE_WIDTH)
-		        || property.equals(ModelessAttributeController.ATTRIBUTE_VIEW_TYPE)) {
+		        || property.equals(ModelessAttributeController.ATTRIBUTE_VIEW_TYPE)
+		        || property.equals(Filter.class)) {
 			setBackground(requiredBackground());
 			getRoot().updateAll();
 			return;
@@ -1304,6 +1308,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * Select the node, resulting in only that one being selected.
 	 */
 	public void selectAsTheOnlyOneSelected(final NodeView newSelected) {
+		if(! newSelected.getModel().isVisible())
+			throw new AssertionError("select invisible node");
 		if (ResourceController.getResourceController().getBooleanProperty("center_selected_node")) {
 			centerNode(newSelected);
 		}
@@ -1611,5 +1617,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(propertyName.equals(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT))
 			UITools.repaintAll(getRoot());
 	}
+
+	public void selectVisibleAncestorOrSelf(NodeView preferred) {
+		while(! preferred.getModel().isVisible())
+			preferred = preferred.getParentView();
+		selectAsTheOnlyOneSelected(preferred);
+    }
 
 }
