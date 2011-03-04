@@ -55,6 +55,7 @@ class RedoAction extends AFreeplaneAction implements INodeChangeListener{
 		try{
 		undoHandler.getRedoAction().actionPerformed(e);
 		if(lastChangedNode != null){
+			mapController.displayNode(lastChangedNode);
 			controller.getSelection().selectAsTheOnlyOneSelected(lastChangedNode);
 			lastChangedNode = null;
 		}
