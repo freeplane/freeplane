@@ -22,6 +22,8 @@ package org.freeplane.features.mindmapmode.text;
 import java.awt.Component;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -29,6 +31,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
+import java.net.URL;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -647,6 +650,16 @@ public class MTextController extends TextController {
     		}
     	});
     	final SHTMLPanel shtmlPanel = SHTMLPanel.createSHTMLPanel();
+    	shtmlPanel.setOpenHyperlinkHandler(new ActionListener(){
+
+			public void actionPerformed(ActionEvent pE) {
+				try {
+					UrlManager.getController().loadURL(new URI(pE.getActionCommand()));
+				} catch (Exception e) {
+					LogUtils.warn(e);
+				}
+			}});
+
     	final JEditorPane editorPane = shtmlPanel.getEditorPane();
     	fireEditorPaneCreated(editorPane, purpose);
 		return shtmlPanel;
