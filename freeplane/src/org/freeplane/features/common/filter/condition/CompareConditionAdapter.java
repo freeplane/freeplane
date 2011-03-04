@@ -96,7 +96,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 		}
 		if (conditionValue instanceof Date) {
 			if(content instanceof Date){
-				return ((Date) content).compareTo((Date)content);
+				return compareTo((Date)content);
 			}
 			final Date date = FreeplaneDate.toDate(text);
 			if(date != null)
