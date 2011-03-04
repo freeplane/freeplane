@@ -214,13 +214,6 @@ public class MModeControllerFactory {
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
 		IconController.install(new MIconController(modeController));
 		final MapController mapController = modeController.getMapController();
-		uiFactory = new MUIFactory();
-		mapController.addNodeChangeListener(uiFactory);
-		mapController.addNodeSelectionListener(uiFactory);
-		mapController.addMapChangeListener(uiFactory);
-		controller.getMapViewManager().addMapSelectionListener(uiFactory);
-		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
-		modeController.addMenuContributor(menuContributor);
 		EdgeController.install(new MEdgeController(modeController));
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
@@ -228,19 +221,19 @@ public class MModeControllerFactory {
 		final MTextController textController = new MTextController(modeController);
 		TextController.install(textController);
 		LinkController.install(new MLinkController());
-		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
-			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
-				textController.edit(e, addNew, editLong);
-			}
-		}));
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		ClipboardController.install(new MClipboardController());
 		userInputListenerFactory.setNodeDragListener(new MNodeDragListener());
 		userInputListenerFactory.setNodeDropTargetListener(new MNodeDropListener());
 		LocationController.install(new MLocationController());
 		LogicalStyleController.install(new MLogicalStyleController());
-		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener());
 		AttributeController.install(new MAttributeController(modeController));
+		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
+			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
+				textController.edit(e, addNew, editLong);
+			}
+		}));
+		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener());
 		modeController.addAction(new EditAttributesAction());
 		SpellCheckerController.install();
 		ExportController.install(new ExportController("/xml/ExportWithXSLT.xml"));
@@ -274,6 +267,15 @@ public class MModeControllerFactory {
 		modeController.addAction(new ToggleToolbarAction("ToggleLeftToolbarAction", "/icon_toolbar"));
 		new RevisionPlugin();
 		new UnfoldAll();
+		
+		uiFactory = new MUIFactory();
+		mapController.addNodeChangeListener(uiFactory);
+		mapController.addNodeSelectionListener(uiFactory);
+		mapController.addMapChangeListener(uiFactory);
+		controller.getMapViewManager().addMapSelectionListener(uiFactory);
+		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
+		modeController.addMenuContributor(menuContributor);
+		
 		userInputListenerFactory.setMenuStructure("/xml/mindmapmodemenu.xml");
 		userInputListenerFactory.updateMenus(modeController);
 		final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
