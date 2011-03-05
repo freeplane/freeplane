@@ -26,6 +26,7 @@ import java.util.TreeSet;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;
@@ -51,7 +52,12 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	public static final String ICONS = "hierarchical_icons";
 
 	public HierarchicalIcons() {
+		this(Mode.OR);
+		new HierarchicalIcons2();
+	}
+	protected HierarchicalIcons(Mode mode) {
 		super();
+		this.mode = mode;
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getMapController().getReadManager().addReadCompletionListener(this);
 		modeController.getMapController().addNodeChangeListener(this);
@@ -68,16 +74,12 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	/**
 	 */
 	private void addAccumulatedIconsToTreeSet(final NodeModel child, final TreeSet<UIIcon> iconSet) {
-		for (final UIIcon icon : IconController.getController().getIcons(child)) {
-			iconSet.add(icon);
-		}
+		iconSet.addAll(IconController.getController().getIcons(child));
 		final UIIconSet uiIcon = (UIIconSet) child.getStateIcons().get(getHookName());
 		if (uiIcon == null) {
 			return;
 		}
-		for (final UIIcon icon : uiIcon.getIcons()) {
-			iconSet.add(icon);
-		}
+		iconSet.addAll(uiIcon.getIcons());
 	}
 
 	@Override
@@ -207,16 +209,28 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		}
 	}
 
+	public static enum Mode{AND, OR};
+	private Mode mode = Mode.OR;
 	private void setStyle(final NodeModel node) {
 		final TreeSet<UIIcon> iconSet = new TreeSet<UIIcon>();
 		final ListIterator<NodeModel> childrenUnfolded = Controller.getCurrentModeController().getMapController().childrenUnfolded(node);
+		boolean first = true;
 		while (childrenUnfolded.hasNext()) {
 			final NodeModel child = childrenUnfolded.next();
-			addAccumulatedIconsToTreeSet(child, iconSet);
+			if(first || mode.equals(Mode.OR)){
+				addAccumulatedIconsToTreeSet(child, iconSet);
+			}
+			else{
+				final TreeSet<UIIcon> iconSet2 = new TreeSet<UIIcon>();
+				addAccumulatedIconsToTreeSet(child, iconSet2);
+				iconSet.retainAll(iconSet2);
+				if(iconSet.isEmpty())
+					break;
+			}
+			first = false;
 		}
-		for (final MindIcon icon : IconController.getController().getIcons(node)) {
-			iconSet.remove(icon);
-		}
+		iconSet.removeAll(IconController.getController().getIcons(node));
+		
 		if (iconSet.size() > 0) {
 			node.setStateIcon(getHookName(), new UIIconSet(iconSet, 0.75f), false);
 		}
@@ -238,4 +252,14 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 	                           final NodeModel child, final int newIndex) {
 	}
+	
+	
+}
+
+@NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons2.properties")
+@ActionLocationDescriptor(locations = { "/menu_bar/icons/automaticLayout2" })
+class HierarchicalIcons2 extends HierarchicalIcons{
+	public HierarchicalIcons2() {
+	    super(Mode.AND);
+    }
 }

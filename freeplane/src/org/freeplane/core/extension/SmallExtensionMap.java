@@ -43,7 +43,7 @@ public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExte
 		}
 		for (int i = 0; i < collection.size(); i++) {
 			final Object extension = collection.get(i);
-			if (((Class<?>) key).isAssignableFrom(extension.getClass())) {
+			if (key.equals(extension.getClass())) {
 				return true;
 			}
 		}
@@ -58,7 +58,7 @@ public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExte
 			return false;
 		}
 		for (int i = 0; i < collection.size(); i++) {
-			if (((IExtension) value).equals(collection.get(i))) {
+			if ( value.equals(collection.get(i))) {
 				return true;
 			}
 		}
@@ -81,7 +81,7 @@ public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExte
 			return -1;
 		}
 		for (int i = 0; i < collection.size(); i++) {
-			if (clazz.isAssignableFrom(collection.get(i).getClass())) {
+			if (clazz.equals(collection.get(i).getClass())) {
 				return i;
 			}
 		}
@@ -116,7 +116,7 @@ public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExte
 			return oldValue;
 		}
 		else {
-			if (!key.isAssignableFrom(value.getClass())) {
+			if (!key.equals(value.getClass())) {
 				throw new ClassCastException();
 			}
 			createCollection().add(value);

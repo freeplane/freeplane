@@ -64,7 +64,7 @@ public abstract class PersistentNodeHook {
 	protected class SelectableHookAction extends HookAction {
 		private static final long serialVersionUID = 1L;
 
-		protected SelectableHookAction(final String key) {
+		public SelectableHookAction(final String key) {
 			super(key);
 			//			System.out.println("SelectableHookAction " + key);
 		}
