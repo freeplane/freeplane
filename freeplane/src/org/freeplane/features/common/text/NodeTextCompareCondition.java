@@ -22,6 +22,7 @@ package org.freeplane.features.common.text;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
@@ -36,9 +37,16 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 	static final String ITEM = "ITEM";
 
 	static ASelectableCondition load(final XMLElement element) {
+		final String valueString = element.getAttribute(NodeTextCompareCondition.VALUE, null);
+		final String type = element.getAttribute(NodeTextCompareCondition.TYPE, null);
+		final Object value;
+		if(type == null)
+			value = valueString;
+		else
+			value = new TypeReference(type).create(valueString);
 		return new NodeTextCompareCondition(
 			element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE), 
-			element.getAttribute(NodeTextCompareCondition.VALUE, null), 
+			value, 
 			TreeXmlReader.xmlToBoolean(element.getAttribute(CompareConditionAdapter.MATCH_CASE, null)), 
 			Integer.parseInt(element.getAttribute(NodeTextCompareCondition.COMPARATION_RESULT, null)), 
 			TreeXmlReader.xmlToBoolean(element.getAttribute(NodeTextCompareCondition.SUCCEED, null)));
@@ -48,7 +56,7 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 	final private boolean succeed;
 	final private String nodeItem;
 
-	NodeTextCompareCondition(String nodeItem, final String value, final boolean matchCase, final int comparationResult,
+	NodeTextCompareCondition(String nodeItem, final Object value, final boolean matchCase, final int comparationResult,
 	                     final boolean succeed) {
 		super(value, matchCase);
 		this.comparationResult = comparationResult;

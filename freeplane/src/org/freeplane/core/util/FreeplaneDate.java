@@ -37,18 +37,18 @@ import org.freeplane.core.resources.ResourceController;
  */
 @SuppressWarnings("serial")
 @FactoryMethod("toObject")
-@SerializationMethod("toStringISO")
+@SerializationMethod("toString")
 public class FreeplaneDate extends Date {
 
-	private static HashMap<String, DateFormat> dateFormatCache = new HashMap<String, DateFormat>();
+	private static HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
 	public static final String ISO_DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 	public static final String ISO_DATE_TIME_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mmZ";
 	public static final Pattern ISO_DATE_TIME_REGEXP_PATTERN = Pattern.compile("\\d{4}(-?)\\d{2}(-?)\\d{2}" //
     + "(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?");
 	
-	static private DateFormat defaultFormat;
+	static private SimpleDateFormat defaultFormat;
 	
-	static private DateFormat getDefaultFormat()
+	static private SimpleDateFormat getDefaultFormat()
 	{
 		if(defaultFormat != null)
 			return defaultFormat;
@@ -64,22 +64,26 @@ public class FreeplaneDate extends Date {
 		});
 		return defaultFormat;
 	}
+	
+	private SimpleDateFormat df; 
 
-	public FreeplaneDate(Date date) {
+	public FreeplaneDate(Date date, String pattern) {
 	    super(date.getTime());
+	    this.df = getDateFormat(pattern);
     }
 
-	public FreeplaneDate(long date) {
+	public FreeplaneDate(long date, SimpleDateFormat df) {
 	    super(date);
+	    this.df = df;
     }
 
 	@Override
     public String toString() {
-		return getDefaultFormat().format(this);
+		return df.format(this);
     }
 
-	public static String toStringISO(final FreeplaneDate date) {
-    	return toStringISO((Date)date);
+	public static String toString(final FreeplaneDate date) {
+    	return toStringISO((Date)date)  + "|" + date.df.toPattern();
     }
 	public static String toStringISO(final Date date) {
     	// use local timezone
@@ -91,8 +95,21 @@ public class FreeplaneDate extends Date {
     }
 
 	public static Object toObject(String text) {
-    	final FreeplaneDate date = toDateISO(text);
-    	return date == null ? text : date;
+		final int index = text.indexOf('|');
+		final SimpleDateFormat df ;
+    	final FreeplaneDate date;
+		if(index == -1){
+			df = getDefaultFormat();
+			date = toDateISO(text);
+		}
+		else{
+			df = getDateFormat(text.substring(index + 1));
+			date = toDateISO(text.substring(0, index));
+		}
+    	if(date == null)
+			return text;
+    	date.df = df;
+    	return date;
     }
 
 	public static FreeplaneDate toDate(String text) {
@@ -148,17 +165,22 @@ public class FreeplaneDate extends Date {
     }
 
 	static private FreeplaneDate parseDate(String text, final String pattern) {
-        DateFormat parser = dateFormatCache.get(pattern);
+		SimpleDateFormat parser = getDateFormat(pattern);
+        final ParsePosition pos = new ParsePosition(0);
+        final Date date = parser.parse(text, pos);
+        if (date != null && pos.getIndex() == text.length()) {
+        	return new FreeplaneDate(date.getTime(), parser);
+        }
+    	return null;
+    }
+
+	static SimpleDateFormat getDateFormat(final String pattern) {
+	    SimpleDateFormat parser = dateFormatCache.get(pattern);
         if (parser == null) {
         	parser = new SimpleDateFormat(pattern);
         	dateFormatCache.put(pattern, parser);
         }
-        final ParsePosition pos = new ParsePosition(0);
-        final Date date = parser.parse(text, pos);
-        if (date != null && pos.getIndex() == text.length()) {
-        	return new FreeplaneDate(date.getTime());
-        }
-    	return null;
+	    return parser;
     }
 
 	public static boolean isDateISO(String text) {
@@ -173,5 +195,9 @@ public class FreeplaneDate extends Date {
 
 	public static boolean isDateUser(String text) {
     	return text != null && toDateUser(text) != null;
+    }
+
+	public boolean containsTime() {
+    	return df.toPattern().contains("m");
     }
 }

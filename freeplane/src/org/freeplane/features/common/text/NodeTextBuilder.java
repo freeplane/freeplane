@@ -39,6 +39,7 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.StyleFactory;
 import org.freeplane.features.common.styles.StyleNamedObject;
+import org.freeplane.features.common.styles.StyleString;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter, IExtensionElementWriter, IExtensionAttributeWriter {
@@ -189,7 +190,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			if (!HtmlUtils.isHtmlNode(text)) {
 				writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 			}
-			if(! (data instanceof String)){
+			if(! (data instanceof String || data instanceof StyleString)){
 				writer.addAttribute(XML_NODE_XHTML_TYPE_TAG, data.getClass().getName());
 			}
 		}

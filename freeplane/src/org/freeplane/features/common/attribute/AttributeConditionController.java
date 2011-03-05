@@ -62,9 +62,8 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
-	                                            final Object v, final boolean matchCase) {
+	                                            final Object value, final boolean matchCase) {
 		final String attribute = (String) selectedItem;
-		final String value = (String) v;
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST)) {
 			return new AttributeExistsCondition(attribute);
 		}

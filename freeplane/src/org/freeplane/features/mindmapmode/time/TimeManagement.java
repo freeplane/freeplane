@@ -163,7 +163,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	}
 
 	private FreeplaneDate getCalendarDate() {
-		return new FreeplaneDate(calendar.getTime());
+		return new FreeplaneDate(calendar.getTime(), dateFormat.getPattern());
 	}
 
 	private ModeController getMindMapController() {

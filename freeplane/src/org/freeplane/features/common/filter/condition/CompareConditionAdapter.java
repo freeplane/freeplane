@@ -25,9 +25,11 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.core.util.TypeReference;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 abstract public class CompareConditionAdapter extends ASelectableCondition {
+	public static final String TYPE = "TYPE";
 	public static final String MATCH_CASE = "MATCH_CASE";
 	public static final String VALUE = "VALUE";
 	private Comparable<?> conditionValue;
@@ -35,25 +37,25 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 	private int comparisonResult;
 	private boolean error;
 
-	protected CompareConditionAdapter(final String value, final boolean matchCase) {
+	protected CompareConditionAdapter(final Object value, final boolean matchCase) {
 		super();
 		this.matchCase = matchCase;
 		final ResourceController resourceController = ResourceController.getResourceController();
-		if(resourceController.getBooleanProperty("compare_as_number") && TextUtils.isNumber(value)) {
-			Number number = TextUtils.toNumber(value);
+		if(value instanceof String && resourceController.getBooleanProperty("compare_as_number") && TextUtils.isNumber((String) value)) {
+			Number number = TextUtils.toNumber((String) value);
 			if(number instanceof Comparable<?>){
 				conditionValue = (Comparable<?>) number;
 			}
 			return;
 		}
-		if(resourceController.getBooleanProperty("compare_as_date") ){
-			final Date date = FreeplaneDate.toDate(value);
+		if(value instanceof String && resourceController.getBooleanProperty("compare_as_date") ){
+			final FreeplaneDate date = FreeplaneDate.toDate((String) value);
 			if(date != null){
 				conditionValue = date;
 				return;
 			}
 		}
-		conditionValue = value;
+		conditionValue = value.toString();
 	}
 
 	protected CompareConditionAdapter(final Double value) {
@@ -71,7 +73,12 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 	@Override
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
-		child.setAttribute(CompareConditionAdapter.VALUE, valueAsString());
+		if(conditionValue instanceof FreeplaneDate){
+			child.setAttribute(TYPE, TypeReference.toString(conditionValue));
+			child.setAttribute(CompareConditionAdapter.VALUE, TypeReference.toString(conditionValue));
+		}
+		else
+			child.setAttribute(CompareConditionAdapter.VALUE, conditionValue.toString());
 		child.setAttribute(CompareConditionAdapter.MATCH_CASE, TreeXmlWriter.BooleanToXml(matchCase));
 	}
 
@@ -104,8 +111,9 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			error = true;
 			return 0;
 		}
-		return matchCase ? text.compareTo(valueAsString()) : text
-		    .compareToIgnoreCase(valueAsString());
+		final String valueAsString = TypeReference.toString(conditionValue);
+		return matchCase ? text.compareTo(valueAsString) : text
+		    .compareToIgnoreCase(valueAsString);
     }
 
 	protected int getComparisonResult() {
@@ -125,7 +133,10 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
     }
 
 	private int compareTo(final Date value) {
-	    return value.compareTo((Date) conditionValue);
+		if(((FreeplaneDate )conditionValue).containsTime() || 
+				(value.getHours() == 0 && value.getMinutes() == 0))
+				return value.compareTo((Date) conditionValue);
+		return new Date(value.getYear(), value.getMonth(), value.getDate()).compareTo((Date) conditionValue);
     }
 
 	public String createDescription(final String attribute, final int comparationResult, final boolean succeed) {
@@ -145,12 +156,6 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 				throw new IllegalArgumentException();
 		}
 		return ConditionFactory.createDescription(attribute, simpleCondition, valueDescription(), matchCase);
-	}
-
-	private String valueAsString() {
-		if (conditionValue instanceof Date)
-			return FreeplaneDate.toStringISO((Date) conditionValue);
-		return conditionValue.toString();
 	}
 
 	private String valueDescription() {

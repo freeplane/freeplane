@@ -66,20 +66,20 @@ class NodeTextConditionController implements IElementaryConditionController {
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
 	                                            final Object value, final boolean matchCase) {
 		final String item = (String) ((NamedObject)selectedItem).getObject();
-		return createASelectableCondition(item, simpleCondition, (String) value, matchCase);
+		return createASelectableCondition(item, simpleCondition, value, matchCase);
 	}
 
-	private ASelectableCondition createASelectableCondition(final String item, final NamedObject simpleCondition, final String value,
+	private ASelectableCondition createASelectableCondition(final String item, final NamedObject simpleCondition, final Object value,
 	                                                   final boolean matchCase) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
 			if (value.equals("")) {
 				return null;
 			}
-			return matchCase ? new MatchCaseNodeContainsCondition(item, value) : new NodeContainsCondition(item, value);
+			return matchCase ? new MatchCaseNodeContainsCondition(item, value.toString()) : new NodeContainsCondition(item, value.toString());
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
 			try {
-				return new NodeMatchesRegexpCondition(item, value, matchCase);
+				return new NodeMatchesRegexpCondition(item, value.toString(), matchCase);
 			}
 			catch (final PatternSyntaxException e) {
 				UITools.errorMessage(TextUtils.format("wrong_regexp", value, e.getMessage()));
