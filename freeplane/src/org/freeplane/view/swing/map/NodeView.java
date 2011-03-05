@@ -22,7 +22,6 @@ package org.freeplane.view.swing.map;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -38,7 +37,6 @@ import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 
@@ -99,44 +97,10 @@ public class NodeView extends JComponent implements INodeView {
 	public final static int SHIFT = -2;
 	static final int SPACE_AROUND = 50;
 	public static final int MAIN_VIEWER_POSITION = 1;
-	public static final int DETAIL_VIEWER_POSITION = 2;
 	public static final int NOTE_VIEWER_POSITION = 10;
-	private static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
+	static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
 	    .getBooleanProperty("formula_dont_mark_formulas");;
 
-	/**
-	 * Determines to a given color a color, that is the best contrary color. It
-	 * is different from {@link #getAntiColor2}.
-	 *
-	 * @since PPS 1.1.1
-	 */
-	protected static Color getAntiColor1(final Color c) {
-		final float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
-		hsb[0] += 0.40;
-		if (hsb[0] > 1) {
-			hsb[0]--;
-		}
-		hsb[1] = 1;
-		hsb[2] = 0.7f;
-		return Color.getHSBColor(hsb[0], hsb[1], hsb[2]);
-	}
-
-	/**
-	 * Determines to a given color a color, that is the best contrary color. It
-	 * is different from {@link #getAntiColor1}.
-	 *
-	 * @since PPS 1.1.1
-	 */
-	protected static Color getAntiColor2(final Color c) {
-		final float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
-		hsb[0] -= 0.40;
-		if (hsb[0] < 0) {
-			hsb[0]++;
-		}
-		hsb[1] = 1;
-		hsb[2] = (float) 0.8;
-		return Color.getHSBColor(hsb[0], hsb[1], hsb[2]);
-	}
 
 	private AttributeView attributeView;
 	private JComponent contentPane;
@@ -146,6 +110,7 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeModel model;
 	private NodeMotionListenerView motionListenerView;
 	private NodeView preferredChild;
+	public static final int DETAIL_VIEWER_POSITION = 2;
 
 	protected NodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
@@ -162,136 +127,6 @@ public class NodeView extends JComponent implements INodeView {
 
 
 	
-
-	@SuppressWarnings("serial")
-    static final class DetailsView extends ZoomableLabel {
-	    public DetailsView() {
-	        super();
-       }
-
-
-		@Override
-	    public Dimension getPreferredSize() {
-			final NodeView nodeView = getNodeView();
-			if(nodeView == null){
-				return super.getPreferredSize();
-			}
-	    	int mainW = nodeView.getMainView().getPreferredSize().width;
-	    	final Dimension ownPrefSize = new Dimension(super.getPreferredSize());
-	    	if(ownPrefSize.width < mainW){
-	    		ownPrefSize.width = mainW;
-	    	}
-	    	return ownPrefSize;
-	    }
-    }
-
-	private class ArrowIcon implements Icon{
-		final private boolean down;
-		final private static int ARROW_HEIGTH = 5;
-		final private static int ARROW_HALF_WIDTH = 4;
-		final private static int ICON_HEIGTH = ARROW_HEIGTH + 2;
-		final private static int ICON_WIDTH = 1 + ARROW_HALF_WIDTH * 2 + 1;
-		
-
-		public ArrowIcon(boolean down) {
-	        super();
-	        this.down = down;
-        }
-
-		public int getIconHeight() {
-			return ICON_HEIGTH; 
-        }
-
-		public int getIconWidth() {
-			return ICON_WIDTH; 
-        }
-
-		public void paintIcon(Component c, Graphics g, int x, int y) {
-			int[]   xs = new int[3];
-			int[]   ys = new int[3];
-			
-			xs[0] = 1 + ARROW_HALF_WIDTH;
-			xs[1] = 1;
-			xs[2] = xs[0] + ARROW_HALF_WIDTH;
-			if(down){
-				ys[0] = 1 + ARROW_HEIGTH;
-				ys[1] = ys[2] = 1;
-			}
-			else{
-				ys[0] = 1;
-				ys[1] = ys[2] = 1 + ARROW_HEIGTH;
-			}
-			final Color oldColor = g.getColor();
-			final Color color = EdgeController.getController(getMap().getModeController()).getColor(model);
-			g.setColor(color);
-			Graphics2D g2= (Graphics2D) g;
-			final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-			ModeController modeController = getMap().getModeController();
-			modeController.getController().getViewController().setEdgesRenderingHint(g2);
-			g.drawPolygon(xs, ys, 3); 
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-			g.setColor(oldColor);
-        }
-		
-	}
-
-	private void updateDetails() {
-		final DetailTextModel detailText = DetailTextModel.getDetailText(model);
-		if (detailText == null) {
-			removeContent(DETAIL_VIEWER_POSITION);
-			return;
-		}
-		DetailsView detailContent = (DetailsView) getContent(DETAIL_VIEWER_POSITION);
-		if (detailContent == null) {
-			detailContent = createDetailView();
-			addContent(detailContent, DETAIL_VIEWER_POSITION);
-		}
-			if (detailText.isHidden()) {
-			detailContent.updateText("");
-			detailContent.setIcon(new ArrowIcon(true));
-		}
-		else {
-			detailContent.updateText(detailText.getHtml());
-			detailContent.setFont(mainView.getFont());
-			detailContent.setForeground(mainView.getForeground());
-			detailContent.setBackground(mainView.getBackground());
-			detailContent.setIcon(new ArrowIcon(false));
-		}
-	}
-
-	private DetailsView createDetailView() {
-	    DetailsView detailContent =  new DetailsView();
-	    final DefaultMapMouseReceiver mouseReceiver = new DefaultMapMouseReceiver();
-	    final DefaultMapMouseListener mouseListener = new DefaultMapMouseListener(mouseReceiver);
-	    detailContent.addMouseMotionListener(mouseListener);
-	    detailContent.addMouseListener(new DelayedMouseListener(new AMouseListener() {
-	    
-	    	@Override
-	        public void mousePressed(MouseEvent e) {
-	    		mouseReceiver.mousePressed(e);
-	        }
-	    
-	    	@Override
-	        public void mouseReleased(MouseEvent e) {
-	    		mouseReceiver.mouseReleased(e);
-	        }
-	    
-	    	@Override
-	        public void mouseClicked(MouseEvent e) {
-	    		final NodeModel model = NodeView.this.getModel();
-	    		TextController controller = TextController.getController();
-	    		final ZoomableLabel component = (ZoomableLabel) e.getComponent();
-	    		if(e.getX() < component.getIconWidth())
-	    			controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
-	    		else if(controller instanceof MTextController && e.getClickCount() == 2){
-	    			((MTextController) controller).editDetails(model, e, e.isAltDown());
-	    		}
-	        }
-	    	
-	    }, 2, MouseEvent.BUTTON1));
-	    return detailContent;
-    }
-
 	void addDragListener(final DragGestureListener dgl) {
 		if (dgl == null) {
 			return;
@@ -991,7 +826,7 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		if (property.equals(NodeModel.NOTE_TEXT)) {
-			updateNoteViewer();
+			NodeViewFactory.getInstance().updateNoteViewer(this);
 			return;
 		}
 		if (property.equals(HistoryInformationModel.class)) {
@@ -1158,34 +993,11 @@ public class NodeView extends JComponent implements INodeView {
 		UITools.convertPointToAncestor(mainView, origin, this);
 		g.translate(origin.x, origin.y);
 		mainView.paintDecoration(this, g);
-		FoldingMarkType markType = foldingMarkType(getMap().getModeController().getMapController(), getModel());
-		if (!markType.equals(FoldingMarkType.UNFOLDED)) {
-			final Point out = getMainViewOutPoint(null, null);
-			mainView.paintFoldingMark(this, g, out, markType.equals(FoldingMarkType.ITSELF_FOLDED));
-		}
 		if(mainView.isShortened()){
 			final Point in = getMainViewInPoint();
 			mainView.paintFoldingMark(this, g, in, true);
 		}
 		g.translate(-origin.x, -origin.y);
-	}
-
-	private enum FoldingMarkType {
-		UNFOLDED, ITSELF_FOLDED, UNVISIBLE_CHILDREN_FOLDED
-	};
-
-	static private FoldingMarkType foldingMarkType(MapController mapController, NodeModel model) {
-		if (mapController.isFolded(model) && (model.isVisible() || model.getFilterInfo().isAncestor())) {
-			return FoldingMarkType.ITSELF_FOLDED;
-		}
-		ListIterator<NodeModel> children = mapController.childrenUnfolded(model);
-		while (children.hasNext()) {
-			NodeModel child = children.next();
-			if (!child.isVisible() && !FoldingMarkType.UNFOLDED.equals(foldingMarkType(mapController, child))) {
-				return FoldingMarkType.UNVISIBLE_CHILDREN_FOLDED;
-			}
-		}
-		return FoldingMarkType.UNFOLDED;
 	}
 
 	/**
@@ -1382,7 +1194,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (attributeView != null) {
 			attributeView.update();
 		}
-		updateDetails();
+		NodeViewFactory.getInstance().updateDetails(this);
 		if (contentPane != null) {
 			final int componentCount = contentPane.getComponentCount();
 			for (int i = 1; i < componentCount; i++) {
@@ -1422,7 +1234,7 @@ public class NodeView extends JComponent implements INodeView {
     }
 
 	public void updateAll() {
-		updateNoteViewer();
+		NodeViewFactory.getInstance().updateNoteViewer(this);
 		update();
 		invalidate();
 		for (final NodeView child : getChildrenViews()) {
@@ -1452,18 +1264,6 @@ public class NodeView extends JComponent implements INodeView {
 		if(mainView != null){
 			final NodeModel nodeModel = getModel();
 			mainView.setToolTipText(nodeModel.getToolTip(getMap().getModeController()));
-		}
-	}
-
-	private String colorize(final String text, String color) {
-		return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";
-	}
-
-	void updateToolTipsRecursive() {
-		updateToolTip();
-		invalidate();
-		for (final NodeView child : getChildrenViews()) {
-			child.updateToolTipsRecursive();
 		}
 	}
 
@@ -1528,46 +1328,5 @@ public class NodeView extends JComponent implements INodeView {
 
 	public JComponent getContent(int pos) {
 		return removeContent(pos, false);
-	}
-
-	void updateNoteViewer() {
-		ZoomableLabel note = (ZoomableLabel) getContent(NOTE_VIEWER_POSITION);
-		String oldText = note != null ? note.getText() : null;
-		String newText;
-		if (getMap().showNotes()) {
-			final TextController textController = TextController.getController();
-			final NoteModel extension = NoteModel.getNote(model);
-			final String originalText = (extension != null ? extension.getHtml() : null);
-			try {
-				newText = textController.getTransformedTextNoThrow(originalText, model, extension);
-				if (!DONT_MARK_FORMULAS && newText != originalText)
-					newText = colorize(newText, "green");
-			}
-			catch (Exception e) {
-				newText = colorize(TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
-				    .replace("\n", "<br>"), "red");
-			}
-		}
-		else {
-			newText = null;
-		}
-		if (oldText == null && newText == null) {
-			return;
-		}
-		if (oldText != null && newText != null) {
-			ZoomableLabel view = (ZoomableLabel) getContent(NOTE_VIEWER_POSITION);
-			view.updateText(newText);
-			return;
-		}
-		if (oldText == null && newText != null) {
-			ZoomableLabel view = NodeViewFactory.getInstance().createNoteViewer();
-			addContent(view, NOTE_VIEWER_POSITION);
-			view.updateText(newText);
-			return;
-		}
-		if (oldText != null && newText == null) {
-			removeContent(NOTE_VIEWER_POSITION);
-			return;
-		}
 	}
 }

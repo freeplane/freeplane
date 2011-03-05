@@ -25,6 +25,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -37,11 +38,20 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.ui.AMouseListener;
+import org.freeplane.core.ui.DelayedMouseListener;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.common.note.NoteController;
+import org.freeplane.features.common.note.NoteModel;
+import org.freeplane.features.common.text.DetailTextModel;
+import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.mindmapmode.text.MTextController;
+import org.freeplane.view.swing.ui.DefaultMapMouseListener;
+import org.freeplane.view.swing.ui.DefaultMapMouseReceiver;
 
 class NodeViewFactory {
 	private static class ContentPane extends JComponent {
@@ -159,7 +169,7 @@ class NodeViewFactory {
 		model.addViewer(newView);
 		newView.setLayout(SelectableLayout.getInstance());
 		newView.setMainView(newMainView(newView));
-        newView.updateNoteViewer();
+        updateNoteViewer(newView);
         newView.update();
         fireNodeViewCreated(newView); 
 		return newView;
@@ -220,4 +230,109 @@ class NodeViewFactory {
 		}
 	    return icon;
     }
+
+	void updateNoteViewer(NodeView nodeView) {
+		ZoomableLabel note = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
+		String oldText = note != null ? note.getText() : null;
+		String newText;
+		if (nodeView.getMap().showNotes()) {
+			final TextController textController = TextController.getController();
+			final NodeModel model = nodeView.getModel();
+			final NoteModel extension = NoteModel.getNote(model);
+			final String originalText = (extension != null ? extension.getHtml() : null);
+			try {
+				newText = textController.getTransformedTextNoThrow(originalText, model, extension);
+				if (!NodeView.DONT_MARK_FORMULAS && newText != originalText)
+					newText = colorize(newText, "green");
+			}
+			catch (Exception e) {
+				newText = colorize(TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
+				    .replace("\n", "<br>"), "red");
+			}
+		}
+		else {
+			newText = null;
+		}
+		if (oldText == null && newText == null) {
+			return;
+		}
+		if (oldText != null && newText != null) {
+			ZoomableLabel view = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
+			view.updateText(newText);
+			return;
+		}
+		if (oldText == null && newText != null) {
+			ZoomableLabel view = NodeViewFactory.getInstance().createNoteViewer();
+			nodeView.addContent(view, NodeView.NOTE_VIEWER_POSITION);
+			view.updateText(newText);
+			return;
+		}
+		if (oldText != null && newText == null) {
+			nodeView.removeContent(NodeView.NOTE_VIEWER_POSITION);
+			return;
+		}
+	}
+	private String colorize(final String text, String color) {
+		return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";
+	}
+
+	void updateDetails(NodeView nodeView) {
+		final DetailTextModel detailText = DetailTextModel.getDetailText(nodeView.getModel());
+		if (detailText == null) {
+			nodeView.removeContent(NodeView.DETAIL_VIEWER_POSITION);
+			return;
+		}
+		DetailsView detailContent = (DetailsView) nodeView.getContent(NodeView.DETAIL_VIEWER_POSITION);
+		if (detailContent == null) {
+			detailContent = createDetailView();
+			nodeView.addContent(detailContent, NodeView.DETAIL_VIEWER_POSITION);
+		}
+			if (detailText.isHidden()) {
+			detailContent.updateText("");
+			detailContent.setIcon(new ArrowIcon(nodeView, true));
+		}
+		else {
+			detailContent.updateText(detailText.getHtml());
+			final MainView mainView = nodeView.getMainView();
+			detailContent.setFont(mainView.getFont());
+			detailContent.setForeground(mainView.getForeground());
+			detailContent.setBackground(mainView.getBackground());
+			detailContent.setIcon(new ArrowIcon(nodeView, false));
+		}
+	}
+
+	private DetailsView createDetailView() {
+	    DetailsView detailContent =  new DetailsView();
+	    final DefaultMapMouseReceiver mouseReceiver = new DefaultMapMouseReceiver();
+	    final DefaultMapMouseListener mouseListener = new DefaultMapMouseListener(mouseReceiver);
+	    detailContent.addMouseMotionListener(mouseListener);
+	    detailContent.addMouseListener(new DelayedMouseListener(new AMouseListener() {
+	    
+	    	@Override
+	        public void mousePressed(MouseEvent e) {
+	    		mouseReceiver.mousePressed(e);
+	        }
+	    
+	    	@Override
+	        public void mouseReleased(MouseEvent e) {
+	    		mouseReceiver.mouseReleased(e);
+	        }
+	    
+	    	@Override
+	        public void mouseClicked(MouseEvent e) {
+	    		final NodeView nodeView = (NodeView)SwingUtilities.getAncestorOfClass(NodeView.class, e.getComponent());
+	    		final NodeModel model = nodeView.getModel();
+	    		TextController controller = TextController.getController();
+	    		final ZoomableLabel component = (ZoomableLabel) e.getComponent();
+	    		if(e.getX() < component.getIconWidth())
+	    			controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
+	    		else if(controller instanceof MTextController && e.getClickCount() == 2){
+	    			((MTextController) controller).editDetails(model, e, e.isAltDown());
+	    		}
+	        }
+	    	
+	    }, 2, MouseEvent.BUTTON1));
+	    return detailContent;
+    }
+
 }

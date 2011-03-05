@@ -32,6 +32,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.net.URI;
 import java.util.Collection;
+import java.util.ListIterator;
 import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
@@ -57,6 +58,7 @@ import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -209,8 +211,31 @@ public abstract class MainView extends ZoomableLabel {
 		g.setColor(color);
 	}
 	
+	static private enum FoldingMarkType {
+		UNFOLDED, ITSELF_FOLDED, UNVISIBLE_CHILDREN_FOLDED
+	};
+
+	static private FoldingMarkType foldingMarkType(MapController mapController, NodeModel model) {
+		if (mapController.isFolded(model) && (model.isVisible() || model.getFilterInfo().isAncestor())) {
+			return FoldingMarkType.ITSELF_FOLDED;
+		}
+		ListIterator<NodeModel> children = mapController.childrenUnfolded(model);
+		while (children.hasNext()) {
+			NodeModel child = children.next();
+			if (!child.isVisible() && !FoldingMarkType.UNFOLDED.equals(foldingMarkType(mapController, child))) {
+				return FoldingMarkType.UNVISIBLE_CHILDREN_FOLDED;
+			}
+		}
+		return FoldingMarkType.UNFOLDED;
+	}
+
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		drawModificationRect(g);
+		FoldingMarkType markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
+		if (!markType.equals(FoldingMarkType.UNFOLDED)) {
+			final Point out = nodeView.getMainViewOutPoint(null, null);
+			paintFoldingMark(nodeView, g, out, markType.equals(FoldingMarkType.ITSELF_FOLDED));
+		}
 	}
 
     private void drawModificationRect(Graphics g) {
