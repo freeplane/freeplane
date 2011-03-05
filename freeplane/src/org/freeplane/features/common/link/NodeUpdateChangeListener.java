@@ -3,7 +3,6 @@ package org.freeplane.features.common.link;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;

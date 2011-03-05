@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.common.attribute;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,10 +29,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

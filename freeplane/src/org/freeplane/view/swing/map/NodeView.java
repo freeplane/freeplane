@@ -33,7 +33,6 @@ import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
-import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -42,11 +41,8 @@ import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.AMouseListener;
-import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.cloud.CloudController;
@@ -57,26 +53,20 @@ import org.freeplane.features.common.icon.HierarchicalIcons;
 import org.freeplane.features.common.map.HistoryInformationModel;
 import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapChangeEvent;
-import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.map.NodeModel.NodeChangeType;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapViewLayout;
-import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.cloud.CloudViewFactory;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.EdgeViewFactory;
-import org.freeplane.view.swing.ui.DefaultMapMouseListener;
-import org.freeplane.view.swing.ui.DefaultMapMouseReceiver;
 
 /**
  * This class represents a single Node of a MindMap (in analogy to

@@ -46,11 +46,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.AccelerateableAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.view.swing.map.NodeView;
 
 /**
  * Utilities for accessing the GUI, creating dialogs etc.: In scripts available as "global variable" <code>ui</code>.

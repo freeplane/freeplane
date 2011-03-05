@@ -21,14 +21,12 @@ package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.net.URI;
 import javax.swing.Icon;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -36,11 +34,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
-import org.freeplane.features.common.icon.IconController;
-import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.ITextTransformer;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.view.swing.map.NodeView;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	/**
