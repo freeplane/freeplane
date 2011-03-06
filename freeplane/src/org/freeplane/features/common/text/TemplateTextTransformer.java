@@ -49,12 +49,39 @@ class TemplateTextTransformer extends AbstractTextTransformer {
 		if (nodeNumbering && !node.isRoot()){
 			StringBuilder builder = new StringBuilder(node.getNodeLevel(true) * 2);
 			getPathToRoot(builder, node);
-			obj = builder.toString() + " " + obj;
+			builder.append(' ');
+			if (isHtml) {
+				obj = insertPrefix((String)obj, builder.toString());
+			}
+			else{
+				obj = builder.toString() + obj;
+			}
 		}
 		if (isHtml)
 			obj = "<html><head></head><body>" + obj + "</body></html>";
 		return obj.toString();
 	}
+
+	private String insertPrefix(String html, String prefix) {
+		StringBuilder sb = new StringBuilder(html.length() + prefix.length() + 1);
+		int i = 0;
+		int level = 0;
+		WHILE: while(i < html.length()){
+			final char c = html.charAt(i);
+			switch(c){
+				case '<': level++; break;
+				case '>': level--; break;
+				default:
+					if(level == 0 && ! Character.isWhitespace(c))
+						break  WHILE;
+			}
+			i++;
+		}
+		sb.append(html.subSequence(0, i));
+		sb.append(prefix);
+		sb.append(html.subSequence(i, html.length()));
+		return sb.toString();
+    }
 
 	private String format(final Object obj, final String template) {
 		try {
