@@ -376,6 +376,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			}
 		}
 		final JComboBox dateFormatChooser = new JComboBox(values);
+		dateFormatChooser.setFocusable(false);
 		if (!datePatterns.isEmpty()){
 			dateFormatChooser.setSelectedIndex(selectedIndex);
 			dateFormat = ((DateFormatComboBoxElement) (dateFormatChooser.getSelectedItem())).getDateFormat();
