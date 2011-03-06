@@ -191,7 +191,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	final private AttributeView attributeView;
 	private int highRowIndex = 0;
 	private static DefaultCellEditor dce;
-	private static Font headerFont;
 
 	AttributeTable(final AttributeView attributeView) {
 		super();
@@ -200,9 +199,18 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		addMouseListener(AttributeTable.cursorUpdater);
 		addMouseMotionListener(AttributeTable.cursorUpdater);
 		final JTableHeader tableHeader = getTableHeader();
-		if(headerFont == null)
-			headerFont = tableHeader.getFont().deriveFont(4f);
-		tableHeader.setFont(headerFont);
+		final TableCellRenderer defaultRenderer = tableHeader.getDefaultRenderer();
+		tableHeader.setDefaultRenderer(new TableCellRenderer() {
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+			                                               int row, int column) {
+				final Component c = defaultRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				final int height = (int) (((AttributeTable)table).getZoom() * 6);
+				final Dimension preferredSize = new Dimension(1, height);
+				c.setPreferredSize(preferredSize);
+				return c;
+				
+			}
+		});
 		setTableHeader(tableHeader);
 		if (attributeView.getMapView().getModeController().canEdit()) {
 			tableHeader.addMouseListener(AttributeTable.componentListener);
