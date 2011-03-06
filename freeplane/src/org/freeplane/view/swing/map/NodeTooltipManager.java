@@ -14,6 +14,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.lang.ref.WeakReference;
 
 import javax.swing.JComponent;
 import javax.swing.JToolTip;
@@ -46,6 +47,7 @@ public class NodeTooltipManager implements IExtension{
 	 */
 	private JToolTip tip;
 	final private ComponentMouseListener componentMouseListener;
+	private WeakReference<Component> focusOwnerRef;
 
 	public static NodeTooltipManager getSharedInstance(ModeController modeController){
 		{
@@ -181,6 +183,7 @@ public class NodeTooltipManager implements IExtension{
 				}
 			}
 		}
+		focusOwnerRef = new WeakReference<Component>(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
 		tipPopup = popupFactory.getPopup(nearComponent, tip, x, y);
 		tipPopup.show();
 	}
@@ -190,9 +193,19 @@ public class NodeTooltipManager implements IExtension{
 		toolTipText = null;
 		mouseEvent = null;
 		if (tipPopup != null) {
+			final Component component;
+			final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+			if(SwingUtilities.isDescendingFrom(focusOwner, tip)){
+				component = focusOwnerRef.get();
+			}
+			else
+				component = null;
 			tipPopup.hide();
+			if(component != null)
+				component.requestFocusInWindow();
 			tipPopup = null;
 			tip = null;
+			focusOwnerRef = null;
 			enterTimer.stop();
 			exitTimer.stop();
 		}
