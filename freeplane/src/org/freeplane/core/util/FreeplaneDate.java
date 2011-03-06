@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.util;
 
-import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,6 +38,18 @@ import org.freeplane.core.resources.ResourceController;
 @FactoryMethod("toObject")
 @SerializationMethod("toString")
 public class FreeplaneDate extends Date {
+
+	@Override
+    public boolean equals(Object obj) {
+	    return obj instanceof FreeplaneDate 
+	    && super.equals(obj) 
+	    && ((FreeplaneDate)obj).getDateFormat().equals(df);
+    }
+
+	@Override
+    public int hashCode() {
+	    return 37 * super.hashCode() + df.hashCode();
+    }
 
 	private static HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
 	public static final String ISO_DATE_FORMAT_PATTERN = "yyyy-MM-dd";
@@ -174,7 +185,7 @@ public class FreeplaneDate extends Date {
     	return null;
     }
 
-	static SimpleDateFormat getDateFormat(final String pattern) {
+	static public SimpleDateFormat getDateFormat(final String pattern) {
 	    SimpleDateFormat parser = dateFormatCache.get(pattern);
         if (parser == null) {
         	parser = new SimpleDateFormat(pattern);
@@ -199,5 +210,9 @@ public class FreeplaneDate extends Date {
 
 	public boolean containsTime() {
     	return df.toPattern().contains("m");
+    }
+
+	public SimpleDateFormat getDateFormat() {
+	    return df;
     }
 }

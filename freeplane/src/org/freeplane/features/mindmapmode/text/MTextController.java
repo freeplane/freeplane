@@ -265,7 +265,7 @@ public class MTextController extends TextController {
 	}
 
 	public void setNodeObject(final NodeModel node, final Object newObject) {
-		final Object oldText = node.getText();
+		final Object oldText = node.getUserObject();
 		if (oldText.equals(newObject)) {
 			return;
 		}
