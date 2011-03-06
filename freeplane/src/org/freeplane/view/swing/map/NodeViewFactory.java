@@ -234,24 +234,23 @@ class NodeViewFactory {
 	void updateNoteViewer(NodeView nodeView) {
 		ZoomableLabel note = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
 		String oldText = note != null ? note.getText() : null;
-		String newText;
+		String newText  = null;
 		if (nodeView.getMap().showNotes()) {
 			final TextController textController = TextController.getController();
 			final NodeModel model = nodeView.getModel();
 			final NoteModel extension = NoteModel.getNote(model);
-			final String originalText = (extension != null ? extension.getHtml() : null);
-			try {
-				newText = textController.getTransformedTextNoThrow(originalText, model, extension);
-				if (!NodeView.DONT_MARK_FORMULAS && newText != originalText)
-					newText = colorize(newText, "green");
+			if(extension != null){
+				final String originalText = extension.getHtml();
+				try {
+					newText = textController.getTransformedTextNoThrow(originalText, model, extension);
+					if (!NodeView.DONT_MARK_FORMULAS && newText != originalText)
+						newText = colorize(newText, "green");
+				}
+				catch (Exception e) {
+					newText = colorize(TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
+						.replace("\n", "<br>"), "red");
+				}
 			}
-			catch (Exception e) {
-				newText = colorize(TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
-				    .replace("\n", "<br>"), "red");
-			}
-		}
-		else {
-			newText = null;
 		}
 		if (oldText == null && newText == null) {
 			return;
