@@ -67,13 +67,15 @@ public class LogUtils {
 		}
 		try {
 			mFileHandler = new FileHandler(resourceController.getFreeplaneUserDirectory() + File.separator + "log",
-			    1400000, 5, false);
+				1400000, 5, false);
 			mFileHandler.setFormatter(new StdFormatter());
-			mFileHandler.setLevel(Level.INFO);
 			parentLogger.addHandler(mFileHandler);
 			final ConsoleHandler stdConsoleHandler = new ConsoleHandler();
 			stdConsoleHandler.setFormatter(new StdFormatter());
-			stdConsoleHandler.setLevel(Level.INFO);
+			if(System.getProperty("java.util.logging.config.file", null) == null){
+				mFileHandler.setLevel(Level.INFO);
+				stdConsoleHandler.setLevel(Level.INFO);
+			}
 			parentLogger.addHandler(stdConsoleHandler);
 			LoggingOutputStream los;
 			Logger logger = Logger.getLogger(StdFormatter.STDOUT.getName());
