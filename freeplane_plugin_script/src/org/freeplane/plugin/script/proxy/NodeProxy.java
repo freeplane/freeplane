@@ -5,6 +5,8 @@ package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
 
+import java.net.URI;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.link.ConnectorModel;
@@ -85,7 +88,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public ConvertibleText getAt(String attributeName) {
-		return new ConvertibleText(getDelegate(), getScriptContext(), getAttributes().getFirst(attributeName));
+		final String value = getAttributes().getFirst(attributeName);
+		return new ConvertibleText(getDelegate(), getScriptContext(), value);
 	}
 
 	// Node: R/W
@@ -253,6 +257,10 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// NodeRO: R
 	public Convertible getTo() {
 		final NodeModel nodeModel = getDelegate();
+		if (nodeModel.getUserObject() instanceof Date)
+			return new ConvertibleDate((Date) nodeModel.getUserObject());
+		else if (nodeModel.getUserObject() instanceof URI)
+			return new ConvertibleUri((URI) nodeModel.getUserObject());
 		return new ConvertibleNodeText(nodeModel, getScriptContext());
 	}
 
@@ -351,6 +359,10 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// Node: R/W
 	public void setText(final Object value) {
 		final MTextController textController = (MTextController) TextController.getController();
+		if (value instanceof Date)
+			textController.setNodeObject(getDelegate(), new FreeplaneDate(((Date) value).getTime()));
+		else if (value instanceof Calendar)
+			textController.setNodeObject(getDelegate(), new FreeplaneDate(((Calendar) value).getTime().getTime()));
 		textController.setNodeText(getDelegate(), Convertible.toString(value));
 	}
 

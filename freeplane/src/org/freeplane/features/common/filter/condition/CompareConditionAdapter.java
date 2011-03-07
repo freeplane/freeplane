@@ -132,12 +132,12 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 	    return value.compareTo((Long) conditionValue);
     }
 
-	private int compareTo(final Date value) {
-		if(((FreeplaneDate )conditionValue).containsTime() || 
-				(value.getHours() == 0 && value.getMinutes() == 0))
-				return value.compareTo((Date) conditionValue);
+	@SuppressWarnings("deprecation")
+    private int compareTo(final Date value) {
+		if (((FreeplaneDate) conditionValue).containsTime() || (value.getHours() == 0 && value.getMinutes() == 0))
+			return value.compareTo((Date) conditionValue);
 		return new Date(value.getYear(), value.getMonth(), value.getDate()).compareTo((Date) conditionValue);
-    }
+	}
 
 	public String createDescription(final String attribute, final int comparationResult, final boolean succeed) {
 		String simpleCondition;

@@ -87,6 +87,10 @@ public class FreeplaneDate extends Date {
 	    super(date);
 	    this.df = df;
     }
+	
+	public FreeplaneDate(long date) {
+		this(date, getDefaultFormat());
+	}
 
 	@Override
     public String toString() {
@@ -94,7 +98,7 @@ public class FreeplaneDate extends Date {
     }
 
 	public static String toString(final FreeplaneDate date) {
-    	return toStringISO((Date)date)  + "|" + date.df.toPattern();
+    	return toStringISO(date)  + "|" + date.df.toPattern();
     }
 	public static String toStringISO(final Date date) {
     	// use local timezone

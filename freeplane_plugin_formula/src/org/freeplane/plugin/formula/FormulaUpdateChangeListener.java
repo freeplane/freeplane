@@ -1,16 +1,12 @@
 package org.freeplane.plugin.formula;
 
-import java.awt.Component;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapViewChangeListener;
-import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
-import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
