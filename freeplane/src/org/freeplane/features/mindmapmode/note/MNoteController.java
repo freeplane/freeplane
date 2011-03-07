@@ -297,7 +297,6 @@ public class MNoteController extends NoteController {
 		final StyleSheet styleSheet = noteViewerComponent.getDocument().getStyleSheet();
 		styleSheet.removeStyle("body");
 		styleSheet.removeStyle("p");
-		final Font defaultFont;
 		if (ResourceController.getResourceController().getBooleanProperty(
 				MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
 			// set default font for notes:
@@ -305,6 +304,7 @@ public class MNoteController extends NoteController {
 					NodeStyleController.class);
 			MapModel map = Controller.getCurrentModeController().getController().getMap();
 			if(map != null){
+				final Font defaultFont;
 				defaultFont = style.getDefaultFont(map);
 				String rule = "body {";
 				rule += "font-family: " + defaultFont.getFamily() + ";";

@@ -21,14 +21,20 @@ package org.freeplane.features.mindmapmode.note;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.regex.Pattern;
 
+import javax.swing.text.html.StyleSheet;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
 import org.freeplane.features.mindmapmode.text.EditNodeWYSIWYG;
@@ -85,6 +91,17 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 		}, false);
 		mCurrentEditDialog = editNodeWYSIWYG;
 		editNodeWYSIWYG.setBackground(Color.WHITE);
+		if (ResourceController.getResourceController().getBooleanProperty(
+				MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
+			// set default font for notes:
+			final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
+					NodeStyleController.class);
+			MapModel map = Controller.getCurrentModeController().getController().getMap();
+			if(map != null){
+				final Font defaultFont = style.getDefaultFont(map);
+				editNodeWYSIWYG.setFont(defaultFont);
+			}
+		}
 		editNodeWYSIWYG.show(controller.getViewController().getJFrame());
     }
 
