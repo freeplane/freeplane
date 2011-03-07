@@ -144,12 +144,9 @@
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 </node>
-<node TEXT="Christian Foltin" FOLDED="true" ID="_Freeplane_Link_875814410" CREATED="1124560950701" MODIFIED="1124560950701" COLOR="#996600">
+<node TEXT="Christian Foltin" ID="_Freeplane_Link_875814410" CREATED="1124560950701" MODIFIED="1124560950701" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
-<node TEXT="christian.foltin@gmx.de" ID="ID_959538898" CREATED="1124560950701" MODIFIED="1124560950701" COLOR="#558000" LINK="mailto:christian.foltin@gmx.de">
-<font NAME="Dialog" SIZE="10"/>
-</node>
 </node>
 <node TEXT="Dimitri Polivaev" ID="_Freeplane_Link_1415293905" CREATED="1124560950701" MODIFIED="1124560950701" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>

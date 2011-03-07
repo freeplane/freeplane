@@ -105,9 +105,6 @@
 <node COLOR="#996600" CREATED="1124560950701" ID="_Freeplane_Link_875814410" MODIFIED="1124560950701" TEXT="Christian Foltin">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#558000" CREATED="1124560950701" LINK="mailto:christian.foltin@gmx.de" MODIFIED="1124560950701" TEXT="christian.foltin@gmx.de">
-<font NAME="Dialog" SIZE="10"/>
-</node>
 </node>
 <node COLOR="#996600" CREATED="1124560950701" ID="_Freeplane_Link_1415293905" MODIFIED="1124560950701" TEXT="Dimitri Polivaev">
 <edge WIDTH="thin"/>
