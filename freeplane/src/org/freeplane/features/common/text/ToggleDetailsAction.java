@@ -22,6 +22,7 @@ package org.freeplane.features.common.text;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.map.NodeModel;
@@ -41,6 +42,8 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		isHidden = !isHidden();
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		selection.keepNodePosition(selection.getSelected(), 0.5f, 0.5f);
 		super.actionPerformed(e);
 	}
 	

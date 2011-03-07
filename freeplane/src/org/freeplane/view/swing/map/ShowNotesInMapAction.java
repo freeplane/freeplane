@@ -3,6 +3,7 @@ package org.freeplane.view.swing.map;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.map.MapModel;
@@ -21,6 +22,8 @@ public class ShowNotesInMapAction extends AFreeplaneAction {
 		final MapModel map = Controller.getCurrentController().getMap();
 		final MNoteController noteController = (MNoteController) NoteController.getController();
 		noteController.setShowNotesInMap(map, ! NoteController.getController().showNotesInMap(map));
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		selection.keepNodePosition(selection.getSelected(), 0.5f, 0.5f);
 		setSelected();
 	}
 
