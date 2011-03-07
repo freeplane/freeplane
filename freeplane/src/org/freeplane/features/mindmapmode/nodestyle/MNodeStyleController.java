@@ -28,6 +28,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -373,7 +374,9 @@ public class MNodeStyleController extends NodeStyleController {
 		final IActor actor = new IActor() {
 			public void act() {
 				NodeStyleModel.setNodeNumbering(node, enableNodeNumbering);
-				modeController.getMapController().nodeChanged(node);
+				final MapController mapController = modeController.getMapController();
+				mapController.setSaved(node.getMap(), false);
+				mapController.delayedNodeRefresh(node, NodeStyleController.NODE_NUMBERING, oldValue, enableNodeNumbering);
 			}
 
 			public String getDescription() {
@@ -382,7 +385,9 @@ public class MNodeStyleController extends NodeStyleController {
 
 			public void undo() {
 				NodeStyleModel.setNodeNumbering(node, oldValue);
-				modeController.getMapController().nodeChanged(node);
+				final MapController mapController = modeController.getMapController();
+				mapController.setSaved(node.getMap(), false);
+				modeController.getMapController().delayedNodeRefresh(node, NodeStyleController.NODE_NUMBERING, enableNodeNumbering, oldValue);
 			}
 		};
 		modeController.execute(actor, node.getMap());

@@ -63,6 +63,7 @@ public class NodeStyleController implements IExtension {
 // 	final private ModeController modeController;
 	final private ExclusivePropertyChain<String, NodeModel> shapeHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
+	public static final String NODE_NUMBERING = "NodeNumbering";
 
 	public NodeStyleController(final ModeController modeController) {
 //		this.modeController = modeController;
