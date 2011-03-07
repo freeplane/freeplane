@@ -232,7 +232,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 			return false;
 		if (obj.getClass() == String.class)
 			return text.equals(obj);
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Convertible))
 			return false;
 		Convertible other = (Convertible) obj;
 		if (text == null) {
