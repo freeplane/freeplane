@@ -107,12 +107,9 @@
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 </node>
-<node TEXT="Christian Foltin" FOLDED="true" COLOR="#996600">
+<node TEXT="Christian Foltin" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
-<node TEXT="christian.foltin@gmx.de" COLOR="#558000" LINK="mailto:christian.foltin@gmx.de">
-<font NAME="Dialog" SIZE="10"/>
-</node>
 </node>
 <node TEXT="Dimitri Polivaev" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>

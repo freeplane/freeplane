@@ -1843,12 +1843,9 @@
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 </node>
-<node TEXT="Christian Foltin" FOLDED="true" ID="ID_591424112" CREATED="1270892460647" MODIFIED="1272869247390" COLOR="#996600">
+<node TEXT="Christian Foltin" ID="ID_591424112" CREATED="1270892460647" MODIFIED="1272869247390" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
-<node TEXT="christian.foltin@gmx.de" ID="ID_1399986755" CREATED="1270892460648" MODIFIED="1272869247390" COLOR="#558000" LINK="mailto:christian.foltin@gmx.de">
-<font NAME="SansSerif" SIZE="10"/>
-</node>
 </node>
 <node TEXT="Dimitry Polivaev" ID="ID_388951080" CREATED="1270892460648" MODIFIED="1272869247390" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
