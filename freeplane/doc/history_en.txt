@@ -1,4 +1,9 @@
 ﻿===============================
+1.1.4
+===============================
+Bug fixes in applet browser
+
+===============================
 1.1.3
 ===============================
 Bug fixes:
@@ -19,7 +24,7 @@ Bug fix in remove format action of simply html
 Bug fixes in applet browser
 Catch exceptions thrown from hook writers
 414: handling of non letter characters in spell checker
-722]: Image http url putted in open file dialog for inserting an image hangs freeplane 
+722]: Image http url putted in open file dialog for inserting an image hangs freeplane
 
 ===============================
 1.1.1
@@ -37,7 +42,7 @@ Bug fixes:
 1.0.45 rc
 ===============================
 New features:
-Display filled folding mark if there are some descendant folded nodes  with visible descendants are hidden by a filter 
+Display filled folding mark if there are some descendant folded nodes  with visible descendants are hidden by a filter
 
 ===============================
 1.0.44 rc
