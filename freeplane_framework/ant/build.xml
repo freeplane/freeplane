@@ -197,6 +197,7 @@
 					<exclude name="*/build/**" />
 					<exclude name="*/build4mac/**" />
 					<exclude name="*/dist/**" />
+					<exclude name="**/.backup/**" />
 					<exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho" />
 					<exclude name="freeplane_framework/windows-launcher/Objects/**" />
 					<exclude name="freeplane_framework/windows-launcher/*.layout" />
