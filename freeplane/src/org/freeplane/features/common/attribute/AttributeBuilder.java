@@ -47,14 +47,14 @@ class AttributeBuilder implements IElementDOMHandler {
         }
 		String attributeName;
 		String attributeValue;
-		String attributeType;
+		String attributeObject;
 		public Object getValue() {
 			Object value;
-			if(attributeType == null)
+			if(attributeObject == null)
 				value = attributeValue;
             else
                 try {
-                    value = new TypeReference(attributeType).create(attributeValue);
+                    value = TypeReference.create(attributeObject);
                 }
                 catch (Exception e) {
                 	LogUtils.warn(e);
@@ -177,11 +177,11 @@ class AttributeBuilder implements IElementDOMHandler {
 				    ap.attributeValue = value;
 			    }
 		    });
-		reader.addAttributeHandler(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE, "TYPE",
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE, "OBJECT",
 		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
 				    final AttributeProperties ap = (AttributeProperties) userObject;
-				    ap.attributeType = value;
+				    ap.attributeObject = value;
 			    }
 		    });
 		reader.addElementHandler(XML_NODE_ATTRIBUTE_LAYOUT, new IElementHandler() {
@@ -217,10 +217,10 @@ class AttributeBuilder implements IElementDOMHandler {
 				ap.attributeValue = value;
 			}
 		});
-		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, "TYPE", new IAttributeHandler() {
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, "OBJECT", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final AttributeProperties ap = (AttributeProperties) userObject;
-				ap.attributeType = value;
+				ap.attributeObject = value;
 			}
 		});
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "RESTRICTED", new IAttributeHandler() {
@@ -312,9 +312,9 @@ class AttributeBuilder implements IElementDOMHandler {
 			attributeElement.setAttribute("VALUE", TextController.getController().getTransformedText(value, node, null));
 		}
 		else{
-			attributeElement.setAttribute("VALUE", TypeReference.toString(value));
+			attributeElement.setAttribute("VALUE", value.toString());
 			if(! (value  instanceof String))
-				attributeElement.setAttribute("TYPE", value.getClass().getName());
+				attributeElement.setAttribute("OBJECT", TypeReference.toSpec(value));
 		}
 		writer.addElement(attr, attributeElement);
 	}

@@ -83,12 +83,12 @@ public class NodeModel implements MutableTreeNode {
 	private String xmlText = null;
 
 	public NodeModel(final MapModel map) {
-		this("", map);
+		this(null, map);
 	}
 
 	public NodeModel(final Object userObject, final MapModel map) {
 		extensionContainer = new ExtensionContainer(new SmallExtensionMap());
-		setText((String) userObject);
+		setUserObject(userObject);
 		setHistoryInformation(new HistoryInformationModel());
 		this.map = map;
 		icons = new NodeIconSetModel();

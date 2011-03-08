@@ -150,9 +150,12 @@ public class AttributeRegistryElement {
 				final XMLElement xmlValue = new XMLElement();
 				xmlValue.setName(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE);
 				final Object value = values.getElementAt(i);
-				xmlValue.setAttribute("VALUE", TypeReference.toString(value));
-				if(! (value  instanceof String))
-					xmlValue.setAttribute("TYPE", value.getClass().getName());
+				final String string = value.toString();
+				xmlValue.setAttribute("VALUE", string);
+				if(! (value  instanceof String)){
+					final String spec = TypeReference.toSpec(value);
+					xmlValue.setAttribute("OBJECT", spec);
+				}
 				element.addChild(xmlValue);
 			}
 		}

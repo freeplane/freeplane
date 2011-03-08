@@ -29,7 +29,7 @@ import org.freeplane.core.util.TypeReference;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 abstract public class CompareConditionAdapter extends ASelectableCondition {
-	public static final String TYPE = "TYPE";
+	public static final String OBJECT = "OBJECT";
 	public static final String MATCH_CASE = "MATCH_CASE";
 	public static final String VALUE = "VALUE";
 	private Comparable<?> conditionValue;
@@ -55,6 +55,10 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 				return;
 			}
 		}
+		if(value instanceof FreeplaneDate){
+			conditionValue = (Comparable<?>) value;
+			return;
+		}
 		conditionValue = value.toString();
 	}
 
@@ -74,8 +78,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
 		if(conditionValue instanceof FreeplaneDate){
-			child.setAttribute(TYPE, TypeReference.toString(conditionValue));
-			child.setAttribute(CompareConditionAdapter.VALUE, TypeReference.toString(conditionValue));
+			child.setAttribute(OBJECT, TypeReference.toSpec(conditionValue));
 		}
 		else
 			child.setAttribute(CompareConditionAdapter.VALUE, conditionValue.toString());
@@ -111,7 +114,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			error = true;
 			return 0;
 		}
-		final String valueAsString = TypeReference.toString(conditionValue);
+		final String valueAsString = conditionValue.toString();
 		return matchCase ? text.compareTo(valueAsString) : text
 		    .compareToIgnoreCase(valueAsString);
     }

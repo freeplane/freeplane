@@ -37,19 +37,24 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 	static final String ITEM = "ITEM";
 
 	static ASelectableCondition load(final XMLElement element) {
+		final String item = element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE);
 		final String valueString = element.getAttribute(NodeTextCompareCondition.VALUE, null);
-		final String type = element.getAttribute(NodeTextCompareCondition.TYPE, null);
 		final Object value;
-		if(type == null)
+		if(valueString != null)
 			value = valueString;
-		else
-			value = new TypeReference(type).create(valueString);
+		else{
+			final String object = element.getAttribute(NodeTextCompareCondition.OBJECT, null);
+			value = TypeReference.create(object);
+		}
+		final boolean matchCase = TreeXmlReader.xmlToBoolean(element.getAttribute(CompareConditionAdapter.MATCH_CASE, null));
+		final int compResult = Integer.parseInt(element.getAttribute(NodeTextCompareCondition.COMPARATION_RESULT, null));
+		final boolean succeed = TreeXmlReader.xmlToBoolean(element.getAttribute(NodeTextCompareCondition.SUCCEED, null));
 		return new NodeTextCompareCondition(
-			element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE), 
+			item, 
 			value, 
-			TreeXmlReader.xmlToBoolean(element.getAttribute(CompareConditionAdapter.MATCH_CASE, null)), 
-			Integer.parseInt(element.getAttribute(NodeTextCompareCondition.COMPARATION_RESULT, null)), 
-			TreeXmlReader.xmlToBoolean(element.getAttribute(NodeTextCompareCondition.SUCCEED, null)));
+			matchCase, 
+			compResult, 
+			succeed);
 	}
 
 	final private int comparationResult;

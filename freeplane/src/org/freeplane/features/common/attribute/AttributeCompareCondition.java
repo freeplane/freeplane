@@ -21,6 +21,7 @@ package org.freeplane.features.common.attribute;
 
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
@@ -37,11 +38,20 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	static final String SUCCEED = "SUCCEED";
 
 	static ASelectableCondition load(final XMLElement element) {
-		return new AttributeCompareCondition(element.getAttribute(AttributeCompareCondition.ATTRIBUTE, null), element
-		    .getAttribute(CompareConditionAdapter.VALUE, null), TreeXmlReader.xmlToBoolean(element.getAttribute(
-		    CompareConditionAdapter.MATCH_CASE, null)), Integer.parseInt(element.getAttribute(
-		    AttributeCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader.xmlToBoolean(element.getAttribute(
-		    AttributeCompareCondition.SUCCEED, null)));
+		final String attr = element.getAttribute(AttributeCompareCondition.ATTRIBUTE, null);
+		Object value = element.getAttribute(CompareConditionAdapter.VALUE, null);
+		if(value == null){
+			final String spec = element.getAttribute(CompareConditionAdapter.OBJECT, null);
+			value = TypeReference.create(spec);
+		}
+			
+		final boolean matchCase = TreeXmlReader.xmlToBoolean(element.getAttribute(
+		    CompareConditionAdapter.MATCH_CASE, null));
+		final int compResult = Integer.parseInt(element.getAttribute(
+		    AttributeCompareCondition.COMPARATION_RESULT, null));
+		final boolean succeed = TreeXmlReader.xmlToBoolean(element.getAttribute(
+		    AttributeCompareCondition.SUCCEED, null));
+		return new AttributeCompareCondition(attr, value, matchCase, compResult, succeed);
 	}
 
 	final private String attribute;

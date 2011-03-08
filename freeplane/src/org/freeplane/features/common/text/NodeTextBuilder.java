@@ -50,6 +50,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	public static final String XML_NODE_XHTML_TYPE_NOTE = "NOTE";
 	public static final String XML_NODE_XHTML_TYPE_DETAILS = "DETAILS";
 	public static final String XML_NODE_XHTML_TYPE_TAG = "TYPE";
+	public static final String XML_NODE_OBJECT = "OBJECT";
 	private static final String XML_NODE_TEXT_SHORTENED = "TEXT_SHORTENED";
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
@@ -86,27 +87,16 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
 				final Object nodeContent = node.getUserObject();
-				if(nodeContent instanceof TypeReference){
-					final Object newInstance = ((TypeReference) nodeContent).create(nodeContent.toString());
-					node.setUserObject(newInstance);
-					return;
+				if(nodeContent == null){
+					node.setText(value);
 				}
-				node.setText(value);
 			}
 		});
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, XML_NODE_XHTML_TYPE_TAG, new IAttributeHandler() {
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "OBJECT", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
-				final Object nodeContent = node.getUserObject();
-				final TypeReference typeReference = new TypeReference(value);
-				if(nodeContent == null){
-					node.setUserObject(typeReference);
-					return;
-				}
-				if(nodeContent instanceof String){
-					final Object newInstance = typeReference.create(nodeContent.toString());
-					node.setUserObject(newInstance);
-				}
+				final Object newInstance = TypeReference.create(value);
+				node.setUserObject(newInstance);
 			}
 		});
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT_SHORTENED, new IAttributeHandler() {
@@ -186,12 +176,12 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			}
 		}
 		else{
-			final String text =  TypeReference.toString(data);
+			final String text =  TypeReference.toSpec(data);
 			if (!HtmlUtils.isHtmlNode(text)) {
 				writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 			}
 			if(! (data instanceof String || data instanceof StyleString)){
-				writer.addAttribute(XML_NODE_XHTML_TYPE_TAG, data.getClass().getName());
+				writer.addAttribute(XML_NODE_OBJECT, TypeReference.toSpec(data));
 			}
 		}
 	}
