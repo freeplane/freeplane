@@ -40,7 +40,6 @@ import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -61,14 +60,6 @@ public class ScriptingEngine {
 	public interface IErrorHandler {
 		void gotoLine(int pLineNumber);
 	}
-
-	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING = "execute_scripts_without_asking";
-	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION = "execute_scripts_without_file_restriction";
-	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION = "execute_scripts_without_write_restriction";
-	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION = "execute_scripts_without_exec_restriction";
-	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION = "execute_scripts_without_network_restriction";
-	public static final String RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING = "script_user_key_name_for_signing";
-	public static final String RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED = "signed_script_are_trusted";
 	public static final String RESOURCES_SCRIPT_DIRECTORIES = "script_directories";
 	public static final String RESOURCES_SCRIPT_CLASSPATH = "script_classpath";
 	public static final String SCRIPT_PREFIX = "script";
@@ -83,15 +74,16 @@ public class ScriptingEngine {
     };
 
 	/**
+	 * @param restricted TODO
 	 * @return the result of the script, or null, if the user has cancelled.
 	 * @throws ExecuteScriptException on errors
 	 */
 	static Object executeScript(final NodeModel node, String script, final IErrorHandler pErrorHandler,
-	                            final PrintStream pOutStream, final ScriptContext scriptContext)
-	        {
+	                            final PrintStream pOutStream, final ScriptContext scriptContext, boolean restricted) {
 		if (!noUserPermissionRequired) {
 			final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
-			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
+			    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+			    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
 			if (showResult != JOptionPane.OK_OPTION) {
 				throw new ExecuteScriptException(TextUtils.getText("script_execution_disabled"));
 			}
@@ -115,42 +107,26 @@ public class ScriptingEngine {
 				script = script.substring(matcher.end());
 			}
 		}
-		/*
-		 * get preferences (and store them again after the script execution,
-		 * such that the scripts are not able to change them).
-		 */
-		final String executeWithoutAsking = ResourceController.getResourceController().getProperty(
-		    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
-		final String executeWithoutReadRestriction = ResourceController.getResourceController().getProperty(
-		    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
-		final String executeWithoutWriteRestriction = ResourceController.getResourceController().getProperty(
-			RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION);
-		final String executeWithoutNetworkRestriction = ResourceController.getResourceController().getProperty(
-		    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
-		final String executeWithoutExecRestriction = ResourceController.getResourceController().getProperty(
-		    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
-		final String signedScriptsWithoutRestriction = ResourceController.getResourceController().getProperty(
-		    RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
-		/* *************** */
-		/* Signature */
-		/* *************** */
 		final PrintStream oldOut = System.out;
-		boolean readPerm = Boolean.parseBoolean(executeWithoutReadRestriction);
-		boolean writePerm = Boolean.parseBoolean(executeWithoutWriteRestriction);
-		boolean networkPerm = Boolean.parseBoolean(executeWithoutNetworkRestriction);
-		boolean execPerm = Boolean.parseBoolean(executeWithoutExecRestriction);
-		if (Boolean.parseBoolean(signedScriptsWithoutRestriction)) {
-			final boolean isSigned = new SignedScriptHandler().isScriptSigned(script, pOutStream);
-			if (isSigned) {
-				readPerm = true;
-				writePerm = true;
-				networkPerm = true;
-				execPerm = true;
-			}
-		}
-		final ScriptingSecurityManager scriptingSecurityManager = new ScriptingSecurityManager(readPerm, writePerm,
-		    networkPerm, execPerm);
+		// get preferences (and store them again after the script execution,
+		// such that the scripts are not able to change them).
+		final ScriptingPermissions scriptingPermissions = new ScriptingPermissions();
+		scriptingPermissions.initFromPreferences();
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
+		final ScriptingSecurityManager scriptingSecurityManager;
+		final boolean needsSecurityManager = !securityManager.hasFinalSecurityManager();
+		if (needsSecurityManager) {
+			final boolean executeSignedScripts = scriptingPermissions.isExecuteSignedScriptsWithoutRestriction();
+			if (restricted)
+				scriptingSecurityManager = scriptingPermissions.getRestrictedScriptingSecurityManager();
+			else if (executeSignedScripts && new SignedScriptHandler().isScriptSigned(script, pOutStream))
+				scriptingSecurityManager = scriptingPermissions.getPermissiveScriptingSecurityManager();
+			else
+				scriptingSecurityManager = scriptingPermissions.getScriptingSecurityManager();
+		}
+		else {
+			scriptingSecurityManager = null;
+		}
 		try {
 			System.setOut(pOutStream);
 			final GroovyShell shell = new GroovyShell(binding, createCompilerConfiguration()) {
@@ -163,7 +139,6 @@ public class ScriptingEngine {
 				@Override
 				public Object evaluate(final InputStream in, final String fileName) throws CompilationFailedException {
 					Script script = null;
-					boolean needsSecurityManager = !securityManager.hasFinalSecurityManager();
 					try {
 						script = parse(in, fileName);
 						if (needsSecurityManager)
@@ -225,16 +200,7 @@ public class ScriptingEngine {
 		finally {
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
-			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-			    executeWithoutAsking);
-			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION,
-			    executeWithoutReadRestriction);
-			ResourceController.getResourceController().setProperty(
-			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION, executeWithoutNetworkRestriction);
-			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
-			    executeWithoutExecRestriction);
-			ResourceController.getResourceController().setProperty(RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
-			    signedScriptsWithoutRestriction);
+			scriptingPermissions.restorePermissions();
 		}
 	}
 
@@ -258,11 +224,12 @@ public class ScriptingEngine {
 	}
 
 	public static Object executeScript(final NodeModel node, final String script) {
-		return ScriptingEngine.executeScript(node, script, null);
+		return ScriptingEngine.executeScript(node, script, null, false);
 	}
 	
-	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext) {
-		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out, scriptContext);
+	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext,
+	                                   boolean restricted) {
+		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out, scriptContext, restricted);
 	}
 
 	static Object executeScriptRecursive(final NodeModel node, final String script) {
@@ -299,10 +266,6 @@ public class ScriptingEngine {
 
 	static void setNoUserPermissionRequired(final Boolean noUserPermissionRequired) {
 		ScriptingEngine.noUserPermissionRequired = noUserPermissionRequired;
-	}
-
-	static Boolean getNoUserPermissionRequired() {
-		return noUserPermissionRequired;
 	}
 
 	/** allows to set the classpath for scripts. Due to security considerations it's not possible to set

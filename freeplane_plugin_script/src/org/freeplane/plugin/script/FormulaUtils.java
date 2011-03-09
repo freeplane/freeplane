@@ -41,6 +41,7 @@ public class FormulaUtils {
 		if (!scriptContext.push(nodeModel, text))
 			throw new StackOverflowError(TextUtils.format("formula.error.circularReference", scriptContext.getStackFront()
 			    .getText()));
+		final boolean restrictedPermissions = true;
 		try {
 			if (ENABLE_CACHING) {
 				final FormulaCache formulaCache = getFormulaCache(nodeModel.getMap());
@@ -48,7 +49,7 @@ public class FormulaUtils {
 				if (value == null) {
 					//				System.out.println("eval(" + text + ")");
 					try {
-	                    value = ScriptingEngine.executeScript(nodeModel, text, scriptContext);
+						value = ScriptingEngine.executeScript(nodeModel, text, scriptContext, restrictedPermissions);
 	                    formulaCache.put(nodeModel, text, value);
                     }
                     catch (ExecuteScriptException e) {
@@ -62,7 +63,7 @@ public class FormulaUtils {
 				return value;
 			}
 			else {
-				return ScriptingEngine.executeScript(nodeModel, text, scriptContext);
+				return ScriptingEngine.executeScript(nodeModel, text, scriptContext, restrictedPermissions);
 			}
 		}
 		finally {
