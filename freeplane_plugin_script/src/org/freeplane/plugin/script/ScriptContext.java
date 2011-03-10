@@ -78,8 +78,8 @@ public class ScriptContext {
 	public boolean push(NodeModel nodeModel, String script) {
 		final boolean success = stack.push(new NodeWrapper(nodeModel, script));
 		if (!success) {
-			LogUtils.warn("circular reference detected on attempt to calculate " + nodeModel.getID() + " -> "
-			        + script + ", call stack:\n " + stackTrace(nodeModel, script));
+			LogUtils.warn("Circular reference detected! Traceback (innermost last):\n " //
+			        + stackTrace(nodeModel, script));
 		}
 		return success;
 	}
@@ -102,7 +102,7 @@ public class ScriptContext {
 	}
 
 	private String format(NodeModel nodeModel, String script, NodeModel nodeToHighlight) {
-		return (nodeToHighlight.equals(nodeModel) ? "* " : "") + nodeModel.getID() + " "
+		return (nodeToHighlight.equals(nodeModel) ? "* " : "") + nodeModel.createID() + " "
 		        + limitLength(deformat(nodeModel.getText()), 30) //
 		        + " -> " + limitLength(script, 60);
 	}
