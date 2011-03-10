@@ -2,10 +2,11 @@ package org.freeplane.plugin.script;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /** A minimal implementation of a stack that may contain an element only once - not threadsafe.
  * The stack may contains null but note that null is used by {@link #pop()} to signal an empty stack. */
-public class UniqueStack<T> {
+public class UniqueStack<T> implements Iterable<T> {
 	private ArrayList<T> stack = new ArrayList<T>(8);
 	private HashSet<T> set = new HashSet<T>(8);
 
@@ -31,13 +32,21 @@ public class UniqueStack<T> {
 	public T pop() {
 		return stack.isEmpty() ? null : stack.get(stack.size() - 1);
 	}
-	
+
 	public T first() {
 		return stack.isEmpty() ? null : stack.get(0);
 	}
-	
+
 	public T last() {
 		return stack.isEmpty() ? null : stack.get(stack.size() - 1);
+	}
+
+	public Iterator<T> iterator() {
+		return stack.iterator();
+	}
+
+	public int size() {
+		return stack.size();
 	}
 
 	public String toString() {

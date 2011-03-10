@@ -194,7 +194,7 @@ public class ScriptingEngine {
 			if (Controller.getCurrentController().getSelection() != null)
 				Controller.getCurrentModeController().getMapController().select(node);
 			// LogUtils.warn(e);
-			pOutStream.print(e.getMessage());
+			// pOutStream.print(e.getMessage());
 			throw new ExecuteScriptException(e.getMessage(), e);
 		}
 		finally {
