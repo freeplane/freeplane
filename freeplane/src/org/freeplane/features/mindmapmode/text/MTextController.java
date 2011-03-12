@@ -248,18 +248,6 @@ public class MTextController extends TextController {
 
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 
-	public void setGuessedNodeObject(final NodeModel node, final String newText) {
-		if(HtmlUtils.isHtmlNode(newText)){
-			setNodeObject(node, newText);
-			return;
-		}
-		final FreeplaneDate date = FreeplaneDate.toDate(newText.trim());
-		if(date != null)
-			setNodeObject(node, date);
-		else
-			setNodeObject(node, newText);
-	}
-
 	public void setNodeText(final NodeModel node, final String newText) {
 		setNodeObject(node, newText);
 	}
@@ -303,7 +291,7 @@ public class MTextController extends TextController {
 		}
 		final String newUpperContent = strings[0];
 		final String newLowerContent = strings[1];
-		setGuessedNodeObject(node, newUpperContent);
+		setNodeObject(node, newUpperContent);
 		final NodeModel parent = node.getParentNode();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel lowerNode = ((MMapController) modeController.getMapController()).addNewNode(parent, parent
@@ -311,7 +299,7 @@ public class MTextController extends TextController {
 		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 		    .getController();
 		nodeStyleController.copyStyle(node, lowerNode);
-		setGuessedNodeObject(lowerNode, newLowerContent);
+		setNodeObject(lowerNode, newLowerContent);
 	}
 
 	public boolean useRichTextInEditor(String key) {
@@ -569,7 +557,7 @@ public class MTextController extends TextController {
 					}
 				}
 				processedText = processedText.replaceFirst("\\s+$", "");
-				setGuessedNodeObject(nodeModel, processedText);
+				setNodeObject(nodeModel, processedText);
 				stop();
 			}
 
