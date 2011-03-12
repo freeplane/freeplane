@@ -1066,6 +1066,7 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		getMap().scrollNodeToVisible(this);
+		Controller.getCurrentController().getViewController().addObjectTypeInfo(getModel().getUserObject());
 		mainView.requestFocus();
 	}
 

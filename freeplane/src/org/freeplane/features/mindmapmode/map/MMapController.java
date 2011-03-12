@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
@@ -57,18 +58,19 @@ public class MMapController extends MapController {
 	public MMapController() {
 		super();
 		createActions();
-		if (ResourceController.getResourceController().getBooleanProperty("display_node_id")) {
 			addNodeSelectionListener(new INodeSelectionListener() {
 				public void onSelect(final NodeModel node) {
-					Controller.getCurrentController().getViewController()
-					    .addStatusInfo("display_node_id", "ID=" + node.createID(), null);
+					final ViewController viewController = Controller.getCurrentController().getViewController();
+					if (ResourceController.getResourceController().getBooleanProperty("display_node_id")) {
+						viewController.addStatusInfo("display_node_id", "ID=" + node.createID(), null);
+					}
 				}
 
 				public void onDeselect(final NodeModel node) {
-					Controller.getCurrentController().getViewController().addStatusInfo("display_node_id", null, null);
+					final ViewController viewController = Controller.getCurrentController().getViewController();
+					viewController.addStatusInfo("display_node_id", null, null);
 				}
 			});
-		}
 	}
 
 	public NodeModel addNewNode(final int newNodeMode, final KeyEvent e) {

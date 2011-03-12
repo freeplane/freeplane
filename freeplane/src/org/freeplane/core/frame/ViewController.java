@@ -67,6 +67,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
@@ -162,6 +163,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		this.propertyKeyPrefix = propertyKeyPrefix;
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
 		statusPanel.putClientProperty(VISIBLE_PROPERTY_KEY, "status_visible");
+		statusPanel.add(new JLabel(">"));
 		status = new JLabel();
 		statusPanel.add(status);
 		statusInfos = new HashMap<String, JLabel>();
@@ -784,4 +786,18 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel, ex);
 		}
 	}
+
+	public void addObjectTypeInfo(Object value) {
+		    if(value instanceof FreeplaneDate){
+		    	final FreeplaneDate fd = (FreeplaneDate) value;
+		    	if(fd.containsTime()){
+		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ResourceController.dateTimeIcon);
+		    	}
+		    	else{
+		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ResourceController.dateIcon);
+		    	}
+		    }
+		    else
+		    	addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
+	    }
 }

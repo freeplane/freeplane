@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
@@ -47,12 +48,17 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
@@ -734,6 +740,28 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
     public void setValueAt(Object aValue, int row, int column) {
 	    super.setValueAt(column == 0 ? aValue.toString() : aValue, row, column);
     }
+
+	@Override
+    public void valueChanged(ListSelectionEvent e) {
+	    super.valueChanged(e);
+	    tableSelectionChanged();
+    }
 	
 	
+
+	@Override
+    public void columnSelectionChanged(ListSelectionEvent e) {
+	    super.columnSelectionChanged(e);
+	    tableSelectionChanged();
+    }
+
+	private void tableSelectionChanged() {
+		final int r = getSelectedRow();
+		final int c = getSelectedColumn();
+		final ViewController viewController = Controller.getCurrentController().getViewController();
+		if(r >= 0 && c >= 0){
+			final Object value = getValueAt(r, c);
+			viewController.addObjectTypeInfo(value);
+		}
+    }
 }

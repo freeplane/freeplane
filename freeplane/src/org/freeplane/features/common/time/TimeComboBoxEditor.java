@@ -29,8 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.ComboBoxEditor;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
@@ -128,8 +126,6 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	    updateDate();
     }
 	
-	final static Icon dateIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/calendar_red.png"));
-	final static Icon dateTimeIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/calendar_clock_red.png"));
 	public static ComboBoxEditor getTextDateTimeEditor() {
 	    final ContainerComboBoxEditor editor = new ContainerComboBoxEditor();
 		final NamedObject keyText = new NamedObject("text", "Abc");
@@ -137,13 +133,13 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 		editor.put(keyText, textEditor);
 		
 		final NamedObject keyDate = new NamedObject("date", ""); 
-		keyDate.setIcon(dateIcon);
+		keyDate.setIcon(ResourceController.dateIcon);
 		final TimeComboBoxEditor dateComboBoxEditor = new TimeComboBoxEditor(false);
 		dateComboBoxEditor.setItem();
 		editor.put(keyDate, dateComboBoxEditor);
 
 		final NamedObject keyDateTime = new NamedObject("date_time", ""); 
-		keyDateTime.setIcon(dateTimeIcon);
+		keyDateTime.setIcon(ResourceController.dateTimeIcon);
 		final TimeComboBoxEditor dateTimeComboBoxEditor = new TimeComboBoxEditor(true);
 		dateTimeComboBoxEditor.setItem();
 		editor.put(keyDateTime, dateTimeComboBoxEditor);
