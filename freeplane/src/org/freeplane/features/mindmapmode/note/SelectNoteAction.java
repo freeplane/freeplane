@@ -62,7 +62,7 @@ class SelectNoteAction extends AFreeplaneAction {
 					noteController.showNotesPanel(true);
 				}
 				else {
-					htmlEditorPanel.getMostRecentFocusOwner().requestFocus();
+					htmlEditorPanel.getMostRecentFocusOwner().requestFocusInWindow();
 					if (ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")) {
 						final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
 						editorPane.setCaretPosition(editorPane.getDocument().getLength());

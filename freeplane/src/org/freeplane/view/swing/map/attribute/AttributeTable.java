@@ -468,7 +468,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			model.insertRow(row);
 			changeSelection(row, 0, false, false);
 			if (editCellAt(row, 0)) {
-				getEditorComponent().requestFocus();
+				getEditorComponent().requestFocusInWindow();
 			}
 		}
 	}
@@ -538,7 +538,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			return true;
 		}
 		if (ks.getKeyCode() == KeyEvent.VK_ESCAPE && e.getModifiers() == 0 && pressed) {
-			attributeView.getNodeView().requestFocus();
+			attributeView.getNodeView().requestFocusInWindow();
 			return true;
 		}
 		boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
@@ -565,7 +565,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					retValue = SwingUtilities.processKeyBindings(keyEv);
 				}
 				else {
-					editorComponent.requestFocus();
+					editorComponent.requestFocusInWindow();
 					retValue = true;
 				}
 			}

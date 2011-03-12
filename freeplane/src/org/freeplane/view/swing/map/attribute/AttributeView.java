@@ -230,7 +230,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	private void startEditingTable() {
-		attributeTable.requestFocus();
+		attributeTable.requestFocusInWindow();
 		if (currentAttributeTableModel.getRowCount() == 0) {
 			attributeTable.insertRow(0);
 		}
@@ -256,7 +256,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 		if (registryAttributeViewType != getViewType()) {
 			setViewType(registryAttributeViewType);
 		}
-		getNodeView().requestFocus();
+		getNodeView().requestFocusInWindow();
 	}
 
 	public void syncronizeAttributeView() {

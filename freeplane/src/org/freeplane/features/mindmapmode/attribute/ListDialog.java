@@ -319,7 +319,7 @@ class ListDialog extends JDialog {
 	}
 
 	private void selectText() {
-		textField.requestFocus();
+		textField.requestFocusInWindow();
 		textField.select(0, textField.getDocument().getLength());
 	}
 

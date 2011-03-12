@@ -88,7 +88,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 				    .getFocusOwner());
 				if (table != focusOwner && focusOwner instanceof JComponent) {
 					table.requestFocus(true);
-					((JComponent) focusOwner).requestFocus();
+					((JComponent) focusOwner).requestFocusInWindow();
 				}
 				table = null;
 			}
@@ -297,7 +297,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 			if (table.isEditing()) {
 				return;
 			}
-			table.requestFocus();
+			table.requestFocusInWindow();
 			make();
 			show(e.getComponent(), e.getX(), e.getY());
 		}
@@ -375,7 +375,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	    if(visible){
 	    	return;
 	    }
-	    table.requestFocus();
+	    table.requestFocusInWindow();
     }
 	
 	

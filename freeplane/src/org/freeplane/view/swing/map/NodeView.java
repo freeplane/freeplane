@@ -1054,20 +1054,15 @@ public class NodeView extends JComponent implements INodeView {
 		final int y = content.getY() - EXTRA;
 		repaint(x, y, content.getWidth() + EXTRA * 2, content.getHeight() + EXTRA * 2);
 	}
-
+	
 	@Override
 	public boolean requestFocusInWindow() {
-		return mainView.requestFocusInWindow();
-	}
-
-	@Override
-	public void requestFocus() {
 		if(mainView == null){
-			return;
+			return false;
 		}
 		getMap().scrollNodeToVisible(this);
 		Controller.getCurrentController().getViewController().addObjectTypeInfo(getModel().getUserObject());
-		mainView.requestFocus();
+		return mainView.requestFocusInWindow();
 	}
 
 	@Override
@@ -1241,7 +1236,7 @@ public class NodeView extends JComponent implements INodeView {
 		final MainView newMainView = NodeViewFactory.getInstance().newMainView(this);
 		setMainView(newMainView);
 		if (map.getSelected() == this) {
-			requestFocus();
+			requestFocusInWindow();
 		}
 	}
 
