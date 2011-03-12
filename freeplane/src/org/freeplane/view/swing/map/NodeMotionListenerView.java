@@ -20,9 +20,11 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 
@@ -63,20 +65,23 @@ public class NodeMotionListenerView extends JComponent {
 
 	@Override
 	public void paintComponent(final Graphics g) {
-		super.paintComponent(g);
-		if (isMouseEntered()) {
-			final Graphics2D g2 = (Graphics2D) g;
-			final Color color = g2.getColor();
-			if (LocationModel.getModel(movedView.getModel()).getHGap() <= 0) {
-				g2.setColor(Color.RED);
-				g.fillOval(0, 0, getWidth() - 1, getHeight() - 1);
-			}
-			else {
-				g2.setColor(Color.BLACK);
-				g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
-			}
-			g2.setColor(color);
+		if (!isMouseEntered()) 
+			return;
+		final Graphics2D g2 = (Graphics2D) g;
+		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+		final MapView parent = (MapView) getParent();
+		parent.getModeController().getController().getViewController().setEdgesRenderingHint(g2);
+		final Color color = g2.getColor();
+		if (LocationModel.getModel(movedView.getModel()).getHGap() <= 0) {
+			g2.setColor(Color.RED);
+			g.fillOval(0, 0, getWidth() - 1, getHeight() - 1);
 		}
+		else {
+			g2.setColor(Color.BLACK);
+			g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
+		}
+		g2.setColor(color);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
 
 	public void setMouseEntered() {
