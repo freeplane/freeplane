@@ -797,6 +797,15 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ResourceController.dateIcon);
 		    	}
 		    }
+		    else if(value instanceof String){
+		    	if(TextUtils.isNumber((String)value)){
+		    		addStatusInfo(ResourceController.OBJECT_TYPE, "123", null);
+		    	}
+		    	else{
+		    		addStatusInfo(ResourceController.OBJECT_TYPE, "Abc", null);
+		    	}
+		    			
+		    }
 		    else
 		    	addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
 	    }
