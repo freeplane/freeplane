@@ -23,14 +23,14 @@ import java.net.URI;
 
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.AbstractTextTransformer;
+import org.freeplane.features.common.text.AbstractContentTransformer;
 import org.freeplane.features.common.text.TextController;
 
 /**
  * @author Dimitry Polivaev
  * Mar 3, 2011
  */
-public class LinkTransformer extends AbstractTextTransformer {
+public class LinkTransformer extends AbstractContentTransformer {
 	private ModeController modeController;
 
 	public LinkTransformer(ModeController modeController, int priority) {

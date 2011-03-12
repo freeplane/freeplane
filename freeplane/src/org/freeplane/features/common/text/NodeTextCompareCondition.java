@@ -26,7 +26,6 @@ import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.common.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.NodeTextConditionController.ItemForComparison;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeTextCompareCondition extends CompareConditionAdapter {
@@ -70,13 +69,13 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final ItemForComparison item = NodeTextConditionController.getItemForComparison(nodeItem, node);
-		return item != null && checkText(item.content, item.text);
+		final Object item = NodeTextConditionController.getItemForComparison(nodeItem, node);
+		return item != null && checkText(item);
 	}
 
-	private boolean checkText(Object content, final String plainTextContent) {
+	private boolean checkText(final Object plainTextContent) {
 		try {
-			compareTo(content, plainTextContent);
+			compareTo(plainTextContent);
 			return isComparisonOK() &&  succeed == (getComparisonResult() == comparationResult);
 		}
 		catch (final NumberFormatException e) {

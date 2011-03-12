@@ -49,7 +49,15 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			return;
 		}
 		if(value instanceof FreeplaneDate){
-			conditionValue = (Comparable<?>) value;
+			final FreeplaneDate date = (FreeplaneDate) value;
+			if(date.containsTime() || 
+					date.getHours() == 0 && date.getMinutes() == 0 && date.getSeconds() == 0) {
+				conditionValue = date;
+            }
+            else{
+	            final Date reducedDate = new Date(date.getYear(), date.getMonth(), date.getDate());
+	 	            conditionValue = new FreeplaneDate(reducedDate.getTime(), date.getDateFormat());
+			}
 			return;
 		}
 		conditionValue = value.toString();
@@ -78,15 +86,15 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 		child.setAttribute(CompareConditionAdapter.MATCH_CASE, TreeXmlWriter.BooleanToXml(matchCase));
 	}
 
-	protected void compareTo(Object nodeContent, final String nodeText) throws NumberFormatException {
+	protected void compareTo(final Object transformedContent) throws NumberFormatException {
 		error = false;
-		comparisonResult = Integer.signum(compareToData(nodeContent, nodeText));
+		comparisonResult = Integer.signum(compareToData(transformedContent));
 	}
 
-	private int compareToData(Object content, final String text) {
-		if (conditionValue instanceof Number) {
+	private int compareToData(final Object transformedContent) {
+		if (conditionValue instanceof Number && transformedContent instanceof String) {
 			try {
-				Number number = TextUtils.toNumber(text); 
+				Number number = TextUtils.toNumber((String)transformedContent); 
 				if(number instanceof Long)
 					return compareTo((Long)number);
 				if(number instanceof Double)
@@ -97,19 +105,16 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			error = true;
 			return 0;
 		}
-		if (conditionValue instanceof Date) {
-			if(content instanceof Date){
-				return compareTo((Date)content);
+		if (conditionValue instanceof FreeplaneDate) {
+			if (transformedContent instanceof FreeplaneDate) {
+				return compareTo((FreeplaneDate)transformedContent);
 			}
-			final Date date = FreeplaneDate.toDate(text);
-			if(date != null)
-				return compareTo(date);
 			error = true;
 			return 0;
 		}
 		final String valueAsString = conditionValue.toString();
-		return matchCase ? text.compareTo(valueAsString) : text
-		    .compareToIgnoreCase(valueAsString);
+		final String text = transformedContent.toString();
+		return matchCase ? text.compareTo(valueAsString) : text.compareToIgnoreCase(valueAsString);
     }
 
 	protected int getComparisonResult() {
@@ -130,7 +135,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 
 	@SuppressWarnings("deprecation")
     private int compareTo(final Date value) {
-		if (((FreeplaneDate) conditionValue).containsTime() || (value.getHours() == 0 && value.getMinutes() == 0))
+		if (((FreeplaneDate) conditionValue).containsTime() || (value.getHours() == 0 && value.getMinutes() == 0 && value.getSeconds() == 0))
 			return value.compareTo((Date) conditionValue);
 		return new Date(value.getYear(), value.getMonth(), value.getDate()).compareTo((Date) conditionValue);
 	}

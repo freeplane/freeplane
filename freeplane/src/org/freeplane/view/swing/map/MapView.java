@@ -90,7 +90,7 @@ import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.styles.MapViewLayout;
-import org.freeplane.features.common.text.ITextTransformer;
+import org.freeplane.features.common.text.IContentTransformer;
 import org.freeplane.features.controller.print.FitMap;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
@@ -1611,7 +1611,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-		if(propertyName.equals(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT))
+		if(propertyName.equals(IContentTransformer.DONT_MARK_TRANSFORMED_TEXT))
 			UITools.repaintAll(getRoot());
 	}
 

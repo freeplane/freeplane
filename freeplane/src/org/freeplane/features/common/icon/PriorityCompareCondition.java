@@ -82,7 +82,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 				continue;
 			}
 			final String prio = iconName.substring(5, 6);
-			compareTo(prio, prio);
+			compareTo(prio);
 			return isComparisonOK() &&  succeed == (getComparisonResult() == comparationResult);
 		}
 		return false;

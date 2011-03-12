@@ -10,14 +10,14 @@ import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.AbstractTextTransformer;
+import org.freeplane.features.common.text.AbstractContentTransformer;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
 import org.freeplane.features.mindmapmode.text.EditNodeDialog;
 import org.freeplane.features.mindmapmode.text.IEditBaseCreator;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.FormulaUtils;
 
-class FormulaTextTransformer extends AbstractTextTransformer implements IEditBaseCreator{
+class FormulaTextTransformer extends AbstractContentTransformer implements IEditBaseCreator{
 	FormulaTextTransformer(int priority) {
 		super(priority);
 	}

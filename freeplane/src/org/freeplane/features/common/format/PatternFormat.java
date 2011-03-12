@@ -13,7 +13,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /** a thin wrapper around {@link FastDateFormat} and {@link Formatter}.
  * <p>
  * Parsing is not supported! */
-public abstract class PatternFormat extends Format {
+public abstract class PatternFormat /*extends Format*/ {
 	private static final long serialVersionUID = 1L;
 	static final String STYLE_FORMATTER = "formatter";
 	static final String STYLE_DATE = "date";
@@ -27,14 +27,6 @@ public abstract class PatternFormat extends Format {
 	public PatternFormat(String pattern, String type) {
 		this.type = type;
 		this.pattern = pattern;
-	}
-
-	/** parsing is not supported. */
-	@Override
-	public Object parseObject(String source, ParsePosition pos) {
-		pos.setIndex(0);
-		pos.setErrorIndex(0);
-		return null;
 	}
 
 	/** the formal format description. */
@@ -140,4 +132,6 @@ public abstract class PatternFormat extends Format {
 	public boolean acceptsString() {
 		return getType().equals(TYPE_STRING);
 	}
+
+	abstract public Object format(Object toFormat);
 }

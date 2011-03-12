@@ -35,7 +35,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.ITextTransformer;
+import org.freeplane.features.common.text.IContentTransformer;
 import org.freeplane.features.common.text.TextController;
 
 /**
@@ -200,7 +200,7 @@ public class AttributeController implements IExtension {
 					try {
 						final String text = textController.getTransformedText(originalText, node, null);
 						final boolean markTransformedText = !Controller.getCurrentController().getResourceController()
-						    .getBooleanProperty(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT);
+						    .getBooleanProperty(IContentTransformer.DONT_MARK_TRANSFORMED_TEXT);
 						if (markTransformedText && text != originalText)
 							return colorize(text, "green");
 						else

@@ -2,7 +2,7 @@ package org.freeplane.features.common.text;
 
 import org.freeplane.features.common.map.NodeModel;
 
-public interface ITextTransformer extends Comparable<ITextTransformer> {
+public interface IContentTransformer extends Comparable<IContentTransformer> {
 	public static final String DONT_MARK_TRANSFORMED_TEXT = "formula_dont_mark_formulas";
 
 	Object transformContent(Object content, NodeModel node, Object transformedExtension);

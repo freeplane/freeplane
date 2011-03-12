@@ -60,7 +60,7 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.features.common.text.ITextTransformer;
+import org.freeplane.features.common.text.IContentTransformer;
 import org.freeplane.features.common.text.TextController;
 
 
@@ -240,7 +240,7 @@ public abstract class MainView extends ZoomableLabel {
 		final Color color = g.getColor();
 		if(TextModificationState.SUCCESS.equals(textModified)){
 			final boolean dontMarkTransformedText = Controller.getCurrentController().getResourceController()
-		    .getBooleanProperty(ITextTransformer.DONT_MARK_TRANSFORMED_TEXT);
+		    .getBooleanProperty(IContentTransformer.DONT_MARK_TRANSFORMED_TEXT);
 			if(dontMarkTransformedText)
 				return;
 			g.setColor(Color.GREEN);

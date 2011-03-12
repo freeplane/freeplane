@@ -64,7 +64,7 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.DetailTextModel;
-import org.freeplane.features.common.text.ITextTransformer;
+import org.freeplane.features.common.text.IContentTransformer;
 import org.freeplane.features.common.text.ShortenedTextModel;
 import org.freeplane.features.common.text.TextController;
 
@@ -591,8 +591,8 @@ public class MTextController extends TextController {
 
 	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, EditedComponent editedComponent, final EditNodeBase.IEditControl editControl,
                                 final KeyEvent firstEvent, final boolean editLong) {
-	    final List<ITextTransformer> textTransformers = getTextTransformers();
-		for(ITextTransformer t : textTransformers){
+	    final List<IContentTransformer> textTransformers = getTextTransformers();
+		for(IContentTransformer t : textTransformers){
 			if(t instanceof IEditBaseCreator){
 				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, editedComponent, editControl, text, firstEvent, editLong);
 				if(base != null){

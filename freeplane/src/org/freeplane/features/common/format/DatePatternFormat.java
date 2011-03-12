@@ -1,16 +1,14 @@
 package org.freeplane.features.common.format;
 
-import java.text.FieldPosition;
+import java.util.Date;
 
 import org.apache.commons.lang.time.FastDateFormat;
+import org.freeplane.core.util.FreeplaneDate;
 
 class DatePatternFormat extends PatternFormat {
 	private static final long serialVersionUID = 1L;
-	private FastDateFormat fastDateFormat;
-
 	public DatePatternFormat(String pattern, String type) {
         super(pattern, type);
-        this.fastDateFormat = FastDateFormat.getInstance(pattern);
     }
 	
 	/**
@@ -22,8 +20,10 @@ class DatePatternFormat extends PatternFormat {
 	 * @return the buffer passed in
 	 */
 	@Override
-	public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
-		return fastDateFormat.format(obj, toAppendTo, pos);
+	public Object format(Object obj) {
+		if(obj instanceof Date)
+			return new FreeplaneDate((Date)obj, getPattern());
+		return obj;
 	}
 
 	@Override

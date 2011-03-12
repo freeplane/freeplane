@@ -11,7 +11,11 @@ class FormatterPatternFormat extends PatternFormat {
 		super(pattern, type);
 		this.formatter = new Formatter();
 	}
-	
+
+	@Override
+	public final Object format (Object obj) {
+		return format(obj, new StringBuffer(), new FieldPosition(0)).toString();
+	}
 	/**
 	 * Formats an object via {@link Formatter#format(String, Object...)}.
 	 * 
@@ -20,7 +24,6 @@ class FormatterPatternFormat extends PatternFormat {
 	 * @param pos  the position - ignored
 	 * @return the buffer passed in
 	 */
-	@Override
 	public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
 		final String formatted = formatter.format(getPattern(), obj).toString();
 		toAppendTo.append(formatted);

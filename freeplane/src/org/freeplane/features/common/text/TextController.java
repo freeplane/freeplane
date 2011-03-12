@@ -56,7 +56,7 @@ public class TextController implements IExtension {
 	public static final String FILTER_DETAILS = "filter_details";
 	private static final Integer NODE_TOOLTIP = 1;
 	private static final Integer DETAILS_TOOLTIP = 2;
-	private final List<ITextTransformer> textTransformers;
+	private final List<IContentTransformer> textTransformers;
 	private final ModeController modeController;
 
 	public static TextController getController() {
@@ -80,7 +80,7 @@ public class TextController implements IExtension {
 
 	public TextController(final ModeController modeController) {
 		super();
-		textTransformers = new LinkedList<ITextTransformer>();
+		textTransformers = new LinkedList<IContentTransformer>();
 		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
@@ -93,18 +93,18 @@ public class TextController implements IExtension {
 		modeController.addAction(new ToggleDetailsAction());
 		modeController.addAction(new SetShortenerStateAction());
 //		modeController.addAction(new ToggleNodeNumberingAction());
-		addTextTransformer(new TemplateTextTransformer(this, 50));
+		addTextTransformer(new TemplateContentTransformer(this, 50));
 	}
 
-	public void addTextTransformer(ITextTransformer textTransformer) {
+	public void addTextTransformer(IContentTransformer textTransformer) {
 	    textTransformers.add(textTransformer);
 	    Collections.sort(textTransformers);
     }
 
-	public List<ITextTransformer> getTextTransformers() {
+	public List<IContentTransformer> getTextTransformers() {
 	    return textTransformers;
 	}
-	public void removeTextTransformer(ITextTransformer textTransformer) {
+	public void removeTextTransformer(IContentTransformer textTransformer) {
 	    textTransformers.remove(textTransformer);
     }
 
@@ -114,11 +114,16 @@ public class TextController implements IExtension {
 	
 	/** @throws RuntimeException if something goes wrong. */
 	public String getTransformedText(Object text, final NodeModel nodeModel, Object extension) {
-		for (ITextTransformer textTransformer : getTextTransformers()) {
-			text = textTransformer.transformContent(text, nodeModel, extension);
-		}
+		text = getTransformedObject(text, nodeModel, extension);
 		return text.toString();
 	}
+
+	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension) {
+	    for (IContentTransformer textTransformer : getTextTransformers()) {
+			object = textTransformer.transformContent(object, nodeModel, extension);
+		}
+	    return object;
+    }
 	
 	/** returns an error message instead of a normal result if something goes wrong. */
 	public String getTransformedTextNoThrow(Object data, final NodeModel node, Object extension) {
@@ -273,5 +278,10 @@ public class TextController implements IExtension {
 			}
 		}
 		return false;
+    }
+
+	public Object getTransformedObject(NodeModel node) {
+		final Object userObject = node.getUserObject();
+		return getTransformedObject(userObject, node, userObject);
     }
 }

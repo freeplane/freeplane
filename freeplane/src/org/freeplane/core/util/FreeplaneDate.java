@@ -78,6 +78,9 @@ public class FreeplaneDate extends Date {
 	
 	private SimpleDateFormat df; 
 
+	public FreeplaneDate(FreeplaneDate date) {
+		this(date.getTime(), date.getDateFormat());
+	}
 	public FreeplaneDate(Date date, String pattern) {
 	    super(date.getTime());
 	    this.df = getDateFormat(pattern);

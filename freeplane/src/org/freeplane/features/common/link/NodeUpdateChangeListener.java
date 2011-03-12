@@ -9,7 +9,7 @@ import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.ITextTransformer;
+import org.freeplane.features.common.text.IContentTransformer;
 
 /** cares for updating formula nodes on change of other nodes. */
 public class NodeUpdateChangeListener implements INodeChangeListener, IMapChangeListener{
@@ -59,7 +59,7 @@ public class NodeUpdateChangeListener implements INodeChangeListener, IMapChange
 		//		}
 		final List<NodeModel> dependencies = EvaluationDependencies.manageChangeAndReturnDependencies(includeChanged, nodes);
 		for (NodeModel dependentNode : dependencies) {
-			modeController.getMapController().delayedNodeRefresh(dependentNode, ITextTransformer.class,
+			modeController.getMapController().delayedNodeRefresh(dependentNode, IContentTransformer.class,
 			    null, null);
 		}
 	}

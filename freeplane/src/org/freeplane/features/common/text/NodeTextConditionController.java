@@ -157,36 +157,25 @@ class NodeTextConditionController implements IElementaryConditionController {
 		return null;
 	}
 
-	static class ItemForComparison{
-		final Object content;
-		final String text;
-		public ItemForComparison(Object content, String text) {
-	        super();
-	        this.content = content;
-	        this.text = text;
-        }
-	}
-	static ItemForComparison getItemForComparison(Object nodeItem, final NodeModel node) {
+	public static Object getItemForComparison(Object nodeItem, final NodeModel node) {
+		final Object result;
 		if(nodeItem.equals(TextController.FILTER_NODE)){
-			final String text = TextController.getController().getPlainTextContent(node);
-			return new ItemForComparison(node.getUserObject(), text);
+			result = TextController.getController().getTransformedObject(node);
 		}
-		if(nodeItem.equals(TextController.FILTER_PARENT)){
+		else if(nodeItem.equals(TextController.FILTER_PARENT)){
 			final NodeModel parentNode = node.getParentNode();
-			if(parentNode == null){
-				return null;
-			}
-			final String text = TextController.getController().getPlainTextContent(parentNode);
-			return new ItemForComparison(node.getUserObject(), text);
+			if(parentNode == null)
+				result = null;
+			else
+				result = TextController.getController().getTransformedObject(parentNode);
 		}
-		if(nodeItem.equals(TextController.FILTER_DETAILS)){
-			final String html = DetailTextModel.getDetailTextText(node);
-			if(html == null){
-				return null;
-			}
-			final String text = HtmlUtils.htmlToPlain(html);
-			return new ItemForComparison(node.getUserObject(), text);
+		else if(nodeItem.equals(TextController.FILTER_DETAILS)){
+			result = DetailTextModel.getDetailTextText(node);
 		}
-		return null;
+		else
+			result = null;
+		if(result instanceof String)
+			return HtmlUtils.htmlToPlain((String)result);
+		return result;
     }
 }
