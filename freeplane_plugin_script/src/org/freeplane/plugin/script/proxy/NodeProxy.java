@@ -87,7 +87,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
-	public ConvertibleText getAt(String attributeName) {
+	public Convertible getAt(String attributeName) {
 		final String value = getAttributes().getFirst(attributeName);
 		return new ConvertibleText(getDelegate(), getScriptContext(), value);
 	}

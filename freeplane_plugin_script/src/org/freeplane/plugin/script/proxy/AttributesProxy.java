@@ -3,6 +3,9 @@
  */
 package org.freeplane.plugin.script.proxy;
 
+import groovy.lang.Closure;
+import groovy.lang.MissingMethodException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,16 +51,61 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		return result;
 	}
 
-	public List<String> getAttributeNames() {
+	public List<String> getNames() {
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {
 			return Collections.emptyList();
 		}
-		final ArrayList<String> result = new ArrayList<String>();
+		final ArrayList<String> result = new ArrayList<String>(nodeAttributeTableModel.getRowCount());
 		for (final Attribute a : nodeAttributeTableModel.getAttributes()) {
 			result.add(a.getName());
 		}
 		return result;
+	}
+
+	@Deprecated
+	public List<String> getAttributeNames() {
+		return getNames();
+	}
+	
+	public List<? extends Convertible> getValues() {
+		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
+		if (nodeAttributeTableModel == null) {
+			return Collections.emptyList();
+		}
+		final ArrayList<ConvertibleText> result = new ArrayList<ConvertibleText>(nodeAttributeTableModel.getRowCount());
+		for (final Attribute a : nodeAttributeTableModel.getAttributes()) {
+			result.add(new ConvertibleText(getDelegate(), getScriptContext(), String.valueOf(a.getValue())));
+		}
+		return result;
+	}
+
+	public List<? extends Convertible> findValues(Closure closure) {
+		try {
+			final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
+			if (nodeAttributeTableModel == null) {
+				return Collections.emptyList();
+			}
+			final ArrayList<ConvertibleText> result = new ArrayList<ConvertibleText>(
+			    nodeAttributeTableModel.getRowCount());
+			for (final Attribute a : nodeAttributeTableModel.getAttributes()) {
+				final Object bool = closure.call(new Object[] { a.getName(), a.getValue() });
+				if (result == null) {
+					throw new RuntimeException("findValues(): closure returned null instead of boolean/Boolean");
+				}
+				if ((Boolean) bool)
+					result.add(new ConvertibleText(getDelegate(), getScriptContext(), String.valueOf(a.getValue())));
+			}
+			return result;
+		}
+		catch (final MissingMethodException e) {
+			throw new RuntimeException("findValues(): closure needs to accept two args and must return boolean/Boolean"
+			        + " e.g. findValues{k,v -> k != 'TOTAL'}");
+		}
+		catch (final ClassCastException e) {
+			throw new RuntimeException("findValues(): closure returned " + e.getMessage()
+			        + " instead of boolean/Boolean");
+		}
 	}
 
 	public String get(final int index) {
