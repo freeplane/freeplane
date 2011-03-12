@@ -109,9 +109,8 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	}
 
 	private void updateDate() {
-		date = new FreeplaneDate(calenderComponent.getDate(), calenderComponent.isTimeVisible() 
-			? FreeplaneDate.ISO_DATE_TIME_FORMAT_PATTERN
-			        : FreeplaneDate.ISO_DATE_FORMAT_PATTERN);
+		date = new FreeplaneDate(calenderComponent.getDate(), 
+			calenderComponent.isTimeVisible() ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd");
 	    if (actionListeners.size() == 0) {
 	    	return;
 	    }

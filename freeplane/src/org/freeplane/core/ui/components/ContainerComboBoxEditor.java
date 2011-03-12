@@ -21,7 +21,6 @@ package org.freeplane.core.ui.components;
 
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -32,12 +31,8 @@ import java.util.Map;
 import javax.swing.Box;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.Popup;
-import javax.swing.PopupFactory;
 
 import org.freeplane.core.resources.NamedObject;
 
@@ -51,8 +46,6 @@ public class ContainerComboBoxEditor implements ComboBoxEditor {
 	final private JComboBox editorSelector;
 	final private JPanel editorPanel;
 	private Box editorComponent;
-	private final JButton selectorButton;
-	private Popup popup;
 
 	final private List<ActionListener> actionListeners;
 
@@ -62,26 +55,10 @@ public class ContainerComboBoxEditor implements ComboBoxEditor {
 		editorSelector = new JComboBox();
 		editorSelector.setEditable(false);
 		editorSelector.setRenderer(NamedObject.getIconRenderer());
-		selectorButton = new JButton();
-		selectorButton.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				if(popup != null)
-					return;
-				final Point location = selectorButton.getLocationOnScreen();
-				popup = PopupFactory.getSharedInstance().getPopup(selectorButton, editorSelector, location.x, location.y + selectorButton.getHeight());
-				popup.show();
-			}
-		});
 		editorSelector.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(popup == null)
-					return;
 				final NamedObject key = (NamedObject) editorSelector.getSelectedItem();
 				editor = editors.get(key);
-				popup.hide();
-				popup = null;
-				setButtonContent(key);
 				final CardLayout layout = (CardLayout) editorPanel.getLayout();				
 				layout.show(editorPanel,  key.getObject().toString());
 				editor.getEditorComponent().requestFocusInWindow();
@@ -91,7 +68,7 @@ public class ContainerComboBoxEditor implements ComboBoxEditor {
 			    }
 			}
 		});
-		editorComponent.add(selectorButton);
+		editorComponent.add(editorSelector);
 		editorPanel = new JPanel(new CardLayout(0, 0));
 		editorComponent.add(editorPanel);
 		actionListeners = new LinkedList<ActionListener>();
@@ -107,7 +84,6 @@ public class ContainerComboBoxEditor implements ComboBoxEditor {
 		model.addElement(key);
 		if(this.editor == null){
 			this.editor = editor;
-			setButtonContent(key);
 		}
 		editorPanel.add(editor.getEditorComponent(), key.getObject().toString());
 		return true;
@@ -140,15 +116,4 @@ public class ContainerComboBoxEditor implements ComboBoxEditor {
 		for(ComboBoxEditor e : editors.values())
 			e.removeActionListener(l);
 	}
-
-	void setButtonContent(final NamedObject key) {
-		final Icon icon = key.getIcon();
-	    selectorButton.setIcon(icon);
-		if(icon == null){
-		    selectorButton.setText(key.toString());
-		}
-		else{
-		    selectorButton.setText(null);
-		}
-    }
 }

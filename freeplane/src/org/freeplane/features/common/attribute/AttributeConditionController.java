@@ -48,7 +48,7 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public boolean canEditValues(final Object selectedItem, final NamedObject simpleCond) {
-		return true;
+		return canSelectValues(selectedItem, simpleCond);
 	}
 
 	public boolean canHandle(final Object selectedItem) {
