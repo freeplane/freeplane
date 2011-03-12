@@ -22,8 +22,12 @@ package org.freeplane.features.common.link;
 import java.net.URI;
 
 
+import org.freeplane.features.common.attribute.Attribute;
+import org.freeplane.features.common.attribute.AttributeController;
+import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -42,10 +46,20 @@ public abstract class HyperLinkCondition extends ASelectableCondition {
 
 	public boolean checkNode(final NodeModel node) {
 		final URI nodeLink = NodeLinks.getValidLink(node);
-		if (nodeLink == null) {
+		if (nodeLink != null && checkLink(nodeLink))
+			return true;
+		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
+		if(attributes == null){
 			return false;
 		}
-		return checkLink(nodeLink);
+		final int rowCount = attributes.getRowCount();
+		for(int i = 0; i < rowCount; i++){
+			final Attribute attribute = attributes.getAttribute(i);
+			final Object value = attribute.getValue();
+			if (value instanceof URI && checkLink((URI)value))
+				return true;
+		}
+		return false;
 	}
 
 	public String getHyperlink() {
