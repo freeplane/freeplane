@@ -161,6 +161,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		super();
 		this.propertyKeyPrefix = propertyKeyPrefix;
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
+		statusPanel.putClientProperty(VISIBLE_PROPERTY_KEY, "status_visible");
 		status = new JLabel();
 		statusPanel.add(status);
 		statusInfos = new HashMap<String, JLabel>();
@@ -189,6 +190,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		controller.addAction(new ToggleMenubarAction(this));
 		controller.addAction(new ToggleToolbarAction("ToggleToolbarAction", "/main_toolbar"));
+		controller.addAction(new ToggleToolbarAction("ToggleStatusAction", "/status"));
 		toolbarPanel = new JComponent[4];
 		toolbarPanel[TOP] = new HorizontalToolbarPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		toolbarPanel[BOTTOM] = Box.createHorizontalBox();

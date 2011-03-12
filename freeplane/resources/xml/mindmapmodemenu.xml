@@ -97,6 +97,7 @@
 				<menu_action action="ToggleFBarAction" />
 				<menu_action action="ToggleLeftToolbarAction" />
 				<menu_action action="ToggleFullScreenAction" />
+				<menu_action action="ToggleStatusAction" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="general">
@@ -376,6 +377,7 @@
 			<menu_action action="ToggleFBarAction" />
 			<menu_action action="ToggleLeftToolbarAction" />
 			<menu_action action="ToggleFullScreenAction" />
+			<menu_action action="ToggleStatusAction" />
 			<menu_action action="ShowHideNoteAction" />
 			<menu_action action="SetBooleanPropertyAction.show_node_tooltips" />
 			<menu_action action="SetBooleanPropertyAction.formula_dont_mark_formulas" />
