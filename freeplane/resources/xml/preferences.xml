@@ -193,7 +193,6 @@
         </separator>
         <separator name="search">
         	<boolean name="compare_as_number"/>
-        	<boolean name="compare_as_date"/>
         </separator>
         <separator name="selection_method">
             <combo name="selection_method">

@@ -36,6 +36,7 @@ import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.time.TimeComboBoxEditor;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -126,7 +127,10 @@ class NodeTextConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
-		return new BasicComboBoxEditor();
+		if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
+				|| selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
+			return new BasicComboBoxEditor();
+		return TimeComboBoxEditor.getTextDateTimeEditor();
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {

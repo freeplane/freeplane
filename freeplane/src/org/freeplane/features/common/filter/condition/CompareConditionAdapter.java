@@ -48,13 +48,6 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			}
 			return;
 		}
-		if(value instanceof String && resourceController.getBooleanProperty("compare_as_date") ){
-			final FreeplaneDate date = FreeplaneDate.toDate((String) value);
-			if(date != null){
-				conditionValue = date;
-				return;
-			}
-		}
 		if(value instanceof FreeplaneDate){
 			conditionValue = (Comparable<?>) value;
 			return;

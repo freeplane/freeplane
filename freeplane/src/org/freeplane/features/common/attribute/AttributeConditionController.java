@@ -23,16 +23,21 @@ import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
+import org.freeplane.features.common.time.TimeComboBoxEditor;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -132,7 +137,7 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
-		return new BasicComboBoxEditor();
+		return TimeComboBoxEditor.getTextDateTimeEditor();
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {

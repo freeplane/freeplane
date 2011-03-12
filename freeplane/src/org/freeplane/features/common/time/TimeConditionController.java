@@ -28,6 +28,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
@@ -38,10 +39,10 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * 21.12.2008
  */
-class TimeConditionController implements IElementaryConditionController {
+public class TimeConditionController implements IElementaryConditionController {
 	static final String FILTER_TIME = "filter_time";
 // // //	final private Controller controller;
-	private final ComboBoxEditor editor = new TimeComboBoxEditor();
+	private final ComboBoxEditor editor = new TimeComboBoxEditor(false);
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
 	public TimeConditionController() {
@@ -92,7 +93,7 @@ class TimeConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
-		values.setSelectedItem(new DayDate());
+		values.setSelectedItem(new FreeplaneDate(new Date(), FreeplaneDate.ISO_DATE_FORMAT_PATTERN));
 		return values;
 	}
 

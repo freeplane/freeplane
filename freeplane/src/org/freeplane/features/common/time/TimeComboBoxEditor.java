@@ -29,11 +29,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.ComboBoxEditor;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import javax.swing.plaf.basic.BasicComboBoxEditor;
 
+import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.ContainerComboBoxEditor;
+import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.features.common.time.swing.JCalendar;
 
 /**
@@ -47,16 +54,16 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 		}
 	}
 
-	List<ActionListener> actionListeners;
+	final private List<ActionListener> actionListeners;
 	final private JPopupMenu calendarPopupMenu;
 	final private JCalendar calenderComponent;
-	private Date date;
+	private FreeplaneDate date;
 	final private JButton showEditorBtn;
 
-	TimeComboBoxEditor() {
+	public TimeComboBoxEditor(boolean timeVisible) {
 		showEditorBtn = new JButton();
 		showEditorBtn.addActionListener(new ShowCalendarAction());
-		calenderComponent = new JCalendar();
+		calenderComponent = new JCalendar(null, null, true, true, timeVisible);
 		calenderComponent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
@@ -69,7 +76,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 			}
 			
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				updateDate(e.getSource());
+				updateDate();
 			}
 			
 			public void popupMenuCanceled(PopupMenuEvent e) {
@@ -87,7 +94,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	}
 
 	public Object getItem() {
-		return new DayDate(date);
+		return date;
 	}
 
 	public void removeActionListener(final ActionListener l) {
@@ -98,18 +105,51 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	}
 
 	public void setItem(final Object date) {
-		this.date = (Date) date;
-		showEditorBtn.setText(date == null ? "" : TimeCondition.format(this.date));
+		if(! (date instanceof FreeplaneDate))
+			return;
+		this.date = (FreeplaneDate) date;
+		showEditorBtn.setText(date == null ? "" : date.toString());
 	}
 
-	private void updateDate(Object source) {
-	    date = calenderComponent.getDate();
+	private void updateDate() {
+		date = new FreeplaneDate(calenderComponent.getDate(), calenderComponent.isTimeVisible() 
+			? FreeplaneDate.ISO_DATE_TIME_FORMAT_PATTERN
+			        : FreeplaneDate.ISO_DATE_FORMAT_PATTERN);
 	    if (actionListeners.size() == 0) {
 	    	return;
 	    }
-	    final ActionEvent actionEvent = new ActionEvent(source, 0, null);
+	    final ActionEvent actionEvent = new ActionEvent(this, 0, null);
 	    for (final ActionListener l : actionListeners) {
 	    	l.actionPerformed(actionEvent);
 	    }
     }
+
+	public void setItem() {
+	    updateDate();
+    }
+	
+	final static Icon dateIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/calendar_red.png"));
+	final static Icon dateTimeIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/calendar_clock_red.png"));
+	public static ComboBoxEditor getTextDateTimeEditor() {
+	    final ContainerComboBoxEditor editor = new ContainerComboBoxEditor();
+		final NamedObject keyText = new NamedObject("text", "Abc");
+		final BasicComboBoxEditor textEditor = new BasicComboBoxEditor();
+		editor.put(keyText, textEditor);
+		
+		final NamedObject keyDate = new NamedObject("date", ""); 
+		keyDate.setIcon(dateIcon);
+		final TimeComboBoxEditor dateComboBoxEditor = new TimeComboBoxEditor(false);
+		dateComboBoxEditor.setItem();
+		editor.put(keyDate, dateComboBoxEditor);
+
+		final NamedObject keyDateTime = new NamedObject("date_time", ""); 
+		keyDateTime.setIcon(dateTimeIcon);
+		final TimeComboBoxEditor dateTimeComboBoxEditor = new TimeComboBoxEditor(true);
+		dateTimeComboBoxEditor.setItem();
+		editor.put(keyDateTime, dateTimeComboBoxEditor);
+
+		return editor;
+    }
+
+	
 }

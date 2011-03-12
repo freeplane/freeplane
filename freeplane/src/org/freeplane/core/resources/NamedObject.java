@@ -19,6 +19,13 @@
  */
 package org.freeplane.core.resources;
 
+import java.awt.Component;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+
 import org.freeplane.core.util.TextUtils;
 
 /**
@@ -36,6 +43,8 @@ public class NamedObject {
 
 	private String name;
 	private Object object;
+	private Icon icon;
+	private static ListCellRenderer listCellRenderer;
 
 	private NamedObject() {
 	}
@@ -93,5 +102,35 @@ public class NamedObject {
 		final String s1 = value.substring(separatorPos + 1);
 		final String text = TextUtils.format(key, s1);
 		return new NamedObject(value, text);
+	}
+
+	public Icon getIcon() {
+		return icon;
+	}
+
+	public void setIcon(Icon icon) {
+		this.icon = icon;
+	}
+
+	public static ListCellRenderer getIconRenderer() {
+		if(listCellRenderer == null)
+			listCellRenderer = new ListCellRenderer() {
+			private ListCellRenderer delegate = new DefaultListCellRenderer();
+			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+			                                              boolean cellHasFocus) {
+				final Object renderedValue;
+				if(value instanceof NamedObject){
+					final Icon icon = ((NamedObject)value).getIcon();
+					if(icon != null)
+						renderedValue = icon;
+					else
+						renderedValue = value;
+				}
+				else
+					renderedValue = value;
+				return delegate.getListCellRendererComponent(list, renderedValue, index, isSelected, cellHasFocus);
+			}
+		};
+		return listCellRenderer;
 	}
 }
