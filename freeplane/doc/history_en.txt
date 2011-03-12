@@ -9,6 +9,7 @@ New style options format/template and node numbering
 Hyperlinks in attributes
 Inline editor for Node Details (on single click)
 Links to nodes in attributes. Shortened content of the linked nodes is displayed.
+Date and time selection in Filter / Search
 
 ===============================
 1.2.2 alpha
