@@ -26,8 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.regex.Pattern;
 
-import javax.swing.text.html.StyleSheet;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;

@@ -23,7 +23,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
@@ -57,8 +56,6 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
