@@ -77,8 +77,10 @@ class ScriptingRegistration {
 
 		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			final ModeController modeController = Controller.getCurrentModeController();
-			 return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
-					pErrorHandler, pOutStream, null);
+			// pattern are like formulas - restrict them!
+			final boolean restrictedPermissions = true;
+			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
+			    pErrorHandler, pOutStream, null, restrictedPermissions);
 		}
 
 		public int getAmountOfScripts() {
@@ -125,9 +127,9 @@ class ScriptingRegistration {
 			public ValidationResult validate(Properties properties) {
 				final ValidationResult result = new ValidationResult();
 				final String readAccessString = properties
-				    .getProperty(ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
+				    .getProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
 				final String writeAccessString = properties
-				.getProperty(ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION);
+				.getProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION);
 				final String classpath = properties.getProperty(ScriptingEngine.RESOURCES_SCRIPT_CLASSPATH);
 				final boolean readAccess = readAccessString != null && Boolean.parseBoolean(readAccessString);
 				final boolean writeAccess = writeAccessString != null && Boolean.parseBoolean(writeAccessString);

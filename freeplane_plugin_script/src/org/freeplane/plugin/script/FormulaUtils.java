@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
@@ -37,10 +38,12 @@ public class FormulaUtils {
 	 * @return the evaluation result. 
 	 * @throws ExecuteScriptException */
 	public static Object eval(final NodeModel nodeModel, final ScriptContext scriptContext, final String text) {
-//		System.err.println(nodeModel.getID() + ": " + text);
-		if (!scriptContext.push(nodeModel, text))
-			throw new StackOverflowError(TextUtils.format("formula.error.circularReference", scriptContext.getStackFront()
-			    .getText()));
+		//		System.err.println(nodeModel.getID() + ": " + text);
+		if (!scriptContext.push(nodeModel, text)) {
+			throw new StackOverflowError(TextUtils.format("formula.error.circularReference",
+			    HtmlUtils.htmlToPlain(scriptContext.getStackFront().getText())));
+		}
+		final boolean restrictedPermissions = true;
 		try {
 			if (ENABLE_CACHING) {
 				final FormulaCache formulaCache = getFormulaCache(nodeModel.getMap());
@@ -48,13 +51,13 @@ public class FormulaUtils {
 				if (value == null) {
 					//				System.out.println("eval(" + text + ")");
 					try {
-	                    value = ScriptingEngine.executeScript(nodeModel, text, scriptContext);
-	                    formulaCache.put(nodeModel, text, value);
-                    }
-                    catch (ExecuteScriptException e) {
-	                    formulaCache.put(nodeModel, text, e);
-	                    throw e;
-                    }
+						value = ScriptingEngine.executeScript(nodeModel, text, scriptContext, restrictedPermissions);
+						formulaCache.put(nodeModel, text, value);
+					}
+					catch (ExecuteScriptException e) {
+						formulaCache.put(nodeModel, text, e);
+						throw e;
+					}
 				}
 				else {
 					scriptContext.accessNode(nodeModel);
@@ -62,7 +65,7 @@ public class FormulaUtils {
 				return value;
 			}
 			else {
-				return ScriptingEngine.executeScript(nodeModel, text, scriptContext);
+				return ScriptingEngine.executeScript(nodeModel, text, scriptContext, restrictedPermissions);
 			}
 		}
 		finally {
