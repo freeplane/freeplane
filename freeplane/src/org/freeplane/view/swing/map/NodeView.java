@@ -1064,7 +1064,17 @@ public class NodeView extends JComponent implements INodeView {
 		Controller.getCurrentController().getViewController().addObjectTypeInfo(getModel().getUserObject());
 		return mainView.requestFocusInWindow();
 	}
-
+	
+	@Override
+    public void requestFocus() {
+		if(mainView == null){
+			return;
+		}
+		getMap().scrollNodeToVisible(this);
+		Controller.getCurrentController().getViewController().addObjectTypeInfo(getModel().getUserObject());
+		mainView.requestFocus();
+    }
+	
 	@Override
 	public void setBounds(final int x, final int y, final int width, final int height) {
 		super.setBounds(x, y, width, height);

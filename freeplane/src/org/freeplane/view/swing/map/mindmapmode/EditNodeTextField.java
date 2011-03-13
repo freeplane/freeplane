@@ -249,7 +249,7 @@ class EditNodeTextField extends EditNodeBase {
 					eventSource = CANCEL;
 					hideMe();
 					getEditControl().cancel();
-					nodeView.requestFocus();
+					nodeView.requestFocusInWindow();
 					e.consume();
 					break;
 				case KeyEvent.VK_ENTER: {
@@ -269,7 +269,7 @@ class EditNodeTextField extends EditNodeBase {
 				eventSource = CANCEL;
 				hideMe();
 				submitText(output);
-				nodeView.requestFocus();
+				nodeView.requestFocusInWindow();
 				break;
 				case KeyEvent.VK_TAB:
 					textfield.replaceSelection("    ");
@@ -389,13 +389,13 @@ class EditNodeTextField extends EditNodeBase {
 			return;
 		}
 		textfield.getDocument().removeDocumentListener(documentListener);
-		textfield = null;
 		parent.setPreferredSize(null);
 		nodeView.update();
 		parent.setHorizontalAlignment(JLabel.CENTER);
 		parent.remove(0);
 		parent.revalidate();
 		parent.repaint();
+		textfield = null;
 	}
 
 	private final ZoomableLabel parent;

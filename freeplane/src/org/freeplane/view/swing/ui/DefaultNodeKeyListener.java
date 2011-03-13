@@ -14,15 +14,11 @@ import org.freeplane.view.swing.map.MapView;
  */
 public class DefaultNodeKeyListener implements KeyListener {
 // // 	final private Controller controller;
-	private boolean disabledKeyType = true;
 	final private IEditHandler editHandler;
-	private boolean keyTypeAddsNew = false;
 
 	public DefaultNodeKeyListener(final IEditHandler editHandler) {
 //		this.controller = controller;
 		this.editHandler = editHandler;
-		disabledKeyType = ResourceController.getResourceController().getBooleanProperty("disable_key_type");
-		keyTypeAddsNew = ResourceController.getResourceController().getBooleanProperty("key_type_adds_new");
 	}
 
 	public void keyPressed(final KeyEvent e) {
@@ -54,6 +50,8 @@ public class DefaultNodeKeyListener implements KeyListener {
 				}
 				return;
 		}
+		boolean disabledKeyType = ResourceController.getResourceController().getBooleanProperty("disable_key_type");
+		boolean keyTypeAddsNew = ResourceController.getResourceController().getBooleanProperty("key_type_adds_new");
 		if (!disabledKeyType) {
 			if (!e.isActionKey() && e.getKeyChar() != KeyEvent.CHAR_UNDEFINED) {
 				if (editHandler != null) {
