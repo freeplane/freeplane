@@ -46,6 +46,10 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IMapLifeCycleListener;
+import org.freeplane.core.controller.INodeSelectionListener;
+import org.freeplane.core.frame.IMapSelectionListener;
+import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.BitmapImagePreview;
@@ -58,9 +62,14 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.map.AMapChangeListenerAdapter;
+import org.freeplane.features.common.map.IMapChangeListener;
+import org.freeplane.features.common.map.INodeChangeListener;
+import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.DetailTextModel;
@@ -488,6 +497,67 @@ public class MTextController extends TextController {
 		return matcher.find();
 	}
 
+	private class EditEventDispatcher implements KeyEventDispatcher, INodeChangeListener, INodeSelectionListener{
+		private final boolean editLong;
+	    private final boolean parentFolded;
+	    private final boolean isNewNode;
+	    private final NodeModel prevSelectedModel;
+	    private final NodeModel nodeModel;
+		private final ModeController modeController;
+
+	    private EditEventDispatcher(ModeController modeController, NodeModel nodeModel, NodeModel prevSelectedModel, boolean isNewNode,
+	                                boolean parentFolded, boolean editLong) {
+	    	this.modeController = modeController;
+		    this.editLong = editLong;
+		    this.parentFolded = parentFolded;
+		    this.isNewNode = isNewNode;
+		    this.prevSelectedModel = prevSelectedModel;
+		    this.nodeModel = nodeModel;
+	    }
+
+	    public boolean dispatchKeyEvent(KeyEvent e) {
+	    	if(e.getID() == KeyEvent.KEY_RELEASED)
+	    		return false;
+	    	switch(e.getKeyCode()){
+	    		case KeyEvent.VK_SHIFT:
+	    		case KeyEvent.VK_CONTROL:
+	    		case KeyEvent.VK_CAPS_LOCK:
+	    		case KeyEvent.VK_ALT:
+	    		case KeyEvent.VK_ALT_GRAPH:
+	    			return false;
+	    	}
+	    	uninstall();
+	    	edit(nodeModel, prevSelectedModel, e, isNewNode, parentFolded, editLong);
+	    	return true;
+	    }
+
+		public void uninstall() {
+	        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(this);
+			MapController mapController = modeController.getMapController();
+			mapController.removeNodeChangeListener(this);
+			mapController.removeNodeSelectionListener(this);
+        }
+
+		public void install() {
+			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
+			MapController mapController = modeController.getMapController();
+			mapController.addNodeChangeListener(this);
+			mapController.addNodeSelectionListener(this);
+        }
+
+		public void onDeselect(NodeModel node) {
+			uninstall();
+        }
+
+		public void onSelect(NodeModel node) {
+			uninstall();
+        }
+
+		public void nodeChanged(NodeChangeEvent event) {
+			uninstall();
+        }
+    }
+
 	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final InputEvent firstEvent,
 	          final boolean isNewNode, final boolean parentFolded, final boolean editLong) {
 		if (nodeModel == null || mCurrentEditDialog != null) {
@@ -508,23 +578,8 @@ public class MTextController extends TextController {
 		node.requestFocus();
 		stopEditing();
 		if(isNewNode && firstEvent == null){
-			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
-				public boolean dispatchKeyEvent(KeyEvent e) {
-					if(e.getID() == KeyEvent.KEY_RELEASED)
-						return false;
-					switch(e.getKeyCode()){
-						case KeyEvent.VK_SHIFT:
-						case KeyEvent.VK_CONTROL:
-						case KeyEvent.VK_CAPS_LOCK:
-						case KeyEvent.VK_ALT:
-						case KeyEvent.VK_ALT_GRAPH:
-							return false;
-					}
-					KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(this);
-					edit(nodeModel, prevSelectedModel, e, isNewNode, parentFolded, editLong);
-					return true;
-				}
-			});
+			final EditEventDispatcher dispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
+			dispatcher.install();
 			return;
 		};
 		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
