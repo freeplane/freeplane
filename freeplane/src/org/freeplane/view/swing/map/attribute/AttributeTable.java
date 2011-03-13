@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
@@ -575,8 +576,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	@Override
 	public void removeEditor() {
+		final Component editorComponent = getEditorComponent();
+		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+		boolean requestFocus = editorComponent != null && focusOwner != null && 
+		(focusOwner == editorComponent || SwingUtilities.isDescendingFrom(focusOwner, editorComponent)); 
 		getAttributeTableModel().editingCanceled();
 		super.removeEditor();
+		if(requestFocus)
+			requestFocusInWindow();
 	}
 
 	/**
