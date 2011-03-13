@@ -240,8 +240,8 @@ public class EditNodeDialog extends EditNodeBase {
 		 */
 		@Override
 		protected void cancel() {
-			getEditControl().cancel();
 			super.cancel();
+			getEditControl().cancel();
 		}
 
 		@Override
@@ -275,8 +275,8 @@ public class EditNodeDialog extends EditNodeBase {
 		 */
 		@Override
 		protected void split() {
-			getEditControl().split(textComponent.getText(), textComponent.getCaretPosition());
 			super.split();
+			getEditControl().split(textComponent.getText(), textComponent.getCaretPosition());
 		}
 
 		/*
@@ -285,8 +285,8 @@ public class EditNodeDialog extends EditNodeBase {
 		 */
 		@Override
 		protected void submit() {
-			getEditControl().ok(textComponent.getText());
 			super.submit();
+			getEditControl().ok(textComponent.getText());
 		}
 	}
 

@@ -111,11 +111,11 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		 */
 		@Override
 		protected void cancel() {
+			super.cancel();
 			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
 			styleSheet.removeStyle("p");
 			styleSheet.removeStyle("BODY");
 			getBase().getEditControl().cancel();
-			super.cancel();
 		}
 
 		private SHTMLPanel createEditorPanel(String purpose) throws Exception {
@@ -158,12 +158,12 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		 */
 		@Override
 		protected void split() {
+			super.split();
 			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
 			styleSheet.removeStyle("p");
 			styleSheet.removeStyle("body");
 			getBase().getEditControl().split(HtmlUtils.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()),
 			    htmlEditorPanel.getCaretPosition());
-			super.split();
 		}
 
 		/*
@@ -172,6 +172,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		 */
 		@Override
 		protected void submit() {
+			super.submit();
 			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("p");
 			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("body");
 			if (htmlEditorPanel.needsSaving()) {
@@ -180,7 +181,6 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			else {
 				getBase().getEditControl().cancel();
 			}
-			super.submit();
 		}
 
 		public void setSplitEnabled(boolean enableSplit) {
