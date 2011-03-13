@@ -799,10 +799,10 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		    }
 		    else if(value instanceof String){
 		    	if(TextUtils.isNumber((String)value)){
-		    		addStatusInfo(ResourceController.OBJECT_TYPE, "123", null);
+		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ResourceController.numberIcon);
 		    	}
 		    	else{
-		    		addStatusInfo(ResourceController.OBJECT_TYPE, "Abc", null);
+		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ResourceController.textIcon);
 		    	}
 		    			
 		    }

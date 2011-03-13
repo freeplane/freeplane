@@ -55,12 +55,16 @@ public abstract class ResourceController {
 
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();
 	private ResourceBundles resources;
+	public static Icon textIcon;
+	public static Icon numberIcon;
 	public static Icon dateIcon;
 	public static Icon dateTimeIcon;
 	public static final String OBJECT_TYPE = "ObjectType";
 
 	public ResourceController() {
 		super();
+		textIcon = new ImageIcon(getResource("/images/text.png"));
+		numberIcon = new ImageIcon(getResource("/images/number.png"));
 		dateIcon = new ImageIcon(getResource("/images/calendar_red.png"));
 		dateTimeIcon = new ImageIcon(getResource("/images/calendar_clock_red.png"));
 	}
