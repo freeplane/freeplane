@@ -192,10 +192,10 @@ public class NodeTooltipManager implements IExtension{
 		insideComponent = null;
 		toolTipText = null;
 		mouseEvent = null;
-		if (tipPopup != null) {
+		if (tipPopup != null && tip != null) {
 			final Component component;
 			final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-			if(SwingUtilities.isDescendingFrom(focusOwner, tip)){
+			if(focusOwner != null && SwingUtilities.isDescendingFrom(focusOwner, tip)){
 				component = focusOwnerRef.get();
 			}
 			else

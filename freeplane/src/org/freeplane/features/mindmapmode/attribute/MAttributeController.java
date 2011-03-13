@@ -62,7 +62,6 @@ public class MAttributeController extends AttributeController {
 			for (int i = 0; i < model.getRowCount(); i++) {
 				if (model.getName(i).equals(name) && model.getValue(i).equals(oldValue)) {
 					final int row = i;
-					final String newValue = this.newValue.toString();
 					final IActor actor = new SetAttributeValueActor(model, row, newValue);
 					Controller.getCurrentModeController().execute(actor, model.getNode().getMap());
 				}
@@ -794,8 +793,7 @@ public class MAttributeController extends AttributeController {
 					final String value = model.getValueAt(row, 1).toString();
 					final int index = element.getValues().getIndexOf(value);
 					if (index == -1) {
-						final IActor valueActor = new SetAttributeValueActor(model, row, element.getValues()
-						    .firstElement().toString());
+						final IActor valueActor = new SetAttributeValueActor(model, row, element.getValues().firstElement());
 						Controller.getCurrentModeController().execute(valueActor, map);
 					}
 				}

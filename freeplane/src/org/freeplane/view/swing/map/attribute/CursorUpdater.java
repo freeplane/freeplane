@@ -71,9 +71,11 @@ class CursorUpdater extends MouseAdapter implements MouseMotionListener{
 		if(!(value instanceof URI)){
 			return Cursor.DEFAULT_CURSOR;
 		}
-		final Icon linkIcon = table.getLinkIcon((URI)value);
+		final Icon linkIcon = table.getLinkIcon((URI) value);
+		if (linkIcon == null)
+			return Cursor.DEFAULT_CURSOR;
 		final int leftColumnWidth = table.getColumnModel().getColumn(0).getWidth();
-		if(point.x < leftColumnWidth + linkIcon.getIconWidth()){
+		if (point.x < leftColumnWidth + linkIcon.getIconWidth()) {
 			return Cursor.HAND_CURSOR;
 		}
 		return Cursor.DEFAULT_CURSOR;
