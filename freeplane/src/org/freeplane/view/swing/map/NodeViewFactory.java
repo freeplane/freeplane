@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.event.MouseEvent;
@@ -38,10 +39,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMouseListener;
 import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
@@ -49,6 +53,7 @@ import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DefaultMapMouseReceiver;
@@ -255,21 +260,31 @@ class NodeViewFactory {
 		if (oldText == null && newText == null) {
 			return;
 		}
+		final ZoomableLabel view;
 		if (oldText != null && newText != null) {
-			ZoomableLabel view = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
-			view.updateText(newText);
-			return;
+			view = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
 		}
-		if (oldText == null && newText != null) {
-			ZoomableLabel view = NodeViewFactory.getInstance().createNoteViewer();
+		else if (oldText == null && newText != null) {
+			view = NodeViewFactory.getInstance().createNoteViewer();
 			nodeView.addContent(view, NodeView.NOTE_VIEWER_POSITION);
-			view.updateText(newText);
-			return;
 		}
-		if (oldText != null && newText == null) {
+		else {
+			assert (oldText != null && newText == null);
 			nodeView.removeContent(NodeView.NOTE_VIEWER_POSITION);
 			return;
 		}
+		if (ResourceController.getResourceController().getBooleanProperty(
+			MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
+			// set default font for notes:
+			final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
+				NodeStyleController.class);
+			MapModel map = nodeView.getMap().getModel();
+			final Font defaultFont;
+			defaultFont = style.getDefaultFont(map);
+			view.setFont(defaultFont);
+		}
+		view.updateText(newText);
+		
 	}
 	private String colorize(final String text, String color) {
 		return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";

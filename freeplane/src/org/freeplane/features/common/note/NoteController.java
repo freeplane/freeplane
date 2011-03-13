@@ -36,6 +36,7 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.mindmapmode.note.MNoteController;
 
 /**
  * @author Dimitry Polivaev
@@ -128,12 +129,20 @@ public class NoteController implements IExtension {
 				if(showNotesInMap(node.getMap()) && ! TextController.getController().getIsShortened(node)){
 					return null;
 				}
-				final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-					NodeStyleController.class);
-				final Font defaultFont = style.getDefaultFont(node.getMap());
 				final StringBuilder rule = new StringBuilder();
-				rule.append("font-family: " + defaultFont.getFamily() + ";");
-				rule.append("font-size: " + defaultFont.getSize() + "pt;");
+				if (ResourceController.getResourceController().getBooleanProperty(
+					MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
+					// set default font for notes:
+					final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
+						NodeStyleController.class);
+					MapModel map = Controller.getCurrentModeController().getController().getMap();
+					if(map != null){
+						final Font defaultFont;
+						defaultFont = style.getDefaultFont(map);
+						rule.append("font-family: " + defaultFont.getFamily() + ";");
+						rule.append("font-size: " + defaultFont.getSize() + "pt;");
+					}
+				}
 				rule.append("margin-top:0;");
 				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");
 				tooltipBodyBegin.append(rule);

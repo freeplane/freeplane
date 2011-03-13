@@ -322,6 +322,7 @@ public class MNoteController extends NoteController {
 			String rule = "p {";
 			rule += "margin-top:0;";
 			rule += "}\n";
+			styleSheet.addRule(rule);
 		}
 	}
 
