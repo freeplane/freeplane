@@ -163,7 +163,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		this.propertyKeyPrefix = propertyKeyPrefix;
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
 		statusPanel.putClientProperty(VISIBLE_PROPERTY_KEY, "status_visible");
-		statusPanel.add(new JLabel(">"));
 		status = new JLabel();
 		statusPanel.add(status);
 		statusInfos = new HashMap<String, JLabel>();
