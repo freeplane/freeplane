@@ -126,8 +126,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	
 	public static ComboBoxEditor getTextDateTimeEditor() {
 	    final ContainerComboBoxEditor editor = new ContainerComboBoxEditor();
-		final NamedObject keyText = new NamedObject("text", "");
-		keyText.setIcon(ResourceController.textIcon);
+		final NamedObject keyText = new NamedObject("text", "1Ab");
 		final BasicComboBoxEditor textEditor = new BasicComboBoxEditor(){
 			@Override
             public void setItem(Object object) {
