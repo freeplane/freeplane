@@ -176,7 +176,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			}
 		}
 		else{
-			final String text =  TypeReference.toSpec(data);
+			final String text =  data.toString();
 			if (!HtmlUtils.isHtmlNode(text)) {
 				writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 			}
