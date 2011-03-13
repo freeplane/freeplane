@@ -164,6 +164,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
 		statusPanel.putClientProperty(VISIBLE_PROPERTY_KEY, "status_visible");
 		status = new JLabel();
+		status.setBorder(BorderFactory.createEtchedBorder());
 		statusPanel.add(status);
 		statusInfos = new HashMap<String, JLabel>();
 		statusInfos.put(STANDARD_STATUS_INFO_KEY, status);
@@ -473,7 +474,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			label = new JLabel(info);
 			label.setBorder(BorderFactory.createEtchedBorder());
 			statusInfos.put(key, label);
-			statusPanel.add(label);
+			statusPanel.add(label, statusPanel.getComponentCount() - 1);
 			label.setIcon(icon);
 		}
 		else {
