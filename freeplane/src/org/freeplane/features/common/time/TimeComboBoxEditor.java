@@ -127,18 +127,44 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	public static ComboBoxEditor getTextDateTimeEditor() {
 	    final ContainerComboBoxEditor editor = new ContainerComboBoxEditor();
 		final NamedObject keyText = new NamedObject("text", "Abc");
-		final BasicComboBoxEditor textEditor = new BasicComboBoxEditor();
+		final BasicComboBoxEditor textEditor = new BasicComboBoxEditor(){
+			@Override
+            public void setItem(Object object) {
+				if(object instanceof FreeplaneDate)
+					super.setItem("");
+				else
+					super.setItem(object);
+            }
+			
+		};
 		editor.put(keyText, textEditor);
 		
 		final NamedObject keyDate = new NamedObject("date", ""); 
 		keyDate.setIcon(ResourceController.dateIcon);
-		final TimeComboBoxEditor dateComboBoxEditor = new TimeComboBoxEditor(false);
+		final TimeComboBoxEditor dateComboBoxEditor = new TimeComboBoxEditor(false){
+			@Override
+            public void setItem(Object object) {
+				if(object instanceof FreeplaneDate && !((FreeplaneDate)object).containsTime())
+					super.setItem(object);
+				else
+					super.setItem(null);
+            }
+		};
+		
 		dateComboBoxEditor.setItem();
 		editor.put(keyDate, dateComboBoxEditor);
 
 		final NamedObject keyDateTime = new NamedObject("date_time", ""); 
 		keyDateTime.setIcon(ResourceController.dateTimeIcon);
-		final TimeComboBoxEditor dateTimeComboBoxEditor = new TimeComboBoxEditor(true);
+		final TimeComboBoxEditor dateTimeComboBoxEditor = new TimeComboBoxEditor(true){
+			@Override
+            public void setItem(Object object) {
+				if(object instanceof FreeplaneDate && ((FreeplaneDate)object).containsTime())
+					super.setItem(object);
+				else
+					super.setItem(null);
+            }
+		};
 		dateTimeComboBoxEditor.setItem();
 		editor.put(keyDateTime, dateTimeComboBoxEditor);
 

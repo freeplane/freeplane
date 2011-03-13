@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.Box;
 import javax.swing.ComboBoxEditor;
@@ -94,7 +95,19 @@ public class ContainerComboBoxEditor implements ComboBoxEditor {
 	}
 
 	public void setItem(Object anObject) {
-		editor.setItem(anObject);
+		if(anObject == null){
+			setItem("");
+			return;
+		}
+		for(Entry<NamedObject, ComboBoxEditor> editorEntry: editors.entrySet()){
+			final ComboBoxEditor editor = editorEntry.getValue();
+			editor.setItem(anObject);
+			final Object item = editor.getItem();
+			if(anObject.equals(item)){
+				editorSelector.setSelectedItem(editorEntry.getKey());
+				return;
+			}
+		}
 	}
 
 	public Object getItem() {
