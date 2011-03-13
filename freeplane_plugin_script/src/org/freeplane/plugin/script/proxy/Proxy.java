@@ -59,13 +59,20 @@ public interface Proxy {
 		 * <pre>
 		 *   // rename attribute
 		 *   int i = 0;
-		 *   for (String name : attributes.getAttributeNames()) {
+		 *   for (String name : attributes.getNames()) {
 		 *       if (name.equals("xy"))
 		 *           attributes.set(i, "xyz", attributes.get(i));
 		 *       ++i;
 		 *   }
 		 * </pre> */
+		List<String> getNames();
+
+		/** @deprecated since 1.2 use #getNames() instead. */
 		List<String> getAttributeNames();
+
+		/** returns all values as a list of {@link Convertible}.
+		 * @since 1.2 */
+		List<? extends Convertible> getValues();
 
 		/** returns the attribute value at the given index.
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
@@ -80,6 +87,16 @@ public interface Proxy {
 		 * must be used.
 		 * @since 1.2*/
 		int findFirst(final String name);
+
+		/** returns the values of all attributes for which the closure returns true. The fact that the values are
+		 * returned as a list of {@link Convertible} enables conversion. The following formula sums all attributes
+		 * whose names are not equal to 'TOTAL':
+		 * <pre>
+		 *  = attributes.findValues{key,val-> key != 'TOTAL'}.sum(0){it.num0}
+		 * </pre>
+		 * @param closure A closure that accepts two arguments (String key, Object value) and returns boolean/Boolean. 
+		 * @since 1.2 */
+		List<? extends Convertible> findValues(Closure closure);
 
 		/** the number of attributes. It is <code>size() == getAttributeNames().size()</code>. */
 		int size();
