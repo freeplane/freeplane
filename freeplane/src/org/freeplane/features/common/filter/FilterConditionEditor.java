@@ -35,6 +35,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.ListCellRenderer;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.text.JTextComponent;
 
@@ -42,6 +43,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
@@ -87,8 +89,13 @@ public class FilterConditionEditor extends JComponent {
 		values.setEnabled(canSelectValues);
 		values.setEditable(false);
 		values.setModel(conditionController.getValuesForProperty(selectedProperty, selectedCondition));
+		
 		final ComboBoxEditor valueEditor = conditionController.getValueEditor(selectedProperty, selectedCondition);
 		values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
+		
+		final ListCellRenderer valueRenderer = conditionController.getValueRenderer(selectedProperty, selectedCondition);
+		values.setRenderer(valueRenderer != null ? valueRenderer : new TypedListCellRenderer());
+		
 		values.setEditable(conditionController.canEditValues(selectedProperty, selectedCondition));
 		if (values.getModel().getSize() > 0) {
 			values.setSelectedIndex(0);

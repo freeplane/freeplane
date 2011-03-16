@@ -53,6 +53,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.Attribute;
@@ -364,6 +365,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 			}
 		});
 		attributeValues = new JComboBox();
+		attributeValues.setRenderer(new TypedListCellRenderer());
 		attributeValues.setMaximumSize(comboBoxMaximumSize);
 		attributeValues.setPreferredSize(comboBoxMaximumSize);
 		replacingAttributeNames = new JComboBox();

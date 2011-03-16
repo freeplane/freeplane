@@ -34,8 +34,8 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.features.common.time.swing.JCalendar;
@@ -140,7 +140,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 		editor.put(keyText, textEditor);
 		
 		final NamedObject keyDate = new NamedObject("date", ""); 
-		keyDate.setIcon(ResourceController.dateIcon);
+		keyDate.setIcon(ViewController.dateIcon);
 		final TimeComboBoxEditor dateComboBoxEditor = new TimeComboBoxEditor(false){
 			@Override
             public void setItem(Object object) {
@@ -155,7 +155,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 		editor.put(keyDate, dateComboBoxEditor);
 
 		final NamedObject keyDateTime = new NamedObject("date_time", ""); 
-		keyDateTime.setIcon(ResourceController.dateTimeIcon);
+		keyDateTime.setIcon(ViewController.dateTimeIcon);
 		final TimeComboBoxEditor dateTimeComboBoxEditor = new TimeComboBoxEditor(true){
 			@Override
             public void setItem(Object object) {

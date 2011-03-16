@@ -49,6 +49,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -156,10 +157,23 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	private int winState;
 	final private String propertyKeyPrefix;
+	public static Icon textIcon;
+	public static Icon numberIcon;
+	public static Icon dateIcon;
+	public static Icon dateTimeIcon;
+	public static Icon linkIcon;
 
 	public ViewController(Controller controller,  final IMapViewManager mapViewManager,
 	                      final String propertyKeyPrefix) {
 		super();
+		final ResourceController resourceController = ResourceController.getResourceController();
+		if(textIcon == null){
+			ViewController.textIcon = new ImageIcon(resourceController.getResource("/images/text.png"));
+			ViewController.numberIcon = new ImageIcon(resourceController.getResource("/images/number.png"));
+			ViewController.dateIcon = new ImageIcon(resourceController.getResource("/images/calendar_red.png"));
+			ViewController.dateTimeIcon = new ImageIcon(resourceController.getResource("/images/calendar_clock_red.png"));
+			ViewController.linkIcon = new ImageIcon(resourceController.getResource("/images/" + resourceController.getProperty("link_icon")));
+		}
 		this.propertyKeyPrefix = propertyKeyPrefix;
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
 		statusPanel.putClientProperty(VISIBLE_PROPERTY_KEY, "status_visible");
@@ -181,7 +195,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		userDefinedZoom = TextUtils.getText("user_defined_zoom");
 		zoomModel = new DefaultComboBoxModel(getZooms());
 		zoomModel.addElement(userDefinedZoom);
-		final ResourceController resourceController = ResourceController.getResourceController();
 		final String mapViewZoom = resourceController.getProperty(getPropertyKeyPrefix() + "map_view_zoom", "1.0");
 		try {
 			setZoom(Float.parseFloat(mapViewZoom));
@@ -791,18 +804,18 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		    if(value instanceof FreeplaneDate){
 		    	final FreeplaneDate fd = (FreeplaneDate) value;
 		    	if(fd.containsTime()){
-		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ResourceController.dateTimeIcon);
+		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.dateTimeIcon);
 		    	}
 		    	else{
-		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ResourceController.dateIcon);
+		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.dateIcon);
 		    	}
 		    }
 		    else if(value instanceof String){
 		    	if(TextUtils.isNumber((String)value)){
-		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ResourceController.numberIcon);
+		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.numberIcon);
 		    	}
 		    	else{
-		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ResourceController.textIcon);
+		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.textIcon);
 		    	}
 		    			
 		    }

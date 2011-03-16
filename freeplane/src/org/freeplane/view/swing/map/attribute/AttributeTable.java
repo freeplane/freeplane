@@ -57,6 +57,7 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
@@ -412,6 +413,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			comboBox = new JComboBox();
 			comboBox.addFocusListener(AttributeTable.focusListener);
 			comboBox.getEditor().getEditorComponent().addFocusListener(AttributeTable.focusListener);
+			comboBox.setRenderer(new TypedListCellRenderer());
 			dce = new DefaultCellEditor(comboBox);
 			dce.setClickCountToStart(CLICK_COUNT_TO_START);
 		}

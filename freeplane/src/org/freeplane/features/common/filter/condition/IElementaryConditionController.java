@@ -21,6 +21,7 @@ package org.freeplane.features.common.filter.condition;
 
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
 import org.freeplane.core.resources.NamedObject;
@@ -45,6 +46,8 @@ public interface IElementaryConditionController {
 	ListModel getFilteredProperties();
 
 	ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition);
+	
+	ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition);
 
 	ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond);
 

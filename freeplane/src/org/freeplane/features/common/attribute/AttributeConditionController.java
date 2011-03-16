@@ -23,6 +23,7 @@ import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
@@ -156,4 +157,8 @@ class AttributeConditionController implements IElementaryConditionController {
 		}
 		return null;
 	}
+
+	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
+	    return null;
+    }
 }

@@ -32,11 +32,11 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 import java.util.Map.Entry;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.AController.IActionOnChange;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 /**
@@ -55,18 +55,10 @@ public abstract class ResourceController {
 
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();
 	private ResourceBundles resources;
-	public static Icon textIcon;
-	public static Icon numberIcon;
-	public static Icon dateIcon;
-	public static Icon dateTimeIcon;
 	public static final String OBJECT_TYPE = "ObjectType";
 
 	public ResourceController() {
 		super();
-		textIcon = new ImageIcon(getResource("/images/text.png"));
-		numberIcon = new ImageIcon(getResource("/images/number.png"));
-		dateIcon = new ImageIcon(getResource("/images/calendar_red.png"));
-		dateTimeIcon = new ImageIcon(getResource("/images/calendar_clock_red.png"));
 	}
 
 	public void addLanguageResources(final String language, final URL url) {

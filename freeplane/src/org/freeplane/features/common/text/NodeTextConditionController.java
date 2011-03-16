@@ -25,6 +25,7 @@ import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
@@ -177,5 +178,9 @@ class NodeTextConditionController implements IElementaryConditionController {
 		if(result instanceof String)
 			return HtmlUtils.htmlToPlain((String)result);
 		return result;
+    }
+
+	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
+	    return null;
     }
 }

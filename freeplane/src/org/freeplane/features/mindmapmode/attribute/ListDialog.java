@@ -55,6 +55,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -260,6 +261,7 @@ class ListDialog extends JDialog {
 				}
 			}
 		});
+		list.setCellRenderer(new TypedListCellRenderer());
 		list.setModel(data);
 		list.addListSelectionListener(new ListSelectionChangeListener());
 		final JScrollPane listScroller = new JScrollPane(list);
