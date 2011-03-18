@@ -334,8 +334,9 @@ public class MapController extends SelectionController {
 	}
 
 	public void fireMapChanged(final MapChangeEvent event) {
-		for (final IMapChangeListener listener : mapChangeListeners) {
-			listener.mapChanged(event);
+		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
+		for (final IMapChangeListener next : list) {
+			next.mapChanged(event);
 		}
 		final MapModel map = event.getMap();
 		if (map != null) {
@@ -345,62 +346,63 @@ public class MapController extends SelectionController {
 	}
 
 	public void fireMapCreated(final MapModel map) {
-		final Iterator<IMapLifeCycleListener> iterator = mapLifeCycleListeners.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().onCreate(map);
+		final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(new IMapLifeCycleListener[]{});
+		for (final IMapLifeCycleListener next : list) {
+			next.onCreate(map);
 		}
 	}
 
 	protected void fireMapRemoved(final MapModel map) {
-		final Iterator<IMapLifeCycleListener> iterator = mapLifeCycleListeners.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().onRemove(map);
+		final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(new IMapLifeCycleListener[]{});
+		for (final IMapLifeCycleListener next : list) {
+			next.onRemove(map);
 		}
 	}
 
 	private void fireNodeChanged(final NodeModel node, final NodeChangeEvent nodeChangeEvent) {
-		for (final INodeChangeListener next : nodeChangeListeners) {
+		final INodeChangeListener[] list = nodeChangeListeners.toArray(new INodeChangeListener[]{});
+		for (final INodeChangeListener next : list) {
 			next.nodeChanged(nodeChangeEvent);
 		}
 		node.fireNodeChanged(nodeChangeEvent);
 	}
 
 	protected void fireNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
-		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().onNodeDeleted(parent, child, index);
+		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
+		for (final IMapChangeListener next : list) {
+			next.onNodeDeleted(parent, child, index);
 		}
 		child.getMap().unregistryNodes(child);
 	}
 
 	protected void fireNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
 		parent.getMap().registryNodeRecursive(child);
-		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().onNodeInserted(parent, child, index);
+		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
+		for (final IMapChangeListener next : list) {
+			next.onNodeInserted(parent, child, index);
 		}
 	}
 
 	protected void fireNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 	                             final NodeModel child, final int newIndex) {
-		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().onNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
+		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
+		for (final IMapChangeListener next : list) {
+			next.onNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
 		}
 	}
 
 	protected void firePreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 	                                final NodeModel child, final int newIndex) {
-		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().onPreNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
+		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
+		for (final IMapChangeListener next : list) {
+			next.onPreNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
 		}
 	}
 
 	protected void firePreNodeDelete(final NodeModel parent, final NodeModel selectedNode, final int index) {
-		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().onPreNodeDelete(parent, selectedNode, index);
+		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
+		for (final IMapChangeListener next : list) {
+			next.onPreNodeDelete(parent, selectedNode, index);
 		}
 	}
 
