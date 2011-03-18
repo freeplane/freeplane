@@ -66,7 +66,9 @@ public class TypedListCellRenderer extends DefaultListCellRenderer implements Li
 	    	setIcon(ViewController.linkIcon);
 	    else if(value instanceof String && TextUtils.isNumber((String) value))
 	    	setIcon(ViewController.numberIcon);
-	    
+	    else if(value instanceof ObjectAndIcon){
+	    	setIcon(((ObjectAndIcon)value).getIcon());
+	    }
 		return this;
     }
 	

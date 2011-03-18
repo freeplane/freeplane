@@ -21,6 +21,11 @@ package org.freeplane.features.common.link;
 
 import java.net.URI;
 
+import javax.swing.Icon;
+
+import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.ui.components.ObjectAndIcon;
+import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.AbstractContentTransformer;
@@ -36,19 +41,33 @@ public class LinkTransformer extends AbstractContentTransformer {
 	public LinkTransformer(ModeController modeController, int priority) {
 	    super(priority);
 	    this.modeController = modeController;
-		final NodeUpdateChangeListener listener = new NodeUpdateChangeListener();
+    }
+
+	public void registerListeners(ModeController modeController) {
+	    final NodeUpdateChangeListener listener = new NodeUpdateChangeListener();
 		modeController.getMapController().addNodeChangeListener(listener);
 		modeController.getMapController().addMapChangeListener(listener);
     }
 
 	public Object transformContent(Object content, NodeModel node, Object transformedExtension) {
+		final MapModel map = node.getMap();
+		return transformContent(content, map);
+	}
+
+	public Object transformContent(Object content, MapModel map) {
 		if(! (content instanceof URI))
 			return content;
 		final String string = content.toString();
 		if(! string.startsWith("#"))
 			return content;
 		final String nodeID=string.substring(1);
-		final NodeModel target = node.getMap().getNodeForID(nodeID);
-		return TextController.getController(modeController).getShortText(target);
-	}
+		final NodeModel target = map.getNodeForID(nodeID);
+		if(target != null){
+			final String shortText = TextController.getController(modeController).getShortText(target);
+			final Icon icon = ViewController.localLinkIcon;
+			return new ObjectAndIcon(shortText, icon);
+		}
+		else
+			return content;
+    }
 }

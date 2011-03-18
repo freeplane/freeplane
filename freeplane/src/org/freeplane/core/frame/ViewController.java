@@ -162,6 +162,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	public static Icon dateIcon;
 	public static Icon dateTimeIcon;
 	public static Icon linkIcon;
+	public static Icon localLinkIcon;
 
 	public ViewController(Controller controller,  final IMapViewManager mapViewManager,
 	                      final String propertyKeyPrefix) {
@@ -173,6 +174,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			ViewController.dateIcon = new ImageIcon(resourceController.getResource("/images/calendar_red.png"));
 			ViewController.dateTimeIcon = new ImageIcon(resourceController.getResource("/images/calendar_clock_red.png"));
 			ViewController.linkIcon = new ImageIcon(resourceController.getResource("/images/" + resourceController.getProperty("link_icon")));
+			ViewController.localLinkIcon = new ImageIcon(resourceController.getResource("/images/" + resourceController.getProperty("link_local_icon")));
 		}
 		this.propertyKeyPrefix = propertyKeyPrefix;
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));

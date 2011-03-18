@@ -128,12 +128,25 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	    final ContainerComboBoxEditor editor = new ContainerComboBoxEditor();
 		final NamedObject keyText = new NamedObject("text", "1Ab");
 		final BasicComboBoxEditor textEditor = new BasicComboBoxEditor(){
+			private Object oldItem;
+
 			@Override
             public void setItem(Object object) {
+				oldItem = object;
 				if(object instanceof FreeplaneDate)
 					super.setItem("");
 				else
 					super.setItem(object);
+            }
+
+			@Override
+            public Object getItem() {
+	            final Object item = super.getItem();
+				final Object oldItem = this.oldItem;
+				this.oldItem = null;
+	            if(item != null && oldItem != null && item.toString().equals(oldItem.toString()))
+	            	return oldItem;
+				return item;
             }
 			
 		};

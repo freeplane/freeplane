@@ -105,7 +105,9 @@ public class LinkController extends SelectionController implements IExtension {
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		new LinkBuilder(this).registerBy(readManager, writeManager);
-		TextController.getController(modeController).addTextTransformer(new LinkTransformer(modeController, 10));
+		final LinkTransformer textTransformer = new LinkTransformer(modeController, 10);
+		TextController.getController(modeController).addTextTransformer(textTransformer);
+		textTransformer.registerListeners(modeController);
 	}
 
 	private void addLinks(final JPopupMenu arrowLinkPopup, final NodeModel source) {

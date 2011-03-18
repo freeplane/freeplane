@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.common.attribute;
 
+import java.net.URI;
+
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -29,9 +31,14 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
+import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
+import org.freeplane.features.common.link.LinkTransformer;
+import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.time.TimeComboBoxEditor;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -136,8 +143,17 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
-		values.setExtensionList(AttributeRegistry.getRegistry(Controller.getCurrentController().getMap()).getElement(selectedItem.toString())
-		    .getValues());
+		final MapModel map = Controller.getCurrentController().getMap();
+		final AttributeRegistry registry = AttributeRegistry.getRegistry(map);
+		final AttributeRegistryElement element = registry.getElement(selectedItem.toString());
+		final SortedComboBoxModel list = element.getValues();
+		SortedComboBoxModel linkedList = new SortedComboBoxModel();
+		for(int i = 0; i < list.getSize();i++){
+			final Object value = list.getElementAt(i);
+			final Object transformedValue = new LinkTransformer(Controller.getCurrentModeController(), 1).transformContent(value, map);
+			linkedList.add(transformedValue);
+		}
+		values.setExtensionList(linkedList);
 		return values;
 	}
 
