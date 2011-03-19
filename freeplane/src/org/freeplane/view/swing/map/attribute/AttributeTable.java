@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.KeyboardFocusManager;
+import java.awt.Window;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
@@ -529,6 +530,32 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		updateFontSize(comboBox, getZoom());
 		return super.prepareEditor(tce, row, col);
 	}
+
+	@Override
+    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+	    Object value = getValueAt(row, column);
+        
+            boolean isSelected = false;
+            boolean hasFocus = false;
+        
+            // Only indicate the selection and focused cell if not printing
+            MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+            if (map == null || ! map.isPrinting()) {
+                isSelected = isCellSelected(row, column);
+        
+                boolean rowIsLead =
+                    (selectionModel.getLeadSelectionIndex() == row);
+                boolean colIsLead =
+                    (columnModel.getSelectionModel().getLeadSelectionIndex() == column);
+        
+                final Window windowAncestor = SwingUtilities.getWindowAncestor(this);
+				hasFocus = (rowIsLead && colIsLead) && windowAncestor != null && equals(windowAncestor.getMostRecentFocusOwner());
+            }
+        
+        return renderer.getTableCellRendererComponent(this, value,
+                                                      isSelected, hasFocus,
+                                                      row, column);
+    }
 
 	@Override
 	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {

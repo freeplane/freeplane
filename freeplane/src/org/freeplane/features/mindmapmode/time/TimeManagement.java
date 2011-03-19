@@ -29,6 +29,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -74,29 +76,7 @@ import org.freeplane.features.mindmapmode.text.MTextController;
 /**
  * @author foltin
  */
-class TimeManagement implements PropertyChangeListener, ActionListener, IMapSelectionListener {
-	private class RemoveReminders implements ActionListener {
-		/**
-		 *
-		 */
-		private final TimeManagement timeManagement;
-
-		/**
-		 * @param timeManagement
-		 */
-		RemoveReminders(final TimeManagement timeManagement) {
-			this.timeManagement = timeManagement;
-		}
-
-		public void actionPerformed(final ActionEvent e) {
-			for (final NodeModel node : timeManagement.getMindMapController().getMapController().getSelectedNodes()) {
-				final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
-				if (alreadyPresentHook != null) {
-					reminderHook.undoableToggleHook(node);
-				}
-			}
-		}
-	}
+class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 
 	private Calendar calendar;
 	public final static String REMINDER_HOOK_NAME = "plugins/TimeManagementReminder.xml";
@@ -114,7 +94,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(this);
 	}
 
-	public void actionPerformed(final ActionEvent arg0) {
+	private void addReminder() {
 		final Date date = getCalendarDate();
 		Controller controller = Controller.getCurrentController();
 		for (final NodeModel node : controller.getModeController().getMapController().getSelectedNodes()) {
@@ -137,6 +117,15 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		}
 	}
 
+	private void removeReminder() {
+        for (final NodeModel node : getMindMapController().getMapController().getSelectedNodes()) {
+			final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
+			if (alreadyPresentHook != null) {
+				reminderHook.undoableToggleHook(node);
+			}
+		}
+    }
+	
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
@@ -276,39 +265,10 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			if (dialog == null) {
 				appendButton.setFocusable(false);
 			}
-			appendButton.addActionListener(new ActionListener() {
-				public void actionPerformed(final ActionEvent ignored) {
-					FreeplaneDate date = getCalendarDate();
-					final String dateAsString = dateFormat.format(date);
-					final Window parentWindow;
-					if (dialog != null) {
-						parentWindow = (Window) dialog.getParent();
-					}
-					else {
-						parentWindow = SwingUtilities.getWindowAncestor(appendButton);
-					}
-					final Component mostRecentFocusOwner = parentWindow.getMostRecentFocusOwner();
-					if (mostRecentFocusOwner instanceof JTextComponent) {
-						final JTextComponent textComponent = (JTextComponent) mostRecentFocusOwner;
-						textComponent.replaceSelection(dateAsString);
-						return;
-					}
-					final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-					if(focusOwner instanceof JTable){
-						JTable table = (JTable) focusOwner;
-						final int[] selectedRows = table.getSelectedRows();
-						final int[] selectedColumns = table.getSelectedColumns();
-						for(int r : selectedRows)
-							for(int c : selectedColumns)
-								table.setValueAt(date, r, c);
-					}
-					else{
-						ModeController mController = Controller.getCurrentModeController();
-						for (final NodeModel node : mController.getMapController().getSelectedNodes()) {
-							final MTextController textController = (MTextController) TextController.getController();
-							textController.setNodeObject(node, date);
-						}
-					}
+			appendButton.addMouseListener(new MouseAdapter() {
+				@Override
+                public void mouseClicked(MouseEvent e) {
+					insertTime(dialog, appendButton);
 				}
 			});
 			increaseSize(btnSize, appendButton);
@@ -317,7 +277,12 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		{
 			final JButton reminderButton = new JButton(getResourceString("plugins/TimeManagement.xml_reminderButton"));
 			reminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_reminderButton_tooltip"));
-			reminderButton.addActionListener(this);
+			reminderButton.addMouseListener(new MouseAdapter() {
+				@Override
+                public void mouseClicked(MouseEvent e) {
+					addReminder();
+				}
+			});
 			increaseSize(btnSize, reminderButton);
 			buttonBox.add(reminderButton);
 		}
@@ -325,14 +290,23 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			final JButton reminderButton = new JButton(
 			    getResourceString("plugins/TimeManagement.xml_removeReminderButton"));
 			reminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_removeReminderButton_tooltip"));
-			reminderButton.addActionListener(new RemoveReminders(this));
+			reminderButton.addMouseListener(new MouseAdapter() {
+
+				@Override
+                public void mouseClicked(MouseEvent e) {
+					removeReminder();
+               }
+				
+			});
 			increaseSize(btnSize, reminderButton);
 			buttonBox.add(reminderButton);
 		}
 		if (dialog != null) {
 			final JButton cancelButton = new JButton(getResourceString("plugins/TimeManagement.xml_closeButton"));
-			cancelButton.addActionListener(new ActionListener() {
-				public void actionPerformed(final ActionEvent arg0) {
+			cancelButton.addMouseListener(new MouseAdapter() {
+
+				@Override
+                public void mouseClicked(MouseEvent e) {
 					disposeDialog();
 				}
 			});
@@ -425,5 +399,38 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	    final Dimension preferredSize = comp.getPreferredSize();
 	    btnSize.width =  Math.max(btnSize.width, preferredSize.width);
 	    btnSize.height =  Math.max(btnSize.height, preferredSize.height);
+    }
+
+	void insertTime(final Dialog dialog, final JButton appendButton) {
+	    FreeplaneDate date = getCalendarDate();
+	    final String dateAsString = dateFormat.format(date);
+	    final Window parentWindow;
+	    if (dialog != null) {
+	    	parentWindow = (Window) dialog.getParent();
+	    }
+	    else {
+	    	parentWindow = SwingUtilities.getWindowAncestor(appendButton);
+	    }
+	    final Component mostRecentFocusOwner = parentWindow.getMostRecentFocusOwner();
+	    if (mostRecentFocusOwner instanceof JTextComponent) {
+	    	final JTextComponent textComponent = (JTextComponent) mostRecentFocusOwner;
+	    	textComponent.replaceSelection(dateAsString);
+	    	return;
+	    }
+	    if(mostRecentFocusOwner instanceof JTable){
+	    	JTable table = (JTable) mostRecentFocusOwner;
+	    	final int[] selectedRows = table.getSelectedRows();
+	    	final int[] selectedColumns = table.getSelectedColumns();
+	    	for(int r : selectedRows)
+	    		for(int c : selectedColumns)
+	    			table.setValueAt(date, r, c);
+	    }
+	    else{
+	    	ModeController mController = Controller.getCurrentModeController();
+	    	for (final NodeModel node : mController.getMapController().getSelectedNodes()) {
+	    		final MTextController textController = (MTextController) TextController.getController();
+	    		textController.setNodeObject(node, date);
+	    	}
+	    }
     }
 }
