@@ -56,15 +56,21 @@ class ForkMainView extends MainView {
 
 	@Override
 	Point getLeftPoint() {
-		final NodeView nodeView = getNodeView();
-		final NodeModel model = nodeView.getModel();
-		final EdgeController edgeController = EdgeController.getController(nodeView.getMap().getModeController());
-		int edgeWidth = edgeController.getWidth(model);
-		final EdgeStyle style = edgeController.getStyle(model);
-		edgeWidth = nodeView.getMap().getZoomed(style.getNodeLineWidth(edgeWidth));
+		int edgeWidth = getEdgeWidth();
 		final Point in = new Point(0, getHeight() + edgeWidth / 2);
 		return in;
 	}
+
+	public int getEdgeWidth() {
+	    final NodeView nodeView = getNodeView();
+		final NodeModel model = nodeView.getModel();
+		final ModeController modeController = nodeView.getMap().getModeController();
+		final EdgeController edgeController = EdgeController.getController(modeController);
+		int edgeWidth = edgeController.getWidth(model);
+		final EdgeStyle style = edgeController.getStyle(model);
+		edgeWidth = nodeView.getMap().getZoomed(style.getNodeLineWidth(edgeWidth));
+	    return edgeWidth;
+    }
 
 	@Override
 	protected int getMainViewHeightWithFoldingMark() {
@@ -90,12 +96,7 @@ class ForkMainView extends MainView {
 
 	@Override
 	Point getRightPoint() {
-		final NodeView nodeView = getNodeView();
-		final NodeModel model = nodeView.getModel();
-		final EdgeController edgeController = EdgeController.getController(nodeView.getMap().getModeController());
-		int edgeWidth = edgeController.getWidth(model);
-		final EdgeStyle style = edgeController.getStyle(model);
-		edgeWidth = nodeView.getMap().getZoomed(style.getNodeLineWidth(edgeWidth));
+		int edgeWidth = getEdgeWidth();
 		final Point in = new Point(getWidth() - 1, getHeight() + edgeWidth / 2);
 		return in;
 	}
@@ -126,13 +127,11 @@ class ForkMainView extends MainView {
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 	    final ModeController modeController = getNodeView().getMap().getModeController();
 		final NodeModel model = nodeView.getModel();
-		final EdgeController edgeController = EdgeController.getController(modeController);
-		int edgeWidth = edgeController.getWidth(model);
-		final EdgeStyle style = edgeController.getStyle(model);
-		edgeWidth = nodeView.getMap().getZoomed(style.getNodeLineWidth(edgeWidth));
 		final Stroke oldStroke = g.getStroke();
+		float edgeWidth  = getEdgeWidth();
 		g.setStroke(new BasicStroke(edgeWidth));
 		final Color oldColor = g.getColor();
+		EdgeController edgeController = EdgeController.getController(modeController);
 		g.setColor(edgeController.getColor(model));
 		Point leftLinePoint = getLeftPoint();
 		g.drawLine(leftLinePoint.x, leftLinePoint.y, leftLinePoint.x + getWidth(), leftLinePoint.y);
