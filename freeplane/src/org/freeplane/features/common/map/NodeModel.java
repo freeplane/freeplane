@@ -83,7 +83,7 @@ public class NodeModel implements MutableTreeNode {
 	private String xmlText = null;
 
 	public NodeModel(final MapModel map) {
-		this(null, map);
+		this("", map);
 	}
 
 	public NodeModel(final Object userObject, final MapModel map) {

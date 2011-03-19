@@ -99,7 +99,10 @@ public abstract class EdgeView {
 
 	protected Stroke getStroke() {
 		final int width = getWidth();
-		if (width == EdgeModel.WIDTH_THIN) {
+		if (width < 0) {
+			return EdgeView.DEF_STROKE;
+		}
+		if (width == 0) {
 			return EdgeView.DEF_STROKE;
 		}
 		return new BasicStroke(width * getMap().getZoom(), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);

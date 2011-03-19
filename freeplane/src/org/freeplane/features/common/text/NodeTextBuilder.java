@@ -87,7 +87,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
 				final Object nodeContent = node.getUserObject();
-				if(nodeContent == null){
+				if(nodeContent == null || nodeContent.equals("")){
 					node.setText(value);
 				}
 			}

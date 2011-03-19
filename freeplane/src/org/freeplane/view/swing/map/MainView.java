@@ -363,7 +363,7 @@ public abstract class MainView extends ZoomableLabel {
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);
-			text = TextUtils.format("MainView.errorUpdateText", content.toString(), e.getLocalizedMessage());
+			text = TextUtils.format("MainView.errorUpdateText", String.valueOf(content), e.getLocalizedMessage());
 			textModified = TextModificationState.FAILURE;
 		}
 		if(textShortened){

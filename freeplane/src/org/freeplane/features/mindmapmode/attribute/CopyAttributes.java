@@ -152,6 +152,8 @@ class AddStyleAttributes extends AMultipleNodeAction {
 		final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
 		final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
 		final NodeModel styleNode = extension.getStyleNode(style);
+		if (styleNode == null)
+			return null;
 		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(styleNode);
 		if (model.getRowCount() > 0)
 			return model;
