@@ -36,6 +36,7 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.features.common.time.swing.JCalendar;
@@ -146,6 +147,12 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 				this.oldItem = null;
 	            if(item != null && oldItem != null && item.toString().equals(oldItem.toString()))
 	            	return oldItem;
+	            if(ResourceController.getResourceController().getBooleanProperty("parse_dates") 
+	            		&& item instanceof String){
+	            	final FreeplaneDate date = FreeplaneDate.toDateISO(((String)item).trim());
+	            	if(date != null)
+	            		return date;
+	            }
 				return item;
             }
 			

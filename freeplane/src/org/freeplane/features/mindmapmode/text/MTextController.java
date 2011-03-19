@@ -46,10 +46,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapLifeCycleListener;
 import org.freeplane.core.controller.INodeSelectionListener;
-import org.freeplane.core.frame.IMapSelectionListener;
-import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.BitmapImagePreview;
@@ -57,15 +54,13 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.FixedHTMLWriter;
+import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
-import org.freeplane.features.common.map.AMapChangeListenerAdapter;
-import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
-import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
@@ -76,7 +71,6 @@ import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.IContentTransformer;
 import org.freeplane.features.common.text.ShortenedTextModel;
 import org.freeplane.features.common.text.TextController;
-
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
@@ -256,6 +250,21 @@ public class MTextController extends TextController {
 
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 
+	public void setGuessedNodeObject(final NodeModel node, final String newText) {
+		if(HtmlUtils.isHtmlNode(newText)){
+			setNodeObject(node, newText);
+			return;
+		}
+		if(ResourceController.getResourceController().getBooleanProperty("parse_dates")){ 
+			final FreeplaneDate date = FreeplaneDate.toDateISO(newText.trim());
+			if(date != null){
+				setNodeObject(node, date);
+				return;
+			}
+		}
+		setNodeObject(node, newText);
+	}
+
 	public void setNodeText(final NodeModel node, final String newText) {
 		setNodeObject(node, newText);
 	}
@@ -299,7 +308,7 @@ public class MTextController extends TextController {
 		}
 		final String newUpperContent = strings[0];
 		final String newLowerContent = strings[1];
-		setNodeObject(node, newUpperContent);
+		setGuessedNodeObject(node, newUpperContent);
 		final NodeModel parent = node.getParentNode();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel lowerNode = ((MMapController) modeController.getMapController()).addNewNode(parent, parent
@@ -307,7 +316,7 @@ public class MTextController extends TextController {
 		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 		    .getController();
 		nodeStyleController.copyStyle(node, lowerNode);
-		setNodeObject(lowerNode, newLowerContent);
+		setGuessedNodeObject(lowerNode, newLowerContent);
 	}
 
 	public boolean useRichTextInEditor(String key) {
@@ -611,7 +620,7 @@ public class MTextController extends TextController {
 					}
 				}
 				processedText = processedText.replaceFirst("\\s+$", "");
-				setNodeObject(nodeModel, processedText);
+				setGuessedNodeObject(nodeModel, processedText);
 				stop();
 			}
 

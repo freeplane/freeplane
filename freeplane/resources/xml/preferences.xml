@@ -178,7 +178,8 @@
             <boolean name="disable_cursor_move_paper"/>
             <number name="foldingsymbolwidth"/>
             <number name="grid_size" min = "1"/>
-            <boolean name="goto_note_end_on_edit"/>            
+            <boolean name="goto_note_end_on_edit"/>    
+            <boolean name="parse_dates"/>    
         </separator>
         <separator name="key_typing">
             <boolean name="disable_key_type"/>
