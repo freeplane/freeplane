@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler;
-import org.freeplane.core.ui.IEditHandler.KeyTypeAction;
+import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.view.swing.map.MapView;
 
 /**
@@ -47,13 +47,13 @@ public class DefaultNodeKeyListener implements KeyListener {
 			case KeyEvent.VK_END:
 			case KeyEvent.VK_BACK_SPACE:
 				if (editHandler != null) {
-					editHandler.edit(e, KeyTypeAction.EDIT_CURRENT, false);
+					editHandler.edit(e, FirstAction.EDIT_CURRENT, false);
 				}
 				return;
 		}
-		final String keyTypeActionString = ResourceController.getResourceController().getProperty("key_type_action", KeyTypeAction.EDIT_CURRENT.toString());
-		KeyTypeAction keyTypeAction = KeyTypeAction.valueOf(keyTypeActionString);
-		if (! KeyTypeAction.IGNORE.equals(keyTypeAction)) {
+		final String keyTypeActionString = ResourceController.getResourceController().getProperty("key_type_action", FirstAction.EDIT_CURRENT.toString());
+		FirstAction keyTypeAction = FirstAction.valueOf(keyTypeActionString);
+		if (! FirstAction.IGNORE.equals(keyTypeAction)) {
 			if (!e.isActionKey() && e.getKeyChar() != KeyEvent.CHAR_UNDEFINED) {
 				if (editHandler != null) {
 					editHandler.edit(e, keyTypeAction, false);

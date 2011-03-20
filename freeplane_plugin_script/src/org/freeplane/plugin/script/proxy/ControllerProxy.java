@@ -17,6 +17,7 @@ import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;
@@ -54,7 +55,7 @@ class ControllerProxy implements Proxy.Controller {
 	private void editImpl(Node node, boolean editInline) {
 	    final NodeModel nodeModel = ((NodeProxy) node).getDelegate();
 		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeModel);
-		((MTextController) TextController.getController()).edit(null, false, !editInline);
+		((MTextController) TextController.getController()).edit(null, FirstAction.EDIT_CURRENT, !editInline);
     }
 
 	public Node getSelected() {

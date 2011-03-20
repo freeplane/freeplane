@@ -22,7 +22,7 @@ package org.freeplane.features.mindmapmode.text;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IEditHandler.KeyTypeAction;
+import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.features.common.text.TextController;
 
 class EditLongAction extends AFreeplaneAction {
@@ -39,6 +39,6 @@ class EditLongAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MTextController) TextController.getController()).edit(null, KeyTypeAction.EDIT_CURRENT, true);
+		((MTextController) TextController.getController()).edit(null, FirstAction.EDIT_CURRENT, true);
 	}
 }

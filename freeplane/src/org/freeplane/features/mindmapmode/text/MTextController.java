@@ -49,7 +49,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IEditHandler.KeyTypeAction;
+import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
@@ -477,11 +477,11 @@ public class MTextController extends TextController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void edit(final InputEvent e, final KeyTypeAction action, final boolean editLong) {
+	public void edit(final InputEvent e, final FirstAction action, final boolean editLong) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel selectedNode = controller.getSelection().getSelected();
 		if (selectedNode != null) {
-			if (e == null || KeyTypeAction.EDIT_CURRENT.equals(action)) {
+			if (e == null || FirstAction.EDIT_CURRENT.equals(action)) {
 				edit(selectedNode, selectedNode, e, false, false, editLong);
 			}
 			else if (!Controller.getCurrentModeController().isBlocked()) {
@@ -490,7 +490,7 @@ public class MTextController extends TextController {
 					firstKeyEvent = (KeyEvent) e;
 				else
 					firstKeyEvent = null;
-				final int mode = KeyTypeAction.ADD_CHILD.equals(action) ? MMapController.NEW_CHILD : MMapController.NEW_SIBLING_BEHIND;
+				final int mode = FirstAction.ADD_CHILD.equals(action) ? MMapController.NEW_CHILD : MMapController.NEW_SIBLING_BEHIND;
 				((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(mode,firstKeyEvent);
 			}
 			if (e != null) {
