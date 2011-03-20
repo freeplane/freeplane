@@ -23,5 +23,6 @@ package org.freeplane.core.ui;
 import java.awt.event.KeyEvent;
 
 public interface IEditHandler {
-	void edit(KeyEvent e, boolean addNew, boolean editLong);
+	public enum KeyTypeAction{EDIT_CURRENT, ADD_SIBLING, ADD_CHILD, IGNORE}
+	void edit(KeyEvent e, KeyTypeAction keyTypeAction, boolean editLong);
 }

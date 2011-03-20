@@ -40,6 +40,7 @@ import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
+import org.freeplane.core.ui.IEditHandler.KeyTypeAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JResizer;
@@ -192,7 +193,7 @@ public class MModeControllerFactory {
 					else {
 						if (e.getClickCount() == 2 && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown()
 								&& !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1) {
-							((MTextController) TextController.getController()).edit(e, false, e.isAltDown());
+							((MTextController) TextController.getController()).edit(e, KeyTypeAction.EDIT_CURRENT, e.isAltDown());
 							return;
 						}
 						final Component selectedComponent = controller.getViewController().getSelectedComponent();
@@ -229,8 +230,8 @@ public class MModeControllerFactory {
 		LogicalStyleController.install(new MLogicalStyleController());
 		AttributeController.install(new MAttributeController(modeController));
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
-			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
-				textController.edit(e, addNew, editLong);
+			public void edit(final KeyEvent e, final KeyTypeAction action, final boolean editLong) {
+				textController.edit(e, action, editLong);
 			}
 		}));
 		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener());

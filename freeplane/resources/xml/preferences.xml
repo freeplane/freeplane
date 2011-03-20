@@ -180,11 +180,13 @@
             <number name="grid_size" min = "1"/>
             <boolean name="goto_note_end_on_edit"/>    
             <boolean name="parse_dates"/>    
+            <combo name="key_type_action">
+            	<choice value="EDIT_CURRENT"/>
+            	<choice value="IGNORE"/>
+            	<choice value="ADD_SIBLING"/>
+            	<choice value="ADD_CHILD"/>
+            </combo>
         </separator>
-        <separator name="key_typing">
-            <boolean name="disable_key_type"/>
-            <boolean name="key_type_adds_new"/>
-       </separator>
        <separator name="inline_editor">        
             <boolean name="il__enter_confirms_by_default" />
         </separator>

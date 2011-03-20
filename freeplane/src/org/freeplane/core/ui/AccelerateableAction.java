@@ -40,6 +40,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.GrabKeyDialog;
 import org.freeplane.core.resources.components.IKeystrokeValidator;
+import org.freeplane.core.ui.IEditHandler.KeyTypeAction;
 import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.IKeyBindingManager;
@@ -51,8 +52,6 @@ import org.freeplane.core.util.TextUtils;
  * 20.04.2009
  */
 public class AccelerateableAction implements IFreeplaneAction {
-	private static final boolean DISABLE_KEY_TYPE = ResourceController.getResourceController().getBooleanProperty(
-	    "disable_key_type");
 	/**
 	 * 
 	 */
@@ -170,7 +169,9 @@ public class AccelerateableAction implements IFreeplaneAction {
 				}
 				if (keyChar != KeyEvent.CHAR_UNDEFINED
 				        && (keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK | Event.META_MASK)) == 0) {
-					return DISABLE_KEY_TYPE;
+					final String keyTypeActionString = ResourceController.getResourceController().getProperty("key_type_action", KeyTypeAction.EDIT_CURRENT.toString());
+					KeyTypeAction keyTypeAction = KeyTypeAction.valueOf(keyTypeActionString);
+					return KeyTypeAction.IGNORE.equals(keyTypeAction);
 				}
 				final DefaultMutableTreeNode menubarNode = menuBuilder.get(menubarKey);
 				if ((keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK | Event.META_MASK)) == Event.ALT_MASK) {

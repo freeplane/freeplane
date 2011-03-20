@@ -49,6 +49,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IEditHandler.KeyTypeAction;
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
@@ -86,6 +87,7 @@ import com.lightdev.app.shtm.TextResources;
  * @author Dimitry Polivaev
  */
 public class MTextController extends TextController {
+	
 	public static final String NODE_TEXT = "NodeText";
 	private EditNodeBase mCurrentEditDialog = null;
 	final private Collection<IEditorPaneListener> editorPaneListeners;
@@ -475,11 +477,11 @@ public class MTextController extends TextController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void edit(final InputEvent e, final boolean addNew, final boolean editLong) {
+	public void edit(final InputEvent e, final KeyTypeAction action, final boolean editLong) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel selectedNode = controller.getSelection().getSelected();
 		if (selectedNode != null) {
-			if (e == null || !addNew) {
+			if (e == null || KeyTypeAction.EDIT_CURRENT.equals(action)) {
 				edit(selectedNode, selectedNode, e, false, false, editLong);
 			}
 			else if (!Controller.getCurrentModeController().isBlocked()) {
@@ -488,7 +490,8 @@ public class MTextController extends TextController {
 					firstKeyEvent = (KeyEvent) e;
 				else
 					firstKeyEvent = null;
-				((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(MMapController.NEW_SIBLING_BEHIND,firstKeyEvent);
+				final int mode = KeyTypeAction.ADD_CHILD.equals(action) ? MMapController.NEW_CHILD : MMapController.NEW_SIBLING_BEHIND;
+				((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(mode,firstKeyEvent);
 			}
 			if (e != null) {
 				e.consume();
@@ -722,3 +725,4 @@ public class MTextController extends TextController {
     }
 
 }
+
