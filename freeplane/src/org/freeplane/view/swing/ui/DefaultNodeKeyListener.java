@@ -33,7 +33,6 @@ public class DefaultNodeKeyListener implements KeyListener {
 			case KeyEvent.VK_SPACE:
 			case KeyEvent.VK_INSERT:
 			case KeyEvent.VK_TAB:
-			case KeyEvent.VK_BACK_SPACE:
 				return;
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_DOWN:
@@ -45,6 +44,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 				return;
 			case KeyEvent.VK_HOME:
 			case KeyEvent.VK_END:
+			case KeyEvent.VK_BACK_SPACE:
 				if (editHandler != null) {
 					editHandler.edit(e, false, false);
 				}
