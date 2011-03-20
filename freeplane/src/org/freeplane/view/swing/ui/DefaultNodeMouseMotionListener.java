@@ -18,6 +18,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IMouseListener;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
@@ -223,7 +224,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	public boolean extendSelection(final MouseEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel newlySelectedNodeView = ((MainView) e.getComponent()).getNodeView().getModel();
-		final boolean extend = e.isControlDown();
+		final boolean extend = Compat.isMacOsX() ? e.isMetaDown() : e.isControlDown();
 		final boolean range = e.isShiftDown();
 		/* windows alt, linux altgraph .... */
 		boolean retValue = false;
