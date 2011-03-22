@@ -42,6 +42,8 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
+import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapModel;
@@ -49,8 +51,10 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.mindmapmode.icon.MIconController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -133,10 +137,13 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			if (openUri(e)) {
 				return;
 			}
+			if (showNext(e)) {
+				return;
+			}
 		}
 
 		private boolean openUri(final MouseEvent e) {
-			if (e.getClickCount() != 2) {
+			if ((e.getClickCount() != 2) || (e.getButton() != MouseEvent.BUTTON1)){
 				return false;
 			}
 			final ExternalResource model = getModel(e);
@@ -174,6 +181,62 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			sizeChanged = false;
 			return true;
 		}
+		private boolean showNext(final MouseEvent e) {
+			//single right click
+			if ((e.getButton() == MouseEvent.BUTTON3) && (e.getClickCount() == 1)) {
+				final ExternalResource activeView = getModel(e);
+				NodeModel node = null;
+				//get node from mouse click
+				for (int i = 0; i < e.getComponent().getParent().getComponentCount(); i++) {
+					if (e.getComponent().getParent().getComponent(i) instanceof MainView) {
+						final MainView mv = (MainView) e.getComponent().getParent().getComponent(i);
+						node = mv.getNodeView().getModel();
+						break;
+					}
+				}
+				if (node == null) {
+					node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+				}
+				final MapModel map = node.getMap();
+				final String sActUri = activeView.getAbsoluteUri(map).toString();
+				if (!sActUri.matches(".*_[0-9]{2}\\.[a-zA-Z0-9]*")) {
+					return false;
+				}
+				int i = Integer.parseInt(sActUri.substring(sActUri.lastIndexOf("_") + 1, sActUri.lastIndexOf("_") + 3));
+				i++;
+				final String sNextNum;
+				if (i < 10) {
+					sNextNum = "0" + Integer.toString(i);
+				}
+				else {
+					sNextNum = Integer.toString(i);
+				}
+				URI nextUri = null;
+				try {
+					nextUri = new URI(sActUri.replaceFirst("_[0-9]{2}\\.", "_" + sNextNum + "."));
+				}
+				catch (final URISyntaxException e1) {
+					e1.printStackTrace();
+				}
+				final File nextFile = new File(nextUri);
+				if (!nextFile.getAbsoluteFile().exists()) {
+					return false;
+				}
+				final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
+				    "relative");
+				if (useRelativeUri) {
+					nextUri = LinkController.toRelativeURI(map.getFile(), nextFile);
+				}
+				final ExternalResource nextView = new ExternalResource();
+				nextView.setUri(nextUri);
+				nextView.setZoom(activeView.getZoom());
+				remove(node, activeView);
+				add(node, nextView);
+				updateProgressIcons(node, nextFile.getName());
+				return true;
+			}
+			return false;
+		}
 
 		public void mouseEntered(final MouseEvent e) {
 			if (isActive) {
@@ -207,7 +270,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			final int width = component.getWidth();
 			final int y = e.getY();
 			final int height = component.getHeight();
-			if (width - 2 * BORDER_SIZE <= x && x <= width && height - 2 * BORDER_SIZE <= y && y <= height) {
+			if (width - 4 * BORDER_SIZE <= x && x <= width && height - 4 * BORDER_SIZE <= y && y <= height) {
 				cursorType = Cursor.SE_RESIZE_CURSOR;
 			}
 			else {
@@ -278,8 +341,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			switch (cursorType) {
 				case Cursor.SE_RESIZE_CURSOR:
 					final Dimension minimumSize = new Dimension(10, 10);
-					int x = e.getX() - 2 * BORDER_SIZE;
-					int y = e.getY() - 2 * BORDER_SIZE;
+					int x = e.getX() - 4 * BORDER_SIZE;
+					int y = e.getY() - 4 * BORDER_SIZE;
 					if (x <= 0 || y <= 0) {
 						return true;
 					}
@@ -311,8 +374,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 	}
 
-	private static final int BORDER_SIZE = 2;
-	private static final Color BORDER_COLOR = Color.GRAY;
+	private static final int BORDER_SIZE = 1;
+	private static final Color BORDER_COLOR = Color.BLACK;
 	static final int VIEWER_POSITION = 5;
 	private final MyMouseListener mouseListener = new MyMouseListener();
 	final private Set<IViewerFactory> factories;
@@ -611,4 +674,82 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	    undoableActivateHook(node, preview);
 	    return true;
     }
+	
+	public void updateProgressIcons(final NodeModel node, final String sFile) {
+		if (sFile.matches(".*[Pp]rogress_(tenth|quarter)_[0-9]{2}\\.[a-zA-z0-9]*")) {
+			final MIconController Mic = (MIconController) IconController.getController();
+			final String[] iconNames = new String[] { "0%", "25%", "50%", "75%", "100%" };
+			final MindIcon[] progressIcons = new MindIcon[] { new MindIcon(iconNames[0], iconNames[0] + ".png"),
+			        new MindIcon(iconNames[1], iconNames[1] + ".png"),
+			        new MindIcon(iconNames[2], iconNames[2] + ".png"),
+			        new MindIcon(iconNames[3], iconNames[3] + ".png"),
+			        new MindIcon(iconNames[4], iconNames[4] + ".png") };
+			final List<MindIcon> icons = node.getIcons();
+			//remove progress icons if present
+			for (int i = 0; i < icons.size(); i++) {
+				for (int j = 0; j < iconNames.length; j++) {
+					if (icons.get(i).getName().equals(iconNames[j])) {
+						Mic.removeIcon(node, i);
+						i--;
+						break;
+					}
+				}
+			}
+			//add the right progress icon
+			if (sFile.matches(".*_quarter_.*")) {
+				final int fileNum = Integer.parseInt(sFile.substring(sFile.lastIndexOf("_") + 1,
+				    sFile.lastIndexOf("_") + 3));
+				switch (fileNum) {
+					case 0:
+						Mic.addIcon(node, progressIcons[0], 0);
+						break;
+					case 1:
+						Mic.addIcon(node, progressIcons[1], 0);
+						break;
+					case 2:
+						Mic.addIcon(node, progressIcons[2], 0);
+						break;
+					case 3:
+						Mic.addIcon(node, progressIcons[3], 0);
+						break;
+					case 4:
+						Mic.addIcon(node, progressIcons[4], 0);
+						break;
+					default:
+						Mic.addIcon(node, progressIcons[0], 0);
+						break;
+				}
+			}
+			else if (sFile.matches(".*_tenth_.*")) {
+				final int fileNum = Integer.parseInt(sFile.substring(sFile.lastIndexOf("_") + 1,
+				    sFile.lastIndexOf("_") + 3));
+				switch (fileNum) {
+					case 0:
+					case 1:
+						Mic.addIcon(node, progressIcons[0], 0);
+						break;
+					case 2:
+					case 3:
+						Mic.addIcon(node, progressIcons[1], 0);
+						break;
+					case 4:
+					case 5:
+					case 6:
+						Mic.addIcon(node, progressIcons[2], 0);
+						break;
+					case 7:
+					case 8:
+					case 9:
+						Mic.addIcon(node, progressIcons[3], 0);
+						break;
+					case 10:
+						Mic.addIcon(node, progressIcons[4], 0);
+						break;
+					default:
+						Mic.addIcon(node, progressIcons[0], 0);
+						break;
+				}
+			}
+		}
+	}
 }
