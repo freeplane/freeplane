@@ -253,10 +253,6 @@ public class MIconController extends IconController {
 		actions.add(modeController.getAction("RemoveIcon_0_Action"));
 		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
-		actions.add(modeController.getAction("ProgressUpAction"));
-		actions.add(modeController.getAction("ProgressDownAction"));
-		actions.add(modeController.getAction("ExtendedProgress10Action"));
-		actions.add(modeController.getAction("ExtendedProgress25Action"));
 		
 		for (final AFreeplaneAction iconAction : actions) {
 			final IIconInformation info = (IIconInformation) iconAction;
