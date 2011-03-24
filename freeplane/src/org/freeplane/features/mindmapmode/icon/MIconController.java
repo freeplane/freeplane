@@ -37,6 +37,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.controller.Controller;
@@ -215,6 +216,11 @@ public class MIconController extends IconController {
 		builder.addAction(category, Controller.getCurrentModeController().getAction("RemoveIconAction"), MenuBuilder.AS_CHILD);
 		builder.addAction(category, Controller.getCurrentModeController().getAction("RemoveAllIconsAction"), MenuBuilder.AS_CHILD);
 		builder.addSeparator(category, MenuBuilder.AS_CHILD);
+		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressIconUpAction"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressIconDownAction"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressExtended10Action"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressExtended25Action"), MenuBuilder.AS_CHILD);
+		builder.addSeparator(category, MenuBuilder.AS_CHILD);
 		for (final IconGroup iconGroup : STORE.getGroups()) {
 			addIconGroupToMenu(builder, category, iconGroup);
 		}
@@ -225,6 +231,14 @@ public class MIconController extends IconController {
 		modeController.addAction(new RemoveIconAction(0));
 		modeController.addAction(new RemoveIconAction(-1));
 		modeController.addAction(new RemoveAllIconsAction());
+		ProgressUpAction prUp = new ProgressUpAction();
+		prUp.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("alt LESS"));
+		modeController.addAction(prUp);
+		ProgressDownAction prDown = new ProgressDownAction();
+		prDown.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("alt shift LESS"));
+		modeController.addAction(prDown);
+		modeController.addAction(new ExtendedProgress10Action());
+		modeController.addAction(new ExtendedProgress25Action());
 		for (final MindIcon icon : STORE.getMindIcons()) {
 			final IconAction myAction = new IconAction(icon);
 			iconActions.put(icon, myAction);
@@ -239,6 +253,11 @@ public class MIconController extends IconController {
 		actions.add(modeController.getAction("RemoveIcon_0_Action"));
 		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
+		actions.add(modeController.getAction("ProgressUpAction"));
+		actions.add(modeController.getAction("ProgressDownAction"));
+		actions.add(modeController.getAction("ExtendedProgress10Action"));
+		actions.add(modeController.getAction("ExtendedProgress25Action"));
+		
 		for (final AFreeplaneAction iconAction : actions) {
 			final IIconInformation info = (IIconInformation) iconAction;
 			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {

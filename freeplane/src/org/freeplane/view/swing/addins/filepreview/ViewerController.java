@@ -468,6 +468,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		final ExternalResource preview = new ExternalResource();
 		preview.setUri(uri);
+		updateProgressIcons(node, input.getName());
 		return preview;
 	}
 
@@ -640,7 +641,9 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		return false;
 	}
-
+    public boolean paste(File file, NodeModel node, boolean isLeft) {
+    	return paste(file, node, true, isLeft);
+    }
 	private boolean paste(File file, NodeModel targetNode, boolean asSibling, boolean isLeft) {
 	    if(! file.exists()){
 	    	return false;
@@ -672,9 +675,17 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	    preview.setUri(uri);
 	    undoableDeactivateHook(node);
 	    undoableActivateHook(node, preview);
+	    updateProgressIcons(node, file.getName());
 	    return true;
     }
-	
+	/**
+	 * This method updates the progress icons dependent of the added external object (svg file)
+	 * The file has a distinct naming scheme from which the progress and the icons to be painted 
+	 * are derived.
+	 * 
+	 * @param node : the node to update the icons
+	 * @param sFile : the name of the added file.
+	 */
 	public void updateProgressIcons(final NodeModel node, final String sFile) {
 		if (sFile.matches(".*[Pp]rogress_(tenth|quarter)_[0-9]{2}\\.[a-zA-z0-9]*")) {
 			final MIconController Mic = (MIconController) IconController.getController();
@@ -684,6 +695,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			        new MindIcon(iconNames[2], iconNames[2] + ".png"),
 			        new MindIcon(iconNames[3], iconNames[3] + ".png"),
 			        new MindIcon(iconNames[4], iconNames[4] + ".png") };
+			final MindIcon OKIcon = new MindIcon("OK","button_ok.png");
 			final List<MindIcon> icons = node.getIcons();
 			//remove progress icons if present
 			for (int i = 0; i < icons.size(); i++) {
@@ -714,6 +726,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 						break;
 					case 4:
 						Mic.addIcon(node, progressIcons[4], 0);
+						Mic.addIcon(node, OKIcon,0);
 						break;
 					default:
 						Mic.addIcon(node, progressIcons[0], 0);
@@ -744,6 +757,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 						break;
 					case 10:
 						Mic.addIcon(node, progressIcons[4], 0);
+						Mic.addIcon(node, OKIcon, 0);
 						break;
 					default:
 						Mic.addIcon(node, progressIcons[0], 0);
