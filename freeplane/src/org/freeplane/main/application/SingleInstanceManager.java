@@ -1,5 +1,6 @@
 package org.freeplane.main.application;
 
+import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,12 +28,10 @@ public class SingleInstanceManager {
 	private Integer port;
 	private boolean isSlave;
 	private boolean isMasterPresent;
-// // 	private Controller controller;
 
 	public SingleInstanceManager(ResourceController resourceController) {
 		isSingleInstanceMode = resourceController.getBooleanProperty("single_instance");
-		isSingleInstanceForceMode = resourceController.getBooleanProperty(
-		    "single_instance_force");
+		isSingleInstanceForceMode = resourceController.getBooleanProperty("single_instance_force");
 	}
 
 	public void start(String[] filesToLoad) {
@@ -129,10 +128,10 @@ public class SingleInstanceManager {
 								LogUtils.info("opening '" + StringUtils.join(filesToLoadForClient, "', '")
 								        + "' for client");
 								for (String file : filesToLoadForClient) {
-									Controller.getCurrentModeController().getMapController().newMap(
-									    Compat.fileToUrl(new File(file)), false);
+									Controller.getCurrentModeController().getMapController()
+									    .newMap(Compat.fileToUrl(new File(file)), false);
 								}
-								UITools.getFrame().toFront();
+								toFront();
 								in.close();
 								client.close();
 							}
@@ -165,6 +164,16 @@ public class SingleInstanceManager {
 			LogUtils.severe(e.getMessage(), e);
 			return false;
 		}
+	}
+
+	private void toFront() {
+		final int state = UITools.getFrame().getExtendedState();
+		if ((state & Frame.ICONIFIED) != 0)
+			UITools.getFrame().setExtendedState(state & ~Frame.ICONIFIED);
+		if (!UITools.getFrame().isVisible())
+			UITools.getFrame().setVisible(true);
+		UITools.getFrame().toFront();
+		UITools.getFrame().requestFocus();
 	}
 
 	private void createLockFile() throws IOException {
