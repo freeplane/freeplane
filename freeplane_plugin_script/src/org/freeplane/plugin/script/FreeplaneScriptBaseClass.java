@@ -150,7 +150,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	/** formats according to the internal standard, that is the conversion will be reversible
 	 * for types that are handled special by the scripting api namely Dates and Numbers.
 	 * @see Convertible#toString(Object) */
-	public String format(final Object o) {
+	public String toString(final Object o) {
 		return Convertible.toString(o);
 	}
 
