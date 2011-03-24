@@ -300,8 +300,8 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
 		return showConfirmDialog( node, message, title, optionType, JOptionPane.QUESTION_MESSAGE);
 	}
 
-	public static String showInputDialog( final NodeModel node, final String text,
-	                                     final String string) {
+	public static String showInputDialog( final NodeModel node, final String message,
+	                                     final String initialValue) {
 		if (node == null) {
 			return null;
 		}
@@ -309,7 +309,7 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
 		final ViewController viewController = controller.getViewController();
 		viewController.scrollNodeToVisible(node);
 		final Component parentComponent = viewController.getComponent(node);
-		return JOptionPane.showInputDialog(parentComponent, text, string);
+		return JOptionPane.showInputDialog(parentComponent, message, initialValue);
 	}
 
 	public static String showInputDialog( final NodeModel node, final String text,
