@@ -30,7 +30,13 @@ public class UniqueStack<T> implements Iterable<T> {
 
 	/** returns the last element in the stack or null if it is empty. */
 	public T pop() {
-		return stack.isEmpty() ? null : stack.get(stack.size() - 1);
+		if (stack.isEmpty()) {
+			return null;
+		} else {
+			final T last = stack.remove(stack.size() - 1);
+			set.remove(last);
+			return last;
+		}
 	}
 
 	public T first() {
