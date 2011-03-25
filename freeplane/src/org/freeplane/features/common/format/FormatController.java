@@ -46,7 +46,7 @@ import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
 
 /**
- * @author Dimitry Polivaev
+ * @author Volker Boerchers
  */
 public class FormatController implements IExtension {
 	private static final String FORMATS_XML = "formats.xml";
