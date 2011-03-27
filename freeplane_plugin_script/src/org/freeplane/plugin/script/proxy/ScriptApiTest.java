@@ -180,7 +180,8 @@ public class ScriptApiTest {
 		    .getAttributes().getAll("x"));
 	}
 
-	public void test_AttributesRO_getAttributeNames() {
+	@SuppressWarnings("deprecation")
+    public void test_AttributesRO_getAttributeNames() {
 		map = setupMapWithSomeAttributes();
 		assertEquals("all names should be found", list("a1", "a1", "a1", "b1"), map.getRoot().getAttributes()
 		    .getAttributeNames());

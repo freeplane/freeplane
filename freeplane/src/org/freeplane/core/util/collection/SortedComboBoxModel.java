@@ -38,7 +38,6 @@ public class SortedComboBoxModel extends AbstractListModel implements ComboBoxMo
 		public int compareTo(Object o) {
 			return compareTo((Comparator)o);
 		}
-        @SuppressWarnings({ "rawtypes", "unchecked" })
         private int compareTo(Comparator o) {
 			final int typeCompare = obj.getClass().getName().compareTo(o.obj.getClass().getName());
 			if(typeCompare != 0)

@@ -37,6 +37,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 	private int comparisonResult;
 	private boolean error;
 
+	@SuppressWarnings("deprecation")
 	protected CompareConditionAdapter(final Object value, final boolean matchCase) {
 		super();
 		this.matchCase = matchCase;
@@ -55,7 +56,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 				conditionValue = date;
             }
             else{
-	            final Date reducedDate = new Date(date.getYear(), date.getMonth(), date.getDate());
+                final Date reducedDate = new Date(date.getYear(), date.getMonth(), date.getDate());
 	 	            conditionValue = new FreeplaneDate(reducedDate.getTime(), date.getDateFormat());
 			}
 			return;

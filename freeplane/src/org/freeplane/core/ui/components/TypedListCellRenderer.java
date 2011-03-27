@@ -29,7 +29,6 @@ import javax.swing.ListCellRenderer;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.icon.IconController;
 
 /**
  * @author Dimitry Polivaev

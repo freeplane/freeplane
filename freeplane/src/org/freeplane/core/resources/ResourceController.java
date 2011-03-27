@@ -27,16 +27,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
-import java.util.Map.Entry;
 
-import javax.swing.ImageIcon;
-
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.AController.IActionOnChange;
-import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 /**

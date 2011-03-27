@@ -3,7 +3,6 @@ package org.freeplane.features.common.text;
 import java.util.Date;
 import java.util.List;
 
-import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;

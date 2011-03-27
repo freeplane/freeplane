@@ -19,26 +19,23 @@
  */
 package org.freeplane.features.common.attribute;
 
-import java.net.URI;
-
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
+import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.filter.condition.ConditionFactory;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
-import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.link.LinkTransformer;
 import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.time.TimeComboBoxEditor;
 import org.freeplane.n3.nanoxml.XMLElement;
 

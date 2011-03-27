@@ -1,7 +1,5 @@
 package org.freeplane.features.common.format;
 
-import java.text.Format;
-import java.text.ParsePosition;
 import java.util.Formatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -21,13 +21,10 @@ package org.freeplane.features.common.link;
 
 import java.net.URI;
 
-
 import org.freeplane.features.common.attribute.Attribute;
-import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
