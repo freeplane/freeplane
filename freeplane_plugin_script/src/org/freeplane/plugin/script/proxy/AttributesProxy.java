@@ -100,7 +100,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		catch (final MissingMethodException e) {
 			throw new RuntimeException("findValues(): closure needs to accept two args and must return boolean/Boolean"
-			        + " e.g. findValues{k,v -> k != 'TOTAL'}");
+			        + " e.g. findValues{k,v -> k != 'TOTAL'}", e);
 		}
 		catch (final ClassCastException e) {
 			throw new RuntimeException("findValues(): closure returned " + e.getMessage()
