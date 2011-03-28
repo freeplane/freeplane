@@ -42,8 +42,6 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
-import org.freeplane.features.common.icon.IconController;
-import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapModel;
@@ -51,7 +49,7 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.url.UrlManager;
-import org.freeplane.features.mindmapmode.icon.MIconController;
+import org.freeplane.features.mindmapmode.icon.ProgressIcons;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.MainView;
@@ -71,7 +69,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return factory == null ? null : factory.createViewer(uri, preferredSize);
 		}
 
-		public JComponent createViewer(final ExternalResource resource, final URI absoluteUri, int maximumWidth)
+		public JComponent createViewer(final ExternalResource resource, final URI absoluteUri, final int maximumWidth)
 		        throws MalformedURLException, IOException {
 			factory = getViewerFactory(absoluteUri);
 			return factory.createViewer(resource, absoluteUri, maximumWidth);
@@ -143,14 +141,15 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 
 		private boolean openUri(final MouseEvent e) {
-			if ((e.getClickCount() != 2) || (e.getButton() != MouseEvent.BUTTON1)){
+			if ((e.getClickCount() != 2) || (e.getButton() != MouseEvent.BUTTON1)) {
 				return false;
 			}
 			final ExternalResource model = getModel(e);
 			if (model == null) {
 				return true;
 			}
-			final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);
+			final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(
+			    UrlManager.class);
 			urlManager.loadURL(model.getUri());
 			return true;
 		}
@@ -181,6 +180,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			sizeChanged = false;
 			return true;
 		}
+
 		private boolean showNext(final MouseEvent e) {
 			//single right click
 			if ((e.getButton() == MouseEvent.BUTTON3) && (e.getClickCount() == 1)) {
@@ -203,7 +203,23 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 					return false;
 				}
 				int i = Integer.parseInt(sActUri.substring(sActUri.lastIndexOf("_") + 1, sActUri.lastIndexOf("_") + 3));
-				i++;
+				//show previous with ctrl + right click
+				if (e.isControlDown()) {
+					if (i > 0) {
+						i--;
+					}
+					else {
+						//remove view if 0 and down
+						if (activeView.getUri().toString().matches(ProgressIcons.EXTENDED_PROGRESS_ICON_IDENTIFIER)) {
+							ProgressIcons.removeProgressIcons(node);
+						}
+						remove(node, activeView);
+						return true;
+					}
+				}
+				else {
+					i++;
+				}
 				final String sNextNum;
 				if (i < 10) {
 					sNextNum = "0" + Integer.toString(i);
@@ -232,7 +248,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				nextView.setZoom(activeView.getZoom());
 				remove(node, activeView);
 				add(node, nextView);
-				updateProgressIcons(node, nextFile.getName());
+				ProgressIcons.updateExtendedProgressIcons(node, nextFile.getName());
 				return true;
 			}
 			return false;
@@ -416,7 +432,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
 		final ExternalResource preview = (ExternalResource) extension;
-		for (INodeView iNodeView : node.getViewers()) {
+		for (final INodeView iNodeView : node.getViewers()) {
 			final NodeView view = (NodeView) iNodeView;
 			createViewer(preview, view);
 		}
@@ -451,7 +467,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			chooser.setFileFilter(new FactoryFileFilter(factories.iterator().next()));
 		}
 		chooser.setAccessory(new ImagePreview(chooser));
-		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getContentPane());
+		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController()
+		    .getContentPane());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return null;
 		}
@@ -468,7 +485,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		final ExternalResource preview = new ExternalResource();
 		preview.setUri(uri);
-		updateProgressIcons(node, input.getName());
+		ProgressIcons.updateExtendedProgressIcons(node, input.getName());
 		return preview;
 	}
 
@@ -514,7 +531,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	void deleteViewer(final ExternalResource model, final NodeView nodeView) {
 		final Set<NodeView> viewers = model.getViewers();
-		if(! viewers.contains(nodeView)){
+		if (!viewers.contains(nodeView)) {
 			return;
 		}
 		nodeView.removeContent(VIEWER_POSITION);
@@ -609,161 +626,77 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean paste(Transferable t, NodeModel targetNode, boolean dropAsSibling, boolean isLeft) {
+	public boolean paste(final Transferable t, final NodeModel targetNode, final boolean dropAsSibling,
+	                     final boolean isLeft) {
 		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
-				List<File> fileList;
-                try {
-	                fileList = (List<File>) (t.getTransferData(MindMapNodesSelection.fileListFlavor));
-                }
-                catch (Exception e) {
-                	return false;
-                }
-				if(fileList.size() != 1){
-					return false;
-				}
-				File file = fileList.get(0);
-				return paste(file, targetNode, dropAsSibling, isLeft);
+			List<File> fileList;
+			try {
+				fileList = (List<File>) (t.getTransferData(MindMapNodesSelection.fileListFlavor));
+			}
+			catch (final Exception e) {
+				return false;
+			}
+			if (fileList.size() != 1) {
+				return false;
+			}
+			final File file = fileList.get(0);
+			return paste(file, targetNode, dropAsSibling, isLeft);
 		}
 		if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			try {
 				final String text = t.getTransferData(DataFlavor.stringFlavor).toString();
-				if(! text.startsWith("file://")){
+				if (!text.startsWith("file://")) {
 					return false;
 				}
-				URI uri = new URI(new URL(text).toString());
+				final URI uri = new URI(new URL(text).toString());
 				final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
-				File file = Compat.urlToFile(url);
+				final File file = Compat.urlToFile(url);
 				return paste(file, targetNode, dropAsSibling, isLeft);
 			}
-            catch (Exception e) {
-            	return false;
-            }
+			catch (final Exception e) {
+				return false;
+			}
 		}
 		return false;
 	}
-    public boolean paste(File file, NodeModel node, boolean isLeft) {
-    	return paste(file, node, true, isLeft);
-    }
-	private boolean paste(File file, NodeModel targetNode, boolean asSibling, boolean isLeft) {
-	    if(! file.exists()){
-	    	return false;
-	    }
-	    URI uri = file.toURI();
-	    if (uri == null || getViewerFactory(uri) == null) {
-	    	return false;
-	    }
-	    final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals("relative");
-	    final File mapFile = targetNode.getMap().getFile();
-	    if (mapFile == null && useRelativeUri) {
-	    	JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), TextUtils
-	    		.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
-	    	return false;
-	    }				if (useRelativeUri) {
-	    	uri = LinkController.toRelativeURI(mapFile, file);
-	    }
-	    
+
+	public boolean paste(final File file, final NodeModel node, final boolean isLeft) {
+		return paste(file, node, true, isLeft);
+	}
+
+	private boolean paste(final File file, final NodeModel targetNode, final boolean asSibling, final boolean isLeft) {
+		if (!file.exists()) {
+			return false;
+		}
+		URI uri = file.toURI();
+		if (uri == null || getViewerFactory(uri) == null) {
+			return false;
+		}
+		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
+		    "relative");
+		final File mapFile = targetNode.getMap().getFile();
+		if (mapFile == null && useRelativeUri) {
+			JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
+			    TextUtils.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		if (useRelativeUri) {
+			uri = LinkController.toRelativeURI(mapFile, file);
+		}
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node;
-		if(! asSibling){
+		if (!asSibling) {
 			node = mapController.newNode(file.getName(), targetNode.getMap());
 			mapController.insertNode(node, targetNode, asSibling, isLeft, isLeft);
 		}
-		else{
+		else {
 			node = targetNode;
 		}
-	    final ExternalResource preview = new ExternalResource();
-	    preview.setUri(uri);
-	    undoableDeactivateHook(node);
-	    undoableActivateHook(node, preview);
-	    updateProgressIcons(node, file.getName());
-	    return true;
-    }
-	/**
-	 * This method updates the progress icons dependent of the added external object (svg file)
-	 * The file has a distinct naming scheme from which the progress and the icons to be painted 
-	 * are derived.
-	 * 
-	 * @param node : the node to update the icons
-	 * @param sFile : the name of the added file.
-	 */
-	public void updateProgressIcons(final NodeModel node, final String sFile) {
-		if (sFile.matches(".*[Pp]rogress_(tenth|quarter)_[0-9]{2}\\.[a-zA-z0-9]*")) {
-			final MIconController Mic = (MIconController) IconController.getController();
-			final String[] iconNames = new String[] { "0%", "25%", "50%", "75%", "100%" };
-			final MindIcon[] progressIcons = new MindIcon[] { new MindIcon(iconNames[0], iconNames[0] + ".png"),
-			        new MindIcon(iconNames[1], iconNames[1] + ".png"),
-			        new MindIcon(iconNames[2], iconNames[2] + ".png"),
-			        new MindIcon(iconNames[3], iconNames[3] + ".png"),
-			        new MindIcon(iconNames[4], iconNames[4] + ".png") };
-			final MindIcon OKIcon = new MindIcon("OK","button_ok.png");
-			final List<MindIcon> icons = node.getIcons();
-			//remove progress icons if present
-			for (int i = 0; i < icons.size(); i++) {
-				for (int j = 0; j < iconNames.length; j++) {
-					if (icons.get(i).getName().equals(iconNames[j])) {
-						Mic.removeIcon(node, i);
-						i--;
-						break;
-					}
-				}
-			}
-			//add the right progress icon
-			if (sFile.matches(".*_quarter_.*")) {
-				final int fileNum = Integer.parseInt(sFile.substring(sFile.lastIndexOf("_") + 1,
-				    sFile.lastIndexOf("_") + 3));
-				switch (fileNum) {
-					case 0:
-						Mic.addIcon(node, progressIcons[0], 0);
-						break;
-					case 1:
-						Mic.addIcon(node, progressIcons[1], 0);
-						break;
-					case 2:
-						Mic.addIcon(node, progressIcons[2], 0);
-						break;
-					case 3:
-						Mic.addIcon(node, progressIcons[3], 0);
-						break;
-					case 4:
-						Mic.addIcon(node, progressIcons[4], 0);
-						Mic.addIcon(node, OKIcon,0);
-						break;
-					default:
-						Mic.addIcon(node, progressIcons[0], 0);
-						break;
-				}
-			}
-			else if (sFile.matches(".*_tenth_.*")) {
-				final int fileNum = Integer.parseInt(sFile.substring(sFile.lastIndexOf("_") + 1,
-				    sFile.lastIndexOf("_") + 3));
-				switch (fileNum) {
-					case 0:
-					case 1:
-						Mic.addIcon(node, progressIcons[0], 0);
-						break;
-					case 2:
-					case 3:
-						Mic.addIcon(node, progressIcons[1], 0);
-						break;
-					case 4:
-					case 5:
-					case 6:
-						Mic.addIcon(node, progressIcons[2], 0);
-						break;
-					case 7:
-					case 8:
-					case 9:
-						Mic.addIcon(node, progressIcons[3], 0);
-						break;
-					case 10:
-						Mic.addIcon(node, progressIcons[4], 0);
-						Mic.addIcon(node, OKIcon, 0);
-						break;
-					default:
-						Mic.addIcon(node, progressIcons[0], 0);
-						break;
-				}
-			}
-		}
+		final ExternalResource preview = new ExternalResource();
+		preview.setUri(uri);
+		undoableDeactivateHook(node);
+		undoableActivateHook(node, preview);
+		ProgressIcons.updateExtendedProgressIcons(node, file.getName());
+		return true;
 	}
 }

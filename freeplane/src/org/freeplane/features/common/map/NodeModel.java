@@ -43,6 +43,8 @@ import org.freeplane.features.common.filter.Filter;
 import org.freeplane.features.common.filter.FilterInfo;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.icon.UIIcon;
+import org.freeplane.features.mindmapmode.icon.ProgressIcons;
+import org.freeplane.view.swing.addins.filepreview.ExternalResource;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to
@@ -315,7 +317,7 @@ public class NodeModel implements MutableTreeNode {
 		}
 		final StringBuilder text = new StringBuilder("<html><table>");
 		boolean tooltipSet = false;
-		for (ITooltipProvider provider : toolTip.values()) {
+		for (final ITooltipProvider provider : toolTip.values()) {
 			String value = provider.getTooltip(modeController);
 			if (value == null) {
 				continue;
@@ -325,13 +327,14 @@ public class NodeModel implements MutableTreeNode {
 			value = value.replaceFirst("</body>", "");
 			value = value.replaceFirst("</html>", "</div>");
 			text.append("<tr><td>");
-			if(tooltipSet)
+			if (tooltipSet) {
 				text.append("<hr>");
+			}
 			text.append(value);
 			text.append("</td></tr>");
 			tooltipSet = true;
 		}
-		if(tooltipSet){
+		if (tooltipSet) {
 			text.append("</table></html>");
 			return text.toString();
 		}
@@ -355,6 +358,52 @@ public class NodeModel implements MutableTreeNode {
 
 	public boolean hasID() {
 		return id != null;
+	}
+
+	/**
+	 * 
+	 * @return : true if the node has an extended progress icon attached.
+	 */
+	public boolean hasExtendedProgressIcon() {
+		final ExternalResource extResource = (ExternalResource) this.getExtension(ExternalResource.class);
+		if (extResource == null) {
+			return false;
+		}
+		if (extResource.getUri().toString().matches(ProgressIcons.EXTENDED_PROGRESS_ICON_IDENTIFIER)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 
+	 * @return : true if OK icon is attached
+	 */
+	public boolean hasOKIcon() {
+		final List<MindIcon> icons = getIcons();
+		for (int i = 0; i < icons.size(); i++) {
+			if (icons.get(i).getName().equals("button_ok")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 
+	 * @return : true if the node has a progress icon (0%, 25%, 50%, 75%, 100%) attached
+	 */
+	public boolean hasProgressIcons() {
+		final String[] iconNames = new String[] { "0%", "25%", "50%", "75%", "100%" };
+		final List<MindIcon> icons = getIcons();
+		for (int i = 0; i < icons.size(); i++) {
+			for (int j = 0; j < iconNames.length; j++) {
+				if (icons.get(i).getName().equals(iconNames[j])) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public void insert(final MutableTreeNode child, int index) {
@@ -622,8 +671,9 @@ public class NodeModel implements MutableTreeNode {
 
 	public NodeModel getVisibleAncestorOrSelf() {
 		NodeModel node = this;
-		while(! node.isVisible())
+		while (!node.isVisible()) {
 			node = node.getParentNode();
+		}
 		return node;
-    }
+	}
 }

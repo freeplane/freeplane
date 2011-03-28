@@ -220,6 +220,8 @@ public class MIconController extends IconController {
 		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressIconDownAction"), MenuBuilder.AS_CHILD);
 		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressExtended10Action"), MenuBuilder.AS_CHILD);
 		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressExtended25Action"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressRemoveAction"), MenuBuilder.AS_CHILD);
+	
 		builder.addSeparator(category, MenuBuilder.AS_CHILD);
 		for (final IconGroup iconGroup : STORE.getGroups()) {
 			addIconGroupToMenu(builder, category, iconGroup);
@@ -239,6 +241,7 @@ public class MIconController extends IconController {
 		modeController.addAction(prDown);
 		modeController.addAction(new ExtendedProgress10Action());
 		modeController.addAction(new ExtendedProgress25Action());
+		modeController.addAction(new RemoveProgressAction());
 		for (final MindIcon icon : STORE.getMindIcons()) {
 			final IconAction myAction = new IconAction(icon);
 			iconActions.put(icon, myAction);
