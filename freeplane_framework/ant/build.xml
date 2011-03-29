@@ -387,6 +387,9 @@
 		<copy file="${build}/bzrinfo.txt"
 			tofile="${dist}/bzrinfo${branch-nick}-${ver}.txt"
 			failonerror="false"/>
+		<copy file="${workspace}/freeplane_plugin_script/dist/api.zip"
+			tofile="${dist}/api${branch-nick}-${ver}.zip"
+			failonerror="false"/>
 	</target>
 
 	<target name="cleandist" depends="clean,dist">
