@@ -494,7 +494,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	@Override
 	public void loadURL(final URI relative) {
 		final MapModel map = Controller.getCurrentController().getMap();
-		if (map.getFile() == null) {
+		if (map == null || map.getFile() == null) {
 			if (!relative.toString().startsWith("#") && !relative.isAbsolute() || relative.isOpaque()) {
 				Controller.getCurrentController().getViewController().out("You must save the current map first!");
 				final boolean result = ((MFileManager) UrlManager.getController()).save(map);
