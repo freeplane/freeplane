@@ -499,24 +499,6 @@ public class MenuBuilder extends UIBuilder {
 		reader = new MenuStructureReader();
 	}
 
-	public void addAction(final AFreeplaneAction action, final ActionLocationDescriptor actionAnnotation) {
-		final String[] actionLocations = actionAnnotation.locations();
-		for (int i = 0; i < actionLocations.length; i++) {
-			final String key = actionLocations.length == 0 ? action.getKey() : action.getKey() + "[" + i + "]";
-			final String itemKey = actionLocations[i] + '/' + key;
-			if (i == 0) {
-				String accelerator = actionAnnotation.accelerator();
-				if (!accelerator.equals("")) {
-					if (Compat.isMacOsX()) {
-						accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
-					}
-					setDefaultAccelerator(itemKey, accelerator);
-				}
-			}
-			addAction(actionLocations[i], itemKey, action, MenuBuilder.AS_CHILD);
-		}
-	}
-
 	private void setDefaultAccelerator(final String itemKey, final String accelerator) {
 		final String shortcutKey = getShortcutKey(itemKey);
 		if (null == ResourceController.getResourceController().getProperty(shortcutKey, null)) {
@@ -583,7 +565,24 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	public void addAnnotatedAction(final AFreeplaneAction action) {
-		addAction(action, action.getClass().getAnnotation(ActionLocationDescriptor.class));
+		ActionLocationDescriptor actionAnnotation = action.getClass().getAnnotation(ActionLocationDescriptor.class);
+		if(actionAnnotation == null)
+			return;
+		final String[] actionLocations = actionAnnotation.locations();
+        for (int i = 0; i < actionLocations.length; i++) {
+        	final String key = actionLocations.length == 0 ? action.getKey() : action.getKey() + "[" + i + "]";
+        	final String itemKey = actionLocations[i] + '/' + key;
+        	if (i == 0) {
+        		String accelerator = actionAnnotation.accelerator();
+        		if (!accelerator.equals("")) {
+        			if (Compat.isMacOsX()) {
+        				accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
+        			}
+        			setDefaultAccelerator(itemKey, accelerator);
+        		}
+        	}
+        	addAction(actionLocations[i], itemKey, action, MenuBuilder.AS_CHILD);
+        }
 	}
 
 	private void addButton(final String category, final Action action, final String key, final int position) {

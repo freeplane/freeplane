@@ -30,7 +30,6 @@ import java.util.Vector;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
-import org.freeplane.core.addins.PersistentNodeHook.HookAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapLifeCycleListener;
 import org.freeplane.core.extension.IExtension;

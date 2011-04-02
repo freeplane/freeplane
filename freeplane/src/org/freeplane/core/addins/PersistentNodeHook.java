@@ -166,10 +166,9 @@ public abstract class PersistentNodeHook {
 		//		controller = modeController.getController();
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (modeController.getModeName().equals("MindMap")) {
-			final ActionLocationDescriptor actionAnnotation = getActionAnnotation();
 			selectableHookAction = createHookAction();
 			if (selectableHookAction != null) {
-				registerAction(selectableHookAction, actionAnnotation);
+				registerAction(selectableHookAction);
 			}
 		}
 		else {
@@ -279,13 +278,8 @@ public abstract class PersistentNodeHook {
 	}
 
 	protected void registerAction(final AFreeplaneAction action) {
-		registerAction(action, action.getClass().getAnnotation(ActionLocationDescriptor.class));
-	}
-
-	protected void registerAction(final AFreeplaneAction action, final ActionLocationDescriptor actionAnnotation) {
 		Controller.getCurrentModeController().addAction(action);
-		if(actionAnnotation != null)
-			Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder().addAction(action, actionAnnotation);
+		Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder().addAnnotatedAction(action);
 	}
 
 	protected void remove(final NodeModel node, final IExtension extension) {
