@@ -312,6 +312,9 @@ public class MenuBuilder extends UIBuilder {
 				if (attributes == null) {
 					return null;
 				}
+				final String plugin = attributes.getAttribute("plugin", null);
+				if(plugin != null && ! plugins.contains(plugin))
+					return null;
 				buttonGroup = null;
 				final MenuPath menuPath = new MenuPath(parent.toString());
 				menuPath.setName(attributes.getAttribute("name", null));

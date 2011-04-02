@@ -3,13 +3,8 @@ package org.freeplane.plugin.formula;
 import java.net.URL;
 import java.util.Hashtable;
 
-import javax.swing.JMenu;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IMenuContributor;
-import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MModeController;

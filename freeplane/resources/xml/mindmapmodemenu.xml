@@ -361,16 +361,16 @@
 					<menu_action action="TimeListAction" />
 					<menu_action action="TimeManagementAction" accelerator="control T" />
 				</menu_category>
-				<menu_separator />
-				<menu_category name="scripting">
+				<menu_category name="scripting" plugin="org.freeplane.plugin.script">
 					<menu_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
+					<menu_separator />
 				</menu_category>
-				<menu_submenu name="formula" name_ref="formula.menuname">
+				<menu_submenu name="formula" name_ref="formula.menuname" plugin="org.freeplane.plugin.formula">
 					<menu_action action="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula"/>
+					<menu_separator />
 				</menu_submenu>
-				<menu_separator />
 				<menu_category name="options">
 					<menu_action action="PropertyAction" accelerator="control COMMA" />
 					<menu_action action="SetAcceleratorOnNextClickAction" />
