@@ -29,6 +29,7 @@ import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -48,30 +49,39 @@ public class ApplicationResourceController extends ResourceController {
 	final private Properties defProps;
 	private LastOpenedList lastOpened;
 	final private Properties props;
-	private ClassLoader urlResourceLoader;
+	final private ClassLoader urlResourceLoader;
 
 	/**
 	 * @param controller
 	 */
 	public ApplicationResourceController() {
 		super();
-		urlResourceLoader = null;
+		defProps = readDefaultPreferences();
+		props = readUsersPreferences(defProps);
+		final File userDir = createUserDirectory(defProps);
+		final ArrayList<URL> urls = new ArrayList<URL>(2);
 		final String resourceBaseDir = getResourceBaseDir();
 		if (resourceBaseDir != null) {
 			try {
+				final File userResourceDir = new File(userDir, "resources");
+				if (userResourceDir.exists()) {
+					final URL userResourceUrl = Compat.fileToUrl(userResourceDir);
+					urls.add(userResourceUrl);
+				}
 				final File resourceDir = new File(resourceBaseDir);
 				if (resourceDir.exists()) {
 					final URL globalResourceUrl = Compat.fileToUrl(resourceDir);
-					urlResourceLoader = new URLClassLoader(new URL[] { globalResourceUrl }, null);
+					urls.add(globalResourceUrl);
 				}
 			}
 			catch (final Exception e) {
 				e.printStackTrace();
 			}
 		}
-		defProps = readDefaultPreferences();
-		props = readUsersPreferences(defProps);
-		createUserDirectory(defProps);
+		if(urls.size() > 0)
+			urlResourceLoader = new URLClassLoader(urls.toArray(new URL[]{}), null);
+		else
+			urlResourceLoader = null;
 		setDefaultLocale(props);
 		autoPropertiesFile = getUserPreferencesFile();
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
@@ -83,17 +93,19 @@ public class ApplicationResourceController extends ResourceController {
 		});
 	}
 
-	private void createUserDirectory(final Properties pDefaultProperties) {
+	private File createUserDirectory(final Properties pDefaultProperties) {
 		final File userPropertiesFolder = new File(getFreeplaneUserDirectory());
 		try {
 			if (!userPropertiesFolder.exists()) {
 				userPropertiesFolder.mkdirs();
 			}
+			return userPropertiesFolder;
 		}
 		catch (final Exception e) {
 			e.printStackTrace();
 			System.err.println("Cannot create folder for user properties and logging: '"
 			        + userPropertiesFolder.getAbsolutePath() + "'");
+			return null;
 		}
 	}
 
