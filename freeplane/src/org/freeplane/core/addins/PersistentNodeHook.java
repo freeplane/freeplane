@@ -33,7 +33,6 @@ import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.map.MapController;
@@ -210,11 +209,6 @@ public abstract class PersistentNodeHook {
 		return new XmlWriter();
 	}
 
-	protected ActionLocationDescriptor getActionAnnotation() {
-		final ActionLocationDescriptor annotation = getClass().getAnnotation(ActionLocationDescriptor.class);
-		return annotation;
-	}
-
 	@SuppressWarnings("unchecked")
 	protected Class<? extends IExtension> getExtensionClass() {
 		return (Class<? extends IExtension>) getClass();
@@ -279,7 +273,6 @@ public abstract class PersistentNodeHook {
 
 	protected void registerAction(final AFreeplaneAction action) {
 		Controller.getCurrentModeController().addAction(action);
-		Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder().addAnnotatedAction(action);
 	}
 
 	protected void remove(final NodeModel node, final IExtension extension) {

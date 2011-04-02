@@ -2,7 +2,6 @@ package org.freeplane.plugin.help;
 
 import java.util.Hashtable;
 
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
@@ -20,8 +19,7 @@ public class Activator implements BundleActivator {
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(ModeController modeController) {
-				    final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-				    menuBuilder.addAnnotatedAction(new FreeplaneHelpStarter());
+				    modeController.addAction(new FreeplaneHelpStarter());
 			    }
 		    }, props);
 	}

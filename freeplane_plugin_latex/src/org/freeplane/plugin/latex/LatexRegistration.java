@@ -20,7 +20,6 @@
 package org.freeplane.plugin.latex;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.common.map.ModeController;
 
 /**
