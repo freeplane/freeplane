@@ -32,7 +32,6 @@ import org.freeplane.features.mindmapmode.map.MMapController;
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/sorting" })
 public class SortNodes extends AMultipleNodeAction {
 	final private class NodeTextComparator implements Comparator<Object> {
 		public int compare(final Object pArg0, final Object pArg1) {
