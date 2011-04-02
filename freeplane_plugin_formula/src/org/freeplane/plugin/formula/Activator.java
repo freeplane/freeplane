@@ -31,16 +31,9 @@ public class Activator implements BundleActivator {
 			addPreferencesToOptionPanel();
 			final boolean disablePluginProperty = ResourceController.getResourceController().getBooleanProperty(
 			    FORMULA_DISABLE_PLUGIN);
+			final EvaluateAllAction evaluateAllAction = new EvaluateAllAction();
+			modeController.addAction(evaluateAllAction);
 			if (!disablePluginProperty) {
-				modeController.addMenuContributor(new IMenuContributor() {
-					public void updateMenus(ModeController modeController, MenuBuilder builder) {
-						final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-                        final JMenu menuItem = new JMenu();
-                        MenuBuilder.setLabelAndMnemonic(menuItem, TextUtils.getText(FormulaUtils.getFormulaKey("menuname")));
-                        menuBuilder.addMenuItem(MENU_BAR_PARENT_LOCATION, menuItem, MENU_BAR_LOCATION, MenuBuilder.AS_CHILD);
-                        menuBuilder.addAction(MENU_BAR_LOCATION, new EvaluateAllAction(), MenuBuilder.AS_CHILD);
-					}
-				});
 				TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer(1));
 				// to enable Formulas in text templates:
 				// TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer(100));
@@ -56,6 +49,7 @@ public class Activator implements BundleActivator {
 			}
 			else {
 				System.out.println("Formula plugin is disabled");
+				evaluateAllAction.setEnabled(false);
 			}
 		}
 

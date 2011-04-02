@@ -367,6 +367,9 @@
 					<menu_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
 				</menu_category>
+				<menu_submenu name="formula" name_ref="formula.menuname">
+					<menu_action action="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula"/>
+				</menu_submenu>
 				<menu_separator />
 				<menu_category name="options">
 					<menu_action action="PropertyAction" accelerator="control COMMA" />
