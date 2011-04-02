@@ -20,6 +20,8 @@
 package org.freeplane.main.mindmapmode.stylemode;
 
 import java.awt.EventQueue;
+import java.util.Collections;
+import java.util.Set;
 
 import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
@@ -184,7 +186,8 @@ public class SModeControllerFactory {
 		//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
 		this.modeController = null;
 		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, styleScrollPane);
-		userInputListenerFactory.updateMenus(modeController, "/xml/stylemodemenu.xml");
+		final Set<String> emptySet = Collections.emptySet();
+		userInputListenerFactory.updateMenus("/xml/stylemodemenu.xml", emptySet);
 		return controller;
 	}
 

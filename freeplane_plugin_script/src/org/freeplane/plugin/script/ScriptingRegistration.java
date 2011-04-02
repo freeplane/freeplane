@@ -36,6 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
+import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -114,8 +115,8 @@ class ScriptingRegistration {
 	final private HashMap<String, Object> mScriptCookies = new HashMap<String, Object>();
 	private IScriptEditorStarter mScriptEditorStarter;
 
-	public ScriptingRegistration() {
-		register();
+	public ScriptingRegistration(ModeController modeController) {
+		register(modeController);
 	}
 
 	private void addPropertiesToOptionPanel() {
@@ -150,7 +151,7 @@ class ScriptingRegistration {
 		return mScriptCookies;
 	}
 
-	private void register() {
+	private void register(ModeController modeController) {
 		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
 				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
@@ -159,16 +160,19 @@ class ScriptingRegistration {
 				return patternScriptModel.getScript();
 			}
 		};
-		ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
 		addPropertiesToOptionPanel();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		menuBuilder.addAnnotatedAction(new ScriptEditor());
-		menuBuilder.addAnnotatedAction(new ExecuteScriptForAllNodes());
-		menuBuilder.addAnnotatedAction(new ExecuteScriptForSelectionAction());
+		modeController.addAction(new ScriptEditor());
+		modeController.addAction(new ExecuteScriptForAllNodes());
+		modeController.addAction(new ExecuteScriptForSelectionAction());
 		final ScriptingConfiguration configuration = new ScriptingConfiguration();
 		ScriptingEngine.setClasspath(configuration.getClasspath());
-		registerScripts(menuBuilder, configuration);
+		modeController.addMenuContributor(new IMenuContributor() {
+			public void updateMenus(ModeController modeController, MenuBuilder builder) {
+				registerScripts(menuBuilder, configuration);
+			}
+		});
 		createUserScriptsDirectory();
 	}
 

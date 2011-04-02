@@ -7,6 +7,7 @@ import javax.swing.JMenu;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.ModeController;
@@ -31,7 +32,15 @@ public class Activator implements BundleActivator {
 			final boolean disablePluginProperty = ResourceController.getResourceController().getBooleanProperty(
 			    FORMULA_DISABLE_PLUGIN);
 			if (!disablePluginProperty) {
-				addMenuItems(modeController);
+				modeController.addMenuContributor(new IMenuContributor() {
+					public void updateMenus(ModeController modeController, MenuBuilder builder) {
+						final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+                        final JMenu menuItem = new JMenu();
+                        MenuBuilder.setLabelAndMnemonic(menuItem, TextUtils.getText(FormulaUtils.getFormulaKey("menuname")));
+                        menuBuilder.addMenuItem(MENU_BAR_PARENT_LOCATION, menuItem, MENU_BAR_LOCATION, MenuBuilder.AS_CHILD);
+                        menuBuilder.addAction(MENU_BAR_LOCATION, new EvaluateAllAction(), MenuBuilder.AS_CHILD);
+					}
+				});
 				TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer(1));
 				// to enable Formulas in text templates:
 				// TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer(100));
@@ -48,20 +57,6 @@ public class Activator implements BundleActivator {
 			else {
 				System.out.println("Formula plugin is disabled");
 			}
-		}
-
-		private void addMenuItems(ModeController modeController) {
-			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-			addSubMenu(menuBuilder, MENU_BAR_PARENT_LOCATION, MENU_BAR_LOCATION,
-			    FormulaUtils.getFormulaKey("menuname"));
-			menuBuilder.addAnnotatedAction(new EvaluateAllAction());
-		}
-
-		private void addSubMenu(final MenuBuilder menuBuilder, final String parentLocation,
-		                        final String location, final String menuKey) {
-			final JMenu menuItem = new JMenu();
-			MenuBuilder.setLabelAndMnemonic(menuItem, TextUtils.getText(menuKey));
-			menuBuilder.addMenuItem(parentLocation, menuItem, location, MenuBuilder.AS_CHILD);
 		}
 
 		private void addPreferencesToOptionPanel() {

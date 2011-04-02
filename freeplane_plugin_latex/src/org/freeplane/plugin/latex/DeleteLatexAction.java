@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.common.map.NodeModel;
 
@@ -33,8 +32,6 @@ import org.freeplane.features.common.map.NodeModel;
  * 
  * This class is called when a LaTeX formula is deleted
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/edit/delete/RemoveNodeExtensions",
-        "/node_popup/remove/RemoveNodeExtensions" })
 @EnabledAction(checkOnNodeChange = true)
 public class DeleteLatexAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;

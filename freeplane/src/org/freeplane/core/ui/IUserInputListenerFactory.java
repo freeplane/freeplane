@@ -29,7 +29,6 @@ import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.features.common.map.ModeController;
 
 public interface IUserInputListenerFactory {
 	void addMouseWheelEventHandler(final IMouseWheelEventHandler handler);
@@ -68,5 +67,5 @@ public interface IUserInputListenerFactory {
 
 	void updateMapList();
 	
-	public void updateMenus(final ModeController modeController, String menuStructureResource);
+	public void updateMenus(String menuStructureResource, Set<String> plugins);
 }

@@ -19,7 +19,7 @@ public class Activator implements BundleActivator {
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(ModeController modeController) {
-				    new ScriptingRegistration();
+				    new ScriptingRegistration(modeController);
 			    }
 		    }, props);
 		JSyntaxPaneProxy.init(context);

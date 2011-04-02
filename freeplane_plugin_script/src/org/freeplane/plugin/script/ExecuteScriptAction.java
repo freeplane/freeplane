@@ -39,7 +39,6 @@ import org.freeplane.features.mindmapmode.MModeController;
  * 
  * @author vboerchers
  */
-//not needed: @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/scripting" })
 public class ExecuteScriptAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 

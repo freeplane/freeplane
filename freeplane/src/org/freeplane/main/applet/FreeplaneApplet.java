@@ -28,6 +28,8 @@ import java.awt.EventQueue;
 import java.awt.HeadlessException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -140,7 +142,8 @@ public class FreeplaneApplet extends JApplet {
 			LinkController.install();
 			IconController.install();
 			final BModeController browseController = BModeControllerFactory.createModeController();
-			browseController.updateMenus("/xml/appletMenu.xml");
+			final Set<String> emptySet = Collections.emptySet();
+			browseController.updateMenus("/xml/appletMenu.xml", emptySet);
 			controller.addAction(new ShowSelectionAsRectangleAction());
 			controller.addAction(new NextNodeAction(Direction.FORWARD));
 			controller.addAction(new NextNodeAction(Direction.BACK));

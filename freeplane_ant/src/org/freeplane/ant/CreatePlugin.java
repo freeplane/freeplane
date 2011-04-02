@@ -101,10 +101,8 @@ public class CreatePlugin extends Task {
 		        + "\n" //
 		        + "import org.freeplane.core.controller.Controller;\n" //
 		        + "import org.freeplane.core.ui.AFreeplaneAction;\n" //
-		        + "import org.freeplane.core.ui.ActionLocationDescriptor;\n" //
 		        + "import org.freeplane.core.ui.components.UITools;\n" //
 		        + "\n" //
-		        + "@ActionLocationDescriptor(locations = { \"/menu_bar/extras\" /*TODO: Menu location*/})\n" //
 		        + "public class " + capPluginName + "Action extends AFreeplaneAction {\n" //
 		        + "	private static final long serialVersionUID = 1L;\n" //
 		        + "\n" //

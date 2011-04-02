@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.common.map.NodeModel;
 
@@ -34,7 +33,6 @@ import org.freeplane.features.common.map.NodeModel;
  *This class is called when a LaTeX formula is inserted into
  * (added to) a node
  */
-@ActionLocationDescriptor(locations = "/menu_bar/insert/other")
 @EnabledAction(checkOnNodeChange = true)
 public class InsertLatexAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;

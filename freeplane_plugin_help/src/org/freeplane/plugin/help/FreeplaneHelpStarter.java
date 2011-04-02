@@ -27,13 +27,11 @@ import javax.help.HelpBroker;
 import javax.help.HelpSet;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.LogUtils;
 
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/help/doc" })
 class FreeplaneHelpStarter extends AFreeplaneAction {
 	/**
 	 * 

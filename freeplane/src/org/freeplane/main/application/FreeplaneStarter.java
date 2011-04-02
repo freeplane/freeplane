@@ -23,6 +23,8 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -161,11 +163,11 @@ public class FreeplaneStarter {
 		FModeControllerFactory.createModeController();
     }
 
-	public void buildMenus(final Controller controller) {
-	    controller.getModeController(MModeController.MODENAME).updateMenus("/xml/mindmapmodemenu.xml");
+	public void buildMenus(final Controller controller, final Set<String> plugins) {
+	    controller.getModeController(MModeController.MODENAME).updateMenus("/xml/mindmapmodemenu.xml", plugins);
 		LoadAcceleratorPresetsAction.install();
-		controller.getModeController(BModeController.MODENAME).updateMenus("/xml/browsemodemenu.xml");
-		controller.getModeController(FModeController.MODENAME).updateMenus("/xml/filemodemenu.xml");
+		controller.getModeController(BModeController.MODENAME).updateMenus("/xml/browsemodemenu.xml", plugins);
+		controller.getModeController(FModeController.MODENAME).updateMenus("/xml/filemodemenu.xml", plugins);
     }
 
 	public void createFrame(final String[] args) {
@@ -241,7 +243,8 @@ public class FreeplaneStarter {
 			}
 			final Controller controller = createController();
 			createModeControllers(controller);
-			buildMenus(controller);
+			final Set<String> emptySet = Collections.emptySet();
+			buildMenus(controller, emptySet);
 			createFrame(args);
 		}
 		catch (final Exception e) {

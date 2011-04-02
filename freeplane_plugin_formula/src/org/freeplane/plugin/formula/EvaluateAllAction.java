@@ -4,12 +4,10 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.view.swing.map.MapView;
 
-@ActionLocationDescriptor(locations = { Activator.MENU_BAR_LOCATION })
-public class EvaluateAllAction extends AFreeplaneAction {
+class EvaluateAllAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public EvaluateAllAction() {

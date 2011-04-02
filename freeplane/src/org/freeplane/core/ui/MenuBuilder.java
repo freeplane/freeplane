@@ -37,6 +37,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
@@ -263,6 +264,9 @@ public class MenuBuilder extends UIBuilder {
 				}
 				final MenuPath menuPath = new MenuPath(parent.toString());
 				final String action = attributes.getAttribute("action", null);
+				final String plugin = attributes.getAttribute("plugin", null);
+				if(plugin != null && ! plugins.contains(plugin))
+					return null;
 				menuPath.setName(action);
 				String accelerator = attributes.getAttribute("accelerator", null);
 				if (accelerator != null) {
@@ -491,6 +495,7 @@ public class MenuBuilder extends UIBuilder {
 	private final Map<KeyStroke, Node> accelerators = new HashMap<KeyStroke, Node>();
  	final private ModeController modeController;
 	final MenuStructureReader reader;
+	private Set<String> plugins;
 
 	public MenuBuilder(ModeController modeController) {
 		super(null);
@@ -787,12 +792,18 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	String getShortcutKey(final String key) {
-		final ModeController modeController = Controller.getCurrentModeController();
 		return SHORTCUT_PROPERTY_PREFIX + modeController.getModeName() + "/" + key;
 	}
 
-	public void processMenuCategory(final URL menu) {
-		reader.processMenu(menu);
+	public void processMenuCategory(final URL menu, Set<String> plugins) {
+		final Set<String> oldPlugins = this.plugins;
+		this.plugins = plugins;
+		try{
+			reader.processMenu(menu);
+		}
+		finally{
+			this.plugins = oldPlugins;
+		}
 	}
 
 	private KeyStroke removeAccelerator(final Node node) throws AssertionError {

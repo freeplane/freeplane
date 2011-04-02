@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
@@ -315,9 +316,9 @@ public class ModeController extends AController {
 	public void startup() {
 	}
 
-	public void updateMenus(String menuStructure) {
+	public void updateMenus(String menuStructure, final Set<String> plugins) {
 		final IUserInputListenerFactory userInputListenerFactory = getUserInputListenerFactory();
-		userInputListenerFactory.updateMenus(this, menuStructure);
+		userInputListenerFactory.updateMenus(menuStructure, plugins);
 		final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
 		final Iterator<IMenuContributor> iterator = menuContributors.iterator();
 		while (iterator.hasNext()) {

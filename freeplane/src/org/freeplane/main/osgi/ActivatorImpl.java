@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -163,8 +164,6 @@ class ActivatorImpl implements BundleActivator {
 		loadPlugins(context);
 		final Controller controller = starter.createController();
 		starter.createModeControllers(controller);
-		starter.buildMenus(controller);
-
 		try {
 			final ServiceReference[] controllerProviders = context.getServiceReferences(
 			    IControllerExtensionProvider.class.getName(), null);
@@ -217,6 +216,12 @@ class ActivatorImpl implements BundleActivator {
 		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				final Bundle[] bundles = context.getBundles();
+				final HashSet<String> plugins = new HashSet<String>();
+				for(Bundle bundle:bundles){
+					plugins.add(bundle.getSymbolicName());
+				}
+				starter.buildMenus(controller, plugins);
 				starter.createFrame(getCallParameters());
 			}
 		});

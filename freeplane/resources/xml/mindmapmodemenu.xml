@@ -74,14 +74,16 @@
 				<menu_submenu name="EditNodeExtensions" name_ref="NodeExtensions.EditNodeExtensions">
 					<menu_action action="EditDetailsAction"/>
 					<menu_action action="EditNoteInDialogAction" />
-				<menu_action action="EditAttributesAction" accelerator="alt F9"/>							
+					<menu_action action="EditAttributesAction" accelerator="alt F9"/>							
+					<menu_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex"/>		
 				</menu_submenu>
 				<menu_action action="SelectNoteAction" accelerator="control LESS"/> <!-- goto -->
 			</menu_category>
 				<menu_separator />				
 			<menu_category name="delete">
 			<menu_submenu name="RemoveNodeExtensions" name_ref="NodeExtensions.RemoveNodeExtensions">
-				<menu_action action="DeleteDetailsAction"/>			
+				<menu_action action="DeleteDetailsAction"/>		
+				<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>		
 			</menu_submenu>
 				<menu_action action="DeleteAction" accelerator="DELETE" />
 				<!-- <menu_action action="remove" /> -->
@@ -168,6 +170,7 @@
 			<menu_separator/>
 			<menu_category name="other">
 				<menu_action action="ViewerControllerAction" />
+				<menu_action action="LatexInsertLatexAction" plugin="org.freeplane.plugin.latex"/>		
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="icons" name_ref="icon_menu">
@@ -360,6 +363,9 @@
 				</menu_category>
 				<menu_separator />
 				<menu_category name="scripting">
+					<menu_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>
+					<menu_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>
+					<menu_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
 				</menu_category>
 				<menu_separator />
 				<menu_category name="options">
@@ -433,6 +439,7 @@
 							<menu_action action="EditDetailsAction"/>
 							<menu_action action="EditNoteInDialogAction" />
 							<menu_action action="EditAttributesAction" />							
+							<menu_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex"/>		
 			</menu_submenu>
 			<menu_separator />
 			<menu_action action="SetShortenerStateAction" />
@@ -449,6 +456,7 @@
 			<menu_action action="DeleteAction" />
 			<menu_submenu name="RemoveNodeExtensions" name_ref="NodeExtensions.RemoveNodeExtensions">
 				<menu_action action="DeleteDetailsAction"/>			
+				<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>		
 			</menu_submenu>
 		</menu_category>
 		<menu_separator />

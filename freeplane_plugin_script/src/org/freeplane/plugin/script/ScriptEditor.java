@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.attribute.Attribute;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
@@ -41,7 +40,6 @@ import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/scripting" })
 class ScriptEditor extends AFreeplaneAction {
 	final private class AttributeHolder {
 		Attribute mAttribute;

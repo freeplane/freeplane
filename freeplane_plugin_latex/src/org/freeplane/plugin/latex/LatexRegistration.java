@@ -19,9 +19,7 @@
  */
 package org.freeplane.plugin.latex;
 
-import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.common.map.ModeController;
 
@@ -32,24 +30,15 @@ import org.freeplane.features.common.map.ModeController;
  * 
  * This class registers the LaTeX plugin in Freeplane
  */
-@NodeHookDescriptor(hookName = "plugins/latex/LatexNodeHook.properties", //
-onceForMap = false)
-@ActionLocationDescriptor(locations = "/menu_bar/insert/other")
 class LatexRegistration {
 	public LatexRegistration() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		//LattexNodeHook -> Menu insert
 		final LatexNodeHook nodeHook = new LatexNodeHook();
 		if (modeController.getModeName() == "MindMap") {
-			//Edit only visible in mindmap mode
-			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-			InsertLatexAction ins = new InsertLatexAction(nodeHook);
-			menuBuilder.addAnnotatedAction(ins);
-			modeController.addAction(ins);
-			menuBuilder.addAnnotatedAction(new EditLatexAction(nodeHook));
-			DeleteLatexAction del = new DeleteLatexAction(nodeHook);
-			menuBuilder.addAnnotatedAction(del);
-			modeController.addAction(del);
+			modeController.addAction(new InsertLatexAction(nodeHook));
+			modeController.addAction(new EditLatexAction(nodeHook));
+			modeController.addAction(new DeleteLatexAction(nodeHook));
 		}
 	}
 }

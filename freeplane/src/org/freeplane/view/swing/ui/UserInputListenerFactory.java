@@ -285,7 +285,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 	}
 
-	public void updateMenus(final ModeController modeController, String menuStructureResource) {
+	public void updateMenus(String menuStructureResource, Set<String> plugins) {
 		final FreeplaneMenuBar menuBar = getMenuBar();
 		menuBuilder.addMenuBar(menuBar, FreeplaneMenuBar.MENU_BAR_PREFIX);
 		mapsPopupMenu = new JPopupMenu();
@@ -295,7 +295,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
 		final URL menuStructure = ResourceController.getResourceController().getResource(menuStructureResource);
 		if (menuStructure != null) {
-			menuBuilder.processMenuCategory(menuStructure);
+			menuBuilder.processMenuCategory(menuStructure, plugins);
 		}
 		final ViewController viewController = Controller.getCurrentController().getViewController();
 		viewController.updateMenus(menuBuilder);
