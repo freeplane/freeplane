@@ -30,7 +30,6 @@ import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.map.IMapChangeListener;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.MapChangeEvent;
@@ -46,7 +45,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Foltin
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons.properties")
-@ActionLocationDescriptor(locations = { "/menu_bar/icons/automaticLayout2" })
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener, IExtension {
 	public static final String ICONS = "hierarchical_icons";
@@ -257,7 +255,6 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 }
 
 @NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons2.properties")
-@ActionLocationDescriptor(locations = { "/menu_bar/icons/automaticLayout2" })
 class HierarchicalIcons2 extends HierarchicalIcons{
 	public HierarchicalIcons2() {
 	    super(Mode.AND);

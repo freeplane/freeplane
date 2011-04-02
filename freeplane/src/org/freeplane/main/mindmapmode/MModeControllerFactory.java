@@ -152,25 +152,31 @@ public class MModeControllerFactory {
 		new ReminderHook();
 		new AutomaticEdgeColorHook();
 		new ViewerController();
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		menuBuilder.addAnnotatedAction(new ShowFormatPanelAction());
-		menuBuilder.addAnnotatedAction(new FitToPage());
+		modeController.addAction(new ShowFormatPanelAction());
+		modeController.addAction(new FitToPage());
 		MEncryptionController.install(new MEncryptionController());
-		menuBuilder.addAnnotatedAction(new IconSelectionPlugin());
-		menuBuilder.addAnnotatedAction(new NewParentNode());
-		menuBuilder.addAnnotatedAction(new SaveAll());
-		menuBuilder.addAnnotatedAction(new SortNodes());
-		menuBuilder.addAnnotatedAction(new SplitNode());
-		new ChangeNodeLevelController().addActionsAtMenuBuilder(menuBuilder);
+		modeController.addAction(new IconSelectionPlugin());
+		modeController.addAction(new NewParentNode());
+		modeController.addAction(new SaveAll());
+		modeController.addAction(new SortNodes());
+		modeController.addAction(new SplitNode());
+		new ChangeNodeLevelController(modeController);
 		NodeHistory.install(modeController);
-		menuBuilder.addAnnotatedAction(new ImportMindmanagerFiles());
-		LoadAcceleratorPresetsAction.install();
+		modeController.addAction(new ImportMindmanagerFiles());
 	}
 
 	private MModeController createModeControllerImpl() {
 //		this.controller = controller;
 		createStandardControllers();
 		createAddIns();
+		UserInputListenerFactory userInputListenerFactory = (UserInputListenerFactory)modeController.getUserInputListenerFactory();
+		userInputListenerFactory.setMenuStructure("/xml/mindmapmodemenu.xml");
+		userInputListenerFactory.updateMenus(modeController);
+		final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		((MIconController) IconController.getController()).updateIconToolbar();
+		((MIconController) IconController.getController()).updateMenus(builder);
+		modeController.updateMenus();
+		LoadAcceleratorPresetsAction.install();
 		return modeController;
 	}
 
@@ -276,12 +282,5 @@ public class MModeControllerFactory {
 		controller.getMapViewManager().addMapSelectionListener(uiFactory);
 		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
 		modeController.addMenuContributor(menuContributor);
-		
-		userInputListenerFactory.setMenuStructure("/xml/mindmapmodemenu.xml");
-		userInputListenerFactory.updateMenus(modeController);
-		final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		((MIconController) IconController.getController()).updateIconToolbar();
-		((MIconController) IconController.getController()).updateMenus(builder);
-		modeController.updateMenus();
 	}
 }

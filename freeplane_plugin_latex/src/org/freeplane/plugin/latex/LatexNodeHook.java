@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
+import org.freeplane.core.addins.PersistentNodeHook.HookAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeViewLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
@@ -78,6 +79,11 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 		}
 		return latexExtension;
 	}
+
+	@Override
+    protected HookAction createHookAction() {
+	    return null;
+    }
 
 	void createViewer(final LatexExtension model, final NodeView view) {
 		final LatexViewer comp = new LatexViewer(this, model);

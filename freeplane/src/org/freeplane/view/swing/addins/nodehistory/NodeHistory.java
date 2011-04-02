@@ -24,7 +24,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewManager;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.ModeController;
@@ -44,12 +43,9 @@ public class NodeHistory implements IExtension {
 		final NodeHistory history = (NodeHistory) controller.getExtension(NodeHistory.class);
 		modeController.getMapController().addNodeSelectionListener(history.getMapSelectionListener());
 		LinkController.getController(modeController).addNodeSelectionListener(history.getLinkSelectionListener());
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		history.backAction = new BackAction(controller, history);
-		menuBuilder.addAnnotatedAction(history.backAction);
 		modeController.addAction(history.backAction);
 		history.forwardAction = new ForwardAction(controller, history);
-		menuBuilder.addAnnotatedAction(history.forwardAction);
 		modeController.addAction(history.forwardAction);
 	}
 

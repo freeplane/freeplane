@@ -26,7 +26,6 @@ import javax.swing.ListModel;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.icon.IIconInformation;
@@ -40,8 +39,6 @@ import org.freeplane.features.common.map.NodeModel;
 /**
  * @author adapted to the plugin mechanism by ganzer
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/icons/actions" }, //
-accelerator = "control F2")
 public class IconSelectionPlugin extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 

@@ -18,10 +18,8 @@
 package org.freeplane.features.mindmapmode.styles;
 
 import org.freeplane.core.frame.ToggleToolbarAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.SelectableAction;
 
-@ActionLocationDescriptor(locations = { "/menu_bar/view/toolbars", "/map_popup/toolbars" })
 @SelectableAction(checkOnPopup = true)
 public class ShowFormatPanelAction extends ToggleToolbarAction {
 	/**

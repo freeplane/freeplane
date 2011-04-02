@@ -20,7 +20,6 @@
 package org.freeplane.features.mindmapmode.encrypt;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.encrypt.EncryptionController;
 import org.freeplane.features.common.map.EncryptionModel;
@@ -35,12 +34,9 @@ public class MEncryptionController extends EncryptionController {
 	public static void install(MEncryptionController encryptionController){
 		EncryptionController.install(encryptionController);
 		final ModeController modeController = Controller.getCurrentModeController();
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		final RemoveEncryption removeEncryptionAction = new RemoveEncryption(encryptionController);
 		modeController.addAction(removeEncryptionAction);
-		menuBuilder.addAnnotatedAction(removeEncryptionAction);
 		final EncryptedMap encryptedMapAction = new EncryptedMap();
-		menuBuilder.addAnnotatedAction(encryptedMapAction);
 		modeController.addAction(encryptedMapAction);
 	}
 	

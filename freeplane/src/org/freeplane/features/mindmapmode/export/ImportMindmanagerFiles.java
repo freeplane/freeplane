@@ -41,7 +41,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
@@ -50,7 +49,6 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 /**
  * Applies an XSLT to the Document.xml file of MindManager(c) files.
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/file/import/import" })
 public class ImportMindmanagerFiles extends AFreeplaneAction {
 	/**
 	 * 

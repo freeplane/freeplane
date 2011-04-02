@@ -8,7 +8,9 @@
 				<menu_action action="OpenAction" accelerator="control O" />
 				<menu_action action="SaveAction" accelerator="control S" />
 				<menu_action action="SaveAsAction" accelerator="control shift S" />
+				<menu_action action="SaveAll" />
 				<menu_action action="RevertAction" />
+				<menu_action action="EncryptedMap" />
 			</menu_category>
 			<menu_category name="close">
 				<menu_action action="CloseAction" accelerator="control W" />
@@ -25,11 +27,12 @@
 			<menu_category name="import">
 				<menu_submenu name="import" name_ref="menu_file_import">
 					<menu_action action="ImportBranchAction" />
-					<menu_action action="ImportLinkedBranchAction"></menu_action>
-					<menu_action action="ImportLinkedBranchWithoutRootAction"></menu_action>
+					<menu_action action="ImportLinkedBranchAction"/>
+					<menu_action action="ImportLinkedBranchWithoutRootAction"/>
 					<menu_separator />
-					<menu_action action="ImportExplorerFavoritesAction"></menu_action>
-					<menu_action action="ImportFolderStructureAction"></menu_action>
+					<menu_action action="ImportExplorerFavoritesAction"/>
+					<menu_action action="ImportFolderStructureAction"/>
+					<menu_action action="ImportMindmanagerFiles"/>
 				</menu_submenu>
 			</menu_category>
 			<menu_separator />
@@ -87,6 +90,8 @@
 			<menu_category name="find">
 				<menu_action action="FindAction" accelerator="control F" />
 				<menu_action action="FindNextAction" accelerator="control G" />
+				<menu_action action="AllMapsNodeListAction" />
+				<menu_action action="NodeListAction" accelerator="control shift F" />
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="view" name_ref="menu_view">
@@ -98,6 +103,7 @@
 				<menu_action action="ToggleLeftToolbarAction" />
 				<menu_action action="ToggleFullScreenAction" />
 				<menu_action action="ToggleStatusAction" />
+				<menu_action action="ShowFormatPanel" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="general">
@@ -113,6 +119,7 @@
 			<menu_category name="zoom">
 				<menu_action action="ZoomInAction" accelerator="alt UP" />
 				<menu_action action="ZoomOutAction" accelerator="alt DOWN" />
+				<menu_action action="FitToPage" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="note_window">
@@ -138,8 +145,8 @@
 			<menu_category name="nodes">
 				<menu_action action="NewChildAction" accelerator="INSERT" />
 				<menu_action action="NewSiblingAction" accelerator="ENTER" />
-				<menu_action action="NewPreviousSiblingAction"
-					accelerator="shift ENTER" />
+				<menu_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
+				<menu_action action="NewParentNode" accelerator="shift INSERT" />
 			</menu_category>
 			<menu_category name="image">
 				<menu_action action="SetImageByFileChooserAction"
@@ -160,10 +167,17 @@
 			</menu_category>
 			<menu_separator/>
 			<menu_category name="other">
+				<menu_action action="ViewerControllerAction" />
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="icons" name_ref="icon_menu">
-			<menu_category name="actions" />
+			<menu_category name="actions">
+				<menu_action action="IconSelectionPlugin" accelerator="control F2"/>
+			</menu_category>
+			<menu_category name="automaticLayout2">
+				<menu_action action="HierarchicalIconsAction" />
+				<menu_action action="HierarchicalIcons2Action" />
+			</menu_category>
 			<menu_category name="automaticLayout2"/>
 			<menu_separator />
 			<menu_category name="icons" />
@@ -207,6 +221,8 @@
 					<menu_action action="ResetNodeLocationAction" />
 				</menu_category>
 				<menu_separator />
+				<menu_action action="AutomaticLayoutAction" />
+				<menu_action action="BlinkingNodeHookAction" />
 			</menu_category>
 			<menu_category name="clouds">
 				<menu_action action="CloudColorAction" />
@@ -237,6 +253,7 @@
 					<menu_radio_action action="EdgeWidthAction_4" />
 					<menu_radio_action action="EdgeWidthAction_8" />
 				</menu_submenu>
+				<menu_action action="AutomaticEdgeColorHookAction" />
 			</menu_category>
 		</menu_submenu>
         <menu_submenu name="styles" name_ref="styles">
@@ -271,6 +288,8 @@
 			<menu_category name="nodes">
 				<menu_action action="NodeUpAction" accelerator="control UP" />
 				<menu_action action="NodeDownAction" accelerator="control DOWN" />
+				<menu_action action="ChangeNodeLevelLeftsAction" accelerator="control LEFT" />
+				<menu_action action="ChangeNodeLevelRightsAction" accelerator="control RIGHT" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="folding">
@@ -281,6 +300,8 @@
 				<menu_action action="FoldAllAction" accelerator="alt HOME" />
 				<menu_action action="UnfoldOneLevelAction" accelerator="alt PAGE_DOWN" />
 				<menu_action action="FoldOneLevelAction" accelerator="alt PAGE_UP" />
+				<menu_action action="BackAction" accelerator="alt LEFT" />
+				<menu_action action="ForwardAction" accelerator="alt RIGHT" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="links">
@@ -311,14 +332,20 @@
 			<menu_category name="first">
 				<menu_category name="join">
 					<menu_action action="JoinNodesAction" accelerator="control J" />
+					<menu_action action="SplitNode" />
 				</menu_category>
 				<menu_category name="nodes">
-
 					<menu_action action="ExtractLinkFromTextAction" />
-					<menu_category name="sorting" />
-					<menu_category name="crypto" />
+					<menu_category name="sorting">
+						<menu_action action="SortNodes" />
+					</menu_category>
+					<menu_category name="crypto">
+						<menu_action action="EnterPassword" />
+						<menu_action action="RemoveEncryption" />
+					</menu_category>
 					<menu_category name="change">
 						<menu_action action="RevisionPluginAction" />
+						<menu_action action="CreationModificationPluginAction" />
 					</menu_category>
 				</menu_category>
 				<menu_action action="RemoveNoteAction" />
@@ -327,6 +354,9 @@
 				<menu_action action="AssignAttributesAction" />
 				<menu_separator />
 				<menu_category name="time_management">
+					<menu_action action="ReminderHookAction" />
+					<menu_action action="TimeListAction" />
+					<menu_action action="TimeManagementAction" accelerator="control T" />
 				</menu_category>
 				<menu_separator />
 				<menu_category name="scripting">
@@ -376,6 +406,7 @@
 			<menu_action action="ShowFilterToolbarAction" />
 			<menu_action action="ToggleFBarAction" />
 			<menu_action action="ToggleLeftToolbarAction" />
+			<menu_action action="ShowFormatPanel" />
 			<menu_action action="ToggleFullScreenAction" />
 			<menu_action action="ToggleStatusAction" />
 			<menu_action action="ShowHideNoteAction" />
@@ -497,6 +528,7 @@
 			</menu_category>
 			<menu_category name="image">
 				<menu_action action="SetImageByFileChooserAction" />
+				<menu_action action="ViewerControllerAction" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="links">
@@ -553,7 +585,10 @@
 			<menu_action action="ShowAttributeDialogAction" />
 		</menu_category>
 		<menu_separator />
-		<menu_category name="history" />
+		<menu_category name="history">
+				<menu_action action="BackAction" />
+				<menu_action action="ForwardAction" />
+		</menu_category>
 		<menu_category name="folding">
 				<menu_action action="UnfoldAllAction"/>
 				<menu_action action="FoldAllAction"/>

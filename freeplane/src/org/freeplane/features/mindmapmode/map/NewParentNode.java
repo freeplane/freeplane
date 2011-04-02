@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.NodeModel;
@@ -45,8 +44,6 @@ import org.freeplane.features.mindmapmode.text.MTextController;
  *         The code simply performs these actions in sequence, after validating
  *         the selected nodes.
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/insert/nodes" }, //
-accelerator = "shift INSERT")
 public class NewParentNode extends AFreeplaneAction {
 	/**
 	 * 

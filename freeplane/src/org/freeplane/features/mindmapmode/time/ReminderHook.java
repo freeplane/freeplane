@@ -35,7 +35,6 @@ import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -52,7 +51,6 @@ import org.freeplane.view.swing.map.attribute.AttributePanelManager;
  * @author foltin
  */
 @NodeHookDescriptor(hookName = "plugins/TimeManagementReminder.xml", onceForMap = false)
-@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" })
 public class ReminderHook extends PersistentNodeHook {
 	private static final IconStore STORE = IconStoreFactory.create();
 
@@ -77,7 +75,6 @@ public class ReminderHook extends PersistentNodeHook {
 		}
 	}
 
-	@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" })
 	static private class TimeListAction extends AFreeplaneAction {
 		/**
 		 * 
@@ -98,8 +95,6 @@ public class ReminderHook extends PersistentNodeHook {
 		}
 	}
 
-	@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" }, //
-	accelerator = "control T")
 	static private class TimeManagementAction extends AFreeplaneAction {
 		/**
 		 * 

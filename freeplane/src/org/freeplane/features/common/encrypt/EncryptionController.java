@@ -24,7 +24,6 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
@@ -41,10 +40,8 @@ public class EncryptionController implements IExtension {
 	public static void install(EncryptionController encryptionController){
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(EncryptionController.class, encryptionController);
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		final EnterPassword pwdAction = new EnterPassword(encryptionController);
 		modeController.addAction(pwdAction);
-		menuBuilder.addAnnotatedAction(pwdAction);
 	}
 	/**
 	 * @param e 

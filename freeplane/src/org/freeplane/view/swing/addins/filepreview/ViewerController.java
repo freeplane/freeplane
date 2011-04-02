@@ -36,7 +36,6 @@ import org.freeplane.core.controller.INodeViewLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
@@ -58,7 +57,6 @@ import org.freeplane.view.swing.map.NodeView;
 
 @NodeHookDescriptor(hookName = "ExternalObject", //
 onceForMap = false)
-@ActionLocationDescriptor(locations = { "/menu_bar/insert/other", "/node_popup/insert/image" })
 public class ViewerController extends PersistentNodeHook implements INodeViewLifeCycleListener, IExtension {
 	private final class CombiFactory implements IViewerFactory {
 		private IViewerFactory factory;

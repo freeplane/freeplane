@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.EnabledAction;
 
 /**
@@ -35,8 +34,6 @@ import org.freeplane.core.ui.EnabledAction;
  * 13.12.2008
  */
 @EnabledAction(checkOnNodeChange = true)
-@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/history" }, // 
-accelerator = "alt LEFT")
 class BackAction extends AFreeplaneAction {
 	/**
 	 * 

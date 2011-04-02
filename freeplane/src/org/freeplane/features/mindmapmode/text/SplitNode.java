@@ -31,7 +31,6 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.ModeController;
@@ -44,7 +43,6 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 /**
  * @author Dimitry Polivaev
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/join" })
 public class SplitNode extends AFreeplaneAction {
 	/**
 	 * 

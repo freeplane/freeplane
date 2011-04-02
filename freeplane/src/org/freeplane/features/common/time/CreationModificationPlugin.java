@@ -28,7 +28,6 @@ import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.HistoryInformationModel;
 import org.freeplane.features.common.map.INodeChangeListener;
@@ -42,7 +41,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author foltin
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/CreationModificationPlugin.properties")
-@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/change" })
 public class CreationModificationPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
 	private static final Integer CREATION_TOOLTIP = 14;
 	private boolean nodeChangeListenerDisabled;

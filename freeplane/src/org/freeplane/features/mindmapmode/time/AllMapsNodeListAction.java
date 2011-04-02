@@ -22,13 +22,11 @@ package org.freeplane.features.mindmapmode.time;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 
 /**
  * @author Dimitry Polivaev
  * 01.09.2009
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/edit/find" })
 class AllMapsNodeListAction extends AFreeplaneAction {
 	/**
 	 * 

@@ -35,7 +35,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapLifeCycleListener;
 import org.freeplane.core.controller.INodeViewVisitor;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.common.map.IMapChangeListener;
@@ -50,7 +49,6 @@ import org.freeplane.view.swing.map.NodeView;
 /**
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/BlinkingNodeHook.properties", onceForMap = false)
-@ActionLocationDescriptor(locations = { "/menu_bar/format/nodes" })
 public class BlinkingNodeHook extends PersistentNodeHook {
 	protected class TimerColorChanger extends TimerTask implements IExtension, IMapChangeListener,
 	        IMapLifeCycleListener {

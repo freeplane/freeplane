@@ -4,14 +4,12 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
 import org.freeplane.features.common.styles.MapStyleModel;
 
-@ActionLocationDescriptor(locations = { "/menu_bar/styles/manage" })
 public class RedefineStyleAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	

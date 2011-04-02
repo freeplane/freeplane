@@ -24,20 +24,18 @@ import java.util.List;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.mindmapmode.MModeController;
 
 /**
  * @author foltin
  */
 public class ChangeNodeLevelController {
-	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/nodes" }, //
-	accelerator = "control LEFT")
 	private class ChangeNodeLevelLeftsAction extends AFreeplaneAction {
 		/**
 		 * 
@@ -62,8 +60,6 @@ public class ChangeNodeLevelController {
 		}
 	}
 
-	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/nodes" }, //
-	accelerator = "control RIGHT")
 	private class ChangeNodeLevelRightsAction extends AFreeplaneAction {
 		/**
 		 * 
@@ -90,13 +86,13 @@ public class ChangeNodeLevelController {
 
 // // 	final private Controller controller;;
 
-	public ChangeNodeLevelController() {
+	public ChangeNodeLevelController(MModeController modeController) {
 //		this.controller = controller;
+		modeController.addAction(new ChangeNodeLevelLeftsAction());
+		modeController.addAction(new ChangeNodeLevelRightsAction());
 	}
 
 	public void addActionsAtMenuBuilder(final MenuBuilder menuBuilder) {
-		menuBuilder.addAnnotatedAction(new ChangeNodeLevelLeftsAction());
-		menuBuilder.addAnnotatedAction(new ChangeNodeLevelRightsAction());
 	}
 
 	private boolean checkSelection() {

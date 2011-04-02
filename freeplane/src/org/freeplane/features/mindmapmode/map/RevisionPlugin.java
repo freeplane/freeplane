@@ -26,7 +26,6 @@ import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.map.INodeChangeListener;
 import org.freeplane.features.common.map.NodeChangeEvent;
@@ -39,7 +38,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = {})
 @NodeHookDescriptor(hookName = "accessories/plugins/RevisionPlugin.properties")
 public class RevisionPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
 	public RevisionPlugin() {

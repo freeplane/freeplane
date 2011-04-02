@@ -26,14 +26,12 @@ import javax.swing.JViewport;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin
  * @author Dimitry Polivaev
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/view/zoom" })
 public class FitToPage extends AFreeplaneAction {
 	/**
 	 * 

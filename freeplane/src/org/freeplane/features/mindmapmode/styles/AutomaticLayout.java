@@ -27,7 +27,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.IStyle;
@@ -38,7 +37,6 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 @NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
-@ActionLocationDescriptor(locations = "/menu_bar/format/nodes")
 public class AutomaticLayout extends PersistentNodeHook implements IExtension {
 
 	/**

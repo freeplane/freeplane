@@ -24,7 +24,6 @@ import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
@@ -40,7 +39,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 
 @NodeHookDescriptor(hookName = "AutomaticEdgeColor")
-@ActionLocationDescriptor(locations = "/menu_bar/format/edges")
 public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExtension{
 	private class Listener extends AMapChangeListenerAdapter{
 		@Override

@@ -21,7 +21,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.features.common.encrypt.SingleDesEncrypter;
 import org.freeplane.features.common.map.EncryptionModel;
@@ -29,7 +28,6 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 
-@ActionLocationDescriptor(locations = { "/menu_bar/file/open" })
 class EncryptedMap extends AFreeplaneAction {
 	/**
 	 * 

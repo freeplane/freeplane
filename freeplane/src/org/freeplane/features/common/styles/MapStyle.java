@@ -30,6 +30,7 @@ import java.util.Vector;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
+import org.freeplane.core.addins.PersistentNodeHook.HookAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
@@ -316,6 +317,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
     }
 
+
+	@Override
+    protected HookAction createHookAction() {
+	    return null;
+    }
+	
 	public void copyStyle(final URL source, final MapModel targetMap, boolean undoable) {
 	    final MapModel styleMapContainer = Controller.getCurrentModeController().getMapController().newModel(null);
 		final IExtension oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
