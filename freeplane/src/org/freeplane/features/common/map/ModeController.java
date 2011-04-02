@@ -315,12 +315,13 @@ public class ModeController extends AController {
 	public void startup() {
 	}
 
-	public void updateMenus() {
+	public void updateMenus(String menuStructure) {
 		final IUserInputListenerFactory userInputListenerFactory = getUserInputListenerFactory();
+		userInputListenerFactory.updateMenus(this, menuStructure);
 		final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
 		final Iterator<IMenuContributor> iterator = menuContributors.iterator();
 		while (iterator.hasNext()) {
-			iterator.next().updateMenus(menuBuilder);
+			iterator.next().updateMenus(this, menuBuilder);
 		}
 	}
 

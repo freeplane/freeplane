@@ -34,6 +34,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.common.map.ModeController;
 
 public class BToolbarContributor implements IMenuContributor, IMapViewChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";
@@ -85,7 +86,7 @@ public class BToolbarContributor implements IMenuContributor, IMapViewChangeList
 		urlfield.setText(text);
 	}
 
-	public void updateMenus(final MenuBuilder builder) {
+	public void updateMenus(final ModeController modeController, final MenuBuilder builder) {
 		builder.addElement("/main_toolbar/url", new JLabel("URL:"), MenuBuilder.AS_CHILD);
 		builder.addElement("/main_toolbar/url", urlfield, MenuBuilder.AS_CHILD);
 	}

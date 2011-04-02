@@ -38,7 +38,6 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.ui.IEditHandler;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.FButtonBar;
@@ -65,7 +64,6 @@ import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.time.CreationModificationPlugin;
 import org.freeplane.features.common.url.UrlManager;
-import org.freeplane.features.mindmapmode.LoadAcceleratorPresetsAction;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
@@ -169,14 +167,6 @@ public class MModeControllerFactory {
 //		this.controller = controller;
 		createStandardControllers();
 		createAddIns();
-		UserInputListenerFactory userInputListenerFactory = (UserInputListenerFactory)modeController.getUserInputListenerFactory();
-		userInputListenerFactory.setMenuStructure("/xml/mindmapmodemenu.xml");
-		userInputListenerFactory.updateMenus(modeController);
-		final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		((MIconController) IconController.getController()).updateIconToolbar();
-		((MIconController) IconController.getController()).updateMenus(builder);
-		modeController.updateMenus();
-		LoadAcceleratorPresetsAction.install();
 		return modeController;
 	}
 

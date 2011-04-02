@@ -49,6 +49,7 @@ import org.freeplane.core.resources.components.IPropertyControlCreator;
 import org.freeplane.core.resources.components.KeyProperty;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
@@ -138,8 +139,14 @@ public class MIconController extends IconController {
 		UITools.setScrollbarIncrement(iconToolBarScrollPane);
 		UITools.addScrollbarIncrementPropertyListener(iconToolBarScrollPane);
 		iconToolBarScrollPane.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "leftToolbarVisible");
-		createIconActions();
+		createIconActions(modeController);
 		createPreferences();
+		modeController.addMenuContributor(new IMenuContributor() {
+			public void updateMenus(final ModeController modeController, MenuBuilder builder) {
+				MIconController.this.updateMenus(modeController, builder);
+				updateIconToolbar(modeController);
+			}
+		});
 	}
 
 	public void addIcon(final NodeModel node, final MindIcon icon) {
@@ -210,17 +217,17 @@ public class MIconController extends IconController {
 		addAction(builder, submenuKey, icon, fileName.substring(separatorPosition + 1));
 	}
 
-	public void addIconsToMenu(final MenuBuilder builder, final String iconMenuString) {
+	private void addIconsToMenu(final ModeController modeController, final MenuBuilder builder, final String iconMenuString) {
 		final String category = iconMenuString + "/icons/icons";
-		builder.addAction(category, Controller.getCurrentModeController().getAction("RemoveIcon_0_Action"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, Controller.getCurrentModeController().getAction("RemoveIconAction"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, Controller.getCurrentModeController().getAction("RemoveAllIconsAction"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, modeController.getAction("RemoveIcon_0_Action"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, modeController.getAction("RemoveIconAction"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, modeController.getAction("RemoveAllIconsAction"), MenuBuilder.AS_CHILD);
 		builder.addSeparator(category, MenuBuilder.AS_CHILD);
-		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressIconUpAction"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressIconDownAction"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressExtended10Action"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressExtended25Action"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, Controller.getCurrentModeController().getAction("IconProgressRemoveAction"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, modeController.getAction("IconProgressIconUpAction"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, modeController.getAction("IconProgressIconDownAction"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, modeController.getAction("IconProgressExtended10Action"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, modeController.getAction("IconProgressExtended25Action"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, modeController.getAction("IconProgressRemoveAction"), MenuBuilder.AS_CHILD);
 	
 		builder.addSeparator(category, MenuBuilder.AS_CHILD);
 		for (final IconGroup iconGroup : STORE.getGroups()) {
@@ -228,8 +235,7 @@ public class MIconController extends IconController {
 		}
 	}
 
-	private void createIconActions() {
-		final ModeController modeController = Controller.getCurrentModeController();
+	private void createIconActions(final ModeController modeController) {
 		modeController.addAction(new RemoveIconAction(0));
 		modeController.addAction(new RemoveIconAction(-1));
 		modeController.addAction(new RemoveAllIconsAction());
@@ -392,12 +398,12 @@ public class MIconController extends IconController {
 		return node.getIcons().size();
 	}
 
-	public void updateIconToolbar() {
+	private void updateIconToolbar(ModeController modeController) {
 		iconToolBar.removeAll();
-		iconToolBar.add(Controller.getCurrentModeController().getAction("RemoveIcon_0_Action"))
+		iconToolBar.add(modeController.getAction("RemoveIcon_0_Action"))
 		    .setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		iconToolBar.add(Controller.getCurrentModeController().getAction("RemoveIconAction")).setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		iconToolBar.add(Controller.getCurrentModeController().getAction("RemoveAllIconsAction")).setAlignmentX(
+		iconToolBar.add(modeController.getAction("RemoveIconAction")).setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		iconToolBar.add(modeController.getAction("RemoveAllIconsAction")).setAlignmentX(
 		    JComponent.CENTER_ALIGNMENT);
 		iconToolBar.addSeparator();
 		if (ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar")) {
@@ -417,8 +423,8 @@ public class MIconController extends IconController {
 		}
 	}
 
-	public void updateMenus(final MenuBuilder builder) {
-		addIconsToMenu(builder, FreeplaneMenuBar.MENU_BAR_PREFIX);
-		addIconsToMenu(builder, UserInputListenerFactory.NODE_POPUP);
+	private void updateMenus(ModeController modeController, final MenuBuilder builder) {
+		addIconsToMenu(modeController, builder, FreeplaneMenuBar.MENU_BAR_PREFIX);
+		addIconsToMenu(modeController, builder, UserInputListenerFactory.NODE_POPUP);
 	}
 }

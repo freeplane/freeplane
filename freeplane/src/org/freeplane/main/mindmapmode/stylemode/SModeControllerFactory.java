@@ -32,7 +32,6 @@ import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.frame.ToggleToolbarAction;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
@@ -129,12 +128,6 @@ public class SModeControllerFactory {
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
 		modeController.addAction(new ToggleToolbarAction("ToggleLeftToolbarAction", "/icon_toolbar"));
-		userInputListenerFactory.setMenuStructure("/xml/stylemodemenu.xml");
-		final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		userInputListenerFactory.updateMenus(modeController);
-		((MIconController) IconController.getController()).updateIconToolbar();
-		((MIconController) IconController.getController()).updateMenus(builder);
-		modeController.updateMenus();
 		new MapStyle(false);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
@@ -190,7 +183,8 @@ public class SModeControllerFactory {
 		UITools.setScrollbarIncrement(styleScrollPane);
 		//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
 		this.modeController = null;
-		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, styleScrollPane);
+		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, styleScrollPane);
+		userInputListenerFactory.updateMenus(modeController, "/xml/stylemodemenu.xml");
 		return controller;
 	}
 

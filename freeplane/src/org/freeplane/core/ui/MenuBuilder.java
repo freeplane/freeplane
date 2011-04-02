@@ -272,7 +272,6 @@ public class MenuBuilder extends UIBuilder {
 					setDefaultAccelerator(menuPath.path, accelerator);
 				}
 				try {
-					final ModeController modeController = Controller.getCurrentModeController();
 					AFreeplaneAction theAction = modeController.getAction(action);
 					if (theAction == null) {
 						if(action.startsWith("SetBooleanPropertyAction.")){
@@ -490,12 +489,12 @@ public class MenuBuilder extends UIBuilder {
 
 	private IAcceleratorChangeListener acceleratorChangeListener;
 	private final Map<KeyStroke, Node> accelerators = new HashMap<KeyStroke, Node>();
-// 	final private ModeController modeController;
+ 	final private ModeController modeController;
 	final MenuStructureReader reader;
 
-	public MenuBuilder() {
+	public MenuBuilder(ModeController modeController) {
 		super(null);
-//		this.modeController = modeController;
+		this.modeController = modeController;
 		reader = new MenuStructureReader();
 	}
 

@@ -85,9 +85,6 @@ public class FModeControllerFactory {
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
 		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getCurrentFilterController().getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController().getStatusBar());
-		userInputListenerFactory.setMenuStructure("/xml/filemodemenu.xml");
-		userInputListenerFactory.updateMenus(modeController);
-		modeController.updateMenus();
 		NodeHistory.install(modeController);
 		return modeController;
 	}

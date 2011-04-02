@@ -65,7 +65,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private JPopupMenu mapsPopupMenu;
 	private FreeplaneMenuBar menuBar;
 	private final MenuBuilder menuBuilder;
-	private URL menuStructure;
 	final private HashSet<IMouseWheelEventHandler> mRegisteredMouseWheelEventHandler = new HashSet<IMouseWheelEventHandler>();
 	private DragGestureListener nodeDragListener;
 	private DropTargetListener nodeDropTargetListener;
@@ -79,7 +78,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public UserInputListenerFactory(final ModeController modeController) {
 		Controller controller = Controller.getCurrentController();
 		mapsMenuActionListener = new MapsMenuActionListener(controller);
-		menuBuilder = new MenuBuilder();
+		menuBuilder = new MenuBuilder(modeController);
 		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 				menuBuilder.afterMapChange(newMap);
@@ -140,10 +139,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public MenuBuilder getMenuBuilder() {
 		return menuBuilder;
-	}
-
-	public URL getMenuStructure() {
-		return menuStructure;
 	}
 
 	public Set<IMouseWheelEventHandler> getMouseWheelEventHandlers() {
@@ -213,17 +208,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		this.menuBar = menuBar;
 	}
 
-	public void setMenuStructure(final String menuStructureResource) {
-		final URL menuStructure = ResourceController.getResourceController().getResource(menuStructureResource);
-		setMenuStructure(menuStructure);
-	}
-
-	private void setMenuStructure(final URL menuStructure) {
-		if (this.menuStructure != null) {
-			throw new RuntimeException("already set");
-		}
-		this.menuStructure = menuStructure;
-	}
 
 	public void setNodeDragListener(DragGestureListener nodeDragListener) {
 		if (this.nodeDragListener != null) {
@@ -301,7 +285,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 	}
 
-	public void updateMenus(final ModeController modeController) {
+	public void updateMenus(final ModeController modeController, String menuStructureResource) {
 		final FreeplaneMenuBar menuBar = getMenuBar();
 		menuBuilder.addMenuBar(menuBar, FreeplaneMenuBar.MENU_BAR_PREFIX);
 		mapsPopupMenu = new JPopupMenu();
@@ -309,6 +293,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		menuBuilder.addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
 		menuBuilder.addToolbar((JToolBar) getToolBar("/main_toolbar"), "/main_toolbar");
 		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
+		final URL menuStructure = ResourceController.getResourceController().getResource(menuStructureResource);
 		if (menuStructure != null) {
 			menuBuilder.processMenuCategory(menuStructure);
 		}

@@ -19,7 +19,6 @@
  */
 package org.freeplane.main.mindmapmode;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
@@ -37,8 +36,7 @@ class MToolbarContributor implements IMenuContributor {
 
 // 	final private ModeController modeController;
 
-	public void updateMenus(final MenuBuilder builder) {
-		final ModeController modeController = Controller.getCurrentModeController();
+	public void updateMenus(final ModeController modeController, final MenuBuilder builder) {
 		final AFreeplaneAction action = modeController.getAction("IncreaseNodeFontAction");
 		builder.addComponent("/main_toolbar/font", uiFactory.createFontBox(), action, MenuBuilder.AS_CHILD);
 		builder.addComponent("/main_toolbar/font", uiFactory.createSizeBox(), action, MenuBuilder.AS_CHILD);

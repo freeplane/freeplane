@@ -37,6 +37,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.filter.NextNodeAction;
@@ -51,6 +52,8 @@ import org.freeplane.features.common.text.TextController.Direction;
 import org.freeplane.features.common.time.TimeController;
 import org.freeplane.features.controller.help.HelpController;
 import org.freeplane.features.controller.print.PrintController;
+import org.freeplane.features.filemode.FModeController;
+import org.freeplane.features.mindmapmode.LoadAcceleratorPresetsAction;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.main.browsemode.BModeControllerFactory;
@@ -150,12 +153,19 @@ public class FreeplaneStarter {
 		}
 	}
 
-	public void createModeControllers() {
-	    MModeControllerFactory.createModeController();
-	    Controller.getCurrentController().getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(
-	        applicationResourceController.getLastOpenedList());
-	    BModeControllerFactory.createModeController("/xml/browsemodemenu.xml");
-	    FModeControllerFactory.createModeController();
+	public void createModeControllers(final Controller controller) {
+		MModeControllerFactory.createModeController();
+		controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(
+			applicationResourceController.getLastOpenedList());
+		BModeControllerFactory.createModeController();
+		FModeControllerFactory.createModeController();
+    }
+
+	public void buildMenus(final Controller controller) {
+	    controller.getModeController(MModeController.MODENAME).updateMenus("/xml/mindmapmodemenu.xml");
+		LoadAcceleratorPresetsAction.install();
+		controller.getModeController(BModeController.MODENAME).updateMenus("/xml/browsemodemenu.xml");
+		controller.getModeController(FModeController.MODENAME).updateMenus("/xml/filemodemenu.xml");
     }
 
 	public void createFrame(final String[] args) {
@@ -229,8 +239,9 @@ public class FreeplaneStarter {
 			if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
 				System.setProperty("org.freeplane.core.dir.lib", "/lib/");
 			}
-			createController();
-			createModeControllers();
+			final Controller controller = createController();
+			createModeControllers(controller);
+			buildMenus(controller);
 			createFrame(args);
 		}
 		catch (final Exception e) {

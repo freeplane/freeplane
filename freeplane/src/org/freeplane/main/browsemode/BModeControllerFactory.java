@@ -56,7 +56,7 @@ import org.freeplane.view.swing.ui.UserInputListenerFactory;
 public class BModeControllerFactory {
 	private static BModeController modeController;
 
-	static public BModeController createModeController(final String menuStructure) {
+	static public BModeController createModeController() {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new BModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
@@ -93,13 +93,9 @@ public class BModeControllerFactory {
 		    controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
-		userInputListenerFactory.setMenuStructure(menuStructure);
 		new UnfoldAll();
-		userInputListenerFactory.updateMenus(modeController);
-		modeController.updateMenus();
 		new ViewerController();
 		EncryptionController.install(new EncryptionController());
-//		NodeHistory.install(modeController);
 		return modeController;
 	}
 }

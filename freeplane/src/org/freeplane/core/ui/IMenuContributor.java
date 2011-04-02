@@ -19,6 +19,8 @@
  */
 package org.freeplane.core.ui;
 
+import org.freeplane.features.common.map.ModeController;
+
 public interface IMenuContributor {
-	public void updateMenus(final MenuBuilder builder);
+	public void updateMenus(final ModeController modeController, final MenuBuilder builder);
 }

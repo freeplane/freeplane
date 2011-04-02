@@ -74,7 +74,7 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 		final Controller controller = Controller.getCurrentController();
 		final SaveAcceleratorPresetsAction saveAction = new SaveAcceleratorPresetsAction();
 		controller.addAction(saveAction);
-		ModeController modecontroller = controller.getModeController();
+		ModeController modecontroller = controller.getModeController(MModeController.MODENAME);
 		final MenuBuilder menuBuilder = modecontroller.getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.addAction("/menu_bar/extras/first/options/acceleratorPresets/save", "SaveAcceleratorPresetsAction",
 		    saveAction, MenuBuilder.AS_CHILD);
