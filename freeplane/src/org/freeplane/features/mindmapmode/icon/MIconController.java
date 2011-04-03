@@ -37,7 +37,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.controller.Controller;

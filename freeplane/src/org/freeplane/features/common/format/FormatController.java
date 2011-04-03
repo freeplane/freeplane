@@ -27,11 +27,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.security.AccessControlException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.commons.lang.time.FastDateFormat;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -81,10 +81,10 @@ public class FormatController implements IExtension {
 		numberFormats.add(PatternFormat.createPatternFormat("%.0f", PatternFormat.STYLE_FORMATTER, numberType));
 		numberFormats.add(PatternFormat.createPatternFormat("%.2f", PatternFormat.STYLE_FORMATTER, numberType));
 		String dateType = PatternFormat.TYPE_DATE;
-		final FastDateFormat localDate = FastDateFormat.getDateInstance(FastDateFormat.MEDIUM, null, null);
-		final FastDateFormat localDateTime = FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.SHORT, null, null);
-		dateFormats.add(PatternFormat.createPatternFormat(localDate.getPattern(), PatternFormat.STYLE_DATE, dateType));
-		dateFormats.add(PatternFormat.createPatternFormat(localDateTime.getPattern(), PatternFormat.STYLE_DATE,
+		final SimpleDateFormat localDate = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM);
+		final SimpleDateFormat localDateTime = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.SHORT);
+		dateFormats.add(PatternFormat.createPatternFormat(localDate.toPattern(), PatternFormat.STYLE_DATE, dateType));
+		dateFormats.add(PatternFormat.createPatternFormat(localDateTime.toPattern(), PatternFormat.STYLE_DATE,
 		    dateType));
 		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd", PatternFormat.STYLE_DATE, dateType));
 		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd HH:mm", PatternFormat.STYLE_DATE, dateType));

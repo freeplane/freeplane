@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 
@@ -105,11 +104,11 @@ public class FreeplaneDate extends Date {
     }
 	public static String toStringISO(final Date date) {
     	// use local timezone
-    	return DateFormatUtils.format(date, ISO_DATE_TIME_FORMAT_PATTERN);
+    	return getDateFormat(ISO_DATE_TIME_FORMAT_PATTERN).format(date);
     }
 
 	public static String toStringShortISO(final Date date) {
-    	return DateFormatUtils.format(date, ISO_DATE_FORMAT_PATTERN);
+    	return getDateFormat(ISO_DATE_FORMAT_PATTERN).format(date);
     }
 
 	public static Object toObject(String text) {

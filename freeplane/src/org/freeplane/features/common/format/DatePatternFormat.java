@@ -2,7 +2,6 @@ package org.freeplane.features.common.format;
 
 import java.util.Date;
 
-import org.apache.commons.lang.time.FastDateFormat;
 import org.freeplane.core.util.FreeplaneDate;
 
 class DatePatternFormat extends PatternFormat {
