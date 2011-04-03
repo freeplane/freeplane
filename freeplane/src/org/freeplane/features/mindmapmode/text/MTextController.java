@@ -589,7 +589,8 @@ public class MTextController extends TextController {
 		}
 		node.requestFocus();
 		stopEditing();
-		if(isNewNode && firstEvent == null){
+		if(isNewNode && firstEvent == null 
+				&& ! ResourceController.getResourceController().getBooleanProperty("display_inline_editor_for_all_new_nodes")){
 			final EditEventDispatcher dispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
 			dispatcher.install();
 			return;

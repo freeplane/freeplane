@@ -187,7 +187,8 @@
             	<choice value="ADD_CHILD"/>
             </combo>
         </separator>
-       <separator name="inline_editor">        
+       <separator name="inline_editor">     
+       	    <boolean name="display_inline_editor_for_all_new_nodes" />
             <boolean name="il__enter_confirms_by_default" />
         </separator>
         <separator name="notifications">
