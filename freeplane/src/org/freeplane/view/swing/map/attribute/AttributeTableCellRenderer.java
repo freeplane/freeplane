@@ -104,14 +104,20 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 			setIcon(icon);
 		}
 		setText(text);
-		final int prefWidth = getPreferredSize().width;
-		final int width = table.getColumnModel().getColumn(column).getWidth();
-		if (prefWidth > width) {
-			final String toolTip = HtmlUtils.isHtmlNode(text) ? text : HtmlUtils.plainToHTML(text);
-			setToolTipText(toolTip.replace("\n", "<br>"));
+		if(text != originalText){
+			final String toolTip = HtmlUtils.isHtmlNode(originalText) ? text : HtmlUtils.plainToHTML(originalText);
+			setToolTipText(toolTip);
 		}
-		else {
-			setToolTipText(null);
+		else{
+			final int prefWidth = getPreferredSize().width;
+			final int width = table.getColumnModel().getColumn(column).getWidth();
+			if (prefWidth > width) {
+				final String toolTip = HtmlUtils.isHtmlNode(text) ? text : HtmlUtils.plainToHTML(text);
+				setToolTipText(toolTip);
+			}
+			else {
+				setToolTipText(null);
+			}
 		}
 		return rendererComponent;
 	}
