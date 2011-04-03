@@ -114,7 +114,7 @@ public class ScriptingEngine {
 		scriptingPermissions.initFromPreferences();
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		final ScriptingSecurityManager scriptingSecurityManager;
-		final boolean needsSecurityManager = !securityManager.hasFinalSecurityManager();
+		final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
 		if (needsSecurityManager) {
 			final boolean executeSignedScripts = scriptingPermissions.isExecuteSignedScriptsWithoutRestriction();
 			if (restricted)

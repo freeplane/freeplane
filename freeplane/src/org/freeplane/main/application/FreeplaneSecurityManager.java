@@ -314,7 +314,8 @@ public final class FreeplaneSecurityManager extends SecurityManager {
 	}
 
 	/** needed since scripts may be invoked recursively and the security manager may only be set replaced. */
-	public boolean hasFinalSecurityManager() {
-	    return mFinalSecurityManager != null;
+	public boolean needsFinalSecurityManager() {
+	    return mFinalSecurityManager == null 
+	    && ! Boolean.valueOf(System.getProperty("org.freeplane.main.application.FreeplaneSecurityManager.disable", "false"));
     }
 }
