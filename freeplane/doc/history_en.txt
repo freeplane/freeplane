@@ -1,6 +1,17 @@
 ===============================
+1.2.4 alpha
+===============================
+New features:
+Display content type icon in status line, attribute editors and find/filter editor
+Use META key for multiple selects on mac
+External object slideshow-function + extended progress display
+Progress up, Progress down, Extended progress 10% and Extended progress 25% in icon menu
+<freeplane-user-dir>/resources added to resources search path
+
+===============================
 1.2.3 alpha
 ===============================
+New features:
 Date comparison for nodes and attributes
 Attributes in node styles
 Insert "external images" on drag and drop to a node
@@ -10,7 +21,7 @@ Hyperlinks in attributes
 Inline editor for Node Details (on single click)
 Links to nodes in attributes. Shortened content of the linked nodes is displayed.
 Date and time selection in Filter / Search
-
+Enable printing from rich text editor
 ===============================
 1.2.2 alpha
 ===============================
