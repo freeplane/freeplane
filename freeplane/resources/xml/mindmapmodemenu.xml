@@ -183,7 +183,18 @@
 			</menu_category>
 			<menu_category name="automaticLayout2"/>
 			<menu_separator />
-			<menu_category name="icons" />
+			<menu_category name="icons">
+				<menu_action action="RemoveIcon_0_Action" />
+				<menu_action action="RemoveIconAction" />
+				<menu_action action="RemoveAllIconsAction" />
+				<menu_separator/>
+				<menu_action action="IconProgressIconUpAction" accelerator="alt LESS" />
+				<menu_action action="IconProgressIconDownAction" accelerator="alt shift LESS" />
+				<menu_action action="IconProgressExtended10Action" />
+				<menu_action action="IconProgressExtended25Action" />
+				<menu_action action="IconProgressRemoveAction" />
+				<menu_separator/>
+			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
             <menu_action action="FormatCopy" accelerator="alt shift C" />
@@ -476,7 +487,18 @@
 		<menu_separator />
 		<menu_submenu name="icons" name_ref="icon_menu">
 			<menu_category name="actions" />
-			<menu_category name="icons" />
+			<menu_category name="icons">
+				<menu_action action="RemoveIcon_0_Action" />
+				<menu_action action="RemoveIconAction" />
+				<menu_action action="RemoveAllIconsAction" />
+				<menu_separator/>
+				<menu_action action="IconProgressIconUpAction" />
+				<menu_action action="IconProgressIconDownAction" />
+				<menu_action action="IconProgressExtended10Action" />
+				<menu_action action="IconProgressExtended25Action" />
+				<menu_action action="IconProgressRemoveAction" />
+				<menu_separator/>
+			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="styles" name_ref="styles">
 			<menu_category name="manage">

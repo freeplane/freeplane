@@ -219,17 +219,6 @@ public class MIconController extends IconController {
 
 	private void addIconsToMenu(final ModeController modeController, final MenuBuilder builder, final String iconMenuString) {
 		final String category = iconMenuString + "/icons/icons";
-		builder.addAction(category, modeController.getAction("RemoveIcon_0_Action"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, modeController.getAction("RemoveIconAction"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, modeController.getAction("RemoveAllIconsAction"), MenuBuilder.AS_CHILD);
-		builder.addSeparator(category, MenuBuilder.AS_CHILD);
-		builder.addAction(category, modeController.getAction("IconProgressIconUpAction"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, modeController.getAction("IconProgressIconDownAction"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, modeController.getAction("IconProgressExtended10Action"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, modeController.getAction("IconProgressExtended25Action"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, modeController.getAction("IconProgressRemoveAction"), MenuBuilder.AS_CHILD);
-	
-		builder.addSeparator(category, MenuBuilder.AS_CHILD);
 		for (final IconGroup iconGroup : STORE.getGroups()) {
 			addIconGroupToMenu(builder, category, iconGroup);
 		}
@@ -239,12 +228,8 @@ public class MIconController extends IconController {
 		modeController.addAction(new RemoveIconAction(0));
 		modeController.addAction(new RemoveIconAction(-1));
 		modeController.addAction(new RemoveAllIconsAction());
-		ProgressUpAction prUp = new ProgressUpAction();
-		prUp.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("alt LESS"));
-		modeController.addAction(prUp);
-		ProgressDownAction prDown = new ProgressDownAction();
-		prDown.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("alt shift LESS"));
-		modeController.addAction(prDown);
+		modeController.addAction(new ProgressUpAction());
+		modeController.addAction(new ProgressDownAction());
 		modeController.addAction(new ExtendedProgress10Action());
 		modeController.addAction(new ExtendedProgress25Action());
 		modeController.addAction(new RemoveProgressAction());
