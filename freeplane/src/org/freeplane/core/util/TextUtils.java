@@ -2,7 +2,6 @@ package org.freeplane.core.util;
 
 import java.text.MessageFormat;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -87,6 +86,17 @@ public class TextUtils {
 	}
 
 	public static boolean isNumber(String text) {
-		return NumberUtils.isNumber(text);
+		if("".equals(text))
+			return false;
+		final char first = text.charAt(0);
+		if(Character.isLetter(first) || Character.isSpaceChar(first))
+			return false;
+		try {
+	        Double.parseDouble(text);
+	        return true;
+        }
+        catch (NumberFormatException e) {
+        	return false;
+        }
     }
 }
