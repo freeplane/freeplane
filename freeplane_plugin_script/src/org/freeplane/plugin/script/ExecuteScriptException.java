@@ -10,4 +10,8 @@ public class ExecuteScriptException extends RuntimeException {
 	public ExecuteScriptException(String message) {
 		super(message);
 	}
+
+	public ExecuteScriptException(Throwable cause) {
+	    super(cause);
+    }
 }

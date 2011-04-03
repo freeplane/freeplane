@@ -85,7 +85,7 @@ public class ScriptingEngine {
 			    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 			    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
 			if (showResult != JOptionPane.OK_OPTION) {
-				throw new ExecuteScriptException(TextUtils.getText("script_execution_disabled"));
+				throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
 			}
 		}
 		noUserPermissionRequired = Boolean.TRUE;

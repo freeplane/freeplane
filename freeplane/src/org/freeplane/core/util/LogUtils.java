@@ -116,7 +116,10 @@ public class LogUtils {
 	}
 
 	public static void severe(final String comment, final Throwable e) {
-		LOGGER.log(Level.SEVERE, comment, e);
+		if(e instanceof SecurityException || e.getCause() instanceof SecurityException)
+			warn(comment, e);
+		else
+			LOGGER.log(Level.SEVERE, comment, e);
 	}
 
 	public static void severe(final Throwable e) {
