@@ -184,10 +184,10 @@ public class SModeControllerFactory {
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		UITools.setScrollbarIncrement(styleScrollPane);
 		//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
-		this.modeController = null;
 		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, styleScrollPane);
 		final Set<String> emptySet = Collections.emptySet();
-		userInputListenerFactory.updateMenus("/xml/stylemodemenu.xml", emptySet);
+		modeController.updateMenus("/xml/stylemodemenu.xml", emptySet);
+		this.modeController = null;
 		return controller;
 	}
 

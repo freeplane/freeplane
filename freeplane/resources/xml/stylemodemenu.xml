@@ -65,9 +65,14 @@
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="icons" name_ref="icon_menu">
-			<menu_category name="actions" />
-			<menu_separator />
-			<menu_category name="icons" />
+			<menu_category name="actions">
+				<menu_action action="RemoveIcon_0_Action" />
+				<menu_action action="RemoveIconAction" />
+				<menu_action action="RemoveAllIconsAction" />
+				<menu_separator/>
+			</menu_category>
+			<menu_category name="icons">
+			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
            <menu_category name="paste">
