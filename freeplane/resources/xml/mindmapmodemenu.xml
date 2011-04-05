@@ -18,7 +18,7 @@
 			<menu_separator />
 			<menu_action action="FilePropertiesAction" />
 			<menu_separator />
-			<menu_submenu name="last" name_ref="most_recent_files"></menu_submenu>
+			<menu_submenu name="last" name_ref="most_recent_files" menu_key="main_menu_most_recent_files"/>
 			<menu_category name="export">
 				<menu_action action="ExportBranchAction" accelerator="alt shift A" />
 				<menu_action action="ExportAction"/>
@@ -183,7 +183,7 @@
 			</menu_category>
 			<menu_category name="automaticLayout2"/>
 			<menu_separator />
-			<menu_category name="icons">
+			<menu_category name="icons" menu_key="main_menu_icons">
 				<menu_action action="RemoveIcon_0_Action" />
 				<menu_action action="RemoveIconAction" />
 				<menu_action action="RemoveAllIconsAction" />
@@ -279,7 +279,7 @@
                 <menu_action action="CopyMapStylesAction" />  
             </menu_category>
             <menu_separator />
-            <menu_category name="assign">
+            <menu_category name="assign" menu_key="main_menu_styles">
             </menu_category>
            	<menu_action action="AddStyleAttributes" />
         </menu_submenu>
@@ -372,7 +372,7 @@
 					<menu_action action="TimeListAction" />
 					<menu_action action="TimeManagementAction" accelerator="control T" />
 				</menu_category>
-				<menu_category name="scripting" plugin="org.freeplane.plugin.script">
+				<menu_category name="scripting" plugin="org.freeplane.plugin.script" menu_key="main_menu_scripting">
 					<menu_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
@@ -386,9 +386,9 @@
 					<menu_action action="PropertyAction" accelerator="control COMMA" />
 					<menu_action action="SetAcceleratorOnNextClickAction" />
 					<menu_submenu name="acceleratorPresets" name_ref="acceleratorPresets">
-						<menu_category name="new" />
+						<menu_category name="new" menu_key="main_menu_new_accelerator_presets"/>
 						<menu_separator />
-						<menu_category name="save" />
+						<menu_category name="save" menu_key="main_menu_save_accelerator_presets"/>
 					</menu_submenu>
 				</menu_category>
 				<menu_action action="OpenUserDirAction" />
@@ -396,10 +396,10 @@
 			<menu_category name="last"></menu_category>
 		</menu_submenu>
 		<menu_submenu name="mindmaps" name_ref="mindmaps">
-			<menu_category name="modes"></menu_category>
-			<menu_category name="navigate"></menu_category>
+			<menu_category name="modes" menu_key="main_menu_modes"/>
+			<menu_category name="navigate" menu_key="main_menu_navigate_maps"/>
 			<menu_separator />
-			<menu_category name="mindmaps"></menu_category>
+			<menu_category name="mindmaps" menu_key="main_menu_mindmaps"/>
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="doc">
@@ -417,8 +417,7 @@
 		</menu_submenu>
 	</menu_category>
 	<menu_category name="map_popup">
-		<menu_category name="maps">
-		</menu_category>
+		<menu_category name="maps" menu_key="map_popup_mindmaps" />
 		<menu_separator />
 		<menu_category name="toolbars">
 			<menu_action action="ToggleMenubarAction" />
@@ -487,7 +486,7 @@
 		<menu_separator />
 		<menu_submenu name="icons" name_ref="icon_menu">
 			<menu_category name="actions" />
-			<menu_category name="icons">
+			<menu_category name="icons"  menu_key="popup_menu_icons">
 				<menu_action action="RemoveIcon_0_Action" />
 				<menu_action action="RemoveIconAction" />
 				<menu_action action="RemoveAllIconsAction" />
@@ -505,8 +504,7 @@
 				<menu_action action="EditStylesAction" />
 			</menu_category>
 			<menu_separator />
-			<menu_category name="assign">
-			</menu_category>
+			<menu_category name="assign" menu_key="node_popup_styles" />
 		</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
 			<menu_category name="nodes">
@@ -575,7 +573,7 @@
 	</menu_category>
 	<menu_category name="main_toolbar">
 		<menu_separator />
-		<menu_category name="update" />
+		<menu_category name="update" menu_key="main_toolbar_update"/>
 		<menu_category name="main">
 			<menu_action action="NavigationPreviousMapAction" />
 			<menu_action action="NavigationNextMapAction" />

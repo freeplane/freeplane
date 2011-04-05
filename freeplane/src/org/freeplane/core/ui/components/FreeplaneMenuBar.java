@@ -38,8 +38,7 @@ public class FreeplaneMenuBar extends JMenuBar {
 	public static final String INSERT_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/insert";
 	public static final String MAP_POPUP_MENU = "/map_popup";
 	public static final String MENU_BAR_PREFIX = "/menu_bar";
-	public static final String MINDMAP_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/mindmaps";
-	public static final String MODES_MENU = FreeplaneMenuBar.MINDMAP_MENU + "/modes";
+	public static final String MODES_MENU = "main_menu_modes";
 	/**
 	 * 
 	 */

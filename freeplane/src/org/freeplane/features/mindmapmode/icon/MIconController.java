@@ -217,9 +217,8 @@ public class MIconController extends IconController {
 	}
 
 	private void addIconsToMenu(final ModeController modeController, final MenuBuilder builder, final String iconMenuString) {
-		final String category = iconMenuString + "/icons/icons";
 		for (final IconGroup iconGroup : STORE.getGroups()) {
-			addIconGroupToMenu(builder, category, iconGroup);
+			addIconGroupToMenu(builder, iconMenuString, iconGroup);
 		}
 	}
 
@@ -408,7 +407,7 @@ public class MIconController extends IconController {
 	}
 
 	private void updateMenus(ModeController modeController, final MenuBuilder builder) {
-		addIconsToMenu(modeController, builder, FreeplaneMenuBar.MENU_BAR_PREFIX);
-		addIconsToMenu(modeController, builder, UserInputListenerFactory.NODE_POPUP);
+		addIconsToMenu(modeController, builder, "main_menu_icons");
+		addIconsToMenu(modeController, builder, "popup_menu_icons");
 	}
 }

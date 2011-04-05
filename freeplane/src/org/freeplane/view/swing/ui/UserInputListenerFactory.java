@@ -253,8 +253,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public void updateMapList() {
 		updateModeMenu();
-		updateMapList(FreeplaneMenuBar.MAP_POPUP_MENU + "/maps");
-		updateMapList(FreeplaneMenuBar.MINDMAP_MENU + "/mindmaps");
+		updateMapList("map_popup_mindmaps");
+		updateMapList("main_menu_mindmaps");
 	}
 
 	private void updateMapList(final String mapsMenuPosition) {

@@ -76,7 +76,7 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 		controller.addAction(saveAction);
 		ModeController modecontroller = controller.getModeController(MModeController.MODENAME);
 		final MenuBuilder menuBuilder = modecontroller.getUserInputListenerFactory().getMenuBuilder();
-		menuBuilder.addAction("/menu_bar/extras/first/options/acceleratorPresets/save", "SaveAcceleratorPresetsAction",
+		menuBuilder.addAction("main_menu_save_accelerator_presets", "SaveAcceleratorPresetsAction",
 		    saveAction, MenuBuilder.AS_CHILD);
 		for (final File dir : dirs) {
 			final File[] fileList = dir.listFiles();
@@ -102,7 +102,7 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 					final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
 					    prop.toURL(), key, title);
 					controller.addAction(loadAcceleratorPresetsAction);
-					menuBuilder.addAction("/menu_bar/extras/first/options/acceleratorPresets/new", key,
+					menuBuilder.addAction("main_menu_new_accelerator_presets", key,
 					    loadAcceleratorPresetsAction, MenuBuilder.AS_CHILD);
 				}
 				catch (final Exception e) {

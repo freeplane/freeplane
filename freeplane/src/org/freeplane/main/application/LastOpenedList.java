@@ -67,7 +67,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
 class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
-	private static final String MENU_CATEGORY = FreeplaneMenuBar.FILE_MENU + "/last";
+	private static final String MENU_CATEGORY = "main_menu_most_recent_files";
 	private static final String LAST_OPENED_LIST_LENGTH = "last_opened_list_length";
 	private static final String OPENED_NOW = "openedNow_1.0.20";
 	private static final String LAST_OPENED = "lastOpened_1.0.20";

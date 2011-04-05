@@ -193,16 +193,16 @@ public class MLogicalStyleController extends LogicalStyleController {
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-				removeStyleMenu(menuBuilder, "/menu_bar");
-				removeStyleMenu(menuBuilder, "/node_popup");
+				removeStyleMenu(menuBuilder, "main_menu_styles");
+				removeStyleMenu(menuBuilder, "node_popup_styles");
 			}
 
 			public void afterMapClose(final MapModel oldMap) {
 			}
 
 			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-				addStyleMenu(menuBuilder, "/menu_bar", newMap);
-				addStyleMenu(menuBuilder, "/node_popup", newMap);
+				addStyleMenu(menuBuilder, "main_menu_styles", newMap);
+				addStyleMenu(menuBuilder, "node_popup_styles", newMap);
 			}
 		});
 		final MapController mapController = modeController.getMapController();
@@ -226,10 +226,10 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 			public void mapChanged(final MapChangeEvent event) {
 				if (event.getProperty().equals(MapStyle.MAP_STYLES)) {
-					removeStyleMenu(menuBuilder, "/menu_bar");
-					addStyleMenu(menuBuilder, "/menu_bar", event.getMap());
-					removeStyleMenu(menuBuilder, "/node_popup");
-					addStyleMenu(menuBuilder, "/node_popup", event.getMap());
+					removeStyleMenu(menuBuilder, "main_menu_styles");
+					addStyleMenu(menuBuilder, "main_menu_styles", event.getMap());
+					removeStyleMenu(menuBuilder, "node_popup_styles");
+					addStyleMenu(menuBuilder, "node_popup_styles", event.getMap());
 				}
 			}
 		});
@@ -244,7 +244,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	protected void removeStyleMenu(final MenuBuilder menuBuilder, final String formatMenuString) {
-		menuBuilder.removeChildElements(formatMenuString + "/styles/assign");
+		menuBuilder.removeChildElements(formatMenuString);
 		actions.clear();
 	}
 
@@ -257,7 +257,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			return;
 		}
 		final NodeModel rootNode = extension.getStyleMap().getRootNode();
-		addStyleMenu(menuBuilder, formatMenuString + "/styles/assign", rootNode, extension);
+		addStyleMenu(menuBuilder, formatMenuString, rootNode, extension);
 	}
 
 	private void addStyleMenu(final MenuBuilder menuBuilder, final String category, final NodeModel rootNode, MapStyleModel extension) {

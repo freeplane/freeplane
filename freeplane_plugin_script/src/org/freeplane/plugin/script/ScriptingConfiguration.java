@@ -101,7 +101,7 @@ class ScriptingConfiguration {
 		}
 	}
 
-	private static final String MENU_BAR_SCRIPTS_PARENT_LOCATION = "/menu_bar/extras/first/scripting";
+	private static final String MENU_BAR_SCRIPTS_PARENT_LOCATION = "main_menu_scripting";
 	private static final String MENU_BAR_SCRIPTS_LOCATION = MENU_BAR_SCRIPTS_PARENT_LOCATION + "/scripts";
 	private static final String SCRIPT_REGEX = ".*\\.groovy$";
 	private static final String JAR_REGEX = ".*\\.jar$";

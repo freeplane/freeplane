@@ -235,24 +235,28 @@ public class MenuBuilder extends UIBuilder {
 	private static class MenuPath {
 		static MenuPath emptyPath() {
 			final MenuPath menuPath = new MenuPath("");
-			menuPath.path = "";
+			menuPath.key = "";
 			return menuPath;
 		}
 
-		String parentPath;
-		String path;
+		String parentKey;
+		String key;
 
-		MenuPath(final String path) {
-			parentPath = path;
+		MenuPath(final String key) {
+			parentKey = key;
 		}
 
-		void setName(final String name) {
-			path = parentPath + '/' + name;
+		void setKey(final String name) {
+			key = name;
+		}
+
+		void setLastKeySection(final String name) {
+			key = parentKey + '/' + name;
 		}
 
 		@Override
 		public String toString() {
-			return path;
+			return key;
 		}
 	}
 
@@ -267,13 +271,17 @@ public class MenuBuilder extends UIBuilder {
 				final String plugin = attributes.getAttribute("plugin", null);
 				if(plugin != null && ! plugins.contains(plugin))
 					return null;
-				menuPath.setName(action);
+				final String menuKey = attributes.getAttribute("menu_key", null);
+				if(menuKey == null)
+					menuPath.setLastKeySection(action);
+				else
+					menuPath.setKey(menuKey);
 				String accelerator = attributes.getAttribute("accelerator", null);
 				if (accelerator != null) {
 					if (Compat.isMacOsX()) {
 						accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
 					}
-					setDefaultAccelerator(menuPath.path, accelerator);
+					setDefaultAccelerator(menuPath.key, accelerator);
 				}
 				try {
 					AFreeplaneAction theAction = modeController.getAction(action);
@@ -289,15 +297,15 @@ public class MenuBuilder extends UIBuilder {
 						}
 					}
 					if (tag.equals("menu_radio_action")) {
-						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) addRadioItem(menuPath.parentPath,
-						    theAction, "true".equals(attributes.getAttribute("selected", "false")));
+						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) 
+						addRadioItem(menuPath.parentKey, menuPath.key, theAction, "true".equals(attributes.getAttribute("selected", "false")));
 						if (buttonGroup == null) {
 							buttonGroup = new ButtonGroup();
 						}
 						buttonGroup.add(item);
 					}
 					else {
-						addAction(menuPath.parentPath, theAction, MenuBuilder.AS_CHILD);
+							addAction(menuPath.parentKey, menuPath.key, theAction, MenuBuilder.AS_CHILD);
 					}
 				}
 				catch (final Exception e) {
@@ -317,8 +325,12 @@ public class MenuBuilder extends UIBuilder {
 					return null;
 				buttonGroup = null;
 				final MenuPath menuPath = new MenuPath(parent.toString());
-				menuPath.setName(attributes.getAttribute("name", null));
-				if (!contains(menuPath.path)) {
+				final String menuKey = attributes.getAttribute("menu_key", null);
+				if(menuKey == null)
+					menuPath.setLastKeySection(attributes.getAttribute("name", null));
+				else
+					menuPath.setKey(menuKey);
+				if (!contains(menuPath.key)) {
 					if (tag.equals("menu_submenu")) {
 						final JMenu menuItem = new JMenu();
 						final String nameRef = attributes.getAttribute("name_ref", null);
@@ -328,11 +340,11 @@ public class MenuBuilder extends UIBuilder {
 							final URL url = ResourceController.getResourceController().getResource(iconResource);
 							menuItem.setIcon(new ImageIcon(url));
 						}
-						addMenuItem(menuPath.parentPath, menuItem, menuPath.path, MenuBuilder.AS_CHILD);
+						addMenuItem(menuPath.parentKey, menuItem, menuPath.key, MenuBuilder.AS_CHILD);
 					}
 					else {
-						if (!(menuPath.parentPath.equals(""))) {
-							addMenuItemGroup(menuPath.parentPath, menuPath.path, MenuBuilder.AS_CHILD);
+						if (!(menuPath.parentKey.equals(""))) {
+							addMenuItemGroup(menuPath.parentKey, menuPath.key, MenuBuilder.AS_CHILD);
 						}
 					}
 				}
@@ -664,6 +676,11 @@ public class MenuBuilder extends UIBuilder {
 	public JMenuItem addRadioItem(final String category, final AFreeplaneAction action, final boolean isSelected) {
 		assert action != null;
 		final String key = action.getKey();
+		return addRadioItem(category, key, action, isSelected);
+	}
+
+	public JMenuItem addRadioItem(final String category, final String key,
+			final AFreeplaneAction action, final boolean isSelected) {
 		assert key != null;
 		final JRadioButtonMenuItem item;
 		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
@@ -745,13 +762,13 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	Object getMenubar(DefaultMutableTreeNode element) {
-		do {
+		while (element != null) {
 			final Object userObject = element.getUserObject();
 			if (userObject instanceof JMenuBar) {
 				return ((Node) element).getKey();
 			}
 			element = (DefaultMutableTreeNode) element.getParent();
-		} while (element != null);
+		} 
 		return null;
 	}
 

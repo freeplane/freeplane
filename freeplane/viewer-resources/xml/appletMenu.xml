@@ -8,7 +8,7 @@
 				<menu_action action="FilePropertiesAction" />				
 			</menu_category>
 			<menu_separator />
-			<menu_submenu name="last" name_ref="most_recent_files"></menu_submenu>
+			<menu_submenu name="last" name_ref="most_recent_files" menu_key="main_menu_most_recent_files"/>
 			<menu_category name="print">
 				<menu_action action="PageAction" />
 				<menu_action action="PrintAction" accelerator="control P" />
@@ -115,10 +115,10 @@
 			<menu_separator />
 		</menu_submenu>
 		<menu_submenu name="mindmaps" name_ref="mindmaps">
-			<menu_category name="modes"></menu_category>
-			<menu_category name="navigate"></menu_category>
+			<menu_category name="modes" menu_key="main_menu_modes"/>
+			<menu_category name="navigate" menu_key="main_menu_navigate_maps"/>
 			<menu_separator />
-			<menu_category name="mindmaps"></menu_category>
+			<menu_category name="mindmaps" menu_key="main_menu_mindmaps"/>
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="doc">
@@ -130,8 +130,7 @@
 		</menu_submenu>
 	</menu_category>
 	<menu_category name="map_popup">
-		<menu_category name="maps">
-		</menu_category>
+		<menu_category name="maps" menu_key="map_popup_mindmaps"/>
 		<menu_separator />
 		<menu_category name="toolbars">
 			<menu_action action="ToggleMenubarAction" />
