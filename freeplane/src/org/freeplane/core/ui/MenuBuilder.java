@@ -75,6 +75,8 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLException;
 
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
+
 public class MenuBuilder extends UIBuilder {
 	private static class ActionHolder implements INameMnemonicHolder {
 		final private Action action;
@@ -529,7 +531,15 @@ public class MenuBuilder extends UIBuilder {
 	 * @return returns the new JMenuItem.
 	 */
 	public void addAction(final String category, final AFreeplaneAction action, final int position) {
-		addAction(category, category + '/' + action.getKey(), action, position);
+		final String actionKey = "$" + action.getKey() + '$';
+		for(int i = 0; i < 1000; i++){
+			String key = actionKey + i;
+			if (null == get(key)){
+				addAction(category, key, action, position);
+				return;
+			}
+		}
+		addAction(category, category + '/' + actionKey, action, position);
 	}
 
 	public void addAction(final String category, final String key, final AFreeplaneAction action, final int position) {
@@ -675,8 +685,14 @@ public class MenuBuilder extends UIBuilder {
 
 	public JMenuItem addRadioItem(final String category, final AFreeplaneAction action, final boolean isSelected) {
 		assert action != null;
-		final String key = action.getKey();
-		return addRadioItem(category, key, action, isSelected);
+		final String actionKey = "$" + action.getKey() + '$';
+		for(int i = 0; i < 1000; i++){
+			String key = actionKey + i;
+			if (null == get(key)){
+				return addRadioItem(category, key, action, isSelected);
+			}
+		}
+		return addRadioItem(category, category + '/' + actionKey, action, isSelected);
 	}
 
 	public JMenuItem addRadioItem(final String category, final String key,
@@ -689,10 +705,9 @@ public class MenuBuilder extends UIBuilder {
 		else {
 			item = new JRadioButtonMenuItem(decorateAction(category, action));
 		}
-		final String fullKey = category + '/' + key;
-		addMenuItem(category, item, fullKey, MenuBuilder.AS_CHILD);
+		addMenuItem(category, item, key, MenuBuilder.AS_CHILD);
 		item.setSelected(isSelected);
-		addListeners(fullKey, action);
+		addListeners(key, action);
 		return item;
 	}
 
