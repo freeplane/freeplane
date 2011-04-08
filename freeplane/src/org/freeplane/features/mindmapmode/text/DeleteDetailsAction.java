@@ -20,6 +20,7 @@
 package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
@@ -27,7 +28,7 @@ import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.DetailTextModel;
 
-@EnabledAction(checkOnNodeChange=true)
+@EnabledAction(checkOnNodeChange = true)
 class DeleteDetailsAction extends AMultipleNodeAction {
 	/**
 	 * 
@@ -39,19 +40,26 @@ class DeleteDetailsAction extends AMultipleNodeAction {
 	}
 
 	@Override
-    protected void actionPerformed(ActionEvent e, NodeModel node) {
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
-		if(detailText == null){
+		if (detailText == null) {
 			return;
 		}
-		MTextController controller = (MTextController) MTextController.getController();
+		final MTextController controller = MTextController.getController();
 		controller.setDetailsHidden(node, false);
 		controller.setDetails(node, null);
-    }
+	}
 
 	@Override
 	public void setEnabled() {
-		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		setEnabled(node != null && DetailTextModel.getDetailText(node) != null);
+		boolean foundDetails = false;
+		final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+		for (final NodeModel node : nodes) {
+			if (node != null && DetailTextModel.getDetailText(node) != null) {
+				foundDetails = true;
+				break;
+			}
+		}
+		setEnabled(foundDetails);
 	}
 }

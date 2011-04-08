@@ -49,16 +49,16 @@ class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final int showResult = OptionalDontShowMeAgainDialog.show("really_remove_notes",
-		    "confirmation", MNoteController.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION,
+		final int showResult = OptionalDontShowMeAgainDialog.show("really_remove_notes", "confirmation",
+		    MNoteController.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION,
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		ModeController modeController = Controller.getCurrentModeController();
-		for (final Iterator<NodeModel> iterator = modeController.getMapController().getSelectedNodes()
-		    .iterator(); iterator.hasNext();) {
-			final NodeModel node = (NodeModel) iterator.next();
+		final ModeController modeController = Controller.getCurrentModeController();
+		for (final Iterator<NodeModel> iterator = modeController.getMapController().getSelectedNodes().iterator(); iterator
+		    .hasNext();) {
+			final NodeModel node = iterator.next();
 			if (NoteModel.getNoteText(node) != null) {
 				removeNote(node);
 			}
@@ -90,7 +90,7 @@ class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 	 * swing.event.PopupMenuEvent)
 	 */
 	public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-		setEnabled(isEnabled());
+		setEnabled();
 	}
 
 	private void removeNote(final NodeModel node) {
@@ -105,7 +105,7 @@ class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 			setEnabled(false);
 			return;
 		}
-		for (final NodeModel node :  modeController.getMapController().getSelectedNodes()) {
+		for (final NodeModel node : modeController.getMapController().getSelectedNodes()) {
 			if (NoteModel.getNoteText(node) != null) {
 				foundNote = true;
 				break;
