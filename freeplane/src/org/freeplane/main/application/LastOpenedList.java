@@ -45,7 +45,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;

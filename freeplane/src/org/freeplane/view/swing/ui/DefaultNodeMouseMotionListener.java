@@ -139,7 +139,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					}
 					return;
 				}
-				mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
+				mapController.toggleFolded(mapController.getSelectedNodes());
 			}
 			e.consume();
 		}

@@ -23,8 +23,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
-import java.util.ListIterator;
-
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
@@ -68,10 +66,8 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 			    .getPath()).getFile());
 			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, file);
 			map.setURL(url);
-			for (final ListIterator<NodeModel> i = modeController.getMapController().childrenUnfolded(node); i
-			    .hasNext();) {
-				final NodeModel importNode = i.next();
-				((MMapController) modeController.getMapController()).insertNode(importNode, selected);
+			for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
+				((MMapController) modeController.getMapController()).insertNode(child, selected);
 			}
 			((MLinkController) LinkController.getController()).setLink(selected, (URI) null, false);
 		}

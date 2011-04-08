@@ -19,10 +19,9 @@
  */
 package org.freeplane.features.common.icon;
 
-import java.util.ListIterator;
-
 import javax.swing.ListModel;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.common.map.MapController;
@@ -61,10 +60,8 @@ public class IconRegistry implements IExtension {
 		for (final MindIcon icon : node.getIcons()) {
 			addIcon(icon);
 		}
-		final ListIterator<NodeModel> iterator = mapController.childrenUnfolded(node);
-		while (iterator.hasNext()) {
-			final NodeModel next = iterator.next();
-			registryNodeIcons(mapController, next);
+		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+			registryNodeIcons(mapController, child);
 		}
 	}
 

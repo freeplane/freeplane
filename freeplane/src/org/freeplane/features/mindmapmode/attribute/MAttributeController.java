@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.mindmapmode.attribute;
 
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
@@ -192,9 +191,7 @@ public class MAttributeController extends AttributeController {
 		 */
 		void iterate(final NodeModel node) {
 			visitor.visit(NodeAttributeTableModel.getModel(node));
-			final ListIterator<NodeModel> iterator = Controller.getCurrentModeController().getMapController().childrenUnfolded(node);
-			while (iterator.hasNext()) {
-				final NodeModel child = iterator.next();
+			for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 				iterate(child);
 			}
 		}
@@ -637,8 +634,7 @@ public class MAttributeController extends AttributeController {
 			final String value = nodeAttributeTableModel.getValueAt(i, 1).toString();
 			performRegistryAttributeValue(name, value);
 		}
-		for (final ListIterator<NodeModel> e = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); e.hasNext();) {
-			final NodeModel child = e.next();
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			performRegistrySubtreeAttributes(child);
 		}
 	}

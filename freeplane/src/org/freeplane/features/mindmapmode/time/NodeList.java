@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EventListener;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -1018,8 +1017,7 @@ class NodeList {
 			        node.getHistoryInformation().getCreatedAt(), node.getHistoryInformation().getLastModifiedAt(),
 			        new NotesHolder(node) });
 		}
-		for (final Iterator<NodeModel> i = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
-			final NodeModel child = i.next();
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			updateModel(model, child);
 		}
 	}

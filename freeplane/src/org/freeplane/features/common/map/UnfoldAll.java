@@ -21,7 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
@@ -107,8 +106,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 
 	protected void foldAll(final NodeModel node) {
 		final MapController modeController = Controller.getCurrentModeController().getMapController();
-		for (final Iterator<NodeModel> i = modeController.childrenUnfolded(node); i.hasNext();) {
-			foldAll(i.next());
+		for (NodeModel child : modeController.childrenUnfolded(node)) {
+			foldAll(child);
 		}
 		setFolded(node, true);
 	}
@@ -124,14 +123,14 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	public void foldLastBranches(final NodeModel node) {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		boolean nodeHasChildWhichIsLeave = false;
-		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
-			if (i.next().getChildCount() == 0) {
+		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+			if (child.getChildCount() == 0) {
 				nodeHasChildWhichIsLeave = true;
 			}
 		}
 		setFolded(node, nodeHasChildWhichIsLeave);
-		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
-			foldLastBranches(i.next());
+		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+			foldLastBranches(child);
 		}
 	}
 
@@ -144,8 +143,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		if (k < stage) {
 			setFolded(node, false);
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
-			for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
-				foldStageN(i.next(), stage);
+			for (final NodeModel child : mapController.childrenUnfolded(node)) {
+				foldStageN(child, stage);
 			}
 		}
 		else {
@@ -159,8 +158,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			return node.depth();
 		}
 		int k = 0;
-		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
-			final int l = getMaxDepth(i.next());
+		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+			final int l = getMaxDepth(child);
 			if (l > k) {
 				k = l;
 			}
@@ -177,8 +176,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			return Integer.MAX_VALUE;
 		}
 		int k = Integer.MAX_VALUE;
-		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
-			final int l = getMinDepth(i.next());
+		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+			final int l = getMinDepth(child);
 			if (l < k) {
 				k = l;
 			}
@@ -213,8 +212,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	public void unfoldAll(final NodeModel node) {
 		setFolded(node, false);
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
-			unfoldAll(i.next());
+		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+			unfoldAll(child);
 		}
 	}
 
@@ -231,8 +230,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		if (k < stage) {
 			setFolded(node, false);
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
-			for (final Iterator<NodeModel> i = mapController.childrenUnfolded(node); i.hasNext();) {
-				unfoldStageN(i.next(), stage);
+			for (final NodeModel child : mapController.childrenUnfolded(node)) {
+				unfoldStageN(child, stage);
 			}
 		}
 		else {

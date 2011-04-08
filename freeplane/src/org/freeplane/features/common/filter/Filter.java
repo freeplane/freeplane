@@ -180,14 +180,11 @@ public class Filter {
 		return condition.checkNode(node);
 	}
 
-	private boolean filterChildren(final NodeModel parent,
+	private boolean filterChildren(final NodeModel node,
 	                               final boolean isAncestorSelected, final boolean isAncestorEclipsed) {
-		final ListIterator<NodeModel> iterator = Controller.getCurrentModeController().getMapController().childrenUnfolded(
-		    parent);
 		boolean isDescendantSelected = false;
-		while (iterator.hasNext()) {
-			final NodeModel node = iterator.next();
-			isDescendantSelected = applyFilter(node, isAncestorSelected, isAncestorEclipsed,
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
+			isDescendantSelected = applyFilter(child, isAncestorSelected, isAncestorEclipsed,
 			    isDescendantSelected);
 		}
 		return isDescendantSelected;

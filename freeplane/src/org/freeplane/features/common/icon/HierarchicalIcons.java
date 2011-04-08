@@ -21,7 +21,6 @@
 package org.freeplane.features.common.icon;
 
 import java.util.HashMap;
-import java.util.ListIterator;
 import java.util.TreeSet;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
@@ -94,9 +93,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			}
 			return;
 		}
-		final ListIterator<NodeModel> childrenUnfolded = Controller.getCurrentModeController().getMapController().childrenUnfolded(node);
-		while (childrenUnfolded.hasNext()) {
-			final NodeModel child = childrenUnfolded.next();
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			gatherLeavesAndSetParentsStyle(child);
 		}
 	}
@@ -108,9 +105,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			setStyle(node);
 			return;
 		}
-		final ListIterator<NodeModel> childrenUnfolded = Controller.getCurrentModeController().getMapController().childrenUnfolded(node);
-		while (childrenUnfolded.hasNext()) {
-			final NodeModel child = childrenUnfolded.next();
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			gatherLeavesAndSetStyle(child);
 		}
 	}
@@ -200,9 +195,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	private void removeIcons(final NodeModel node) {
 		node.removeStateIcons(getHookName());
 		Controller.getCurrentModeController().getMapController().nodeRefresh(node);
-		final ListIterator<NodeModel> childrenUnfolded = Controller.getCurrentModeController().getMapController().childrenUnfolded(node);
-		while (childrenUnfolded.hasNext()) {
-			final NodeModel child = childrenUnfolded.next();
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			removeIcons(child);
 		}
 	}
@@ -211,10 +204,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	private Mode mode = Mode.OR;
 	private void setStyle(final NodeModel node) {
 		final TreeSet<UIIcon> iconSet = new TreeSet<UIIcon>();
-		final ListIterator<NodeModel> childrenUnfolded = Controller.getCurrentModeController().getMapController().childrenUnfolded(node);
 		boolean first = true;
-		while (childrenUnfolded.hasNext()) {
-			final NodeModel child = childrenUnfolded.next();
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			if(first || mode.equals(Mode.OR)){
 				addAccumulatedIconsToTreeSet(child, iconSet);
 			}

@@ -83,9 +83,8 @@ public class ClipboardController implements IExtension {
 		if (color != null) {
 			colors.add(color);
 		}
-		for (final ListIterator<NodeModel> e = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); e
-		    .hasNext();) {
-			collectColors(e.next(), colors);
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
+			collectColors(child, colors);
 		}
 	}
 
@@ -288,11 +287,9 @@ public class ClipboardController implements IExtension {
 		}
 	}
 
-	private void writeChildrenRTF(final NodeModel mindMapNodeModel, final Writer fileout, final int depth,
+	private void writeChildrenRTF(final NodeModel node, final Writer fileout, final int depth,
 	                              final HashMap<Color, Integer> colorTable) throws IOException {
-		for (final ListIterator<NodeModel> e = Controller.getCurrentModeController().getMapController()
-		    .childrenUnfolded(mindMapNodeModel); e.hasNext();) {
-			final NodeModel child = e.next();
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			if (child.isVisible()) {
 				writeRTF(child, fileout, depth + 1, colorTable);
 			}
@@ -302,11 +299,9 @@ public class ClipboardController implements IExtension {
 		}
 	}
 
-	private void writeChildrenText(final NodeModel mindMapNodeModel, final Writer fileout, final int depth)
+	private void writeChildrenText(final NodeModel node, final Writer fileout, final int depth)
 	        throws IOException {
-		for (final ListIterator<NodeModel> e = Controller.getCurrentModeController().getMapController()
-		    .childrenUnfolded(mindMapNodeModel); e.hasNext();) {
-			final NodeModel child = e.next();
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			if (child.isVisible()) {
 				writeTXT(child, fileout, depth + 1);
 			}

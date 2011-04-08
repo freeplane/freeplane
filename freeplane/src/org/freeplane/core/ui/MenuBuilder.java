@@ -75,8 +75,6 @@ import org.freeplane.features.common.map.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLException;
 
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
-
 public class MenuBuilder extends UIBuilder {
 	private static class ActionHolder implements INameMnemonicHolder {
 		final private Action action;

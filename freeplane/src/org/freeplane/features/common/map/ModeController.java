@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 
 import org.freeplane.core.controller.AController;
@@ -232,8 +231,8 @@ public class ModeController extends AController {
 
 	public boolean hasOneVisibleChild(final NodeModel parent) {
 		int count = 0;
-		for (final ListIterator<NodeModel> i = getMapController().childrenUnfolded(parent); i.hasNext();) {
-			if ((i.next()).isVisible()) {
+		for (final NodeModel child : getMapController().childrenUnfolded(parent)) {
+			if (child.isVisible()) {
 				count++;
 			}
 			if (count == 2) {

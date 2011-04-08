@@ -20,8 +20,6 @@
 package org.freeplane.features.common.map;
 
 import java.io.IOException;
-import java.util.ListIterator;
-
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
@@ -53,8 +51,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	}
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
-		for (final ListIterator<NodeModel> e = mapController.childrenUnfolded(node); e.hasNext();) {
-			final NodeModel child = e.next();
+		for (final NodeModel child: mapController.childrenUnfolded(node)) {
 			if (writeInvisible || child.isVisible()) {
 				writer.addElement(child, nodeTag);
 			}
@@ -123,7 +120,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 			writer.addElement(null, xmlNode.getChildAtIndex(i));
 		}
 		if ((encryptionModel == null || encryptionModel.isAccessible() && Mode.EXPORT.equals(writer.getHint(Hint.MODE)))
-		        && writeChildren && mapController.childrenUnfolded(node).hasNext()) {
+		        && writeChildren && mapController.childrenUnfolded(node).size()>0) {
 			saveChildren(writer, node);
 		}
 		return;

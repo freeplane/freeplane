@@ -19,7 +19,6 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JComponent;
@@ -83,9 +82,7 @@ class ClickableImageCreator {
 			holder.coordinates.width = content.getWidth();
 			holder.coordinates.height = content.getHeight();
 			area.add(holder);
-			for (final Iterator<NodeModel> i = mapView.getModeController().getMapController().childrenUnfolded(node); i
-			    .hasNext();) {
-				final NodeModel child = i.next();
+			for (final NodeModel child: mapView.getModeController().getMapController().childrenUnfolded(node)) {
 				createArea(child);
 			}
 		}

@@ -20,7 +20,6 @@
 package org.freeplane.features.common.attribute;
 
 import java.io.IOException;
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import javax.swing.ComboBoxModel;
@@ -305,10 +304,8 @@ public class AttributeRegistry implements IExtension {
 		for (int i = 0; i < model.getRowCount(); i++) {
 			registry(model.getAttribute(i));
 		}
-		final ListIterator<NodeModel> iterator = mapController.childrenUnfolded(node);
-		while (iterator.hasNext()) {
-			final NodeModel next = iterator.next();
-			registryAttributes(mapController, next);
+		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+			registryAttributes(mapController, child);
 		}
 	}
 

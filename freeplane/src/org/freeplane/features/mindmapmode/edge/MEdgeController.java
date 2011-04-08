@@ -20,8 +20,6 @@
 package org.freeplane.features.mindmapmode.edge;
 
 import java.awt.Color;
-import java.util.ListIterator;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.undo.IActor;
@@ -144,9 +142,7 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeStyleRefresh(final NodeModel node) {
-				final ListIterator<NodeModel> childrenFolded = modeController.getMapController().childrenFolded(node);
-				while (childrenFolded.hasNext()) {
-					final NodeModel child = (NodeModel) childrenFolded.next();
+				for (final NodeModel child : modeController.getMapController().childrenFolded(node)) {
 					final EdgeModel edge = EdgeModel.getModel(child);
 					if (edge == null || edge.getStyle() == null) {
 						modeController.getMapController().nodeRefresh(child);
@@ -182,9 +178,7 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeWidthRefresh(final NodeModel node) {
-				final ListIterator<NodeModel> childrenFolded = modeController.getMapController().childrenFolded(node);
-				while (childrenFolded.hasNext()) {
-					final NodeModel child = (NodeModel) childrenFolded.next();
+				for (final NodeModel child : modeController.getMapController().childrenFolded(node)) {
 					final EdgeModel edge = EdgeModel.getModel(child);
 					if (edge == null || edge.getWidth() == EdgeModel.WIDTH_PARENT) {
 						modeController.getMapController().nodeRefresh(child);

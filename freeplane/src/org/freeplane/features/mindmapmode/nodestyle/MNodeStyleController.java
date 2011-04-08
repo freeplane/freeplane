@@ -22,8 +22,6 @@ package org.freeplane.features.mindmapmode.nodestyle;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.List;
-import java.util.ListIterator;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.ui.AMultipleNodeAction;
@@ -429,9 +427,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			private void nodeShapeRefresh(final NodeModel node) {
-				final ListIterator<NodeModel> childrenFolded = modeController.getMapController().childrenFolded(node);
-				while (childrenFolded.hasNext()) {
-					final NodeModel child = childrenFolded.next();
+				for (final NodeModel child : modeController.getMapController().childrenFolded(node)) {
 					if (NodeStyleModel.getShape(child) == null) {
 						modeController.getMapController().nodeRefresh(child);
 						nodeShapeRefresh(child);

@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.browsemode;
 
-import java.util.ListIterator;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.features.common.icon.UIIcon;
 import org.freeplane.features.common.icon.factory.IconStoreFactory;
@@ -50,9 +48,8 @@ public class BModeController extends ModeController {
 			}
 			node.setStateIcon(NoteController.NODE_NOTE_ICON, noteIcon, true);
 		}
-		final ListIterator<NodeModel> children = getMapController().childrenUnfolded(node);
-		while (children.hasNext()) {
-			setNoteIcon(children.next());
+		for (final NodeModel child : getMapController().childrenUnfolded(node)) {
+			setNoteIcon(child);
 		}
 	}
 }

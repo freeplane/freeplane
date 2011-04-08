@@ -27,7 +27,6 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -234,16 +233,15 @@ public class ScriptingEngine {
 
 	static Object executeScriptRecursive(final NodeModel node, final String script) {
 		ModeController modeController = Controller.getCurrentModeController();
-		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
-			executeScriptRecursive(iter.next(), script);
+		for (final NodeModel child : modeController.getMapController().childrenUnfolded(node)) {
+			executeScriptRecursive(child, script);
 		}
 		return executeScript(node, script);
 	}
 
 	static void performScriptOperationRecursive(final NodeModel node) {
 		ModeController modeController = Controller.getCurrentModeController();
-		for (final Iterator<NodeModel> iter = modeController.getMapController().childrenUnfolded(node); iter.hasNext();) {
-			final NodeModel child = iter.next();
+		for (final NodeModel child : modeController.getMapController().childrenUnfolded(node)) {
 			performScriptOperationRecursive(child);
 		}
 		performScriptOperation(node);

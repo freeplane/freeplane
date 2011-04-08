@@ -195,7 +195,7 @@ public class MModeControllerFactory {
 						final Component selectedComponent = controller.getViewController().getSelectedComponent();
 						final boolean isFocused = SwingUtilities.isDescendingFrom(e.getComponent(), selectedComponent);
 						if(isFocused){
-							mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
+							mapController.toggleFolded(mapController.getSelectedNodes());
 						}
 					}
 					e.consume();

@@ -32,7 +32,6 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.net.URI;
 import java.util.Collection;
-import java.util.ListIterator;
 import java.util.Map.Entry;
 
 import javax.swing.Icon;
@@ -213,13 +212,11 @@ public abstract class MainView extends ZoomableLabel {
 		UNFOLDED, ITSELF_FOLDED, UNVISIBLE_CHILDREN_FOLDED
 	};
 
-	static private FoldingMarkType foldingMarkType(MapController mapController, NodeModel model) {
-		if (mapController.isFolded(model) && (model.isVisible() || model.getFilterInfo().isAncestor())) {
+	static private FoldingMarkType foldingMarkType(MapController mapController, NodeModel node) {
+		if (mapController.isFolded(node) && (node.isVisible() || node.getFilterInfo().isAncestor())) {
 			return FoldingMarkType.ITSELF_FOLDED;
 		}
-		ListIterator<NodeModel> children = mapController.childrenUnfolded(model);
-		while (children.hasNext()) {
-			NodeModel child = children.next();
+		for (final NodeModel child : mapController.childrenUnfolded(node)) {
 			if (!child.isVisible() && !FoldingMarkType.UNFOLDED.equals(foldingMarkType(mapController, child))) {
 				return FoldingMarkType.UNVISIBLE_CHILDREN_FOLDED;
 			}

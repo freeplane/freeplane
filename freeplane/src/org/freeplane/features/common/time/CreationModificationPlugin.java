@@ -22,8 +22,6 @@ package org.freeplane.features.common.time;
 
 import java.awt.EventQueue;
 import java.text.MessageFormat;
-import java.util.Iterator;
-
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
@@ -110,8 +108,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	 */
 	private void removeToolTipRecursively(final NodeModel node) {
 		setToolTip(node, CREATION_TOOLTIP, null);
-		for (final Iterator<NodeModel> i = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
-			final NodeModel child = i.next();
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			removeToolTipRecursively(child);
 		}
 	}
@@ -137,8 +134,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	 */
 	private void setStyleRecursive(final NodeModel node) {
 		setStyle(node);
-		for (final Iterator<NodeModel> i = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
-			final NodeModel child = i.next();
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			setStyleRecursive(child);
 		}
 	}

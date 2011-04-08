@@ -730,9 +730,8 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void insert() {
-		final ListIterator<NodeModel> it = getMap().getModeController().getMapController().childrenFolded(getModel());
-		while (it.hasNext()) {
-			insert(it.next(), 0);
+		for (NodeModel child : getMap().getModeController().getMapController().childrenFolded(getModel())) {
+			insert(child, 0);
 		}
 	}
 

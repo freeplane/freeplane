@@ -23,8 +23,6 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
-import java.util.ListIterator;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.icon.IconController;
@@ -285,15 +283,14 @@ class MindMapHTMLWriter {
 			fileout.write("</h" + depth + ">" + MindMapHTMLWriter.el);
 		}
 		boolean treatChildrenAsParagraph = false;
-		for (final ListIterator<NodeModel> e = mapController.childrenUnfolded(model); e.hasNext();) {
-			if (e.next().toString().length() > 100) {
+		for (final NodeModel child : mapController.childrenUnfolded(model)) {
+			if (child.toString().length() > 100) {
 				treatChildrenAsParagraph = true;
 				break;
 			}
 		}
 		if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
-			for (final ListIterator<NodeModel> e = mapController.childrenUnfolded(model); e.hasNext();) {
-				final NodeModel child = e.next();
+			for (final NodeModel child : mapController.childrenUnfolded(model)) {
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*isRoot=*/false,
 				    treatChildrenAsParagraph, depth + 1);
 			}
@@ -301,8 +298,7 @@ class MindMapHTMLWriter {
 		}
 		if (mapController.hasChildren(model)) {
 			if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
-				for (final ListIterator<NodeModel> e = mapController.childrenUnfolded(model); e.hasNext();) {
-					final NodeModel child = e.next();
+				for (final NodeModel child : mapController.childrenUnfolded(model)) {
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
 					/*isRoot=*/false, treatChildrenAsParagraph, depth + 1);
 				}
@@ -314,8 +310,7 @@ class MindMapHTMLWriter {
 					fileout.write("<li>");
 				}
 				int localLastChildNumber = 0;
-				for (final ListIterator<NodeModel> e = mapController.childrenUnfolded(model); e.hasNext();) {
-					final NodeModel child = e.next();
+				for (final NodeModel child : mapController.childrenUnfolded(model)) {
 					localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber,
 					/* isRoot=*/false, treatChildrenAsParagraph, depth + 1);
 				}
@@ -325,8 +320,7 @@ class MindMapHTMLWriter {
 				if (treatChildrenAsParagraph) {
 					fileout.write("<li>");
 				}
-				for (final ListIterator<NodeModel> e = mapController.childrenUnfolded(model); e.hasNext();) {
-					final NodeModel child = (NodeModel) e.next();
+				for (final NodeModel child : mapController.childrenUnfolded(model)) {
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
 					/* isRoot= */false, treatChildrenAsParagraph, depth + 1);
 				}

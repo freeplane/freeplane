@@ -34,8 +34,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
-
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
@@ -271,21 +269,21 @@ public class MapController extends SelectionController {
 		Controller.getCurrentController().getSelection().centerNode(node);
 	}
 
-	public ListIterator<NodeModel> childrenFolded(final NodeModel node) {
+	public List<NodeModel> childrenFolded(final NodeModel node) {
 		if (node.isFolded()) {
 			final List<NodeModel> empty = Collections.emptyList();
-			return empty.listIterator();
+			return empty;
 		}
 		return childrenUnfolded(node);
 	}
 
-	public ListIterator<NodeModel> childrenUnfolded(final NodeModel node) {
+	public List<NodeModel> childrenUnfolded(final NodeModel node) {
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null && !encryptionModel.isAccessible()) {
 			final List<NodeModel> empty = Collections.emptyList();
-			return empty.listIterator();
+			return empty;
 		}
-		return node.getChildren().listIterator();
+		return node.getChildren();
 	}
 
 	/**
@@ -420,15 +418,14 @@ public class MapController extends SelectionController {
 	 *            an iterator of MindMapNodes.
 	 * @return true, if the nodes should be folded.
 	 */
-	public boolean getFoldingState(final ListIterator<NodeModel> iterator) {
+	public boolean getFoldingState(final List<NodeModel> list) {
 		/*
 		 * Retrieve the information whether or not all nodes have the same
 		 * folding state.
 		 */
 		Boolean state = null;
 		boolean allNodeHaveSameFoldedStatus = true;
-		while (iterator.hasNext()) {
-			final NodeModel node = iterator.next();
+		for(final NodeModel node : list){
 			if (node.getChildCount() == 0) {
 				continue;
 			}
@@ -518,8 +515,7 @@ public class MapController extends SelectionController {
 	 * sufficient to return true.
 	 */
 	public boolean hasFoldedStrictDescendant(final NodeModel node) {
-		for (final ListIterator<NodeModel> e = childrenUnfolded(node); e.hasNext();) {
-			final NodeModel child = e.next();
+		for (final NodeModel child : childrenUnfolded(node)) {
 			if (isFolded(child) || hasFoldedStrictDescendant(child)) {
 				return true;
 			}
@@ -734,13 +730,6 @@ public class MapController extends SelectionController {
 		}
 	}
 
-	private ListIterator<NodeModel> resetIterator(final ListIterator<NodeModel> iterator) {
-		while (iterator.hasPrevious()) {
-			iterator.previous();
-		}
-		return iterator;
-	}
-
 	public void select(final NodeModel node) {
 		displayNode(node);
 		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
@@ -779,13 +768,13 @@ public class MapController extends SelectionController {
 	}
 
 	public void toggleFolded() {
-		toggleFolded(getSelectedNodes().listIterator());
+		toggleFolded(getSelectedNodes());
 	}
 
-	public void toggleFolded(final ListIterator<NodeModel> listIterator) {
-		final boolean fold = getFoldingState(resetIterator(listIterator));
-		for (final Iterator<NodeModel> i = resetIterator(listIterator); i.hasNext();) {
-			final NodeModel node = i.next();
+	public void toggleFolded(final List<NodeModel> list) {
+		final boolean fold = getFoldingState(list);
+		final NodeModel nodes[] = list.toArray(new NodeModel[]{});
+		for (final NodeModel node:nodes) {
 			setFolded(node, fold);
 		}
 	}

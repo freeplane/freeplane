@@ -22,7 +22,6 @@ package org.freeplane.features.mindmapmode.map;
 import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
@@ -97,8 +96,8 @@ class NodeUpAction extends AFreeplaneAction {
 	 */
 	private Vector<NodeModel> getSortedSiblings(final NodeModel node) {
 		final Vector<NodeModel> nodes = new Vector<NodeModel>();
-		for (final Iterator<NodeModel> i = Controller.getCurrentModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
-			nodes.add(i.next());
+		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
+			nodes.add(child);
 		}
 		if(! node.isRoot()){
 			return nodes;
