@@ -212,6 +212,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 							ProgressIcons.removeProgressIcons(node);
 						}
 						remove(node, activeView);
+						Controller.getCurrentModeController().getMapController().nodeChanged(node,
+						    NodeModel.UNKNOWN_PROPERTY, null, null);
 						return true;
 					}
 				}
