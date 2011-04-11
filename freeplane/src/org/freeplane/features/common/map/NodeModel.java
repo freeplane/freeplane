@@ -362,6 +362,20 @@ public class NodeModel implements MutableTreeNode {
 
 	/**
 	 * 
+	 * @return : true if the node has an external resource attached.
+	 */
+	public boolean hasExternalResource() {
+		final ExternalResource extResource = (ExternalResource) this.getExtension(ExternalResource.class);
+		if (extResource == null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	/**
+	 * 
 	 * @return : true if the node has an extended progress icon attached.
 	 */
 	public boolean hasExtendedProgressIcon() {
@@ -554,8 +568,8 @@ public class NodeModel implements MutableTreeNode {
 			return;
 		}
 		this.folded = folded;
-		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(!folded), Boolean
-		    .valueOf(folded)));
+		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(!folded),
+		    Boolean.valueOf(folded)));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {
