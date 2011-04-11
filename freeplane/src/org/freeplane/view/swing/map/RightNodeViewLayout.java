@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 
@@ -48,141 +49,130 @@ public class RightNodeViewLayout extends NodeViewLayoutAdapter {
 
 	@Override
 	protected void layout() {
-		final int contentHeight;
-		{
-			final int childCount = getChildCount();
-			if (childCount == 0) {
-				contentHeight = 0;
-			}
-			else{
-			int height = 0;
-			int count = 0;
-			for (int i = 0; i < childCount; i++) {
-				final NodeView child = (NodeView) getView().getComponent(i);
-				if (child.isLeft() == false) {
-					final int additionalCloudHeigth = getAdditionalCloudHeigth(child);
-					final int h = child.getContent().getHeight();
-					height += h + additionalCloudHeigth;
-					if (child.getHeight() - 2 * getSpaceAround() != 0) {
-						count++;
-					}
-				}
-			}
-			if (count <= 1) {
-				contentHeight = height;
-			}
-			else{
-				contentHeight = height + getVGap() * (count - 1);
-			}
-			}
-			
-		}
-		int childVerticalShift;
-		{
-			if (getChildCount() == 0) {
-				childVerticalShift = 0;
-			}
-			else{
-			int shift = 0;
-			for (int i = 0; i < getChildCount(); i++) {
-				final NodeView child = (NodeView) getView().getComponent(i);
-				if (child.isLeft() == false) {
-					final int childShift = child.getShift();
-					if (childShift < 0 || i == 0) {
-						shift += childShift;
-					}
-					final int contentShift = child.getContent().getY() - getSpaceAround();
-					shift -= contentShift;
-				}
-			}
-			childVerticalShift = shift;
-			}
-		}
-		final int childHorizontalShift;
-		{
-			if (getChildCount() == 0) {
-				childHorizontalShift = 0;
-			}
-			else{
-				int shift = 0;
-				for (int i = 0; i < getChildCount(); i++) {
-					final NodeView child = (NodeView) getView().getComponent(i);
-					int shiftCandidate;
-					if (child.isLeft()) {
-						shiftCandidate = -child.getContent().getX() - child.getContent().getWidth();
-						if (child.isContentVisible()) {
-							shiftCandidate -= child.getHGap() + getAdditionalCloudHeigth(child) / 2;
-						}
-					}
-					else {
-						shiftCandidate = -child.getContent().getX();
-						if (child.isContentVisible()) {
-							shiftCandidate += child.getHGap();
-						}
-					}
-					shift = Math.min(shift, shiftCandidate);
-				}
-				childHorizontalShift = shift;
-			}
-		}
-		if (getView().isContentVisible()) {
-			getContent().setVisible(true);
-			final Dimension contentPreferredSize = getContent().getPreferredSize();
-			final int x = Math.max(getSpaceAround(), -contentPreferredSize.width - childHorizontalShift);
-			final int contentVerticalShift = (contentPreferredSize.height - contentHeight) / 2;
-			childVerticalShift += contentVerticalShift;
-			final int y = getSpaceAround() + Math.max(0, -childVerticalShift);
-			getContent().setBounds(x, y, contentPreferredSize.width, contentPreferredSize.height);
-		}
-		else {
-			getContent().setVisible(false);
-			final int x = Math.max(getSpaceAround(), -childHorizontalShift);
-			final int y = getSpaceAround() + Math.max(0, -childVerticalShift);
-			getContent().setBounds(x, y, 0, contentHeight);
-		}
-		final int[] lx = new int[getChildCount()];
-		final int[] ly = new int[getChildCount()];
-		final int baseX = getContent().getX() + getContent().getWidth();
-		int y = getContent().getY() - getSpaceAround() + childVerticalShift;
-		int right = baseX + getSpaceAround();;
-		NodeView child = null;
+		final int[] lx = new int[getChildCount() + 2];
+		final int[] ly = new int[getChildCount() + 2];
+		calcLayout(false, lx, ly);
+		placeRightChildren(lx, ly);
+	}
+
+	void calcLayout(final boolean isLeft, final int[] lx, final int[] ly) {
+	    int y = 0;
+		int right = 0;
+		int childContentHeight = 0;
+		boolean visibleChildFound = false;
+		int childHorizontalShift = 0;
+		int childVerticalShift = 0;
 		for (int i = 0; i < getChildCount(); i++) {
-			final NodeView component = (NodeView) getView().getComponent(i);
-			if (component.isLeft()) {
+			final NodeView child = (NodeView) getView().getComponent(i);
+			if (child.isLeft() != isLeft) {
 				continue;
 			}
-			child = component;
-			final int additionalCloudHeigth = getAdditionalCloudHeigth(child) / 2;
-			y += additionalCloudHeigth;
+			final int additionalCloudHeigth = getAdditionalCloudHeigth(child);
+			final int h = child.getContent().getHeight();
+			childContentHeight += h + additionalCloudHeigth;
+			if (child.getHeight() - 2 * getSpaceAround() != 0) {
+				if (visibleChildFound)
+					childContentHeight +=  getVGap();
+				else
+					visibleChildFound = true;
+			}
+			
+			int shiftCandidate;
+			shiftCandidate = -child.getContent().getX();
+			if (child.isContentVisible()) {
+				shiftCandidate += child.getHGap();
+			}
+			childHorizontalShift = Math.min(childHorizontalShift, shiftCandidate);
+
+			final int childShift = child.getShift();
+			if (childShift < 0 || i == 0) {
+				childVerticalShift += childShift;
+			}
+			final int contentShift = child.getContent().getY() - getSpaceAround();
+			childVerticalShift -= contentShift;
+			
+			y += additionalCloudHeigth/2;
 			final int shiftY = child.getShift();
 			final int childHGap = child.getContent().isVisible() ? child.getHGap() : 0;
-			final int x = baseX + childHGap - child.getContent().getX();
+			final int x = childHGap - child.getContent().getX();
 			if(i == 0){
-				child.setLocation(x, y);
+				lx[i] = x; ly[i] = y;
 			}
 			else if (shiftY < 0) {
-				child.setLocation(x, y);
+				lx[i] = x; ly[i] = y;
 				y -= shiftY;
 			}
 			else {
 				y += shiftY;
-				child.setLocation(x, y);
+				lx[i] = x; ly[i] = y;
 			}
 			final int childHeight = child.getHeight() - 2 * getSpaceAround();
 			if (childHeight != 0) {
-				y += childHeight + getVGap() + additionalCloudHeigth;
+				y += childHeight + getVGap() + additionalCloudHeigth/2;
 			}
-			right = Math.max(right, x + child.getWidth() + additionalCloudHeigth);
+			right = Math.max(right, x + child.getWidth() + additionalCloudHeigth/2);
 		}
-		final int bottom = getContent().getY() + getContent().getHeight() + getSpaceAround();
+		if (getView().isContentVisible()) {
+			final Dimension contentPreferredSize = getContent().getPreferredSize();
+			final int contentVerticalShift = (contentPreferredSize.height - childContentHeight) / 2;
+			childVerticalShift += contentVerticalShift;
+		}
+		
+		lx[lx.length - 2] = right;
+		ly[ly.length - 2] = childContentHeight;
+		lx[lx.length - 1] = childHorizontalShift;
+		ly[ly.length - 1] = childVerticalShift;
+    }
+
+	void placeRightChildren(final int[] lx, final int[] ly) {
+		int right = lx[lx.length - 2];
+		int childContentHeight = ly[ly.length - 2];
+		int childHorizontalShift = lx[lx.length - 1];
+		int childVerticalShift = ly[ly.length - 1];
+	    final int contentX;
+		final int contentY;
+		final int contentHeight;
+		final int contentWidth;
+		if (getView().isContentVisible()) {
+			final Dimension contentPreferredSize = getContent().getPreferredSize();
+			contentWidth = contentPreferredSize.width;
+			contentHeight = contentPreferredSize.height;
+			contentX = Math.max(getSpaceAround(), -contentWidth - childHorizontalShift);
+			contentY = getSpaceAround() + Math.max(0, -childVerticalShift);
+		}
+		else {
+			contentX = Math.max(getSpaceAround(), -childHorizontalShift);
+			contentY = getSpaceAround() + Math.max(0, -childVerticalShift);
+			contentWidth = 0;
+			contentHeight = childContentHeight;
+		}
+		
+		if (getView().isContentVisible()) {
+			getContent().setVisible(true);
+		}
+		else {
+			getContent().setVisible(false);
+		}
+		getContent().setBounds(contentX, contentY, contentWidth, contentHeight);
+		
+		final int baseX = contentX + contentWidth;
+		final int baseY = contentY - getSpaceAround() + ly[ly.length - 1];
+
+		NodeView child = null;
+		for (int i = 0; i < getChildCount(); i++) {
+			child = (NodeView) getView().getComponent(i);
+			child.setLocation(baseX + lx[i], baseY + ly[i]);
+		}
+		
+		final int bottom = contentY + contentHeight + getSpaceAround();
 		if (child != null) {
-			getView().setSize(right,
+			getView().setSize(baseX + Math.max(right, getSpaceAround()),
 			    Math.max(bottom, child.getY() + child.getHeight() + getAdditionalCloudHeigth(child) / 2));
 		}
 		else {
-			getView().setSize(right, bottom);
+			getView().setSize(baseX + Math.max(right, getSpaceAround()), bottom);
 		}
-	}
+    }
 
 	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
 		final NodeView movedView = view.getMovedView();
