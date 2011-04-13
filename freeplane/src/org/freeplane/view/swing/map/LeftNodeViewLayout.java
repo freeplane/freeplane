@@ -19,7 +19,6 @@
  */
 package org.freeplane.view.swing.map;
 
-import java.awt.Dimension;
 import java.awt.Point;
 
 import javax.swing.JComponent;
@@ -51,24 +50,11 @@ public class LeftNodeViewLayout extends NodeViewLayoutAdapter {
 
 	@Override
 	protected void layout() {
-		final int contentHeight = getChildContentHeight(true);
-		int childVerticalShift = getChildVerticalShift(true);
-		final int childHorizontalShift = getChildHorizontalShift();
-		final int x = Math.max(getSpaceAround(), -childHorizontalShift);
-		if (getView().isContentVisible()) {
-			getContent().setVisible(true);
-			final Dimension contentPreferredSize = getContent().getPreferredSize();
-			childVerticalShift += (contentPreferredSize.height - contentHeight) / 2;
-			final int y = getSpaceAround() + Math.max(0,  -childVerticalShift);
-			getContent().setBounds(x, y, contentPreferredSize.width, contentPreferredSize.height);
-		}
-		else {
-			getContent().setVisible(false);
-			final int y = getSpaceAround() + Math.max(0, -childVerticalShift);
-			getContent().setBounds(x, y, 0, contentHeight);
-		}
-		placeLeftChildren(childVerticalShift);
+		final LayoutData layoutData = new LayoutData(getChildCount());
+		calcLayout(true, layoutData);
+		placeChildren(layoutData);
 	}
+
 
 	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
 		final NodeView movedView = view.getMovedView();
