@@ -940,7 +940,7 @@ public class NodeView extends JComponent implements INodeView {
 		else {
 			super.paint(g);
 		}
-// g.drawRect(50, 50, getWidth()-100, getHeight()-100);		
+// if (isSelected()) g.drawRect(SPACE_AROUND, SPACE_AROUND, getWidth()-2*SPACE_AROUND, getHeight()-2*SPACE_AROUND);		
 	}
 
 	private void paintCloud(final Graphics g) {
