@@ -118,6 +118,10 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 		mNum = pNum;
 	}
 
+	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin) {
+		this(pMaj, pMid, pMin, "", 0);
+	}
+
 	/** Use it like this:
 	 * <pre>
 	 *   FreeplaneVersion required = FreeplaneVersion.getVersion("1.0.38");
@@ -183,5 +187,13 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 		buf.append('.');
 		buf.append(mMin);
 		return buf.toString();
+	}
+
+	public boolean isOlderThan(FreeplaneVersion freeplaneVersion) {
+	    return compareTo(freeplaneVersion) < 0;
+    }
+	
+	public boolean isNewerThan(FreeplaneVersion freeplaneVersion) {
+		return compareTo(freeplaneVersion) > 0;
 	}
 }
