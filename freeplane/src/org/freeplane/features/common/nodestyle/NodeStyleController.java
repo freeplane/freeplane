@@ -377,8 +377,8 @@ public class NodeStyleController implements IExtension {
 		return nodeNumbering == null ? false : nodeNumbering.booleanValue();
 	}
 
-	public String getNodeTextTemplate(NodeModel node) {
+	public String getNodeFormat(NodeModel node) {
 		final NodeStyleModel style = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-		return style == null ? null : style.getNodeTextTemplate();
+		return style == null ? null : style.getNodeFormat();
 	}
 }

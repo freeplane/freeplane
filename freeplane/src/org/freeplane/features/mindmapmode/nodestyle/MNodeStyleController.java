@@ -93,8 +93,8 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichStyle.getBackgroundColor()) {
 				fromStyle.setBackgroundColor(null);
 			}
-			if (null != whichStyle.getNodeTextTemplate()) {
-				fromStyle.setNodeTextTemplate(null);
+			if (null != whichStyle.getNodeFormat()) {
+				fromStyle.setNodeFormat(null);
 			}
 			if (null != whichStyle.getNodeNumbering()) {
 				fromStyle.setNodeNumbering(null);
@@ -145,7 +145,7 @@ public class MNodeStyleController extends NodeStyleController {
 			setFontSize(target, sourceStyleModel.getFontSize());
 			setBold(target, sourceStyleModel.isBold());
 			setItalic(target, sourceStyleModel.isItalic());
-			setNodeTextTemplate(target, sourceStyleModel.getNodeTextTemplate());
+			setNodeFormat(target, sourceStyleModel.getNodeFormat());
 			setNodeNumbering(target, sourceStyleModel.getNodeNumbering());
 		}
 	}
@@ -391,21 +391,21 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.execute(actor, node.getMap());
     }
 
-	public void setNodeTextTemplate(final NodeModel node, final String template) {
+	public void setNodeFormat(final NodeModel node, final String format) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final String oldTemplate = NodeStyleModel.getNodeTextTemplate(node);
+		final String oldFormat = NodeStyleModel.getNodeFormat(node);
 		final IActor actor = new IActor() {
 			public void act() {
-				NodeStyleModel.setNodeTextTemplate(node, template);
+				NodeStyleModel.setNodeFormat(node, format);
 				modeController.getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
-				return "setNodeTextTemplate";
+				return "setNodeFormat";
 			}
 
 			public void undo() {
-				NodeStyleModel.setNodeTextTemplate(node, oldTemplate);
+				NodeStyleModel.setNodeFormat(node, oldFormat);
 				modeController.getMapController().nodeChanged(node);
 			}
 		};
