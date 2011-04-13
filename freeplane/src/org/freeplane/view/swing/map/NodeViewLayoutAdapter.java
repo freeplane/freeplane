@@ -247,10 +247,11 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     		left = Math.min(left, x);
     		if (childShift < 0) {
     			data.lx[i] = x; data.ly[i] = y;
-    			y -= childShift;
+    				y -= childShift;
     		}
     		else {
-    			y += childShift;
+    			if(i > 0)
+    				y += childShift;
     			data.lx[i] = x; data.ly[i] = y;
     		}
     		final int childHeight = child.getHeight() - 2 * getSpaceAround();
