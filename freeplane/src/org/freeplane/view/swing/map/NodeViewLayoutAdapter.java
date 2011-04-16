@@ -38,7 +38,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     		final int[] ly;
     		int left;
     		int childContentHeight;
-    		int childVerticalShift;
+    		int top;
     		boolean rightDataSet;
     		boolean leftDataSet;
     		public LayoutData(int childCount) {
@@ -47,7 +47,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     	        this.ly = new int[childCount];
     	        this.left = 0;
     	        this.childContentHeight = 0;
-    	        this.childVerticalShift = 0;
+    	        this.top = 0;
     	        rightDataSet = false;
     	        leftDataSet = false;
             }
@@ -213,7 +213,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         int y = 0;
     	int childContentHeight = 0;
     	boolean visibleChildFound = false;
-    	int childVerticalShift = 0;
+    	int top = 0;
     	int left = 0;
     	for (int i = 0; i < getChildCount(); i++) {
     		final NodeView child = (NodeView) getView().getComponent(i);
@@ -232,10 +232,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     		
     		final int childShift = child.getShift();
     		if (childShift < 0 || i == 0) {
-    			childVerticalShift += childShift;
+    			top += childShift;
     		}
     		final int contentShift = child.getContent().getY() - getSpaceAround();
-    		childVerticalShift -= contentShift;
+    		top -= contentShift;
     		
     		y += additionalCloudHeigth/2;
     		final int childHGap = child.getContent().isVisible() ? child.getHGap() : 0;
@@ -259,24 +259,25 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     			y += childHeight + getVGap() + additionalCloudHeigth/2;
     		}
     	}
+    	
     	if (getView().isContentVisible()) {
     		final Dimension contentPreferredSize = getContent().getPreferredSize();
     		final int contentVerticalShift = (contentPreferredSize.height - childContentHeight) / 2;
-    		childVerticalShift += contentVerticalShift;
+    		top += contentVerticalShift;
     	}
-    	setData(data, isLeft, left, childContentHeight, childVerticalShift);
+    	setData(data, isLeft, left, childContentHeight, top);
     }
 	
-	private void setData(final LayoutData data, boolean isLeft, int left, int childContentHeight, int childVerticalShift) {
+	private void setData(final LayoutData data, boolean isLeft, int left, int childContentHeight, int top) {
 		if(!isLeft && data.leftDataSet || isLeft && data.rightDataSet){
 			data.left = Math.min(data.left, left);
 			data.childContentHeight = Math.max(data.childContentHeight, childContentHeight);
-			int deltaVerticalShift = childVerticalShift - data.childVerticalShift;
+			int deltaTop = top - data.top;
 			final boolean changeLeft;
-			if(deltaVerticalShift < 0){
-				data.childVerticalShift = childVerticalShift;
+			if(deltaTop < 0){
+				data.top = top;
 				changeLeft = !isLeft;
-				deltaVerticalShift = - deltaVerticalShift;
+				deltaTop = - deltaTop;
 			}
 			else{
 				changeLeft = isLeft;
@@ -284,14 +285,14 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 			for(int i = 0; i < getChildCount(); i++){
 				NodeView child = (NodeView) getView().getComponent(i);
 				if(child.isLeft() == changeLeft){
-					data.ly[i] += deltaVerticalShift;
+					data.ly[i] += deltaTop;
 				}
 			}
 		}
 		else{
 			data.left = left;
 			data.childContentHeight = childContentHeight;
-			data.childVerticalShift = childVerticalShift;
+			data.top = top;
 		}
 		if(isLeft)
 			data.leftDataSet = true;
@@ -301,18 +302,15 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 	
 
 	protected void placeChildren(final LayoutData data) {
-    	int childContentHeight = data.childContentHeight;
-    	int left = data.left;
-    	int childVerticalShift = data.childVerticalShift;
     	final int contentHeight;
     	final NodeView view = getView();
-    	final int contentX = Math.max(getSpaceAround(), -left);
-    	final int contentY = getSpaceAround() + Math.max(0, -childVerticalShift);
+    	final int contentX = Math.max(getSpaceAround(), -data.left);
+    	final int contentY = getSpaceAround() + Math.max(0, -data.top);
 		if (view.isContentVisible()) {
      		contentHeight = contentPreferredSize.height;
     	}
     	else {
-    		contentHeight = childContentHeight;
+    		contentHeight = data.childContentHeight;
     	}
     	
     	if (getView().isContentVisible()) {
@@ -323,7 +321,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     	}
     	getContent().setBounds(contentX, contentY, contentWidth, contentHeight);
     	
-    	final int baseY = contentY - getSpaceAround() + data.childVerticalShift;
+    	final int baseY = contentY - getSpaceAround() + data.top;
     
     	final int bottomContent = contentY + contentHeight + getSpaceAround();
     	int width =  contentX + contentWidth + getSpaceAround();
