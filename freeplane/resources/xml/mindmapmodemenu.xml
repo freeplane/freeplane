@@ -148,6 +148,10 @@
 					accelerator="alt shift R" />
 				<menu_action action="UsePlainTextAction" accelerator="alt shift P" />
 			 </menu_category>
+			<menu_category name="position">
+				<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
+				<menu_action action="ResetNodeLocationAction" />
+			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="node features" name_ref="menu_node_features">
 		  	<menu_submenu name="notes" name_ref="menu_notes">
@@ -257,9 +261,6 @@
 				<menu_action action="NodeColorBlendAction" accelerator="alt shift B" />
 				<menu_action action="NodeBackgroundColorAction" />
 				<menu_action action="MapBackgroundColorAction" />
-				<menu_category name="position">
-					<menu_action action="ResetNodeLocationAction" />
-				</menu_category>
 				<menu_separator />
 				<menu_action action="AutomaticLayoutAction" />
 				<menu_action action="BlinkingNodeHookAction" />
@@ -463,6 +464,7 @@
 			<menu_action action="ToggleDetailsAction"/>
 		</menu_category>
 		<menu_separator />
+		<menu_action action="SummaryNodeAction" />
 		<menu_category name="navigate_nodes">
 			<menu_action action="NodeUpAction" />
 			<menu_action action="NodeDownAction" />

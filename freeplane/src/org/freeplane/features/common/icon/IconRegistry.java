@@ -21,7 +21,6 @@ package org.freeplane.features.common.icon;
 
 import javax.swing.ListModel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.common.map.MapController;

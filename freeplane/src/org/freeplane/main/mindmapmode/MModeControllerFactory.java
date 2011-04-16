@@ -55,6 +55,7 @@ import org.freeplane.features.common.icon.HierarchicalIcons;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.SummaryNode;
 import org.freeplane.features.common.map.UnfoldAll;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -146,6 +147,7 @@ public class MModeControllerFactory {
 		new HierarchicalIcons();
 		new AutomaticLayout();
 		new BlinkingNodeHook();
+		new SummaryNode();
 		new CreationModificationPlugin();
 		new ReminderHook();
 		new AutomaticEdgeColorHook();

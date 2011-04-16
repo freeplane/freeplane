@@ -56,6 +56,7 @@ import org.freeplane.features.common.map.MapChangeEvent;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeChangeEvent;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.map.SummaryNode;
 import org.freeplane.features.common.map.NodeModel.NodeChangeType;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -67,6 +68,7 @@ import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.cloud.CloudViewFactory;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.EdgeViewFactory;
+import org.freeplane.view.swing.map.edge.SummaryEdgeView;
 
 /**
  * This class represents a single Node of a MindMap (in analogy to
@@ -968,14 +970,85 @@ public class NodeView extends JComponent implements INodeView {
 				g.translate(p.x, p.y);
 				nodeView.paintCloud(g);
 				g.translate(-p.x, -p.y);
-				final EdgeView edge = EdgeViewFactory.getInstance().getEdge(nodeView);
-				edge.paint(g);
+				if(getMap().getLayoutType() != MapViewLayout.OUTLINE && nodeView.isSummary()){
+					paintSummaryEdge(g, nodeView, i);
+				}
+				else{
+					final EdgeView edge = EdgeViewFactory.getInstance().getEdge(nodeView);
+					edge.paint(g);
+				}
 			}
 			else {
 				nodeView.paintCloudsAndEdges(g);
 			}
 		}
 	}
+
+	private void paintSummaryEdge(Graphics2D g, NodeView nodeView, int pos) {
+		final boolean isLeft = nodeView.isLeft();
+		final int spaceAround = getSpaceAround();
+		NodeView lastView = null;
+		NodeView firstView = null;
+		int x1 = 0;
+		for(int i = pos - 1;i >= 0;i--){
+			final NodeView nodeViewSibling = (NodeView) getComponent(i);
+			if(nodeViewSibling.isLeft() != isLeft || ! nodeViewSibling.getModel().isVisible())
+				continue;
+			if(nodeViewSibling.isSummary())
+				break;
+			firstView = nodeViewSibling;
+			if(lastView == null){
+				lastView = nodeViewSibling;
+				if(isLeft){
+					x1 = nodeViewSibling.getX() + spaceAround;
+				}
+				else{
+					x1 = nodeViewSibling.getX() + lastView.getWidth() - spaceAround;
+				}
+			}
+			else{
+				if(isLeft){
+					x1 = Math.min(x1, nodeViewSibling.getX() + spaceAround);
+				}
+				else{
+					x1 = Math.max(x1,  nodeViewSibling.getX() + firstView.getWidth() - spaceAround);
+				}
+				
+			}
+		}
+		if(firstView == null){
+			final EdgeView edge = EdgeViewFactory.getInstance().getEdge(nodeView);
+			edge.paint(g);
+			return;
+		}
+		int y1 = firstView.getY() + spaceAround;
+		int y2 = lastView.getY() + lastView.getHeight() - spaceAround;
+		final JComponent content = nodeView.getContent();
+		int x = nodeView.getX() + content.getX();
+		if(isLeft){
+			x += nodeView.getWidth() - 2 * spaceAround;
+		}
+		else{
+		}
+		int y = nodeView.getY() + content.getY()+ content.getHeight()/2;
+		y1 = Math.min(y1, y);
+		y2 = Math.max(y2, y);
+		final EdgeView edgeView = new SummaryEdgeView(nodeView);
+		edgeView.setStart(new Point(x1, y1));
+		edgeView.paint(g);
+		edgeView.setStart(new Point(x1, y2));
+		edgeView.paint(g);
+    }
+
+	int getSpaceAround() {
+		return getZoomed(NodeView.SPACE_AROUND) ;
+	}
+
+
+
+	private int getZoomed(int x) {
+	    return getMap().getZoomed(x);
+    }
 
 	void paintDecoration(final Graphics2D g) {
 		final Point origin = new Point();
@@ -1324,4 +1397,10 @@ public class NodeView extends JComponent implements INodeView {
 	public JComponent getContent(int pos) {
 		return removeContent(pos, false);
 	}
+
+
+
+	public boolean isSummary() {
+	    return SummaryNode.isSummaryNode(getModel());
+    }
 }

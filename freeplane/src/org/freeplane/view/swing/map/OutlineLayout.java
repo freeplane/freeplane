@@ -65,10 +65,10 @@ public class OutlineLayout extends NodeViewLayoutAdapter {
 			getContent().setVisible(false);
 			getContent().setBounds(x, y, 0, 0);
 		}
-		placeRightChildren();
+		placeChildren();
 	}
 
-	protected void placeRightChildren() {
+	private void placeChildren() {
 		int baseX = getContent().getX();
 		int y = getContent().getY() + getContent().getHeight() - getSpaceAround();
 		if (getContent().isVisible()) {

@@ -49,8 +49,17 @@ public abstract class EdgeView {
 
 	private final NodeView source;
 	protected Point start, end;
+	
+	public void setStart(Point start) {
+    	this.start = start;
+    }
+
 	public Point getStart() {
     	return start;
+    }
+
+	public void setEnd(Point end) {
+    	this.end = end;
     }
 
 	public Point getEnd() {
