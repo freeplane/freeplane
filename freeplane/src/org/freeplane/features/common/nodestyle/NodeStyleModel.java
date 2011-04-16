@@ -74,9 +74,9 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return styleModel == null ? null : styleModel.getNodeNumbering();
     }
 
-	public static String getNodeTextTemplate(final NodeModel node) {
+	public static String getNodeFormat(final NodeModel node) {
 		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.getNodeTextTemplate();
+		return styleModel == null ? null : styleModel.getNodeFormat();
 	}
 
 	public static String getShape(final NodeModel node) {
@@ -109,9 +109,9 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		styleModel.setNodeNumbering(enableNodeNumbering);
     }
 
-	public static void setNodeTextTemplate(final NodeModel node, final String nodeTextTemplate) {
+	public static void setNodeFormat(final NodeModel node, final String nodeFormat) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
-		styleModel.setNodeTextTemplate(nodeTextTemplate);
+		styleModel.setNodeFormat(nodeFormat);
 	}
 
 	public static void setShape(final NodeModel node, final String shape) {
@@ -127,7 +127,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	private Boolean isItalic = null;
 	private String shape;
 	private Boolean nodeNumbering = null;
-	private String nodeTextTemplate = null;
+	private String nodeFormat = null;
 
 	@Override
 	protected NodeStyleModel clone() {
@@ -142,7 +142,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		nodeStyleModel.setFontSize(fontSize);
 		nodeStyleModel.setItalic(isItalic);
 		nodeStyleModel.setShape(shape);
-		nodeStyleModel.setNodeTextTemplate(nodeTextTemplate);
+		nodeStyleModel.setNodeFormat(nodeFormat);
 		nodeStyleModel.setNodeNumbering(nodeNumbering);
 		return nodeStyleModel;
     }
@@ -167,8 +167,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return nodeNumbering;
 	}
 
-	public String getNodeTextTemplate() {
-	    return nodeTextTemplate;
+	public String getNodeFormat() {
+	    return nodeFormat;
     }
 
 	public String getShape() {
@@ -211,8 +211,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		this.nodeNumbering = enableNodeNumbering;
     }
 
-	public void setNodeTextTemplate(String nodeTextTemplate) {
-		this.nodeTextTemplate = nodeTextTemplate;
+	public void setNodeFormat(String nodeFormat) {
+		this.nodeFormat = nodeFormat;
     }
 
 	public void setShape(final String shape) {

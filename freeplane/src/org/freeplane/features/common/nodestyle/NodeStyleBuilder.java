@@ -33,6 +33,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.MapStyle;
@@ -141,14 +142,19 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "NUMBERED", nodenumberingHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "NUMBERED", nodenumberingHandler);
-		final IAttributeHandler templateHandler = new IAttributeHandler() {
+		final IAttributeHandler formatHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeStyleModel.setNodeTextTemplate(node, value);
+				NodeStyleModel.setNodeFormat(node, value);
 			}
 		};
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEMPLATE", templateHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEMPLATE", templateHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "FORMAT", formatHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "FORMAT", formatHandler);
+		if (FreeplaneVersion.getVersion().isOlderThan(new FreeplaneVersion(1, 3, 0))) {
+			// compatibility for a view 1.2.X preview versions - remove after release 1.3
+			reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEMPLATE", formatHandler);
+			reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEMPLATE", formatHandler);
+		}
 	}
 
 	/**
@@ -201,9 +207,9 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (numbered != null && numbered) {
 			writer.addAttribute("NUMBERED", numbered.toString());
 		}
-		final String template = forceFormatting ? nsc.getNodeTextTemplate(node) : style.getNodeTextTemplate();
-		if (template != null) {
-			writer.addAttribute("TEMPLATE", template);
+		final String format = forceFormatting ? nsc.getNodeFormat(node) : style.getNodeFormat();
+		if (format != null) {
+			writer.addAttribute("FORMAT", format);
 		}
 	}
 

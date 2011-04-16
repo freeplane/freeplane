@@ -272,8 +272,8 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 	
-	private class NodeTextTemplateChangeListener extends ChangeListener {
-		public NodeTextTemplateChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+	private class NodeFormatChangeListener extends ChangeListener {
+		public NodeFormatChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -281,7 +281,7 @@ public class StyleEditorPanel extends JPanel {
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) Controller.getCurrentModeController()
 			    .getExtension(NodeStyleController.class);
-			styleController.setNodeTextTemplate(node, enabled ? mNodeTextTemplate.getValue() : null);
+			styleController.setNodeFormat(node, enabled ? mNodeFormat.getValue() : null);
 		}
 	}
 
@@ -357,7 +357,7 @@ public class StyleEditorPanel extends JPanel {
 	private static final String NODE_NUMBERING = "nodenumbering";
 	private static final String NODE_SHAPE = "nodeshape";
 	private static final String NODE_TEXT_COLOR = "standardnodetextcolor";
-	private static final String NODE_TEXT_TEMPLATE = "nodetexttemplate";
+	private static final String NODE_FORMAT = "nodeformat";
 	/**
 	* 
 	*/
@@ -398,7 +398,7 @@ public class StyleEditorPanel extends JPanel {
 	private ComboProperty mNodeFontSize;
 	private BooleanProperty mNodeNumbering;
 	private ComboProperty mNodeShape;
-	private EditableComboProperty mNodeTextTemplate;
+	private EditableComboProperty mNodeFormat;
 	private BooleanProperty mSetCloud;
 	private BooleanProperty mSetEdgeColor;
 	private BooleanProperty mSetEdgeStyle;
@@ -411,7 +411,7 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetNodeFontSize;
 	private BooleanProperty mSetNodeNumbering;
 	private BooleanProperty mSetNodeShape;
-	private BooleanProperty mSetNodeTextTemplate;
+	private BooleanProperty mSetNodeFormat;
 	private BooleanProperty mSetStyle;
 	final private String[] sizes = new String[] { "2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24",
 	        "30", "36", "48", "72" };
@@ -440,18 +440,17 @@ public class StyleEditorPanel extends JPanel {
 		mNodeBackgroundColor.fireOnMouseClick();
 	}
 
-	private void addTemplateControl(final List<IPropertyControl> controls) {
-		mSetNodeTextTemplate = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
-		controls.add(mSetNodeTextTemplate);
-		mNodeTextTemplate = new EditableComboProperty(StyleEditorPanel.NODE_TEXT_TEMPLATE,
+	private void addFormatControl(final List<IPropertyControl> controls) {
+		mSetNodeFormat = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetNodeFormat);
+		mNodeFormat = new EditableComboProperty(StyleEditorPanel.NODE_FORMAT,
 		    new FormatController().getAllPatterns());
-		mNodeTextTemplate.setToolTipText(TextUtils.getText("node_text_template.tooltip"));
-		controls.add(mNodeTextTemplate);
-		final NodeTextTemplateChangeListener listener = new NodeTextTemplateChangeListener(mSetNodeTextTemplate,
-		    mNodeTextTemplate);
-		mSetNodeTextTemplate.addPropertyChangeListener(listener);
-		mNodeTextTemplate.addPropertyChangeListener(listener);
-		mNodeTextTemplate.fireOnMouseClick();
+		controls.add(mNodeFormat);
+		final NodeFormatChangeListener listener = new NodeFormatChangeListener(mSetNodeFormat,
+		    mNodeFormat);
+		mSetNodeFormat.addPropertyChangeListener(listener);
+		mNodeFormat.addPropertyChangeListener(listener);
+		mNodeFormat.fireOnMouseClick();
 	}
 	
 	private void addNodeNumberingControl(final List<IPropertyControl> controls) {
@@ -594,7 +593,7 @@ public class StyleEditorPanel extends JPanel {
 		addColorControl(controls);
 		addBgColorControl(controls);
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeText"));
-		addTemplateControl(controls);
+		addFormatControl(controls);
 		addNodeNumberingControl(controls);
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeShape"));
 		addNodeShapeControl(controls);
@@ -787,9 +786,9 @@ public class StyleEditorPanel extends JPanel {
 				mNodeNumbering.setValue(viewNodeNumbering);
 			}
 			{
-				final String nodeTextTemplate = NodeStyleModel.getNodeTextTemplate(node);
-				mSetNodeTextTemplate.setValue(nodeTextTemplate != null);
-				mNodeTextTemplate.setValue(nodeTextTemplate);
+				final String nodeFormat = NodeStyleModel.getNodeFormat(node);
+				mSetNodeFormat.setValue(nodeFormat != null);
+				mNodeFormat.setValue(nodeFormat);
 			}
 			if(mAutomaticLayoutCheckBox != null){
 				final ModeController modeController = Controller.getCurrentModeController();

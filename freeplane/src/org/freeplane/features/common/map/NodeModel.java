@@ -39,6 +39,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.SmallExtensionMap;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.XmlUtils;
+import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.filter.Filter;
 import org.freeplane.features.common.filter.FilterInfo;
 import org.freeplane.features.common.icon.MindIcon;
@@ -359,6 +360,45 @@ public class NodeModel implements MutableTreeNode {
 	public boolean hasID() {
 		return id != null;
 	}
+	/**
+	 * 
+	 * @return : the number of attributes attached to the node. 0 for none.
+	 */
+	public int getNumberOfAttributes() {
+		if (hasAttributes()) {
+			final NodeAttributeTableModel natm = NodeAttributeTableModel.getModel(this);
+			return natm.getRowCount();
+		}
+		else {
+			return 0;
+		}
+	}
+	/**
+	 * 
+	 * @return : true if the node has at least one attribute attached.
+	 */
+	public boolean hasAttributes() {
+		final NodeAttributeTableModel natm = NodeAttributeTableModel.getModel(this);
+		if (natm.getRowCount() > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	/**
+	 * 
+	 * @return : true if the node has an external resource attached.
+	 */
+	public boolean hasExternalResource() {
+		final ExternalResource extResource = (ExternalResource) this.getExtension(ExternalResource.class);
+		if (extResource == null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
 
 	/**
 	 * 
@@ -554,8 +594,8 @@ public class NodeModel implements MutableTreeNode {
 			return;
 		}
 		this.folded = folded;
-		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(!folded), Boolean
-		    .valueOf(folded)));
+		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(!folded),
+		    Boolean.valueOf(folded)));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {

@@ -93,7 +93,7 @@ public class TextController implements IExtension {
 		modeController.addAction(new ToggleDetailsAction());
 		modeController.addAction(new SetShortenerStateAction());
 //		modeController.addAction(new ToggleNodeNumberingAction());
-		addTextTransformer(new TemplateContentTransformer(this, 50));
+		addTextTransformer(new FormatContentTransformer(this, 50));
 	}
 
 	public void addTextTransformer(IContentTransformer textTransformer) {
@@ -248,7 +248,7 @@ public class TextController implements IExtension {
 		setIsShortened(node, ! getIsShortened(node)); 
     }
 
-	public String getNodeTextTemplate(NodeModel node) {
+	public String getNodeFormat(NodeModel node) {
 		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
 		final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
 		for(IStyle styleKey : collection){
@@ -256,9 +256,9 @@ public class TextController implements IExtension {
 			if (styleNode == null) {
 				continue;
 			}
-			final String template = NodeStyleModel.getNodeTextTemplate(styleNode);
-			if (template != null) {
-				return template;
+			final String format = NodeStyleModel.getNodeFormat(styleNode);
+			if (format != null) {
+				return format;
 			}
 		}
 		return null;

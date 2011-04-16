@@ -165,6 +165,10 @@
 		  	</menu_submenu>
 		  	<menu_submenu name="attributes" name_ref="menu_attributes">
 		      		<menu_action action="EditAttributesAction" accelerator="alt F9"/>
+		      		<menu_action action="attributes_RemoveFirstAttributeAction"/>
+		      		<menu_action action="attributes_RemoveLastAttributeAction"/>
+		      		<menu_action action="attributes_RemoveAllAttributesAction"/>
+		      		<menu_separator/>
 		      		<menu_action action="AssignAttributesAction" />
 		      		<menu_action action="ShowAttributeDialogAction" />
 		  	</menu_submenu>
@@ -202,7 +206,9 @@
 		  	<menu_submenu name="image" name_ref="menu_image">
 				<menu_action action="SetImageByFileChooserAction"
 					accelerator="alt shift K" />
-				<menu_action action="ViewerControllerAction" />
+				<menu_action action="ExternalImageAddAction" />
+				<menu_action action="ExternalImageChangeAction" />
+				<menu_action action="ExternalImageRemoveAction" />
 			</menu_submenu>
 			<menu_submenu name="progress" name_ref="menu_progress">
 				<menu_action action="IconProgressIconUpAction" accelerator="alt LESS" />
@@ -498,6 +504,10 @@
 		  	</menu_submenu>
 		  	<menu_submenu name="attributes" name_ref="menu_attributes">
 		      		<menu_action action="EditAttributesAction" accelerator="alt F9"/>
+		      		<menu_action action="attributes_RemoveFirstAttributeAction"/>
+		      		<menu_action action="attributes_RemoveLastAttributeAction"/>
+		      		<menu_action action="attributes_RemoveAllAttributesAction"/>
+		      		<menu_separator/>
 		      		<menu_action action="AssignAttributesAction" />
 		      		<menu_action action="ShowAttributeDialogAction" />
 		  	</menu_submenu>
@@ -535,7 +545,9 @@
 		  	<menu_submenu name="image" name_ref="menu_image">
 				<menu_action action="SetImageByFileChooserAction"
 					accelerator="alt shift K" />
-				<menu_action action="ViewerControllerAction" />
+				<menu_action action="ExternalImageAddAction" />
+				<menu_action action="ExternalImageChangeAction" />
+				<menu_action action="ExternalImageRemoveAction" />
 			</menu_submenu>
 			<menu_submenu name="progress" name_ref="menu_progress">
 				<menu_action action="IconProgressIconUpAction" accelerator="alt LESS" />

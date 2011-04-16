@@ -9,10 +9,10 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.format.PatternFormat;
 import org.freeplane.features.common.map.NodeModel;
 
-class TemplateContentTransformer extends AbstractContentTransformer {
+class FormatContentTransformer extends AbstractContentTransformer {
 	final private TextController textController;
 
-	public TemplateContentTransformer(final TextController textController, final int priority) {
+	public FormatContentTransformer(final TextController textController, final int priority) {
 		super(priority);
 		this.textController = textController;
 	}
@@ -20,14 +20,14 @@ class TemplateContentTransformer extends AbstractContentTransformer {
 	public Object transformContent(Object obj, final NodeModel node, Object transformedExtension) {
 		if (obj == null || node.getUserObject() != transformedExtension)
 			return obj;
-		final String template = textController.getNodeTextTemplate(node);
+		final String format = textController.getNodeFormat(node);
 		final boolean nodeNumbering = textController.getNodeNumbering(node);
-		return expandTemplate(obj, node, template, nodeNumbering);
+		return expandFormat(obj, node, format, nodeNumbering);
 	}
 
-	private Object expandTemplate(Object obj, final NodeModel node, final String template, boolean nodeNumbering) {
-		final boolean hasTemplate = template != null && template.length() != 0;
-		if (!hasTemplate && !nodeNumbering){
+	private Object expandFormat(Object obj, final NodeModel node, final String format, boolean nodeNumbering) {
+		final boolean hasFormat = format != null && format.length() != 0;
+		if (!hasFormat && !nodeNumbering){
 			return obj;
 		}
 		// - if html: strip html header
@@ -40,8 +40,8 @@ class TemplateContentTransformer extends AbstractContentTransformer {
 		if (isHtml) {
 			obj = HtmlUtils.extractRawBody((String)obj);
 		}
-		if (hasTemplate)
-			obj = format(obj, template);
+		if (hasFormat)
+			obj = format(obj, format);
 		if (nodeNumbering && !node.isRoot()){
 			StringBuilder builder = new StringBuilder(node.getNodeLevel(true) * 2);
 			getPathToRoot(builder, node);
@@ -79,9 +79,9 @@ class TemplateContentTransformer extends AbstractContentTransformer {
 		return sb.toString();
     }
 
-	private Object format(final Object obj, final String template) {
+	private Object format(final Object obj, final String formatString) {
 		try {
-			final PatternFormat format = PatternFormat.guessPatternFormat(template);
+			final PatternFormat format = PatternFormat.guessPatternFormat(formatString);
 			// logging for invalid pattern is done in guessPatternFormat()
 			if (format == null)
 				return obj.toString();
@@ -95,7 +95,7 @@ class TemplateContentTransformer extends AbstractContentTransformer {
 			return toFormat == null ? obj : format.format(toFormat);
 		}
 		catch (Exception e) {
-			LogUtils.warn("cannot format " + obj.toString() + " with " + template + ": " + e.getMessage());
+			LogUtils.warn("cannot format " + obj.toString() + " with " + formatString + ": " + e.getMessage());
 			return obj;
 		}
 	}

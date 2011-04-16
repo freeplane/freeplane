@@ -20,7 +20,6 @@
 package org.freeplane.features.mindmapmode.attribute;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -44,8 +43,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListDataListener;
 
@@ -298,7 +298,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	final private AttributeController attributeController;
 	final private JComboBox attributeNames;
 	final private JComboBox attributeValues;
-// // 	final private Controller Controller.getCurrentController();
+	// // 	final private Controller Controller.getCurrentController();
 	private IMapSelection mapSelection;
 	final private JComboBox replacingAttributeNames;
 	final private JComboBox replacingAttributeValues;
@@ -310,7 +310,8 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		super(frame, TextUtils.removeMnemonic(TextUtils.getText("attributes_assign_dialog")), false);
 		this.attributeController = attributeController;
 		mapSelection = Controller.getCurrentController().getSelection();
-		final Border actionBorder = new MatteBorder(2, 2, 2, 2, Color.BLACK);
+		final Border actionBorder = new CompoundBorder(new EmptyBorder(5, 10, 0, 10), new CompoundBorder(
+		    new EtchedBorder(), new EmptyBorder(5, 5, 5, 5)));
 		final Border emptyBorder = new EmptyBorder(5, 5, 5, 5);
 		final Border btnBorder = new EmptyBorder(2, 2, 2, 2);
 		selectedBtn = new JRadioButton();
