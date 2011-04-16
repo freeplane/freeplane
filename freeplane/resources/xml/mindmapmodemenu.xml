@@ -64,8 +64,6 @@
   				<menu_action action="CopyIDAction" />
 				<menu_action action="PasteAction" accelerator="control V" />
 				<menu_action action="SelectedPasteAction" />
-				<menu_action action="CopyAttributes" />
-				<menu_action action="PasteAttributes" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="find">
@@ -148,6 +146,7 @@
 					accelerator="alt shift R" />
 				<menu_action action="UsePlainTextAction" accelerator="alt shift P" />
 			 </menu_category>
+			<menu_separator/>
 			<menu_category name="position">
 				<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
 				<menu_action action="ResetNodeLocationAction" />
@@ -168,6 +167,9 @@
 		      		<menu_action action="attributes_RemoveFirstAttributeAction"/>
 		      		<menu_action action="attributes_RemoveLastAttributeAction"/>
 		      		<menu_action action="attributes_RemoveAllAttributesAction"/>
+		      		<menu_separator/>
+		      		<menu_action action="CopyAttributes" />
+					<menu_action action="PasteAttributes" />
 		      		<menu_separator/>
 		      		<menu_action action="AssignAttributesAction" />
 		      		<menu_action action="ShowAttributeDialogAction" />
