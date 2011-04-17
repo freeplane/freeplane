@@ -148,6 +148,7 @@
 			 </menu_category>
 			<menu_separator/>
 			<menu_category name="position">
+				<menu_action action="FirstGroupNodeAction" accelerator = "alt shift B"/>
 				<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
 				<menu_action action="ResetNodeLocationAction" />
 			</menu_category>
@@ -266,7 +267,7 @@
 					-->
 				</menu_category>
 				<menu_action action="NodeColorAction" accelerator="alt shift F" />
-				<menu_action action="NodeColorBlendAction" accelerator="alt shift B" />
+				<menu_action action="NodeColorBlendAction"/>
 				<menu_action action="NodeBackgroundColorAction" />
 				<menu_action action="MapBackgroundColorAction" />
 				<menu_separator />
@@ -472,6 +473,7 @@
 			<menu_action action="ToggleDetailsAction"/>
 		</menu_category>
 		<menu_separator />
+		<menu_action action="FirstGroupNodeAction"/>
 		<menu_action action="SummaryNodeAction" />
 		<menu_category name="navigate_nodes">
 			<menu_action action="NodeUpAction" />

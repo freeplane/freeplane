@@ -30,6 +30,16 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 @NodeHookDescriptor(hookName = "SummaryNode", onceForMap = false)
 public class SummaryNode extends PersistentNodeHook implements IExtension{
+	
+	public static void install(){
+		new SummaryNode();
+		new FirstGroupNode();
+	};
+	
+	static public boolean isFirstGroupNode(final NodeModel nodeModel) {
+		return nodeModel.containsExtension(FirstGroupNode.class);
+	}
+
 	@Override
 	protected IExtension createExtension(NodeModel node, XMLElement element) {
 		return this;
@@ -38,4 +48,29 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 	static public boolean isSummaryNode(final NodeModel nodeModel) {
 		return nodeModel.containsExtension(SummaryNode.class);
 	}
+
+	@Override
+    public void undoableToggleHook(NodeModel node, IExtension extension) {
+		final FirstGroupNode extension2 = (FirstGroupNode) node.getExtension(FirstGroupNode.class);
+		if(extension2 != null) extension2.undoableToggleHook(node, extension2);
+	    super.undoableToggleHook(node, extension);
+    }
+	
 }
+
+@NodeHookDescriptor(hookName = "FirstGroupNode", onceForMap = false)
+class FirstGroupNode extends PersistentNodeHook implements IExtension{
+	@Override
+	protected IExtension createExtension(NodeModel node, XMLElement element) {
+		return this;
+	}
+	
+	@Override
+    public void undoableToggleHook(NodeModel node, IExtension extension) {
+		final SummaryNode extension2 = (SummaryNode) node.getExtension(SummaryNode.class);
+		if(extension2 != null) extension2.undoableToggleHook(node, extension2);
+	    super.undoableToggleHook(node, extension);
+    }
+	
+}
+

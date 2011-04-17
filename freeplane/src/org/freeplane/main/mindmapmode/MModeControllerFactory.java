@@ -153,7 +153,7 @@ public class MModeControllerFactory {
 		new HierarchicalIcons();
 		new AutomaticLayout();
 		new BlinkingNodeHook();
-		new SummaryNode();
+		SummaryNode.install();
 		new CreationModificationPlugin();
 		new ReminderHook();
 		new AutomaticEdgeColorHook();

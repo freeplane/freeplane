@@ -1013,8 +1013,9 @@ public class NodeView extends JComponent implements INodeView {
 				else{
 					x1 = Math.max(x1,  nodeViewSibling.getX() + firstView.getWidth() - spaceAround);
 				}
-				
 			}
+			if(nodeViewSibling.isFirstGroupNode())
+				break;
 		}
 		if(firstView == null){
 			final EdgeView edge = EdgeViewFactory.getInstance().getEdge(nodeView);
@@ -1046,7 +1047,7 @@ public class NodeView extends JComponent implements INodeView {
 
 
 
-	private int getZoomed(int x) {
+	public int getZoomed(int x) {
 	    return getMap().getZoomed(x);
     }
 
@@ -1402,5 +1403,11 @@ public class NodeView extends JComponent implements INodeView {
 
 	public boolean isSummary() {
 	    return SummaryNode.isSummaryNode(getModel());
+    }
+
+
+
+	public boolean isFirstGroupNode() {
+	    return SummaryNode.isFirstGroupNode(getModel());
     }
 }

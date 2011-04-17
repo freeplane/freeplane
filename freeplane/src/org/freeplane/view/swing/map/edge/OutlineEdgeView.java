@@ -62,11 +62,9 @@ public class OutlineEdgeView extends EdgeView {
 		g.drawLine(start.x, end.y, end.x, end.y);
 		if(getTarget().isSummary()){
 			final int gap = getWidth();
-			final int x1 = start.x - gap;
 			final int y1 = end.y + gap * 13/8;
-			g.drawLine(x1, start.y, x1, y1);
 			g.drawLine(start.x, start.y, start.x, y1);
-			g.drawLine(x1, y1, end.x + getTarget().getContent().getWidth(), y1);
+			g.drawLine(start.x, y1, end.x + getTarget().getContent().getWidth(), y1);
 		}
 	}
 
@@ -77,6 +75,6 @@ public class OutlineEdgeView extends EdgeView {
 		int edgeWidth = edgeController.getWidth(model);
 		final EdgeStyle style = edgeController.getStyle(model);
 		edgeWidth = style.getNodeLineWidth(edgeWidth);
-		return new BasicStroke(edgeWidth);
+		return new BasicStroke(getTarget().getZoomed(edgeWidth));
 	}
 }

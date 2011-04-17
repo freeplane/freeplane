@@ -225,6 +225,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     	
     	int summaryBaseX = 0;
     	
+    	boolean afterSummaryNode = false;
+    	
     	for (int i = 0; i < getChildCount(); i++) {
     		final NodeView child = (NodeView) getView().getComponent(i);
     		if (child.isLeft() != isLeft) {
@@ -233,6 +235,14 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     		
     		final boolean isSummary = child.isSummary();
     		final boolean isItem = ! (isSummary && visibleChildCounter > groupStartVisibleChildCounter);
+       		if(afterSummaryNode || child.isFirstGroupNode()){
+    	    	groupStartContentHeightSum = childContentHeightSum;
+    	    	groupStartVisibleChildCounter = visibleChildCounter;
+    	    	summaryBaseX = 0;
+    	    	groupStartY = y;
+    	    	groupStart = i;
+    	    	afterSummaryNode = false;
+    		}
     		
     		final int childCloudHeigth = getAdditionalCloudHeigth(child);
     		final int childContentHeight = child.getContent().getHeight();
@@ -312,13 +322,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     				childContentHeightSum = summaryContentHeight;
     			}
     		}
-    		if(isSummary){
-    	    	groupStartContentHeightSum = childContentHeightSum;
-    	    	groupStartVisibleChildCounter = visibleChildCounter;
-    	    	summaryBaseX = 0;
-    	    	groupStartY = y;
-    	    	groupStart = i+1;
-    		}
+    		afterSummaryNode = isSummary;
     	}
     	
     	if (getView().isContentVisible()) {
