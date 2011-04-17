@@ -268,7 +268,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     			final int x;
     			if(child.isLeft()){
     				x = - childHGap - child.getContent().getX() - child.getContent().getWidth();
-    				summaryBaseX = Math.min(summaryBaseX, x);
+    				summaryBaseX = Math.min(summaryBaseX, x + getSpaceAround());
     			}
     			else{
     				x = contentWidth + childHGap - child.getContent().getX();
@@ -295,7 +295,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     			int summaryY = (groupStartY + groupEndY ) / 2 - childContentHeight / 2 + childShiftY - (child.getContent().getY() - getSpaceAround());
     			final int x;
     			if(child.isLeft()){
-    				x = summaryBaseX - childHGap - child.getContent().getWidth();
+    				x = summaryBaseX - childHGap - child.getContent().getX() - child.getContent().getWidth();
     			}
     			else{
     				x = summaryBaseX + childHGap;
