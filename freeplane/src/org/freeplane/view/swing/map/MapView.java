@@ -832,12 +832,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				newSelected = newSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), true);
 			}
 			if(newSelected == null)
-				newSelected = getSummaryView(oldSelected);
+				newSelected = getVisibleSummaryView(oldSelected);
 		}
 		return newSelected;
 	}
 
-	private NodeView getSummaryView(NodeView node) {
+	private NodeView getVisibleSummaryView(NodeView node) {
 	    if(node.isRoot())
 	    	return null;
 	    final NodeView parent = node.getParentView();
@@ -846,10 +846,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	if(! (component instanceof NodeView))
 	    		break;
 	    	NodeView next = (NodeView) component;
-	    	if(next.isSummary())
-	    		return next;
+	    	if(next.isLeft() != node.isLeft())
+	    		continue;
+	    	if(next.isSummary()){
+	    		if(next.getModel().isVisible())
+	    			return next;
+	    		break;
+	    	}
 	    }
-	    return getSummaryView(parent);
+	    return getVisibleSummaryView(parent);
     }
 
 	int getIndex(NodeView node) {
@@ -912,7 +917,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				newSelected = newSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), false);
 			}
 			if(newSelected == null)
-				newSelected = getSummaryView(oldSelected);
+				newSelected = getVisibleSummaryView(oldSelected);
 		}
 		return newSelected;
 	}
