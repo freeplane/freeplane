@@ -831,9 +831,35 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			while (newSelected != null && !newSelected.isContentVisible()) {
 				newSelected = newSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), true);
 			}
+			if(newSelected == null)
+				newSelected = getSummaryView(oldSelected);
 		}
 		return newSelected;
 	}
+
+	private NodeView getSummaryView(NodeView node) {
+	    if(node.isRoot())
+	    	return null;
+	    final NodeView parent = node.getParentView();
+	    for (int i = 1 + getIndex(node);i < parent.getComponentCount();i++){
+	    	final Component component = parent.getComponent(i);
+	    	if(! (component instanceof NodeView))
+	    		break;
+	    	NodeView next = (NodeView) component;
+	    	if(next.isSummary())
+	    		return next;
+	    }
+	    return getSummaryView(parent);
+    }
+
+	int getIndex(NodeView node) {
+	    final NodeView parent = node.getParentView();
+	    for(int i = 0; i < parent.getComponentCount(); i++){
+	    	if(parent.getComponent(i).equals(node))
+	    		return i;
+	    }
+	    return -1;
+    }
 
 	private NodeView getVisibleNeighbour(final int directionCode) {
 		final NodeView oldSelected = getSelected();
@@ -885,6 +911,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			while (newSelected != null && !newSelected.isContentVisible()) {
 				newSelected = newSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), false);
 			}
+			if(newSelected == null)
+				newSelected = getSummaryView(oldSelected);
 		}
 		return newSelected;
 	}
