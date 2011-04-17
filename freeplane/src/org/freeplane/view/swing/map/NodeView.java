@@ -90,7 +90,16 @@ public class NodeView extends JComponent implements INodeView {
 	static final int SPACE_AROUND = 50;
 	public static final int MAIN_VIEWER_POSITION = 1;
 	public static final int NOTE_VIEWER_POSITION = 10;
-	final static boolean PAINT_DEBUG_BORDER = System.getProperty("org.freeplane.view.swing.map.NodeView.PAINT_DEBUG_BORDER", "false").equalsIgnoreCase("true");
+	final static boolean PAINT_DEBUG_BORDER;
+	static{
+		boolean paintDebugBorder = false;
+		try{
+			paintDebugBorder = System.getProperty("org.freeplane.view.swing.map.NodeView.PAINT_DEBUG_BORDER", "false").equalsIgnoreCase("true");
+		}
+		catch(Exception e){
+		}
+		PAINT_DEBUG_BORDER = paintDebugBorder;
+	};
 	static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
 	    .getBooleanProperty("formula_dont_mark_formulas");;
 	private AttributeView attributeView;
