@@ -769,7 +769,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					}
 				}
 			}
-			view.getContent().getLocation(point);
+			if(view.isSummary()){
+				point.x = 0;
+				point.y = view.getHeight() - view.getSpaceAround(); 
+			}
+			else{
+				view.getContent().getLocation(point);
+			}
 			UITools.convertPointToAncestor(view, point, this);
 			final Integer pointY = new Integer(point.y);
 			LinkedList<NodeModel> nodeList = sortedNodes.get(pointY);
