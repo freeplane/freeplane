@@ -17,6 +17,7 @@ def removeModifiers(String[] parts) {
     def result = parts.toList()
     result.remove("final")
     result.remove("abstract")
+    result.remove("public")
     return result
 }
 
@@ -29,12 +30,9 @@ def newChildNode(node, method){
     List parts = removeModifiers(text.split(" "));
 
     StringBuilder sb = new StringBuilder();
-    sb.append(parts[0]);
-    sb.append(" ");
+    sb.append(lastSection(parts[0]));
 
-    sb.append(lastSection(parts[1]));
-
-    returnType.setText(parts[1].replace('Proxy$', ''));
+    returnType.setText(parts[0].replace('Proxy$', ''));
 
     sb.append(" ");
     sb.append(method.getName());
@@ -44,8 +42,8 @@ def newChildNode(node, method){
     def protoTxt = new StringBuffer();
     if(parms.size() >0){
         for(i in 0..parms.size()-1){
-            protoTxt.append(parms[i].toString());
-            sb.append(lastSection(parms[i].toString()));
+            protoTxt.append(parms[i].canonicalName);
+            sb.append(lastSection(parms[i].canonicalName));
             if(i<parms.size()-1){
                 protoTxt.append("\n");
                 sb.append(",");
@@ -66,7 +64,9 @@ def makeApi(node, clazz, apiBase) {
     child.text = clazz.simpleName.replace('Proxy$', '')
     def path = clazz.name.replace('.', '/').replace('$', '.')
     child.link.text = apiBase + '/' + path + '.html'
-    def methods = clazz.getMethods().sort{ a,b -> b.name <=> a.name }
+    def methods = clazz.getMethods().findAll{
+        it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO')
+    }.sort{ a,b -> b.name <=> a.name }
     for(i in 0..<methods.size()){
         newChildNode(child, methods[i]);
     }
@@ -90,7 +90,8 @@ def PROXY_NODE = textUtils.getText('scripting_api_generator_proxy')
 def UTILITES_NODE = textUtils.getText('scripting_api_generator_utilities')
 def WEB_NODE = textUtils.getText('scripting_api_generator_web')
 c.deactivateUndo()
-def apiBase = 'file:/devel/freeplane-bazaar-repo/trunk/freeplane_framework/build/doc/api'
+// FIXME: api is installed locally but is there a portable way to find it?
+def apiBase = 'http://freeplane.sourceforge.net/doc/api'
 def newMap = c.newMap()
 def oldName = newMap.name
 newMap.name = MAP_NAME
@@ -115,10 +116,10 @@ makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Map'), api
 makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Node'), apiBase)
 makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$NodeStyle'), apiBase)
 makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Convertible'), apiBase)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.FreeplaneScriptBaseClass'), apiBase)
 
 def utils = createChild(newMap.root, UTILITES_NODE, null)
 initHeading(utils)
+makeApi(utils, Class.forName('org.freeplane.plugin.script.FreeplaneScriptBaseClass'), apiBase)
 makeApi(utils, Class.forName('org.freeplane.core.ui.components.UITools'), apiBase)
 makeApi(utils, Class.forName('org.freeplane.core.util.TextUtils'), apiBase)
 makeApi(utils, Class.forName('org.freeplane.core.util.FreeplaneVersion'), apiBase)
