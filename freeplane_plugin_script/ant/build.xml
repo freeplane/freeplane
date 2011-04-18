@@ -70,9 +70,10 @@
 				</fileset>
 				<fileset dir="${workspace}/freeplane">
 					<include name="**/UITools.java" />
-					<include name="**/LogUtils.java" />
-					<include name="**/HtmlUtils.java" />
+					<include name="**/TextUtils.java" />
 					<include name="**/FreeplaneVersion.java" />
+					<include name="**/HtmlUtils.java" />
+					<include name="**/LogUtils.java" />
 				</fileset>
 			</sourcefiles>
 		</javadoc>
