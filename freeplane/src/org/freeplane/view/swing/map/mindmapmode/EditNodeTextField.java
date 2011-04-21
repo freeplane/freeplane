@@ -181,11 +181,9 @@ class EditNodeTextField extends EditNodeBase {
 		}
 	    final HTMLDocument document = (HTMLDocument) textfield.getDocument();
 	    document.getStyleSheet().addRule("body { width: " + (maxWidth - 1) + "}");
-	    final int selectionStart = textfield.getSelectionStart();
-	    final int selectionEnd = textfield.getSelectionEnd();
-	    textfield.setText(getNewText());
-	    textfield.setSelectionStart(selectionStart);
-	    textfield.setSelectionEnd(selectionEnd);
+	    // bad hack: call "setEditable" only to update view
+	    textfield.setEditable(false);
+	    textfield.setEditable(true);
 	    textfield.putClientProperty("EditNodeTextField.linewrap", true);
     }
 
