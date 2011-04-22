@@ -995,16 +995,18 @@ public class NodeView extends JComponent implements INodeView {
 	private void paintSummaryEdge(Graphics2D g, NodeView nodeView, int pos) {
 		final boolean isLeft = nodeView.isLeft();
 		final int spaceAround = getSpaceAround();
+		
+		int level = 0;
+		int anotherLevel = 0;
+		int i;
 		NodeView lastView = null;
-		NodeView firstView = null;
 		int x1 = 0;
-		for (int i = pos - 1; i >= 0; i--) {
+		boolean itemFound = false;
+		boolean firstGroupNodeFound = false;
+		for (i = pos - 1; i >= 0; i--) {
 			final NodeView nodeViewSibling = (NodeView) getComponent(i);
-			if (nodeViewSibling.isLeft() != isLeft || !nodeViewSibling.getModel().isVisible())
+			if (nodeViewSibling.isLeft() != isLeft)
 				continue;
-			if (nodeViewSibling.isSummary())
-				break;
-			firstView = nodeViewSibling;
 			if (lastView == null) {
 				lastView = nodeViewSibling;
 				if (isLeft) {
@@ -1013,35 +1015,63 @@ public class NodeView extends JComponent implements INodeView {
 				else {
 					x1 = nodeViewSibling.getX() + lastView.getWidth() - spaceAround;
 				}
+				firstGroupNodeFound = lastView.isFirstGroupNode();
 			}
-			else {
-				if (isLeft) {
-					x1 = Math.min(x1, nodeViewSibling.getX() + spaceAround);
-				}
-				else {
-					x1 = Math.max(x1, nodeViewSibling.getX() + firstView.getWidth() - spaceAround);
-				}
+			if(! itemFound){ 
+				if( ! nodeViewSibling.isSummary())
+					itemFound = true;
+				else
+					level++;
 			}
-			if (nodeViewSibling.isFirstGroupNode())
+			else if(nodeViewSibling.isSummary()){
+				anotherLevel++;
+				if(anotherLevel > level)
+					break;
+			}
+			else
+				anotherLevel = 0;
+			if(anotherLevel == level && nodeViewSibling.isFirstGroupNode())
+				firstGroupNodeFound = true;
+			if(firstGroupNodeFound && ! nodeViewSibling.isSummary()){
+				i--;
 				break;
+			}
+			
 		}
-		if (firstView == null) {
+		
+		if (lastView == null) {
 			final EdgeView edge = EdgeViewFactory.getInstance().getEdge(nodeView);
 			edge.paint(g);
 			return;
 		}
+		
+		NodeView firstView = null;
+		anotherLevel = 0;
+		for (i = i + 1; i < pos; i++) {
+			final NodeView nodeViewSibling = (NodeView) getComponent(i);
+			if (nodeViewSibling.isLeft() != isLeft)
+				continue;
+			if (nodeViewSibling.isSummary())
+				anotherLevel++;
+			else
+				anotherLevel = 0;
+			if (anotherLevel == level && firstView == null) {
+				firstView = nodeViewSibling;
+			}
+			if (isLeft) {
+				x1 = Math.min(x1, nodeViewSibling.getX() + spaceAround);
+			}
+			else {
+				x1 = Math.max(x1, nodeViewSibling.getX() + nodeViewSibling.getWidth() - spaceAround);
+			}
+		}
+		
 		int y1 = firstView.getY() + spaceAround;
 		int y2 = lastView.getY() + lastView.getHeight() - spaceAround;
 		final JComponent content = nodeView.getContent();
 		int x = nodeView.getX() + content.getX();
-		if (isLeft) {
+		if (isLeft)
 			x += nodeView.getWidth() - 2 * spaceAround;
-		}
-		else {
-		}
-		int y = nodeView.getY() + content.getY() + content.getHeight() / 2;
-		y1 = Math.min(y1, y);
-		y2 = Math.max(y2, y);
 		final EdgeView edgeView = new SummaryEdgeView(nodeView);
 		edgeView.setStart(new Point(x1, y1));
 		edgeView.paint(g);
