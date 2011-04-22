@@ -41,6 +41,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
@@ -263,8 +264,13 @@ abstract public class EditNodeBase {
 		class KeyEventQueue implements KeyEventDispatcher, FocusListener {
 			LinkedList<KeyEvent> events = new LinkedList<KeyEvent>();
 
-			public boolean dispatchKeyEvent(final KeyEvent e) {
-				events.add(e);
+			public boolean dispatchKeyEvent(final KeyEvent ke) {
+				if(ke.getKeyChar() != 0){
+					if (ke.getID() == KeyEvent.KEY_PRESSED){
+						KeyEvent newEvent = new KeyEvent(textComponent, KeyEvent.KEY_TYPED, ke.getWhen(), ke.getModifiers(), KeyEvent.VK_UNDEFINED, ke.getKeyChar(), KeyEvent.KEY_LOCATION_UNKNOWN);
+						events.add(newEvent);
+					}
+				}
 				return true;
 			}
 
@@ -272,8 +278,7 @@ abstract public class EditNodeBase {
 				e.getComponent().removeFocusListener(this);
 				currentKeyboardFocusManager.removeKeyEventDispatcher(this);
 				for (final KeyEvent ke : events) {
-					ke.setSource(textComponent);
-					textComponent.dispatchEvent(ke);
+					SwingUtilities.processKeyBindings(ke);
 				}
 			}
 
@@ -300,7 +305,7 @@ abstract public class EditNodeBase {
 		}
 		else {
 			textComponent.selectAll();
-			textComponent.dispatchEvent(firstKeyEvent);
+			keyEventDispatcher.dispatchKeyEvent(firstKeyEvent);
 		}
 	}
 
