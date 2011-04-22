@@ -66,15 +66,25 @@ public class UserPropertiesUpdater {
 	void importOldDefaultStyle() {
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
 		MFileManager fm = (MFileManager) MFileManager.getController(modeController);
-		final File userTemplates = fm.defaultUserTemplateDir();
-		final File userDefault = new File(userTemplates, fm.getStandardTemplateName());
+		final String standardTemplateName = fm.getStandardTemplateName();
+		final File userDefault;
+		final File absolute = new File(standardTemplateName);
+		if(absolute.isAbsolute())
+			userDefault = absolute;
+		else{
+			final File userTemplates = fm.defaultUserTemplateDir();
+			userDefault= new File(userTemplates, standardTemplateName);
+		}
 		if(userDefault.exists()){
 			return;
 		}
 		userDefault.getParentFile().mkdirs();
+		if(! userDefault.getParentFile().exists()){
+			return;
+		}
 		MapModel defaultStyleMap = new MapModel(null);
 		final File allUserTemplates = fm.defaultStandardTemplateDir();
-		final File standardTemplate = new File(allUserTemplates, fm.getStandardTemplateName());
+		final File standardTemplate = new File(allUserTemplates, "standard.mm");
 		try {
 			fm.loadImpl(standardTemplate.toURL(), defaultStyleMap);
 		}

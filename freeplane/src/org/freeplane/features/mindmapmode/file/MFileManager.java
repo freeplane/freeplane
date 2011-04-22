@@ -88,8 +88,6 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	private static final boolean SET_NEW_MAP_SAVED = true;
 	private static final String BACKUP_EXTENSION = "bak";
-	// FIXME: set to 0!!!
-	//	private static final int DEBUG_OFFSET = 5 * 24 * 3600 * 1000;
 	private static final int DEBUG_OFFSET = 0;
 
 	static private class BackupFlag implements IExtension {
@@ -126,7 +124,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	private static File singleBackupDirectory;
 
 	private File[] findNewerFileRevisions(final File file, final File backupDir) {
-		final Pattern pattern = Pattern.compile("^" + backupFileName(file) + "\\.+\\d+\\.(" + BACKUP_EXTENSION + "|"
+		final Pattern pattern = Pattern.compile("^" + Pattern.quote(backupFileName(file)) + "\\.+\\d+\\.(" + BACKUP_EXTENSION + "|"
 		        + DoAutomaticSave.AUTOSAVE_EXTENSION + ")");
 		if (backupDir.exists()) {
 			return backupDir.listFiles(new java.io.FileFilter() {
@@ -531,24 +529,27 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public void newMap() {
-		File[] files = defaultTemplateFiles();
-		for (File file : files) {
-			if (file.exists() && !file.isDirectory()) {
-				newMapFromTemplate(file);
-				return;
-			}
+		final File file = defaultTemplateFile();
+		if (file != null) {
+			newMapFromTemplate(file);
+			return;
 		}
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final MapModel map = mapController.newMap(((NodeModel) null));
 		mapController.setSaved(map, SET_NEW_MAP_SAVED);
 	}
 
-	private File[] defaultTemplateFiles() {
-		final File allUserTemplates = defaultStandardTemplateDir();
+	private File defaultTemplateFile() {
+		final String userDefinedTemplateFile = getStandardTemplateName();
+		final File absolute = new File(userDefinedTemplateFile);
+		if(absolute.isAbsolute() && absolute.exists() && ! absolute.isDirectory()){
+			return absolute;
+		}
 		final File userTemplates = defaultUserTemplateDir();
-		File[] files = new File[] { new File(userTemplates, getStandardTemplateName()),
-		        new File(allUserTemplates, getStandardTemplateName()) };
-		return files;
+		final File userStandard = new File(userTemplates, userDefinedTemplateFile);
+		if(userStandard.exists() && ! userStandard.isDirectory())
+			return userStandard;
+		return null;
 	}
 
 	public File defaultUserTemplateDir() {
@@ -826,18 +827,15 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public void loadDefault(MapModel target) {
 		try {
-			File[] files = defaultTemplateFiles();
-			for (File file : files) {
-				if (file.exists() && !file.isDirectory()) {
-					try {
-						loadImpl(Compat.fileToUrl(file), target);
-						return;
-					}
-					catch (Exception e) {
-						UITools.errorMessage(e.getMessage());
-						LogUtils.warn(e);
-						continue;
-					}
+			final File file = defaultTemplateFile();
+			if (file != null) {
+				try {
+					loadImpl(Compat.fileToUrl(file), target);
+					return;
+				}
+				catch (Exception e) {
+					UITools.errorMessage(e.getMessage());
+					LogUtils.warn(e);
 				}
 			}
 			final URL url = ResourceController.getResourceController().getResource("/styles/viewer_standard.mm");
