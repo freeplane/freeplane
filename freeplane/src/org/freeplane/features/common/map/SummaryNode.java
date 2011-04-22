@@ -48,13 +48,6 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 	static public boolean isSummaryNode(final NodeModel nodeModel) {
 		return nodeModel.containsExtension(SummaryNode.class);
 	}
-
-	@Override
-    public void undoableToggleHook(NodeModel node, IExtension extension) {
-		final FirstGroupNode extension2 = (FirstGroupNode) node.getExtension(FirstGroupNode.class);
-		if(extension2 != null) extension2.undoableToggleHook(node, extension2);
-	    super.undoableToggleHook(node, extension);
-    }
 	
 }
 
@@ -64,13 +57,6 @@ class FirstGroupNode extends PersistentNodeHook implements IExtension{
 	protected IExtension createExtension(NodeModel node, XMLElement element) {
 		return this;
 	}
-	
-	@Override
-    public void undoableToggleHook(NodeModel node, IExtension extension) {
-		final SummaryNode extension2 = (SummaryNode) node.getExtension(SummaryNode.class);
-		if(extension2 != null) extension2.undoableToggleHook(node, extension2);
-	    super.undoableToggleHook(node, extension);
-    }
 	
 }
 

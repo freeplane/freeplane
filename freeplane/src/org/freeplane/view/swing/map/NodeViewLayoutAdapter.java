@@ -323,6 +323,13 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     		}
     		else{
     			final int itemLevel = level - 1;
+				if(child.isFirstGroupNode()){
+        	    	groupStartContentHeightSum[level] = groupStartContentHeightSum[itemLevel];
+        	    	groupStartVisibleChildCounter[level] = groupStartVisibleChildCounter[itemLevel];
+        	    	summaryBaseX[level] = 0;
+        	    	groupStartY[level] = groupStartY[itemLevel];
+        	    	groupStart[level] = groupStart[itemLevel];
+           		}
     			int summaryY = (groupStartY[itemLevel] + groupEndY[itemLevel] ) / 2 - childContentHeight / 2 + childShiftY - (child.getContent().getY() - getSpaceAround());
     			final int x;
     			if(child.isLeft()){
