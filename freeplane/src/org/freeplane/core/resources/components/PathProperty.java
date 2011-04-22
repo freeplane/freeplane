@@ -63,8 +63,8 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 		}
 	}
 
-	private boolean isDir;
-	private String[] suffixes;
+	final private boolean isDir;
+	final private String[] suffixes;
 	private String path;
 	private JTextField filenameField;
 	private JButton selectButton;
@@ -157,7 +157,7 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 		if (value != null) {
 			value = value.replace("{freeplaneuserdir}", ResourceController.getResourceController()
 			    .getFreeplaneUserDirectory());
-			this.path = new File(value).getAbsolutePath();
+			this.path = value;
 		}
 		else {
 			this.path = null;
