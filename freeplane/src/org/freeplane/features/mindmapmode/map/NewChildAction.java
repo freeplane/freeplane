@@ -19,21 +19,13 @@
  */
 package org.freeplane.features.mindmapmode.map;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.mindmapmode.text.MTextController;
 
 class NewChildAction extends AFreeplaneAction {
 	/**
@@ -51,105 +43,13 @@ class NewChildAction extends AFreeplaneAction {
 
 	public NodeModel addNewNode(int newNodeMode, final KeyEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final TextController textController = TextController.getController();
-		if (textController instanceof MTextController) {
-			((MTextController) textController).stopEditing();
-		}
 		final MMapController mapController = (MMapController) modeController.getMapController();
-		final NodeModel target = mapController.getSelectedNode();
-		if (textController instanceof MTextController) {
-			modeController.startTransaction();
-			try {
-				((MTextController) TextController.getController()).stopEditing();
-			}
-			finally {
-				modeController.commit();
-			}
-		}
-		final NodeModel targetNode = target;
-		final NodeModel newNode;
-		switch (newNodeMode) {
-			case MMapController.NEW_SIBLING_BEFORE:
-			case MMapController.NEW_SIBLING_BEHIND: {
-				if (!targetNode.isRoot()) {
-					final NodeModel parent = targetNode.getParentNode();
-					int childPosition = parent.getChildPosition(targetNode);
-					if (newNodeMode == MMapController.NEW_SIBLING_BEHIND) {
-						childPosition++;
-					}
-					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
-					if (newNode == null) {
-						return null;
-					}
-					mapController.select(newNode);
-					if (e != null) {
-						((MTextController) textController).edit(newNode, targetNode, e, true, false, false);
-					}
-					else {
-						EventQueue.invokeLater(new Runnable() {
-							public void run() {
-								((MTextController) textController).edit(newNode, targetNode, e, true, false, false);
-							}
-						});
-					}
-					break;
-				}
-				else {
-					newNodeMode = MMapController.NEW_CHILD;
-				}
-			}
-			case MMapController.NEW_CHILD:
-			case MMapController.NEW_CHILD_WITHOUT_FOCUS: {
-				final boolean parentFolded = mapController.isFolded(targetNode);
-				if (parentFolded) {
-					mapController.setFolded(targetNode, false);
-				}
-				final int position = ResourceController.getResourceController().getProperty("placenewbranches").equals(
-				    "last") ? targetNode.getChildCount() : 0;
-				newNode = addNewNode(targetNode, position, targetNode.isNewChildLeft());
-				if (newNode == null) {
-					return null;
-				}
-				if (newNodeMode == MMapController.NEW_CHILD) {
-					mapController.select(newNode);
-				}
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						((MTextController) textController).edit(newNode, targetNode, e, true, parentFolded, false);
-					}
-				});
-				break;
-			}
-			default:
-				newNode = null;
-		}
-		return newNode;
+		return mapController.addNewNode(newNodeMode, e);
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
-		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		if (!mapController.isWriteable(parent)) {
-			final String message = TextUtils.getText("node_is_write_protected");
-			UITools.errorMessage(message);
-			return null;
-		}
-		final MapModel map = parent.getMap();
-		final NodeModel newNode = Controller.getCurrentModeController().getMapController().newNode("", map);
-		newNode.setLeft(newNodeIsLeft);
-		final IActor actor = new IActor() {
-			public void act() {
-				(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(newNode, parent, index);
-			}
-
-			public String getDescription() {
-				return "addNewNode";
-			}
-
-			public void undo() {
-				mapController.deleteWithoutUndo(newNode);
-			}
-		};
-		Controller.getCurrentModeController().execute(actor, map);
-		return newNode;
+		final ModeController modeController = Controller.getCurrentModeController();
+		final MMapController mapController = (MMapController) modeController.getMapController();
+		return mapController.addNewNode(parent, index, newNodeIsLeft);
 	}
 }

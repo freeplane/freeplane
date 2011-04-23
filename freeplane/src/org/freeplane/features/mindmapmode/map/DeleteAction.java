@@ -28,6 +28,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -56,40 +57,10 @@ class DeleteAction extends AFreeplaneAction {
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
+		final MMapController mapController = (MMapController) modeController.getMapController();
 		final Iterator<NodeModel> iterator = controller.getSelection().getSortedSelection(true).iterator();
 		while (iterator.hasNext()) {
-			delete(iterator.next());
+			mapController.deleteNode(iterator.next());
 		}
-	}
-
-	public IActor createActor(final int index, final NodeModel parentNode, final NodeModel node) {
-		final IActor actor = new IActor() {
-			public void act() {
-				deleteWithoutUndo(node);
-			}
-
-			public String getDescription() {
-				return "delete";
-			}
-
-			public void undo() {
-				(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
-			}
-		};
-		return actor;
-	}
-
-	/**
-	 * @param node
-	 */
-	void delete(final NodeModel node) {
-		final NodeModel parentNode = node.getParentNode();
-		final int index = parentNode.getIndex(node);
-		final IActor actor = createActor(index, parentNode, node);
-		Controller.getCurrentModeController().execute(actor, node.getMap());
-	}
-
-	void deleteWithoutUndo(final NodeModel node) {
-		((MMapController) Controller.getCurrentModeController().getMapController()).deleteWithoutUndo(node);
 	}
 }

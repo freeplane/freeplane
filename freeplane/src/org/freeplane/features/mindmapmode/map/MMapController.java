@@ -20,6 +20,7 @@
 package org.freeplane.features.mindmapmode.map;
 
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +31,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.EncryptionModel;
@@ -37,22 +39,21 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
+import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MMapController extends MapController {
-	static private DeleteAction delete;
 	public static final int NEW_CHILD = 2;
 	public static final int NEW_CHILD_WITHOUT_FOCUS = 1;
 	public static final int NEW_SIBLING_BEFORE = 4;
 	public static final int NEW_SIBLING_BEHIND = 3;
-	@Deprecated //remove the action field, move its methods to this class.
-	private NewChildAction newChild;
 	public static final String RESOURCES_CONVERT_TO_CURRENT_VERSION = "convert_to_current_version";
 
 	public MMapController() {
@@ -73,12 +74,107 @@ public class MMapController extends MapController {
 			});
 	}
 
-	public NodeModel addNewNode(final int newNodeMode, final KeyEvent e) {
-		return newChild.addNewNode(newNodeMode, e);
+	public NodeModel addNewNode(int newNodeMode, final KeyEvent e) {
+		final ModeController modeController = Controller.getCurrentModeController();
+		final TextController textController = TextController.getController();
+		if (textController instanceof MTextController) {
+			((MTextController) textController).stopEditing();
+		}
+		final NodeModel target = getSelectedNode();
+		if (textController instanceof MTextController) {
+			modeController.startTransaction();
+			try {
+				((MTextController) TextController.getController()).stopEditing();
+			}
+			finally {
+				modeController.commit();
+			}
+		}
+		final NodeModel targetNode = target;
+		final NodeModel newNode;
+		switch (newNodeMode) {
+			case MMapController.NEW_SIBLING_BEFORE:
+			case MMapController.NEW_SIBLING_BEHIND: {
+				if (!targetNode.isRoot()) {
+					final NodeModel parent = targetNode.getParentNode();
+					int childPosition = parent.getChildPosition(targetNode);
+					if (newNodeMode == MMapController.NEW_SIBLING_BEHIND) {
+						childPosition++;
+					}
+					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
+					if (newNode == null) {
+						return null;
+					}
+					select(newNode);
+					if (e != null) {
+						((MTextController) textController).edit(newNode, targetNode, e, true, false, false);
+					}
+					else {
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								((MTextController) textController).edit(newNode, targetNode, e, true, false, false);
+							}
+						});
+					}
+					break;
+				}
+				else {
+					newNodeMode = MMapController.NEW_CHILD;
+				}
+			}
+			case MMapController.NEW_CHILD:
+			case MMapController.NEW_CHILD_WITHOUT_FOCUS: {
+				final boolean parentFolded = isFolded(targetNode);
+				if (parentFolded) {
+					setFolded(targetNode, false);
+				}
+				final int position = ResourceController.getResourceController().getProperty("placenewbranches").equals(
+				    "last") ? targetNode.getChildCount() : 0;
+				newNode = addNewNode(targetNode, position, targetNode.isNewChildLeft());
+				if (newNode == null) {
+					return null;
+				}
+				if (newNodeMode == MMapController.NEW_CHILD) {
+					select(newNode);
+				}
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						((MTextController) textController).edit(newNode, targetNode, e, true, parentFolded, false);
+					}
+				});
+				break;
+			}
+			default:
+				newNode = null;
+		}
+		return newNode;
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
-		return newChild.addNewNode(parent, index, newNodeIsLeft);
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		if (!mapController.isWriteable(parent)) {
+			final String message = TextUtils.getText("node_is_write_protected");
+			UITools.errorMessage(message);
+			return null;
+		}
+		final MapModel map = parent.getMap();
+		final NodeModel newNode = Controller.getCurrentModeController().getMapController().newNode("", map);
+		newNode.setLeft(newNodeIsLeft);
+		final IActor actor = new IActor() {
+			public void act() {
+				(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(newNode, parent, index);
+			}
+
+			public String getDescription() {
+				return "addNewNode";
+			}
+
+			public void undo() {
+				mapController.deleteWithoutUndo(newNode);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, map);
+		return newNode;
 	}
 
 	/**
@@ -115,16 +211,29 @@ public class MMapController extends MapController {
 		modeController.addAction(new NewMapViewAction());
 		modeController.addAction(new NewSiblingAction());
 		modeController.addAction(new NewPreviousSiblingAction());
-		newChild = new NewChildAction();
-		modeController.addAction(newChild);
-		delete = new DeleteAction();
-		modeController.addAction(delete);
+		modeController.addAction(new NewChildAction());
+		modeController.addAction(new DeleteAction());
 		modeController.addAction(new NodeUpAction());
 		modeController.addAction(new NodeDownAction());
 	}
 
 	public void deleteNode(final NodeModel node) {
-		delete.delete(node);
+		final NodeModel parentNode = node.getParentNode();
+		final int index = parentNode.getIndex(node);
+		final IActor actor = new IActor() {
+        	public void act() {
+        		deleteWithoutUndo(node);
+        	}
+        
+        	public String getDescription() {
+        		return "delete";
+        	}
+        
+        	public void undo() {
+        		(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
+        	}
+        };
+		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
 	/**
