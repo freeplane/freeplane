@@ -276,7 +276,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 			        TextUtils.removeMnemonic(TextUtils.getText("cancel")) };
 		}
 		else {
-			options = new Object[] { TextUtils.removeMnemonic(TextUtils.getText("CloseAction.text")) };
+			options = new Object[] { TextUtils.removeMnemonic(TextUtils.getText("simplyhtml.closeBtnName")) };
 		}
 		final int choice = JOptionPane.showOptionDialog(Controller.getCurrentController().getViewController().getFrame(), messagePane,
 		    TextUtils.getText("updatecheckdialog"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,

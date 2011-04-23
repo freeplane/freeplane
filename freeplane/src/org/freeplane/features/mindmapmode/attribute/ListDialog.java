@@ -206,7 +206,7 @@ class ListDialog extends JDialog {
 	public void init(final Component locationComp, final String labelText, final IListModel data, final String longValue) {
 	    this.data = data;
 		final JButton closeButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(closeButton, TextUtils.getText("CloseAction.text"));
+		MenuBuilder.setLabelAndMnemonic(closeButton, TextUtils.getText("simplyhtml.closeBtnName"));
 		closeButton.addActionListener(new CloseAction());
 		getRootPane().setDefaultButton(closeButton);
 		addButton = new JButton();

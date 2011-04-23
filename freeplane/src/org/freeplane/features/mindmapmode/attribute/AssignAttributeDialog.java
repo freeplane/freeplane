@@ -418,7 +418,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		actionBox.add(Box.createVerticalGlue());
 		getContentPane().add(actionBox, BorderLayout.CENTER);
 		final JButton closeBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(closeBtn, TextUtils.getText("CloseAction.text"));
+		MenuBuilder.setLabelAndMnemonic(closeBtn, TextUtils.getText("simplyhtml.closeBtnName"));
 		closeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				dispose();
