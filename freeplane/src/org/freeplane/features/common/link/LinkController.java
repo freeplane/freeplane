@@ -34,8 +34,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
@@ -125,7 +129,19 @@ public class LinkController extends SelectionController implements IExtension {
 		modeController.addAction(new FollowLinkAction());
 	}
 
+	protected static final String CANCEL = "CANCEL";
+	protected static final String CLOSE = "CLOSE";
 	protected void createArrowLinkPopup(final ConnectorModel link, final JPopupMenu arrowLinkPopup) {
+		
+		final InputMap inputMap = arrowLinkPopup.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		final ActionMap actionMap = arrowLinkPopup.getActionMap();
+		inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), CANCEL);
+		actionMap.put(CANCEL, new UITools.ClosePopupAction(CANCEL));
+		final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
+		final KeyStroke close = KeyStroke.getKeyStroke(enterConfirms ? "ENTER" : "alt ENTER");
+		inputMap.put(close, CLOSE);
+		actionMap.put(CLOSE, new UITools.ClosePopupAction(CLOSE));
+
 		final NodeModel source = link.getSource();
 		final NodeModel target = link.getTarget();
 		addLinks(arrowLinkPopup, source);

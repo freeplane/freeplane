@@ -1071,7 +1071,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 						arrowLink = new EdgeLinkView(ref, getModeController(), sourceView, targetView);
 					}
 					else {
-						arrowLink = new ConnectorView(ref, sourceView, targetView);
+						arrowLink = new ConnectorView(ref, sourceView, targetView, getBackground());
 					}
 					arrowLink.paint(graphics);
 					arrowLinkViews.add(arrowLink);

@@ -255,8 +255,7 @@ class EditNodeTextField extends EditNodeBase {
 					e.consume();
 					break;
 				case KeyEvent.VK_ENTER: {
-					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty(
-					    "il__enter_confirms_by_default");
+					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
 					if (enterConfirms == e.isAltDown() || e.isShiftDown()) {
 						e.consume();
 						final Component component = e.getComponent();

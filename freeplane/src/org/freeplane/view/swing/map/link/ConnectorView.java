@@ -57,11 +57,13 @@ public class ConnectorView extends AConnectorView{
 	final private Color textColor;
 	final private Color color;
 	final private BasicStroke stroke;
+	final private Color bgColor;
 	/* Note, that source and target are nodeviews and not nodemodels!. */
-	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target) {
+	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target, Color bgColor) {
 		super(connectorModel, source, target);
 		final LinkController linkController = LinkController.getController(getModeController());
 		textColor = linkController.getColor(connectorModel);
+		this.bgColor =bgColor;
 		final int alpha = linkController.getAlpha(connectorModel);
 		color =  ColorUtils.createColor(textColor, alpha);
 
@@ -108,9 +110,9 @@ public class ConnectorView extends AConnectorView{
 		if (text == null || text.equals("")) {
 			return;
 		}
-		final FontMetrics fontMetrics = g.getFontMetrics();
-		final int textWidth = fontMetrics.stringWidth(text);
-		final int textHeight = fontMetrics.getMaxAscent();
+		final TextPainter textPainter = new TextPainter(g, text);
+		final int textWidth = textPainter.getTextWidth();
+		final int textHeight = textPainter.getTextHeight();
 		final int x;
 		if (controlPoint.x > endPoint.x) {
 			x = endPoint.x - textWidth;
@@ -120,22 +122,23 @@ public class ConnectorView extends AConnectorView{
 		}
 		final int y;
 		if (controlPoint.y > endPoint.y) {
-			y = endPoint.y + textHeight + LABEL_SHIFT;
+			y = endPoint.y  + LABEL_SHIFT;
 		}
 		else {
-			y = endPoint.y - LABEL_SHIFT;
+			y = endPoint.y - textHeight - LABEL_SHIFT;
 		}
-		g.drawString(text, x, y);
+		textPainter.draw(x, y, textColor, bgColor);
 	}
-
-	private void drawMiddleLabel(final Graphics2D g, final String middleLabel) {
-		if (middleLabel == null || middleLabel.equals("")) {
+	
+	private void drawMiddleLabel(final Graphics2D g, final String text) {
+		if (text == null || text.equals("")) {
 			return;
 		}
-		final FontMetrics fontMetrics = g.getFontMetrics();
-		final int textWidth = fontMetrics.stringWidth(middleLabel);
+		final TextPainter textPainter = new TextPainter(g, text);
 		final Point centerPoint = getCenterPoint();
-		g.drawString(middleLabel, centerPoint.x - textWidth / 2, centerPoint.y - LABEL_SHIFT);
+		final int x = centerPoint.x - textPainter.getTextWidth() / 2;
+		int y = centerPoint.y - textPainter.getTextHeight()/2;
+		textPainter.draw(x, y, textColor, bgColor);
 	}
 
 	Shape getArrowLinkCurve() {
@@ -396,7 +399,6 @@ public class ConnectorView extends AConnectorView{
 	    final String sourceLabel = connectorModel.getSourceLabel();
 		final String middleLabel = connectorModel.getMiddleLabel();
 		final String targetLabel = connectorModel.getTargetLabel();
-		g.setColor(textColor);
 		if (startPoint != null) {
 			drawEndPointText(g, sourceLabel, startPoint, startPoint2);
 			if (endPoint == null) {

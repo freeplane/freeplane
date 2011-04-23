@@ -30,17 +30,20 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
+import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
@@ -63,6 +66,34 @@ import org.freeplane.features.common.map.NodeModel;
  * @since 29.12.2008
  */
 public class UITools {
+	public static final class InsertEolAction extends AbstractAction {
+        public void actionPerformed(ActionEvent e) {
+        	JTextComponent c = (JTextComponent) e.getSource();
+        	c.replaceSelection("\n");
+        }
+    }
+
+	public static final class ClosePopupAction extends AbstractAction {
+        final private String reason;
+    
+    	public ClosePopupAction(String reason) {
+            this.reason = reason;
+        }
+    
+    	public void actionPerformed(ActionEvent e) {
+        	JComponent src = (JComponent) e.getSource();
+        	if(src instanceof JPopupMenu)
+        		close(src);
+        	else
+        		close((JComponent) SwingUtilities.getAncestorOfClass(JPopupMenu.class, src));
+        }
+    
+    	private void close(JComponent popup) {
+            popup.putClientProperty(reason, Boolean.TRUE);
+        	popup.setVisible(false);
+        }
+    }
+
 	public static final String MAIN_FREEPLANE_FRAME = "mainFreeplaneFrame";
 
 	public static void addEscapeActionToDialog(final JDialog dialog) {
@@ -426,5 +457,15 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
     	JDialog dialog = infoPane.createDialog(component, titel);
     	dialog.setModal(false);
     	return dialog;
+    }
+
+	public static void addFocusListenerToDescendants(Component component, FocusListener listener) {
+		component.addFocusListener(listener);
+		if(! (component instanceof Container))
+			return;
+		Container container = (Container)component;
+		for(int i = 0; i < container.getComponentCount(); i++){
+			addFocusListenerToDescendants(container.getComponent(i), listener);
+		}
     }
 }

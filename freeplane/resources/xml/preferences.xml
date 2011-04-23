@@ -189,7 +189,6 @@
         </separator>
        <separator name="inline_editor">     
        	    <boolean name="display_inline_editor_for_all_new_nodes" />
-            <boolean name="il__enter_confirms_by_default" />
         </separator>
         <separator name="notifications">
             <remind_value name="remind_use_rich_text_in_new_nodes"/>

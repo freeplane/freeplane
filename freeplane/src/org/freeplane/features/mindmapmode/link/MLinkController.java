@@ -20,31 +20,53 @@
 package org.freeplane.features.mindmapmode.link;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Point;
+import java.awt.Window;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
+
+import javax.swing.ActionMap;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.FocusManager;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.MenuElement;
+import javax.swing.MenuSelectionManager;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.ArrowType;
@@ -67,6 +89,7 @@ import org.freeplane.features.mindmapmode.MModeController;
  * @author Dimitry Polivaev
  */
 public class MLinkController extends LinkController {
+
 	private final class CreateArrowLinkActor implements IActor {
 		private final String targetID;
 		private final NodeModel source;
@@ -180,35 +203,6 @@ public class MLinkController extends LinkController {
 		public void undo() {
 			model.setMiddleLabel(oldLabel);
 			Controller.getCurrentModeController().getMapController().nodeChanged(model.getSource());
-		}
-	}
-
-	private final class PopupEditorKeyListener implements KeyListener {
-		private final JPopupMenu arrowLinkPopup;
-		private boolean canceled = false;
-
-		private PopupEditorKeyListener(final JPopupMenu arrowLinkPopup) {
-			this.arrowLinkPopup = arrowLinkPopup;
-		}
-
-		public void keyPressed(final KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				arrowLinkPopup.setVisible(false);
-				e.consume();
-			}
-			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-				canceled = true;
-			}
-		}
-
-		protected boolean isCanceled() {
-			return canceled;
-		}
-
-		public void keyReleased(final KeyEvent e) {
-		}
-
-		public void keyTyped(final KeyEvent e) {
 		}
 	}
 
@@ -503,25 +497,24 @@ public class MLinkController extends LinkController {
 		
 		arrowLinkPopup.addSeparator();
 
-		final PopupEditorKeyListener enterListener = new PopupEditorKeyListener(arrowLinkPopup);
-		final JTextField sourceLabelEditor = new JTextField(link.getSourceLabel());
-		sourceLabelEditor.addKeyListener(enterListener);
-		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_source_label"), sourceLabelEditor);
+		final JTextArea sourceLabelEditor = new JTextArea(link.getSourceLabel());
+		addTextEditor(arrowLinkPopup, "edit_source_label", sourceLabelEditor);
 
-		final JTextField middleLabelEditor = new JTextField(link.getMiddleLabel());
-		middleLabelEditor.addKeyListener(enterListener);
-		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_middle_label"), middleLabelEditor);
+		final JTextArea middleLabelEditor = new JTextArea(link.getMiddleLabel());
+		addTextEditor(arrowLinkPopup, "edit_middle_label", middleLabelEditor);
 
-		final JTextField targetLabelEditor = new JTextField(link.getTargetLabel());
-		targetLabelEditor.addKeyListener(enterListener);
-		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_target_label"), targetLabelEditor);
-		
+		final JTextArea targetLabelEditor = new JTextArea(link.getTargetLabel());
+		if(! link.getSource().equals(link.getTarget()))
+			addTextEditor(arrowLinkPopup, "edit_target_label", targetLabelEditor);
+
 		arrowLinkPopup.addPopupMenuListener(new PopupMenuListener() {
+			private Component focusOwner;
 			public void popupMenuCanceled(final PopupMenuEvent e) {
 			}
-
+			
 			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-				if (enterListener.isCanceled()) {
+				focusOwner.requestFocus();
+				if (Boolean.TRUE.equals(((JComponent)e.getSource()).getClientProperty(CANCEL))) {
 					return;
 				}
 				setSourceLabel(link, sourceLabelEditor.getText());
@@ -532,17 +525,99 @@ public class MLinkController extends LinkController {
 			}
 
 			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+				focusOwner = FocusManager.getCurrentManager().getFocusOwner();
 			}
 		});
 		
+		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
+			public void hierarchyChanged(HierarchyEvent e) {
+				final Component component = e.getComponent();
+				Window window = SwingUtilities.windowForComponent(component);
+				if(window != null){
+					if ( ! window.getFocusableWindowState())
+						window.setFocusableWindowState(true);
+					component.removeHierarchyListener(this);
+				}
+			}
+		});
 	}
 
+	private void addTextEditor(final JPopupMenu popup, final String label, final JTextArea editor) {
+	    final InputMap inputMap = editor.getInputMap();
+		final ActionMap actionMap = editor.getActionMap();
+		final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
+		final KeyStroke close = KeyStroke.getKeyStroke(enterConfirms ? "ENTER" : "alt ENTER");
+		inputMap.put(close, CLOSE);
+		actionMap.put(CLOSE, new UITools.ClosePopupAction(CLOSE));
+		
+		final KeyStroke enter = KeyStroke.getKeyStroke(! enterConfirms ? "ENTER" : "alt ENTER");
+		final KeyStroke enter2 = KeyStroke.getKeyStroke("shift ENTER");
+		inputMap.put(enter, "INSERT_EOL");
+		inputMap.put(enter2, "INSERT_EOL");
+		actionMap.put("INSERT_EOL", new UITools.InsertEolAction());
+		editor.setRows(5);
+		final JScrollPane scrollPane = new JScrollPane(editor, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		addPopupComponent(popup, TextUtils.getText(label), scrollPane);
+    }
+
+	private static class MenuBox extends Box implements MenuElement{
+
+		public MenuBox(String label, JComponent component) {
+	        super(BoxLayout.X_AXIS);
+			add(Box.createHorizontalStrut(10));
+			final JLabel jlabel = new JLabel(label);
+			add(jlabel);
+			add(Box.createHorizontalStrut(10));
+			add(component);
+			UITools.addFocusListenerToDescendants(component, new MenuItemFocusListener());
+       }
+
+		public void processMouseEvent(MouseEvent event, MenuElement[] path, MenuSelectionManager manager) {
+        }
+
+		public void processKeyEvent(KeyEvent event, MenuElement[] path, MenuSelectionManager manager) {
+        }
+
+		public void menuSelectionChanged(boolean isIncluded) {
+			final Component focusOwner = FocusManager.getCurrentManager().getFocusOwner();
+			if(! isIncluded && focusOwner != null && SwingUtilities.isDescendingFrom(focusOwner, this)){
+				requestFocus();
+			}
+        }
+
+		public MenuElement[] getSubElements() {
+	        return new MenuElement[]{};
+        }
+
+		public Component getComponent() {
+	        return this;
+        }
+
+		public void select() {
+			MenuSelectionManager msm = MenuSelectionManager.defaultManager();
+			if (msm.isComponentPartOfCurrentMenu(this)){
+				MenuElement path[] = new MenuElement[2];
+				path[0] = msm.getSelectedPath()[0];
+				path[1] = this;
+				msm.setSelectedPath(path);        
+			 }
+        }
+	}
+	
+	private static class MenuItemFocusListener implements FocusListener{
+
+		public void focusGained(FocusEvent e) {
+			MenuBox box = (MenuBox) SwingUtilities.getAncestorOfClass(MenuBox.class, e.getComponent());
+			box.select();
+		}
+
+		public void focusLost(FocusEvent e) {
+        }
+		
+	}
+	
 	private void addPopupComponent(final JPopupMenu arrowLinkPopup, final String label, final JComponent component) {
-	    final Box componentBox = Box.createHorizontalBox();
-		componentBox.add(Box.createHorizontalStrut(20));
-		componentBox.add(new JLabel(label));
-		componentBox.add(Box.createHorizontalStrut(10));
-		componentBox.add(component);
+	    final Component componentBox = new MenuBox(label, component);
 		arrowLinkPopup.add(componentBox);
     }
 
