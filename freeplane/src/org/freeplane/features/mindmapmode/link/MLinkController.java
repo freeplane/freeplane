@@ -24,14 +24,8 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.Window;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -39,25 +33,18 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.ActionMap;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.FocusManager;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.MenuElement;
-import javax.swing.MenuSelectionManager;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
@@ -66,6 +53,7 @@ import javax.swing.event.PopupMenuListener;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
+import org.freeplane.core.ui.components.ContainerMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
@@ -560,64 +548,8 @@ public class MLinkController extends LinkController {
 		addPopupComponent(popup, TextUtils.getText(label), scrollPane);
     }
 
-	private static class MenuBox extends Box implements MenuElement{
-
-		public MenuBox(String label, JComponent component) {
-	        super(BoxLayout.X_AXIS);
-			add(Box.createHorizontalStrut(10));
-			final JLabel jlabel = new JLabel(label);
-			add(jlabel);
-			add(Box.createHorizontalStrut(10));
-			add(component);
-			UITools.addFocusListenerToDescendants(component, new MenuItemFocusListener());
-       }
-
-		public void processMouseEvent(MouseEvent event, MenuElement[] path, MenuSelectionManager manager) {
-        }
-
-		public void processKeyEvent(KeyEvent event, MenuElement[] path, MenuSelectionManager manager) {
-        }
-
-		public void menuSelectionChanged(boolean isIncluded) {
-			final Component focusOwner = FocusManager.getCurrentManager().getFocusOwner();
-			if(! isIncluded && focusOwner != null && SwingUtilities.isDescendingFrom(focusOwner, this)){
-				requestFocus();
-			}
-        }
-
-		public MenuElement[] getSubElements() {
-	        return new MenuElement[]{};
-        }
-
-		public Component getComponent() {
-	        return this;
-        }
-
-		public void select() {
-			MenuSelectionManager msm = MenuSelectionManager.defaultManager();
-			if (msm.isComponentPartOfCurrentMenu(this)){
-				MenuElement path[] = new MenuElement[2];
-				path[0] = msm.getSelectedPath()[0];
-				path[1] = this;
-				msm.setSelectedPath(path);        
-			 }
-        }
-	}
-	
-	private static class MenuItemFocusListener implements FocusListener{
-
-		public void focusGained(FocusEvent e) {
-			MenuBox box = (MenuBox) SwingUtilities.getAncestorOfClass(MenuBox.class, e.getComponent());
-			box.select();
-		}
-
-		public void focusLost(FocusEvent e) {
-        }
-		
-	}
-	
 	private void addPopupComponent(final JPopupMenu arrowLinkPopup, final String label, final JComponent component) {
-	    final Component componentBox = new MenuBox(label, component);
+	    final Component componentBox = new ContainerMenuItem(label, component);
 		arrowLinkPopup.add(componentBox);
     }
 

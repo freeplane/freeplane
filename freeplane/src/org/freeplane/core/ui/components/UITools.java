@@ -66,14 +66,16 @@ import org.freeplane.features.common.map.NodeModel;
  * @since 29.12.2008
  */
 public class UITools {
-	public static final class InsertEolAction extends AbstractAction {
+	@SuppressWarnings("serial")
+    public static final class InsertEolAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
         	JTextComponent c = (JTextComponent) e.getSource();
         	c.replaceSelection("\n");
         }
     }
 
-	public static final class ClosePopupAction extends AbstractAction {
+	@SuppressWarnings("serial")
+    public static final class ClosePopupAction extends AbstractAction {
         final private String reason;
     
     	public ClosePopupAction(String reason) {
