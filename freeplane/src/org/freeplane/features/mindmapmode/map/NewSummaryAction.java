@@ -22,8 +22,6 @@ package org.freeplane.features.mindmapmode.map;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import javax.swing.tree.TreeNode;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AFreeplaneAction;

@@ -59,7 +59,9 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 			linkController.getStandardConnectorColor(),
 			linkController.getStandardConnectorAlpha(),
 			linkController.getStandardConnectorShape(),
-		    linkController.getStandardConnectorWidth());
+		    linkController.getStandardConnectorWidth(),
+		    linkController.getStandardLabelFontFamily(), 
+		    linkController.getStandardLabelFontSize());
 	}
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
@@ -178,6 +180,19 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 				arrowLink.setWidth(Integer.parseInt(value.toString()));
 			}
 		});
+		
+		reader.addAttributeHandler("arrowlink", "FONT_FAMILY", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
+				arrowLink.setLabelFontFamily(value.toString());
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "FONT_SIZE", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final ConnectorModel arrowLink = (ConnectorModel) userObject;
+				arrowLink.setLabelFontSize(Integer.parseInt(value.toString()));
+			}
+		});
 	}
 
 	public void endElement(Object parent, String tag, Object element, XMLElement dom) {
@@ -244,7 +259,15 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 				arrowLink.setAttribute("DASH", sb.toString());				
 			}
 		}
+		
+		final int fontSize = model.getLabelFontSize();
+		arrowLink.setAttribute("FONT_SIZE", Integer.toString(fontSize));
+
+		final String fontFamily = model.getLabelFontFamily();
+		arrowLink.setAttribute("FONT_FAMILY", fontFamily);
+		
 		final String destinationLabel = target.createID();
+
 		if (destinationLabel != null) {
 			arrowLink.setAttribute("DESTINATION", destinationLabel);
 		}

@@ -41,6 +41,10 @@ public class ConnectorModel extends NodeLinkModel {
 	private String targetLabel;
 	private int width;
 	private Shape shape;
+	
+	private String labelFontFamily;
+	private int labelFontSize;
+
 
 	public Shape getShape() {
 		return shape;
@@ -60,7 +64,8 @@ public class ConnectorModel extends NodeLinkModel {
 	}
 
 	public ConnectorModel(final NodeModel source, final String targetID, final Color color,
-	                      final int alpha, final Shape shape, final int width) {
+	                      final int alpha, final Shape shape, final int width,
+	                      final String labelFontFamily, final int labelFontSize) {
 		super(source, targetID);
 		assert source != null;
 		assert color != null;
@@ -69,6 +74,8 @@ public class ConnectorModel extends NodeLinkModel {
 		this.setAlpha(alpha);
 		this.width = width;
 		this.shape = shape;
+		this.labelFontFamily = labelFontFamily;
+		this.labelFontSize = labelFontSize;
 		startArrow = ArrowType.NONE;
 		endArrow = ArrowType.DEFAULT;
 	}
@@ -197,4 +204,20 @@ public class ConnectorModel extends NodeLinkModel {
 	public int getAlpha() {
 	    return alpha;
     }
+	public String getLabelFontFamily() {
+    	return labelFontFamily;
+    }
+
+	public void setLabelFontFamily(String labelFontFamily) {
+    	this.labelFontFamily = labelFontFamily;
+    }
+
+	public int getLabelFontSize() {
+    	return labelFontSize;
+    }
+
+	public void setLabelFontSize(int labelFontSize) {
+    	this.labelFontSize = labelFontSize;
+    }
+
 }

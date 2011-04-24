@@ -21,6 +21,7 @@ package org.freeplane.view.swing.map.link;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -398,6 +399,16 @@ public class ConnectorView extends AConnectorView{
 	    final String sourceLabel = connectorModel.getSourceLabel();
 		final String middleLabel = connectorModel.getMiddleLabel();
 		final String targetLabel = connectorModel.getTargetLabel();
+		if (sourceLabel == null && middleLabel == null && targetLabel == null) {
+			return;
+		}
+
+		final Font oldFont = g.getFont();
+		final String fontFamily = connectorModel.getLabelFontFamily();
+        final int fontSize = connectorModel.getLabelFontSize();
+        final Font linksFont = new Font(fontFamily, 0, getZoomed(fontSize));
+        g.setFont(linksFont);
+
 		if (startPoint != null) {
 			drawEndPointText(g, sourceLabel, startPoint, startPoint2);
 			if (endPoint == null) {
@@ -413,6 +424,7 @@ public class ConnectorView extends AConnectorView{
 		if (startPoint != null && endPoint != null) {
 			drawMiddleLabel(g, middleLabel);
 		}
+		g.setFont(oldFont);
     }
 
 	private CubicCurve2D createCubicCurve2D(Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {

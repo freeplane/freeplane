@@ -1045,10 +1045,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	                        final HashSet<ConnectorModel> alreadyPaintedLinks) {
 		final Font font = graphics.getFont();
 		try {
-			final String fontFamily = ResourceController.getResourceController().getProperty("label_font_family");
-			final int fontSize = ResourceController.getResourceController().getIntProperty("label_font_size", 12);
-			final Font linksFont = new Font(fontFamily, 0, getZoomed(fontSize));
-			graphics.setFont(linksFont);
 			final Iterator<LinkModel> linkIterator = links.iterator();
 			while (linkIterator.hasNext()) {
 				final LinkModel next = linkIterator.next();

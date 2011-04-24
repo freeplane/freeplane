@@ -39,6 +39,10 @@ abstract class AConnectorView  implements ILinkView {
 	protected double getZoom() {
 		return getMap().getZoom();
 	}
+
+	protected int getZoomed(int i) {
+		return getMap().getZoomed(i);
+	}
 	protected MapView getMap() {
 		return (source == null) ? target.getMap() : source.getMap();
 	}

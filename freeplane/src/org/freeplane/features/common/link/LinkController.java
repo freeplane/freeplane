@@ -476,4 +476,13 @@ public class LinkController extends SelectionController implements IExtension {
 		return connectorModel.getAlpha();
     }
 
+	public int getStandardLabelFontSize() {
+		return ResourceController.getResourceController().getIntProperty("label_font_size", 12);
+    }
+
+	public String getStandardLabelFontFamily() {
+	    return ResourceController.getResourceController().getProperty("label_font_family");
+    }
+
+
 }

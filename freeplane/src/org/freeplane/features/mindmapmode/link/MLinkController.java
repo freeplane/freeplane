@@ -22,10 +22,13 @@ package org.freeplane.features.mindmapmode.link;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -34,8 +37,10 @@ import java.util.Set;
 
 import javax.swing.ActionMap;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.FocusManager;
 import javax.swing.InputMap;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
@@ -100,7 +105,8 @@ public class MLinkController extends LinkController {
 			}
 			arrowLink = new ConnectorModel(source, targetID, 
 				getStandardConnectorColor(), getStandardConnectorAlpha(),
-				getStandardConnectorShape(), getStandardConnectorWidth());
+				getStandardConnectorShape(), getStandardConnectorWidth(),
+				getStandardLabelFontFamily(), getStandardLabelFontSize());
 			nodeLinks.addArrowlink(arrowLink);
 			Controller.getCurrentModeController().getMapController().nodeChanged(source);
 		}
@@ -312,7 +318,7 @@ public class MLinkController extends LinkController {
 						if (link instanceof HyperTextLinkModel) {
 							final NodeModel source = ((HyperTextLinkModel) link).getSource();
 							Controller.getCurrentModeController().getMapController().delayedNodeRefresh(source, NodeModel.NODE_ICON,
-							    null, null);
+								null, null);
 						}
 					}
 				}
@@ -388,7 +394,7 @@ public class MLinkController extends LinkController {
 	protected void createArrowLinkPopup(final ConnectorModel link, final JPopupMenu arrowLinkPopup) {
 		super.createArrowLinkPopup(link, arrowLinkPopup);
 		arrowLinkPopup.add(new RemoveConnectorAction(this, link));
-		
+
 		arrowLinkPopup.addSeparator();
 		arrowLinkPopup.add(new ConnectorColorAction(this, link));
 
@@ -398,63 +404,63 @@ public class MLinkController extends LinkController {
 		transparencySlider.setSnapToTicks(true);
 		transparencySlider.setPaintTrack(true);
 		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_transparency_label"), transparencySlider);
-		
+
 		arrowLinkPopup.addSeparator();
 
 		final JMenu connectorArrows = new JMenu(TextUtils.getText("connector_arrows"));
 		final ButtonGroup arrowsGroup = new ButtonGroup();
-		
+
 		final ChangeConnectorArrowsAction actionNN = new ChangeConnectorArrowsAction(this, "none", link,
-		    ArrowType.NONE, ArrowType.NONE);
+			ArrowType.NONE, ArrowType.NONE);
 		final JRadioButtonMenuItem itemnn = new JAutoRadioButtonMenuItem(actionNN);
 		connectorArrows.add(itemnn);
 		arrowsGroup.add(itemnn);
-		
+
 		final ChangeConnectorArrowsAction actionNT = new ChangeConnectorArrowsAction(this, "forward", link,
-		    ArrowType.NONE, ArrowType.DEFAULT);
+			ArrowType.NONE, ArrowType.DEFAULT);
 		final JRadioButtonMenuItem itemnt = new JAutoRadioButtonMenuItem(actionNT);
 		connectorArrows.add(itemnt);
 		arrowsGroup.add(itemnt);
-		
+
 		final ChangeConnectorArrowsAction actionTN = new ChangeConnectorArrowsAction(this, "backward", link,
-		    ArrowType.DEFAULT, ArrowType.NONE);
+			ArrowType.DEFAULT, ArrowType.NONE);
 		final JRadioButtonMenuItem itemtn = new JAutoRadioButtonMenuItem(actionTN);
 		connectorArrows.add(itemtn);
 		arrowsGroup.add(itemtn);
-		
+
 		final ChangeConnectorArrowsAction actionTT = new ChangeConnectorArrowsAction(this, "both", link,
-		    ArrowType.DEFAULT, ArrowType.DEFAULT);
+			ArrowType.DEFAULT, ArrowType.DEFAULT);
 		final JRadioButtonMenuItem itemtt = new JAutoRadioButtonMenuItem(actionTT);
 		connectorArrows.add(itemtt);
 		arrowsGroup.add(itemtt);
-		
+
 		arrowLinkPopup.add(connectorArrows);
-		
+
 		final JMenu connectorShapes = new JMenu(TextUtils.getText("connector_shapes"));
 		final ButtonGroup shapeGroup = new ButtonGroup();
-		
+
 		final ChangeConnectorShapeAction actionCubic = new ChangeConnectorShapeAction(this, link,Shape.CUBIC_CURVE);
 		final JRadioButtonMenuItem itemCubic = new JAutoRadioButtonMenuItem(actionCubic);
 		connectorShapes.add(itemCubic);
 		shapeGroup.add(itemCubic);
-		
+
 		final ChangeConnectorShapeAction actionLinear = new ChangeConnectorShapeAction(this, link,Shape.LINE);
 		final JRadioButtonMenuItem itemLinear = new JAutoRadioButtonMenuItem(actionLinear);
 		connectorShapes.add(itemLinear);
 		shapeGroup.add(itemLinear);
-		
+
 		final ChangeConnectorShapeAction actionLinearPath = new ChangeConnectorShapeAction(this, link,Shape.LINEAR_PATH);
 		final JRadioButtonMenuItem itemLinearPath = new JAutoRadioButtonMenuItem(actionLinearPath);
 		connectorShapes.add(itemLinearPath);
 		shapeGroup.add(itemLinearPath);
-		
+
 		final ChangeConnectorShapeAction actionEdgeLike = new ChangeConnectorShapeAction(this, link,Shape.EDGE_LIKE);
 		final JRadioButtonMenuItem itemEdgeLike = new JAutoRadioButtonMenuItem(actionEdgeLike);
 		connectorShapes.add(itemEdgeLike);
 		shapeGroup.add(itemEdgeLike);
-		
+
 		arrowLinkPopup.add(connectorShapes);
-	
+
 		final JMenu connectorDashes = new JMenu(TextUtils.getText("connector_lines"));
 
 		final ChangeConnectorDashAction actionD1 = new ChangeConnectorDashAction(this, link, null); 
@@ -479,12 +485,58 @@ public class MLinkController extends LinkController {
 
 		arrowLinkPopup.add(connectorDashes);
 
-		final SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(link.getWidth(),1, 32, 1);
-		final JSpinner widthSpinner = new JSpinner(spinnerNumberModel);
+		final SpinnerNumberModel widthModel = new SpinnerNumberModel(link.getWidth(),1, 32, 1);
+		final JSpinner widthSpinner = new JSpinner(widthModel);
 		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_width_label"), widthSpinner);
-		
+
 		arrowLinkPopup.addSeparator();
 
+		{
+			final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			final String[] envFonts = gEnv.getAvailableFontFamilyNames();
+			DefaultComboBoxModel fonts = new DefaultComboBoxModel(envFonts);
+			fonts.setSelectedItem(link.getLabelFontFamily());
+			JComboBox fontBox = new JComboBox(fonts);
+			fontBox.setEditable(false);
+			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_family"), fontBox);
+			fontBox.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent e) {
+					final Object item = e.getItem();
+					if(item != null)
+						setLabelFontFamily(link, item.toString());
+				}
+			});
+		}
+		{
+			final Integer[] sizes = {4, 6, 8, 10, 12, 14, 16, 18, 24, 36};
+			DefaultComboBoxModel sizesModel = new DefaultComboBoxModel(sizes);
+			sizesModel.setSelectedItem(link.getLabelFontSize());
+			JComboBox sizesBox = new JComboBox(sizesModel);
+			sizesBox.setEditable(true);
+			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_size"), sizesBox);
+			sizesBox.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent e) {
+					final Object item = e.getItem();
+					if(item != null){
+						final int size;
+						if(item instanceof Integer)
+							size = (Integer)item;
+						else{
+							try{
+								size = Integer.valueOf(item.toString());
+								if(size <=0)
+									return;
+							}
+							catch (NumberFormatException ex){
+								return;
+							}
+						}
+
+						setLabelFontSize(link, size);
+					}
+				}
+			});
+		}
 		final JTextArea sourceLabelEditor = new JTextArea(link.getSourceLabel());
 		addTextEditor(arrowLinkPopup, "edit_source_label", sourceLabelEditor);
 
@@ -499,7 +551,7 @@ public class MLinkController extends LinkController {
 			private Component focusOwner;
 			public void popupMenuCanceled(final PopupMenuEvent e) {
 			}
-			
+
 			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
 				focusOwner.requestFocus();
 				if (Boolean.TRUE.equals(((JComponent)e.getSource()).getClientProperty(CANCEL))) {
@@ -509,14 +561,14 @@ public class MLinkController extends LinkController {
 				setMiddleLabel(link, middleLabelEditor.getText());
 				setTargetLabel(link, targetLabelEditor.getText());
 				setAlpha(link, transparencySlider.getValue());
-				setWidth(link, spinnerNumberModel.getNumber().intValue());
+				setWidth(link, widthModel.getNumber().intValue());
 			}
 
 			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 				focusOwner = FocusManager.getCurrentManager().getFocusOwner();
 			}
 		});
-		
+
 		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
 			public void hierarchyChanged(HierarchyEvent e) {
 				final Component component = e.getComponent();
@@ -531,13 +583,13 @@ public class MLinkController extends LinkController {
 	}
 
 	private void addTextEditor(final JPopupMenu popup, final String label, final JTextArea editor) {
-	    final InputMap inputMap = editor.getInputMap();
+		final InputMap inputMap = editor.getInputMap();
 		final ActionMap actionMap = editor.getActionMap();
 		final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
 		final KeyStroke close = KeyStroke.getKeyStroke(enterConfirms ? "ENTER" : "alt ENTER");
 		inputMap.put(close, CLOSE);
 		actionMap.put(CLOSE, new UITools.ClosePopupAction(CLOSE));
-		
+
 		final KeyStroke enter = KeyStroke.getKeyStroke(! enterConfirms ? "ENTER" : "alt ENTER");
 		final KeyStroke enter2 = KeyStroke.getKeyStroke("shift ENTER");
 		inputMap.put(enter, "INSERT_EOL");
@@ -546,12 +598,12 @@ public class MLinkController extends LinkController {
 		editor.setRows(5);
 		final JScrollPane scrollPane = new JScrollPane(editor, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		addPopupComponent(popup, TextUtils.getText(label), scrollPane);
-    }
+	}
 
 	private void addPopupComponent(final JPopupMenu arrowLinkPopup, final String label, final JComponent component) {
-	    final Component componentBox = new ContainerMenuItem(label, component);
+		final Component componentBox = new ContainerMenuItem(label, component);
 		arrowLinkPopup.add(componentBox);
-    }
+	}
 
 	public void setConnectorColor(final ConnectorModel arrowLink, final Color color) {
 		final Color oldColor = arrowLink.getColor();
@@ -642,17 +694,17 @@ public class MLinkController extends LinkController {
 	}
 
 	private URI relativeLink(final URI argUri, final NodeModel node, final boolean makeRelative) {
-	    if (makeRelative && "file".equals(argUri.getScheme())) {
+		if (makeRelative && "file".equals(argUri.getScheme())) {
 			try {
 				final File mapFile = node.getMap().getFile();
-	            return LinkController.toRelativeURI(mapFile, new File(argUri));
-            }
-            catch (Exception e) {
-            }
+				return LinkController.toRelativeURI(mapFile, new File(argUri));
+			}
+			catch (Exception e) {
+			}
 		}
-	    return argUri;
-    }
-	
+		return argUri;
+	}
+
 	public void setLink(final NodeModel node, final URI argUri, final boolean makeRelative) {
 		final URI uri = relativeLink(argUri, node, makeRelative);
 		final IActor actor = new IActor() {
@@ -814,6 +866,58 @@ public class MLinkController extends LinkController {
 
 			public void undo() {
 				connector.setWidth(oldWidth);
+				final NodeModel node = connector.getSource();
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
+	}
+
+
+	public void setLabelFontSize(final ConnectorModel connector, final int width) {
+		final int oldWidth = connector.getLabelFontSize();
+		if (oldWidth == width) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				connector.setLabelFontSize(width);
+				final NodeModel node = connector.getSource();
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setConnectorWidth";
+			}
+
+			public void undo() {
+				connector.setLabelFontSize(oldWidth);
+				final NodeModel node = connector.getSource();
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
+	}
+
+
+	public void setLabelFontFamily(final ConnectorModel connector, final String family) {
+		final String oldFamily = connector.getLabelFontFamily();
+		if (oldFamily.equals(family)) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				connector.setLabelFontFamily(family);
+				final NodeModel node = connector.getSource();
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setConnectorWidth";
+			}
+
+			public void undo() {
+				connector.setLabelFontFamily(oldFamily);
 				final NodeModel node = connector.getSource();
 				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
