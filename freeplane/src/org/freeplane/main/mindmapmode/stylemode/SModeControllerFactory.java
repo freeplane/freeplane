@@ -108,7 +108,7 @@ public class SModeControllerFactory {
 		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener());
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());
-		modeController.setMapController(new MMapController());
+		new MMapController(modeController);
 		TextController.install(new MTextController(modeController));
 		IconController.install(new MIconController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));

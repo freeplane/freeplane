@@ -20,12 +20,9 @@
 package org.freeplane.features.mindmapmode.map;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
 
 class NewChildAction extends AFreeplaneAction {
 	/**
@@ -38,18 +35,8 @@ class NewChildAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		addNewNode(MMapController.NEW_CHILD, null);
-	}
-
-	public NodeModel addNewNode(int newNodeMode, final KeyEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final MMapController mapController = (MMapController) modeController.getMapController();
-		return mapController.addNewNode(newNodeMode, e);
-	}
-
-	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
-		final ModeController modeController = Controller.getCurrentModeController();
-		final MMapController mapController = (MMapController) modeController.getMapController();
-		return mapController.addNewNode(parent, index, newNodeIsLeft);
+        final MMapController mapController = (MMapController) modeController.getMapController();
+		mapController.addNewNode(MMapController.NEW_CHILD, null);
 	}
 }

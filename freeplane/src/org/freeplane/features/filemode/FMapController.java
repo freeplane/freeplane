@@ -30,8 +30,8 @@ import org.freeplane.features.common.map.NodeModel;
  * @author Dimitry Polivaev
  */
 public class FMapController extends MapController {
-	public FMapController() {
-		super();
+	public FMapController(FModeController modeController) {
+		super(modeController);
 	}
 
 	public FModeController getFModeController() {

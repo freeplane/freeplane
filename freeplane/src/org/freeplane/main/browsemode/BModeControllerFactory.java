@@ -64,7 +64,7 @@ public class BModeControllerFactory {
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
-		modeController.setMapController(new MapController());
+		new MapController(modeController);
 		UrlManager.install(new UrlManager());
 		AttributeController.install(new AttributeController(modeController));
 		IconController.install(new IconController(modeController));

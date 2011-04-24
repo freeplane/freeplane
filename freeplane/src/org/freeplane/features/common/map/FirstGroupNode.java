@@ -26,47 +26,13 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
- * Apr 9, 2011
+ * Apr 24, 2011
  */
-@NodeHookDescriptor(hookName = "SummaryNode", onceForMap = false)
-public class SummaryNode extends PersistentNodeHook implements IExtension{
-	
-	public static void install(){
-		new SummaryNode();
-		new FirstGroupNode();
-	};
-	
-	static public boolean isFirstGroupNode(final NodeModel nodeModel) {
-		return nodeModel.containsExtension(FirstGroupNode.class);
-	}
-
+@NodeHookDescriptor(hookName = "FirstGroupNode", onceForMap = false)
+public class FirstGroupNode extends PersistentNodeHook implements IExtension{
 	@Override
 	protected IExtension createExtension(NodeModel node, XMLElement element) {
 		return this;
 	}
 	
-	static public boolean isSummaryNode(final NodeModel nodeModel) {
-		return nodeModel.containsExtension(SummaryNode.class);
-	}
-
-	public static int getSummaryLevel(NodeModel node) {
-		if(node.isRoot() || ! isSummaryNode(node))
-			return 0;
-		final NodeModel parentNode = node.getParentNode();
-		final int index = parentNode.getIndex(node);
-		final boolean isleft = node.isLeft();
-		int level = 1;
-		for(int i =  index - 1; i > 0; i--){
-			final NodeModel child = (NodeModel) parentNode.getChildAt(i);
-			if(isleft == child.isLeft()){
-				if( isSummaryNode(child))
-					level++;
-				else
-					return level;
-			}
-		}
-		return level;
-    }
-	
 }
-

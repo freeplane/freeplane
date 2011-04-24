@@ -127,6 +127,7 @@
 				<menu_action action="NewChildAction" accelerator="INSERT" />
 				<menu_action action="NewSiblingAction" accelerator="ENTER" />
 				<menu_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
+				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
 				<menu_separator />
 				<menu_action action="DeleteAction" accelerator="DELETE" />
 			</menu_category>

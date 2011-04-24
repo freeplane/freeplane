@@ -213,8 +213,9 @@ public class MapController extends SelectionController {
 	final private ReadManager readManager;
 	private final WriteManager writeManager;
 
-	public MapController() {
+	public MapController(ModeController modeController) {
 		super();
+		modeController.setMapController(this);
 //		this.modeController = modeController;
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
 		writeManager = new WriteManager();

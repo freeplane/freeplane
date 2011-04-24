@@ -59,7 +59,7 @@ public class FModeControllerFactory {
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
-		modeController.setMapController(new FMapController());
+		new FMapController(modeController);
 		UrlManager.install(new UrlManager());
 		IconController.install(new IconController(modeController));
 		NodeStyleController.install(new NodeStyleController(modeController));

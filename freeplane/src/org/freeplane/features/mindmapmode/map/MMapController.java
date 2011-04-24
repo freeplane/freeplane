@@ -56,8 +56,8 @@ public class MMapController extends MapController {
 	public static final int NEW_SIBLING_BEHIND = 3;
 	public static final String RESOURCES_CONVERT_TO_CURRENT_VERSION = "convert_to_current_version";
 
-	public MMapController() {
-		super();
+	public MMapController(ModeController modeController) {
+		super(modeController);
 		createActions();
 			addNodeSelectionListener(new INodeSelectionListener() {
 				public void onSelect(final NodeModel node) {
@@ -212,6 +212,7 @@ public class MMapController extends MapController {
 		modeController.addAction(new NewSiblingAction());
 		modeController.addAction(new NewPreviousSiblingAction());
 		modeController.addAction(new NewChildAction());
+		modeController.addAction(new NewSummaryAction());
 		modeController.addAction(new DeleteAction());
 		modeController.addAction(new NodeUpAction());
 		modeController.addAction(new NodeDownAction());

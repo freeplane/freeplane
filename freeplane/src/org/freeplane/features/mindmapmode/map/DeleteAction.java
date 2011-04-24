@@ -27,8 +27,6 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;

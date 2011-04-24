@@ -219,7 +219,7 @@ public class MModeControllerFactory {
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
-		modeController.setMapController(new MMapController());
+		new MMapController(modeController);
 		final MFileManager fileManager = new MFileManager();
 		UrlManager.install(fileManager);
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
