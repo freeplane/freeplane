@@ -516,6 +516,8 @@ public class MLinkController extends LinkController {
 			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_size"), sizesBox);
 			sizesBox.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
+					if(arrowLinkPopup.isVisible())
+						arrowLinkPopup.setVisible(false);
 					final Object item = e.getItem();
 					if(item != null){
 						final int size;
