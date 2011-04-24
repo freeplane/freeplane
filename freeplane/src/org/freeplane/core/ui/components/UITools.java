@@ -31,6 +31,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -470,4 +471,15 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
 			addFocusListenerToDescendants(container.getComponent(i), listener);
 		}
     }
+
+	public static void addMousesListenerToDescendants(Component component,
+                                                      MouseListener listener) {
+		component.addMouseListener(listener);
+		if(! (component instanceof Container))
+			return;
+		Container container = (Container)component;
+		for(int i = 0; i < container.getComponentCount(); i++){
+			addMousesListenerToDescendants(container.getComponent(i), listener);
+		}
+   }
 }
