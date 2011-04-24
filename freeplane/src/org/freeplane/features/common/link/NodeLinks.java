@@ -83,14 +83,6 @@ public class NodeLinks implements IExtension {
 	}
 
 	public void addArrowlink(final NodeLinkModel newLink) {
-		final String targetID = newLink.getTargetID();
-		final Iterator<LinkModel> iterator = links.iterator();
-		while (iterator.hasNext()) {
-			final LinkModel link = iterator.next();
-			if (link.getClass().equals(newLink.getClass()) && link.getTargetID().equals(targetID)) {
-				return;
-			}
-		}
 		links.add(newLink);
 		final MapModel map = newLink.getSource().getMap();
 		addLinkToMap(map, newLink);
