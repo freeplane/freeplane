@@ -4,6 +4,8 @@
 New features:
 New menu structure
 Summary nodes
+Multiline connector labels
+Individual connector label font family and font size
 ===============================
 1.2.4 alpha
 ===============================
