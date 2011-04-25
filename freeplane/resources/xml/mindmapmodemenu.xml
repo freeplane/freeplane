@@ -127,11 +127,17 @@
 				<menu_action action="NewChildAction" accelerator="INSERT" />
 				<menu_action action="NewSiblingAction" accelerator="ENTER" />
 				<menu_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
+			<menu_separator/>
+			</menu_category>
+			<menu_category name="position">
 				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
-				<menu_separator />
-				<menu_action action="DeleteAction" accelerator="DELETE" />
+				<menu_action action="FirstGroupNodeAction" accelerator = "alt shift B"/>
+				<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
 			</menu_category>
 			<menu_separator/>
+			<menu_category name="remove">
+				<menu_action action="DeleteAction" />
+			</menu_category>
 			<menu_category name="join">
 				<menu_action action="JoinNodesAction" accelerator="control J" />
 				<menu_action action="SplitNode" />
@@ -147,12 +153,6 @@
 					accelerator="alt shift R" />
 				<menu_action action="UsePlainTextAction" accelerator="alt shift P" />
 			 </menu_category>
-			<menu_separator/>
-			<menu_category name="position">
-				<menu_action action="FirstGroupNodeAction" accelerator = "alt shift B"/>
-				<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
-				<menu_action action="ResetNodeLocationAction" />
-			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="node features" name_ref="menu_node_features">
 		  	<menu_submenu name="notes" name_ref="menu_notes">
@@ -474,20 +474,25 @@
 			<menu_action action="ToggleDetailsAction"/>
 		</menu_category>
 		<menu_separator />
-		<menu_action action="FirstGroupNodeAction"/>
-		<menu_action action="SummaryNodeAction" />
 		<menu_category name="navigate_nodes">
 			<menu_action action="NodeUpAction" />
 			<menu_action action="NodeDownAction" />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="new_nodes">
-			<menu_action action="NewParentNode" accelerator="shift INSERT" />			
+			<menu_action action="NewParentNode"/>			
 			<menu_action action="NewChildAction" />
 			<menu_action action="NewSiblingAction" />
 			<menu_action action="NewPreviousSiblingAction" />
+			<menu_separator/>
 		</menu_category>
-		<menu_separator/>
+		<menu_category name="position">
+			<menu_action action="NewSummaryAction"/>
+			<menu_action action="FirstGroupNodeAction"/>
+			<menu_action action="SummaryNodeAction" />
+			<menu_action action="ResetNodeLocationAction" />
+			<menu_separator/>
+		</menu_category>
 		<menu_category name="remove">
 			<menu_action action="DeleteAction" />
 		</menu_category>

@@ -37,6 +37,9 @@ class NewSummaryAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private int start;
+	private int end;
+	private int summaryLevel;
 
 	public NewSummaryAction() {
 		super("NewSummaryAction");
@@ -45,41 +48,33 @@ class NewSummaryAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		if(! check())
 			return;
+		final int summaryLevel = this.summaryLevel;
+		final int start = this.start;
+		final int end = this.end;
 		final ModeController modeController = Controller.getCurrentModeController();
 		List<NodeModel> selection = modeController.getController().getSelection().getSelection();
 		NodeModel selected = selection.get(0);
 		final NodeModel parentNode = selected.getParentNode();
-		final boolean left = selected.isLeft();
+		final boolean isLeft = selected.isLeft();
 		final MMapController mapController = (MMapController) modeController.getMapController();
-		final NodeModel firstNode;
-		final NodeModel lastNode;
-		final int lastNodeIndex;
-		if(selection.size() == 1){
-			firstNode = selected;
-			lastNode = selected;
-			lastNodeIndex = parentNode.getIndex(lastNode);
-		}
-		else{
-			final NodeModel node0 = selection.get(0);
-			final int index0 = parentNode.getIndex(node0);
-			final NodeModel node1 = selection.get(1);
-			final int index1 = parentNode.getIndex(node1);
-			if(index0 < index1){
-				firstNode = node0;
-				lastNode = node1;
-				lastNodeIndex = index1;
-			}
-			else{
-				firstNode = node1;
-				lastNode = node0;
-				lastNodeIndex = index0;
-			}
-		}
-		final NodeModel newNode = mapController.addNewNode(parentNode, lastNodeIndex+1, left);
+		final NodeModel newNode = mapController.addNewNode(parentNode, end+1, isLeft);
 		final SummaryNode summary = (SummaryNode) modeController.getExtension(SummaryNode.class);
 		summary.undoableActivateHook(newNode, summary);
 		final FirstGroupNode firstGroup = (FirstGroupNode) modeController.getExtension(FirstGroupNode.class);
+		final NodeModel firstNode = (NodeModel) parentNode.getChildAt(start);
 		firstGroup.undoableActivateHook(firstNode, firstGroup);
+		int level = summaryLevel;
+		for(int i = start+1; i < end; i++){
+			NodeModel node = (NodeModel) parentNode.getChildAt(i);
+			if(isLeft != node.isLeft())
+				continue;
+			if(SummaryNode.isSummaryNode(node))
+				level++;
+			else
+				level = 0;
+			if(level == summaryLevel && SummaryNode.isFirstGroupNode(node))
+				firstGroup.undoableActivateHook(node, firstGroup);
+		}
 		mapController.select(newNode);
 	}
 
@@ -90,6 +85,9 @@ class NewSummaryAction extends AFreeplaneAction {
    }
 
 	private boolean check() {
+		start = -1;
+		end = -1;
+		summaryLevel = -1;
 	    final ModeController modeController = Controller.getCurrentModeController();
 		final IMapSelection selection = modeController.getController().getSelection();
 		
@@ -124,16 +122,14 @@ class NewSummaryAction extends AFreeplaneAction {
 		}
 		final int index0 = parentNode.getIndex(node0);
 		final int index1 = parentNode.getIndex(node1);
-		final int start;
-		final int end;
 		final NodeModel lastNode;
 		if(index0 < index1){
-			start = index0 + 1;
+			start = index0;
 			end = index1;
 			lastNode = node1;
 		}
 		else{
-			start = index1 + 1;
+			start = index1;
 			end = index0;
 			lastNode = node0;
 		}
@@ -151,13 +147,13 @@ class NewSummaryAction extends AFreeplaneAction {
 			}
 		}
 		
-		final int summaryLevel = SummaryNode.getSummaryLevel(node0);
+		summaryLevel = SummaryNode.getSummaryLevel(node0);
 		
 		// selected nodes have different summary levels
 		if (summaryLevel != SummaryNode.getSummaryLevel(node1))
 			return false;
 		int level = summaryLevel;
-		for(int i = start; i < end; i++){
+		for(int i = start+1; i < end; i++){
 			NodeModel node = (NodeModel) parentNode.getChildAt(i);
 			if(isLeft != node.isLeft())
 				continue;
@@ -167,10 +163,6 @@ class NewSummaryAction extends AFreeplaneAction {
 				level = 0;
 			// There is a higher summary node between the selected nodes
 			if(level > summaryLevel)
-				return false;
-			
-			// There is a first group node between the selected nodes
-			if(level == summaryLevel && SummaryNode.isFirstGroupNode(node))
 				return false;
 		}
 		return true;
