@@ -59,12 +59,21 @@ abstract public class CloudView {
 		this.cloudModel = cloudModel;
 		this.source = source;
 		final ModeController modeController = source.getMap().getModeController();
-		iterativeLevel = CloudController.getController(modeController).getCloudIterativeLevel(source.getModel());
+		iterativeLevel = getCloudIterativeLevel();
 	}
 
+	private int getCloudIterativeLevel() {
+		int iterativeLevel = 0;
+		for (NodeView parentNode = source.getParentView(); parentNode != null; parentNode = parentNode.getParentView()) {
+			if (null != parentNode.getCloudModel()) {
+				iterativeLevel++;
+			}
+		}
+		return iterativeLevel;
+    }
+
 	public Color getColor() {
-		final NodeModel model = source.getModel();
-		return CloudController.getController(source.getMap().getModeController()).getColor(model);
+		return source.getCloudColor();
 	}
 
 	protected double getDistanceToConvexHull() {

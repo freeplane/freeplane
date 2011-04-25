@@ -36,8 +36,7 @@ public class EdgeViewFactory {
 		if (nodeView.getMap().getLayoutType() == MapViewLayout.OUTLINE) {
 			return new OutlineEdgeView(nodeView);
 		}
-		final NodeModel model = nodeView.getModel();
-		final EdgeStyle edgeStyle = EdgeController.getController(nodeView.getMap().getModeController()).getStyle(model);
+		final EdgeStyle edgeStyle = nodeView.getEdgeStyle();
 		if (edgeStyle.equals(EdgeStyle.EDGESTYLE_LINEAR)) {
 			return new LinearEdgeView(nodeView);
 		}
@@ -63,8 +62,7 @@ public class EdgeViewFactory {
 	}
 
 	public EdgeView getEdge(final NodeView source, final NodeView target) {
-		final NodeModel model = target.getModel();
-		final EdgeStyle edgeStyle = EdgeController.getController(target.getMap().getModeController()).getStyle(model);
+		final EdgeStyle edgeStyle = target.getEdgeStyle();
 		if (edgeStyle.equals(EdgeStyle.EDGESTYLE_LINEAR)) {
 			return new LinearEdgeView(source, target);
 		}

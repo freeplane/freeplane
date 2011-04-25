@@ -143,24 +143,6 @@ public class CloudController implements IExtension {
 		}
 	}
 
-	/** gets iterative level which is required for painting and layout. */
-	public int getCloudIterativeLevel(final NodeModel target) {
-		int iterativeLevel = 0;
-		if (target != null) {
-			for (NodeModel parentNode = target.getParentNode(); parentNode != null; parentNode = parentNode
-			    .getParentNode()) {
-				if (cloudExist(target)) {
-					iterativeLevel++;
-				}
-			}
-		}
-		return iterativeLevel;
-	}
-
-	public boolean cloudExist(final NodeModel model) {
-		return getCloud(model) != null;
-	}
-
 	public CloudModel getCloud(final NodeModel model) {
 		return cloudHandlers.getProperty(model);
 	}

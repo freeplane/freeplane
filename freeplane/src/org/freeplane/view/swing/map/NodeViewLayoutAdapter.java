@@ -198,9 +198,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 		if (!node.isContentVisible()) {
 			return 0;
 		}
-		final ModeController modeController = node.getMap().getModeController();
-		final CloudController cloudController = CloudController.getController(modeController);
-		final CloudModel cloud = cloudController.getCloud(node.getModel());
+		final CloudModel cloud = node.getCloudModel();
 		if (cloud != null) {
 			return CloudView.getAdditionalHeigth(cloud, node);
 		}

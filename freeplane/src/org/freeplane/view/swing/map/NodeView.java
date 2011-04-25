@@ -110,6 +110,10 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeModel model;
 	private NodeMotionListenerView motionListenerView;
 	private NodeView preferredChild;
+	private EdgeStyle edgeStyle = EdgeStyle.EDGESTYLE_HIDDEN;
+	private int edgeWidth = 1;
+	private Color edgeColor = Color.BLACK;
+	private Color modelBackgroundColor;
 	public static final int DETAIL_VIEWER_POSITION = 2;
 
 	protected NodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
@@ -187,7 +191,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public Color getBackgroundColor() {
-		final Color cloudColor = CloudController.getController(getMap().getModeController()).getColor(model);
+		final Color cloudColor = getCloudColor();
 		if (cloudColor != null) {
 			return cloudColor;
 		}
@@ -196,6 +200,15 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		return getParentView().getBackgroundColor();
 	}
+
+	public Color getCloudColor() {
+	    final CloudModel cloudModel = getCloudModel();
+		if(cloudModel != null){
+			final Color cloudColor = cloudModel.getColor();
+			return cloudColor;
+		}
+		return null;
+    }
 
 	/**
 	 * This method returns the NodeViews that are children of this node.
@@ -694,8 +707,6 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public Color getTextBackground() {
-		final Color modelBackgroundColor = NodeStyleController.getController(getMap().getModeController())
-		    .getBackgroundColor(model);
 		if (modelBackgroundColor != null) {
 			return modelBackgroundColor;
 		}
@@ -960,7 +971,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (!isContentVisible()) {
 			return;
 		}
-		final CloudModel cloudModel = CloudController.getController(getMap().getModeController()).getCloud(model);
+		final CloudModel cloudModel = getCloudModel();
 		if (cloudModel == null) {
 			return;
 		}
@@ -1153,8 +1164,7 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		mainView.updateTextColor(this);
-		if (EdgeController.getController(getMap().getModeController()).getStyle(model)
-		    .equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
+		if (getEdgeStyle().equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
 			final NodeView visibleParentView = getVisibleParentView();
 			if (visibleParentView != null) {
 				visibleParentView.repaintEdge(this);
@@ -1316,8 +1326,40 @@ public class NodeView extends JComponent implements INodeView {
 		mainView.updateText(getModel());
 		mainView.updateIcons(this);
 		updateToolTip();
+		updateCloud();
+		updateEdge();
+		modelBackgroundColor = NodeStyleController.getController(getMap().getModeController()).getBackgroundColor(model);
 		revalidate();
 	}
+
+	private void updateEdge() {
+	    if(! isRoot()) {
+	        final EdgeController edgeController = EdgeController.getController(getMap().getModeController());
+	        this.edgeStyle = edgeController.getStyle(model);
+	    	this.edgeWidth = edgeController.getWidth(model);
+	    	this.edgeColor = edgeController.getColor(model);
+        }
+    }
+
+	public EdgeStyle getEdgeStyle() {
+    	return edgeStyle;
+    }
+
+	public int getEdgeWidth() {
+	    return edgeWidth;
+    }
+	public Color getEdgeColor() {
+	    return edgeColor;
+    }
+	
+	private void updateCloud() {
+		final CloudModel cloudModel = CloudController.getController(getMap().getModeController()).getCloud(model);
+		putClientProperty(CloudModel.class, cloudModel);
+    }
+
+	public CloudModel getCloudModel() {
+		return (CloudModel) getClientProperty(CloudModel.class);
+    }
 
 	private void updateShortener(NodeModel nodeModel) {
 		final ModeController modeController = getMap().getModeController();
@@ -1445,4 +1487,5 @@ public class NodeView extends JComponent implements INodeView {
 	public boolean isFirstGroupNode() {
 		return SummaryNode.isFirstGroupNode(getModel());
 	}
+
 }

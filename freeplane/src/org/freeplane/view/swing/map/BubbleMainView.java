@@ -102,7 +102,7 @@ class BubbleMainView extends MainView {
 		final Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
 		paintBackgound(g);
 		paintDragOver(g);
-		final Color edgeColor = EdgeController.getController(modeController).getColor(model);
+		final Color edgeColor = nodeView.getEdgeColor();
 		g.setColor(edgeColor);
 		g.setStroke(BubbleMainView.DEF_STROKE);
 		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
