@@ -6,6 +6,9 @@ New menu structure
 Summary nodes
 Multiline connector labels
 Individual connector label font family and font size
+"Add connector" action creates also connectors to self
+Preferences->Behavior->In-line node editor->Layout map during editing
+  disable for better performance 
 ===============================
 1.2.4 alpha
 ===============================
