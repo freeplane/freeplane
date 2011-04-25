@@ -72,6 +72,7 @@ import javax.swing.text.html.StyleSheet;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -93,6 +94,7 @@ import com.lightdev.app.shtm.SHTMLWriter;
  */
 class EditNodeTextField extends EditNodeBase {
 	private int extraWidth;
+	final private boolean layoutMapOnTextChange;
 
 	private final class MyDocumentListener implements DocumentListener {
 		private boolean updateRunning = false;
@@ -167,12 +169,16 @@ class EditNodeTextField extends EditNodeBase {
 			return;
 		}
 		textfield.setSize(preferredSize);
-		parent.setPreferredSize(new Dimension(preferredSize.width + horizontalSpace + iconWidth, preferredSize.height
-		        + verticalSpace));
+		if(layoutMapOnTextChange)
+			parent.setPreferredSize(new Dimension(preferredSize.width + horizontalSpace + iconWidth, preferredSize.height
+				+ verticalSpace));
 		textfield.revalidate();
 		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, parent);
 		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, nodeView);
-		mapView.scrollNodeToVisible(nodeView);
+		if(layoutMapOnTextChange)
+			mapView.scrollNodeToVisible(nodeView);
+		else
+			mapView.scrollRectToVisible(textfield.getBounds());
 	}
 
 	private void setLineWrap() {
@@ -315,6 +321,7 @@ class EditNodeTextField extends EditNodeBase {
 		super(node, text, editControl);
 		this.firstEvent = firstEvent;
 		this.parent = parent;
+		this.layoutMapOnTextChange = ResourceController.getResourceController().getBooleanProperty("layout_map_on_text_change");
 		documentListener = new MyDocumentListener();
 
 		pasteAction = new DefaultEditorKit.PasteAction(){
@@ -393,7 +400,10 @@ class EditNodeTextField extends EditNodeBase {
 		parent.setPreferredSize(null);
 		nodeView.update();
 		parent.setHorizontalAlignment(JLabel.CENTER);
-		parent.remove(0);
+		if(layoutMapOnTextChange)
+			parent.remove(0);
+		else
+			nodeView.getMap().remove(0);
 		parent.revalidate();
 		parent.repaint();
 		textfield = null;
@@ -567,11 +577,16 @@ class EditNodeTextField extends EditNodeBase {
 
 		final int x = (horizontalSpace + 1) / 2;
 		final int y = (verticalSpace + 1) / 2;
-		textfield.setBounds(x + iconWidth, y, textFieldSize.width, textFieldSize.height);
+		final Point location = new Point(x + iconWidth, y);
+		if(! layoutMapOnTextChange)
+			UITools.convertPointToAncestor(parent, location, mapView);
+		textfield.setBounds(location.x, location.y, textFieldSize.width, textFieldSize.height);
 		parent.setText("");
 		parent.setHorizontalAlignment(JLabel.LEFT);
-
-		parent.add(textfield, 0);
+		if(layoutMapOnTextChange)
+			parent.add(textfield, 0);
+		else
+			mapView.add(textfield, 0);
 		if (firstEvent instanceof KeyEvent) {
 			redispatchKeyEvents(textfield, (KeyEvent) firstEvent);
 		}
