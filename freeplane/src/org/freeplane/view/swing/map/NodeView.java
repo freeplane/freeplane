@@ -554,6 +554,7 @@ public class NodeView extends JComponent implements INodeView {
 		else {
 			baseComponent = getVisibleParentView();
 		}
+		final int ownX = baseComponent.getContent().getX() + baseComponent.getContent().getWidth() / 2;
 		final int ownY = baseComponent.getContent().getY() + baseComponent.getContent().getHeight() / 2;
 		NodeView newSelected = null;
 		for (int i = 0; i < getComponentCount(); i++) {
@@ -571,12 +572,14 @@ public class NodeView extends JComponent implements INodeView {
 					continue;
 				}
 			}
-			final Point childPoint = new Point(0, childView.getContent().getHeight() / 2);
-			UITools.convertPointToAncestor(childView.getContent(), childPoint, baseComponent);
 			if (getUpper) {
 				return childView;
 			}
-			final int gapToChild = Math.abs(childPoint.y - ownY);
+			final Point childPoint = new Point(childView.getContent().getWidth() / 2, childView.getContent().getHeight() / 2);
+			UITools.convertPointToAncestor(childView.getContent(), childPoint, baseComponent);
+			final int dy = childPoint.y - ownY;
+			final int dx = childPoint.x - ownX;
+			final int gapToChild = dy*dy + dx*dx;
 			if (gapToChild < yGap) {
 				newSelected = childView;
 				preferredChild = (NodeView) c;
@@ -1227,7 +1230,8 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void setPreferredChild(final NodeView view) {
-		preferredChild = view;
+		if(view != null && ! SummaryNode.isSummaryNode(view.getModel()))
+			preferredChild = view;
 		final Container parent = this.getParent();
 		if (view == null) {
 			return;

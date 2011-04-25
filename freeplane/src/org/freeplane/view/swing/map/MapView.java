@@ -86,6 +86,7 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.map.SummaryNode;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
@@ -840,6 +841,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private NodeView getVisibleSummaryView(NodeView node) {
 	    if(node.isRoot())
 	    	return null;
+	    final int currentSummaryLevel = SummaryNode.getSummaryLevel(node.getModel());
+		int level = currentSummaryLevel;
+		final int requiredSummaryLevel = level + 1;
 	    final NodeView parent = node.getParentView();
 	    for (int i = 1 + getIndex(node);i < parent.getComponentCount();i++){
 	    	final Component component = parent.getComponent(i);
@@ -848,11 +852,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	NodeView next = (NodeView) component;
 	    	if(next.isLeft() != node.isLeft())
 	    		continue;
-	    	if(next.isSummary()){
+	    	if(next.isSummary())
+	    		level++;
+	    	else
+	    		level = 0;
+	    	if(level == requiredSummaryLevel){
 	    		if(next.getModel().isVisible())
 	    			return next;
 	    		break;
 	    	}
+	    	if(level == currentSummaryLevel && SummaryNode.isFirstGroupNode(next.getModel()))
+	    		break;
 	    }
 	    return getVisibleSummaryView(parent);
     }
