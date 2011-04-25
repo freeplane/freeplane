@@ -26,12 +26,14 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.FirstGroupNode;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.map.SummaryNode;
 
-@EnabledAction(checkOnNodeChange=true)
 class NewSummaryAction extends AFreeplaneAction {
 	/**
 	 * 
@@ -46,8 +48,10 @@ class NewSummaryAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if(! check())
+		if(! check()){
+			UITools.errorMessage(TextUtils.getText("summary_not_possible"));
 			return;
+		}
 		final int summaryLevel = this.summaryLevel;
 		final int start = this.start;
 		final int end = this.end;
@@ -78,63 +82,37 @@ class NewSummaryAction extends AFreeplaneAction {
 		mapController.select(newNode);
 	}
 
-	@Override
-    public void setEnabled() {
-		setEnabled(check());
-		
-   }
-
 	private boolean check() {
 		start = -1;
 		end = -1;
 		summaryLevel = -1;
 	    final ModeController modeController = Controller.getCurrentModeController();
 		final IMapSelection selection = modeController.getController().getSelection();
+
+		final List<NodeModel> sortedSelection = selection.getSortedSelection(false);
 		
-		// more than 2 nodes selected
-		if(selection.size() > 2){
-			return false;
-		}
-		final List<NodeModel> list = selection.getSelection();
-		final NodeModel node0 = list.get(0);
+		final NodeModel firstNode = sortedSelection.get(0);
 		
+		final NodeModel parentNode = firstNode.getParentNode();
 		// root node selected
-		if(node0.isRoot()){
+		if(parentNode == null)
 			return false;
-		}
-		final NodeModel node1;
-		if(selection.size() == 1){
-			node1 = node0;
-		}
-		else{
-			node1 = list.get(1);
-		}
-		final NodeModel parentNode = node0.getParentNode();
 		
+		final NodeModel lastNode = sortedSelection.get(sortedSelection.size()-1);
 		// different parents
-		if(! parentNode.equals(node1.getParentNode())){
+		if(! parentNode.equals(lastNode.getParentNode())){
 			return false;
 		}
-		final boolean isLeft = node0.isLeft();
+		final boolean isLeft = firstNode.isLeft();
 		// different sides
-		if(isLeft!=node1.isLeft()){
+		if(isLeft!=lastNode.isLeft()){
 			return false;
 		}
-		final int index0 = parentNode.getIndex(node0);
-		final int index1 = parentNode.getIndex(node1);
-		final NodeModel lastNode;
-		if(index0 < index1){
-			start = index0;
-			end = index1;
-			lastNode = node1;
-		}
-		else{
-			start = index1;
-			end = index0;
-			lastNode = node0;
-		}
+		start = parentNode.getIndex(firstNode);
+		end = parentNode.getIndex(lastNode);
+		
 		// last node is a group node
-		if(node0 != node1 && SummaryNode.isFirstGroupNode(lastNode))
+		if(firstNode != lastNode && SummaryNode.isFirstGroupNode(lastNode))
 			return false;
 		
 		// last node is already followed by a summary node
@@ -147,10 +125,10 @@ class NewSummaryAction extends AFreeplaneAction {
 			}
 		}
 		
-		summaryLevel = SummaryNode.getSummaryLevel(node0);
+		summaryLevel = SummaryNode.getSummaryLevel(firstNode);
 		
 		// selected nodes have different summary levels
-		if (summaryLevel != SummaryNode.getSummaryLevel(node1))
+		if (summaryLevel != SummaryNode.getSummaryLevel(lastNode))
 			return false;
 		int level = summaryLevel;
 		for(int i = start+1; i < end; i++){
