@@ -136,7 +136,7 @@
 			</menu_category>
 			<menu_separator/>
 			<menu_category name="remove">
-				<menu_action action="DeleteAction" />
+				<menu_action action="DeleteAction" accelerator="DELETE" />
 			</menu_category>
 			<menu_category name="join">
 				<menu_action action="JoinNodesAction" accelerator="control J" />

@@ -227,7 +227,8 @@ class KeyEventTranslator {
 					    .toUpperCase((char) keyCode));
 				}
 				else {
-					if (keyCode > 0 && keyCode <= KeyEvent.VK_SPACE) {
+					if (keyCode > 0 && keyCode <= KeyEvent.VK_SPACE
+							|| keyCode == KeyEvent.VK_DELETE) {
 						evt.consume();
 						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), keyCode,
 						    KeyEvent.CHAR_UNDEFINED);
