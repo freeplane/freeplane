@@ -150,7 +150,6 @@
             <number name="el__max_default_window_height" />
             <number name="el__min_default_window_width" />
             <number name="el__max_default_window_width" />
-            <boolean name="el__enter_confirms_by_default" />
         </separator>
         <separator name="outline_view">
         	<number name="outline_vgap" min = "1"/>
@@ -190,6 +189,7 @@
        <separator name="inline_editor">     
        	    <boolean name="display_inline_editor_for_all_new_nodes" />
        	    <boolean name="layout_map_on_text_change" />
+            <boolean name="el__enter_confirms_by_default" />
         </separator>
         <separator name="notifications">
             <remind_value name="remind_use_rich_text_in_new_nodes"/>
