@@ -262,14 +262,17 @@ public class MTextController extends TextController {
 
 	/** converts strings to date or number if possible. All other data types are left unchanged. */
 	public static Object guessObject(final Object text) {
-		if (text instanceof String && ResourceController.getResourceController().getBooleanProperty("parse_dates")) {
-			final String string = (String)text;
-			final FreeplaneDate date = FreeplaneDate.toDateISO(string.trim());
-			if (date != null) {
-				return date;
+		if (text instanceof String) {
+			final String string = (String) text;
+			if (parseDates) {
+				final FreeplaneDate date = FreeplaneDate.toDateISO(string.trim());
+				if (date != null) {
+					return date;
+				}
 			}
 			try {
-				return new FormattedNumber(TextUtils.toNumber(string));
+				if (parseNumbers)
+					return new FormattedNumber(TextUtils.toNumber(string));
 			}
 			catch (NumberFormatException e) {
 				return text;
@@ -511,6 +514,10 @@ public class MTextController extends TextController {
 	}
 
 	private static Pattern FORMATTING_PATTERN = null;
+	private static final boolean parseDates = ResourceController.getResourceController().getBooleanProperty(
+	    "parse_dates");
+	private static final boolean parseNumbers = ResourceController.getResourceController().getBooleanProperty(
+	    "parse_numbers");
 	
 	public boolean containsFormatting(final String text){
 		if(FORMATTING_PATTERN == null){
