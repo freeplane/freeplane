@@ -85,11 +85,11 @@ public class PatternFormatTest {
 		final PatternFormat formatter = PatternFormat.guessPatternFormat(pattern);
 		assertNotNull("could not create a formatter for pattern " + pattern, formatter);
 		if (formatter.acceptsDate())
-			System.err.println(pattern + "->" + formatter.format(new Date()));
+			System.err.println(pattern + "->" + formatter.formatObject(new Date()));
 		else if (formatter.acceptsNumber())
-			System.err.println(pattern + "->" + formatter.format(1223.456789));
+			System.err.println(pattern + "->" + formatter.formatObject(1223.456789));
 		else
-			System.err.println(pattern + "->" + formatter.format("Hello world!"));
+			System.err.println(pattern + "->" + formatter.formatObject("Hello world!"));
 	}
 
 	private void assertMatches(final Pattern pattern, String string) {

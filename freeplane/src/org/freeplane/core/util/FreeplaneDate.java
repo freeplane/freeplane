@@ -36,7 +36,7 @@ import org.freeplane.core.resources.ResourceController;
 @SuppressWarnings("serial")
 @FactoryMethod("toObject")
 @SerializationMethod("toString")
-public class FreeplaneDate extends Date {
+public class FreeplaneDate extends Date implements IFormattedObject {
 
 	@Override
     public boolean equals(Object obj) {
@@ -111,6 +111,7 @@ public class FreeplaneDate extends Date {
     	return getDateFormat(ISO_DATE_FORMAT_PATTERN).format(date);
     }
 
+	// deserialize method
 	public static Object toObject(String text) {
 		final int index = text.indexOf('|');
 		final SimpleDateFormat df ;
@@ -137,13 +138,6 @@ public class FreeplaneDate extends Date {
 	public static boolean isDate(String text) {
     	return isDateISO(text) || isDateUser(text);
     }
-
-	public static Object createDateObject(String text) {
-		final FreeplaneDate dateISO = toDateISO(text);
-		if(dateISO != null)
-			return dateISO;
-		return text;
-	}
 	
 	public static FreeplaneDate toDateISO(String text) {
     	//        1         2         34            5         6   7        8           9
@@ -220,5 +214,13 @@ public class FreeplaneDate extends Date {
 
 	public SimpleDateFormat getDateFormat() {
 	    return df;
+    }
+
+	public String getPattern() {
+	    return df.toPattern();
+    }
+
+	public Date getObject() {
+	    return this;
     }
 }

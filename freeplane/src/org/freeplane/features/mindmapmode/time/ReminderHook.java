@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -130,13 +131,16 @@ public class ReminderHook extends PersistentNodeHook {
 	public ReminderHook() {
 		super();
 		final TimeManagement timeManagement = new TimeManagement(this);
-		final JComponent timePanel = timeManagement.createTimePanel(null, false, BoxLayout.Y_AXIS);
+		final int axis = BoxLayout.Y_AXIS;
+		final JComponent timePanel = timeManagement.createTimePanel(null, false, axis);
 		timePanel.setBorder(BorderFactory.createTitledBorder(TextUtils.getText("calendar_panel")));
 		final JPanel tablePanel = new AttributePanelManager(Controller.getCurrentModeController()).getTablePanel();
 		tablePanel.setBorder(BorderFactory.createTitledBorder(TextUtils.getText("attributes_attribute")));
-		timePanel.add(tablePanel);
+		final Box panel = new Box(axis);
+		panel.add(timePanel);
+		panel.add(tablePanel);
 		final JTabbedPane tabs = (JTabbedPane) Controller.getCurrentModeController().getUserInputListenerFactory().getToolBar("/format").getComponent(1);
-		final JScrollPane timeScrollPane = new JScrollPane(timePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		final JScrollPane timeScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		UITools.setScrollbarIncrement(timeScrollPane);
 		tabs.add(TextUtils.getText("calendar_attributes_panel"), timeScrollPane);

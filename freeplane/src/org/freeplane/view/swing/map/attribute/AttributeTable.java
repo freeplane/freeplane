@@ -758,9 +758,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	        TableCellEditor editor = getCellEditor();
 	        if (editor != null) {
 	            Object value = editor.getCellEditorValue();
-	            if(value != null){
-	            	setValueAt(value, editingRow, editingColumn);
-	            }
+				if (value != null) {
+					setValueAt(MTextController.guessObject(value), editingRow, editingColumn);
+				}
 	            removeEditor();
 	        }
 		}

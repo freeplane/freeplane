@@ -10,16 +10,8 @@ class DatePatternFormat extends PatternFormat {
         super(pattern, type);
     }
 	
-	/**
-	 * Formats an object via {@link FastDateFormat#format(Object)}.
-	 * 
-	 * @param obj  the object to format
-	 * @param toAppendTo  the buffer to append to
-	 * @param pos  the position - ignored
-	 * @return the buffer passed in
-	 */
 	@Override
-	public Object format(Object obj) {
+	public Object formatObject(Object obj) {
 		if(obj instanceof Date)
 			return new FreeplaneDate((Date)obj, getPattern());
 		return obj;

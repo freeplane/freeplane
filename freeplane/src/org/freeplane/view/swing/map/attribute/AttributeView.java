@@ -28,6 +28,7 @@ import javax.swing.UIManager;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
@@ -54,6 +55,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	final private NodeView nodeView;
 	final private ReducedAttributeTableModelDecorator reducedAttributeTableModel;
 	private JTableHeader tableHeader;
+	private ListSelectionListener tableSelectionListener;
 
 	public AttributeView(final NodeView nodeView, final boolean addToNodeView) {
 		super();
@@ -73,10 +75,10 @@ public class AttributeView implements ChangeListener, TableModelListener {
 
 	private void addListeners() {
 		getAttributeRegistry().addChangeListener(this);
-		addTableModelListeners();
+		addTableListeners();
 	}
 
-	private void addTableModelListeners() {
+	private void addTableListeners() {
 		if (!getMapView().getModeController().canEdit()) {
 			return;
 		}
@@ -87,6 +89,10 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			getAttributes().getLayout().addColumnWidthChangeListener(attributeTable);
 			attributeTable.addMouseListener(AttributeView.tablePopupMenu);
 			tableHeader.addMouseListener(AttributeView.tablePopupMenu);
+			if (tableSelectionListener != null) {
+				attributeTable.getSelectionModel().addListSelectionListener(tableSelectionListener);
+				attributeTable.getColumnModel().getSelectionModel().addListSelectionListener(tableSelectionListener);
+			}
 		}
 		else {
 			getAttributes().addTableModelListener(this);
@@ -168,7 +174,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			attributeTable = new AttributeTable(this);
 			tableHeader = attributeTable.getTableHeader();
 			tableHeader.setBackground(AttributeView.HEADER_BACKGROUND);
-			addTableModelListeners();
+			addTableListeners();
 			attributeViewScrollPane = new AttributeViewScrollPane(attributeTable);
 			if(addToNodeView()){
 				getNodeView().addContent(attributeViewScrollPane, VIEWER_POSITION);
@@ -302,5 +308,22 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			provideAttributeTable();
 		}
 	    return attributeViewScrollPane;
+    }
+
+	public void addRow() {
+		attributeTable.insertRow(attributeTable.getRowCount());
+    }
+	
+	public void setOptimalColumnWidths() {
+		attributeTable.setOptimalColumnWidths();
+	}
+
+	public AttributeTable getAttributeTable() {
+	    return attributeTable;
+    }
+
+	public void addTableSelectionListener(ListSelectionListener listSelectionListener) {
+		// we have to cache the listener to enable lazy construction of the AttributeTable
+		tableSelectionListener = listSelectionListener;
     }
 }

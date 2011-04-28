@@ -55,6 +55,7 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.FixedHTMLWriter;
+import org.freeplane.core.util.FormattedNumber;
 import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -253,20 +254,30 @@ public class MTextController extends TextController {
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 
 	public void setGuessedNodeObject(final NodeModel node, final String newText) {
-		if(HtmlUtils.isHtmlNode(newText)){
+		if (HtmlUtils.isHtmlNode(newText))
 			setNodeObject(node, newText);
-			return;
-		}
-		if(ResourceController.getResourceController().getBooleanProperty("parse_dates")){ 
-			final FreeplaneDate date = FreeplaneDate.toDateISO(newText.trim());
-			if(date != null){
-				setNodeObject(node, date);
-				return;
-			}
-		}
-		setNodeObject(node, newText);
+		else
+			setNodeObject(node, guessObject(newText));
 	}
 
+	/** converts strings to date or number if possible. All other data types are left unchanged. */
+	public static Object guessObject(final Object text) {
+		if (text instanceof String && ResourceController.getResourceController().getBooleanProperty("parse_dates")) {
+			final String string = (String)text;
+			final FreeplaneDate date = FreeplaneDate.toDateISO(string.trim());
+			if (date != null) {
+				return date;
+			}
+			try {
+				return new FormattedNumber(TextUtils.toNumber(string));
+			}
+			catch (NumberFormatException e) {
+				return text;
+			}
+		}
+		return text;
+	}
+	
 	public void setNodeText(final NodeModel node, final String newText) {
 		setNodeObject(node, newText);
 	}

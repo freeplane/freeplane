@@ -30,39 +30,39 @@ import java.lang.reflect.Method;
  */
 public class TypeReference{
 
-	static public Object create(final String objSpec){
-		final int sep = objSpec.indexOf('|');
-		final String type = objSpec.substring(0, sep);
-		final AccessibleObject factory = getFactory(type);
-		final String spec = objSpec.substring(sep + 1);
+	static public Object create(final String objSpec) {
+		return create(objSpec, true);
+	}
+	
+	static public Object create(final String objSpec, final boolean verbose) {
 		try {
-			if(factory instanceof Method)
+			final int sep = objSpec.indexOf('|');
+			if (sep == -1)
+				return objSpec;
+			final String type = objSpec.substring(0, sep);
+			final String spec = objSpec.substring(sep + 1);
+			final AccessibleObject factory = getFactory(type);
+			if (factory instanceof Method)
 				return ((Method) factory).invoke(null, spec);
 			return ((Constructor<?>) factory).newInstance(spec);
 		}
 		catch (Exception e) {
-			LogUtils.warn(e);
-			return spec;
+			if (verbose)
+				LogUtils.warn("cannot create for type reference " + objSpec, e);
+			return objSpec;
 		}
 	}
-	
-	private static AccessibleObject getFactory (String typeReference) {
-		AccessibleObject constructor;
-        try {
-            final Class<?> clazz = TypeReference.class.getClassLoader().loadClass(typeReference);
-            final FactoryMethod factoryAnnotation = clazz.getAnnotation(FactoryMethod.class);
-            if(factoryAnnotation != null)
-            	constructor = clazz.getMethod(factoryAnnotation.value(), String.class);
-            
-            else
-            	constructor = clazz.getConstructor(String.class);
-            return constructor;
-        }
-        catch (Exception e) {
-            LogUtils.warn(e);
-        	return null;
-        }
-    }
+
+	private static AccessibleObject getFactory(String typeReference) throws ClassNotFoundException, SecurityException,
+	        NoSuchMethodException {
+		final Class<?> clazz = TypeReference.class.getClassLoader().loadClass(typeReference);
+		final FactoryMethod factoryAnnotation = clazz.getAnnotation(FactoryMethod.class);
+		if (factoryAnnotation != null)
+			return clazz.getMethod(factoryAnnotation.value(), String.class);
+		else
+			return clazz.getConstructor(String.class);
+	}
+
 	public static String toSpec(Object obj){
 		final Class<? extends Object> clazz = obj.getClass();
 		if(clazz.equals(String.class)){
@@ -81,4 +81,27 @@ public class TypeReference{
 			return obj.toString();
 		}
 	}
+
+	/** copy of HtmlUtils.unicodeToHTMLUnicodeEntity() with the exception that the separator char '|' and the XML
+     * special chars '"' and '&' are escaped too. */
+    public static String encode(String text) {
+    	final StringBuilder result = new StringBuilder((int) (text.length() * 1.2));
+    	int intValue;
+    	char myChar;
+    	for (int i = 0; i < text.length(); ++i) {
+    		myChar = text.charAt(i);
+    		intValue = text.charAt(i);
+    		if (intValue < 32 || intValue == 34 || intValue == 38 || intValue == 124 || intValue > 126) {
+    			result.append("&#x").append(Integer.toString(intValue, 16)).append(';');
+    		}
+    		else {
+    			result.append(myChar);
+    		}
+    	}
+    	return result.toString();
+    }
+
+	public static String decode(final String spec) {
+        return HtmlUtils.unescapeHTMLUnicodeEntity(spec);
+    }
 }
