@@ -27,7 +27,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 		return ColorUtils.colorToString(getColor());
 	}
 
-	public ConnectorModel getConnector() {
+	ConnectorModel getConnector() {
 		return getDelegate();
 	}
 
