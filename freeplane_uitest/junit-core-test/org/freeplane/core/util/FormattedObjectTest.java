@@ -68,7 +68,7 @@ public class FormattedObjectTest {
 	public void testSerializeNumber() {
 		double number = 1.123456;
 		final FormattedObject formattedObject = new FormattedObject(number, "#.##");
-		final String serialized = "java.lang.Double&#x7c;1.123456|date:decimal:#.##";
+		final String serialized = "java.lang.Double&#x7c;1.123456|number:decimal:#.##";
 		assertEquals(serialized, FormattedObject.serialize(formattedObject));
 		assertEquals("failure in deserialization", formattedObject, FormattedObject.deserialize(serialized));
 	}
