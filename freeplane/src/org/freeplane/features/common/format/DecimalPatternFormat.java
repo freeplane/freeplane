@@ -27,8 +27,8 @@ import org.freeplane.core.util.FormattedNumber;
 class DecimalPatternFormat extends PatternFormat {
 	private static final long serialVersionUID = 1L;
 
-	public DecimalPatternFormat(final String pattern, final String type) {
-		super(pattern, type);
+	public DecimalPatternFormat(final String pattern) {
+		super(pattern, PatternFormat.TYPE_NUMBER);
 	}
 
 	@Override

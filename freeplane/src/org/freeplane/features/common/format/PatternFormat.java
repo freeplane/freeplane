@@ -74,11 +74,11 @@ public abstract class PatternFormat /*extends Format*/ {
 	
 	public static PatternFormat createPatternFormat(final String pattern, final String style, final String type) {
 		if (style.equals(STYLE_DATE))
-			return new DatePatternFormat(pattern, type);
+			return new DatePatternFormat(pattern);
 		else if (style.equals(STYLE_FORMATTER))
 			return new FormatterPatternFormat(pattern, type);
 		else if (style.equals(STYLE_DECIMAL))
-			return new DecimalPatternFormat(pattern, type);
+			return new DecimalPatternFormat(pattern);
 		else
 			throw new IllegalArgumentException("unknown format style");
 	}
@@ -139,10 +139,10 @@ public abstract class PatternFormat /*extends Format*/ {
 				}
 			}
 			if (datePattern.matcher(pattern).find()) {
-				return new DatePatternFormat(pattern, TYPE_DATE);
+				return new DatePatternFormat(pattern);
 			}
 			if (pattern.indexOf('#') != -1 || pattern.indexOf('0') != -1) {
-				return new DecimalPatternFormat(pattern, TYPE_DATE);
+				return new DecimalPatternFormat(pattern);
 			}
 			LogUtils.warn("not a pattern format: '" + pattern + "'");
 			return null;

@@ -6,8 +6,8 @@ import org.freeplane.core.util.FreeplaneDate;
 
 class DatePatternFormat extends PatternFormat {
 	private static final long serialVersionUID = 1L;
-	public DatePatternFormat(String pattern, String type) {
-        super(pattern, type);
+	public DatePatternFormat(String pattern) {
+        super(pattern, PatternFormat.TYPE_DATE);
     }
 	
 	@Override

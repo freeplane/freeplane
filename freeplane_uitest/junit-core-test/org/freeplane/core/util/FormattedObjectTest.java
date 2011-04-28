@@ -19,8 +19,9 @@
  */
 package org.freeplane.core.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
 import java.util.Locale;
 
 import org.junit.Before;
@@ -79,5 +80,12 @@ public class FormattedObjectTest {
 		final String serialized = "&#x22;sdf&#x22;&#x7c;sdf&#x26;#x7c;sdf&#x26;amp;#x7c;: %s|string:formatter:&#x7c;&#x22;x&#x22;&#x7c;: %s";
 		assertEquals(serialized, FormattedObject.serialize(formattedObject));
 		assertEquals("failure in deserialization", formattedObject, FormattedObject.deserialize(serialized));
+	}
+	
+	@Test
+	public void testStrangeInput() {
+		final FreeplaneDate date = new FreeplaneDate(new Date(), "yyyy-mm-dd");
+		final FormattedObject formattedObject = new FormattedObject(date, "#.##");
+		assertEquals("decimal format is not applicable to date", date.toString(), formattedObject.toString());
 	}
 }
