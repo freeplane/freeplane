@@ -64,6 +64,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 	private NodeView view;
 	private Dimension contentPreferredSize;
 	private int contentWidth;
+	
+	private boolean branchesOverlap = true;
 
 	public void addLayoutComponent(final String arg0, final Component arg1) {
 	}
@@ -276,7 +278,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 			}
     		
     		if(isItem){
-    			y -= childTopOverlap;
+    			if(branchesOverlap)
+    				y -= childTopOverlap;
+    			else
+    				top -= childTopOverlap;
     			if(oldLevel > 0){
         	    	summaryBaseX[0] = 0;
         	    	for(int j = 0; j < oldLevel; j++){
@@ -304,8 +309,9 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     			}
 
     			y += childCloudHeigth/2;
-    			if(childShiftY < 0)
+    			if(childShiftY < 0){
     				top += childShiftY;
+    			}
     			else
     				y += childShiftY;
     			data.ly[i] = y;
@@ -316,7 +322,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     			if (childHeight != 0) {
     				y += childHeight + getVGap() + childCloudHeigth/2;
     			}
-    			y -= childBottomOverlap;
+    			if(branchesOverlap)
+    				y -= childBottomOverlap;
     			
     			final int x;
     			if(child.isLeft()){
@@ -351,15 +358,30 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     				}
 				}
 				
-				int summaryY = groupStartY[itemLevel] + childShiftY - childTopOverlap;
+				int summaryY = groupStartY[itemLevel] + childShiftY;
 				if(deltaY < 0){
 					summaryY -= deltaY;
 				}
+				summaryY -= childTopOverlap;
+				if(! branchesOverlap){
+					int delta2 = groupStartY[itemLevel] - summaryY;
+					if(delta2 > 0){
+						summaryY = groupStartY[itemLevel];
+						for(int j = groupStart[itemLevel]; j <= i; j++){
+							NodeView groupItem = (NodeView) getView().getComponent(j);
+							if(groupItem.isLeft() == isLeft)
+								data.ly[j]+=delta2;
+						}
+						top -= delta2;
+					}
+					
+				}
+					
 				minY = Math.min(minY, summaryY);
 				final int summaryEnd = summaryY + childHeight;
 				groupEndY[level] = Math.max(summaryEnd, groupEndY[level]);
 				data.ly[i] = summaryY;
-				y = Math.max(y, summaryEnd - childBottomOverlap);
+				y = Math.max(y, branchesOverlap ?  summaryEnd - childBottomOverlap : summaryEnd);
 				childContentHeightSum = Math.max(childContentHeightSum, groupStartContentHeightSum[itemLevel] + summaryContentHeight); 
  
 				final int x;
