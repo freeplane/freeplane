@@ -115,6 +115,16 @@ public class NodeView extends JComponent implements INodeView {
 	private Color edgeColor = Color.BLACK;
 	private Color modelBackgroundColor;
 	public static final int DETAIL_VIEWER_POSITION = 2;
+	
+	private int summedContentHeight;
+
+	public int getSummedContentHeight() {
+    	return summedContentHeight;
+    }
+
+	public void setSummedContentHeight(int summedContentHeight) {
+    	this.summedContentHeight = summedContentHeight;
+    }
 
 	protected NodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
@@ -1061,6 +1071,8 @@ public class NodeView extends JComponent implements INodeView {
 		
 		NodeView firstView = null;
 		anotherLevel = 0;
+		int y2 = lastView.getY() + lastView.getHeight() - spaceAround;
+		int y1 = y2;
 		for (i = i + 1; i < pos; i++) {
 			final NodeView nodeViewSibling = (NodeView) getComponent(i);
 			if (nodeViewSibling.isLeft() != isLeft)
@@ -1072,6 +1084,8 @@ public class NodeView extends JComponent implements INodeView {
 			if (anotherLevel == level && firstView == null) {
 				firstView = nodeViewSibling;
 			}
+			y1 = Math.min(y1, nodeViewSibling.getY() + spaceAround);
+			y2 = Math.max(y2, nodeViewSibling.getY() + nodeViewSibling.getHeight() - spaceAround);
 			if (isLeft) {
 				x1 = Math.min(x1, nodeViewSibling.getX() + spaceAround);
 			}
@@ -1080,8 +1094,6 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		
-		int y1 = firstView.getY() + spaceAround;
-		int y2 = lastView.getY() + lastView.getHeight() - spaceAround;
 		final JComponent content = nodeView.getContent();
 		int x = nodeView.getX() + content.getX();
 		if (isLeft)
