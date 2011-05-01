@@ -229,12 +229,14 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		}
 		calendar.setMaximumSize(calendar.getPreferredSize());
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		contentPane.add(Box.createHorizontalGlue());
 		calendar.getDayChooser().addPropertyChangeListener(this);
 		calendarComponent.setAlignmentX(0.5f);
 		contentPane.add(calendarComponent);
 		Box buttonBox = new Box(axis);
 		buttonBox.setAlignmentX(0.5f);
 		contentPane.add(buttonBox);
+		contentPane.add(Box.createVerticalStrut(5));
 		final Dimension btnSize = new Dimension();
 		{
 			final JButton todayButton = new JButton(getResourceString("plugins/TimeManagement.xml_todayButton"));

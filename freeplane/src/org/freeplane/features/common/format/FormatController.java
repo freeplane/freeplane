@@ -29,13 +29,18 @@ import java.io.Writer;
 import java.security.AccessControlException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.FormattedNumber;
+import org.freeplane.core.util.FormattedObject;
 import org.freeplane.core.util.FreeplaneDate;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.IFormattedObject;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.IXMLParser;
@@ -52,9 +57,10 @@ public class FormatController implements IExtension {
 	private static final String FORMATS_XML = "formats.xml";
 	private static final String ROOT_ELEMENT = "formats";
 	private String pathToFormatsFile;
-	private List<PatternFormat> dateFormats = new ArrayList<PatternFormat>();
-	private List<PatternFormat> numberFormats = new ArrayList<PatternFormat>();
-	private List<PatternFormat> stringFormats = new ArrayList<PatternFormat>();
+	private static List<PatternFormat> dateFormats = new ArrayList<PatternFormat>();
+	private static List<PatternFormat> numberFormats = new ArrayList<PatternFormat>();
+	private static List<PatternFormat> stringFormats = new ArrayList<PatternFormat>();
+    private static boolean formatsLoaded;
 
 	public FormatController() {
 		pathToFormatsFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
@@ -63,12 +69,15 @@ public class FormatController implements IExtension {
 	}
 
 	private void initFormats() {
+		if (formatsLoaded)
+			return;
 		try {
 			loadFormats();
 			if (numberFormats.isEmpty() && dateFormats.isEmpty() && stringFormats.isEmpty()) {
 				addStandardFormats();
 				saveFormats();
 			}
+			formatsLoaded = true;
 		}
 		catch (final Exception e) {
 			LogUtils.warn(e);
@@ -78,18 +87,18 @@ public class FormatController implements IExtension {
 
 	private void addStandardFormats() {
 		String numberType = PatternFormat.TYPE_NUMBER;
-		numberFormats.add(PatternFormat.createPatternFormat("%.0f", PatternFormat.STYLE_FORMATTER, numberType));
-		numberFormats.add(PatternFormat.createPatternFormat("%.2f", PatternFormat.STYLE_FORMATTER, numberType));
+		numberFormats.add(PatternFormat.createPatternFormat("%.0f", PatternFormat.STYLE_FORMATTER, numberType, "integer"));
+		numberFormats.add(PatternFormat.createPatternFormat("%.2f", PatternFormat.STYLE_FORMATTER, numberType, "decimal"));
 		String dateType = PatternFormat.TYPE_DATE;
 		final SimpleDateFormat localDate = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM);
+		dateFormats.add(PatternFormat.createPatternFormat(localDate.toPattern(), PatternFormat.STYLE_DATE, dateType, "date"));
 		final SimpleDateFormat localDateTime = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.SHORT);
-		dateFormats.add(PatternFormat.createPatternFormat(localDate.toPattern(), PatternFormat.STYLE_DATE, dateType));
 		dateFormats.add(PatternFormat.createPatternFormat(localDateTime.toPattern(), PatternFormat.STYLE_DATE,
-		    dateType));
-		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd", PatternFormat.STYLE_DATE, dateType));
-		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd HH:mm", PatternFormat.STYLE_DATE, dateType));
+		    dateType, "datetime"));
+		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd", PatternFormat.STYLE_DATE, dateType, "short iso date"));
+		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd HH:mm", PatternFormat.STYLE_DATE, dateType, "long iso date"));
 		dateFormats.add(PatternFormat.createPatternFormat(FreeplaneDate.ISO_DATE_TIME_FORMAT_PATTERN,
-		    PatternFormat.STYLE_DATE, dateType));
+		    PatternFormat.STYLE_DATE, dateType, "full iso date"));
 	}
 
 	void loadFormats() throws Exception {
@@ -102,6 +111,7 @@ public class FormatController implements IExtension {
 			for (XMLElement xmlElement : formats) {
 				final String type = xmlElement.getAttribute("type", "");
 				final String style = xmlElement.getAttribute("style", "");
+				final String name = xmlElement.getAttribute("name", "");
 				final String content = xmlElement.getContent();
 				if (nullOrEmpty(type) || nullOrEmpty(style) || nullOrEmpty(content)) {
 					throw new RuntimeException("wrong format in " + pathToFormatsFile
@@ -110,6 +120,9 @@ public class FormatController implements IExtension {
 				}
 				else {
 					final PatternFormat format = PatternFormat.createPatternFormat(content, style, type);
+					if (name != null) {
+						format.setName(name);
+					}
 					if (type.equals(PatternFormat.TYPE_DATE)) {
 						dateFormats.add(format);
 					}
@@ -159,8 +172,9 @@ public class FormatController implements IExtension {
 		final String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + sep //
 		        + "<!-- 'type' selects the kind of data the formatter is intended to format. -->" + sep //
 		        + "<!-- 'style' selects the formatter implementation: -->" + sep //
-		        + "<!-- 'formatter': http://download.oracle.com/javase/6/docs/api/java/util/Formatter.html -->" + sep //
-		        + "<!-- 'date': http://download.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html -->" + sep;
+		        + "<!--   - 'date': http://download.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html -->" + sep //
+		        + "<!--   - 'decimal': http://download.oracle.com/javase/6/docs/api/java/text/DecimalFormat.html -->" + sep //
+		        + "<!--   - 'formatter': http://download.oracle.com/javase/6/docs/api/java/util/Formatter.html -->" + sep;
 		for (PatternFormat patternFormat : formats) {
 			patternFormat.toXml(saver);
 		}
@@ -191,4 +205,33 @@ public class FormatController implements IExtension {
         }
 	    return result;
     }
+
+	/** returns a matching IFormattedObject if possible and if formatString is not-null.
+	 * Removes format if formatString is null. */
+	public static Object format(final Object obj, final String formatString) {
+		try {
+			final PatternFormat format = formatString == null ? null : PatternFormat.guessPatternFormat(formatString);
+			// logging for invalid pattern is done in guessPatternFormat()
+			if (obj == null)
+				return obj;
+			final Object toFormat = (obj instanceof IFormattedObject) ? ((IFormattedObject) obj).getObject() : obj;
+			if (format == null)
+				return toFormat;
+			if (format.acceptsDate() && toFormat instanceof Date) {
+				return new FreeplaneDate((Date) toFormat, formatString);
+			}
+			else if (format.acceptsNumber()) {
+				final Number number = toFormat instanceof Number ? (Number) toFormat : TextUtils.toNumber(HtmlUtils
+				    .htmlToPlain(toFormat.toString()));
+				return new FormattedNumber(number, formatString, format.formatObject(number).toString());
+			}
+			else {
+				return new FormattedObject(toFormat, format);
+			}
+		}
+		catch (Exception e) {
+			LogUtils.warn("cannot format " + obj.toString() + " with " + formatString + ": " + e.getMessage());
+			return obj;
+		}
+	}
 }

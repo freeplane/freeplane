@@ -730,11 +730,12 @@ public interface Proxy {
 
 	/** The currently selected node: <code>node</code> - read-write. */
 	interface Node extends NodeRO {
+		/** adds a new Connector to the given target node and returns the new
+		 * connector for optional further editing (style); also enlists the
+		 * Connector on the target Node object. */
 		Connector addConnectorTo(Node target);
 
-		/** adds a new Connector object to List<Node> connectors and returns
-		 * reference for optional further editing (style); also enlists the
-		 * Connector on the target Node object. */
+		/** as above, using String targetNodeId instead of Node object to establish the connector. */
 		Connector addConnectorTo(String targetNodeId);
 
 		/** inserts *new* node as child, takes care of all construction work and
@@ -751,13 +752,11 @@ public interface Proxy {
 
 		void delete();
 
-		/** removes connector from List<Node> connectors; does the corresponding
-		 * on the target Node object referenced by connectorToBeRemoved */
 		void moveTo(Node parentNode);
 
 		void moveTo(Node parentNode, int position);
 
-		/** as above, using String nodeId instead of Node object to establish the connector*/
+		/** removes the given connector on both sides. */
 		void removeConnector(Connector connectorToBeRemoved);
 
 		/**

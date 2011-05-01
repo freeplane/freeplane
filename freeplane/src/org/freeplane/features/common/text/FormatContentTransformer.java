@@ -1,12 +1,9 @@
 package org.freeplane.features.common.text;
 
-import java.util.Date;
 import java.util.List;
 
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.format.PatternFormat;
+import org.freeplane.features.common.format.FormatController;
 import org.freeplane.features.common.map.NodeModel;
 
 class FormatContentTransformer extends AbstractContentTransformer {
@@ -41,7 +38,7 @@ class FormatContentTransformer extends AbstractContentTransformer {
 			obj = HtmlUtils.extractRawBody((String)obj);
 		}
 		if (hasFormat)
-			obj = format(obj, format);
+			obj = FormatController.format(obj, format);
 		if (nodeNumbering && !node.isRoot()){
 			StringBuilder builder = new StringBuilder(node.getNodeLevel(true) * 2);
 			getPathToRoot(builder, node);
@@ -78,27 +75,6 @@ class FormatContentTransformer extends AbstractContentTransformer {
 		sb.append(html.subSequence(i, html.length()));
 		return sb.toString();
     }
-
-	private Object format(final Object obj, final String formatString) {
-		try {
-			final PatternFormat format = PatternFormat.guessPatternFormat(formatString);
-			// logging for invalid pattern is done in guessPatternFormat()
-			if (format == null)
-				return obj.toString();
-			final Object toFormat;
-			if (format.acceptsDate() && obj instanceof Date)
-				toFormat = obj;
-			else if (format.acceptsNumber())
-				toFormat = TextUtils.toNumber(HtmlUtils.htmlToPlain(obj.toString()));
-			else
-				toFormat = obj.toString();
-			return toFormat == null ? obj : format.format(toFormat);
-		}
-		catch (Exception e) {
-			LogUtils.warn("cannot format " + obj.toString() + " with " + formatString + ": " + e.getMessage());
-			return obj;
-		}
-	}
 
 	private void getPathToRoot(StringBuilder builder, NodeModel node) {
 		if(node.isRoot())

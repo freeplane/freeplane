@@ -13,8 +13,8 @@ class FormatterPatternFormat extends PatternFormat {
 	}
 
 	@Override
-	public final Object format (Object obj) {
-		return format(obj, new StringBuffer(), new FieldPosition(0)).toString();
+	public final String formatObject (Object obj) {
+		return formatter.format(getPattern(), obj).toString();
 	}
 	/**
 	 * Formats an object via {@link Formatter#format(String, Object...)}.
@@ -25,7 +25,7 @@ class FormatterPatternFormat extends PatternFormat {
 	 * @return the buffer passed in
 	 */
 	public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
-		final String formatted = formatter.format(getPattern(), obj).toString();
+		final String formatted = formatObject(obj);
 		toAppendTo.append(formatted);
 		return toAppendTo;
 	}

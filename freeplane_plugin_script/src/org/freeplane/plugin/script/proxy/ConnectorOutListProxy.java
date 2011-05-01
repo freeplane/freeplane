@@ -4,8 +4,11 @@
 package org.freeplane.plugin.script.proxy;
 
 import java.util.AbstractCollection;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
+import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
@@ -21,7 +24,8 @@ class ConnectorOutListProxy extends AbstractCollection<Proxy.Connector> {
 
 	@Override
 	public Iterator<Proxy.Connector> iterator() {
-		return new ConnectorIterator(NodeLinks.getLinks(node).iterator(), scriptContext);
+		return new ConnectorIterator(Collections.unmodifiableList(new ArrayList<LinkModel>(NodeLinks.getLinks(node)))
+		    .iterator(), scriptContext);
 	}
 
 	@Override

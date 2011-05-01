@@ -53,6 +53,8 @@ import org.freeplane.core.resources.components.NextLineProperty;
 import org.freeplane.core.resources.components.NumberProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.IFormattedObject;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
@@ -786,8 +788,11 @@ public class StyleEditorPanel extends JPanel {
 				mNodeNumbering.setValue(viewNodeNumbering);
 			}
 			{
-				final String nodeFormat = NodeStyleModel.getNodeFormat(node);
+				String nodeFormat = NodeStyleModel.getNodeFormat(node);
 				mSetNodeFormat.setValue(nodeFormat != null);
+				LogUtils.warn("hi, getNodeFormat(" + node.getUserObject() + ": " + node.getUserObject().getClass());
+				if (nodeFormat == null && node.getUserObject() instanceof IFormattedObject)
+					nodeFormat = ((IFormattedObject)node.getUserObject()).getPattern();
 				mNodeFormat.setValue(nodeFormat);
 			}
 			if(mAutomaticLayoutCheckBox != null){
