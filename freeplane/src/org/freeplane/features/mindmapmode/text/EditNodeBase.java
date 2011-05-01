@@ -265,7 +265,7 @@ abstract public class EditNodeBase {
 			LinkedList<KeyEvent> events = new LinkedList<KeyEvent>();
 
 			public boolean dispatchKeyEvent(final KeyEvent ke) {
-				if(ke.getKeyChar() != 0){
+				if(ke.getKeyChar() != 0 && ke.getKeyChar() != KeyEvent.CHAR_UNDEFINED){
 					if (ke.getID() == KeyEvent.KEY_PRESSED){
 						KeyEvent newEvent = new KeyEvent(textComponent, KeyEvent.KEY_TYPED, ke.getWhen(), ke.getModifiers(), KeyEvent.VK_UNDEFINED, ke.getKeyChar(), KeyEvent.KEY_LOCATION_UNKNOWN);
 						events.add(newEvent);
