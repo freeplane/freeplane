@@ -11,6 +11,8 @@ Preferences->Behavior->In-line node editor->Layout map during editing
   disable for better performance 
 Auto formatting of numbers
 Formatting of attributes
+Overlapping branches
+
 ===============================
 1.2.4 alpha
 ===============================
