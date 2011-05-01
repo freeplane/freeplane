@@ -324,7 +324,11 @@ public abstract class PersistentNodeHook {
 	}
 
 	protected IExtension toggle(final NodeModel node, IExtension extension) {
+		final IExtension before;
+		final IExtension after;
 		if (extension != null && node.containsExtension(extension.getClass())) {
+			before = extension;
+			after = null;
 			remove(node, extension);
 		}
 		else {
@@ -334,9 +338,11 @@ public abstract class PersistentNodeHook {
 			if (extension != null) {
 				add(node, extension);
 			}
+			before = null;
+			after = extension;
 		}
 		Controller.getCurrentModeController().getMapController()
-		    .nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
+		    .nodeChanged(node, getExtensionClass(), before, after);
 		return extension;
 	}
 }

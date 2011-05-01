@@ -65,8 +65,14 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 	private Dimension contentPreferredSize;
 	private int contentWidth;
 	
-	private boolean branchesOverlap = true;
+	private boolean branchesOverlap = false;
 
+	public boolean isBranchesOverlap() {
+		return branchesOverlap;
+	}
+	public void setBranchesOverlap(boolean branchesOverlap) {
+		this.branchesOverlap = branchesOverlap;
+	}
 	public void addLayoutComponent(final String arg0, final Component arg1) {
 	}
 	/**

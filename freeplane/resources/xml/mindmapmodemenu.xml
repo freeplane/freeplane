@@ -92,6 +92,7 @@
 				<menu_action action="ToggleDetailsAction" accelerator="alt F2" />
 				<menu_action action="ShowSelectionAsRectangleAction" />
 				<menu_action action="ViewLayoutTypeAction.OUTLINE" />
+				<menu_action action="BranchesOverlapAction" />
 				<menu_action action="MaxNodeWidthAction" />
 			</menu_category>
 			<menu_action action="CenterSelectedNodeAction"
