@@ -134,6 +134,7 @@
 				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
 				<menu_action action="FirstGroupNodeAction" accelerator = "alt shift B"/>
 				<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
+				<menu_action action="ResetNodeLocationAction" />
 			</menu_category>
 			<menu_separator/>
 			<menu_category name="remove">
