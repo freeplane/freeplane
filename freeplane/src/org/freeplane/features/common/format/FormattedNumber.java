@@ -17,11 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.util;
+package org.freeplane.features.common.format;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
+
+import org.freeplane.core.util.FactoryMethod;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.SerializationMethod;
 
 /**
  * @author vboerchers

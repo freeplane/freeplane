@@ -17,9 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.util;
+package org.freeplane.features.common.format;
 
-import org.freeplane.features.common.format.PatternFormat;
+import org.freeplane.core.util.FactoryMethod;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.SerializationMethod;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.core.util.TypeReference;
 
 /**
  * A generic multi purpose IFormattedObject but mainly for the formatting of strings.

@@ -55,11 +55,11 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.FixedHTMLWriter;
-import org.freeplane.core.util.FormattedNumber;
-import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.format.FormattedNumber;
+import org.freeplane.features.common.format.FormattedDate;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.INodeChangeListener;
@@ -265,7 +265,7 @@ public class MTextController extends TextController {
 		if (text instanceof String) {
 			final String string = (String) text;
 			if (parseDates) {
-				final FreeplaneDate date = FreeplaneDate.toDateISO(string.trim());
+				final FormattedDate date = FormattedDate.toDateISO(string.trim());
 				if (date != null) {
 					return date;
 				}

@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.common.format;
 
-import org.freeplane.core.util.FormattedNumber;
 
 /**
  * @author vboerchers

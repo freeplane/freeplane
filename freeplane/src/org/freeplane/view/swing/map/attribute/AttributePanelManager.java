@@ -39,11 +39,11 @@ import javax.swing.event.ListSelectionListener;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeSelectionListener;
-import org.freeplane.core.util.IFormattedObject;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.format.FormatController;
+import org.freeplane.features.common.format.IFormattedObject;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.view.swing.map.NodeView;

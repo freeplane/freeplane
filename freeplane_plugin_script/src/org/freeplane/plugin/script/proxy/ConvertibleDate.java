@@ -3,13 +3,13 @@ package org.freeplane.plugin.script.proxy;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.freeplane.core.util.FreeplaneDate;
+import org.freeplane.features.common.format.FormattedDate;
 
 public class ConvertibleDate extends Convertible {
 	final private Date date;
 
 	public ConvertibleDate(Date date) {
-	    super(FreeplaneDate.toStringISO(date));
+	    super(FormattedDate.toStringISO(date));
 	    this.date = date;
     }
 

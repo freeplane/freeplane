@@ -27,8 +27,8 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.format.FormattedDate;
 
 /**
  * @author Dimitry Polivaev
@@ -54,8 +54,8 @@ public class TypedListCellRenderer extends DefaultListCellRenderer implements Li
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                   boolean cellHasFocus) {
 	    super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	    if(value instanceof FreeplaneDate){
-	    	final FreeplaneDate fd = (FreeplaneDate)value;
+	    if(value instanceof FormattedDate){
+	    	final FormattedDate fd = (FormattedDate)value;
 	    	if(fd.containsTime())
 	    		setIcon(ViewController.dateTimeIcon);
 	    	else

@@ -38,7 +38,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
-import org.freeplane.core.util.FreeplaneDate;
+import org.freeplane.features.common.format.FormattedDate;
 import org.freeplane.features.common.time.swing.JCalendar;
 
 /**
@@ -55,7 +55,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	final private List<ActionListener> actionListeners;
 	final private JPopupMenu calendarPopupMenu;
 	final private JCalendar calenderComponent;
-	private FreeplaneDate date;
+	private FormattedDate date;
 	final private JButton showEditorBtn;
 
 	public TimeComboBoxEditor(boolean timeVisible) {
@@ -103,14 +103,14 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	}
 
 	public void setItem(final Object date) {
-		if(! (date instanceof FreeplaneDate))
+		if(! (date instanceof FormattedDate))
 			return;
-		this.date = (FreeplaneDate) date;
+		this.date = (FormattedDate) date;
 		showEditorBtn.setText(date == null ? "" : date.toString());
 	}
 
 	private void updateDate() {
-		date = new FreeplaneDate(calenderComponent.getDate(), 
+		date = new FormattedDate(calenderComponent.getDate(), 
 			calenderComponent.isTimeVisible() ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd");
 	    if (actionListeners.size() == 0) {
 	    	return;
@@ -134,7 +134,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 			@Override
             public void setItem(Object object) {
 				oldItem = object;
-				if(object instanceof FreeplaneDate)
+				if(object instanceof FormattedDate)
 					super.setItem("");
 				else
 					super.setItem(object);
@@ -149,7 +149,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	            	return oldItem;
 	            if(ResourceController.getResourceController().getBooleanProperty("parse_dates") 
 	            		&& item instanceof String){
-	            	final FreeplaneDate date = FreeplaneDate.toDateISO(((String)item).trim());
+	            	final FormattedDate date = FormattedDate.toDateISO(((String)item).trim());
 	            	if(date != null)
 	            		return date;
 	            }
@@ -164,7 +164,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 		final TimeComboBoxEditor dateComboBoxEditor = new TimeComboBoxEditor(false){
 			@Override
             public void setItem(Object object) {
-				if(object instanceof FreeplaneDate && !((FreeplaneDate)object).containsTime())
+				if(object instanceof FormattedDate && !((FormattedDate)object).containsTime())
 					super.setItem(object);
 				else
 					super.setItem(null);
@@ -179,7 +179,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 		final TimeComboBoxEditor dateTimeComboBoxEditor = new TimeComboBoxEditor(true){
 			@Override
             public void setItem(Object object) {
-				if(object instanceof FreeplaneDate && ((FreeplaneDate)object).containsTime())
+				if(object instanceof FormattedDate && ((FormattedDate)object).containsTime())
 					super.setItem(object);
 				else
 					super.setItem(null);

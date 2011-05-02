@@ -61,9 +61,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.format.FormatController;
+import org.freeplane.features.common.format.FormattedDate;
 import org.freeplane.features.common.format.PatternFormat;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
@@ -149,8 +149,8 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		TimeManagement.sCurrentlyOpenTimeManagement = null;
 	}
 
-	private FreeplaneDate getCalendarDate() {
-		return new FreeplaneDate(calendar.getTime().getTime(), dateFormat);
+	private FormattedDate getCalendarDate() {
+		return new FormattedDate(calendar.getTime().getTime(), dateFormat);
 	}
 
 	private ModeController getMindMapController() {
@@ -344,7 +344,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		final List<PatternFormat> datePatterns = new FormatController().getDateFormats();
 		int selectedIndex = 0;
 		for (int i = 0; i < datePatterns.size(); ++i) {
-			SimpleDateFormat patternFormat = FreeplaneDate.getDateFormat(datePatterns.get(i).getPattern());
+			SimpleDateFormat patternFormat = FormattedDate.getDateFormat(datePatterns.get(i).getPattern());
 			values.add(new DateFormatComboBoxElement(patternFormat));
 			if (patternFormat.toPattern().equals(dateFormatPattern)) {
 				dateFormat = patternFormat;
@@ -369,10 +369,10 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 					for(int r : selectedRows)
 						for(int c : selectedColumns){
 							Object date = table.getValueAt(r, c);
-							if(date instanceof FreeplaneDate){
-								final FreeplaneDate fd = (FreeplaneDate) date;
+							if(date instanceof FormattedDate){
+								final FormattedDate fd = (FormattedDate) date;
 								if(! fd.getDateFormat().equals(dateFormat)){
-									table.setValueAt(new FreeplaneDate(fd.getTime(), dateFormat), r, c);
+									table.setValueAt(new FormattedDate(fd.getTime(), dateFormat), r, c);
 								}
 							}
 						}
@@ -382,10 +382,10 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 					for (final NodeModel node : mController.getMapController().getSelectedNodes()) {
 						final MTextController textController = (MTextController) TextController.getController();
 						Object date = node.getUserObject();
-						if(date instanceof FreeplaneDate){
-							final FreeplaneDate fd = (FreeplaneDate) date;
+						if(date instanceof FormattedDate){
+							final FormattedDate fd = (FormattedDate) date;
 							if(! fd.getDateFormat().equals(dateFormat)){
-								textController.setNodeObject(node, new FreeplaneDate(fd.getTime(), dateFormat));
+								textController.setNodeObject(node, new FormattedDate(fd.getTime(), dateFormat));
 							}
 						}
 					}
@@ -404,7 +404,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
     }
 
 	void insertTime(final Dialog dialog, final JButton appendButton) {
-	    FreeplaneDate date = getCalendarDate();
+	    FormattedDate date = getCalendarDate();
 	    final String dateAsString = dateFormat.format(date);
 	    final Window parentWindow;
 	    if (dialog != null) {

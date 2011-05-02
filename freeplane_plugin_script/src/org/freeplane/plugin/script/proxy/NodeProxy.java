@@ -14,9 +14,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.filter.condition.ICondition;
+import org.freeplane.features.common.format.FormattedDate;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapModel;
@@ -360,9 +360,9 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public void setText(final Object value) {
 		final MTextController textController = (MTextController) TextController.getController();
 		if (value instanceof Date)
-			textController.setNodeObject(getDelegate(), new FreeplaneDate(((Date) value).getTime()));
+			textController.setNodeObject(getDelegate(), new FormattedDate(((Date) value).getTime()));
 		else if (value instanceof Calendar)
-			textController.setNodeObject(getDelegate(), new FreeplaneDate(((Calendar) value).getTime().getTime()));
+			textController.setNodeObject(getDelegate(), new FormattedDate(((Calendar) value).getTime().getTime()));
 		textController.setNodeText(getDelegate(), Convertible.toString(value));
 	}
 

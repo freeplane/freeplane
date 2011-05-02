@@ -23,9 +23,9 @@ import java.util.Date;
 
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
+import org.freeplane.features.common.format.FormattedDate;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 abstract public class CompareConditionAdapter extends ASelectableCondition {
@@ -49,15 +49,15 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			}
 			return;
 		}
-		if(value instanceof FreeplaneDate){
-			final FreeplaneDate date = (FreeplaneDate) value;
+		if(value instanceof FormattedDate){
+			final FormattedDate date = (FormattedDate) value;
 			if(date.containsTime() || 
 					date.getHours() == 0 && date.getMinutes() == 0 && date.getSeconds() == 0) {
 				conditionValue = date;
             }
             else{
                 final Date reducedDate = new Date(date.getYear(), date.getMonth(), date.getDate());
-	 	            conditionValue = new FreeplaneDate(reducedDate.getTime(), date.getDateFormat());
+	 	            conditionValue = new FormattedDate(reducedDate.getTime(), date.getDateFormat());
 			}
 			return;
 		}
@@ -79,7 +79,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 	@Override
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
-		if(conditionValue instanceof FreeplaneDate){
+		if(conditionValue instanceof FormattedDate){
 			child.setAttribute(OBJECT, TypeReference.toSpec(conditionValue));
 		}
 		else
@@ -106,9 +106,9 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			error = true;
 			return 0;
 		}
-		if (conditionValue instanceof FreeplaneDate) {
-			if (transformedContent instanceof FreeplaneDate) {
-				return compareTo((FreeplaneDate)transformedContent);
+		if (conditionValue instanceof FormattedDate) {
+			if (transformedContent instanceof FormattedDate) {
+				return compareTo((FormattedDate)transformedContent);
 			}
 			error = true;
 			return 0;
@@ -136,7 +136,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 
 	@SuppressWarnings("deprecation")
     private int compareTo(final Date value) {
-		if (((FreeplaneDate) conditionValue).containsTime() || (value.getHours() == 0 && value.getMinutes() == 0 && value.getSeconds() == 0))
+		if (((FormattedDate) conditionValue).containsTime() || (value.getHours() == 0 && value.getMinutes() == 0 && value.getSeconds() == 0))
 			return value.compareTo((Date) conditionValue);
 		return new Date(value.getYear(), value.getMonth(), value.getDate()).compareTo((Date) conditionValue);
 	}

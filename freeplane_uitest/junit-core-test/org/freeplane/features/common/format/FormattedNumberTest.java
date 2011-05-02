@@ -17,12 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.util;
+package org.freeplane.features.common.format;
 
 import static org.junit.Assert.*;
 
 import java.util.Locale;
 
+import org.freeplane.features.common.format.FormattedNumber;
 import org.junit.Before;
 import org.junit.Test;
 

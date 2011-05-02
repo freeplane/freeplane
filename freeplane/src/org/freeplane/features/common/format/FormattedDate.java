@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.util;
+package org.freeplane.features.common.format;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -28,6 +28,8 @@ import java.util.regex.Pattern;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.FactoryMethod;
+import org.freeplane.core.util.SerializationMethod;
 
 /**
  * @author Dimitry Polivaev
@@ -36,13 +38,13 @@ import org.freeplane.core.resources.ResourceController;
 @SuppressWarnings("serial")
 @FactoryMethod("toObject")
 @SerializationMethod("toString")
-public class FreeplaneDate extends Date implements IFormattedObject {
+public class FormattedDate extends Date implements IFormattedObject {
 
 	@Override
     public boolean equals(Object obj) {
-	    return obj instanceof FreeplaneDate 
+	    return obj instanceof FormattedDate 
 	    && super.equals(obj) 
-	    && ((FreeplaneDate)obj).getDateFormat().equals(df);
+	    && ((FormattedDate)obj).getDateFormat().equals(df);
     }
 
 	@Override
@@ -77,20 +79,20 @@ public class FreeplaneDate extends Date implements IFormattedObject {
 	
 	private SimpleDateFormat df; 
 
-	public FreeplaneDate(FreeplaneDate date) {
+	public FormattedDate(FormattedDate date) {
 		this(date.getTime(), date.getDateFormat());
 	}
-	public FreeplaneDate(Date date, String pattern) {
+	public FormattedDate(Date date, String pattern) {
 	    super(date.getTime());
 	    this.df = getDateFormat(pattern);
     }
 
-	public FreeplaneDate(long date, SimpleDateFormat df) {
+	public FormattedDate(long date, SimpleDateFormat df) {
 	    super(date);
 	    this.df = df;
     }
 	
-	public FreeplaneDate(long date) {
+	public FormattedDate(long date) {
 		this(date, getDefaultFormat());
 	}
 
@@ -99,7 +101,7 @@ public class FreeplaneDate extends Date implements IFormattedObject {
 		return df.format(this);
     }
 
-	public static String toString(final FreeplaneDate date) {
+	public static String toString(final FormattedDate date) {
     	return toStringISO(date)  + "|" + date.df.toPattern();
     }
 	public static String toStringISO(final Date date) {
@@ -115,7 +117,7 @@ public class FreeplaneDate extends Date implements IFormattedObject {
 	public static Object toObject(String text) {
 		final int index = text.indexOf('|');
 		final SimpleDateFormat df ;
-    	final FreeplaneDate date;
+    	final FormattedDate date;
 		if(index == -1){
 			df = getDefaultFormat();
 			date = toDateISO(text);
@@ -130,8 +132,8 @@ public class FreeplaneDate extends Date implements IFormattedObject {
     	return date;
     }
 
-	public static FreeplaneDate toDate(String text) {
-    	final FreeplaneDate date = toDateISO(text);
+	public static FormattedDate toDate(String text) {
+    	final FormattedDate date = toDateISO(text);
     	return date == null ? toDateUser(text) : date;
     }
 
@@ -139,7 +141,7 @@ public class FreeplaneDate extends Date implements IFormattedObject {
     	return isDateISO(text) || isDateUser(text);
     }
 	
-	public static FreeplaneDate toDateISO(String text) {
+	public static FormattedDate toDateISO(String text) {
     	//        1         2         34            5         6   7        8           9
     	// \\d{4}(-?)\\d{2}(-?)\\d{2}(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?
     	final Matcher matcher = ISO_DATE_TIME_REGEXP_PATTERN.matcher(text);
@@ -175,12 +177,12 @@ public class FreeplaneDate extends Date implements IFormattedObject {
     	return null;
     }
 
-	static private FreeplaneDate parseDate(String text, final String pattern) {
+	static private FormattedDate parseDate(String text, final String pattern) {
 		SimpleDateFormat parser = getDateFormat(pattern);
         final ParsePosition pos = new ParsePosition(0);
         final Date date = parser.parse(text, pos);
         if (date != null && pos.getIndex() == text.length()) {
-        	return new FreeplaneDate(date.getTime(), parser);
+        	return new FormattedDate(date.getTime(), parser);
         }
     	return null;
     }
@@ -200,7 +202,7 @@ public class FreeplaneDate extends Date implements IFormattedObject {
     	return ISO_DATE_TIME_REGEXP_PATTERN.matcher(text).matches();
     }
 
-	public static FreeplaneDate toDateUser(String text) {
+	public static FormattedDate toDateUser(String text) {
     	return parseDate(text, ResourceController.getResourceController().getProperty("date_format"));
     }
 

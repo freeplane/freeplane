@@ -55,6 +55,9 @@ public class TypeReference{
 
 	private static AccessibleObject getFactory(String typeReference) throws ClassNotFoundException, SecurityException,
 	        NoSuchMethodException {
+		// backward compatibility
+		if (typeReference.equals("org.freeplane.core.util.FreeplaneDate"))
+			typeReference = "org.freeplane.features.common.format.FormattedDate";
 		final Class<?> clazz = TypeReference.class.getClassLoader().loadClass(typeReference);
 		final FactoryMethod factoryAnnotation = clazz.getAnnotation(FactoryMethod.class);
 		if (factoryAnnotation != null)

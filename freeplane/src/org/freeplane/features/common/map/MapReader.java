@@ -68,6 +68,8 @@ public class MapReader implements IElementDOMHandler {
 		        XMLException {
 			start(map);
 			final NodeModel node = create(pReader);
+			if (node == null)
+				throw new RuntimeException("corrupt map");
 			finish(node);
 			return node;
 		}

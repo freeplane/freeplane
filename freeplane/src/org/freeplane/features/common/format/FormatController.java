@@ -36,11 +36,7 @@ import java.util.Vector;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.FormattedNumber;
-import org.freeplane.core.util.FormattedObject;
-import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.IFormattedObject;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.IXMLParser;
@@ -97,7 +93,7 @@ public class FormatController implements IExtension {
 		    dateType, "datetime"));
 		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd", PatternFormat.STYLE_DATE, dateType, "short iso date"));
 		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd HH:mm", PatternFormat.STYLE_DATE, dateType, "long iso date"));
-		dateFormats.add(PatternFormat.createPatternFormat(FreeplaneDate.ISO_DATE_TIME_FORMAT_PATTERN,
+		dateFormats.add(PatternFormat.createPatternFormat(FormattedDate.ISO_DATE_TIME_FORMAT_PATTERN,
 		    PatternFormat.STYLE_DATE, dateType, "full iso date"));
 	}
 
@@ -218,7 +214,7 @@ public class FormatController implements IExtension {
 			if (format == null)
 				return toFormat;
 			if (format.acceptsDate() && toFormat instanceof Date) {
-				return new FreeplaneDate((Date) toFormat, formatString);
+				return new FormattedDate((Date) toFormat, formatString);
 			}
 			else if (format.acceptsNumber()) {
 				final Number number = toFormat instanceof Number ? (Number) toFormat : TextUtils.toNumber(HtmlUtils

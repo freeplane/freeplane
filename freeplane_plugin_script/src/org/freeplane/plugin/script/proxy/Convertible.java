@@ -9,9 +9,9 @@ import java.util.GregorianCalendar;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.format.FormattedDate;
 
 /** Utility class that is used to convert node texts to different types.
  * It's especially important for Formulas. */
@@ -86,7 +86,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	}
 
 	private static Date parseDate(String text) throws ConversionException {
-		final Date date = FreeplaneDate.toDate(text);
+		final Date date = FormattedDate.toDate(text);
 		if(date != null)
 			return date;
 		throw new ConversionException("not a date: " + text);
@@ -145,7 +145,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 
 	/** returns true if the text is convertible to date. */
 	public boolean isDate() {
-		return FreeplaneDate.isDate(text);
+		return FormattedDate.isDate(text);
 	}
 
 	/** pretend we are a String if we don't provide a property for ourselves. */
@@ -194,9 +194,9 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 		else if (value.getClass().equals(String.class))
 			return (String) value;
 		else if (value instanceof Date)
-			return FreeplaneDate.toStringISO(((Date) value));
+			return FormattedDate.toStringISO(((Date) value));
 		else if (value instanceof Calendar)
-			return FreeplaneDate.toStringISO(((Calendar) value).getTime());
+			return FormattedDate.toStringISO(((Calendar) value).getTime());
 		else
 			return value.toString();
 	}

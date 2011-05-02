@@ -29,11 +29,11 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.condition.IElementaryConditionController;
 import org.freeplane.features.common.filter.condition.ASelectableCondition;
+import org.freeplane.features.common.format.FormattedDate;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -94,7 +94,7 @@ public class TimeConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
-		values.setSelectedItem(new FreeplaneDate(new Date(), FreeplaneDate.ISO_DATE_FORMAT_PATTERN));
+		values.setSelectedItem(new FormattedDate(new Date(), FormattedDate.ISO_DATE_FORMAT_PATTERN));
 		return values;
 	}
 

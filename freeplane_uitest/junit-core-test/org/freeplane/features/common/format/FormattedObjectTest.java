@@ -17,13 +17,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.util;
+package org.freeplane.features.common.format;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 import java.util.Locale;
 
+import org.freeplane.features.common.format.FormattedNumber;
+import org.freeplane.features.common.format.FormattedObject;
+import org.freeplane.features.common.format.FormattedDate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -84,7 +87,7 @@ public class FormattedObjectTest {
 	
 	@Test
 	public void testStrangeInput() {
-		final FreeplaneDate date = new FreeplaneDate(new Date(), "yyyy-mm-dd");
+		final FormattedDate date = new FormattedDate(new Date(), "yyyy-mm-dd");
 		final FormattedObject formattedObject = new FormattedObject(date, "#.##");
 		assertEquals("decimal format is not applicable to date", date.toString(), formattedObject.toString());
 	}

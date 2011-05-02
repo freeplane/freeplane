@@ -2,7 +2,6 @@ package org.freeplane.features.common.format;
 
 import java.util.Date;
 
-import org.freeplane.core.util.FreeplaneDate;
 
 class DatePatternFormat extends PatternFormat {
 	private static final long serialVersionUID = 1L;
@@ -13,7 +12,7 @@ class DatePatternFormat extends PatternFormat {
 	@Override
 	public Object formatObject(Object obj) {
 		if(obj instanceof Date)
-			return new FreeplaneDate((Date)obj, getPattern());
+			return new FormattedDate((Date)obj, getPattern());
 		return obj;
 	}
 

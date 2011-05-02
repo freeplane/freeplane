@@ -45,6 +45,7 @@ public abstract class PatternFormat /*extends Format*/ {
 	private final String type;
 	private final String pattern;
 	private String name;
+	private String locale;
 
 	public PatternFormat(String pattern, String type) {
 		this.type = type;
@@ -68,6 +69,14 @@ public abstract class PatternFormat /*extends Format*/ {
 	public void setName(final String name) {
 		this.name = name;
 	}
+	
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
+    }
 
 	/** selects the formatter implementation, e.g. "formatter" or "date" */
 	public abstract String getStyle();
@@ -83,14 +92,22 @@ public abstract class PatternFormat /*extends Format*/ {
 			throw new IllegalArgumentException("unknown format style");
 	}
 	
-	public static PatternFormat createPatternFormat(final String pattern, final String style, final String type, final String name) {
+	public static PatternFormat createPatternFormat(final String pattern, final String style, final String type,
+	                                                final String name) {
 		final PatternFormat format = createPatternFormat(pattern, style, type);
 		format.setName(name);
 		return format;
 	}
 
+	public static PatternFormat createPatternFormat(final String pattern, final String style, final String type,
+	                                                final String name, final String locale) {
+		final PatternFormat format = createPatternFormat(pattern, style, type, name);
+		format.setLocale(locale);
+		return format;
+	}
+
 	// yyyy-MM-dd HH:mm:ss
-	final static Pattern datePattern = Pattern.compile("yyyy");
+	final static Pattern datePattern = Pattern.compile("yy");
 
 	// %[argument_index$] [flags] [width] conversion
 	// == conversions
@@ -164,6 +181,8 @@ public abstract class PatternFormat /*extends Format*/ {
 		child.setAttribute("style", getStyle());
 		if (getName() != null)
 			child.setAttribute("name", getName());
+		if (getLocale() != null)
+			child.setAttribute("locale", getLocale());
 		child.setContent(getPattern());
 		element.addChild(child);
 	}

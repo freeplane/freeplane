@@ -68,9 +68,9 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.core.util.FreeplaneDate;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.format.FormattedDate;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -803,8 +803,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	public void addObjectTypeInfo(Object value) {
-		    if(value instanceof FreeplaneDate){
-		    	final FreeplaneDate fd = (FreeplaneDate) value;
+		    if(value instanceof FormattedDate){
+		    	final FormattedDate fd = (FormattedDate) value;
 		    	if(fd.containsTime()){
 		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.dateTimeIcon);
 		    	}
