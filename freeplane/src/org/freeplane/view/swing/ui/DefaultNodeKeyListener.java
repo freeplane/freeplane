@@ -3,22 +3,29 @@ package org.freeplane.view.swing.ui;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JPopupMenu;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
+import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * The KeyListener which belongs to the node and cares for Events like C-D
  * (Delete Node). It forwards the requests to NodeController.
  */
 public class DefaultNodeKeyListener implements KeyListener {
-// // 	final private Controller controller;
+	// // 	final private Controller controller;
 	final private IEditHandler editHandler;
 
 	public DefaultNodeKeyListener(final IEditHandler editHandler) {
-//		this.controller = controller;
+		//		this.controller = controller;
 		this.editHandler = editHandler;
 	}
 
@@ -50,10 +57,22 @@ public class DefaultNodeKeyListener implements KeyListener {
 					editHandler.edit(e, FirstAction.EDIT_CURRENT, false);
 				}
 				return;
+			case KeyEvent.VK_CONTEXT_MENU:
+				final ModeController modeController = Controller.getCurrentModeController();
+				final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+				final NodeView nodeView = ((MapView) Controller.getCurrentController().getViewController().getMapView())
+				    .getNodeView(node);
+				final JPopupMenu popupmenu = modeController.getUserInputListenerFactory().getNodePopupMenu();
+				if (popupmenu != null) {
+					popupmenu.addPopupMenuListener(new ControllerPopupMenuListener());
+					final MainView mainView = nodeView.getMainView();
+					popupmenu.show(mainView, mainView.getX(), mainView.getY());
+				}
 		}
-		final String keyTypeActionString = ResourceController.getResourceController().getProperty("key_type_action", FirstAction.EDIT_CURRENT.toString());
-		FirstAction keyTypeAction = FirstAction.valueOf(keyTypeActionString);
-		if (! FirstAction.IGNORE.equals(keyTypeAction)) {
+		final String keyTypeActionString = ResourceController.getResourceController().getProperty("key_type_action",
+		    FirstAction.EDIT_CURRENT.toString());
+		final FirstAction keyTypeAction = FirstAction.valueOf(keyTypeActionString);
+		if (!FirstAction.IGNORE.equals(keyTypeAction)) {
 			if (!e.isActionKey() && e.getKeyChar() != KeyEvent.CHAR_UNDEFINED) {
 				if (editHandler != null) {
 					editHandler.edit(e, keyTypeAction, false);
