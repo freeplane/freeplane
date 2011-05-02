@@ -407,6 +407,11 @@
 	<target name="create-plugin">
 	  <create-plugin />
 	</target>
+	<target name="test">
+		<ant antfile="build.xml" target="test" dir="${workspace}/freeplane_ant" inheritall="false" />
+		<ant antfile="ant/build.xml" target="test" dir="${workspace}/freeplane_plugin_script" inheritall="false" />
+		<ant antfile="ant/build.xml" target="test" dir="${workspace}/freeplane_uitest" inheritall="false" />
+	</target>
 
 	<target name="clean">
 		<delete quiet="true" includeemptydirs="true">

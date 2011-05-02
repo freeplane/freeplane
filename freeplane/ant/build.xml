@@ -175,7 +175,7 @@
 			</fileset>
 		</copy>
 		<mkdir dir="${dist.osgi.dir}/META-INF" />
-		<copyfile dest="${dist.osgi.dir}/META-INF/MANIFEST.MF" src="${osgimanifest}"/>
+		<copy tofile="${dist.osgi.dir}/META-INF/MANIFEST.MF" file="${osgimanifest}"/>
 	</target>
 
 	<target name="osgi_dist_as_jar" depends="osgi_dist">

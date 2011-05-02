@@ -1,0 +1,19 @@
+<project name="freeplane_uitest" default="test" basedir="..">
+	<property name="workspace" location=".." />
+	<property file="${workspace}/freeplane_framework/ant/ant.properties" />
+	<property file="${workspace}/freeplane/ant/ant.properties" />
+	<property file="ant/ant.properties" />
+	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}:${jsyntaxpane.jar}"/>
+	<target name="test">
+		<junit>
+			<classpath path="${classpath}:${workspace}/freeplane_ant/lib/junit.jar:${workspace}/freeplane_uitest/bin" />
+			<formatter type="brief" usefile="false" />
+			<batchtest>
+				<fileset dir="bin"
+					includes="**/*Test.class"
+					excludes="**/FreeplaneFirstTest.class" />
+			</batchtest>
+		</junit>
+		<fail message="test failed" if="test.failure" />
+	</target>
+</project>

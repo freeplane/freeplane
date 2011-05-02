@@ -71,6 +71,7 @@
   <target name="test" depends="run-junit">
     <antcall target="format" />
     <antcall target="check-sorted" />
+    <delete dir="freeplane_plugin_helloworld" quiet="true" />
     <antcall target="create-plugin-batch" />
   </target>
 </project>

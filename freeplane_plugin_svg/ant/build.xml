@@ -37,7 +37,7 @@
 			</fileset>
 		</copy>
 		<mkdir dir="${dist.osgi.dir}/META-INF" />
-		<copyfile dest="${dist.osgi.dir}/META-INF/MANIFEST.MF" src="${osgimanifest}"/>
+		<copy tofile="${dist.osgi.dir}/META-INF/MANIFEST.MF" file="${osgimanifest}"/>
 		<delete file="lib/plugin.jar" quiet="true"/>
 	</target>
 

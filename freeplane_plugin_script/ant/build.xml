@@ -55,7 +55,7 @@
 			</fileset>
 		</copy>
 		<mkdir dir="${dist.osgi.dir}/META-INF" />
-		<copyfile dest="${dist.osgi.dir}/META-INF/MANIFEST.MF" src="${osgimanifest}"/>
+		<copy tofile="${dist.osgi.dir}/META-INF/MANIFEST.MF" file="${osgimanifest}"/>
 		<delete file="lib/plugin.jar" quiet="true"/>
 	</target>
 
@@ -87,7 +87,20 @@
 			</fileset>
 		</jar>
 	</target>
-	
+
+	<target name="test">
+		<junit>
+			<classpath path="${classpath}:${workspace}/freeplane_ant/lib/junit.jar:${workspace}/freeplane_uitest/bin" />
+			<formatter type="brief" usefile="false" />
+			<batchtest>
+				<fileset dir="${workspace}/freeplane_uitest/bin"
+					includes="**/*Test.class"
+					excludes="**/FreeplaneFirstTest.class" />
+			</batchtest>
+		</junit>
+		<fail message="test failed" if="test.failure" />
+	</target>
+
 	<target name="clean">
 		<delete dir="build"  quiet="true"/>
 		<delete dir="build-nodehighlighter"  quiet="true"/>
