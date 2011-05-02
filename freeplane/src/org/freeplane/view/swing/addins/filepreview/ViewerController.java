@@ -127,33 +127,9 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			if (resetSize(e)) {
 				return;
 			}
-			if (showPopupMenu(e)) {
-				return;
-			}
-			if (openUri(e)) {
-				return;
-			}
 			if (showNext(e)) {
 				return;
 			}
-		}
-
-		private boolean openUri(final MouseEvent e) {
-			if ((e.getClickCount() != 2) || (e.getButton() != MouseEvent.BUTTON1)) {
-				return false;
-			}
-			final ExternalResource model = getModel(e);
-			if (model == null) {
-				return true;
-			}
-			final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(
-			    UrlManager.class);
-			urlManager.loadURL(model.getUri());
-			return true;
-		}
-
-		private boolean showPopupMenu(final MouseEvent e) {
-			return false;
 		}
 
 		private boolean resetSize(final MouseEvent e) {
@@ -180,78 +156,81 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 
 		private boolean showNext(final MouseEvent e) {
-			//single right click
-			if ((e.getButton() == MouseEvent.BUTTON3) && (e.getClickCount() == 1)) {
-				final ExternalResource activeView = getModel(e);
-				NodeModel node = null;
-				//get node from mouse click
-				for (int i = 0; i < e.getComponent().getParent().getComponentCount(); i++) {
-					if (e.getComponent().getParent().getComponent(i) instanceof MainView) {
-						final MainView mv = (MainView) e.getComponent().getParent().getComponent(i);
-						node = mv.getNodeView().getModel();
-						break;
-					}
-				}
-				if (node == null) {
-					node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-				}
-				final MapModel map = node.getMap();
-				final String sActUri = activeView.getAbsoluteUri(map).toString();
-				if (!sActUri.matches(".*_[0-9]{2}\\.[a-zA-Z0-9]*")) {
-					return false;
-				}
-				int i = Integer.parseInt(sActUri.substring(sActUri.lastIndexOf("_") + 1, sActUri.lastIndexOf("_") + 3));
-				//show previous with ctrl + right click
-				if (e.isControlDown()) {
-					if (i > 0) {
-						i--;
-					}
-					else {
-						//remove view if 0 and down
-						if (activeView.getUri().toString().matches(ProgressIcons.EXTENDED_PROGRESS_ICON_IDENTIFIER)) {
-							ProgressIcons.removeProgressIcons(node);
-						}
-						remove(node, activeView);
-						Controller.getCurrentModeController().getMapController().nodeChanged(node,
-						    NodeModel.UNKNOWN_PROPERTY, null, null);
-						return true;
-					}
-				}
-				else {
-					i++;
-				}
-				final String sNextNum;
-				if (i < 10) {
-					sNextNum = "0" + Integer.toString(i);
-				}
-				else {
-					sNextNum = Integer.toString(i);
-				}
-				URI nextUri = null;
-				try {
-					nextUri = new URI(sActUri.replaceFirst("_[0-9]{2}\\.", "_" + sNextNum + "."));
-				}
-				catch (final URISyntaxException e1) {
-					e1.printStackTrace();
-				}
-				final File nextFile = new File(nextUri);
-				if (!nextFile.getAbsoluteFile().exists()) {
-					return false;
-				}
-				final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
-				    "relative");
-				if (useRelativeUri) {
-					nextUri = LinkController.toRelativeURI(map.getFile(), nextFile);
-				}
-				final ExternalResource nextView = new ExternalResource();
-				nextView.setUri(nextUri);
-				nextView.setZoom(activeView.getZoom());
-				remove(node, activeView);
-				add(node, nextView);
-				ProgressIcons.updateExtendedProgressIcons(node, nextFile.getName());
-				return true;
+			//double left click
+			final JComponent component = (JComponent) e.getComponent();
+			final int cursorType = component.getCursor().getType();
+			if ((e.getClickCount() != 2) || (e.getButton() != MouseEvent.BUTTON1)
+			        || (cursorType == Cursor.SE_RESIZE_CURSOR)) {
+				return false;
 			}
-			return false;
+			final ExternalResource activeView = getModel(e);
+			NodeModel node = null;
+			//get node from mouse click
+			for (int i = 0; i < e.getComponent().getParent().getComponentCount(); i++) {
+				if (e.getComponent().getParent().getComponent(i) instanceof MainView) {
+					final MainView mv = (MainView) e.getComponent().getParent().getComponent(i);
+					node = mv.getNodeView().getModel();
+					break;
+				}
+			}
+			if (node == null) {
+				node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+			}
+			final MapModel map = node.getMap();
+			final String sActUri = activeView.getAbsoluteUri(map).toString();
+			if (!sActUri.matches(".*_[0-9]{2}\\.[a-zA-Z0-9]*")) {
+				return false;
+			}
+			int i = Integer.parseInt(sActUri.substring(sActUri.lastIndexOf("_") + 1, sActUri.lastIndexOf("_") + 3));
+			//show previous with ctrl + double click
+			if (e.isControlDown()) {
+				if (i > 0) {
+					i--;
+				}
+				else {
+					//remove view if 0 and down
+					if (activeView.getUri().toString().matches(ProgressIcons.EXTENDED_PROGRESS_ICON_IDENTIFIER)) {
+						ProgressIcons.removeProgressIcons(node);
+					}
+					remove(node, activeView);
+					Controller.getCurrentModeController().getMapController().nodeChanged(node,
+					    NodeModel.UNKNOWN_PROPERTY, null, null);
+					return true;
+				}
+			}
+			else {
+				i++;
+			}
+			final String sNextNum;
+			if (i < 10) {
+				sNextNum = "0" + Integer.toString(i);
+			}
+			else {
+				sNextNum = Integer.toString(i);
+			}
+			URI nextUri = null;
+			try {
+				nextUri = new URI(sActUri.replaceFirst("_[0-9]{2}\\.", "_" + sNextNum + "."));
+			}
+			catch (final URISyntaxException e1) {
+				e1.printStackTrace();
+			}
+			final File nextFile = new File(nextUri);
+			if (!nextFile.getAbsoluteFile().exists()) {
+				return false;
+			}
+			final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
+			    "relative");
+			if (useRelativeUri) {
+				nextUri = LinkController.toRelativeURI(map.getFile(), nextFile);
+			}
+			final ExternalResource nextView = new ExternalResource();
+			nextView.setUri(nextUri);
+			nextView.setZoom(activeView.getZoom());
+			remove(node, activeView);
+			add(node, nextView);
+			ProgressIcons.updateExtendedProgressIcons(node, nextFile.getName());
+			return true;
 		}
 
 		public void mouseEntered(final MouseEvent e) {
@@ -286,7 +265,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			final int width = component.getWidth();
 			final int y = e.getY();
 			final int height = component.getHeight();
-			if (width - 4 * BORDER_SIZE <= x && x <= width && height - 4 * BORDER_SIZE <= y && y <= height) {
+			if (width - 6 * BORDER_SIZE <= x && x <= width && height - 6 * BORDER_SIZE <= y && y <= height) {
 				cursorType = Cursor.SE_RESIZE_CURSOR;
 			}
 			else {
@@ -303,14 +282,18 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		public void mousePressed(final MouseEvent e) {
 			final JComponent component = (JComponent) e.getComponent();
 			final int cursorType = component.getCursor().getType();
-			if (cursorType != Cursor.SE_RESIZE_CURSOR) {
+			if (cursorType == Cursor.SE_RESIZE_CURSOR) {
+				final IViewerFactory factory = (IViewerFactory) component.getClientProperty(IViewerFactory.class);
+				if (factory == null) {
+					return;
+				}
+				isActive = true;
 				return;
 			}
-			final IViewerFactory factory = (IViewerFactory) component.getClientProperty(IViewerFactory.class);
-			if (factory == null) {
+			else {
+				imagePopupMenu.maybeShowPopup(e);
 				return;
 			}
-			isActive = true;
 		}
 
 		public void mouseReleased(final MouseEvent e) {
@@ -330,6 +313,9 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				setZoom(mapView.getModeController(), mapView.getModel(), (ExternalResource) component
 				    .getClientProperty(ExternalResource.class), modelSize);
 				sizeChanged = false;
+			}
+			else {
+				imagePopupMenu.maybeShowPopup(e);
 			}
 			isActive = false;
 			setCursor(e);
@@ -390,6 +376,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 	}
 
+	static private ExternalImagePopupMenu imagePopupMenu;
 	private static final int BORDER_SIZE = 1;
 	private static final Color BORDER_COLOR = Color.BLACK;
 	static final int VIEWER_POSITION = 5;
@@ -521,9 +508,13 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	void createViewer(final ExternalResource model, final NodeView view) {
 		final JComponent viewer = createViewer(view.getMap().getModel(), model);
+		if (imagePopupMenu == null) {
+			imagePopupMenu = new ExternalImagePopupMenu();
+		}
 		viewer.setBorder(new MatteBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_COLOR));
 		final Set<NodeView> viewers = model.getViewers();
 		viewers.add(view);
+		viewer.setBounds(viewer.getX() - 5, viewer.getY() - 5, viewer.getWidth() + 15, viewer.getHeight() + 15);
 		view.addContent(viewer, VIEWER_POSITION);
 		viewer.revalidate();
 		viewer.repaint();
