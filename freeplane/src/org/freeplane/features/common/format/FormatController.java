@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Vector;
 
 import org.freeplane.core.extension.IExtension;
@@ -82,19 +83,31 @@ public class FormatController implements IExtension {
 	}
 
 	private void addStandardFormats() {
-		String numberType = PatternFormat.TYPE_NUMBER;
-		numberFormats.add(PatternFormat.createPatternFormat("%.0f", PatternFormat.STYLE_FORMATTER, numberType, "integer"));
-		numberFormats.add(PatternFormat.createPatternFormat("%.2f", PatternFormat.STYLE_FORMATTER, numberType, "decimal"));
-		String dateType = PatternFormat.TYPE_DATE;
-		final SimpleDateFormat localDate = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM);
-		dateFormats.add(PatternFormat.createPatternFormat(localDate.toPattern(), PatternFormat.STYLE_DATE, dateType, "date"));
-		final SimpleDateFormat localDateTime = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.SHORT);
-		dateFormats.add(PatternFormat.createPatternFormat(localDateTime.toPattern(), PatternFormat.STYLE_DATE,
-		    dateType, "datetime"));
-		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd", PatternFormat.STYLE_DATE, dateType, "short iso date"));
-		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd HH:mm", PatternFormat.STYLE_DATE, dateType, "long iso date"));
-		dateFormats.add(PatternFormat.createPatternFormat(FormattedDate.ISO_DATE_TIME_FORMAT_PATTERN,
-		    PatternFormat.STYLE_DATE, dateType, "full iso date"));
+		String number = PatternFormat.TYPE_NUMBER;
+		numberFormats.add(PatternFormat.createPatternFormat("#.####", PatternFormat.STYLE_DECIMAL, number,
+		    "default number"));
+		numberFormats.add(PatternFormat.createPatternFormat("#.00", PatternFormat.STYLE_DECIMAL, number, "decimal"));
+		numberFormats.add(PatternFormat.createPatternFormat("#", PatternFormat.STYLE_DECIMAL, number, "integer"));
+		numberFormats.add(PatternFormat.createPatternFormat("#.##%", PatternFormat.STYLE_DECIMAL, number, "percent"));
+		String dType = PatternFormat.TYPE_DATE;
+		final String dStyle = PatternFormat.STYLE_DATE;
+		dateFormats.add(createLocalPattern("short date", SimpleDateFormat.SHORT, null));
+		dateFormats.add(createLocalPattern("medium date", SimpleDateFormat.MEDIUM, null));
+		dateFormats.add(createLocalPattern("short datetime", SimpleDateFormat.SHORT, SimpleDateFormat.SHORT));
+		dateFormats.add(createLocalPattern("medium datetime", SimpleDateFormat.MEDIUM, SimpleDateFormat.SHORT));
+		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd", dStyle, dType, "short iso date"));
+		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd HH:mm", dStyle, dType, "long iso date"));
+		dateFormats.add(PatternFormat.createPatternFormat(FormattedDate.ISO_DATE_TIME_FORMAT_PATTERN, dStyle, dType,
+		    "full iso date"));
+	}
+
+	private PatternFormat createLocalPattern(String name, int dateStyle, Integer timeStyle) {
+		final SimpleDateFormat simpleDateFormat = (SimpleDateFormat) (timeStyle == null ? SimpleDateFormat
+		    .getDateInstance(dateStyle) : SimpleDateFormat.getDateTimeInstance(dateStyle, timeStyle));
+		final String dStyle = PatternFormat.STYLE_DATE;
+		final String dType = PatternFormat.TYPE_DATE;
+		final String locale = Locale.getDefault().toString();
+		return PatternFormat.createPatternFormat(simpleDateFormat.toPattern(), dStyle, dType, name, locale);
 	}
 
 	void loadFormats() throws Exception {
@@ -108,6 +121,7 @@ public class FormatController implements IExtension {
 				final String type = xmlElement.getAttribute("type", "");
 				final String style = xmlElement.getAttribute("style", "");
 				final String name = xmlElement.getAttribute("name", "");
+				final String locale = xmlElement.getAttribute("locale", "");
 				final String content = xmlElement.getContent();
 				if (nullOrEmpty(type) || nullOrEmpty(style) || nullOrEmpty(content)) {
 					throw new RuntimeException("wrong format in " + pathToFormatsFile
@@ -116,9 +130,8 @@ public class FormatController implements IExtension {
 				}
 				else {
 					final PatternFormat format = PatternFormat.createPatternFormat(content, style, type);
-					if (name != null) {
-						format.setName(name);
-					}
+					format.setName(name);
+					format.setLocale(locale);
 					if (type.equals(PatternFormat.TYPE_DATE)) {
 						dateFormats.add(format);
 					}
