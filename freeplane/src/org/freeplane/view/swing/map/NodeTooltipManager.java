@@ -23,11 +23,13 @@ import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.common.map.AMapChangeListenerAdapter;
 import org.freeplane.features.common.map.IMapChangeListener;
+import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 
@@ -87,7 +89,21 @@ public class NodeTooltipManager implements IExtension{
             }
 			
 		};
-		modeController.getMapController().addMapChangeListener(mapChangeListener);
+		MapController mapController = modeController.getMapController();
+		mapController.addMapChangeListener(mapChangeListener);
+		INodeSelectionListener nodeSelectionListener = new INodeSelectionListener() {
+			
+			public void onSelect(NodeModel node) {
+				NodeView view = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, instance.insideComponent);
+				if(view != null && node.equals(view.getModel()))
+					return;
+				instance.hideTipWindow();
+			}
+			
+			public void onDeselect(NodeModel node) {
+			}
+		};
+		mapController.addNodeSelectionListener(nodeSelectionListener);
 		modeController.addExtension(NodeTooltipManager.class, instance);
 		return instance;
 	}
