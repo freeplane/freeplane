@@ -23,6 +23,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Stroke;
 
@@ -148,4 +149,15 @@ class ForkMainView extends MainView {
 		}
 		super.paintFoldingMark(nodeView, g, p, itself);
 	}
+    private static Insets insets = new Insets(0, 2, 0, 2);
+    
+    @Override
+    public Insets getInsets() {
+        return ForkMainView.insets;
+    }
+
+    @Override
+    public Insets getInsets(Insets insets) {
+        return ForkMainView.insets;
+    }
 }

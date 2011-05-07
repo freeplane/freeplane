@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -87,6 +88,7 @@ import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
+import org.freeplane.view.swing.map.ZoomableLabelUI;
 
 import com.lightdev.app.shtm.SHTMLWriter;
 
@@ -580,8 +582,10 @@ class EditNodeTextField extends EditNodeBase {
 		final int x;
 		if(nodeView.isRoot() || ! (parent instanceof MainView)) 
 		    x= (horizontalSpace + 1) / 2;
-		else
-		    x = mapView.getZoomed(2);
+		else{
+		    final Insets insets = parent.getInsets();
+		    x = mapView.getZoomed(insets.left);
+		}
 		final int y = (verticalSpace + 1) / 2;
 		final Point location = new Point(x + iconWidth, y);
 		if(! layoutMapOnTextChange)

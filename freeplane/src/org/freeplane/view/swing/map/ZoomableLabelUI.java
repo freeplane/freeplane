@@ -39,8 +39,8 @@ import javax.swing.plaf.basic.BasicLabelUI;
  * @author Dimitry Polivaev
  * 23.08.2009
  */
-class ZoomableLabelUI extends BasicLabelUI {
-	private boolean isPainting = false;
+public class ZoomableLabelUI extends BasicLabelUI {
+    private boolean isPainting = false;
 	static ZoomableLabelUI labelUI = new ZoomableLabelUI();
 
 	@Override
@@ -52,7 +52,6 @@ class ZoomableLabelUI extends BasicLabelUI {
 		if (preferredSize.width <= 4) {
 			preferredSize.width = 4;
 		}
-		preferredSize.width += 4;
 		final float zoom = ((ZoomableLabel) c).getZoom();
 		if (zoom != 1f) {
 			preferredSize.width = (int) (Math.ceil(zoom * preferredSize.width));
@@ -78,16 +77,6 @@ class ZoomableLabelUI extends BasicLabelUI {
 			viewR.height = height - (insets.top + insets.bottom);
 		}
 		super.layoutCL(mainView, mainView.getFontMetrics(), text, icon, viewR, iconR, textR);
-		final int horizontalAlignment = mainView.getHorizontalAlignment();
-		switch(horizontalAlignment){
-		    case  JLabel.LEFT:
-		        textR.x += 2;
-		        iconR.x += 2;
-		        break;
-            case  JLabel.RIGHT:
-                textR.x -= 2;
-                iconR.x -= 2;
-		}
 		return text;
 	}
 

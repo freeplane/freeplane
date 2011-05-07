@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
 
@@ -144,4 +145,15 @@ class RootMainView extends MainView {
 		setDraggedOver((dropLeft(p.getX())) ? NodeView.DRAGGED_OVER_SON_LEFT : NodeView.DRAGGED_OVER_SON);
 	}
 	
+    private static Insets insets = new Insets(4, 4, 4, 4);
+    
+    @Override
+    public Insets getInsets() {
+        return RootMainView.insets;
+    }
+
+    @Override
+    public Insets getInsets(Insets insets) {
+        return RootMainView.insets;
+    }
 }

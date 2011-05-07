@@ -34,7 +34,8 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 class BubbleMainView extends MainView {
-	final static Stroke DEF_STROKE = new BasicStroke();
+
+    final static Stroke DEF_STROKE = new BasicStroke();
 	/**
 	 * 
 	 */
@@ -115,4 +116,15 @@ class BubbleMainView extends MainView {
 		graphics.setColor(color);
 		graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
 	}
+    private static Insets insets = new Insets(3, 3, 3, 3);
+    
+    @Override
+    public Insets getInsets() {
+        return BubbleMainView.insets;
+    }
+
+    @Override
+    public Insets getInsets(Insets insets) {
+        return BubbleMainView.insets;
+    }
 }

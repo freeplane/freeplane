@@ -40,6 +40,7 @@ import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.controller.Controller;
@@ -423,4 +424,11 @@ public abstract class MainView extends ZoomableLabel {
             toolTipManager.unregisterComponent(this);
         }
     }
+
+    @Override
+    public void setBorder(Border border) {
+        assert(false);
+    }
+	
+	
 }
