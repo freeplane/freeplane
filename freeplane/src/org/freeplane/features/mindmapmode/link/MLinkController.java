@@ -508,15 +508,26 @@ public class MLinkController extends LinkController {
 				}
 			});
 		}
-		final JTextArea sourceLabelEditor = new JTextArea(link.getSourceLabel());
-		addTextEditor(arrowLinkPopup, "edit_source_label", sourceLabelEditor);
+        final boolean twoNodesConnector = ! link.getSource().equals(link.getTarget());
+		final JTextArea sourceLabelEditor;
+        if(twoNodesConnector){
+            sourceLabelEditor = new JTextArea(link.getSourceLabel());
+            addTextEditor(arrowLinkPopup, "edit_source_label", sourceLabelEditor);
+        }
+        else
+            sourceLabelEditor = null;
 
 		final JTextArea middleLabelEditor = new JTextArea(link.getMiddleLabel());
-	      if(! link.getSource().equals(link.getTarget()))
-	          addTextEditor(arrowLinkPopup, "edit_middle_label", middleLabelEditor);
+        addTextEditor(arrowLinkPopup, twoNodesConnector ? "edit_middle_label" : "edit_end_label", middleLabelEditor);
 
-		final JTextArea targetLabelEditor = new JTextArea(link.getTargetLabel());
-		addTextEditor(arrowLinkPopup, "edit_target_label", targetLabelEditor);
+        final JTextArea targetLabelEditor ; 
+        if(twoNodesConnector){
+            targetLabelEditor = new JTextArea(link.getTargetLabel());
+        }
+        else{
+            targetLabelEditor = new JTextArea(link.getSourceLabel());
+        }
+        addTextEditor(arrowLinkPopup, "edit_target_label", targetLabelEditor);
 
 		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
             private Component focusOwner;
@@ -546,14 +557,14 @@ public class MLinkController extends LinkController {
                 }
                 if (Controller.getCurrentController().getSelection().getSelected() == null)
                     return;
-                setSourceLabel(link, sourceLabelEditor.getText());
-                if(! link.getSource().equals(link.getTarget())){
-                    setMiddleLabel(link, middleLabelEditor.getText());
+                if(twoNodesConnector){
+                    setSourceLabel(link, sourceLabelEditor.getText());
                     setTargetLabel(link, targetLabelEditor.getText());
                 }
-                else {
-                    setMiddleLabel(link, targetLabelEditor.getText());
+                else{
+                    setSourceLabel(link, targetLabelEditor.getText());
                 }
+                setMiddleLabel(link, middleLabelEditor.getText());
                 setAlpha(link, transparencySlider.getValue());
                 setWidth(link, widthModel.getNumber().intValue());
             }
@@ -614,6 +625,7 @@ public class MLinkController extends LinkController {
 		inputMap.put(enter2, "INSERT_EOL");
 		actionMap.put("INSERT_EOL", new UITools.InsertEolAction());
 		editor.setRows(5);
+		editor.setColumns(30);
 		
 		final JPopupMenu popupMenu = new JPopupMenu();
         SpellCheckerController spellCheckerController = SpellCheckerController.getController();

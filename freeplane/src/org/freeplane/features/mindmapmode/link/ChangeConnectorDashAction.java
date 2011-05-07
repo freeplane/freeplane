@@ -34,7 +34,7 @@ import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 
 class ChangeConnectorDashAction extends AFreeplaneAction {
-	private static final int ICON_HEIGHT = 4;
+	private static final int ICON_HEIGHT = 6;
 	private static final int ICON_WIDTH = 60;
 	/**
 	 * 
