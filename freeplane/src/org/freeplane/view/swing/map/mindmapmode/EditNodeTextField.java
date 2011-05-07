@@ -83,6 +83,7 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
 import org.freeplane.features.mindmapmode.text.MTextController;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
@@ -399,7 +400,8 @@ class EditNodeTextField extends EditNodeBase {
 		textfield.getDocument().removeDocumentListener(documentListener);
 		parent.setPreferredSize(null);
 		nodeView.update();
-		parent.setHorizontalAlignment(JLabel.CENTER);
+		if(nodeView.isRoot())
+		    parent.setHorizontalAlignment(JLabel.CENTER);
 		if(layoutMapOnTextChange)
 			parent.remove(0);
 		else
@@ -575,14 +577,19 @@ class EditNodeTextField extends EditNodeBase {
 			horizontalSpace -= iconWidth;
 		}
 
-		final int x = (horizontalSpace + 1) / 2;
+		final int x;
+		if(nodeView.isRoot() || ! (parent instanceof MainView)) 
+		    x= (horizontalSpace + 1) / 2;
+		else
+		    x = mapView.getZoomed(2);
 		final int y = (verticalSpace + 1) / 2;
 		final Point location = new Point(x + iconWidth, y);
 		if(! layoutMapOnTextChange)
 			UITools.convertPointToAncestor(parent, location, mapView);
 		textfield.setBounds(location.x, location.y, textFieldSize.width, textFieldSize.height);
 		parent.setText("");
-		parent.setHorizontalAlignment(JLabel.LEFT);
+        if(nodeView.isRoot())
+            parent.setHorizontalAlignment(JLabel.LEFT);
 		if(layoutMapOnTextChange)
 			parent.add(textfield, 0);
 		else

@@ -78,6 +78,16 @@ class ZoomableLabelUI extends BasicLabelUI {
 			viewR.height = height - (insets.top + insets.bottom);
 		}
 		super.layoutCL(mainView, mainView.getFontMetrics(), text, icon, viewR, iconR, textR);
+		final int horizontalAlignment = mainView.getHorizontalAlignment();
+		switch(horizontalAlignment){
+		    case  JLabel.LEFT:
+		        textR.x += 2;
+		        iconR.x += 2;
+		        break;
+            case  JLabel.RIGHT:
+                textR.x -= 2;
+                iconR.x -= 2;
+		}
 		return text;
 	}
 

@@ -28,6 +28,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 
+import javax.swing.SwingConstants;
+
 import org.freeplane.features.common.map.ModeController;
 
 class RootMainView extends MainView {
@@ -36,7 +38,14 @@ class RootMainView extends MainView {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Override
+	
+	
+	public RootMainView() {
+        super();
+        setHorizontalAlignment(SwingConstants.CENTER);
+    }
+
+    @Override
 	public boolean dropAsSibling(final double xCoord) {
 		return false;
 	}

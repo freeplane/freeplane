@@ -83,7 +83,7 @@ public abstract class MainView extends ZoomableLabel {
 
 	MainView() {
 		setAlignmentX(Component.CENTER_ALIGNMENT);
-		setHorizontalAlignment(SwingConstants.CENTER);
+		setHorizontalAlignment(SwingConstants.LEFT);
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalTextPosition(SwingConstants.TRAILING);
 	}
