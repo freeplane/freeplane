@@ -560,18 +560,6 @@ public class MLinkController extends LinkController {
         
 		});
 
-		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
-			public void hierarchyChanged(HierarchyEvent e) {
-				final Component component = e.getComponent();
-				Window window = SwingUtilities.windowForComponent(component);
-				if(window != null){
-					if ( ! window.getFocusableWindowState())
-						window.setFocusableWindowState(true);
-					component.removeHierarchyListener(this);
-				}
-			}
-		});
-		
 	}
 
     @SuppressWarnings("serial")
