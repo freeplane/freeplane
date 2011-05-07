@@ -439,25 +439,4 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
     	dialog.setModal(false);
     	return dialog;
     }
-
-	public static void addFocusListenerToDescendants(Component component, FocusListener listener) {
-		component.addFocusListener(listener);
-		if(! (component instanceof Container))
-			return;
-		Container container = (Container)component;
-		for(int i = 0; i < container.getComponentCount(); i++){
-			addFocusListenerToDescendants(container.getComponent(i), listener);
-		}
-    }
-
-	public static void addMousesListenerToDescendants(Component component,
-                                                      MouseListener listener) {
-		component.addMouseListener(listener);
-		if(! (component instanceof Container))
-			return;
-		Container container = (Container)component;
-		for(int i = 0; i < container.getComponentCount(); i++){
-			addMousesListenerToDescendants(container.getComponent(i), listener);
-		}
-   }
 }
