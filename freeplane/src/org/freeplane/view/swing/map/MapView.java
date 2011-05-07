@@ -759,7 +759,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			selectedNodesSet.add(getSelected(i).getModel());
 		}
 		final TreeMap<Integer, LinkedList<NodeModel>> sortedNodes = new TreeMap<Integer, LinkedList<NodeModel>>();
-		final Point point = new Point();
 		iteration: for (int i = 0; i < selection.size(); i++) {
 			final NodeView view = getSelected(i);
 			final NodeModel node = view.getModel();
@@ -770,19 +769,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					}
 				}
 			}
-			if(view.isSummary()){
-				point.x = 0;
-				point.y = view.getHeight() - view.getSpaceAround(); 
+			final Point point = new Point();
+			UITools.convertPointToAncestor(view.getParent(), point, this);
+			if(node.getParentNode() != null){
+			    point.y += node.getParentNode().getIndex(node); 
 			}
-			else{
-				view.getContent().getLocation(point);
-			}
-			UITools.convertPointToAncestor(view, point, this);
-			final Integer pointY = new Integer(point.y);
-			LinkedList<NodeModel> nodeList = sortedNodes.get(pointY);
+			LinkedList<NodeModel> nodeList = sortedNodes.get(point.y);
 			if (nodeList == null) {
 				nodeList = new LinkedList<NodeModel>();
-				sortedNodes.put(pointY, nodeList);
+				sortedNodes.put(point.y, nodeList);
 			}
 			nodeList.add(node);
 		}
