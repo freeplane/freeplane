@@ -427,8 +427,5 @@ public abstract class MainView extends ZoomableLabel {
 
     @Override
     public void setBorder(Border border) {
-        assert(false);
     }
-	
-	
 }
