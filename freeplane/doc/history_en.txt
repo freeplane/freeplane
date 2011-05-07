@@ -1,4 +1,12 @@
 ===============================
+1.2.6 alpha
+===============================
+Auto formatting of numbers
+Formatting of attributes
+Free node positioning
+Improved connector editor
+
+===============================
 1.2.5 alpha
 ===============================
 New features:
@@ -9,9 +17,6 @@ Individual connector label font family and font size
 "Add connector" action creates also connectors to self
 Preferences->Behavior->In-line node editor->Layout map during editing
   disable for better performance 
-Auto formatting of numbers
-Formatting of attributes
-Overlapping branches
 
 ===============================
 1.2.4 alpha
