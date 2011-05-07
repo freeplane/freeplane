@@ -64,7 +64,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 				    .getNodeView(node);
 				final JPopupMenu popupmenu = modeController.getUserInputListenerFactory().getNodePopupMenu();
 				if (popupmenu != null) {
-					popupmenu.addPopupMenuListener(new ControllerPopupMenuListener());
+					popupmenu.addHierarchyListener(new ControllerPopupMenuListener());
 					final MainView mainView = nodeView.getMainView();
 					popupmenu.show(mainView, mainView.getX(), mainView.getY());
 				}

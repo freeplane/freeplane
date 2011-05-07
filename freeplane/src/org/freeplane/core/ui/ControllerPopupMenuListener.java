@@ -19,8 +19,8 @@
  */
 package org.freeplane.core.ui;
 
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 
 import org.freeplane.core.controller.Controller;
 
@@ -28,22 +28,10 @@ import org.freeplane.core.controller.Controller;
  * listener, that blocks the controler if the menu is active (PN) Take care!
  * This listener is also used for modelpopups (as for graphical links).
  */
-public class ControllerPopupMenuListener implements PopupMenuListener {
-//	ModeController modeController;
-
-	public ControllerPopupMenuListener() {
-		super();
-	}
-
-	public void popupMenuCanceled(final PopupMenuEvent e) {
-		Controller.getCurrentModeController().setBlocked(false);
-	}
-
-	public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-		Controller.getCurrentModeController().setBlocked(false);
-	}
-
-	public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-		Controller.getCurrentModeController().setBlocked(true);
-	}
-}
+public class ControllerPopupMenuListener implements HierarchyListener {
+    
+    public void hierarchyChanged(HierarchyEvent e) {
+        if(e.getID() != HierarchyEvent.ANCESTOR_MOVED && e.getID() != HierarchyEvent.ANCESTOR_RESIZED)
+            Controller.getCurrentModeController().setBlocked(e.getComponent().isShowing());
+    }
+ }

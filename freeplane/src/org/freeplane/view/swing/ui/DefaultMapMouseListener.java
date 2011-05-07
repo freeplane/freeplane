@@ -19,8 +19,20 @@
  */
 package org.freeplane.view.swing.ui;
 
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.Point;
+import java.awt.Window;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
@@ -28,6 +40,7 @@ import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.core.ui.IMouseListener;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.view.swing.map.MapView;
@@ -50,8 +63,8 @@ public class DefaultMapMouseListener implements IMouseListener {
 
 	private void handlePopup(final MouseEvent e) {
 		if (e.isPopupTrigger()) {
-			JPopupMenu popup = null;
-			final JPopupMenu popupForModel;
+			Component popup = null;
+			final Component popupForModel;
 			final MapView mapView = (MapView) Controller.getCurrentController().getViewController().getMapView();
 			final ModeController modeController = Controller.getCurrentController().getModeController();
 			if(mapView != null){
@@ -63,14 +76,52 @@ public class DefaultMapMouseListener implements IMouseListener {
 			}
 			if (popupForModel != null) {
 				final ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener();
-				popupForModel.addPopupMenuListener(popupListener);
+				popupForModel.addHierarchyListener(popupListener);
 				popup = popupForModel;
 			}
 			else {
 				popup = modeController.getUserInputListenerFactory().getMapPopup();
 			}
-			popup.show(e.getComponent(), e.getX(), e.getY());
-			popup.setVisible(true);
+            Component component = e.getComponent();
+			if(popup instanceof JPopupMenu) {
+                ((JPopupMenu)popup).show(component, e.getX(), e.getY());
+            }
+			else {
+			    Point locationOnScreen = component.getLocationOnScreen();
+			    final Component window;
+			    if(popup instanceof Window){
+			        window= popup;
+			    }
+			    else{
+                    final Frame frame = UITools.getFrame();
+                    final JDialog d = new JDialog(frame, popup.getName());
+                    d.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    d.setModal(false);
+                    d.add(popup);
+                    d.pack();
+                    d.addWindowFocusListener(new WindowFocusListener() {
+                        public void windowLostFocus(WindowEvent e) {
+                        }
+                        
+                        public void windowGainedFocus(WindowEvent e) {
+                            frame.addWindowFocusListener(new WindowFocusListener() {
+                                public void windowLostFocus(WindowEvent e) {
+                                }
+                                
+                                public void windowGainedFocus(WindowEvent e) {
+                                    d.setVisible(false);
+                                    frame.removeWindowFocusListener(this);
+                                }
+                            });
+                            d.removeWindowFocusListener(this);
+                        }
+                    });
+			        window = d;
+			    }
+			    window.setLocation(locationOnScreen.x+e.getX(), locationOnScreen.y + e.getY());
+			    window.setVisible(true);
+			}
+			
 		}
 	}
 

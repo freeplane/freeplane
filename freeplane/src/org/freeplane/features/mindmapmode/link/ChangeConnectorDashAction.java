@@ -20,6 +20,7 @@
 package org.freeplane.features.mindmapmode.link;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -62,6 +63,7 @@ class ChangeConnectorDashAction extends AFreeplaneAction {
 		return new Icon() {
 			public void paintIcon(Component c, Graphics g, int x, int y) {
 				Graphics2D g2 = (Graphics2D) g;
+				g2.setColor(Color.BLACK);
 				Stroke oldStroke = g2.getStroke();
 				g2.setStroke(stroke);
 				g2.drawLine(x, y+ICON_HEIGHT / 2, x+ICON_WIDTH, y+ICON_HEIGHT / 2);

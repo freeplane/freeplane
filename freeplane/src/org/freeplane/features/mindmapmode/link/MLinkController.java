@@ -21,27 +21,41 @@ package org.freeplane.features.mindmapmode.link;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.FocusManager;
+import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
@@ -49,16 +63,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
-import org.freeplane.core.ui.components.ContainerMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
@@ -77,6 +94,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
 /**
  * @author Dimitry Polivaev
@@ -391,12 +409,12 @@ public class MLinkController extends LinkController {
 	}
 
 	@Override
-	protected void createArrowLinkPopup(final ConnectorModel link, final JPopupMenu arrowLinkPopup) {
+	protected void createArrowLinkPopup(final ConnectorModel link, final JComponent arrowLinkPopup) {
 		super.createArrowLinkPopup(link, arrowLinkPopup);
-		arrowLinkPopup.add(new RemoveConnectorAction(this, link));
+		addAction(arrowLinkPopup, new RemoveConnectorAction(this, link));
 
-		arrowLinkPopup.addSeparator();
-		arrowLinkPopup.add(new ConnectorColorAction(this, link));
+		addSeparator(arrowLinkPopup);
+		addAction(arrowLinkPopup, new ConnectorColorAction(this, link));
 
 		final JSlider transparencySlider = new JSlider(20, 255, link.getAlpha());
 		transparencySlider.setMinorTickSpacing(20);
@@ -405,91 +423,42 @@ public class MLinkController extends LinkController {
 		transparencySlider.setPaintTrack(true);
 		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_transparency_label"), transparencySlider);
 
-		arrowLinkPopup.addSeparator();
+		addSeparator(arrowLinkPopup);
 
-		final JMenu connectorArrows = new JMenu(TextUtils.getText("connector_arrows"));
-		final ButtonGroup arrowsGroup = new ButtonGroup();
 
-		final ChangeConnectorArrowsAction actionNN = new ChangeConnectorArrowsAction(this, "none", link,
-			ArrowType.NONE, ArrowType.NONE);
-		final JRadioButtonMenuItem itemnn = new JAutoRadioButtonMenuItem(actionNN);
-		connectorArrows.add(itemnn);
-		arrowsGroup.add(itemnn);
+		AFreeplaneAction[] arrowActions = new AFreeplaneAction[]{
+                new ChangeConnectorArrowsAction(this, "none", link, ArrowType.NONE, ArrowType.NONE),
+                new ChangeConnectorArrowsAction(this, "forward", link, ArrowType.NONE, ArrowType.DEFAULT),
+                new ChangeConnectorArrowsAction(this, "backward", link, ArrowType.DEFAULT, ArrowType.NONE),
+                new ChangeConnectorArrowsAction(this, "both", link, ArrowType.DEFAULT, ArrowType.DEFAULT) 
+		};
+        final JComboBox connectorArrows = createActionBox(arrowActions);
+		addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_arrows"), connectorArrows);
+		
+        AFreeplaneAction[] shapeActions = new AFreeplaneAction[] {
+                new ChangeConnectorShapeAction(this, link, Shape.CUBIC_CURVE),
+                new ChangeConnectorShapeAction(this, link, Shape.LINE),
+                new ChangeConnectorShapeAction(this, link, Shape.LINEAR_PATH),
+                new ChangeConnectorShapeAction(this, link, Shape.EDGE_LIKE) 
+        };
+        final JComboBox connectorShapes = createActionBox(shapeActions);
+        addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_shapes"), connectorShapes);
 
-		final ChangeConnectorArrowsAction actionNT = new ChangeConnectorArrowsAction(this, "forward", link,
-			ArrowType.NONE, ArrowType.DEFAULT);
-		final JRadioButtonMenuItem itemnt = new JAutoRadioButtonMenuItem(actionNT);
-		connectorArrows.add(itemnt);
-		arrowsGroup.add(itemnt);
-
-		final ChangeConnectorArrowsAction actionTN = new ChangeConnectorArrowsAction(this, "backward", link,
-			ArrowType.DEFAULT, ArrowType.NONE);
-		final JRadioButtonMenuItem itemtn = new JAutoRadioButtonMenuItem(actionTN);
-		connectorArrows.add(itemtn);
-		arrowsGroup.add(itemtn);
-
-		final ChangeConnectorArrowsAction actionTT = new ChangeConnectorArrowsAction(this, "both", link,
-			ArrowType.DEFAULT, ArrowType.DEFAULT);
-		final JRadioButtonMenuItem itemtt = new JAutoRadioButtonMenuItem(actionTT);
-		connectorArrows.add(itemtt);
-		arrowsGroup.add(itemtt);
-
-		arrowLinkPopup.add(connectorArrows);
-
-		final JMenu connectorShapes = new JMenu(TextUtils.getText("connector_shapes"));
-		final ButtonGroup shapeGroup = new ButtonGroup();
-
-		final ChangeConnectorShapeAction actionCubic = new ChangeConnectorShapeAction(this, link,Shape.CUBIC_CURVE);
-		final JRadioButtonMenuItem itemCubic = new JAutoRadioButtonMenuItem(actionCubic);
-		connectorShapes.add(itemCubic);
-		shapeGroup.add(itemCubic);
-
-		final ChangeConnectorShapeAction actionLinear = new ChangeConnectorShapeAction(this, link,Shape.LINE);
-		final JRadioButtonMenuItem itemLinear = new JAutoRadioButtonMenuItem(actionLinear);
-		connectorShapes.add(itemLinear);
-		shapeGroup.add(itemLinear);
-
-		final ChangeConnectorShapeAction actionLinearPath = new ChangeConnectorShapeAction(this, link,Shape.LINEAR_PATH);
-		final JRadioButtonMenuItem itemLinearPath = new JAutoRadioButtonMenuItem(actionLinearPath);
-		connectorShapes.add(itemLinearPath);
-		shapeGroup.add(itemLinearPath);
-
-		final ChangeConnectorShapeAction actionEdgeLike = new ChangeConnectorShapeAction(this, link,Shape.EDGE_LIKE);
-		final JRadioButtonMenuItem itemEdgeLike = new JAutoRadioButtonMenuItem(actionEdgeLike);
-		connectorShapes.add(itemEdgeLike);
-		shapeGroup.add(itemEdgeLike);
-
-		arrowLinkPopup.add(connectorShapes);
-
-		final JMenu connectorDashes = new JMenu(TextUtils.getText("connector_lines"));
-
-		final ChangeConnectorDashAction actionD1 = new ChangeConnectorDashAction(this, link, null); 
-		final JRadioButtonMenuItem itemD1 = new JAutoRadioButtonMenuItem(actionD1);
-		connectorDashes.add(itemD1);
-
-		final ChangeConnectorDashAction actionD2 = new ChangeConnectorDashAction(this, link, new int[]{3, 3}); 
-		final JRadioButtonMenuItem itemD2 = new JAutoRadioButtonMenuItem(actionD2);
-		connectorDashes.add(itemD2);
-
-		final ChangeConnectorDashAction actionD3 = new ChangeConnectorDashAction(this, link, new int[]{7, 7}); 
-		final JRadioButtonMenuItem itemD3 = new JAutoRadioButtonMenuItem(actionD3);
-		connectorDashes.add(itemD3);
-
-		final ChangeConnectorDashAction actionD4 = new ChangeConnectorDashAction(this, link, new int[]{2, 7}); 
-		final JRadioButtonMenuItem itemD4 = new JAutoRadioButtonMenuItem(actionD4);
-		connectorDashes.add(itemD4);
-
-		final ChangeConnectorDashAction actionD5 = new ChangeConnectorDashAction(this, link, new int[]{2, 7, 7, 7}); 
-		final JRadioButtonMenuItem itemD5 = new JAutoRadioButtonMenuItem(actionD5);
-		connectorDashes.add(itemD5);
-
-		arrowLinkPopup.add(connectorDashes);
+        AFreeplaneAction[] dashActions = new AFreeplaneAction[] {
+                new ChangeConnectorDashAction(this, link, null), 
+                new ChangeConnectorDashAction(this, link, new int[]{3, 3}), 
+                new ChangeConnectorDashAction(this, link, new int[]{7, 7}), 
+                new ChangeConnectorDashAction(this, link, new int[]{2, 7}), 
+                new ChangeConnectorDashAction(this, link, new int[]{2, 7, 7, 7})
+        };
+        final JComboBox connectorDashes = createActionBox(dashActions);
+        addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_lines"), connectorDashes);
 
 		final SpinnerNumberModel widthModel = new SpinnerNumberModel(link.getWidth(),1, 32, 1);
 		final JSpinner widthSpinner = new JSpinner(widthModel);
 		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_width_label"), widthSpinner);
 
-		arrowLinkPopup.addSeparator();
+		addSeparator(arrowLinkPopup);
 
 		{
 			final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -543,32 +512,52 @@ public class MLinkController extends LinkController {
 		addTextEditor(arrowLinkPopup, "edit_source_label", sourceLabelEditor);
 
 		final JTextArea middleLabelEditor = new JTextArea(link.getMiddleLabel());
-		addTextEditor(arrowLinkPopup, "edit_middle_label", middleLabelEditor);
+	      if(! link.getSource().equals(link.getTarget()))
+	          addTextEditor(arrowLinkPopup, "edit_middle_label", middleLabelEditor);
 
 		final JTextArea targetLabelEditor = new JTextArea(link.getTargetLabel());
-		if(! link.getSource().equals(link.getTarget()))
-			addTextEditor(arrowLinkPopup, "edit_target_label", targetLabelEditor);
+		addTextEditor(arrowLinkPopup, "edit_target_label", targetLabelEditor);
 
-		arrowLinkPopup.addPopupMenuListener(new PopupMenuListener() {
-			private Component focusOwner;
-			public void popupMenuCanceled(final PopupMenuEvent e) {
-			}
+		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
+            private Component focusOwner;
+            private Window dialog;
+            public void hierarchyChanged(HierarchyEvent e) {
+                final JComponent component = (JComponent) e.getComponent();
+                if(component.isShowing()){
+                    if(dialog == null){
+                        dialog =  SwingUtilities.getWindowAncestor(component);
+                        dialog.addWindowListener(new WindowAdapter() {
 
-			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-				focusOwner.requestFocus();
-				if (Boolean.TRUE.equals(((JComponent)e.getSource()).getClientProperty(CANCEL))) {
-					return;
-				}
-				setSourceLabel(link, sourceLabelEditor.getText());
-				setMiddleLabel(link, middleLabelEditor.getText());
-				setTargetLabel(link, targetLabelEditor.getText());
-				setAlpha(link, transparencySlider.getValue());
-				setWidth(link, widthModel.getNumber().intValue());
-			}
-
-			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-				focusOwner = FocusManager.getCurrentManager().getFocusOwner();
-			}
+                            @Override
+                            public void windowClosing(WindowEvent e) {
+                                component.putClientProperty(CANCEL, Boolean.TRUE);
+                            }
+                        });
+                    }
+                    if(focusOwner == null)
+                        focusOwner = FocusManager.getCurrentManager().getFocusOwner();
+                    return;
+                }
+                if(focusOwner == null || ! focusOwner.isShowing())
+                    return;
+                focusOwner.requestFocus();
+                if (Boolean.TRUE.equals(component.getClientProperty(CANCEL))) {
+                    return;
+                }
+                if (Controller.getCurrentController().getSelection().getSelected() == null)
+                    return;
+                setSourceLabel(link, sourceLabelEditor.getText());
+                if(! link.getSource().equals(link.getTarget())){
+                    setMiddleLabel(link, middleLabelEditor.getText());
+                    setTargetLabel(link, targetLabelEditor.getText());
+                }
+                else {
+                    setMiddleLabel(link, targetLabelEditor.getText());
+                }
+                setAlpha(link, transparencySlider.getValue());
+                setWidth(link, widthModel.getNumber().intValue());
+            }
+        
 		});
 
 		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
@@ -582,15 +571,54 @@ public class MLinkController extends LinkController {
 				}
 			}
 		});
+		
 	}
 
-	private void addTextEditor(final JPopupMenu popup, final String label, final JTextArea editor) {
+    @SuppressWarnings("serial")
+    protected JComboBox createActionBox(AFreeplaneAction[] items) {
+        final JComboBox box = new JComboBox();
+        box.setEditable(false);
+        box.setModel(new DefaultComboBoxModel(items));
+        for(AFreeplaneAction item : items){
+            if(item.isSelected()){
+                box.setSelectedItem(item);
+                break;
+            }
+        }
+        box.setRenderer(new DefaultListCellRenderer() {
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+                                                          boolean cellHasFocus) {
+                Action action = (Action) value;
+                Icon icon = (Icon)action.getValue(Action.SMALL_ICON);
+                String text = (String)action.getValue(Action.NAME);
+                Object renderedValue = text == null ? icon : text;
+                DefaultListCellRenderer renderer = (DefaultListCellRenderer) super.getListCellRendererComponent(list, renderedValue, index, isSelected, cellHasFocus);
+                if(text != null && icon != null)
+                    renderer.setIcon(icon);
+                return renderer;
+            }
+        });
+        box.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                AFreeplaneAction item = (AFreeplaneAction)e.getItem();
+                final JComboBox box = (JComboBox) e.getSource();
+                item.actionPerformed(new ActionEvent(box, ActionEvent.ACTION_PERFORMED, null));
+                SwingUtilities.getWindowAncestor(box).setVisible(false);
+            }
+        });
+        return box;
+    }
+
+	private void addSeparator(JComponent arrowLinkPopup) {
+    }
+
+    private void addTextEditor(final JComponent popup, final String label, final JTextArea editor) {
 		final InputMap inputMap = editor.getInputMap();
 		final ActionMap actionMap = editor.getActionMap();
 		final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
 		final KeyStroke close = KeyStroke.getKeyStroke(enterConfirms ? "ENTER" : "alt ENTER");
 		inputMap.put(close, CLOSE);
-		actionMap.put(CLOSE, new UITools.ClosePopupAction(CLOSE));
+		actionMap.put(CLOSE, new ClosePopupAction(CLOSE));
 
 		final KeyStroke enter = KeyStroke.getKeyStroke(! enterConfirms ? "ENTER" : "alt ENTER");
 		final KeyStroke enter2 = KeyStroke.getKeyStroke("shift ENTER");
@@ -598,13 +626,36 @@ public class MLinkController extends LinkController {
 		inputMap.put(enter2, "INSERT_EOL");
 		actionMap.put("INSERT_EOL", new UITools.InsertEolAction());
 		editor.setRows(5);
+		
+		final JPopupMenu popupMenu = new JPopupMenu();
+        SpellCheckerController spellCheckerController = SpellCheckerController.getController();
+        spellCheckerController.addSpellCheckerMenu(popupMenu );
+        spellCheckerController.enableAutoSpell(editor, true);
+        editor.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                handlePopup(e);
+             }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                handlePopup(e);
+            }
+
+            private void handlePopup(MouseEvent e) {
+                if(e.isPopupTrigger()){
+                    e.consume();
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
+                
+            }
+            
+        });
+        
+		
 		final JScrollPane scrollPane = new JScrollPane(editor, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		addPopupComponent(popup, TextUtils.getText(label), scrollPane);
-	}
-
-	private void addPopupComponent(final JPopupMenu arrowLinkPopup, final String label, final JComponent component) {
-		final Component componentBox = new ContainerMenuItem(label, component);
-		arrowLinkPopup.add(componentBox);
 	}
 
 	public void setConnectorColor(final ConnectorModel arrowLink, final Color color) {

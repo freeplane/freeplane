@@ -75,28 +75,6 @@ public class UITools {
         }
     }
 
-	@SuppressWarnings("serial")
-    public static final class ClosePopupAction extends AbstractAction {
-        final private String reason;
-    
-    	public ClosePopupAction(String reason) {
-            this.reason = reason;
-        }
-    
-    	public void actionPerformed(ActionEvent e) {
-        	JComponent src = (JComponent) e.getSource();
-        	if(src instanceof JPopupMenu)
-        		close(src);
-        	else
-        		close((JComponent) SwingUtilities.getAncestorOfClass(JPopupMenu.class, src));
-        }
-    
-    	private void close(JComponent popup) {
-            popup.putClientProperty(reason, Boolean.TRUE);
-        	popup.setVisible(false);
-        }
-    }
-
 	public static final String MAIN_FREEPLANE_FRAME = "mainFreeplaneFrame";
 
 	public static void addEscapeActionToDialog(final JDialog dialog) {
