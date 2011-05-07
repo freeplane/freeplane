@@ -362,6 +362,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     					if(groupItem.isLeft() == isLeft)
     						data.ly[j]+=deltaY;
     				}
+	   				y += deltaY;
 				}
 				
 				int summaryY = groupStartY[itemLevel] + childShiftY;
@@ -379,6 +380,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 								data.ly[j]+=delta2;
 						}
 						top -= delta2;
+						y += delta2;
 					}
 					
 				}
