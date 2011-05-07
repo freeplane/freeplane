@@ -107,5 +107,6 @@
 		</stylenode>
 	</map_styles>
 </hook>
+<hook NAME="BranchesOverlap"/>
 </node>
 </map>

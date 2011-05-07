@@ -94,5 +94,6 @@
 </map_styles>
 </hook>
 <hook NAME="AutomaticEdgeColor"/>
+<hook NAME="BranchesOverlap"/>
 </node>
 </map>
