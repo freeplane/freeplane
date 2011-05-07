@@ -17,7 +17,7 @@
   </body>
 </html></richcontent>
 <font NAME="Dialog" SIZE="18" BOLD="true"/>
-<hook NAME="MapStyle" max_node_width="600">
+<hook NAME="MapStyle" zoom="1.1" max_node_width="600">
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" FOLDED="false">
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
@@ -111,19 +111,19 @@
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right">
-<stylenode TEXT="Hoofdstuk" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<stylenode TEXT="Hoofdstuk" BACKGROUND_COLOR="#ffff00" STYLE="bubble" TYPE="org.freeplane.features.common.styles.StyleString">
 <icon BUILTIN="folder"/>
 <font BOLD="true"/>
 <edge STYLE="hide_edge"/>
 </stylenode>
-<stylenode TEXT="Onderwerp" COLOR="#006699">
+<stylenode TEXT="Onderwerp" COLOR="#006699" TYPE="org.freeplane.features.common.styles.StyleString">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </stylenode>
-<stylenode TEXT="Inleiding" BACKGROUND_COLOR="#ffff00" STYLE="bubble"/>
-<stylenode TEXT="Functiegroep" COLOR="#407000">
+<stylenode TEXT="Inleiding" BACKGROUND_COLOR="#ffff00" STYLE="bubble" TYPE="org.freeplane.features.common.styles.StyleString"/>
+<stylenode TEXT="Functiegroep" COLOR="#407000" TYPE="org.freeplane.features.common.styles.StyleString">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </stylenode>
-<stylenode TEXT="Functie" COLOR="#663300"/>
+<stylenode TEXT="Functie" COLOR="#663300" TYPE="org.freeplane.features.common.styles.StyleString"/>
 </stylenode>
 </stylenode>
 </map_styles>
@@ -162,7 +162,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1854051049" CREATED="1293652042623" MODIFIED="1293652042623">
+<node ID="ID_1854051049" CREATED="1293652042623" MODIFIED="1294169033095">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -170,12 +170,12 @@
   </head>
   <body>
     <p>
-      Map stijlen worden opgeslagen in map <i>Templates </i>
+      Een mindmap-stijl wordt opgeslagen in map <i>Templates als </i>.mm-bestand
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_845524241" CREATED="1293652042626" MODIFIED="1293652042626">
+<node ID="ID_845524241" CREATED="1293652042626" MODIFIED="1294169172147">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -183,7 +183,7 @@
   </head>
   <body>
     <p>
-      Sneltoetsen sets worden opgeslagen in map <i>accelerators</i>
+      Een sneltoetsen-set worden opgeslagen in map <i>accelerators </i>als .properies bestand
     </p>
   </body>
 </html></richcontent>
@@ -192,6 +192,22 @@
 <node TEXT="auto.properties" ID="ID_1767737172" CREATED="1293652217954" MODIFIED="1293652227310"/>
 <node TEXT="auto.mmfilter" ID="ID_218849517" CREATED="1293652229631" MODIFIED="1293652264671"/>
 </node>
+<node FOLDED="true" ID="ID_1197372668" CREATED="1295721215492" MODIFIED="1295721321884">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om de locatie van de&#160;&#160;configuratiebestanden te vinden:
+    </p>
+    <p>
+      - <i>kies Help &gt; Over Freeplane</i>
+    </p>
+  </body>
+</html></richcontent>
+<font ITALIC="false"/>
 <node TEXT="Windows7" FOLDED="true" ID="ID_391274199" CREATED="1293651313131" MODIFIED="1293651324906">
 <node ID="ID_904494029" CREATED="1293651324911" MODIFIED="1293651459183">
 <icon BUILTIN="idea"/>
@@ -232,6 +248,10 @@
 </html></richcontent>
 </node>
 </node>
+<node TEXT="Portable Freeplane" FOLDED="true" ID="ID_262813593" CREATED="1294515697306" MODIFIED="1294515708944">
+<node TEXT="Driveletter e.g. E:/PortableApps/FreeplanePortable/Data/Freeplane/1.2.x" ID="ID_1634959071" CREATED="1294515727102" MODIFIED="1294515758435"/>
+</node>
+</node>
 </node>
 <node TEXT="Nederlandse spellingcontrole" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1547931043" CREATED="1291617322249" MODIFIED="1293651591317">
 <icon BUILTIN="pencil"/>
@@ -244,8 +264,9 @@
 </node>
 </node>
 <node TEXT="Pictogrammen toevoegen" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_993666367" CREATED="1291839224463" MODIFIED="1293651591315">
-<node TEXT="Om eigen pictogrammen aan de Pictogrammenbalk toe te voegen:&#xa;- plaats het pictogrambestand, bijvoorbeeld mijnpictogram.png, in de Freeplane gebruikersmap als %user%/appdata/freeplane/roaming/icons/mijnpictogram.png" ID="ID_537134358" CREATED="1270892460676" MODIFIED="1293553793435"/>
+<node TEXT="Om eigen pictogrammen aan de Pictogrammenbalk toe te voegen:&#xa;- plaats het pictogrambestand, bijvoorbeeld mijnpictogram.png, in de Freeplane gebruikersmap als %user%/appdata/freeplane/roaming/1.2.x/icons/mijnpictogram.png" ID="ID_537134358" CREATED="1270892460676" MODIFIED="1294415789301"/>
 <node TEXT="Locaties met pictogrammen op Internet" ID="ID_846418218" CREATED="1293543764927" MODIFIED="1293543800792" LINK="http://freemind.sourceforge.net/wiki/index.php/Icons"/>
+<node TEXT="Van een foto een pictogram maken" ID="ID_644281696" CREATED="1294330621441" MODIFIED="1294330648565" LINK="http://www.computeridee.nl/workshops.jsp?rubriek=1620361&amp;id=2143345"/>
 </node>
 <node TEXT="Installatie op Windows platform" STYLE_REF="Functiegroep" FOLDED="true" ID="_Freeplane_Link_139664576" CREATED="1270892460640" MODIFIED="1293651591314">
 <node TEXT="De volgende acties gebeuren meestal automatisch als je Freeplane download van Freeplane&apos;s homepagina" ID="ID_241920394" CREATED="1289029210967" MODIFIED="1293375091082" BACKGROUND_COLOR="#ffff00"/>
@@ -489,7 +510,7 @@
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!
+      <!--<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!
         h3 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 0 }
         h2 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 0 }
         h1 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 0 }
@@ -1807,488 +1828,46 @@
 <edge STYLE="bezier"/>
 </node>
 </node>
-<node TEXT="Basismogelijkheden mm" STYLE_REF="Onderwerp" FOLDED="true" POSITION="right" ID="ID_1444754090" CREATED="1289121848352" MODIFIED="1293375090225" LINK="freeplane_functionality_nl.mm">
-<node TEXT="Basismogelijkheden (plaatje)" FOLDED="true" ID="ID_147712495" CREATED="1288549229612" MODIFIED="1293375090221" LINK="freeplane_functionality_nl.jpg" COLOR="#006699">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="(Klik op het rode pijltje om het plaatje respectievelijk de mindmap te openen.)" ID="ID_1295796813" CREATED="1291837423869" MODIFIED="1293375090218"/>
-</node>
-</node>
-<node TEXT="Basisbegrippen" STYLE_REF="Onderwerp" FOLDED="true" POSITION="right" ID="ID_689355813" CREATED="1286912474338" MODIFIED="1293375090214">
-<node TEXT="Knoop" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1134143931" CREATED="1288986433297" MODIFIED="1293375090210">
-<node ID="ID_1859916476" CREATED="1288985786692" MODIFIED="1293375090203" LINK="#_Freeplane_Link_1709752669" BACKGROUND_COLOR="#ffff33" STYLE="bubble">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Plaats op het scherm waar een tekst of plaatje kan worden ingevoegd. De knoop kan wel of geen omlijning hebben. Een knoop is verbonden met een <b>ourderknoop</b>&#160;en kan verbondenen zijn met 0 of meer <b>kindknopen</b>. De <b>basisknoop</b>&#160;is de knoop waar een nieuwe mindmap mee opent: hier beginnen de takken naar alle andere knopen; de basisknoop is altijd herkenbaar aanzijn afwijkende vorm. De basisknoop is de ultieme ouderknoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Inhoud knoop" STYLE_REF="Functie" FOLDED="true" ID="ID_1791342474" CREATED="1291753245064" MODIFIED="1293375090200">
-<node STYLE_REF="Inleiding" ID="ID_1546528464" CREATED="1291835986334" MODIFIED="1293375090192">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een knoop heeft 4 tekstgebieden, te noemen basistekst, bijlage, attributen en notitie. Deze tekstgebieden zijn alleen zichtbaar als deze tekst bevatten &#233;n zijn ingeschakeld. Zie hiervoor:
-    </p>
-    <p>
-      - <i>Beeld &gt; Verbergen bijlage, attributen en notitie</i> (niet aangevinkt);
-    </p>
-    <p>
-      - <i>Beeld &gt; Tonen attributen</i>;
-    </p>
-    <p>
-      - <i>Beeld &gt; Tonen notities bij knopen</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Voorbeeld" FOLDED="true" ID="ID_1149649282" CREATED="1291836804157" MODIFIED="1293375090188">
-<node ID="ID_1010722858" CREATED="1288646162992" MODIFIED="1293375090183">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Basistekst</b>
-    </p>
-  </body>
-</html></richcontent>
-<font ITALIC="false"/>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Notitietekst
-    </p>
-  </body>
-</html></richcontent>
-<attribute NAME="a1" VALUE="waarde1"/>
-<attribute NAME="a2" VALUE="waarde2"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Tekst van bijlage
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1556415147" CREATED="1292788187298" MODIFIED="1293375090180">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Idem Met bijlage, attributen en notitie verborgen.
-    </p>
-    <p>
-      Beweeg over <i>Basistekst</i>&#160;om de verborgen inhoud te zien.
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_103918686" CREATED="1288646162992" MODIFIED="1293375090174" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Basistekst</b>
-    </p>
-  </body>
-</html></richcontent>
-<font ITALIC="false"/>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Notitietekst
-    </p>
-  </body>
-</html></richcontent>
-<attribute NAME="a1" VALUE="waarde1"/>
-<attribute NAME="a2" VALUE="waarde2"/>
+<node TEXT="Inleiding" STYLE_REF="Onderwerp" FOLDED="true" POSITION="right" ID="ID_689355813" CREATED="1286912474338" MODIFIED="1304347748652" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
-    <p>
-      Tekst van bijlage
+    <p class="MsoNormal">
+      Bij Freeplane wordt elk onderwerp een <b>knoop</b>&#160;genoemd. Een knoop bevat een gebied&#160;&#160;(veld) dat al dan niet kan zijn omlijnd en waarin een basistekst, pictogram, (vast) plaatje en/of hyperlink kan worden getoond. De <b>basistekst</b>&#160;wordt meestal gebruikt als een soort titel en bevat dan niet meer dan enkele woorden, Aan/onder dit gebied kunnen een bijlagetekst, notitietekst, attributen en een externe (schaalbare) afbeelding&#160;&#160;worden getoond. In de <b>bijlagetekst</b>&#160;&#160;kan bijvoorbeeld een toelichting op de basistekst worden opgenomen; deze tekst is dan ook meestal langer dan de basistekst. De <b>notitietekst</b>&#160;is van oorsprong bedoeld voor het presenteren van een document in een afzonderlijk, schermbreed venster, maar kan ook worden gebruikt als een tweede bijlageveld. Het veld van de basistekst kan in plaats van tekst ook een formule bevatten. Deze begint, net als bij een <i>spreadsheet,</i>&#160;met &#8220;=&#8221; en wordt automatisch uitgerekend. En verder kan een tijdstip worden opgegeven waarop een signalering moet worden gegeven (agendafunctie). Er kan worden ingesteld dat deze velden permanent zichtbaar zijn of alleen als de knoop is geslecteerd.
+    </p>
+    <p class="MsoNormal">
+      
+    </p>
+    <p class="MsoNormal">
+      Er is &#233;&#233;n <i>basisknoop</i>&#160;&#160;die de vorm heeft van een ovaal. &#160;Uit de basisknoop komen <b>takken</b>&#160;die een reeks van knopen verbinden die een ouder-kind relatie hebben. &#160;Daarnaast kunnen twee willekeurige knopen worden verbonden met een <b>verbindingslijn</b>&#160;&#160;(of pijl). Twee knopen kunnen digitaal worden verbonden met een <b>snelkoppeling</b>&#160;&#160;waarmee de focus van de ene naar de andere knoop kan worden verplaatst.. Knopen binnen een tak kunnen visueel worden verbonden door een <b>wolk</b>.
+    </p>
+    <p class="MsoNormal">
+      
+    </p>
+    <p class="MsoNormal">
+      De basiskenmerken van een knoop zijn toegankelijk via menu <b><i>Knoop</i></b>&#160; en de andere elementen via menu <b><i>Knoopkenmerken</i></b>.
+    </p>
+    <p class="MsoNormal">
+      
     </p>
   </body>
 </html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Omlijning knoop" STYLE_REF="Functie" FOLDED="true" ID="ID_1926775464" CREATED="1288536586615" MODIFIED="1293375090171">
-<node TEXT="zonder omlijning" ID="ID_433807760" CREATED="1288536619429" MODIFIED="1293375090167"/>
-<node TEXT="met omlijning" ID="ID_1794331644" CREATED="1288536624648" MODIFIED="1293375090163" STYLE="bubble"/>
-</node>
-<node TEXT="Knipperen" STYLE_REF="Functie" FOLDED="true" ID="ID_787918314" CREATED="1289051684862" MODIFIED="1293375090159">
-<node TEXT="Knipperen" ID="ID_1280590016" CREATED="1288548004325" MODIFIED="1293375090155">
-<hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
-</node>
-</node>
-<node TEXT="Pictogram" STYLE_REF="Functie" FOLDED="true" ID="ID_306655855" CREATED="1288991474812" MODIFIED="1293375090151">
-<node STYLE_REF="Inleiding" ID="ID_1663966222" CREATED="1288991485351" MODIFIED="1293375090147" LINK="#Freeplane_Link_1044397139">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een mini plaatje dat in een knoop kan worden opgenomen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Voorbeeld" FOLDED="true" ID="ID_614436124" CREATED="1289048771023" MODIFIED="1293375090143">
-<node TEXT="knoop met Pictogrammen" ID="ID_233656995" CREATED="1288542843639" MODIFIED="1293375090139">
-<icon BUILTIN="bookmark"/>
-<icon BUILTIN="button_ok"/>
-<icon BUILTIN="closed"/>
-</node>
-</node>
-</node>
-<node STYLE_REF="Functie" FOLDED="true" ID="ID_1300463318" CREATED="1288474841716" MODIFIED="1293375090135">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Afbeelding
-    </p>
-  </body>
-</html></richcontent>
-<node STYLE_REF="Inleiding" ID="ID_205998982" CREATED="1288455296861" MODIFIED="1293375090130" LINK="#Freeplane_Link_271176250">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Er zijn twee soorten afbeeldingen: met een vaste of met een instelbare grootte.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Tak" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1889396171" CREATED="1288986009569" MODIFIED="1293375090126">
-<node STYLE_REF="Inleiding" ID="ID_1324301486" CREATED="1288986019188" MODIFIED="1293375090120" LINK="#ID_1797063061">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een lijn tussen ouderknoop en kindknoop. Standaard is deze lijn zichtbaar. De kleur, dikte en vorm van deze lijn kunnen worden ingesteld<i>.</i>&#160;Een tak kan&#160;ook onzichtbaar worden gemaakt.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Voorbeeld" FOLDED="true" ID="ID_784697063" CREATED="1288536745875" MODIFIED="1293375090116">
-<node TEXT="Rechte lijn" ID="ID_884692926" CREATED="1288538234095" MODIFIED="1293375090112">
-<edge STYLE="linear" WIDTH="4"/>
-</node>
-<node TEXT="Bocht" ID="ID_609820168" CREATED="1288538240451" MODIFIED="1293375090108">
-<edge STYLE="bezier" WIDTH="4"/>
-</node>
-<node TEXT="Taps toelopend recht" ID="ID_1647821228" CREATED="1288538242377" MODIFIED="1293375090104">
-<edge STYLE="sharp_linear" WIDTH="4"/>
-</node>
-<node TEXT="Taps toelopend bocht" ID="ID_895403951" CREATED="1288538470332" MODIFIED="1293375090101">
-<edge STYLE="sharp_bezier" WIDTH="4"/>
-</node>
-<node TEXT="Verborgen tak" ID="ID_1675552701" CREATED="1288538507390" MODIFIED="1293375090097" BACKGROUND_COLOR="#00ffff">
-<edge STYLE="hide_edge" WIDTH="4"/>
-</node>
-</node>
-</node>
-<node TEXT="Afstammingslijn" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_310423354" CREATED="1288986069567" MODIFIED="1293375090093">
-<node STYLE_REF="Inleiding" ID="ID_1343985178" CREATED="1288986076986" MODIFIED="1293375090087">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knopen die met elkaar zijn verbonden in een afstammingsketen. De afstamingsketen begint bij de geselecteerde knoop en eindigt bij de laatste knoop, de <b>bladknoop</b>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Voorbeeld" FOLDED="true" ID="ID_441663322" CREATED="1288536353356" MODIFIED="1293375090083" STYLE="bubble">
-<node ID="ID_1863548649" CREATED="1288536207761" MODIFIED="1293375090079" STYLE="bubble">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      boven a
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="knoop a" FOLDED="true" ID="ID_1119041406" CREATED="1288535672221" MODIFIED="1293375090075" STYLE="bubble">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="ID_268922755" SOURCE_LABEL="ouder (=label)" TARGET_LABEL="kleinkind" MIDDLE_LABEL="verbindingslijn" STARTINCLINATION="-11;64;" ENDINCLINATION="11;87;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
-<node TEXT="knoop b" FOLDED="true" ID="ID_1908863616" CREATED="1288535688688" MODIFIED="1293375090070">
-<edge STYLE="bezier"/>
-<node TEXT="knoop c" ID="ID_268922755" CREATED="1288535699522" MODIFIED="1293375090066"/>
-</node>
-</node>
-<node TEXT="onder a" ID="ID_975219834" CREATED="1288536218798" MODIFIED="1293375090062" STYLE="bubble"/>
-</node>
-</node>
-<node TEXT="Wolk" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_108561273" CREATED="1289051373406" MODIFIED="1293375090058">
-<node STYLE_REF="Inleiding" ID="ID_693997263" CREATED="1289051381324" MODIFIED="1293375090054" LINK="#Freeplane_Link_1697687428">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een omkadering van een afstammingslijn.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Vorm" FOLDED="true" ID="ID_68274920" CREATED="1291306069080" MODIFIED="1293375090050">
-<node TEXT="boog" ID="ID_1145623348" CREATED="1291306087730" MODIFIED="1293375090046">
-<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-</node>
-<node TEXT="ster" ID="ID_681141861" CREATED="1291306077388" MODIFIED="1293375090042">
-<cloud COLOR="#f0f0f0" SHAPE="STAR"/>
-</node>
-<node TEXT="rechthoek" ID="ID_747200704" CREATED="1291306083573" MODIFIED="1293375090038">
-<cloud COLOR="#f0f0f0" SHAPE="RECT"/>
-</node>
-<node TEXT="afgeronde rechthoek" ID="ID_1190004089" CREATED="1291306090717" MODIFIED="1293375090034">
-<cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
-</node>
-</node>
-<node TEXT="Voorbeeld" FOLDED="true" ID="ID_1945985705" CREATED="1289051535881" MODIFIED="1293375090029">
-<node TEXT="knoop in wolk" FOLDED="true" ID="ID_646958243" CREATED="1288541742338" MODIFIED="1293375090025">
-<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<node TEXT="in wolk" ID="ID_1388178346" CREATED="1288541758195" MODIFIED="1293375090021" BACKGROUND_COLOR="#ff0066"/>
-<node TEXT="in wolk" ID="ID_504032805" CREATED="1288541802273" MODIFIED="1293375090017"/>
-</node>
-</node>
-</node>
-<node TEXT="Verbindingslijnen&#xa;en tekstlabels" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1147942380" CREATED="1288474899921" MODIFIED="1293375090012">
-<node STYLE_REF="Inleiding" ID="ID_283967235" CREATED="1288455348489" MODIFIED="1293375090006" LINK="#_Freeplane_Link_1996597932">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een lijn tussen twee willekeurige knopen. Op drie plaatsen van deze lijn (begin, midden en eind) kan een tekstlabel worden geplaatst.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node FOLDED="true" ID="ID_957571945" CREATED="1270893118534" MODIFIED="1293375090002" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Voorbeeld tekstlabel
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="beginknoop" ID="ID_1530991316" CREATED="1270893130918" MODIFIED="1293375089998">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="255" DESTINATION="ID_1975334004" SOURCE_LABEL="BEGINLABEL" TARGET_LABEL="EINDLABEL" MIDDLE_LABEL="MIDDENLABEL" STARTINCLINATION="115;27;" ENDINCLINATION="202;36;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-<node TEXT="eindknoop" ID="ID_1975334004" CREATED="1270893138577" MODIFIED="1293375089994"/>
-</node>
-</node>
-<node TEXT="Stijl" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1265358251" CREATED="1291305304499" MODIFIED="1293375089990" BACKGROUND_COLOR="#ffffff">
-<node TEXT="Een verzameling vormeigenschappen waarmee een knoop in &#xe9;&#xe9;n keer kan worden opgemaakt." STYLE_REF="Inleiding" ID="ID_1775866146" CREATED="1291305338376" MODIFIED="1293375089986"/>
-<node TEXT="Voorbeeld" LOCALIZED_STYLE_REF="AutomaticLayout.level,1" ID="ID_874424939" CREATED="1291305410190" MODIFIED="1293375089982"/>
-</node>
-<node TEXT="Selecteren" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1766881836" CREATED="1288989443175" MODIFIED="1293375089978">
-<node STYLE_REF="Inleiding" ID="ID_126870003" CREATED="1288989453947" MODIFIED="1293375089973">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Het in focus brengen van een knoop door de muiscursor over de knoop te bewegen en/of de linker muisknop te klikken. Er verschijnt een&#160; <b>selectiekader </b>om de knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Open/dichtvouwen" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_929078472" CREATED="1288987730151" MODIFIED="1293375089969">
-<node STYLE_REF="Inleiding" ID="ID_1435470272" CREATED="1288987741415" MODIFIED="1293375089962">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een knoop&#160;&#160;heet <b>opengevouwen</b>&#160;als alle verderliggende knopen in de knoopketen zichtbaar zijn. Een knoop heet <b>dichtgevouwen</b>&#160;als de verderliggende knopen zijn verborgen. Een ingevouwen knoop kan worden herkend aan een cirkeltje aan de kind-zijde van de knoop.&#160;Door&#160;&#160;met de linkermuisknop op een ingevouwen knoop te<b>&#160;klikken</b>&#160;kan deze worden uitgevouwen, en door weer te klikken worden ingevouwen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Koppeling" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_716188950" CREATED="1291305880663" MODIFIED="1293375089958">
-<node TEXT="Snelkoppeling" FOLDED="true" ID="ID_1095857585" CREATED="1288988654289" MODIFIED="1293375089954">
-<node STYLE_REF="Inleiding" ID="ID_566916458" CREATED="1288988680123" MODIFIED="1293375089948" LINK="#Freeplane_Link_203858515">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Elektronische koppeling tussen twee knopen (bronknoop en bestemming)&#160;welke is te herkennen aan een <b>groen pijltje</b>&#160;in de bronknoop.&#160;Door op het pijltje te klikken verschuift de focus (selectie) naar de bestemmingsknoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Hyperlink" FOLDED="true" ID="ID_373685796" CREATED="1288988935230" MODIFIED="1293375089944">
-<node STYLE_REF="Inleiding" ID="ID_130894030" CREATED="1288988946252" MODIFIED="1293375089938" LINK="#Freeplane_Link_203858515">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Electronische koppeling van een bronknoop naar&#160;&#160;naar een webpagina, een bestand of een applicatie zoals een tekstverwerker. De koppeling is te herkennen aan een<b>&#160;rood pijltje</b>. Door op het rode pijltje te klikken wordt de hyperlink geactiveerd.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="E-mail koppeling" FOLDED="true" ID="ID_244002768" CREATED="1289567404190" MODIFIED="1293375089935">
-<node TEXT="Een knoop met een e-mail adres. Door op de e-mail te klikken opent het e-mail bewerkingsvenster." STYLE_REF="Inleiding" ID="ID_137685702" CREATED="1289567412888" MODIFIED="1293375089931" LINK="mailto:test@freeplane.nl"/>
-</node>
-</node>
-<node TEXT="Agenda" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1247362742" CREATED="1288971324667" MODIFIED="1293375089927">
-<node TEXT="Een agenda is een venster waarin een datum en tijdstip kan worden gekozen. Deze datum verschijnt als tekst in de knoop. Er kan worden ingesteld dat op het tijdstip een activiteit moet gebeuren. Er wordt getoond dat de activiteit is ingesteld doordat een pictogram van een klokje in de knoop en in de basisknoop verschijnt. Op het tijdstip van de activiteit  knippert het klokje en verschijnt een rood uitroepteken in de basisknoop. De activiteit zelf kan worden beschreven in de tekst van de knoop of in een notitie bij de knoop." STYLE_REF="Inleiding" ID="ID_1087686800" CREATED="1288971330308" MODIFIED="1293375089922" LINK="#ID_1542554542"/>
-<node TEXT="Voorbeeld" FOLDED="true" ID="ID_548439261" CREATED="1289047813775" MODIFIED="1293375089919">
-<node TEXT="knoop met Agenda" ID="ID_1885496887" CREATED="1288542096079" MODIFIED="1293375089915">
-<hook NAME="plugins/TimeManagementReminder.xml">
-    <Parameters REMINDUSERAT="2077460580480"/>
-</hook>
-</node>
-</node>
-</node>
-<node TEXT="Notitie" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_391322847" CREATED="1288971070247" MODIFIED="1293375089911">
-<node TEXT="Een notitie is een tekst die bij een knoop hoort maar die bij een knoop en/of in een apart venster wordt getoond wordt als de knoop wordt geslelecteerd. De notitie wordt ook getoond in het venster waarin de activiteiten van de Agenda worden getoond." STYLE_REF="Inleiding" ID="ID_871040111" CREATED="1288971093047" MODIFIED="1293375089906" LINK="#ID_1542554542"/>
-<node TEXT="Voorbeeld" FOLDED="true" ID="ID_1389860743" CREATED="1289051630129" MODIFIED="1293375089902">
-<node TEXT="knoop met notitie" ID="ID_817370954" CREATED="1288646262270" MODIFIED="1293375089898">
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Dit is de notitie bij een knoop
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Attribuut" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1547039860" CREATED="1288984602150" MODIFIED="1293375089894">
-<node STYLE_REF="Inleiding" ID="ID_93375612" CREATED="1288984624529" MODIFIED="1293375089888" LINK="#ID_540307688">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een attribuut is een kenmerk met een waarde. Bijvoorbeeld het kenmerk <i>lengte</i>&#160; heeft waarde <i>1.75 m</i>. Aan een knoop kunnen meerdere attributen worden gekoppeld die al dan niet kunnen worden getoond. Attributen kunnen (ook) worden gebruikt om knopen te selecteren die wel/niet moeten worden getoond.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Voorbeeld" FOLDED="true" ID="ID_1601597975" CREATED="1289047766671" MODIFIED="1293375089884">
-<node TEXT="knoop met atribuut x=25" ID="ID_1811929182" CREATED="1288542302701" MODIFIED="1293375089880">
-<attribute NAME="x" VALUE="25"/>
-</node>
-</node>
-</node>
-<node TEXT="Formule" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_906917161" CREATED="1291305622483" MODIFIED="1293375089877" BACKGROUND_COLOR="#ffffff">
-<node TEXT="Een wiskundige formule die aan een knoop is gekoppeld en die kan worden uitgevoerd" STYLE_REF="Inleiding" ID="ID_700280123" CREATED="1291305629402" MODIFIED="1293375089873"/>
-</node>
-<node TEXT="Beveiligen" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_596564529" CREATED="1289048117709" MODIFIED="1293375089869">
-<node TEXT="Knoop" FOLDED="true" ID="ID_269999394" CREATED="1289048131492" MODIFIED="1293375089866">
-<node TEXT="Een knoop die beveiligd is kan alleen worden uitgevouwen nadat een wachtwoord is ingevoerd. Deze functionaliteit is experimenteel." STYLE_REF="Inleiding" ID="ID_300282915" CREATED="1289049097303" MODIFIED="1293375089861" LINK="#ID_1883292588"/>
-<node TEXT="Voorbeeld" ENCRYPTED_CONTENT="t/NS/HPSppU= VbQIDGWIdFE=" ID="ID_36040841" CREATED="1288542236861" MODIFIED="1293375089857"/>
-</node>
-<node TEXT="Mindmap" ID="ID_1880151658" CREATED="1289052364576" MODIFIED="1293375089853" LINK="#ID_1594926210"/>
-</node>
-<node STYLE_REF="Inleiding" ID="ID_538076297" CREATED="1286912660777" MODIFIED="1293375089848">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Er zijn vele manieren waarop binnen Freeplane de dingen kunnen worden gedaan: zie hieronder de knoop &quot;Functies en menu's&quot;. Bekijk de knoop &quot;Voorbeelden&quot; voor welke dingen kunnen worden gedaan.
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Er zijn vele manieren waarop binnen Freeplane de dingen kunnen worden gedaan: zie hieronder de knoop &quot;Functies en menu&apos;s&quot;. Bekijk de knoop &quot;Voorbeelden&quot; voor welke dingen kunnen worden gedaan.&#xa;Houd de cursor boven een knoop en wacht even om verborgen tekst zichtbaar te maken." STYLE_REF="Inleiding" ID="ID_538076297" CREATED="1286912660777" MODIFIED="1304347822690">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>
-</node>
-<node TEXT="Functies en menu&apos;s" FOLDED="true" POSITION="right" ID="ID_777714483" CREATED="1286740573662" MODIFIED="1293375089844" COLOR="#006699">
+<node TEXT="Basismogelijkheden mm" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_1444754090" CREATED="1289121848352" MODIFIED="1293375090225" LINK="freeplane_functionality_nl.mm">
+<node TEXT="Basismogelijkheden (plaatje)" FOLDED="true" ID="ID_147712495" CREATED="1288549229612" MODIFIED="1293375090221" LINK="freeplane_functionality_nl.jpg" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node STYLE_REF="Functie" ID="ID_164253080" CREATED="1286910994642" MODIFIED="1293375089837" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<richcontent TYPE="NODE">
+<node TEXT="(Klik op het rode pijltje om het plaatje respectievelijk de mindmap te openen.)" ID="ID_1295796813" CREATED="1291837423869" MODIFIED="1293375090218"/>
+</node>
+</node>
+</node>
+<node TEXT="Functies en menu&apos;s" FOLDED="true" POSITION="right" ID="ID_777714483" CREATED="1286740573662" MODIFIED="1304348482204" COLOR="#006699" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -2302,10 +1881,10 @@
     </p>
   </body>
 </html></richcontent>
-</node>
 <node TEXT="Waar bevinden zich de menubalken en hoe heten ze ?" ID="ID_1527109093" CREATED="1287139381881" MODIFIED="1293375089833" LINK="freeplane_menuposition_nl.jpg"/>
-<node TEXT="Welke functies bevatten de menu&apos;s ?" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_602915987" CREATED="1286909912487" MODIFIED="1293375089829">
-<node TEXT="Hoofdmenu" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1676223674" CREATED="1286741018708" MODIFIED="1293375089826">
+<node TEXT="Welke functies bevatten de menu&apos;s ?" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_602915987" CREATED="1286909912487" MODIFIED="1304348502679">
+<font ITALIC="true"/>
+<node TEXT="Hoofdmenu" STYLE_REF="Functiegroep" ID="ID_1676223674" CREATED="1286741018708" MODIFIED="1293375089826">
 <node TEXT="Bestand" FOLDED="true" ID="ID_726273295" CREATED="1266240579156" MODIFIED="1293375089822" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node FOLDED="true" ID="ID_368992923" CREATED="1266240728734" MODIFIED="1293375089818" COLOR="#663300">
@@ -2392,6 +1971,32 @@
 </html></richcontent>
 </node>
 </node>
+<node FOLDED="true" ID="ID_36822681" CREATED="1266240760812" MODIFIED="1293375089741" COLOR="#663300">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Alles opslaan
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_845551262" CREATED="1266244077296" MODIFIED="1293375089737" COLOR="#000000">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bewaart alle open mindmaps.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
 <node TEXT="Teruggaan naar opgeslagen versie" FOLDED="true" ID="ID_1689665561" CREATED="1266240740062" MODIFIED="1293375089774" COLOR="#663300">
 <node ID="ID_1182324893" CREATED="1266240906265" MODIFIED="1293375089767" COLOR="#000000">
 <richcontent TYPE="NODE">
@@ -2425,32 +2030,6 @@
 </html></richcontent>
 </node>
 </node>
-<node FOLDED="true" ID="ID_36822681" CREATED="1266240760812" MODIFIED="1293375089741" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Alles opslaan
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_845551262" CREATED="1266244077296" MODIFIED="1293375089737" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bewaart alle open mindmaps.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
 <node FOLDED="true" ID="ID_1638327663" CREATED="1266240764406" MODIFIED="1293375089733" COLOR="#663300">
 <richcontent TYPE="NODE">
 <html>
@@ -2477,6 +2056,7 @@
 </html></richcontent>
 </node>
 </node>
+<node TEXT="Bestandseigenschappen" ID="ID_1258957076" CREATED="1296241429294" MODIFIED="1303928653354" COLOR="#663300"/>
 <node FOLDED="true" ID="ID_1675582059" CREATED="1266240766296" MODIFIED="1293375089726" COLOR="#663300">
 <richcontent TYPE="NODE">
 <html>
@@ -2926,35 +2506,13 @@
 <node TEXT="Selecteren van het zichtare" FOLDED="true" ID="ID_1753527006" CREATED="1266244598296" MODIFIED="1293375089395" COLOR="#663300">
 <node TEXT="Selekteert alle knopen die zichbaar zijn op de mindmap  (niet ingevouwen knopen)." ID="ID_236802992" CREATED="1266590817413" MODIFIED="1293375089391"/>
 </node>
-<node FOLDED="true" ID="ID_989256344" CREATED="1266244616625" MODIFIED="1293375089387" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Selecteren tak
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Selecteren zichtbare tak" FOLDED="true" ID="ID_989256344" CREATED="1266244616625" MODIFIED="1303928815674" COLOR="#663300">
 <node TEXT="Selekteer alle zichtbare (niet-ingevouwen) knopen van de geselekteerde knoop." ID="ID_108766240" CREATED="1266590829788" MODIFIED="1293375089383"/>
 </node>
 <node TEXT="Knippen" FOLDED="true" ID="ID_1547909248" CREATED="1266590937117" MODIFIED="1293375089379" COLOR="#663300">
 <node TEXT="Knip de geselekteerde knoop en zijn kinderen." ID="ID_1572752848" CREATED="1266591004710" MODIFIED="1293375089375"/>
 </node>
-<node FOLDED="true" ID="ID_332933439" CREATED="1266590939085" MODIFIED="1293375089371" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Kopi&#235;ren
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Kopi&#xeb;ren" FOLDED="true" ID="ID_332933439" CREATED="1266590939085" MODIFIED="1294258544637" COLOR="#663300">
 <node TEXT="Kopieert de geselecteerde knoop en zijn takken (kinderen)." ID="ID_1573135167" CREATED="1266590985179" MODIFIED="1293375089367"/>
 </node>
 <node FOLDED="true" ID="ID_1364929345" CREATED="1266244631343" MODIFIED="1293375089363" COLOR="#663300">
@@ -3049,108 +2607,6 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Bewerken knooptekst" FOLDED="true" ID="ID_1162372089" CREATED="1266247401765" MODIFIED="1293375089327" COLOR="#663300">
-<node ID="ID_500343761" CREATED="1266259247359" MODIFIED="1293375089321">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Brengt de geselekteerde knoop in bewerkingsmodus voor <i>Eenvoudige opmaak</i>. In <i>Eenvoudige opmaak </i>hebben alle letters dezelfde opmaak.&#160;&#160;Als de knoop de laatste knoop is van een tak, dan brengt ook het klikken met de linker muisknop de knoop in bewerkingsmodus. Bij andere knopen zorgt linksklikken voor het open/dichtvouwen van de knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Bewerken knooptekst in hulpvenster" FOLDED="true" ID="ID_1542197841" CREATED="1266244681296" MODIFIED="1293375089317" COLOR="#663300">
-<node ID="ID_669267737" CREATED="1266248543843" MODIFIED="1293375089310" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster met uitgebreide bewerkingsmogelijkheden, waarbij alle letters een andere opmaak kunnen hebben. Nadat een knoop een keer als<i>&#160;Bewerken Uitgebreide opmaak</i>&#160;is geopend, opent het altijd op deze wijze, tenzij <i>Opmaak &gt; Gebruiken Eenvoudigre opmaak</i>&#160;(die alle eerdere bewerkingen verwijdert) wordt gekozen. ZIE OOK: <i>Bewerken knoop.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Bewerken knoopbijlage" FOLDED="true" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1293375089306" COLOR="#663300">
-<node ID="ID_1571583355" CREATED="1291616743871" MODIFIED="1293375089300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent venster voor het invoeren en opmaken van tekst die onder een knoop getoond wordt als <i>Beeld &gt; Tonen knoopbijlage</i>&#160;is geselecteerd.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_984784283" CREATED="1266244687437" MODIFIED="1293375089297" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bewerken attributen
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_328241656" CREATED="1266246408843" MODIFIED="1293375089290" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een tabelachtige structuur onder de knoop met een regel met twee kolommen. Er kunnen meer regels worden toegevoegd met de TAB-toets. Alle cellen kunnen worden bewerkt. De <i>pijl-naar-beneden</i>&#160;toont de extra toegevoegde regels. Attributen kunnen allen worden verwijderd met<i>&#160; Toekennen Attributen</i>. OPMERKING: Er zijn meer en betere mogelijkehden door met<i>&#160;Extra &gt; Attributen beheren</i>&#160;attributen te maken en vervolgens waarden te geven met <i>Extra &gt;Bewerken&#160;Attributen.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Bewerken notitie" FOLDED="true" ID="ID_924676619" CREATED="1266255695750" MODIFIED="1293375089286" COLOR="#663300">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1338064532" CREATED="1266596080085" MODIFIED="1293375089280">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wisselt de focus tussen mindmap en en Notitievenster. Als een knoop wordt bewerkt dan wordt dit bewerkingsvenster gesloten. Het notitievenster wordt geopend indien dit nog niet open was. Het omgekeerde gebeurt niet: als de focus van het Notitievenster naar de mindmap gaat: dan blijft het notitievenster open. Om het notietivenster te openen en te sluiten: zie <i>BEELD &gt; Notitievenster.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Verwijderen knoop" FOLDED="true" ID="ID_1954594298" CREATED="1266247035265" MODIFIED="1293375089276" COLOR="#663300">
-<node ID="ID_1394618550" CREATED="1266591179132" MODIFIED="1293375089272">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verwijdert de knoop en zijn kinderen. ZIE OOK: <i>Ongedaan maken</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
 <node FOLDED="true" ID="ID_747315143" CREATED="1266247041171" MODIFIED="1293375089269" COLOR="#663300">
 <richcontent TYPE="NODE">
 <html>
@@ -3203,6 +2659,21 @@
 </html></richcontent>
 </node>
 </node>
+<node TEXT="Zoeken en vervangen in alle mindmaps." FOLDED="true" ID="ID_100634645" CREATED="1266247064718" MODIFIED="1293375089243" COLOR="#663300">
+<node ID="ID_264652060" CREATED="1266591545695" MODIFIED="1293375089237">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Zelfde als<i>&#160;Zoeken en vervangen</i>... maar toegepast op alle open Mindamaps. ZIE OOK: <i>Zoeken en vervangen...</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
 <node FOLDED="true" ID="ID_766990235" CREATED="1266247058828" MODIFIED="1293375089253" COLOR="#663300">
 <richcontent TYPE="NODE">
 <html>
@@ -3229,20 +2700,13 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Zoeken en vervangen in alle mindmaps." FOLDED="true" ID="ID_100634645" CREATED="1266247064718" MODIFIED="1293375089243" COLOR="#663300">
-<node ID="ID_264652060" CREATED="1266591545695" MODIFIED="1293375089237">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Zelfde als<i>&#160;Zoeken en vervangen</i>... maar toegepast op alle open Mindamaps. ZIE OOK: <i>Zoeken en vervangen...</i>
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Rest" FOLDED="true" ID="ID_1019603825" CREATED="1303928856474" MODIFIED="1303928863651">
+<node TEXT="Bewerken tekstextenties" FOLDED="true" ID="ID_1069007155" CREATED="1298574156892" MODIFIED="1298581236801" COLOR="#663300">
+<node TEXT="Bewerken LaTeX..." ID="ID_1637294677" CREATED="1298574227302" MODIFIED="1298574297768" COLOR="#663300">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>
+</node>
+<node TEXT="Verwijderen tekstextenties" ID="ID_602736920" CREATED="1298574611663" MODIFIED="1298581337671" COLOR="#663300"/>
 </node>
 </node>
 <node FOLDED="true" ID="ID_389115947" CREATED="1266240584812" MODIFIED="1293375089234" COLOR="#407000">
@@ -3258,6 +2722,7 @@
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Werkbalken" FOLDED="true" ID="ID_1963983857" CREATED="1303929006438" MODIFIED="1303929017499">
 <node TEXT="Tonen hoofdmenu" FOLDED="true" ID="ID_926021846" CREATED="1266247097703" MODIFIED="1293375089230" COLOR="#663300">
 <node ID="ID_641371847" CREATED="1266591746476" MODIFIED="1293375089226">
 <richcontent TYPE="NODE">
@@ -3309,6 +2774,7 @@
 </html></richcontent>
 </node>
 </node>
+</node>
 <node TEXT="Tonen volledig scherm" FOLDED="true" ID="ID_1560330236" CREATED="1266247120765" MODIFIED="1293375089193" COLOR="#663300">
 <node ID="ID_1467881326" CREATED="1266247143359" MODIFIED="1293375089187" COLOR="#000000">
 <richcontent TYPE="NODE">
@@ -3327,24 +2793,14 @@
 <node TEXT="Tonen opmaakpaneel" FOLDED="true" ID="ID_1783882978" CREATED="1291154608643" MODIFIED="1293375089184" COLOR="#663300">
 <node TEXT="Toont/verbergt een venster waarin alle vormelementen van een knoop worden getoond en in &#xe9;&#xe9;n keer kunnen worden bewerkt." ID="ID_1802564803" CREATED="1291154670380" MODIFIED="1293375089179"/>
 </node>
+<node TEXT="Displaystatus ?" ID="ID_183960920" CREATED="1303929119304" MODIFIED="1303929131239"/>
 <node TEXT="Verbergen bijlage, attributen en notitie" FOLDED="true" ID="ID_787093188" CREATED="1291155413971" MODIFIED="1293375089175" COLOR="#663300">
 <node TEXT="Voor zover deze bestaan worden bijlage, attributen en notitie van/bij de geselecteerde knoop verborgen.&#xa;Tevens wordt de tekst van de basisknoop beperkt to een of enkele woorden. Verborgen teksten worden zichtbaar door de cursor boven de knoop te plaatsen en/of op het &quot;verticale&quot; driehoekje te kilkken waarmee bijlage en notitie kunnen woren open/dichtgeklapt." ID="ID_1977628080" CREATED="1291664153292" MODIFIED="1293375089171"/>
 </node>
-<node TEXT="Tonen knoopbijlage" FOLDED="true" ID="ID_734978433" CREATED="1291155323140" MODIFIED="1293375089167" COLOR="#663300">
+<node TEXT="Tonen bijlage" FOLDED="true" ID="ID_734978433" CREATED="1291155323140" MODIFIED="1298472141071" COLOR="#663300">
 <node TEXT="Wisselt tussen opnen/sluiten van het bijlagevenster onder een knoop. Alternatief: klik op het verticale pijltje in de knoop." ID="ID_1006458466" CREATED="1291616743871" MODIFIED="1293375089162"/>
 </node>
-<node FOLDED="true" ID="ID_1851007191" CREATED="1266247206859" MODIFIED="1293375089158" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Rechthoekig selectiekader
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Tonen rechthoekig selectiekader" FOLDED="true" ID="ID_1851007191" CREATED="1266247206859" MODIFIED="1303929165512" COLOR="#663300">
 <node ID="ID_683878435" CREATED="1266593143132" MODIFIED="1293375089152">
 <richcontent TYPE="NODE">
 <html>
@@ -3360,18 +2816,7 @@
 <font ITALIC="false"/>
 </node>
 </node>
-<node FOLDED="true" ID="ID_519734292" CREATED="1266247214640" MODIFIED="1293375089148" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Overzichtsweergave
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Tonen overzichtsweergave" FOLDED="true" ID="ID_519734292" CREATED="1266247214640" MODIFIED="1303929181970" COLOR="#663300">
 <node ID="ID_1390220676" CREATED="1266593482726" MODIFIED="1293375089142">
 <richcontent TYPE="NODE">
 <html>
@@ -3437,18 +2882,7 @@
 </html></richcontent>
 </node>
 </node>
-<node FOLDED="true" ID="ID_1360497080" CREATED="1266249692203" MODIFIED="1293375089099" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Passend op de pagina
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Maak passend op de pagina" FOLDED="true" ID="ID_1360497080" CREATED="1266249692203" MODIFIED="1303929210175" COLOR="#663300">
 <node ID="ID_313804071" CREATED="1266593683835" MODIFIED="1293375089095">
 <richcontent TYPE="NODE">
 <html>
@@ -3463,7 +2897,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Notitiehulpvenster" FOLDED="true" ID="ID_1073686439" CREATED="1266249699921" MODIFIED="1293375089091" COLOR="#663300">
+<node TEXT="Tonen notitiehulpvenster" FOLDED="true" ID="ID_1073686439" CREATED="1266249699921" MODIFIED="1303929239971" COLOR="#663300">
 <node ID="ID_716526560" CREATED="1266593745976" MODIFIED="1293375089087">
 <richcontent TYPE="NODE">
 <html>
@@ -3496,7 +2930,7 @@
 <node TEXT="Tonen notities bij knopen" FOLDED="true" ID="ID_389897702" CREATED="1291155591515" MODIFIED="1293375089076" COLOR="#663300">
 <node TEXT="Wisselt tussen wel/niet tonen van een aanwezige notitie bij de knoop waar deze bij hoort. Zie ook: Notitiehulpvenster." ID="ID_561965363" CREATED="1292657156974" MODIFIED="1293375089071"/>
 </node>
-<node TEXT="Attributen" FOLDED="true" ID="ID_353026241" CREATED="1266249735046" MODIFIED="1293375089066" COLOR="#663300">
+<node TEXT="Tonen attributen" FOLDED="true" ID="ID_353026241" CREATED="1266249735046" MODIFIED="1303929264291" COLOR="#663300">
 <node ID="ID_1065342219" CREATED="1266593893960" MODIFIED="1293375089059">
 <richcontent TYPE="NODE">
 <html>
@@ -3511,9 +2945,36 @@
 </html></richcontent>
 </node>
 </node>
+<node TEXT="Tonen tooltips voor knopen" ID="ID_1080042379" CREATED="1303929283533" MODIFIED="1303929296186"/>
+<node TEXT="Markeer formules niet met een rand" ID="ID_1847984972" CREATED="1303929296863" MODIFIED="1303929325568"/>
 </node>
-<node TEXT="Invoegen" FOLDED="true" ID="ID_108574210" CREATED="1266240590140" MODIFIED="1293375089055" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Knoop" FOLDED="true" ID="ID_1435472587" CREATED="1303928254072" MODIFIED="1303928272090">
+<node FOLDED="true" ID="ID_1509185966" CREATED="1266249870703" MODIFIED="1293375089019" COLOR="#663300">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Nieuwe ouderknoop (niveau hoger)
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_1420919206" CREATED="1266257910906" MODIFIED="1293375089015">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Maakt een nieuwe knoop tussen de huidige knoop en zijn ouderknoop.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
 <node FOLDED="true" ID="ID_942355748" CREATED="1266249828031" MODIFIED="1293375089051" COLOR="#663300">
 <richcontent TYPE="NODE">
 <html>
@@ -3570,7 +3031,9 @@
 </html></richcontent>
 </node>
 </node>
-<node FOLDED="true" ID="ID_1509185966" CREATED="1266249870703" MODIFIED="1293375089019" COLOR="#663300">
+<node TEXT="Nieuwe summary knoop" ID="ID_322077643" CREATED="1303929629986" MODIFIED="1303929647568"/>
+<node TEXT="Verwijderen knoop" FOLDED="true" ID="ID_1954594298" CREATED="1266247035265" MODIFIED="1293375089276" COLOR="#663300">
+<node ID="ID_1394618550" CREATED="1266591179132" MODIFIED="1293375089272">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -3578,25 +3041,14 @@
   </head>
   <body>
     <p>
-      Nieuwe ouderknoop (niveau hoger)
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1420919206" CREATED="1266257910906" MODIFIED="1293375089015">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt een nieuwe knoop tussen de huidige knoop en zijn ouderknoop.
+      Verwijdert de knoop en zijn kinderen. ZIE OOK: <i>Ongedaan maken</i>.
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node FOLDED="true" ID="ID_1277752024" CREATED="1266249875046" MODIFIED="1293375089011" COLOR="#663300">
+<node TEXT="Samenvoegen knopen" FOLDED="true" ID="ID_1720469761" CREATED="1266247462656" MODIFIED="1293375088268" COLOR="#663300">
+<node ID="ID_351515654" CREATED="1267747213492" MODIFIED="1293375088264">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -3604,12 +3056,63 @@
   </head>
   <body>
     <p>
-      Afbeelding kiezen uit bestandenlijst of via hyperlink...
+      Voegt twee knopen samen, maar alleen als beide geen kindknopen hebben.
     </p>
   </body>
 </html></richcontent>
+</node>
+</node>
+<node TEXT="Knoop splitsen" FOLDED="true" ID="ID_1796564424" CREATED="1266247473250" MODIFIED="1293375088260" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
+<node ID="ID_1642976344" CREATED="1266248295484" MODIFIED="1293375088254" COLOR="#000000">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Verdeelt de tekst van een knoop over twee knopen op het punt waar een nieuwe regel begint welke is gemaakt met <i>Shift + Enter</i>&#160;(bij Eenvoudige tekstompaak)&#160;of &lt;Enter&gt; bij Uitgebreide tekstopmaak. Bij HTML-knopen kan de opdracht herhaaldelijk voor elk genest niveau worden toegepast. Het contextmenu voor uitgebreide tekstopmaak bevat een knop Splitsen. Hiermee wordt het punt waar de cursor staat gebruikt om te splitsen.<br/>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Snelbewerken basistekst" FOLDED="true" ID="ID_1162372089" CREATED="1266247401765" MODIFIED="1298476773512" COLOR="#663300">
+<node ID="ID_500343761" CREATED="1266259247359" MODIFIED="1293375089321">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Brengt de geselekteerde knoop in bewerkingsmodus voor <i>Eenvoudige opmaak</i>. In <i>Eenvoudige opmaak </i>hebben alle letters dezelfde opmaak.&#160;&#160;Als de knoop de laatste knoop is van een tak, dan brengt ook het klikken met de linker muisknop de knoop in bewerkingsmodus. Bij andere knopen zorgt linksklikken voor het open/dichtvouwen van de knoop.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Bewerken basistekst" FOLDED="true" ID="ID_1542197841" CREATED="1266244681296" MODIFIED="1298574155090" COLOR="#663300">
+<node ID="ID_669267737" CREATED="1266248543843" MODIFIED="1293375089310" COLOR="#000000">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opent een dialoogvenster met uitgebreide bewerkingsmogelijkheden, waarbij alle letters een andere opmaak kunnen hebben. Nadat een knoop een keer als<i>&#160;Bewerken Uitgebreide opmaak</i>&#160;is geopend, opent het altijd op deze wijze, tenzij <i>Opmaak &gt; Gebruiken Eenvoudigre opmaak</i>&#160;(die alle eerdere bewerkingen verwijdert) wordt gekozen. ZIE OOK: <i>Bewerken knoop.</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Uitgebreide tekstopmaak (RTF)" FOLDED="true" ID="ID_601879583" CREATED="1266251602796" MODIFIED="1303930085967" COLOR="#663300">
+<node TEXT="Stelt alle geselecteerde knopen in op Uitgebreide tekstopmaak (Rich Text Format)." ID="ID_1427224313" CREATED="1266256310578" MODIFIED="1293375088886"/>
+</node>
+<node TEXT="Platte tekstopmaak" FOLDED="true" ID="ID_421682408" CREATED="1266251609187" MODIFIED="1293375088881" COLOR="#663300">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1927196799" CREATED="1266257430281" MODIFIED="1293375089004">
+<node ID="ID_1473717210" CREATED="1266256336093" MODIFIED="1293375088863">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -3617,18 +3120,214 @@
   </head>
   <body>
     <p>
-      Voeg een afbeelding toe van type: bitmap, giff, jpg, jpeg, or png.
-    </p>
-    <p>
-      Als de knoop nog geen afbeelding bevat dan kan deze met de V<i>erkenner</i>&#160; worden gezocht en gekozen.
-    </p>
-    <p>
-      Als de knoop al een snelkoppeling naar een afbeelding bevat dan wordt deze gebruikt om automatisch de afbeelding te kiezen.
+      Alleen voor geautomatisseerde verwerking; bedoeld voor systemen die geen HTML kennen. Maakt van alle tekst in geselecteerde knopen &quot;platte tekst&quot; zonder HTML code. Dit maakt het effect van <i>Opmaak &gt; Uitgebreide tekstopmaak (RTF)..</i>. ongedaan.
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
+</node>
+<node TEXT="Knoopkenmerk" FOLDED="true" ID="ID_1929697075" CREATED="1303928282470" MODIFIED="1304432729415">
+<node TEXT="Notitie" FOLDED="true" ID="ID_1365598976" CREATED="1303930145801" MODIFIED="1304442669079" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Onder de bijlagetekst kan een tweede externe tekst worden getoond. Deze tekst kan naar keuze in een separaat, schermbreed venster worden getoond. Hierdoor is de notitietekst geschikt om bijvoorbeeld refertes te bevatten. De notitietekst wordt ook gebruikt in het venster waarin de activiteiten van de Agenda worden getoond.
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Bewerken notitie" ID="ID_924676619" CREATED="1266255695750" MODIFIED="1304441466520" COLOR="#663300" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wisselt de focus tussen mindmap en en Notitievenster.
+    </p>
+    <p>
+      Als een knoop wordt bewerkt dan wordt dit bewerkingsvenster gesloten.
+    </p>
+    <p>
+      Het notitievenster wordt geopend indien dit nog niet open was.Het omgekeerde gebeurt niet: als de focus van het Notitievenster naar de mindmap gaat: dan blijft het notitievenster open.
+    </p>
+    <p>
+      Om het notietivenster te openen en te sluiten: zie <i>BEELD &gt; Notitievenster.</i>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Verwijderen notitie" ID="ID_142539324" CREATED="1266247870640" MODIFIED="1304441905264" COLOR="#663300" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toont dialoogvenster voor het verwijderen van de notities van de geselecteerde knopen.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Bewerken notitiehulpvenster" ID="ID_221910481" CREATED="1298574467254" MODIFIED="1304442408784" COLOR="#663300" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Opent een schermbreed hulpvenster waarin de notitietekst wordt getoond en kan worden bewerkt. Dit venster blijft open staan als een andere knoop wordt geselecteerd. Om het venster te sluiten, kies: <i>Beeld &gt; Notitievenster</i>.</span></font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Bijlage" FOLDED="true" ID="ID_1543644666" CREATED="1303930434451" MODIFIED="1304442826136" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Onder de basistekst kan, in het buitengebied van de knoop een toelichtende tekst&#160;&#160;worden getoond. De gebruiker kan deze tekst oprollen/uitrollen..&#160;&#160;Er kan worden ingesteld dat de bijlagetekst alleen wordt getoond als de knoop is geselecteerd.
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Bewerken bijlage" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1304442945648" COLOR="#663300" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opent venster voor het invoeren en opmaken van tekst die onder een knoop getoond wordt als <i>Beeld &gt; Tonen bijlage</i>&#160;is geselecteerd.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Verwijderen bijlage" STYLE_REF="Functie" ID="ID_949038869" CREATED="1291201354423" MODIFIED="1304443046808" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Verwijdert een aanwezige bijlage uit de geselecteerde knoop.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Attributen" FOLDED="true" ID="ID_147715298" CREATED="1303930553284" MODIFIED="1304445114833" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een attribuut is een paar van twee naast elkaar gelegen velden. Het linker veld is bedoeld voor de naam van het attribuut en de rechter voor de waarde van het attribuut.&#160;&#160;Een knoop kan onder elkaar meerdere attributen tonen (attributenlijst).
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Bewerken attribuut" FOLDED="true" ID="ID_984784283" CREATED="1266244687437" MODIFIED="1298476843366" COLOR="#663300">
+<node ID="ID_328241656" CREATED="1266246408843" MODIFIED="1293375089290" COLOR="#000000">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opent een tabelachtige structuur onder de knoop met een regel met twee kolommen. Er kunnen meer regels worden toegevoegd met de TAB-toets. Alle cellen kunnen worden bewerkt. De <i>pijl-naar-beneden</i>&#160;toont de extra toegevoegde regels. Attributen kunnen allen worden verwijderd met<i>&#160; Toekennen Attributen</i>. OPMERKING: Er zijn meer en betere mogelijkehden door met<i>&#160;Extra &gt; Attributen beheren</i>&#160;attributen te maken en vervolgens waarden te geven met <i>Extra &gt;Bewerken&#160;Attributen.</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Verwijder eerste attribuut" ID="ID_869406084" CREATED="1303930754909" MODIFIED="1303930766033"/>
+<node TEXT="Verwijder laatste attribuut" ID="ID_412020595" CREATED="1303930767148" MODIFIED="1303930780019"/>
+<node TEXT="Verwijder alle attributen" ID="ID_8268990" CREATED="1303930781149" MODIFIED="1303930791836"/>
+<node TEXT="Kopi&#xeb;ren attributen" STYLE_REF="Functie" FOLDED="true" ID="ID_602133149" CREATED="1294258521065" MODIFIED="1294258649212">
+<node TEXT="Kopieert de attributen van de geselecteerde knoop." ID="ID_1342405727" CREATED="1294258592879" MODIFIED="1294258614579"/>
+</node>
+<node TEXT="Plakken attributen" STYLE_REF="Functie" FOLDED="true" ID="ID_1806982803" CREATED="1294258579299" MODIFIED="1294258651715">
+<node TEXT="Plakt eerder gekopieerde attributen in de geselecteerde knoop." ID="ID_1640472538" CREATED="1294258617410" MODIFIED="1294258643432"/>
+</node>
+<node TEXT="Attribuutwaarden beheren" FOLDED="true" ID="ID_639830064" CREATED="1266247880359" MODIFIED="1303930926965" COLOR="#663300">
+<node ID="ID_1867411346" CREATED="1267746434945" MODIFIED="1293375088183">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toont dialoogvenster voor het bewerken van attributen en attribuutwaarden van geselecteerde knopen.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node FOLDED="true" ID="ID_1707643609" CREATED="1266247875750" MODIFIED="1293375088193" COLOR="#663300">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Attributen beheren...
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_125791885" CREATED="1267746411055" MODIFIED="1293375088190">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toont het dialoogvenster voor het toevoegen en het beheren van alle gedefinieerde attribbuten.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Koppeling" FOLDED="true" ID="ID_1430712985" CREATED="1303930954062" MODIFIED="1304445450808" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een verbindingslijn of interactieve verbinding tussen twee knopen, of tussen een knoop en een extern object.
+    </p>
+  </body>
+</html>
+</richcontent>
 <node TEXT="Hyperlink kiezen uit bestandenlijst" FOLDED="true" ID="ID_178833757" CREATED="1266249910406" MODIFIED="1293375089000" COLOR="#663300">
 <node ID="ID_63859182" CREATED="1266594047023" MODIFIED="1293375088992">
 <richcontent TYPE="NODE">
@@ -3688,7 +3387,8 @@
 </html></richcontent>
 </node>
 </node>
-<node FOLDED="true" ID="ID_646708313" CREATED="1266249966500" MODIFIED="1293375088977" COLOR="#663300">
+<node TEXT="Hyperlink uit tekstadres" FOLDED="true" ID="ID_1049705529" CREATED="1266247483750" MODIFIED="1293375088251" COLOR="#663300">
+<node ID="ID_178007559" CREATED="1271845283423" MODIFIED="1293375088246">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -3696,10 +3396,13 @@
   </head>
   <body>
     <p>
-      Verbindingslijn
+      Maakt een snelkoppeling van een knoop die een URL bevat zoals http://www.google.com/
     </p>
   </body>
 </html></richcontent>
+</node>
+</node>
+<node TEXT="Verbindingslijn(en)" FOLDED="true" ID="ID_646708313" CREATED="1266249966500" MODIFIED="1303931620460" COLOR="#663300">
 <node ID="ID_1624469639" CREATED="1266594128851" MODIFIED="1293375088971">
 <richcontent TYPE="NODE">
 <html>
@@ -3743,8 +3446,8 @@
 <node TEXT="Snelkoppeling naar menutoegang" FOLDED="true" ID="ID_1477740287" CREATED="1291192827927" MODIFIED="1293375088957" COLOR="#663300">
 <node TEXT="Opent dialoogvenster om een snelkoppeling naar een van de menuopties van Freeplane te kiezen. Klikken op de ingevoegde snelkoppeling opent de gekozen menuoptie." ID="ID_1873606819" CREATED="1291193131435" MODIFIED="1293375088952"/>
 </node>
-<node TEXT="Wolk" FOLDED="true" ID="ID_1259373322" CREATED="1266250644843" MODIFIED="1293375088948" COLOR="#663300">
-<node ID="ID_471274727" CREATED="1266257029468" MODIFIED="1293375088943">
+</node>
+<node FOLDED="true" ID="ID_68469558" CREATED="1266240681421" MODIFIED="1293375088924" COLOR="#407000">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -3752,7 +3455,54 @@
   </head>
   <body>
     <p>
-      Plaatst een wolk rond de afstammelingen van een wolk. Er kunnen tegelijkertijd verschillende wolken worden geplaatst door verschillende knopen te selecteren. ZIE OOK: <i>Opmaken &gt; Kleur wolk..</i>.
+      Pictogram
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node ID="ID_1105036662" CREATED="1266594258148" MODIFIED="1293375088919">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opent een keuzemenu met pictogrammen die aan de geselecteerde knoop kunnen worden toegevoegd. Het eerste pictogram (kruisje) kan niet worden toegevoegd, maar zorgt dat een eerder togevoegd pictogram wordt verwijderd. Het is mogelijk eigen pictogrammen aan het menu toe te voegen.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Afbeelding" FOLDED="true" ID="ID_1620391394" CREATED="1303931708607" MODIFIED="1303931717375">
+<node FOLDED="true" ID="ID_1277752024" CREATED="1266249875046" MODIFIED="1293375089011" COLOR="#663300">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Afbeelding kiezen uit bestandenlijst of via hyperlink...
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node ID="ID_1927196799" CREATED="1266257430281" MODIFIED="1293375089004">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Voeg een afbeelding toe van type: bitmap, giff, jpg, jpeg, or png.
+    </p>
+    <p>
+      Als de knoop nog geen afbeelding bevat dan kan deze met de V<i>erkenner</i>&#160; worden gezocht en gekozen.
+    </p>
+    <p>
+      Als de knoop al een snelkoppeling naar een afbeelding bevat dan wordt deze gebruikt om automatisch de afbeelding te kiezen.
     </p>
   </body>
 </html></richcontent>
@@ -3784,7 +3534,83 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="LaTex" FOLDED="true" ID="ID_816429133" CREATED="1266250651984" MODIFIED="1293375088932" COLOR="#663300">
+<node TEXT="Verander schaalbare afbeelding" ID="ID_276232981" CREATED="1303931774914" MODIFIED="1303931788066"/>
+<node TEXT="Verwijder schaalbare afbeelding" ID="ID_1348672374" CREATED="1303931789305" MODIFIED="1303931802286"/>
+</node>
+<node TEXT="Schijf %" FOLDED="true" ID="ID_1053622072" CREATED="1303931822760" MODIFIED="1304433894105" TEXT_SHORTENED="true">
+<icon BUILTIN="0%"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Schijf die in stappen van 10% of 25% kan worden gevuld.
+    </p>
+    <p>
+      Standaard wordt de schijf als pictogram getoond.
+    </p>
+    <p>
+      Additioneel kan een grote schijf alsexterne&#160;&#160;afbeelding worden getoond.
+    </p>
+    <p>
+      De grote schijf is niet zichtbaar als afbeeldingen zijn verborgen; de kleine schijf
+    </p>
+    <p>
+      (pictogram) blijft wel zichtbaar.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Schijf met meer vulling" ID="ID_1352152467" CREATED="1304432750435" MODIFIED="1304433430176">
+<icon BUILTIN="25%"/>
+</node>
+<node TEXT="Schijf met minder vulling" ID="ID_1503763375" CREATED="1304432902357" MODIFIED="1304433412735"/>
+<node TEXT="Grote schijf + 10%" FOLDED="true" ID="ID_931502203" CREATED="1304432912176" MODIFIED="1304434197268">
+<icon BUILTIN="0%"/>
+<hook URI="../../../../../Desktop/fp124_06/freeplane_bin-1.2.5_06/freeplane-1.2.5_06/resources/templates/Progress_tenth_01.svg" SIZE="1.0" NAME="ExternalObject"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Rechtsklikken om % te vergroten.
+    </p>
+    <p>
+      Ctrl + rechtsklikken om % te verkleien
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Rechtsklikken om % te vergroten&#xa;Ctrl +rechtslklikken om % te verkleinen" ID="ID_1983790710" CREATED="1304434082077" MODIFIED="1304434160873"/>
+</node>
+<node TEXT="Grote schijf + 25%" FOLDED="true" ID="ID_193609803" CREATED="1304432932074" MODIFIED="1304433525508">
+<icon BUILTIN="25%"/>
+<hook URI="../../../../../Desktop/fp124_06/freeplane_bin-1.2.5_06/freeplane-1.2.5_06/resources/templates/Progress_quarter_01.svg" SIZE="1.0" NAME="ExternalObject"/>
+<node TEXT="Rechtsklikken om % te vergroten&#xa;Ctrl +rechtslklikken om % te verkleinen" ID="ID_475124683" CREATED="1304434082077" MODIFIED="1304434160873"/>
+</node>
+<node TEXT="Verwijder schijf" ID="ID_1336453593" CREATED="1304432977103" MODIFIED="1304432984873"/>
+</node>
+<node TEXT="Wolken" FOLDED="true" ID="ID_829509235" CREATED="1303931852579" MODIFIED="1303931863344">
+<node TEXT="Wolk" FOLDED="true" ID="ID_1259373322" CREATED="1266250644843" MODIFIED="1293375088948" COLOR="#663300">
+<node ID="ID_471274727" CREATED="1266257029468" MODIFIED="1293375088943">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Plaatst een wolk rond de afstammelingen van een wolk. Er kunnen tegelijkertijd verschillende wolken worden geplaatst door verschillende knopen te selecteren. ZIE OOK: <i>Opmaken &gt; Kleur wolk..</i>.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="LaTeX" FOLDED="true" ID="ID_1750517188" CREATED="1303931890027" MODIFIED="1303931900558">
+<node TEXT="Toevoegen LaTeX" FOLDED="true" ID="ID_816429133" CREATED="1266250651984" MODIFIED="1303931965431" COLOR="#663300">
 <node ID="ID_1356853070" CREATED="1266258023468" MODIFIED="1293375088928">
 <richcontent TYPE="NODE">
 <html>
@@ -3799,8 +3625,10 @@
 </html></richcontent>
 </node>
 </node>
+<node TEXT="Verwijderen LaTeX" ID="ID_1339380039" CREATED="1303931933356" MODIFIED="1303931950049"/>
 </node>
-<node FOLDED="true" ID="ID_68469558" CREATED="1266240681421" MODIFIED="1293375088924" COLOR="#407000">
+<node TEXT="Beveiliging" FOLDED="true" ID="ID_83654353" CREATED="1303931982176" MODIFIED="1303931989821">
+<node FOLDED="true" ID="ID_1020968664" CREATED="1266247815921" MODIFIED="1293375088234" COLOR="#663300">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -3808,12 +3636,11 @@
   </head>
   <body>
     <p>
-      Pictogram
+      Beveiligen
     </p>
   </body>
 </html></richcontent>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1105036662" CREATED="1266594258148" MODIFIED="1293375088919">
+<node ID="ID_648523041" CREATED="1267721007546" MODIFIED="1293375088229">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -3821,10 +3648,58 @@
   </head>
   <body>
     <p>
-      Opent een keuzemenu met pictogrammen die aan de geselecteerde knoop kunnen worden toegevoegd. Het eerste pictogram (kruisje) kan niet worden toegevoegd, maar zorgt dat een eerder togevoegd pictogram wordt verwijderd. Het is mogelijk eigen pictogrammen aan het menu toe te voegen.
+      Opent een dialoogvenster voor het invoeren van wachtwoord waarmee de mindmap wordt beveiligd tegen wijzigen. .
     </p>
   </body>
 </html></richcontent>
+</node>
+</node>
+<node TEXT="Verwijderen beveiliging" ID="ID_136268743" CREATED="1303932060947" MODIFIED="1303932075643"/>
+</node>
+<node TEXT="Agenda" FOLDED="true" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1303932107178">
+<node FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1293375088172" COLOR="#663300">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Agenda...
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_516339910" CREATED="1267746640914" MODIFIED="1293375088166">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toont een dialoogvenster voor het instellen of veranderen van een datum (tekst) of een herinneringsmoment (activiteit) aan de geselecteerde knopen. Op het moment dat de activiteit moet worden uitgevoerd &#160;knippert een klokje in de betreffende knoop en verschijnt een rood uitroepteken in de basisknoop.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Alle activiteiten (herinnering + notitie)..." FOLDED="true" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1296158400935" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1106133151" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node ID="ID_216580381" CREATED="1267746718758" MODIFIED="1298472026220">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toont een dialoogvenster met een lijst van activiteiten en de knopen waaraan deze zijn gekoppeld; bijbehorende basisteksten, pictogrammen, notities; en creatie- en wijzigingsdata; en opties voor<i>&#160;Zoeken</i>&#160;en<i>&#160; vervangen</i>.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Verwijderen herinnering" ID="ID_148977369" CREATED="1303932208426" MODIFIED="1303932217459"/>
 </node>
 </node>
 <node TEXT="Opmaken" FOLDED="true" ID="ID_258919699" CREATED="1266240683718" MODIFIED="1293375088915" COLOR="#407000">
@@ -3872,52 +3747,6 @@
 </node>
 <node TEXT="Verwijderen opmaak" FOLDED="true" ID="ID_640761139" CREATED="1291193542440" MODIFIED="1293375088897" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
 <node TEXT="Herstelt de opmaak van een knoop naar de standaard knoopstijl." ID="ID_264164507" CREATED="1292055652256" MODIFIED="1293375088893"/>
-</node>
-<node TEXT="Uitgebreide&#xa0;tekstopmaak" FOLDED="true" ID="ID_601879583" CREATED="1266251602796" MODIFIED="1293375088889" COLOR="#663300">
-<node TEXT="Stelt alle geselecteerde knopen in op Uitgebreide tekstopmaak (Rich Text Format)." ID="ID_1427224313" CREATED="1266256310578" MODIFIED="1293375088886"/>
-</node>
-<node TEXT="Platte tekstopmaak" FOLDED="true" ID="ID_421682408" CREATED="1266251609187" MODIFIED="1293375088881" COLOR="#663300">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1473717210" CREATED="1266256336093" MODIFIED="1293375088863">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Alleen voor geautomatisseerde verwerking; bedoeld voor systemen die geen HTML kennen. Maakt van alle tekst in geselecteerde knopen &quot;platte tekst&quot; zonder HTML code. Dit maakt het effect van <i>Opmaak &gt; Uitgebreide tekstopmaak (RTF)..</i>. ongedaan.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_426658457" CREATED="1271859579978" MODIFIED="1293375088859" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Standaard opmaakpatronen
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_936686419" CREATED="1271859598157" MODIFIED="1293375088853">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster met standaard profofielen en past het gekozen profiel toe op alle geselekteerde knopen. ZIE OOK: <i>Opmaken &gt; Algemene knoopstijl...</i>
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-</node>
 </node>
 <node TEXT="Knoop zonder omlijning" FOLDED="true" ID="ID_401265529" CREATED="1266251650156" MODIFIED="1293375088850" COLOR="#663300">
 <node ID="ID_1545808926" CREATED="1266252984468" MODIFIED="1293375088844" COLOR="#000000" BACKGROUND_COLOR="#ffffff">
@@ -4067,7 +3896,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Knoopkleur" FOLDED="true" ID="ID_1529197837" CREATED="1266252194281" MODIFIED="1293375088785" COLOR="#663300" BACKGROUND_COLOR="#33ff33">
+<node TEXT="Knoopachtergrondkleur" FOLDED="true" ID="ID_1529197837" CREATED="1266252194281" MODIFIED="1295722843018" COLOR="#663300" BACKGROUND_COLOR="#33ff33">
 <node ID="ID_633092543" CREATED="1266253205187" MODIFIED="1293375088781" COLOR="#000000" BACKGROUND_COLOR="#ffffff">
 <richcontent TYPE="NODE">
 <html>
@@ -4103,48 +3932,6 @@
   <body>
     <p>
       Opent een dialoogvenster om de achtergrondkleur van de&#160;&#160;mindmap in te stellen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Herstellen oorspronkelijke knoopposities" FOLDED="true" ID="ID_286609105" CREATED="1266252216156" MODIFIED="1293375088770" COLOR="#663300">
-<node ID="ID_828714332" CREATED="1266252583531" MODIFIED="1293375088764">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt de verplaatsingen van de geselecteerde knopen ongedaan en brengt de posities van deze knopen terug naar de relatieve posities op het moment dat de knopen werden gemaakt. Om alle knopen in een mindmap te selecteren: kies <i>Esc</i>&#160;en vervolgens<i>&#160;Ctrl + A.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1164550160" CREATED="1266252231218" MODIFIED="1293375088761" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Pictogrammenhi&#235;rarchie
-    </p>
-  </body>
-</html></richcontent>
-<edge COLOR="#000000"/>
-<node ID="ID_1107658218" CREATED="1266256776328" MODIFIED="1293375088757">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont alle pictogrammen in de volgorde waarin deze werden toegepast in de ouder-knoop.
     </p>
   </body>
 </html></richcontent>
@@ -4285,6 +4072,77 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Wisselt tussen wel/niet automatische takkleur. Bij automatische takkleur krijgt elke nieuwe tak die begint in de basisknoop een andere kleur." ID="ID_551944676" CREATED="1291583011182" MODIFIED="1293375088639"/>
 </node>
+<node TEXT="REST" FOLDED="true" ID="ID_1751086488" CREATED="1303932362078" MODIFIED="1303932371221">
+<node FOLDED="true" ID="ID_426658457" CREATED="1271859579978" MODIFIED="1293375088859" COLOR="#663300">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Standaard opmaakpatronen
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_936686419" CREATED="1271859598157" MODIFIED="1293375088853">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opent een dialoogvenster met standaard profofielen en past het gekozen profiel toe op alle geselekteerde knopen. ZIE OOK: <i>Opmaken &gt; Algemene knoopstijl...</i>
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+</node>
+</node>
+<node TEXT="Herstellen oorspronkelijke knoopposities" FOLDED="true" ID="ID_286609105" CREATED="1266252216156" MODIFIED="1293375088770" COLOR="#663300">
+<node ID="ID_828714332" CREATED="1266252583531" MODIFIED="1293375088764">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Maakt de verplaatsingen van de geselecteerde knopen ongedaan en brengt de posities van deze knopen terug naar de relatieve posities op het moment dat de knopen werden gemaakt. Om alle knopen in een mindmap te selecteren: kies <i>Esc</i>&#160;en vervolgens<i>&#160;Ctrl + A.</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node FOLDED="true" ID="ID_1164550160" CREATED="1266252231218" MODIFIED="1293375088761" COLOR="#663300">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Pictogrammenhi&#235;rarchie
+    </p>
+  </body>
+</html></richcontent>
+<edge COLOR="#000000"/>
+<node ID="ID_1107658218" CREATED="1266256776328" MODIFIED="1293375088757">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toont alle pictogrammen in de volgorde waarin deze werden toegepast in de ouder-knoop.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
 </node>
 <node TEXT="Stijlen" FOLDED="true" ID="ID_1778719162" CREATED="1291143603918" MODIFIED="1293375088635" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
@@ -4312,6 +4170,7 @@
 <node TEXT="Opent een lijst met 5 profielen voor automatisch opmaken. Past het gekozen profiel toe op de geselecteerde knoop/knopen, ongeacht het werkelijke niveau van de knoop." ID="ID_1651751206" CREATED="1291200854247" MODIFIED="1293375088572"/>
 </node>
 <node TEXT="Gebruikerstijl toepassen" STYLE_REF="Functie" ID="ID_948529232" CREATED="1291550475365" MODIFIED="1293375088568"/>
+<node TEXT="Toevoegen attributen ??" ID="ID_866847643" CREATED="1303932601297" MODIFIED="1303932613887"/>
 </node>
 <node TEXT="Navigeren" FOLDED="true" ID="ID_1496009393" CREATED="1266240686343" MODIFIED="1293375088564" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
@@ -4786,7 +4645,49 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Filtermenu" FOLDED="true" ID="ID_319707937" CREATED="1266256024515" MODIFIED="1293375088286" COLOR="#663300">
+<node TEXT="Vorige zoeken" STYLE_REF="Functie" ID="ID_1821436195" CREATED="1291789940739" MODIFIED="1293375086848">
+<richcontent TYPE="NOTE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Mist in hoofdmenu Edit.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Volgende zoeken" STYLE_REF="Functie" ID="ID_1077748166" CREATED="1291789947611" MODIFIED="1293375086844" LINK="#ID_1438958017"/>
+<node TEXT="Passende knopen selecteren" STYLE_REF="Functie" FOLDED="true" ID="ID_1469284491" CREATED="1291789963156" MODIFIED="1293375086840">
+<richcontent TYPE="NOTE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Niet in hoofdmeneu
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Deze functie heeft alleen effect op de knoop die de focus heeft en al zijn zichtbare en verborgen afstammelingen: (1) tonen en (2) selecteren van alle afstammelingen die aan het het filtercriterium voldoen, (3) tonen van verborgen knopen in de keten  tussen de basisknoop en de buitenste geselecteerde knoop. Verborgen kindknopen van de buitenste geselecteerde knoop van elke tak blijven verborgen (dichtgevouwen) en alle andere knopen blijven zichtbaar." ID="ID_1532324933" CREATED="1292622581568" MODIFIED="1293375086835"/>
+</node>
+<node TEXT="Filteren mindmap" STYLE_REF="Functie" FOLDED="true" ID="ID_1620220937" CREATED="1291790046452" MODIFIED="1293375086831">
+<richcontent TYPE="NOTE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Niet in hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Deze functie omvat: (1) het verbergen van alle zichtbare knopen van de mindmap die niet aan het filtercriterium voldoen en (2) naar elkaar schuiven van de knopen die na het filteren zichtbaar blijven. Knopen buiten het filtergebied blijven zichtbaar. Er kunnen verschillende opties voor het filteren worden ingesteld." LOCALIZED_STYLE_REF="default" ID="ID_829574154" CREATED="1292622675691" MODIFIED="1293375086827" LINK="#ID_727640069"/>
+</node>
+<node TEXT="Tonen filtermenu" FOLDED="true" ID="ID_319707937" CREATED="1266256024515" MODIFIED="1303932733508" COLOR="#663300">
 <node TEXT="Toont of verbergt Filtermenu." ID="ID_101445395" CREATED="1267719720078" MODIFIED="1293375088282">
 <font ITALIC="true"/>
 </node>
@@ -4809,94 +4710,11 @@
 </node>
 <node TEXT="Extra" FOLDED="true" ID="ID_1833899525" CREATED="1266240695203" MODIFIED="1293375088271" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Samenvoegen knopen" FOLDED="true" ID="ID_1720469761" CREATED="1266247462656" MODIFIED="1293375088268" COLOR="#663300">
-<node ID="ID_351515654" CREATED="1267747213492" MODIFIED="1293375088264">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Voegt twee knopen samen, maar alleen als beide geen kindknopen hebben.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Knoop splitsen" FOLDED="true" ID="ID_1796564424" CREATED="1266247473250" MODIFIED="1293375088260" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
-<node ID="ID_1642976344" CREATED="1266248295484" MODIFIED="1293375088254" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verdeelt de tekst van een knoop over twee knopen op het punt waar een nieuwe regel begint welke is gemaakt met <i>Shift + Enter</i>&#160;(bij Eenvoudige tekstompaak)&#160;of &lt;Enter&gt; bij Uitgebreide tekstopmaak. Bij HTML-knopen kan de opdracht herhaaldelijk voor elk genest niveau worden toegepast. Het contextmenu voor uitgebreide tekstopmaak bevat een knop Splitsen. Hiermee wordt het punt waar de cursor staat gebruikt om te splitsen.<br/>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Hyperlink uit tekstadres" FOLDED="true" ID="ID_1099444092" CREATED="1266247483750" MODIFIED="1293375088251" COLOR="#663300">
-<node ID="ID_1758831987" CREATED="1271845283423" MODIFIED="1293375088246">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt een snelkoppeling van een knoop die een URL bevat zoals http://www.google.com/
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
 <node TEXT="Alfabetisch sorteren kinderen" FOLDED="true" ID="ID_1942706169" CREATED="1266247810468" MODIFIED="1293375088243" COLOR="#663300">
 <node TEXT="Sorteert de kinderen van een geselecteerde knoop in aflopende alfanumerieke volgorde. De knoophi&#xeb;rarchie&#xa0;blijft behouden." ID="ID_541025067" CREATED="1267720959687" MODIFIED="1293375088238"/>
 </node>
-<node FOLDED="true" ID="ID_1020968664" CREATED="1266247815921" MODIFIED="1293375088234" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Beveiligen
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_648523041" CREATED="1267721007546" MODIFIED="1293375088229">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster voor het invoeren van wachtwoord waarmee de mindmap wordt beveiligd tegen wijzigen. .
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
 <node TEXT="Wijzigen achtergrondkleur voor revisies" FOLDED="true" ID="ID_974319465" CREATED="1266247833890" MODIFIED="1293375088226" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
-<node ID="ID_1510254995" CREATED="1267721443828" MODIFIED="1293375088220" BACKGROUND_COLOR="#ffffff">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wisselt tussen wel/niet herkenbaar maken van revisies in de huidige mindmap door toepassing van een andere knoopkleur. De revisies van alle geselecteerde knopen kunnen naar de standaardkleur worden hersteld met&#160;Opmaken &gt; Knoopkleur....
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="Wisselt tussen wel/niet herkenbaar maken van revisies in de huidige mindmap door toepassing van een andere knoopachtergrondkleur. De revisies van alle geselecteerde knopen kunnen naar de standaardkleur worden hersteld met Opmaken &gt; Knoopachtergrondkleur...." ID="ID_1510254995" CREATED="1267721443828" MODIFIED="1295722969557" BACKGROUND_COLOR="#ffffff"/>
 </node>
 <node TEXT="Tonen wanneer gewijzigd" FOLDED="true" ID="ID_208481180" CREATED="1266247851640" MODIFIED="1293375088217" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
 <node ID="ID_198955102" CREATED="1267746222164" MODIFIED="1293375088211">
@@ -4908,122 +4726,6 @@
   <body>
     <p>
       Wisselt wel/niet tonen van de laatste datum waarop de knoop werd gemaakt of bewerkt. Deze datum wordt getoond als de muiscursor zich boven een knoop bevindt.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Verwijderen knoopbijlage" STYLE_REF="Functie" FOLDED="true" ID="ID_949038869" CREATED="1291201354423" MODIFIED="1293375088208" BACKGROUND_COLOR="#ffffff">
-<node TEXT="Verwijdert een aanwezige knoopbijlage uit de geselecteerde knoop." ID="ID_839920600" CREATED="1291202111867" MODIFIED="1293375088204"/>
-</node>
-<node TEXT="Verwijderen knoopnotitie" FOLDED="true" ID="ID_142539324" CREATED="1266247870640" MODIFIED="1293375088201" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
-<node ID="ID_1237179609" CREATED="1267746357149" MODIFIED="1293375088197">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont dialoogvenster voor het wel/niet verwijderen van de notities van de geselecteerde knopen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1707643609" CREATED="1266247875750" MODIFIED="1293375088193" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Attributen beheren...
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_125791885" CREATED="1267746411055" MODIFIED="1293375088190">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont het dialoogvenster voor het toevoegen en het beheren van alle gedefinieerde attribbuten.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Attribuutwaarden bewerken" FOLDED="true" ID="ID_639830064" CREATED="1266247880359" MODIFIED="1293375088186" COLOR="#663300">
-<node ID="ID_1867411346" CREATED="1267746434945" MODIFIED="1293375088183">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont dialoogvenster voor het bewerken van attributen en attribuutwaarden van geselecteerde knopen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Verwijderen activiteit" FOLDED="true" ID="ID_1156859151" CREATED="1266247890656" MODIFIED="1293375088179" COLOR="#663300">
-<node ID="ID_152983693" CREATED="1267746576195" MODIFIED="1293375088175">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verwijdert activiteit uit de kalender. ZIE OOK: <i>Extra &gt; Agenda</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1293375088172" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Agenda...
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_516339910" CREATED="1267746640914" MODIFIED="1293375088166">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont een dialoogvenster voor het instellen of veranderen van een datum (tekst) of een herinneringsmoment (activiteit) aan de geselecteerde knopen. Op het moment dat de activiteit moet worden uitgevoerd &#160;knippert een klokje in de betreffende knoop en verschijnt een rood uitroepteken in de basisknoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Activiteiten..." FOLDED="true" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1293375088162" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="ID_1106133151" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node ID="ID_216580381" CREATED="1267746718758" MODIFIED="1293375088156">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont een dialoogvenster met een lijst van activiteiten en de knopen waaraan deze zijn gekoppeld; bijbehorende knoopteksten, pictogrammen, notities; en creatie- en wijzigingsdata; en opties voor<i>&#160;Zoeken</i>&#160;en<i>&#160; vervangen</i>.
     </p>
   </body>
 </html></richcontent>
@@ -5089,6 +4791,10 @@
   </body>
 </html></richcontent>
 </node>
+</node>
+<node TEXT="Formules" STYLE_REF="Functie" FOLDED="true" ID="ID_394104724" CREATED="1291201976731" MODIFIED="1293375087164" BACKGROUND_COLOR="#ffffff">
+<node TEXT="Formules zijn voor gevorderde gebruikers. Voor het gebruik van formules, ga naar Internet." ID="ID_941770870" CREATED="1291754737435" MODIFIED="1293375087160" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
+<node TEXT="Alles uitrekenen" STYLE_REF="Functie" ID="ID_1812283108" CREATED="1291201995803" MODIFIED="1293375087156"/>
 </node>
 <node TEXT="Instellingen..." FOLDED="true" ID="ID_1201108812" CREATED="1266242708796" MODIFIED="1293375088120" COLOR="#663300">
 <node TEXT="Omgeving" FOLDED="true" ID="ID_538478024" CREATED="1266242716593" MODIFIED="1293375088117" COLOR="#000000">
@@ -5225,7 +4931,7 @@
 </node>
 </node>
 <node TEXT="Standaardkleuren" FOLDED="true" ID="ID_646613700" CREATED="1290771296291" MODIFIED="1293375087900">
-<node TEXT="Standaard knoopkleur" FOLDED="true" ID="ID_128477044" CREATED="1290771377934" MODIFIED="1293375087897">
+<node TEXT="Standaard knoopachtergrondkleur" FOLDED="true" ID="ID_128477044" CREATED="1290771377934" MODIFIED="1295722887143">
 <node TEXT="Standaard: zwart #000000" ID="ID_97289634" CREATED="1290773833636" MODIFIED="1293375087893"/>
 </node>
 <node TEXT="Standaard takkleur" FOLDED="true" ID="ID_613301395" CREATED="1290771393247" MODIFIED="1293375087890">
@@ -5573,10 +5279,7 @@
 <node TEXT="Set met sneltoetsen" ID="ID_1598709203" CREATED="1291201458109" MODIFIED="1293375087172"/>
 <node TEXT="Opslaan set met sneltoetsen" ID="ID_944401423" CREATED="1291201465277" MODIFIED="1293375087168"/>
 </node>
-<node TEXT="Formules" STYLE_REF="Functie" FOLDED="true" ID="ID_394104724" CREATED="1291201976731" MODIFIED="1293375087164" BACKGROUND_COLOR="#ffffff">
-<node TEXT="Formules zijn voor gevorderde gebruikers. Voor het gebruik van formules, ga naar Internet." ID="ID_941770870" CREATED="1291754737435" MODIFIED="1293375087160" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
-<node TEXT="Alles uitrekenen" STYLE_REF="Functie" ID="ID_1812283108" CREATED="1291201995803" MODIFIED="1293375087156"/>
-</node>
+<node TEXT="Openen gebruikersdirectory" ID="ID_4259182" CREATED="1303933344973" MODIFIED="1303933357049"/>
 </node>
 <node TEXT="Mindmaps" FOLDED="true" ID="ID_539574104" CREATED="1266240697187" MODIFIED="1293375087153" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
@@ -5607,7 +5310,7 @@
 <node TEXT="Thuispagina op Internet van Freeplane" FOLDED="true" ID="ID_797729331" CREATED="1271855734459" MODIFIED="1293375087089" COLOR="#663300">
 <node TEXT="Opent een Web browser venster voor de hoofdpagina van de Freeplane web site." ID="ID_1068424163" CREATED="1271855759592" MODIFIED="1293375087086"/>
 </node>
-<node TEXT="Rapporteren fout" FOLDED="true" ID="ID_1404935411" CREATED="1271855833848" MODIFIED="1293375087082" COLOR="#663300">
+<node TEXT="Melden van een fout" FOLDED="true" ID="ID_1404935411" CREATED="1271855833848" MODIFIED="1303933468059" COLOR="#663300">
 <node ID="ID_135222820" CREATED="1271855844369" MODIFIED="1293375087078">
 <richcontent TYPE="NODE">
 <html>
@@ -5632,12 +5335,13 @@
 <node TEXT="Licentie" FOLDED="true" ID="ID_1881309718" CREATED="1271857117445" MODIFIED="1293375087053" COLOR="#663300">
 <node TEXT="Opens a window displaying a short summary of Freeplane&apos;s copyright and licensing information, including information about where to find full copies of the GNU General Public License." ID="ID_1830436655" CREATED="1271857123250" MODIFIED="1293375087049"/>
 </node>
-<node TEXT="Info" FOLDED="true" ID="ID_1959296182" CREATED="1272489323245" MODIFIED="1293375087046" COLOR="#663300">
+<node TEXT="Over freeplane" FOLDED="true" ID="ID_1959296182" CREATED="1272489323245" MODIFIED="1303933524250" COLOR="#663300">
 <node TEXT="Opens a dialog with copyright, version, and technical information." ID="ID_585968650" CREATED="1272489332743" MODIFIED="1293375087042"/>
 </node>
-<node TEXT="Controleren of er updates zijn" FOLDED="true" ID="ID_1051551158" CREATED="1271862920378" MODIFIED="1293375087039" COLOR="#663300">
+<node TEXT="Controleren op nieuwe onderdelen" FOLDED="true" ID="ID_1051551158" CREATED="1271862920378" MODIFIED="1303933506185" COLOR="#663300">
 <node TEXT="Manually check whether a newer version of Freeplane has been released. This check will be done automatically if the corresponding checkbox is enabled at the bottom of the dialog which opens." ID="ID_1365637235" CREATED="1271862957486" MODIFIED="1293375087034"/>
 </node>
+<node TEXT="API voor scripts" ID="ID_1515623567" CREATED="1303933416063" MODIFIED="1303933436765"/>
 </node>
 </node>
 <node TEXT="Werkmenu" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1060899431" CREATED="1286909230469" MODIFIED="1293375087031">
@@ -5681,8 +5385,8 @@
 <node TEXT="Niet-geselecteerde knopen verbergen" STYLE_REF="Functie" ID="ID_1980024389" CREATED="1291789661405" MODIFIED="1293375086888" LINK="#ID_1213542242"/>
 <node TEXT="Ongedaan maken filteren" STYLE_REF="Functie" ID="ID_1291115911" CREATED="1291789674501" MODIFIED="1293375086884" LINK="#ID_1248752843"/>
 <node TEXT="Filterbeheer" STYLE_REF="Functie" ID="ID_1263327296" CREATED="1291789686848" MODIFIED="1293375086880" LINK="#ID_1642550374"/>
-<node TEXT="Filteronderdeel (Knooptekst)" STYLE_REF="Functie" FOLDED="true" ID="ID_347030826" CREATED="1291789702082" MODIFIED="1293375086877">
-<node TEXT="Het onderdeel van de knoop waarop gefilterd wordt: Knooptekst (standaard) , Tekst van ouderknoop, Pictogram, of een gebruikt attribuut" ID="ID_1309406902" CREATED="1292623150807" MODIFIED="1293375086872"/>
+<node TEXT="Filteronderdeel (Tekst)" STYLE_REF="Functie" FOLDED="true" ID="ID_347030826" CREATED="1291789702082" MODIFIED="1298476866223">
+<node TEXT="Het onderdeel van de knoop waarop gefilterd wordt: Tekst (standaard) , Tekst van ouderknoop, Pictogram, of een gebruikt attribuut" ID="ID_1309406902" CREATED="1292623150807" MODIFIED="1298476939907"/>
 </node>
 <node TEXT="Filteroperator (bevat)" STYLE_REF="Functie" FOLDED="true" ID="ID_384668739" CREATED="1291789851117" MODIFIED="1293375086869">
 <node TEXT="Mogelijke operatoren zijn: Bevat, Is gelijk aan, Is niet gelijk aan,&gt;, &gt;=, &lt;=,&lt;, Is gelijk aan expressie" ID="ID_179269976" CREATED="1292624017084" MODIFIED="1293375086865"/>
@@ -5693,7 +5397,7 @@
 <node TEXT="Hoodlettergevoelig (niet)" STYLE_REF="Functie" FOLDED="true" ID="ID_624006528" CREATED="1291789920217" MODIFIED="1293375086855">
 <node TEXT="Geeft aan of bij het filteren een hoofdletter als dezelfde letter wordt opgevat als een kleine letter." ID="ID_4195852" CREATED="1292624301816" MODIFIED="1293375086851"/>
 </node>
-<node TEXT="Vorige zoeken" STYLE_REF="Functie" ID="ID_1821436195" CREATED="1291789940739" MODIFIED="1293375086848">
+<node TEXT="Vorige zoeken" STYLE_REF="Functie" ID="ID_511849259" CREATED="1291789940739" MODIFIED="1293375086848">
 <richcontent TYPE="NOTE">
 <html>
   <head>
@@ -5706,7 +5410,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Volgende zoeken" STYLE_REF="Functie" ID="ID_1077748166" CREATED="1291789947611" MODIFIED="1293375086844" LINK="#ID_1438958017"/>
+<node TEXT="Volgende zoeken" STYLE_REF="Functie" ID="ID_1022127218" CREATED="1291789947611" MODIFIED="1293375086844" LINK="#ID_1438958017"/>
 <node TEXT="Passende knopen selecteren" STYLE_REF="Functie" FOLDED="true" ID="ID_1407131071" CREATED="1291789963156" MODIFIED="1293375086840">
 <richcontent TYPE="NOTE">
 <html>
@@ -5783,12 +5487,12 @@
 <node TEXT="Tonen opmaakpaneel" STYLE_REF="Functie" ID="ID_1855760029" CREATED="1291788412794" MODIFIED="1293375086747"/>
 </node>
 <node TEXT="Knoop" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_346564760" CREATED="1286909339568" MODIFIED="1293375086744">
-<node TEXT="Bewerken knooptekst" STYLE_REF="Functie" ID="ID_1544856363" CREATED="1286909379278" MODIFIED="1293375086740"/>
-<node TEXT="Bewerken tekst in hulpvenster" STYLE_REF="Functie" ID="ID_1683399005" CREATED="1286909390595" MODIFIED="1293375086737"/>
-<node TEXT="Bewerken knoopbijlage" STYLE_REF="Functie" ID="ID_422688336" CREATED="1291788504265" MODIFIED="1293375086734"/>
+<node TEXT="Snelbewerken basistekst" STYLE_REF="Functie" ID="ID_1544856363" CREATED="1286909379278" MODIFIED="1298476966587"/>
+<node TEXT="Bewerken basistekst" STYLE_REF="Functie" ID="ID_1683399005" CREATED="1286909390595" MODIFIED="1298476980103"/>
+<node TEXT="Bewerken bijlage" STYLE_REF="Functie" ID="ID_422688336" CREATED="1291788504265" MODIFIED="1298472141087"/>
 <node TEXT="Verbergen bijlage, attributen, notites" STYLE_REF="Functie" ID="ID_1268111084" CREATED="1291788515926" MODIFIED="1293375086730"/>
-<node TEXT="Tonen knoopbijlage" STYLE_REF="Functie" ID="ID_218637558" CREATED="1291788559224" MODIFIED="1293375086727"/>
-<node TEXT="Verwijderen knoopbijlage" STYLE_REF="Functie" ID="ID_259463251" CREATED="1291788591773" MODIFIED="1293375086723"/>
+<node TEXT="Tonen bijlage" STYLE_REF="Functie" ID="ID_218637558" CREATED="1291788559224" MODIFIED="1298472141087"/>
+<node TEXT="Verwijderen bijlage" STYLE_REF="Functie" ID="ID_259463251" CREATED="1291788591773" MODIFIED="1298472141087"/>
 <node TEXT="Bewerken knoopattributen" STYLE_REF="Functie" ID="ID_17658022" CREATED="1289156667203" MODIFIED="1293375086720"/>
 <node TEXT="Knippen" STYLE_REF="Functie" ID="ID_1789837162" CREATED="1289156695478" MODIFIED="1293375086716"/>
 <node STYLE_REF="Functie" ID="ID_1048158519" CREATED="1289156714861" MODIFIED="1293375086713">
@@ -5865,6 +5569,13 @@
 </node>
 <node TEXT="Opmaken" STYLE_REF="Functie" ID="ID_65465707" CREATED="1291788891543" MODIFIED="1293375086635"/>
 </node>
+<node TEXT="Bewerkingsvenster attribuut" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1189738066" CREATED="1296496490530" MODIFIED="1296497170277">
+<node TEXT="De breedte van een attribuut of attribuutwaarde kan worden gewijzigd door de oplichtende rand net boven de (lijst) attributen of attribuutwaarden met de muiscursor ingedrukt te verschuiven." STYLE_REF="Inleiding" ID="ID_801624390" CREATED="1296496503610" MODIFIED="1296497083073"/>
+<node TEXT="Door met de rechtermuisknop op een attribuut te klikken wordt een contextmenu zichtbaar., met daarin" ID="ID_1156051900" CREATED="1296496613301" MODIFIED="1296496638683"/>
+<node TEXT="Optimale breedte" ID="ID_1125208660" CREATED="1296496705824" MODIFIED="1296496715279"/>
+<node TEXT="Nieuw attribuut" ID="ID_671940123" CREATED="1296496727672" MODIFIED="1296496737236"/>
+<node TEXT="Wissen attribuut" ID="ID_414351862" CREATED="1296496738491" MODIFIED="1296497043800"/>
+</node>
 <node TEXT="Hulpvenster knoop, bijlage, notitie" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1089029453" CREATED="1289159066674" MODIFIED="1293375086632">
 <node TEXT="Ongedaan maken" STYLE_REF="Functie" ID="ID_869841842" CREATED="1289159170180" MODIFIED="1293375086629"/>
 <node TEXT="Opnieuw" STYLE_REF="Functie" ID="ID_1610609818" CREATED="1289159177036" MODIFIED="1293375086625"/>
@@ -5894,10 +5605,21 @@
 <node TEXT="Bewerken label beginzijde" STYLE_REF="Functie" ID="ID_349096829" CREATED="1289157963708" MODIFIED="1293375086587"/>
 <node TEXT="Bewerken label eindzijde" STYLE_REF="Functie" ID="ID_1340385435" CREATED="1289157974651" MODIFIED="1293375086584"/>
 <node TEXT="Bewerken label in het midden" STYLE_REF="Functie" ID="ID_334850168" CREATED="1289157984081" MODIFIED="1293375086580"/>
+<node TEXT="Verbindingslijnen" FOLDED="true" ID="ID_1102960088" CREATED="1298403732872" MODIFIED="1298403751998">
+<node TEXT="Pijlvorm verbindingslijn" FOLDED="true" ID="ID_1670679707" CREATED="1298403369416" MODIFIED="1298404234234">
 <node TEXT="Geen pijl" STYLE_REF="Functie" ID="ID_228757308" CREATED="1289157997240" MODIFIED="1293375086577"/>
 <node TEXT="Pijl vooruit" STYLE_REF="Functie" ID="ID_641549126" CREATED="1289158067276" MODIFIED="1293375086573"/>
 <node TEXT="Pijl terug" STYLE_REF="Functie" ID="ID_419344950" CREATED="1289158074647" MODIFIED="1293375086570"/>
 <node TEXT="Pijl tweezijdig" STYLE_REF="Functie" ID="ID_1356424534" CREATED="1289158081706" MODIFIED="1293375086566"/>
+</node>
+<node TEXT="Lijnvorm verbindingslijn" ID="ID_1182694739" CREATED="1298403401164" MODIFIED="1298404406909"/>
+<node TEXT="Bochtvorm verbindinslijn" FOLDED="true" ID="ID_485077892" CREATED="1298403585981" MODIFIED="1298404326077">
+<node TEXT="Bocht" ID="ID_127460701" CREATED="1298403608038" MODIFIED="1298403652760"/>
+<node TEXT="Lijn" ID="ID_1383910929" CREATED="1298403653496" MODIFIED="1298403656812"/>
+<node TEXT="Rechthoekige lijn" ID="ID_1986861766" CREATED="1298403657457" MODIFIED="1298403665419"/>
+<node TEXT="Als tak" ID="ID_451006869" CREATED="1298403666590" MODIFIED="1298403678164"/>
+</node>
+</node>
 </node>
 </node>
 </node>
@@ -5944,9 +5666,19 @@
 </node>
 </node>
 </node>
-<node TEXT="Opties selecteren" FOLDED="true" POSITION="right" ID="ID_1473860848" CREATED="1289509916695" MODIFIED="1293375086552" COLOR="#006699">
+<node TEXT="Opties selecteren" FOLDED="true" POSITION="right" ID="ID_1473860848" CREATED="1289509916695" MODIFIED="1304348561101" COLOR="#006699" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Functies zijn toegankelijk via het Hoofmenu, de andere menubalken en de Contextmenu&apos;s. Het is een persoonlijke keuze welk menu je gebruikt." STYLE_REF="Inleiding" ID="ID_1761169918" CREATED="1289509941695" MODIFIED="1293375086548"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Functies zijn toegankelijk via het Hoofmenu, de andere menubalken en de Contextmenu's. Het is een persoonlijke keuze welk menu je gebruikt.
+    </p>
+  </body>
+</html></richcontent>
 <node ID="ID_840811150" CREATED="1289566310292" MODIFIED="1293375086544" LINK="#ID_1945244112">
 <richcontent TYPE="NODE">
 <html>
@@ -5982,7 +5714,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_232123733" CREATED="1289510317571" MODIFIED="1293375086531">
+<node ID="ID_232123733" CREATED="1289510317571" MODIFIED="1298472026236">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6002,7 +5734,7 @@
       - klik met de linker muisknop op een getoonde functie.
     </p>
     <p>
-      Let op waar je rechtsklikt, er zijn verschillende contextmenu's: voor de omlijning van een object, binnen de omlijning en voor de inhoud. Het contextmenu om binnen een knoop tekst op te maken, verschijnt alleen als tenminste &#233;&#233;n karakter van de knooptekst is geselecteerd.
+      Let op waar je rechtsklikt, er zijn verschillende contextmenu's: voor de omlijning van een object, binnen de omlijning en voor de inhoud. Het contextmenu om binnen een knoop tekst op te maken, verschijnt alleen als tenminste &#233;&#233;n karakter van de basistekst is geselecteerd.
     </p>
   </body>
 </html></richcontent>
@@ -6011,6 +5743,9 @@
 <node TEXT="Voorbeelden en instructievideo op Internet" FOLDED="true" POSITION="right" ID="ID_208137441" CREATED="1289027071603" MODIFIED="1293391500943" LINK="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Klik op het rode pijltje om naar Internet te gaan." ID="ID_1596597703" CREATED="1291837388433" MODIFIED="1293375086523"/>
+<node TEXT="Toe te voegen Progress:" ID="ID_1082107676" CREATED="1304077965686" MODIFIED="1304078052400">
+<icon BUILTIN="pencil"/>
+</node>
 </node>
 <node POSITION="right" ID="ID_51218940" CREATED="1286913595764" MODIFIED="1293376823611" BACKGROUND_COLOR="#ffff00" STYLE="bubble" VSHIFT="30">
 <icon BUILTIN="wizard"/>
@@ -6028,10 +5763,9 @@
 <font BOLD="true"/>
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="Knopen selecteren en  vasthouden" FOLDED="true" POSITION="right" ID="ID_1804240683" CREATED="1289508690978" MODIFIED="1293391508775" COLOR="#006699">
+<node TEXT="Selecteren en  vasthouden van knopen" FOLDED="true" POSITION="right" ID="ID_1804240683" CREATED="1289508690978" MODIFIED="1304144333774" COLOR="#006699" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node STYLE_REF="Inleiding" ID="ID_485160362" CREATED="1271003250866" MODIFIED="1293375086508">
-<richcontent TYPE="NODE">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -6042,7 +5776,6 @@
     </p>
   </body>
 </html></richcontent>
-</node>
 <node TEXT="Selecteren" FOLDED="true" ID="ID_478502424" CREATED="1291295264936" MODIFIED="1293375086505" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Om een knoop te selecteren:&#xa;- beweeg de muiscursor over de knoop: de knoop krijgt een kader als deze geselecteerd is." ID="ID_1447050435" CREATED="1289508703982" MODIFIED="1293375086500"/>
@@ -6145,24 +5878,21 @@
 <node TEXT="Om een selectie ongedaan te maken:&#xa;- klik op de achtergrond van de mindmap of op een andere, knoop." ID="ID_451303534" CREATED="1270892460682" MODIFIED="1293375086456"/>
 </node>
 </node>
-<node TEXT="Knopen tonen of verbergen" STYLE_REF="Onderwerp" FOLDED="true" POSITION="right" ID="Freeplane_Link_423038022" CREATED="1270892460681" MODIFIED="1293375086452">
-<node TEXT="Open/dichtvouwen" FOLDED="true" ID="Freeplane_Link_4727471" CREATED="1270892460688" MODIFIED="1293391269548" COLOR="#407000">
-<icon BUILTIN="full-5"/>
-<node ID="ID_1622399561" CREATED="1270892460688" MODIFIED="1293375757099" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<richcontent TYPE="NODE">
+<node TEXT="Tonen en verbergen van knopen" STYLE_REF="Onderwerp" FOLDED="true" POSITION="right" ID="Freeplane_Link_423038022" CREATED="1270892460681" MODIFIED="1304144692209">
+<node TEXT="Open/dichtvouwen" FOLDED="true" ID="Freeplane_Link_4727471" CREATED="1270892460688" MODIFIED="1304347659755" COLOR="#407000" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      De <b>afstamelingen</b>&#160;van een geselecteerde knoop kunnen worden verborgen door dichtvouwen van de geselecteerde knoop en door openvouwen weer zichtbaar gemaakt. Een dichtgevouwen knoop is te herkennen aan een <b>cirkeltje</b>&#160;aan de kant die het verste weg ligt van de basisknoop. Elke van de afstammelingen van een knoop kan zelf ook weer dicht/opengevouwen worden.
+      Een knoop&#160;&#160;heet <b>opengevouwen</b>&#160;als alle verderliggende knopen in de knoopketen zichtbaar zijn. Een knoop heet <b>dichtgevouwen</b>&#160;als de verderliggende knopen zijn verborgen. Een dichtgevouwen knoop kan worden herkend aan een cirkeltje aan de kind-zijde van de knoop.&#160;Door&#160;&#160;met de linkermuisknop op een dichtgevouwen knoop te<b>&#160;klikken</b>&#160;kan deze worden opengevouwen, en door weer te klikken worden dichtgevouwen.
     </p>
   </body>
 </html></richcontent>
-</node>
 <node TEXT="Alle knopen van de mindmap dichtvouwen" STYLE_REF="Functie" FOLDED="true" ID="ID_634654908" CREATED="1293302592306" MODIFIED="1293375086438">
-<node ID="ID_248605696" CREATED="1293302611534" MODIFIED="1293375782052">
+<node ID="ID_248605696" CREATED="1293302611534" MODIFIED="1304078257850">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6176,11 +5906,11 @@
       - selecteer basisknoop (druk op Escape);
     </p>
     <p>
-      - voer <i>Alleeen alle afstammelingen dichtvouwen uit,</i>&#160;zie onder
+      - voer <i>Alleen alle afstammelingen dichtvouwen uit,</i>&#160;zie onder
     </p>
   </body>
 </html></richcontent>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="ID_671896061" STARTINCLINATION="378;0;" ENDINCLINATION="378;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_671896061" STARTINCLINATION="378;0;" ENDINCLINATION="378;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
 <node TEXT="Alle knopen  van de mindmap openvouwen" STYLE_REF="Functie" FOLDED="true" ID="ID_296679523" CREATED="1293302749632" MODIFIED="1293375086431">
@@ -6202,7 +5932,7 @@
     </p>
   </body>
 </html></richcontent>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="ID_1181138636" STARTINCLINATION="370;0;" ENDINCLINATION="370;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1181138636" STARTINCLINATION="370;0;" ENDINCLINATION="370;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
 <node TEXT="Alleen alle afstammelingen dichtvouwen" STYLE_REF="Functie" FOLDED="true" ID="ID_671896061" CREATED="1293298750240" MODIFIED="1293375763113">
@@ -6303,7 +6033,7 @@
 </node>
 </node>
 <node TEXT="Filteren" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_65781048" CREATED="1293304154415" MODIFIED="1293375086392">
-<node STYLE_REF="Inleiding" ID="ID_727640069" CREATED="1292964136471" MODIFIED="1293375086383">
+<node STYLE_REF="Inleiding" ID="ID_727640069" CREATED="1292964136471" MODIFIED="1304078482069">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6311,7 +6041,7 @@
   </head>
   <body>
     <p>
-      Filteren is het alleen tonen van knopen die aan een door de gebruiker gedefinieerd <b>filtercriterium </b>of<b>&#160;filterregel </b>voldoen. Het filtercriterium bestaat uit: (1) een knoopelement; (2) een operator; (3) een in te vullen inhoud; en (4) al dan niet hoofdlettergevoelig zijn van tekst. Filtercriteria kunnen tot een worden gecombineerd met EN, OF en NIET-operatoren tot&#160;&#160;filterregels. Een set van filterregels kan worden bewaard om op een later moment te worden geladen.&#160;&#160;
+      Filteren is het alleen tonen van knopen die aan een door de gebruiker gedefinieerd <b>filtercriterium </b>of<b>&#160;filterregel </b>voldoen. Het filtercriterium bestaat uit: (1) een knoopelement; (2) een operator; (3) een in te vullen inhoud; en (4) al dan niet hoofdlettergevoelig zijn van tekst. Filtercriteria kunnen worden gecombineerd met EN, OF en NIET-operatoren tot&#160;&#160;filterregels. Een set van filterregels kan worden bewaard om op een later moment te worden geladen.&#160;&#160;
     </p>
     <p>
       Bij het filteren kunnen kunnen <b>filteropties</b>&#160;worden opgegeven die het filterresutaal beinvloeden. Het filteren kan op alle knopen worden uitgevoerd of alleen de knopen van een bepaalde tak; de knopen die niet worden gefilterd blijven dan gewoon zichtbaar. Het filteren kan worden beperkt tot de zichtbare (= opengevouwen) knopen of ook de dichtgevouwen knopen omvatten. Bij het filteren kunnen behalve de gefilterde knopen, ook de voorouder en/of niet-dichtgevouwen afstammelingen worden getoond. Daarnaast is het mogelijk alleen geselecteerde knopen te tonen, of alle gefilterde knopen te selecteren. Het filter kan worden ingesteld met de werkbalk Filtermenu (Snelfilteren en Eenvoudig filteren) of met Filterbeheer (Uitgebreid filteren).
@@ -6320,7 +6050,7 @@
 </html></richcontent>
 </node>
 <node TEXT="Filtercriterium" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_872666616" CREATED="1293290180283" MODIFIED="1293375086379">
-<node STYLE_REF="Inleiding" ID="ID_1238665231" CREATED="1293296710587" MODIFIED="1293375086375">
+<node STYLE_REF="Inleiding" ID="ID_1238665231" CREATED="1293296710587" MODIFIED="1303933671795">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6334,7 +6064,8 @@
 </html></richcontent>
 </node>
 <node TEXT="Knoopelement" STYLE_REF="Functie" FOLDED="true" ID="ID_1908186538" CREATED="1293290197826" MODIFIED="1293375086372">
-<node TEXT="Afrolmenu met de volgende opties: Knooptekst, Tekst van ouder, Knoopbijlage, Pictogram, Hyperlink, Label bij verbindingslijn, Verbindingslijn, Gebruikte knoopstijlen, Gebruikte attributen); (2) een functie (Bevat, Is gelijk aan, Is niet gelijk aan, &gt;, &gt;=, &lt;=, &lt;, Komt overeen met reguliere expressie" ID="ID_1010380546" CREATED="1293290240726" MODIFIED="1293375086368"/>
+<node TEXT="Afrolmenu met de volgende opties: Tekst, Tekst van ouder, bijlage, Pictogram, Hyperlink, Label bij verbindingslijn, Verbindingslijn, Gebruikte knoopstijlen, Gebruikte attributen), Tijdstip; (2) een functie (Bevat, Is gelijk aan, Is niet gelijk aan, &gt;, &gt;=, &lt;=, &lt;, Komt overeen met reguliere expressie" ID="ID_1010380546" CREATED="1293290240726" MODIFIED="1298575481896"/>
+<node TEXT="Om knopen te filteren op basis van een datum/tijdstip in de tekst, moet dit gegeven vooraan in de basistekststaan. Met de operatoren groter/kleiner kan het tekstfilter ingesteld worden." ID="ID_299050374" CREATED="1299253576582" MODIFIED="1299253764610" BACKGROUND_COLOR="#ccff00"/>
 </node>
 <node TEXT="Operator" STYLE_REF="Functie" FOLDED="true" ID="ID_270970377" CREATED="1293290306690" MODIFIED="1293375086364">
 <node TEXT="Afrolmenu met de volgende opties: Bevat, Is gelijk aan, Is niet gelijk aan, &gt;, &gt;=, &lt;=, &lt;, Komt overeen met reguliere expressie" ID="ID_1360822447" CREATED="1293290356252" MODIFIED="1293375086360"/>
@@ -6343,7 +6074,7 @@
 <node TEXT="Door de gebruiker in te typen. Bijvoorbeeld: &quot;mijn tekst" ID="ID_768441543" CREATED="1293290390619" MODIFIED="1293375086353"/>
 </node>
 <node TEXT="Hoofdlettergevoeligheid" STYLE_REF="Functie" FOLDED="true" ID="ID_547288320" CREATED="1293290431045" MODIFIED="1293375086349">
-<node ID="ID_72212500" CREATED="1293290446810" MODIFIED="1293375086344">
+<node ID="ID_72212500" CREATED="1293290446810" MODIFIED="1298472026236">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6351,7 +6082,7 @@
   </head>
   <body>
     <p>
-      Een vinkje betekent dat bij het zoeken en filteren de hoodletters in <i>Inhoud</i>&#160; moeten worden gevonden in de knooptekst om te passen.
+      Een vinkje betekent dat bij het zoeken en filteren de hoodletters in <i>Inhoud</i>&#160; moeten worden gevonden in de basistekst om te passen.
     </p>
   </body>
 </html></richcontent>
@@ -6432,7 +6163,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1701814590" CREATED="1292961201677" MODIFIED="1293375086279">
+<node ID="ID_1701814590" CREATED="1292961201677" MODIFIED="1298472026251">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6440,7 +6171,7 @@
   </head>
   <body>
     <p>
-      Kies in lijst met knoopelementen het element waarin moet worden gezocht, bijvoorbeeld <i>Knooptekst</i>.
+      Kies in lijst met knoopelementen het element waarin moet worden gezocht, bijvoorbeeld <i>basistekst</i>.
     </p>
   </body>
 </html></richcontent>
@@ -6675,7 +6406,7 @@
 <node TEXT="Het is mogelijk filters te defini&#xeb;ren voor hergebruiik op een later moment (zie Snelfilteren). Hierbij kunnen ook samengestelde filterrregels met EN, OF en NIET worden gedefinieerd. Een filterregel kan een naam hebben, welke (dan) voor de filterregel zelf, in de lijst met filterregels wordt getoond. Ook kunnen sets met filterregels worden opgeslagen en geladen voor gebruik op een later moment." STYLE_REF="Inleiding" ID="ID_196091416" CREATED="1293227031442" MODIFIED="1293653670484"/>
 <node TEXT="Filtercriterium instellen" STYLE_REF="Functie" FOLDED="true" ID="ID_168833629" CREATED="1292961191029" MODIFIED="1293375086172">
 <node TEXT="De volgende acies worden utgevoerd in de velden van het venster voor Filterbeheer" STYLE_REF="Inleiding" ID="ID_1587395494" CREATED="1293120040497" MODIFIED="1293375086168"/>
-<node ID="ID_53389241" CREATED="1292961201677" MODIFIED="1293375086164">
+<node ID="ID_53389241" CREATED="1292961201677" MODIFIED="1298472026251">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6683,7 +6414,7 @@
   </head>
   <body>
     <p>
-      Kies in lijst met knoopelementen het element waarin moet worden gezocht, bijvoorbeeld <i>Knooptekst</i>.
+      Kies in lijst met knoopelementen het element waarin moet worden gezocht, bijvoorbeeld <i>basistekst</i>.
     </p>
   </body>
 </html></richcontent>
@@ -6903,7 +6634,7 @@
 </node>
 <node TEXT="Zoeken" STYLE_REF="Functiegroep" ID="ID_751081177" CREATED="1293117624284" MODIFIED="1293375086058" LINK="#ID_1316598579"/>
 </node>
-<node TEXT="Navigeren" FOLDED="true" POSITION="right" ID="ID_1233270983" CREATED="1272091279810" MODIFIED="1293375086055" COLOR="#006699">
+<node TEXT="Navigeren tussen knopen" FOLDED="true" POSITION="right" ID="ID_1233270983" CREATED="1272091279810" MODIFIED="1304144299876" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node FOLDED="true" ID="Freeplane_Link_913137192" CREATED="1270892460689" MODIFIED="1293375086051" COLOR="#407000">
 <richcontent TYPE="NODE">
@@ -6917,7 +6648,7 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_1270232158" CREATED="1272007214049" MODIFIED="1293375086048">
+<node ID="ID_1270232158" CREATED="1272007214049" MODIFIED="1298472858197">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6925,7 +6656,7 @@
   </head>
   <body>
     <p>
-      Om het beeld groter te maken:
+      Om het beeld <b>groter</b>&#160;te maken:
     </p>
     <p>
       - kies <i>Beeld &gt; Inzoomen </i>in Hoofdmenu
@@ -6933,7 +6664,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_173079242" CREATED="1286529528486" MODIFIED="1293375086044">
+<node ID="ID_173079242" CREATED="1286529528486" MODIFIED="1298472871472">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6941,7 +6672,7 @@
   </head>
   <body>
     <p>
-      Om het beeld kleiner te maken:
+      Om het beeld <b>kleiner</b>&#160;te maken:
     </p>
     <p>
       - kies <i>Beeld&#160;&gt; Uitzoomen</i>&#160;in de Hoofdmenu .
@@ -6949,7 +6680,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1128495236" CREATED="1286529777751" MODIFIED="1293375086041">
+<node ID="ID_1128495236" CREATED="1286529777751" MODIFIED="1298472886199">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -6957,7 +6688,7 @@
   </head>
   <body>
     <p>
-      Om het beeld tot een bepaald percentage te vergroten of verkleinen:<br/>- kies <i>percentage</i>&#160;&#160;in Werkmenu.
+      Om het beeld tot een bepaald <b>percentage</b>&#160;te vergroten of verkleinen:<br/>- kies <i>percentage</i>&#160;&#160;in Werkmenu.
     </p>
   </body>
 </html></richcontent>
@@ -7271,8 +7002,27 @@
 </node>
 </node>
 </node>
-<node TEXT="Inhoud toevoegen en bewerken" STYLE_REF="Onderwerp" FOLDED="true" POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1293375085952">
-<node FOLDED="true" ID="_Freeplane_Link_1709752669" CREATED="1270892460670" MODIFIED="1293375085948" COLOR="#407000">
+<node TEXT="Bewerken van knopen en knoopkenmerken" STYLE_REF="Onderwerp" FOLDED="true" POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1304144429278">
+<node TEXT="Knoop" FOLDED="true" ID="_Freeplane_Link_1709752669" CREATED="1270892460670" MODIFIED="1304276647245" COLOR="#407000" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een knoop is een plaats waar informatie kan worden geraadpleegd. Een knoop heeft op het beeldscherm een binnengebied en een buitengebied. In het binnengebied kunnen een <b>basistekst</b>, <b>pictogram</b>, <b>snelkoppeling</b>, <b>hyperlink</b>&#160;en een <b>afbeelding</b>&#160;(met vaste grootte) worden getoond. Het binnengebied kan verder zichtbaar worden worden gemaakt door deze te omlijnen. Het buitengebied bevindt zich onder het binnengebied. In het buitengebied kan een <b>bijlagetekst</b>, <b>notitietekst</b>, <b>attributenlijst</b>, en schaalbare <b>afbeelding</b>&#160;worden getoond. Deze informatiekan naar keuze worden <b>verborgen</b>&#160;en alleen&#160;&#160;getoond als de knoop is geselecteerd.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Een nieuwe mindmap opent met &#233;&#233;n knoop, de <b>basisknoop</b>. Hieraan kunnen via <b>takken</b>&#160;kindknopen worden gekoppeld. Aaan kindknopen kunnen kleinkindknopen worden gekoppeld, enz. Takken geven een hierarchische, ouder-kind relatie.aan. Een knoop kan daarnaast door een <b>verbindingslijn</b>&#160;&#160;met een willekeurige andere knoop worden verbonden. Via een accolade kan een selectie van knopen worden verbonden met een <b>aggregatieknoop</b>. Knopen kunnen visueel worden verbonden binnen een <b>wolk</b>.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Voorbeeld knoop" STYLE_REF="Functie" FOLDED="true" ID="ID_932505136" CREATED="1291753245064" MODIFIED="1304279318765" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node ID="ID_1160972403" CREATED="1288646162992" MODIFIED="1293375090183">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7280,10 +7030,91 @@
   </head>
   <body>
     <p>
-      Maken en verwijderen knoop
+      <b>Basistekst</b>
     </p>
   </body>
 </html></richcontent>
+<font ITALIC="false"/>
+<richcontent TYPE="NOTE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Notitietekst
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="a1" VALUE="waarde1"/>
+<attribute NAME="a2" VALUE="waarde2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Tekst van bijlage
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node FOLDED="true" ID="ID_1187773932" CREATED="1292788187298" MODIFIED="1293375090180">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Idem Met bijlage, attributen en notitie verborgen.
+    </p>
+    <p>
+      Beweeg over <i>Basistekst</i>&#160;om de verborgen inhoud te zien.
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_1843996536" CREATED="1288646162992" MODIFIED="1293375090174" TEXT_SHORTENED="true">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Basistekst</b>
+    </p>
+  </body>
+</html></richcontent>
+<font ITALIC="false"/>
+<richcontent TYPE="NOTE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Notitietekst
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="a1" VALUE="waarde1"/>
+<attribute NAME="a2" VALUE="waarde2"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Tekst van bijlage
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
 <node FOLDED="true" ID="ID_847485935" CREATED="1270892460670" MODIFIED="1293375085944">
 <richcontent TYPE="NODE">
 <html>
@@ -7358,7 +7189,7 @@
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1638437345" CREATED="1270892460671" MODIFIED="1293375085926">
+<node ID="ID_1638437345" CREATED="1270892460671" MODIFIED="1304276360251">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7372,7 +7203,7 @@
       - druk <i>Del(ete); </i>of
     </p>
     <p>
-      - kies&#160; <i>Verwijderen knoop </i>in Hoofdmenu of in Contextmenu
+      - kies&#160; <i>Verwijderen knoop </i>in Hoofdmenu &gt; Knoop of in Contextmenu
     </p>
   </body>
 </html></richcontent>
@@ -7392,11 +7223,33 @@
     </p>
   </body>
 </html></richcontent>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="ID_1718916776" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1718916776" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
-<node TEXT="Bewerken knooptekst" FOLDED="true" ID="Freeplane_Link_1700974092" CREATED="1270892460671" MODIFIED="1293375085919" COLOR="#407000">
-<node ID="ID_1492174446" CREATED="1286545534701" MODIFIED="1293375085911" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node TEXT="Aggregatieknoop" FOLDED="true" ID="ID_439385370" CREATED="1304194464418" MODIFIED="1304279474820" TEXT_SHORTENED="true" COLOR="#407000">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een aggregatieknoop is een bijzondere knoop die (ook) een aggregatierelatie heeft met een of meer bovenliggende knopen. De aggregatierelatie wordt weergegeven door een accolade.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Voorbeeld aggregatieknoop" FOLDED="true" ID="ID_1315814940" CREATED="1304192858754" MODIFIED="1304279406149" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node TEXT="1" ID="ID_1040690623" CREATED="1304192867654" MODIFIED="1304192869901"/>
+<node TEXT="2" ID="ID_667693508" CREATED="1304192871203" MODIFIED="1304192946154">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="3" ID="ID_1271934555" CREATED="1304192874252" MODIFIED="1304192875439"/>
+<node TEXT="4 = aggregatie" ID="ID_850025269" CREATED="1304192876647" MODIFIED="1304193805922">
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="5" ID="ID_970363027" CREATED="1304192881678" MODIFIED="1304192885953"/>
+</node>
+<node ID="ID_176322009" CREATED="1304191328224" MODIFIED="1304194036062">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7404,14 +7257,84 @@
   </head>
   <body>
     <p>
-      Er zijn twee manieren om de tekst van een knoop te bewerken:
+      Om een lijst knopen via een accolade te verbinden met een aggreatieknoop:
+    </p>
+    <p>
+      - selecteer de lijst;
+    </p>
+    <p>
+      - kies <i>Knoop &gt; Nieuwe aggregatieknoop</i>&#160;in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_582288245" CREATED="1304194036793" MODIFIED="1304194160600">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een knoop in een lijst te promoveren tot aggregatieknoop:
+    </p>
+    <p>
+      - selecteer de knoop die aggregatieknoop moet worden;
+    </p>
+    <p>
+      - kies <i>Knoop &gt; Aggregatieknoop</i>&#160;in hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1931859695" CREATED="1304194162034" MODIFIED="1304194388195">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om de bovenste van door een accolade verbonden knopen aan te geven:
+    </p>
+    <p>
+      - selecteer de bovenste knoop;
+    </p>
+    <p>
+      - kies <i>Knoop &gt; Bovenste geaggregeerde knoop </i>in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Basistekst" FOLDED="true" ID="Freeplane_Link_1700974092" CREATED="1270892460671" MODIFIED="1304276900012" COLOR="#407000" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Elke knoop heeft binnengebied met een basis tekstveld. Dit veld wordt meestal gebruikt om een titel weer te geven en kan worden omlijnd.
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_1492174446" CREATED="1286545534701" MODIFIED="1304079248030" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Er zijn twee manieren om de basistekst van een knoop te bewerken:
     </p>
     <ol>
       <li>
-        <b>binnen de knoop</b>. De bewerkingsmenu's bevinden zich op twee plaatsen. De eerste plaats is in de het werkmenu bovenin het scherm. Dit werkmenu kan worden geopend door in het Hoofdmenu <i>Beeld &gt; Werkmenu</i>&#160;te kiezen. De tweede plaats is het Contextmenu dat opent wanneer met de rechter muisknop op de knooptekts wordt geklikt.
+        <b>binnen de knoop </b>(snelbewerken). De bewerkingsmenu's bevinden zich op twee plaatsen. De eerste plaats is in de het werkmenu bovenin het scherm. Dit werkmenu kan worden geopend door in het Hoofdmenu <i>Beeld &gt; Werkbalken &gt; Werkmenu</i>&#160;te kiezen. De tweede plaats is het Contextmenu dat opent wanneer met de rechter muisknop op de knooptekts wordt geklikt.
       </li>
       <li>
-        <b>in een hulpvenster. </b>Dit venster heeft eigen knoppen voor Bewerken, Opmaak, Tabel en Help.
+        <b>in een hulpvenster. </b>Dit venster heeft eigen knoppen voor Bewerken, Opmaak, Tabel en Help.Dit venster opent door <i>Bewerken basisteks</i>t in Hoofdmenu&gt;Knoop of in Contextmenu te kiezen.
       </li>
     </ol>
     <p>
@@ -7419,13 +7342,16 @@
     </p>
   </body>
 </html></richcontent>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="ID_1492174446" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1492174446" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+<node TEXT="Let op: een basistekst kan niet beginnen met het karaker &quot;=&quot;, zie formules." ID="ID_1591953472" CREATED="1296498256369" MODIFIED="1298472026251" BACKGROUND_COLOR="#ffffff" STYLE="bubble">
+<icon BUILTIN="messagebox_warning"/>
 </node>
 <node TEXT="Selecteren knoop" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_1086730254" CREATED="1286650861195" MODIFIED="1293375085908">
 <node TEXT="Om een knoop te kunnen bewerken moet deze eerst worden geselecteerd." ID="ID_271126985" CREATED="1286649877330" MODIFIED="1293375085904" LINK="#ID_1804240683"/>
 </node>
 <node TEXT="Tekst bewerken binnen knoop" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_1916991834" CREATED="1286650397903" MODIFIED="1293375085901" BACKGROUND_COLOR="#ffffff">
-<node ID="ID_714309616" CREATED="1291210223004" MODIFIED="1293375085895" BACKGROUND_COLOR="#ffff33" STYLE="bubble">
+<node ID="ID_714309616" CREATED="1291210223004" MODIFIED="1304079452328" BACKGROUND_COLOR="#ffff33" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7433,12 +7359,12 @@
   </head>
   <body>
     <p>
-      Dit is de snelste manier om tektst aan een knoop toe te voegen. Voor meer uitgebreide mogelijkheden: kies Bewerken &gt; <i>Tekst bewerken in hulpvenster </i>in Hoofdmenu
+      Dit is de snelste manier om tektst aan een knoop toe te voegen. Voor meer uitgebreide mogelijkheden: kies <i>Knoop &gt; Bewerken basistekst&#160;</i>in Hoofdmenu of in Contextmenu
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_473657585" CREATED="1270892460671" MODIFIED="1293375085891">
+<node ID="ID_473657585" CREATED="1270892460671" MODIFIED="1304079381410">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7446,7 +7372,7 @@
   </head>
   <body>
     <p>
-      Om tekst binnen een geselecteerd knoopvenster te bewerken:
+      Om tekst binnen een geselecteerd knoopvenster te bewerken (snelbewerken):
     </p>
     <p>
       - dubbelklik op de knoop zodat de invoercursor zichtbaar wordt; of
@@ -7455,7 +7381,7 @@
       - druk <i>F2</i>; of &#160;<i>Home</i>&#160;of <i>End</i>; of
     </p>
     <p>
-      - kies <i>Bewerken knooptekst </i>in Hoofdmenu of in het Contextmenu.<br/>
+      - kies <i>Bewerken basistekst </i>in Hoofdmenu&gt;Knoop of in het Contextmenu.<br/>
     </p>
     <p>
       en:
@@ -7471,7 +7397,7 @@
     </p>
   </body>
 </html></richcontent>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="ID_473657585" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_473657585" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node FOLDED="true" ID="ID_785582356" CREATED="1270892460672" MODIFIED="1293375085888">
 <richcontent TYPE="NODE">
@@ -7514,7 +7440,7 @@
 </node>
 <node TEXT="Om alle tekst van de geselecteerde knoop te verwijderen:&#xa;- selecteer de knoop en begin met typen." ID="ID_673531040" CREATED="1270892460671" MODIFIED="1293375085876"/>
 <node TEXT="Om het bewerken te eindigen:&#xa;- druk Enter; of&#xa;- klik met de muisknop buiten de knoop." ID="ID_1373800660" CREATED="1291205543183" MODIFIED="1293375085872"/>
-<node ID="ID_1491068549" CREATED="1291205875143" MODIFIED="1293375085868" BACKGROUND_COLOR="#ffff33">
+<node ID="ID_1491068549" CREATED="1291205875143" MODIFIED="1304079517287" BACKGROUND_COLOR="#ffff33">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7522,14 +7448,14 @@
   </head>
   <body>
     <p>
-      Mocht het bewerken niet lukken, schakel dan over naar <i>Tekst bewerken in hulpvenster</i>
+      Mocht het bewerken niet lukken, schakel dan over naar <i>Bewerken basistekst</i>
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 <node TEXT="Tekst bewerken in hulpvenster" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_1775583940" CREATED="1286650453228" MODIFIED="1293375085865">
-<node ID="ID_1386037184" CREATED="1270892460672" MODIFIED="1293375085861">
+<node ID="ID_1386037184" CREATED="1270892460672" MODIFIED="1304079588922">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7540,15 +7466,15 @@
       Om te zorgen dat Freeplane dit venster kiest, selecteer een knoop en
     </p>
     <p>
-      - kies <i>Bewerken &gt; Bewerken in hulpvenster</i>&#160;in Hoofdmenu of Contextmenu; of
+      - kies <i>Bewerken ibasistekst </i>in <i>Hoofdmenu &gt; Knoop</i>&#160;of <i>Contextmenu</i>; of
     </p>
     <p>
-      - druk <i>Alt + Enter </i>( <font color="#ff0000">ALLEEN als de knoop geslecteerd is, NIET als de invoercursor zichtbaar is</font> )
+      - druk <i>Alt + Enter </i>( <font color="#ff0000">ALLEEN als de knoop geslecteerd is, NIET als de invoercursor zichtbaar is</font>&#160;)
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_328110224" CREATED="1270892460672" MODIFIED="1293375085857">
+<node ID="ID_328110224" CREATED="1270892460672" MODIFIED="1304079685876">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7556,10 +7482,10 @@
   </head>
   <body>
     <p>
-      Om een tekst in een knoop op te delen in twee knopen:
+      Om een tekst in een knoop op te delen en op te nemen in twee knopen:
     </p>
     <p>
-      - kies <i>Bewerken in hulpvenster</i> in Hoofdmenu;
+      - kies <i>Bewerken basistekst</i>&#160;in <i>Hoofdmenu &gt; Knoop</i>&#160;of <i>Contextmenu</i>;
     </p>
     <p>
       - selecteer de tekst die bij de te splitsen knoop moet blijven en
@@ -7641,16 +7567,440 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Pictogram" STYLE_REF="Onderwerp" FOLDED="true" ID="Freeplane_Link_1044397139" CREATED="1270892460676" MODIFIED="1293375085829">
+<node TEXT="Pictogram" ID="ID_1595604721" CREATED="1304144754818" MODIFIED="1304144810465" LINK="#Freeplane_Link_1044397139" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+</node>
+</node>
+<node TEXT="Bijlagetekst" FOLDED="true" ID="ID_1237483271" CREATED="1291616540782" MODIFIED="1304277354511" COLOR="#407000" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Onder de basistekst kan, in het buitengebied van de knoop een toelichtende tekst&#160;&#160;worden getoond. De gebruiker kan deze tekst oprollen/uitrollen..&#160;&#160;Er kan worden ingesteld dat de bijlagetekst alleen wordt getoond als de knoop is geselecteerd.
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_1890676101" CREATED="1291756829074" MODIFIED="1304148211318">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Als bij basistekst met hulpvenster (zie boven);
+    </p>
+    <p>
+      - kies <i>Knoopkenmerken &gt; Bijlagetekst &gt; Beweken bijlage&#160;</i>in <i>Hoofdmenu&#160;</i>of <i>Contextmenu</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_345051640" CREATED="1291757478884" MODIFIED="1304148265122">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een bijlage te verwijderen:
+    </p>
+    <p>
+      - kies <i>Knoopkenmerken &gt; Bijlagetekst &gt; Verwijderen bijlage&#160;</i>in<i>&#160;Hoofdmenu </i>of<i>&#160;Contextmenu</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Notitietekst" FOLDED="true" ID="ID_307063579" CREATED="1291616540782" MODIFIED="1304278932111" COLOR="#407000" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Onder de bijlagetekst kan een tweede externe tekst worden getoond. Deze tekst kan naar keuze in een separaat, schermbreed venster worden getoond. Hierdoor is de notitietekst geschikt om bijvoorbeeld refertes te bevatten. De notitietekst wordt ook gebruikt in het venster waarin de activiteiten van de Agenda worden getoond.
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_1702667012" CREATED="1291757028480" MODIFIED="1298472255607" STYLE="bubble">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een notitie kan in een afzonderlijk hulpvenster worden getoond of bij de knoop, zie:
+    </p>
+    <p>
+      - <i>Beeld &gt; Tonen notities bij knopen</i> in Hoofdmenu;
+    </p>
+    <p>
+      - <i>Beeld &gt; Tonen notitiehulpvenster</i> in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1408896252" CREATED="1291756829074" MODIFIED="1304085014922">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Als bij basistekst met hulpvenster;
+    </p>
+    <p>
+      - kies <i>Bewerken bijlage</i>&#160;in <i>Hoofdmenu &gt; Knoopkenmerken&#160;</i>of&#160; <i>Contextmenu</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_958969692" CREATED="1291757560652" MODIFIED="1304084988933">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een notitie te verwijderen:
+    </p>
+    <p>
+      - kies <i>Verwijderen notitie</i>&#160;in <i>Hoofdmenu &gt; Knoopkenmerken</i>&#160; of <i>Contextmenu</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Attributen" FOLDED="true" ID="ID_540307688" CREATED="1270896851973" MODIFIED="1304279067698" COLOR="#407000" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een attribuut is een paar van twee naast elkaar gelegen velden. Het linker veld is bedoeld voor de naam van het attribuut en de rechter voor de waarde van het attribuut.&#160;&#160;Een knoop kan onder elkaar meerdere attributen tonen (attributenlijst).
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT=" Voorbeeld van attributen" ID="ID_50207363" CREATED="1270893318566" MODIFIED="1304279150535" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<attribute_layout NAME_WIDTH="33" VALUE_WIDTH="33"/>
+<attribute NAME="jan" VALUE="10"/>
+<attribute NAME="piet" VALUE="20"/>
+</node>
+<node STYLE_REF="Inleiding" ID="ID_260165980" CREATED="1296496503610" MODIFIED="1304106842498">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      De breedte van een attribuut of attribuutwaarde kan worden gewijzigd door de oplichtende rand net boven de (lijst) attributen of attribuutwaarden met de muiscursor ingedrukt te verschuiven.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Om de optimale breedte in te stellen:
+    </p>
+    <p>
+      - klik met de rechter muisknop op een attribuut;
+    </p>
+    <p>
+      - kies <i>Optimale breedte </i>in het contextmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Attributen die zijn gebruikt binnen een mindmap komen terug als keuzeopties bij andere knopen.&#xa;Attribuutwaarden kunnen worde gebruikt om knopen wel/niet te tonen, zie Filteren." STYLE_REF="Inleiding" ID="ID_1827145511" CREATED="1289570137569" MODIFIED="1296497457107"/>
+<node ID="ID_541565942" CREATED="1270896865255" MODIFIED="1304107947686">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een attribuut toe te voegen aan een knoop die nog geen attributen heeft, of die niet zichtbaar zijn::
+    </p>
+    <p>
+      - kies <i>Knoopkenmerken &gt; Nieuw/Bewerken&#160;attribuut </i>in <i>Hoofdmenu </i>&#160;of &#160;in Contextmenu (rechtsklik knoop); of
+    </p>
+    <p>
+      <i>- </i>druk<i>&#160;Alt + F9. </i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_855365799" CREATED="1296497665858" MODIFIED="1298402478990">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een nieuw attribuut toe te voegen aan een bestaande lijst:
+    </p>
+    <p>
+      - klik met de rechtermuisknop op een attibuut;
+    </p>
+    <p>
+      - kies <i>Nieuw attribuut</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_238666736" CREATED="1296497665858" MODIFIED="1304108085372">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een bestaand attribuut te wissen:
+    </p>
+    <p>
+      - klik met de rechtermuisknop op het attibuut;
+    </p>
+    <p>
+      - kies W<i>issen attribuut</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Om een hyperlink als attribuutwaarde toe te voegen:&#xa;- sleep de hyperlink in het veld van de attribuutwaarde" ID="ID_722555431" CREATED="1298928752603" MODIFIED="1298928813970"/>
+<node ID="ID_1213222306" CREATED="1270896956119" MODIFIED="1293375085753">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om tegelijkertijd meerdere attributen van meerdere knopen te bewerken:
+    </p>
+    <p>
+      - kies<i>&#160;Extra &gt; Attribuutwaarden beheren</i>&#160;in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_686245498" CREATED="1291757348243" MODIFIED="1304108135510">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om attributen te verwijderen:
+    </p>
+    <p>
+      - kies <i>Knoopkenmerken&#160;&gt; Attribuutwaarden beheren</i>;
+    </p>
+    <p>
+      - kies alle waarden wissen.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Zie ook" ID="ID_1612379315" CREATED="1296498105485" MODIFIED="1296498141725" LINK="#ID_238203193"/>
+</node>
+<node TEXT="Afbeelding" FOLDED="true" ID="Freeplane_Link_271176250" CREATED="1270892460699" MODIFIED="1304279647700" COLOR="#407000" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een afbeelding is een plaatje. Een plaatje kan in het binnegebied van de knoop (interne afbeelding) worden getoond of in het buitengebied, onder de knoop (extern plaatje). Alleen een extern plaatje is schaalbaar.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Wat is een afbeelding ?" ID="ID_1708768705" CREATED="1304149499403" MODIFIED="1304149531189" BACKGROUND_COLOR="#ffff00" STYLE="bubble"/>
+<node ID="ID_1044142128" CREATED="1286741509257" MODIFIED="1304149628690" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In / bij knopen kunnen plaatjes worden getoond van de typen<b>&#160;png, jpeg, gif, </b>en<b>&#160;svg</b>. Een plaatje kan binnen een knoop worden ingevoegd en heeft dan een vaste grootte. Of het plaatje kan onder de knoop worden geplaatst (extern plaatje) en dan is de grootte instelbaar.
+    </p>
+    <p>
+      De getoonde plaatjes worden <u>niet</u>&#160;opgenomen in het mindmap bestand. Bij het kopi&#235;ren en verplaatsen van een mindmap bestand moeten de plaatjes dus ook meegekopieerd worden om te zorgen dat de mindmap goed werkt. Hetzelfde geldt voor het exporteren van een mindmap: de plaatjes worden niet automatisch meege&#235;xporteerd.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Schaalbaar plaatje onder basistekst" FOLDED="true" ID="ID_1248928522" CREATED="1286806901272" MODIFIED="1304110771478">
+<node TEXT="Om onder een knoop een schaalbaar, extern plaatje toe te voegen:&#xa;- klik links op (de lokatie) van het plaatje;&#xa;- sleep het plaatje naar een knoop, tot het bovenste grijze selectieveld oplicht;&#xa;- laat de linker muisknop los." ID="ID_1089926428" CREATED="1298574864898" MODIFIED="1304110245445"/>
+<node TEXT="Idem. om een nieuwe kindknoop met het schaalbaar, extern plaatje toe te voegen:&#xa;- klik links op de lokatie van het plaatje;&#xa;- sleep naar een knoop, naar het grijze selectieveld aan de kindkant;&#xa;- laat de linker muisknop los." ID="ID_225789255" CREATED="1299178169909" MODIFIED="1304110314959"/>
+<node FOLDED="true" ID="ID_692449557" CREATED="1271527733841" MODIFIED="1304110592562">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Alternatief: om onder een knoop een extern, schaalbaar plaatje te tonen, waarbij de knoop ook tekst kan bevatten:
+    </p>
+    <p>
+      - kies&#160; <i>Knoopkenmerken &gt;&#160;Afbeelding &gt;Toevoegen externe, </i>s<i>chaalbare afbeelding</i>&#160;in Hoofdmenu of Contextmenu (rechtsklik knoop); en
+    </p>
+    <p>
+      - zoek en selecteer het plaatje;
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Om het plaatje in grootte te verstellen:" ID="ID_895929042" CREATED="1286742816233" MODIFIED="1293375085390"/>
+</node>
+<node ID="ID_1548126810" CREATED="1298575057637" MODIFIED="1304110652060">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#160;Om de <b>grootte</b>&#160;van het schaalbare plaatje aan te passen:
+    </p>
+    <p>
+      - beweeg de linker muisknop over een hoekpunt van het plaatje totdat de cursor verandert in een diagonaal lijntje; en
+    </p>
+    <p>
+      - klik en sleep naar het juiste formaat.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Vaste afbeelding zonder tekst" FOLDED="true" ID="ID_95494296" CREATED="1286806940607" MODIFIED="1304149260139">
+<node ID="ID_1950962853" CREATED="1270892460699" MODIFIED="1304110740777">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om binnen een knoop een plaatje (geen svg !) met vaste grootte in te voegen:
+    </p>
+    <p>
+      - kies <i>Knoopkenmerken &gt; Afbeelding &gt; Afbeelding&#160;uit bestandenlijst of hyperlink in </i>Hoofdmenu of Contextmenu&#160;(rechtsklik knoop);&#160;of
+    </p>
+    <p>
+      - druk <i>Alt + Shift + K</i>.
+    </p>
+    <p>
+      N.B. Het plaatje wordt getoond in oorpronkelijke grootte. Pas deze grootte zo nodig aan in een tekenprogramma.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Hyperlink naar afbeelding" FOLDED="true" ID="ID_1609288412" CREATED="1286807289790" MODIFIED="1304149275458">
+<node TEXT="Om een hyperlink naar een plaatje in te voegen:&#xa;- kopieer het adres van het plaatje;&#xa;- plak het adres &quot;op&quot; de knoop: er wordt automatisch een kindknoop aangemaakt met de hyperlink.&#xa;Dit werkt ook met meerdere geelekteerde plaatjesbestanden tegelijk." FOLDED="true" ID="ID_890405454" CREATED="1270892460700" MODIFIED="1293375085371">
+<node TEXT="SintEnPiet.JPG" ID="ID_1275791527" CREATED="1286808154863" MODIFIED="1293375085368" LINK="../Documents/My%20Dropbox/MindMap/Plaatjes/SintEnPiet.JPG"/>
+</node>
+</node>
+<node TEXT="Converteren snelkoppeling naar afbeelding" FOLDED="true" ID="ID_1576666245" CREATED="1286807975568" MODIFIED="1304110875468">
+<node ID="ID_24021694" CREATED="1286807988291" MODIFIED="1304110947790">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een hyperlink naar een afbeelding te vervangen door de afbeelding zelf:
+    </p>
+    <p>
+      - kies <i>Invoegen &gt; Afbeelding&#160;uit bestandenlijst of hyperlink in </i>Hoofdmenu of Contextmenu (rechtsklik op knoop);&#160;of
+    </p>
+    <p>
+      - druk <i>Alt + Shift + K</i>.
+    </p>
+    <p>
+      Werkt ook met meerdere geselecteerde knopen/links tegelijk.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_303024466" CREATED="1290628462994" MODIFIED="1293375085352" LINK="#ID_1451936706">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      De bovenstaande procedure werkt om veiligheidsredenen <i><b>niet</b></i>&#160;als de snelkoppeling naar een bestand op Internet verwijst.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Afbeelding via HTML-code" FOLDED="true" ID="ID_1100890918" CREATED="1286808673817" MODIFIED="1304111044370">
+<node TEXT="In een hulpvenster kan met HTML-code een plaatje worden opgenomen" ID="ID_1512479346" CREATED="1270892460700" MODIFIED="1293375085346">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node ID="ID_258073366" CREATED="1270892460700" MODIFIED="1293375085340">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Voorbeeld:<br/>&#160;&#160;&lt;html&gt;&lt;img src=&quot;linked/Apple.png&quot;&gt;<br/>&#160;&#160;&lt;html&gt;&lt;img src=&quot;file://C:/Users/My Documents/Mind Maps/Linked/Apple.png&quot;&gt;<br/>De relatieve link op de eerste regel verwijst naar een afbeeldingsbestand in een submap (subdirectory) binnen (onder) de map waarin de mindmap staat.
+    </p>
+  </body>
+</html></richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
+</node>
+<node TEXT="Pictogram" STYLE_REF="Onderwerp" FOLDED="true" ID="Freeplane_Link_1044397139" CREATED="1270892460676" MODIFIED="1304279900950" TEXT_SHORTENED="true" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
-<node TEXT=" Een pictogram is een kleine afbeelding die aan een knoop kan worden gekoppeld." ID="ID_1983709741" CREATED="1270892460676" MODIFIED="1293375085825" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een pictogram is een miniafbeelding welke aan het binnengebied van een knoop kan worden gekoppeld.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT=" Voorbeelden van pictogrammen." ID="ID_1983709741" CREATED="1270892460676" MODIFIED="1304279791423" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
 <icon BUILTIN="help"/>
 <icon BUILTIN="yes"/>
 <icon BUILTIN="messagebox_warning"/>
 <icon BUILTIN="button_ok"/>
 </node>
 <node TEXT="Vind pictogram" FOLDED="true" ID="ID_1869499817" CREATED="1286699808207" MODIFIED="1293375085822">
-<node ID="ID_1000521100" CREATED="1286697831695" MODIFIED="1293375085818">
+<node ID="ID_1000521100" CREATED="1286697831695" MODIFIED="1304079803438">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7670,7 +8020,7 @@
       <i>De pictogrammen zijn ook als volgt te vinden en te kiezen: </i>
     </p>
     <p>
-      - kies&#160; <i>Pictogram</i>&#160;in Hoofdmenu<i>;&#160;</i>of
+      - kies&#160; <i>Pictogram</i>&#160;in Hoofdmenu &gt; Knoopkenmerken<i>;&#160;</i>of
     </p>
     <p>
       - kies <i>&#160;Pictogrammen</i>&#160;in het Contextmenu<i>&#160;</i>; of
@@ -7682,7 +8032,7 @@
 </html></richcontent>
 </node>
 </node>
-<node ID="ID_1126175660" CREATED="1270892460676" MODIFIED="1293375085811">
+<node ID="ID_1126175660" CREATED="1270892460676" MODIFIED="1304079874558">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7696,12 +8046,12 @@
       - selecteer de knoop waarin het pictogram moet komen (houd daarna <i>Ctrl</i>&#160; ingedrukt om te zorgen dat knoop geselekteerd blijft);
     </p>
     <p>
-      - kies <i>Pictogram</i>&#160;in Hoofdmenu;
+      - kies <i>Pictogram</i>&#160;in Hoofdmenu &gt; Knoop;
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1703076068" CREATED="1270892460676" MODIFIED="1293375085804">
+<node ID="ID_1703076068" CREATED="1270892460676" MODIFIED="1304084239928">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7715,16 +8065,16 @@
       - selecteer de knoop waarin het pictogram moet komen (houd daarna <i>Ctrl</i>&#160; ingedrukt om te zorgen dat knoop geselecteerd blijft);
     </p>
     <p>
-      - kies <i>Pictogram</i>&#160;in Hoofdmenu of ga naar de Pictogrammenbalk;
+      - kies <i>Pictogram</i>&#160;in Hoofdmenu &gt; Knoop of ga naar de Pictogrammenbalk;
     </p>
     <p>
-      -&#160;kies eerste of tweede pictogram met het rode kruisje (verwideren pictogram);
+      -&#160;kies eerste of tweede pictogram met het rode kruisje (verwijderen pictogram);
     </p>
   </body>
 </html></richcontent>
 </node>
 <node TEXT="Om alle pictogrammen te verwijderen:&#xa;- kies in de Pictogrammenbalk de vuilnisbak." ID="ID_1240276527" CREATED="1270892460676" MODIFIED="1293375085800"/>
-<node ID="ID_26845444" CREATED="1271096826323" MODIFIED="1293375085796">
+<node ID="ID_26845444" CREATED="1271096826323" MODIFIED="1304084301860">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7735,15 +8085,26 @@
       Om alle knopen met pictogrammen hi&#235;rarchisch te tonen:
     </p>
     <p>
-      - kies <i>Opmaak &gt; Pictogrammen hi&#235;rarchie </i>in Hoofdmenu .
+      - kies Knoopkenmerken<i>&#160;&gt; Pictogrammen hi&#235;rarchie </i>in Hoofdmenu .
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-</node>
-<node TEXT="Bewerken knoopbijlage" FOLDED="true" ID="ID_1237483271" CREATED="1291616540782" MODIFIED="1293375085793" COLOR="#407000">
-<node ID="ID_1890676101" CREATED="1291756829074" MODIFIED="1293375085789">
+<node TEXT="Tak" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_893133723" CREATED="1288986009569" MODIFIED="1304281104181" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een lijn tussen ouderknoop en kindknoop. Standaard is deze lijn zichtbaar. De kleur, dikte en vorm van deze lijn kunnen worden ingesteld<i>.</i>&#160;Een tak kan&#160;ook onzichtbaar worden gemaakt.&#160;&#160;Opeenvolgende takken vormen een <b>afstammingsketen</b>&#160; welke eindigt bij de <b>bladknoop</b>.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Voorbeeld afstammingsketen" FOLDED="true" ID="ID_532956169" CREATED="1288536353356" MODIFIED="1304281219636" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node ID="ID_341122380" CREATED="1288536207761" MODIFIED="1293375090079" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7751,15 +8112,53 @@
   </head>
   <body>
     <p>
-      Als bij basistekst met hulpvenster (zie boven);
-    </p>
-    <p>
-      - kies <i>Bewerken &gt; Bewerken knoopbijlage</i> in Hoofdmenu
+      boven a
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_345051640" CREATED="1291757478884" MODIFIED="1293375085786">
+<node TEXT="knoop a" FOLDED="true" ID="ID_1034869985" CREATED="1288535672221" MODIFIED="1293375090075" STYLE="bubble">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_864779162" SOURCE_LABEL="ouder (=label)" TARGET_LABEL="kleinkind" MIDDLE_LABEL="verbindingslijn" STARTINCLINATION="-11;64;" ENDINCLINATION="11;87;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+<node TEXT="knoop b" FOLDED="true" ID="ID_1639474035" CREATED="1288535688688" MODIFIED="1293375090070">
+<edge STYLE="bezier"/>
+<node TEXT="knoop c" ID="ID_864779162" CREATED="1288535699522" MODIFIED="1293375090066"/>
+</node>
+</node>
+<node TEXT="onder a" ID="ID_565180204" CREATED="1288536218798" MODIFIED="1304280871725" STYLE="bubble" HGAP="30" VSHIFT="70"/>
+</node>
+<node TEXT="Voorbeeld tavormk" FOLDED="true" ID="ID_456434312" CREATED="1288536745875" MODIFIED="1304281241398" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node TEXT="Rechte lijn" ID="ID_848359347" CREATED="1288538234095" MODIFIED="1293375090112">
+<edge STYLE="linear" WIDTH="4"/>
+</node>
+<node TEXT="Bocht" ID="ID_186410127" CREATED="1288538240451" MODIFIED="1293375090108">
+<edge STYLE="bezier" WIDTH="4"/>
+</node>
+<node TEXT="Taps toelopend recht" ID="ID_372463562" CREATED="1288538242377" MODIFIED="1293375090104">
+<edge STYLE="sharp_linear" WIDTH="4"/>
+</node>
+<node TEXT="Taps toelopend bocht" ID="ID_1929460798" CREATED="1288538470332" MODIFIED="1293375090101">
+<edge STYLE="sharp_bezier" WIDTH="4"/>
+</node>
+<node TEXT="Verborgen tak" ID="ID_17917727" CREATED="1288538507390" MODIFIED="1293375090097" BACKGROUND_COLOR="#00ffff">
+<edge STYLE="hide_edge" WIDTH="4"/>
+</node>
+</node>
+<node TEXT="Opmaken tak" STYLE_REF="Inleiding" ID="ID_1467645659" CREATED="1288986019188" MODIFIED="1304280607944" LINK="#ID_1797063061" BACKGROUND_COLOR="#ffffff" STYLE="fork"/>
+</node>
+<node TEXT="Hyperlink" FOLDED="true" ID="Freeplane_Link_203858515" CREATED="1270892460675" MODIFIED="1304279885397" COLOR="#407000" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een hyperlink si een electronische koppeling van een bronknoop naar&#160;&#160;naar een webpagina, een bestand of een applicatie zoals een tekstverwerker. De koppeling is te herkennen aan een<b>&#160;rood pijltje</b>. Door op het rode pijltje te klikken wordt de hyperlink geactiveerd.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Wat is een hyperlink ?" ID="ID_419094936" CREATED="1304149642986" MODIFIED="1304149909584" BACKGROUND_COLOR="#ffff00" STYLE="bubble"/>
+<node ID="ID_440145113" CREATED="1288457268442" MODIFIED="1304111775834" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7767,17 +8166,18 @@
   </head>
   <body>
     <p>
-      Om een knoopbijlage te verwijderen:
+      <b><i>Hyperlink toevoegen</i></b>
     </p>
     <p>
-      - kies <i>Extra &gt; Verwijderen knoopbijlage</i>
+      Een hyperlink kan worden ingevoegd in de basistektst van een knoop en in een attribuut(waarde). Zie Hoofdmenu onder <i>Knoopkenmerken &gt; Koppelingen</i>&#160; voor verschillende mogelijkheden om een&#160;hyperlink&#160;in de basistekst toe te voegen. Het contextmenu van attribuutwaarde bevat&#160;&#160;een beperkte set van deze mogelijkheden. Makkelijker is het echter om een hyperlink toe aan een knoop of aan een attribuutwaarde door slepen en laten vallen, of kopieren en plakken, . Hierbij kan ook automatisch een kindknoop worden aangemaakt.
     </p>
   </body>
 </html></richcontent>
 </node>
-</node>
-<node TEXT="Bewerken knoopnotitie" FOLDED="true" ID="ID_307063579" CREATED="1291616540782" MODIFIED="1293375085782" COLOR="#407000">
-<node ID="ID_1702667012" CREATED="1291757028480" MODIFIED="1293375085779" STYLE="bubble">
+<node TEXT="In basistekst" FOLDED="true" ID="ID_25234663" CREATED="1299179592723" MODIFIED="1299179602600">
+<node TEXT="Hyperlink kopi&#xeb;ren en plakken" FOLDED="true" ID="ID_264876289" CREATED="1286655645441" MODIFIED="1293375085462">
+<node TEXT="Om een hyperlink naar een bestand te maken:&#xa;- sleep h" ID="ID_1756497395" CREATED="1270892460683" MODIFIED="1293375085458"/>
+<node ID="ID_640110372" CREATED="1286651969385" MODIFIED="1293375085454">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7785,18 +8185,25 @@
   </head>
   <body>
     <p>
-      Een knoopnotitie kan in een afzonderlijk hulpvenster worden getoond of bij de knoop, zie:
+      Om in &#233;&#233;n keer een lijst van hyperlinks&#160;&#160;naar een aantal bestanden te maken:
     </p>
     <p>
-      - <i>Beeld &gt; Tonen notities bij knopen</i> in Hoofdmenu;
+      - ga bijvoorbeeld naar Verkenner en selecteer en kopieer de groep bestanden;
     </p>
     <p>
-      - <i>Beeld &gt; Tonen notitiehulpvenster</i> in Hoofdmenu
+      - ga naar de mindmap en selekteer een knoop;
+    </p>
+    <p>
+      - kies <i>Bewerken &gt; Plakken </i>in Hoofdmenu of Contextmenu; of klik op het pictogram voor Plakken.
+    </p>
+    <p>
+      Elke hyperlink komt in een aparte knoop.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1408896252" CREATED="1291756829074" MODIFIED="1293375085775">
+</node>
+<node FOLDED="true" ID="ID_898557755" CREATED="1286656418750" MODIFIED="1293375085450">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7804,15 +8211,11 @@
   </head>
   <body>
     <p>
-      Als bij basistekst met hulpvenster;
-    </p>
-    <p>
-      - kies <i>Bewerken &gt; Bewerken knoopbijlage</i> in Hoofdmenu
+      Hyperlink naar bestand in bestandenlijst
     </p>
   </body>
 </html></richcontent>
-</node>
-<node ID="ID_958969692" CREATED="1291757560652" MODIFIED="1293375085772">
+<node ID="ID_1159570525" CREATED="1270894120878" MODIFIED="1304111947435">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7820,25 +8223,188 @@
   </head>
   <body>
     <p>
-      Om een notitie te verwijderen:
+      Om een koppeling naar een bestand in te voegen:
     </p>
     <p>
-      - kies <i>Extra &gt; Verwijderen notitie</i> in Hoofdmenu
+      - selecteer de knoop;
+    </p>
+    <p>
+      - kies <i>Knoopkenmerken &gt; Koppeling&#160;&gt; Hyperlink kiezen uit bestandenlijst </i>&#160;in Hoofdmenu; of
+    </p>
+    <p>
+      druk <i>Ctrl + Shift + K.</i>
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Bewerken knoopattributen" FOLDED="true" ID="ID_540307688" CREATED="1270896851973" MODIFIED="1293375085768" COLOR="#407000">
+<node FOLDED="true" ID="ID_439188785" CREATED="1286655618819" MODIFIED="1293375085443">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Hyperlink typen
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_745700749" CREATED="1270892460675" MODIFIED="1304112027463">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een hyperlink in een knoop op te nemen door het adres te typen:
+    </p>
+    <p>
+      - selecteer de knoop;
+    </p>
+    <p>
+      - kies<i>&#160;Knoopkenmerken &gt; Koppeling&#160;&#160;&gt; Hyperlink typen</i>; of druk op <i>Ctrl + K</i>; en
+    </p>
+    <p>
+      - type de hyperlink
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node FOLDED="true" ID="ID_463015053" CREATED="1286655769765" MODIFIED="1293375085435">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Hyperlink verwijderen
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_1795785910" CREATED="1289550333175" MODIFIED="1304112149315">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een hyperlink te verwijderen zonder de knoop te verwijderen:
+    </p>
+    <p>
+      - selecteer de knoop met snelkoppeling;
+    </p>
+    <p>
+      - kies <i>Knoopkenmerken &gt; Koppeling &gt; Hyperlink intypen</i>... in Hoofdmenu of het Contextmenu; of
+    </p>
+    <p>
+      - druk op Ctrl + K
+    </p>
+    <p>
+      en wis de tekst in het dialoogvenster dat opent.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node ID="ID_1332466654" CREATED="1286655879246" MODIFIED="1304112213462" LINK="#ID_609655514">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Koppeling naar e-mail
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="In attribuutwaarde" FOLDED="true" ID="ID_1953507040" CREATED="1299179628141" MODIFIED="1299180792936">
+<node TEXT="als in basistekst, alleen via het Contextmenu van attribuutwaarde." ID="ID_177452033" CREATED="1299180745727" MODIFIED="1299180789282"/>
+</node>
+</node>
+<node TEXT="Snelkoppeling" FOLDED="true" ID="ID_342404639" CREATED="1289551103373" MODIFIED="1304280004761" COLOR="#407000" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Een knoop kan attributen hebben, bijvoorbeeld:" ID="ID_1293545211" CREATED="1270893318566" MODIFIED="1293375085764" STYLE="bubble">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Elektronische koppeling tussen twee knopen (bronknoop en bestemming)&#160;welke is te herkennen aan een <b>groen pijltje</b>&#160;in de bronknoop.&#160;Door op het pijltje te klikken verschuift de focus (selectie) naar de bestemmingsknoop.
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_1561159352" CREATED="1289551169759" MODIFIED="1304144239675">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een snelkoppeling tussen twee knopen te maken, of te veranderen:
+    </p>
+    <p>
+      - selecteer de knoop waar de snelkoppeling moet komen;
+    </p>
+    <p>
+      - houd<i>&#160;Shift </i>ingedrukt en selecteer de knoop waarheen de snelkoppeling moet leiden;
+    </p>
+    <p>
+      - kies<i>&#160;Knoopkenmerk &gt; Snelkoppeling tussen knopen</i>&#160;in Hoofdmenu of het Contextmenu.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_953613682" CREATED="1289550333175" MODIFIED="1304144262046">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een snekoppeling te verwijderen zonder de knoop te verwijderen:
+    </p>
+    <p>
+      - selecteer knoop met snelkoppeling;
+    </p>
+    <p>
+      - kies Knoopkenmerk <i>&gt; Hyperlink intypen</i>... in Hoofdmenu of Contextmenu; of
+    </p>
+    <p>
+      - druk op Ctrl + K
+    </p>
+    <p>
+      en wis de tekst in het dialoogvenster dat opent.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="E-mail koppeling" FOLDED="true" ID="ID_609655514" CREATED="1289567011406" MODIFIED="1304280089485" COLOR="#407000" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<attribute_layout NAME_WIDTH="40" VALUE_WIDTH="49"/>
-<attribute NAME="jan" VALUE="10"/>
-<attribute NAME="piet" VALUE="20"/>
-</node>
-<node TEXT="Attributen die zijn gebruikt binnen een mindmap komen terug als keuzeopties bij andere knopen.&#xa;Attribuutwaarden kunnen worde gebruikt om knopen wel/niet te tonen, zie Filteren." ID="ID_1827145511" CREATED="1289570137569" MODIFIED="1293375085760"/>
-<node ID="ID_541565942" CREATED="1270896865255" MODIFIED="1293375085757">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een knoop met een e-mail adres. Door op de e-mail te klikken opent het e-mail bewerkingsvenster
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="De eenvoudigste manier om een e-mail toe te voegen is om het e-mail adres te kopieren en te plakken op een knoop. Er wordt dan een kindknoop aangemaakt met (1) het e-mail adres als hyperlink en (2) als basistekst het e-mailadres. De basistekst kan worden vervangen door een naam, bijvoorbeeld Jan Jansen. Dit laat de hyperlink ongewijzigd." ID="ID_250029024" CREATED="1298319410882" MODIFIED="1304150217162" BACKGROUND_COLOR="#ffffff" STYLE="fork"/>
+<node ID="ID_869144882" CREATED="1270892460675" MODIFIED="1304150375861" LINK="mailto:%20jokro@freeplane.nl">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7846,21 +8412,43 @@
   </head>
   <body>
     <p>
-      Om attributen van een enkele knoop te bewerken:
+      Een andere manier om een e-mail adres in een knoop op te nemen:
     </p>
     <p>
-      - kies <i>Bewerken &gt; Bewerken attributen </i>in Hoofdmenu; of
+      - selecteer de knoop;
     </p>
     <p>
-      - kies <i>Bewerken attributen</i>&#160;in Contextmenu (rechtsklik knoop); of
+      - kies<i>&#160;Knoopkenmerken &gt; Koppeling&#160;&#160;&gt; Hyperlink typen </i>in<i>&#160; Hoofdmenu</i>; of druk op <i>Ctrl + K</i>; en
     </p>
     <p>
-      <i>- </i>druk<i>&#160;Alt + F9.</i>
+      - type mailto:
+    </p>
+    <p>
+      - type het adres
+    </p>
+    <p>
+      Voorbeeld: mailto:jokro@freeplane.nl
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_1213222306" CREATED="1270896956119" MODIFIED="1293375085753">
+<node TEXT="Om aan een email een onderwerp toe te voegen, pas het adres aan, bijvoorbeeld:&#xa;- mailto:jokro@freeplane.nl?subject=laatste telefoongesprek." ID="ID_1116507628" CREATED="1270892460676" MODIFIED="1293375085415"/>
+</node>
+<node TEXT="Verbindingslijn" FOLDED="true" ID="_Freeplane_Link_1996597932" CREATED="1270892460679" MODIFIED="1304280178537" COLOR="#407000" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een lijn tussen twee willekeurige knopen. Op drie plaatsen van deze lijn (begin, midden en eind) kan een tekstlabel worden geplaatst. De tekst in het label kan meerdere regels (Shift-Return) omvatten.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Wat is een verbindingslijn ?" ID="ID_1613777563" CREATED="1304179289723" MODIFIED="1304179492134" BACKGROUND_COLOR="#ffff00" STYLE="bubble"/>
+<node TEXT="Maken verbinding" STYLE_REF="Functie" FOLDED="true" ID="ID_1468846146" CREATED="1286733104547" MODIFIED="1293375085333">
+<node ID="ID_1564001222" CREATED="1270892460679" MODIFIED="1304186908428">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7868,15 +8456,24 @@
   </head>
   <body>
     <p>
-      Om tegelijkertijd meerdere attributen van meerdere knopen te bewerken:
+      Om een verbindingslijn tussen twee knopen te maken:
     </p>
     <p>
-      - kies<i>&#160;Extra &gt; Attribuutwaarden beheren</i>&#160;in Hoofdmenu
+      - selecteer de knoop waar de verbinding begint;
+    </p>
+    <p>
+      - houd<i>&#160;Ctrl</i>&#160;ingedrukt en selecteer de knoop waar de verbinding eindigt;
+    </p>
+    <p>
+      - kies <i>Knoopkenmerken&#160;&gt;&#160;Verbindingslijn</i>&#160;in Hoofdmenu; of
+    </p>
+    <p>
+      - druk op <i>Ctrl + L</i>.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_686245498" CREATED="1291757348243" MODIFIED="1293375085749">
+<node FOLDED="true" ID="ID_1349903691" CREATED="1291294657798" MODIFIED="1304198080352">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -7884,13 +8481,372 @@
   </head>
   <body>
     <p>
-      Om attributen te verwijderen:
+      Om een verbinding van x knopen naar &#233;&#233;n bestemmingsknoop te maken:
     </p>
     <p>
-      - kies <i>Extra &gt; Attribuutwaarden beheren</i>;
+      - selecteer de knopen waar de verbindingslijnen moeten beginnen;
     </p>
     <p>
-      - kies alle waarden wissen.
+      - selecteer als laatste de knoop waar de verbindingslijn moet eindigen;
+    </p>
+    <p>
+      - kies<i>&#160;Knoopkenmerken &gt; Verbindiingslijn</i>&#160;in Hoofdmenu.
+    </p>
+  </body>
+</html></richcontent>
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1349903691" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="a" ID="ID_1467915029" CREATED="1291294549785" MODIFIED="1293375085323">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_260381550" STARTINCLINATION="27;0;" ENDINCLINATION="27;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+<node TEXT="b" ID="ID_260381550" CREATED="1291294553894" MODIFIED="1293375085320"/>
+<node TEXT="c" ID="ID_1644821908" CREATED="1291294558364" MODIFIED="1293375085316">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_260381550" STARTINCLINATION="28;0;" ENDINCLINATION="28;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+</node>
+</node>
+<node TEXT="Verwijderen verbinding" STYLE_REF="Functie" FOLDED="true" ID="ID_1819154867" CREATED="1286733944185" MODIFIED="1293375085313">
+<node ID="ID_1970882825" CREATED="1270892460679" MODIFIED="1293375085310">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een verbinding te verwijderen:
+    </p>
+    <p>
+      - kies&#160; <i>Verbinding verwijderen </i>in Contextmenu (rechtsklik verbindingslijn).
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node STYLE_REF="Functie" FOLDED="true" ID="ID_602285602" CREATED="1286735857458" MODIFIED="1293375085306">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Positie van de verbinding
+    </p>
+  </body>
+</html></richcontent>
+<node ID="_Freeplane_Link_1015289745" CREATED="1270892460679" MODIFIED="1293375085303">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om de loop van een verbinding te veranderen:
+    </p>
+    <p>
+      - klik en sleep de lijn.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Kleur van de verbinding" STYLE_REF="Functie" FOLDED="true" ID="ID_436722393" CREATED="1286733165707" MODIFIED="1293375085300">
+<node ID="_Freeplane_Link_208378337" CREATED="1270892460679" MODIFIED="1293375085296">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om de kleur van de verbinding in te stellen:
+    </p>
+    <p>
+      - kies<i>&#160;Kleur verbindingslijn </i>in Contextmenu (rechtsklik op lijn);
+    </p>
+    <p>
+      (Bij MAC OS; druk op&#160;Control + klik.)
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node STYLE_REF="Functie" FOLDED="true" ID="_Freeplane_Link_1484370636" CREATED="1270892460679" MODIFIED="1293375085293">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Vorm van de verbinding
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_1593020710" CREATED="1270892460679" MODIFIED="1293375085289">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om de vorm van de verbindigslijn in te stellen (wel/geen pijlen):
+    </p>
+    <p>
+      - kies <i>Geen pijl enz</i>. in Contexmenu (rechtsklik verbindingslijn)
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Tekstlabel bij de verbinding" STYLE_REF="Functie" FOLDED="true" ID="ID_264054779" CREATED="1286733965690" MODIFIED="1293375085286">
+<node ID="ID_469749659" CREATED="1270894208830" MODIFIED="1293375085283">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een tekstlabel aan een lijn te koppelen:
+    </p>
+    <p>
+      - open Contextmenu (rechtsklik verbindingslijn);
+    </p>
+    <p>
+      - vul voor &#233;&#233;n of meer van de labelvelden een tekst in
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node STYLE_REF="Functie" FOLDED="true" ID="_Freeplane_Link_266716332" CREATED="1270892460679" MODIFIED="1293375085279">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Spring naar de andere knoop
+    </p>
+  </body>
+</html></richcontent>
+<node ID="ID_1012001207" CREATED="1286734322033" MODIFIED="1293375085276">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om naar de verbonden (andere) knoop te navigeren:
+    </p>
+    <p>
+      - open Contextmenu (rechtsklik verbindingslijn);
+    </p>
+    <p>
+      - kies <i>Ga naar.... .</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Label bij knoop" FOLDED="true" ID="ID_1229947356" CREATED="1304199030454" MODIFIED="1304280295413" TEXT_SHORTENED="true" COLOR="#407000">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een verbindingslijn met een label die naar de knoop zelf verwijst
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Voorbeeld" ID="ID_431740704" CREATED="1303722690480" MODIFIED="1304199424140">
+<hook NAME="SummaryNode"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000099" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_431740704" MIDDLE_LABEL="label bij knoop kan worden gemaakt met verbindingslijn naar zelf met&#xa;Knoopkenmerken &gt; Koppelingen &gt; Toevoegen verbindingslijn" STARTINCLINATION="259;110;" ENDINCLINATION="259;110;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+</node>
+<node TEXT="Accolade" ID="ID_1012829945" CREATED="1304188631993" MODIFIED="1304280822085" COLOR="#407000"/>
+<node TEXT="Wolk" FOLDED="true" ID="ID_1258921068" CREATED="1270892460674" MODIFIED="1304282143782" COLOR="#407000" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een wolk omgeeft &#233;&#233;n of meer knopen.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Een wolk heeft een kleur.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Een wolk heeft een vorm:
+    </p>
+    <ul>
+      <li>
+        Boog
+      </li>
+      <li>
+        Ster
+      </li>
+      <li>
+        Rechthoek
+      </li>
+      <li>
+        Afgeronde rechthoek
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="Voorbeeld wolk" FOLDED="true" ID="ID_431170062" CREATED="1291306069080" MODIFIED="1304282157229" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node TEXT="Een wolk kan (een deel van) een tak laten oplichten." FOLDED="true" ID="ID_1363137597" CREATED="1286824340950" MODIFIED="1293375084836" STYLE="bubble">
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="Voorbeeld" ID="ID_1687490176" CREATED="1286824692699" MODIFIED="1293375084832">
+<cloud COLOR="#33ff00" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="boog" ID="ID_1001592395" CREATED="1291306087730" MODIFIED="1293375090046">
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+<node TEXT="ster" ID="ID_1324767567" CREATED="1291306077388" MODIFIED="1293375090042">
+<cloud COLOR="#f0f0f0" SHAPE="STAR"/>
+</node>
+<node TEXT="rechthoek" ID="ID_1613407236" CREATED="1291306083573" MODIFIED="1293375090038">
+<cloud COLOR="#f0f0f0" SHAPE="RECT"/>
+</node>
+<node TEXT="afgeronde rechthoek" ID="ID_1218166459" CREATED="1291306090717" MODIFIED="1293375090034">
+<cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
+</node>
+</node>
+<node ID="ID_1660741432" CREATED="1286824447576" MODIFIED="1304196101757">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een wolk toe te voegen of een geselecteerde wolk te verwijderen:
+    </p>
+    <p>
+      - selekteer een knoop;
+    </p>
+    <p>
+      - kies Knoopkenmerk <i>&gt; Wolken &gt; Wolk</i>&#160;in<i>&#160;</i>Hoofdmenu of in Contextmenu; of
+    </p>
+    <p>
+      - druk <i>Ctrl + Shift + B.</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Om een zwevende wolk (verborgen tak) toe te voegen:&#xa;- kies het rolmenu voor knoopstijl in werkmenu;&#xa;- kies zwevende knoop." ID="ID_1746325958" CREATED="1291294193050" MODIFIED="1298558367411"/>
+<node ID="ID_1425868860" CREATED="1286824575013" MODIFIED="1293375084821">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om de kleur van een wolk te wijzigen:
+    </p>
+    <p>
+      - kies Opmaken<i> &gt; Kleur wolk </i>in<i> </i>Hoofdmenu of Contextmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_857440538" CREATED="1289549207659" MODIFIED="1293375084817">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een wolk te verwijderen: zie wolk toevoegen.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1442380813" CREATED="1286824575013" MODIFIED="1298558466378">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om de vorm van een wolk te wijzigen:
+    </p>
+    <p>
+      - kies Opmaken<i>&#160;&gt; Vorm wolk </i>in<i>&#160;</i>Hoofdmenu of Contextmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Groovy script" FOLDED="true" ID="ID_1603082351" CREATED="1291754914764" MODIFIED="1304109956486" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Script zijn bedoeld voor gevorderde gebruikes.Ga naar Internet voor informatie over scripts.&#xa;Belangrijk: knopen waarop scripts betrekking hebben dienen in FP 1.1.x verplicht en in FP 1.2.x bij voorkeur platte tekst te bevatten en geen HTML." ID="ID_84273607" CREATED="1291754964115" MODIFIED="1293640873178" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
+<node ID="ID_985643604" CREATED="1271022419501" MODIFIED="1293375085242" STYLE="bubble">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Er zijn interne en externe scripts.<b> </b>Externe scripts zijn geen onderdeel van de mindmap. Ze kunnen worden toegepast nadat is aangegeven waar deze zich bevinden. Locale scripts zijn onderdeel van een knoop en dus van de mindmap.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_972686609" CREATED="1291755375049" MODIFIED="1293375085238">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om Groovy scripts te maken en te bewerken:
+    </p>
+    <p>
+      - Kies <i>Extra &gt; Groovy scripts bewerken</i> in Hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_486136910" CREATED="1291755108015" MODIFIED="1293375085226">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om Groovy scripts uit te voeren:
+    </p>
+    <p>
+      - kies <i>Extra &gt; Uitvoeren alle scripts</i> in Hoofdmenu; of
+    </p>
+    <p>
+      - kies <i>Extra &gt; Uitvoeren scripts in geselecteerde knopen</i>
     </p>
   </body>
 </html></richcontent>
@@ -8484,7 +9440,7 @@
 <node TEXT="Zoeken" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1316598579" CREATED="1292960748869" MODIFIED="1293375085543">
 <node TEXT="De volgende functies gebeuren alle in balk Filtermenu" STYLE_REF="Inleiding" ID="ID_1757381448" CREATED="1292962187870" MODIFIED="1293375085540"/>
 <node TEXT="Voorbereiding" STYLE_REF="Functie" FOLDED="true" ID="ID_88594706" CREATED="1292961191029" MODIFIED="1293375085537">
-<node TEXT="Kies in lijst met knoopelementen het elemen waarin moet worden gezocht, bijvoorbeeld knooptekst." ID="ID_426739437" CREATED="1292961201677" MODIFIED="1293375085534"/>
+<node TEXT="Kies in lijst met knoopelementen het elemen waarin moet worden gezocht, bijvoorbeeld basistekst." ID="ID_426739437" CREATED="1292961201677" MODIFIED="1298472026267"/>
 <node TEXT="Kies in lijst met functies hoe moet worden gezocht, bijvoorbeeld &quot;Bevat&quot;." ID="ID_604841295" CREATED="1292961318902" MODIFIED="1293375085531"/>
 <node TEXT="Type in het inhoudveld wat moet worden gezocht, bijvoorbeeld &quot;mijntekst&quot;" ID="ID_778001730" CREATED="1292961375819" MODIFIED="1293375085527"/>
 <node TEXT="Bij tekst: geef aan of naar gelijke hoofd- en kleine letters moet worden gezocht (vink hoofdlettergevoelig)." ID="ID_1729279710" CREATED="1292961424826" MODIFIED="1293375085523"/>
@@ -8549,736 +9505,10 @@
 </node>
 </node>
 </node>
-<node TEXT="Snelkoppeling tussen knopen maken" FOLDED="true" ID="ID_342404639" CREATED="1289551103373" MODIFIED="1293375085486" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1561159352" CREATED="1289551169759" MODIFIED="1293375085482">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een snelkoppeling tussen twee knopen te maken, of te veranderen:
-    </p>
-    <p>
-      - selecteer de knoop waar de snelkoppeling moet komen;
-    </p>
-    <p>
-      - houd<i>&#160;Shift </i>ingedrukt en selecteer de knoop waarheen de snelkoppeling moet leiden;
-    </p>
-    <p>
-      - kies<i>&#160;Invoegen &gt; Snelkoppeling tussen knopen</i>&#160;in Hoofdmenu of het Contextmenu.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_953613682" CREATED="1289550333175" MODIFIED="1293375085478">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een snekoppeling te verwijderen zonder de knoop te verwijderen:
-    </p>
-    <p>
-      - selecteer knoop met snelkoppeling;
-    </p>
-    <p>
-      - kies <i>Invoegen &gt; Hyperlink intypen</i>... in Hoofdmenu of Contextmenu; of
-    </p>
-    <p>
-      - druk op Ctrl + K
-    </p>
-    <p>
-      en wis de tekst in het dialoogvenster dat opent.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Hyperlink maken" FOLDED="true" ID="Freeplane_Link_203858515" CREATED="1270892460675" MODIFIED="1293375085474" COLOR="#407000">
-<node ID="ID_440145113" CREATED="1288457268442" MODIFIED="1293375085466" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <i><b>Hyperlink toevoegen</b></i>
-    </p>
-    <p>
-      De Hoofdmenu biedt onder <i>Invoegen</i>&#160;verschillende mogelijkheden om een&#160;hyperlink&#160;toe te voegen. Makkelijker is het echter om de locatie (het adres) van een webpagina, bestand of applicatie te kopi&#235;ren en vervolgens te plakken via <i>Bewerken &gt; Plakken </i>in<i>&#160;</i>Hoofdmenu of in het Contextmenu. Er wordt dan automatisch een kindknoop aangemaakt en hierin wordt de hyperlink geplaatst. De&#160;&#160;kindnoop krijgt hierbij automatisch als tekst het adres van de hyperlink. Deze tekst is echter niet nodig en kan worden vervangen door een andere tekst zonder dat&#160;&#160;de hyperlink verandert. Bij gebruik van het hulpvenster moet voor het plakken de plafuctie van het hulpvester worden gebruikt.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Hyperlink kopi&#xeb;ren en plakken" FOLDED="true" ID="ID_264876289" CREATED="1286655645441" MODIFIED="1293375085462">
-<node TEXT="Om een hyperlink naar een bestand te maken:&#xa;- sleep h" ID="ID_1756497395" CREATED="1270892460683" MODIFIED="1293375085458"/>
-<node ID="ID_640110372" CREATED="1286651969385" MODIFIED="1293375085454">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om in &#233;&#233;n keer een lijst van hyperlinks&#160;&#160;naar een aantal bestanden te maken:
-    </p>
-    <p>
-      - ga bijvoorbeeld naar Verkenner en selecteer en kopieer de groep bestanden;
-    </p>
-    <p>
-      - ga naar de mindmap en selekteer een knoop;
-    </p>
-    <p>
-      - kies <i>Bewerken &gt; Plakken </i>in Hoofdmenu of Contextmenu; of klik op het pictogram voor Plakken.
-    </p>
-    <p>
-      Elke hyperlink komt in een aparte knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_898557755" CREATED="1286656418750" MODIFIED="1293375085450">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Hyperlink naar bestand in bestandenlijst
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1159570525" CREATED="1270894120878" MODIFIED="1293375085446">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een koppeling naar een bestand in te voegen:
-    </p>
-    <p>
-      - selecteer de knoop;
-    </p>
-    <p>
-      - kies <i>Invoegen &gt; Hyperlink kiezen uit bestandenlijst </i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      druk <i>Ctrl + Shift + K.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_439188785" CREATED="1286655618819" MODIFIED="1293375085443">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Hyperlink typen
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_745700749" CREATED="1270892460675" MODIFIED="1293375085439">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een hyperlink in een knoop op te nemen:
-    </p>
-    <p>
-      - selecteer de knoop;
-    </p>
-    <p>
-      - kies<i>&#160;Invoegen&#160;&#160;&gt; Hyperlink typen</i>; of druk op <i>Ctrl + K</i>; en
-    </p>
-    <p>
-      - type de hyperlink
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_463015053" CREATED="1286655769765" MODIFIED="1293375085435">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Hyperlink verwijderen
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1795785910" CREATED="1289550333175" MODIFIED="1293375085431">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een hyperlink te verwijderen zonder de knoop te verwijderen:
-    </p>
-    <p>
-      - selecteer de knoop met snelkoppeling;
-    </p>
-    <p>
-      - kies <i>Invoegen &gt; Hyperlink intypen</i>... in Hoofdmenu of het Contextmenu; of
-    </p>
-    <p>
-      - druk op Ctrl + K
-    </p>
-    <p>
-      en wis de tekst in het dialoogvenster dat opent.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node ID="ID_1332466654" CREATED="1286655879246" MODIFIED="1293375085427">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Koppeling naar e-mail
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="E-mail koppeling maken" FOLDED="true" ID="ID_609655514" CREATED="1289567011406" MODIFIED="1293375085423" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_869144882" CREATED="1270892460675" MODIFIED="1293375085420" LINK="mailto:%20jokro@freeplane.nl">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een e-mail adres in een knoop op te nemen:
-    </p>
-    <p>
-      - selecteer de knoop;
-    </p>
-    <p>
-      - kies<i>&#160;Invoegen&#160;&#160;&gt; Hyperlink typen</i>; of druk op <i>Ctrl + K</i>; en
-    </p>
-    <p>
-      - type mailto:
-    </p>
-    <p>
-      - type het adres
-    </p>
-    <p>
-      Voorbeeld: mailto:jokro@freeplane.nl
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Om aan een email een onderwerp toe te voegen, pas het adres aan, bijvoorbeeld:&#xa;- mailto:jokro@freeplane.nl?subject=laatste telefoongesprek." ID="ID_1116507628" CREATED="1270892460676" MODIFIED="1293375085415"/>
-</node>
-<node TEXT="Afbeelding toevoegen" FOLDED="true" ID="Freeplane_Link_271176250" CREATED="1270892460699" MODIFIED="1293375085412" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_1044142128" CREATED="1286741509257" MODIFIED="1293375085405" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      In / bij knopen kunnen plaatjes worden getoond van de typen<b>&#160;png, jpeg, gif, </b>en<b>&#160;svg</b>. Een plaatje kan binnen een knoop worden ingevoegd en heeft dan een vaste grootte. Of het plaatje kan onder de knoop worden geplaatst en dan is de grootte instelbaar.
-    </p>
-    <p>
-      De getoonde plaatjes worden <u>niet</u>&#160;opgenomen in het mindmap bestand. Bij het kopi&#235;ren en verplaatsen van een mindmap bestand moeten de plaatjes dus ook meegekopieerd worden om te zorgen dat de mindmap goed werkt. Hetzelfde geldt voor het exporteren van een mindmap: de plaatjes worden niet automatisch meege&#235;xporteerd.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node FOLDED="true" ID="ID_1248928522" CREATED="1286806901272" MODIFIED="1293375085401">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Schaalbaar plaatje met tekst
-    </p>
-  </body>
-</html></richcontent>
-<node FOLDED="true" ID="ID_692449557" CREATED="1271527733841" MODIFIED="1293375085394">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om onder een knoop een plaatje te tonen dat in grootte kan worden aangepast en waarbij de knoop ook tekst kan bevatten:
-    </p>
-    <p>
-      - kies&#160; <i>Invoegen &gt; Schaalbare afbeelding</i>&#160;in Hoofdmenu of Contextmenu (rechtsklik knoop); en
-    </p>
-    <p>
-      - zoek en selecteer het plaatje;
-    </p>
-    <p>
-      <br/>
-      
-    </p>
-    <p>
-      Om de grootte aan te passen:
-    </p>
-    <p>
-      - beweeg de linker muisknop over een hoekpunt van het plaatje totdat de cursor verandert in een diagonaal lijntje; en
-    </p>
-    <p>
-      - klik en sleep naar het juiste formaat.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Om het plaatje in grootte te verstellen:" ID="ID_895929042" CREATED="1286742816233" MODIFIED="1293375085390"/>
-</node>
-</node>
-<node TEXT="Vast plaatje zonder tekst" FOLDED="true" ID="ID_95494296" CREATED="1286806940607" MODIFIED="1293375085387">
-<node ID="ID_1950962853" CREATED="1270892460699" MODIFIED="1293375085380">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om binnen een knoop een plaatje (geen svg !) met vaste grootte in te voegen:
-    </p>
-    <p>
-      - kies <i>Invoegen &gt; Afbeelding&#160;uit bestandenlijst of hyperlink in </i>Hoofdmenu of Contextmenu&#160;(rechtsklik knoop);&#160;of
-    </p>
-    <p>
-      - druk <i>Alt + Shift + K</i>.
-    </p>
-    <p>
-      N.B. Het plaatje wordt getoond in oorpronkelijke grootte. Pas deze grootte zo nodig aan in een tekenprogramma.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1609288412" CREATED="1286807289790" MODIFIED="1293375085376">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Snelkoppeling naar plaatje
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Om een hyperlink naar een plaatje in te voegen:&#xa;- kopieer het adres van het plaatje;&#xa;- plak het adres &quot;op&quot; de knoop: er wordt automatisch een kindknoop aangemaakt met de hyperlink.&#xa;Dit werkt ook met meerdere geelekteerde plaatjesbestanden tegelijk." FOLDED="true" ID="ID_890405454" CREATED="1270892460700" MODIFIED="1293375085371">
-<node TEXT="SintEnPiet.JPG" ID="ID_1275791527" CREATED="1286808154863" MODIFIED="1293375085368" LINK="../Documents/My%20Dropbox/MindMap/Plaatjes/SintEnPiet.JPG"/>
-</node>
-</node>
-<node TEXT="Plaatje van snelkoppeling" FOLDED="true" ID="ID_1576666245" CREATED="1286807975568" MODIFIED="1293375085365">
-<node ID="ID_24021694" CREATED="1286807988291" MODIFIED="1293375085358">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om bovenstaande hyperlink te vervangen door het plaatje zelf:
-    </p>
-    <p>
-      - kies <i>Invoegen &gt; Afbeelding&#160;uit bestandenlijst of hyperlink in </i>Hoofdmenu of Contextmenu (rechtsklik op knoop);&#160;of
-    </p>
-    <p>
-      - druk <i>Alt + Shift + K</i>.
-    </p>
-    <p>
-      Werkt ook met meerdere geselecteerde knopen/links tegelijk.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_303024466" CREATED="1290628462994" MODIFIED="1293375085352" LINK="#ID_1451936706">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De bovenstaande procedure werkt om veiligheidsredenen <i><b>niet</b></i>&#160;als de snelkoppeling naar een bestand op Internet verwijst.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Plaatje via HTML-code" FOLDED="true" ID="ID_1100890918" CREATED="1286808673817" MODIFIED="1293375085349">
-<node TEXT="In een hulpvenster kan met HTML-code een plaatje worden opgenomen" ID="ID_1512479346" CREATED="1270892460700" MODIFIED="1293375085346">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node ID="ID_258073366" CREATED="1270892460700" MODIFIED="1293375085340">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Voorbeeld:<br/>&#160;&#160;&lt;html&gt;&lt;img src=&quot;linked/Apple.png&quot;&gt;<br/>&#160;&#160;&lt;html&gt;&lt;img src=&quot;file://C:/Users/My Documents/Mind Maps/Linked/Apple.png&quot;&gt;<br/>De relatieve link op de eerste regel verwijst naar een afbeeldingsbestand in een submap (subdirectory) binnen (onder) de map waarin de mindmap staat.
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-</node>
-<node TEXT="Verbindingslijn bewerken" FOLDED="true" ID="_Freeplane_Link_1996597932" CREATED="1270892460679" MODIFIED="1293375085337" COLOR="#407000">
-<node TEXT="Maken verbinding" STYLE_REF="Functie" FOLDED="true" ID="ID_1468846146" CREATED="1286733104547" MODIFIED="1293375085333">
-<node ID="ID_1564001222" CREATED="1270892460679" MODIFIED="1293375085330">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een verbindingslijn tussen twee knopen te maken:
-    </p>
-    <p>
-      - selecteer de knoop waar de verbinding begint;
-    </p>
-    <p>
-      - houd<i>&#160;Ctrl</i>&#160;ingedrukt en selecteer de knoop waar de verbinding eindigt;
-    </p>
-    <p>
-      - kies <i>Invoegen &gt; Verbindingslijn</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      - druk op <i>Ctrl + L</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node FOLDED="true" ID="ID_1349903691" CREATED="1291294657798" MODIFIED="1293375085326">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een verbinding van x knopen naar &#233;&#233;n bestemmingsknoop te maken:
-    </p>
-    <p>
-      - selecteer de knopen waar de verbindingslijnen moeten beginnen;
-    </p>
-    <p>
-      - selecteer als laatste de knoop waar de verbindingslijn moet eindigen;
-    </p>
-    <p>
-      - kies<i>&#160;Invoegen &gt; Verbindiingslijn</i>&#160;in Hoofdmenu.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="a" ID="ID_1467915029" CREATED="1291294549785" MODIFIED="1293375085323">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="ID_260381550" STARTINCLINATION="27;0;" ENDINCLINATION="27;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-<node TEXT="b" ID="ID_260381550" CREATED="1291294553894" MODIFIED="1293375085320"/>
-<node TEXT="c" ID="ID_1644821908" CREATED="1291294558364" MODIFIED="1293375085316">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DESTINATION="ID_260381550" STARTINCLINATION="28;0;" ENDINCLINATION="28;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-</node>
-</node>
-<node TEXT="Verwijderen verbinding" STYLE_REF="Functie" FOLDED="true" ID="ID_1819154867" CREATED="1286733944185" MODIFIED="1293375085313">
-<node ID="ID_1970882825" CREATED="1270892460679" MODIFIED="1293375085310">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een verbinding te verwijderen:
-    </p>
-    <p>
-      - kies&#160; <i>Verbinding verwijderen </i>in Contextmenu (rechtsklik verbindingslijn).
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node STYLE_REF="Functie" FOLDED="true" ID="ID_602285602" CREATED="1286735857458" MODIFIED="1293375085306">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Positie van de verbinding
-    </p>
-  </body>
-</html></richcontent>
-<node ID="_Freeplane_Link_1015289745" CREATED="1270892460679" MODIFIED="1293375085303">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de loop van een verbinding te veranderen:
-    </p>
-    <p>
-      - klik en sleep de lijn.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Kleur van de verbinding" STYLE_REF="Functie" FOLDED="true" ID="ID_436722393" CREATED="1286733165707" MODIFIED="1293375085300">
-<node ID="_Freeplane_Link_208378337" CREATED="1270892460679" MODIFIED="1293375085296">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de kleur van de verbinding in te stellen:
-    </p>
-    <p>
-      - kies<i>&#160;Kleur verbindingslijn </i>in Contextmenu (rechtsklik op lijn);
-    </p>
-    <p>
-      (Bij MAC OS; druk op&#160;Control + klik.)
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node STYLE_REF="Functie" FOLDED="true" ID="_Freeplane_Link_1484370636" CREATED="1270892460679" MODIFIED="1293375085293">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Vorm van de verbinding
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1593020710" CREATED="1270892460679" MODIFIED="1293375085289">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de vorm van de verbindigslijn in te stellen (wel/geen pijlen):
-    </p>
-    <p>
-      - kies <i>Geen pijl enz</i>. in Contexmenu (rechtsklik verbindingslijn)
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Tekstlabel bij de verbinding" STYLE_REF="Functie" FOLDED="true" ID="ID_264054779" CREATED="1286733965690" MODIFIED="1293375085286">
-<node ID="ID_469749659" CREATED="1270894208830" MODIFIED="1293375085283">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een tekstlabel aan een lijn te koppelen:
-    </p>
-    <p>
-      - open Contextmenu (rechtsklik verbindingslijn);
-    </p>
-    <p>
-      - vul voor &#233;&#233;n of meer van de labelvelden een tekst in
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node STYLE_REF="Functie" FOLDED="true" ID="_Freeplane_Link_266716332" CREATED="1270892460679" MODIFIED="1293375085279">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Spring naar de andere knoop
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1012001207" CREATED="1286734322033" MODIFIED="1293375085276">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om naar de verbonden (andere) knoop te navigeren:
-    </p>
-    <p>
-      - open Contextmenu (rechtsklik verbindingslijn);
-    </p>
-    <p>
-      - kies <i>Ga naar.... .</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Activiteit bewerken en bekijken" FOLDED="true" ID="ID_1542554542" CREATED="1288472782852" MODIFIED="1293375085272" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Een activiteit is een gebeurtenis met een datum/tijd welke is gekoppeld aan een knoop. Op het herinneringsmoment  knippert een klokje in de betreffende knoop en verschijnt een rood uitroepteken in de basisknoop. Zie hieronder voor het bekijken van de activiteit. Personen of zaken die van toepassing zijn op de activiteit kunnen behalve in de basistekst, bijlagetekst en notitietekst, ook worden opgenomen in de attributen van de knoop." STYLE_REF="Inleiding" ID="ID_14055764" CREATED="1267746640914" MODIFIED="1293375085268"/>
-<node ID="ID_539989636" CREATED="1288983926867" MODIFIED="1293375085265">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een datum in een knoop te plaatsen:<br/>- kies&#160; <i>Extra &gt; Agenda in </i>Hoofdmenu; en
-    </p>
-    <p>
-      - kies de datum.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1295895929" CREATED="1288906343373" MODIFIED="1293375085261">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een activiteit toe te voegen:
-    </p>
-    <p>
-      - kies&#160; <i>Extra &gt; Agenda... in </i>Hoofdmenu;
-    </p>
-    <p>
-      <i>- </i>Stel een datum en tijd in en&#160;kies<i>&#160;Activiteit</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1375492151" CREATED="1288907062597" MODIFIED="1293375085258">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle activiteiten te bekijken:
-    </p>
-    <p>
-      - kies<i>&#160;Extra &gt; Activiteiten..</i>.in<i>&#160;</i>Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Zie Bewerken basistekst/bijlage,/notitie/attributen voor het opnemen van een beschrijving van de activiteit." STYLE_REF="Inleiding" ID="ID_354261689" CREATED="1288906708874" MODIFIED="1293375085254"/>
-</node>
-<node TEXT="Groovy scripts bewerken en uitvoeren" FOLDED="true" ID="ID_1603082351" CREATED="1291754914764" MODIFIED="1293375085251" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Script zijn bedoeld voor gevorderde gebruikes.Ga naar Internet voor informatie over scripts.&#xa;Belangrijk: knopen waarop scripts betrekking hebben dienen in FP 1.1.x verplicht en in FP 1.2.x bij voorkeur platte tekst te bevatten en geen HTML." ID="ID_84273607" CREATED="1291754964115" MODIFIED="1293640873178" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
-<node ID="ID_985643604" CREATED="1271022419501" MODIFIED="1293375085242" STYLE="bubble">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Er zijn interne en externe scripts.<b> </b>Externe scripts zijn geen onderdeel van de mindmap. Ze kunnen worden toegepast nadat is aangegeven waar deze zich bevinden. Locale scripts zijn onderdeel van een knoop en dus van de mindmap.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_972686609" CREATED="1291755375049" MODIFIED="1293375085238">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om Groovy scripts te maken en te bewerken:
-    </p>
-    <p>
-      - Kies <i>Extra &gt; Groovy scripts bewerken</i> in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_486136910" CREATED="1291755108015" MODIFIED="1293375085226">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om Groovy scripts uit te voeren:
-    </p>
-    <p>
-      - kies <i>Extra &gt; Uitvoeren alle scripts</i> in Hoofdmenu; of
-    </p>
-    <p>
-      - kies <i>Extra &gt; Uitvoeren scripts in geselecteerde knopen</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
 <node TEXT="Formule bewerken en uitvoeren" FOLDED="true" ID="ID_146041488" CREATED="1291211215610" MODIFIED="1293375085223" COLOR="#407000">
 <node TEXT="In Freeplane kunnen op dezelfde wijze als in een Spread Sheet (Excel) formules worden gebruikt om de inhoud van een knoop te bepalen." STYLE_REF="Inleiding" ID="ID_285394677" CREATED="1293572145243" MODIFIED="1293572284394"/>
 <node TEXT="Eenvoudige formules" STYLE_REF="Functie" FOLDED="true" ID="ID_613530429" CREATED="1293571575892" MODIFIED="1293572110118">
-<node TEXT="Een eenvoudige formule is een knooptekst welke begint met &quot;=&quot; en wordt gevolgd door een reguliere expressie zoals 3 + 5. De knoop toont het resultaat van de expressie (dus 8). De  formule-knoop is te herkennen door een afwijkende kleur en omlijning." STYLE_REF="Inleiding" ID="ID_411531912" CREATED="1293571634022" MODIFIED="1293571996961"/>
+<node TEXT="Een eenvoudige formule is een basistekst welke begint met &quot;=&quot; en wordt gevolgd door een reguliere expressie zoals 3 + 5. De knoop toont het resultaat van de expressie (dus 8). De  formule-knoop is te herkennen door een afwijkende kleur en omlijning." STYLE_REF="Inleiding" ID="ID_411531912" CREATED="1293571634022" MODIFIED="1298472026267"/>
 </node>
 <node TEXT="Geavanceerde formules" STYLE_REF="Functie" FOLDED="true" ID="ID_1328271894" CREATED="1293572050808" MODIFIED="1293572110123">
 <node TEXT="Geavanceerde formules zijn voor gevorderde gebruikers.Ga naar Internet voor meer informatie." ID="ID_1097547484" CREATED="1291754737435" MODIFIED="1293572359770" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
@@ -9400,11 +9630,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Inhoud verwijderen" FOLDED="true" POSITION="right" ID="ID_254258847" CREATED="1289512457366" MODIFIED="1293375085179" COLOR="#006699">
+<node TEXT="Verwijderen van knopen en knoopkenmerken" FOLDED="true" POSITION="right" ID="ID_254258847" CREATED="1289512457366" MODIFIED="1304198024212" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Verwijderen knoop" STYLE_REF="Functiegroep" ID="ID_126408841" CREATED="1289512497052" MODIFIED="1293375085175" LINK="#ID_1638437345"/>
-<node TEXT="Verwijderen knoopbijlage" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1584388528" CREATED="1291841859790" MODIFIED="1293375085172">
-<node ID="ID_1440514386" CREATED="1291757478884" MODIFIED="1293375085169">
+<node TEXT="Verwijderen bijlage" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1584388528" CREATED="1291841859790" MODIFIED="1298472141103">
+<node ID="ID_1440514386" CREATED="1291757478884" MODIFIED="1304195749102">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9412,17 +9642,17 @@
   </head>
   <body>
     <p>
-      Om een knoopbijlage te verwijderen:
+      Om een bijlage te verwijderen:
     </p>
     <p>
-      - kies <i>Extra &gt; Verwijderen knoopbijlage</i>
+      - kies <i>Knoopkenmerken &gt; Bijlage&#160;&gt;&#160;Verwijderen bijlage</i>
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 <node TEXT="Verwijderen knoopattributen" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_238203193" CREATED="1291841879485" MODIFIED="1293375085165">
-<node ID="ID_720658447" CREATED="1291757348243" MODIFIED="1293375085162">
+<node ID="ID_720658447" CREATED="1291757348243" MODIFIED="1304195905248">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9430,20 +9660,17 @@
   </head>
   <body>
     <p>
-      Om attributen te verwijderen:
+      Om van een knoop alle attributen te verwijderen:
     </p>
     <p>
-      - kies <i>Extra &gt; Attribuutwaarden beheren</i>;
-    </p>
-    <p>
-      - kies alle waarden wissen.
+      - kies <i>Knoop &gt; Attributen&#160;&gt;&#160;Verwijderen eerste/laatste/alle attributen </i>in<i>&#160;Hoofdmenu</i>
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 <node TEXT="Verwijderen notitie" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1211083782" CREATED="1291842270577" MODIFIED="1293375085159">
-<node ID="ID_887799420" CREATED="1291757560652" MODIFIED="1293375085155">
+<node ID="ID_887799420" CREATED="1291757560652" MODIFIED="1304195970237">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9454,13 +9681,13 @@
       Om een notitie te verwijderen:
     </p>
     <p>
-      - kies <i>Extra &gt; Verwijderen notitie</i> in Hoofdmenu
+      - kies <i>Knoop &gt; Notitie &gt; Verwijderen notitie</i>&#160;in Hoofdmenu
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Verwijderen wolk" STYLE_REF="Functiegroep" ID="ID_899019730" CREATED="1289512513635" MODIFIED="1293375085152" LINK="#ID_1853723333"/>
+<node TEXT="Verwijderen wolk" STYLE_REF="Functiegroep" ID="ID_899019730" CREATED="1289512513635" MODIFIED="1293375085152"/>
 <node TEXT="Verwijderen tak" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_250032053" CREATED="1289512538073" MODIFIED="1293375085148">
 <node ID="ID_1762585242" CREATED="1289549463833" MODIFIED="1293375085145" LINK="#ID_992635233">
 <richcontent TYPE="NODE">
@@ -9497,9 +9724,9 @@
 </node>
 <node TEXT="Verwijderen pictogram" STYLE_REF="Functiegroep" ID="ID_843447223" CREATED="1289558800144" MODIFIED="1293375085118" LINK="#ID_1703076068"/>
 </node>
-<node TEXT="Inhoud opmaken" FOLDED="true" POSITION="right" ID="ID_326068339" CREATED="1272091260034" MODIFIED="1293375085115" COLOR="#006699">
+<node TEXT="Opmaken van knopen en mindmap" FOLDED="true" POSITION="right" ID="ID_326068339" CREATED="1272091260034" MODIFIED="1304347946187" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node STYLE_REF="Inleiding" ID="ID_1992135145" CREATED="1293305209524" MODIFIED="1293375085109">
+<node STYLE_REF="Inleiding" ID="ID_1992135145" CREATED="1293305209524" MODIFIED="1298559100721">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9513,7 +9740,7 @@
 </html></richcontent>
 </node>
 <node TEXT="Openen/sluiten Opmaakpaneel" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1648295199" CREATED="1293305636300" MODIFIED="1293375085106">
-<node ID="ID_1101082023" CREATED="1293305834414" MODIFIED="1293375085102">
+<node ID="ID_1101082023" CREATED="1293305834414" MODIFIED="1304196232781">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9524,12 +9751,12 @@
       Om het opmaakpaneel te openen:
     </p>
     <p>
-      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;om dit AAN te zetten.
+      - kies <i>Beeld &gt; Tonen opmaakpaneel</i>&#160;om dit AAN te zetten.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_134699622" CREATED="1293305834414" MODIFIED="1293375085099">
+<node ID="ID_134699622" CREATED="1293305834414" MODIFIED="1304196250531">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9540,17 +9767,16 @@
       Om een geopend opmaakpaneel te sluiten:
     </p>
     <p>
-      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;om dit UIT te zetten.
+      - kies <i>Beeld &gt; Tonen opmaakpaneel</i>&#160;om dit UIT te zetten.
     </p>
   </body>
 </html></richcontent>
 </node>
 <node TEXT="Om een knoopkenmerk te wijzigen:&#xa;- Open het opmaakpaneel&#xa;- Wijzig het betreffende knoopkenmerk&#xa;- Druk op OK" ID="ID_1140547739" CREATED="1293305969634" MODIFIED="1293375085094"/>
 </node>
-<node TEXT="Knoopstijlen" FOLDED="true" ID="ID_108677312" CREATED="1291228908372" MODIFIED="1293375085091" COLOR="#407000">
+<node TEXT="Knoopstijlen" FOLDED="true" ID="ID_108677312" CREATED="1291228908372" MODIFIED="1304346435722" COLOR="#407000" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_925068390" CREATED="1291228280218" MODIFIED="1293375085080" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<richcontent TYPE="NODE">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -9572,11 +9798,11 @@
       - <b>gebruikerstijlen</b>, knoopstijlen&#160;welke door de gebruiker zijn gemaakt.
     </p>
     <p>
-      Het is mogelijk condities aan te geven waarin een knoop automatisch een bepaalde stijl krijgt. Condities zijn de aanwezigeid van beppaalde knooptekst, pictogrammen, knoopniveau of attribuutwaarden. Stijlen kunnen ook per geval worden gekozen in het afrolmenu in het Werkmenu (standaard knoopstijl) of via het menu <i>Stijlen</i>&#160;in Hoofdmenu. De stijlen zelf kunnen door de gebruiker worden aangepast en worden bewaard in een mindmapstijl. Deze mindmapstijl kan vervolgens in andere mindmaps worden toegepast.
+      Het is mogelijk condities aan te geven waarin een knoop automatisch een bepaalde stijl krijgt. Condities zijn de aanwezigeid van beppaalde basistekst, pictogrammen, knoopniveau of attribuutwaarden. Stijlen kunnen ook per geval worden gekozen in het afrolmenu in het Werkmenu (standaard knoopstijl) of via het menu <i>Stijlen</i>&#160;in Hoofdmenu. De stijlen zelf kunnen door de gebruiker worden aangepast en worden bewaard in een mindmapstijl. Deze mindmapstijl kan vervolgens in andere mindmaps worden toegepast.
     </p>
   </body>
 </html></richcontent>
-</node>
+<node TEXT="Voorbeeld stijl" LOCALIZED_STYLE_REF="AutomaticLayout.level,1" ID="ID_1379615942" CREATED="1291305410190" MODIFIED="1304346622353"/>
 <node TEXT="Om een knoop een eerder gedefinieerde stijl te geven:&#xa;- selecteer de knoop waarop de stijl moet worden toegepast;&#xa;- kies in het afrolmenu van de Werkbalk de stijl die moet worden toegepast (standaard: Standaardstijl)." ID="ID_1826856110" CREATED="1291229828687" MODIFIED="1293375085076"/>
 <node TEXT="Knoopprofielen" STYLE_REF="Functie" FOLDED="true" ID="ID_984874398" CREATED="1289568127033" MODIFIED="1293375085072" BACKGROUND_COLOR="#ffffff">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
@@ -9832,7 +10058,7 @@
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_389058288" CREATED="1291235351749" MODIFIED="1293375084961" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node ID="ID_389058288" CREATED="1291235351749" MODIFIED="1299179282276" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9890,7 +10116,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Opmaken knooptekst en tekstachtergrond" FOLDED="true" ID="Freeplane_Link_1660149394" CREATED="1270892460672" MODIFIED="1293375084942" COLOR="#407000">
+<node TEXT="Opmaken basistekst en tekstachtergrond" FOLDED="true" ID="Freeplane_Link_1660149394" CREATED="1270892460672" MODIFIED="1298472026282" COLOR="#407000">
 <node TEXT="De volgende functies hebben effect op de hele knoop." ID="ID_1545556259" CREATED="1291293335158" MODIFIED="1293375084939" BACKGROUND_COLOR="#ffff00" STYLE="bubble"/>
 <node TEXT="Vet" FOLDED="true" ID="ID_1614710012" CREATED="1286818269341" MODIFIED="1293375084936">
 <font BOLD="true"/>
@@ -9975,7 +10201,7 @@
 </node>
 </node>
 <node TEXT="Achtergrond kleur" FOLDED="true" ID="ID_1170435264" CREATED="1286819032661" MODIFIED="1293375084916" BACKGROUND_COLOR="#00ffff">
-<node ID="ID_732981346" CREATED="1286819046024" MODIFIED="1293375084912">
+<node ID="ID_732981346" CREATED="1286819046024" MODIFIED="1295722906736">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -9986,7 +10212,7 @@
       Om de hele achtergrond van een knoop een kleur te geven:
     </p>
     <p>
-      - kies <i>Opmaken&#160;&gt;&#160;Knoopkleur</i>&#160;in<i>&#160;</i>Hoofdmenu
+      - kies <i>Opmaken&#160;&gt;&#160;Knoopachtergrondkleur</i>&#160;in<i>&#160;</i>Hoofdmenu
     </p>
   </body>
 </html></richcontent>
@@ -10083,8 +10309,75 @@
   </body>
 </html></richcontent>
 </node>
+<node ID="ID_1727100859" CREATED="1298927998881" MODIFIED="1298928651201" TEXT_SHORTENED="true">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om automatisch een (volg)<b>nummer</b>&#160;aan een knoop toe te voegen:
+    </p>
+    <p>
+      - kies <i>Beeld&gt;Opmaakpaneel</i>
+    </p>
+    <p>
+      - zet vinkje voor knoopnummer
+    </p>
+  </body>
+</html></richcontent>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Knopen worden genummerd van boven naar bendeden. Aleen knopen waarvoor het vinkje is gezet worden (door)genummerd.
+    </p>
+  </body>
+</html></richcontent>
 </node>
-<node TEXT="Kopi&#xeb;ren en plakken opmaak" FOLDED="true" ID="ID_1156809838" CREATED="1286820246498" MODIFIED="1293375084881" COLOR="#407000">
+<node TEXT="Datum/tijdweergave" FOLDED="true" ID="ID_1879997236" CREATED="1299178585510" MODIFIED="1299178776362">
+<node TEXT="Datums en tijden kun het beste volgens ISO-standaard worden toegevoegd. Vervolgens kan in het opmaakpaneel worden gekozen welke weergavevorm men wenst." ID="ID_1732151461" CREATED="1299178594798" MODIFIED="1299178758880"/>
+<node TEXT="ISO-standaard is:&#xa;YYYY-MM-DD HH:MM:SS" ID="ID_1206186548" CREATED="1299178759762" MODIFIED="1299178925407" FORMAT="%.0f"/>
+<node TEXT="Om een ISO datum of tijd van een knoop op andere wijze te tonen:&#xa;- kies Beeld&gt;Opmaakpaneel;&#xa;- kies een optie uit het menu Template/formaat" ID="ID_915638625" CREATED="1299178946412" MODIFIED="1299179076243"/>
+</node>
+<node TEXT="Automatische knoopnummering" FOLDED="true" ID="ID_1580279117" CREATED="1299179094034" MODIFIED="1299179108659">
+<node ID="ID_1884572643" CREATED="1299179108667" MODIFIED="1299179221499">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een knoop automatisch van een nummer te voorzien:
+    </p>
+    <p>
+      - kies <i>Beeld&gt;Opmaakpaneel;</i>
+    </p>
+    <p>
+      - Selecteer <i>Aanpassen</i>&#160;en <i>Knoopnummering</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Kopi&#xeb;ren en plakken opmaak" FOLDED="true" ID="ID_1156809838" CREATED="1286820246498" MODIFIED="1298558239850" COLOR="#407000" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In de huidige versie wordt niet alle opmaak gekopieerd. Alleen teksttype, tekstgrootte, tekstkleur en achtergrondkleur.
+    </p>
+  </body>
+</html></richcontent>
 <node ID="ID_1575812829" CREATED="1286820264151" MODIFIED="1293375084877">
 <richcontent TYPE="NODE">
 <html>
@@ -10130,7 +10423,7 @@
 </html></richcontent>
 </node>
 </node>
-<node FOLDED="true" ID="ID_1797063061" CREATED="1270896049950" MODIFIED="1293375084871" COLOR="#407000">
+<node FOLDED="true" ID="ID_1797063061" CREATED="1270896049950" MODIFIED="1298558814789" COLOR="#407000" TEXT_SHORTENED="true">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -10143,6 +10436,34 @@
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een tak hoort bij een kindknoop.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Een tak (lijn) heeft:
+    </p>
+    <ul>
+      <li>
+        een kleur;
+      </li>
+      <li>
+        een dikte;
+      </li>
+      <li>
+        een vorm.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
 <node FOLDED="true" ID="ID_835600675" CREATED="1270896191326" MODIFIED="1293375084867" BACKGROUND_COLOR="#ffff33" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
@@ -10296,77 +10617,6 @@
 </html></richcontent>
 </node>
 </node>
-<node FOLDED="true" ID="Freeplane_Link_1697687428" CREATED="1270892460674" MODIFIED="1293375084839" COLOR="#407000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wolk toevoegen
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Een wolk kan (een deel van) een tak laten oplichten." FOLDED="true" ID="ID_51473083" CREATED="1286824340950" MODIFIED="1293375084836" STYLE="bubble">
-<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<node TEXT="Voorbeeld" ID="ID_1069090813" CREATED="1286824692699" MODIFIED="1293375084832">
-<cloud COLOR="#33ff00" SHAPE="ARC"/>
-</node>
-</node>
-<node ID="ID_1853723333" CREATED="1286824447576" MODIFIED="1293375084829">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een wolk toe te voegen of een geselecteerde wolk te verwijderen:
-    </p>
-    <p>
-      - selekteer een knoop;
-    </p>
-    <p>
-      - kies <i>Invoegen &gt; Wolk</i>&#160;in<i>&#160;</i>Hoofdmenu of in Contextmenu; of
-    </p>
-    <p>
-      - druk <i>Ctrl + Shift + B.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Om een zevende wolk (verborgen tak) toe te voegen:&#xa;- kies het rolmenu voor knoopstijl in werkmenu;&#xa;- kies zwevende knoop." ID="ID_1512518340" CREATED="1291294193050" MODIFIED="1293375084824"/>
-<node ID="ID_1481615351" CREATED="1286824575013" MODIFIED="1293375084821">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de kleur van een wolk te wijzigen:
-    </p>
-    <p>
-      - kies Opmaken<i> &gt; Kleur wolk </i>in<i> </i>Hoofdmenu of Contextmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1974488652" CREATED="1289549207659" MODIFIED="1293375084817">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een wolk te verwijderen: zie wolk toevoegen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
 <node FOLDED="true" ID="ID_1060978136" CREATED="1271097112611" MODIFIED="1293375084814" COLOR="#407000">
 <richcontent TYPE="NODE">
 <html>
@@ -10452,10 +10702,11 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Eigen opmaakstijlen toevoegen" ID="ID_1378240582" CREATED="1291550224112" MODIFIED="1293375084777" LINK="#Freeplane_Link_1822195277" COLOR="#407000">
+<node TEXT="Eigen opmaakstijlen toevoegen" ID="ID_1378240582" CREATED="1291550224112" MODIFIED="1298558655387" LINK="#Freeplane_Link_1822195277" COLOR="#407000" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>
-<node TEXT="Verticaal uitlijnen knopen" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1190380971" CREATED="1293375159094" MODIFIED="1293376764385">
+<node TEXT="Verticaal uitlijnen knopen" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1190380971" CREATED="1293375159094" MODIFIED="1304196597918">
+<icon BUILTIN="help"/>
 <node TEXT="Selecteer de knopen waar het om gaat" FOLDED="true" ID="ID_825486860" CREATED="1293375176562" MODIFIED="1293375213982">
 <node TEXT="Om alle knopen te selecteren" FOLDED="true" ID="ID_1905899006" CREATED="1293375292830" MODIFIED="1293375306253">
 <node TEXT="selectteer basisknoop (Escape)" ID="ID_1938787598" CREATED="1293375306259" MODIFIED="1293375333191"/>
@@ -10465,62 +10716,19 @@
 <node TEXT="Kies Opmaken &gt; Reset position" ID="ID_1103922080" CREATED="1293375214845" MODIFIED="1293375290412"/>
 </node>
 </node>
-<node TEXT="Uitvoeren" STYLE_REF="Onderwerp" FOLDED="true" POSITION="right" ID="ID_1355067173" CREATED="1293112206415" MODIFIED="1293375084774">
-<node TEXT="Agenda gebruiken" FOLDED="true" ID="ID_1857793378" CREATED="1289027425406" MODIFIED="1293375084771" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_77223280" CREATED="1288907062597" MODIFIED="1293375084767">
-<richcontent TYPE="NODE">
+<node TEXT="Uitvoeren bijzondere functies" STYLE_REF="Onderwerp" FOLDED="true" POSITION="right" ID="ID_1355067173" CREATED="1293112206415" MODIFIED="1304369932685">
+<node TEXT="Formules uitvoeren" FOLDED="true" ID="ID_1414134990" CREATED="1291211215610" MODIFIED="1304347033414" COLOR="#407000" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om de datum te bepalen:
-    </p>
-    <p>
-      - kies <i>Extra &gt; Agenda</i>&#160;&#160;in&#160;Hoofdmenu<i>&#160;</i>
+      Een wiskundige formule die aan een knoop is gekoppeld en die kan worden uitgevoerd
     </p>
   </body>
 </html></richcontent>
-</node>
-<node ID="ID_1114399870" CREATED="1288907062597" MODIFIED="1293375084764">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle activiteiten en notitites te bekijken:
-    </p>
-    <p>
-      - kies <i>Extra &gt; Activiteiten... </i>in<i>&#160;</i>Hoofdmenu<i>&#160;</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_26533930" CREATED="1289570843304" MODIFIED="1293375084760">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een actieve signalering te be&#235;indigen:
-    </p>
-    <p>
-      - kies <i>Extra &gt; Agenda</i>&#160;&#160;in&#160;Hoofdmenu;
-    </p>
-    <p>
-      - kies Verwijderen activiteit.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Formules uitvoeren" FOLDED="true" ID="ID_1414134990" CREATED="1291211215610" MODIFIED="1293375084757" COLOR="#407000">
 <node TEXT="Formules zijn voor gevorderde gebruikers. Voor het gebruik van formules, ga naar Internet." ID="ID_1161094229" CREATED="1291754737435" MODIFIED="1293375084754" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
 <node ID="ID_1483572235" CREATED="1291211225228" MODIFIED="1293375084751">
 <richcontent TYPE="NODE">
@@ -10562,8 +10770,20 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Beveiligen knoop" FOLDED="true" ID="ID_1883292588" CREATED="1289052221017" MODIFIED="1293375084738" COLOR="#407000">
+<node TEXT="Beveiligen knoop" FOLDED="true" ID="ID_1883292588" CREATED="1289052221017" MODIFIED="1304347134736" COLOR="#407000" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een knoop die beveiligd is kan alleen worden uitgevouwen nadat een wachtwoord is ingevoerd. Deze functionaliteit is experimenteel.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Voorbeeld" ENCRYPTED_CONTENT="t/NS/HPSppU= VbQIDGWIdFE=" ID="ID_36040841" CREATED="1288542236861" MODIFIED="1304347226753" BACKGROUND_COLOR="#ffff00" STYLE="bubble"/>
 <node ID="ID_1458128776" CREATED="1289052232586" MODIFIED="1293375084735">
 <richcontent TYPE="NODE">
 <html>
@@ -10580,6 +10800,138 @@
   </body>
 </html></richcontent>
 </node>
+<node TEXT="Mindmap" ID="ID_1880151658" CREATED="1289052364576" MODIFIED="1293375089853" LINK="#ID_1594926210"/>
+</node>
+</node>
+<node TEXT="Agenda gebruiken" FOLDED="true" POSITION="right" ID="ID_1857793378" CREATED="1289027425406" MODIFIED="1304346768666" COLOR="#006699" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een agenda is een venster waarin een datum en tijdstip kan worden gekozen. Deze datum verschijnt als tekst in de knoop. Er kan worden ingesteld dat op het tijdstip een activiteit (herinnering) moet gebeuren. Er wordt getoond dat de activiteit is ingesteld doordat een pictogram van een klokje in de knoop en in de basisknoop verschijnt. Op het tijdstip van de activiteit&#160;&#160;knippert het klokje en verschijnt een rood uitroepteken in de basisknoop. De activiteit zelf kan worden beschreven in de tekst van de knoop of in een notitie bij de knoop.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Voorbeeld" FOLDED="true" ID="ID_685561323" CREATED="1289047813775" MODIFIED="1304346826222" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node TEXT="knoop met Agenda" ID="ID_517678813" CREATED="1288542096079" MODIFIED="1293375089915">
+<hook NAME="plugins/TimeManagementReminder.xml">
+    <Parameters REMINDUSERAT="2077460580480"/>
+</hook>
+</node>
+</node>
+<node ID="ID_844489801" CREATED="1296154014434" MODIFIED="1304196763987" BACKGROUND_COLOR="#ffff00">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Er zijn twee plaatsen waar agendafuncties beschikbaar zijn:
+    </p>
+    <ol>
+      <li>
+        Beeld &gt; Opmaakpaneel&gt; Agenda en attributen
+      </li>
+      <li>
+        Knoopkenmerken &gt; Agenda&#160;&#160;(geen attributen
+      </li>
+    </ol>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_77223280" CREATED="1288907062597" MODIFIED="1296157991676">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een datum toe te voegen aan een knoop:
+    </p>
+    <p>
+      - kies optie 1 of 2; en
+    </p>
+    <p>
+      - kies <i>Datum toevoegen aan geselecteerde knopen</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1475604224" CREATED="1296157994148" MODIFIED="1296158066720">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een signalering (herinnering) toe te voegen:
+    </p>
+    <p>
+      - kies optie 1 of 2; en
+    </p>
+    <p>
+      - kies <i>Toevoegen herinnering</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_26533930" CREATED="1289570843304" MODIFIED="1296158123153">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een actieve signalering te be&#235;indigen:
+    </p>
+    <p>
+      - kies optie 1 of 2;
+    </p>
+    <p>
+      - kies <i>Verwijderen activiteit</i>.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1114399870" CREATED="1288907062597" MODIFIED="1304196854042">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om alle herinneringen en bijbehorende notitites te bekijken:
+    </p>
+    <p>
+      -<i>&#160;</i>kies<i>&#160;Knoopkenmerken &gt; Agenda &gt; Activiteiten (herrinering + notitie)</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_1271295824" CREATED="1296158896914" MODIFIED="1304196892706">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een attribuut toe te voegen:
+    </p>
+    <p>
+      - kies <i>Knoopkenmerken &gt; attributen&#160;&gt;&#160;Bewerken attribuut</i>&#160;in het hoofdmenu
+    </p>
+  </body>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="Printen en publiceren" FOLDED="true" POSITION="right" ID="ID_467939642" CREATED="1288473008474" MODIFIED="1293375084731" COLOR="#006699">
@@ -10702,7 +11054,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Met Java Applet" STYLE_REF="Functie" FOLDED="true" ID="ID_384746026" CREATED="1286892051688" MODIFIED="1293375084685">
-<node STYLE_REF="Inleiding" ID="ID_318546238" CREATED="1288993113978" MODIFIED="1293375084682">
+<node STYLE_REF="Inleiding" ID="ID_318546238" CREATED="1288993113978" MODIFIED="1298557445370">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -10719,7 +11071,7 @@
       - open/dichtvouwen;
     </p>
     <p>
-      - zoeken (klik rechter muisknop);
+      - zoeken/filteren (klik rechter muisknop);
     </p>
     <p>
       - verplaatsen mindmap
@@ -10979,8 +11331,8 @@
 <node TEXT="Versie en bijdragen" FOLDED="true" POSITION="left" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1293375084554" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Handleiding" STYLE_REF="Functie" FOLDED="true" ID="ID_577923166" CREATED="1289155126738" MODIFIED="1293375084496">
-<node TEXT="Versie Freeplane 1.2.1" ID="ID_605038742" CREATED="1289133018961" MODIFIED="1293375084492"/>
-<node TEXT="Datum laatste wijziging in handleiding: 2010-12-19" ID="ID_21798827" CREATED="1289730911791" MODIFIED="1293375084486"/>
+<node TEXT="Versie Freeplane 1.2.5" ID="ID_605038742" CREATED="1289133018961" MODIFIED="1304196974763"/>
+<node TEXT="Datum laatste wijziging in handleiding: 2011-05-01" ID="ID_21798827" CREATED="1289730911791" MODIFIED="1304196988697"/>
 <node TEXT="NL vertaling en bewerking" FOLDED="true" ID="ID_136822724" CREATED="1286311222217" MODIFIED="1293375084480">
 <node TEXT="Jokro" FOLDED="true" ID="ID_1128010246" CREATED="1286311242349" MODIFIED="1293375084474" LINK="mailto:jokro@users.sourceforge.net?subject%20=%20handleiding">
 <node TEXT="Eerste versie: 2010-11-14" ID="ID_52670674" CREATED="1289731003743" MODIFIED="1293375084468"/>
@@ -11006,7 +11358,7 @@
 <node TEXT="Edit Long node = Bewerken in hulpvenster" ID="ID_1657410725" CREATED="1293387901037" MODIFIED="1293388557241"/>
 <node TEXT="Edge style = Vorm tak" ID="ID_1267765483" CREATED="1293389118434" MODIFIED="1293389130995"/>
 <node TEXT="Edge width = Dikte tak" ID="ID_1146133222" CREATED="1293389160117" MODIFIED="1293389175367"/>
-<node TEXT="Edit node = Bewerken knooptekst" ID="ID_1470159663" CREATED="1293387999722" MODIFIED="1293388146223"/>
+<node TEXT="Edit node = Bewerken basistekst" ID="ID_1470159663" CREATED="1293387999722" MODIFIED="1298472026282"/>
 <node TEXT="Edit node details = Bewerken bijlage" ID="ID_1058861806" CREATED="1293388158370" MODIFIED="1293388541235"/>
 <node TEXT="Encrypted = Beveiligd" ID="ID_311285770" CREATED="1293388762982" MODIFIED="1293388775443"/>
 <node TEXT="External hyperlink = Hyperlink" ID="ID_135688108" CREATED="1293388373173" MODIFIED="1293388428282"/>
@@ -11016,7 +11368,7 @@
 <node TEXT="Hot key = Sneltoets" ID="ID_1271275444" CREATED="1293390253034" MODIFIED="1293390268057"/>
 <node TEXT="Icon = Pictogram" ID="ID_1648329913" CREATED="1293388649953" MODIFIED="1293388660950"/>
 <node TEXT="Internal hyperlinkd = Snelkoppeling" ID="ID_1547885962" CREATED="1293388341991" MODIFIED="1293388367060"/>
-<node TEXT="Node background color = Knoopkleur" ID="ID_1534434940" CREATED="1293389220392" MODIFIED="1293389239093"/>
+<node TEXT="Node background color = Knoopachtergrondkleur" ID="ID_1534434940" CREATED="1293389220392" MODIFIED="1295722927547"/>
 <node TEXT="Node color = Tekstkleur" ID="ID_1747286254" CREATED="1293389197961" MODIFIED="1293389211672"/>
 <node TEXT="Note = Notitie" ID="ID_618428882" CREATED="1293388819640" MODIFIED="1293388828900"/>
 <node TEXT="Note Edit Switch = Bewerken notitie" ID="ID_811757943" CREATED="1293388223084" MODIFIED="1293388591160"/>
@@ -11060,5 +11412,3 @@
 </node>
 </node>
 </map>
-
- 	  	 
