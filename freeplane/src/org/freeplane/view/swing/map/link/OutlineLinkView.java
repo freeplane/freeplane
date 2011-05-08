@@ -58,11 +58,8 @@ public class OutlineLinkView extends EdgeView {
 	protected void createStart() {
 		final MainView startMainView = getSource().getMainView();
 		start = new Point(startMainView.getWidth(), startMainView.getHeight() / 2);
-		UITools.convertPointToAncestor(startMainView, start, getSource());
 		final MainView targetMainView = getTarget().getMainView();
 		end = new Point(targetMainView.getWidth(), targetMainView.getHeight() / 2);
-		UITools.convertPointToAncestor(targetMainView, end, getTarget().getMap());
-		align(start, end);
 	}
 
 	@Override
