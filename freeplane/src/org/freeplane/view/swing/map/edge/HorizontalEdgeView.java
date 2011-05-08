@@ -26,6 +26,7 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
 import org.freeplane.features.common.nodelocation.LocationModel;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.link.CollisionDetector;
 
@@ -45,6 +46,27 @@ public class HorizontalEdgeView extends EdgeView {
 	}
 
 	@Override
+	protected void createStart() {
+	    if(getSource().isRoot() && ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE){
+	        super.createStart();
+	    }
+	    else{
+	        if(getTarget().isLeft()){
+	            start = getSource().getMainView().getLeftPoint();
+	        }
+	        else{
+	            start = getSource().getMainView().getRightPoint();
+	        }
+	    }
+        if(getTarget().isLeft()){
+            end = getTarget().getMainView().getRightPoint();
+        }
+        else{
+            end = getTarget().getMainView().getLeftPoint();
+        }
+    }
+
+    @Override
 	protected void draw(final Graphics2D g) {
 		final Color color = getColor();
 		g.setColor(color);
@@ -52,23 +74,13 @@ public class HorizontalEdgeView extends EdgeView {
 		g.setStroke(stroke);
 		getWidth();
 		int xMiddle = getTarget().getMap().getZoomed(LocationModel.HGAP) / 2;
-		if (getTarget().isLeft()) {
+		final boolean left = getTarget().isLeft() 
+		    || ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getSource().isRoot()&& start.x > end.x;
+        if (left) {
 			xMiddle = -xMiddle;
 		}
 		xMiddle += start.x;
-		int endX = end.x;
-		final int mainViewWidth = getTarget().getMainView().getWidth();
-		if (getTarget().isLeft()) {
-			if (end.x - mainViewWidth / 2 > xMiddle) {
-				endX -= mainViewWidth;
-			}
-		}
-		else {
-			if (end.x + mainViewWidth / 2 < xMiddle) {
-				endX += mainViewWidth;
-			}
-		}
-		xs = new int[] { start.x, xMiddle, xMiddle, endX };
+		xs = new int[] { start.x, xMiddle, xMiddle, end.x };
 		ys = new int[] { start.y, start.y, end.y, end.y };
 		g.drawPolyline(xs, ys, 4);
 		if (isTargetEclipsed()) {

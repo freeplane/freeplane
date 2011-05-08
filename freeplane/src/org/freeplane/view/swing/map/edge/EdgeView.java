@@ -29,6 +29,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -70,6 +71,8 @@ public abstract class EdgeView {
 	private final NodeView target;
 	private Color color;
 	private Integer width;
+    private ConnectorLocation startConnectorLocation;
+    private ConnectorLocation endConnectorLocation;
 
 	protected void createStart() {
         final MainView mainView = source.getMainView();
@@ -79,15 +82,51 @@ public abstract class EdgeView {
         relativeLocation.x += targetMainView.getWidth()/2;
         relativeLocation.y += targetMainView.getHeight()/2;
         start = mainView.getConnectorPoint(relativeLocation);
+        startConnectorLocation = mainView.getConnectorLocation(relativeLocation);
                 
         relativeLocation.x -= targetMainView.getWidth()/2;
         relativeLocation.y -= targetMainView.getHeight()/2;
         relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2;
         relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2;
 		end = target.getMainView().getConnectorPoint(relativeLocation);
+		endConnectorLocation = mainView.getConnectorLocation(relativeLocation);
 	}
 
-	protected void align(Point start, Point end) {
+	protected ConnectorLocation getStartConnectorLocation() {
+        return startConnectorLocation;
+    }
+
+    protected ConnectorLocation getEndConnectorLocation() {
+        return endConnectorLocation;
+    }
+
+    protected Point getControlPoint(ConnectorLocation startConnectorLocation){
+        final int xctrl; 
+        final int yctrl; 
+        if(ConnectorLocation.LEFT.equals(startConnectorLocation)){
+            xctrl= - 1;
+            yctrl = 0;
+        }
+        else if(ConnectorLocation.RIGHT.equals(startConnectorLocation)){
+            xctrl= 1;
+            yctrl = 0;
+        }
+        else if(ConnectorLocation.TOP.equals(startConnectorLocation)){
+            xctrl= 0;
+            yctrl = - 1;
+        }
+        else if(ConnectorLocation.LEFT.equals(startConnectorLocation)){
+            xctrl= 0;
+            yctrl = 1;
+        }
+        else {
+            xctrl = 0;
+            yctrl = 0;
+        }
+        return new Point(xctrl, yctrl);
+    }
+
+    protected void align(Point start, Point end) {
 		if(1 == Math.abs(start.y - end.y)){
 			end.y = start.y; 
 		}

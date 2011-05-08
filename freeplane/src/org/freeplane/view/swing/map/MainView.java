@@ -434,6 +434,19 @@ public abstract class MainView extends ZoomableLabel {
     public void setBorder(Border border) {
     }
 
+    static public enum ConnectorLocation{LEFT, RIGHT, TOP, BOTTOM, CENTER};
+    
+    public ConnectorLocation getConnectorLocation(Point relativeLocation) {
+        if(relativeLocation.x > getWidth())
+            return ConnectorLocation.RIGHT;
+        if(relativeLocation.x < 0)
+            return ConnectorLocation.LEFT;
+        if(relativeLocation.y > getHeight())
+            return ConnectorLocation.BOTTOM;
+        if(relativeLocation.y <0)
+            return ConnectorLocation.TOP;
+        return ConnectorLocation.CENTER;
+    }
     public Point getConnectorPoint(Point relativeLocation) {
         if(relativeLocation.x > getWidth())
             return getRightPoint();
@@ -443,7 +456,11 @@ public abstract class MainView extends ZoomableLabel {
             return getBottomPoint();
         if(relativeLocation.y <0)
             return getTopPoint();
-        return null;
+        return getCenterPoint();
+    }
+
+    private Point getCenterPoint() {
+        return new Point(getWidth()/2, getHeight()/2);
     }
 
     public Point getTopPoint() {

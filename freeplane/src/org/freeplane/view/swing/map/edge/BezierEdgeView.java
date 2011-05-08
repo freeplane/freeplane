@@ -27,6 +27,7 @@ import java.awt.geom.CubicCurve2D;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.VerticalRootNodeViewLayout;
 import org.freeplane.view.swing.map.link.CollisionDetector;
@@ -63,18 +64,19 @@ public class BezierEdgeView extends EdgeView {
 	}
 
 	private CubicCurve2D.Float update() {
-		final int sign = (getTarget().isLeft()) ? -1 : 1;
-		int sourceSign = 1;
-		if (getSource().isRoot() && !MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE) {
-			sourceSign = 0;
-		}
-		final int xctrl = getMap().getZoomed(sourceSign * sign * BezierEdgeView.XCTRL);
-		final int childXctrl = getMap().getZoomed(-1 * sign * BezierEdgeView.CHILD_XCTRL);
+        final Point startControlPoint = getControlPoint(getStartConnectorLocation());
+        final int zoomedXCTRL = getMap().getZoomed(XCTRL);
+        final int xctrl = startControlPoint.x * zoomedXCTRL; 
+        final int yctrl = startControlPoint.y * zoomedXCTRL; 
+        final Point endControlPoint = getControlPoint(getEndConnectorLocation());
+        final int zoomedChildXCTRL = getMap().getZoomed(CHILD_XCTRL);
+        final int childXctrl = endControlPoint.x * zoomedChildXCTRL; 
+        final int childYctrl = endControlPoint.y * zoomedChildXCTRL; 
 		final CubicCurve2D.Float graph = new CubicCurve2D.Float();
-		graph.setCurve(start.x, start.y, start.x + xctrl, start.y, end.x + childXctrl, end.y, end.x, end.y);
+		graph.setCurve(start.x, start.y, start.x + xctrl, start.y + yctrl, end.x + childXctrl, end.y  + childYctrl, end.x, end.y);
 		return graph;
 	}
-
+	
 	@Override
 	public boolean detectCollision(final Point p) {
 		final CubicCurve2D.Float graph = update();
