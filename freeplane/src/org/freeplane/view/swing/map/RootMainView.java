@@ -31,6 +31,8 @@ import java.awt.RenderingHints;
 
 import javax.swing.SwingConstants;
 
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.map.ModeController;
 
 class RootMainView extends MainView {
@@ -59,13 +61,7 @@ class RootMainView extends MainView {
 
 
 	@Override
-	Point getCenterPoint() {
-		final Point in = getLeftPoint();
-		in.x = getWidth() / 2;
-		return in;
-	}
-
-	@Override
+    public
 	Point getLeftPoint() {
 		final Point in = new Point(0, getHeight() / 2);
 		return in;
@@ -87,6 +83,7 @@ class RootMainView extends MainView {
 	}
 
 	@Override
+    public
 	Point getRightPoint() {
 		final Point in = getLeftPoint();
 		in.x = getWidth() - 1;
@@ -155,5 +152,20 @@ class RootMainView extends MainView {
     @Override
     public Insets getInsets(Insets insets) {
         return RootMainView.insets;
+    }
+    @Override
+    public Point getConnectorPoint(Point p) {
+            final MainView mainView = this;
+            if (USE_COMMON_OUT_POINT_FOR_ROOT_NODE) {
+                return super.getConnectorPoint(p);
+            }
+            final double nWidth = mainView.getWidth() / 2f;
+            final double nHeight = mainView.getHeight() / 2f;
+            double angle = Math.atan((p.y - nHeight) / (p.x - nWidth));
+            if (p.x < nWidth) {
+                angle += Math.PI;
+            }
+            final Point out = new Point((int) ((1f + Math.cos(angle)) * nWidth), (int) ((1f + Math.sin(angle)) * nHeight));
+            return out;
     }
 }

@@ -41,14 +41,6 @@ class BubbleMainView extends MainView {
 	 */
 	private static final long serialVersionUID = 1L;
 
-
-	@Override
-	Point getCenterPoint() {
-		final Point in = getLeftPoint();
-		in.x = getWidth() / 2;
-		return in;
-	}
-
 	@Override
 	public int getDeltaX() {
 		final NodeModel model = getNodeView().getModel();
@@ -59,6 +51,7 @@ class BubbleMainView extends MainView {
 	}
 
 	@Override
+    public
 	Point getLeftPoint() {
 		final Point in = new Point(0, getHeight() / 2);
 		return in;
@@ -76,6 +69,7 @@ class BubbleMainView extends MainView {
 	}
 
 	@Override
+    public
 	Point getRightPoint() {
 		final Point in = getLeftPoint();
 		in.x = getWidth() - 1;

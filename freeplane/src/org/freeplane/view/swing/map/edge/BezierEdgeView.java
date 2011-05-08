@@ -25,6 +25,8 @@ import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.geom.CubicCurve2D;
 
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.VerticalRootNodeViewLayout;
 import org.freeplane.view.swing.map.link.CollisionDetector;
@@ -35,7 +37,6 @@ import org.freeplane.view.swing.map.link.CollisionDetector;
 public class BezierEdgeView extends EdgeView {
 	private static final int CHILD_XCTRL = 20;
 	private static final int XCTRL = 12;
-
 	public BezierEdgeView(final NodeView source, final NodeView target) {
 		super(source, target);
 	}
@@ -64,7 +65,7 @@ public class BezierEdgeView extends EdgeView {
 	private CubicCurve2D.Float update() {
 		final int sign = (getTarget().isLeft()) ? -1 : 1;
 		int sourceSign = 1;
-		if (getSource().isRoot() && !VerticalRootNodeViewLayout.USE_COMMON_OUT_POINT_FOR_ROOT_NODE) {
+		if (getSource().isRoot() && !MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE) {
 			sourceSign = 0;
 		}
 		final int xctrl = getMap().getZoomed(sourceSign * sign * BezierEdgeView.XCTRL);

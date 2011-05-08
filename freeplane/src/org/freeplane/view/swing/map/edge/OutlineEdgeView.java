@@ -47,7 +47,7 @@ public class OutlineEdgeView extends EdgeView {
 
 	@Override
 	protected void createStart() {
-		start = getSource().getMainViewInPoint();
+		start = getSource().getMainView().getLeftPoint();
 		UITools.convertPointToAncestor(getSource().getMainView(), start, getSource());
 		align(start, end);
 	}

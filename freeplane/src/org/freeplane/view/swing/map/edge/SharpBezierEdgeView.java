@@ -36,8 +36,6 @@ import org.freeplane.view.swing.map.link.CollisionDetector;
  */
 public class SharpBezierEdgeView extends EdgeView {
 	private static final float XCTRL = 12;
-	private int deltaX;
-	private int deltaY;
 	Point2D.Float one, two;
 
 	public SharpBezierEdgeView(final NodeView source, final NodeView target) {
@@ -48,42 +46,6 @@ public class SharpBezierEdgeView extends EdgeView {
 		super(target);
 	}
 
-	@Override
-	protected void createStart() {
-		if (getSource().isRoot()) {
-			start = getSource().getMainViewOutPoint(getTarget(), end);
-			final MainView mainView = getSource().getMainView();
-			final double w = mainView.getWidth() / 2;
-			final double x0 = start.x - w;
-			final double w2 = w * w;
-			final double x02 = x0 * x0;
-			if (Double.compare(w2, x02) == 0) {
-				final int delta = getMap().getZoomed(getWidth() + 1);
-				deltaX = 0;
-				deltaY = delta;
-			}
-			else {
-				final double delta = getMap().getZoom() * (getWidth() + 1);
-				final int h = mainView.getHeight() / 2;
-				final int y0 = start.y - h;
-				final double k = h / w * x0 / Math.sqrt(w2 - x02);
-				final double dx = delta / Math.sqrt(1 + k * k);
-				deltaX = (int) dx;
-				deltaY = (int) (k * dx);
-				if (y0 > 0) {
-					deltaY = -deltaY;
-				}
-			}
-			UITools.convertPointToAncestor(mainView, start, getSource());
-		}
-		else {
-			final int delta = getMap().getZoomed(getWidth() + 1);
-			super.createStart();
-			deltaX = 0;
-			deltaY = delta;
-		}
-		align(start, end);
-	}
 
 	@Override
 	public Stroke getStroke() {
@@ -106,6 +68,35 @@ public class SharpBezierEdgeView extends EdgeView {
 	}
 
 	private GeneralPath update() {
+        final int delta = getMap().getZoomed(getWidth() + 1);
+        final int deltaX;
+        int deltaY;
+        if (getSource().isRoot()) {
+            final MainView mainView = getSource().getMainView();
+            final double w = mainView.getWidth() / 2;
+            final double x0 = start.x - w;
+            final double w2 = w * w;
+            final double x02 = x0 * x0;
+            if (Double.compare(w2, x02) == 0) {
+                deltaX = 0;
+                deltaY = delta;
+            }
+            else {
+                final int h = mainView.getHeight() / 2;
+                final int y0 = start.y - h;
+                final double k = h / w * x0 / Math.sqrt(w2 - x02);
+                final double dx = delta / Math.sqrt(1 + k * k);
+                deltaX = (int) dx;
+                deltaY = (int) (k * dx);
+                if (y0 > 0) {
+                    deltaY = -deltaY;
+                }
+            }
+        }
+        else {
+            deltaX = 0;
+            deltaY = delta;
+        }
 		final float zoom = getMap().getZoom();
 		float xctrlRelative = SharpBezierEdgeView.XCTRL * zoom;
 		if (getTarget().isLeft()) {
