@@ -65,8 +65,8 @@ public class LinearEdgeView extends EdgeView {
 	        final Point endControlPoint = getControlPoint(getEndConnectorLocation());
 	        final int childXctrl = endControlPoint.x * zoomedXCTRL; 
 	        final int childYctrl = endControlPoint.y * zoomedXCTRL; 
-			final int xs[] = { start.x, start.x + xctrl, end.x - childXctrl, end.x };
-			final int ys[] = { start.y, start.y + yctrl, end.y - childYctrl, end.y };
+			final int xs[] = { start.x, start.x + xctrl, end.x + childXctrl, end.x };
+			final int ys[] = { start.y, start.y + yctrl, end.y + childYctrl, end.y };
 			g.drawPolyline(xs, ys, 4);
 			if (isTargetEclipsed()) {
 				g.setColor(g.getBackground());
