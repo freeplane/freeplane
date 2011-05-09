@@ -790,7 +790,7 @@ public class StyleEditorPanel extends JPanel {
 			{
 				String nodeFormat = NodeStyleModel.getNodeFormat(node);
 				mSetNodeFormat.setValue(nodeFormat != null);
-				LogUtils.warn("hi, getNodeFormat(" + node.getUserObject() + ": " + node.getUserObject().getClass());
+//				LogUtils.warn("hi, getNodeFormat(" + node.getUserObject() + ": " + node.getUserObject().getClass());
 				if (nodeFormat == null && node.getUserObject() instanceof IFormattedObject)
 					nodeFormat = ((IFormattedObject)node.getUserObject()).getPattern();
 				mNodeFormat.setValue(nodeFormat);
