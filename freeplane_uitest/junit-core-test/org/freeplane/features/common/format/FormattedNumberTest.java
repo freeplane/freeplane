@@ -45,11 +45,11 @@ public class FormattedNumberTest {
 
 	@Test
 	public void testDefaultPattern() {
-		double number = 1.123459;
+		double number = 1.123456;
 		final FormattedNumber formattedNumber = new FormattedNumber(number);
-		assertEquals("wrong default pattern", "#.#####", formattedNumber.getPattern());
+		assertEquals("wrong default pattern", "#0.####", formattedNumber.getPattern());
 		// expect a rounded number
-		assertEquals("wrong default formatting", "1.12346", formattedNumber.toString());
+		assertEquals("wrong default formatting", "1.1235", formattedNumber.toString());
 	}
 
 	@Test

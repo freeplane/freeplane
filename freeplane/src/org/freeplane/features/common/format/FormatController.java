@@ -76,7 +76,14 @@ public class FormatController implements IExtension {
 	private static HashMap<String, DecimalFormat> numberFormatCache = new HashMap<String, DecimalFormat>();
 
 	static {
-		MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		addOptionPanelValidator();
+	}
+
+	private static void addOptionPanelValidator() {
+	    MModeController modeController = (MModeController) Controller.getCurrentModeController();
+	    // check for unit tests
+	    if (modeController == null)
+	    	return;
 		modeController.getOptionPanelBuilder().addValidator(new IValidator() {
 			public ValidationResult validate(Properties properties) {
 				final ValidationResult result = new ValidationResult();
@@ -101,7 +108,7 @@ public class FormatController implements IExtension {
 				return result;
 			}
 		});
-	}
+    }
 
 	public FormatController() {
 		pathToFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
@@ -128,7 +135,7 @@ public class FormatController implements IExtension {
 
 	private void addStandardFormats() {
 		String number = IFormattedObject.TYPE_NUMBER;
-		numberFormats.add(PatternFormat.createPatternFormat("#.####", PatternFormat.STYLE_DECIMAL, number,
+		numberFormats.add(PatternFormat.createPatternFormat("#0.####", PatternFormat.STYLE_DECIMAL, number,
 		    "default number"));
 		numberFormats.add(PatternFormat.createPatternFormat("#.00", PatternFormat.STYLE_DECIMAL, number, "decimal"));
 		numberFormats.add(PatternFormat.createPatternFormat("#", PatternFormat.STYLE_DECIMAL, number, "integer"));
