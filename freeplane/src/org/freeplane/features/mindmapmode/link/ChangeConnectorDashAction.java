@@ -26,6 +26,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 
 import javax.swing.Icon;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -49,7 +50,7 @@ class ChangeConnectorDashAction extends AFreeplaneAction {
 		this.arrowLink = arrowLink;
 		this.dash = dash;
 		final int[] dash2 = arrowLink.getDash();
-		final boolean selected = dash2 == dash || dash != null && dash.equals(dash2);
+		final boolean selected = dash2 == dash || dash != null && Arrays.equals(dash, dash2);
 		setSelected(selected);
 	}
 
