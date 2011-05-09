@@ -19,26 +19,27 @@
  */
 package org.freeplane.features.common.format;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
+import java.util.Locale;
 
-/**
- * @author vboerchers
- */
-class DecimalPatternFormat extends PatternFormat {
-	private static final long serialVersionUID = 1L;
+public class DecimalFormatParser extends Parser {
+	private final DecimalFormat parser;
 
-	public DecimalPatternFormat(final String pattern) {
-		super(pattern, IFormattedObject.TYPE_NUMBER);
+	public DecimalFormatParser(Locale locale) {
+		super(Parser.STYLE_DECIMAL, IFormattedObject.TYPE_NUMBER, null);
+		parser = (DecimalFormat) NumberFormat.getInstance(locale);
 	}
 
 	@Override
-	public Object formatObject(final Object obj) {
-		if (obj instanceof Number)
-			return new FormattedNumber((Number) obj, getPattern());
-		return obj;
-	}
-
-	@Override
-	public String getStyle() {
-		return PatternFormat.STYLE_DECIMAL;
+	Object parse(String string) {
+		if (string == null)
+			return null;
+		final ParsePosition parsePosition = new ParsePosition(0);
+		final Number result = parser.parse(string, parsePosition);
+		if (parsePosition.getIndex() != string.length())
+			return null;
+		return new FormattedNumber(result);
 	}
 }

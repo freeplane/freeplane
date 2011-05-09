@@ -5,6 +5,7 @@ Auto formatting of numbers
 Formatting of attributes
 Free node positioning
 Improved connector editor
+Configurable parsing of dates and numbers
 
 ===============================
 1.2.5 alpha

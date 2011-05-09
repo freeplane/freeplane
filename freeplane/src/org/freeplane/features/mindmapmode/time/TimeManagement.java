@@ -344,7 +344,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		final List<PatternFormat> datePatterns = new FormatController().getDateFormats();
 		int selectedIndex = 0;
 		for (int i = 0; i < datePatterns.size(); ++i) {
-			SimpleDateFormat patternFormat = FormattedDate.getDateFormat(datePatterns.get(i).getPattern());
+			SimpleDateFormat patternFormat = FormatController.getDateFormat(datePatterns.get(i).getPattern());
 			values.add(new DateFormatComboBoxElement(patternFormat));
 			if (patternFormat.toPattern().equals(dateFormatPattern)) {
 				dateFormat = patternFormat;
@@ -360,7 +360,6 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		dateFormatChooser.addItemListener(new ItemListener() {
 			public void itemStateChanged(final ItemEvent e) {
 				dateFormat = ((DateFormatComboBoxElement) e.getItem()).getDateFormat();
-				ResourceController.getResourceController().setProperty("date_format", dateFormat.toPattern());
 				final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 				if(focusOwner instanceof JTable){
 					JTable table = (JTable) focusOwner;

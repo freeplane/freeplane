@@ -19,26 +19,29 @@
  */
 package org.freeplane.features.common.format;
 
+import java.text.SimpleDateFormat;
 
 /**
- * @author vboerchers
+ * A locale independent parser that uses the parsed input to decide between TYPE_DATE and TYPE_DATETIME.
+ *
+ * @author Volker Boerchers
  */
-class DecimalPatternFormat extends PatternFormat {
-	private static final long serialVersionUID = 1L;
-
-	public DecimalPatternFormat(final String pattern) {
-		super(pattern, IFormattedObject.TYPE_NUMBER);
+public class IsoDateParser extends Parser {
+	public IsoDateParser() {
+		super(Parser.STYLE_ISODATE, IFormattedObject.TYPE_DATE, null);
 	}
 
 	@Override
-	public Object formatObject(final Object obj) {
-		if (obj instanceof Number)
-			return new FormattedNumber((Number) obj, getPattern());
-		return obj;
-	}
-
-	@Override
-	public String getStyle() {
-		return PatternFormat.STYLE_DECIMAL;
+	Object parse(String string) {
+		try {
+			if (string == null)
+				return null;
+			final FormattedDate date = FormattedDate.toDateISO(string);
+			return new FormattedDate(date.getTime(), (SimpleDateFormat) FormatController.getDefaultFormat(date
+			    .containsTime() ? IFormattedObject.TYPE_DATETIME : IFormattedObject.TYPE_DATE));
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 }

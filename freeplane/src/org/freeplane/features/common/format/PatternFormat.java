@@ -1,3 +1,22 @@
+/*
+ *  Freeplane - mind map editor
+ *  Copyright (C) 2011 Volker Boerchers
+ *
+ *  This file author is Volker Boerchers
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.freeplane.features.common.format;
 
 import java.util.Formatter;
@@ -37,9 +56,6 @@ public abstract class PatternFormat /*extends Format*/ {
 	static final String STYLE_FORMATTER = "formatter";
 	static final String STYLE_DATE = "date";
 	static final String STYLE_DECIMAL = "decimal";
-	static final String TYPE_NUMBER = "number";
-	static final String TYPE_DATE = "date";
-	static final String TYPE_STRING = "string";
 	private static final String TYPE_ANY = "any";
 	private static final String ELEMENT_NAME = "format";
 	private final String type;
@@ -137,7 +153,7 @@ public abstract class PatternFormat /*extends Format*/ {
 				switch (conversion) {
 					case 's':
 					case 'S':
-						return new FormatterPatternFormat(pattern, TYPE_STRING);
+						return new FormatterPatternFormat(pattern, IFormattedObject.TYPE_STRING);
 					case 'd':
 					case 'o':
 					case 'x':
@@ -149,10 +165,10 @@ public abstract class PatternFormat /*extends Format*/ {
 					case 'G':
 					case 'a':
 					case 'A':
-						return new FormatterPatternFormat(pattern, TYPE_NUMBER);
+						return new FormatterPatternFormat(pattern, IFormattedObject.TYPE_NUMBER);
 					case 't':
 					case 'T':
-						return new FormatterPatternFormat(pattern, TYPE_DATE);
+						return new FormatterPatternFormat(pattern, IFormattedObject.TYPE_DATE);
 				}
 			}
 			if (datePattern.matcher(pattern).find()) {
@@ -174,17 +190,16 @@ public abstract class PatternFormat /*extends Format*/ {
 	    return IDENTITY;
     }
 
-	public void toXml(XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(ELEMENT_NAME);
-		child.setAttribute("type", getType());
-		child.setAttribute("style", getStyle());
+	public XMLElement toXml() {
+		final XMLElement xmlElement = new XMLElement(ELEMENT_NAME);
+		xmlElement.setAttribute("type", getType());
+		xmlElement.setAttribute("style", getStyle());
 		if (getName() != null)
-			child.setAttribute("name", getName());
+			xmlElement.setAttribute("name", getName());
 		if (getLocale() != null)
-			child.setAttribute("locale", getLocale());
-		child.setContent(getPattern());
-		element.addChild(child);
+			xmlElement.setAttribute("locale", getLocale());
+		xmlElement.setContent(getPattern());
+		return xmlElement;
 	}
 
 	public String serialize() {
@@ -197,15 +212,15 @@ public abstract class PatternFormat /*extends Format*/ {
     }
 
 	public boolean acceptsDate() {
-	    return getType().equals(TYPE_DATE);
+	    return getType().equals(IFormattedObject.TYPE_DATE);
     }
 	
 	public boolean acceptsNumber() {
-		return getType().equals(TYPE_NUMBER);
+		return getType().equals(IFormattedObject.TYPE_NUMBER);
 	}
 	
 	public boolean acceptsString() {
-		return getType().equals(TYPE_STRING);
+		return getType().equals(IFormattedObject.TYPE_STRING);
 	}
 
 	abstract public Object formatObject(Object toFormat);

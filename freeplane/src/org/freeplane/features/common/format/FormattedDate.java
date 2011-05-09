@@ -22,12 +22,9 @@ package org.freeplane.features.common.format;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.freeplane.core.resources.IFreeplanePropertyListener;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FactoryMethod;
 import org.freeplane.core.util.SerializationMethod;
 
@@ -36,193 +33,148 @@ import org.freeplane.core.util.SerializationMethod;
  * Mar 2, 2011
  */
 @SuppressWarnings("serial")
-@FactoryMethod("toObject")
-@SerializationMethod("toString")
+@FactoryMethod("deserialize")
+@SerializationMethod("serialize")
 public class FormattedDate extends Date implements IFormattedObject {
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof FormattedDate && super.equals(obj) && ((FormattedDate) obj).getDateFormat().equals(df);
+	}
 
 	@Override
-    public boolean equals(Object obj) {
-	    return obj instanceof FormattedDate 
-	    && super.equals(obj) 
-	    && ((FormattedDate)obj).getDateFormat().equals(df);
-    }
+	public int hashCode() {
+		return 37 * super.hashCode() + df.hashCode();
+	}
 
-	@Override
-    public int hashCode() {
-	    return 37 * super.hashCode() + df.hashCode();
-    }
-
-	private static HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
 	public static final String ISO_DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 	public static final String ISO_DATE_TIME_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mmZ";
 	public static final Pattern ISO_DATE_TIME_REGEXP_PATTERN = Pattern.compile("\\d{4}(-?)\\d{2}(-?)\\d{2}" //
-    + "(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?");
-	
-	static private SimpleDateFormat defaultFormat;
-	
-	static private SimpleDateFormat getDefaultFormat()
-	{
-		if(defaultFormat != null)
-			return defaultFormat;
-		
-		final ResourceController resourceController = ResourceController.getResourceController();
-		String defaultFormatPattern = resourceController.getProperty("date_format");
-		defaultFormat = new SimpleDateFormat(defaultFormatPattern);
-		resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
-			public void propertyChanged(String propertyName, String newValue, String oldValue) {
-				if(propertyName.equals("date_format"))
-					defaultFormat = new SimpleDateFormat(newValue);
-			}
-		});
-		return defaultFormat;
-	}
-	
-	private SimpleDateFormat df; 
+	        + "(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?");
+	private SimpleDateFormat df;
 
 	public FormattedDate(FormattedDate date) {
 		this(date.getTime(), date.getDateFormat());
 	}
+
 	public FormattedDate(Date date, String pattern) {
-	    super(date.getTime());
-	    this.df = getDateFormat(pattern);
-    }
+		super(date.getTime());
+		this.df = FormatController.getDateFormat(pattern);
+	}
 
 	public FormattedDate(long date, SimpleDateFormat df) {
-	    super(date);
-	    this.df = df;
-    }
-	
+		super(date);
+		this.df = df;
+	}
+
 	public FormattedDate(long date) {
-		this(date, getDefaultFormat());
+		this(date, FormatController.getDefaultDateFormat());
 	}
 
 	@Override
-    public String toString() {
+	public String toString() {
 		return df.format(this);
-    }
+	}
 
-	public static String toString(final FormattedDate date) {
-    	return toStringISO(date)  + "|" + date.df.toPattern();
-    }
+	public static String serialize(final FormattedDate date) {
+		return toStringISO(date) + "|" + date.df.toPattern();
+	}
+
 	public static String toStringISO(final Date date) {
-    	// use local timezone
-    	return getDateFormat(ISO_DATE_TIME_FORMAT_PATTERN).format(date);
-    }
+		// use local timezone
+		return FormatController.getDateFormat(ISO_DATE_TIME_FORMAT_PATTERN).format(date);
+	}
 
 	public static String toStringShortISO(final Date date) {
-    	return getDateFormat(ISO_DATE_FORMAT_PATTERN).format(date);
-    }
+		return FormatController.getDateFormat(ISO_DATE_FORMAT_PATTERN).format(date);
+	}
 
-	// deserialize method
-	public static Object toObject(String text) {
+	public static Object deserialize(String text) {
 		final int index = text.indexOf('|');
-		final SimpleDateFormat df ;
-    	final FormattedDate date;
-		if(index == -1){
-			df = getDefaultFormat();
+		final SimpleDateFormat df;
+		final FormattedDate date;
+		if (index == -1) {
+			df = FormatController.getDefaultDateFormat();
 			date = toDateISO(text);
 		}
-		else{
-			df = getDateFormat(text.substring(index + 1));
+		else {
+			df = FormatController.getDateFormat(text.substring(index + 1));
 			date = toDateISO(text.substring(0, index));
 		}
-    	if(date == null)
+		if (date == null)
 			return text;
-    	date.df = df;
-    	return date;
-    }
+		date.df = df;
+		return date;
+	}
 
 	public static FormattedDate toDate(String text) {
-    	final FormattedDate date = toDateISO(text);
-    	return date == null ? toDateUser(text) : date;
-    }
+		return toDateISO(text);
+	}
 
 	public static boolean isDate(String text) {
-    	return isDateISO(text) || isDateUser(text);
-    }
-	
+		if (text == null)
+			return false;
+		return ISO_DATE_TIME_REGEXP_PATTERN.matcher(text).matches();
+	}
+
 	public static FormattedDate toDateISO(String text) {
-    	//        1         2         34            5         6   7        8           9
-    	// \\d{4}(-?)\\d{2}(-?)\\d{2}(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?
-    	final Matcher matcher = ISO_DATE_TIME_REGEXP_PATTERN.matcher(text);
-    	if (matcher.matches()) {
-    		StringBuilder builder = new StringBuilder("yyyy");
-    		builder.append(matcher.group(1));
-    		builder.append("MM");
-    		builder.append(matcher.group(2));
-    		builder.append("dd");
-    		if (matcher.group(3) != null) {
-    			if (matcher.group(4) != null) {
-    				builder.append('\'');
-    				builder.append(matcher.group(4));
-    				builder.append('\'');
-    			}
-    			builder.append("HH");
-    			builder.append(matcher.group(5));
-    			builder.append("mm");
-    			if (matcher.group(7) != null) {
-    				builder.append(matcher.group(6));
-    				builder.append("ss");
-    			}
-    			if (matcher.group(8) != null) {
-    				builder.append(".SSS");
-    			}
-    			if (matcher.group(9) != null) {
-    				builder.append("Z");
-    			}
-    		}
-    		final String pattern = builder.toString();
-    		return parseDate(text, pattern);
-    	}
-    	return null;
-    }
+		//        1         2         34            5         6   7        8           9
+		// \\d{4}(-?)\\d{2}(-?)\\d{2}(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?
+		final Matcher matcher = ISO_DATE_TIME_REGEXP_PATTERN.matcher(text);
+		if (matcher.matches()) {
+			StringBuilder builder = new StringBuilder("yyyy");
+			builder.append(matcher.group(1));
+			builder.append("MM");
+			builder.append(matcher.group(2));
+			builder.append("dd");
+			if (matcher.group(3) != null) {
+				if (matcher.group(4) != null) {
+					builder.append('\'');
+					builder.append(matcher.group(4));
+					builder.append('\'');
+				}
+				builder.append("HH");
+				builder.append(matcher.group(5));
+				builder.append("mm");
+				if (matcher.group(7) != null) {
+					builder.append(matcher.group(6));
+					builder.append("ss");
+				}
+				if (matcher.group(8) != null) {
+					builder.append(".SSS");
+				}
+				if (matcher.group(9) != null) {
+					builder.append("Z");
+				}
+			}
+			final String pattern = builder.toString();
+			return parseDate(text, pattern);
+		}
+		return null;
+	}
 
 	static private FormattedDate parseDate(String text, final String pattern) {
-		SimpleDateFormat parser = getDateFormat(pattern);
-        final ParsePosition pos = new ParsePosition(0);
-        final Date date = parser.parse(text, pos);
-        if (date != null && pos.getIndex() == text.length()) {
-        	return new FormattedDate(date.getTime(), parser);
-        }
-    	return null;
-    }
-
-	static public SimpleDateFormat getDateFormat(final String pattern) {
-	    SimpleDateFormat parser = dateFormatCache.get(pattern);
-        if (parser == null) {
-        	parser = new SimpleDateFormat(pattern);
-        	dateFormatCache.put(pattern, parser);
-        }
-	    return parser;
-    }
-
-	public static boolean isDateISO(String text) {
-    	if (text == null)
-    		return false;
-    	return ISO_DATE_TIME_REGEXP_PATTERN.matcher(text).matches();
-    }
-
-	public static FormattedDate toDateUser(String text) {
-    	return parseDate(text, ResourceController.getResourceController().getProperty("date_format"));
-    }
-
-	public static boolean isDateUser(String text) {
-    	return text != null && toDateUser(text) != null;
-    }
+		SimpleDateFormat parser = FormatController.getDateFormat(pattern);
+		final ParsePosition pos = new ParsePosition(0);
+		final Date date = parser.parse(text, pos);
+		if (date != null && pos.getIndex() == text.length()) {
+			return new FormattedDate(date.getTime(), parser);
+		}
+		return null;
+	}
 
 	public boolean containsTime() {
-    	return df.toPattern().contains("m");
-    }
+		return df.toPattern().contains("m");
+	}
 
 	public SimpleDateFormat getDateFormat() {
-	    return df;
-    }
+		return df;
+	}
 
 	public String getPattern() {
-	    return df.toPattern();
-    }
+		return df.toPattern();
+	}
 
 	public Date getObject() {
-	    return this;
-    }
+		return this;
+	}
 }

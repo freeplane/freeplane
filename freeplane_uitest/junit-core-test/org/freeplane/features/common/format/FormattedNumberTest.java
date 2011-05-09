@@ -19,18 +19,25 @@
  */
 package org.freeplane.features.common.format;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Locale;
 
-import org.freeplane.features.common.format.FormattedNumber;
+import org.freeplane.main.application.FreeplaneStarter;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
  * @author vboerchers
  */
 public class FormattedNumberTest {
+	@BeforeClass
+	public static void initStatics() {
+		// FIXME: we have to start Freeplane to create a Controller for script execution
+		new FreeplaneStarter().createController();
+	}
+	
 	@Before
 	public void setup() {
 		Locale.setDefault(new Locale("en"));

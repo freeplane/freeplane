@@ -399,7 +399,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			else{
 				kev = null;
 			}
-			MTextController textController = (MTextController) TextController.getController();
+			final MTextController textController = (MTextController) TextController.getController();
 			final IAttributeTableModel model = (IAttributeTableModel) getModel();
 			final String text = getValueAt(row, col).toString();
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
@@ -759,7 +759,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	        if (editor != null) {
 	            Object value = editor.getCellEditorValue();
 				if (value != null) {
-					setValueAt(MTextController.guessObject(value), editingRow, editingColumn);
+					final MTextController textController = (MTextController) TextController.getController();
+					setValueAt(textController.guessObject(value), editingRow, editingColumn);
 				}
 	            removeEditor();
 	        }

@@ -86,7 +86,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	}
 
 	private static Date parseDate(String text) throws ConversionException {
-		final Date date = FormattedDate.toDate(text);
+		final Date date = FormattedDate.toDateISO(text);
 		if(date != null)
 			return date;
 		throw new ConversionException("not a date: " + text);
