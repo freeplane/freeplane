@@ -59,7 +59,7 @@ public class LinearEdgeView extends EdgeView {
 		}
 		else {
 	        final Point startControlPoint = getControlPoint(getStartConnectorLocation());
-	        final int zoomedXCTRL = w / 3 + 1;
+	        final int zoomedXCTRL = w + 1;
 	        final int xctrl = startControlPoint.x * zoomedXCTRL; 
 	        final int yctrl = startControlPoint.y * zoomedXCTRL; 
 	        final Point endControlPoint = getControlPoint(getEndConnectorLocation());
