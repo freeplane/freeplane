@@ -89,7 +89,7 @@ public abstract class EdgeView {
         relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2;
         relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2;
 		end = target.getMainView().getConnectorPoint(relativeLocation);
-		endConnectorLocation = mainView.getConnectorLocation(relativeLocation);
+		endConnectorLocation = targetMainView.getConnectorLocation(relativeLocation);
 	}
 
 	protected ConnectorLocation getStartConnectorLocation() {
