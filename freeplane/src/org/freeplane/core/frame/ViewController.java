@@ -71,6 +71,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.format.FormattedDate;
+import org.freeplane.features.common.format.FormattedObject;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
@@ -803,25 +804,26 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	public void addObjectTypeInfo(Object value) {
-		    if(value instanceof FormattedDate){
-		    	final FormattedDate fd = (FormattedDate) value;
-		    	if(fd.containsTime()){
-		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.dateTimeIcon);
-		    	}
-		    	else{
-		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.dateIcon);
-		    	}
-		    }
-		    else if(value instanceof String){
-		    	if(TextUtils.isNumber((String)value)){
-		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.numberIcon);
-		    	}
-		    	else{
-		    		addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.textIcon);
-		    	}
-		    			
-		    }
-		    else
-		    	addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
-	    }
+		if (value instanceof FormattedObject) {
+			value = ((FormattedObject) value).getObject();
+		}
+		if (value instanceof String) {
+			addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.textIcon);
+		}
+		else if (value instanceof FormattedDate) {
+			final FormattedDate fd = (FormattedDate) value;
+			if (fd.containsTime()) {
+				addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.dateTimeIcon);
+			}
+			else {
+				addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.dateIcon);
+			}
+		}
+		else if (value instanceof Number) {
+			addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.numberIcon);
+		}
+		else {
+			addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
+		}
+	}
 }

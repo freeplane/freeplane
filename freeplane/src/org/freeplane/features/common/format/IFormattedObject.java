@@ -23,6 +23,10 @@ package org.freeplane.features.common.format;
  * @author vboerchers
  */
 public interface IFormattedObject {
+	public static final String TYPE_NUMBER = "number";
+	public static final String TYPE_DATE = "date";
+	public static final String TYPE_DATETIME = "datetime";
+	public static final String TYPE_STRING = "string";
 
 	String getPattern();
 

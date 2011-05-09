@@ -27,7 +27,6 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.format.FormattedDate;
 
 /**
@@ -51,24 +50,29 @@ public class TypedListCellRenderer extends DefaultListCellRenderer implements Li
     private static final long serialVersionUID = 1L;
 
 	@Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-                                                  boolean cellHasFocus) {
-	    super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	    if(value instanceof FormattedDate){
-	    	final FormattedDate fd = (FormattedDate)value;
-	    	if(fd.containsTime())
-	    		setIcon(ViewController.dateTimeIcon);
-	    	else
-	    		setIcon(ViewController.dateIcon);
-	    }
-	    else if(value instanceof URI)
-	    	setIcon(ViewController.linkIcon);
-	    else if(value instanceof String && TextUtils.isNumber((String) value))
-	    	setIcon(ViewController.numberIcon);
-	    else if(value instanceof ObjectAndIcon){
-	    	setIcon(((ObjectAndIcon)value).getIcon());
-	    }
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+	                                              boolean cellHasFocus) {
+		super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+		if (value instanceof String) {
+			setIcon(ViewController.textIcon);
+		}
+		else if (value instanceof FormattedDate) {
+			final FormattedDate fd = (FormattedDate) value;
+			if (fd.containsTime())
+				setIcon(ViewController.dateTimeIcon);
+			else
+				setIcon(ViewController.dateIcon);
+		}
+		else if (value instanceof URI) {
+			setIcon(ViewController.linkIcon);
+		}
+		else if (value instanceof Number) {
+			setIcon(ViewController.numberIcon);
+		}
+		else if (value instanceof ObjectAndIcon) {
+			setIcon(((ObjectAndIcon) value).getIcon());
+		}
 		return this;
-    }
+	}
 	
 }

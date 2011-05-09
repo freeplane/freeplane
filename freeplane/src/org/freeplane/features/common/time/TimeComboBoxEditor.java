@@ -147,7 +147,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 				this.oldItem = null;
 	            if(item != null && oldItem != null && item.toString().equals(oldItem.toString()))
 	            	return oldItem;
-	            if(ResourceController.getResourceController().getBooleanProperty("parse_dates") 
+	            if(ResourceController.getResourceController().getBooleanProperty("parse_data") 
 	            		&& item instanceof String){
 	            	final FormattedDate date = FormattedDate.toDateISO(((String)item).trim());
 	            	if(date != null)

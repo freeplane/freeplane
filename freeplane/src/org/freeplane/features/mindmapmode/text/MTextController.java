@@ -58,8 +58,7 @@ import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.format.FormattedNumber;
-import org.freeplane.features.common.format.FormattedDate;
+import org.freeplane.features.common.format.ScannerController;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.INodeChangeListener;
@@ -90,8 +89,12 @@ import com.lightdev.app.shtm.TextResources;
 public class MTextController extends TextController {
 	
 	public static final String NODE_TEXT = "NodeText";
+	private static Pattern FORMATTING_PATTERN = null;
+	private static final boolean parseData = ResourceController.getResourceController().getBooleanProperty(
+	"parse_data");
 	private EditNodeBase mCurrentEditDialog = null;
-	final private Collection<IEditorPaneListener> editorPaneListeners;
+	private final Collection<IEditorPaneListener> editorPaneListeners;
+	private final ScannerController scannerController;
 
 	public static MTextController getController() {
 		return (MTextController) TextController.getController();
@@ -101,6 +104,7 @@ public class MTextController extends TextController {
 		super(modeController);
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
 		createActions();
+		scannerController = new ScannerController();
 	}
 
 	/**
@@ -261,23 +265,9 @@ public class MTextController extends TextController {
 	}
 
 	/** converts strings to date or number if possible. All other data types are left unchanged. */
-	public static Object guessObject(final Object text) {
-		if (text instanceof String) {
-			final String string = (String) text;
-			if (parseDates) {
-				final FormattedDate date = FormattedDate.toDateISO(string.trim());
-				if (date != null) {
-					return date;
-				}
-			}
-			try {
-				if (parseNumbers)
-					return new FormattedNumber(TextUtils.toNumber(string));
-			}
-			catch (NumberFormatException e) {
-				return text;
-			}
-		}
+	public Object guessObject(final Object text) {
+		if (parseData && text instanceof String)
+			return scannerController.parse((String) text);
 		return text;
 	}
 	
@@ -512,12 +502,6 @@ public class MTextController extends TextController {
 			}
 		}
 	}
-
-	private static Pattern FORMATTING_PATTERN = null;
-	private static final boolean parseDates = ResourceController.getResourceController().getBooleanProperty(
-	    "parse_dates");
-	private static final boolean parseNumbers = ResourceController.getResourceController().getBooleanProperty(
-	    "parse_numbers");
 	
 	public boolean containsFormatting(final String text){
 		if(FORMATTING_PATTERN == null){

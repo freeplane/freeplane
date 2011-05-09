@@ -20,8 +20,6 @@
 package org.freeplane.features.common.format;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.HashMap;
 
 import org.freeplane.core.util.FactoryMethod;
 import org.freeplane.core.util.LogUtils;
@@ -34,18 +32,20 @@ import org.freeplane.core.util.SerializationMethod;
 @FactoryMethod("deserialize")
 @SerializationMethod("serialize")
 public class FormattedNumber extends Number implements IFormattedObject {
-	private static HashMap<String, NumberFormat> formatCache = new HashMap<String, NumberFormat>();
 	private final Number number;
 	private final String pattern;
 	private String formattedString;
-	public static final String defaultPattern = "#.#####";
 
 	public FormattedNumber(final Number number) {
-		this(number, defaultPattern);
+		this(number, FormatController.getDefaultNumberFormat());
+	}
+	
+	public FormattedNumber(final Number number, final DecimalFormat format) {
+		this(number, format.toPattern(), number == null ? null : format.format(number));
 	}
 	
 	public FormattedNumber(final Number number, final String pattern) {
-		this(number, pattern, number == null ? null : getDecimalFormat(pattern).format(number));
+		this(number, pattern, number == null ? null : FormatController.getDecimalFormat(pattern).format(number));
 	}
 
 	public FormattedNumber(final Number number, final String pattern, final String formattedString) {
@@ -66,15 +66,6 @@ public class FormattedNumber extends Number implements IFormattedObject {
 	public Object getObject() {
 	    return number;
     }
-
-	private static NumberFormat getDecimalFormat(final String pattern) {
-		NumberFormat format = formatCache.get(pattern);
-		if (format == null) {
-			format = (pattern == null) ? DecimalFormat.getInstance() : new DecimalFormat(pattern);
-			formatCache.put(pattern, format);
-		}
-		return format;
-	}
 
 	public static String serialize(final FormattedNumber formattedNumber) {
     	return formattedNumber.number + "|" + formattedNumber.pattern;
