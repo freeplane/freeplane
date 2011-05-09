@@ -58,12 +58,15 @@ public class LinearEdgeView extends EdgeView {
 			}
 		}
 		else {
-			int dx = w / 3 + 1;
-			if (getTarget().isLeft()) {
-				dx = -dx;
-			}
-			final int xs[] = { start.x, start.x + dx, end.x - dx, end.x };
-			final int ys[] = { start.y, start.y, end.y, end.y };
+	        final Point startControlPoint = getControlPoint(getStartConnectorLocation());
+	        final int zoomedXCTRL = w / 3 + 1;
+	        final int xctrl = startControlPoint.x * zoomedXCTRL; 
+	        final int yctrl = startControlPoint.y * zoomedXCTRL; 
+	        final Point endControlPoint = getControlPoint(getEndConnectorLocation());
+	        final int childXctrl = endControlPoint.x * zoomedXCTRL; 
+	        final int childYctrl = endControlPoint.y * zoomedXCTRL; 
+			final int xs[] = { start.x, start.x + xctrl, end.x - childXctrl, end.x };
+			final int ys[] = { start.y, start.y + yctrl, end.y - childYctrl, end.y };
 			g.drawPolyline(xs, ys, 4);
 			if (isTargetEclipsed()) {
 				g.setColor(g.getBackground());

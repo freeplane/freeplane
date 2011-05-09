@@ -27,20 +27,16 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.link.CollisionDetector;
 
 /**
  * This class represents a sharp Edge of a MindMap.
  */
-public class SharpBezierEdgeView extends EdgeView {
+public class SharpBezierEdgeView extends SharpEdgeView {
 	private static final float XCTRL = 12;
-	private int deltaX;
-	private int deltaY;
 	Point2D.Float one, two;
-
-	public SharpBezierEdgeView(final NodeView source, final NodeView target) {
+    public SharpBezierEdgeView(final NodeView source, final NodeView target) {
 		super(source, target);
 	}
 
@@ -48,42 +44,6 @@ public class SharpBezierEdgeView extends EdgeView {
 		super(target);
 	}
 
-	@Override
-	protected void createStart() {
-		if (getSource().isRoot()) {
-			start = getSource().getMainViewOutPoint(getTarget(), end);
-			final MainView mainView = getSource().getMainView();
-			final double w = mainView.getWidth() / 2;
-			final double x0 = start.x - w;
-			final double w2 = w * w;
-			final double x02 = x0 * x0;
-			if (Double.compare(w2, x02) == 0) {
-				final int delta = getMap().getZoomed(getWidth() + 1);
-				deltaX = 0;
-				deltaY = delta;
-			}
-			else {
-				final double delta = getMap().getZoom() * (getWidth() + 1);
-				final int h = mainView.getHeight() / 2;
-				final int y0 = start.y - h;
-				final double k = h / w * x0 / Math.sqrt(w2 - x02);
-				final double dx = delta / Math.sqrt(1 + k * k);
-				deltaX = (int) dx;
-				deltaY = (int) (k * dx);
-				if (y0 > 0) {
-					deltaY = -deltaY;
-				}
-			}
-			UITools.convertPointToAncestor(mainView, start, getSource());
-		}
-		else {
-			final int delta = getMap().getZoomed(getWidth() + 1);
-			super.createStart();
-			deltaX = 0;
-			deltaY = delta;
-		}
-		align(start, end);
-	}
 
 	@Override
 	public Stroke getStroke() {
@@ -98,29 +58,29 @@ public class SharpBezierEdgeView extends EdgeView {
 		g.setStroke(getStroke());
 		g.fill(graph);
 		g.draw(graph);
-		//		g.setColor(Color.WHITE);
-		//		g.drawOval(start.x, start.y, 4, 4);
-		//		g.drawOval((int)one.x, (int)one.y, 4, 4);
-		//		g.drawOval((int)two.x, (int)two.y, 4, 4);
-		//		g.drawOval(end.x, end.y, 4, 4);
 	}
 
 	private GeneralPath update() {
-		final float zoom = getMap().getZoom();
-		float xctrlRelative = SharpBezierEdgeView.XCTRL * zoom;
-		if (getTarget().isLeft()) {
-			xctrlRelative = -xctrlRelative;
-		}
-		one = new Point2D.Float(start.x + xctrlRelative, start.y);
-		two = new Point2D.Float(end.x - xctrlRelative, end.y);
-		final float w = (getWidth() / 2f + 1) * zoom;
-		final float w2 = w / 2;
+        final Point startControlPoint = getControlPoint(getStartConnectorLocation());
+        final float zoom = getMap().getZoom();
+        final float zoomedXCTRL = zoom * XCTRL;
+        final float xctrl = startControlPoint.x * zoomedXCTRL; 
+        final float yctrl = startControlPoint.y * zoomedXCTRL; 
+        final Point endControlPoint = getControlPoint(getEndConnectorLocation());
+        final float w = (getWidth() / 2f + 1) * zoom;
+        final float w2 = w / 2;
+        final int deltaX = getDeltaX();
+        final int deltaY = getDeltaY();
+        final float childXctrl = deltaX > 0 ? endControlPoint.y * w2 : -endControlPoint.y * w2; 
+        final float childYctrl = deltaY > 0 ? endControlPoint.x * w2 : -endControlPoint.x * w2; 
+	    
+		one = new Point2D.Float(start.x + xctrl, start.y + yctrl);
+		two = new Point2D.Float(end.x - xctrl, end.y - yctrl);
 		final CubicCurve2D.Float line1 = new CubicCurve2D.Float();
 		final CubicCurve2D.Float line2 = new CubicCurve2D.Float();
-		final float wEnd = deltaY > 0 ? w2 : -w2;
-		line1.setCurve(start.x - deltaX, start.y - deltaY, one.x - deltaX, one.y - deltaY, two.x, two.y - wEnd, end.x,
-		    end.y - wEnd / 4);
-		line2.setCurve(end.x, end.y + wEnd / 4, two.x, two.y + wEnd, one.x + deltaX, one.y + deltaY, start.x + deltaX,
+		line1.setCurve(start.x - deltaX, start.y - deltaY, one.x - deltaX, one.y - deltaY, two.x - childXctrl, two.y - childYctrl, end.x - childXctrl/4,
+		    end.y - childYctrl / 4);
+		line2.setCurve(end.x + childXctrl/4, end.y + childYctrl / 4, two.x  + childXctrl, two.y + childYctrl, one.x + deltaX, one.y + deltaY, start.x + deltaX,
 		    start.y + deltaY);
 		final GeneralPath graph = new GeneralPath();
 		graph.append(line1, true);

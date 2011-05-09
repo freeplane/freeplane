@@ -429,26 +429,29 @@ public class NodeView extends JComponent implements INodeView {
 		return mainView;
 	}
 
-	/**
-	 * Returns the Point where the InEdge should arrive the Node.
-	 */
-	public Point getMainViewInPoint() {
-		final INodeViewLayout layoutManager = (INodeViewLayout) getLayout();
-		final Point in = layoutManager.getMainViewInPoint(this);
-		return in;
-	}
+    public Point getMainViewConnectorPoint(NodeView target) {
+        final Point relativeLocation = getRelativeLocation(target);
+        relativeLocation.x += target.getMainView().getWidth()/2;
+        relativeLocation.y += target.getMainView().getHeight()/2;
+        return mainView.getConnectorPoint(relativeLocation);
+    }
 
-	/**
-	 * Returns the point the edge should start given the point of the child node
-	 * that should be connected.
-	 *
-	 * @param targetView
-	 */
-	public Point getMainViewOutPoint(final NodeView targetView, final Point destinationPoint) {
-		final INodeViewLayout layoutManager = (INodeViewLayout) getLayout();
-		final Point out = layoutManager.getMainViewOutPoint(this, targetView, destinationPoint);
-		return out;
-	}
+    public Point getRelativeLocation(NodeView target) {
+        Component component;  
+        int targetX = 0; 
+        int targetY = 0;
+        for(component = target.getMainView(); 
+            !(this.equals(component) || component.getClass().equals(MapView.class)); 
+            component = component.getParent()){
+            targetX += component.getX();
+            targetY += component.getY();
+        }
+        Point relativeLocation = new Point();
+        UITools.convertPointToAncestor(mainView, relativeLocation, component);
+        relativeLocation.x = targetX - relativeLocation.x;
+        relativeLocation.y = targetY - relativeLocation.y;
+        return relativeLocation;
+    }
 
 	public MapView getMap() {
 		return map;
@@ -788,7 +791,6 @@ public class NodeView extends JComponent implements INodeView {
 		return getModel().isVisible();
 	}
 
-	/** Is the node left of root? */
 	public boolean isLeft() {
 		if (getMap().getLayoutType() == MapViewLayout.OUTLINE) {
 			return false;
@@ -1123,10 +1125,6 @@ public class NodeView extends JComponent implements INodeView {
 		UITools.convertPointToAncestor(mainView, origin, this);
 		g.translate(origin.x, origin.y);
 		mainView.paintDecoration(this, g);
-		if (mainView.isShortened()) {
-			final Point in = getMainViewInPoint();
-			mainView.paintFoldingMark(this, g, in, true);
-		}
 		g.translate(-origin.x, -origin.y);
 	}
 
@@ -1158,11 +1156,21 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
-	private void repaintEdge(final NodeView nodeView) {
-		final Point inPoint = nodeView.getMainViewInPoint();
-		UITools.convertPointToAncestor(nodeView.getMainView(), inPoint, this);
-		final Point outPoint = getMainViewOutPoint(nodeView, inPoint);
+	private void repaintEdge(final NodeView target) {
+		final Point relativeLocation = getRelativeLocation(target);
+        final MainView targetMainView = target.getMainView();
+        relativeLocation.x += targetMainView.getWidth()/2;
+        relativeLocation.y += targetMainView.getHeight()/2;
+        final Point inPoint = mainView.getConnectorPoint(relativeLocation);
+        UITools.convertPointToAncestor(targetMainView, inPoint, this);
+                
+        relativeLocation.x -= targetMainView.getWidth()/2;
+        relativeLocation.y -= targetMainView.getHeight()/2;
+        relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2;
+        relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2;
+		final Point outPoint = targetMainView.getConnectorPoint(relativeLocation);
 		UITools.convertPointToAncestor(getMainView(), outPoint, this);
+		
 		final int x = Math.min(inPoint.x, outPoint.x);
 		final int y = Math.min(inPoint.y, outPoint.y);
 		final int w = Math.abs(inPoint.x - outPoint.x);

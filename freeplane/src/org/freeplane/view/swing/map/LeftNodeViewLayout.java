@@ -38,16 +38,6 @@ public class LeftNodeViewLayout extends NodeViewLayoutAdapter {
 		return LeftNodeViewLayout.instance;
 	}
 
-	public Point getMainViewInPoint(final NodeView view) {
-		final MainView mainView = view.getMainView();
-		return mainView.getRightPoint();
-	}
-
-	public Point getMainViewOutPoint(final NodeView view, final NodeView targetView, final Point destinationPoint) {
-		final MainView mainView = view.getMainView();
-		return mainView.getLeftPoint();
-	}
-
 	@Override
 	protected void layout() {
 		final LayoutData layoutData = new LayoutData(getChildCount());

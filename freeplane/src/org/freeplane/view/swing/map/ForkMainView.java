@@ -39,11 +39,6 @@ class ForkMainView extends MainView {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	Point getCenterPoint() {
-		final Point in = new Point(getWidth() / 2, getHeight() / 2);
-		return in;
-	}
 
 	@Override
 	public int getDeltaX() {
@@ -56,6 +51,7 @@ class ForkMainView extends MainView {
 	}
 
 	@Override
+    public
 	Point getLeftPoint() {
 		int edgeWidth = getEdgeWidth();
 		final Point in = new Point(0, getHeight() + edgeWidth / 2);
@@ -93,6 +89,7 @@ class ForkMainView extends MainView {
 	}
 
 	@Override
+    public
 	Point getRightPoint() {
 		int edgeWidth = getEdgeWidth();
 		final Point in = new Point(getWidth() - 1, getHeight() + edgeWidth / 2);

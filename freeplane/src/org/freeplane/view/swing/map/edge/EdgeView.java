@@ -28,6 +28,8 @@ import java.awt.Stroke;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -69,14 +71,62 @@ public abstract class EdgeView {
 	private final NodeView target;
 	private Color color;
 	private Integer width;
+    private ConnectorLocation startConnectorLocation;
+    private ConnectorLocation endConnectorLocation;
 
 	protected void createStart() {
-		start = source.getMainViewOutPoint(getTarget(), end);
-		UITools.convertPointToAncestor(source.getMainView(), start, source);
-		align(start, end);
+        final MainView mainView = source.getMainView();
+        final MainView targetMainView = target.getMainView();
+        
+        final Point relativeLocation = source.getRelativeLocation(target);
+        relativeLocation.x += targetMainView.getWidth()/2;
+        relativeLocation.y += targetMainView.getHeight()/2;
+        start = mainView.getConnectorPoint(relativeLocation);
+        startConnectorLocation = mainView.getConnectorLocation(relativeLocation);
+                
+        relativeLocation.x -= targetMainView.getWidth()/2;
+        relativeLocation.y -= targetMainView.getHeight()/2;
+        relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2;
+        relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2;
+		end = target.getMainView().getConnectorPoint(relativeLocation);
+		endConnectorLocation = mainView.getConnectorLocation(relativeLocation);
 	}
 
-	protected void align(Point start, Point end) {
+	protected ConnectorLocation getStartConnectorLocation() {
+        return startConnectorLocation;
+    }
+
+    protected ConnectorLocation getEndConnectorLocation() {
+        return endConnectorLocation;
+    }
+
+    protected Point getControlPoint(ConnectorLocation startConnectorLocation){
+        final int xctrl; 
+        final int yctrl; 
+        if(ConnectorLocation.LEFT.equals(startConnectorLocation)){
+            xctrl= - 1;
+            yctrl = 0;
+        }
+        else if(ConnectorLocation.RIGHT.equals(startConnectorLocation)){
+            xctrl= 1;
+            yctrl = 0;
+        }
+        else if(ConnectorLocation.TOP.equals(startConnectorLocation)){
+            xctrl= 0;
+            yctrl = - 1;
+        }
+        else if(ConnectorLocation.LEFT.equals(startConnectorLocation)){
+            xctrl= 0;
+            yctrl = 1;
+        }
+        else {
+            xctrl = 0;
+            yctrl = 0;
+        }
+        return new Point(xctrl, yctrl);
+    }
+
+    protected void align(Point start, Point end) {
 		if(1 == Math.abs(start.y - end.y)){
 			end.y = start.y; 
 		}
@@ -143,9 +193,10 @@ public abstract class EdgeView {
 	public EdgeView(final NodeView target) {
 		source = target.getVisibleParentView();
 		this.target = target;
-		end = getTarget().getMainViewInPoint();
-		UITools.convertPointToAncestor(target.getMainView(), end, source);
 		createStart();
+        UITools.convertPointToAncestor(target.getMainView(), end, source);
+        UITools.convertPointToAncestor(source.getMainView(), start, source);
+        align(start, end);
 	}
 
 	public void paint(final Graphics2D g) {
@@ -157,11 +208,11 @@ public abstract class EdgeView {
 	public EdgeView(final NodeView source, final NodeView target) {
 		this.source = source;
 		this.target = target;
-		end = getTarget().getMainViewInPoint();
-		final MapView map = getMap();
-		UITools.convertPointToAncestor(target.getMainView(), end, map);
 		createStart();
-		UITools.convertPointToAncestor(source, start, map);
+        final MapView map = getMap();
+        UITools.convertPointToAncestor(target.getMainView(), end, map);
+		UITools.convertPointToAncestor(source.getMainView(), start, map);
+        align(start, end);
 	}
 
 	abstract public boolean detectCollision(Point p);

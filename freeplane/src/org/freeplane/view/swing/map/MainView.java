@@ -68,6 +68,9 @@ import org.freeplane.features.common.text.TextController;
  * Base class for all node views.
  */
 public abstract class MainView extends ZoomableLabel {
+    private static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
+    public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = ResourceController.getResourceController().getBooleanProperty(USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
+
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	static Dimension minimumSize = new Dimension(0, 0);
 	/**
@@ -110,8 +113,6 @@ public abstract class MainView extends ZoomableLabel {
 		return getNodeView().isLeft();
 	}
 
-	abstract Point getCenterPoint();
-
 	/** get x coordinate including folding symbol */
 	public int getDeltaX() {
 		return 0;
@@ -126,7 +127,7 @@ public abstract class MainView extends ZoomableLabel {
 		return isDraggedOver;
 	}
 
-	abstract Point getLeftPoint();
+	public abstract Point getLeftPoint();
 
 	/** get height including folding symbol */
 	protected int getMainViewHeightWithFoldingMark() {
@@ -148,7 +149,7 @@ public abstract class MainView extends ZoomableLabel {
 		return MainView.minimumSize;
 	}
 
-	abstract Point getRightPoint();
+	public abstract Point getRightPoint();
 
 	abstract String getStyle();
 
@@ -229,9 +230,13 @@ public abstract class MainView extends ZoomableLabel {
 		drawModificationRect(g);
 		FoldingMarkType markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
 		if (!markType.equals(FoldingMarkType.UNFOLDED)) {
-			final Point out = nodeView.getMainViewOutPoint(null, null);
+			final Point out = nodeView.isLeft() ? getRightPoint() : getLeftPoint();
 			paintFoldingMark(nodeView, g, out, markType.equals(FoldingMarkType.ITSELF_FOLDED));
 		}
+        if (isShortened()) {
+            final Point in =  nodeView.isLeft() ? getLeftPoint() : getRightPoint();
+            paintFoldingMark(nodeView, g, in, true);
+        }
 	}
 
     private void drawModificationRect(Graphics g) {
@@ -427,8 +432,42 @@ public abstract class MainView extends ZoomableLabel {
 
     @Override
     public void setBorder(Border border) {
-        assert(false);
     }
-	
-	
+
+    static public enum ConnectorLocation{LEFT, RIGHT, TOP, BOTTOM, CENTER};
+    
+    public ConnectorLocation getConnectorLocation(Point relativeLocation) {
+        if(relativeLocation.x > getWidth())
+            return ConnectorLocation.RIGHT;
+        if(relativeLocation.x < 0)
+            return ConnectorLocation.LEFT;
+        if(relativeLocation.y > getHeight())
+            return ConnectorLocation.BOTTOM;
+        if(relativeLocation.y <0)
+            return ConnectorLocation.TOP;
+        return ConnectorLocation.CENTER;
+    }
+    public Point getConnectorPoint(Point relativeLocation) {
+        if(relativeLocation.x > getWidth())
+            return getRightPoint();
+        if(relativeLocation.x < 0)
+            return getLeftPoint();
+        if(relativeLocation.y > getHeight())
+            return getBottomPoint();
+        if(relativeLocation.y <0)
+            return getTopPoint();
+        return getCenterPoint();
+    }
+
+    private Point getCenterPoint() {
+        return new Point(getWidth()/2, getHeight()/2);
+    }
+
+    public Point getTopPoint() {
+        return new Point(getWidth()/2, 0);
+    }
+
+    public Point getBottomPoint() {
+        return new Point(getWidth()/2, getHeight());
+    }
 }

@@ -23,9 +23,5 @@ import java.awt.LayoutManager;
 import java.awt.Point;
 
 public interface INodeViewLayout extends LayoutManager {
-	Point getMainViewInPoint(NodeView view);
-
-	Point getMainViewOutPoint(NodeView view, NodeView targetView, Point destinationPoint);
-
 	void layoutNodeMotionListenerView(NodeMotionListenerView view);
 }

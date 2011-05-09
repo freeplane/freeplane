@@ -31,47 +31,12 @@ import org.freeplane.core.ui.components.UITools;
  */
 public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 	static private VerticalRootNodeViewLayout instance = null;
-	public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = ResourceController.getResourceController()
-	    .getBooleanProperty(VerticalRootNodeViewLayout.USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
-	private static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
 
 	static VerticalRootNodeViewLayout getInstance() {
 		if (VerticalRootNodeViewLayout.instance == null) {
 			VerticalRootNodeViewLayout.instance = new VerticalRootNodeViewLayout();
 		}
 		return VerticalRootNodeViewLayout.instance;
-	}
-
-	public Point getMainViewInPoint(final NodeView view) {
-		final Point leftPoint = (view.getMainView()).getLeftPoint();
-		return leftPoint;
-	}
-
-	public Point getMainViewOutPoint(final NodeView view, final NodeView targetView, final Point destinationPoint) {
-		final MainView mainView = view.getMainView();
-		if(destinationPoint == null){
-			return mainView.getRightPoint();
-		}
-		if (VerticalRootNodeViewLayout.USE_COMMON_OUT_POINT_FOR_ROOT_NODE) {
-			if (targetView.isLeft()) {
-				return mainView.getLeftPoint();
-			}
-			else {
-				return mainView.getRightPoint();
-			}
-		}
-		final Point p = new Point(destinationPoint);
-		UITools.convertPointFromAncestor(view, p, mainView);
-		final double nWidth = mainView.getWidth() / 2f;
-		final double nHeight = mainView.getHeight() / 2f;
-		final Point centerPoint = new Point((int) nWidth, (int) nHeight);
-		double angle = Math.atan((p.y - centerPoint.y + 0f) / (p.x - centerPoint.x + 0f));
-		if (p.x < centerPoint.x) {
-			angle += Math.PI;
-		}
-		final Point out = new Point(centerPoint.x + (int) (Math.cos(angle) * nWidth), centerPoint.y
-		        + (int) (Math.sin(angle) * nHeight));
-		return out;
 	}
 
 	@Override

@@ -38,20 +38,10 @@ public class OutlineLayout extends NodeViewLayoutAdapter {
 
 	static private final OutlineLayout instance = new OutlineLayout();
 
-	static OutlineLayout getInstance() {
-		return OutlineLayout.instance;
-	}
-
-	public Point getMainViewInPoint(final NodeView view) {
-		final MainView mainView = view.getMainView();
-		return mainView.getLeftPoint();
-	}
-
-	public Point getMainViewOutPoint(final NodeView view, final NodeView targetView, final Point destinationPoint) {
-		final MainView mainView = view.getMainView();
-		return mainView.getRightPoint();
-	}
-
+    static OutlineLayout getInstance() {
+        return OutlineLayout.instance;
+    }
+    
 	@Override
 	protected void layout() {
 		final int x = getSpaceAround();
