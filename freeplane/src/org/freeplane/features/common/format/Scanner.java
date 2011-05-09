@@ -27,6 +27,12 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 /** Scanner.scan(string) uses a number of Parsers to convert string into a Number, a Date or whatever. */
 public class Scanner {
+	private static final String ELEM_SCANNER = "scanner";
+	private static final String ATTRIB_LOCALE = "locale";
+	private static final String ATTRIB_DEFAULT = "default";
+	private static final String ELEM_CHECKFIRSTCHAR = "checkfirstchar";
+	private static final String ATTRIB_DISABLED = "disabled";
+	private static final String ATTRIB_CHARS = "chars";
 	private final ArrayList<String> locales;
 	private final boolean isDefault;
 	private String firstChars;
@@ -41,7 +47,7 @@ public class Scanner {
 
 	private void validate() {
 		if (locales.isEmpty())
-			throw new IllegalArgumentException("illegal ");
+			throw new IllegalArgumentException("attribute " + ATTRIB_LOCALE + " is mandatory and may not be empty");
 	}
 
 	public ArrayList<String> getLocales() {
@@ -66,8 +72,10 @@ public class Scanner {
 	}
 
 	public XMLElement toXml() {
-		final XMLElement xmlElement = new XMLElement("scanner");
-		xmlElement.setAttribute("locale", StringUtils.join(locales.iterator(), ","));
+		final XMLElement xmlElement = new XMLElement(ELEM_SCANNER);
+		xmlElement.setAttribute(ATTRIB_LOCALE, StringUtils.join(locales.iterator(), ","));
+		if (isDefault)
+		xmlElement.setAttribute(ATTRIB_DEFAULT, "true");
 		xmlElement.addChild(firstCharsToXml());
 		for (Parser parser : parsers) {
 			xmlElement.addChild(parser.toXml());
@@ -76,11 +84,11 @@ public class Scanner {
 	}
 
 	private XMLElement firstCharsToXml() {
-		final XMLElement xmlElement = new XMLElement("checkfirstchar");
+		final XMLElement xmlElement = new XMLElement(ELEM_CHECKFIRSTCHAR);
 		if (checkFirstChars)
-			xmlElement.setAttribute("chars", firstChars);
+			xmlElement.setAttribute(ATTRIB_CHARS, firstChars);
 		else
-			xmlElement.setAttribute("isDisabled", "true");
+			xmlElement.setAttribute(ATTRIB_DISABLED, "true");
 		return xmlElement;
 	}
 

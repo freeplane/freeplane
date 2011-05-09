@@ -122,7 +122,7 @@ public class ScannerController implements IExtension {
 	}
 
 	private Scanner createGermanScanner() {
-		final Scanner s = new Scanner(new String[] { "de", "hr" }, true);
+		final Scanner s = new Scanner(new String[] { "de", "hr" }, false);
 		s.setFirstChars("+-0123456789,.");
 		final String tNumber = IFormattedObject.TYPE_NUMBER;
 		final String tDate = IFormattedObject.TYPE_DATETIME;
@@ -147,6 +147,17 @@ public class ScannerController implements IExtension {
 			for (XMLElement elem : scannerElements) {
 				scanners.add(parseScanner(elem));
 			}
+			boolean haveDefault = false;
+			for (Scanner scanner : scanners) {
+				if (scanner.isDefault()) {
+					if (haveDefault)
+						LogUtils.warn(pathToFile + ": multiple scanners are marked as default - fix that!");
+					else
+						haveDefault = true;
+				}
+			}
+			if (haveDefault)
+				LogUtils.warn(pathToFile + ": no scanner is marked as default - fix that!");
 		}
 		catch (final IOException e) {
 			LogUtils.warn("error parsing " + pathToFile, e);
