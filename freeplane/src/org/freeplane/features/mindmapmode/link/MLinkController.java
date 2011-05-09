@@ -435,14 +435,17 @@ public class MLinkController extends LinkController {
         final JComboBox connectorArrows = createActionBox(arrowActions);
 		addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_arrows"), connectorArrows);
 		
-        AFreeplaneAction[] shapeActions = new AFreeplaneAction[] {
-                new ChangeConnectorShapeAction(this, link, Shape.CUBIC_CURVE),
-                new ChangeConnectorShapeAction(this, link, Shape.LINE),
-                new ChangeConnectorShapeAction(this, link, Shape.LINEAR_PATH),
-                new ChangeConnectorShapeAction(this, link, Shape.EDGE_LIKE) 
-        };
-        final JComboBox connectorShapes = createActionBox(shapeActions);
-        addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_shapes"), connectorShapes);
+        final boolean twoNodesConnector = ! link.getSource().equals(link.getTarget());
+        if(twoNodesConnector){
+            AFreeplaneAction[] shapeActions = new AFreeplaneAction[] {
+                    new ChangeConnectorShapeAction(this, link, Shape.CUBIC_CURVE),
+                    new ChangeConnectorShapeAction(this, link, Shape.LINE),
+                    new ChangeConnectorShapeAction(this, link, Shape.LINEAR_PATH),
+                    new ChangeConnectorShapeAction(this, link, Shape.EDGE_LIKE) 
+            };
+            final JComboBox connectorShapes = createActionBox(shapeActions);
+            addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_shapes"), connectorShapes);
+        }
 
         AFreeplaneAction[] dashActions = new AFreeplaneAction[] {
                 new ChangeConnectorDashAction(this, link, null), 
@@ -508,7 +511,6 @@ public class MLinkController extends LinkController {
 				}
 			});
 		}
-        final boolean twoNodesConnector = ! link.getSource().equals(link.getTarget());
 		final JTextArea sourceLabelEditor;
         if(twoNodesConnector){
             sourceLabelEditor = new JTextArea(link.getSourceLabel());
