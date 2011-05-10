@@ -23,6 +23,7 @@ package org.freeplane.features.common.format;
  * @author vboerchers
  */
 public interface IFormattedObject {
+	// do not change this constants since they are used for serialization!
 	public static final String TYPE_NUMBER = "number";
 	public static final String TYPE_DATE = "date";
 	public static final String TYPE_DATETIME = "datetime";

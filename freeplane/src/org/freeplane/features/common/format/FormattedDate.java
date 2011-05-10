@@ -41,7 +41,7 @@ public class FormattedDate extends Date implements IFormattedObject {
 	public static final Pattern ISO_DATE_TIME_REGEXP_PATTERN = Pattern.compile("\\d{4}(-?)\\d{2}(-?)\\d{2}" //
 	        + "(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?");
 	private SimpleDateFormat df;
-	private boolean isDefaultFormat;
+	private String defaultType;
 
 	public FormattedDate(FormattedDate date) {
 		this(date.getTime(), date.getDateFormat());
@@ -57,9 +57,17 @@ public class FormattedDate extends Date implements IFormattedObject {
 		this.df = df;
 	}
 
+	/**@deprecated use {@link #createDefaultFormattedDate(long, String)} instead. */
 	public FormattedDate(long date) {
 		this(date, FormatController.getDefaultDateFormat());
-		this.isDefaultFormat = true;
+		this.defaultType = IFormattedObject.TYPE_DATE;
+	}
+
+	public static FormattedDate createDefaultFormattedDate(long time, String type) {
+		final FormattedDate formattedDate = new FormattedDate(time,
+		    (SimpleDateFormat) FormatController.getDefaultFormat(type));
+		formattedDate.defaultType = type;
+		return formattedDate;
 	}
 
 	@Override
@@ -69,7 +77,7 @@ public class FormattedDate extends Date implements IFormattedObject {
 
 	/** default formats are not saved to file. */
 	public static String serialize(final FormattedDate date) {
-		return toStringISO(date) + (date.isDefaultFormat ? "" : "|" + date.df.toPattern());
+		return toStringISO(date) + "|" + (date.defaultType != null ? date.defaultType : date.df.toPattern());
 	}
 
 	public static String toStringISO(final Date date) {
@@ -83,20 +91,25 @@ public class FormattedDate extends Date implements IFormattedObject {
 
 	public static Object deserialize(String text) {
 		final int index = text.indexOf('|');
-		final SimpleDateFormat df;
 		final FormattedDate date;
+		final String arg;
 		if (index == -1) {
-			df = FormatController.getDefaultDateFormat();
 			date = toDateISO(text);
-			date.isDefaultFormat = true;
+			arg = IFormattedObject.TYPE_DATE;
 		}
 		else {
-			df = FormatController.getDateFormat(text.substring(index + 1));
 			date = toDateISO(text.substring(0, index));
+			arg = text.substring(index + 1);
 		}
 		if (date == null)
 			return text;
-		date.df = df;
+		if (arg.equals(IFormattedObject.TYPE_DATE) || arg.equals(IFormattedObject.TYPE_DATETIME)) {
+			date.defaultType = arg;
+			date.df = (SimpleDateFormat) FormatController.getDefaultFormat(arg);
+		}
+		else {
+			date.df = FormatController.getDateFormat(arg);
+		}
 		return date;
 	}
 

@@ -57,6 +57,6 @@ public class DateFormatParser extends Parser {
 			calendar.set(Calendar.YEAR, year);
 			date = calendar.getTime();
 		}
-		return new FormattedDate(date.getTime(), (SimpleDateFormat) FormatController.getDefaultFormat(getType()));
+		return FormattedDate.createDefaultFormattedDate(date.getTime(), getType());
 	}
 }

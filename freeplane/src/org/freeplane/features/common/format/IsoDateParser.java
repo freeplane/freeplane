@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.common.format;
 
-import java.text.SimpleDateFormat;
-
 /**
  * A locale independent parser that uses the parsed input to decide between TYPE_DATE and TYPE_DATETIME.
  *
@@ -37,8 +35,8 @@ public class IsoDateParser extends Parser {
 			if (string == null)
 				return null;
 			final FormattedDate date = FormattedDate.toDateISO(string);
-			return new FormattedDate(date.getTime(), (SimpleDateFormat) FormatController.getDefaultFormat(date
-			    .containsTime() ? IFormattedObject.TYPE_DATETIME : IFormattedObject.TYPE_DATE));
+			final String type = date.containsTime() ? IFormattedObject.TYPE_DATETIME : IFormattedObject.TYPE_DATE;
+			return FormattedDate.createDefaultFormattedDate(date.getTime(), type);
 		}
 		catch (Exception e) {
 			return null;
