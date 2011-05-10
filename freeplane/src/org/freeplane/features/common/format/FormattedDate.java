@@ -36,21 +36,12 @@ import org.freeplane.core.util.SerializationMethod;
 @FactoryMethod("deserialize")
 @SerializationMethod("serialize")
 public class FormattedDate extends Date implements IFormattedObject {
-	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof FormattedDate && super.equals(obj) && ((FormattedDate) obj).getDateFormat().equals(df);
-	}
-
-	@Override
-	public int hashCode() {
-		return 37 * super.hashCode() + df.hashCode();
-	}
-
 	public static final String ISO_DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 	public static final String ISO_DATE_TIME_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mmZ";
 	public static final Pattern ISO_DATE_TIME_REGEXP_PATTERN = Pattern.compile("\\d{4}(-?)\\d{2}(-?)\\d{2}" //
 	        + "(([ T])?\\d{2}(:?)\\d{2}(:?)(\\d{2})?(\\.\\d{3})?([-+]\\d{4})?)?");
 	private SimpleDateFormat df;
+	private boolean isDefaultFormat;
 
 	public FormattedDate(FormattedDate date) {
 		this(date.getTime(), date.getDateFormat());
@@ -68,6 +59,7 @@ public class FormattedDate extends Date implements IFormattedObject {
 
 	public FormattedDate(long date) {
 		this(date, FormatController.getDefaultDateFormat());
+		this.isDefaultFormat = true;
 	}
 
 	@Override
@@ -75,8 +67,9 @@ public class FormattedDate extends Date implements IFormattedObject {
 		return df.format(this);
 	}
 
+	/** default formats are not saved to file. */
 	public static String serialize(final FormattedDate date) {
-		return toStringISO(date) + "|" + date.df.toPattern();
+		return toStringISO(date) + (date.isDefaultFormat ? "" : "|" + date.df.toPattern());
 	}
 
 	public static String toStringISO(final Date date) {
@@ -95,6 +88,7 @@ public class FormattedDate extends Date implements IFormattedObject {
 		if (index == -1) {
 			df = FormatController.getDefaultDateFormat();
 			date = toDateISO(text);
+			date.isDefaultFormat = true;
 		}
 		else {
 			df = FormatController.getDateFormat(text.substring(index + 1));
@@ -176,5 +170,15 @@ public class FormattedDate extends Date implements IFormattedObject {
 
 	public Date getObject() {
 		return this;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof FormattedDate && super.equals(obj) && ((FormattedDate) obj).getDateFormat().equals(df);
+	}
+
+	@Override
+	public int hashCode() {
+		return 37 * super.hashCode() + df.hashCode();
 	}
 }
