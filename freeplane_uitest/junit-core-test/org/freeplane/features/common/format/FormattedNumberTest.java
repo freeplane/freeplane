@@ -82,4 +82,22 @@ public class FormattedNumberTest {
 		assertEquals(serialized, FormattedNumber.serialize(formattedNumber));
 		assertEquals(formattedNumber, FormattedNumber.deserialize(serialized));
 	}
+	
+	@Test
+	public void testCompareTo() {
+		final FormattedNumber formattedNumberNull = new FormattedNumber(null);
+		Double number1 = 1.123456;
+		final FormattedNumber formattedNumber1 = new FormattedNumber(number1);
+		Double number2 = 1.123457;
+		final FormattedNumber formattedNumber2 = new FormattedNumber(number2);
+		assertEquals(-1, number1.compareTo(number2));
+		assertEquals(-1, formattedNumber1.compareTo(formattedNumber2));
+		assertEquals(-1, formattedNumberNull.compareTo(formattedNumber2));
+		assertEquals(1, formattedNumber1.compareTo(null));
+
+		assertEquals(1, number2.compareTo(number1));
+		assertEquals(1, formattedNumber2.compareTo(formattedNumber1));
+		// NPE (OK - only limited support for nulls): assertEquals(1, formattedNumber2.compareTo(formattedNumberNull));
+		assertEquals(-1, formattedNumberNull.compareTo(formattedNumber1));
+	}
 }
