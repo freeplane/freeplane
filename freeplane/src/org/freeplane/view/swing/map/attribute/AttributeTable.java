@@ -119,6 +119,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			else {
 				focusedTable = (AttributeTable) SwingUtilities.getAncestorOfClass(AttributeTable.class, source);
 			}
+			if(focusedTable != null){
+			    focusedTable.setSelectedCellTypeInfo();
+			}
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					if (focusedTable != null) {
@@ -455,7 +458,11 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	float getZoom() {
-		return attributeView.getMapView().getZoom();
+        final MapView mapView = attributeView.getMapView();
+	    if(SwingUtilities.isDescendingFrom(this, mapView)) {
+            return mapView.getZoom();
+        }
+	    return 1f;
 	}
 
 	/**
@@ -773,13 +780,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	@Override
     public void setValueAt(Object aValue, int row, int column) {
 	    super.setValueAt(column == 0 ? aValue.toString() : aValue, row, column);
-	    tableSelectionChanged();
+	    setSelectedCellTypeInfo();
     }
 
 	@Override
     public void valueChanged(ListSelectionEvent e) {
 	    super.valueChanged(e);
-	    tableSelectionChanged();
+	    setSelectedCellTypeInfo();
     }
 	
 	
@@ -787,10 +794,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	@Override
     public void columnSelectionChanged(ListSelectionEvent e) {
 	    super.columnSelectionChanged(e);
-	    tableSelectionChanged();
+	    setSelectedCellTypeInfo();
     }
 
-	private void tableSelectionChanged() {
+	private void setSelectedCellTypeInfo() {
 		final int r = getSelectedRow();
 		final int c = getSelectedColumn();
 		final ViewController viewController = Controller.getCurrentController().getViewController();

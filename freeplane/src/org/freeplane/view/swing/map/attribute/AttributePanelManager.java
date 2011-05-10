@@ -68,8 +68,7 @@ public class AttributePanelManager{
 		private void removeOldView() {
 	        if(attributeView != null){
 				tablePanel.removeAll();
-				tablePanel.revalidate();
-				tablePanel.repaint();
+				tablePanel.setVisible(false);
 				attributeView.viewRemoved();
 				attributeView = null;
 			}
@@ -86,6 +85,7 @@ public class AttributePanelManager{
 			Box buttonBox = new Box(axis);
 			buttonBox.setAlignmentX(0.5f);
 			tablePanel.add(buttonBox);
+			tablePanel.setVisible(true);
 			Dimension btnSize = new Dimension();
 			{
 				final JButton newAttributeButton = new JButton(TextUtils.getText("attributes_popup_new"));

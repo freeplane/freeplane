@@ -75,6 +75,7 @@ import org.freeplane.features.common.format.FormattedObject;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.StyleNamedObject;
 
 /**
  * @author Dimitry Polivaev
@@ -807,7 +808,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		if (value instanceof FormattedObject) {
 			value = ((FormattedObject) value).getObject();
 		}
-		if (value instanceof String) {
+		if (value instanceof String || value instanceof StyleNamedObject) {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.textIcon);
 		}
 		else if (value instanceof FormattedDate) {
