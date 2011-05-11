@@ -24,28 +24,28 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	}
 
 	@Deprecated
-	public String get(final String name) {
+	public Object get(final String name) {
 		return getFirst(name);
 	}
 
-	public String getFirst(final String name) {
+	public Object getFirst(final String name) {
 		final int index = findAttribute(name);
 		if (index == -1) {
 			return null;
 		}
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		return nodeAttributeTableModel.getAttribute(index).getValue().toString();
+		return nodeAttributeTableModel.getAttribute(index).getValue();
 	}
 
-	public List<String> getAll(final String name) {
+	public List<Object> getAll(final String name) {
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {
 			return Collections.emptyList();
 		}
-		final ArrayList<String> result = new ArrayList<String>();
+		final ArrayList<Object> result = new ArrayList<Object>();
 		for (final Attribute attribute : nodeAttributeTableModel.getAttributes()) {
 			if (attribute.getName().equals(name)) {
-				result.add(attribute.getValue().toString());
+				result.add(attribute.getValue());
 			}
 		}
 		return result;
@@ -73,9 +73,9 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		if (nodeAttributeTableModel == null) {
 			return Collections.emptyList();
 		}
-		final ArrayList<ConvertibleText> result = new ArrayList<ConvertibleText>(nodeAttributeTableModel.getRowCount());
+		final ArrayList<Convertible> result = new ArrayList<Convertible>(nodeAttributeTableModel.getRowCount());
 		for (final Attribute a : nodeAttributeTableModel.getAttributes()) {
-			result.add(new ConvertibleText(getDelegate(), getScriptContext(), String.valueOf(a.getValue())));
+			result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), a.getValue()));
 		}
 		return result;
 	}
@@ -86,7 +86,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 			if (nodeAttributeTableModel == null) {
 				return Collections.emptyList();
 			}
-			final ArrayList<ConvertibleText> result = new ArrayList<ConvertibleText>(
+			final ArrayList<Convertible> result = new ArrayList<Convertible>(
 			    nodeAttributeTableModel.getRowCount());
 			for (final Attribute a : nodeAttributeTableModel.getAttributes()) {
 				final Object bool = closure.call(new Object[] { a.getName(), a.getValue() });
@@ -94,7 +94,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 					throw new RuntimeException("findValues(): closure returned null instead of boolean/Boolean");
 				}
 				if ((Boolean) bool)
-					result.add(new ConvertibleText(getDelegate(), getScriptContext(), String.valueOf(a.getValue())));
+					result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), a.getValue()));
 			}
 			return result;
 		}
@@ -108,16 +108,15 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 	}
 
-	public String get(final int index) {
+	public Object get(final int index) {
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {
 			throw new IndexOutOfBoundsException("get:" + index);
 		}
-		final Object value = nodeAttributeTableModel.getValue(index);
-		return value == null ? null : value.toString();
+		return nodeAttributeTableModel.getValue(index);
 	}
 
-	public void set(final int index, final String value) {
+	public void set(final int index, final Object value) {
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {
 			throw new IndexOutOfBoundsException("set1:" + index);
@@ -125,7 +124,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		getAttributeController().performSetValueAt(nodeAttributeTableModel, value, index, 1);
 	}
 
-	public void set(final int index, final String name, final String value) {
+	public void set(final int index, final String name, final Object value) {
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {
 			throw new IndexOutOfBoundsException("set2:" + index);
@@ -193,7 +192,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 	}
 
-	public void set(final String name, final String value) {
+	public void set(final String name, final Object value) {
 		final int index = findFirst(name);
 		final Attribute attribute = new Attribute(name, value);
 		if (index == -1) {
@@ -204,7 +203,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 	}
 
-	public void add(final String name, final String value) {
+	public void add(final String name, final Object value) {
 		final Attribute attribute = new Attribute(name, value);
 		getAttributeController().addAttribute(getDelegate(), attribute);
 	}

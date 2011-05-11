@@ -5,10 +5,12 @@ import groovy.lang.Closure;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
 import org.freeplane.features.common.filter.condition.ICondition;
+import org.freeplane.features.common.format.IFormattedObject;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
@@ -96,5 +98,28 @@ public class ProxyUtils {
     			return nodeModel.getChildCount();
     		}
     	});
+    }
+
+	/** this method is null-safe, i.e. value may be null and the result is not null. */
+	public static Convertible attributeValueToConvertible(final NodeModel nodeModel, final ScriptContext scriptContext,
+	                                             Object value) {
+		if (value instanceof IFormattedObject)
+			value = ((IFormattedObject) value).getObject();
+		if (value instanceof Number)
+			return new ConvertibleNumber((Number) value);
+		else if (value instanceof Date)
+			return new ConvertibleDate((Date) value);
+		return new ConvertibleText(nodeModel, scriptContext, value == null ? null : value.toString());
+	}
+
+	public static Convertible nodeModelToConvertible(final NodeModel nodeModel, final ScriptContext scriptContext) {
+        Object value = nodeModel.getUserObject();
+    	if (value instanceof IFormattedObject)
+    		value = ((IFormattedObject) value).getObject();
+    	if (value instanceof Number)
+    		return new ConvertibleNumber((Number) value);
+    	else if (value instanceof Date)
+    		return new ConvertibleDate((Date) value);
+    	return new ConvertibleNodeText(nodeModel, scriptContext);
     }
 }

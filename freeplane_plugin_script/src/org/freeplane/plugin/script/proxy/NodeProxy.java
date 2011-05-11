@@ -5,7 +5,6 @@ package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
 
-import java.net.URI;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -17,6 +16,8 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.format.FormattedDate;
+import org.freeplane.features.common.format.FormattedNumber;
+import org.freeplane.features.common.format.IFormattedObject;
 import org.freeplane.features.common.link.ConnectorModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapModel;
@@ -87,25 +88,24 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
-	public Convertible getAt(String attributeName) {
-		final String value = getAttributes().getFirst(attributeName);
-		return new ConvertibleText(getDelegate(), getScriptContext(), value);
+	public Convertible getAt(final String attributeName) {
+		final Object value = getAttributes().getFirst(attributeName);
+		return ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), value);
 	}
 
 	// Node: R/W
-	public String putAt(String attributeName, Object value) {
-		final String stringValue = Convertible.toString(value);
+	public Object putAt(final String attributeName, final Object value) {
 		final Attributes attributes = getAttributes();
-		if (stringValue == null) {
+		if (value == null) {
 			final int index = attributes.findFirst(attributeName);
 			if (index != -1)
 				attributes.remove(index);
 			// else: ignore request
 		}
 		else {
-			attributes.set(attributeName, stringValue);
+			attributes.set(attributeName, value);
 		}
-		return stringValue;
+		return value;
 	}
 
 	// Node: R/W
@@ -113,7 +113,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		final Attributes attributes = getAttributes();
 		attributes.clear();
 		for (Entry<String, Object> entry : attributeMap.entrySet()) {
-			attributes.set(entry.getKey(), Convertible.toString(entry.getValue()));
+			attributes.set(entry.getKey(), entry.getValue());
 		}
 	}
 
@@ -256,12 +256,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public Convertible getTo() {
-		final NodeModel nodeModel = getDelegate();
-		if (nodeModel.getUserObject() instanceof Date)
-			return new ConvertibleDate((Date) nodeModel.getUserObject());
-		else if (nodeModel.getUserObject() instanceof URI)
-			return new ConvertibleUri((URI) nodeModel.getUserObject());
-		return new ConvertibleNodeText(nodeModel, getScriptContext());
+		return ProxyUtils.nodeModelToConvertible(getDelegate(), getScriptContext());
 	}
 
 	// NodeRO: R
@@ -359,12 +354,20 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// Node: R/W
 	public void setText(final Object value) {
 		final MTextController textController = (MTextController) TextController.getController();
-		if (value instanceof Date)
-			textController.setNodeObject(getDelegate(), new FormattedDate(((Date) value).getTime()));
+		if (value instanceof IFormattedObject)
+			textController.setNodeObject(getDelegate(), value);
+		else if (value instanceof Number)
+			textController.setNodeObject(getDelegate(), new FormattedNumber((Number) value));
+		else if (value instanceof Date)
+			textController.setNodeObject(getDelegate(), createDefaultFormattedDate((Date) value));
 		else if (value instanceof Calendar)
-			textController.setNodeObject(getDelegate(), new FormattedDate(((Calendar) value).getTime().getTime()));
+			textController.setNodeObject(getDelegate(), createDefaultFormattedDate(((Calendar) value).getTime()));
 		textController.setNodeText(getDelegate(), Convertible.toString(value));
 	}
+
+	private FormattedDate createDefaultFormattedDate(final Date date) {
+	    return FormattedDate.createDefaultFormattedDate(date.getTime(), IFormattedObject.TYPE_DATE);
+    }
 
 	// NodeRO: R
 	public Proxy.Map getMap() {

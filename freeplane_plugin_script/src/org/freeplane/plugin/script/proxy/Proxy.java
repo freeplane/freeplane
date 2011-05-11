@@ -45,14 +45,14 @@ public interface Proxy {
 		/** alias for {@link #getFirst(String)}.
 		 * @deprecated before 1.1 - use {@link #get(int)}, {@link #getFirst(String)} or {@link #getAll(String)} instead. */
 		@Deprecated
-		String get(final String name);
+		Object get(final String name);
 
 		/** returns the <em>first</em> value of an attribute with the given name or null otherwise.
 		 * @since 1.2 */
-		String getFirst(final String name);
+		Object getFirst(final String name);
 
 		/** returns all values for the attribute name. */
-		List<String> getAll(final String name);
+		List<Object> getAll(final String name);
 
 		/** returns all attribute names in the proper sequence. The number of names returned
 		 * is equal to the number of attributes.
@@ -77,7 +77,7 @@ public interface Proxy {
 		/** returns the attribute value at the given index.
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
 		 *         &lt; 0 || index &gt;= size())</tt>.*/
-		String get(final int index);
+		Object get(final int index);
 
 		/** @deprecated since 1.2 - use {@link #findFirst(String)} instead. */
 		int findAttribute(final String name);
@@ -107,12 +107,12 @@ public interface Proxy {
 		/** sets the value of the attribute at an index. This method will not create new attributes.
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
 		 *         &lt; 0 || index &gt;= size())</tt>. */
-		void set(final int index, final String value);
+		void set(final int index, final Object value);
 
 		/** sets name and value of the attribute at the given index. This method will not create new attributes.
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
 		 *         &lt; 0 || index &gt;= size())</tt>. */
-		void set(final int index, final String name, final String value);
+		void set(final int index, final String name, final Object value);
 
 		/** removes the <em>first</em> attribute with this name.
 		 * @return true on removal of an existing attribute and false otherwise.
@@ -131,10 +131,10 @@ public interface Proxy {
 
 		/** adds an attribute if there is no attribute with the given name or changes
 		 * the value <em>of the first</em> attribute with the given name. */
-		void set(final String name, final String value);
+		void set(final String name, final Object value);
 
 		/** adds an attribute no matter if an attribute with the given name already exists. */
-		void add(final String name, final String value);
+		void add(final String name, final Object value);
 
 		/** removes all attributes.
 		 * @since 1.2 */
@@ -885,7 +885,7 @@ public interface Proxy {
 		 *        handles, particularly {@link Convertible}s itself. Use null to unset an attribute.
 		 * @return the new value
 		 */
-		String putAt(String attributeName, Object value);
+		Object putAt(String attributeName, Object value);
 
 		/** allows to set all attributes at once:
 		 * <pre>
