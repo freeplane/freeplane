@@ -8,18 +8,18 @@ import org.freeplane.features.common.format.FormattedDate;
 public class ConvertibleDate extends Convertible {
 	final private Date date;
 
-	public ConvertibleDate(Date date) {
+	public ConvertibleDate(final Date date) {
 	    super(FormattedDate.toStringISO(date));
 	    this.date = date;
     }
 
 	@Override
-    public Date getDate() throws ConversionException {
+    public Date getDate() {
 	    return date;
     }
 
 	@Override
-    public Calendar getCalendar() throws ConversionException {
+    public Calendar getCalendar() {
 	    final Calendar calendar = Calendar.getInstance();
 	    calendar.setTime(date);
 		return calendar;
