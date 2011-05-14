@@ -167,7 +167,7 @@ public class ScannerController{
 						haveDefault = true;
 				}
 			}
-			if (haveDefault)
+			if (!haveDefault)
 				LogUtils.warn(pathToFile + ": no scanner is marked as default - fix that!");
 		}
 		catch (final IOException e) {
