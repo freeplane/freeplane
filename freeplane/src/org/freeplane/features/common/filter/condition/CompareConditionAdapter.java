@@ -106,6 +106,9 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 		if (conditionValue instanceof Number && transformedContent instanceof String) {
 			try {
 				Number number = TextUtils.toNumber((String)transformedContent); 
+		        if (conditionValue instanceof FormattedNumber){
+		            return -((FormattedNumber)conditionValue).compareTo(number);
+		        }
 				if(number instanceof Long)
 					return compareTo((Long)number);
 				if(number instanceof Double)
