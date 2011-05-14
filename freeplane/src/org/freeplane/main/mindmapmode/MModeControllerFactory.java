@@ -51,6 +51,7 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.format.FormatController;
 import org.freeplane.features.common.icon.HierarchicalIcons;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
@@ -288,5 +289,6 @@ public class MModeControllerFactory {
 		controller.getMapViewManager().addMapSelectionListener(uiFactory);
 		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
 		modeController.addMenuContributor(menuContributor);
+		modeController.getOptionPanelBuilder().addValidator(new FormatController().createValidator());
 	}
 }

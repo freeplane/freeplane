@@ -38,7 +38,6 @@ import java.util.Properties;
 import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -47,7 +46,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -75,16 +73,8 @@ public class FormatController implements IExtension {
 	private static DecimalFormat defaultNumberFormat;
 	private static HashMap<String, DecimalFormat> numberFormatCache = new HashMap<String, DecimalFormat>();
 
-	static {
-		addOptionPanelValidator();
-	}
-
-	private static void addOptionPanelValidator() {
-	    MModeController modeController = (MModeController) Controller.getCurrentModeController();
-	    // check for unit tests
-	    if (modeController == null)
-	    	return;
-		modeController.getOptionPanelBuilder().addValidator(new IValidator() {
+	public IValidator createValidator (){
+	    return new IValidator() {
 			public ValidationResult validate(Properties properties) {
 				final ValidationResult result = new ValidationResult();
 				try {
@@ -107,9 +97,9 @@ public class FormatController implements IExtension {
                 }
 				return result;
 			}
-		});
-    }
-
+		};
+	}
+	
 	public FormatController() {
 		pathToFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
 		        + FORMATS_XML;
