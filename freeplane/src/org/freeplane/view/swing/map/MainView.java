@@ -230,11 +230,11 @@ public abstract class MainView extends ZoomableLabel {
 		drawModificationRect(g);
 		FoldingMarkType markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
 		if (!markType.equals(FoldingMarkType.UNFOLDED)) {
-			final Point out = nodeView.isLeft() ? getRightPoint() : getLeftPoint();
+			final Point out = nodeView.isLeft() ? getLeftPoint() : getRightPoint();
 			paintFoldingMark(nodeView, g, out, markType.equals(FoldingMarkType.ITSELF_FOLDED));
 		}
         if (isShortened()) {
-            final Point in =  nodeView.isLeft() ? getLeftPoint() : getRightPoint();
+            final Point in =  nodeView.isLeft() ? getRightPoint() : getLeftPoint();
             paintFoldingMark(nodeView, g, in, true);
         }
 	}
