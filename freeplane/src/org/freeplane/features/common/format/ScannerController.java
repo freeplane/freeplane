@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -95,18 +96,20 @@ public class ScannerController{
 	private void initScanners() {
 		if (fileLoaded)
 			return;
+        fileLoaded = true;
 		try {
 			loadScanners();
-			if (scanners.isEmpty()) {
-				addStandardScanners();
-				saveScannersNoThrow();
-			}
-			fileLoaded = true;
 		}
-		catch (final Exception e) {
+        catch (final AccessControlException e) {
+        }
+        catch (final Exception e) {
 			LogUtils.warn(e);
 			UITools.errorMessage(TextUtils.getText("scanners_not_loaded"));
 		}
+        if (scanners.isEmpty()) {
+            addStandardScanners();
+            saveScannersNoThrow();
+        }
 	}
 
 	private void addStandardScanners() {
