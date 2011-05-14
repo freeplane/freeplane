@@ -210,9 +210,11 @@ public class ScannerController{
 		try {
 			saveScanners(scanners);
 		}
-		catch (final Exception e) {
-			LogUtils.warn("cannot save create " + pathToFile, e);
-		}
+        catch (final NoClassDefFoundError e) {
+        }
+        catch (final Exception e) {
+            LogUtils.warn("cannot save create " + pathToFile, e);
+        }
 	}
 
 	private void saveScanners(final List<Scanner> scanners) throws IOException {

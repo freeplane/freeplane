@@ -22,7 +22,9 @@ package org.freeplane.features.common.format;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /** Scanner.scan(string) uses a number of Parsers to convert string into a Number, a Date or whatever. */
@@ -64,7 +66,7 @@ public class Scanner {
 
 	public void setFirstChars(String firstChars) {
 		this.firstChars = firstChars;
-		checkFirstChars = !StringUtils.isEmpty(firstChars);
+		checkFirstChars = !TextUtils.isEmpty(firstChars);
 	}
 
 	public void addParser(Parser parser) {
@@ -101,7 +103,7 @@ public class Scanner {
 	}
 
 	public Object parse(String string) {
-		if (StringUtils.isEmpty(string) || (checkFirstChars && firstChars.indexOf(string.charAt(0)) == -1))
+		if (TextUtils.isEmpty(string) || (checkFirstChars && firstChars.indexOf(string.charAt(0)) == -1))
 			return string;
 		for (Parser parser : parsers) {
 			final Object object = parser.parse(string);
