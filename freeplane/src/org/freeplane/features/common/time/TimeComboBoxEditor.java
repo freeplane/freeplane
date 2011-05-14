@@ -39,6 +39,8 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.features.common.format.FormattedDate;
+import org.freeplane.features.common.format.IFormattedObject;
+import org.freeplane.features.common.format.ScannerController;
 import org.freeplane.features.common.time.swing.JCalendar;
 
 /**
@@ -71,6 +73,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 		calendarPopupMenu = calenderComponent.createPopupMenu();
 		calendarPopupMenu.addPopupMenuListener(new PopupMenuListener() {
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+			    calenderComponent.setDate(date);
 			}
 			
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -110,8 +113,11 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	}
 
 	private void updateDate() {
-		date = new FormattedDate(calenderComponent.getDate(), 
+		final FormattedDate newDate = new FormattedDate(calenderComponent.getDate(), 
 			calenderComponent.isTimeVisible() ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd");
+        final String type = newDate.containsTime() ? IFormattedObject.TYPE_DATETIME : IFormattedObject.TYPE_DATE;
+        date = FormattedDate.createDefaultFormattedDate(newDate.getTime(), type);
+		
 	    if (actionListeners.size() == 0) {
 	    	return;
 	    }
@@ -149,9 +155,8 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	            	return oldItem;
 	            if(ResourceController.getResourceController().getBooleanProperty("parse_data") 
 	            		&& item instanceof String){
-	            	final FormattedDate date = FormattedDate.toDateISO(((String)item).trim());
-	            	if(date != null)
-	            		return date;
+	                final Object scannedObject = ScannerController.getInstance().parse((String)item);
+	                return scannedObject;
 	            }
 				return item;
             }

@@ -45,7 +45,7 @@ public class ScannerTest {
 	public static void initStatics() throws Exception {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
 		new FreeplaneStarter().createController();
-		scannerController = new ScannerController();
+		scannerController = ScannerController.getInstance();
 		datePattern = ((SimpleDateFormat) FormatController.getDefaultFormat(TYPE_DATE)).toPattern();
 		datetimePattern = ((SimpleDateFormat) FormatController.getDefaultFormat(TYPE_DATETIME)).toPattern();
 	}

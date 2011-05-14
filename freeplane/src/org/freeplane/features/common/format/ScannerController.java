@@ -31,7 +31,6 @@ import java.util.Locale;
 import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -46,15 +45,24 @@ import org.freeplane.n3.nanoxml.XMLWriter;
 /**
  * @author Volker Boerchers
  */
-public class ScannerController implements IExtension {
+public class ScannerController{
 	private static final String SCANNER_XML = "scanner.xml";
 	private static final String ROOT_ELEMENT = "scanners";
+    private static ScannerController instance;
 	private String pathToFile;
 	private Scanner selectedScanner;
 	private static List<Scanner> scanners = new ArrayList<Scanner>();
 	private static boolean fileLoaded;
+	
+	@Deprecated
+	static public ScannerController getInstance(){
+	    //FIXME move ScannerController to core and make it available from ResourceController
+	    if(instance == null)
+	        instance = new ScannerController();
+	    return instance;
+	}
 
-	public ScannerController() {
+	private ScannerController() {
 		pathToFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
 		        + SCANNER_XML;
 		initScanners();

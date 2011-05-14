@@ -104,7 +104,7 @@ public class MTextController extends TextController {
 		super(modeController);
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
 		createActions();
-		scannerController = new ScannerController();
+		scannerController = ScannerController.getInstance();
 	}
 
 	/**

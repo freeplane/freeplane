@@ -26,6 +26,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.common.format.FormattedDate;
+import org.freeplane.features.common.format.FormattedNumber;
+import org.freeplane.features.common.format.FormattedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 abstract public class CompareConditionAdapter extends ASelectableCondition {
@@ -49,6 +51,11 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			}
 			return;
 		}
+		if(value instanceof FormattedNumber){
+		    conditionValue = (FormattedNumber)value;
+		    return;
+		}
+		    
 		if(value instanceof FormattedDate){
 			final FormattedDate date = (FormattedDate) value;
 			if(date.containsTime() || 
@@ -79,7 +86,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 	@Override
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
-		if(conditionValue instanceof FormattedDate){
+		if(conditionValue instanceof FormattedObject){
 			child.setAttribute(OBJECT, TypeReference.toSpec(conditionValue));
 		}
 		else
@@ -93,6 +100,9 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 	}
 
 	private int compareToData(final Object transformedContent) {
+	    if (conditionValue instanceof FormattedNumber && transformedContent instanceof Number){
+	        return -((FormattedNumber)conditionValue).compareTo((Number)transformedContent);
+	    }
 		if (conditionValue instanceof Number && transformedContent instanceof String) {
 			try {
 				Number number = TextUtils.toNumber((String)transformedContent); 
