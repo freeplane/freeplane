@@ -27,7 +27,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.common.format.FormattedDate;
 import org.freeplane.features.common.format.FormattedNumber;
-import org.freeplane.features.common.format.FormattedObject;
+import org.freeplane.features.common.format.IFormattedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 abstract public class CompareConditionAdapter extends ASelectableCondition {
@@ -86,7 +86,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 	@Override
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
-		if(conditionValue instanceof FormattedObject){
+		if(conditionValue instanceof IFormattedObject){
 			child.setAttribute(OBJECT, TypeReference.toSpec(conditionValue));
 		}
 		else
