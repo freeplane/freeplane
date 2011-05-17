@@ -1063,7 +1063,7 @@ public class NodeView extends JComponent implements INodeView {
 				anotherLevel = 0;
 			if(anotherLevel == level && nodeViewSibling.isFirstGroupNode())
 				firstGroupNodeFound = true;
-			if(firstGroupNodeFound && ! nodeViewSibling.isSummary()){
+			if(firstGroupNodeFound && anotherLevel == level && ! nodeViewSibling.isSummary()){
 				i--;
 				break;
 			}
