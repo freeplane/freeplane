@@ -20,14 +20,19 @@
 package org.freeplane.core.resources.components;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.Collator;
-import java.util.Map.Entry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -35,8 +40,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -70,8 +77,6 @@ public class OptionPanelBuilder {
 			final int childrenCount = data.getChildrenCount();
 			final Vector<String> choices = new Vector<String>(childrenCount);
 			final Vector<String> translations = new Vector<String>(childrenCount);
-			// sort according to current locale
-			final TreeMap<String, String> inverseMap = new TreeMap<String, String>(Collator.getInstance());
 			for (int i = 0; i < childrenCount; i++) {
 				final XMLElement element = data.getChildAtIndex(i);
 				final String choice = element.getAttribute("value", null);
@@ -79,7 +84,29 @@ public class OptionPanelBuilder {
 				final String translationKey = element.getAttribute("text", "OptionPanel." + choice);
 				final String translation = TextUtils.getOptionalText(translationKey);
 				translations.add(translation);
-				inverseMap.put(translation, choice);
+			}
+			return createComboProperty(name, choices, translations);
+		}
+	}
+	
+	private class LanguagesComboCreator extends PropertyCreator {
+		@Override
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
+			final Set<String> locales = findAvailableLocales();
+			locales.add(ResourceBundles.LANGUAGE_AUTOMATIC);
+			final Vector<String> choices = new Vector<String>(locales.size());
+			final Vector<String> translations = new Vector<String>(locales.size());
+			// sort according to current locale
+			final TreeMap<String, String> inverseMap = new TreeMap<String, String>(Collator.getInstance());
+			for (String locale : locales) {
+				final String translation = TextUtils.getOptionalText("OptionPanel." + locale);
+				choices.add(locale);
+				translations.add(translation);
+				if (inverseMap.containsKey(translation)) {
+					LogUtils.severe("translation " + translation + " is used for more that one locale, for "
+					        + inverseMap.get(translation) + " and for " + locale + ".");
+				}
+				inverseMap.put(translation, locale);
 			}
 			if (inverseMap.size() == choices.size()) {
 				// fix #630: Language not sorted alphabetically
@@ -90,10 +117,26 @@ public class OptionPanelBuilder {
 					translations.add(entry.getKey());
 				}
 			}
-			else {
-				LogUtils.severe("found duplicate in translations for combo box selection for " + choices);
-			}
 			return createComboProperty(name, choices, translations);
+		}
+
+		private Set<String> findAvailableLocales() {
+			final TreeSet<String> locales = new TreeSet<String>();
+			final String name = "/translations/locales.txt";
+			final InputStream stream = ResourceController.class.getResourceAsStream(name);
+			if (stream == null) {
+				LogUtils.severe("available locales not found");
+				return locales;
+			}
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			try {
+                                FileUtils.copyStream(stream, out);
+                                locales.addAll(Arrays.asList(out.toString().split("\\s+")));
+			}
+			catch (IOException e) {
+				// OK - return locales
+			}
+			return locales;
 		}
 	}
 
@@ -487,6 +530,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("path", new PathOptionCreator());
 		readManager.addElementHandler("color", new ColorOptionCreator());
 		readManager.addElementHandler("combo", new ComboOptionCreator());
+		readManager.addElementHandler("languages", new LanguagesComboCreator());
 		readManager.addElementHandler("key", new KeyOptionCreator());
 		readManager.addElementHandler("remind_value", new RemindValueCreator());
 	}

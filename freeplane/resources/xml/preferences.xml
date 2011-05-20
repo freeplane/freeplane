@@ -7,42 +7,7 @@
             <boolean name = "single_instance_force"/>
         </separator>
         <separator name="language">
-       	    <combo name = "language">
-                <choice value="automatic"/>
-                <choice value="ar"/>
-                <choice value="ca"/>
-                <choice value="cs"/>
-                <choice value="de"/>
-                <choice value="da"/>
-                <choice value="en"/>
-                <choice value="el"/>
-                <choice value="es"/>
-                <choice value="et"/>
-                <choice value="fr"/>
-                <choice value="gl"/>
-                <choice value="hr"/>
-                <choice value="hu"/>
-                <choice value="id"/>
-                <choice value="it"/>
-                <choice value="ja"/>
-                <choice value="ko"/>
-                <choice value="lt"/>
-                <choice value="nl"/>
-                <choice value="nn"/>
-                <choice value="nb"/>
-                <choice value="pl"/>
-                <choice value="pt_BR"/>
-                <choice value="pt_PT"/>
-                <choice value="ru"/>
-                <choice value="sk"/>
-                <choice value="sv"/>
-                <choice value="sl"/>
-                <choice value="tr"/>
-                <choice value="uk_UA"/>
-                <choice value="vi"/>
-                <choice value="zh_TW"/>
-                <choice value="zh_CN"/>
-            </combo>
+       	    <languages name = "language" />
         </separator>
         <separator name = "files">
             <number name = "last_opened_list_length" min="1" max="50"/> 
@@ -178,10 +143,6 @@
             <number name="foldingsymbolwidth"/>
             <number name="grid_size" min = "1"/>
             <boolean name="goto_note_end_on_edit"/>    
-            <boolean name="parse_data"/>    
-            <string name="number_format"/>    
-            <string name="date_format"/>    
-            <string name="datetime_format"/>    
             <combo name="key_type_action">
             	<choice value="EDIT_CURRENT"/>
             	<choice value="IGNORE"/>
@@ -189,7 +150,14 @@
             	<choice value="ADD_CHILD"/>
             </combo>
         </separator>
-       <separator name="inline_editor">     
+        <separator name="data_formats">
+            <boolean name="parse_data"/>    
+            <string name="number_format"/>    
+            <string name="date_format"/>    
+            <string name="datetime_format"/>    
+       	    <languages name="format_locale" />
+        </separator>
+        <separator name="inline_editor">
        	    <boolean name="display_inline_editor_for_all_new_nodes" />
        	    <boolean name="layout_map_on_text_change" />
             <boolean name="el__enter_confirms_by_default" />
