@@ -151,6 +151,7 @@ public class MModeControllerFactory {
 		UITools.setScrollbarIncrement(styleScrollPane);
 		final JComponent tabs = (JComponent) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
+		FormatController.install(new FormatController());
 		new AttributePanelManager(modeController);
 		new HierarchicalIcons();
 		new AutomaticLayout();

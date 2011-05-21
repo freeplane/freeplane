@@ -49,7 +49,7 @@ public class FormattedDate extends Date implements IFormattedObject {
 
 	public FormattedDate(Date date, String pattern) {
 		super(date.getTime());
-		this.df = FormatController.getDateFormat(pattern);
+		this.df = FormatController.getController().getDateFormat(pattern);
 	}
 
 	public FormattedDate(long date, SimpleDateFormat df) {
@@ -59,13 +59,13 @@ public class FormattedDate extends Date implements IFormattedObject {
 
 	/**@deprecated use {@link #createDefaultFormattedDate(long, String)} instead. */
 	public FormattedDate(long date) {
-		this(date, FormatController.getDefaultDateFormat());
+		this(date, FormatController.getController().getDefaultDateFormat());
 		this.defaultType = IFormattedObject.TYPE_DATE;
 	}
 
 	public static FormattedDate createDefaultFormattedDate(long time, String type) {
 		final FormattedDate formattedDate = new FormattedDate(time,
-		    (SimpleDateFormat) FormatController.getDefaultFormat(type));
+		    (SimpleDateFormat) FormatController.getController().getDefaultFormat(type));
 		formattedDate.defaultType = type;
 		return formattedDate;
 	}
@@ -82,11 +82,11 @@ public class FormattedDate extends Date implements IFormattedObject {
 
 	public static String toStringISO(final Date date) {
 		// use local timezone
-		return FormatController.getDateFormat(ISO_DATE_TIME_FORMAT_PATTERN).format(date);
+		return FormatController.getController().getDateFormat(ISO_DATE_TIME_FORMAT_PATTERN).format(date);
 	}
 
 	public static String toStringShortISO(final Date date) {
-		return FormatController.getDateFormat(ISO_DATE_FORMAT_PATTERN).format(date);
+		return FormatController.getController().getDateFormat(ISO_DATE_FORMAT_PATTERN).format(date);
 	}
 
 	public static Object deserialize(String text) {
@@ -105,10 +105,10 @@ public class FormattedDate extends Date implements IFormattedObject {
 			return text;
 		if (arg.equals(IFormattedObject.TYPE_DATE) || arg.equals(IFormattedObject.TYPE_DATETIME)) {
 			date.defaultType = arg;
-			date.df = (SimpleDateFormat) FormatController.getDefaultFormat(arg);
+			date.df = (SimpleDateFormat) FormatController.getController().getDefaultFormat(arg);
 		}
 		else {
-			date.df = FormatController.getDateFormat(arg);
+			date.df = FormatController.getController().getDateFormat(arg);
 		}
 		return date;
 	}
@@ -160,7 +160,7 @@ public class FormattedDate extends Date implements IFormattedObject {
 	}
 
 	static private FormattedDate parseDate(String text, final String pattern) {
-		SimpleDateFormat parser = FormatController.getDateFormat(pattern);
+		SimpleDateFormat parser = FormatController.getController().getDateFormat(pattern);
 		final ParsePosition pos = new ParsePosition(0);
 		final Date date = parser.parse(text, pos);
 		if (date != null && pos.getIndex() == text.length()) {

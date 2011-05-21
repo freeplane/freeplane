@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.freeplane.main.application.FreeplaneStarter;
+import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -40,14 +41,17 @@ public class ScannerTest {
 	private static ScannerController scannerController;
 	private static String datePattern;
 	private static String datetimePattern;
+	private static FormatController formatController;
 
 	@BeforeClass
 	public static void initStatics() throws Exception {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
 		new FreeplaneStarter().createController();
+		MModeControllerFactory.createModeController();
+		formatController = FormatController.getController();
 		scannerController = ScannerController.getInstance();
-		datePattern = ((SimpleDateFormat) FormatController.getDefaultFormat(TYPE_DATE)).toPattern();
-		datetimePattern = ((SimpleDateFormat) FormatController.getDefaultFormat(TYPE_DATETIME)).toPattern();
+		datePattern = ((SimpleDateFormat) formatController.getDefaultFormat(TYPE_DATE)).toPattern();
+		datetimePattern = ((SimpleDateFormat) formatController.getDefaultFormat(TYPE_DATETIME)).toPattern();
 	}
 
 	@Test
