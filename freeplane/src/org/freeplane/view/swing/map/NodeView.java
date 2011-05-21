@@ -50,7 +50,7 @@ import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.icon.HierarchicalIcons;
-import org.freeplane.features.common.map.BranchesOverlap;
+import org.freeplane.features.common.map.FlexibleLayout;
 import org.freeplane.features.common.map.HistoryInformationModel;
 import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapChangeEvent;
@@ -856,7 +856,7 @@ public class NodeView extends JComponent implements INodeView {
 			updateToolTip();
 			return;
 		}
-		if(property.equals(BranchesOverlap.class)){
+		if(property.equals(FlexibleLayout.class)){
 			updateAll();
 			return;
 		}
@@ -1046,7 +1046,6 @@ public class NodeView extends JComponent implements INodeView {
 				else {
 					x1 = nodeViewSibling.getX() + lastView.getWidth() - spaceAround;
 				}
-				firstGroupNodeFound = lastView.isFirstGroupNode();
 			}
 			if(! itemFound){ 
 				if( ! nodeViewSibling.isSummary())
@@ -1063,7 +1062,7 @@ public class NodeView extends JComponent implements INodeView {
 				anotherLevel = 0;
 			if(anotherLevel == level && nodeViewSibling.isFirstGroupNode())
 				firstGroupNodeFound = true;
-			if(firstGroupNodeFound && anotherLevel == level && ! nodeViewSibling.isSummary()){
+			if(firstGroupNodeFound  && ! nodeViewSibling.isSummary()){
 				i--;
 				break;
 			}

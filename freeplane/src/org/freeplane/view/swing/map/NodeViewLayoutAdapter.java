@@ -27,6 +27,7 @@ import java.awt.Point;
 import javax.swing.JComponent;
 
 import org.freeplane.features.common.cloud.CloudModel;
+import org.freeplane.features.common.map.FlexibleLayout.Type;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.view.swing.map.cloud.CloudView;
 
@@ -64,15 +65,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     private NodeView view;
     private Dimension contentPreferredSize;
     private int contentWidth;
+    private Type branchesOverlap;
     
-    private boolean branchesOverlap = false;
-
-    public boolean isBranchesOverlap() {
-        return branchesOverlap;
-    }
-    public void setBranchesOverlap(boolean branchesOverlap) {
-        this.branchesOverlap = branchesOverlap;
-    }
     public void addLayoutComponent(final String arg0, final Component arg1) {
     }
     /**
@@ -285,18 +279,22 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             }
             
             if(isItem){
-                if(branchesOverlap){
+                if(branchesOverlap != null)
                     y -= childTopOverlap;
-                    y += childShiftY;
-                }
                 else
                     top -= childTopOverlap;
+                if(Type.SIBLINGS.equals(branchesOverlap) || childShiftY > 0)
+                    y += childShiftY;
+                else
+                    top += childShiftY;
+
+
                 if(oldLevel > 0){
                     summaryBaseX[0] = 0;
                     for(int j = 0; j < oldLevel; j++){
                         groupStart[j] = i;
-                        groupStartY[j] = y;
-                        groupEndY[j] = y;
+                        groupStartY[j] = y + childContentShift;
+                        groupEndY[j] = y + childContentShift + childContentHeight;
                         groupStartContentHeightSum[j] = childContentHeightSum;
                         groupStartVisibleChildCounter[j] = visibleChildCounter;
                     }
@@ -305,12 +303,12 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                     groupStartContentHeightSum[0] = childContentHeightSum;
                     groupStartVisibleChildCounter[0] = visibleChildCounter;
                     summaryBaseX[0] = 0;
-                    groupStartY[0] = y;
-                    groupEndY[0] = y;
+                    groupStartY[0] = y + childContentShift;
+                    groupEndY[0] = y + childContentShift + childContentHeight;
                     groupStart[0] = i;
                 }
                 for(int j = 0; j < highestSummaryLevel; j++){
-                    groupStartY[j] = Math.min(groupStartY[j],y);
+                    groupStartY[j] = Math.min(groupStartY[j],y + childContentShift + childContentHeight);
                 }
                 childContentHeightSum += Math.max(childContentHeight, childSummedContentHeight) + childCloudHeigth;
                 if (child.getHeight() - 2 * getSpaceAround() != 0) {
@@ -320,26 +318,17 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 }
 
                 y += childCloudHeigth/2;
-                if(! branchesOverlap){
-                    if(childShiftY < 0){
-                        top += childShiftY;
-                    }
-                    else
-                        y += childShiftY;
-                }
+
                 data.ly[i] = y;
-                groupEndY[0] = Math.max(y + childHeight, groupEndY[0]);
+                groupEndY[0] = Math.max(y + childContentShift + childContentHeight, groupEndY[0]);
                 if (childHeight != 0) {
                     y += childHeight + getVGap() + childCloudHeigth/2;
                 }
-                if(branchesOverlap){
+                
+                if(branchesOverlap != null)
                     y -= childBottomOverlap;
+                if(Type.SIBLINGS.equals(branchesOverlap) || childShiftY < 0)
                     y -= childShiftY;
-                }
-                else {
-                  if(childShiftY < 0)
-                      y -= childShiftY;
-                }
                 
                 final int x;
                 if(child.isLeft()){
@@ -367,10 +356,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 final int groupHeight = groupEndY[itemLevel] - groupStartY[itemLevel];
                 int summaryY = groupStartY[itemLevel] + (groupHeight - childContentHeight)/2- childContentShift + childShiftY;
                 final int deltaY;
-                if(branchesOverlap){
-                    final int summaryContentHeight = Math.max(childContentHeight, childSummedContentHeight);
+                final int summaryContentHeight = Math.max(childContentHeight, childSummedContentHeight);
+                if(Type.CHILDREN.equals(branchesOverlap)){
                     final int delta1 = (summaryContentHeight - (childContentHeightSum - groupStartContentHeightSum[itemLevel]))/2;
-                    final int delta2 = groupStartY[itemLevel] - summaryY - Math.min(childShiftY, 0);
+                    final int delta2 = groupStartY[itemLevel] - summaryY;
                     deltaY = Math.min( delta1, delta2);
                  }
                 else{
@@ -387,12 +376,15 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                     summaryY += deltaY;
                 }
                    
-                final int summaryEnd = summaryY + childHeight;
-                groupEndY[level] = Math.max(summaryEnd, groupEndY[level]);
+                final int summaryEnd; 
+                groupEndY[level] = Math.max(summaryY + childContentShift + childContentHeight, groupEndY[level]);
                 data.ly[i] = summaryY;
-                if(! branchesOverlap)
-                    y = Math.max(y, summaryEnd);
- 
+                if(branchesOverlap == null)
+                    summaryEnd = summaryY + childHeight;
+                else{
+                    summaryEnd = Math.min(summaryY + childHeight, summaryY  - childShiftY - childBottomOverlap + summaryContentHeight);
+                }
+                y = Math.max(y, summaryEnd);
                 final int x;
                 if(child.isLeft()){
                     x = summaryBaseX[itemLevel] - childHGap - child.getContent().getX() - child.getContent().getWidth();
@@ -500,5 +492,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         
         view.setSize(width, height);
         view.setSummedContentHeight(data.childContentHeight);
+    }
+    public void setBranchesOverlap(Type type) {
+        branchesOverlap = type;
     }
 }

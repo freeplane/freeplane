@@ -101,7 +101,11 @@
 			<menu_separator />
 			<menu_action action="ToggleFullScreenAction" />
 			<menu_action action="ViewLayoutTypeAction.OUTLINE" />
-			<menu_action action="BranchesOverlapAction" />
+			<menu_category name="flex">
+				<menu_radio_action action="FlexibleLayoutAction.SIBLINGS" />
+				<menu_radio_action action="FlexibleLayoutAction.CHILDREN" />
+				<menu_radio_action action="FlexibleLayoutAction.null" />
+			</menu_category>
 			<menu_separator />
 			<menu_category name="zoom">
 				<menu_action action="ZoomInAction" accelerator="alt UP" />
@@ -494,14 +498,10 @@
 			<menu_action action="DeleteAction" />
 		</menu_category>
 		<menu_separator />
-		<menu_category name="navigate_nodes">			
-			<menu_action action="NodeUpAction" accelerator="control UP" />
-			<menu_action action="NodeDownAction" accelerator="control DOWN" />
-			<menu_action action="ChangeNodeLevelLeftsAction" accelerator="control LEFT" />
-			<menu_action action="ChangeNodeLevelRightsAction" accelerator="control RIGHT" />
-		</menu_category>
-		<menu_separator />						
 		<menu_category name="position">			
+			<menu_action action="NewSummaryAction"/>
+			<menu_action action="FirstGroupNodeAction"/>
+			<menu_action action="SummaryNodeAction" />
 			<menu_action action="ResetNodeLocationAction" />			
 		</menu_category>	
 		<menu_separator />
