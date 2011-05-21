@@ -101,6 +101,7 @@
 			<menu_separator />
 			<menu_action action="ToggleFullScreenAction" />
 			<menu_action action="ViewLayoutTypeAction.OUTLINE" />
+			<menu_separator />
 			<menu_category name="flex">
 				<menu_radio_action action="FlexibleLayoutAction.SIBLINGS" />
 				<menu_radio_action action="FlexibleLayoutAction.CHILDREN" />
@@ -481,29 +482,30 @@
 			<menu_action action="CopyAction" />
 			<menu_action action="PasteAction" />
 		</menu_category>
+		<menu_separator/>
+		<menu_category name="folding">
+			<menu_action action="ToggleFoldedAction" />
+		</menu_category>
 		<menu_separator />
-		<menu_category name="new_nodes">
+		<menu_submenu name="new_node">
 			<menu_action action="NewChildAction" accelerator="INSERT" />
 			<menu_action action="NewSiblingAction" accelerator="ENTER" />
 			<menu_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
 			<menu_action action="NewParentNode" accelerator="shift INSERT" />					
-		</menu_category>
+		</menu_submenu>
+		<menu_submenu name="summary_nodes">
+			<menu_action action="NewSummaryAction"/>
+			<menu_action action="FirstGroupNodeAction"/>
+			<menu_action action="SummaryNodeAction" />
+		</menu_submenu>
+		<menu_separator />
+		<menu_action action="DeleteAction" />
+		<menu_action action="ResetNodeLocationAction" />			
 		<menu_separator/>
 		<menu_category name="EditAction">
 			<menu_action action="EditAction" />
 			<menu_action action="EditLongAction" />
 		</menu_category>
-		<menu_separator />
-		<menu_category name="remove">
-			<menu_action action="DeleteAction" />
-		</menu_category>
-		<menu_separator />
-		<menu_category name="position">			
-			<menu_action action="NewSummaryAction"/>
-			<menu_action action="FirstGroupNodeAction"/>
-			<menu_action action="SummaryNodeAction" />
-			<menu_action action="ResetNodeLocationAction" />			
-		</menu_category>	
 		<menu_separator />
 		<!-- Useless in this contextual menu ?
 		<menu_category name="view_or_hide">
@@ -523,7 +525,7 @@
 					<menu_action action="HierarchicalIcons2Action" />
 				</menu_category>
 				<menu_separator />
-				<menu_category name="icons">
+				<menu_category name="icons" menu_key="popup_menu_icons">
 					<menu_action action="RemoveIcon_0_Action" />
 					<menu_action action="RemoveIconAction" />
 					<menu_action action="RemoveAllIconsAction" />					
@@ -670,10 +672,6 @@
 			<menu_category name="assign" menu_key="node_popup_styles"/>
 		</menu_submenu>
 
-		<menu_separator/>
-		<menu_category name="folding">
-			<menu_action action="ToggleFoldedAction" />
-		</menu_category>
 	</menu_category>
 	<menu_category name="main_toolbar">
 		<menu_separator />
