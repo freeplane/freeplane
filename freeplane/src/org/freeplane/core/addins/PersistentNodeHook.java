@@ -21,11 +21,15 @@ package org.freeplane.core.addins;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.freeplane.core.addins.PersistentNodeHook.HookAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -81,6 +85,30 @@ public abstract class PersistentNodeHook {
 		}
 	}
 
+
+    @SelectableAction(checkOnNodeChange = true)
+    protected class SelectableEnumAction extends HookAction {
+        private static final long serialVersionUID = 1L;
+        final Enum<?> value;
+        public SelectableEnumAction(String key, final Enum<?> value) {
+            super(key + "." + String.valueOf(value));
+            this.value = value;
+        }
+
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+            undoableSetHook(false);
+            if(value != null)
+                undoableSetHook((IExtension)value);
+            setSelected(true);
+        }
+
+        @Override
+        public void setSelected() {
+            setSelected(isActiveForSelection(value));
+        }
+    }
+
 	private final class ToggleHookActor implements IActor {
 		IExtension extension;
 		private final NodeModel node;
@@ -131,9 +159,6 @@ public abstract class PersistentNodeHook {
 				return;
 			}
 			add(node, extension);
-			if (selectableHookAction != null) {
-				selectableHookAction.setEnabled(true);
-			}
 		}
 	}
 
@@ -151,33 +176,37 @@ public abstract class PersistentNodeHook {
 		}
 	}
 
-	// // 	final private Controller controller;
-	// 	private final ModeController modeController;
-	private final HookAction selectableHookAction;
-
 	@SuppressWarnings("unchecked")
 	public PersistentNodeHook() {
 		super();
-		if (getHookAnnotation().onceForMap()) {
-			mapExtensionClasses.add(getExtensionClass());
+		final Class<? extends IExtension> extensionClass = getExtensionClass();
+        if (getHookAnnotation().onceForMap()) {
+			mapExtensionClasses.add(extensionClass);
 		}
 		//		this.modeController = modeController;
 		//		controller = modeController.getController();
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (modeController.getModeName().equals("MindMap")) {
-			selectableHookAction = createHookAction();
-			if (selectableHookAction != null) {
-				registerAction(selectableHookAction);
-			}
-		}
-		else {
-			selectableHookAction = null;
+		    if(extensionClass.isEnum()){
+		        Class<Enum> enumClass = (Class<Enum>) extensionClass;
+                EnumSet<? extends Enum<?>> all= EnumSet.allOf(enumClass);
+                for(Enum e : all){
+                    registerAction(new SelectableEnumAction(getClass().getSimpleName() + "Action", e));
+                }
+                registerAction(new SelectableEnumAction(getClass().getSimpleName() + "Action", null));
+		    }
+		    else{
+		        final HookAction selectableHookAction = createHookAction();
+		        if (selectableHookAction != null) {
+		            registerAction(selectableHookAction);
+		        }
+		    }
 		}
 		final MapController mapController = modeController.getMapController();
 		mapController.getReadManager().addElementHandler("hook", createXmlReader());
 		final IExtensionElementWriter xmlWriter = createXmlWriter();
 		if (xmlWriter != null) {
-			mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(), xmlWriter);
+			mapController.getWriteManager().addExtensionElementWriter(extensionClass, xmlWriter);
 		}
 		if (this instanceof IExtension) {
 			// do not use getExtensionClass() here since in several subclasses getExtensionClass() returns a
@@ -195,7 +224,24 @@ public abstract class PersistentNodeHook {
 		return createExtension(node, null);
 	}
 
-	abstract protected IExtension createExtension(final NodeModel node, final XMLElement element);
+	protected IExtension createExtension(final NodeModel node, final XMLElement element){
+        try {
+	    final Class<? extends IExtension> extensionClass = getExtensionClass();
+	    if(extensionClass.isEnum()){
+	            final String value = element.getAttribute("VALUE");
+                final Method factory = extensionClass.getMethod("valueOf", String.class);
+                return (IExtension)factory.invoke(null, value);
+
+	    }
+	    return extensionClass.newInstance();
+        }
+        catch (SecurityException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+        }
+        return null;
+	}
 
 	protected HookAction createHookAction() {
 		return new SelectableHookAction(getClass().getSimpleName() + "Action");
@@ -271,6 +317,18 @@ public abstract class PersistentNodeHook {
 		return false;
 	}
 
+
+    private boolean isActiveForSelection(Enum<?> value) {
+        final NodeModel[] nodes = getNodes();
+        for (int i = 0; i < nodes.length; i++) {
+            final NodeModel nodeModel = nodes[i];
+            final IExtension nodeValue = nodeModel.getExtension(getExtensionClass());
+            if (value == null && nodeValue != null || value != null && !value.equals(nodeValue)) {
+                return false;
+            }
+        }
+        return true;
+    }
 	protected void registerAction(final AFreeplaneAction action) {
 		Controller.getCurrentModeController().addAction(action);
 	}
@@ -281,6 +339,9 @@ public abstract class PersistentNodeHook {
 
 	protected void saveExtension(final IExtension extension, final XMLElement element) {
 		element.setAttribute("NAME", getHookName());
+		if(extension instanceof Enum){
+		    element.setAttribute("VALUE", extension.toString());
+		}
 	}
 
 	public void undoableActivateHook(final NodeModel node, final IExtension extension) {
