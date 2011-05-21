@@ -107,6 +107,6 @@
 		</stylenode>
 	</map_styles>
 </hook>
-<hook NAME="BranchesOverlap"/>
+<hook NAME="FlexibleLayout" VALUE="CHILDREN"/>
 </node>
 </map>
