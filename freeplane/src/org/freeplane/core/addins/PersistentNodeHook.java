@@ -188,7 +188,7 @@ public abstract class PersistentNodeHook {
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (modeController.getModeName().equals("MindMap")) {
 		    if(extensionClass.isEnum()){
-		        Class<Enum> enumClass = (Class<Enum>) extensionClass;
+		        Class<Enum> enumClass = (Class<Enum>) (Class<?>)extensionClass;
                 EnumSet<? extends Enum<?>> all= EnumSet.allOf(enumClass);
                 for(Enum e : all){
                     registerAction(new SelectableEnumAction(getClass().getSimpleName() + "Action", e));
