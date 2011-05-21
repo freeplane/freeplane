@@ -332,7 +332,9 @@ public class MenuBuilder extends UIBuilder {
 				if (!contains(menuPath.key)) {
 					if (tag.equals("menu_submenu")) {
 						final JMenu menuItem = new JMenu();
-						final String nameRef = attributes.getAttribute("name_ref", null);
+						String nameRef = attributes.getAttribute("name_ref", null);
+						if(nameRef == null)
+						    nameRef = attributes.getAttribute("name", null);
 						final String iconResource = ResourceController.getResourceController().getProperty(nameRef + ".icon", null);
 						MenuBuilder.setLabelAndMnemonic(menuItem, TextUtils.getText(nameRef));
 						if(iconResource != null){
