@@ -199,7 +199,7 @@ public class FormatTranslation extends Task {
 				continue;
 			}
 			final String thisKey = keyValue[0];
-			final String thisValue = keyValue[1];
+			String thisValue = keyValue[1];
 			if (thisValue.matches("(\\[auto\\]|\\[translate me\\])?")) {
 				warn(filename + ": empty translation: " + line);
 			}
@@ -208,6 +208,15 @@ public class FormatTranslation extends Task {
 			}
 			if (thisValue.matches(".*\\$\\d.*")) {
 				warn(filename + ": use '{0}' instead of '$1' as placeholder! (likewise for $2...): " + line);
+				thisValue = thisValue.replaceAll("\\$1", "{0}").replaceAll("\\$2", "{1}");
+			}
+			if (thisValue.matches(".*\\{\\d[^},]*")) {
+				warn(filename + ": mismatched braces in placeholder: '{' not closed by '}': " + line);
+			}
+			if (thisValue.matches(".*[^']'[^'].*\\{\\d\\}.*") || thisValue.matches(".*\\{\\d\\}.*[^']'[^'].*")) {
+				warn(filename + ": replaced single quotes in strings containing placeholders by two: "
+				        + "\"'{0}' n'a\" -> \"''{0}'' n''a\": " + line);
+				thisValue = thisValue.replaceAll("([^'])'([^'])", "$1''$2");
 			}
 			if (lastKey != null && thisKey.equals(lastKey)) {
 				if (quality(thisValue) < quality(lastValue)) {
@@ -234,13 +243,13 @@ public class FormatTranslation extends Task {
 				else {
 					log(filename + ": drop " + TaskUtils.toLine(lastKey, lastValue));
 				}
-				lastValue = thisValue.replaceAll("\\$1", "{0}").replaceAll("\\$2", "{1}");
+				lastValue = thisValue;
 			}
 			else {
 				if (lastKey != null)
 					result.add(TaskUtils.toLine(lastKey, lastValue));
 				lastKey = thisKey;
-				lastValue = thisValue.replaceAll("\\$1", "{0}").replaceAll("\\$2", "{1}");
+				lastValue = thisValue;
 			}
 		}
 		if (lastKey != null)

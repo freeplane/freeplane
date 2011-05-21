@@ -713,12 +713,12 @@ public interface Proxy {
 		 * returns true. See {@link Controller#find(Closure)} for details. */
 		List<Node> find(Closure closure);
 
-		/** Returns all nodes of the map in breadth-first order.
+		/** Returns all nodes of the branch that starts with this node in breadth-first order.
 		 * @see Controller#findAll() for subtrees
 		 * @since 1.2 */
 		List<Node> findAll();
 		
-		/** Returns all nodes of the map in depth-first order.
+		/** Returns all nodes of the branch that starts with this node in depth-first order.
 		 * @see Controller#findAllDepthFirst() for subtrees.
 		 * @since 1.2 */
 		List<Node> findAllDepthFirst();
