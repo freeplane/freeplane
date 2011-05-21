@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.controller.Controller;
@@ -856,7 +857,7 @@ public class NodeView extends JComponent implements INodeView {
 			updateToolTip();
 			return;
 		}
-		if(property.equals(FlexibleLayout.class)){
+		if(property.equals(FlexibleLayout.Type.class)){
 			updateAll();
 			return;
 		}
@@ -981,6 +982,11 @@ public class NodeView extends JComponent implements INodeView {
 		if (PAINT_DEBUG_BORDER && isSelected()){
 			final int spaceAround = getZoomed(SPACE_AROUND);
 			g.drawRect(spaceAround, spaceAround, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
+			if(getMap().getLayoutType().equals(MapViewLayout.MAP)){
+			    Point p = new Point();
+			    UITools.convertPointToAncestor(getContent(), p, getMap().getRoot());
+			    g.drawString("" + p.x + ":" + p.y, spaceAround, getHeight() - spaceAround + 15);
+			}
 		}
 	}
 
@@ -1036,7 +1042,7 @@ public class NodeView extends JComponent implements INodeView {
 		boolean firstGroupNodeFound = false;
 		for (i = pos - 1; i >= 0; i--) {
 			final NodeView nodeViewSibling = (NodeView) getComponent(i);
-			if (nodeViewSibling.isLeft() != isLeft)
+			if (nodeViewSibling.isLeft() != isLeft || nodeViewSibling.getHeight() == 2 * spaceAround)
 				continue;
 			if (lastView == null) {
 				lastView = nodeViewSibling;
@@ -1052,6 +1058,8 @@ public class NodeView extends JComponent implements INodeView {
 					itemFound = true;
 				else
 					level++;
+	            if(1 == level && nodeViewSibling.isFirstGroupNode())
+	                firstGroupNodeFound = true;
 			}
 			else if(nodeViewSibling.isSummary()){
 				anotherLevel++;
@@ -1081,7 +1089,7 @@ public class NodeView extends JComponent implements INodeView {
 		int y1 = y2;
 		for (i = i + 1; i < pos; i++) {
 			final NodeView nodeViewSibling = (NodeView) getComponent(i);
-			if (nodeViewSibling.isLeft() != isLeft)
+			if (nodeViewSibling.isLeft() != isLeft|| nodeViewSibling.getHeight() == 2 * spaceAround)
 				continue;
 			if (nodeViewSibling.isSummary())
 				anotherLevel++;
@@ -1105,9 +1113,17 @@ public class NodeView extends JComponent implements INodeView {
 		if (isLeft)
 			x += nodeView.getWidth() - 2 * spaceAround;
 		final EdgeView edgeView = new SummaryEdgeView(nodeView);
-		edgeView.setStart(new Point(x1, y1));
+		final Point start1 = new Point(x1, y1);
+        final Point start2 = new Point(x1, y2);
+		final NodeView parentView = nodeView.getParentView();
+        if(! parentView.isContentVisible()){
+		    final NodeView visibleParentView = parentView.getVisibleParentView();
+            UITools.convertPointToAncestor(parentView, start1, visibleParentView);
+            UITools.convertPointToAncestor(parentView, start2, visibleParentView);
+		}
+        edgeView.setStart(start1);
 		edgeView.paint(g);
-		edgeView.setStart(new Point(x1, y2));
+        edgeView.setStart(start2);
 		edgeView.paint(g);
 	}
 

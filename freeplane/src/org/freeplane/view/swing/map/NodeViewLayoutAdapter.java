@@ -258,11 +258,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             else{
                 level++;
             }
-                
-            
+             
             final int childCloudHeigth = getAdditionalCloudHeigth(child);
             final int childContentHeight = child.getContent().getHeight();
-            final int childShiftY = child.getShift();
+            final int childShiftY = child.isContentVisible() ? child.getShift() : 0;
             final int childContentShift = child.getContent().getY() - getSpaceAround();
             final int childHGap = child.getContent().isVisible() ? child.getHGap() : 0;
             final int childHeight = child.getHeight() - 2 * getSpaceAround();
@@ -287,14 +286,24 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                     y += childShiftY;
                 else
                     top += childShiftY;
+                
+                y += childCloudHeigth/2;
+                data.ly[i] = y;
+                if(branchesOverlap != null)
+                    y -= childBottomOverlap;
+                if(Type.SIBLINGS.equals(branchesOverlap) || childShiftY < 0)
+                    y -= childShiftY;
 
-
+                if (childHeight != 0) {
+                    y += childHeight + getVGap() + childCloudHeigth/2;
+                }
+                
                 if(oldLevel > 0){
                     summaryBaseX[0] = 0;
                     for(int j = 0; j < oldLevel; j++){
                         groupStart[j] = i;
-                        groupStartY[j] = y + childContentShift;
-                        groupEndY[j] = y + childContentShift + childContentHeight;
+                        groupStartY[j] = Integer.MAX_VALUE;
+                        groupEndY[j] = Integer.MIN_VALUE;
                         groupStartContentHeightSum[j] = childContentHeightSum;
                         groupStartVisibleChildCounter[j] = visibleChildCounter;
                     }
@@ -303,12 +312,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                     groupStartContentHeightSum[0] = childContentHeightSum;
                     groupStartVisibleChildCounter[0] = visibleChildCounter;
                     summaryBaseX[0] = 0;
-                    groupStartY[0] = y + childContentShift;
-                    groupEndY[0] = y + childContentShift + childContentHeight;
                     groupStart[0] = i;
-                }
-                for(int j = 0; j < highestSummaryLevel; j++){
-                    groupStartY[j] = Math.min(groupStartY[j],y + childContentShift + childContentHeight);
                 }
                 childContentHeightSum += Math.max(childContentHeight, childSummedContentHeight) + childCloudHeigth;
                 if (child.getHeight() - 2 * getSpaceAround() != 0) {
@@ -317,39 +321,13 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                     visibleChildCounter++;
                 }
 
-                y += childCloudHeigth/2;
-
-                data.ly[i] = y;
-                groupEndY[0] = Math.max(y + childContentShift + childContentHeight, groupEndY[0]);
-                if (childHeight != 0) {
-                    y += childHeight + getVGap() + childCloudHeigth/2;
-                }
-                
-                if(branchesOverlap != null)
-                    y -= childBottomOverlap;
-                if(Type.SIBLINGS.equals(branchesOverlap) || childShiftY < 0)
-                    y -= childShiftY;
-                
-                final int x;
-                if(child.isLeft()){
-                    x = - childHGap - child.getContent().getX() - child.getContent().getWidth();
-                    summaryBaseX[0] = Math.min(summaryBaseX[0], x + getSpaceAround());
-                }
-                else{
-                    x = contentWidth + childHGap - child.getContent().getX();
-                    summaryBaseX[0] = Math.max(summaryBaseX[0], x + child.getWidth() - 2 * getSpaceAround());
-                }
-                data.lx[i] = x; 
-                left = Math.min(left, x);
-            }
+             }
             else{
                 final int itemLevel = level - 1;
                 if(child.isFirstGroupNode()){
                     groupStartContentHeightSum[level] = groupStartContentHeightSum[itemLevel];
                     groupStartVisibleChildCounter[level] = groupStartVisibleChildCounter[itemLevel];
                     summaryBaseX[level] = 0;
-                    groupStartY[level] = groupStartY[itemLevel];
-                    groupEndY[level] = groupEndY[itemLevel];
                     groupStart[level] = groupStart[itemLevel];
                 }
                 
@@ -357,8 +335,16 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 int summaryY = groupStartY[itemLevel] + (groupHeight - childContentHeight)/2- childContentShift + childShiftY;
                 final int deltaY;
                 final int summaryContentHeight = Math.max(childContentHeight, childSummedContentHeight);
+                final int additionalSummaryHeight = summaryContentHeight - (childContentHeightSum - groupStartContentHeightSum[itemLevel]);
+                if(additionalSummaryHeight > 0){
+                    childContentHeightSum += additionalSummaryHeight;
+                    if (view.isContentVisible()) {
+                        top += additionalSummaryHeight/2;
+                    }
+                }
+                
                 if(Type.CHILDREN.equals(branchesOverlap)){
-                    final int delta1 = (summaryContentHeight - (childContentHeightSum - groupStartContentHeightSum[itemLevel]))/2;
+                    final int delta1 = additionalSummaryHeight/2;
                     final int delta2 = groupStartY[itemLevel] - summaryY;
                     deltaY = Math.min( delta1, delta2);
                  }
@@ -376,27 +362,47 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                     summaryY += deltaY;
                 }
                    
-                final int summaryEnd; 
                 groupEndY[level] = Math.max(summaryY + childContentShift + childContentHeight, groupEndY[level]);
                 data.ly[i] = summaryY;
+                final int summaryEnd; 
                 if(branchesOverlap == null)
                     summaryEnd = summaryY + childHeight;
                 else{
                     summaryEnd = Math.min(summaryY + childHeight, summaryY  - childShiftY - childBottomOverlap + summaryContentHeight);
                 }
                 y = Math.max(y, summaryEnd);
-                final int x;
+            }
+            if(child.isFirstGroupNode()){
+                groupStartY[level] = data.ly[i] + childContentShift;
+                groupEndY[level] = data.ly[i] + childContentShift + childContentHeight;
+            }
+            else{
+                groupStartY[level] = Math.min(groupStartY[level],data.ly[i] + childContentShift);
+                groupEndY[level] = Math.max(data.ly[i] + childContentShift + childContentHeight, groupEndY[level]);
+            }
+            final int x;
+            final int baseX;
+            if(level > 0)
+                baseX = summaryBaseX[level - 1];
+            else{
                 if(child.isLeft()){
-                    x = summaryBaseX[itemLevel] - childHGap - child.getContent().getX() - child.getContent().getWidth();
-                    summaryBaseX[level] = Math.min(summaryBaseX[level], x + getSpaceAround());
+                    baseX = 0;
                 }
                 else{
-                    x = summaryBaseX[itemLevel] + childHGap - child.getContent().getX() + getSpaceAround();
-                    summaryBaseX[level] = Math.max(summaryBaseX[level], x + child.getWidth() - 2 * getSpaceAround());
+                    baseX = contentWidth;
                 }
-                left = Math.min(left, x);
-                data.lx[i] = x; 
             }
+            if(child.isLeft()){
+                x = baseX - childHGap - child.getContent().getX() - child.getContent().getWidth();
+                summaryBaseX[level] = Math.min(summaryBaseX[level], x + getSpaceAround());
+            }
+            else{
+                x = baseX + childHGap - child.getContent().getX();
+                summaryBaseX[level] = Math.max(summaryBaseX[level], x + child.getWidth() - getSpaceAround());
+            }
+            left = Math.min(left, x);
+            data.lx[i] = x; 
+
         }
         final NodeView view = getView();
         if (view.isContentVisible()) {
@@ -464,17 +470,13 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         final NodeView view = getView();
         if (view.isContentVisible()) {
             contentHeight = contentPreferredSize.height;
-        }
-        else {
-            contentHeight = data.childContentHeight;
-        }
-        
-        if (getView().isContentVisible()) {
             getContent().setVisible(true);
         }
         else {
+            contentHeight = data.childContentHeight;
             getContent().setVisible(false);
         }
+        
         final int contentX = Math.max(getSpaceAround(), -data.left);
         final int contentY = getSpaceAround() + Math.max(0, -data.top);
         getContent().setBounds(contentX, contentY, contentWidth, contentHeight);
